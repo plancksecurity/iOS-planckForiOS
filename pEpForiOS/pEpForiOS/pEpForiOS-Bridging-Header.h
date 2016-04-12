@@ -1,0 +1,29 @@
+//
+//  pEpForiOS-Bridging-Header.h
+//  pEpForiOS
+//
+//  Created by Dirk Zimmermann on 12/04/16.
+//  Copyright © 2016 pEp Security S.A. All rights reserved.
+//
+
+#ifndef pEpForiOS_Bridging_Header_h
+#define pEpForiOS_Bridging_Header_h
+
+#import "Pantomime/CWConstants.h"
+#import "Pantomime/CWFolder.h"
+#import "Pantomime/CWService.h"
+#import "Pantomime/CWConnection.h"
+#import "Pantomime/CWIMAPFolder.h"
+#import "Pantomime/CacheRecord.h"
+
+#import "Pantomime/CWCacheManager.h"
+#import "Pantomime/CWIMAPCacheManager.h"
+
+#import "Pantomime/CWIMAPStore.h"
+#import "Pantomime/CWIMAPMessage.h"
+
+#import "Pantomime/CWSMTP.h"
+#import "Pantomime/CWInternetAddress.h"
+#import "Pantomime/NSData+Extensions.h"
+
+#endif /* pEpForiOS_Bridging_Header_h */

@@ -15,6 +15,13 @@
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		43980E3F1CBD0BCA00A7FC3C /* pEpForiOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E3E1CBD0BCA00A7FC3C /* pEpForiOSTests.swift */; };
 		43980E4A1CBD0BCA00A7FC3C /* pEpForiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */; };
+		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
+		43980EE61CBD24B800A7FC3C /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE21CBD24B800A7FC3C /* ConnectInfo.swift */; };
+		43980EE71CBD24B800A7FC3C /* ImapSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE31CBD24B800A7FC3C /* ImapSync.swift */; };
+		43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE41CBD24B800A7FC3C /* SmtpSend.swift */; };
+		43980EE91CBD24B800A7FC3C /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE51CBD24B800A7FC3C /* TestData.swift */; };
+		43980EEC1CBD26B400A7FC3C /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EEB1CBD26B400A7FC3C /* CacheManager.swift */; };
+		43980EED1CBD26D000A7FC3C /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43980EDA1CBD1CCD00A7FC3C /* libPantomimeStatic.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +60,13 @@
 			remoteGlobalIDString = 43980E5B1CBD1B3E00A7FC3C;
 			remoteInfo = PantomimeStatic;
 		};
+		43980EEE1CBD26DF00A7FC3C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 43980E5A1CBD1B3E00A7FC3C;
+			remoteInfo = PantomimeStatic;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +85,13 @@
 		43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpForiOSUITests.swift; sourceTree = "<group>"; };
 		43980E4B1CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pantomime.xcodeproj; path = "../../pantomime-iOS/Pantomime.xcodeproj"; sourceTree = "<group>"; };
+		43980EDF1CBD24B000A7FC3C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		43980EE21CBD24B800A7FC3C /* ConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectInfo.swift; sourceTree = "<group>"; };
+		43980EE31CBD24B800A7FC3C /* ImapSync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSync.swift; sourceTree = "<group>"; };
+		43980EE41CBD24B800A7FC3C /* SmtpSend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSend.swift; sourceTree = "<group>"; };
+		43980EE51CBD24B800A7FC3C /* TestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
+		43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		43980EEB1CBD26B400A7FC3C /* CacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43980EED1CBD26D000A7FC3C /* libPantomimeStatic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +144,8 @@
 		43980E251CBD0BC900A7FC3C /* pEpForiOS */ = {
 			isa = PBXGroup;
 			children = (
+				43980EE11CBD24B800A7FC3C /* Sync */,
+				43980EDE1CBD24B000A7FC3C /* Util */,
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				43980E281CBD0BC900A7FC3C /* ViewController.swift */,
 				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
@@ -129,6 +153,7 @@
 				43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
 				43980E2D1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld */,
+				43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */,
 			);
 			path = pEpForiOS;
 			sourceTree = "<group>";
@@ -169,6 +194,26 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		43980EDE1CBD24B000A7FC3C /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				43980EDF1CBD24B000A7FC3C /* Log.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		43980EE11CBD24B800A7FC3C /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				43980EEB1CBD26B400A7FC3C /* CacheManager.swift */,
+				43980EE21CBD24B800A7FC3C /* ConnectInfo.swift */,
+				43980EE31CBD24B800A7FC3C /* ImapSync.swift */,
+				43980EE41CBD24B800A7FC3C /* SmtpSend.swift */,
+				43980EE51CBD24B800A7FC3C /* TestData.swift */,
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -183,6 +228,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				43980EEF1CBD26DF00A7FC3C /* PBXTargetDependency */,
 			);
 			name = pEpForiOS;
 			productName = pEpForiOS;
@@ -330,8 +376,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */,
+				43980EEC1CBD26B400A7FC3C /* CacheManager.swift in Sources */,
 				43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */,
+				43980EE71CBD24B800A7FC3C /* ImapSync.swift in Sources */,
+				43980EE91CBD24B800A7FC3C /* TestData.swift in Sources */,
+				43980EE61CBD24B800A7FC3C /* ConnectInfo.swift in Sources */,
 				43980E291CBD0BC900A7FC3C /* ViewController.swift in Sources */,
+				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -364,6 +416,11 @@
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* pEpForiOS */;
 			targetProxy = 43980E461CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
+		};
+		43980EEF1CBD26DF00A7FC3C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PantomimeStatic;
+			targetProxy = 43980EEE1CBD26DF00A7FC3C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -424,9 +481,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../pantomime-iOS/pantomime-lib/Framework/";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -464,8 +523,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../pantomime-iOS/pantomime-lib/Framework/";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -481,6 +542,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)//pEpForiOS/pEpForiOS-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -493,6 +555,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)//pEpForiOS/pEpForiOS-Bridging-Header.h";
 			};
 			name = Release;
 		};

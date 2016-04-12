@@ -13,10 +13,18 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var imap: ImapSync!
+    var smtp: SmtpSend!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+
+        imap = ImapSync.init(connectInfo: TestData())
+        imap.start()
+
+        //smtp = SmtpSend.init(connectInfo: TestData())
+        //smtp.start()
+
         return true
     }
 
