@@ -26,6 +26,7 @@ class SmtpSend {
         smtp = CWSMTP.init(name: connectInfo.smtpServerName, port: connectInfo.smtpServerPort,
                            transport: connectInfo.smtpTransport)
         smtp.setDelegate(self)
+        smtp.setLogger(Log())
     }
 
     func start() {

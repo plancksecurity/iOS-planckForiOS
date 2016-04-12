@@ -28,10 +28,6 @@ import Foundation
         }
     }
 
-    override init() {
-        super.init()
-    }
-
     @objc public func infoComponent(component: String!, message: String!) {
         Log.info(component, message)
     }
