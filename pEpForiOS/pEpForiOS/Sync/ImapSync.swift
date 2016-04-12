@@ -28,6 +28,7 @@ public class ImapSync {
                                      port: connectInfo.imapServerPort,
                                      transport: connectInfo.imapTransport)
         imapStore.setDelegate(self)
+        imapStore.setLogger(Log.init())
     }
 
     deinit {
@@ -43,7 +44,7 @@ public class ImapSync {
         if let folder = imapStore.folderForName(defaultInboxName, mode: PantomimeReadOnlyMode,
                                                 prefetch: false) {
             folder.setCacheManager(cache)
-            Log.info(comp, content: "openMailBox \(folder.name())")
+            Log.info(comp, "openMailBox \(folder.name())")
         }
     }
 
@@ -55,7 +56,7 @@ public class ImapSync {
                 let folderName = folder as! String
                 imapState.folderNames.append(folderName)
             }
-            Log.info(comp, content: "IMAP folders: \(imapState.folderNames)")
+            Log.info(comp, "IMAP folders: \(imapState.folderNames)")
             openMailBox(defaultInboxName)
         }
     }
@@ -72,7 +73,7 @@ public class ImapSync {
     }
 
     func dumpMethodName(methodName: String, notification: NSNotification) {
-        Log.info(comp, content: "\(methodName): \(notification)")
+        Log.info(comp, "\(methodName): \(notification)")
     }
 }
 
@@ -106,9 +107,9 @@ extension ImapSync: CWServiceClient {
     @objc public func folderPrefetchCompleted(notification: NSNotification) {
         dumpMethodName("folderPrefetchCompleted", notification: notification)
         if let folder: CWFolder = (notification.userInfo?["Folder"] as! CWFolder) {
-            Log.info(comp, content: "prefetched folder: \(folder.name())")
+            Log.info(comp, "prefetched folder: \(folder.name())")
         } else {
-            Log.info(comp, content: "folderPrefetchCompleted: \(notification)")
+            Log.info(comp, "folderPrefetchCompleted: \(notification)")
         }
     }
 
@@ -141,17 +142,17 @@ extension ImapSync: CWServiceClient {
 extension ImapSync: PantomimeFolderDelegate {
     @objc public func folderOpenCompleted(notification: NSNotification!) {
         if let folder: CWFolder = (notification.userInfo?["Folder"] as! CWFolder) {
-            Log.info(comp, content: "folderOpenCompleted: \(folder.name())")
+            Log.info(comp, "folderOpenCompleted: \(folder.name())")
         } else {
-            Log.info(comp, content: "folderOpenCompleted: \(notification)")
+            Log.info(comp, "folderOpenCompleted: \(notification)")
         }
     }
 
     @objc public func folderOpenFailed(notification: NSNotification!) {
         if let folder: CWFolder = (notification.userInfo?["Folder"] as! CWFolder) {
-            Log.info(comp, content: "folderOpenFailed: \(folder.name())")
+            Log.info(comp, "folderOpenFailed: \(folder.name())")
         } else {
-            Log.info(comp, content: "folderOpenFailed: \(notification)")
+            Log.info(comp, "folderOpenFailed: \(notification)")
         }
     }
 }

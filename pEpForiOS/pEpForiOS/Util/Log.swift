@@ -9,13 +9,13 @@
 import Foundation
 
 /** Very primitive Logging class. */
-class Log {
+@objc public class Log: NSObject, CWLogging {
 
-    static let allow: [String:Bool] = ["TCPConnection": true, "ImapSync": true,
+    static let allow: [String:Bool] = ["CWTCPConnection": true, "ImapSync": true,
                                        "SmtpSend": true]
 
     /** Somewhat verbose */
-    static func info(component: String, content: String) {
+    static func info(component: String, _ content: String) {
         if allow[component] == true {
             print("\(component): \(content)")
         }
@@ -26,5 +26,17 @@ class Log {
         if allow[component] == true {
             print("\(component): \(content)")
         }
+    }
+
+    override init() {
+        super.init()
+    }
+
+    @objc public func infoComponent(component: String!, message: String!) {
+        Log.info(component, message)
+    }
+
+    @objc public func warnComponent(component: String!, message: String!) {
+        Log.warn(component, message)
     }
 }

@@ -41,7 +41,7 @@ import Foundation
               " content(\(msg.content()))")
     }
 
-    public func writeRecord(theRecord: CacheRecord!, message: CWIMAPMessage!) {
+    public func writeRecord(theRecord: CWCacheRecord!, message: CWIMAPMessage!) {
         let folder = message.folder()
         print("write UID(\(message.UID())) folder(\(folder.name()))")
         dumpMessage(message)

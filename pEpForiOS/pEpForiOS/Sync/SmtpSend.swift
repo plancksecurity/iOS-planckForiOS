@@ -33,7 +33,7 @@ class SmtpSend {
     }
 
     func dumpMethodName(methodName: String, notification: NSNotification) {
-        Log.info(comp, content: "\(methodName): \(notification)")
+        Log.info(comp, "\(methodName): \(notification)")
     }
 
     func createMessage() -> CWMessage {
