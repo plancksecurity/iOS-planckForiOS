@@ -20,7 +20,7 @@ public class ImapSync {
     let connectInfo: ConnectInfo
     var imapStore: CWIMAPStore
     var imapState = ImapState()
-    var cache = CacheManager()
+    var cache = EmailCacheManager()
 
     init(connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo

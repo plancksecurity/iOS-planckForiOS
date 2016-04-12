@@ -8,6 +8,9 @@
 
 import Foundation
 
+/**
+ Holds connection info (like server, port etc.) for IMAP and SMTP.
+ */
 class ConnectInfo {
     let email: String
     let imapUsername: String?

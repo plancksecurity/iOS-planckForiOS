@@ -8,7 +8,10 @@
 
 import Foundation
 
-@objc public class CacheManager: NSObject, CWCache, CWIMAPCache {
+/**
+ This is the interface the IMAP implementation (and possibly others) uses to store mails.
+ */
+@objc public class EmailCacheManager: NSObject, CWCache, CWIMAPCache {
 
     public func invalidate() {
     }
