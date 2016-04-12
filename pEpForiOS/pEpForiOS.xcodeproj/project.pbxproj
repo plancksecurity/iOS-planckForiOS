@@ -32,6 +32,27 @@
 			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
 			remoteInfo = pEpForiOS;
 		};
+		43980ED51CBD1CCD00A7FC3C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 43E854BB1CB7EA9A006867C0;
+			remoteInfo = Pantomime;
+		};
+		43980ED71CBD1CCD00A7FC3C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 43E854CF1CB7EA9B006867C0;
+			remoteInfo = PantomimeTests;
+		};
+		43980ED91CBD1CCD00A7FC3C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 43980E5B1CBD1B3E00A7FC3C;
+			remoteInfo = PantomimeStatic;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +70,7 @@
 		43980E451CBD0BCA00A7FC3C /* pEpForiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpForiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpForiOSUITests.swift; sourceTree = "<group>"; };
 		43980E4B1CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pantomime.xcodeproj; path = "../../pantomime-iOS/Pantomime.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +101,7 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
+				43980ECE1CBD1CAD00A7FC3C /* Libraries */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				43980E481CBD0BCA00A7FC3C /* pEpForiOSUITests */,
@@ -126,6 +149,24 @@
 				43980E4B1CBD0BCA00A7FC3C /* Info.plist */,
 			);
 			path = pEpForiOSUITests;
+			sourceTree = "<group>";
+		};
+		43980ECE1CBD1CAD00A7FC3C /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		43980ED01CBD1CCD00A7FC3C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				43980ED61CBD1CCD00A7FC3C /* Pantomime.app */,
+				43980ED81CBD1CCD00A7FC3C /* PantomimeTests.xctest */,
+				43980EDA1CBD1CCD00A7FC3C /* libPantomimeStatic.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +259,12 @@
 			mainGroup = 43980E1A1CBD0BC900A7FC3C;
 			productRefGroup = 43980E241CBD0BC900A7FC3C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 43980ED01CBD1CCD00A7FC3C /* Products */;
+					ProjectRef = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				43980E221CBD0BC900A7FC3C /* pEpForiOS */,
@@ -226,6 +273,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		43980ED61CBD1CCD00A7FC3C /* Pantomime.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Pantomime.app;
+			remoteRef = 43980ED51CBD1CCD00A7FC3C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		43980ED81CBD1CCD00A7FC3C /* PantomimeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PantomimeTests.xctest;
+			remoteRef = 43980ED71CBD1CCD00A7FC3C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		43980EDA1CBD1CCD00A7FC3C /* libPantomimeStatic.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libPantomimeStatic.a;
+			remoteRef = 43980ED91CBD1CCD00A7FC3C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		43980E211CBD0BC900A7FC3C /* Resources */ = {
@@ -490,6 +561,7 @@
 				43980E501CBD0BCA00A7FC3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		43980E511CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEpForiOSTests" */ = {
 			isa = XCConfigurationList;
@@ -498,6 +570,7 @@
 				43980E531CBD0BCA00A7FC3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		43980E541CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEpForiOSUITests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +579,7 @@
 				43980E561CBD0BCA00A7FC3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
