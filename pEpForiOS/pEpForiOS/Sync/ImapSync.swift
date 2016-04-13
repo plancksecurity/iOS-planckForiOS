@@ -9,18 +9,24 @@
 import Foundation
 
 struct ImapState {
-    var authenticationCompleted: Bool = false
+    var authenticationCompleted = false
     var folderNames: [String] = []
 }
 
 public class ImapSync {
-    let comp = "ImapSync"
-    let defaultInboxName = "INBOX"
+    private let comp = "ImapSync"
 
-    let connectInfo: ConnectInfo
-    var imapStore: CWIMAPStore
-    var imapState = ImapState()
-    var cache = EmailCacheManager()
+    let ErrorAuthenticationFailed = 1000
+    let ErrorConnectionTimedOut = 1001
+
+    private let defaultInboxName = "INBOX"
+
+    private let connectInfo: ConnectInfo
+    private var imapStore: CWIMAPStore
+    private var imapState = ImapState()
+    private var cache = EmailCacheManager()
+
+    private var testOnlyCallback: (NSError? -> ())? = nil
 
     init(connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
@@ -35,6 +41,11 @@ public class ImapSync {
     }
 
     func start() {
+        imapStore.connectInBackgroundAndNotify()
+    }
+
+    func test(block:(NSError? -> ())) {
+        testOnlyCallback = block
         imapStore.connectInBackgroundAndNotify()
     }
 
@@ -62,18 +73,27 @@ public class ImapSync {
     }
 
     /**
-     Triggered by a time after authentication completes, have to wait
+     Triggered by a timer after authentication completes, have to wait
      for folders to appear.
      */
-    func waitForFolders() {
+    private func waitForFolders() {
         let timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self,
                                                            selector: #selector(handleFolders),
                                                            userInfo: nil, repeats: true)
         timer.fire()
     }
 
-    func dumpMethodName(methodName: String, notification: NSNotification) {
+    private func dumpMethodName(methodName: String, notification: NSNotification) {
         Log.info(comp, "\(methodName): \(notification)")
+    }
+
+    /**
+     If this was just a test, and there was an error, invoke the test block with that error.
+     */
+    private func callTestBlock(error: NSError?) {
+        if let block = testOnlyCallback {
+            block(error)
+        }
     }
 }
 
@@ -81,11 +101,20 @@ extension ImapSync: CWServiceClient {
     @objc public func authenticationCompleted(notification: NSNotification) {
         dumpMethodName("authenticationCompleted", notification: notification)
         imapState.authenticationCompleted = true
-        waitForFolders()
+        if let block = testOnlyCallback {
+            block(nil)
+        } else {
+            waitForFolders()
+        }
     }
 
     @objc public func authenticationFailed(notification: NSNotification) {
         dumpMethodName("authenticationFailed", notification: notification)
+        let error = NSError.init(domain: comp, code: ErrorAuthenticationFailed,
+                                 userInfo: [NSLocalizedDescriptionKey:
+                                    NSLocalizedString("IMAP authentication failed",
+                                        comment: "Error when testing IMAP account")])
+        callTestBlock(error)
     }
 
     @objc public func connectionEstablished(notification: NSNotification) {
@@ -102,6 +131,11 @@ extension ImapSync: CWServiceClient {
 
     @objc public func connectionTimedOut(notification: NSNotification) {
         dumpMethodName("connectionTimedOut", notification: notification)
+        let error = NSError.init(domain: comp, code: ErrorConnectionTimedOut,
+                                 userInfo: [NSLocalizedDescriptionKey:
+                                    NSLocalizedString("IMAP connection timed out",
+                                        comment: "Error when testing IMAP account")])
+        callTestBlock(error)
     }
 
     @objc public func folderPrefetchCompleted(notification: NSNotification) {

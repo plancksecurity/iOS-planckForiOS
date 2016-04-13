@@ -11,7 +11,7 @@ import Foundation
 /**
  Holds connection info (like server, port etc.) for IMAP and SMTP.
  */
-class ConnectInfo {
+class ConnectInfo: NSObject {
     let email: String
     let imapUsername: String?
     let smtpUsername: String?
