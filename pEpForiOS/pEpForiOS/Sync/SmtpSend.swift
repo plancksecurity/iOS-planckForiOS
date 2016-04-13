@@ -13,13 +13,18 @@ struct SmtpStatus {
 }
 
 class SmtpSend {
-    let comp = "SmtpSend"
+    private let comp = "SmtpSend"
 
-    let connectInfo: ConnectInfo!
-    let smtp: CWSMTP
-    var smtpStatus: SmtpStatus = SmtpStatus.init()
-    var messagesSent = 0
-    var maxMessageToSend = 3
+    let ErrorAuthenticationFailed = 1000
+    let ErrorConnectionTimedOut = 1001
+
+    private let connectInfo: ConnectInfo!
+    private let smtp: CWSMTP
+    private var smtpStatus: SmtpStatus = SmtpStatus.init()
+    private var messagesSent = 0
+    private var maxMessageToSend = 3
+
+    private var testOnlyCallback: (NSError? -> ())? = nil
 
     init(connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
@@ -29,15 +34,33 @@ class SmtpSend {
         smtp.setLogger(Log())
     }
 
+    deinit {
+        smtp.close()
+    }
+
     func start() {
         smtp.connectInBackgroundAndNotify()
     }
 
-    func dumpMethodName(methodName: String, notification: NSNotification) {
+    func test(block:(NSError? -> ())) {
+        testOnlyCallback = block
+        smtp.connectInBackgroundAndNotify()
+    }
+
+    /**
+     If this was just a test, and there was an error, invoke the test block with that error.
+     */
+    private func callTestBlock(error: NSError?) {
+        if let block = testOnlyCallback {
+            block(error)
+        }
+    }
+
+    private func dumpMethodName(methodName: String, notification: NSNotification) {
         Log.info(comp, "\(methodName): \(notification)")
     }
 
-    func createMessage() -> CWMessage {
+    private func createMessage() -> CWMessage {
         let msg = CWMessage.init()
         msg.setSubject("Subject Message \(messagesSent + 1)")
         msg.setFrom(CWInternetAddress.init(personal: "Test 001", address: "test001@peptest.ch"))
@@ -53,7 +76,7 @@ class SmtpSend {
         return msg
     }
 
-    func sendMessage() {
+    private func sendMessage() {
         smtp.setRecipients(nil)
         smtp.setMessageData(nil)
         smtp.setMessage(createMessage())
@@ -108,11 +131,20 @@ extension SmtpSend: SMTPClient {
 extension SmtpSend: CWServiceClient {
     @objc func authenticationCompleted(theNotification: NSNotification!) {
         dumpMethodName("authenticationCompleted", notification: theNotification)
-        smtp.reset()
+        if let block = testOnlyCallback {
+            block(nil)
+        } else {
+            smtp.reset()
+        }
     }
 
     @objc func authenticationFailed(theNotification: NSNotification!) {
         dumpMethodName("authenticationFailed", notification: theNotification)
+        let error = NSError.init(domain: comp, code: ErrorAuthenticationFailed,
+                                 userInfo: [NSLocalizedDescriptionKey:
+                                    NSLocalizedString("SMTP authentication failed",
+                                        comment: "Error when testing SMTP account")])
+        callTestBlock(error)
     }
 
     @objc func connectionEstablished(theNotification: NSNotification!) {
@@ -129,6 +161,11 @@ extension SmtpSend: CWServiceClient {
 
     @objc func connectionTimedOut(theNotification: NSNotification!) {
         dumpMethodName("connectionTimedOut", notification: theNotification)
+        let error = NSError.init(domain: comp, code: ErrorConnectionTimedOut,
+                                 userInfo: [NSLocalizedDescriptionKey:
+                                    NSLocalizedString("IMAP connection timed out",
+                                        comment: "Error when testing IMAP account")])
+        callTestBlock(error)
     }
 
     @objc func requestCancelled(theNotification: NSNotification!) {

@@ -38,6 +38,7 @@ public class ImapSync {
     }
 
     deinit {
+        imapStore.close()
     }
 
     func start() {

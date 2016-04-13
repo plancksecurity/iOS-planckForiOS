@@ -21,10 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appConfig = AppConfig()
         appConfig.coreDataUtil = CoreDataUtil()
 
-        imap = ImapSync.init(connectInfo: TestData())
-        imap.start()
+        //imap = ImapSync.init(connectInfo: TestData())
+        //imap.start()
 
-        //smtp = SmtpSend.init(connectInfo: TestData())
+        smtp = SmtpSend.init(connectInfo: TestData())
+        smtp.test({ error in
+            print("error: \(error)")
+        })
         //smtp.start()
 
         return true
