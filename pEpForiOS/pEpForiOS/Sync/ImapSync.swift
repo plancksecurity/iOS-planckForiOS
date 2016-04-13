@@ -13,41 +13,24 @@ struct ImapState {
     var folderNames: [String] = []
 }
 
-public class ImapSync {
+public class ImapSync: Service {
     private let comp = "ImapSync"
-
-    let ErrorAuthenticationFailed = 1000
-    let ErrorConnectionTimedOut = 1001
 
     private let defaultInboxName = "INBOX"
 
-    private let connectInfo: ConnectInfo
-    private var imapStore: CWIMAPStore
     private var imapState = ImapState()
     private var cache = EmailCacheManager()
 
-    private var testOnlyCallback: (NSError? -> ())? = nil
-
-    init(connectInfo: ConnectInfo) {
-        self.connectInfo = connectInfo
-        imapStore = CWIMAPStore.init(name: connectInfo.imapServerName,
-                                     port: connectInfo.imapServerPort,
-                                     transport: connectInfo.imapTransport)
-        imapStore.setDelegate(self)
-        imapStore.setLogger(Log.init())
+    var imapStore: CWIMAPStore {
+        get {
+            return service as! CWIMAPStore
+        }
     }
 
-    deinit {
-        imapStore.close()
-    }
-
-    func start() {
-        imapStore.connectInBackgroundAndNotify()
-    }
-
-    func test(block:(NSError? -> ())) {
-        testOnlyCallback = block
-        imapStore.connectInBackgroundAndNotify()
+    override func createService() -> CWService {
+        return CWIMAPStore.init(name: connectInfo.imapServerName,
+                                port: connectInfo.imapServerPort,
+                                transport: connectInfo.imapTransport)
     }
 
     func openMailBox(name: String) {
@@ -87,23 +70,14 @@ public class ImapSync {
     private func dumpMethodName(methodName: String, notification: NSNotification) {
         Log.info(comp, "\(methodName): \(notification)")
     }
-
-    /**
-     If this was just a test, and there was an error, invoke the test block with that error.
-     */
-    private func callTestBlock(error: NSError?) {
-        if let block = testOnlyCallback {
-            block(error)
-        }
-    }
 }
 
 extension ImapSync: CWServiceClient {
     @objc public func authenticationCompleted(notification: NSNotification) {
         dumpMethodName("authenticationCompleted", notification: notification)
         imapState.authenticationCompleted = true
-        if let block = testOnlyCallback {
-            block(nil)
+        if (isJustATest) {
+            callTestBlock(nil)
         } else {
             waitForFolders()
         }

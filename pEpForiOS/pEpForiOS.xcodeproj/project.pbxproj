@@ -27,6 +27,7 @@
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C6F35F1CBE74EB006A2A18 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35E1CBE74EB006A2A18 /* Networking.swift */; };
+		43C6F3611CBE8153006A2A18 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F3601CBE8153006A2A18 /* Service.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 		43980EF91CBD415700A7FC3C /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C6F35E1CBE74EB006A2A18 /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		43C6F3601CBE8153006A2A18 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +227,7 @@
 				43980EE51CBD24B800A7FC3C /* TestData.swift */,
 				43980EF51CBD3EED00A7FC3C /* Mailbox.swift */,
 				43C6F35E1CBE74EB006A2A18 /* Networking.swift */,
+				43C6F3601CBE8153006A2A18 /* Service.swift */,
 			);
 			path = Sync;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 			files = (
 				43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */,
 				43980EEC1CBD26B400A7FC3C /* EmailCacheManager.swift in Sources */,
+				43C6F3611CBE8153006A2A18 /* Service.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */,
 				43980EE71CBD24B800A7FC3C /* ImapSync.swift in Sources */,

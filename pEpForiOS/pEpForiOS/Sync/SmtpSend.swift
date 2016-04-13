@@ -12,48 +12,23 @@ struct SmtpStatus {
     var haveStartedTLS = false
 }
 
-class SmtpSend {
+class SmtpSend: Service {
     private let comp = "SmtpSend"
 
-    let ErrorAuthenticationFailed = 1000
-    let ErrorConnectionTimedOut = 1001
-
-    private let connectInfo: ConnectInfo!
-    private let smtp: CWSMTP
     private var smtpStatus: SmtpStatus = SmtpStatus.init()
     private var messagesSent = 0
     private var maxMessageToSend = 3
 
-    private var testOnlyCallback: (NSError? -> ())? = nil
-
-    init(connectInfo: ConnectInfo) {
-        self.connectInfo = connectInfo
-        smtp = CWSMTP.init(name: connectInfo.smtpServerName, port: connectInfo.smtpServerPort,
-                           transport: connectInfo.smtpTransport)
-        smtp.setDelegate(self)
-        smtp.setLogger(Log())
-    }
-
-    deinit {
-        smtp.close()
-    }
-
-    func start() {
-        smtp.connectInBackgroundAndNotify()
-    }
-
-    func test(block:(NSError? -> ())) {
-        testOnlyCallback = block
-        smtp.connectInBackgroundAndNotify()
-    }
-
-    /**
-     If this was just a test, and there was an error, invoke the test block with that error.
-     */
-    private func callTestBlock(error: NSError?) {
-        if let block = testOnlyCallback {
-            block(error)
+    var smtp: CWSMTP {
+        get {
+            return service as! CWSMTP
         }
+    }
+
+    override func createService() -> CWService {
+        return CWSMTP.init(name: connectInfo.smtpServerName,
+                           port: connectInfo.smtpServerPort,
+                           transport: connectInfo.smtpTransport)
     }
 
     private func dumpMethodName(methodName: String, notification: NSNotification) {
@@ -131,8 +106,8 @@ extension SmtpSend: SMTPClient {
 extension SmtpSend: CWServiceClient {
     @objc func authenticationCompleted(theNotification: NSNotification!) {
         dumpMethodName("authenticationCompleted", notification: theNotification)
-        if let block = testOnlyCallback {
-            block(nil)
+        if (isJustATest) {
+            callTestBlock(nil)
         } else {
             smtp.reset()
         }
