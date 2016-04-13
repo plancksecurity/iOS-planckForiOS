@@ -11,7 +11,7 @@ import Foundation
 /** Very primitive Logging class. */
 @objc public class Log: NSObject, CWLogging {
 
-    static let allow: [String:Bool] = ["CWTCPConnection": true, "ImapSync": true,
+    private static let allow: [String:Bool] = ["CWTCPConnection": true, "ImapSync": true,
                                        "SmtpSend": true]
 
     /** Somewhat verbose */

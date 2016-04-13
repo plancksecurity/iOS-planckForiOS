@@ -13,20 +13,22 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var imap: ImapSync!
-    var smtp: SmtpSend!
-    var appConfig: AppConfig!
+
+    private var imap: ImapSync! // TODO: Only for testing here
+    private var smtp: SmtpSend! // TODO: Only for testing here
+
+    var appConfig: AppConfig = AppConfig()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [NSObject: AnyObject]?) -> Bool {
-        appConfig = AppConfig()
-        appConfig.coreDataUtil = CoreDataUtil()
 
-        //imap = ImapSync.init(connectInfo: TestData())
-        //imap.start()
+        if let connectInfo = appConfig.currentConnectInfo() {
+            imap = appConfig.connectionManager.emaiSyncConnection(connectInfo)
+            imap.start()
 
-        //smtp = SmtpSend.init(connectInfo: TestData())
-        //smtp.start()
+            //smtp = appConfig.connectionManager.smtpConnection(connectInfo)
+            //smtp.start()
+        }
 
         return true
     }

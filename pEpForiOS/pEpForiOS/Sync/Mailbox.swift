@@ -19,9 +19,17 @@ class Mailbox: NSObject {
     let folderName: String
     let emailAddress: String
 
-    init(folderName: String, emailAddress: String) {
+    init(emailAddress: String, folderName: String) {
         self.folderName = folderName
         self.emailAddress = emailAddress
+    }
+
+    convenience init(emailAddress: String) {
+        self.init(emailAddress: emailAddress, folderName: "INBOX")
+    }
+
+    convenience init(connectInfo: ConnectInfo) {
+        self.init(emailAddress: connectInfo.email)
     }
 
 }

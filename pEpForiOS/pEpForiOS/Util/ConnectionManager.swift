@@ -9,5 +9,20 @@
 import Foundation
 
 class ConnectionManager {
-    var emailSyncConnections: [ConnectInfo:Networking] = [:]
+    private var emailSyncConnections: [ConnectInfo:Service] = [:]
+
+    func emaiSyncConnection(connectInfo: ConnectInfo) -> ImapSync {
+        if let service = emailSyncConnections[connectInfo] {
+            return service as! ImapSync
+        } else {
+            let sync = ImapSync.init(connectInfo: connectInfo)
+            emailSyncConnections[connectInfo] = sync
+            return sync
+        }
+    }
+
+    func smtpConnection(connectInfo: ConnectInfo) -> SmtpSend {
+        // Don't cache
+        return SmtpSend.init(connectInfo: connectInfo)
+    }
 }
