@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Automatic">
+    <entity name="Account" representedClassName="Account" syncable="YES">
+        <attribute name="accountType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="imapAuthMethod" attributeType="String" defaultValueString="LOGIN" syncable="YES"/>
+        <attribute name="imapServerName" attributeType="String" syncable="YES"/>
+        <attribute name="imapServerPort" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="imapTransport" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="imapUsername" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="smtpAuthMethod" attributeType="String" defaultValueString="LOGIN" syncable="YES"/>
+        <attribute name="smtpServerName" attributeType="String" syncable="YES"/>
+        <attribute name="smtpServerPort" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="smtpTransport" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="smtpUsername" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="folders" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Folder" inverseName="account" inverseEntity="Folder" syncable="YES"/>
+    </entity>
+    <entity name="Folder" representedClassName="Folder" syncable="YES">
+        <attribute name="folderType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="folders" inverseEntity="Account" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Account" positionX="-63" positionY="-18" width="128" height="240"/>
+        <element name="Folder" positionX="-54" positionY="72" width="128" height="90"/>
+    </elements>
 </model>
