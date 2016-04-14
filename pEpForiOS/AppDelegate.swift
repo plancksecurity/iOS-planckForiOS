@@ -24,14 +24,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         setupDefaultSettings()
-        let account = Account.fetchLastAccount(appConfig.coreDataUtil.managedObjectContext)
-        let connectInfo = account.connectInfo
+        if let account = Account.fetchLastAccount(appConfig.coreDataUtil.managedObjectContext) {
+            let connectInfo = account.connectInfo
 
-        imap = appConfig.connectionManager.emaiSyncConnection(connectInfo)
-        imap.start()
+            //imap = appConfig.connectionManager.emaiSyncConnection(connectInfo)
+            //imap.start()
 
-        //smtp = appConfig.connectionManager.smtpConnection(connectInfo)
-        //smtp.start()
+            //smtp = appConfig.connectionManager.smtpConnection(connectInfo)
+            //smtp.start()
+        }
 
         return true
     }

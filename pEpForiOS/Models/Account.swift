@@ -3,9 +3,11 @@ import CoreData
 
 @objc(Account)
 public class Account: _Account {
-    static let comp = "Account"
-
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
+    static let kServerTypeImap = "kServerTypeImap"
+    static let kServerTypeSmtp = "kServerTypeSmtp"
+
+    static let comp = "Account"
 
     var connectInfo: ConnectInfo {
         return ConnectInfo.init(
@@ -53,7 +55,7 @@ public class Account: _Account {
         return account
     }
 
-    static func fetchLastAccount(context: NSManagedObjectContext) -> Account {
+    static func fetchLastAccount(context: NSManagedObjectContext) -> Account? {
         let lastEmail = NSUserDefaults.standardUserDefaults().stringForKey(
             Account.kSettingLastAccountEmail)
 
@@ -83,14 +85,28 @@ public class Account: _Account {
         return account
     }
 
-    static func insertTestAccount(context: NSManagedObjectContext) -> Account {
-        let account = Account.newAccountFromConnectInfo(TestData(), context: context)
+    static func insertAccountFromConnectInfo(
+        connectInfo: ConnectInfo, context: NSManagedObjectContext) -> Account? {
+        let account = Account.newAccountFromConnectInfo(connectInfo, context: context)
         do {
             try context.save()
+            KeyChain.addEmail(connectInfo.email, serverType: kServerTypeImap,
+                              password: connectInfo.imapPassword)
+            KeyChain.addEmail(connectInfo.email, serverType: kServerTypeSmtp,
+                              password: connectInfo.getSmtpPassword())
+            return account
         } catch let e as NSError {
             Log.error(comp, error: e)
         }
-        return setAccountAsLastUsed(account)
+        return nil
+    }
+
+    static func insertTestAccount(context: NSManagedObjectContext) -> Account? {
+        if let account = insertAccountFromConnectInfo(TestData(), context: context) {
+            return setAccountAsLastUsed(account)
+        } else {
+            return nil
+        }
     }
 
 }

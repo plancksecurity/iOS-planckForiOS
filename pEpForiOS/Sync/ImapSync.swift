@@ -128,8 +128,9 @@ extension ImapSync: CWServiceClient {
 
     @objc public func serviceInitialized(notification: NSNotification) {
         dumpMethodName("serviceInitialized", notification: notification)
+        let password = KeyChain.getPassword(connectInfo.email, serverType: Account.kServerTypeImap)
         imapStore.authenticate(connectInfo.getImapUsername(),
-                               password: connectInfo.imapPassword,
+                               password: password,
                                mechanism: connectInfo.imapAuthMethod)
     }
 

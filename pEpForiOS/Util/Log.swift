@@ -11,19 +11,19 @@ import Foundation
 /** Very primitive Logging class. */
 @objc public class Log: NSObject, CWLogging {
 
-    private static let allow: [String:Bool] = ["CWTCPConnection": true, "ImapSync": true,
-                                       "SmtpSend": true]
+    private static let allow: Set<String> = ["CWTCPConnection", "ImapSync",
+                                       "SmtpSend", "KeyChain"]
 
     /** Somewhat verbose */
     static func info(component: String, _ content: String) {
-        if allow[component] == true {
+        if allow.contains(component) {
             print("\(component): \(content)")
         }
     }
 
     /** More important */
     static func warn(component: String, _ content: String) {
-        if allow[component] == true {
+        if allow.contains(component) {
             print("\(component): \(content)")
         }
     }
