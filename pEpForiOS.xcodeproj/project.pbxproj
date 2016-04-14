@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
 		43980E291CBD0BC900A7FC3C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E281CBD0BC900A7FC3C /* ViewController.swift */; };
 		43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
@@ -21,7 +22,6 @@
 		43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE41CBD24B800A7FC3C /* SmtpSend.swift */; };
 		43980EE91CBD24B800A7FC3C /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE51CBD24B800A7FC3C /* TestData.swift */; };
 		43980EEC1CBD26B400A7FC3C /* EmailCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EEB1CBD26B400A7FC3C /* EmailCacheManager.swift */; };
-		43980EED1CBD26D000A7FC3C /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43980EDA1CBD1CCD00A7FC3C /* libPantomimeStatic.a */; };
 		43980EF61CBD3EED00A7FC3C /* Mailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF51CBD3EED00A7FC3C /* Mailbox.swift */; };
 		43980EF81CBD402400A7FC3C /* CoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF71CBD402400A7FC3C /* CoreDataUtil.swift */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
@@ -30,6 +30,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		434662CD1CBF808D0053FC48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 43980E5A1CBD1B3E00A7FC3C;
+			remoteInfo = PantomimeStatic;
+		};
 		43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980E1B1CBD0BC900A7FC3C /* Project object */;
@@ -44,32 +51,25 @@
 			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
 			remoteInfo = pEpForiOS;
 		};
-		43980ED51CBD1CCD00A7FC3C /* PBXContainerItemProxy */ = {
+		43E6A27E1CBF802C00787A56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 43E854BB1CB7EA9A006867C0;
 			remoteInfo = Pantomime;
 		};
-		43980ED71CBD1CCD00A7FC3C /* PBXContainerItemProxy */ = {
+		43E6A2801CBF802C00787A56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 43E854CF1CB7EA9B006867C0;
 			remoteInfo = PantomimeTests;
 		};
-		43980ED91CBD1CCD00A7FC3C /* PBXContainerItemProxy */ = {
+		43E6A2821CBF802C00787A56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 43980E5B1CBD1B3E00A7FC3C;
-			remoteInfo = PantomimeStatic;
-		};
-		43980EEE1CBD26DF00A7FC3C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 43980E5A1CBD1B3E00A7FC3C;
 			remoteInfo = PantomimeStatic;
 		};
 /* End PBXContainerItemProxy section */
@@ -89,7 +89,7 @@
 		43980E451CBD0BCA00A7FC3C /* pEpForiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpForiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpForiOSUITests.swift; sourceTree = "<group>"; };
 		43980E4B1CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pantomime.xcodeproj; path = "../../pantomime-iOS/Pantomime.xcodeproj"; sourceTree = "<group>"; };
+		43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pantomime.xcodeproj; path = "../pantomime-iOS/Pantomime.xcodeproj"; sourceTree = "<group>"; };
 		43980EDF1CBD24B000A7FC3C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		43980EE21CBD24B800A7FC3C /* ConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectInfo.swift; sourceTree = "<group>"; };
 		43980EE31CBD24B800A7FC3C /* ImapSync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSync.swift; sourceTree = "<group>"; };
@@ -109,7 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43980EED1CBD26D000A7FC3C /* libPantomimeStatic.a in Frameworks */,
+				434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,16 +194,6 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
-		43980ED01CBD1CCD00A7FC3C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				43980ED61CBD1CCD00A7FC3C /* Pantomime.app */,
-				43980ED81CBD1CCD00A7FC3C /* PantomimeTests.xctest */,
-				43980EDA1CBD1CCD00A7FC3C /* libPantomimeStatic.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,6 +219,16 @@
 			path = Sync;
 			sourceTree = "<group>";
 		};
+		43E6A2791CBF802C00787A56 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				43E6A27F1CBF802C00787A56 /* Pantomime.app */,
+				43E6A2811CBF802C00787A56 /* PantomimeTests.xctest */,
+				43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -243,7 +243,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				43980EEF1CBD26DF00A7FC3C /* PBXTargetDependency */,
+				434662CE1CBF808D0053FC48 /* PBXTargetDependency */,
 			);
 			name = "p≡p";
 			productName = pEpForiOS;
@@ -322,7 +322,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 43980ED01CBD1CCD00A7FC3C /* Products */;
+					ProductGroup = 43E6A2791CBF802C00787A56 /* Products */;
 					ProjectRef = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
 				},
 			);
@@ -336,25 +336,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		43980ED61CBD1CCD00A7FC3C /* Pantomime.app */ = {
+		43E6A27F1CBF802C00787A56 /* Pantomime.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = Pantomime.app;
-			remoteRef = 43980ED51CBD1CCD00A7FC3C /* PBXContainerItemProxy */;
+			remoteRef = 43E6A27E1CBF802C00787A56 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		43980ED81CBD1CCD00A7FC3C /* PantomimeTests.xctest */ = {
+		43E6A2811CBF802C00787A56 /* PantomimeTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = PantomimeTests.xctest;
-			remoteRef = 43980ED71CBD1CCD00A7FC3C /* PBXContainerItemProxy */;
+			remoteRef = 43E6A2801CBF802C00787A56 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		43980EDA1CBD1CCD00A7FC3C /* libPantomimeStatic.a */ = {
+		43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libPantomimeStatic.a;
-			remoteRef = 43980ED91CBD1CCD00A7FC3C /* PBXContainerItemProxy */;
+			remoteRef = 43E6A2821CBF802C00787A56 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -427,6 +427,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		434662CE1CBF808D0053FC48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PantomimeStatic;
+			targetProxy = 434662CD1CBF808D0053FC48 /* PBXContainerItemProxy */;
+		};
 		43980E3C1CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* p≡p */;
@@ -436,11 +441,6 @@
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* p≡p */;
 			targetProxy = 43980E461CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
-		};
-		43980EEF1CBD26DF00A7FC3C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = PantomimeStatic;
-			targetProxy = 43980EEE1CBD26DF00A7FC3C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -501,7 +501,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../pantomime-iOS/pantomime-lib/Framework/";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework/";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -543,7 +543,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../pantomime-iOS/pantomime-lib/Framework/";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework/";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
