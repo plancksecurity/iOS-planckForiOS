@@ -43,7 +43,7 @@ class CoreDataUtil: NSObject {
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
 
-            let err: NSError = error as NSError
+            let err: NSError = error as! NSError
             dict[NSUnderlyingErrorKey] = err
             let wrappedError = NSError(domain: comp, code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
