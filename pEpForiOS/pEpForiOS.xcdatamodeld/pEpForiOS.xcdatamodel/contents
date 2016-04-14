@@ -5,12 +5,12 @@
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="imapAuthMethod" attributeType="String" defaultValueString="LOGIN" syncable="YES"/>
         <attribute name="imapServerName" attributeType="String" syncable="YES"/>
-        <attribute name="imapServerPort" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="imapServerPort" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="imapTransport" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="imapUsername" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="smtpAuthMethod" attributeType="String" defaultValueString="LOGIN" syncable="YES"/>
         <attribute name="smtpServerName" attributeType="String" syncable="YES"/>
-        <attribute name="smtpServerPort" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="smtpServerPort" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="smtpTransport" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="smtpUsername" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="folders" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Folder" inverseName="account" inverseEntity="Folder" syncable="YES"/>

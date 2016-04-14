@@ -27,7 +27,7 @@ class SmtpSend: Service {
 
     override func createService() -> CWService {
         return CWSMTP.init(name: connectInfo.smtpServerName,
-                           port: connectInfo.smtpServerPort,
+                           port: UInt32(connectInfo.smtpServerPort),
                            transport: connectInfo.smtpTransport)
     }
 

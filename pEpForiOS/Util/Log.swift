@@ -28,6 +28,10 @@ import Foundation
         }
     }
 
+    static func error(component: String, error: NSError) {
+        print("\(component): Error: \(error)")
+    }
+
     @objc public func infoComponent(component: String!, message: String!) {
         Log.info(component, message)
     }

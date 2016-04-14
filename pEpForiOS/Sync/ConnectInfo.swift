@@ -20,9 +20,9 @@ class ConnectInfo: NSObject {
     let imapAuthMethod: String
     let smtpAuthMethod: String
     let imapServerName: String
-    let imapServerPort: UInt32
+    let imapServerPort: UInt16
     let smtpServerName: String
-    let smtpServerPort: UInt32
+    let smtpServerPort: UInt16
     let imapTransport: ConnectionTransport
     let smtpTransport: ConnectionTransport
 
@@ -30,8 +30,8 @@ class ConnectInfo: NSObject {
          imapUsername: String?, smtpUsername: String?,
          imapPassword: String, smtpPassword: String?,
          imapAuthMethod: String, smtpAuthMethod: String,
-         imapServerName: String, imapServerPort: UInt32, imapTransport: ConnectionTransport,
-         smtpServerName: String, smtpServerPort: UInt32, smtpTransport: ConnectionTransport) {
+         imapServerName: String, imapServerPort: UInt16, imapTransport: ConnectionTransport,
+         smtpServerName: String, smtpServerPort: UInt16, smtpTransport: ConnectionTransport) {
         self.email = email
         self.imapUsername = imapUsername
         self.smtpUsername = smtpUsername
@@ -50,9 +50,9 @@ class ConnectInfo: NSObject {
     convenience init(email: String,
                      imapPassword: String,
                      imapAuthMethod: String, smtpAuthMethod: String,
-                     imapServerName: String, imapServerPort: UInt32,
+                     imapServerName: String, imapServerPort: UInt16,
                      imapTransport: ConnectionTransport,
-                     smtpServerName: String, smtpServerPort: UInt32,
+                     smtpServerName: String, smtpServerPort: UInt16,
                      smtpTransport: ConnectionTransport) {
         self.init(email: email, imapUsername: nil, smtpUsername: nil,
                   imapPassword: imapPassword, smtpPassword: nil,

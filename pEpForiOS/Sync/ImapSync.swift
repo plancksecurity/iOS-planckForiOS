@@ -29,7 +29,7 @@ public class ImapSync: Service {
 
     override func createService() -> CWService {
         return CWIMAPStore.init(name: connectInfo.imapServerName,
-                                port: connectInfo.imapServerPort,
+                                port: UInt32(connectInfo.imapServerPort),
                                 transport: connectInfo.imapTransport)
     }
 

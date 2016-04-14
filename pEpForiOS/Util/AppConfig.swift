@@ -18,14 +18,4 @@ class AppConfig: NSObject {
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
     let connectionManager: ConnectionManager = ConnectionManager()
 
-    /**
-     - Returns: The `ConnectInfo` of the current account. If there is only one account,
-     the connect info for that one will be returned. Otherwise, the connect info from the last
-     used account.
-     */
-    func currentConnectInfo() -> ConnectInfo? {
-        // TODO: currently mocked. Use core data/settings
-        return TestData()
-    }
-
 }

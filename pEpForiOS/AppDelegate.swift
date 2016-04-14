@@ -11,24 +11,27 @@ import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    let comp = "AppDelegate"
 
     var window: UIWindow?
 
     private var imap: ImapSync! // TODO: Only for testing here
     private var smtp: SmtpSend! // TODO: Only for testing here
 
-    var appConfig: AppConfig = AppConfig()
+    let appConfig: AppConfig = AppConfig()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-        if let connectInfo = appConfig.currentConnectInfo() {
-            imap = appConfig.connectionManager.emaiSyncConnection(connectInfo)
-            imap.start()
+        setupDefaultSettings()
+        let account = Account.fetchLastAccount(appConfig.coreDataUtil.managedObjectContext)
+        let connectInfo = account.connectInfo
 
-            //smtp = appConfig.connectionManager.smtpConnection(connectInfo)
-            //smtp.start()
-        }
+        imap = appConfig.connectionManager.emaiSyncConnection(connectInfo)
+        imap.start()
+
+        //smtp = appConfig.connectionManager.smtpConnection(connectInfo)
+        //smtp.start()
 
         return true
     }
@@ -55,6 +58,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         appConfig.coreDataUtil.saveContext()
+    }
+
+    func setupDefaultSettings() {
+        let settings: [String:AnyObject] = [Account.kSettingLastAccountEmail:""]
+        NSUserDefaults.standardUserDefaults().registerDefaults(settings)
     }
 
 }
