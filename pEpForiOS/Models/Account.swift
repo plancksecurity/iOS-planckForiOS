@@ -4,8 +4,20 @@ import CoreData
 @objc(Account)
 public class Account: _Account {
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
-    static let kServerTypeImap = "kServerTypeImap"
-    static let kServerTypeSmtp = "kServerTypeSmtp"
+
+    public enum AccountType: Int {
+        case Imap = 0
+        case Smtp = 1
+
+        public func asString() -> String {
+            switch self {
+            case .Imap:
+                return "IMAP"
+            case .Smtp:
+                return "SMTP"
+            }
+        }
+    }
 
     static let comp = "Account"
 
@@ -38,7 +50,7 @@ public class Account: _Account {
     static func newAccountFromConnectInfo(connectInfo: ConnectInfo,
                                           context: NSManagedObjectContext) -> Account {
         let account = NSEntityDescription.insertNewObjectForEntityForName(
-            "Account", inManagedObjectContext: context) as! Account
+            entityName(), inManagedObjectContext: context) as! Account
 
         account.email = connectInfo.email
         account.imapUsername = connectInfo.imapUsername
@@ -90,9 +102,9 @@ public class Account: _Account {
         let account = Account.newAccountFromConnectInfo(connectInfo, context: context)
         do {
             try context.save()
-            KeyChain.addEmail(connectInfo.email, serverType: kServerTypeImap,
+            KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Imap.asString(),
                               password: connectInfo.imapPassword)
-            KeyChain.addEmail(connectInfo.email, serverType: kServerTypeSmtp,
+            KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Smtp.asString(),
                               password: connectInfo.getSmtpPassword())
             return account
         } catch let e as NSError {
@@ -107,6 +119,57 @@ public class Account: _Account {
         } else {
             return nil
         }
+    }
+
+    static func accountByEmail(email: String, context: NSManagedObjectContext) -> Account? {
+        let fetchAccount = NSFetchRequest.init(entityName: Account.entityName())
+        fetchAccount.predicate = NSPredicate.init(format: "email = %@", email)
+        do {
+            let accounts = try context.executeFetchRequest(fetchAccount)
+            if accounts.count == 1 {
+                let account: Account = accounts[0] as! Account
+                return account
+            } else if accounts.count == 0 {
+                Log.warn(comp, "No account found for email: \(email)")
+            } else {
+                Log.warn(comp, "Several accounts found for email: \(email)")
+            }
+        } catch let err as NSError {
+            Log.error(comp, error: err)
+        }
+        return nil
+    }
+
+    static func insertOrUpdateFolderWithName(folderName: String,
+                                             folderType: AccountType,
+                                             accountEmail: String,
+                                             context: NSManagedObjectContext) -> Folder? {
+        let p = NSPredicate.init(format: "account.email = %@ and name = %@", accountEmail,
+                                 folderName)
+        let fetch = NSFetchRequest.init(entityName: Folder.entityName())
+        fetch.predicate = p
+        do {
+            let folders = try context.executeFetchRequest(fetch)
+            if folders.count > 1 {
+                Log.warn(comp, "Duplicate foldername \(folderName) for \(accountEmail)")
+            } else if folders.count == 1 {
+                let folder: Folder = folders[0] as! Folder
+                return folder
+            } else {
+                if let account = self.accountByEmail(accountEmail, context: context) {
+                    let folder = NSEntityDescription.insertNewObjectForEntityForName(
+                        Folder.entityName(), inManagedObjectContext: context) as! Folder
+                    folder.account = account
+                    folder.name = folderName
+                    folder.folderType = folderType.rawValue
+                    try context.save()
+                    return folder
+                }
+            }
+        } catch let err as NSError {
+            Log.error(comp, error: err)
+        }
+        return nil
     }
 
 }

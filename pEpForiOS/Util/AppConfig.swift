@@ -16,6 +16,10 @@ import Foundation
 class AppConfig: NSObject {
 
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
-    let connectionManager: ConnectionManager = ConnectionManager()
+    let connectionManager: ConnectionManager
+
+    override init() {
+        connectionManager = ConnectionManager(coreDataUtil: coreDataUtil)
+    }
 
 }

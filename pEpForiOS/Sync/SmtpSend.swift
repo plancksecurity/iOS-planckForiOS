@@ -156,7 +156,7 @@ extension SmtpSend: CWServiceClient {
                 self.smtp.startTLS()
             } else {
                 let password = KeyChain.getPassword(self.connectInfo.email,
-                    serverType: Account.kServerTypeSmtp)
+                    serverType: Account.AccountType.Smtp.asString())
                 self.smtp.authenticate(self.connectInfo.getSmtpUsername(),
                     password: password,
                     mechanism: self.connectInfo.smtpAuthMethod)

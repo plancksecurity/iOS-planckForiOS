@@ -17,6 +17,7 @@ public class Service {
     let ErrorConnectionTimedOut = 1001
 
     let connectInfo: ConnectInfo!
+    let coreDataUtil: CoreDataUtil
 
     private var testOnlyCallback: (NSError? -> ())? = nil
 
@@ -28,8 +29,9 @@ public class Service {
 
     var service: CWService!
 
-    init(connectInfo: ConnectInfo) {
+    init(coreDataUtil: CoreDataUtil, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
+        self.coreDataUtil = coreDataUtil
         service = self.createService()
         service.setDelegate(self)
         service.setLogger(Log())

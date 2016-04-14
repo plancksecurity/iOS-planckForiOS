@@ -10,12 +10,17 @@ import Foundation
 
 class ConnectionManager {
     private var emailSyncConnections: [ConnectInfo:Service] = [:]
+    private let coreDataUtil: CoreDataUtil
+
+    init(coreDataUtil: CoreDataUtil) {
+        self.coreDataUtil = coreDataUtil
+    }
 
     func emaiSyncConnection(connectInfo: ConnectInfo) -> ImapSync {
         if let service = emailSyncConnections[connectInfo] {
             return service as! ImapSync
         } else {
-            let sync = ImapSync.init(connectInfo: connectInfo)
+            let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: connectInfo)
             emailSyncConnections[connectInfo] = sync
             return sync
         }
@@ -23,6 +28,6 @@ class ConnectionManager {
 
     func smtpConnection(connectInfo: ConnectInfo) -> SmtpSend {
         // Don't cache
-        return SmtpSend.init(connectInfo: connectInfo)
+        return SmtpSend.init(coreDataUtil: coreDataUtil, connectInfo: connectInfo)
     }
 }

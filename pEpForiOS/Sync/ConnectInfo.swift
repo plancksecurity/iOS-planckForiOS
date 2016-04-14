@@ -26,6 +26,10 @@ class ConnectInfo: NSObject {
     let imapTransport: ConnectionTransport
     let smtpTransport: ConnectionTransport
 
+    var accountName: String {
+        return email
+    }
+
     init(email: String,
          imapUsername: String?, smtpUsername: String?,
          imapPassword: String, smtpPassword: String?,

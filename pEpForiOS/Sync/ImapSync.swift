@@ -49,6 +49,10 @@ public class ImapSync: Service {
             imapState.folderNames = []
             for folder in folderEnum {
                 let folderName = folder as! String
+                Account.insertOrUpdateFolderWithName(folderName,
+                                                     folderType: Account.AccountType.Imap,
+                                                     accountEmail: connectInfo.accountName,
+                                                     context: coreDataUtil.managedObjectContext)
                 imapState.folderNames.append(folderName)
             }
             Log.info(comp, "IMAP folders: \(imapState.folderNames)")
@@ -128,7 +132,8 @@ extension ImapSync: CWServiceClient {
 
     @objc public func serviceInitialized(notification: NSNotification) {
         dumpMethodName("serviceInitialized", notification: notification)
-        let password = KeyChain.getPassword(connectInfo.email, serverType: Account.kServerTypeImap)
+        let password = KeyChain.getPassword(connectInfo.email,
+                                            serverType: Account.AccountType.Imap.asString())
         imapStore.authenticate(connectInfo.getImapUsername(),
                                password: password,
                                mechanism: connectInfo.imapAuthMethod)
