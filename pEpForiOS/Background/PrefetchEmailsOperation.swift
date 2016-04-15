@@ -10,14 +10,13 @@ import Foundation
 import CoreData
 
 /**
- This operation is no intended to be put in a queue, It runs asynchronously, but mainly
- driven by the main runloop through the use of NSStream. Therefore it behaves as a
- concurrent operation, handling the state itself.
+ This operation is not intended to be put in a queue (though this should work too).
+ It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
+ Therefore it behaves as a concurrent operation, handling the state itself.
  */
-class PrefetchEmailsOperation: NSOperation {
+class PrefetchEmailsOperation: BaseOperation {
     let comp = "PrefetchEmailsOperation"
 
-    let grandOperator: GrandOperator
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
     var imapSync: ImapSync!
@@ -38,7 +37,6 @@ class PrefetchEmailsOperation: NSOperation {
     let folderToOpen: String
 
     init(grandOperator: GrandOperator, connectInfo: ConnectInfo, folder: String?) {
-        self.grandOperator = grandOperator
         self.connectInfo = connectInfo
         if let folder = folder {
             folderToOpen = folder
@@ -48,7 +46,7 @@ class PrefetchEmailsOperation: NSOperation {
 
         backgroundQueue = NSOperationQueue.init()
 
-        super.init()
+        super.init(grandOperator: grandOperator)
     }
 
     override func main() {
@@ -69,7 +67,10 @@ class PrefetchEmailsOperation: NSOperation {
     }
 
     func savePrefetchedMessage(msg: CWIMAPMessage) {
-        let folder = msg.folder()
+        let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
+                                                   accountEmail: connectInfo.email,
+                                                   message: msg)
+        backgroundQueue.addOperation(op)
     }
 
     override static func automaticallyNotifiesObserversForKey(keyPath: String) -> Bool {
@@ -102,9 +103,15 @@ class PrefetchEmailsOperation: NSOperation {
                                          change: [String : AnyObject]?,
                                          context: UnsafeMutablePointer<Void>) {
         if keyPath == "operationCount" {
-            markAsFinished()
+            if let newValue = change?[NSKeyValueChangeNewKey] {
+                if newValue.intValue == 0 {
+                    markAsFinished()
+                }
+            }
+        } else {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change,
+                                         context: context)
         }
-        super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
     }
 
 }
@@ -179,19 +186,11 @@ extension PrefetchEmailsOperation: EmailCache {
         return nil
     }
 
-    func dumpMessage(msg: CWMessage) {
-        print("CWMessage: contentType(\(msg.contentType()))",
-              " isInitialized(\(msg.isInitialized()))\n",
-              " content(\(msg.content()))")
-    }
-
     /**
      In general, a prefetch will yield these header fields:
      ```From To Cc Subject Date Message-ID References In-Reply-To```
      */
     func writeRecord(theRecord: CWCacheRecord!, message: CWIMAPMessage!) {
-        //print("write UID(\(message.UID())) folder(\(folder.name()))")
-        //dumpMessage(message)
         self.savePrefetchedMessage(message)
     }
 }

@@ -89,7 +89,7 @@ class CoreDataUtil: NSObject {
     func confinedManagedObjectContext() -> NSManagedObjectContext {
         let context = NSManagedObjectContext.init(concurrencyType: .ConfinementConcurrencyType)
         context.persistentStoreCoordinator = self.persistentStoreCoordinator
-        // TODO: Maybe NSErrorMergePolicy (the default) is not the best choice here
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
     }
 

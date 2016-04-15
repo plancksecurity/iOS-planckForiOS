@@ -8,24 +8,28 @@
 
 import Foundation
 
-class StoreFoldersOperation: NSOperation {
+class StoreFoldersOperation: BaseOperation {
 
-    let grandOperator: GrandOperator
     let foldersToStore: [String]
     let email: String
 
     init(grandOperator: GrandOperator, folders: [String], email: String) {
-        self.grandOperator = grandOperator
         self.foldersToStore = folders
         self.email = email
+        super.init(grandOperator: grandOperator)
     }
 
     override func main() {
         let context = grandOperator.coreDataUtil.confinedManagedObjectContext()
         for folderName in foldersToStore {
-            Account.insertOrUpdateFolderWithName(folderName, folderType: Account.AccountType.Imap,
-                                                 accountEmail: email,
-                                                 context: context)
+            do {
+            try Folder.insertOrUpdateFolderWithName(folderName,
+                                                    folderType: Account.AccountType.Imap,
+                                                    accountEmail: email,
+                                                    context: context)
+            } catch let err as NSError {
+                grandOperator.addError(err)
+            }
         }
         CoreDataUtil.saveContext(managedObjectContext: context)
     }

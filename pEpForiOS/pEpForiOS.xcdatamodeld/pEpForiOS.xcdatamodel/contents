@@ -15,7 +15,7 @@
         <attribute name="smtpUsername" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="folders" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Folder" inverseName="account" inverseEntity="Folder" syncable="YES"/>
     </entity>
-    <entity name="Contact" syncable="YES">
+    <entity name="Contact" representedClassName="Contact" syncable="YES">
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -24,16 +24,21 @@
         <attribute name="name" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="folders" inverseEntity="Account" syncable="YES"/>
     </entity>
-    <entity name="Message" syncable="YES">
+    <entity name="Message" representedClassName="Message" syncable="YES">
+        <attribute name="messageId" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="sentDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="cc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" syncable="YES"/>
+        <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" syncable="YES"/>
         <relationship name="from" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" syncable="YES"/>
+        <relationship name="references" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Message" syncable="YES"/>
+        <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" syncable="YES"/>
     </entity>
     <elements>
         <element name="Account" positionX="-63" positionY="-18" width="128" height="240"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="90"/>
         <element name="Contact" positionX="-54" positionY="90" width="128" height="75"/>
-        <element name="Message" positionX="-45" positionY="99" width="128" height="105"/>
+        <element name="Message" positionX="-45" positionY="99" width="128" height="180"/>
     </elements>
 </model>

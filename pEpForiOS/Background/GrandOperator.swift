@@ -10,6 +10,8 @@ import Foundation
 
 class GrandOperator {
 
+    var errors: [NSError] = []
+
     let prefetchQueue = NSOperationQueue.init()
     let connectionManager: ConnectionManager
     let coreDataUtil: CoreDataUtil
@@ -26,6 +28,11 @@ class GrandOperator {
             print("completed")
         }
         op.start()
+    }
+
+    func addError(error: NSError) {
+        errors.append(error)
+        Log.error("GrandOperator", error: error)
     }
 
 }
