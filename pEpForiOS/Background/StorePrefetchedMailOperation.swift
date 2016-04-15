@@ -19,7 +19,7 @@ class StorePrefetchedMailOperation: BaseOperation {
         self.message = message
         super.init(grandOperator: grandOperator)
     }
-    
+
     override func main() {
         let context = grandOperator.coreDataUtil.confinedManagedObjectContext()
         var addresses = message.recipients() as! [CWInternetAddress]
