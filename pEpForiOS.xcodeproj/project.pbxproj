@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		431144AA1CC0CB480007639D /* PrefetchEmailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144A91CC0CB480007639D /* PrefetchEmailsOperation.swift */; };
 		431144AC1CC0CCE30007639D /* GrandOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144AB1CC0CCE20007639D /* GrandOperator.swift */; };
+		431144B51CC0FCA40007639D /* StoreFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B41CC0FCA40007639D /* StoreFoldersOperation.swift */; };
 		434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
 		43980E291CBD0BC900A7FC3C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E281CBD0BC900A7FC3C /* ViewController.swift */; };
@@ -85,6 +86,7 @@
 /* Begin PBXFileReference section */
 		431144A91CC0CB480007639D /* PrefetchEmailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetchEmailsOperation.swift; sourceTree = "<group>"; };
 		431144AB1CC0CCE20007639D /* GrandOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperator.swift; sourceTree = "<group>"; };
+		431144B41CC0FCA40007639D /* StoreFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreFoldersOperation.swift; sourceTree = "<group>"; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43980E281CBD0BC900A7FC3C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			children = (
 				431144AB1CC0CCE20007639D /* GrandOperator.swift */,
 				431144A91CC0CB480007639D /* PrefetchEmailsOperation.swift */,
+				431144B41CC0FCA40007639D /* StoreFoldersOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				43E58EC61CBF8365008AA7A7 /* BaseManagedObject.swift in Sources */,
 				431144AA1CC0CB480007639D /* PrefetchEmailsOperation.swift in Sources */,
 				43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */,
+				431144B51CC0FCA40007639D /* StoreFoldersOperation.swift in Sources */,
 				43980EEC1CBD26B400A7FC3C /* EmailCacheManager.swift in Sources */,
 				43C6F3611CBE8153006A2A18 /* Service.swift in Sources */,
 				43E58EB91CBF8301008AA7A7 /* Folder.swift in Sources */,

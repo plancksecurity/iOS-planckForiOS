@@ -22,7 +22,10 @@ class GrandOperator {
     func prefetchEmailsImap(connectInfo: ConnectInfo, folder: String?) {
         let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
                                               folder: folder)
-        prefetchQueue.addOperation(op)
+        op.completionBlock = {
+            print("completed")
+        }
+        op.start()
     }
 
 }

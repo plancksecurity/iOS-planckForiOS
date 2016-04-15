@@ -9,24 +9,31 @@
 import Foundation
 import CoreData
 
+/**
+ This operation is no intended to be put in a queue, It runs asynchronously, but mainly
+ driven by the main runloop through the use of NSStream. Therefore it behaves as a
+ concurrent operation, handling the state itself.
+ */
 class PrefetchEmailsOperation: NSOperation {
     let comp = "PrefetchEmailsOperation"
 
     let grandOperator: GrandOperator
     let connectInfo: ConnectInfo
+    let backgroundQueue: NSOperationQueue
     var imapSync: ImapSync!
+    var myFinished: Bool = false
 
-    /**
-     This is needed, although stuff already happens in the background,
-     because `CWTCPConnection` uses `NSStream` and they get scheduled on the main thread.
-     This could be rewritten but you'd still need an additional runloop thread.
-     */
-    let queue: dispatch_queue_t
+    override var executing: Bool {
+        return !finished
+    }
 
-    /**
-     - Note: This context is confined to `queue`.
-     */
-    var context: NSManagedObjectContext!
+    override var asynchronous: Bool {
+        return true
+    }
+
+    override var finished: Bool {
+        return myFinished && backgroundQueue.operationCount == 0
+    }
 
     let folderToOpen: String
 
@@ -39,11 +46,9 @@ class PrefetchEmailsOperation: NSOperation {
             folderToOpen = ImapSync.defaultImapInboxName
         }
 
-        queue = dispatch_queue_create("PrefetchEmailsOperation helper", DISPATCH_QUEUE_SERIAL)
+        backgroundQueue = NSOperationQueue.init()
+
         super.init()
-        background {
-            self.context = grandOperator.coreDataUtil.confinedManagedObjectContext()
-        }
     }
 
     override func main() {
@@ -58,16 +63,48 @@ class PrefetchEmailsOperation: NSOperation {
     }
 
     func updateFolderNames(folderNames: [String]) {
-        for folderName in folderNames {
-            Account.insertOrUpdateFolderWithName(folderName, folderType: Account.AccountType.Imap,
-                                                 accountEmail: self.connectInfo.email,
-                                                 context: context)
-        }
-       CoreDataUtil.saveContext(managedObjectContext: context)
+        let op = StoreFoldersOperation.init(grandOperator: self.grandOperator,
+                                            folders: folderNames, email: self.connectInfo.email)
+        backgroundQueue.addOperation(op)
     }
 
-    func background(block: () -> Void) {
-        dispatch_async(queue, block)
+    func savePrefetchedMessage(msg: CWIMAPMessage) {
+        let folder = msg.folder()
+    }
+
+    override static func automaticallyNotifiesObserversForKey(keyPath: String) -> Bool {
+        var automatic: Bool = false
+        if keyPath == "isFinished" {
+            automatic = false
+        } else {
+            automatic = super.automaticallyNotifiesObserversForKey(keyPath)
+        }
+        return automatic
+    }
+
+    func waitForFinished() {
+        if backgroundQueue.operationCount == 0 {
+            markAsFinished()
+        } else {
+            backgroundQueue.addObserver(self, forKeyPath: "operationCount",
+                                        options: .New,
+                                        context: nil)
+        }
+    }
+
+    func markAsFinished() {
+        willChangeValueForKey("isFinished")
+        myFinished = true
+        didChangeValueForKey("isFinished")
+    }
+
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?,
+                                         change: [String : AnyObject]?,
+                                         context: UnsafeMutablePointer<Void>) {
+        if keyPath == "operationCount" {
+            markAsFinished()
+        }
+        super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
     }
 
 }
@@ -82,9 +119,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
 
     func receivedFolderNames(folderNames: [String]) {
         if !self.cancelled {
-            background {
-                self.updateFolderNames(folderNames)
-            }
+            self.updateFolderNames(folderNames)
             imapSync.openMailBox(folderToOpen)
         }
     }
@@ -102,7 +137,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     func folderPrefetchCompleted(notification: NSNotification) {
-        // TODO: op is finished
+        waitForFinished()
     }
 
     func messageChanged(notification: NSNotification) {
@@ -150,11 +185,13 @@ extension PrefetchEmailsOperation: EmailCache {
               " content(\(msg.content()))")
     }
 
+    /**
+     In general, a prefetch will yield these header fields:
+     ```From To Cc Subject Date Message-ID References In-Reply-To```
+     */
     func writeRecord(theRecord: CWCacheRecord!, message: CWIMAPMessage!) {
-        // TODO: Test for mails that are obviously pEp and should never
-        // be displayed, like beacon messages.
-        let folder = message.folder()
-        print("write UID(\(message.UID())) folder(\(folder.name()))")
-        dumpMessage(message)
+        //print("write UID(\(message.UID())) folder(\(folder.name()))")
+        //dumpMessage(message)
+        self.savePrefetchedMessage(message)
     }
 }
