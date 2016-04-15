@@ -25,7 +25,7 @@ class Mailbox: NSObject {
     }
 
     convenience init(emailAddress: String) {
-        self.init(emailAddress: emailAddress, folderName: "INBOX")
+        self.init(emailAddress: emailAddress, folderName: ImapSync.defaultImapInboxName)
     }
 
     convenience init(connectInfo: ConnectInfo) {

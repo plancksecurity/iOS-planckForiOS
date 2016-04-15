@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class PrefetchEmailsOperation: NSOperation {
     let comp = "PrefetchEmailsOperation"
@@ -22,11 +23,27 @@ class PrefetchEmailsOperation: NSOperation {
      */
     let queue: dispatch_queue_t
 
-    init(grandOperator: GrandOperator, connectInfo: ConnectInfo) {
+    /**
+     - Note: This context is confined to `queue`.
+     */
+    var context: NSManagedObjectContext!
+
+    let folderToOpen: String
+
+    init(grandOperator: GrandOperator, connectInfo: ConnectInfo, folder: String?) {
         self.grandOperator = grandOperator
         self.connectInfo = connectInfo
+        if let folder = folder {
+            folderToOpen = folder
+        } else {
+            folderToOpen = ImapSync.defaultImapInboxName
+        }
 
         queue = dispatch_queue_create("PrefetchEmailsOperation helper", DISPATCH_QUEUE_SERIAL)
+        super.init()
+        background {
+            self.context = grandOperator.coreDataUtil.confinedManagedObjectContext()
+        }
     }
 
     override func main() {
@@ -36,11 +53,11 @@ class PrefetchEmailsOperation: NSOperation {
         }
         imapSync = grandOperator.connectionManager.emaiSyncConnection(connectInfo)
         imapSync.delegate = self
+        imapSync.cache = self
         imapSync.start()
     }
 
     func updateFolderNames(folderNames: [String]) {
-        let context = grandOperator.coreDataUtil.confinedManagedObjectContext()
         for folderName in folderNames {
             Account.insertOrUpdateFolderWithName(folderName, folderType: Account.AccountType.Imap,
                                                  accountEmail: self.connectInfo.email,
@@ -68,6 +85,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
             background {
                 self.updateFolderNames(folderNames)
             }
+            imapSync.openMailBox(folderToOpen)
         }
     }
 
@@ -84,6 +102,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     func folderPrefetchCompleted(notification: NSNotification) {
+        // TODO: op is finished
     }
 
     func messageChanged(notification: NSNotification) {
@@ -97,5 +116,45 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
 
     func folderOpenFailed(notification: NSNotification!) {
     }
+}
 
+extension PrefetchEmailsOperation: EmailCache {
+    func invalidate() {
+    }
+
+    func synchronize() -> Bool {
+        return true
+    }
+
+    func count() -> UInt {
+        return 0
+    }
+
+    func removeMessageWithUID(theUID: UInt) {
+    }
+
+    func UIDValidity() -> UInt {
+        return 0
+    }
+
+    func setUIDValidity(theUIDValidity: UInt) {
+    }
+
+    func messageWithUID(theUID: UInt) -> CWIMAPMessage! {
+        return nil
+    }
+
+    func dumpMessage(msg: CWMessage) {
+        print("CWMessage: contentType(\(msg.contentType()))",
+              " isInitialized(\(msg.isInitialized()))\n",
+              " content(\(msg.content()))")
+    }
+
+    func writeRecord(theRecord: CWCacheRecord!, message: CWIMAPMessage!) {
+        // TODO: Test for mails that are obviously pEp and should never
+        // be displayed, like beacon messages.
+        let folder = message.folder()
+        print("write UID(\(message.UID())) folder(\(folder.name()))")
+        dumpMessage(message)
+    }
 }

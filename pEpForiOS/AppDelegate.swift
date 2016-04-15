@@ -27,7 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let account = Account.fetchLastAccount(appConfig.coreDataUtil.managedObjectContext) {
             let connectInfo = account.connectInfo
 
-            appConfig.grandOperator.prefetchEmailsImap(connectInfo)
+            appConfig.grandOperator.prefetchEmailsImap(connectInfo,
+                                                       folder: ImapSync.defaultImapInboxName)
         }
 
         return true

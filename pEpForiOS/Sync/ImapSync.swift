@@ -31,10 +31,10 @@ public protocol ImapSyncDelegate {
 public class ImapSync: Service {
     private let comp = "ImapSync"
 
-    private let defaultInboxName = "INBOX"
+    static public let defaultImapInboxName = "INBOX"
 
     private var imapState = ImapState()
-    private var cache = EmailCacheManager()
+    public var cache: EmailCache?
     public var delegate: ImapSyncDelegate?
 
     var imapStore: CWIMAPStore {

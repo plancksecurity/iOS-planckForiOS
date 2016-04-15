@@ -19,8 +19,9 @@ class GrandOperator {
         self.coreDataUtil = coreDataUtil
     }
 
-    func prefetchEmailsImap(connectInfo: ConnectInfo) {
-        let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo)
+    func prefetchEmailsImap(connectInfo: ConnectInfo, folder: String?) {
+        let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
+                                              folder: folder)
         prefetchQueue.addOperation(op)
     }
 
