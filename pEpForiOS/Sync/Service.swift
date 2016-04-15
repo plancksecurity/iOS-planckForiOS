@@ -43,7 +43,9 @@ public class Service {
     }
 
     func start() {
-        service.connectInBackgroundAndNotify()
+        dispatch_async(dispatch_get_main_queue(), {
+            self.service.connectInBackgroundAndNotify()
+        })
     }
 
     func test(block:(NSError? -> ())) {

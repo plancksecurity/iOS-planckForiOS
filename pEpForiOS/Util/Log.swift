@@ -12,7 +12,7 @@ import Foundation
 @objc public class Log: NSObject, CWLogging {
 
     private static let allow: Set<String> = ["CWTCPConnection", "ImapSync",
-                                       "SmtpSend", "KeyChain"]
+                                       "SmtpSend", "KeyChain", "PrefetchEmailsOperation"]
 
     /** Somewhat verbose */
     static func info(component: String, _ content: String) {

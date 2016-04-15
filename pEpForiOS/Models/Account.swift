@@ -100,17 +100,12 @@ public class Account: _Account {
     static func insertAccountFromConnectInfo(
         connectInfo: ConnectInfo, context: NSManagedObjectContext) -> Account? {
         let account = Account.newAccountFromConnectInfo(connectInfo, context: context)
-        do {
-            try context.save()
-            KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Imap.asString(),
-                              password: connectInfo.imapPassword)
-            KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Smtp.asString(),
-                              password: connectInfo.getSmtpPassword())
-            return account
-        } catch let e as NSError {
-            Log.error(comp, error: e)
-        }
-        return nil
+        CoreDataUtil.saveContext(managedObjectContext: context)
+        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Imap.asString(),
+                          password: connectInfo.imapPassword)
+        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Smtp.asString(),
+                          password: connectInfo.getSmtpPassword())
+        return account
     }
 
     static func insertTestAccount(context: NSManagedObjectContext) -> Account? {
@@ -140,6 +135,10 @@ public class Account: _Account {
         return nil
     }
 
+    /**
+     Inserts a folder of the given type.
+     - Note: Caller is responsible for saving!
+     */
     static func insertOrUpdateFolderWithName(folderName: String,
                                              folderType: AccountType,
                                              accountEmail: String,
@@ -162,7 +161,6 @@ public class Account: _Account {
                     folder.account = account
                     folder.name = folderName
                     folder.folderType = folderType.rawValue
-                    try context.save()
                     return folder
                 }
             }

@@ -67,6 +67,12 @@ class CoreDataUtil: NSObject {
     // MARK: - Core Data Saving support
 
     func saveContext () {
+        CoreDataUtil.saveContext(managedObjectContext: managedObjectContext)
+    }
+
+    // MARK: - Extensions
+
+    static func saveContext(managedObjectContext managedObjectContext: NSManagedObjectContext) {
         if managedObjectContext.hasChanges {
             do {
                 try managedObjectContext.save()
@@ -79,5 +85,12 @@ class CoreDataUtil: NSObject {
             }
         }
     }
-    
+
+    func confinedManagedObjectContext() -> NSManagedObjectContext {
+        let context = NSManagedObjectContext.init(concurrencyType: .ConfinementConcurrencyType)
+        context.persistentStoreCoordinator = self.persistentStoreCoordinator
+        // TODO: Maybe NSErrorMergePolicy (the default) is not the best choice here
+        return context
+    }
+
 }

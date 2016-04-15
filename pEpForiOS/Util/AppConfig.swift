@@ -17,9 +17,12 @@ class AppConfig: NSObject {
 
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
     let connectionManager: ConnectionManager
+    let grandOperator: GrandOperator
 
     override init() {
         connectionManager = ConnectionManager(coreDataUtil: coreDataUtil)
+        grandOperator = GrandOperator.init(connectionManager: connectionManager,
+                                           coreDataUtil: coreDataUtil)
     }
 
 }
