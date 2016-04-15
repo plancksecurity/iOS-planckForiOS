@@ -69,21 +69,16 @@ public class Account: _Account {
         let lastEmail = NSUserDefaults.standardUserDefaults().stringForKey(
             Account.kSettingLastAccountEmail)
 
-        let request = NSFetchRequest.init(entityName: Account.entityName())
+        var predicate: NSPredicate! = nil
+
         if lastEmail?.characters.count > 0 {
-            let predicate = NSPredicate.init(format: "email == %@", lastEmail!)
-            request.predicate = predicate
+            predicate = NSPredicate.init(format: "email == %@", lastEmail!)
         }
 
-        do {
-            let accounts = try context.executeFetchRequest(request)
-            if accounts.count > 0 {
-                return setAccountAsLastUsed(accounts[0] as! Account)
-            } else {
-                return insertTestAccount(context)
-            }
-        } catch let e as NSError {
-            Log.error(Account.comp, error: e)
+        if let account = singleEntityWithName(entityName(), predicate: predicate,
+                                              context: context) {
+            return setAccountAsLastUsed(account as! Account)
+        } else {
             return insertTestAccount(context)
         }
     }
