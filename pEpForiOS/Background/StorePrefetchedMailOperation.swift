@@ -83,8 +83,7 @@ class StorePrefetchedMailOperation: BaseOperation {
     }
 
     func updateContact(contact: Contact, address: CWInternetAddress) {
-        contact.email = address.address()
-        contact.name = address.personal()
+        contact.updateFromInternetAddress(address)
     }
 
     func addContacts(contacts: [CWInternetAddress],

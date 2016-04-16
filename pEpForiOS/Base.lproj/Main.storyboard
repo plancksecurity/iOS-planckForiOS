@@ -3,31 +3,13 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Email List View Controller-->
-        <scene sceneID="LzO-Vp-U1f">
-            <objects>
-                <viewController id="ssz-BG-yhq" customClass="EmailListViewController" customModule="p_p" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ydh-uy-oLc"/>
-                        <viewControllerLayoutGuide type="bottom" id="otC-7V-FJn"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="5zQ-PK-gGP" customClass="UITableView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="Yme-Ob-lFU"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yKK-HR-Vb5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1597" y="1089"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="yOv-6H-wiG">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="SnR-XU-LSM" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainEmailNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="SnR-XU-LSM" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="P92-v2-uTO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -39,12 +21,77 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="ssz-BG-yhq" kind="relationship" relationship="rootViewController" id="4xm-wc-eJm"/>
+                        <segue destination="kcA-RK-9Xg" kind="relationship" relationship="rootViewController" id="O3O-Dk-tqd"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAr-j7-O0Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="785" y="1089"/>
+        </scene>
+        <!--Email List View Controller-->
+        <scene sceneID="OWw-y9-SIo">
+            <objects>
+                <tableViewController id="kcA-RK-9Xg" customClass="EmailListViewController" customModule="p_p" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="111" sectionHeaderHeight="28" sectionFooterHeight="28" id="smX-Ka-bhC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EmailListViewCell" rowHeight="111" id="uhL-VL-48i" customClass="EmailListViewCell" customModule="p_p" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="111"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uhL-VL-48i" id="jgQ-nZ-h1r">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="111"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-jW-sUg">
+                                            <rect key="frame" x="16" y="16" width="568" height="21"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-55-oem">
+                                            <rect key="frame" x="16" y="45" width="568" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BvI-Zi-zU6">
+                                            <rect key="frame" x="16" y="74" width="568" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="tWZ-jW-sUg" secondAttribute="trailing" constant="8" id="3ce-VI-ZAh"/>
+                                        <constraint firstItem="tWZ-jW-sUg" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" constant="8" id="Hq3-CB-0Ff"/>
+                                        <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" constant="8" id="IVQ-bb-iYc"/>
+                                        <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="8" id="QvC-c0-8HZ"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="5Py-55-oem" secondAttribute="trailing" constant="8" id="WFn-4U-afx"/>
+                                        <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="topMargin" constant="8" id="bac-hr-Az9"/>
+                                        <constraint firstItem="5Py-55-oem" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" constant="8" id="kWD-MK-Hq0"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="BvI-Zi-zU6" secondAttribute="trailing" constant="8" id="qBA-yw-XjK"/>
+                                        <constraint firstItem="BvI-Zi-zU6" firstAttribute="top" secondItem="5Py-55-oem" secondAttribute="bottom" constant="8" id="qvz-vu-KvF"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="senderLabel" destination="tWZ-jW-sUg" id="lM6-YZ-J7S"/>
+                                    <outlet property="subjectLabel" destination="5Py-55-oem" id="UtV-Po-SPg"/>
+                                    <outlet property="summaryLabel" destination="BvI-Zi-zU6" id="oGG-8D-EeC"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="kcA-RK-9Xg" id="IAG-qJ-l6e"/>
+                            <outlet property="delegate" destination="kcA-RK-9Xg" id="Urv-Qr-ajf"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="bgm-ua-A0f"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1653" y="1092"/>
         </scene>
     </scenes>
 </document>

@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         setupDefaultSettings()
+
         if let account = Account.fetchLastAccount(appConfig.coreDataUtil.managedObjectContext) {
             let connectInfo = account.connectInfo
 
