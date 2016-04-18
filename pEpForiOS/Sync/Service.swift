@@ -16,7 +16,7 @@ public class Service {
     let ErrorAuthenticationFailed = 1000
     let ErrorConnectionTimedOut = 1001
 
-    let connectInfo: ConnectInfo!
+    let connectInfo: ConnectInfo
     let coreDataUtil: CoreDataUtil
 
     private var testOnlyCallback: (NSError? -> ())? = nil

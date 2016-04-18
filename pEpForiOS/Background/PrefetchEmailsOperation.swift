@@ -118,7 +118,7 @@ class PrefetchEmailsOperation: BaseOperation {
 
 extension PrefetchEmailsOperation: ImapSyncDelegate {
 
-    func authenticationCompleted(notification: NSNotification) {
+    func authenticationCompleted(notification: NSNotification?) {
         if !self.cancelled {
             imapSync.waitForFolders()
         }
@@ -131,32 +131,32 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
         }
     }
 
-    func authenticationFailed(notification: NSNotification) {
+    func authenticationFailed(notification: NSNotification?) {
     }
 
-    func connectionLost(notification: NSNotification) {
+    func connectionLost(notification: NSNotification?) {
     }
 
-    func connectionTerminated(notification: NSNotification) {
+    func connectionTerminated(notification: NSNotification?) {
     }
 
-    func connectionTimedOut(notification: NSNotification) {
+    func connectionTimedOut(notification: NSNotification?) {
     }
 
-    func folderPrefetchCompleted(notification: NSNotification) {
+    func folderPrefetchCompleted(notification: NSNotification?) {
         waitForFinished()
     }
 
-    func messageChanged(notification: NSNotification) {
+    func messageChanged(notification: NSNotification?) {
     }
 
-    func messagePrefetchCompleted(notification: NSNotification) {
+    func messagePrefetchCompleted(notification: NSNotification?) {
     }
 
-    func folderOpenCompleted(notification: NSNotification!) {
+    func folderOpenCompleted(notification: NSNotification?) {
     }
 
-    func folderOpenFailed(notification: NSNotification!) {
+    func folderOpenFailed(notification: NSNotification?) {
     }
 }
 
