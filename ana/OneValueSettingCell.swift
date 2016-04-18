@@ -1,0 +1,25 @@
+//
+//  MyTableViewCustomCell.swift
+//  pEpDemo
+//
+//  Created by ana on 12/4/16.
+//  Copyright © 2016 pEp. All rights reserved.
+//
+
+import UIKit
+
+class OneValueSettingCell: UITableViewCell {
+
+    @IBOutlet weak var titleName: UILabel!
+    @IBOutlet weak var fieldName: UITextField!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+
+}
+
