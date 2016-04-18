@@ -41,11 +41,11 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="111"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uhL-VL-48i" id="jgQ-nZ-h1r">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="111"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="110"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-jW-sUg">
-                                            <rect key="frame" x="16" y="16" width="568" height="21"/>
+                                            <rect key="frame" x="16" y="16" width="59" height="21"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -62,11 +62,19 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wkg-wf-Dbd">
+                                            <rect key="frame" x="548" y="16" width="36" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="tWZ-jW-sUg" secondAttribute="trailing" constant="8" id="3ce-VI-ZAh"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Wkg-wf-Dbd" secondAttribute="trailing" constant="8" id="DrL-gh-6oY"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" constant="8" id="Hq3-CB-0Ff"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" constant="8" id="IVQ-bb-iYc"/>
+                                        <constraint firstItem="Wkg-wf-Dbd" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="topMargin" constant="8" id="Qg3-ij-Yc8"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="8" id="QvC-c0-8HZ"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="5Py-55-oem" secondAttribute="trailing" constant="8" id="WFn-4U-afx"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="topMargin" constant="8" id="bac-hr-Az9"/>
@@ -74,8 +82,14 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="BvI-Zi-zU6" secondAttribute="trailing" constant="8" id="qBA-yw-XjK"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="top" secondItem="5Py-55-oem" secondAttribute="bottom" constant="8" id="qvz-vu-KvF"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="3ce-VI-ZAh"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="dateLabel" destination="Wkg-wf-Dbd" id="TSP-tH-GR2"/>
                                     <outlet property="senderLabel" destination="tWZ-jW-sUg" id="lM6-YZ-J7S"/>
                                     <outlet property="subjectLabel" destination="5Py-55-oem" id="UtV-Po-SPg"/>
                                     <outlet property="summaryLabel" destination="BvI-Zi-zU6" id="oGG-8D-EeC"/>

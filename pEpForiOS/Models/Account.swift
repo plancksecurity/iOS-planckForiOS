@@ -69,7 +69,7 @@ public class Account: _Account {
         let lastEmail = NSUserDefaults.standardUserDefaults().stringForKey(
             Account.kSettingLastAccountEmail)
 
-        var predicate: NSPredicate! = nil
+        var predicate = NSPredicate.init(value: true)
 
         if lastEmail?.characters.count > 0 {
             predicate = NSPredicate.init(format: "email == %@", lastEmail!)

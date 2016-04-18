@@ -33,19 +33,33 @@ class StorePrefetchedMailOperation: BaseOperation {
                     context: NSManagedObjectContext) {
         var mail: Message! = Message.existingMessage(message, context: context)
 
+        var isFresh = false
         if mail == nil {
             mail = NSEntityDescription.insertNewObjectForEntityForName(
                 Message.entityName(), inManagedObjectContext: context) as! Message
+            isFresh = true
         }
 
-        mail.subject = message.subject()
-        mail.messageId = message.messageID()
-        mail.uid = message.UID()
+        if isFresh || mail.sentDate != message.receivedDate() {
+            mail.sentDate = message.receivedDate()
+        }
+        if isFresh || mail.subject != message.subject() {
+            mail.subject = message.subject()
+        }
+        if isFresh || mail.messageId != message.messageID() {
+            mail.messageId = message.messageID()
+        }
+        if isFresh || mail.uid != message.UID() {
+            mail.uid = message.UID()
+        }
+
         do {
             if let folder = try Folder.insertOrUpdateFolderWithName(
                 message.folder().name(), folderType: Account.AccountType.Imap,
                 accountEmail: accountEmail, context: context) {
-                mail.folder = folder
+                if isFresh || mail.folder != folder {
+                    mail.folder = folder
+                }
             }
         } catch let err as NSError {
             grandOperator.addError(err)
@@ -64,9 +78,15 @@ class StorePrefetchedMailOperation: BaseOperation {
                 Log.warn(errorDomain, "Unsupported recipient type \(addr.type)")
             }
         }
-        mail.cc = ccs
-        mail.to = tos
-        mail.from = contacts[message.from().address()]
+        if isFresh || mail.cc != ccs {
+            mail.cc = ccs
+        }
+        if isFresh || mail.to != tos {
+            mail.to = tos
+        }
+        if isFresh || mail.from != contacts[message.from().address()] {
+            mail.from = contacts[message.from().address()]
+        }
 
         // TODO: Test references
         if let msgRefs = message.allReferences() {
@@ -74,8 +94,8 @@ class StorePrefetchedMailOperation: BaseOperation {
             for ref in msgRefs {
                 let stringRef = ref as! String
                 let predicate = NSPredicate.init(format: "messageId = %@", stringRef)
-                if let refMsg = BaseManagedObject.singleEntityWithName(Message.entityName(),
-                                                                     predicate: predicate, context: context) {
+                if let refMsg = BaseManagedObject.singleEntityWithName(
+                    Message.entityName(), predicate: predicate, context: context) {
                     references.addObject(refMsg)
                 }
             }

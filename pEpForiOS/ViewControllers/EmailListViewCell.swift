@@ -14,5 +14,6 @@ class EmailListViewCell: UITableViewCell {
     @IBOutlet weak var senderLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
 
 }

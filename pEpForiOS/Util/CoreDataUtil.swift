@@ -9,8 +9,28 @@
 import Foundation
 import CoreData
 
-class CoreDataUtil: NSObject {
+class CoreDataUtil {
     static let comp = "CoreDataUtil"
+
+    var saveObserver: NSObjectProtocol!
+
+    init() {
+        saveObserver = NSNotificationCenter.defaultCenter().addObserverForName(
+        NSManagedObjectContextDidSaveNotification, object: nil, queue: nil) {
+            [unowned self] notification in
+            self.mergeContexts(notification)
+        }
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(saveObserver)
+    }
+
+    func mergeContexts(notification: NSNotification) {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+        })
+    }
 
     // MARK: - Core Data stack
 

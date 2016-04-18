@@ -6,7 +6,7 @@ public class Contact: _Contact {
 
     func displayString() -> String {
         if self.name?.characters.count > 0 {
-            return String.init(format: "%@ (%@)", name!, email)
+            return name!
         } else {
             return email
         }

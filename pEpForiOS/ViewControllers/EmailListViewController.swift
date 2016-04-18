@@ -81,6 +81,15 @@ class EmailListViewController: UITableViewController {
             putString(email.from?.displayString(), toLabel: cell.senderLabel)
             putString(email.subject, toLabel: cell.subjectLabel)
             putString(nil, toLabel: cell.summaryLabel)
+
+            if let sentDate = email.sentDate {
+                let formatter = NSDateFormatter.init()
+                formatter.dateStyle = .ShortStyle
+                formatter.timeStyle = .ShortStyle
+                putString(formatter.stringFromDate(sentDate), toLabel: cell.dateLabel)
+            } else {
+                putString(nil, toLabel: cell.dateLabel)
+            }
         }
     }
 
@@ -118,12 +127,17 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             case .Delete:
                 tableView.deleteRowsAtIndexPaths([ip], withRowAnimation: .Fade)
             case .Update:
-                // TODO: Configure cell
-                Log.warn(comp, "TODO")
+                if let cell = tableView.cellForRowAtIndexPath(ip) {
+                    self.configureCell(cell as! EmailListViewCell, indexPath: ip)
+                } else {
+                    Log.warn(comp, "Could not find cell for changed indexPath: \(ip)")
+                }
             case .Move:
-                tableView.deleteRowsAtIndexPaths([ip], withRowAnimation: .Fade)
                 if let nip = newIndexPath {
-                    tableView.insertRowsAtIndexPaths([nip], withRowAnimation: .Fade)
+                    if nip != ip {
+                        tableView.deleteRowsAtIndexPaths([ip], withRowAnimation: .Fade)
+                        tableView.insertRowsAtIndexPaths([nip], withRowAnimation: .Fade)
+                    }
                 } else {
                     Log.warn(comp, "didChangeObject without newIndexPath")
                 }
