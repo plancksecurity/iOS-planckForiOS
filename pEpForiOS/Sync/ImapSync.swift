@@ -50,7 +50,8 @@ public class ImapSync: Service {
     }
 
     func openMailBox(name: String) {
-        // Note: If you open a folder, all messages will be prefetched by default,
+        // Note: If you open a folder like this, with PantomimeReadOnlyMode,
+        // all messages will be prefetched by default,
         // independent of the prefetch parameter.
         if let folder = imapStore.folderForName(name, mode: PantomimeReadOnlyMode,
                                                 prefetch: false) {
