@@ -17,6 +17,7 @@
 		431144C01CC1202E0007639D /* _Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144BE1CC1202E0007639D /* _Contact.swift */; };
 		431144C11CC1202E0007639D /* _Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144BF1CC1202E0007639D /* _Message.swift */; };
 		431BB4831CC292E800A4637E /* EmailListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431BB4821CC292E800A4637E /* EmailListViewCell.swift */; };
+		43248C4E1CC6266900AD3A7C /* PersistentEmailCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */; };
 		434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */; };
 		435A77C11CC3CB4200133D16 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435A77C01CC3CB4200133D16 /* Regex.swift */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
@@ -112,6 +113,7 @@
 		431144BE1CC1202E0007639D /* _Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Contact.swift; sourceTree = "<group>"; };
 		431144BF1CC1202E0007639D /* _Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Message.swift; sourceTree = "<group>"; };
 		431BB4821CC292E800A4637E /* EmailListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewCell.swift; sourceTree = "<group>"; };
+		43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentEmailCache.swift; sourceTree = "<group>"; };
 		435A77C01CC3CB4200133D16 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,6 +189,7 @@
 		431144A61CC0CB0A0007639D /* Background */ = {
 			isa = PBXGroup;
 			children = (
+				43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */,
 				4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */,
 				431144AB1CC0CCE20007639D /* GrandOperator.swift */,
 				431144B61CC11D6A0007639D /* BaseOperation.swift */,
@@ -538,6 +541,7 @@
 				43A214681CC2458200D702AA /* EmailListViewController.swift in Sources */,
 				43F03D801CC5177E0051C22D /* IMAPSettingsTableView.swift in Sources */,
 				4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */,
+				43248C4E1CC6266900AD3A7C /* PersistentEmailCache.swift in Sources */,
 				431144AC1CC0CCE30007639D /* GrandOperator.swift in Sources */,
 				431144C01CC1202E0007639D /* _Contact.swift in Sources */,
 				43980EF61CBD3EED00A7FC3C /* Mailbox.swift in Sources */,
