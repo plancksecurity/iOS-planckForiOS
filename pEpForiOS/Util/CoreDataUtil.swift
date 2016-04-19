@@ -57,13 +57,12 @@ class CoreDataUtil {
         do {
             try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil,
                                                        URL: url, options: nil)
-        } catch {
+        } catch let err as NSError {
             // Report any error we got.
             var dict = [String: AnyObject]()
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
 
-            let err: NSError = error as! NSError
             dict[NSUnderlyingErrorKey] = err
             let wrappedError = NSError(domain: comp, code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.

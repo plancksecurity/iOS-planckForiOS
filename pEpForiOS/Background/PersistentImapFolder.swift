@@ -57,4 +57,29 @@ class PersistentImapFolder: CWIMAPFolder {
                                       context: mainContext)
         return UInt(n)
     }
+
+    override func lastUID() -> UInt {
+        let fetch = NSFetchRequest.init(entityName: Message.entityName())
+        fetch.fetchLimit = 1
+        fetch.sortDescriptors = [NSSortDescriptor.init(key: "uid", ascending: false)]
+        do {
+            let elems = try mainContext.executeFetchRequest(fetch)
+            if elems.count > 0 {
+                if elems.count > 1 {
+                    Log.warn(comp, "lastUID has found more than one element")
+                }
+                if let msg = elems[0] as? Message {
+                    return UInt(msg.uid!.integerValue)
+                } else {
+                    Log.warn(comp, "Could not cast core data result to Message")
+                }
+            } else if elems.count > 0 {
+                Log.warn(comp, "lastUID has several objects with the same UID?")
+            }
+        } catch let error as NSError {
+            Log.error(comp, error: error)
+        }
+        Log.warn(comp, "lastUID no object found, returning 0")
+        return 0
+    }
 }
