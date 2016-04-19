@@ -30,6 +30,7 @@
         <relationship name="messages" toMany="YES" deletionRule="Cascade" destinationEntity="Message" inverseName="folder" inverseEntity="Message" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="Message" syncable="YES">
+        <attribute name="fetched" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="messageId" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="sentDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
@@ -45,6 +46,6 @@
         <element name="Account" positionX="-63" positionY="-18" width="128" height="240"/>
         <element name="Contact" positionX="-54" positionY="90" width="128" height="120"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="120"/>
-        <element name="Message" positionX="-45" positionY="99" width="128" height="195"/>
+        <element name="Message" positionX="-45" positionY="99" width="128" height="210"/>
     </elements>
 </model>
