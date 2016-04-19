@@ -12,6 +12,7 @@ public enum FolderAttributes: String {
 
 public enum FolderRelationships: String {
     case account = "account"
+    case messages = "messages"
 }
 
 public class _Folder: BaseManagedObject {
@@ -52,6 +53,37 @@ public class _Folder: BaseManagedObject {
 
     @NSManaged public
     var account: Account
+
+    @NSManaged public
+    var messages: NSSet
+
+}
+
+extension _Folder {
+
+    func addMessages(objects: NSSet) {
+        let mutable = self.messages.mutableCopy() as! NSMutableSet
+        mutable.unionSet(objects as Set<NSObject>)
+        self.messages = mutable.copy() as! NSSet
+    }
+
+    func removeMessages(objects: NSSet) {
+        let mutable = self.messages.mutableCopy() as! NSMutableSet
+        mutable.minusSet(objects as Set<NSObject>)
+        self.messages = mutable.copy() as! NSSet
+    }
+
+    func addMessagesObject(value: Message) {
+        let mutable = self.messages.mutableCopy() as! NSMutableSet
+        mutable.addObject(value)
+        self.messages = mutable.copy() as! NSSet
+    }
+
+    func removeMessagesObject(value: Message) {
+        let mutable = self.messages.mutableCopy() as! NSMutableSet
+        mutable.removeObject(value)
+        self.messages = mutable.copy() as! NSSet
+    }
 
 }
 
