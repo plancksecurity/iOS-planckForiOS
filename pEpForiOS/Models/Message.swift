@@ -5,10 +5,15 @@ import CoreData
 public class Message: _Message {
 
     static func existingMessage(msg: CWIMAPMessage, context: NSManagedObjectContext) -> Message? {
-        var predicates = [NSPredicate.init(format: "subject = %@ and sentDate = %@",
-            msg.subject(), msg.receivedDate())]
-        predicates.append(NSPredicate.init(format: "uid = %d and folder.name = %@",
-            msg.UID(), msg.folder().name()))
+        var predicates: [NSPredicate] = []
+        if msg.subject() != nil && msg.receivedDate() != nil {
+            predicates.append(NSPredicate.init(format: "subject = %@ and sentDate = %@",
+                msg.subject()!, msg.receivedDate()!))
+        }
+        if msg.folder() != nil {
+            predicates.append(NSPredicate.init(format: "uid = %d and folder.name = %@",
+                msg.UID(), msg.folder()!.name()))
+        }
         if let msgId = msg.messageID() {
             predicates.append(NSPredicate.init(format: "messageId = %@", msgId))
         }

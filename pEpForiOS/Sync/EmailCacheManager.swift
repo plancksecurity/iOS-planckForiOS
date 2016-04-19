@@ -48,8 +48,9 @@ public protocol EmailCache: CWCache, CWIMAPCache {
     }
 
     public func writeRecord(theRecord: CWCacheRecord!, message: CWIMAPMessage!) {
-        let folder = message.folder()
-        print("write UID(\(message.UID())) folder(\(folder.name()))")
+        if let folder = message.folder() {
+            print("write UID(\(message.UID())) folder(\(folder.name()))")
+        }
         dumpMessage(message)
     }
 

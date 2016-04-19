@@ -24,7 +24,9 @@ class StorePrefetchedMailOperation: BaseOperation {
     override func main() {
         let context = grandOperator.coreDataUtil.confinedManagedObjectContext()
         var addresses = message.recipients() as! [CWInternetAddress]
-        addresses.append(message.from())
+        if let from = message.from() {
+            addresses.append(from)
+        }
         let contacts = addContacts(addresses, context: context)
         insertOrUpdateMail(contacts, message: message, context: context)
         CoreDataUtil.saveContext(managedObjectContext: context)
@@ -55,11 +57,13 @@ class StorePrefetchedMailOperation: BaseOperation {
         }
 
         do {
-            if let folder = try Folder.insertOrUpdateFolderWithName(
-                message.folder().name(), folderType: Account.AccountType.Imap,
-                accountEmail: accountEmail, context: context) {
-                if isFresh || mail.folder != folder {
-                    mail.folder = folder
+            if let folderName = message.folder()?.name() {
+                if let folder = try Folder.insertOrUpdateFolderWithName(
+                    folderName, folderType: Account.AccountType.Imap,
+                    accountEmail: accountEmail, context: context) {
+                    if isFresh || mail.folder != folder {
+                        mail.folder = folder
+                    }
                 }
             }
         } catch let err as NSError {
@@ -85,8 +89,8 @@ class StorePrefetchedMailOperation: BaseOperation {
         if isFresh || mail.to != tos {
             mail.to = tos
         }
-        if isFresh || mail.from != contacts[message.from().address()] {
-            mail.from = contacts[message.from().address()]
+        if let from = message.from() {
+            mail.from = contacts[from.address()]
         }
 
         // TODO: Test references
