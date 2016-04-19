@@ -120,30 +120,22 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
                     atIndexPath indexPath: NSIndexPath?,
                                 forChangeType type: NSFetchedResultsChangeType,
                                               newIndexPath: NSIndexPath?) {
-        if let ip = indexPath {
-            switch type {
-            case .Insert:
-                tableView.insertRowsAtIndexPaths([ip], withRowAnimation: .Fade)
-            case .Delete:
-                tableView.deleteRowsAtIndexPaths([ip], withRowAnimation: .Fade)
-            case .Update:
-                if let cell = tableView.cellForRowAtIndexPath(ip) {
-                    self.configureCell(cell as! EmailListViewCell, indexPath: ip)
-                } else {
-                    Log.warn(comp, "Could not find cell for changed indexPath: \(ip)")
-                }
-            case .Move:
-                if let nip = newIndexPath {
-                    if nip != ip {
-                        tableView.deleteRowsAtIndexPaths([ip], withRowAnimation: .Fade)
-                        tableView.insertRowsAtIndexPaths([nip], withRowAnimation: .Fade)
-                    }
-                } else {
-                    Log.warn(comp, "didChangeObject without newIndexPath")
-                }
+        switch type {
+        case .Insert:
+            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        case .Delete:
+            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+        case .Update:
+            if let cell = tableView.cellForRowAtIndexPath(indexPath!) {
+                self.configureCell(cell as! EmailListViewCell, indexPath: indexPath!)
+            } else {
+                Log.warn(comp, "Could not find cell for changed indexPath: \(indexPath!)")
             }
-        } else {
-            Log.warn(comp, "didChangeObject without indexPath")
+        case .Move:
+            if newIndexPath != indexPath {
+                tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+                tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+            }
         }
     }
 
