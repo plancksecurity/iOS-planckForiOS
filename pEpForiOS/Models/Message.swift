@@ -17,11 +17,10 @@ public class Message: _Message {
         if let msgId = msg.messageID() {
             predicates.append(NSPredicate.init(format: "messageId = %@", msgId))
         }
-        for p in predicates {
-            if let mail = singleEntityWithName(entityName(), predicate: p, context: context) {
-                let result = mail as! Message
-                return result
-            }
+        let pred = NSCompoundPredicate.init(andPredicateWithSubpredicates: predicates)
+        if let mail = singleEntityWithName(entityName(), predicate: pred, context: context) {
+            let result = mail as! Message
+            return result
         }
         return nil
     }
