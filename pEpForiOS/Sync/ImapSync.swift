@@ -61,8 +61,8 @@ public class ImapSync: Service {
         // Note: If you open a folder like this, with PantomimeReadOnlyMode,
         // all messages will be prefetched by default,
         // independent of the prefetch parameter.
-        if let folder = imapStore.folderForName(name, mode: PantomimeReadOnlyMode,
-                                                prefetch: false) {
+        if let folder = imapStore.folderForName(name, mode: PantomimeReadWriteMode,
+                                                prefetch: true) {
             if cache != nil {
                 folder.setCacheManager(cache!)
             }

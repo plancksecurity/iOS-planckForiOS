@@ -25,4 +25,17 @@ public class Message: _Message {
         return nil
     }
 
+    func imapMessage() -> CWIMAPMessage {
+        let msg = CWIMAPMessage.init()
+        if let sub = subject {
+            msg.setSubject(sub)
+        }
+        if let uid = uid?.integerValue {
+            msg.setUID(UInt(uid))
+        }
+        let fol = CWFolder.init(name: folder.name)
+        msg.setFolder(fol)
+        return msg
+    }
+
 }

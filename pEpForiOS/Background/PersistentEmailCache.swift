@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 class PersistentEmailCache: NSObject {
+    let comp = "PersistentEmailCache"
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
     let grandOperator: GrandOperator
@@ -52,7 +53,15 @@ extension PersistentEmailCache: EmailCache {
     }
 
     func messageWithUID(theUID: UInt) -> CWIMAPMessage! {
-        return nil
+        let p = NSPredicate.init(format: "uid = %d", theUID)
+        if let msg = Message.singleEntityWithName(
+            Message.entityName(), predicate: p,
+            context: grandOperator.coreDataUtil.managedObjectContext) as? Message {
+            return msg.imapMessage()
+        } else {
+            Log.warn(comp, "Could not fetch message with uid \(theUID)")
+            return nil
+        }
     }
 
     func writeRecord(theRecord: CWCacheRecord!, message: CWIMAPMessage!) {

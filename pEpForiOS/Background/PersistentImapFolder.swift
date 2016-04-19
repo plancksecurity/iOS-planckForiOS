@@ -52,6 +52,16 @@ class PersistentImapFolder: CWIMAPFolder {
         }
     }
 
+    override func messageAtIndex(theIndex: UInt) -> CWMessage? {
+        let msgs = allMessages()
+        if msgs.count > Int(theIndex) {
+            if let msg = msgs[Int(theIndex)] as? Message {
+                return msg.imapMessage()
+            }
+        }
+        return nil
+    }
+
     override func count() -> UInt {
         let n = Message.countWithName(Message.entityName(), predicate: self.predicateAllMessages(),
                                       context: mainContext)

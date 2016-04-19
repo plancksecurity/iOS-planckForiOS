@@ -89,13 +89,6 @@ class PrefetchEmailsOperation: BaseOperation {
         backgroundQueue.addOperation(op)
     }
 
-    func savePrefetchedMessage(msg: CWIMAPMessage) {
-        let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
-                                                   accountEmail: connectInfo.email,
-                                                   message: msg)
-        backgroundQueue.addOperation(op)
-    }
-
     override static func automaticallyNotifiesObserversForKey(keyPath: String) -> Bool {
         var automatic: Bool = false
         if keyPath == "isFinished" {
