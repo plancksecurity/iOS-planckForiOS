@@ -47,4 +47,19 @@ public class BaseManagedObject: NSManagedObject {
         return nil
     }
 
+    static func countWithName(name: String,
+                              predicate: NSPredicate,
+                              context: NSManagedObjectContext) -> Int {
+        let fetch = NSFetchRequest.init(entityName: name)
+        fetch.predicate = predicate
+        var error: NSError?
+        let number = context.countForFetchRequest(fetch, error: &error)
+        if let err = error {
+            Log.error(comp, error: err)
+        }
+        if number !=  NSNotFound {
+            return number
+        }
+        return 0
+    }
 }
