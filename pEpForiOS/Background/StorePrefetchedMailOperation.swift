@@ -17,6 +17,7 @@ class StorePrefetchedMailOperation: BaseOperation {
     init(grandOperator: GrandOperator, accountEmail: String, message: CWIMAPMessage) {
         self.accountEmail = accountEmail
         self.message = message
+        print("message from \(message.from())")
         super.init(grandOperator: grandOperator)
     }
 

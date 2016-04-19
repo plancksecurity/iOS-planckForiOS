@@ -28,21 +28,6 @@ public protocol ImapSyncDelegate {
 
 }
 
-class ImapFolderBuilder: NSObject, CWFolderBuilding {
-    let connectInfo: ConnectInfo
-    let coreDataUtil: CoreDataUtil
-
-    init(coreDataUtil: CoreDataUtil, connectInfo: ConnectInfo) {
-        self.connectInfo = connectInfo
-        self.coreDataUtil = coreDataUtil
-    }
-
-    func folderWithName(name: String!) -> CWFolder! {
-        return PersistentImapFolder(name: name, connectInfo: connectInfo,
-                                    context: coreDataUtil.managedObjectContext) as CWFolder
-    }
-}
-
 public class ImapSync: Service {
     private let comp = "ImapSync"
 
@@ -51,12 +36,13 @@ public class ImapSync: Service {
     private var imapState = ImapState()
     public var cache: EmailCache?
     public var delegate: ImapSyncDelegate?
-    let folderBuilder: ImapFolderBuilder
-
-    override init(coreDataUtil: CoreDataUtil, connectInfo: ConnectInfo) {
-        folderBuilder = ImapFolderBuilder(coreDataUtil: coreDataUtil, connectInfo: connectInfo)
-        super.init(coreDataUtil: coreDataUtil, connectInfo: connectInfo)
-        imapStore.folderBuilder = folderBuilder
+    var folderBuilder: CWFolderBuilding? {
+        set {
+            imapStore.folderBuilder = newValue
+        }
+        get {
+            return imapStore.folderBuilder
+        }
     }
 
     var imapStore: CWIMAPStore {

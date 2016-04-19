@@ -9,6 +9,25 @@
 import Foundation
 import CoreData
 
+class ImapFolderBuilder: NSObject, CWFolderBuilding {
+    let connectInfo: ConnectInfo
+    let backgroundQueue: NSOperationQueue
+    let grandOperator: GrandOperator
+
+    init(grandOperator: GrandOperator, connectInfo: ConnectInfo,
+         backgroundQueue: NSOperationQueue) {
+        self.connectInfo = connectInfo
+        self.grandOperator = grandOperator
+        self.backgroundQueue = backgroundQueue
+    }
+
+    func folderWithName(name: String!) -> CWFolder! {
+        return PersistentImapFolder(name: name, grandOperator: grandOperator,
+                                    connectInfo: connectInfo, backgroundQueue: backgroundQueue)
+            as CWFolder
+    }
+}
+
 /**
  This operation is not intended to be put in a queue (though this should work too).
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
@@ -21,6 +40,7 @@ class PrefetchEmailsOperation: BaseOperation {
     let backgroundQueue: NSOperationQueue
     var imapSync: ImapSync!
     var myFinished: Bool = false
+    let folderBuilder: ImapFolderBuilder
 
     override var executing: Bool {
         return !finished
@@ -45,6 +65,9 @@ class PrefetchEmailsOperation: BaseOperation {
         }
 
         backgroundQueue = NSOperationQueue.init()
+        folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
+                                               connectInfo: connectInfo,
+                                               backgroundQueue: backgroundQueue)
 
         super.init(grandOperator: grandOperator)
     }
@@ -56,7 +79,7 @@ class PrefetchEmailsOperation: BaseOperation {
         }
         imapSync = grandOperator.connectionManager.emaiSyncConnection(connectInfo)
         imapSync.delegate = self
-        imapSync.cache = self
+        imapSync.folderBuilder = folderBuilder
         imapSync.start()
     }
 
@@ -157,40 +180,5 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     func folderOpenFailed(notification: NSNotification?) {
-    }
-}
-
-extension PrefetchEmailsOperation: EmailCache {
-    func invalidate() {
-    }
-
-    func synchronize() -> Bool {
-        return true
-    }
-
-    func count() -> UInt {
-        return 0
-    }
-
-    func removeMessageWithUID(theUID: UInt) {
-    }
-
-    func UIDValidity() -> UInt {
-        return 0
-    }
-
-    func setUIDValidity(theUIDValidity: UInt) {
-    }
-
-    func messageWithUID(theUID: UInt) -> CWIMAPMessage! {
-        return nil
-    }
-
-    /**
-     In general, a prefetch will yield these header fields:
-     ```From To Cc Subject Date Message-ID References In-Reply-To```
-     */
-    func writeRecord(theRecord: CWCacheRecord!, message: CWIMAPMessage!) {
-        self.savePrefetchedMessage(message)
     }
 }
