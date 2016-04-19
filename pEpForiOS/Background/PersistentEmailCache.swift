@@ -10,6 +10,11 @@ import Foundation
 import CoreData
 
 class PersistentEmailCache: NSObject, EmailCache {
+    let persistentImapFolder: PersistentImapFolder
+
+    init(persistentImapFolder: PersistentImapFolder) {
+        self.persistentImapFolder = persistentImapFolder
+    }
 
     func invalidate() {
     }
