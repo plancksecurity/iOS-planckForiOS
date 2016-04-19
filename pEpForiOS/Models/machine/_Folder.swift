@@ -7,6 +7,7 @@ import CoreData
 public enum FolderAttributes: String {
     case folderType = "folderType"
     case name = "name"
+    case uidValidity = "uidValidity"
 }
 
 public enum FolderRelationships: String {
@@ -43,6 +44,9 @@ public class _Folder: BaseManagedObject {
 
     @NSManaged public
     var name: String
+
+    @NSManaged public
+    var uidValidity: NSNumber?
 
     // MARK: - Relationships
 

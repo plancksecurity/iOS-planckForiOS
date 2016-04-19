@@ -82,4 +82,38 @@ class PersistentImapFolder: CWIMAPFolder {
         Log.warn(comp, "lastUID no object found, returning 0")
         return 0
     }
+
+    func folderObject() -> Folder? {
+        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
+                                 connectInfo.email, name())
+        if let folder = Folder.singleEntityWithName(Folder.entityName(), predicate: p,
+                                                    context: mainContext) as? Folder {
+            return folder
+        } else {
+            Log.warn(comp,
+                     "Could not fetch folder with name \(name()) of account \(connectInfo.email)")
+            return nil
+        }
+    }
+
+    override func setUIDValidity(theUIDValidity: UInt) {
+        if let folder = folderObject() {
+            folder.uidValidity = theUIDValidity
+            CoreDataUtil.saveContext(managedObjectContext: mainContext)
+        } else {
+            Log.warn(comp,
+                     "Could not set UIDValidity \(theUIDValidity) for folder (name()) of account \(connectInfo.email)")
+        }
+    }
+
+    override func UIDValidity() -> UInt {
+        if let folder = folderObject() {
+            if let uidVal = folder.uidValidity {
+                return UInt(uidVal.integerValue)
+            }
+        }
+        Log.warn(comp,
+                 "Could not get UIDValidity for folder (name()) of account \(connectInfo.email)")
+        return 0
+    }
 }
