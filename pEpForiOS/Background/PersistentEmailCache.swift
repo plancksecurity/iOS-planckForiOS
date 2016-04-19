@@ -9,13 +9,27 @@
 import Foundation
 import CoreData
 
-class PersistentEmailCache: NSObject, EmailCache {
-    let persistentImapFolder: PersistentImapFolder
+class PersistentEmailCache: NSObject {
+    let connectInfo: ConnectInfo
+    let backgroundQueue: NSOperationQueue
+    let grandOperator: GrandOperator
 
-    init(persistentImapFolder: PersistentImapFolder) {
-        self.persistentImapFolder = persistentImapFolder
+    init(grandOperator: GrandOperator, connectInfo: ConnectInfo,
+         backgroundQueue: NSOperationQueue) {
+        self.grandOperator = grandOperator
+        self.connectInfo = connectInfo
+        self.backgroundQueue = backgroundQueue
     }
 
+    func saveMessage(message: CWMessage) {
+        let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
+                                                   accountEmail: connectInfo.email,
+                                                   message: message as! CWIMAPMessage)
+        backgroundQueue.addOperation(op)
+    }
+}
+
+extension PersistentEmailCache: EmailCache {
     func invalidate() {
     }
 
@@ -41,16 +55,7 @@ class PersistentEmailCache: NSObject, EmailCache {
         return nil
     }
 
-    func dumpMessage(msg: CWMessage) {
-        print("CWMessage: contentType(\(msg.contentType()))",
-              " isInitialized(\(msg.isInitialized()))\n",
-              " content(\(msg.content()))")
-    }
-
     func writeRecord(theRecord: CWCacheRecord!, message: CWIMAPMessage!) {
-        if let folder = message.folder() {
-            print("write UID(\(message.UID())) folder(\(folder.name()))")
-        }
-        dumpMessage(message)
+        saveMessage(message)
     }
 }

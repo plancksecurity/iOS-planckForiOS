@@ -12,21 +12,22 @@ import CoreData
 class PersistentImapFolder: CWIMAPFolder {
     let comp = "PersistentImapFolder"
 
+    let mainContext: NSManagedObjectContext
     let connectInfo: ConnectInfo
-    let context: NSManagedObjectContext
     let backgroundQueue: NSOperationQueue
     let grandOperator: GrandOperator
-    let watchedMessages: NSMutableOrderedSet = []
-    var cache: PersistentEmailCache!
+    let cache: PersistentEmailCache
 
     init(name: String, grandOperator: GrandOperator, connectInfo: ConnectInfo,
          backgroundQueue: NSOperationQueue) {
         self.connectInfo = connectInfo
         self.backgroundQueue = backgroundQueue
         self.grandOperator = grandOperator
-        self.context = grandOperator.coreDataUtil.managedObjectContext
+        self.mainContext = grandOperator.coreDataUtil.managedObjectContext
+        self.cache = PersistentEmailCache.init(grandOperator: grandOperator,
+                                               connectInfo: connectInfo,
+                                               backgroundQueue: backgroundQueue)
         super.init(name: name)
-        self.cache = PersistentEmailCache(persistentImapFolder: self)
         self.setCacheManager(cache)
     }
 
@@ -44,7 +45,7 @@ class PersistentImapFolder: CWIMAPFolder {
     override func allMessages() -> [AnyObject] {
         if let messages = Message.entitiesWithName(Message.entityName(),
                                                    predicate: self.predicateAllMessages(),
-                                                   context: context) {
+                                                   context: mainContext) {
             return messages
         } else {
             return []
@@ -53,18 +54,7 @@ class PersistentImapFolder: CWIMAPFolder {
 
     override func count() -> UInt {
         let n = Message.countWithName(Message.entityName(), predicate: self.predicateAllMessages(),
-                                      context: context)
+                                      context: mainContext)
         return UInt(n)
-    }
-
-    override func appendMessage(theMessage: CWMessage) {
-        super.appendMessage(theMessage)
-    }
-
-    func saveMessage(message: CWMessage) {
-        let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
-                                                   accountEmail: connectInfo.email,
-                                                   message: message as! CWIMAPMessage)
-        backgroundQueue.addOperation(op)
     }
 }
