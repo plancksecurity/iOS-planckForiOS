@@ -36,6 +36,10 @@
 		43980EF61CBD3EED00A7FC3C /* Mailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF51CBD3EED00A7FC3C /* Mailbox.swift */; };
 		43980EF81CBD402400A7FC3C /* CoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF71CBD402400A7FC3C /* CoreDataUtil.swift */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
+		439D406B1CC78862009A4E7C /* libpEpiOSAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40661CC78825009A4E7C /* libpEpiOSAdapter.a */; };
+		439D40701CC78930009A4E7C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
+		439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
+		439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C6F3611CBE8153006A2A18 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F3601CBE8153006A2A18 /* Service.swift */; };
 		43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB31CBF8301008AA7A7 /* Account.swift */; };
@@ -79,12 +83,26 @@
 			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
 			remoteInfo = pEpForiOS;
 		};
-		43E6A27E1CBF802C00787A56 /* PBXContainerItemProxy */ = {
+		439D40651CC78825009A4E7C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
+			containerPortal = 439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 43E854BB1CB7EA9A006867C0;
-			remoteInfo = Pantomime;
+			remoteGlobalIDString = 352988AA1AEF964100FA7E2E;
+			remoteInfo = pEpiOSAdapter;
+		};
+		439D40671CC78825009A4E7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64415E171BE94FCB00F6CBB2;
+			remoteInfo = iOSTests;
+		};
+		439D40691CC7883D009A4E7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 352988A91AEF964100FA7E2E;
+			remoteInfo = pEpiOSAdapter;
 		};
 		43E6A2801CBF802C00787A56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -139,6 +157,10 @@
 		43980EF51CBD3EED00A7FC3C /* Mailbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mailbox.swift; sourceTree = "<group>"; };
 		43980EF71CBD402400A7FC3C /* CoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataUtil.swift; sourceTree = "<group>"; };
 		43980EF91CBD415700A7FC3C /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pEpiOSAdapter.xcodeproj; path = ../pEpiOSAdapter/pEpiOSAdapter.xcodeproj; sourceTree = "<group>"; };
+		439D406F1CC78930009A4E7C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		439D40711CC78958009A4E7C /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		439D40731CC7897B009A4E7C /* libiconv.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.tbd; path = usr/lib/libiconv.2.tbd; sourceTree = SDKROOT; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C6F3601CBE8153006A2A18 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		43E58EB31CBF8301008AA7A7 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -165,6 +187,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */,
+				439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */,
+				439D40701CC78930009A4E7C /* libz.tbd in Frameworks */,
+				439D406B1CC78862009A4E7C /* libpEpiOSAdapter.a in Frameworks */,
 				434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,7 +287,9 @@
 		43980ECE1CBD1CAD00A7FC3C /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				439D40781CC78A2D009A4E7C /* Raw */,
 				43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */,
+				439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -293,6 +321,25 @@
 			path = Sync;
 			sourceTree = "<group>";
 		};
+		439D405D1CC78825009A4E7C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				439D40661CC78825009A4E7C /* libpEpiOSAdapter.a */,
+				439D40681CC78825009A4E7C /* iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		439D40781CC78A2D009A4E7C /* Raw */ = {
+			isa = PBXGroup;
+			children = (
+				439D40731CC7897B009A4E7C /* libiconv.2.tbd */,
+				439D40711CC78958009A4E7C /* libbz2.tbd */,
+				439D406F1CC78930009A4E7C /* libz.tbd */,
+			);
+			name = Raw;
+			sourceTree = "<group>";
+		};
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,7 +367,6 @@
 		43E6A2791CBF802C00787A56 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43E6A27F1CBF802C00787A56 /* Pantomime.app */,
 				43E6A2811CBF802C00787A56 /* PantomimeTests.xctest */,
 				43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */,
 			);
@@ -375,6 +421,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				439D406A1CC7883D009A4E7C /* PBXTargetDependency */,
 				434662CE1CBF808D0053FC48 /* PBXTargetDependency */,
 			);
 			name = "p≡p";
@@ -457,6 +504,10 @@
 					ProductGroup = 43E6A2791CBF802C00787A56 /* Products */;
 					ProjectRef = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
 				},
+				{
+					ProductGroup = 439D405D1CC78825009A4E7C /* Products */;
+					ProjectRef = 439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -468,11 +519,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		43E6A27F1CBF802C00787A56 /* Pantomime.app */ = {
+		439D40661CC78825009A4E7C /* libpEpiOSAdapter.a */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Pantomime.app;
-			remoteRef = 43E6A27E1CBF802C00787A56 /* PBXContainerItemProxy */;
+			fileType = archive.ar;
+			path = libpEpiOSAdapter.a;
+			remoteRef = 439D40651CC78825009A4E7C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		439D40681CC78825009A4E7C /* iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = iOSTests.xctest;
+			remoteRef = 439D40671CC78825009A4E7C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		43E6A2811CBF802C00787A56 /* PantomimeTests.xctest */ = {
@@ -601,6 +659,11 @@
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* p≡p */;
 			targetProxy = 43980E461CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
+		};
+		439D406A1CC7883D009A4E7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = pEpiOSAdapter;
+			targetProxy = 439D40691CC7883D009A4E7C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
