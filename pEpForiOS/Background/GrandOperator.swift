@@ -22,11 +22,17 @@ class GrandOperator {
     }
 
     func prefetchEmailsImap(connectInfo: ConnectInfo, folder: String?,
-                            completionBlock: (() -> Void)?) {
-        let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
-                                              folder: folder)
-        op.completionBlock = completionBlock
-        op.start()
+                            completionBlock: ((op: PrefetchEmailsOperation) -> Void)?)
+        -> PrefetchEmailsOperation {
+            let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
+                                                  folder: folder)
+            if let block = completionBlock {
+                op.completionBlock = {
+                    block(op: op)
+                }
+            }
+            op.start()
+            return op
     }
 
     func addError(error: NSError) {

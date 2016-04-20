@@ -10,11 +10,29 @@ import Foundation
 import UIKit
 import CoreData
 
+struct UIState {
+    let runningOpsUser = NSMutableOrderedSet()
+    let runningOpsAuto = NSMutableOrderedSet()
+
+    func isSynching() -> Bool {
+        return runningOpsUser.count > 0 || runningOpsAuto.count > 0
+    }
+
+    func isSynchingAuto() -> Bool {
+        return runningOpsAuto.count > 0
+    }
+
+    func isSynchingUser() -> Bool {
+        return runningOpsUser.count > 0
+    }
+}
+
 class EmailListViewController: UITableViewController {
     let comp = "EmailListViewController"
 
     var appConfig: AppConfig?
     var fetchController: NSFetchedResultsController?
+    let state = UIState()
 
     override func viewWillAppear(animated: Bool) {
         if appConfig == nil {
@@ -27,10 +45,17 @@ class EmailListViewController: UITableViewController {
         if let account = Account.fetchLastAccount(appConfig!.coreDataUtil.managedObjectContext) {
             let connectInfo = account.connectInfo
 
-            appConfig!.grandOperator.prefetchEmailsImap(
+            let op = appConfig!.grandOperator.prefetchEmailsImap(
                 connectInfo, folder: ImapSync.defaultImapInboxName, completionBlock: {
-                    Log.info(self.comp, "Sync completed")
+                    [unowned self] op in
+                    GCD.onMain({
+                        Log.info(self.comp, "Sync completed")
+                        self.state.runningOpsAuto.removeObject(op)
+                        self.updateUI()
+                    })
             })
+            state.runningOpsAuto.addObject(op)
+            updateUI()
         }
         
         super.viewWillAppear(animated)
@@ -51,6 +76,16 @@ class EmailListViewController: UITableViewController {
             try fetchController?.performFetch()
         } catch let err as NSError {
             Log.error(comp, error: err)
+        }
+    }
+
+    // MARK: - UI State
+
+    func updateUI() {
+        if state.isSynching() {
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        } else {
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         }
     }
 

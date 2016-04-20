@@ -40,6 +40,7 @@
 		439D40701CC78930009A4E7C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
 		439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
 		439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
+		439D407A1CC79423009A4E7C /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439D40791CC79423009A4E7C /* GCD.swift */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C6F3611CBE8153006A2A18 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F3601CBE8153006A2A18 /* Service.swift */; };
 		43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB31CBF8301008AA7A7 /* Account.swift */; };
@@ -161,6 +162,7 @@
 		439D406F1CC78930009A4E7C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		439D40711CC78958009A4E7C /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		439D40731CC7897B009A4E7C /* libiconv.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.tbd; path = usr/lib/libiconv.2.tbd; sourceTree = SDKROOT; };
+		439D40791CC79423009A4E7C /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C6F3601CBE8153006A2A18 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		43E58EB31CBF8301008AA7A7 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */,
 				43E58ED01CBFA943008AA7A7 /* KeyChain.swift */,
 				435A77C01CC3CB4200133D16 /* Regex.swift */,
+				439D40791CC79423009A4E7C /* GCD.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -590,6 +593,7 @@
 				431144B51CC0FCA40007639D /* StoreFoldersOperation.swift in Sources */,
 				43980EEC1CBD26B400A7FC3C /* EmailCacheManager.swift in Sources */,
 				43C6F3611CBE8153006A2A18 /* Service.swift in Sources */,
+				439D407A1CC79423009A4E7C /* GCD.swift in Sources */,
 				43E58EB91CBF8301008AA7A7 /* Folder.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
