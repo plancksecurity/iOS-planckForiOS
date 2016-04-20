@@ -15,7 +15,7 @@ class IMAPSettingsTableView: UITableViewController {
     @IBOutlet weak var portValue: UITextField!
 
 
-    var mailParameters = MailSettingParameters(email: " ", username: " ", password: " ", serverhostIMAP: " ", portIMAP: " ", transportSecurityIMAP: " ", serverhostSMTP: " ", portSMTP: " ",transportSecuritySMTP: " ")
+    var mailParameters = MailSettingParameters()
 
     override func viewDidLoad() {
         super.viewDidLoad()

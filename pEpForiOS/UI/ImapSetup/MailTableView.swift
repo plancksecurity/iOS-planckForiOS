@@ -10,7 +10,7 @@ import UIKit
 
 class MailTableView: UITableViewController {
 
-     var mailParameters = MailSettingParameters(email: " ", username: " ", password: " ", serverhostIMAP: " ", portIMAP: " ", transportSecurityIMAP: " ", serverhostSMTP: " ", portSMTP: " ",transportSecuritySMTP: " ")
+     var mailParameters = MailSettingParameters()
 
     let allMailList = MailList()
 
