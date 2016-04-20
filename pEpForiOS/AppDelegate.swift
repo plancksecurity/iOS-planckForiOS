@@ -15,22 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private var imap: ImapSync! // TODO: Only for testing here
-    private var smtp: SmtpSend! // TODO: Only for testing here
-
     let appConfig: AppConfig = AppConfig()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         setupDefaultSettings()
-
-        if let account = Account.fetchLastAccount(appConfig.coreDataUtil.managedObjectContext) {
-            let connectInfo = account.connectInfo
-
-            appConfig.grandOperator.prefetchEmailsImap(connectInfo,
-                                                       folder: ImapSync.defaultImapInboxName)
-        }
 
         return true
     }

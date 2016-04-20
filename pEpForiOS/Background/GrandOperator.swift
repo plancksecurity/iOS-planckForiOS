@@ -21,12 +21,11 @@ class GrandOperator {
         self.coreDataUtil = coreDataUtil
     }
 
-    func prefetchEmailsImap(connectInfo: ConnectInfo, folder: String?) {
+    func prefetchEmailsImap(connectInfo: ConnectInfo, folder: String?,
+                            completionBlock: (() -> Void)?) {
         let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
                                               folder: folder)
-        op.completionBlock = {
-            print("completed")
-        }
+        op.completionBlock = completionBlock
         op.start()
     }
 

@@ -23,6 +23,16 @@ class EmailListViewController: UITableViewController {
             }
         }
         prepareFetchRequest()
+
+        if let account = Account.fetchLastAccount(appConfig!.coreDataUtil.managedObjectContext) {
+            let connectInfo = account.connectInfo
+
+            appConfig!.grandOperator.prefetchEmailsImap(
+                connectInfo, folder: ImapSync.defaultImapInboxName, completionBlock: {
+                    Log.info(self.comp, "Sync completed")
+            })
+        }
+        
         super.viewWillAppear(animated)
     }
 
