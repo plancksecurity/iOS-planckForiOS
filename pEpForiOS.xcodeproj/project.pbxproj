@@ -43,6 +43,8 @@
 		439D407A1CC79423009A4E7C /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439D40791CC79423009A4E7C /* GCD.swift */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C6F3611CBE8153006A2A18 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F3601CBE8153006A2A18 /* Service.swift */; };
+		43D9CB731CC9FCDA000C809C /* SwiftFSM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D9CB711CC9FCDA000C809C /* SwiftFSM.swift */; };
+		43D9CB741CC9FCDA000C809C /* SwiftFSMState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D9CB721CC9FCDA000C809C /* SwiftFSMState.swift */; };
 		43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB31CBF8301008AA7A7 /* Account.swift */; };
 		43E58EB91CBF8301008AA7A7 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB41CBF8301008AA7A7 /* Folder.swift */; };
 		43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB61CBF8301008AA7A7 /* _Account.swift */; };
@@ -165,6 +167,8 @@
 		439D40791CC79423009A4E7C /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C6F3601CBE8153006A2A18 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		43D9CB711CC9FCDA000C809C /* SwiftFSM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftFSM.swift; sourceTree = "<group>"; };
+		43D9CB721CC9FCDA000C809C /* SwiftFSMState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftFSMState.swift; sourceTree = "<group>"; };
 		43E58EB31CBF8301008AA7A7 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		43E58EB41CBF8301008AA7A7 /* Folder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		43E58EB61CBF8301008AA7A7 /* _Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Account.swift; sourceTree = "<group>"; };
@@ -257,6 +261,7 @@
 				43980EE11CBD24B800A7FC3C /* Sync */,
 				43ED53611CC77F95006AB156 /* UI */,
 				43980EDE1CBD24B000A7FC3C /* Util */,
+				43D9CB701CC9FCDA000C809C /* FSM */,
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
@@ -341,6 +346,15 @@
 				439D406F1CC78930009A4E7C /* libz.tbd */,
 			);
 			name = Raw;
+			sourceTree = "<group>";
+		};
+		43D9CB701CC9FCDA000C809C /* FSM */ = {
+			isa = PBXGroup;
+			children = (
+				43D9CB711CC9FCDA000C809C /* SwiftFSM.swift */,
+				43D9CB721CC9FCDA000C809C /* SwiftFSMState.swift */,
+			);
+			path = FSM;
 			sourceTree = "<group>";
 		};
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
@@ -588,9 +602,11 @@
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
 				43ED53741CC77F95006AB156 /* MailList.swift in Sources */,
 				43E58EC61CBF8365008AA7A7 /* BaseManagedObject.swift in Sources */,
+				43D9CB731CC9FCDA000C809C /* SwiftFSM.swift in Sources */,
 				431144AA1CC0CB480007639D /* PrefetchEmailsOperation.swift in Sources */,
 				43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFoldersOperation.swift in Sources */,
+				43D9CB741CC9FCDA000C809C /* SwiftFSMState.swift in Sources */,
 				43980EEC1CBD26B400A7FC3C /* EmailCacheManager.swift in Sources */,
 				43C6F3611CBE8153006A2A18 /* Service.swift in Sources */,
 				439D407A1CC79423009A4E7C /* GCD.swift in Sources */,
