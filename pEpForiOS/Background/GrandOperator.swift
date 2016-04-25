@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol GrandOperatorProtocol {
+    func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
+                        completionBlock: (error: NSError?) -> Void)
+}
+
 class GrandOperator {
 
     var errors: [NSError] = []
