@@ -10,7 +10,7 @@ import Foundation
 
 protocol IGrandOperator {
     /**
-     Prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
+     Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
      and the given folder and stores them into the persistent store.
 
      - parameter connectInfo: Denotes the server and other connection parameters
