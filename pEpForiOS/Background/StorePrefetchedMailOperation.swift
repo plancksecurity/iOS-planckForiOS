@@ -66,7 +66,7 @@ class StorePrefetchedMailOperation: BaseOperation {
                 }
             }
         } catch let err as NSError {
-            grandOperator.addError(err)
+            grandOperator.setErrorForOperation(self, error: err)
         }
 
         let ccs: NSMutableOrderedSet = []
@@ -132,7 +132,7 @@ class StorePrefetchedMailOperation: BaseOperation {
                     added[contact.email] = contact
                 }
             } catch let err as NSError {
-                grandOperator.addError(err)
+                grandOperator.setErrorForOperation(self, error: err)
             }
         }
         return added

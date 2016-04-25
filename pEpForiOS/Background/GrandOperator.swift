@@ -8,14 +8,30 @@
 
 import Foundation
 
-protocol GrandOperatorProtocol {
+protocol IGrandOperator {
+    /**
+     Prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
+     and the given folder and stores them into the persistent store.
+
+     - parameter connectInfo: Denotes the server and other connection parameters
+     - parameter completionBlock: Will be called on completion of the operation, with
+     a non-nil error object if there was an error during execution.
+     */
     func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
-                        completionBlock: (error: NSError?) -> Void)
+                        completionBlock: ((error: NSError?) -> Void)?)
+
+    /**
+     Used by background operations to set an error.
+     
+     - parameter operation: The operation the error occurred
+     - parameter error: The error that occurred
+     */
+    func setErrorForOperation(operation: NSOperation, error: NSError)
 }
 
-class GrandOperator {
+class GrandOperator: IGrandOperator {
 
-    var errors: [NSError] = []
+    var errors: [NSOperation:NSError] = [:]
 
     let prefetchQueue = NSOperationQueue.init()
     let connectionManager: ConnectionManager
@@ -26,23 +42,21 @@ class GrandOperator {
         self.coreDataUtil = coreDataUtil
     }
 
-    func prefetchEmailsImap(connectInfo: ConnectInfo, folder: String?,
-                            completionBlock: ((op: PrefetchEmailsOperation) -> Void)?)
-        -> PrefetchEmailsOperation {
-            let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
-                                                  folder: folder)
-            if let block = completionBlock {
-                op.completionBlock = {
-                    block(op: op)
-                }
+    func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
+                        completionBlock: ((error: NSError?) -> Void)?) {
+        let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
+                                              folder: folder)
+        if let block = completionBlock {
+            op.completionBlock = { [unowned self] in
+                let error = self.errors[op]
+                block(error: error)
+                self.errors.removeValueForKey(op)
             }
-            op.start()
-            return op
+        }
+        op.start()
     }
 
-    func addError(error: NSError) {
-        errors.append(error)
-        Log.error("GrandOperator", error: error)
+    func setErrorForOperation(operation: NSOperation, error: NSError) {
+        errors[operation] = error
     }
-
 }

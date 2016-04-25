@@ -30,8 +30,8 @@ public class SwiftFSM<State: Hashable, Transition: Hashable> {
      Initializes a new fsm with the provided id and logging specifications
      Also defines the State and Transition generics
 
-     - param id: The id of the fsm.. Might come in handy if you use multiple fsm instances
-     - param willLog: Parameter that will enable/disable logging of this fsm instance
+     - parameter id: The id of the fsm.. Might come in handy if you use multiple fsm instances
+     - parameter willLog: Parameter that will enable/disable logging of this fsm instance
 
      - returns: A new SwiftFSM instance
      */
@@ -44,7 +44,7 @@ public class SwiftFSM<State: Hashable, Transition: Hashable> {
      Adds and returns a new or an already existing fsm state
      If the state was defined before, that SwiftFSMState instance will be returned
 
-     - param newState- The enum of the new fsm state
+     - parameter newState- The enum of the new fsm state
 
      - returns: A SwiftFSMState instance for the newState
      */
@@ -64,7 +64,7 @@ public class SwiftFSM<State: Hashable, Transition: Hashable> {
 
      This method will not trigger any onEnter or onExit methods
 
-     - param state- The initial state of the fsm
+     - parameter state- The initial state of the fsm
      */
     public func startFrom(state: State) {
         if _currentState == nil {
@@ -81,7 +81,7 @@ public class SwiftFSM<State: Hashable, Transition: Hashable> {
     /**
      Try transitioning the fsm with the specified transition
 
-     - param transition: The transition to be used
+     - parameter transition: The transition to be used
 
      - returns: This method will return the new state if the state transition was successful or nil otherwise
      */

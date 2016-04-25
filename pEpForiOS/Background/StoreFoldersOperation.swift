@@ -28,7 +28,7 @@ class StoreFoldersOperation: BaseOperation {
                                                     accountEmail: email,
                                                     context: context)
             } catch let err as NSError {
-                grandOperator.addError(err)
+                grandOperator.setErrorForOperation(self, error: err)
             }
         }
         CoreDataUtil.saveContext(managedObjectContext: context)

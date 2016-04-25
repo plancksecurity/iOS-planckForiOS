@@ -45,16 +45,14 @@ class EmailListViewController: UITableViewController {
         if let account = Account.fetchLastAccount(appConfig!.coreDataUtil.managedObjectContext) {
             let connectInfo = account.connectInfo
 
-            let op = appConfig!.grandOperator.prefetchEmailsImap(
+            appConfig!.grandOperator.prefetchEmails(
                 connectInfo, folder: ImapSync.defaultImapInboxName, completionBlock: {
-                    [unowned self] op in
+                    [unowned self] error in
                     GCD.onMain({
-                        Log.info(self.comp, "Sync completed")
-                        self.state.runningOpsAuto.removeObject(op)
+                        Log.info(self.comp, "Sync completed, error: \(error)")
                         self.updateUI()
                     })
             })
-            state.runningOpsAuto.addObject(op)
             updateUI()
         }
         

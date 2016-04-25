@@ -28,7 +28,7 @@ public class SwiftFSMState<State: Hashable, Transition: Hashable> {
     /**
      Define a transition from the current state to a new state
 
-     - param transition: The transition to be defined
+     - parameter transition: The transition to be defined
      */
     public func addTransition(transition: Transition, to: State) {
         _availableTransitions[transition] = to
