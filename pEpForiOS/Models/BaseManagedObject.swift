@@ -12,9 +12,9 @@ import CoreData
 public class BaseManagedObject: NSManagedObject {
     static let comp = "BaseManagedObject"
 
-    static func singleEntityWithName(name: String,
-                                     predicate: NSPredicate,
-                                     context: NSManagedObjectContext) -> NSManagedObject? {
+    public static func singleEntityWithName(name: String,
+                                            predicate: NSPredicate,
+                                            context: NSManagedObjectContext) -> NSManagedObject? {
         let fetch = NSFetchRequest.init(entityName: name)
         fetch.predicate = predicate
         do {
@@ -33,9 +33,9 @@ public class BaseManagedObject: NSManagedObject {
         return nil
     }
 
-    static func entitiesWithName(name: String,
-                                 predicate: NSPredicate,
-                                 context: NSManagedObjectContext) -> [NSManagedObject]? {
+    public static func entitiesWithName(name: String,
+                                        predicate: NSPredicate,
+                                        context: NSManagedObjectContext) -> [NSManagedObject]? {
         let fetch = NSFetchRequest.init(entityName: name)
         fetch.predicate = predicate
         do {
@@ -47,9 +47,9 @@ public class BaseManagedObject: NSManagedObject {
         return nil
     }
 
-    static func countWithName(name: String,
-                              predicate: NSPredicate,
-                              context: NSManagedObjectContext) -> Int {
+    public static func countWithName(name: String,
+                                     predicate: NSPredicate,
+                                     context: NSManagedObjectContext) -> Int {
         let fetch = NSFetchRequest.init(entityName: name)
         fetch.predicate = predicate
         var error: NSError?

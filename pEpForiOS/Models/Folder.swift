@@ -3,6 +3,9 @@ import CoreData
 
 @objc(Folder)
 public class Folder: _Folder {
+    let comp = "Folder"
+
+    public static let CouldNotCreateFolder = 1000
 
     /**
      Inserts a folder of the given type.
@@ -26,7 +29,12 @@ public class Folder: _Folder {
             folder.name = folderName
             folder.folderType = folderType.rawValue
             return folder
+        } else {
+            let error = NSError.init(domain: comp, code: CouldNotCreateFolder,
+                                     userInfo: [NSLocalizedDescriptionKey:
+                                        NSLocalizedString("IMAP authentication failed",
+                                            comment: "Error when testing IMAP account")])
+            throw error
         }
-        return nil
     }
 }

@@ -141,11 +141,15 @@ class ImapSyncTest: XCTestCase {
         XCTAssertTrue(del.folderNames.count > 0)
     }
 
-    func testPrefetch() {
+    func testPrefetchWithPersistence() {
         let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true)
         let conInfo = TestData()
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
+
+        let account = Account.insertAccountFromConnectInfo(
+            conInfo, context: coreDataUtil.managedObjectContext)
+        XCTAssertNotNil(account)
 
         let backgroundQueue = NSOperationQueue.init()
         let connectionManager = ConnectionManager.init(coreDataUtil: coreDataUtil)
@@ -158,11 +162,22 @@ class ImapSyncTest: XCTestCase {
 
         sync.start()
         runloopFor(5, until: {
-            print("del.foldersFetched \(del.foldersFetched)")
             return del.errorOccurred || (del.folderOpenSuccess && del.folderPrefetchSuccess)
         })
         XCTAssertTrue(!del.errorOccurred)
         XCTAssertTrue(del.folderOpenSuccess)
         XCTAssertTrue(del.folderPrefetchSuccess)
+
+        backgroundQueue.waitUntilAllOperationsAreFinished()
+
+        let p = NSPredicate.init(format: "account.email = %@ and name = %@", conInfo.email,
+                                 ImapSync.defaultImapInboxName)
+        if let folder = BaseManagedObject.singleEntityWithName(
+            Folder.entityName(), predicate: p, context: coreDataUtil.managedObjectContext)
+            as? Folder {
+            XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
+        } else {
+            XCTAssertTrue(false, "Expected persisted folder")
+        }
     }
 }

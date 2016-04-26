@@ -17,8 +17,8 @@ protocol IService {
  */
 public class Service: IService {
 
-    let ErrorAuthenticationFailed = 1000
-    let ErrorConnectionTimedOut = 1001
+    public let ErrorAuthenticationFailed = 1000
+    public let ErrorConnectionTimedOut = 1001
 
     let connectInfo: ConnectInfo
     let coreDataUtil: ICoreDataUtil

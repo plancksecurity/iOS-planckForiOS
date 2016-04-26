@@ -75,12 +75,12 @@
 			remoteGlobalIDString = 43980E5A1CBD1B3E00A7FC3C;
 			remoteInfo = PantomimeStatic;
 		};
-		43980E461CBD0BCA00A7FC3C /* PBXContainerItemProxy */ = {
+		434EA5FF1CCFCBA800F40F59 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980E1B1CBD0BC900A7FC3C /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
-			remoteInfo = pEpForiOS;
+			remoteInfo = "p≡p";
 		};
 		439D40651CC78825009A4E7C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -487,7 +487,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				43980E471CBD0BCA00A7FC3C /* PBXTargetDependency */,
+				434EA6001CCFCBA800F40F59 /* PBXTargetDependency */,
 			);
 			name = pEpForiOSUITests;
 			productName = pEpForiOSUITests;
@@ -702,10 +702,10 @@
 			name = PantomimeStatic;
 			targetProxy = 434662CD1CBF808D0053FC48 /* PBXContainerItemProxy */;
 		};
-		43980E471CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
+		434EA6001CCFCBA800F40F59 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* p≡p */;
-			targetProxy = 43980E461CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
+			targetProxy = 434EA5FF1CCFCBA800F40F59 /* PBXContainerItemProxy */;
 		};
 		439D406A1CC7883D009A4E7C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -863,7 +863,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = pEpForiOS;
+				PROVISIONING_PROFILE = "";
+				TEST_TARGET_NAME = "p≡p";
 			};
 			name = Debug;
 		};
@@ -874,7 +875,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = pEpForiOS;
+				PROVISIONING_PROFILE = "";
+				TEST_TARGET_NAME = "p≡p";
 			};
 			name = Release;
 		};

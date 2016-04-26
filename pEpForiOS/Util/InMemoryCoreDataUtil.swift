@@ -22,15 +22,33 @@ public class InMemoryCoreDataUtil: ICoreDataUtil {
     /**
      An in-memory store coordinator for unit tests.
      */
-    public lazy var testPersistentStoreCoordinator: NSPersistentStoreCoordinator = {
-        return NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+    public lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+        let comp = "InMemoryCoreDataUtil"
+        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+        do {
+            try coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil,
+                                                       URL: nil, options: nil)
+            return coordinator
+        } catch {
+            // Report any error we got.
+            var dict = [String: AnyObject]()
+            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
+            dict[NSLocalizedFailureReasonErrorKey] = "In memory store could not be created."
+
+            dict[NSUnderlyingErrorKey] = error as! NSError
+            let wrappedError = NSError(domain: comp, code: 9999, userInfo: dict)
+            // Replace this with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            Log.error(comp, error: wrappedError)
+            abort()
+        }
     }()
 
     /**
      An in-memory managed object context.
      */
     public lazy var managedObjectContext: NSManagedObjectContext = {
-        let coordinator = self.testPersistentStoreCoordinator
+        let coordinator = self.persistentStoreCoordinator
         var managedObjectContext = NSManagedObjectContext(
             concurrencyType: .MainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
@@ -42,7 +60,7 @@ public class InMemoryCoreDataUtil: ICoreDataUtil {
      */
     public func confinedManagedObjectContext() -> NSManagedObjectContext {
         let context = NSManagedObjectContext.init(concurrencyType: .ConfinementConcurrencyType)
-        context.persistentStoreCoordinator = self.testPersistentStoreCoordinator
+        context.persistentStoreCoordinator = self.persistentStoreCoordinator
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
     }

@@ -45,7 +45,7 @@ public class Account: _Account {
         return ConnectionTransport(rawValue: v)!
     }
 
-    static func newAccountFromConnectInfo(connectInfo: ConnectInfo,
+    public static func newAccountFromConnectInfo(connectInfo: ConnectInfo,
                                           context: NSManagedObjectContext) -> Account {
         let account = NSEntityDescription.insertNewObjectForEntityForName(
             entityName(), inManagedObjectContext: context) as! Account
@@ -65,7 +65,7 @@ public class Account: _Account {
         return account
     }
 
-    static func fetchLastAccount(context: NSManagedObjectContext) -> Account? {
+    public static func fetchLastAccount(context: NSManagedObjectContext) -> Account? {
         let lastEmail = NSUserDefaults.standardUserDefaults().stringForKey(
             Account.kSettingLastAccountEmail)
 
@@ -83,14 +83,14 @@ public class Account: _Account {
         }
     }
 
-    static func setAccountAsLastUsed(account: Account) -> Account {
+    public static func setAccountAsLastUsed(account: Account) -> Account {
         NSUserDefaults.standardUserDefaults().setObject(
             account.email, forKey: Account.kSettingLastAccountEmail)
         NSUserDefaults.standardUserDefaults().synchronize()
         return account
     }
 
-    static func insertAccountFromConnectInfo(
+    public static func insertAccountFromConnectInfo(
         connectInfo: ConnectInfo, context: NSManagedObjectContext) -> Account? {
         let account = Account.newAccountFromConnectInfo(connectInfo, context: context)
         CoreDataUtil.saveContext(managedObjectContext: context)
@@ -109,7 +109,7 @@ public class Account: _Account {
         }
     }
 
-    static func byEmail(email: String, context: NSManagedObjectContext) -> Account? {
+    public static func byEmail(email: String, context: NSManagedObjectContext) -> Account? {
         let predicate = NSPredicate.init(format: "email = %@", email)
         return singleEntityWithName(Account.entityName(), predicate: predicate,
                                   context: context) as! Account?
