@@ -13,7 +13,7 @@ class StoreFoldersOperation: BaseOperation {
     let foldersToStore: [String]
     let email: String
 
-    init(grandOperator: GrandOperator, folders: [String], email: String) {
+    init(grandOperator: IGrandOperator, folders: [String], email: String) {
         self.foldersToStore = folders
         self.email = email
         super.init(grandOperator: grandOperator)

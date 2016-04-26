@@ -10,9 +10,9 @@ import Foundation
 
 class BaseOperation: NSOperation {
 
-    let grandOperator: GrandOperator
+    let grandOperator: IGrandOperator
 
-    init(grandOperator: GrandOperator) {
+    init(grandOperator: IGrandOperator) {
         self.grandOperator = grandOperator
         super.init()
     }

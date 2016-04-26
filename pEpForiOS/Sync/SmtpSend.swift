@@ -12,7 +12,7 @@ struct SmtpStatus {
     var haveStartedTLS = false
 }
 
-class SmtpSend: Service {
+public class SmtpSend: Service {
     private let comp = "SmtpSend"
 
     private var smtpStatus: SmtpStatus = SmtpStatus.init()
@@ -25,7 +25,7 @@ class SmtpSend: Service {
         }
     }
 
-    override func createService() -> CWService {
+    public override func createService() -> CWService {
         return CWSMTP.init(name: connectInfo.smtpServerName,
                            port: UInt32(connectInfo.smtpServerPort),
                            transport: connectInfo.smtpTransport)
@@ -61,7 +61,7 @@ class SmtpSend: Service {
 
 extension SmtpSend: TransportClient {
 
-    @objc func messageSent(theNotification: NSNotification!) {
+    @objc public func messageSent(theNotification: NSNotification!) {
         dumpMethodName("messageSent", notification: theNotification)
         messagesSent += 1
         if messagesSent < maxMessageToSend {
@@ -71,40 +71,40 @@ extension SmtpSend: TransportClient {
         }
     }
 
-    @objc func messageNotSent(theNotification: NSNotification!) {
+    @objc public func messageNotSent(theNotification: NSNotification!) {
         dumpMethodName("messageNotSent", notification: theNotification)
     }
 }
 
 extension SmtpSend: SMTPClient {
-    @objc func transactionInitiationCompleted(theNotification: NSNotification!) {
+    @objc public func transactionInitiationCompleted(theNotification: NSNotification!) {
         dumpMethodName("transactionInitiationCompleted", notification: theNotification)
     }
 
-    @objc func transactionInitiationFailed(theNotification: NSNotification!) {
+    @objc public func transactionInitiationFailed(theNotification: NSNotification!) {
         dumpMethodName("transactionInitiationFailed", notification: theNotification)
     }
 
-    @objc func recipientIdentificationCompleted(theNotification: NSNotification!) {
+    @objc public func recipientIdentificationCompleted(theNotification: NSNotification!) {
         dumpMethodName("recipientIdentificationCompleted", notification: theNotification)
     }
 
-    @objc func recipientIdentificationFailed(theNotification: NSNotification!) {
+    @objc public func recipientIdentificationFailed(theNotification: NSNotification!) {
         dumpMethodName("recipientIdentificationFailed", notification: theNotification)
     }
 
-    @objc func transactionResetCompleted(theNotification: NSNotification!) {
+    @objc public func transactionResetCompleted(theNotification: NSNotification!) {
         dumpMethodName("transactionResetCompleted", notification: theNotification)
         sendMessage()
     }
 
-    @objc func transactionResetFailed(theNotification: NSNotification!) {
+    @objc public func transactionResetFailed(theNotification: NSNotification!) {
         dumpMethodName("transactionResetFailed", notification: theNotification)
     }
 }
 
 extension SmtpSend: CWServiceClient {
-    @objc func authenticationCompleted(theNotification: NSNotification!) {
+    @objc public func authenticationCompleted(theNotification: NSNotification!) {
         dumpMethodName("authenticationCompleted", notification: theNotification)
         if (isJustATest) {
             callTestBlock(nil)
@@ -113,7 +113,7 @@ extension SmtpSend: CWServiceClient {
         }
     }
 
-    @objc func authenticationFailed(theNotification: NSNotification!) {
+    @objc public func authenticationFailed(theNotification: NSNotification!) {
         dumpMethodName("authenticationFailed", notification: theNotification)
         let error = NSError.init(domain: comp, code: ErrorAuthenticationFailed,
                                  userInfo: [NSLocalizedDescriptionKey:
@@ -122,19 +122,19 @@ extension SmtpSend: CWServiceClient {
         callTestBlock(error)
     }
 
-    @objc func connectionEstablished(theNotification: NSNotification!) {
+    @objc public func connectionEstablished(theNotification: NSNotification!) {
         dumpMethodName("connectionEstablished", notification: theNotification)
     }
 
-    @objc func connectionLost(theNotification: NSNotification!) {
+    @objc public func connectionLost(theNotification: NSNotification!) {
         dumpMethodName("connectionLost", notification: theNotification)
     }
 
-    @objc func connectionTerminated(theNotification: NSNotification!) {
+    @objc public func connectionTerminated(theNotification: NSNotification!) {
         dumpMethodName("connectionTerminated", notification: theNotification)
     }
 
-    @objc func connectionTimedOut(theNotification: NSNotification!) {
+    @objc public func connectionTimedOut(theNotification: NSNotification!) {
         dumpMethodName("connectionTimedOut", notification: theNotification)
         let error = NSError.init(domain: comp, code: ErrorConnectionTimedOut,
                                  userInfo: [NSLocalizedDescriptionKey:
@@ -143,11 +143,11 @@ extension SmtpSend: CWServiceClient {
         callTestBlock(error)
     }
 
-    @objc func requestCancelled(theNotification: NSNotification!) {
+    @objc public func requestCancelled(theNotification: NSNotification!) {
         dumpMethodName("requestCancelled", notification: theNotification)
     }
 
-    @objc func serviceInitialized(theNotification: NSNotification!) {
+    @objc public func serviceInitialized(theNotification: NSNotification!) {
         dumpMethodName("serviceInitialized", notification: theNotification)
         dispatch_async(dispatch_get_main_queue(), {
             if self.connectInfo.smtpTransport == ConnectionTransport.StartTLS &&
@@ -164,7 +164,7 @@ extension SmtpSend: CWServiceClient {
         })
     }
 
-    @objc func serviceReconnected(theNotification: NSNotification!) {
+    @objc public func serviceReconnected(theNotification: NSNotification!) {
         dumpMethodName("serviceReconnected", notification: theNotification)
     }
 

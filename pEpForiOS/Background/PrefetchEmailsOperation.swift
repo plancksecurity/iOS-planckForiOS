@@ -9,19 +9,19 @@
 import Foundation
 import CoreData
 
-class ImapFolderBuilder: NSObject, CWFolderBuilding {
+public class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
-    let grandOperator: GrandOperator
+    let grandOperator: IGrandOperator
 
-    init(grandOperator: GrandOperator, connectInfo: ConnectInfo,
+    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
          backgroundQueue: NSOperationQueue) {
         self.connectInfo = connectInfo
         self.grandOperator = grandOperator
         self.backgroundQueue = backgroundQueue
     }
 
-    func folderWithName(name: String!) -> CWFolder! {
+    public func folderWithName(name: String!) -> CWFolder! {
         return PersistentImapFolder(name: name, grandOperator: grandOperator,
                                     connectInfo: connectInfo, backgroundQueue: backgroundQueue)
             as CWFolder
@@ -56,7 +56,7 @@ class PrefetchEmailsOperation: BaseOperation {
 
     let folderToOpen: String
 
-    init(grandOperator: GrandOperator, connectInfo: ConnectInfo, folder: String?) {
+    init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folder: String?) {
         self.connectInfo = connectInfo
         if let folder = folder {
             folderToOpen = folder

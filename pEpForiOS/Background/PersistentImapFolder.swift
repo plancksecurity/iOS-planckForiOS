@@ -18,10 +18,10 @@ class PersistentImapFolder: CWIMAPFolder {
     let mainContext: NSManagedObjectContext
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
-    let grandOperator: GrandOperator
+    let grandOperator: IGrandOperator
     let cache: PersistentEmailCache
 
-    init(name: String, grandOperator: GrandOperator, connectInfo: ConnectInfo,
+    init(name: String, grandOperator: IGrandOperator, connectInfo: ConnectInfo,
          backgroundQueue: NSOperationQueue) {
         self.connectInfo = connectInfo
         self.backgroundQueue = backgroundQueue

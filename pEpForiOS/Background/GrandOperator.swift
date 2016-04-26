@@ -8,7 +8,13 @@
 
 import Foundation
 
-protocol IGrandOperator {
+public protocol IGrandOperator {
+    var coreDataUtil: ICoreDataUtil { get }
+
+    var connectionManager: ConnectionManager { get }
+
+    var errors: [NSOperation:NSError] { get }
+
     /**
      Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
      and the given folder and stores them into the persistent store.
@@ -29,20 +35,21 @@ protocol IGrandOperator {
     func setErrorForOperation(operation: NSOperation, error: NSError)
 }
 
-class GrandOperator: IGrandOperator {
+public class GrandOperator: IGrandOperator {
 
-    var errors: [NSOperation:NSError] = [:]
+    public let connectionManager: ConnectionManager
+    public let coreDataUtil: ICoreDataUtil
+
+    public var errors: [NSOperation:NSError] = [:]
 
     let prefetchQueue = NSOperationQueue.init()
-    let connectionManager: ConnectionManager
-    let coreDataUtil: CoreDataUtil
 
     init(connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
     }
 
-    func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
+    public func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
                         completionBlock: ((error: NSError?) -> Void)?) {
         let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
                                               folder: folder)
@@ -56,7 +63,7 @@ class GrandOperator: IGrandOperator {
         op.start()
     }
 
-    func setErrorForOperation(operation: NSOperation, error: NSError) {
+    public func setErrorForOperation(operation: NSOperation, error: NSError) {
         GCD.onMain({
             self.errors[operation] = error
         })

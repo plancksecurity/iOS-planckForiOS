@@ -16,9 +16,9 @@ class PersistentEmailCache: NSObject {
     let comp = "PersistentEmailCache"
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
-    let grandOperator: GrandOperator
+    let grandOperator: IGrandOperator
 
-    init(grandOperator: GrandOperator, connectInfo: ConnectInfo,
+    init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
          backgroundQueue: NSOperationQueue) {
         self.grandOperator = grandOperator
         self.connectInfo = connectInfo

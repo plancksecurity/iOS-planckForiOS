@@ -8,15 +8,15 @@
 
 import Foundation
 
-class ConnectionManager {
+public class ConnectionManager {
     private var emailSyncConnections: [ConnectInfo:Service] = [:]
     private let coreDataUtil: CoreDataUtil
 
-    init(coreDataUtil: CoreDataUtil) {
+    public init(coreDataUtil: CoreDataUtil) {
         self.coreDataUtil = coreDataUtil
     }
 
-    func emaiSyncConnection(connectInfo: ConnectInfo) -> ImapSync {
+    public func emaiSyncConnection(connectInfo: ConnectInfo) -> ImapSync {
         if let service = emailSyncConnections[connectInfo] {
             return service as! ImapSync
         } else {
@@ -26,7 +26,7 @@ class ConnectionManager {
         }
     }
 
-    func smtpConnection(connectInfo: ConnectInfo) -> SmtpSend {
+    public func smtpConnection(connectInfo: ConnectInfo) -> SmtpSend {
         // Don't cache
         return SmtpSend.init(coreDataUtil: coreDataUtil, connectInfo: connectInfo)
     }

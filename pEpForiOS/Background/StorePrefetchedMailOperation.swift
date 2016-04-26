@@ -14,7 +14,7 @@ class StorePrefetchedMailOperation: BaseOperation {
     let errorDomain = "StorePrefetchedMailOperation"
     let accountEmail: String
 
-    init(grandOperator: GrandOperator, accountEmail: String, message: CWIMAPMessage) {
+    init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage) {
         self.accountEmail = accountEmail
         self.message = message
         super.init(grandOperator: grandOperator)
