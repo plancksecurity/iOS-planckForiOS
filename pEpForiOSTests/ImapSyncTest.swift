@@ -44,6 +44,17 @@ class ImapSyncTest: XCTestCase {
         coreDataUtil = InMemoryCoreDataUtil()
     }
 
+    /**
+     Runs the runloop until either some time has elapsed or a predicate is true.
+     */
+    func runloopFor(time: CFAbsoluteTime, until: () -> Bool) {
+        let now = CFAbsoluteTimeGetCurrent()
+        while CFAbsoluteTimeGetCurrent() - now < time && !until() {
+            NSRunLoop.mainRunLoop().runMode(
+                NSDefaultRunLoopMode, beforeDate: NSDate.distantFuture())
+        }
+    }
+
     func testConnectionFail() {
         let del = TestImapSyncDelegate.init()
         let conInfo = ConnectInfo.init(
@@ -53,12 +64,7 @@ class ImapSyncTest: XCTestCase {
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
         sync.start()
-        let wait: CFAbsoluteTime = 2
-        let now = CFAbsoluteTimeGetCurrent()
-        while !del.errorOccurred && CFAbsoluteTimeGetCurrent() - now < wait {
-            NSRunLoop.mainRunLoop().runMode(
-                NSDefaultRunLoopMode, beforeDate: NSDate.distantFuture())
-        }
+        runloopFor(2, until: { return del.errorOccurred })
         XCTAssertTrue(del.errorOccurred)
         XCTAssertTrue(del.connectionTimedOut)
     }
