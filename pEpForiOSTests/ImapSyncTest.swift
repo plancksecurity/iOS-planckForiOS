@@ -15,29 +15,52 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     var errorOccurred = false
     var connectionTimedOut = false
     var authSucess = false
+    var foldersFetched = false
+    var folderNames: [String] = []
 
-    override init() {
+    let fetchFolders: Bool
+    let preFetchMails: Bool
+
+    init(fetchFolders: Bool, preFetchMails: Bool) {
+        self.fetchFolders = fetchFolders
+        self.preFetchMails = preFetchMails
     }
 
-    override func authenticationFailed(notification: NSNotification?) {
+    convenience override init() {
+        self.init(fetchFolders: false, preFetchMails: false)
+    }
+
+    convenience init(fetchFolders: Bool) {
+        self.init(fetchFolders: fetchFolders, preFetchMails: false)
+    }
+
+    override func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
         errorOccurred = true
     }
 
-    override func connectionLost(notification: NSNotification?) {
+    override func connectionLost(sync: ImapSync, notification: NSNotification?) {
         errorOccurred = true
     }
 
-    override func connectionTerminated(notification: NSNotification?) {
+    override func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
         errorOccurred = true
     }
 
-    override func connectionTimedOut(notification: NSNotification?) {
+    override func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
         connectionTimedOut = true
         errorOccurred = true
     }
 
-    override func authenticationCompleted(notification: NSNotification?) {
+    override func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
+        foldersFetched = true
+        self.folderNames = folderNames
+    }
+
+    override func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         authSucess = true
+        if  fetchFolders {
+            sync.waitForFolders()
+        }
     }
 }
 
@@ -81,10 +104,24 @@ class ImapSyncTest: XCTestCase {
         sync.delegate = del
         sync.start()
         runloopFor(5, until: {
-            print("del.errorOccurred \(del.errorOccurred) del.authSucess \(del.authSucess)")
             return del.errorOccurred || del.authSucess
         })
         XCTAssertTrue(!del.errorOccurred)
         XCTAssertTrue(del.authSucess)
+    }
+
+    func testFetchFolders() {
+        let del = TestImapSyncDelegate.init(fetchFolders: true)
+        let conInfo = TestData()
+        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
+        sync.delegate = del
+        sync.start()
+        runloopFor(5, until: {
+            print("del.foldersFetched \(del.foldersFetched)")
+            return del.foldersFetched
+        })
+        XCTAssertTrue(!del.errorOccurred)
+        XCTAssertTrue(del.foldersFetched)
+        XCTAssertTrue(del.folderNames.count > 0)
     }
 }
