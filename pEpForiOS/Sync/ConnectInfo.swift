@@ -11,26 +11,26 @@ import Foundation
 /**
  Holds connection info (like server, port etc.) for IMAP and SMTP.
  */
-class ConnectInfo: NSObject {
-    let email: String
-    let imapUsername: String?
-    let smtpUsername: String?
-    let imapPassword: String
-    let smtpPassword: String?
-    let imapAuthMethod: String
-    let smtpAuthMethod: String
-    let imapServerName: String
-    let imapServerPort: UInt16
-    let smtpServerName: String
-    let smtpServerPort: UInt16
-    let imapTransport: ConnectionTransport
-    let smtpTransport: ConnectionTransport
+public class ConnectInfo: NSObject {
+    public let email: String
+    public let imapUsername: String?
+    public let smtpUsername: String?
+    public let imapPassword: String
+    public let smtpPassword: String?
+    public let imapAuthMethod: String
+    public let smtpAuthMethod: String
+    public let imapServerName: String
+    public let imapServerPort: UInt16
+    public let smtpServerName: String
+    public let smtpServerPort: UInt16
+    public let imapTransport: ConnectionTransport
+    public let smtpTransport: ConnectionTransport
 
-    var accountName: String {
+    public var accountName: String {
         return email
     }
 
-    init(email: String,
+    public init(email: String,
          imapUsername: String?, smtpUsername: String?,
          imapPassword: String, smtpPassword: String?,
          imapAuthMethod: String, smtpAuthMethod: String,
@@ -51,7 +51,7 @@ class ConnectInfo: NSObject {
         self.smtpTransport = smtpTransport
     }
 
-    convenience init(email: String,
+    public convenience init(email: String,
                      imapPassword: String,
                      imapAuthMethod: String, smtpAuthMethod: String,
                      imapServerName: String, imapServerPort: UInt16,
@@ -67,21 +67,21 @@ class ConnectInfo: NSObject {
                   smtpTransport: smtpTransport)
     }
 
-    func getSmtpUsername() -> String {
+    public func getSmtpUsername() -> String {
         if let username = smtpUsername {
             return username
         }
         return getImapUsername()
     }
 
-    func getImapUsername() -> String {
+    public func getImapUsername() -> String {
         if let username = imapUsername {
             return username
         }
         return email
     }
 
-    func getSmtpPassword() -> String {
+    public func getSmtpPassword() -> String {
         if let password = smtpPassword {
             return password
         }

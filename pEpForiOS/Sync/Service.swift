@@ -21,7 +21,7 @@ public class Service: IService {
     let ErrorConnectionTimedOut = 1001
 
     let connectInfo: ConnectInfo
-    let coreDataUtil: CoreDataUtil
+    let coreDataUtil: ICoreDataUtil
 
     private var testOnlyCallback: (NSError? -> ())? = nil
 
@@ -33,7 +33,7 @@ public class Service: IService {
 
     var service: CWService!
 
-    init(coreDataUtil: CoreDataUtil, connectInfo: ConnectInfo) {
+    public init(coreDataUtil: ICoreDataUtil, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
         self.coreDataUtil = coreDataUtil
         service = self.createService()
@@ -46,7 +46,7 @@ public class Service: IService {
         abort()
     }
 
-    func start() {
+    public func start() {
         dispatch_async(dispatch_get_main_queue(), {
             self.service.connectInBackgroundAndNotify()
         })

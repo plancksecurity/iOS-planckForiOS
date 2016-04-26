@@ -21,6 +21,7 @@
 		435A77C11CC3CB4200133D16 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435A77C01CC3CB4200133D16 /* Regex.swift */; };
 		436287721CCF4784001757E8 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436287711CCF4784001757E8 /* InMemoryCoreDataUtil.swift */; };
 		436287761CCF561C001757E8 /* GrandOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436287751CCF561C001757E8 /* GrandOperatorTests.swift */; };
+		436287781CCF6DE3001757E8 /* ImapSyncTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436287771CCF6DE3001757E8 /* ImapSyncTest.swift */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
 		43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
@@ -139,6 +140,7 @@
 		435A77C01CC3CB4200133D16 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		436287711CCF4784001757E8 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
 		436287751CCF561C001757E8 /* GrandOperatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorTests.swift; sourceTree = "<group>"; };
+		436287771CCF6DE3001757E8 /* ImapSyncTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncTest.swift; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				43991C341CCE69CF005F8070 /* Frameworks */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				436287751CCF561C001757E8 /* GrandOperatorTests.swift */,
+				436287771CCF6DE3001757E8 /* ImapSyncTest.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -687,6 +690,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				436287761CCF561C001757E8 /* GrandOperatorTests.swift in Sources */,
+				436287781CCF6DE3001757E8 /* ImapSyncTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

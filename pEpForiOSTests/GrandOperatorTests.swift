@@ -19,10 +19,6 @@ class GrandOperatorTests: XCTestCase {
         coreDataUtil = InMemoryCoreDataUtil()
     }
     
-    override func tearDown() {
-        super.tearDown()
-    }
-    
     /**
      Proof of concept for using managed object context in unit tests.
      */

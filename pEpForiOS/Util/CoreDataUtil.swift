@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-protocol ICoreDataUtil {
+public protocol ICoreDataUtil {
     /**
      - returns: The one and only main context, confined to the main thread/queue.
      */

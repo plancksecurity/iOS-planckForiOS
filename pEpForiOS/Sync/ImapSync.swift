@@ -25,10 +25,29 @@ public protocol ImapSyncDelegate {
     func messagePrefetchCompleted(notification: NSNotification?)
     func folderOpenCompleted(notification: NSNotification?)
     func folderOpenFailed(notification: NSNotification?)
-
 }
 
-protocol IImapSync {
+/**
+ Default implementation of a delegate that does nothing.
+ */
+public class DefaultImapSyncDelegate: ImapSyncDelegate {
+    public init() {
+    }
+
+    public func receivedFolderNames(folderNames: [String]) {}
+    public func authenticationCompleted(notification: NSNotification?)  {}
+    public func authenticationFailed(notification: NSNotification?)  {}
+    public func connectionLost(notification: NSNotification?)  {}
+    public func connectionTerminated(notification: NSNotification?)  {}
+    public func connectionTimedOut(notification: NSNotification?)  {}
+    public func folderPrefetchCompleted(notification: NSNotification?)  {}
+    public func messageChanged(notification: NSNotification?)  {}
+    public func messagePrefetchCompleted(notification: NSNotification?)  {}
+    public func folderOpenCompleted(notification: NSNotification?)  {}
+    public func folderOpenFailed(notification: NSNotification?)  {}
+}
+
+public protocol IImapSync {
     /**
      The delegate.
      */
@@ -82,7 +101,7 @@ public class ImapSync: Service, IImapSync {
                                 transport: connectInfo.imapTransport)
     }
 
-    func openMailBox(name: String) {
+    public func openMailBox(name: String) {
         // Note: If you open a folder with PantomimeReadOnlyMode,
         // all messages will be prefetched by default,
         // independent of the prefetch parameter.
