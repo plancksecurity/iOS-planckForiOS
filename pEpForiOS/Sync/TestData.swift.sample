@@ -8,9 +8,9 @@
 
 import Foundation
 
-class TestData: ConnectInfo {
+public class TestData: ConnectInfo {
 
-    init() {
+    public init() {
         super.init(email: "test001@pep.com",
                    imapUsername: nil,
                    smtpUsername: nil,

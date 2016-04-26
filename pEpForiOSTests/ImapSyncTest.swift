@@ -14,6 +14,7 @@ import pEpForiOS
 class TestImapSyncDelegate: DefaultImapSyncDelegate {
     var errorOccurred = false
     var connectionTimedOut = false
+    var authSucess = false
 
     override init() {
     }
@@ -33,6 +34,10 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     override func connectionTimedOut(notification: NSNotification?) {
         connectionTimedOut = true
         errorOccurred = true
+    }
+
+    override func authenticationCompleted(notification: NSNotification?) {
+        authSucess = true
     }
 }
 
@@ -67,5 +72,19 @@ class ImapSyncTest: XCTestCase {
         runloopFor(2, until: { return del.errorOccurred })
         XCTAssertTrue(del.errorOccurred)
         XCTAssertTrue(del.connectionTimedOut)
+    }
+
+    func testAuthSuccess() {
+        let del = TestImapSyncDelegate.init()
+        let conInfo = TestData()
+        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
+        sync.delegate = del
+        sync.start()
+        runloopFor(5, until: {
+            print("del.errorOccurred \(del.errorOccurred) del.authSucess \(del.authSucess)")
+            return del.errorOccurred || del.authSucess
+        })
+        XCTAssertTrue(!del.errorOccurred)
+        XCTAssertTrue(del.authSucess)
     }
 }
