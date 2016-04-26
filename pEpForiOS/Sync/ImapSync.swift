@@ -54,6 +54,11 @@ public protocol IImapSync {
     var delegate: ImapSyncDelegate? { get set }
 
     /**
+     An instance of `CWFolderBuilding` can be used for persistence.
+     */
+    var folderBuilder: CWFolderBuilding? { get set }
+
+    /**
      Start to connect.
      */
     func start()
@@ -77,10 +82,9 @@ public class ImapSync: Service, IImapSync {
 
     static public let defaultImapInboxName = "INBOX"
 
-    private var imapState = ImapState()
     public var cache: EmailCache?
     public var delegate: ImapSyncDelegate?
-    var folderBuilder: CWFolderBuilding? {
+    public var folderBuilder: CWFolderBuilding? {
         set {
             imapStore.folderBuilder = newValue
         }
@@ -88,6 +92,8 @@ public class ImapSync: Service, IImapSync {
             return imapStore.folderBuilder
         }
     }
+
+    private var imapState = ImapState()
 
     var imapStore: CWIMAPStore {
         get {

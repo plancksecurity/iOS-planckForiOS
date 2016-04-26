@@ -10,9 +10,9 @@ import Foundation
 
 public class ConnectionManager {
     private var emailSyncConnections: [ConnectInfo:Service] = [:]
-    private let coreDataUtil: CoreDataUtil
+    private let coreDataUtil: ICoreDataUtil
 
-    public init(coreDataUtil: CoreDataUtil) {
+    public init(coreDataUtil: ICoreDataUtil) {
         self.coreDataUtil = coreDataUtil
     }
 

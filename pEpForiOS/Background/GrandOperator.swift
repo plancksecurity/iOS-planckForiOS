@@ -44,7 +44,7 @@ public class GrandOperator: IGrandOperator {
 
     let prefetchQueue = NSOperationQueue.init()
 
-    init(connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
+    public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
     }

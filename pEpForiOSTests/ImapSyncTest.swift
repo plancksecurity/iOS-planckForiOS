@@ -16,6 +16,8 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     var connectionTimedOut = false
     var authSucess = false
     var foldersFetched = false
+    var folderOpenSuccess = false
+    var folderPrefetchSuccess = false
     var folderNames: [String] = []
 
     let fetchFolders: Bool
@@ -54,13 +56,28 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     override func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
         foldersFetched = true
         self.folderNames = folderNames
+        if preFetchMails {
+            sync.openMailBox(ImapSync.defaultImapInboxName)
+        }
     }
 
     override func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         authSucess = true
-        if  fetchFolders {
+        if  fetchFolders || preFetchMails {
             sync.waitForFolders()
         }
+    }
+
+    override func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+        folderPrefetchSuccess = true
+    }
+
+    override func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
+        errorOccurred = true
+    }
+
+    override func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
+        folderOpenSuccess = true
     }
 }
 
@@ -117,11 +134,35 @@ class ImapSyncTest: XCTestCase {
         sync.delegate = del
         sync.start()
         runloopFor(5, until: {
-            print("del.foldersFetched \(del.foldersFetched)")
-            return del.foldersFetched
+            return del.errorOccurred || del.foldersFetched
         })
         XCTAssertTrue(!del.errorOccurred)
         XCTAssertTrue(del.foldersFetched)
         XCTAssertTrue(del.folderNames.count > 0)
+    }
+
+    func testPrefetch() {
+        let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true)
+        let conInfo = TestData()
+        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
+        sync.delegate = del
+
+        let backgroundQueue = NSOperationQueue.init()
+        let connectionManager = ConnectionManager.init(coreDataUtil: coreDataUtil)
+        let grandOperator = GrandOperator.init(connectionManager: connectionManager,
+                                               coreDataUtil: coreDataUtil)
+        let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
+                                                   connectInfo: conInfo,
+                                                   backgroundQueue: backgroundQueue)
+        sync.folderBuilder = folderBuilder
+
+        sync.start()
+        runloopFor(5, until: {
+            print("del.foldersFetched \(del.foldersFetched)")
+            return del.errorOccurred || (del.folderOpenSuccess && del.folderPrefetchSuccess)
+        })
+        XCTAssertTrue(!del.errorOccurred)
+        XCTAssertTrue(del.folderOpenSuccess)
+        XCTAssertTrue(del.folderPrefetchSuccess)
     }
 }
