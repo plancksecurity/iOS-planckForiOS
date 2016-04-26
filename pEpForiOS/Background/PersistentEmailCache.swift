@@ -9,6 +9,9 @@
 import Foundation
 import CoreData
 
+/**
+ An implementation of `EmailCache` that uses core data.
+ */
 class PersistentEmailCache: NSObject {
     let comp = "PersistentEmailCache"
     let connectInfo: ConnectInfo

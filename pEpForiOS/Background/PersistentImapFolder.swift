@@ -9,6 +9,9 @@
 import Foundation
 import CoreData
 
+/**
+ A `CWFolder`/`CWIMAPFolder` that is backed by core data.
+ */
 class PersistentImapFolder: CWIMAPFolder {
     let comp = "PersistentImapFolder"
 
