@@ -134,44 +134,44 @@ class PrefetchEmailsOperation: BaseOperation {
 
 extension PrefetchEmailsOperation: ImapSyncDelegate {
 
-    func authenticationCompleted(notification: NSNotification?) {
+    func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
             imapSync.waitForFolders()
         }
     }
 
-    func receivedFolderNames(folderNames: [String]) {
+    func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
         if !self.cancelled {
             self.updateFolderNames(folderNames)
             imapSync.openMailBox(folderToOpen)
         }
     }
 
-    func authenticationFailed(notification: NSNotification?) {
+    func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func connectionLost(notification: NSNotification?) {
+    func connectionLost(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func connectionTerminated(notification: NSNotification?) {
+    func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func connectionTimedOut(notification: NSNotification?) {
+    func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func folderPrefetchCompleted(notification: NSNotification?) {
+    func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
         waitForFinished()
     }
 
-    func messageChanged(notification: NSNotification?) {
+    func messageChanged(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func messagePrefetchCompleted(notification: NSNotification?) {
+    func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func folderOpenCompleted(notification: NSNotification?) {
+    func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func folderOpenFailed(notification: NSNotification?) {
+    func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
     }
 }
