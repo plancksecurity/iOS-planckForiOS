@@ -10,6 +10,9 @@ import Foundation
 import CoreData
 
 public class InMemoryCoreDataUtil: ICoreDataUtil {
+    public init() {
+    }
+
     public lazy var managedObjectModel: NSManagedObjectModel = {
         // reuse the official one
         let model = CoreDataUtil.init().managedObjectModel

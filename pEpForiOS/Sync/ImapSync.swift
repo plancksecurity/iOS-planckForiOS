@@ -28,7 +28,32 @@ public protocol ImapSyncDelegate {
 
 }
 
-public class ImapSync: Service {
+protocol IImapSync {
+    /**
+     The delegate.
+     */
+    var delegate: ImapSyncDelegate? { get set }
+
+    /**
+     Start to connect.
+     */
+    func start()
+
+    /**
+     Triggers a timer after authentication completes, have to wait
+     for folders to appear.
+     Should call this after receiving authenticationCompleted()
+     */
+    func waitForFolders()
+
+    /**
+     Opens the folder with the given name, prefetching all emails contained.
+     Should call this after receiving receivedFolderNames().
+     */
+    func openMailBox(name: String)
+}
+
+public class ImapSync: Service, IImapSync {
     private let comp = "ImapSync"
 
     static public let defaultImapInboxName = "INBOX"
@@ -58,7 +83,7 @@ public class ImapSync: Service {
     }
 
     func openMailBox(name: String) {
-        // Note: If you open a folder like this, with PantomimeReadOnlyMode,
+        // Note: If you open a folder with PantomimeReadOnlyMode,
         // all messages will be prefetched by default,
         // independent of the prefetch parameter.
         if let folder = imapStore.folderForName(name, mode: PantomimeReadWriteMode,

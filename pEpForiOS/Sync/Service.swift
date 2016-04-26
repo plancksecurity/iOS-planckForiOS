@@ -8,10 +8,14 @@
 
 import Foundation
 
+protocol IService {
+    func start()
+}
+
 /**
  Base class for IMAP and SMTP implementations.
  */
-public class Service {
+public class Service: IService {
 
     let ErrorAuthenticationFailed = 1000
     let ErrorConnectionTimedOut = 1001

@@ -57,6 +57,8 @@ class GrandOperator: IGrandOperator {
     }
 
     func setErrorForOperation(operation: NSOperation, error: NSError) {
-        errors[operation] = error
+        GCD.onMain({
+            self.errors[operation] = error
+        })
     }
 }

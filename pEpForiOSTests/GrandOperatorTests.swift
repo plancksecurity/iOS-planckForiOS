@@ -1,38 +1,41 @@
 //
-//  BasicCoreDataTests.swift
-//  pEpForiOSTests
+//  GrandOperatorTests.swift
+//  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 25/04/16.
+//  Created by Dirk Zimmermann on 26/04/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
 import XCTest
+import CoreData
 
 import pEpForiOS
 
-import CoreData
+class GrandOperatorTests: XCTestCase {
+    var coreDataUtil: InMemoryCoreDataUtil!
 
-class BasicCoreDataTests: XCTestCase {
-    var coreDataUtil: CoreDataUtil!
-    
     override func setUp() {
         super.setUp()
-        coreDataUtil = CoreDataUtil()
+        coreDataUtil = InMemoryCoreDataUtil()
     }
     
     override func tearDown() {
         super.tearDown()
     }
-
+    
     /**
      Proof of concept for using managed object context in unit tests.
      */
     func testNewMessage() {
         let message = NSEntityDescription.insertNewObjectForEntityForName(
             Message.entityName(),
-            inManagedObjectContext: coreDataUtil.testManagedObjectContext) as? Message
+            inManagedObjectContext: coreDataUtil.managedObjectContext) as? Message
         XCTAssertNotNil(message)
         message!.subject = "Subject"
         XCTAssertNotNil(message?.subject)
+    }
+
+    func testConnectionError() {
+        
     }
 }

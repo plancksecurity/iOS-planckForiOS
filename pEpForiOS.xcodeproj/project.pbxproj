@@ -20,6 +20,7 @@
 		434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */; };
 		435A77C11CC3CB4200133D16 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435A77C01CC3CB4200133D16 /* Regex.swift */; };
 		436287721CCF4784001757E8 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436287711CCF4784001757E8 /* InMemoryCoreDataUtil.swift */; };
+		436287761CCF561C001757E8 /* GrandOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436287751CCF561C001757E8 /* GrandOperatorTests.swift */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
 		43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
@@ -42,7 +43,6 @@
 		439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
 		439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
 		439D407A1CC79423009A4E7C /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439D40791CC79423009A4E7C /* GCD.swift */; };
-		439D52EC1CCE671700EED1A4 /* BasicCoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E3E1CBD0BCA00A7FC3C /* BasicCoreDataTests.swift */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C6F3611CBE8153006A2A18 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F3601CBE8153006A2A18 /* Service.swift */; };
 		43D9CB731CC9FCDA000C809C /* SwiftFSM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D9CB711CC9FCDA000C809C /* SwiftFSM.swift */; };
@@ -138,6 +138,7 @@
 		43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentEmailCache.swift; sourceTree = "<group>"; };
 		435A77C01CC3CB4200133D16 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		436287711CCF4784001757E8 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
+		436287751CCF561C001757E8 /* GrandOperatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorTests.swift; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -146,7 +147,6 @@
 		43980E301CBD0BCA00A7FC3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43980E331CBD0BCA00A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43980E351CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		43980E3E1CBD0BCA00A7FC3C /* BasicCoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicCoreDataTests.swift; sourceTree = "<group>"; };
 		43980E401CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980E451CBD0BCA00A7FC3C /* pEpForiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpForiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpForiOSUITests.swift; sourceTree = "<group>"; };
@@ -285,8 +285,8 @@
 			isa = PBXGroup;
 			children = (
 				43991C341CCE69CF005F8070 /* Frameworks */,
-				43980E3E1CBD0BCA00A7FC3C /* BasicCoreDataTests.swift */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
+				436287751CCF561C001757E8 /* GrandOperatorTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -686,7 +686,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				439D52EC1CCE671700EED1A4 /* BasicCoreDataTests.swift in Sources */,
+				436287761CCF561C001757E8 /* GrandOperatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
