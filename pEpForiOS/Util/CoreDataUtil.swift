@@ -9,7 +9,20 @@
 import Foundation
 import CoreData
 
-public class CoreDataUtil {
+protocol ICoreDataUtil {
+    /**
+     - returns: The one and only main context, confined to the main thread/queue.
+     */
+    var managedObjectContext: NSManagedObjectContext { get }
+
+    /**
+     - returns: Another context that's suitable for background tasks, confined to the
+     thread/queue it was called on.
+     */
+    func confinedManagedObjectContext() -> NSManagedObjectContext
+}
+
+public class CoreDataUtil: ICoreDataUtil {
     static let comp = "CoreDataUtil"
 
     var saveObserver: NSObjectProtocol!
@@ -82,36 +95,6 @@ public class CoreDataUtil {
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
     }()
-
-    // MARK: - Core Data unit test support
-
-    /**
-     An in-memory store coordinator for unit tests.
-     */
-    public lazy var testPersistentStoreCoordinator: NSPersistentStoreCoordinator = {
-        return NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-    }()
-
-    /**
-     An in-memory managed object context.
-     */
-    public lazy var testManagedObjectContext: NSManagedObjectContext = {
-        let coordinator = self.testPersistentStoreCoordinator
-        var managedObjectContext = NSManagedObjectContext(
-            concurrencyType: .MainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = coordinator
-        return managedObjectContext
-    }()
-
-    /**
-     An in-memory object context for background operations in unit test.
-     */
-    public func testConfinedManagedObjectContext() -> NSManagedObjectContext {
-        let context = NSManagedObjectContext.init(concurrencyType: .ConfinementConcurrencyType)
-        context.persistentStoreCoordinator = self.testPersistentStoreCoordinator
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        return context
-    }
 
     // MARK: - Core Data Saving support
 
