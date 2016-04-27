@@ -71,10 +71,10 @@ public protocol IImapSync {
     func waitForFolders()
 
     /**
-     Opens the folder with the given name, prefetching all emails contained.
+     Opens the folder with the given name, prefetching all emails contained if wanted.
      Should call this after receiving receivedFolderNames().
      */
-    func openMailBox(name: String)
+    func openMailBox(name: String, prefetchMails: Bool)
 }
 
 public class ImapSync: Service, IImapSync {
@@ -107,12 +107,12 @@ public class ImapSync: Service, IImapSync {
                                 transport: connectInfo.imapTransport)
     }
 
-    public func openMailBox(name: String) {
+    public func openMailBox(name: String, prefetchMails: Bool) {
         // Note: If you open a folder with PantomimeReadOnlyMode,
         // all messages will be prefetched by default,
         // independent of the prefetch parameter.
         if let folder = imapStore.folderForName(name, mode: PantomimeReadWriteMode,
-                                                prefetch: true) {
+                                                prefetch: prefetchMails) {
             if cache != nil {
                 folder.setCacheManager(cache!)
             }

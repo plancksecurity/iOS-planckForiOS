@@ -11,6 +11,14 @@ import CoreData
 
 import pEpForiOS
 
+struct PersistentSetup {
+    let connectionInfo: ConnectInfo
+    let connectionmanager: ConnectionManager
+    let backgroundQueue: NSOperationQueue
+    let grandOperator: GrandOperator
+    let folderBuilder: ImapFolderBuilder
+}
+
 class TestImapSyncDelegate: DefaultImapSyncDelegate {
     var errorOccurred = false
     var connectionTimedOut = false
@@ -56,9 +64,7 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     override func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
         foldersFetched = true
         self.folderNames = folderNames
-        if preFetchMails {
-            sync.openMailBox(ImapSync.defaultImapInboxName)
-        }
+        sync.openMailBox(ImapSync.defaultImapInboxName, prefetchMails: preFetchMails)
     }
 
     override func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
@@ -141,16 +147,8 @@ class ImapSyncTest: XCTestCase {
         XCTAssertTrue(del.folderNames.count > 0)
     }
 
-    func testPrefetchWithPersistence() {
-        let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true)
+    func setupMemoryPersistence() -> PersistentSetup {
         let conInfo = TestData()
-        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
-        sync.delegate = del
-
-        let account = Account.insertAccountFromConnectInfo(
-            conInfo, context: coreDataUtil.managedObjectContext)
-        XCTAssertNotNil(account)
-
         let backgroundQueue = NSOperationQueue.init()
         let connectionManager = ConnectionManager.init(coreDataUtil: coreDataUtil)
         let grandOperator = GrandOperator.init(connectionManager: connectionManager,
@@ -158,7 +156,25 @@ class ImapSyncTest: XCTestCase {
         let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
                                                    connectInfo: conInfo,
                                                    backgroundQueue: backgroundQueue)
-        sync.folderBuilder = folderBuilder
+
+        let account = Account.insertAccountFromConnectInfo(
+            conInfo, context: coreDataUtil.managedObjectContext)
+        XCTAssertNotNil(account)
+
+        return PersistentSetup.init(
+            connectionInfo: conInfo, connectionmanager: connectionManager,
+            backgroundQueue: backgroundQueue, grandOperator: grandOperator,
+            folderBuilder: folderBuilder)
+    }
+
+    func testPrefetchWithPersistence() {
+        let setup = setupMemoryPersistence()
+
+        let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true)
+        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
+        sync.delegate = del
+
+        sync.folderBuilder = setup.folderBuilder
 
         sync.start()
         runloopFor(5, until: {
@@ -168,10 +184,10 @@ class ImapSyncTest: XCTestCase {
         XCTAssertTrue(del.folderOpenSuccess)
         XCTAssertTrue(del.folderPrefetchSuccess)
 
-        backgroundQueue.waitUntilAllOperationsAreFinished()
+        setup.backgroundQueue.waitUntilAllOperationsAreFinished()
 
-        let p = NSPredicate.init(format: "account.email = %@ and name = %@", conInfo.email,
-                                 ImapSync.defaultImapInboxName)
+        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
+                                 setup.connectionInfo.email, ImapSync.defaultImapInboxName)
         if let folder = BaseManagedObject.singleEntityWithName(
             Folder.entityName(), predicate: p, context: coreDataUtil.managedObjectContext)
             as? Folder {
@@ -179,5 +195,32 @@ class ImapSyncTest: XCTestCase {
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }
+    }
+
+    func testOpenMailboxWithoutPrefetch() {
+        let setup = setupMemoryPersistence()
+
+        let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false)
+        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
+        sync.delegate = del
+
+        sync.folderBuilder = setup.folderBuilder
+
+        sync.start()
+        runloopFor(5, until: {
+            return del.errorOccurred || (del.folderOpenSuccess)
+        })
+        XCTAssertTrue(!del.errorOccurred)
+        XCTAssertTrue(del.folderOpenSuccess)
+        XCTAssertFalse(del.folderPrefetchSuccess)
+
+        setup.backgroundQueue.waitUntilAllOperationsAreFinished()
+
+        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
+                                 setup.connectionInfo.email, ImapSync.defaultImapInboxName)
+        let folder = BaseManagedObject.singleEntityWithName(
+            Folder.entityName(), predicate: p, context: coreDataUtil.managedObjectContext)
+            as? Folder
+        XCTAssertNil(folder, "Unexpected persisted folder")
     }
 }

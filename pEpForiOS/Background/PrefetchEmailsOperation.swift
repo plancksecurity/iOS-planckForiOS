@@ -143,7 +143,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
         if !self.cancelled {
             self.updateFolderNames(folderNames)
-            imapSync.openMailBox(folderToOpen)
+            imapSync.openMailBox(folderToOpen, prefetchMails: true)
         }
     }
 
