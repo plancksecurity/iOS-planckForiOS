@@ -30,8 +30,4 @@ class GrandOperatorTests: XCTestCase {
         message!.subject = "Subject"
         XCTAssertNotNil(message?.subject)
     }
-
-    func testConnectionError() {
-        
-    }
 }

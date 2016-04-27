@@ -91,6 +91,9 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     override func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
         folderOpenSuccess = true
     }
+
+    override func messageChanged(sync: ImapSync, notification: NSNotification?)  {
+    }
 }
 
 class ImapSyncTest: XCTestCase {
@@ -173,11 +176,10 @@ class ImapSyncTest: XCTestCase {
             folderBuilder: folderBuilder)
     }
 
-    func prefetchMails(setup: PersistentSetup) {
+    func prefetchMails(setup: PersistentSetup) -> ImapSync {
         let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true)
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
         sync.delegate = del
-
         sync.folderBuilder = setup.folderBuilder
 
         sync.start()
@@ -198,6 +200,7 @@ class ImapSyncTest: XCTestCase {
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }
+        return sync
     }
 
     func testPrefetchWithPersistence() {
@@ -211,7 +214,6 @@ class ImapSyncTest: XCTestCase {
         let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false)
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
         sync.delegate = del
-
         sync.folderBuilder = setup.folderBuilder
 
         sync.start()
@@ -233,7 +235,7 @@ class ImapSyncTest: XCTestCase {
 
     func testFetchMail() {
         let setup = setupMemoryPersistence()
-        prefetchMails(setup)
+        let sync = prefetchMails(setup)
         if let folder = BaseManagedObject.singleEntityWithName(
             Folder.entityName(), predicate: setup.inboxFolderPredicate(),
             context: coreDataUtil.managedObjectContext)
@@ -244,6 +246,14 @@ class ImapSyncTest: XCTestCase {
             XCTAssertNotNil(message.uid)
             XCTAssertTrue(message.uid?.intValue > 0)
             XCTAssertNil(message.rawDataSource)
+
+            let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false)
+            sync.delegate = del
+            sync.fetchMailFromFolderNamed(ImapSync.defaultImapInboxName,
+                                          uid: message.uid!.integerValue)
+            runloopFor(5, until: {
+                return false
+            })
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }

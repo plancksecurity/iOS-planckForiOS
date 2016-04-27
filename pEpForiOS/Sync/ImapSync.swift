@@ -150,6 +150,12 @@ public class ImapSync: Service, IImapSync {
     }
 
     public func fetchMailFromFolderNamed(folderName: String, uid: Int) {
+        imapStore.sendCommand(
+            IMAP_UID_FETCH_HEADER_FIELDS_NOT, info: nil,
+            string: String.init(format: "UID FETCH %u:%u BODY.PEEK[HEADER.FIELDS.NOT (From To Cc Subject Date Message-ID References In-Reply-To)]", uid, uid))
+        imapStore.sendCommand(
+            IMAP_UID_FETCH_BODY_TEXT, info: nil,
+            string: String.init(format: "UID FETCH %u:%u BODY[TEXT]", uid, uid))
     }
 
     private func dumpMethodName(methodName: String, notification: NSNotification?) {
