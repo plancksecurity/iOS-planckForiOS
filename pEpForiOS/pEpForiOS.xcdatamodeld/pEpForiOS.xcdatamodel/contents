@@ -39,22 +39,22 @@
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="ccMessages" inverseEntity="Contact" syncable="YES"/>
+        <relationship name="content" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MessageContent" inverseName="message" inverseEntity="MessageContent" syncable="YES"/>
         <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="messages" inverseEntity="Folder" syncable="YES"/>
         <relationship name="from" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="fromMessages" inverseEntity="Contact" syncable="YES"/>
-        <relationship name="rawDataSource" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RawMessageSource" inverseName="message" inverseEntity="RawMessageSource" syncable="YES"/>
         <relationship name="referenced" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="references" inverseEntity="Message" syncable="YES"/>
         <relationship name="references" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Message" inverseName="referenced" inverseEntity="Message" syncable="YES"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="toMessages" inverseEntity="Contact" syncable="YES"/>
     </entity>
-    <entity name="RawMessageSource" representedClassName="RawMessageSource" syncable="YES">
+    <entity name="MessageContent" representedClassName="MessageContent" syncable="YES">
         <attribute name="data" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="rawDataSource" inverseEntity="Message" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="content" inverseEntity="Message" syncable="YES"/>
     </entity>
     <elements>
         <element name="Account" positionX="-63" positionY="-18" width="128" height="240"/>
         <element name="Contact" positionX="-54" positionY="90" width="128" height="120"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="120"/>
         <element name="Message" positionX="-45" positionY="99" width="128" height="270"/>
-        <element name="RawMessageSource" positionX="-45" positionY="135" width="128" height="75"/>
+        <element name="MessageContent" positionX="-45" positionY="135" width="128" height="75"/>
     </elements>
 </model>

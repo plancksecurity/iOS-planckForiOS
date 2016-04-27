@@ -249,7 +249,7 @@ class ImapSyncTest: XCTestCase {
             XCTAssertNotNil(message)
             XCTAssertNotNil(message.uid)
             XCTAssertTrue(message.uid?.intValue > 0)
-            XCTAssertNil(message.rawDataSource)
+            XCTAssertNil(message.content)
 
             let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false)
             sync.delegate = del
@@ -263,6 +263,10 @@ class ImapSyncTest: XCTestCase {
             XCTAssertTrue(del.message!.isInitialized())
             XCTAssertEqual(del.message!.UID(), UInt(message.uid!.integerValue))
             XCTAssertNotNil(del.message!.content())
+            let data = del.message!.content() as? NSData
+            XCTAssertNotNil(data)
+            let s = String.init(data: data!, encoding: NSUTF8StringEncoding)
+            XCTAssertNotNil(s)
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }

@@ -1,23 +1,23 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to RawMessageSource.swift instead.
+// Make changes to MessageContent.swift instead.
 
 import Foundation
 import CoreData
 
-public enum RawMessageSourceAttributes: String {
+public enum MessageContentAttributes: String {
     case data = "data"
 }
 
-public enum RawMessageSourceRelationships: String {
+public enum MessageContentRelationships: String {
     case message = "message"
 }
 
-public class _RawMessageSource: BaseManagedObject {
+public class _MessageContent: BaseManagedObject {
 
     // MARK: - Class methods
 
     public class func entityName () -> String {
-        return "RawMessageSource"
+        return "MessageContent"
     }
 
     public class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
@@ -31,7 +31,7 @@ public class _RawMessageSource: BaseManagedObject {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _RawMessageSource.entity(managedObjectContext) else { return nil }
+        guard let entity = _MessageContent.entity(managedObjectContext) else { return nil }
         self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
     }
 
