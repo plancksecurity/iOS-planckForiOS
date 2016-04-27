@@ -11,7 +11,6 @@ import UIKit
 
 class UserInfoTableView: UITableViewController {
 
-   
     @IBOutlet weak var emailValue: UITextField!
     @IBOutlet weak var usernameValue: UITextField!
     @IBOutlet weak var passwordValue: UITextField!
@@ -24,17 +23,13 @@ class UserInfoTableView: UITableViewController {
     }
 
     @IBAction func editingEmail(sender: UITextField) {
-        print(emailValue.text)
-        if (emailValue.text != "" && passwordValue.text != "") {
-             self.navigationItem.rightBarButtonItem!.enabled = true
-        }
-        else {
-            self.navigationItem.rightBarButtonItem!.enabled = false
-        }
-    }
-    @IBAction func editingPassword(sender: UITextField) {
-        if (emailValue.text != "" && passwordValue.text != "")  {
-            self.navigationItem.rightBarButtonItem!.enabled = true
+        if (!emailValue.text!.isEmpty && !passwordValue.text!.isEmpty) {
+            if isACorrectEmail() {
+                self.navigationItem.rightBarButtonItem!.enabled = true
+            }
+            else {
+                self.navigationItem.rightBarButtonItem!.enabled = false
+            }
         }
         else {
             self.navigationItem.rightBarButtonItem!.enabled = false
@@ -44,6 +39,7 @@ class UserInfoTableView: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "IMAPSettings" {
             mailParameters.email = emailValue.text!
@@ -54,7 +50,21 @@ class UserInfoTableView: UITableViewController {
             }
         }
     }
+
+    func isACorrectEmail() -> Bool {
+        if emailValue.text!.containsString("@") && emailValue.text!.containsString(".") {
+            let emailValueAux = emailValue.text! as NSString
+            if emailValueAux.length >= 5 {return true}
+        }
+        return false
+    }
+
+    func isACorrectPassword()-> Bool {
+        let PasswordValueAux = emailValue.text! as NSString
+        if PasswordValueAux.length >= 8 {return true}
+        return false
+    }
+
 }
 
-  
 

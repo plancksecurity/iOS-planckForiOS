@@ -60,6 +60,7 @@
 		43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */; };
 		43ED53781CC77F95006AB156 /* SMTPSettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */; };
 		43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */; };
+		A1F5D7791CD0C9A300D8D045 /* UIViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5D7781CD0C9A300D8D045 /* UIViewControllerTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,6 +183,7 @@
 		43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneValueSettingCell.swift; sourceTree = "<group>"; };
 		43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsTableView.swift; sourceTree = "<group>"; };
 		43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoTableView.swift; sourceTree = "<group>"; };
+		A1F5D7781CD0C9A300D8D045 /* UIViewControllerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +275,7 @@
 			children = (
 				43980E3E1CBD0BCA00A7FC3C /* pEpForiOSTests.swift */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
+				A1F5D7781CD0C9A300D8D045 /* UIViewControllerTest.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -634,6 +637,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1F5D7791CD0C9A300D8D045 /* UIViewControllerTest.swift in Sources */,
 				43980E3F1CBD0BCA00A7FC3C /* pEpForiOSTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
