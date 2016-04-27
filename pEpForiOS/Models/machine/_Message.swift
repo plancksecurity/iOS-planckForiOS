@@ -5,6 +5,9 @@ import Foundation
 import CoreData
 
 public enum MessageAttributes: String {
+    case fetched = "fetched"
+    case longMessage = "longMessage"
+    case longMessageFormatted = "longMessageFormatted"
     case messageId = "messageId"
     case sentDate = "sentDate"
     case subject = "subject"
@@ -15,6 +18,7 @@ public enum MessageRelationships: String {
     case cc = "cc"
     case folder = "folder"
     case from = "from"
+    case rawDataSource = "rawDataSource"
     case referenced = "referenced"
     case references = "references"
     case to = "to"
@@ -46,6 +50,15 @@ public class _Message: BaseManagedObject {
     // MARK: - Properties
 
     @NSManaged public
+    var fetched: NSNumber?
+
+    @NSManaged public
+    var longMessage: String?
+
+    @NSManaged public
+    var longMessageFormatted: String?
+
+    @NSManaged public
     var messageId: String?
 
     @NSManaged public
@@ -67,6 +80,9 @@ public class _Message: BaseManagedObject {
 
     @NSManaged public
     var from: Contact?
+
+    @NSManaged public
+    var rawDataSource: RawMessageSource?
 
     @NSManaged public
     var referenced: Message?

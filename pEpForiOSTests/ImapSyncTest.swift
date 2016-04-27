@@ -17,6 +17,12 @@ struct PersistentSetup {
     let backgroundQueue: NSOperationQueue
     let grandOperator: GrandOperator
     let folderBuilder: ImapFolderBuilder
+
+    func inboxFolderPredicate() -> NSPredicate {
+        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
+                                 connectionInfo.email, ImapSync.defaultImapInboxName)
+        return p
+    }
 }
 
 class TestImapSyncDelegate: DefaultImapSyncDelegate {
@@ -167,9 +173,7 @@ class ImapSyncTest: XCTestCase {
             folderBuilder: folderBuilder)
     }
 
-    func testPrefetchWithPersistence() {
-        let setup = setupMemoryPersistence()
-
+    func prefetchMails(setup: PersistentSetup) {
         let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true)
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
         sync.delegate = del
@@ -186,15 +190,19 @@ class ImapSyncTest: XCTestCase {
 
         setup.backgroundQueue.waitUntilAllOperationsAreFinished()
 
-        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
-                                 setup.connectionInfo.email, ImapSync.defaultImapInboxName)
         if let folder = BaseManagedObject.singleEntityWithName(
-            Folder.entityName(), predicate: p, context: coreDataUtil.managedObjectContext)
+            Folder.entityName(), predicate: setup.inboxFolderPredicate(),
+            context: coreDataUtil.managedObjectContext)
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }
+    }
+
+    func testPrefetchWithPersistence() {
+        let setup = setupMemoryPersistence()
+        prefetchMails(setup)
     }
 
     func testOpenMailboxWithoutPrefetch() {
@@ -216,11 +224,28 @@ class ImapSyncTest: XCTestCase {
 
         setup.backgroundQueue.waitUntilAllOperationsAreFinished()
 
-        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
-                                 setup.connectionInfo.email, ImapSync.defaultImapInboxName)
         let folder = BaseManagedObject.singleEntityWithName(
-            Folder.entityName(), predicate: p, context: coreDataUtil.managedObjectContext)
+            Folder.entityName(), predicate: setup.inboxFolderPredicate(),
+            context: coreDataUtil.managedObjectContext)
             as? Folder
         XCTAssertNil(folder, "Unexpected persisted folder")
+    }
+
+    func testFetchMail() {
+        let setup = setupMemoryPersistence()
+        prefetchMails(setup)
+        if let folder = BaseManagedObject.singleEntityWithName(
+            Folder.entityName(), predicate: setup.inboxFolderPredicate(),
+            context: coreDataUtil.managedObjectContext)
+            as? Folder {
+            XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
+            let message = folder.messages.anyObject() as! Message
+            XCTAssertNotNil(message)
+            XCTAssertNotNil(message.uid)
+            XCTAssertTrue(message.uid?.intValue > 0)
+            XCTAssertNil(message.rawDataSource)
+        } else {
+            XCTAssertTrue(false, "Expected persisted folder")
+        }
     }
 }

@@ -75,6 +75,12 @@ public protocol IImapSync {
      Should call this after receiving receivedFolderNames().
      */
     func openMailBox(name: String, prefetchMails: Bool)
+
+    /**
+     Tries to fetch the the mail with the given UID from the folder with the given name.
+     The folder must be currently opened!
+     */
+    func fetchMailFromFolderNamed(folderName: String, uid: Int)
 }
 
 public class ImapSync: Service, IImapSync {
@@ -141,6 +147,9 @@ public class ImapSync: Service, IImapSync {
                                                            selector: #selector(handleFolders),
                                                            userInfo: nil, repeats: true)
         timer.fire()
+    }
+
+    public func fetchMailFromFolderNamed(folderName: String, uid: Int) {
     }
 
     private func dumpMethodName(methodName: String, notification: NSNotification?) {
