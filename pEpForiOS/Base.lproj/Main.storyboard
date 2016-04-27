@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="SnR-XU-LSM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -20,9 +20,6 @@
                         <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
-                    <connections>
-                        <segue destination="kcA-RK-9Xg" kind="relationship" relationship="rootViewController" id="O3O-Dk-tqd"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAr-j7-O0Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -31,14 +28,14 @@
         <!--Email List View Controller-->
         <scene sceneID="OWw-y9-SIo">
             <objects>
-                <tableViewController id="kcA-RK-9Xg" customClass="EmailListViewController" customModule="p_p" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="kcA-RK-9Xg" customClass="EmailListViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="111" sectionHeaderHeight="28" sectionFooterHeight="28" id="smX-Ka-bhC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EmailListViewCell" rowHeight="111" id="uhL-VL-48i" customClass="EmailListViewCell" customModule="p_p" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="600" height="111"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EmailListViewCell" rowHeight="111" id="uhL-VL-48i" customClass="EmailListViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="600" height="111"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uhL-VL-48i" id="jgQ-nZ-h1r">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="110"/>
@@ -118,7 +115,7 @@
                         <sections>
                             <tableViewSection headerTitle="" id="tYU-l4-l1k">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="Muc-p7-eLR" customClass="OneValueSettingCell" customModule="p_p" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="Muc-p7-eLR" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Muc-p7-eLR" id="ALh-ce-psL">
@@ -142,7 +139,7 @@
                                             <outlet property="titleName" destination="SCr-eb-mdn" id="Nk4-U5-xxW"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="wzw-Ix-clS" customClass="OneValueSettingCell" customModule="p_p" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="wzw-Ix-clS" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="148" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wzw-Ix-clS" id="iw0-fF-fSh">
@@ -166,7 +163,7 @@
                                             <outlet property="titleName" destination="3ti-b6-5l8" id="Zde-4d-O8P"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="x9C-Hc-Hvk" customClass="OneValueSettingCell" customModule="p_p" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="x9C-Hc-Hvk" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="197" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x9C-Hc-Hvk" id="Tc7-0e-d7T">
@@ -224,13 +221,13 @@
         <!--Mail Table View-->
         <scene sceneID="f6A-Gu-Nbz">
             <objects>
-                <tableViewController id="6zF-04-uxQ" customClass="MailTableView" customModule="p_p" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="6zF-04-uxQ" customClass="MailTableView" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="107" sectionHeaderHeight="28" sectionFooterHeight="28" id="HfB-vY-7Q3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="mailCell" rowHeight="107" id="Twc-iF-51E" customClass="MailCell" customModule="p_p" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="mailCell" rowHeight="107" id="Twc-iF-51E" customClass="MailCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="107"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Twc-iF-51E" id="rn6-0W-fWK">
@@ -335,7 +332,7 @@
         <!--Settings Table View-->
         <scene sceneID="hV9-Ts-Xp9">
             <objects>
-                <tableViewController id="dfm-hT-uzc" customClass="IMAPSettingsTableView" customModule="p_p" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="dfm-hT-uzc" customClass="IMAPSettingsTableView" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="174" sectionHeaderHeight="18" sectionFooterHeight="18" id="5wc-Fu-6na">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -343,7 +340,7 @@
                         <sections>
                             <tableViewSection headerTitle="" id="GYz-2C-zBn">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="yEs-RC-FK5" customClass="OneValueSettingCell" customModule="p_p" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="yEs-RC-FK5" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yEs-RC-FK5" id="Kbm-32-bnt">
@@ -368,7 +365,7 @@
                                             <outlet property="titleName" destination="TQX-jQ-6wQ" id="pkd-kd-pJH"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="Xpq-Fu-Dd3" customClass="OneValueSettingCell" customModule="p_p" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="Xpq-Fu-Dd3" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="148" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xpq-Fu-Dd3" id="Luz-CL-ptS">
@@ -393,7 +390,7 @@
                                             <outlet property="titleName" destination="miu-ep-BRp" id="4Wk-PH-AhW"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="057-Jd-AD3" customClass="OneValueSettingCell" customModule="p_p" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="057-Jd-AD3" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="197" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="057-Jd-AD3" id="VC6-Uj-uQb">
@@ -450,7 +447,7 @@
         <!--Settings Table View-->
         <scene sceneID="zuo-Oy-4J7">
             <objects>
-                <tableViewController id="vub-1r-sQ6" customClass="SMTPSettingsTableView" customModule="p_p" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="vub-1r-sQ6" customClass="SMTPSettingsTableView" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="174" sectionHeaderHeight="18" sectionFooterHeight="18" id="3t6-cN-af2">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -458,7 +455,7 @@
                         <sections>
                             <tableViewSection headerTitle="" id="ngB-ai-2of">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="6kU-ew-kCV" customClass="OneValueSettingCell" customModule="p_p" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="6kU-ew-kCV" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6kU-ew-kCV" id="eXm-f1-cNo">
@@ -483,7 +480,7 @@
                                             <outlet property="titleName" destination="VW4-JJ-HKV" id="BLk-Ee-GYD"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="XL7-h6-uwJ" customClass="OneValueSettingCell" customModule="p_p" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="XL7-h6-uwJ" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="148" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XL7-h6-uwJ" id="e4c-NT-9NK">
@@ -508,7 +505,7 @@
                                             <outlet property="titleName" destination="N1c-o2-ebQ" id="QUu-N6-BfA"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="xIb-rc-iWj" customClass="OneValueSettingCell" customModule="p_p" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="xIb-rc-iWj" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="197" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xIb-rc-iWj" id="mpo-zI-aeT">

@@ -73,6 +73,7 @@ public protocol IImapSync {
     /**
      Opens the folder with the given name, prefetching all emails contained if wanted.
      Should call this after receiving receivedFolderNames().
+     - Todo: Make sure that prefetch actually syncs removed mails too.
      */
     func openMailBox(name: String, prefetchMails: Bool)
 

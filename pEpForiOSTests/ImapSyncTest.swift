@@ -32,6 +32,8 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     var foldersFetched = false
     var folderOpenSuccess = false
     var folderPrefetchSuccess = false
+    var messagePrefetched = false
+    var message: CWIMAPMessage?
     var folderNames: [String] = []
 
     let fetchFolders: Bool
@@ -92,7 +94,9 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
         folderOpenSuccess = true
     }
 
-    override func messageChanged(sync: ImapSync, notification: NSNotification?)  {
+    override func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?)  {
+        messagePrefetched = true
+        message = notification?.userInfo?["Message"] as? CWIMAPMessage
     }
 }
 
@@ -252,8 +256,13 @@ class ImapSyncTest: XCTestCase {
             sync.fetchMailFromFolderNamed(ImapSync.defaultImapInboxName,
                                           uid: message.uid!.integerValue)
             runloopFor(5, until: {
-                return false
+                return del.messagePrefetched
             })
+            XCTAssertTrue(del.messagePrefetched)
+            XCTAssertNotNil(del.message)
+            XCTAssertTrue(del.message!.isInitialized())
+            XCTAssertEqual(del.message!.UID(), UInt(message.uid!.integerValue))
+            XCTAssertNotNil(del.message!.content())
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }

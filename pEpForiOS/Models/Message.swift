@@ -33,6 +33,9 @@ public class Message: _Message {
         if let uid = uid?.integerValue {
             msg.setUID(UInt(uid))
         }
+        if let msn = messageNumber?.integerValue {
+            msg.setMessageNumber(UInt(msn))
+        }
         let fol = CWFolder.init(name: folder.name)
         msg.setFolder(fol)
         return msg

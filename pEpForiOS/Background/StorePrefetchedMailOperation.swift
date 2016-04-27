@@ -54,6 +54,9 @@ class StorePrefetchedMailOperation: BaseOperation {
         if isFresh || mail.uid != message.UID() {
             mail.uid = message.UID()
         }
+        if isFresh || mail.messageNumber != message.messageNumber() {
+            mail.messageNumber = message.messageNumber()
+        }
 
         do {
             if let folderName = message.folder()?.name() {

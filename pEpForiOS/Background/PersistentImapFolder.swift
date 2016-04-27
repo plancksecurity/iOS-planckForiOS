@@ -55,14 +55,17 @@ class PersistentImapFolder: CWIMAPFolder {
         }
     }
 
+    /**
+     This implementation assumes that the index is typically referred to by pantomime
+     as the messageNumber.
+     */
     override func messageAtIndex(theIndex: UInt) -> CWMessage? {
-        let msgs = allMessages()
-        if msgs.count > Int(theIndex) {
-            if let msg = msgs[Int(theIndex)] as? Message {
-                return msg.imapMessage()
-            }
-        }
-        return nil
+        let p = NSPredicate.init(
+            format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
+            connectInfo.email, self.name(), theIndex)
+        let msg = Message.singleEntityWithName(Message.entityName(), predicate: p,
+                                               context: mainContext) as! Message
+        return msg.imapMessage()
     }
 
     override func count() -> UInt {

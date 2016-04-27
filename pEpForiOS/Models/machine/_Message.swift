@@ -9,6 +9,7 @@ public enum MessageAttributes: String {
     case longMessage = "longMessage"
     case longMessageFormatted = "longMessageFormatted"
     case messageId = "messageId"
+    case messageNumber = "messageNumber"
     case sentDate = "sentDate"
     case subject = "subject"
     case uid = "uid"
@@ -60,6 +61,9 @@ public class _Message: BaseManagedObject {
 
     @NSManaged public
     var messageId: String?
+
+    @NSManaged public
+    var messageNumber: NSNumber?
 
     @NSManaged public
     var sentDate: NSDate?
