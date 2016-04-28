@@ -8,6 +8,8 @@
 
 import Foundation
 
+public typealias GrandOperatorCompletionBlock = (error: NSError?) -> Void
+
 public protocol IGrandOperator {
     var coreDataUtil: ICoreDataUtil { get }
 
@@ -24,12 +26,12 @@ public protocol IGrandOperator {
      a non-nil error object if there was an error during execution.
      */
     func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
-                        completionBlock: ((error: NSError?) -> Void)?)
+                        completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Verifies the given connection. Tests for IMAP and SMTP.
      */
-    func verifyConnection(connectInfo: ConnectInfo, completionBlock: ((error: NSError?) -> Void)?)
+    func verifyConnection(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Used by background operations to set an error.
@@ -56,7 +58,7 @@ public class GrandOperator: IGrandOperator {
     }
 
     public func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
-                        completionBlock: ((error: NSError?) -> Void)?) {
+                        completionBlock: GrandOperatorCompletionBlock?) {
         let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
                                               folder: folder)
         if let block = completionBlock {
@@ -69,9 +71,50 @@ public class GrandOperator: IGrandOperator {
         op.start()
     }
 
+    func handleVerificationCompletion(finished1: Bool, finished2: Bool,
+                                      op1: NSOperation, op2: NSOperation,
+                                      completionBlock: GrandOperatorCompletionBlock?) {
+        GCD.onMain({ // serialize
+            if finished1 && finished2 {
+                var error: NSError? = nil
+                if let err = self.errors[op1] {
+                    error = err
+                } else if let err = self.errors[op2] {
+                    error = err
+                }
+                completionBlock?(error: error)
+            }
+        })
+    }
+
     public func verifyConnection(connectInfo: ConnectInfo,
-                                 completionBlock: ((error: NSError?) -> Void)?) {
-        completionBlock?(error: Constants.errorNotImplemented(comp))
+                                 completionBlock: GrandOperatorCompletionBlock?) {
+        var finished1 = false
+        var finished2 = false
+
+        let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
+        let op2 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
+
+        let completion1 = {
+            finished1 = true
+            self.handleVerificationCompletion(finished1, finished2: finished2,
+                                              op1: op1, op2: op1,
+                                              completionBlock: completionBlock)
+        }
+        let completion2 = {
+            finished2 = true
+            self.handleVerificationCompletion(finished1, finished2: finished2,
+                                              op1: op1, op2: op1,
+                                              completionBlock: completionBlock)
+        }
+
+        op1.completionBlock = completion1
+        op2.completionBlock = completion2
+
+        let queue = NSOperationQueue()
+        queue.maxConcurrentOperationCount = 2
+        queue.addOperation(op1)
+        queue.addOperation(op2)
     }
 
     public func setErrorForOperation(operation: NSOperation, error: NSError) {

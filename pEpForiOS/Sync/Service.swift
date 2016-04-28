@@ -23,14 +23,6 @@ public class Service: IService {
     let connectInfo: ConnectInfo
     let coreDataUtil: ICoreDataUtil
 
-    private var testOnlyCallback: (NSError? -> ())? = nil
-
-    var isJustATest: Bool {
-        get {
-            return testOnlyCallback != nil
-        }
-    }
-
     var service: CWService!
 
     public init(coreDataUtil: ICoreDataUtil, connectInfo: ConnectInfo) {
@@ -50,24 +42,6 @@ public class Service: IService {
         dispatch_async(dispatch_get_main_queue(), {
             self.service.connectInBackgroundAndNotify()
         })
-    }
-
-    func test(block:(NSError? -> ())) {
-        testOnlyCallback = block
-        service.connectInBackgroundAndNotify()
-    }
-
-    /**
-     If this was just a test, invoke the test block with that error.
-
-     - Returns: `true` if this was indeed only a test, `false` otherwise.
-     */
-    func callTestBlock(error: NSError?) -> Bool {
-        if let block = testOnlyCallback {
-            block(error)
-            return true
-        }
-        return false
     }
 
     deinit {

@@ -101,6 +101,7 @@ class PrefetchEmailsOperation: BaseOperation {
 
     func waitForFinished() {
         if backgroundQueue.operationCount == 0 {
+            myFinished = true
             markAsFinished()
         } else {
             backgroundQueue.addObserver(self, forKeyPath: "operationCount",
@@ -109,18 +110,13 @@ class PrefetchEmailsOperation: BaseOperation {
         }
     }
 
-    func markAsFinished() {
-        willChangeValueForKey("isFinished")
-        myFinished = true
-        didChangeValueForKey("isFinished")
-    }
-
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?,
                                          change: [String : AnyObject]?,
                                          context: UnsafeMutablePointer<Void>) {
         if keyPath == "operationCount" {
             if let newValue = change?[NSKeyValueChangeNewKey] {
                 if newValue.intValue == 0 {
+                    myFinished = true
                     markAsFinished()
                 }
             }

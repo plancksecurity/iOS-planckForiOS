@@ -12,6 +12,8 @@ import CoreData
 import pEpForiOS
 
 class GrandOperatorTests: XCTestCase {
+    let comp = "GrandOperatorTests"
+
     let correct = TestData()
     var coreDataUtil: InMemoryCoreDataUtil!
     var connectionManager: ConnectionManager!
@@ -107,6 +109,7 @@ class GrandOperatorTests: XCTestCase {
             failed = true
         })
         TestUtil.runloopFor(5, until: {
+            Log.info("", "runloop callback")
             return failed
         })
         XCTAssertTrue(failed)

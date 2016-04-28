@@ -169,19 +169,11 @@ extension ImapSync: CWServiceClient {
         dumpMethodName("authenticationCompleted", notification: notification)
         imapState.authenticationCompleted = true
         delegate?.authenticationCompleted(self, notification: notification)
-        if (isJustATest) {
-            callTestBlock(nil)
-        }
     }
 
     @objc public func authenticationFailed(notification: NSNotification) {
         dumpMethodName("authenticationFailed", notification: notification)
         delegate?.authenticationFailed(self, notification: notification)
-        let error = NSError.init(domain: comp, code: ErrorAuthenticationFailed,
-                                 userInfo: [NSLocalizedDescriptionKey:
-                                    NSLocalizedString("IMAP authentication failed",
-                                        comment: "Error when testing IMAP account")])
-        callTestBlock(error)
     }
 
     @objc public func connectionEstablished(notification: NSNotification) {
@@ -201,11 +193,6 @@ extension ImapSync: CWServiceClient {
     @objc public func connectionTimedOut(notification: NSNotification) {
         dumpMethodName("connectionTimedOut", notification: notification)
         delegate?.connectionTimedOut(self, notification: notification)
-        let error = NSError.init(domain: comp, code: ErrorConnectionTimedOut,
-                                 userInfo: [NSLocalizedDescriptionKey:
-                                    NSLocalizedString("IMAP connection timed out",
-                                        comment: "Error when testing IMAP account")])
-        callTestBlock(error)
     }
 
     @objc public func folderPrefetchCompleted(notification: NSNotification?) {

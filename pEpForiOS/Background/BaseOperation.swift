@@ -16,4 +16,9 @@ class BaseOperation: NSOperation {
         self.grandOperator = grandOperator
         super.init()
     }
+
+    func markAsFinished() {
+        willChangeValueForKey("isFinished")
+        didChangeValueForKey("isFinished")
+    }
 }
