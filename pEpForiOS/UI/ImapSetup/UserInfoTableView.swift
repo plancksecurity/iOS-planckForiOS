@@ -8,43 +8,51 @@
 
 import UIKit
 
+public struct ModelUserInfoTable {
+    public var emailTextExist:Bool = false
+    public var passwordTextExist:Bool = false
 
-class UserInfoTableView: UITableViewController {
+    public init(emailTextExist:Bool,passwordTextExist:Bool) {
+        self.emailTextExist = emailTextExist
+        self.passwordTextExist = passwordTextExist
+    }
 
-   
+    public func shouldEnableNextButton()-> Bool {
+        return emailTextExist &&  passwordTextExist
+    }
+}
+
+public class UserInfoTableView: UITableViewController {
+
+
     @IBOutlet weak var emailValue: UITextField!
-    @IBOutlet weak var usernameValue: UITextField!
     @IBOutlet weak var passwordValue: UITextField!
+    @IBOutlet weak var usernameValue: UITextField!
 
     var mailParameters = MailSettingParameters()
+    public var model = ModelUserInfoTable(emailTextExist: false,passwordTextExist: false)
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem!.enabled = false
     }
 
     @IBAction func editingEmail(sender: UITextField) {
-        print(emailValue.text)
-        if (emailValue.text != "" && passwordValue.text != "") {
-             self.navigationItem.rightBarButtonItem!.enabled = true
-        }
-        else {
-            self.navigationItem.rightBarButtonItem!.enabled = false
-        }
+        model.emailTextExist = emailValue.text != ""
+        updateView()
     }
     @IBAction func editingPassword(sender: UITextField) {
-        if (emailValue.text != "" && passwordValue.text != "")  {
-            self.navigationItem.rightBarButtonItem!.enabled = true
-        }
-        else {
-            self.navigationItem.rightBarButtonItem!.enabled = false
-        }
+        model.passwordTextExist = passwordValue.text != ""
+        updateView()
     }
 
-    override func didReceiveMemoryWarning() {
+    func updateView() {
+        self.navigationItem.rightBarButtonItem!.enabled = model.shouldEnableNextButton()
+    }
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "IMAPSettings" {
             mailParameters.email = emailValue.text!
             mailParameters.username = usernameValue.text!
