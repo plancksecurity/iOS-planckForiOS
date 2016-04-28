@@ -212,8 +212,15 @@ extension ImapSync: CWServiceClient {
 
     @objc public func serviceInitialized(notification: NSNotification) {
         dumpMethodName("serviceInitialized", notification: notification)
-        let password = KeyChain.getPassword(connectInfo.email,
+
+        // The password from connectInfo has precedence over the keychain, for unit test
+        var password: String?
+        if let pass = connectInfo.imapPassword {
+            password = pass
+        } else {
+            password = KeyChain.getPassword(connectInfo.email,
                                             serverType: Account.AccountType.Imap.asString())
+        }
         imapStore.authenticate(connectInfo.getImapUsername(),
                                password: password,
                                mechanism: connectInfo.imapAuthMethod)

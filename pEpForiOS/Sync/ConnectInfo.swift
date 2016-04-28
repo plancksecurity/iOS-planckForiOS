@@ -15,7 +15,7 @@ public class ConnectInfo: NSObject {
     public let email: String
     public let imapUsername: String?
     public let smtpUsername: String?
-    public let imapPassword: String
+    public let imapPassword: String?
     public let smtpPassword: String?
     public let imapAuthMethod: String
     public let smtpAuthMethod: String
@@ -32,7 +32,7 @@ public class ConnectInfo: NSObject {
 
     public init(email: String,
          imapUsername: String?, smtpUsername: String?,
-         imapPassword: String, smtpPassword: String?,
+         imapPassword: String?, smtpPassword: String?,
          imapAuthMethod: String, smtpAuthMethod: String,
          imapServerName: String, imapServerPort: UInt16, imapTransport: ConnectionTransport,
          smtpServerName: String, smtpServerPort: UInt16, smtpTransport: ConnectionTransport) {
@@ -81,7 +81,7 @@ public class ConnectInfo: NSObject {
         return email
     }
 
-    public func getSmtpPassword() -> String {
+    public func getSmtpPassword() -> String? {
         if let password = smtpPassword {
             return password
         }

@@ -109,7 +109,6 @@ class GrandOperatorTests: XCTestCase {
             failed = true
         })
         TestUtil.runloopFor(5, until: {
-            Log.info("", "runloop callback")
             return failed
         })
         XCTAssertTrue(failed)

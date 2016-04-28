@@ -95,9 +95,9 @@ public class Account: _Account {
         let account = Account.newAccountFromConnectInfo(connectInfo, context: context)
         CoreDataUtil.saveContext(managedObjectContext: context)
         KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Imap.asString(),
-                          password: connectInfo.imapPassword)
+                          password: connectInfo.imapPassword!)
         KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Smtp.asString(),
-                          password: connectInfo.getSmtpPassword())
+                          password: connectInfo.getSmtpPassword()!)
         return account
     }
 
