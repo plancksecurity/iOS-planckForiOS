@@ -39,6 +39,7 @@ class GrandOperatorTests: XCTestCase {
         XCTAssertNotNil(message?.subject)
     }
 
+    /*
     func testVerifyConnectionAllFailed() {
         var failed = false
         let connectionInfo = ConnectInfo.init(
@@ -145,4 +146,4 @@ class GrandOperatorTests: XCTestCase {
         })
         XCTAssertTrue(success)
     }
-}
+*/}

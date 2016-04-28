@@ -26,15 +26,26 @@ struct PersistentSetup {
 }
 
 class TestImapSyncDelegate: DefaultImapSyncDelegate {
-    var errorOccurred = false
-    var connectionTimedOut = false
-    var authSucess = false
-    var foldersFetched = false
-    var folderOpenSuccess = false
-    var folderPrefetchSuccess = false
-    var messagePrefetched = false
+    var errorOccurred: Bool = false
+    var connectionTimeout: Bool = false
+    var authSuccess: Bool = false
+    var folderPrefetchSuccess: Bool = false
+    var folderOpenSuccess: Bool = false
+    var foldersFetched: Bool = false
+    var messagePrefetched: Bool = false
+
+    var errorExpectationFulfilled = false
+
     var message: CWIMAPMessage?
     var folderNames: [String] = []
+
+    var errorOccurredExpectation: XCTestExpectation?
+    var connectionTimeoutExpectation: XCTestExpectation?
+    var authSuccessExpectation: XCTestExpectation?
+    var folderPrefetchSuccessExpectation: XCTestExpectation?
+    var folderOpenSuccessExpectation: XCTestExpectation?
+    var foldersFetchedExpectation: XCTestExpectation?
+    var messagePrefetchedExpectation: XCTestExpectation?
 
     let fetchFolders: Bool
     let preFetchMails: Bool
@@ -42,6 +53,8 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     init(fetchFolders: Bool, preFetchMails: Bool) {
         self.fetchFolders = fetchFolders
         self.preFetchMails = preFetchMails
+        super.init()
+        print("init() \(unsafeAddressOf(self))")
     }
 
     convenience override init() {
@@ -52,55 +65,91 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
         self.init(fetchFolders: fetchFolders, preFetchMails: false)
     }
 
+    func fulfillError(kind: String) {
+        if let exp = errorOccurredExpectation {
+            if !errorExpectationFulfilled {
+                exp.fulfill()
+                errorExpectationFulfilled = true
+            } else {
+                XCTAssertFalse(true, "This should not happen. Some cyclic dependency somewhere?")
+            }
+        }
+    }
+
     override func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
         errorOccurred = true
+        fulfillError("authenticationFailed")
     }
 
     override func connectionLost(sync: ImapSync, notification: NSNotification?) {
         errorOccurred = true
+        fulfillError("connectionLost")
     }
 
     override func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
         errorOccurred = true
+        fulfillError("connectionTerminated")
     }
 
     override func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
-        connectionTimedOut = true
         errorOccurred = true
+        connectionTimeout = true
+        if let exp = connectionTimeoutExpectation {
+            exp.fulfill()
+        }
+        fulfillError("connectionTimedOut")
     }
 
     override func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
-        foldersFetched = true
         self.folderNames = folderNames
         sync.openMailBox(ImapSync.defaultImapInboxName, prefetchMails: preFetchMails)
+        foldersFetched = true
+        if let exp = foldersFetchedExpectation {
+            exp.fulfill()
+        }
     }
 
     override func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
-        authSucess = true
-        if  fetchFolders || preFetchMails {
+        if fetchFolders || preFetchMails {
             sync.waitForFolders()
+        }
+        authSuccess = true
+        if let exp = authSuccessExpectation {
+            exp.fulfill()
         }
     }
 
     override func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
         folderPrefetchSuccess = true
+        if let exp = folderPrefetchSuccessExpectation {
+            exp.fulfill()
+        }
     }
 
     override func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
         errorOccurred = true
+        fulfillError("folderOpenFailed")
     }
 
     override func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
         folderOpenSuccess = true
+        if let exp = folderOpenSuccessExpectation {
+            exp.fulfill()
+        }
     }
 
     override func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?)  {
-        messagePrefetched = true
         message = notification?.userInfo?["Message"] as? CWIMAPMessage
+        messagePrefetched = true
+        if let exp = messagePrefetchedExpectation {
+            exp.fulfill()
+        }
     }
 }
 
 class ImapSyncTest: XCTestCase {
+    let waitTime: NSTimeInterval = 10
+
     var coreDataUtil: InMemoryCoreDataUtil!
 
     override func setUp() {
@@ -116,10 +165,16 @@ class ImapSyncTest: XCTestCase {
             imapTransport: .Plain, smtpServerName: "", smtpServerPort: 5001, smtpTransport: .Plain)
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
+
+        del.errorOccurredExpectation = expectationWithDescription("errorOccurred")
+
         sync.start()
-        TestUtil.runloopFor(2, until: { return del.errorOccurred })
-        XCTAssertTrue(del.errorOccurred)
-        XCTAssertTrue(del.connectionTimedOut)
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertTrue(del.errorOccurred)
+            XCTAssertTrue(del.connectionTimeout)
+        })
     }
 
     func testAuthSuccess() {
@@ -127,12 +182,16 @@ class ImapSyncTest: XCTestCase {
         let conInfo = TestData()
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
+
+        del.authSuccessExpectation = expectationWithDescription("authSuccess")
+
         sync.start()
-        TestUtil.runloopFor(5, until: {
-            return del.errorOccurred || del.authSucess
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertTrue(!del.errorOccurred)
+            XCTAssertTrue(del.authSuccess)
         })
-        XCTAssertTrue(!del.errorOccurred)
-        XCTAssertTrue(del.authSucess)
     }
 
     func testFetchFolders() {
@@ -140,13 +199,17 @@ class ImapSyncTest: XCTestCase {
         let conInfo = TestData()
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
+
+        del.foldersFetchedExpectation = expectationWithDescription("foldersFetched")
+
         sync.start()
-        TestUtil.runloopFor(5, until: {
-            return del.errorOccurred || del.foldersFetched
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertTrue(!del.errorOccurred)
+            XCTAssertTrue(del.foldersFetched)
+            XCTAssertTrue(del.folderNames.count > 0)
         })
-        XCTAssertTrue(!del.errorOccurred)
-        XCTAssertTrue(del.foldersFetched)
-        XCTAssertTrue(del.folderNames.count > 0)
     }
 
     func setupMemoryPersistence() -> PersistentSetup {
@@ -175,13 +238,17 @@ class ImapSyncTest: XCTestCase {
         sync.delegate = del
         sync.folderBuilder = setup.folderBuilder
 
+        del.folderPrefetchSuccessExpectation = expectationWithDescription("folderPrefetchSuccess")
+        del.folderOpenSuccessExpectation = expectationWithDescription("folderOpenSuccess")
+
         sync.start()
-        TestUtil.runloopFor(5, until: {
-            return del.errorOccurred || (del.folderOpenSuccess && del.folderPrefetchSuccess)
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertTrue(!del.errorOccurred)
+            XCTAssertTrue(del.folderOpenSuccess)
+            XCTAssertTrue(del.folderPrefetchSuccess)
         })
-        XCTAssertTrue(!del.errorOccurred)
-        XCTAssertTrue(del.folderOpenSuccess)
-        XCTAssertTrue(del.folderPrefetchSuccess)
 
         setup.backgroundQueue.waitUntilAllOperationsAreFinished()
 
@@ -209,13 +276,17 @@ class ImapSyncTest: XCTestCase {
         sync.delegate = del
         sync.folderBuilder = setup.folderBuilder
 
+        del.foldersFetchedExpectation = expectationWithDescription("foldersFetchedExpectation")
+        del.folderOpenSuccessExpectation = expectationWithDescription("folderOpenSuccess")
+
         sync.start()
-        TestUtil.runloopFor(5, until: {
-            return del.errorOccurred || (del.folderOpenSuccess)
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertTrue(!del.errorOccurred)
+            XCTAssertTrue(del.folderOpenSuccess)
+            XCTAssertFalse(del.folderPrefetchSuccess)
         })
-        XCTAssertTrue(!del.errorOccurred)
-        XCTAssertTrue(del.folderOpenSuccess)
-        XCTAssertFalse(del.folderPrefetchSuccess)
 
         setup.backgroundQueue.waitUntilAllOperationsAreFinished()
 
@@ -242,20 +313,24 @@ class ImapSyncTest: XCTestCase {
 
             let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false)
             sync.delegate = del
+
+            del.messagePrefetchedExpectation = expectationWithDescription("messagePrefetched")
+
             sync.fetchMailFromFolderNamed(ImapSync.defaultImapInboxName,
                                           uid: message.uid!.integerValue)
-            TestUtil.runloopFor(5, until: {
-                return del.messagePrefetched
+            waitForExpectationsWithTimeout(waitTime, handler: { error in
+                XCTAssertNil(error)
+                XCTAssertTrue(!del.errorOccurred)
+                XCTAssertTrue(del.messagePrefetched)
+                XCTAssertNotNil(del.message)
+                XCTAssertTrue(del.message!.isInitialized())
+                XCTAssertEqual(del.message!.UID(), UInt(message.uid!.integerValue))
+                XCTAssertNotNil(del.message!.content())
+                let data = del.message!.content() as? NSData
+                XCTAssertNotNil(data)
+                let s = String.init(data: data!, encoding: NSUTF8StringEncoding)
+                XCTAssertNotNil(s)
             })
-            XCTAssertTrue(del.messagePrefetched)
-            XCTAssertNotNil(del.message)
-            XCTAssertTrue(del.message!.isInitialized())
-            XCTAssertEqual(del.message!.UID(), UInt(message.uid!.integerValue))
-            XCTAssertNotNil(del.message!.content())
-            let data = del.message!.content() as? NSData
-            XCTAssertNotNil(data)
-            let s = String.init(data: data!, encoding: NSUTF8StringEncoding)
-            XCTAssertNotNil(s)
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }

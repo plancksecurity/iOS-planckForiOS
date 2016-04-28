@@ -19,7 +19,6 @@
 		43248C4E1CC6266900AD3A7C /* PersistentEmailCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */; };
 		434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */; };
 		434B81151CD1F21C00330DC6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B81141CD1F21C00330DC6 /* Constants.swift */; };
-		434B81191CD1F56F00330DC6 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B81181CD1F56F00330DC6 /* TestUtil.swift */; };
 		434B811C1CD1FABE00330DC6 /* VerifyImapConnectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B811A1CD1FA6A00330DC6 /* VerifyImapConnectionOperation.swift */; };
 		435A77C11CC3CB4200133D16 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435A77C01CC3CB4200133D16 /* Regex.swift */; };
 		436287721CCF4784001757E8 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436287711CCF4784001757E8 /* InMemoryCoreDataUtil.swift */; };
@@ -143,7 +142,6 @@
 		431144BF1CC1202E0007639D /* _Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Message.swift; sourceTree = "<group>"; };
 		43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentEmailCache.swift; sourceTree = "<group>"; };
 		434B81141CD1F21C00330DC6 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		434B81181CD1F56F00330DC6 /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
 		434B811A1CD1FA6A00330DC6 /* VerifyImapConnectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyImapConnectionOperation.swift; sourceTree = "<group>"; };
 		435A77C01CC3CB4200133D16 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		436287711CCF4784001757E8 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
@@ -301,7 +299,6 @@
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				436287751CCF561C001757E8 /* GrandOperatorTests.swift */,
 				436287771CCF6DE3001757E8 /* ImapSyncTest.swift */,
-				434B81181CD1F56F00330DC6 /* TestUtil.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -709,7 +706,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				436287761CCF561C001757E8 /* GrandOperatorTests.swift in Sources */,
-				434B81191CD1F56F00330DC6 /* TestUtil.swift in Sources */,
 				436287781CCF6DE3001757E8 /* ImapSyncTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
