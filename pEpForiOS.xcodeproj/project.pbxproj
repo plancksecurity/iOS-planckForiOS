@@ -25,7 +25,6 @@
 		43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 43980E2D1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld */; };
 		43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43980E301CBD0BCA00A7FC3C /* Assets.xcassets */; };
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
-		43980E3F1CBD0BCA00A7FC3C /* pEpForiOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E3E1CBD0BCA00A7FC3C /* pEpForiOSTests.swift */; };
 		43980E4A1CBD0BCA00A7FC3C /* pEpForiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */; };
 		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
 		43980EE61CBD24B800A7FC3C /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE21CBD24B800A7FC3C /* ConnectInfo.swift */; };
@@ -60,6 +59,14 @@
 		43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */; };
 		43ED53781CC77F95006AB156 /* SMTPSettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */; };
 		43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */; };
+		A1B50A7E1CD26FA700B1A997 /* MessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A7D1CD26FA700B1A997 /* MessageContent.swift */; };
+		A1B50A801CD26FB500B1A997 /* _MessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A7F1CD26FB500B1A997 /* _MessageContent.swift */; };
+		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
+		A1B50A851CD26FF100B1A997 /* CoreDataUtil.swift.orig in Resources */ = {isa = PBXBuildFile; fileRef = A1B50A821CD26FF100B1A997 /* CoreDataUtil.swift.orig */; };
+		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
+		A1B50A8A1CD271EC00B1A997 /* GrandOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A871CD271EC00B1A997 /* GrandOperatorTests.swift */; };
+		A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */; };
+		A1B50A8C1CD271EC00B1A997 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A891CD271EC00B1A997 /* TestUtil.swift */; };
 		A1F5D7791CD0C9A300D8D045 /* UIViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5D7781CD0C9A300D8D045 /* UIViewControllerTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -143,7 +150,6 @@
 		43980E331CBD0BCA00A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43980E351CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980E3A1CBD0BCA00A7FC3C /* pEpForiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpForiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43980E3E1CBD0BCA00A7FC3C /* pEpForiOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpForiOSTests.swift; sourceTree = "<group>"; };
 		43980E401CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980E451CBD0BCA00A7FC3C /* pEpForiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpForiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpForiOSUITests.swift; sourceTree = "<group>"; };
@@ -183,6 +189,14 @@
 		43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneValueSettingCell.swift; sourceTree = "<group>"; };
 		43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsTableView.swift; sourceTree = "<group>"; };
 		43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoTableView.swift; sourceTree = "<group>"; };
+		A1B50A7D1CD26FA700B1A997 /* MessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContent.swift; sourceTree = "<group>"; };
+		A1B50A7F1CD26FB500B1A997 /* _MessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _MessageContent.swift; sourceTree = "<group>"; };
+		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A1B50A821CD26FF100B1A997 /* CoreDataUtil.swift.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CoreDataUtil.swift.orig; sourceTree = "<group>"; };
+		A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
+		A1B50A871CD271EC00B1A997 /* GrandOperatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorTests.swift; sourceTree = "<group>"; };
+		A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncTest.swift; sourceTree = "<group>"; };
+		A1B50A891CD271EC00B1A997 /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
 		A1F5D7781CD0C9A300D8D045 /* UIViewControllerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -273,7 +287,9 @@
 		43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				43980E3E1CBD0BCA00A7FC3C /* pEpForiOSTests.swift */,
+				A1B50A871CD271EC00B1A997 /* GrandOperatorTests.swift */,
+				A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */,
+				A1B50A891CD271EC00B1A997 /* TestUtil.swift */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				A1F5D7781CD0C9A300D8D045 /* UIViewControllerTest.swift */,
 			);
@@ -302,6 +318,9 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				A1B50A811CD26FF100B1A997 /* Constants.swift */,
+				A1B50A821CD26FF100B1A997 /* CoreDataUtil.swift.orig */,
+				A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */,
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
 				43980EF71CBD402400A7FC3C /* CoreDataUtil.swift */,
 				43980EF91CBD415700A7FC3C /* AppConfig.swift */,
@@ -349,6 +368,7 @@
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A1B50A7D1CD26FA700B1A997 /* MessageContent.swift */,
 				43E58EC51CBF8365008AA7A7 /* BaseManagedObject.swift */,
 				431144BA1CC120220007639D /* Contact.swift */,
 				431144BB1CC120220007639D /* Message.swift */,
@@ -362,6 +382,7 @@
 		43E58EB51CBF8301008AA7A7 /* machine */ = {
 			isa = PBXGroup;
 			children = (
+				A1B50A7F1CD26FB500B1A997 /* _MessageContent.swift */,
 				431144BE1CC1202E0007639D /* _Contact.swift */,
 				431144BF1CC1202E0007639D /* _Message.swift */,
 				43E58EB61CBF8301008AA7A7 /* _Account.swift */,
@@ -562,6 +583,7 @@
 			files = (
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
+				A1B50A851CD26FF100B1A997 /* CoreDataUtil.swift.orig in Resources */,
 				43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -594,11 +616,13 @@
 				431144AA1CC0CB480007639D /* PrefetchEmailsOperation.swift in Sources */,
 				43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFoldersOperation.swift in Sources */,
+				A1B50A7E1CD26FA700B1A997 /* MessageContent.swift in Sources */,
 				43980EEC1CBD26B400A7FC3C /* EmailCacheManager.swift in Sources */,
 				43C6F3611CBE8153006A2A18 /* Service.swift in Sources */,
 				439D407A1CC79423009A4E7C /* GCD.swift in Sources */,
 				43E58EB91CBF8301008AA7A7 /* Folder.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
+				A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */,
 				43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */,
@@ -615,10 +639,12 @@
 				431144C01CC1202E0007639D /* _Contact.swift in Sources */,
 				43980EF61CBD3EED00A7FC3C /* Mailbox.swift in Sources */,
 				43980EF81CBD402400A7FC3C /* CoreDataUtil.swift in Sources */,
+				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				43E58EBB1CBF8301008AA7A7 /* _Folder.swift in Sources */,
 				431144C11CC1202E0007639D /* _Message.swift in Sources */,
 				43ED53721CC77F95006AB156 /* Mail.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
+				A1B50A801CD26FB500B1A997 /* _MessageContent.swift in Sources */,
 				431144BD1CC120220007639D /* Message.swift in Sources */,
 				435A77C11CC3CB4200133D16 /* Regex.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
@@ -637,8 +663,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B50A8A1CD271EC00B1A997 /* GrandOperatorTests.swift in Sources */,
+				A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */,
 				A1F5D7791CD0C9A300D8D045 /* UIViewControllerTest.swift in Sources */,
-				43980E3F1CBD0BCA00A7FC3C /* pEpForiOSTests.swift in Sources */,
+				A1B50A8C1CD271EC00B1A997 /* TestUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -792,6 +820,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOS";
+				PRODUCT_MODULE_NAME = pEpForiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)//pEpForiOS/pEpForiOS-Bridging-Header.h";
 			};
@@ -805,6 +834,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOS";
+				PRODUCT_MODULE_NAME = pEpForiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)//pEpForiOS/pEpForiOS-Bridging-Header.h";
 			};
@@ -818,7 +848,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pEpForiOS.app/pEpForiOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/p≡p.app/p≡p";
 			};
 			name = Debug;
 		};
@@ -830,7 +860,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pEpForiOS.app/pEpForiOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/p≡p.app/p≡p";
 			};
 			name = Release;
 		};
