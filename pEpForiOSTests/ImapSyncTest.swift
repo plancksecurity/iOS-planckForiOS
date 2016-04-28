@@ -108,17 +108,6 @@ class ImapSyncTest: XCTestCase {
         coreDataUtil = InMemoryCoreDataUtil()
     }
 
-    /**
-     Runs the runloop until either some time has elapsed or a predicate is true.
-     */
-    func runloopFor(time: CFAbsoluteTime, until: () -> Bool) {
-        let now = CFAbsoluteTimeGetCurrent()
-        while CFAbsoluteTimeGetCurrent() - now < time && !until() {
-            NSRunLoop.mainRunLoop().runMode(
-                NSDefaultRunLoopMode, beforeDate: NSDate.distantFuture())
-        }
-    }
-
     func testConnectionFail() {
         let del = TestImapSyncDelegate.init()
         let conInfo = ConnectInfo.init(
@@ -128,7 +117,7 @@ class ImapSyncTest: XCTestCase {
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
         sync.start()
-        runloopFor(2, until: { return del.errorOccurred })
+        TestUtil.runloopFor(2, until: { return del.errorOccurred })
         XCTAssertTrue(del.errorOccurred)
         XCTAssertTrue(del.connectionTimedOut)
     }
@@ -139,7 +128,7 @@ class ImapSyncTest: XCTestCase {
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
         sync.start()
-        runloopFor(5, until: {
+        TestUtil.runloopFor(5, until: {
             return del.errorOccurred || del.authSucess
         })
         XCTAssertTrue(!del.errorOccurred)
@@ -152,7 +141,7 @@ class ImapSyncTest: XCTestCase {
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
         sync.start()
-        runloopFor(5, until: {
+        TestUtil.runloopFor(5, until: {
             return del.errorOccurred || del.foldersFetched
         })
         XCTAssertTrue(!del.errorOccurred)
@@ -187,7 +176,7 @@ class ImapSyncTest: XCTestCase {
         sync.folderBuilder = setup.folderBuilder
 
         sync.start()
-        runloopFor(5, until: {
+        TestUtil.runloopFor(5, until: {
             return del.errorOccurred || (del.folderOpenSuccess && del.folderPrefetchSuccess)
         })
         XCTAssertTrue(!del.errorOccurred)
@@ -221,7 +210,7 @@ class ImapSyncTest: XCTestCase {
         sync.folderBuilder = setup.folderBuilder
 
         sync.start()
-        runloopFor(5, until: {
+        TestUtil.runloopFor(5, until: {
             return del.errorOccurred || (del.folderOpenSuccess)
         })
         XCTAssertTrue(!del.errorOccurred)
@@ -255,7 +244,7 @@ class ImapSyncTest: XCTestCase {
             sync.delegate = del
             sync.fetchMailFromFolderNamed(ImapSync.defaultImapInboxName,
                                           uid: message.uid!.integerValue)
-            runloopFor(5, until: {
+            TestUtil.runloopFor(5, until: {
                 return del.messagePrefetched
             })
             XCTAssertTrue(del.messagePrefetched)

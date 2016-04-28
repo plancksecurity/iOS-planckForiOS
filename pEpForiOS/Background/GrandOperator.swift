@@ -27,6 +27,11 @@ public protocol IGrandOperator {
                         completionBlock: ((error: NSError?) -> Void)?)
 
     /**
+     Verifies the given connection. Tests for IMAP and SMTP.
+     */
+    func verifyConnection(connectInfo: ConnectInfo, completionBlock: ((error: NSError?) -> Void)?)
+
+    /**
      Used by background operations to set an error.
      
      - parameter operation: The operation the error occurred
@@ -36,6 +41,7 @@ public protocol IGrandOperator {
 }
 
 public class GrandOperator: IGrandOperator {
+    let comp = "GrandOperator"
 
     public let connectionManager: ConnectionManager
     public let coreDataUtil: ICoreDataUtil
@@ -61,6 +67,11 @@ public class GrandOperator: IGrandOperator {
             }
         }
         op.start()
+    }
+
+    public func verifyConnection(connectInfo: ConnectInfo,
+                                 completionBlock: ((error: NSError?) -> Void)?) {
+        completionBlock?(error: Constants.errorNotImplemented(comp))
     }
 
     public func setErrorForOperation(operation: NSOperation, error: NSError) {
