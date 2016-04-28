@@ -14,6 +14,8 @@ import pEpForiOS
 class GrandOperatorTests: XCTestCase {
     let comp = "GrandOperatorTests"
 
+    let waitTime: NSTimeInterval = 10
+
     let correct = TestData()
     var coreDataUtil: InMemoryCoreDataUtil!
     var connectionManager: ConnectionManager!
@@ -39,25 +41,24 @@ class GrandOperatorTests: XCTestCase {
         XCTAssertNotNil(message?.subject)
     }
 
-    /*
     func testVerifyConnectionAllFailed() {
-        var failed = false
+        let exp = expectationWithDescription("verified")
         let connectionInfo = ConnectInfo.init(
             email: "none", imapPassword: "none", imapAuthMethod: "none", smtpAuthMethod: "none",
             imapServerName: "cant.connect", imapServerPort: 993, imapTransport: .Plain,
             smtpServerName: "cant.connect", smtpServerPort: 516, smtpTransport: .TLS)
         grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
-            failed = true
+            XCTAssertTrue(error!.code == Constants.NetworkError.Timeout.rawValue)
+            exp.fulfill()
         })
-        TestUtil.runloopFor(5, until: {
-            return failed
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
         })
-        XCTAssertTrue(failed)
     }
 
     func testVerifyConnectionImapAuthenticationFailed() {
-        var failed = false
+        let exp = expectationWithDescription("verified")
         let connectionInfo = ConnectInfo.init(
             email: correct.email, imapPassword: "notwork", imapAuthMethod: correct.imapAuthMethod,
             smtpAuthMethod: correct.smtpAuthMethod,
@@ -67,16 +68,16 @@ class GrandOperatorTests: XCTestCase {
             smtpTransport: correct.smtpTransport)
         grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
-            failed = true
+            XCTAssertTrue(error!.code == Constants.NetworkError.AuthenticationFailed.rawValue)
+            exp.fulfill()
         })
-        TestUtil.runloopFor(5, until: {
-            return failed
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
         })
-        XCTAssertTrue(failed)
     }
 
     func testVerifyConnectionSmtpAuthenticationFailed() {
-        var failed = false
+        let exp = expectationWithDescription("verified")
         let connectionInfo = ConnectInfo.init(
             email: correct.email, imapUsername: correct.getImapUsername(),
             smtpUsername: correct.getSmtpUsername(), imapPassword: correct.imapPassword,
@@ -87,16 +88,15 @@ class GrandOperatorTests: XCTestCase {
             smtpTransport: correct.smtpTransport)
         grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
-            failed = true
+            exp.fulfill()
         })
-        TestUtil.runloopFor(5, until: {
-            return failed
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
         })
-        XCTAssertTrue(failed)
     }
 
     func testVerifyConnectionImapConnectionFailed() {
-        var failed = false
+        let exp = expectationWithDescription("verified")
         let connectionInfo = ConnectInfo.init(
             email: correct.email, imapUsername: correct.getImapUsername(),
             smtpUsername: correct.getSmtpUsername(), imapPassword: correct.imapPassword,
@@ -107,16 +107,15 @@ class GrandOperatorTests: XCTestCase {
             smtpTransport: correct.smtpTransport)
         grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
-            failed = true
+            exp.fulfill()
         })
-        TestUtil.runloopFor(5, until: {
-            return failed
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
         })
-        XCTAssertTrue(failed)
     }
 
     func testVerifyConnectionSmtpConnectionFailed() {
-        var failed = false
+        let exp = expectationWithDescription("verified")
         let connectionInfo = ConnectInfo.init(
             email: correct.email, imapUsername: correct.getImapUsername(),
             smtpUsername: correct.getSmtpUsername(), imapPassword: correct.imapPassword,
@@ -127,23 +126,21 @@ class GrandOperatorTests: XCTestCase {
             smtpTransport: correct.smtpTransport)
         grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
-            failed = true
+            exp.fulfill()
         })
-        TestUtil.runloopFor(5, until: {
-            return failed
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
         })
-        XCTAssertTrue(failed)
     }
 
     func testVerifyConnectionOk() {
-        var success = false
+        let exp = expectationWithDescription("verified")
         grandOperator.verifyConnection(correct, completionBlock: { error in
             XCTAssertNil(error)
-            success = true
+            exp.fulfill()
         })
-        TestUtil.runloopFor(5, until: {
-            return success
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
         })
-        XCTAssertTrue(success)
     }
-*/}
+}

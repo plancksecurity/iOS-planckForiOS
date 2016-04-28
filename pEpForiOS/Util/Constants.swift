@@ -8,12 +8,12 @@
 
 import Foundation
 
-class Constants {
-    enum ErrorCode: Int {
+public class Constants {
+    public enum ErrorCode: Int {
         case NotImplemented = 1000
     }
 
-    enum NetworkError: Int {
+    public enum NetworkError: Int {
         case Timeout = 2000
         case AuthenticationFailed
         case ConnectionLost

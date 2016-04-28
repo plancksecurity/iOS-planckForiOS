@@ -13,7 +13,6 @@ class VerifyImapConnectionOperation: BaseOperation {
 
     let connectInfo: ConnectInfo
     var imapSync: ImapSync!
-    var myFinished = false
 
     init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
@@ -28,16 +27,11 @@ class VerifyImapConnectionOperation: BaseOperation {
         imapSync.delegate = self
         imapSync.start()
     }
-
-    override var finished: Bool {
-        return myFinished
-    }
 }
 
 extension VerifyImapConnectionOperation: ImapSyncDelegate {
 
     func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
-        myFinished = true
         markAsFinished()
     }
 
@@ -45,27 +39,24 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     }
 
     func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorTimeout(errorDomain))
-        myFinished = true
+        grandOperator.setErrorForOperation(self,
+                                           error: Constants.errorAuthenticationFailed(errorDomain))
         markAsFinished()
     }
 
     func connectionLost(sync: ImapSync, notification: NSNotification?) {
         grandOperator.setErrorForOperation(self, error: Constants.errorConnectionLost(errorDomain))
-        myFinished = true
         markAsFinished()
     }
 
     func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
         grandOperator.setErrorForOperation(self,
                                            error: Constants.errorConnectionTerminated(errorDomain))
-        myFinished = true
         markAsFinished()
     }
 
     func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
         grandOperator.setErrorForOperation(self, error: Constants.errorTimeout(errorDomain))
-        myFinished = true
         markAsFinished()
     }
 

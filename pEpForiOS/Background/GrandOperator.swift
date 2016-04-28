@@ -51,6 +51,7 @@ public class GrandOperator: IGrandOperator {
     public var errors: [NSOperation:NSError] = [:]
 
     let prefetchQueue = NSOperationQueue.init()
+    let verifyConnectionQueue = NSOperationQueue.init()
 
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectionManager = connectionManager
@@ -111,10 +112,8 @@ public class GrandOperator: IGrandOperator {
         op1.completionBlock = completion1
         op2.completionBlock = completion2
 
-        let queue = NSOperationQueue()
-        queue.maxConcurrentOperationCount = 2
-        queue.addOperation(op1)
-        queue.addOperation(op2)
+        verifyConnectionQueue.addOperation(op1)
+        verifyConnectionQueue.addOperation(op2)
     }
 
     public func setErrorForOperation(operation: NSOperation, error: NSError) {

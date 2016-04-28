@@ -39,7 +39,6 @@ class PrefetchEmailsOperation: BaseOperation {
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
     var imapSync: ImapSync!
-    var myFinished: Bool = false
     let folderBuilder: ImapFolderBuilder
 
     override var executing: Bool {
@@ -101,7 +100,6 @@ class PrefetchEmailsOperation: BaseOperation {
 
     func waitForFinished() {
         if backgroundQueue.operationCount == 0 {
-            myFinished = true
             markAsFinished()
         } else {
             backgroundQueue.addObserver(self, forKeyPath: "operationCount",
@@ -116,7 +114,6 @@ class PrefetchEmailsOperation: BaseOperation {
         if keyPath == "operationCount" {
             if let newValue = change?[NSKeyValueChangeNewKey] {
                 if newValue.intValue == 0 {
-                    myFinished = true
                     markAsFinished()
                 }
             }
