@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lUt-al-rhM">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -20,6 +20,9 @@
                         <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
+                    <connections>
+                        <segue destination="kcA-RK-9Xg" kind="relationship" relationship="rootViewController" id="O3O-Dk-tqd"/>
+                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAr-j7-O0Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -35,7 +38,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EmailListViewCell" rowHeight="111" id="uhL-VL-48i" customClass="EmailListViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="600" height="111"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="111"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uhL-VL-48i" id="jgQ-nZ-h1r">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="110"/>
@@ -107,7 +110,7 @@
         <!--User Info Table View-->
         <scene sceneID="hJo-oO-Yib">
             <objects>
-                <tableViewController id="YcO-Oc-XZx" customClass="UserInfoTableView" customModule="p_p" sceneMemberID="viewController">
+                <tableViewController id="YcO-Oc-XZx" customClass="UserInfoTableView" customModule="pEpForiOS" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="174" sectionHeaderHeight="18" sectionFooterHeight="18" id="5QC-WL-de6">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -126,6 +129,9 @@
                                                     <rect key="frame" x="174" y="5" width="244" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="editingEmail:" destination="YcO-Oc-XZx" eventType="editingDidEnd" id="XJA-eH-oVe"/>
+                                                    </connections>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCr-eb-mdn">
                                                     <rect key="frame" x="52" y="14" width="41" height="21"/>
@@ -174,6 +180,9 @@
                                                     <rect key="frame" x="174" y="5" width="97" height="30"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                    <connections>
+                                                        <action selector="editingPassword:" destination="YcO-Oc-XZx" eventType="editingDidEnd" id="jQZ-kK-TF6"/>
+                                                    </connections>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbE-mW-hjW">
                                                     <rect key="frame" x="55" y="13" width="74" height="21"/>
@@ -200,23 +209,20 @@
                     <navigationItem key="navigationItem" id="QS1-DH-6Lg">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="OEI-dm-im4">
                             <connections>
-                                <action selector="changeToIMAPSettings:" destination="YcO-Oc-XZx" id="pjf-ja-6Ew"/>
-                                <segue destination="dfm-hT-uzc" kind="show" identifier="IMAPSettings" id="Ovh-5j-bvd">
-                                    <nil key="action"/>
-                                </segue>
+                                <segue destination="dfm-hT-uzc" kind="show" id="ldH-cQ-xRu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="PasswordValue" destination="91l-1l-FuW" id="2xB-Q1-NAE"/>
-                        <outlet property="UsernameValue" destination="5Mt-BZ-h4K" id="gAJ-A7-xnL"/>
-                        <outlet property="emailValue" destination="TPZ-TM-PaG" id="N4P-JF-Dh4"/>
+                        <outlet property="emailValue" destination="TPZ-TM-PaG" id="BFT-MY-4yy"/>
+                        <outlet property="passwordValue" destination="91l-1l-FuW" id="RJE-lb-Tv7"/>
+                        <outlet property="usernameValue" destination="5Mt-BZ-h4K" id="L4G-Ew-DRD"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2vq-tw-UZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1703" y="365"/>
+            <point key="canvasLocation" x="2515" y="365"/>
         </scene>
         <!--Mail Table View-->
         <scene sceneID="f6A-Gu-Nbz">
@@ -309,25 +315,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lz5-UM-Eew" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3804" y="365"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="hSt-0s-QRe">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hPh-3q-eHI" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1zv-y7-ZI0">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="YcO-Oc-XZx" kind="relationship" relationship="rootViewController" id="y0C-0N-pna"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LsC-4Q-7ex" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="891" y="365"/>
+            <point key="canvasLocation" x="4616" y="365"/>
         </scene>
         <!--Settings Table View-->
         <scene sceneID="hV9-Ts-Xp9">
@@ -442,7 +430,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4z3-a3-v23" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2391" y="365"/>
+            <point key="canvasLocation" x="3203" y="365"/>
         </scene>
         <!--Settings Table View-->
         <scene sceneID="zuo-Oy-4J7">
@@ -557,7 +545,25 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBU-82-njk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3053" y="365"/>
+            <point key="canvasLocation" x="3865" y="365"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="gku-pE-upd">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lUt-al-rhM" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="aaD-jy-n74">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="YcO-Oc-XZx" kind="relationship" relationship="rootViewController" id="4JF-Dj-xrZ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Uy-Za-cli" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1703" y="365"/>
         </scene>
     </scenes>
 </document>

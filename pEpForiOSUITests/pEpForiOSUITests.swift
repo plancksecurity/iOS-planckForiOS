@@ -7,9 +7,13 @@
 //
 
 import XCTest
+import pEpForiOS
 
-class pEpForiOSUITests: XCTestCase {
-        
+
+class PEpForiOSUITests: XCTestCase {
+
+
+
     override func setUp() {
         super.setUp()
         
@@ -31,6 +35,17 @@ class pEpForiOSUITests: XCTestCase {
     func testExample() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let tablesQuery = XCUIApplication().tables
+        tablesQuery.textFields["paquito.chocolatero@gmail.com"].tap()
+        tablesQuery.cells.containingType(.StaticText, identifier:"Email").childrenMatchingType(.TextField).element
+
+        var aux:UserInfoTableView? = nil
+
+        //var model = ModelUserInfoTable.init(emailTextExist: false, passwordTextExist: false)
+        //XCTAssertTrue(model.emailTextExist)
+
+
     }
     
 }
