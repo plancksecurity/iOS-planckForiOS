@@ -37,7 +37,7 @@
         <attribute name="messageNumber" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="sentDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uid" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="ccMessages" inverseEntity="Contact" syncable="YES"/>
         <relationship name="content" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MessageContent" inverseName="message" inverseEntity="MessageContent" syncable="YES"/>
         <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="messages" inverseEntity="Folder" syncable="YES"/>
