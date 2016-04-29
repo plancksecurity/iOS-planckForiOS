@@ -55,8 +55,9 @@ class EmailListViewController: UITableViewController {
             })
             updateUI()
         }
-        
-        super.viewWillAppear(animated)
+        //self.performSegueWithIdentifier("AccountSettings2", sender: self)
+        //super.viewWillAppear(animated)
+        //countWithName
     }
 
     func prepareFetchRequest() {
@@ -185,4 +186,9 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
     }
+    /*override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "AccountSettings2" {
+            let destination = segue.destinationViewController as? UserInfoTableView
+        }
+    }*/
 }
