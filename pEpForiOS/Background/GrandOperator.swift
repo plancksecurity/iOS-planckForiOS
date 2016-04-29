@@ -47,10 +47,10 @@ public class GrandOperator: IGrandOperator {
     public let connectionManager: ConnectionManager
     public let coreDataUtil: ICoreDataUtil
 
-    public var errors: [NSOperation:NSError] = [:]
+    private var errors: [NSOperation:NSError] = [:]
 
-    let prefetchQueue = NSOperationQueue.init()
-    let verifyConnectionQueue = NSOperationQueue.init()
+    private let prefetchQueue = NSOperationQueue.init()
+    private let verifyConnectionQueue = NSOperationQueue.init()
 
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectionManager = connectionManager
