@@ -60,7 +60,9 @@ public class UserInfoTableView: UITableViewController {
             if let destination = segue.destinationViewController as? IMAPSettingsTableView {
                destination.mailParameters = mailParameters
             }
+
         }
+
     }
 }
 
