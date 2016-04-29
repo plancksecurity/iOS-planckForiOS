@@ -15,8 +15,6 @@ public protocol IGrandOperator {
 
     var connectionManager: ConnectionManager { get }
 
-    var errors: [NSOperation:NSError] { get }
-
     /**
      Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
      and the given folder and stores them into the persistent store.
@@ -29,7 +27,8 @@ public protocol IGrandOperator {
                         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Verifies the given connection. Tests for IMAP and SMTP.
+     Asynchronously verifies the given connection. Tests for IMAP and SMTP. The test is considered
+     a success when authentication was successful.
      */
     func verifyConnection(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
@@ -94,18 +93,18 @@ public class GrandOperator: IGrandOperator {
         var finished2 = false
 
         let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
-        let op2 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
+        let op2 = VerifySmtpConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
 
         let completion1 = {
             finished1 = true
             self.handleVerificationCompletion(finished1, finished2: finished2,
-                                              op1: op1, op2: op1,
+                                              op1: op1, op2: op2,
                                               completionBlock: completionBlock)
         }
         let completion2 = {
             finished2 = true
             self.handleVerificationCompletion(finished1, finished2: finished2,
-                                              op1: op1, op2: op1,
+                                              op1: op1, op2: op2,
                                               completionBlock: completionBlock)
         }
 
