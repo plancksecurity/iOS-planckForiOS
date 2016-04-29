@@ -13,27 +13,37 @@ class UIViewControllerTest: XCTestCase {
 
     var model = ModelUserInfoTable(emailTextExist: false, passwordTextExist: false)
 
-
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
+    func testButtonNextScreenCorrectBehaviorWithoutPasswordAndEmail() {
         let model = ModelUserInfoTable.init(emailTextExist: false, passwordTextExist: false)
         XCTAssertFalse(model.shouldEnableNextButton())
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
+
+    func testButtonNextScreenCorrectBehaviorWithoutPassword() {
+        let model = ModelUserInfoTable.init(emailTextExist: true, passwordTextExist: false)
+        XCTAssertFalse(model.shouldEnableNextButton())
+    }
+
+    func testButtonNextScreenCorrectBehaviorWithoutEmail() {
+        let model = ModelUserInfoTable.init(emailTextExist: false, passwordTextExist: true)
+        XCTAssertFalse(model.shouldEnableNextButton())
+    }
+
+    func testButtonNextScreenCorrectBehaviorWithAllData() {
+        let model = ModelUserInfoTable.init(emailTextExist: true, passwordTextExist: true)
+        XCTAssertTrue(model.shouldEnableNextButton())
     }
 
     func testPerformanceExample() {
         let vc = UserInfoTableView.init()
-        var prove = model.passwordTextExist
+        XCTAssertNotNil(vc)
     }
 
 }
