@@ -22,7 +22,8 @@ public class Account: _Account {
     var connectInfo: ConnectInfo {
         return ConnectInfo.init(
             email: self.email, imapPassword: "",
-            imapAuthMethod: self.imapAuthMethod, smtpAuthMethod: self.smtpAuthMethod,
+            imapAuthMethod: ImapAuthMethod.init(string: self.imapAuthMethod),
+            smtpAuthMethod: SmtpAuthMethod.init(string: self.smtpAuthMethod),
             imapServerName: self.imapServerName,
             imapServerPort: UInt16(self.imapServerPort!.integerValue),
             imapTransport: self.rawImapTransport,
@@ -53,8 +54,8 @@ public class Account: _Account {
         account.email = connectInfo.email
         account.imapUsername = connectInfo.imapUsername
         account.smtpUsername = connectInfo.smtpUsername
-        account.imapAuthMethod = connectInfo.imapAuthMethod
-        account.smtpAuthMethod = connectInfo.smtpAuthMethod
+        account.imapAuthMethod = connectInfo.imapAuthMethod.rawValue
+        account.smtpAuthMethod = connectInfo.smtpAuthMethod.rawValue
         account.imapServerName = connectInfo.imapServerName
         account.smtpServerName = connectInfo.smtpServerName
         account.imapServerPort = NSNumber.init(short: Int16(connectInfo.imapServerPort))

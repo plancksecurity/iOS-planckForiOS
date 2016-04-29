@@ -223,7 +223,7 @@ extension ImapSync: CWServiceClient {
         }
         imapStore.authenticate(connectInfo.getImapUsername(),
                                password: password,
-                               mechanism: connectInfo.imapAuthMethod)
+                               mechanism: connectInfo.imapAuthMethod.rawValue)
     }
 
     @objc public func serviceReconnected(theNotification: NSNotification!) {

@@ -11,11 +11,12 @@ import Foundation
 public class TestData {
 
     public static var connectInfo: ConnectInfo =
-        ConnectInfo.init(email: "email@email.test",
-                         imapPassword: "pasword",
-                         imapAuthMethod: "LOGIN", smtpAuthMethod: "PLAIN",
-                         imapServerName: "some.host", imapServerPort: 993,
+        ConnectInfo.init(email: "someemail@test.com",
+                         imapPassword: "password",
+                         imapAuthMethod: ImapAuthMethod.Simple,
+                         smtpAuthMethod: SmtpAuthMethod.Plain,
+                         imapServerName: "host.com", imapServerPort: 993,
                          imapTransport: .TLS,
-                         smtpServerName: "some.host", smtpServerPort: 587,
+                         smtpServerName: "host.com", smtpServerPort: 587,
                          smtpTransport: .StartTLS)
 }

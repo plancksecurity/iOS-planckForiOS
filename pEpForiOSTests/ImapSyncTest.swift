@@ -160,8 +160,9 @@ class ImapSyncTest: XCTestCase {
     func testConnectionFail() {
         let del = TestImapSyncDelegate.init()
         let conInfo = ConnectInfo.init(
-            email: "", imapPassword: "", imapAuthMethod: "",
-            smtpAuthMethod: "", imapServerName: "doesnot.work", imapServerPort: 5000,
+            email: "", imapPassword: "", imapAuthMethod: ImapAuthMethod.Simple,
+            smtpAuthMethod: SmtpAuthMethod.Plain, imapServerName: "doesnot.work",
+            imapServerPort: 5000,
             imapTransport: .Plain, smtpServerName: "", smtpServerPort: 5001, smtpTransport: .Plain)
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del

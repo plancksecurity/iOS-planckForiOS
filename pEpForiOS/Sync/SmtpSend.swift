@@ -177,7 +177,7 @@ extension SmtpSend: CWServiceClient {
                 }
                 self.smtp.authenticate(self.connectInfo.getSmtpUsername(),
                     password: password,
-                    mechanism: self.connectInfo.smtpAuthMethod)
+                    mechanism: self.connectInfo.smtpAuthMethod.rawValue)
             }
         }
     }

@@ -8,6 +8,41 @@
 
 import Foundation
 
+public enum ImapAuthMethod: String {
+    case Simple = "LOGIN"
+    case CramMD5 = "CRAM-MD5"
+
+    init(string: String) {
+        if string.isEqual(Simple.rawValue) {
+            self = Simple
+        } else if string.isEqual(CramMD5.rawValue) {
+            self = CramMD5
+        } else {
+            self = Simple
+            assert(false, "")
+        }
+    }
+}
+
+public enum SmtpAuthMethod: String {
+    case Plain = "PLAIN"
+    case Login = "LOGIN"
+    case CramMD5 = "CRAM-MD5"
+
+    init(string: String) {
+        if string.isEqual(Plain.rawValue) {
+            self = Plain
+        } else if string.isEqual(Login.rawValue) {
+            self = Login
+        } else if string.isEqual(CramMD5.rawValue) {
+            self = CramMD5
+        } else {
+            self = Plain
+            assert(false, "")
+        }
+    }
+}
+
 /**
  Holds connection info (like server, port etc.) for IMAP and SMTP.
  */
@@ -17,8 +52,9 @@ public protocol IConnectInfo {
     var smtpUsername: String? { get }
     var imapPassword: String? { get }
     var smtpPassword: String? { get }
-    var imapAuthMethod: String { get }
-    var smtpAuthMethod: String { get }
+    var imapAuthMethod: ImapAuthMethod { get }
+    var smtpAuthMethod: SmtpAuthMethod { get }
+
     var imapServerName: String { get }
     var imapServerPort: UInt16 { get }
     var smtpServerName: String { get }
@@ -41,8 +77,8 @@ public struct ConnectInfo: IConnectInfo {
     public let smtpUsername: String?
     public let imapPassword: String?
     public let smtpPassword: String?
-    public let imapAuthMethod: String
-    public let smtpAuthMethod: String
+    public let imapAuthMethod: ImapAuthMethod
+    public let smtpAuthMethod: SmtpAuthMethod
     public let imapServerName: String
     public let imapServerPort: UInt16
     public let imapTransport: ConnectionTransport
@@ -56,7 +92,7 @@ public struct ConnectInfo: IConnectInfo {
 
     public init(email: String, imapUsername: String?, smtpUsername: String?,
                 imapPassword: String?, smtpPassword: String?,
-                imapAuthMethod: String, smtpAuthMethod: String,
+                imapAuthMethod: ImapAuthMethod, smtpAuthMethod: SmtpAuthMethod,
                 imapServerName: String, imapServerPort: UInt16, imapTransport: ConnectionTransport,
                 smtpServerName: String, smtpServerPort: UInt16, smtpTransport: ConnectionTransport) {
         self.email = email
@@ -74,7 +110,8 @@ public struct ConnectInfo: IConnectInfo {
         self.smtpTransport = smtpTransport
     }
 
-    public init(email: String, imapPassword: String, imapAuthMethod: String, smtpAuthMethod: String,
+    public init(email: String, imapPassword: String, imapAuthMethod: ImapAuthMethod,
+                smtpAuthMethod: SmtpAuthMethod,
                 imapServerName: String, imapServerPort: UInt16, imapTransport: ConnectionTransport,
                 smtpServerName: String, smtpServerPort: UInt16, smtpTransport: ConnectionTransport) {
         self.email = email
