@@ -75,7 +75,7 @@ class PrefetchEmailsOperation: BaseOperation {
         if self.cancelled {
             return
         }
-        imapSync = grandOperator.connectionManager.emaiSyncConnection(connectInfo)
+        imapSync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
         imapSync.delegate = self
         imapSync.folderBuilder = folderBuilder
         imapSync.start()

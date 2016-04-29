@@ -16,7 +16,7 @@ public class ConnectionManager {
         self.coreDataUtil = coreDataUtil
     }
 
-    public func emaiSyncConnection(connectInfo: ConnectInfo) -> ImapSync {
+    public func emailSyncConnection(connectInfo: ConnectInfo) -> ImapSync {
         if let service = emailSyncConnections[connectInfo] {
             return service as! ImapSync
         } else {
