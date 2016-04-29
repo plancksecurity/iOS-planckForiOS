@@ -29,6 +29,7 @@ class StorePrefetchedMailOperation: BaseOperation {
         let contacts = addContacts(addresses, context: context)
         insertOrUpdateMail(contacts, message: message, context: context)
         CoreDataUtil.saveContext(managedObjectContext: context)
+        markAsFinished()
     }
 
     func insertOrUpdateMail(contacts: [String: Contact], message: CWIMAPMessage,

@@ -72,7 +72,6 @@ class PrefetchEmailsOperation: BaseOperation {
     }
 
     override func main() {
-        Log.info(comp, "main")
         if self.cancelled {
             return
         }
