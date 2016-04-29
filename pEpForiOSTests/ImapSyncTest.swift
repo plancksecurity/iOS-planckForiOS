@@ -179,7 +179,7 @@ class ImapSyncTest: XCTestCase {
 
     func testAuthSuccess() {
         let del = TestImapSyncDelegate.init()
-        let conInfo = TestData()
+        let conInfo = TestData.connectInfo
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
 
@@ -196,7 +196,7 @@ class ImapSyncTest: XCTestCase {
 
     func testFetchFolders() {
         let del = TestImapSyncDelegate.init(fetchFolders: true)
-        let conInfo = TestData()
+        let conInfo = TestData.connectInfo
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
         sync.delegate = del
 
@@ -213,7 +213,7 @@ class ImapSyncTest: XCTestCase {
     }
 
     func setupMemoryPersistence() -> PersistentSetup {
-        let conInfo = TestData()
+        let conInfo = TestData.connectInfo
         let backgroundQueue = NSOperationQueue.init()
         let connectionManager = ConnectionManager.init(coreDataUtil: coreDataUtil)
         let grandOperator = GrandOperator.init(connectionManager: connectionManager,

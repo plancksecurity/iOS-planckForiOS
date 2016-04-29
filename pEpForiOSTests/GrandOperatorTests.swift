@@ -16,7 +16,7 @@ class GrandOperatorTests: XCTestCase {
 
     let waitTime: NSTimeInterval = 10
 
-    let correct = TestData()
+    let correct = TestData.connectInfo
     var coreDataUtil: InMemoryCoreDataUtil!
     var connectionManager: ConnectionManager!
     var grandOperator: IGrandOperator!

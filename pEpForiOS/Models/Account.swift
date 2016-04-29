@@ -102,7 +102,7 @@ public class Account: _Account {
     }
 
     static func insertTestAccount(context: NSManagedObjectContext) -> Account? {
-        if let account = insertAccountFromConnectInfo(TestData(), context: context) {
+        if let account = insertAccountFromConnectInfo(TestData.connectInfo, context: context) {
             return setAccountAsLastUsed(account)
         } else {
             return nil

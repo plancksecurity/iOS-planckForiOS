@@ -1,26 +1,21 @@
 //
 //  TestData.swift
-//  PantomimeMailOSX
+//  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 07/04/16.
-//  Copyright © 2016 pEp Security S.A. All rights reserved.
+//  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
 
-public class TestData: ConnectInfo {
+public class TestData {
 
-    public init() {
-        super.init(email: "test001@pep.com",
-                   imapUsername: nil,
-                   smtpUsername: nil,
-                   imapPassword: "password",
-                   smtpPassword: nil,
-                   imapAuthMethod: "LOGIN", smtpAuthMethod: "PLAIN",
-                   imapServerName: "imap.email.com", imapServerPort: 993,
-                   imapTransport: .TLS,
-                   smtpServerName: "smtp.email.com", smtpServerPort: 587,
-                   smtpTransport: .StartTLS)
-    }
-
+    public static var connectInfo: ConnectInfo =
+        ConnectInfo.init(email: "email@email.test",
+                         imapPassword: "pasword",
+                         imapAuthMethod: "LOGIN", smtpAuthMethod: "PLAIN",
+                         imapServerName: "some.host", imapServerPort: 993,
+                         imapTransport: .TLS,
+                         smtpServerName: "some.host", smtpServerPort: 587,
+                         smtpTransport: .StartTLS)
 }
