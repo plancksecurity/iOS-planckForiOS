@@ -7,6 +7,7 @@ import CoreData
 public enum FolderAttributes: String {
     case folderType = "folderType"
     case name = "name"
+    case nextUID = "nextUID"
     case uidValidity = "uidValidity"
 }
 
@@ -45,6 +46,9 @@ public class _Folder: BaseManagedObject {
 
     @NSManaged public
     var name: String
+
+    @NSManaged public
+    var nextUID: NSNumber?
 
     @NSManaged public
     var uidValidity: NSNumber?

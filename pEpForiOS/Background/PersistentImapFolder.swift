@@ -21,6 +21,22 @@ class PersistentImapFolder: CWIMAPFolder {
     let grandOperator: IGrandOperator
     let cache: PersistentEmailCache
 
+    override var nextUID: UInt {
+        get {
+            return super.nextUID
+        }
+        set {
+            super.nextUID = nextUID
+            if let folder = folderObject() {
+                folder.nextUID = nextUID
+                CoreDataUtil.saveContext(managedObjectContext: mainContext)
+            } else {
+                Log.warn(comp,
+                         "Could not set nextUID \(nextUID) for folder (name()) of account \(connectInfo.email)")
+            }
+        }
+    }
+
     init(name: String, grandOperator: IGrandOperator, connectInfo: ConnectInfo,
          backgroundQueue: NSOperationQueue) {
         self.connectInfo = connectInfo
