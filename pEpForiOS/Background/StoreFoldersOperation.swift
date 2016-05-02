@@ -22,8 +22,8 @@ class StoreFoldersOperation: BaseOperation {
     override func main() {
         let model = grandOperator.backgroundModel()
         for folderName in foldersToStore {
-            let folder = model.insertOrUpdateFolderWithName(
-            folderName, folderType: Account.AccountType.Imap, accountEmail: email)
+            let folder = model.insertOrUpdateFolderName(
+                folderName, folderType: Account.AccountType.Imap, accountEmail: email)
             if folder == nil {
                 grandOperator.setErrorForOperation(
                     self,

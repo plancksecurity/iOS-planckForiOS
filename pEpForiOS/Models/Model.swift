@@ -11,18 +11,21 @@ import CoreData
 
 public protocol IModel {
     func existingMessage(msg: CWIMAPMessage) -> IMessage?
-    func newAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount
+    func messageByPredicate(predicate: NSPredicate) -> IMessage?
+
+    func accountByEmail(email: String) -> IAccount?
+    func setAccountAsLastUsed(account: IAccount) -> IAccount
+    func fetchLastAccount() -> IAccount?
+
     func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount?
     func insertNewMessage() -> IMessage
     func insertTestAccount() -> IAccount?
-    func setAccountAsLastUsed(account: IAccount) -> IAccount
-    func accountByEmail(email: String) -> IAccount?
-    func insertOrUpdateFolderWithName(folderName: String,
-                                      folderType: Account.AccountType,
-                                      accountEmail: String) -> IFolder?
-    func fetchLastAccount() -> IAccount?
-    func messageByPredicate(predicate: NSPredicate) -> IMessage?
+
     func insertOrUpdateContactEmail(email: String, name: String?) -> IContact?
+    func insertOrUpdateFolderName(folderName: String,
+                                  folderType: Account.AccountType,
+                                  accountEmail: String) -> IFolder?
+
     func save()
 }
 
@@ -77,7 +80,7 @@ public class Model: IModel {
         return nil
     }
 
-    public func newAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount {
+    func newAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount {
         let account = NSEntityDescription.insertNewObjectForEntityForName(
             Account.entityName(), inManagedObjectContext: context) as! Account
 
@@ -166,7 +169,7 @@ public class Model: IModel {
      Inserts a folder of the given type.
      - Note: Caller is responsible for saving!
      */
-    public func insertOrUpdateFolderWithName(
+    public func insertOrUpdateFolderName(
         folderName: String, folderType: Account.AccountType,
         accountEmail: String) -> IFolder? {
         let p = NSPredicate.init(format: "account.email = %@ and name = %@", accountEmail,

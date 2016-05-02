@@ -59,7 +59,7 @@ class StorePrefetchedMailOperation: BaseOperation {
         }
 
             if let folderName = message.folder()?.name() {
-                if let folder = model.insertOrUpdateFolderWithName(
+                if let folder = model.insertOrUpdateFolderName(
                     folderName, folderType: Account.AccountType.Imap,
                     accountEmail: accountEmail) {
                     if isFresh || mail.folder.name != folder.name {
