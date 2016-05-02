@@ -25,7 +25,45 @@ public enum MessageRelationships: String {
     case to = "to"
 }
 
-public class _Message: BaseManagedObject {
+public protocol IMessage {
+
+    // MARK: - Properties
+
+    var fetched: NSNumber? { get set }
+
+    var longMessage: String? { get set }
+
+    var longMessageFormatted: String? { get set }
+
+    var messageId: String? { get set }
+
+    var messageNumber: NSNumber? { get set }
+
+    var sentDate: NSDate? { get set }
+
+    var subject: String? { get set }
+
+    var uid: NSNumber? { get set }
+
+    // MARK: - Relationships
+
+    var cc: NSOrderedSet { get set }
+
+    var content: MessageContent? { get set }
+
+    var folder: Folder { get set }
+
+    var from: Contact? { get set }
+
+    var referenced: Message? { get set }
+
+    var references: NSOrderedSet { get set }
+
+    var to: NSOrderedSet { get set }
+
+}
+
+public class _Message: BaseManagedObject, IMessage {
 
     // MARK: - Class methods
 

@@ -15,7 +15,25 @@ public enum ContactRelationships: String {
     case toMessages = "toMessages"
 }
 
-public class _Contact: BaseManagedObject {
+public protocol IContact {
+
+    // MARK: - Properties
+
+    var email: String { get set }
+
+    var name: String? { get set }
+
+    // MARK: - Relationships
+
+    var ccMessages: NSSet { get set }
+
+    var fromMessages: NSSet { get set }
+
+    var toMessages: NSSet { get set }
+
+}
+
+public class _Contact: BaseManagedObject, IContact {
 
     // MARK: - Class methods
 

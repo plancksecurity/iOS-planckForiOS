@@ -23,7 +23,41 @@ public enum AccountRelationships: String {
     case folders = "folders"
 }
 
-public class _Account: BaseManagedObject {
+public protocol IAccount {
+
+    // MARK: - Properties
+
+    var accountType: NSNumber? { get set }
+
+    var email: String { get set }
+
+    var imapAuthMethod: String { get set }
+
+    var imapServerName: String { get set }
+
+    var imapServerPort: NSNumber? { get set }
+
+    var imapTransport: NSNumber? { get set }
+
+    var imapUsername: String? { get set }
+
+    var smtpAuthMethod: String { get set }
+
+    var smtpServerName: String { get set }
+
+    var smtpServerPort: NSNumber? { get set }
+
+    var smtpTransport: NSNumber? { get set }
+
+    var smtpUsername: String? { get set }
+
+    // MARK: - Relationships
+
+    var folders: NSSet { get set }
+
+}
+
+public class _Account: BaseManagedObject, IAccount {
 
     // MARK: - Class methods
 

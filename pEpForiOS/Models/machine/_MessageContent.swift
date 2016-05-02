@@ -12,7 +12,19 @@ public enum MessageContentRelationships: String {
     case message = "message"
 }
 
-public class _MessageContent: BaseManagedObject {
+public protocol IMessageContent {
+
+    // MARK: - Properties
+
+    var data: NSData { get set }
+
+    // MARK: - Relationships
+
+    var message: Message? { get set }
+
+}
+
+public class _MessageContent: BaseManagedObject, IMessageContent {
 
     // MARK: - Class methods
 
