@@ -217,14 +217,14 @@ class ImapSyncTest: XCTestCase {
         let conInfo = TestData.connectInfo
         let backgroundQueue = NSOperationQueue.init()
         let connectionManager = ConnectionManager.init(coreDataUtil: coreDataUtil)
-        let grandOperator = GrandOperator.init(connectionManager: connectionManager,
-                                               coreDataUtil: coreDataUtil)
+        let grandOperator = GrandOperator.init(
+            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
                                                    connectInfo: conInfo,
                                                    backgroundQueue: backgroundQueue)
 
-        let account = Account.insertAccountFromConnectInfo(
-            conInfo, context: coreDataUtil.managedObjectContext)
+        let model = Model.init(context: coreDataUtil.managedObjectContext)
+        let account = model.insertAccountFromConnectInfo(conInfo)
         XCTAssertNotNil(account)
 
         return PersistentSetup.init(

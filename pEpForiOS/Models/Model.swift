@@ -10,14 +10,144 @@ import Foundation
 import CoreData
 
 public protocol IModel {
+    func existingMessage(msg: CWIMAPMessage) -> IMessage?
+    func newAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount
+    func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount?
+    func insertNewMessage() -> IMessage
+    func insertTestAccount() -> IAccount?
+    func setAccountAsLastUsed(account: IAccount) -> IAccount
+    func accountByEmail(email: String) -> IAccount?
+    func insertOrUpdateFolderWithName(folderName: String,
+                                      folderType: Account.AccountType,
+                                      accountEmail: String) -> IFolder?
+    func fetchLastAccount() -> IAccount?
+    func messageByPredicate(predicate: NSPredicate) -> IMessage?
+    func insertOrUpdateContactEmail(email: String, name: String?) -> IContact?
     func save()
 }
 
 public class Model: IModel {
+    let comp = "Model"
+
+    public static let CouldNotCreateFolder = 1000
+
     let context: NSManagedObjectContext
 
     public init(context: NSManagedObjectContext) {
         self.context = context
+    }
+
+    func singleEntityWithName(name: String, predicate: NSPredicate) -> NSManagedObject? {
+        let fetch = NSFetchRequest.init(entityName: name)
+        fetch.predicate = predicate
+        do {
+            let objs = try context.executeFetchRequest(fetch)
+            if objs.count == 1 {
+                return objs[0] as? NSManagedObject
+            } else if objs.count == 0 {
+                return nil
+            } else {
+                Log.warn(comp, "Several objects (\(name)) found for predicate: \(predicate)")
+                return objs[0] as? NSManagedObject
+            }
+        } catch let err as NSError {
+            Log.error(comp, error: err)
+        }
+        return nil
+    }
+
+    public func existingMessage(msg: CWIMAPMessage) -> IMessage? {
+        var predicates: [NSPredicate] = []
+        if msg.subject() != nil && msg.receivedDate() != nil {
+            predicates.append(NSPredicate.init(format: "subject = %@ and sentDate = %@",
+                msg.subject()!, msg.receivedDate()!))
+        }
+        if msg.folder() != nil {
+            predicates.append(NSPredicate.init(format: "uid = %d and folder.name = %@",
+                msg.UID(), msg.folder()!.name()))
+        }
+        if let msgId = msg.messageID() {
+            predicates.append(NSPredicate.init(format: "messageId = %@", msgId))
+        }
+        let pred = NSCompoundPredicate.init(andPredicateWithSubpredicates: predicates)
+        if let mail = singleEntityWithName(Message.entityName(), predicate: pred) {
+            let result = mail as! Message
+            return result
+        }
+        return nil
+    }
+
+    public func newAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount {
+        let account = NSEntityDescription.insertNewObjectForEntityForName(
+            Account.entityName(), inManagedObjectContext: context) as! Account
+
+        account.email = connectInfo.email
+        account.imapUsername = connectInfo.imapUsername
+        account.smtpUsername = connectInfo.smtpUsername
+        account.imapAuthMethod = connectInfo.imapAuthMethod.rawValue
+        account.smtpAuthMethod = connectInfo.smtpAuthMethod.rawValue
+        account.imapServerName = connectInfo.imapServerName
+        account.smtpServerName = connectInfo.smtpServerName
+        account.imapServerPort = NSNumber.init(short: Int16(connectInfo.imapServerPort))
+        account.smtpServerPort = NSNumber.init(short: Int16(connectInfo.smtpServerPort))
+        account.imapTransport = NSNumber.init(short: Int16(connectInfo.imapTransport.rawValue))
+        account.smtpTransport = NSNumber.init(short: Int16(connectInfo.smtpTransport.rawValue))
+
+        return account
+    }
+
+    public func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount? {
+        let account = newAccountFromConnectInfo(connectInfo)
+        save()
+        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Imap.asString(),
+                          password: connectInfo.imapPassword!)
+        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Smtp.asString(),
+                          password: connectInfo.getSmtpPassword()!)
+        return account
+    }
+
+    public func insertNewMessage() -> IMessage {
+        let mail = NSEntityDescription.insertNewObjectForEntityForName(
+            Message.entityName(), inManagedObjectContext: context) as! IMessage
+        return mail
+    }
+
+    public func insertTestAccount() -> IAccount? {
+        if let account = insertAccountFromConnectInfo(TestData.connectInfo) {
+            return setAccountAsLastUsed(account)
+        } else {
+            return nil
+        }
+    }
+
+    public func setAccountAsLastUsed(account: IAccount) -> IAccount {
+        NSUserDefaults.standardUserDefaults().setObject(
+            account.email, forKey: Account.kSettingLastAccountEmail)
+        NSUserDefaults.standardUserDefaults().synchronize()
+        return account
+    }
+
+    public func fetchLastAccount() -> IAccount? {
+        let lastEmail = NSUserDefaults.standardUserDefaults().stringForKey(
+            Account.kSettingLastAccountEmail)
+
+        var predicate = NSPredicate.init(value: true)
+
+        if lastEmail?.characters.count > 0 {
+            predicate = NSPredicate.init(format: "email == %@", lastEmail!)
+        }
+
+        if let account = singleEntityWithName(Account.entityName(), predicate: predicate) {
+            return setAccountAsLastUsed(account as! IAccount)
+        } else {
+            return insertTestAccount()
+        }
+    }
+
+    public func accountByEmail(email: String) -> IAccount? {
+        let predicate = NSPredicate.init(format: "email = %@", email)
+        return singleEntityWithName(Account.entityName(), predicate: predicate)
+            as! IAccount?
     }
 
     public func save() {
@@ -29,6 +159,60 @@ public class Model: IModel {
                 Log.error(CoreDataUtil.comp, error: nserror)
                 abort()
             }
+        }
+    }
+
+    /**
+     Inserts a folder of the given type.
+     - Note: Caller is responsible for saving!
+     */
+    public func insertOrUpdateFolderWithName(
+        folderName: String, folderType: Account.AccountType,
+        accountEmail: String) -> IFolder? {
+        let p = NSPredicate.init(format: "account.email = %@ and name = %@", accountEmail,
+                                 folderName)
+        if let folder = BaseManagedObject.singleEntityWithName(
+            Folder.entityName(), predicate: p, context: context) {
+            return folder as? Folder
+        }
+
+        if let account = accountByEmail(accountEmail) {
+            let folder = NSEntityDescription.insertNewObjectForEntityForName(
+                Folder.entityName(), inManagedObjectContext: context) as! Folder
+            folder.account = account as! Account
+            folder.name = folderName
+            folder.folderType = folderType.rawValue
+            return folder
+        }
+        return nil
+    }
+
+    public func messageByPredicate(predicate: NSPredicate) -> IMessage? {
+        return BaseManagedObject.singleEntityWithName(
+            Message.entityName(), predicate: predicate, context: context) as? IMessage
+    }
+
+    public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact? {
+        let fetch = NSFetchRequest.init(entityName:Contact.entityName())
+        fetch.predicate = NSPredicate.init(format: "email == %@", email)
+        do {
+            var existing = try context.executeFetchRequest(fetch) as! [Contact]
+            if existing.count > 1 {
+                Log.warn(comp, "Duplicate contacts with address \(email)")
+                existing[0].updateFromEmail(email, name: name)
+                return existing[0]
+            } else if existing.count == 1 {
+                existing[0].updateFromEmail(email, name: name)
+                return existing[0]
+            } else {
+                var contact = NSEntityDescription.insertNewObjectForEntityForName(
+                    Contact.entityName(), inManagedObjectContext: context) as! Contact
+                contact.updateFromEmail(email, name: name)
+                return contact
+            }
+        } catch let err as NSError {
+            Log.error(comp, error: err)
+            return nil
         }
     }
 }

@@ -10,8 +10,8 @@ import Foundation
 import CoreData
 
 class StorePrefetchedMailOperation: BaseOperation {
+    let comp = "StorePrefetchedMailOperation"
     let message: CWIMAPMessage
-    let errorDomain = "StorePrefetchedMailOperation"
     let accountEmail: String
 
     init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage) {
@@ -21,25 +21,24 @@ class StorePrefetchedMailOperation: BaseOperation {
     }
 
     override func main() {
-        let context = grandOperator.coreDataUtil.confinedManagedObjectContext()
+        let model = grandOperator.backgroundModel()
         var addresses = message.recipients() as! [CWInternetAddress]
         if let from = message.from() {
             addresses.append(from)
         }
-        let contacts = addContacts(addresses, context: context)
-        insertOrUpdateMail(contacts, message: message, context: context)
-        CoreDataUtil.saveContext(managedObjectContext: context)
+        let contacts = addContacts(addresses, model: model)
+        insertOrUpdateMail(contacts, message: message, model: model)
+        model.save()
         markAsFinished()
     }
 
-    func insertOrUpdateMail(contacts: [String: Contact], message: CWIMAPMessage,
-                    context: NSManagedObjectContext) {
-        var mail: Message! = Message.existingMessage(message, context: context)
+    func insertOrUpdateMail(contacts: [String: IContact], message: CWIMAPMessage,
+                    model: IModel) {
+        var mail: IMessage! = model.existingMessage(message)
 
         var isFresh = false
         if mail == nil {
-            mail = NSEntityDescription.insertNewObjectForEntityForName(
-                Message.entityName(), inManagedObjectContext: context) as! Message
+            mail = model.insertNewMessage()
             isFresh = true
         }
 
@@ -59,18 +58,17 @@ class StorePrefetchedMailOperation: BaseOperation {
             mail.messageNumber = message.messageNumber()
         }
 
-        do {
             if let folderName = message.folder()?.name() {
-                if let folder = try Folder.insertOrUpdateFolderWithName(
+                if let folder = model.insertOrUpdateFolderWithName(
                     folderName, folderType: Account.AccountType.Imap,
-                    accountEmail: accountEmail, context: context) {
-                    if isFresh || mail.folder != folder {
-                        mail.folder = folder
+                    accountEmail: accountEmail) {
+                    if isFresh || mail.folder.name != folder.name {
+                        mail.folder = folder as! Folder
                     }
+                } else {
+                    grandOperator.setErrorForOperation(
+                        self, error: Constants.errorCouldNotInsertOrUpdate(comp))
                 }
-            }
-        } catch let err as NSError {
-            grandOperator.setErrorForOperation(self, error: err)
         }
 
         let ccs: NSMutableOrderedSet = []
@@ -79,11 +77,11 @@ class StorePrefetchedMailOperation: BaseOperation {
             let addr = address as! CWInternetAddress
             switch addr.type() {
             case PantomimeCcRecipient:
-                ccs.addObject(contacts[addr.address()]!)
+                ccs.addObject(contacts[addr.address()]! as! Contact)
             case PantomimeToRecipient:
-                tos.addObject(contacts[addr.address()]!)
+                tos.addObject(contacts[addr.address()]! as! Contact)
             default:
-                Log.warn(errorDomain, "Unsupported recipient type \(addr.type)")
+                Log.warn(comp, "Unsupported recipient type \(addr.type)")
             }
         }
         if isFresh || mail.cc != ccs {
@@ -93,50 +91,34 @@ class StorePrefetchedMailOperation: BaseOperation {
             mail.to = tos
         }
         if let from = message.from() {
-            mail.from = contacts[from.address()]
+            mail.from = contacts[from.address()] as? Contact
         }
 
         // TODO: Test references
+        var messages = [IMessage]()
         if let msgRefs = message.allReferences() {
-            let references: NSMutableOrderedSet = []
+            var idSet = Set<String>()
             for ref in msgRefs {
-                let stringRef = ref as! String
-                let predicate = NSPredicate.init(format: "messageId = %@", stringRef)
-                if let refMsg = BaseManagedObject.singleEntityWithName(
-                    Message.entityName(), predicate: predicate, context: context) {
-                    references.addObject(refMsg)
+                idSet.insert(ref as! String)
+            }
+            for ref in idSet {
+                let predicate = NSPredicate.init(format: "messageId = %@", ref)
+                if let refMsg = model.messageByPredicate(predicate) {
+                    messages.append(refMsg)
                 }
             }
         }
     }
 
-    func updateContact(contact: Contact, address: CWInternetAddress) {
-        contact.updateFromInternetAddress(address)
-    }
-
     func addContacts(contacts: [CWInternetAddress],
-                     context: NSManagedObjectContext) -> [String: Contact] {
-        var added: [String: Contact] = [:]
+                     model: IModel) -> [String: IContact] {
+        var added: [String: IContact] = [:]
         for address in contacts {
-            let fetch = NSFetchRequest.init(entityName:Contact.entityName())
-            fetch.predicate = NSPredicate.init(format: "email == %@", address.address())
-            do {
-                let existing = try context.executeFetchRequest(fetch) as! [Contact]
-                if existing.count > 1 {
-                    Log.warn(errorDomain, "Duplicate contacts with address \(address.address())")
-                    updateContact(existing[0], address: address)
-                    added[existing[0].email] = existing[0]
-                } else if existing.count == 1 {
-                    updateContact(existing[0], address: address)
-                    added[existing[0].email] = existing[0]
-                } else {
-                    let contact = NSEntityDescription.insertNewObjectForEntityForName(
-                        Contact.entityName(), inManagedObjectContext: context) as! Contact
-                    updateContact(contact, address: address)
-                    added[contact.email] = contact
-                }
-            } catch let err as NSError {
-                grandOperator.setErrorForOperation(self, error: err)
+            if let addr = model.insertOrUpdateContactEmail(address.address(),
+                                                           name: address.personal()) {
+                added[addr.email] = addr
+            } else {
+                Log.error(comp, error: Constants.errorCouldNotInsertOrUpdate(comp))
             }
         }
         return added

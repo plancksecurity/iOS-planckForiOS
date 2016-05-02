@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class BaseOperation: NSOperation {
 
@@ -26,5 +27,9 @@ class BaseOperation: NSOperation {
         willChangeValueForKey("isFinished")
         myFinished = true
         didChangeValueForKey("isFinished")
+    }
+
+    func modelForContext(context: NSManagedObjectContext) -> IModel {
+        return Model.init(context: context)
     }
 }

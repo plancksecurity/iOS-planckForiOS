@@ -9,7 +9,7 @@
 import Foundation
 
 public class Constants {
-    public enum ErrorCode: Int {
+    public enum GeneralErrorCode: Int {
         case NotImplemented = 1000
     }
 
@@ -20,9 +20,22 @@ public class Constants {
         case ConnectionTerminated
     }
 
+    public enum CoreDataErrorCode: Int {
+        case CouldNotInsertOrUpdate = 3000
+    }
+
+    static func errorCouldNotInsertOrUpdate(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.CouldNotInsertOrUpdate.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString("Could not insert or update object",
+                    comment: "General error description when DB object could not be updated or inserted")])
+        return error
+    }
+
     static func errorNotImplemented(component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: ErrorCode.NotImplemented.rawValue,
+            domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Not implemented",
                     comment: "General error description for operation that is not yet implemented")])

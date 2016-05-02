@@ -9,7 +9,7 @@
 import Foundation
 
 class StoreFoldersOperation: BaseOperation {
-
+    let comp = "StoreFoldersOperation"
     let foldersToStore: [String]
     let email: String
 
@@ -20,17 +20,16 @@ class StoreFoldersOperation: BaseOperation {
     }
 
     override func main() {
-        let context = grandOperator.coreDataUtil.confinedManagedObjectContext()
+        let model = grandOperator.backgroundModel()
         for folderName in foldersToStore {
-            do {
-            try Folder.insertOrUpdateFolderWithName(folderName,
-                                                    folderType: Account.AccountType.Imap,
-                                                    accountEmail: email,
-                                                    context: context)
-            } catch let err as NSError {
-                grandOperator.setErrorForOperation(self, error: err)
+            let folder = model.insertOrUpdateFolderWithName(
+            folderName, folderType: Account.AccountType.Imap, accountEmail: email)
+            if folder == nil {
+                grandOperator.setErrorForOperation(
+                    self,
+                    error: Constants.errorCouldNotInsertOrUpdate(comp))
             }
         }
-        CoreDataUtil.saveContext(managedObjectContext: context)
+        model.save()
     }
 }

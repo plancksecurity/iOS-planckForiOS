@@ -39,6 +39,11 @@ public protocol IGrandOperator {
      - parameter error: The error that occurred
      */
     func setErrorForOperation(operation: NSOperation, error: NSError)
+
+    /**
+     Creates a new background model, confined to the current thread/queue
+     */
+    func backgroundModel() -> IModel
 }
 
 public class GrandOperator: IGrandOperator {
@@ -119,5 +124,9 @@ public class GrandOperator: IGrandOperator {
         GCD.onMain({
             self.errors[operation] = error
         })
+    }
+
+    public func backgroundModel() -> IModel {
+        return Model.init(context: coreDataUtil.confinedManagedObjectContext())
     }
 }

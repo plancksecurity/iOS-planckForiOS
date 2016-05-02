@@ -25,9 +25,9 @@ class AppConfig: NSObject {
 
     override init() {
         connectionManager = ConnectionManager(coreDataUtil: coreDataUtil)
+        model = Model.init(context: coreDataUtil.managedObjectContext)
         grandOperator = GrandOperator.init(connectionManager: connectionManager,
                                            coreDataUtil: coreDataUtil)
-        model = Model.init(context: coreDataUtil.managedObjectContext)
     }
 
 }

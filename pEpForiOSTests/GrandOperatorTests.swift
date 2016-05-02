@@ -25,8 +25,8 @@ class GrandOperatorTests: XCTestCase {
         super.setUp()
         coreDataUtil = InMemoryCoreDataUtil()
         connectionManager = ConnectionManager.init(coreDataUtil: coreDataUtil)
-        grandOperator = GrandOperator.init(connectionManager: connectionManager,
-                                           coreDataUtil: coreDataUtil)
+        grandOperator = GrandOperator.init(
+            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
     }
     
     /**

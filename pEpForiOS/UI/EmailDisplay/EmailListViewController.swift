@@ -42,7 +42,7 @@ class EmailListViewController: UITableViewController {
         }
         prepareFetchRequest()
 
-        if let account = Account.fetchLastAccount(appConfig!.coreDataUtil.managedObjectContext) {
+        if let account = appConfig?.model.fetchLastAccount() {
             let connectInfo = account.connectInfo
 
             appConfig!.grandOperator.prefetchEmails(

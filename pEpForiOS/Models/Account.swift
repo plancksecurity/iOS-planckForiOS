@@ -1,8 +1,14 @@
 import Foundation
 import CoreData
 
+public protocol IAccount: _IAccount {
+    var connectInfo: ConnectInfo { get }
+    var rawImapTransport: ConnectionTransport { get }
+    var rawSmtpTransport: ConnectionTransport { get }
+}
+
 @objc(Account)
-public class Account: _Account {
+public class Account: _Account, IAccount {
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
 
     public enum AccountType: Int {
@@ -19,7 +25,7 @@ public class Account: _Account {
         }
     }
 
-    var connectInfo: ConnectInfo {
+    public var connectInfo: ConnectInfo {
         return ConnectInfo.init(
             email: self.email, imapPassword: "",
             imapAuthMethod: ImapAuthMethod.init(string: self.imapAuthMethod),
@@ -32,82 +38,11 @@ public class Account: _Account {
             smtpTransport: self.rawSmtpTransport)
     }
 
-    var rawImapTransport: ConnectionTransport {
+    public var rawImapTransport: ConnectionTransport {
         return ConnectionTransport(rawValue: self.imapTransport.integerValue)!
     }
 
-    var rawSmtpTransport: ConnectionTransport {
+    public var rawSmtpTransport: ConnectionTransport {
         return ConnectionTransport(rawValue: self.smtpTransport.integerValue)!
     }
-
-    public static func newAccountFromConnectInfo(connectInfo: ConnectInfo,
-                                          context: NSManagedObjectContext) -> Account {
-        let account = NSEntityDescription.insertNewObjectForEntityForName(
-            entityName(), inManagedObjectContext: context) as! Account
-
-        account.email = connectInfo.email
-        account.imapUsername = connectInfo.imapUsername
-        account.smtpUsername = connectInfo.smtpUsername
-        account.imapAuthMethod = connectInfo.imapAuthMethod.rawValue
-        account.smtpAuthMethod = connectInfo.smtpAuthMethod.rawValue
-        account.imapServerName = connectInfo.imapServerName
-        account.smtpServerName = connectInfo.smtpServerName
-        account.imapServerPort = NSNumber.init(short: Int16(connectInfo.imapServerPort))
-        account.smtpServerPort = NSNumber.init(short: Int16(connectInfo.smtpServerPort))
-        account.imapTransport = NSNumber.init(short: Int16(connectInfo.imapTransport.rawValue))
-        account.smtpTransport = NSNumber.init(short: Int16(connectInfo.smtpTransport.rawValue))
-
-        return account
-    }
-
-    public static func fetchLastAccount(context: NSManagedObjectContext) -> Account? {
-        let lastEmail = NSUserDefaults.standardUserDefaults().stringForKey(
-            Account.kSettingLastAccountEmail)
-
-        var predicate = NSPredicate.init(value: true)
-
-        if lastEmail?.characters.count > 0 {
-            predicate = NSPredicate.init(format: "email == %@", lastEmail!)
-        }
-
-        if let account = singleEntityWithName(entityName(), predicate: predicate,
-                                              context: context) {
-            return setAccountAsLastUsed(account as! Account)
-        } else {
-            return insertTestAccount(context)
-        }
-    }
-
-    public static func setAccountAsLastUsed(account: Account) -> Account {
-        NSUserDefaults.standardUserDefaults().setObject(
-            account.email, forKey: Account.kSettingLastAccountEmail)
-        NSUserDefaults.standardUserDefaults().synchronize()
-        return account
-    }
-
-    public static func insertAccountFromConnectInfo(
-        connectInfo: ConnectInfo, context: NSManagedObjectContext) -> Account? {
-        let account = Account.newAccountFromConnectInfo(connectInfo, context: context)
-        CoreDataUtil.saveContext(managedObjectContext: context)
-        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Imap.asString(),
-                          password: connectInfo.imapPassword!)
-        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Smtp.asString(),
-                          password: connectInfo.getSmtpPassword()!)
-        return account
-    }
-
-    static func insertTestAccount(context: NSManagedObjectContext) -> Account? {
-        if let account = insertAccountFromConnectInfo(TestData.connectInfo, context: context) {
-            return setAccountAsLastUsed(account)
-        } else {
-            return nil
-        }
-    }
-
-    public static func byEmail(email: String, context: NSManagedObjectContext) -> Account? {
-        let predicate = NSPredicate.init(format: "email = %@", email)
-        return singleEntityWithName(Account.entityName(), predicate: predicate,
-                                  context: context) as! Account?
-    }
-
 }
