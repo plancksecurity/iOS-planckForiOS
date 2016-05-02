@@ -10,7 +10,7 @@ public enum MessageAttributes: String {
     case longMessageFormatted = "longMessageFormatted"
     case messageId = "messageId"
     case messageNumber = "messageNumber"
-    case sentDate = "sentDate"
+    case originationDate = "originationDate"
     case subject = "subject"
     case uid = "uid"
 }
@@ -39,7 +39,7 @@ public protocol _IMessage {
 
     var messageNumber: NSNumber? { get set }
 
-    var sentDate: NSDate? { get set }
+    var originationDate: NSDate? { get set }
 
     var subject: String? { get set }
 
@@ -104,7 +104,7 @@ public class _Message: BaseManagedObject, _IMessage {
     var messageNumber: NSNumber?
 
     @NSManaged public
-    var sentDate: NSDate?
+    var originationDate: NSDate?
 
     @NSManaged public
     var subject: String?

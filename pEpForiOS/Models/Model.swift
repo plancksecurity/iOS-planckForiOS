@@ -92,7 +92,7 @@ public class Model: IModel {
     public func existingMessage(msg: CWIMAPMessage) -> IMessage? {
         var predicates: [NSPredicate] = []
         if msg.subject() != nil && msg.receivedDate() != nil {
-            predicates.append(NSPredicate.init(format: "subject = %@ and sentDate = %@",
+            predicates.append(NSPredicate.init(format: "subject = %@ and originationDate = %@",
                 msg.subject()!, msg.receivedDate()!))
         }
         if msg.folder() != nil {

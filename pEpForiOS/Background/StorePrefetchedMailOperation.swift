@@ -42,8 +42,8 @@ class StorePrefetchedMailOperation: BaseOperation {
             isFresh = true
         }
 
-        if isFresh || mail.sentDate != message.receivedDate() {
-            mail.sentDate = message.receivedDate()
+        if isFresh || mail.originationDate != message.receivedDate() {
+            mail.originationDate = message.receivedDate()
         }
         if isFresh || mail.subject != message.subject() {
             mail.subject = message.subject()
