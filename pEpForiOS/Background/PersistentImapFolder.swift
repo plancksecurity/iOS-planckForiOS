@@ -62,10 +62,12 @@ class PersistentImapFolder: CWIMAPFolder {
      be the case.
      */
     override func allMessages() -> [AnyObject] {
-        if let messages = Message.entitiesWithName(Message.entityName(),
-                                                   predicate: self.predicateAllMessages(),
-                                                   context: mainContext) {
-            return messages
+        var result: [AnyObject] = []
+        if let messages = grandOperator.model.messagesByPredicate(self.predicateAllMessages()) {
+            for m in messages {
+                result.append(m as! AnyObject)
+            }
+            return result
         } else {
             return []
         }
@@ -79,14 +81,12 @@ class PersistentImapFolder: CWIMAPFolder {
         let p = NSPredicate.init(
             format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
             connectInfo.email, self.name(), theIndex)
-        let msg = Message.singleEntityWithName(Message.entityName(), predicate: p,
-                                               context: mainContext) as! Message
-        return msg.imapMessage()
+        let msg = grandOperator.model.messageByPredicate(p)
+        return msg?.imapMessage()
     }
 
     override func count() -> UInt {
-        let n = Message.countWithName(Message.entityName(), predicate: self.predicateAllMessages(),
-                                      context: mainContext)
+        let n = grandOperator.model.messageCountWithPredicate(self.predicateAllMessages())
         return UInt(n)
     }
 
@@ -118,8 +118,7 @@ class PersistentImapFolder: CWIMAPFolder {
     func folderObject() -> Folder? {
         let p = NSPredicate.init(format: "account.email = %@ and name = %@",
                                  connectInfo.email, name())
-        if let folder = Folder.singleEntityWithName(Folder.entityName(), predicate: p,
-                                                    context: mainContext) as? Folder {
+        if let folder = grandOperator.model.folderByPredicate(p) as? Folder {
             return folder
         } else {
             Log.warn(comp,

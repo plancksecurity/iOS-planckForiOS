@@ -12,6 +12,9 @@ import CoreData
 public protocol IModel {
     func existingMessage(msg: CWIMAPMessage) -> IMessage?
     func messageByPredicate(predicate: NSPredicate) -> IMessage?
+    func messagesByPredicate(predicate: NSPredicate) -> [IMessage]?
+    func messageCountWithPredicate(predicate: NSPredicate) -> Int
+    func folderByPredicate(predicate: NSPredicate) -> IFolder?
 
     func accountByEmail(email: String) -> IAccount?
     func setAccountAsLastUsed(account: IAccount) -> IAccount
@@ -59,6 +62,33 @@ public class Model: IModel {
         return nil
     }
 
+    public func entitiesWithName(name: String,
+                                 predicate: NSPredicate) -> [NSManagedObject]? {
+        let fetch = NSFetchRequest.init(entityName: name)
+        fetch.predicate = predicate
+        do {
+            let objs = try context.executeFetchRequest(fetch)
+            return objs as? [NSManagedObject]
+        } catch let err as NSError {
+            Log.error(comp, error: err)
+        }
+        return nil
+    }
+
+    public func countWithName(name: String,
+                              predicate: NSPredicate) -> Int {
+        let fetch = NSFetchRequest.init(entityName: name)
+        fetch.predicate = predicate
+        var error: NSError?
+        let number = context.countForFetchRequest(fetch, error: &error)
+        if let err = error {
+            Log.error(comp, error: err)
+        }
+        if number != NSNotFound {
+            return number
+        }
+        return 0
+    }
     public func existingMessage(msg: CWIMAPMessage) -> IMessage? {
         var predicates: [NSPredicate] = []
         if msg.subject() != nil && msg.receivedDate() != nil {
@@ -174,8 +204,7 @@ public class Model: IModel {
         accountEmail: String) -> IFolder? {
         let p = NSPredicate.init(format: "account.email = %@ and name = %@", accountEmail,
                                  folderName)
-        if let folder = BaseManagedObject.singleEntityWithName(
-            Folder.entityName(), predicate: p, context: context) {
+        if let folder = singleEntityWithName(Folder.entityName(), predicate: p) {
             return folder as? Folder
         }
 
@@ -191,8 +220,19 @@ public class Model: IModel {
     }
 
     public func messageByPredicate(predicate: NSPredicate) -> IMessage? {
-        return BaseManagedObject.singleEntityWithName(
-            Message.entityName(), predicate: predicate, context: context) as? IMessage
+        return singleEntityWithName(Message.entityName(), predicate: predicate) as? IMessage
+    }
+
+    public func messagesByPredicate(predicate: NSPredicate) -> [IMessage]? {
+        return entitiesWithName(Message.entityName(), predicate: predicate) as? [Message]
+    }
+
+    public func messageCountWithPredicate(predicate: NSPredicate) -> Int {
+        return countWithName(Message.entityName(), predicate: predicate)
+    }
+
+    public func folderByPredicate(predicate: NSPredicate) -> IFolder? {
+        return singleEntityWithName(Folder.entityName(), predicate: predicate) as? IFolder
     }
 
     public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact? {

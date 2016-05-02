@@ -16,6 +16,11 @@ public protocol IGrandOperator {
     var connectionManager: ConnectionManager { get }
 
     /**
+     The main model (for use on the main thread)
+     */
+    var model: IModel { get }
+
+    /**
      Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
      and the given folder and stores them into the persistent store.
 
@@ -56,6 +61,10 @@ public class GrandOperator: IGrandOperator {
 
     private let prefetchQueue = NSOperationQueue.init()
     private let verifyConnectionQueue = NSOperationQueue.init()
+
+    public lazy var model: IModel = {
+        return self.createModel()
+    }()
 
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectionManager = connectionManager
@@ -128,5 +137,9 @@ public class GrandOperator: IGrandOperator {
 
     public func backgroundModel() -> IModel {
         return Model.init(context: coreDataUtil.confinedManagedObjectContext())
+    }
+
+    func createModel() -> IModel {
+        return Model.init(context: coreDataUtil.managedObjectContext)
     }
 }

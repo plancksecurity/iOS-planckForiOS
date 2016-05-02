@@ -57,9 +57,7 @@ extension PersistentEmailCache: EmailCache {
 
     func messageWithUID(theUID: UInt) -> CWIMAPMessage! {
         let p = NSPredicate.init(format: "uid = %d", theUID)
-        if let msg = Message.singleEntityWithName(
-            Message.entityName(), predicate: p,
-            context: grandOperator.coreDataUtil.managedObjectContext) as? Message {
+        if let msg = grandOperator.model.messageByPredicate(p) {
             return msg.imapMessage()
         } else {
             Log.warn(comp, "Could not fetch message with uid \(theUID)")

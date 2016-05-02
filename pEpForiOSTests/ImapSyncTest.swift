@@ -17,6 +17,7 @@ struct PersistentSetup {
     let backgroundQueue: NSOperationQueue
     let grandOperator: GrandOperator
     let folderBuilder: ImapFolderBuilder
+    let model: IModel
 
     func inboxFolderPredicate() -> NSPredicate {
         let p = NSPredicate.init(format: "account.email = %@ and name = %@",
@@ -230,7 +231,7 @@ class ImapSyncTest: XCTestCase {
         return PersistentSetup.init(
             connectionInfo: conInfo, connectionmanager: connectionManager,
             backgroundQueue: backgroundQueue, grandOperator: grandOperator,
-            folderBuilder: folderBuilder)
+            folderBuilder: folderBuilder, model: model)
     }
 
     func prefetchMails(setup: PersistentSetup) -> ImapSync {
@@ -253,9 +254,7 @@ class ImapSyncTest: XCTestCase {
 
         setup.backgroundQueue.waitUntilAllOperationsAreFinished()
 
-        if let folder = BaseManagedObject.singleEntityWithName(
-            Folder.entityName(), predicate: setup.inboxFolderPredicate(),
-            context: coreDataUtil.managedObjectContext)
+        if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
         } else {
@@ -291,9 +290,7 @@ class ImapSyncTest: XCTestCase {
 
         setup.backgroundQueue.waitUntilAllOperationsAreFinished()
 
-        let folder = BaseManagedObject.singleEntityWithName(
-            Folder.entityName(), predicate: setup.inboxFolderPredicate(),
-            context: coreDataUtil.managedObjectContext)
+        let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder
         XCTAssertNil(folder, "Unexpected persisted folder")
     }
@@ -301,9 +298,7 @@ class ImapSyncTest: XCTestCase {
     func testFetchMail() {
         let setup = setupMemoryPersistence()
         let sync = prefetchMails(setup)
-        if let folder = BaseManagedObject.singleEntityWithName(
-            Folder.entityName(), predicate: setup.inboxFolderPredicate(),
-            context: coreDataUtil.managedObjectContext)
+        if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
             let message = folder.messages.anyObject() as! Message
