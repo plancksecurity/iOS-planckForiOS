@@ -25,11 +25,11 @@ public enum MessageRelationships: String {
     case to = "to"
 }
 
-public protocol IMessage {
+public protocol _IMessage {
 
     // MARK: - Properties
 
-    var fetched: NSNumber? { get set }
+    var fetched: NSNumber { get set }
 
     var longMessage: String? { get set }
 
@@ -63,7 +63,7 @@ public protocol IMessage {
 
 }
 
-public class _Message: BaseManagedObject, IMessage {
+public class _Message: BaseManagedObject, _IMessage {
 
     // MARK: - Class methods
 
@@ -89,7 +89,7 @@ public class _Message: BaseManagedObject, IMessage {
     // MARK: - Properties
 
     @NSManaged public
-    var fetched: NSNumber?
+    var fetched: NSNumber
 
     @NSManaged public
     var longMessage: String?

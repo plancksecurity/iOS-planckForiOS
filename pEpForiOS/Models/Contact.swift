@@ -1,5 +1,10 @@
 import Foundation
 
+public protocol IContact: _IContact {
+    func displayString() -> String
+    func updateFromInternetAddress(address: CWInternetAddress)
+}
+
 @objc(Contact)
 public class Contact: _Contact {
     let comp = "Contact"

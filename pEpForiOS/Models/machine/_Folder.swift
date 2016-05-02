@@ -16,15 +16,15 @@ public enum FolderRelationships: String {
     case messages = "messages"
 }
 
-public protocol IFolder {
+public protocol _IFolder {
 
     // MARK: - Properties
 
-    var folderType: NSNumber? { get set }
+    var folderType: NSNumber { get set }
 
     var name: String { get set }
 
-    var nextUID: NSNumber? { get set }
+    var nextUID: NSNumber { get set }
 
     var uidValidity: NSNumber? { get set }
 
@@ -36,7 +36,7 @@ public protocol IFolder {
 
 }
 
-public class _Folder: BaseManagedObject, IFolder {
+public class _Folder: BaseManagedObject, _IFolder {
 
     // MARK: - Class methods
 
@@ -62,13 +62,13 @@ public class _Folder: BaseManagedObject, IFolder {
     // MARK: - Properties
 
     @NSManaged public
-    var folderType: NSNumber?
+    var folderType: NSNumber
 
     @NSManaged public
     var name: String
 
     @NSManaged public
-    var nextUID: NSNumber?
+    var nextUID: NSNumber
 
     @NSManaged public
     var uidValidity: NSNumber?

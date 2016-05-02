@@ -57,7 +57,7 @@ public class BaseManagedObject: NSManagedObject {
         if let err = error {
             Log.error(comp, error: err)
         }
-        if number !=  NSNotFound {
+        if number != NSNotFound {
             return number
         }
         return 0

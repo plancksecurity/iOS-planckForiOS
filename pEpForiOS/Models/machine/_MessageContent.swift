@@ -12,7 +12,7 @@ public enum MessageContentRelationships: String {
     case message = "message"
 }
 
-public protocol IMessageContent {
+public protocol _IMessageContent {
 
     // MARK: - Properties
 
@@ -24,7 +24,7 @@ public protocol IMessageContent {
 
 }
 
-public class _MessageContent: BaseManagedObject, IMessageContent {
+public class _MessageContent: BaseManagedObject, _IMessageContent {
 
     // MARK: - Class methods
 

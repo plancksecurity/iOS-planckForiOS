@@ -25,25 +25,19 @@ public class Account: _Account {
             imapAuthMethod: ImapAuthMethod.init(string: self.imapAuthMethod),
             smtpAuthMethod: SmtpAuthMethod.init(string: self.smtpAuthMethod),
             imapServerName: self.imapServerName,
-            imapServerPort: UInt16(self.imapServerPort!.integerValue),
+            imapServerPort: UInt16(self.imapServerPort.integerValue),
             imapTransport: self.rawImapTransport,
             smtpServerName: self.smtpServerName,
-            smtpServerPort: UInt16(self.smtpServerPort!.integerValue),
+            smtpServerPort: UInt16(self.smtpServerPort.integerValue),
             smtpTransport: self.rawSmtpTransport)
     }
 
     var rawImapTransport: ConnectionTransport {
-        guard let v = self.imapTransport?.integerValue else {
-            abort()
-        }
-        return ConnectionTransport(rawValue: v)!
+        return ConnectionTransport(rawValue: self.imapTransport.integerValue)!
     }
 
     var rawSmtpTransport: ConnectionTransport {
-        guard let v = self.smtpTransport?.integerValue else {
-            abort()
-        }
-        return ConnectionTransport(rawValue: v)!
+        return ConnectionTransport(rawValue: self.smtpTransport.integerValue)!
     }
 
     public static func newAccountFromConnectInfo(connectInfo: ConnectInfo,

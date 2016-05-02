@@ -23,11 +23,11 @@ public enum AccountRelationships: String {
     case folders = "folders"
 }
 
-public protocol IAccount {
+public protocol _IAccount {
 
     // MARK: - Properties
 
-    var accountType: NSNumber? { get set }
+    var accountType: NSNumber { get set }
 
     var email: String { get set }
 
@@ -35,9 +35,9 @@ public protocol IAccount {
 
     var imapServerName: String { get set }
 
-    var imapServerPort: NSNumber? { get set }
+    var imapServerPort: NSNumber { get set }
 
-    var imapTransport: NSNumber? { get set }
+    var imapTransport: NSNumber { get set }
 
     var imapUsername: String? { get set }
 
@@ -45,9 +45,9 @@ public protocol IAccount {
 
     var smtpServerName: String { get set }
 
-    var smtpServerPort: NSNumber? { get set }
+    var smtpServerPort: NSNumber { get set }
 
-    var smtpTransport: NSNumber? { get set }
+    var smtpTransport: NSNumber { get set }
 
     var smtpUsername: String? { get set }
 
@@ -57,7 +57,7 @@ public protocol IAccount {
 
 }
 
-public class _Account: BaseManagedObject, IAccount {
+public class _Account: BaseManagedObject, _IAccount {
 
     // MARK: - Class methods
 
@@ -83,7 +83,7 @@ public class _Account: BaseManagedObject, IAccount {
     // MARK: - Properties
 
     @NSManaged public
-    var accountType: NSNumber?
+    var accountType: NSNumber
 
     @NSManaged public
     var email: String
@@ -95,10 +95,10 @@ public class _Account: BaseManagedObject, IAccount {
     var imapServerName: String
 
     @NSManaged public
-    var imapServerPort: NSNumber?
+    var imapServerPort: NSNumber
 
     @NSManaged public
-    var imapTransport: NSNumber?
+    var imapTransport: NSNumber
 
     @NSManaged public
     var imapUsername: String?
@@ -110,10 +110,10 @@ public class _Account: BaseManagedObject, IAccount {
     var smtpServerName: String
 
     @NSManaged public
-    var smtpServerPort: NSNumber?
+    var smtpServerPort: NSNumber
 
     @NSManaged public
-    var smtpTransport: NSNumber?
+    var smtpTransport: NSNumber
 
     @NSManaged public
     var smtpUsername: String?

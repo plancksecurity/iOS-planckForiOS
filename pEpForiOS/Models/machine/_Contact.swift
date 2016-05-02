@@ -15,7 +15,7 @@ public enum ContactRelationships: String {
     case toMessages = "toMessages"
 }
 
-public protocol IContact {
+public protocol _IContact {
 
     // MARK: - Properties
 
@@ -33,7 +33,7 @@ public protocol IContact {
 
 }
 
-public class _Contact: BaseManagedObject, IContact {
+public class _Contact: BaseManagedObject, _IContact {
 
     // MARK: - Class methods
 
