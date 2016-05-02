@@ -143,7 +143,7 @@ public class Model: IModel {
         if let account = singleEntityWithName(Account.entityName(), predicate: predicate) {
             return setAccountAsLastUsed(account as! IAccount)
         } else {
-            return insertTestAccount()
+            return nil
         }
     }
 
