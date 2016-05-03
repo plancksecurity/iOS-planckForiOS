@@ -34,6 +34,7 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     var folderOpenSuccess: Bool = false
     var foldersFetched: Bool = false
     var messagePrefetched: Bool = false
+    var folderStatusCompleted: Bool = false
 
     var errorExpectationFulfilled = false
 
@@ -47,23 +48,30 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     var folderOpenSuccessExpectation: XCTestExpectation?
     var foldersFetchedExpectation: XCTestExpectation?
     var messagePrefetchedExpectation: XCTestExpectation?
+    var folderStatusCompletedExpectation: XCTestExpectation?
 
     let fetchFolders: Bool
     let preFetchMails: Bool
+    let openInbox: Bool
 
-    init(fetchFolders: Bool, preFetchMails: Bool) {
+    init(fetchFolders: Bool, preFetchMails: Bool, openInbox: Bool) {
         self.fetchFolders = fetchFolders
         self.preFetchMails = preFetchMails
+        self.openInbox = openInbox
         super.init()
         print("init() \(unsafeAddressOf(self))")
     }
 
     convenience override init() {
-        self.init(fetchFolders: false, preFetchMails: false)
+        self.init(fetchFolders: false, preFetchMails: false, openInbox: false)
     }
 
     convenience init(fetchFolders: Bool) {
-        self.init(fetchFolders: fetchFolders, preFetchMails: false)
+        self.init(fetchFolders: fetchFolders, preFetchMails: false, openInbox: false)
+    }
+
+    convenience init(openInbox: Bool, demandStatus: Bool) {
+        self.init(fetchFolders: false, preFetchMails: false, openInbox: openInbox)
     }
 
     func fulfillError(kind: String) {
@@ -111,7 +119,9 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     }
 
     override func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
-        if fetchFolders || preFetchMails {
+        if openInbox {
+            sync.openMailBox(ImapSync.defaultImapInboxName, prefetchMails: false)
+        } else if fetchFolders {
             sync.waitForFolders()
         }
         authSuccess = true
@@ -143,6 +153,13 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
         message = notification?.userInfo?["Message"] as? CWIMAPMessage
         messagePrefetched = true
         if let exp = messagePrefetchedExpectation {
+            exp.fulfill()
+        }
+    }
+
+    override func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
+        folderStatusCompleted = true
+        if let exp = folderStatusCompletedExpectation {
             exp.fulfill()
         }
     }
@@ -235,7 +252,8 @@ class ImapSyncTest: XCTestCase {
     }
 
     func prefetchMails(setup: PersistentSetup) -> ImapSync {
-        let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true)
+        let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true,
+                                            openInbox: false)
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
         sync.delegate = del
         sync.folderBuilder = setup.folderBuilder
@@ -271,7 +289,8 @@ class ImapSyncTest: XCTestCase {
     func testOpenMailboxWithoutPrefetch() {
         let setup = setupMemoryPersistence()
 
-        let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false)
+        let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false,
+                                            openInbox: false)
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
         sync.delegate = del
         sync.folderBuilder = setup.folderBuilder
@@ -307,7 +326,8 @@ class ImapSyncTest: XCTestCase {
             XCTAssertTrue(message.uid?.intValue > 0)
             XCTAssertNil(message.content)
 
-            let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false)
+            let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false,
+                                                openInbox: false)
             sync.delegate = del
 
             del.messagePrefetchedExpectation = expectationWithDescription("messagePrefetched")

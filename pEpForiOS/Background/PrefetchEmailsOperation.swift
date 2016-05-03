@@ -166,4 +166,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
 
     func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
     }
+
+    func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
+    }
 }

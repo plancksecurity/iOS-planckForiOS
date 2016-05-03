@@ -25,6 +25,7 @@ public protocol ImapSyncDelegate {
     func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?)
     func folderOpenCompleted(sync: ImapSync, notification: NSNotification?)
     func folderOpenFailed(sync: ImapSync, notification: NSNotification?)
+    func folderStatusCompleted(sync: ImapSync, notification: NSNotification?)
 }
 
 /**
@@ -45,6 +46,7 @@ public class DefaultImapSyncDelegate: ImapSyncDelegate {
     public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?)  {}
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?)  {}
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?)  {}
+    public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {}
 }
 
 public protocol IImapSync {
@@ -239,6 +241,11 @@ extension ImapSync: CWServiceClient {
     @objc public func messageChanged(notification: NSNotification) {
         dumpMethodName("messageChanged", notification: notification)
         delegate?.messageChanged(self, notification: notification)
+    }
+
+    @objc public func folderStatusCompleted(notification: NSNotification) {
+        dumpMethodName("folderStatusCompleted", notification: notification)
+        delegate?.folderStatusCompleted(self, notification: notification)
     }
 }
 
