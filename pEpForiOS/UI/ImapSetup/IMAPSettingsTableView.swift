@@ -8,14 +8,14 @@
 
 import UIKit
 
-class IMAPSettingsTableView: UITableViewController {
+class IMAPSettingsTableView: UITableViewController  {
 
    
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
-
-
-    var mailParameters = MailSettingParameters()
+    
+    var appConfig: AppConfig?
+    var mailSettings = MailSettingParameters()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +25,9 @@ class IMAPSettingsTableView: UITableViewController {
         super.didReceiveMemoryWarning()
     }
 
+    @IBAction func textFieldDoneEditing(sender: AnyObject) {
+        sender.resignFirstResponder()
+    }
 
     @IBAction func alertWithSecurityValues(sender: AnyObject) {
         let alertController = UIAlertController(title: "Security protocol", message: "Choose an Security protocol  for your accont", preferredStyle: .ActionSheet)
@@ -34,17 +37,19 @@ class IMAPSettingsTableView: UITableViewController {
         alertController.addAction(StartTLSAction)
         let TLSAction = UIAlertAction(title: "TLS", style: .Default) { (action) in}
         alertController.addAction(TLSAction)
-        let NONEAction = UIAlertAction(title: "NONE", style: .Default) { (action) in}
+        let NONEAction = UIAlertAction(title: "Plain", style: .Default) { (action) in}
         alertController.addAction(NONEAction)
         self.presentViewController(alertController, animated: true) {}
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "SMTPSettings" {
-            mailParameters.serverhostIMAP = serverValue.text!
-            mailParameters.portIMAP = portValue.text!
+            mailSettings.serverhostIMAP = serverValue.text!
+            let aux:String = portValue.text!
+            mailSettings.portIMAP = UInt16(aux)!
             if let destination = segue.destinationViewController as? SMTPSettingsTableView {
-                destination.mailParameters = mailParameters
+                destination.mailSettings = mailSettings
+                destination.appConfig = appConfig
             }
         }
     }

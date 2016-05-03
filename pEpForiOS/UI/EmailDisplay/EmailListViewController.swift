@@ -40,7 +40,7 @@ class EmailListViewController: UITableViewController {
                 appConfig = appDelegate.appConfig
             }
         }
-        prepareFetchRequest()
+        //prepareFetchRequest()
 
         if let account = appConfig?.model.fetchLastAccount() {
             let connectInfo = account.connectInfo
@@ -50,17 +50,21 @@ class EmailListViewController: UITableViewController {
                     [unowned self] error in
                     GCD.onMain({
                         Log.info(self.comp, "Sync completed, error: \(error)")
-                        self.updateUI()
+                       // self.updateUI()
                     })
             })
-            updateUI()
+           // updateUI()
         }
-        //self.performSegueWithIdentifier("AccountSettings2", sender: self)
+
+        //let model:IModel = self.appConfig?.model
+        //model.insertAccountFromConnectInfo(<#T##connectInfo: ConnectInfo##ConnectInfo#>)
+
+        //selfperformSegueWithIdentifier("AccountSettings2", sender: self)
         //super.viewWillAppear(animated)
         //countWithName
     }
 
-    func prepareFetchRequest() {
+   /* func prepareFetchRequest() {
         let predicates: [NSPredicate] = [NSPredicate.init(value: true)]
         let fetchRequest = NSFetchRequest.init(entityName: Message.entityName())
         fetchRequest.predicate = NSCompoundPredicate.init(
@@ -186,7 +190,8 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
     }
-    /*override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "AccountSettings2" {
             let destination = segue.destinationViewController as? UserInfoTableView
         }
