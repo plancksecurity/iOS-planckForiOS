@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class SMTPSettingsTableView: UITableViewController {
 
 
@@ -15,21 +16,13 @@ class SMTPSettingsTableView: UITableViewController {
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
 
-    var mailParameters = MailSettingParameters()
+
+    var appConfig: AppConfig?
+    var mailSettings = MailSettingParameters()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print (mailParameters.email)
-        print (mailParameters.username)
-        print (mailParameters.password)
 
-        print (mailParameters.serverhostIMAP)
-        print (mailParameters.portIMAP)
-        print (mailParameters.transportSecurityIMAP)
-
-        print (mailParameters.serverhostSMTP)
-        print (mailParameters.portSMTP)
-        print (mailParameters.transportSecuritySMTP)
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,11 +30,25 @@ class SMTPSettingsTableView: UITableViewController {
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        mailSettings.serverhostSMTP = serverValue.text!
+        let portSMTPAux:String = portValue.text!
+        mailSettings.portSMTP = UInt16(portSMTPAux)!
+
+
+    let connect = ConnectInfo.init(email: mailSettings.email!, imapPassword: mailSettings.password!, imapAuthMethod: ImapAuthMethod.Login, smtpAuthMethod: SmtpAuthMethod.Login, imapServerName: mailSettings.serverhostIMAP!, imapServerPort: mailSettings.portIMAP!, imapTransport:ConnectionTransport.Plain, smtpServerName: mailSettings.serverhostSMTP!, smtpServerPort: mailSettings.portSMTP!, smtpTransport: ConnectionTransport.Plain)
+
+        var account:IAccount = (appConfig?.model.insertAccountFromConnectInfo(connect))!
+
+        print(account)
+
+        var accountAux:IAccount = (appConfig?.model.fetchLastAccount())!
+
+        print(accountAux)
+        
+
         if segue.identifier == "inboxMail" {
-            mailParameters.serverhostSMTP = serverValue.text!
-            mailParameters.portSMTP = portValue.text!
             if let destination = segue.destinationViewController as? MailTableView {
-                destination.mailParameters = mailParameters
+                destination.mailParameters = mailSettings
             }
         }
     }

@@ -209,7 +209,7 @@
                     <navigationItem key="navigationItem" id="QS1-DH-6Lg">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="OEI-dm-im4">
                             <connections>
-                                <segue destination="dfm-hT-uzc" kind="show" id="ldH-cQ-xRu"/>
+                                <segue destination="dfm-hT-uzc" kind="show" identifier="IMAPSettings" id="ldH-cQ-xRu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -370,6 +370,9 @@
                                                     <rect key="frame" x="216" y="10" width="244" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="textFieldDoneEditing:" destination="dfm-hT-uzc" eventType="editingDidEndOnExit" id="1ra-rY-yL2"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -391,15 +394,15 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="SSL" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iAH-67-XfH">
-                                                    <rect key="frame" x="216" y="10" width="244" height="30"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
-                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="NONE &gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0oe-aN-Jo9">
+                                                    <rect key="frame" x="216" y="13" width="113" height="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="fieldName" destination="iAH-67-XfH" id="tNq-19-Gih"/>
                                             <outlet property="titleName" destination="b0p-Pv-I3v" id="oM3-5l-OCV"/>
                                         </connections>
                                     </tableViewCell>

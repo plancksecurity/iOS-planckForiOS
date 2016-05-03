@@ -13,6 +13,7 @@ class MailTableView: UITableViewController {
      var mailParameters = MailSettingParameters()
 
     let allMailList = MailList()
+    var appConfig: AppConfig?
 
     @IBOutlet weak var sender: UITextView!
 
@@ -21,9 +22,18 @@ class MailTableView: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        if existAccount() {
+
+        print (mailParameters.email)
+        print (mailParameters.username)
+        print (mailParameters.password)
+        print (mailParameters.serverhostIMAP)
+        print (mailParameters.portIMAP)
+        print (mailParameters.serverhostSMTP)
+        print (mailParameters.portSMTP)
+
+        /*if existAccount() {
             self.performSegueWithIdentifier("accountSettings", sender: self)
-        }
+        }*/
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,10 +59,10 @@ class MailTableView: UITableViewController {
         
     }
 
-    override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+   /* override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "accountSettings" {
             let destination = segue.destinationViewController as? UserInfoTableView
         }
-    }
+    }*/
 }
 

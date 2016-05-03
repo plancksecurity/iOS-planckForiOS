@@ -9,6 +9,7 @@
 import UIKit
 
 public struct ModelUserInfoTable {
+
     public var emailTextExist:Bool = false
     public var passwordTextExist:Bool = false
 
@@ -24,45 +25,58 @@ public struct ModelUserInfoTable {
 
 public class UserInfoTableView: UITableViewController {
 
-
     @IBOutlet weak var emailValue: UITextField!
     @IBOutlet weak var passwordValue: UITextField!
     @IBOutlet weak var usernameValue: UITextField!
 
-    var mailParameters = MailSettingParameters()
+    var appConfig: AppConfig?
+    var mailSettings = MailSettingParameters()
+
     public var model = ModelUserInfoTable(emailTextExist: false,passwordTextExist: false)
 
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem!.enabled = false
-    }
+        if appConfig == nil {
+            if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                appConfig = appDelegate.appConfig
+            }
+        }
 
-    @IBAction func editingEmail(sender: UITextField) {
-        model.emailTextExist = emailValue.text != ""
-        updateView()
-    }
-    @IBAction func editingPassword(sender: UITextField) {
-        model.passwordTextExist = passwordValue.text != ""
-        updateView()
     }
 
     func updateView() {
         self.navigationItem.rightBarButtonItem!.enabled = model.shouldEnableNextButton()
     }
+
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+
     override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        mailSettings.email = emailValue.text!
+        mailSettings.username = usernameValue.text!
+        mailSettings.password = passwordValue.text!
         if segue.identifier == "IMAPSettings" {
-            mailParameters.email = emailValue.text!
-            mailParameters.username = usernameValue.text!
-            mailParameters.password = passwordValue.text!
             if let destination = segue.destinationViewController as? IMAPSettingsTableView {
-               destination.mailParameters = mailParameters
+                destination.appConfig = appConfig
+                destination.mailSettings = mailSettings
             }
-
         }
+    }
 
+    @IBAction func textFieldDoneEditing(sender: AnyObject) {
+        sender.resignFirstResponder()
+    }
+    @
+    IBAction func editingEmail(sender: UITextField) {
+        model.emailTextExist = emailValue.text != ""
+        updateView()
+    }
+
+    @IBAction func editingPassword(sender: UITextField) {
+        model.passwordTextExist = passwordValue.text != ""
+        updateView()
     }
 }
 

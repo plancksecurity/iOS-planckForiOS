@@ -19,11 +19,12 @@ class MailSettingParameters {
     var password: String?
 
     var serverhostIMAP:String?
-    var portIMAP:String?
+    var portIMAP:UInt16?
     var transportSecurityIMAP:String?
 
     var serverhostSMTP:String?
-    var portSMTP:String?
+    var portSMTP:UInt16?
     var transportSecuritySMTP:String?
+
 }
 
