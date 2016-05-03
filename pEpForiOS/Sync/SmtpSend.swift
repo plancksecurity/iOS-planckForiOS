@@ -9,23 +9,23 @@
 import Foundation
 
 public protocol SmtpSendDelegate {
-    func messageSent(smtp: SmtpSend, theNotification: NSNotification!)
-    func messageNotSent(smtp: SmtpSend, theNotification: NSNotification!)
-    func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification!)
-    func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification!)
-    func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification!)
-    func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification!)
-    func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification!)
-    func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification!)
-    func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification!)
-    func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification!)
-    func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification!)
-    func connectionLost(smtp: SmtpSend, theNotification: NSNotification!)
-    func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification!)
-    func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification!)
-    func requestCancelled(smtp: SmtpSend, theNotification: NSNotification!)
-    func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification!)
-    func serviceReconnected(smtp: SmtpSend, theNotification: NSNotification!)
+    func messageSent(smtp: SmtpSend, theNotification: NSNotification?)
+    func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?)
+    func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?)
+    func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification?)
+    func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification?)
+    func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification?)
+    func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification?)
+    func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?)
+    func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?)
+    func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?)
+    func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?)
+    func connectionLost(smtp: SmtpSend, theNotification: NSNotification?)
+    func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?)
+    func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?)
+    func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?)
+    func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?)
+    func serviceReconnected(smtp: SmtpSend, theNotification: NSNotification?)
 }
 
 struct SmtpStatus {
@@ -50,7 +50,7 @@ public class SmtpSend: Service {
                            transport: connectInfo.smtpTransport)
     }
 
-    private func dumpMethodName(methodName: String, notification: NSNotification) {
+    private func dumpMethodName(methodName: String, notification: NSNotification?) {
         Log.info(comp, "\(methodName): \(notification)")
     }
 
@@ -80,86 +80,86 @@ public class SmtpSend: Service {
 
 extension SmtpSend: TransportClient {
 
-    @objc public func messageSent(theNotification: NSNotification!) {
+    @objc public func messageSent(theNotification: NSNotification?) {
         dumpMethodName("messageSent", notification: theNotification)
         delegate?.messageSent(self, theNotification: theNotification)
     }
 
-    @objc public func messageNotSent(theNotification: NSNotification!) {
+    @objc public func messageNotSent(theNotification: NSNotification?) {
         dumpMethodName("messageNotSent", notification: theNotification)
         delegate?.messageNotSent(self, theNotification: theNotification)
     }
 }
 
 extension SmtpSend: SMTPClient {
-    @objc public func transactionInitiationCompleted(theNotification: NSNotification!) {
+    @objc public func transactionInitiationCompleted(theNotification: NSNotification?) {
         dumpMethodName("transactionInitiationCompleted", notification: theNotification)
         delegate?.transactionInitiationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func transactionInitiationFailed(theNotification: NSNotification!) {
+    @objc public func transactionInitiationFailed(theNotification: NSNotification?) {
         dumpMethodName("transactionInitiationFailed", notification: theNotification)
         delegate?.transactionInitiationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func recipientIdentificationCompleted(theNotification: NSNotification!) {
+    @objc public func recipientIdentificationCompleted(theNotification: NSNotification?) {
         dumpMethodName("recipientIdentificationCompleted", notification: theNotification)
         delegate?.recipientIdentificationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func recipientIdentificationFailed(theNotification: NSNotification!) {
+    @objc public func recipientIdentificationFailed(theNotification: NSNotification?) {
         dumpMethodName("recipientIdentificationFailed", notification: theNotification)
         delegate?.recipientIdentificationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func transactionResetCompleted(theNotification: NSNotification!) {
+    @objc public func transactionResetCompleted(theNotification: NSNotification?) {
         dumpMethodName("transactionResetCompleted", notification: theNotification)
         delegate?.transactionResetCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func transactionResetFailed(theNotification: NSNotification!) {
+    @objc public func transactionResetFailed(theNotification: NSNotification?) {
         dumpMethodName("transactionResetFailed", notification: theNotification)
         delegate?.transactionResetFailed(self, theNotification: theNotification)
     }
 }
 
 extension SmtpSend: CWServiceClient {
-    @objc public func authenticationCompleted(theNotification: NSNotification!) {
+    @objc public func authenticationCompleted(theNotification: NSNotification?) {
         dumpMethodName("authenticationCompleted", notification: theNotification)
         delegate?.authenticationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func authenticationFailed(theNotification: NSNotification!) {
+    @objc public func authenticationFailed(theNotification: NSNotification?) {
         dumpMethodName("authenticationFailed", notification: theNotification)
         delegate?.authenticationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func connectionEstablished(theNotification: NSNotification!) {
+    @objc public func connectionEstablished(theNotification: NSNotification?) {
         dumpMethodName("connectionEstablished", notification: theNotification)
         delegate?.connectionEstablished(self, theNotification: theNotification)
     }
 
-    @objc public func connectionLost(theNotification: NSNotification!) {
+    @objc public func connectionLost(theNotification: NSNotification?) {
         dumpMethodName("connectionLost", notification: theNotification)
         delegate?.connectionLost(self, theNotification: theNotification)
     }
 
-    @objc public func connectionTerminated(theNotification: NSNotification!) {
+    @objc public func connectionTerminated(theNotification: NSNotification?) {
         dumpMethodName("connectionTerminated", notification: theNotification)
         delegate?.connectionTerminated(self, theNotification: theNotification)
     }
 
-    @objc public func connectionTimedOut(theNotification: NSNotification!) {
+    @objc public func connectionTimedOut(theNotification: NSNotification?) {
         dumpMethodName("connectionTimedOut", notification: theNotification)
         delegate?.connectionTimedOut(self, theNotification: theNotification)
     }
 
-    @objc public func requestCancelled(theNotification: NSNotification!) {
+    @objc public func requestCancelled(theNotification: NSNotification?) {
         dumpMethodName("requestCancelled", notification: theNotification)
         delegate?.requestCancelled(self, theNotification: theNotification)
     }
 
-    @objc public func serviceInitialized(theNotification: NSNotification!) {
+    @objc public func serviceInitialized(theNotification: NSNotification?) {
         dumpMethodName("serviceInitialized", notification: theNotification)
         delegate?.serviceInitialized(self, theNotification: theNotification)
         GCD.onMain() {
@@ -182,7 +182,7 @@ extension SmtpSend: CWServiceClient {
         }
     }
 
-    @objc public func serviceReconnected(theNotification: NSNotification!) {
+    @objc public func serviceReconnected(theNotification: NSNotification?) {
         dumpMethodName("serviceReconnected", notification: theNotification)
         delegate?.serviceReconnected(self, theNotification: theNotification)
    }
