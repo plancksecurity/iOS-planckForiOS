@@ -129,6 +129,13 @@ class PersistentImapFolder: CWIMAPFolder {
 
     override func setUIDValidity(theUIDValidity: UInt) {
         if let folder = folderObject() {
+            if let oldUidValidity = folder.uidValidity?.integerValue {
+                if theUIDValidity != UInt(oldUidValidity) {
+                    Log.warn(comp,
+                             "UIValidity changed, deleting all messages. Folder \(folder.name)")
+                    folder.messages = []
+                }
+            }
             folder.uidValidity = theUIDValidity
             CoreDataUtil.saveContext(managedObjectContext: mainContext)
         } else {
