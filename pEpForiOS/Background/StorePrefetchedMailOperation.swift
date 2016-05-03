@@ -29,7 +29,6 @@ class StorePrefetchedMailOperation: BaseOperation {
         let contacts = addContacts(addresses, model: model)
         insertOrUpdateMail(contacts, message: message, model: model)
         model.save()
-        markAsFinished()
     }
 
     func insertOrUpdateMail(contacts: [String: IContact], message: CWIMAPMessage,

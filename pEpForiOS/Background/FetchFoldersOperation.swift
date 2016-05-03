@@ -1,36 +1,46 @@
 //
-//  PrefetchEmailsOperation.swift
+//  FetchFoldersOperation.swift
 //  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 15/04/16.
+//  Created by Dirk Zimmermann on 03/05/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
-import CoreData
+
+public class ImapFolderBuilder: NSObject, CWFolderBuilding {
+    let connectInfo: ConnectInfo
+    let backgroundQueue: NSOperationQueue
+    let grandOperator: IGrandOperator
+
+    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
+                backgroundQueue: NSOperationQueue) {
+        self.connectInfo = connectInfo
+        self.grandOperator = grandOperator
+        self.backgroundQueue = backgroundQueue
+    }
+
+    public func folderWithName(name: String!) -> CWFolder! {
+        return PersistentImapFolder(name: name, grandOperator: grandOperator,
+                                    connectInfo: connectInfo, backgroundQueue: backgroundQueue)
+            as CWFolder
+    }
+}
 
 /**
- This operation is not intended to be put in a queue (though this should work too).
+ This operation is not intended to be put in a queue.
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-public class PrefetchEmailsOperation: ConcurrentBaseOperation {
-    let comp = "PrefetchEmailsOperation"
+public class FetchFoldersOperation: ConcurrentBaseOperation {
+    let comp = "FetchFoldersOperation"
 
     let connectInfo: ConnectInfo
     var imapSync: ImapSync!
     var folderBuilder: ImapFolderBuilder!
 
-    let folderToOpen: String
-
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folder: String?) {
         self.connectInfo = connectInfo
-        if let folder = folder {
-            folderToOpen = folder
-        } else {
-            folderToOpen = ImapSync.defaultImapInboxName
-        }
-
 
         super.init(grandOperator: grandOperator)
 
@@ -39,7 +49,7 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
                                                backgroundQueue: backgroundQueue)
     }
 
-    override public func main() {
+    public override func main() {
         if self.cancelled {
             return
         }
@@ -56,7 +66,7 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
     }
 }
 
-extension PrefetchEmailsOperation: ImapSyncDelegate {
+extension FetchFoldersOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
@@ -67,7 +77,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     public func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
         if !self.cancelled {
             self.updateFolderNames(folderNames)
-            imapSync.openMailBox(folderToOpen, prefetchMails: true)
+            waitForFinished()
         }
     }
 
@@ -84,7 +94,6 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-        waitForFinished()
     }
 
     public func messageChanged(sync: ImapSync, notification: NSNotification?) {

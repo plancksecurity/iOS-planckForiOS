@@ -13,7 +13,10 @@ public protocol IModel {
     func existingMessage(msg: CWIMAPMessage) -> IMessage?
     func messageByPredicate(predicate: NSPredicate) -> IMessage?
     func messagesByPredicate(predicate: NSPredicate) -> [IMessage]?
-    func messageCountWithPredicate(predicate: NSPredicate) -> Int
+    func messageCountByPredicate(predicate: NSPredicate) -> Int
+
+    func folderCountByPredicate(predicate: NSPredicate) -> Int
+    func foldersByPredicate(predicate: NSPredicate) -> [IFolder]?
     func folderByPredicate(predicate: NSPredicate) -> IFolder?
 
     func accountByEmail(email: String) -> IAccount?
@@ -227,8 +230,16 @@ public class Model: IModel {
         return entitiesWithName(Message.entityName(), predicate: predicate) as? [Message]
     }
 
-    public func messageCountWithPredicate(predicate: NSPredicate) -> Int {
+    public func messageCountByPredicate(predicate: NSPredicate) -> Int {
         return countWithName(Message.entityName(), predicate: predicate)
+    }
+
+    public func folderCountByPredicate(predicate: NSPredicate) -> Int {
+        return countWithName(Folder.entityName(), predicate: predicate)
+    }
+
+    public func foldersByPredicate(predicate: NSPredicate) -> [IFolder]? {
+        return entitiesWithName(Folder.entityName(), predicate: predicate) as? [Folder]
     }
 
     public func folderByPredicate(predicate: NSPredicate) -> IFolder? {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VerifySmtpConnectionOperation: BaseOperation {
+class VerifySmtpConnectionOperation: ConcurrentBaseOperation {
     let errorDomain = "VerifySmtpConnectionOperation"
 
     let connectInfo: ConnectInfo

@@ -9,19 +9,15 @@
 import Foundation
 
 public class ConnectionManager {
-    private let coreDataUtil: ICoreDataUtil
-
-    public init(coreDataUtil: ICoreDataUtil) {
-        self.coreDataUtil = coreDataUtil
-    }
+    public init() {}
 
     public func emailSyncConnection(connectInfo: ConnectInfo) -> ImapSync {
-        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: connectInfo)
+        let sync = ImapSync.init(connectInfo: connectInfo)
         return sync
     }
 
     public func smtpConnection(connectInfo: ConnectInfo) -> SmtpSend {
         // Don't cache
-        return SmtpSend.init(coreDataUtil: coreDataUtil, connectInfo: connectInfo)
+        return SmtpSend.init(connectInfo: connectInfo)
     }
 }

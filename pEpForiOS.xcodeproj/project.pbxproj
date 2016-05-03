@@ -18,6 +18,7 @@
 		431144C11CC1202E0007639D /* _Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144BF1CC1202E0007639D /* _Message.swift */; };
 		431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */; };
 		43248C4E1CC6266900AD3A7C /* PersistentEmailCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */; };
+		4325F3141CD8A8D200A10727 /* ConcurrentBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */; };
 		434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */; };
 		435A77C11CC3CB4200133D16 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435A77C01CC3CB4200133D16 /* Regex.swift */; };
 		4367E26F1CD7360000B05F83 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367E26E1CD7360000B05F83 /* Model.swift */; };
@@ -62,6 +63,8 @@
 		43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */; };
 		43ED53781CC77F95006AB156 /* SMTPSettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */; };
 		43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */; };
+		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
+		43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */; };
 		A1B50A7E1CD26FA700B1A997 /* MessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A7D1CD26FA700B1A997 /* MessageContent.swift */; };
 		A1B50A801CD26FB500B1A997 /* _MessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A7F1CD26FB500B1A997 /* _MessageContent.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
@@ -142,6 +145,7 @@
 		431144BF1CC1202E0007639D /* _Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Message.swift; sourceTree = "<group>"; };
 		431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifySmtpConnectionOperation.swift; sourceTree = "<group>"; };
 		43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentEmailCache.swift; sourceTree = "<group>"; };
+		4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentBaseOperation.swift; sourceTree = "<group>"; };
 		435A77C01CC3CB4200133D16 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		4367E26E1CD7360000B05F83 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
@@ -193,6 +197,8 @@
 		43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneValueSettingCell.swift; sourceTree = "<group>"; };
 		43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsTableView.swift; sourceTree = "<group>"; };
 		43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoTableView.swift; sourceTree = "<group>"; };
+		43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersOperation.swift; sourceTree = "<group>"; };
+		43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		A1B50A7D1CD26FA700B1A997 /* MessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContent.swift; sourceTree = "<group>"; };
 		A1B50A7F1CD26FB500B1A997 /* _MessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _MessageContent.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -239,11 +245,13 @@
 				4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */,
 				431144AB1CC0CCE20007639D /* GrandOperator.swift */,
 				431144B61CC11D6A0007639D /* BaseOperation.swift */,
+				4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */,
 				431144A91CC0CB480007639D /* PrefetchEmailsOperation.swift */,
 				431144B41CC0FCA40007639D /* StoreFoldersOperation.swift */,
 				431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */,
 				439C4D401CD27B0E0099A27F /* VerifyImapConnectionOperation.swift */,
 				431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */,
+				43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -295,6 +303,7 @@
 				A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				A1F5D7781CD0C9A300D8D045 /* UIViewControllerTest.swift */,
+				43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -626,6 +635,7 @@
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
 				A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
+				4325F3141CD8A8D200A10727 /* ConcurrentBaseOperation.swift in Sources */,
 				43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */,
 				43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */,
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */,
@@ -637,6 +647,7 @@
 				4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */,
 				43248C4E1CC6266900AD3A7C /* PersistentEmailCache.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
+				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
 				431144AC1CC0CCE30007639D /* GrandOperator.swift in Sources */,
 				431144C01CC1202E0007639D /* _Contact.swift in Sources */,
 				43980EF61CBD3EED00A7FC3C /* Mailbox.swift in Sources */,
@@ -668,6 +679,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */,
 				A1B50A8A1CD271EC00B1A997 /* GrandOperatorTests.swift in Sources */,
 				A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */,
 				A1F5D7791CD0C9A300D8D045 /* UIViewControllerTest.swift in Sources */,

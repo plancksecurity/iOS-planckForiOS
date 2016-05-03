@@ -24,7 +24,7 @@ class GrandOperatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         coreDataUtil = InMemoryCoreDataUtil()
-        connectionManager = ConnectionManager.init(coreDataUtil: coreDataUtil)
+        connectionManager = ConnectionManager.init()
         grandOperator = GrandOperator.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
     }

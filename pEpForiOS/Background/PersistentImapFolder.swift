@@ -86,7 +86,7 @@ class PersistentImapFolder: CWIMAPFolder {
     }
 
     override func count() -> UInt {
-        let n = grandOperator.model.messageCountWithPredicate(self.predicateAllMessages())
+        let n = grandOperator.model.messageCountByPredicate(self.predicateAllMessages())
         return UInt(n)
     }
 

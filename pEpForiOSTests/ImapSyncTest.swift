@@ -13,11 +13,26 @@ import pEpForiOS
 
 struct PersistentSetup {
     let connectionInfo: ConnectInfo
-    let connectionmanager: ConnectionManager
+    let connectionManager: ConnectionManager
     let backgroundQueue: NSOperationQueue
     let grandOperator: GrandOperator
     let folderBuilder: ImapFolderBuilder
     let model: IModel
+
+    init(coreDataUtil: ICoreDataUtil) {
+        connectionInfo = TestData.connectInfo
+        backgroundQueue = NSOperationQueue.init()
+        connectionManager = ConnectionManager.init()
+        grandOperator = GrandOperator.init(
+            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
+        folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
+                                               connectInfo: connectionInfo,
+                                               backgroundQueue: backgroundQueue)
+
+        model = Model.init(context: coreDataUtil.managedObjectContext)
+        let account = model.insertAccountFromConnectInfo(connectionInfo)
+        XCTAssertNotNil(account)
+    }
 
     func inboxFolderPredicate() -> NSPredicate {
         let p = NSPredicate.init(format: "account.email = %@ and name = %@",
@@ -182,7 +197,7 @@ class ImapSyncTest: XCTestCase {
             smtpAuthMethod: SmtpAuthMethod.Plain, imapServerName: "doesnot.work",
             imapServerPort: 5000,
             imapTransport: .Plain, smtpServerName: "", smtpServerPort: 5001, smtpTransport: .Plain)
-        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
+        let sync = ImapSync.init(connectInfo: conInfo)
         sync.delegate = del
 
         del.errorOccurredExpectation = expectationWithDescription("errorOccurred")
@@ -199,7 +214,7 @@ class ImapSyncTest: XCTestCase {
     func testAuthSuccess() {
         let del = TestImapSyncDelegate.init()
         let conInfo = TestData.connectInfo
-        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
+        let sync = ImapSync.init(connectInfo: conInfo)
         sync.delegate = del
 
         del.authSuccessExpectation = expectationWithDescription("authSuccess")
@@ -216,7 +231,7 @@ class ImapSyncTest: XCTestCase {
     func testFetchFolders() {
         let del = TestImapSyncDelegate.init(fetchFolders: true)
         let conInfo = TestData.connectInfo
-        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: conInfo)
+        let sync = ImapSync.init(connectInfo: conInfo)
         sync.delegate = del
 
         del.foldersFetchedExpectation = expectationWithDescription("foldersFetched")
@@ -231,30 +246,10 @@ class ImapSyncTest: XCTestCase {
         })
     }
 
-    func setupMemoryPersistence() -> PersistentSetup {
-        let conInfo = TestData.connectInfo
-        let backgroundQueue = NSOperationQueue.init()
-        let connectionManager = ConnectionManager.init(coreDataUtil: coreDataUtil)
-        let grandOperator = GrandOperator.init(
-            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
-        let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                                   connectInfo: conInfo,
-                                                   backgroundQueue: backgroundQueue)
-
-        let model = Model.init(context: coreDataUtil.managedObjectContext)
-        let account = model.insertAccountFromConnectInfo(conInfo)
-        XCTAssertNotNil(account)
-
-        return PersistentSetup.init(
-            connectionInfo: conInfo, connectionmanager: connectionManager,
-            backgroundQueue: backgroundQueue, grandOperator: grandOperator,
-            folderBuilder: folderBuilder, model: model)
-    }
-
     func prefetchMails(setup: PersistentSetup) -> ImapSync {
         let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true,
                                             openInbox: false)
-        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
+        let sync = ImapSync.init(connectInfo: setup.connectionInfo)
         sync.delegate = del
         sync.folderBuilder = setup.folderBuilder
 
@@ -282,7 +277,7 @@ class ImapSyncTest: XCTestCase {
     }
 
     func testPrefetchWithPersistence() {
-        let setup = setupMemoryPersistence()
+        let setup = PersistentSetup.init(coreDataUtil: coreDataUtil)
         prefetchMails(setup)
     }
 
@@ -290,11 +285,11 @@ class ImapSyncTest: XCTestCase {
      Test for directly opening a mailbox without fetching folders or prefetching any mails.
      */
     func testOpenMailboxWithoutPrefetch() {
-        let setup = setupMemoryPersistence()
+        let setup = PersistentSetup.init(coreDataUtil: coreDataUtil)
 
         let del = TestImapSyncDelegate.init(fetchFolders: false, preFetchMails: false,
                                             openInbox: true)
-        let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
+        let sync = ImapSync.init(connectInfo: setup.connectionInfo)
         sync.delegate = del
         sync.folderBuilder = setup.folderBuilder
 
@@ -317,7 +312,7 @@ class ImapSyncTest: XCTestCase {
     }
 
     func testFetchMail() {
-        let setup = setupMemoryPersistence()
+        let setup = PersistentSetup.init(coreDataUtil: coreDataUtil)
         let sync = prefetchMails(setup)
         if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder {
@@ -328,7 +323,7 @@ class ImapSyncTest: XCTestCase {
             XCTAssertTrue(message.uid?.intValue > 0)
             XCTAssertNil(message.content)
 
-            let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false,
+            let del = TestImapSyncDelegate.init(fetchFolders: false, preFetchMails: false,
                                                 openInbox: false)
             sync.delegate = del
 

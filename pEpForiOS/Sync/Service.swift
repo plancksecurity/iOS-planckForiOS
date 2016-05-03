@@ -21,13 +21,11 @@ public class Service: IService {
     public let ErrorConnectionTimedOut = 1001
 
     let connectInfo: ConnectInfo
-    let coreDataUtil: ICoreDataUtil
 
     var service: CWService!
 
-    public init(coreDataUtil: ICoreDataUtil, connectInfo: ConnectInfo) {
+    public init(connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
-        self.coreDataUtil = coreDataUtil
         service = self.createService()
         service.setDelegate(self)
         service.setLogger(Log())

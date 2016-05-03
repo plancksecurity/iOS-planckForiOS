@@ -9,24 +9,14 @@
 import Foundation
 import CoreData
 
-class BaseOperation: NSOperation {
+public class BaseOperation: NSOperation {
 
     let grandOperator: IGrandOperator
     var myFinished: Bool = false
 
-    init(grandOperator: IGrandOperator) {
+    public init(grandOperator: IGrandOperator) {
         self.grandOperator = grandOperator
         super.init()
-    }
-
-    override var finished: Bool {
-        return myFinished
-    }
-
-    func markAsFinished() {
-        willChangeValueForKey("isFinished")
-        myFinished = true
-        didChangeValueForKey("isFinished")
     }
 
     func modelForContext(context: NSManagedObjectContext) -> IModel {

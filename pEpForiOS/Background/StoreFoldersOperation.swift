@@ -20,6 +20,7 @@ class StoreFoldersOperation: BaseOperation {
     }
 
     override func main() {
+        Log.warn(comp, "StoreFoldersOperation started")
         let model = grandOperator.backgroundModel()
         for folderName in foldersToStore {
             let folder = model.insertOrUpdateFolderName(
@@ -31,5 +32,6 @@ class StoreFoldersOperation: BaseOperation {
             }
         }
         model.save()
+        Log.warn(comp, "StoreFoldersOperation finished")
     }
 }
