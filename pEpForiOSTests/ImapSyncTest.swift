@@ -124,12 +124,14 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
         fulfillError("connectionTimedOut")
     }
 
-    override func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
-        self.folderNames = folderNames
-        sync.openMailBox(ImapSync.defaultImapInboxName, prefetchMails: preFetchMails)
-        foldersFetched = true
-        if let exp = foldersFetchedExpectation {
-            exp.fulfill()
+    func receivedFolderNames(sync: ImapSync, folderNames: [String]?) {
+        if let folders = folderNames {
+            self.folderNames = folders
+            sync.openMailBox(ImapSync.defaultImapInboxName, prefetchMails: preFetchMails)
+            foldersFetched = true
+            if let exp = foldersFetchedExpectation {
+                exp.fulfill()
+            }
         }
     }
 
@@ -137,7 +139,9 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
         if openInbox {
             sync.openMailBox(ImapSync.defaultImapInboxName, prefetchMails: false)
         } else if fetchFolders {
-            sync.waitForFolders()
+            if let folderNames = sync.folderNames {
+                receivedFolderNames(sync, folderNames: folderNames)
+            }
         }
         authSuccess = true
         if let exp = authSuccessExpectation {
@@ -177,6 +181,10 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
         if let exp = folderStatusCompletedExpectation {
             exp.fulfill()
         }
+    }
+
+    override func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
+        self.receivedFolderNames(sync, folderNames: sync.folderNames)
     }
 }
 

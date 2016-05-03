@@ -35,7 +35,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
-    func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
+    func receivedFolderNames(sync: ImapSync, folderNames: [String]?) {
     }
 
     func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
@@ -76,5 +76,8 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     }
 
     func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
+    }
+
+    public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
     }
 }

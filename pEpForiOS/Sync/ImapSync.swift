@@ -13,8 +13,6 @@ struct ImapState {
 }
 
 public protocol ImapSyncDelegate {
-    func receivedFolderNames(sync: ImapSync, folderNames: [String])
-
     func authenticationCompleted(sync: ImapSync, notification: NSNotification?)
     func authenticationFailed(sync: ImapSync, notification: NSNotification?)
     func connectionLost(sync: ImapSync, notification: NSNotification?)
@@ -26,6 +24,7 @@ public protocol ImapSyncDelegate {
     func folderOpenCompleted(sync: ImapSync, notification: NSNotification?)
     func folderOpenFailed(sync: ImapSync, notification: NSNotification?)
     func folderStatusCompleted(sync: ImapSync, notification: NSNotification?)
+    func folderListCompleted(sync: ImapSync, notification: NSNotification?)
 }
 
 /**
@@ -35,7 +34,6 @@ public class DefaultImapSyncDelegate: ImapSyncDelegate {
     public init() {
     }
 
-    public func receivedFolderNames(sync: ImapSync, folderNames: [String]) {}
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?)  {}
     public func authenticationFailed(sync: ImapSync, notification: NSNotification?)  {}
     public func connectionLost(sync: ImapSync, notification: NSNotification?)  {}
@@ -47,6 +45,7 @@ public class DefaultImapSyncDelegate: ImapSyncDelegate {
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?)  {}
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?)  {}
     public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {}
+    public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {}
 }
 
 public protocol IImapSync {
@@ -61,16 +60,17 @@ public protocol IImapSync {
     var folderBuilder: CWFolderBuilding? { get set }
 
     /**
+     The list of all IMAP folders on the server.
+     
+     - Note: This will return nil the first time you access it. Try again when you have
+     received `folderListCompleted`.
+     */
+    var folderNames: [String]? { get }
+
+    /**
      Start to connect.
      */
     func start()
-
-    /**
-     Triggers a timer after authentication completes, have to wait
-     for folders to appear.
-     Should call this after receiving authenticationCompleted()
-     */
-    func waitForFolders()
 
     /**
      Opens the folder with the given name, prefetching all emails contained if wanted.
@@ -100,6 +100,13 @@ public class ImapSync: Service, IImapSync {
         get {
             return imapStore.folderBuilder
         }
+    }
+
+    public var folderNames: [String]? {
+        if let folders = imapStore.folderEnumerator() {
+            return folders.allObjects as? [String]
+        }
+        return nil
     }
 
     /**
@@ -132,29 +139,6 @@ public class ImapSync: Service, IImapSync {
             }
             Log.info(comp, "openMailBox \(folder.name())")
         }
-    }
-
-    @objc func handleFolders(timer: NSTimer?) {
-        if let folderEnum = imapStore.folderEnumerator() {
-            timer?.invalidate()
-            var folderNames: [String] = []
-            for folder in folderEnum {
-                let folderName = folder as! String
-                folderNames.append(folderName)
-            }
-            delegate?.receivedFolderNames(self, folderNames: folderNames)
-        }
-    }
-
-    /**
-     Triggers a timer after authentication completes, have to wait
-     for folders to appear.
-     */
-    public func waitForFolders() {
-        let timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self,
-                                                           selector: #selector(handleFolders),
-                                                           userInfo: nil, repeats: true)
-        timer.fire()
     }
 
     public func fetchMailFromFolderNamed(folderName: String, uid: Int) {
@@ -207,32 +191,32 @@ public class ImapSync: Service, IImapSync {
 }
 
 extension ImapSync: CWServiceClient {
-    @objc public func authenticationCompleted(notification: NSNotification) {
+    @objc public func authenticationCompleted(notification: NSNotification?) {
         dumpMethodName("authenticationCompleted", notification: notification)
         imapState.authenticationCompleted = true
         delegate?.authenticationCompleted(self, notification: notification)
     }
 
-    @objc public func authenticationFailed(notification: NSNotification) {
+    @objc public func authenticationFailed(notification: NSNotification?) {
         dumpMethodName("authenticationFailed", notification: notification)
         delegate?.authenticationFailed(self, notification: notification)
     }
 
-    @objc public func connectionEstablished(notification: NSNotification) {
+    @objc public func connectionEstablished(notification: NSNotification?) {
         dumpMethodName("connectionEstablished", notification: notification)
     }
 
-    @objc public func connectionLost(notification: NSNotification) {
+    @objc public func connectionLost(notification: NSNotification?) {
         dumpMethodName("connectionLost", notification: notification)
         delegate?.connectionLost(self, notification: notification)
     }
 
-    @objc public func connectionTerminated(notification: NSNotification) {
+    @objc public func connectionTerminated(notification: NSNotification?) {
         dumpMethodName("connectionTerminated", notification: notification)
         delegate?.connectionTerminated(self, notification: notification)
     }
 
-    @objc public func connectionTimedOut(notification: NSNotification) {
+    @objc public func connectionTimedOut(notification: NSNotification?) {
         dumpMethodName("connectionTimedOut", notification: notification)
         delegate?.connectionTimedOut(self, notification: notification)
     }
@@ -247,12 +231,12 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func messagePrefetchCompleted(notification: NSNotification) {
+    @objc public func messagePrefetchCompleted(notification: NSNotification?) {
         dumpMethodName("messagePrefetchCompleted", notification: notification)
         delegate?.messagePrefetchCompleted(self, notification: notification)
     }
 
-    @objc public func serviceInitialized(notification: NSNotification) {
+    @objc public func serviceInitialized(notification: NSNotification?) {
         dumpMethodName("serviceInitialized", notification: notification)
 
         // The password from connectInfo has precedence over the keychain, for unit test
@@ -267,26 +251,26 @@ extension ImapSync: CWServiceClient {
         authenticationMethod = bestConnectionMethodFromCapabilities(imapStore.capabilities())
 
         imapStore.authenticate(connectInfo.getImapUsername(),
-                               password: password,
+                               password: password!,
                                mechanism: authenticationMethod.rawValue)
     }
 
-    @objc public func serviceReconnected(theNotification: NSNotification!) {
+    @objc public func serviceReconnected(theNotification: NSNotification?) {
         dumpMethodName("serviceReconnected", notification: theNotification)
     }
 
-    @objc public func service(theService: CWService!, sentData theData: NSData!) {
+    @objc public func service(theService: CWService, sentData theData: NSData) {
     }
 
-    @objc public func service(theService: CWService!, receivedData theData: NSData!) {
+    @objc public func service(theService: CWService, receivedData theData: NSData) {
     }
 
-    @objc public func messageChanged(notification: NSNotification) {
+    @objc public func messageChanged(notification: NSNotification?) {
         dumpMethodName("messageChanged", notification: notification)
         delegate?.messageChanged(self, notification: notification)
     }
 
-    @objc public func folderStatusCompleted(notification: NSNotification) {
+    @objc public func folderStatusCompleted(notification: NSNotification?) {
         dumpMethodName("folderStatusCompleted", notification: notification)
         delegate?.folderStatusCompleted(self, notification: notification)
     }
@@ -309,5 +293,10 @@ extension ImapSync: PantomimeFolderDelegate {
         } else {
             Log.info(comp, "folderOpenFailed: \(notification)")
         }
+    }
+
+    @objc public func folderListCompleted(notification: NSNotification?) {
+        dumpMethodName("folderListCompleted", notification: notification)
+        delegate?.folderListCompleted(self, notification: notification)
     }
 }

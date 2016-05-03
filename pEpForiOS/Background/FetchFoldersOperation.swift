@@ -59,10 +59,13 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
         imapSync.start()
     }
 
-    func updateFolderNames(folderNames: [String]) {
-        let op = StoreFoldersOperation.init(grandOperator: self.grandOperator,
-                                            folders: folderNames, email: self.connectInfo.email)
-        backgroundQueue.addOperation(op)
+    func readFolderNames() {
+        if let folderNames = imapSync.folderNames {
+            let op = StoreFoldersOperation.init(grandOperator: self.grandOperator,
+                                                folders: folderNames, email: self.connectInfo.email)
+            backgroundQueue.addOperation(op)
+            waitForFinished()
+        }
     }
 }
 
@@ -70,14 +73,7 @@ extension FetchFoldersOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
-            sync.waitForFolders()
-        }
-    }
-
-    public func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
-        if !self.cancelled {
-            self.updateFolderNames(folderNames)
-            waitForFinished()
+            readFolderNames()
         }
     }
 
@@ -109,5 +105,9 @@ extension FetchFoldersOperation: ImapSyncDelegate {
     }
 
     public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
+    }
+
+    public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
+        readFolderNames()
     }
 }
