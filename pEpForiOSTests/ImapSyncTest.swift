@@ -27,14 +27,14 @@ struct PersistentSetup {
 }
 
 class TestImapSyncDelegate: DefaultImapSyncDelegate {
-    var errorOccurred: Bool = false
-    var connectionTimeout: Bool = false
-    var authSuccess: Bool = false
-    var folderPrefetchSuccess: Bool = false
-    var folderOpenSuccess: Bool = false
-    var foldersFetched: Bool = false
-    var messagePrefetched: Bool = false
-    var folderStatusCompleted: Bool = false
+    var errorOccurred = false
+    var connectionTimeout = false
+    var authSuccess = false
+    var folderPrefetchSuccess = false
+    var folderOpenSuccess = false
+    var foldersFetched = false
+    var messagePrefetched = false
+    var folderStatusCompleted = false
 
     var errorExpectationFulfilled = false
 
@@ -286,16 +286,18 @@ class ImapSyncTest: XCTestCase {
         prefetchMails(setup)
     }
 
+    /**
+     Test for directly opening a mailbox without fetching folders or prefetching any mails.
+     */
     func testOpenMailboxWithoutPrefetch() {
         let setup = setupMemoryPersistence()
 
-        let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: false,
-                                            openInbox: false)
+        let del = TestImapSyncDelegate.init(fetchFolders: false, preFetchMails: false,
+                                            openInbox: true)
         let sync = ImapSync.init(coreDataUtil: coreDataUtil, connectInfo: setup.connectionInfo)
         sync.delegate = del
         sync.folderBuilder = setup.folderBuilder
 
-        del.foldersFetchedExpectation = expectationWithDescription("foldersFetchedExpectation")
         del.folderOpenSuccessExpectation = expectationWithDescription("folderOpenSuccess")
 
         sync.start()
