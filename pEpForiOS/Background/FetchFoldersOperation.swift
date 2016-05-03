@@ -70,7 +70,7 @@ extension FetchFoldersOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
-            imapSync.waitForFolders()
+            sync.waitForFolders()
         }
     }
 

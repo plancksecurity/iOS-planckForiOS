@@ -193,7 +193,7 @@ class ImapSyncTest: XCTestCase {
     func testConnectionFail() {
         let del = TestImapSyncDelegate.init()
         let conInfo = ConnectInfo.init(
-            email: "", imapPassword: "", imapAuthMethod: ImapAuthMethod.Simple,
+            email: "", imapPassword: "", imapAuthMethod: .Login,
             smtpAuthMethod: SmtpAuthMethod.Plain, imapServerName: "doesnot.work",
             imapServerPort: 5000,
             imapTransport: .Plain, smtpServerName: "", smtpServerPort: 5001, smtpTransport: .Plain)
@@ -347,5 +347,23 @@ class ImapSyncTest: XCTestCase {
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }
+    }
+
+    func testCapabilityCheck() {
+        let sync = ImapSync.init(connectInfo: TestData.connectInfo)
+        XCTAssertEqual(sync.bestConnectionMethodFromCapabilitiesList(
+            ["IMAP4rev1", "UIDPLUS", "CHILDREN", "NAMESPACE", "THREAD=ORDEREDSUBJECT",
+                "THREAD=REFERENCES", "SORT", "QUOTA", "AUTH=PLAIN", "IDLE",
+                "ACL", "ACL2=UNION", "AUTH=PLAIN"]),
+                       ImapAuthMethod.Login)
+        XCTAssertEqual(sync.bestConnectionMethodFromCapabilitiesList(
+            ["IMAP4rev1", "UIDPLUS", "CHILDREN", "NAMESPACE", "THREAD=ORDEREDSUBJECT",
+                "THREAD=REFERENCES", "SORT", "QUOTA", "AUTH=CRAM-MD5", "IDLE",
+                "ACL", "ACL2=UNION", "AUTH=PLAIN"]),
+                       ImapAuthMethod.CramMD5)
+        XCTAssertEqual(sync.bestConnectionMethodFromCapabilitiesList(
+            ["IMAP4rev1", "UIDPLUS", "CHILDREN", "NAMESPACE", "THREAD=ORDEREDSUBJECT",
+                "THREAD=REFERENCES", "SORT", "QUOTA", "IDLE", "ACL", "ACL2=UNION"]),
+                       ImapAuthMethod.Login)
     }
 }

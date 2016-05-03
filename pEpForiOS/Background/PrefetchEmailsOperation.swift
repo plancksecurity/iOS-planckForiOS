@@ -60,14 +60,14 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
-            imapSync.waitForFolders()
+            sync.waitForFolders()
         }
     }
 
     public func receivedFolderNames(sync: ImapSync, folderNames: [String]) {
         if !self.cancelled {
             self.updateFolderNames(folderNames)
-            imapSync.openMailBox(folderToOpen, prefetchMails: true)
+            sync.openMailBox(folderToOpen, prefetchMails: true)
         }
     }
 

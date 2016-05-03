@@ -9,16 +9,16 @@
 import Foundation
 
 public enum ImapAuthMethod: String {
-    case Simple = "LOGIN"
+    case Login = "LOGIN"
     case CramMD5 = "CRAM-MD5"
 
     init(string: String) {
-        if string.isEqual(Simple.rawValue) {
-            self = Simple
+        if string.isEqual(Login.rawValue) {
+            self = Login
         } else if string.isEqual(CramMD5.rawValue) {
             self = CramMD5
         } else {
-            self = Simple
+            self = Login
             assert(false, "")
         }
     }
