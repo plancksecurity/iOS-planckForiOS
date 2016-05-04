@@ -69,7 +69,7 @@ class GrandOperatorTests: XCTestCase {
             smtpTransport: correct.smtpTransport)
         grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
-            XCTAssertTrue(error!.code == Constants.NetworkError.AuthenticationFailed.rawValue)
+            XCTAssertEqual(error!.code, Constants.NetworkError.AuthenticationFailed.rawValue)
             exp.fulfill()
         })
         waitForExpectationsWithTimeout(waitTime, handler: { error in
