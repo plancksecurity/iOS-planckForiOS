@@ -45,7 +45,7 @@ class GrandOperatorTests: XCTestCase {
         let exp = expectationWithDescription("verified")
         let connectionInfo = ConnectInfo.init(
             email: "none", imapPassword: "none", imapAuthMethod: .Login,
-            smtpAuthMethod: SmtpAuthMethod.Plain,
+            smtpAuthMethod: .Plain,
             imapServerName: "cant.connect", imapServerPort: 993, imapTransport: .Plain,
             smtpServerName: "cant.connect", smtpServerPort: 516, smtpTransport: .TLS)
         grandOperator.verifyConnection(connectionInfo, completionBlock: { error in

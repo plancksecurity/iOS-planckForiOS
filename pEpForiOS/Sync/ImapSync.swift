@@ -109,11 +109,6 @@ public class ImapSync: Service, IImapSync {
         return nil
     }
 
-    /**
-     Will get modified when the server gives something in its capabilities
-     */
-    public var authenticationMethod = ImapAuthMethod.Login
-
     private var imapState = ImapState()
 
     var imapStore: CWIMAPStore {
@@ -152,41 +147,6 @@ public class ImapSync: Service, IImapSync {
 
     private func dumpMethodName(methodName: String, notification: NSNotification?) {
         Log.info(comp, "\(methodName): \(notification)")
-    }
-
-    public func bestConnectionMethodFromCapabilitiesList(
-        capabilities: [String]) -> ImapAuthMethod {
-        do {
-            let re = try NSRegularExpression.init(pattern: "auth=([-a-z0-9]+)",
-                                                  options: .CaseInsensitive)
-            let auths: [String] = capabilities.map() { string in
-                let wholeStringRange = NSRange(location: 0, length: string.characters.count)
-
-                if let match = re.firstMatchInString(string, options: .ReportCompletion,
-                    range: wholeStringRange) {
-                    let r = match.rangeAtIndex(1)
-                    return (string as NSString).substringWithRange(r).lowercaseString
-                } else {
-                    return ""
-                }
-            }
-            if auths.count > 0 {
-                let s = Set.init(auths)
-                if s.contains("cram-md5") {
-                    return .CramMD5
-                }
-                return .Login
-            } else {
-                return .Login
-            }
-        } catch let err as NSError {
-            Log.error(comp, error: err)
-        }
-        return .Login
-    }
-
-    public func bestConnectionMethodFromCapabilities(capabilities: NSArray) -> ImapAuthMethod {
-        return bestConnectionMethodFromCapabilitiesList(capabilities as! [String])
     }
 }
 
@@ -248,11 +208,9 @@ extension ImapSync: CWServiceClient {
                                             serverType: Account.AccountType.Imap.asString())
         }
 
-        authenticationMethod = bestConnectionMethodFromCapabilities(imapStore.capabilities())
-
         imapStore.authenticate(connectInfo.getImapUsername(),
                                password: password!,
-                               mechanism: authenticationMethod.rawValue)
+                               mechanism: bestAuthMethod().rawValue)
     }
 
     @objc public func serviceReconnected(theNotification: NSNotification?) {

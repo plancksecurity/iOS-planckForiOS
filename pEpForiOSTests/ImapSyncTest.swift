@@ -202,7 +202,7 @@ class ImapSyncTest: XCTestCase {
         let del = TestImapSyncDelegate.init()
         let conInfo = ConnectInfo.init(
             email: "", imapPassword: "", imapAuthMethod: .Login,
-            smtpAuthMethod: SmtpAuthMethod.Plain, imapServerName: "doesnot.work",
+            smtpAuthMethod: .Plain, imapServerName: "doesnot.work",
             imapServerPort: 5000,
             imapTransport: .Plain, smtpServerName: "", smtpServerPort: 5001, smtpTransport: .Plain)
         let sync = ImapSync.init(connectInfo: conInfo)
@@ -357,21 +357,29 @@ class ImapSyncTest: XCTestCase {
         }
     }
 
-    func testCapabilityCheck() {
+    func testImapSupportedAuthMethodsBasic() {
         let sync = ImapSync.init(connectInfo: TestData.connectInfo)
-        XCTAssertEqual(sync.bestConnectionMethodFromCapabilitiesList(
-            ["IMAP4rev1", "UIDPLUS", "CHILDREN", "NAMESPACE", "THREAD=ORDEREDSUBJECT",
-                "THREAD=REFERENCES", "SORT", "QUOTA", "AUTH=PLAIN", "IDLE",
-                "ACL", "ACL2=UNION", "AUTH=PLAIN"]),
-                       ImapAuthMethod.Login)
-        XCTAssertEqual(sync.bestConnectionMethodFromCapabilitiesList(
-            ["IMAP4rev1", "UIDPLUS", "CHILDREN", "NAMESPACE", "THREAD=ORDEREDSUBJECT",
-                "THREAD=REFERENCES", "SORT", "QUOTA", "AUTH=CRAM-MD5", "IDLE",
-                "ACL", "ACL2=UNION", "AUTH=PLAIN"]),
-                       ImapAuthMethod.CramMD5)
-        XCTAssertEqual(sync.bestConnectionMethodFromCapabilitiesList(
-            ["IMAP4rev1", "UIDPLUS", "CHILDREN", "NAMESPACE", "THREAD=ORDEREDSUBJECT",
-                "THREAD=REFERENCES", "SORT", "QUOTA", "IDLE", "ACL", "ACL2=UNION"]),
-                       ImapAuthMethod.Login)
+        XCTAssertEqual(sync.bestAuthMethodFromList([]), AuthMethod.Login)
+        XCTAssertEqual(sync.bestAuthMethodFromList(["CRAM-Md5", "pLAIn"]),
+                       AuthMethod.CramMD5)
+    }
+
+    func testImapSupportedAuthMethods() {
+        let del = TestImapSyncDelegate.init()
+        let conInfo = TestData.connectInfo
+        let sync = ImapSync.init(connectInfo: conInfo)
+        sync.delegate = del
+
+        del.authSuccessExpectation = expectationWithDescription("authSuccess")
+
+        sync.start()
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertTrue(!del.errorOccurred)
+            XCTAssertTrue(del.authSuccess)
+            // Adapt this for different servers
+            XCTAssertEqual(sync.bestAuthMethod(), AuthMethod.Login)
+        })
     }
 }

@@ -45,4 +45,23 @@ public class Service: IService {
     deinit {
         service.close()
     }
+
+    public func bestAuthMethodFromList(mechanisms: [String])  -> AuthMethod {
+        if mechanisms.count > 0 {
+            let mechanismsLC = mechanisms.map() { mech in
+                return mech.lowercaseString
+            }
+            let s = Set.init(mechanismsLC)
+            if s.contains("cram-md5") {
+                return .CramMD5
+            }
+            return .Login
+        } else {
+            return .Login
+        }
+    }
+
+    public func bestAuthMethod()  -> AuthMethod {
+        return bestAuthMethodFromList(service.supportedMechanisms() as! [String])
+    }
 }

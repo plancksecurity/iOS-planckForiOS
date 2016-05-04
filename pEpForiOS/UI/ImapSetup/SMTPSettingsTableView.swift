@@ -35,7 +35,7 @@ class SMTPSettingsTableView: UITableViewController {
         mailSettings.portSMTP = UInt16(portSMTPAux)!
 
 
-    let connect = ConnectInfo.init(email: mailSettings.email!, imapPassword: mailSettings.password!, imapAuthMethod: ImapAuthMethod.Login, smtpAuthMethod: SmtpAuthMethod.Login, imapServerName: mailSettings.serverhostIMAP!, imapServerPort: mailSettings.portIMAP!, imapTransport:ConnectionTransport.Plain, smtpServerName: mailSettings.serverhostSMTP!, smtpServerPort: mailSettings.portSMTP!, smtpTransport: ConnectionTransport.Plain)
+    let connect = ConnectInfo.init(email: mailSettings.email!, imapPassword: mailSettings.password!, imapAuthMethod: AuthMethod.Login, smtpAuthMethod: AuthMethod.Login, imapServerName: mailSettings.serverhostIMAP!, imapServerPort: mailSettings.portIMAP!, imapTransport:ConnectionTransport.Plain, smtpServerName: mailSettings.serverhostSMTP!, smtpServerPort: mailSettings.portSMTP!, smtpTransport: ConnectionTransport.Plain)
 
         var account:IAccount = (appConfig?.model.insertAccountFromConnectInfo(connect))!
 
