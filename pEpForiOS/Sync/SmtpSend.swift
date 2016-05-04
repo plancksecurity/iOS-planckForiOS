@@ -28,6 +28,28 @@ public protocol SmtpSendDelegate {
     func serviceReconnected(smtp: SmtpSend, theNotification: NSNotification?)
 }
 
+public class SmtpSendDefaultDelegate: SmtpSendDelegate {
+    public func messageSent(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func connectionLost(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func serviceReconnected(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public init() {}
+}
+
 struct SmtpStatus {
     var haveStartedTLS = false
 }
