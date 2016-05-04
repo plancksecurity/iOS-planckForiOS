@@ -7,12 +7,10 @@ import CoreData
 public enum AccountAttributes: String {
     case accountType = "accountType"
     case email = "email"
-    case imapAuthMethod = "imapAuthMethod"
     case imapServerName = "imapServerName"
     case imapServerPort = "imapServerPort"
     case imapTransport = "imapTransport"
     case imapUsername = "imapUsername"
-    case smtpAuthMethod = "smtpAuthMethod"
     case smtpServerName = "smtpServerName"
     case smtpServerPort = "smtpServerPort"
     case smtpTransport = "smtpTransport"
@@ -31,8 +29,6 @@ public protocol _IAccount {
 
     var email: String { get set }
 
-    var imapAuthMethod: String { get set }
-
     var imapServerName: String { get set }
 
     var imapServerPort: NSNumber { get set }
@@ -40,8 +36,6 @@ public protocol _IAccount {
     var imapTransport: NSNumber { get set }
 
     var imapUsername: String? { get set }
-
-    var smtpAuthMethod: String { get set }
 
     var smtpServerName: String { get set }
 
@@ -89,9 +83,6 @@ public class _Account: BaseManagedObject, _IAccount {
     var email: String
 
     @NSManaged public
-    var imapAuthMethod: String
-
-    @NSManaged public
     var imapServerName: String
 
     @NSManaged public
@@ -102,9 +93,6 @@ public class _Account: BaseManagedObject, _IAccount {
 
     @NSManaged public
     var imapUsername: String?
-
-    @NSManaged public
-    var smtpAuthMethod: String
 
     @NSManaged public
     var smtpServerName: String

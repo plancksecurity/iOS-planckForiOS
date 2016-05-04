@@ -28,8 +28,6 @@ public class Account: _Account, IAccount {
     public var connectInfo: ConnectInfo {
         return ConnectInfo.init(
             email: self.email, imapPassword: "",
-            imapAuthMethod: AuthMethod.init(string: self.imapAuthMethod),
-            smtpAuthMethod: AuthMethod.init(string: self.smtpAuthMethod),
             imapServerName: self.imapServerName,
             imapServerPort: UInt16(self.imapServerPort.integerValue),
             imapTransport: self.rawImapTransport,

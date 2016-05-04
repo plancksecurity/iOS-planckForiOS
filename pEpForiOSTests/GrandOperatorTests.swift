@@ -44,8 +44,7 @@ class GrandOperatorTests: XCTestCase {
     func testVerifyConnectionAllFailed() {
         let exp = expectationWithDescription("verified")
         let connectionInfo = ConnectInfo.init(
-            email: "none", imapPassword: "none", imapAuthMethod: .Login,
-            smtpAuthMethod: .Plain,
+            email: "none", imapPassword: "none",
             imapServerName: "cant.connect", imapServerPort: 993, imapTransport: .Plain,
             smtpServerName: "cant.connect", smtpServerPort: 516, smtpTransport: .TLS)
         grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
@@ -61,8 +60,7 @@ class GrandOperatorTests: XCTestCase {
     func testVerifyConnectionImapAuthenticationFailed() {
         let exp = expectationWithDescription("verified")
         let connectionInfo = ConnectInfo.init(
-            email: correct.email, imapPassword: "notwork", imapAuthMethod: correct.imapAuthMethod,
-            smtpAuthMethod: correct.smtpAuthMethod,
+            email: correct.email, imapPassword: "notwork",
             imapServerName: correct.imapServerName, imapServerPort: correct.imapServerPort,
             imapTransport: correct.imapTransport,
             smtpServerName: correct.smtpServerName, smtpServerPort: correct.smtpServerPort,
@@ -82,8 +80,7 @@ class GrandOperatorTests: XCTestCase {
         let connectionInfo = ConnectInfo.init(
             email: correct.email, imapUsername: correct.getImapUsername(),
             smtpUsername: correct.getSmtpUsername(), imapPassword: correct.imapPassword,
-            smtpPassword: "wrong", imapAuthMethod: correct.imapAuthMethod,
-            smtpAuthMethod: correct.smtpAuthMethod, imapServerName: correct.imapServerName,
+            smtpPassword: "wrong", imapServerName: correct.imapServerName,
             imapServerPort: correct.imapServerPort, imapTransport: correct.imapTransport,
             smtpServerName: correct.smtpServerName, smtpServerPort: correct.smtpServerPort,
             smtpTransport: correct.smtpTransport)
@@ -101,8 +98,7 @@ class GrandOperatorTests: XCTestCase {
         let connectionInfo = ConnectInfo.init(
             email: correct.email, imapUsername: correct.getImapUsername(),
             smtpUsername: correct.getSmtpUsername(), imapPassword: correct.imapPassword,
-            smtpPassword: correct.getSmtpPassword(), imapAuthMethod: correct.imapAuthMethod,
-            smtpAuthMethod: correct.smtpAuthMethod, imapServerName: "noconnect",
+            smtpPassword: correct.getSmtpPassword(), imapServerName: "noconnect",
             imapServerPort: correct.imapServerPort, imapTransport: correct.imapTransport,
             smtpServerName: correct.smtpServerName, smtpServerPort: correct.smtpServerPort,
             smtpTransport: correct.smtpTransport)
@@ -120,8 +116,7 @@ class GrandOperatorTests: XCTestCase {
         let connectionInfo = ConnectInfo.init(
             email: correct.email, imapUsername: correct.getImapUsername(),
             smtpUsername: correct.getSmtpUsername(), imapPassword: correct.imapPassword,
-            smtpPassword: correct.getSmtpPassword(), imapAuthMethod: correct.imapAuthMethod,
-            smtpAuthMethod: correct.smtpAuthMethod, imapServerName: correct.imapServerName,
+            smtpPassword: correct.getSmtpPassword(), imapServerName: correct.imapServerName,
             imapServerPort: correct.imapServerPort, imapTransport: correct.imapTransport,
             smtpServerName: "noconnect", smtpServerPort: correct.smtpServerPort,
             smtpTransport: correct.smtpTransport)

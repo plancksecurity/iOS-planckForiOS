@@ -36,8 +36,6 @@ public protocol IConnectInfo {
     var smtpUsername: String? { get }
     var imapPassword: String? { get }
     var smtpPassword: String? { get }
-    var imapAuthMethod: AuthMethod { get }
-    var smtpAuthMethod: AuthMethod { get }
 
     var imapServerName: String { get }
     var imapServerPort: UInt16 { get }
@@ -61,8 +59,6 @@ public struct ConnectInfo: IConnectInfo {
     public let smtpUsername: String?
     public let imapPassword: String?
     public let smtpPassword: String?
-    public let imapAuthMethod: AuthMethod
-    public let smtpAuthMethod: AuthMethod
     public let imapServerName: String
     public let imapServerPort: UInt16
     public let imapTransport: ConnectionTransport
@@ -76,7 +72,6 @@ public struct ConnectInfo: IConnectInfo {
 
     public init(email: String, imapUsername: String?, smtpUsername: String?,
                 imapPassword: String?, smtpPassword: String?,
-                imapAuthMethod: AuthMethod, smtpAuthMethod: AuthMethod,
                 imapServerName: String, imapServerPort: UInt16, imapTransport: ConnectionTransport,
                 smtpServerName: String, smtpServerPort: UInt16, smtpTransport: ConnectionTransport) {
         self.email = email
@@ -84,8 +79,6 @@ public struct ConnectInfo: IConnectInfo {
         self.smtpUsername = smtpUsername
         self.imapPassword = imapPassword
         self.smtpPassword = smtpPassword
-        self.imapAuthMethod = imapAuthMethod
-        self.smtpAuthMethod = smtpAuthMethod
         self.imapServerName = imapServerName
         self.imapServerPort = imapServerPort
         self.imapTransport = imapTransport
@@ -94,8 +87,7 @@ public struct ConnectInfo: IConnectInfo {
         self.smtpTransport = smtpTransport
     }
 
-    public init(email: String, imapPassword: String, imapAuthMethod: AuthMethod,
-                smtpAuthMethod: AuthMethod,
+    public init(email: String, imapPassword: String,
                 imapServerName: String, imapServerPort: UInt16, imapTransport: ConnectionTransport,
                 smtpServerName: String, smtpServerPort: UInt16, smtpTransport: ConnectionTransport) {
         self.email = email
@@ -103,8 +95,6 @@ public struct ConnectInfo: IConnectInfo {
         self.smtpUsername = nil
         self.imapPassword = imapPassword
         self.smtpPassword = nil
-        self.imapAuthMethod = imapAuthMethod
-        self.smtpAuthMethod = smtpAuthMethod
         self.imapServerName = imapServerName
         self.imapServerPort = imapServerPort
         self.imapTransport = imapTransport
@@ -137,7 +127,7 @@ public struct ConnectInfo: IConnectInfo {
 
 extension ConnectInfo: Hashable {
     public var hashValue: Int {
-        return "\(email) \(imapUsername) \(smtpUsername) \(imapAuthMethod) \(smtpAuthMethod) \(imapServerName) \(imapServerPort) \(smtpServerName) \(smtpServerPort) \(imapTransport) \(smtpTransport)".hashValue
+        return "\(email) \(imapUsername) \(smtpUsername) \(imapServerName) \(imapServerPort) \(smtpServerName) \(smtpServerPort) \(imapTransport) \(smtpTransport)".hashValue
     }
 }
 
@@ -145,9 +135,9 @@ extension ConnectInfo: Equatable {}
 
 public func ==(l: ConnectInfo, r: ConnectInfo) -> Bool {
     return l.email == r.email && l.imapUsername == r.imapUsername &&
-        l.imapTransport == r.imapTransport && l.imapAuthMethod == r.imapAuthMethod &&
+        l.imapTransport == r.imapTransport &&
         l.imapServerName == r.imapServerName && l.imapServerPort == r.imapServerPort &&
         l.smtpUsername == r.smtpUsername && l.smtpTransport == r.smtpTransport &&
-        l.smtpAuthMethod == r.smtpAuthMethod && l.smtpTransport == r.smtpTransport &&
+        l.smtpTransport == r.smtpTransport &&
         l.smtpServerName == r.smtpServerName && l.smtpServerPort == r.smtpServerPort
 }

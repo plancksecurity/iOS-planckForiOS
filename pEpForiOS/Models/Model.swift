@@ -120,8 +120,6 @@ public class Model: IModel {
         account.email = connectInfo.email
         account.imapUsername = connectInfo.imapUsername
         account.smtpUsername = connectInfo.smtpUsername
-        account.imapAuthMethod = connectInfo.imapAuthMethod.rawValue
-        account.smtpAuthMethod = connectInfo.smtpAuthMethod.rawValue
         account.imapServerName = connectInfo.imapServerName
         account.smtpServerName = connectInfo.smtpServerName
         account.imapServerPort = NSNumber.init(short: Int16(connectInfo.imapServerPort))
