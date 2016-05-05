@@ -46,6 +46,11 @@ public protocol IGrandOperator {
     func setErrorForOperation(operation: NSOperation, error: NSError)
 
     /**
+     - returns: The list of all errors
+     */
+    func allErrors() -> [NSError]
+
+    /**
      Creates a new background model, confined to the current thread/queue
      */
     func backgroundModel() -> IModel
@@ -133,6 +138,14 @@ public class GrandOperator: IGrandOperator {
         GCD.onMain({
             self.errors[operation] = error
         })
+    }
+
+    public func allErrors() -> [NSError] {
+        var errors: [NSError] = []
+        for (_, err) in self.errors {
+            errors.append(err)
+        }
+        return errors
     }
 
     public func backgroundModel() -> IModel {

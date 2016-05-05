@@ -69,4 +69,70 @@ class SimpleOperationsTest: XCTestCase {
                 self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 1)
         })
     }
+
+    func testStoreSingleMail() {
+        grandOperator.model.insertOrUpdateFolderName(
+            ImapSync.defaultImapInboxName, folderType: Account.AccountType.Imap,
+            accountEmail: connectInfo.email)
+        grandOperator.model.save()
+
+        let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
+        let message = CWIMAPMessage.init()
+        message.setFrom(CWInternetAddress.init(personal: "personal", address: "somemail@test.com"))
+        message.setFolder(folder)
+        let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
+                                                   accountEmail: connectInfo.email,
+                                                   message: message)
+        let backgroundQueue = NSOperationQueue.init()
+        backgroundQueue.addOperation(op)
+        backgroundQueue.waitUntilAllOperationsAreFinished()
+        XCTAssertEqual(
+            self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 1)
+    }
+
+    func testStoreMultipleMails() {
+        let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
+        let numMails = 10
+
+        grandOperator.model.insertOrUpdateFolderName(
+            ImapSync.defaultImapInboxName, folderType: Account.AccountType.Imap,
+            accountEmail: connectInfo.email)
+        grandOperator.model.save()
+
+        let exp = expectationWithDescription("exp")
+        var operations: Set<NSOperation> = []
+        let backgroundQueue = NSOperationQueue.init()
+        var fulfilled = false
+        for i in 1...numMails {
+            let message = CWIMAPMessage.init()
+            message.setFrom(CWInternetAddress.init(personal: "personal\(i)",
+                address: "somemail\(i)@test.com"))
+            message.setSubject("Subject \(i)")
+            message.setRecipients([CWInternetAddress.init(personal: "thisIsMe",
+                address: "myaddress@test.com", type: PantomimeToRecipient)])
+            message.setFolder(folder)
+            message.setUID(UInt(i))
+            let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
+                                                       accountEmail: connectInfo.email,
+                                                       message: message)
+            operations.insert(op)
+            op.completionBlock = {
+                operations.remove(op)
+                if backgroundQueue.operationCount == 0 && !fulfilled {
+                    fulfilled = true
+                    exp.fulfill()
+                }
+            }
+            backgroundQueue.addOperation(op)
+        }
+
+        waitForExpectationsWithTimeout(10, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.grandOperator.allErrors().count, 0)
+            XCTAssertEqual(
+                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 1)
+            XCTAssertGreaterThan(
+                self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 1)
+        })
+    }
 }

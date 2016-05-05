@@ -135,7 +135,8 @@ class PersistentEmailCache: NSObject {
                                                            name: address.personal()) {
                 added[addr.email] = addr
             } else {
-                Log.error(comp, error: Constants.errorCouldNotInsertOrUpdate(comp))
+                Log.error(comp, error: Constants.errorCouldNotUpdateOrAddContact(comp,
+                    name: address.stringValue()))
             }
         }
         return added

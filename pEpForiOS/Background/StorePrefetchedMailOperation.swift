@@ -9,38 +9,60 @@
 import Foundation
 import CoreData
 
-class StorePrefetchedMailOperation: BaseOperation {
+public class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
     let message: CWIMAPMessage
     let accountEmail: String
 
-    init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage) {
+    public init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage) {
         self.accountEmail = accountEmail
         self.message = message
         super.init(grandOperator: grandOperator)
     }
 
-    override func main() {
-        Log.info(comp, "storing \(message.UID()) in \(message.folder()?.name())")
+    override public func main() {
         let model = grandOperator.backgroundModel()
         var addresses = message.recipients() as! [CWInternetAddress]
         if let from = message.from() {
             addresses.append(from)
         }
         let contacts = addContacts(addresses, model: model)
-        let mail = insertOrUpdateMail(contacts, message: message, model: model)
+        insertOrUpdateMail(contacts, message: message, model: model)
         model.save()
-        Log.info(comp, "stored \(mail.uid) in \(mail.folder.name) (\(mail.folder.messages.count))")
     }
 
     func insertOrUpdateMail(contacts: [String: IContact], message: CWIMAPMessage,
-                    model: IModel) -> IMessage {
-        var mail: IMessage! = model.existingMessage(message)
+                    model: IModel) -> IMessage? {
+        guard let folderName = message.folder()?.name() else {
+            grandOperator.setErrorForOperation(
+                self, error: Constants.errorCannotStoreMailWithoutFolder(comp))
+            return nil
+        }
+
+        guard let folder = model.folderByName(
+            folderName, email: accountEmail, folderType: Account.AccountType.Imap) as? Folder
+            else {
+                grandOperator.setErrorForOperation(
+                    self, error: Constants.errorFolderDoesNotExist(comp,
+                        folderName: folderName))
+                return nil
+        }
 
         var isFresh = false
-        if mail == nil {
-            mail = model.insertNewMessage()
+        var theMail: IMessage? = model.existingMessage(message)
+        if theMail == nil {
+            theMail = model.insertNewMessage()
             isFresh = true
+        }
+
+        var mail = theMail!
+
+        if isFresh || mail.folder.name != folder.name {
+            mail.folder = folder
+        }
+
+        if isFresh || mail.folder.name != folder.name {
+            mail.folder = folder
         }
 
         if isFresh || mail.originationDate != message.receivedDate() {
@@ -57,19 +79,6 @@ class StorePrefetchedMailOperation: BaseOperation {
         }
         if isFresh || mail.messageNumber != message.messageNumber() {
             mail.messageNumber = message.messageNumber()
-        }
-
-        if let folderName = message.folder()?.name() {
-            if let folder = model.insertOrUpdateFolderName(
-                folderName, folderType: Account.AccountType.Imap,
-                accountEmail: accountEmail) {
-                if isFresh || mail.folder.name != folder.name {
-                    mail.folder = folder as! Folder
-                }
-            } else {
-                grandOperator.setErrorForOperation(
-                    self, error: Constants.errorCouldNotInsertOrUpdate(comp))
-            }
         }
 
         let ccs: NSMutableOrderedSet = []
@@ -120,7 +129,8 @@ class StorePrefetchedMailOperation: BaseOperation {
                                                            name: address.personal()) {
                 added[addr.email] = addr
             } else {
-                Log.error(comp, error: Constants.errorCouldNotInsertOrUpdate(comp))
+                Log.error(comp, error: Constants.errorCouldNotUpdateOrAddContact(comp,
+                    name: address.stringValue()))
             }
         }
         return added

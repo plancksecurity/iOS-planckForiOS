@@ -18,6 +18,8 @@ public protocol IModel {
     func folderCountByPredicate(predicate: NSPredicate) -> Int
     func foldersByPredicate(predicate: NSPredicate) -> [IFolder]?
     func folderByPredicate(predicate: NSPredicate) -> IFolder?
+    func folderByName(name: String, email: String) -> IFolder?
+    func folderByName(name: String, email: String, folderType: Account.AccountType) -> IFolder?
 
     func accountByEmail(email: String) -> IAccount?
     func setAccountAsLastUsed(account: IAccount) -> IAccount
@@ -28,6 +30,11 @@ public protocol IModel {
     func insertTestAccount() -> IAccount?
 
     func insertOrUpdateContactEmail(email: String, name: String?) -> IContact?
+
+    /**
+     Inserts a folder of the given type.
+     - Note: Caller is responsible for saving!
+     */
     func insertOrUpdateFolderName(folderName: String,
                                   folderType: Account.AccountType,
                                   accountEmail: String) -> IFolder?
@@ -196,15 +203,14 @@ public class Model: IModel {
         }
     }
 
-    /**
-     Inserts a folder of the given type.
-     - Note: Caller is responsible for saving!
-     */
+    func folderPredicateByName(name: String, email: String) -> NSPredicate {
+        return NSPredicate.init(format: "account.email = %@ and name = %@", email, name)
+    }
+
     public func insertOrUpdateFolderName(
         folderName: String, folderType: Account.AccountType,
         accountEmail: String) -> IFolder? {
-        let p = NSPredicate.init(format: "account.email = %@ and name = %@", accountEmail,
-                                 folderName)
+        let p = folderPredicateByName(folderName, email: accountEmail)
         if let folder = singleEntityWithName(Folder.entityName(), predicate: p) {
             return folder as? Folder
         }
@@ -244,8 +250,20 @@ public class Model: IModel {
         return singleEntityWithName(Folder.entityName(), predicate: predicate) as? Folder
     }
 
+    public func folderByName(name: String, email: String) -> IFolder? {
+        return folderByPredicate(folderPredicateByName(name, email: email))
+    }
+
+    public func folderByName(
+        name: String, email: String, folderType: Account.AccountType) -> IFolder? {
+        let p1 = folderPredicateByName(name, email: email)
+        let p2 = NSPredicate.init(format: "folderType = %d", folderType.rawValue)
+        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
+        return folderByPredicate(p)
+    }
+
     public func insertFolderName(name: String, email: String) -> IFolder {
-        var folder = NSEntityDescription.insertNewObjectForEntityForName(
+        let folder = NSEntityDescription.insertNewObjectForEntityForName(
             Folder.entityName(), inManagedObjectContext: context) as! Folder
         folder.name = name
         if let account = accountByEmail(email) as? Account {
