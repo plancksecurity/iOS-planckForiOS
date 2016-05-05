@@ -59,17 +59,11 @@ class PersistentImapFolder: CWIMAPFolder {
     }
 
     func folderObject() -> IFolder {
-        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
-                                 connectInfo.email, name())
-        if let folder = grandOperator.model.folderByPredicate(p) as? Folder {
+        if let folder = grandOperator.model.insertOrUpdateFolderName(
+            name(), folderType: Account.AccountType.Imap, accountEmail: connectInfo.email) {
             return folder
         } else {
-            if let folder = grandOperator.model.insertOrUpdateFolderName(
-                name(), folderType: Account.AccountType.Imap, accountEmail: connectInfo.email) {
-                return folder
-            } else {
-                abort()
-            }
+            abort()
         }
     }
 
