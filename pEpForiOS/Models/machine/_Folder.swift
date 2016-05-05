@@ -5,6 +5,7 @@ import Foundation
 import CoreData
 
 public enum FolderAttributes: String {
+    case existsCount = "existsCount"
     case folderType = "folderType"
     case name = "name"
     case nextUID = "nextUID"
@@ -19,6 +20,8 @@ public enum FolderRelationships: String {
 public protocol _IFolder {
 
     // MARK: - Properties
+
+    var existsCount: NSNumber { get set }
 
     var folderType: NSNumber { get set }
 
@@ -60,6 +63,9 @@ public class _Folder: BaseManagedObject, _IFolder {
     }
 
     // MARK: - Properties
+
+    @NSManaged public
+    var existsCount: NSNumber
 
     @NSManaged public
     var folderType: NSNumber

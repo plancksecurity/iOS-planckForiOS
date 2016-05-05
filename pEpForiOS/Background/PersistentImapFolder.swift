@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 /**
- A `CWFolder`/`CWIMAPFolder` that is backed by core data.
+ A `CWFolder`/`CWIMAPFolder` that is backed by core data. Use on the main thread.
  */
 class PersistentImapFolder: CWIMAPFolder {
     let comp = "PersistentImapFolder"
@@ -21,19 +21,26 @@ class PersistentImapFolder: CWIMAPFolder {
     let grandOperator: IGrandOperator
     let cache: PersistentEmailCache
 
+    /** The underlying core data object */
+    var folder: IFolder!
+
     override var nextUID: UInt {
         get {
-            return super.nextUID
+            return UInt(folder.nextUID.integerValue)
         }
         set {
-            super.nextUID = nextUID
-            if let folder = folderObject() {
-                folder.nextUID = nextUID
-                CoreDataUtil.saveContext(managedObjectContext: mainContext)
-            } else {
-                Log.warn(comp,
-                         "Could not set nextUID \(nextUID) for folder (name()) of account \(connectInfo.email)")
-            }
+            folder.nextUID = newValue
+            CoreDataUtil.saveContext(managedObjectContext: mainContext)
+        }
+    }
+
+    override var existsCount: UInt {
+        get {
+            return UInt(folder.existsCount)
+        }
+        set {
+            folder.existsCount = newValue
+            CoreDataUtil.saveContext(managedObjectContext: mainContext)
         }
     }
 
@@ -48,6 +55,39 @@ class PersistentImapFolder: CWIMAPFolder {
                                                backgroundQueue: backgroundQueue)
         super.init(name: name)
         self.setCacheManager(cache)
+        self.folder = folderObject()
+    }
+
+    func folderObject() -> IFolder {
+        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
+                                 connectInfo.email, name())
+        if let folder = grandOperator.model.folderByPredicate(p) as? Folder {
+            return folder
+        } else {
+            if let folder = grandOperator.model.insertOrUpdateFolderName(
+                name(), folderType: Account.AccountType.Imap, accountEmail: connectInfo.email) {
+                return folder
+            } else {
+                abort()
+            }
+        }
+    }
+
+    override func setUIDValidity(theUIDValidity: UInt) {
+        if folder.uidValidity != theUIDValidity {
+            Log.warn(comp,
+                     "UIValidity changed, deleting all messages. Folder \(folder.name)")
+            folder.messages = []
+        }
+        folder.uidValidity = theUIDValidity
+        CoreDataUtil.saveContext(managedObjectContext: mainContext)
+    }
+
+    override func UIDValidity() -> UInt {
+        if let uidVal = folder.uidValidity {
+            return UInt(uidVal.integerValue)
+        }
+        return 0
     }
 
     func predicateAllMessages() -> NSPredicate {
@@ -76,6 +116,8 @@ class PersistentImapFolder: CWIMAPFolder {
     /**
      This implementation assumes that the index is typically referred to by pantomime
      as the messageNumber.
+     - Todo: This must be synchronized with the fetching. The way it currently is
+     implemented is not feasible, since the messageIDs would have to be recomputed.
      */
     override func messageAtIndex(theIndex: UInt) -> CWMessage? {
         let p = NSPredicate.init(
@@ -112,46 +154,6 @@ class PersistentImapFolder: CWIMAPFolder {
             Log.error(comp, error: error)
         }
         Log.warn(comp, "lastUID no object found, returning 0")
-        return 0
-    }
-
-    func folderObject() -> Folder? {
-        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
-                                 connectInfo.email, name())
-        if let folder = grandOperator.model.folderByPredicate(p) as? Folder {
-            return folder
-        } else {
-            Log.warn(comp,
-                     "Could not fetch folder with name \(name()) of account \(connectInfo.email)")
-            return nil
-        }
-    }
-
-    override func setUIDValidity(theUIDValidity: UInt) {
-        if let folder = folderObject() {
-            if let oldUidValidity = folder.uidValidity?.integerValue {
-                if theUIDValidity != UInt(oldUidValidity) {
-                    Log.warn(comp,
-                             "UIValidity changed, deleting all messages. Folder \(folder.name)")
-                    folder.messages = []
-                }
-            }
-            folder.uidValidity = theUIDValidity
-            CoreDataUtil.saveContext(managedObjectContext: mainContext)
-        } else {
-            Log.warn(comp,
-                     "Could not set UIDValidity \(theUIDValidity) for folder (name()) of account \(connectInfo.email)")
-        }
-    }
-
-    override func UIDValidity() -> UInt {
-        if let folder = folderObject() {
-            if let uidVal = folder.uidValidity {
-                return UInt(uidVal.integerValue)
-            }
-        }
-        Log.warn(comp,
-                 "Could not get UIDValidity for folder (name()) of account \(connectInfo.email)")
         return 0
     }
 }

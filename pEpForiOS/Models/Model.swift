@@ -94,16 +94,16 @@ public class Model: IModel {
     }
     public func existingMessage(msg: CWIMAPMessage) -> IMessage? {
         var predicates: [NSPredicate] = []
-        if msg.subject() != nil && msg.receivedDate() != nil {
-            predicates.append(NSPredicate.init(format: "subject = %@ and originationDate = %@",
-                msg.subject()!, msg.receivedDate()!))
+        if let msgId = msg.messageID() {
+            predicates.append(NSPredicate.init(format: "messageId = %@", msgId))
         }
         if msg.folder() != nil {
             predicates.append(NSPredicate.init(format: "uid = %d and folder.name = %@",
                 msg.UID(), msg.folder()!.name()))
         }
-        if let msgId = msg.messageID() {
-            predicates.append(NSPredicate.init(format: "messageId = %@", msgId))
+        if msg.subject() != nil && msg.receivedDate() != nil {
+            predicates.append(NSPredicate.init(format: "subject = %@ and originationDate = %@",
+                msg.subject()!, msg.receivedDate()!))
         }
         let pred = NSCompoundPredicate.init(andPredicateWithSubpredicates: predicates)
         if let mail = singleEntityWithName(Message.entityName(), predicate: pred) {
@@ -142,7 +142,7 @@ public class Model: IModel {
 
     public func insertNewMessage() -> IMessage {
         let mail = NSEntityDescription.insertNewObjectForEntityForName(
-            Message.entityName(), inManagedObjectContext: context) as! IMessage
+            Message.entityName(), inManagedObjectContext: context) as! Message
         return mail
     }
 
@@ -172,7 +172,7 @@ public class Model: IModel {
         }
 
         if let account = singleEntityWithName(Account.entityName(), predicate: predicate) {
-            return setAccountAsLastUsed(account as! IAccount)
+            return setAccountAsLastUsed(account as! Account)
         } else {
             return nil
         }
@@ -181,7 +181,7 @@ public class Model: IModel {
     public func accountByEmail(email: String) -> IAccount? {
         let predicate = NSPredicate.init(format: "email = %@", email)
         return singleEntityWithName(Account.entityName(), predicate: predicate)
-            as! IAccount?
+            as? Account
     }
 
     public func save() {
@@ -221,7 +221,7 @@ public class Model: IModel {
     }
 
     public func messageByPredicate(predicate: NSPredicate) -> IMessage? {
-        return singleEntityWithName(Message.entityName(), predicate: predicate) as? IMessage
+        return singleEntityWithName(Message.entityName(), predicate: predicate) as? Message
     }
 
     public func messagesByPredicate(predicate: NSPredicate) -> [IMessage]? {
@@ -241,7 +241,17 @@ public class Model: IModel {
     }
 
     public func folderByPredicate(predicate: NSPredicate) -> IFolder? {
-        return singleEntityWithName(Folder.entityName(), predicate: predicate) as? IFolder
+        return singleEntityWithName(Folder.entityName(), predicate: predicate) as? Folder
+    }
+
+    public func insertFolderName(name: String, email: String) -> IFolder {
+        var folder = NSEntityDescription.insertNewObjectForEntityForName(
+            Folder.entityName(), inManagedObjectContext: context) as! Folder
+        folder.name = name
+        if let account = accountByEmail(email) as? Account {
+            folder.account = account
+        }
+        return folder
     }
 
     public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact? {

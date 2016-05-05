@@ -21,18 +21,20 @@ class StorePrefetchedMailOperation: BaseOperation {
     }
 
     override func main() {
+        Log.info(comp, "storing \(message.UID()) in \(message.folder()?.name())")
         let model = grandOperator.backgroundModel()
         var addresses = message.recipients() as! [CWInternetAddress]
         if let from = message.from() {
             addresses.append(from)
         }
         let contacts = addContacts(addresses, model: model)
-        insertOrUpdateMail(contacts, message: message, model: model)
+        let mail = insertOrUpdateMail(contacts, message: message, model: model)
         model.save()
+        Log.info(comp, "stored \(mail.uid) in \(mail.folder.name) (\(mail.folder.messages.count))")
     }
 
     func insertOrUpdateMail(contacts: [String: IContact], message: CWIMAPMessage,
-                    model: IModel) {
+                    model: IModel) -> IMessage {
         var mail: IMessage! = model.existingMessage(message)
 
         var isFresh = false
@@ -57,17 +59,17 @@ class StorePrefetchedMailOperation: BaseOperation {
             mail.messageNumber = message.messageNumber()
         }
 
-            if let folderName = message.folder()?.name() {
-                if let folder = model.insertOrUpdateFolderName(
-                    folderName, folderType: Account.AccountType.Imap,
-                    accountEmail: accountEmail) {
-                    if isFresh || mail.folder.name != folder.name {
-                        mail.folder = folder as! Folder
-                    }
-                } else {
-                    grandOperator.setErrorForOperation(
-                        self, error: Constants.errorCouldNotInsertOrUpdate(comp))
+        if let folderName = message.folder()?.name() {
+            if let folder = model.insertOrUpdateFolderName(
+                folderName, folderType: Account.AccountType.Imap,
+                accountEmail: accountEmail) {
+                if isFresh || mail.folder.name != folder.name {
+                    mail.folder = folder as! Folder
                 }
+            } else {
+                grandOperator.setErrorForOperation(
+                    self, error: Constants.errorCouldNotInsertOrUpdate(comp))
+            }
         }
 
         let ccs: NSMutableOrderedSet = []
@@ -107,6 +109,7 @@ class StorePrefetchedMailOperation: BaseOperation {
                 }
             }
         }
+        return mail
     }
 
     func addContacts(contacts: [CWInternetAddress],

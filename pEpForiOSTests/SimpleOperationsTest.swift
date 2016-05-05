@@ -46,9 +46,9 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertGreaterThan(
-                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 1)
+                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 0)
             XCTAssertGreaterThan(
-                self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 1)
+                self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 0)
         })
     }
 
