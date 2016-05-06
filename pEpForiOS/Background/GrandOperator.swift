@@ -85,10 +85,8 @@ public class GrandOperator: IGrandOperator {
         self.coreDataUtil = coreDataUtil
     }
 
-    public func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
-                        completionBlock: GrandOperatorCompletionBlock?) {
-        let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
-                                              folder: folder)
+    func kickOffConcurrentOperation(operation op: NSOperation,
+                                    completionBlock: GrandOperatorCompletionBlock?) {
         op.completionBlock = { [unowned self] in
             let error = self.errors[op]
             completionBlock?(error: error)
@@ -97,16 +95,17 @@ public class GrandOperator: IGrandOperator {
         op.start()
     }
 
+    public func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
+                        completionBlock: GrandOperatorCompletionBlock?) {
+        let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
+                                              folder: folder)
+        kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
+    }
+
     public func fetchFolders(connectInfo: ConnectInfo,
                              completionBlock: GrandOperatorCompletionBlock?) {
         let op = FetchFoldersOperation.init(grandOperator: self, connectInfo: connectInfo)
-
-        op.completionBlock = { [unowned self] in
-            let error = self.errors[op]
-            completionBlock?(error: error)
-            self.errors.removeValueForKey(op)
-        }
-        op.start()
+        kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
     func handleVerificationCompletion(finished1: Bool, finished2: Bool,
@@ -121,6 +120,8 @@ public class GrandOperator: IGrandOperator {
                     error = err
                 }
                 completionBlock?(error: error)
+                self.errors.removeValueForKey(op1)
+                self.errors.removeValueForKey(op2)
             }
         })
     }
