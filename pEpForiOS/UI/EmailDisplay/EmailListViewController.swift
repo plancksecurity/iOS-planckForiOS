@@ -50,11 +50,12 @@ class EmailListViewController: UITableViewController {
                     [unowned self] error in
                     GCD.onMain({
                         Log.info(self.comp, "Sync completed, error: \(error)")
-                       // self.updateUI()
+                        self.updateUI()
                     })
             })
-           //updateUI()
+            updateUI()
         }
+        super.viewWillAppear(animated)
     }
 
     func prepareFetchRequest() {
