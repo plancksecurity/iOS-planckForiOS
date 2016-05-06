@@ -56,8 +56,7 @@ class SimpleOperationsTest: XCTestCase {
         let foldersFetched = expectationWithDescription("foldersFetched")
 
         let op = FetchFoldersOperation.init(grandOperator: grandOperator,
-                                            connectInfo: connectInfo,
-                                            folder: ImapSync.defaultImapInboxName)
+                                            connectInfo: connectInfo)
         op.completionBlock = {
             foldersFetched.fulfill()
         }
@@ -67,6 +66,9 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertGreaterThan(
                 self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 1)
+            XCTAssertEqual(self.grandOperator.model.folderByName(
+                ImapSync.defaultImapInboxName, email: self.connectInfo.email)?.name.lowercaseString,
+                ImapSync.defaultImapInboxName.lowercaseString)
         })
     }
 

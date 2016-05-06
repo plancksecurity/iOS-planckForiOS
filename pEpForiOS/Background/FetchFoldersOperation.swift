@@ -39,7 +39,7 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
     var imapSync: ImapSync!
     var folderBuilder: ImapFolderBuilder!
 
-    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folder: String?) {
+    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
 
         super.init(grandOperator: grandOperator)
@@ -78,33 +78,49 @@ extension FetchFoldersOperation: ImapSyncDelegate {
     }
 
     public func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorAuthenticationFailed(comp))
     }
 
     public func connectionLost(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorConnectionLost(comp))
     }
 
     public func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorConnectionTerminated(comp))
     }
 
     public func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorConnectionTimeout(comp))
     }
 
     public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
+            stateName: "folderPrefetchCompleted"))
     }
 
     public func messageChanged(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
+            stateName: "messageChanged"))
     }
 
     public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
+            stateName: "messagePrefetchCompleted"))
     }
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
+            stateName: "folderOpenCompleted"))
     }
 
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
+            stateName: "folderOpenFailed"))
     }
 
     public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
+        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
+            stateName: "folderStatusCompleted"))
     }
 
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {

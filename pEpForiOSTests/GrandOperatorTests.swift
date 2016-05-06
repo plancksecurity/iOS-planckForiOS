@@ -17,16 +17,11 @@ class GrandOperatorTests: XCTestCase {
     let waitTime: NSTimeInterval = 10
 
     let correct = TestData.connectInfo
-    var coreDataUtil: InMemoryCoreDataUtil!
-    var connectionManager: ConnectionManager!
-    var grandOperator: IGrandOperator!
+    var persistentSetup: PersistentSetup!
 
     override func setUp() {
         super.setUp()
-        coreDataUtil = InMemoryCoreDataUtil()
-        connectionManager = ConnectionManager.init()
-        grandOperator = GrandOperator.init(
-            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
+        persistentSetup = PersistentSetup.init(coreDataUtil: InMemoryCoreDataUtil())
     }
     
     /**
@@ -35,7 +30,8 @@ class GrandOperatorTests: XCTestCase {
     func testNewMessage() {
         let message = NSEntityDescription.insertNewObjectForEntityForName(
             Message.entityName(),
-            inManagedObjectContext: coreDataUtil.managedObjectContext) as? Message
+            inManagedObjectContext:
+            persistentSetup.grandOperator.coreDataUtil.managedObjectContext) as? Message
         XCTAssertNotNil(message)
         message!.subject = "Subject"
         XCTAssertNotNil(message?.subject)
@@ -47,7 +43,7 @@ class GrandOperatorTests: XCTestCase {
             email: "none", imapPassword: "none",
             imapServerName: "cant.connect", imapServerPort: 993, imapTransport: .Plain,
             smtpServerName: "cant.connect", smtpServerPort: 516, smtpTransport: .TLS)
-        grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
+        persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
             XCTAssertTrue(error!.code == Constants.NetworkError.Timeout.rawValue)
             exp.fulfill()
@@ -65,7 +61,7 @@ class GrandOperatorTests: XCTestCase {
             imapTransport: correct.imapTransport,
             smtpServerName: correct.smtpServerName, smtpServerPort: correct.smtpServerPort,
             smtpTransport: correct.smtpTransport)
-        grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
+        persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
             XCTAssertEqual(error!.code, Constants.NetworkError.AuthenticationFailed.rawValue)
             exp.fulfill()
@@ -84,7 +80,7 @@ class GrandOperatorTests: XCTestCase {
             imapServerPort: correct.imapServerPort, imapTransport: correct.imapTransport,
             smtpServerName: correct.smtpServerName, smtpServerPort: correct.smtpServerPort,
             smtpTransport: correct.smtpTransport)
-        grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
+        persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
             exp.fulfill()
         })
@@ -102,7 +98,7 @@ class GrandOperatorTests: XCTestCase {
             imapServerPort: correct.imapServerPort, imapTransport: correct.imapTransport,
             smtpServerName: correct.smtpServerName, smtpServerPort: correct.smtpServerPort,
             smtpTransport: correct.smtpTransport)
-        grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
+        persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
             exp.fulfill()
         })
@@ -120,7 +116,7 @@ class GrandOperatorTests: XCTestCase {
             imapServerPort: correct.imapServerPort, imapTransport: correct.imapTransport,
             smtpServerName: "noconnect", smtpServerPort: correct.smtpServerPort,
             smtpTransport: correct.smtpTransport)
-        grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
+        persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
             exp.fulfill()
         })
@@ -131,12 +127,28 @@ class GrandOperatorTests: XCTestCase {
 
     func testVerifyConnectionOk() {
         let exp = expectationWithDescription("verified")
-        grandOperator.verifyConnection(correct, completionBlock: { error in
+        persistentSetup.grandOperator.verifyConnection(correct, completionBlock: { error in
             XCTAssertNil(error)
             exp.fulfill()
         })
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
+        })
+    }
+
+    func testFetchFolders() {
+        let exp = expectationWithDescription("foldersFetched")
+        persistentSetup.grandOperator.fetchFolders(correct, completionBlock: { error in
+            XCTAssertNil(error)
+            exp.fulfill()
+        })
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            let p = NSPredicate.init(value: true)
+            XCTAssertGreaterThan(self.persistentSetup.grandOperator.model.folderCountByPredicate(p), 0)
+            XCTAssertEqual(self.persistentSetup.grandOperator.model.folderByName(
+                ImapSync.defaultImapInboxName, email: self.correct.email)?.name.lowercaseString,
+                ImapSync.defaultImapInboxName.lowercaseString)
         })
     }
 }

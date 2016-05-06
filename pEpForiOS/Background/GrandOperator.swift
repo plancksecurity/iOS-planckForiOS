@@ -32,6 +32,15 @@ public protocol IGrandOperator {
                         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
+     Asynchronously fetches the folder list.
+
+     - parameter connectInfo: Denotes the server and other connection parameters
+     - parameter completionBlock: Will be called on completion of the operation, with
+     a non-nil error object if there was an error during execution.
+     */
+    func fetchFolders(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
      Asynchronously verifies the given connection. Tests for IMAP and SMTP. The test is considered
      a success when authentication was successful.
      */
@@ -80,12 +89,22 @@ public class GrandOperator: IGrandOperator {
                         completionBlock: GrandOperatorCompletionBlock?) {
         let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
                                               folder: folder)
-        if let block = completionBlock {
-            op.completionBlock = { [unowned self] in
-                let error = self.errors[op]
-                block(error: error)
-                self.errors.removeValueForKey(op)
-            }
+        op.completionBlock = { [unowned self] in
+            let error = self.errors[op]
+            completionBlock?(error: error)
+            self.errors.removeValueForKey(op)
+        }
+        op.start()
+    }
+
+    public func fetchFolders(connectInfo: ConnectInfo,
+                             completionBlock: GrandOperatorCompletionBlock?) {
+        let op = FetchFoldersOperation.init(grandOperator: self, connectInfo: connectInfo)
+
+        op.completionBlock = { [unowned self] in
+            let error = self.errors[op]
+            completionBlock?(error: error)
+            self.errors.removeValueForKey(op)
         }
         op.start()
     }

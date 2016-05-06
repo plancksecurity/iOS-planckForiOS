@@ -11,6 +11,7 @@ import Foundation
 public class Constants {
     public enum GeneralErrorCode: Int {
         case NotImplemented = 1000
+        case IllegalState
     }
 
     public enum NetworkError: Int {
@@ -18,14 +19,35 @@ public class Constants {
         case AuthenticationFailed
         case ConnectionLost
         case ConnectionTerminated
+        case ConnectionTimeout
     }
 
     public enum CoreDataErrorCode: Int {
         case CouldNotInsertOrUpdate = 3000
-        case FolderDoesNotExist = 3001
-        case CannotStoreMailWithoutFolder = 3002
-        case CouldNotUpdateOrAddContact = 3003
-        case CouldNotStoreFolder = 3004
+        case FolderDoesNotExist
+        case CannotStoreMailWithoutFolder
+        case CouldNotUpdateOrAddContact
+        case CouldNotStoreFolder
+    }
+
+    static func errorNotImplemented(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString("Not implemented",
+                    comment: "General error description for operation that is not yet implemented"
+                )])
+        return error
+    }
+
+    static func errorIllegalState(component: String, stateName: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSString.init(format: NSLocalizedString("Unexpected state: %@",
+                    comment: "General error description for operation that encountered an unexpected state/callback, e.g. a 'message received' when waiting for a list of folders"),
+                    stateName)])
+        return error
     }
 
     static func errorFolderDoesNotExist(component: String,
@@ -68,15 +90,6 @@ public class Constants {
         return error
     }
 
-    static func errorNotImplemented(component: String) -> NSError {
-        let error = NSError.init(
-            domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
-            userInfo: [NSLocalizedDescriptionKey:
-                NSLocalizedString("Not implemented",
-                    comment: "General error description for operation that is not yet implemented")])
-        return error
-    }
-
     static func errorTimeout(component: String) -> NSError {
         let error = NSError.init(
             domain: component, code: NetworkError.Timeout.rawValue,
@@ -110,6 +123,15 @@ public class Constants {
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Connection terminated",
                     comment: "General error description for a terminated connection")])
+        return error
+    }
+
+    static func errorConnectionTimeout(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: NetworkError.ConnectionTimeout.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString("Connection timed out",
+                    comment: "General error description for a timed out connection")])
         return error
     }
 }
