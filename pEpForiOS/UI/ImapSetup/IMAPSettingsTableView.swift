@@ -10,7 +10,6 @@ import UIKit
 
 class IMAPSettingsTableView: UITableViewController  {
 
-   
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
     

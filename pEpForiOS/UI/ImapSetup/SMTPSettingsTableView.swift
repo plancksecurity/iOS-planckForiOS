@@ -11,11 +11,8 @@ import UIKit
 
 class SMTPSettingsTableView: UITableViewController {
 
-
- 
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
-
 
     var appConfig: AppConfig?
     var mailSettings = MailSettingParameters()
@@ -41,18 +38,13 @@ class SMTPSettingsTableView: UITableViewController {
         imapTransport:ConnectionTransport.Plain, smtpServerName: mailSettings.serverhostSMTP!,
         smtpServerPort: mailSettings.portSMTP!, smtpTransport: ConnectionTransport.Plain)
 
-        var account:IAccount = (appConfig?.model.insertAccountFromConnectInfo(connect))!
-
-        print(account)
-
-        var accountAux:IAccount = (appConfig?.model.fetchLastAccount())!
-
-        print(accountAux)
-        
-
+        _ = appConfig?.grandOperator.verifyConnection(connect, completionBlock: { (error) in
+            GCD.onMain({
+                let account:IAccount = (self.appConfig?.model.insertAccountFromConnectInfo(connect))!
+            })
+        })
         if segue.identifier == "inboxMail" {
-            if let destination = segue.destinationViewController as? MailTableView {
-                destination.mailParameters = mailSettings
+            if let destination = segue.destinationViewController as? EmailListViewController {
             }
         }
     }

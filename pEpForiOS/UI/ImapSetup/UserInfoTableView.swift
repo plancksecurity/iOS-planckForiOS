@@ -42,7 +42,6 @@ public class UserInfoTableView: UITableViewController {
                 appConfig = appDelegate.appConfig
             }
         }
-
     }
 
     func updateView() {
@@ -68,6 +67,7 @@ public class UserInfoTableView: UITableViewController {
     @IBAction func textFieldDoneEditing(sender: AnyObject) {
         sender.resignFirstResponder()
     }
+
     @
     IBAction func editingEmail(sender: UITextField) {
         model.emailTextExist = emailValue.text != ""
