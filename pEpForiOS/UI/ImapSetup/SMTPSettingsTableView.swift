@@ -38,11 +38,8 @@ class SMTPSettingsTableView: UITableViewController {
         appConfig?.grandOperator.verifyConnection(connect, completionBlock: nil)
         appConfig?.model.insertAccountFromConnectInfo(connect)
 
-        let account:IAccount? = appConfig!.model.fetchLastAccount()
-        //print(account)
-
         if segue.identifier == "iboxFirstTime" {
-            if let destination = segue.destinationViewController as? MailTableView {
+            if let destination = segue.destinationViewController as? EmailListViewController {
             }
         }
     }

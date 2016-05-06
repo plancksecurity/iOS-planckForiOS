@@ -22,14 +22,49 @@ public class Constants {
 
     public enum CoreDataErrorCode: Int {
         case CouldNotInsertOrUpdate = 3000
+        case FolderDoesNotExist = 3001
+        case CannotStoreMailWithoutFolder = 3002
+        case CouldNotUpdateOrAddContact = 3003
+        case CouldNotStoreFolder = 3004
     }
 
-    static func errorCouldNotInsertOrUpdate(component: String) -> NSError {
+    static func errorFolderDoesNotExist(component: String,
+                                                     folderName: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.CouldNotInsertOrUpdate.rawValue,
+            domain: component, code: CoreDataErrorCode.FolderDoesNotExist.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
-                NSLocalizedString("Could not insert or update object",
-                    comment: "General error description when DB object could not be updated or inserted")])
+                NSString.init(format: NSLocalizedString("Cannot store mail for non-existent folder: %@",
+                    comment: "Error description when mail for non-existent folder gets stored"),
+                    folderName) ])
+        return error
+    }
+
+    static func errorCannotStoreMailWithoutFolder(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.CannotStoreMailWithoutFolder.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString("Cannot store mail without folder",
+                    comment: "General error description for not being able to store a mail without a folder")])
+        return error
+    }
+
+    static func errorCouldNotUpdateOrAddContact(component: String, name: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.CouldNotUpdateOrAddContact.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSString.init(format: NSLocalizedString("Cannot store contact: %@",
+                    comment: "Error description when not being able to update or store a contact"),
+                    name)])
+        return error
+    }
+
+    static func errorCouldNotStoreFolder(component: String, name: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.CouldNotStoreFolder.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSString.init(format: NSLocalizedString("Cannot store folder: %@",
+                    comment: "Error description when not being able to store a folder"),
+                    name)])
         return error
     }
 

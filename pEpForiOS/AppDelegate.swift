@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              rootViewController = storyboard.instantiateViewControllerWithIdentifier("UserInfoTableView") as! UITableViewController
         }
         else {
-             rootViewController = storyboard.instantiateViewControllerWithIdentifier("MailTableView") as! UITableViewController
+             rootViewController = storyboard.instantiateViewControllerWithIdentifier("EmailListViewController") as! UITableViewController
         }
         navigationController.viewControllers = [rootViewController]
         window?.rootViewController = navigationController

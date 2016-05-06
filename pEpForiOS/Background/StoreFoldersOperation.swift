@@ -28,7 +28,7 @@ class StoreFoldersOperation: BaseOperation {
             if folder == nil {
                 grandOperator.setErrorForOperation(
                     self,
-                    error: Constants.errorCouldNotInsertOrUpdate(comp))
+                    error: Constants.errorCouldNotStoreFolder(comp, name: folderName))
             }
         }
         model.save()

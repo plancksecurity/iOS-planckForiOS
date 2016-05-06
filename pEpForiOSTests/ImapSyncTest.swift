@@ -315,7 +315,7 @@ class ImapSyncTest: XCTestCase {
 
         let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder
-        XCTAssertNil(folder, "Unexpected persisted folder")
+        XCTAssertNotNil(folder, "Accessed folders should be created automatically")
     }
 
     func testFetchMail() {
