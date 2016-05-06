@@ -11,8 +11,6 @@ import UIKit
 
 class SMTPSettingsTableView: UITableViewController {
 
-
- 
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
 
@@ -35,24 +33,16 @@ class SMTPSettingsTableView: UITableViewController {
         mailSettings.portSMTP = UInt16(portSMTPAux)!
 
 
-    let connect = ConnectInfo.init(
-        email: mailSettings.email!, imapPassword: mailSettings.password!,
-        imapServerName: mailSettings.serverhostIMAP!, imapServerPort: mailSettings.portIMAP!,
-        imapTransport:ConnectionTransport.Plain, smtpServerName: mailSettings.serverhostSMTP!,
-        smtpServerPort: mailSettings.portSMTP!, smtpTransport: ConnectionTransport.Plain)
+        let connect = ConnectInfo.init(email: mailSettings.email!, imapPassword: mailSettings.password!, imapServerName: mailSettings.serverhostIMAP!, imapServerPort: mailSettings.portIMAP!, imapTransport: ConnectionTransport.TLS, smtpServerName: mailSettings.serverhostSMTP!, smtpServerPort: mailSettings.portSMTP!, smtpTransport: ConnectionTransport.TLS)
 
-        var account:IAccount = (appConfig?.model.insertAccountFromConnectInfo(connect))!
+        appConfig?.grandOperator.verifyConnection(connect, completionBlock: nil)
+        appConfig?.model.insertAccountFromConnectInfo(connect)
 
-        print(account)
+        let account:IAccount? = appConfig!.model.fetchLastAccount()
+        //print(account)
 
-        var accountAux:IAccount = (appConfig?.model.fetchLastAccount())!
-
-        print(accountAux)
-        
-
-        if segue.identifier == "inboxMail" {
+        if segue.identifier == "iboxFirstTime" {
             if let destination = segue.destinationViewController as? MailTableView {
-                destination.mailParameters = mailSettings
             }
         }
     }

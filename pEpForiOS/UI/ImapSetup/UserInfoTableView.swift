@@ -36,13 +36,13 @@ public class UserInfoTableView: UITableViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem!.enabled = false
         if appConfig == nil {
             if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
                 appConfig = appDelegate.appConfig
             }
         }
-
+        self.navigationItem.hidesBackButton = true
+        self.navigationItem.rightBarButtonItem!.enabled = false
     }
 
     func updateView() {
