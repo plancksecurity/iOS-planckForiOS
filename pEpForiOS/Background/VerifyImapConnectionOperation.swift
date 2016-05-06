@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VerifyImapConnectionOperation: ConcurrentBaseOperation {
+public class VerifyImapConnectionOperation: ConcurrentBaseOperation {
     let errorDomain = "VerifyImapConnectionOperation"
 
     let connectInfo: ConnectInfo
@@ -19,7 +19,7 @@ class VerifyImapConnectionOperation: ConcurrentBaseOperation {
         super.init(grandOperator: grandOperator)
     }
 
-    override func main() {
+    public override func main() {
         if self.cancelled {
             return
         }
@@ -31,51 +31,51 @@ class VerifyImapConnectionOperation: ConcurrentBaseOperation {
 
 extension VerifyImapConnectionOperation: ImapSyncDelegate {
 
-    func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         markAsFinished()
     }
 
-    func receivedFolderNames(sync: ImapSync, folderNames: [String]?) {
+    public func receivedFolderNames(sync: ImapSync, folderNames: [String]?) {
     }
 
-    func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
+    public func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
         grandOperator.setErrorForOperation(self,
                                            error: Constants.errorAuthenticationFailed(errorDomain))
         markAsFinished()
     }
 
-    func connectionLost(sync: ImapSync, notification: NSNotification?) {
+    public func connectionLost(sync: ImapSync, notification: NSNotification?) {
         grandOperator.setErrorForOperation(self, error: Constants.errorConnectionLost(errorDomain))
         markAsFinished()
     }
 
-    func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
+    public func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
         grandOperator.setErrorForOperation(self,
                                            error: Constants.errorConnectionTerminated(errorDomain))
         markAsFinished()
     }
 
-    func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
+    public func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
         grandOperator.setErrorForOperation(self, error: Constants.errorTimeout(errorDomain))
         markAsFinished()
     }
 
-    func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func messageChanged(sync: ImapSync, notification: NSNotification?) {
+    public func messageChanged(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
+    public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
     }
 
-    func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
     }
 
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
