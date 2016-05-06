@@ -9,10 +9,25 @@
 import Foundation
 
 public class ConnectionManager {
+    public var cacheImapConnections: Bool = true
+
+    var imapConnections: [ConnectInfo: ImapSync] = [:]
+
     public init() {}
 
     public func emailSyncConnection(connectInfo: ConnectInfo) -> ImapSync {
+        if cacheImapConnections {
+            if let sync = imapConnections[connectInfo] {
+                return sync
+            }
+        }
+
         let sync = ImapSync.init(connectInfo: connectInfo)
+
+        if cacheImapConnections {
+            imapConnections[connectInfo] = sync
+        }
+
         return sync
     }
 
