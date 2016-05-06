@@ -22,17 +22,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         setupDefaultSettings()
         self.window? = UIWindow(frame:UIScreen.mainScreen().bounds)
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
 
         var rootViewController = UITableViewController()
-
         let account:IAccount? = appConfig.model.fetchLastAccount()
+        print(account)
+
         if (account == nil)  {
-            rootViewController = storyboard.instantiateViewControllerWithIdentifier("UserInfoTableView") as! UITableViewController
+             rootViewController = storyboard.instantiateViewControllerWithIdentifier("UserInfoTableView") as! UITableViewController
         }
         else {
-            rootViewController = storyboard.instantiateViewControllerWithIdentifier("EmailListViewController") as! UITableViewController
+             rootViewController = storyboard.instantiateViewControllerWithIdentifier("EmailListViewController") as! UITableViewController
         }
         navigationController.viewControllers = [rootViewController]
         window?.rootViewController = navigationController
