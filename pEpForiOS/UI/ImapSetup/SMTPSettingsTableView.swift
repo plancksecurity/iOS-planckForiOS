@@ -65,7 +65,7 @@ class SMTPSettingsTableView: UITableViewController {
         let portSMTPAux:String = portValue.text!
         mailSettings.portSMTP = UInt16(portSMTPAux)!
 
-        var x = 3
+        /*var x = 3
         let connect = ConnectInfo.init(email: mailSettings.email!, imapPassword: mailSettings.password!,
         imapServerName: mailSettings.serverhostIMAP!, imapServerPort: mailSettings.portIMAP!,
         imapTransport:ConnectionTransport(rawValue: x)!,smtpServerName: mailSettings.serverhostSMTP!,
@@ -75,7 +75,7 @@ class SMTPSettingsTableView: UITableViewController {
             GCD.onMain({
                 let account:IAccount = (self.appConfig?.model.insertAccountFromConnectInfo(connect))!
             })
-        })
+        })*/
         if segue.identifier == "inboxMail" {
             if let destination = segue.destinationViewController as? EmailListViewController {
             }

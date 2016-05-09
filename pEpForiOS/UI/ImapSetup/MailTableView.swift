@@ -20,11 +20,15 @@ class MailTableView: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.hidesBackButton = true
-        if appConfig == nil {
-            if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-                appConfig = appDelegate.appConfig
+            if appConfig == nil {
+                if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                    appConfig = appDelegate.appConfig
+                }
             }
-        }
+            let account:IAccount? = appConfig!.model.fetchLastAccount()
+            if (account == nil)  {
+                self.performSegueWithIdentifier("userSettings", sender: self)
+            }
     }
 
     override func didReceiveMemoryWarning() {

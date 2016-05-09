@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         setupDefaultSettings()
-        self.window? = UIWindow(frame:UIScreen.mainScreen().bounds)
+       /* self.window? = UIWindow(frame:UIScreen.mainScreen().bounds)
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         navigationController.viewControllers = [rootViewController]
         window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
+        window?.makeKeyAndVisible()*/
 
         return true
     }

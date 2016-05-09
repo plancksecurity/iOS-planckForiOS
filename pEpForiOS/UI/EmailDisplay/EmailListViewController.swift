@@ -40,6 +40,12 @@ class EmailListViewController: UITableViewController {
                 appConfig = appDelegate.appConfig
             }
         }
+
+        let account:IAccount? = appConfig!.model.fetchLastAccount()
+        if (account == nil)  {
+            self.performSegueWithIdentifier("userSettings", sender: self)
+        }
+
         prepareFetchRequest()
 
         if let account = appConfig?.model.fetchLastAccount() {

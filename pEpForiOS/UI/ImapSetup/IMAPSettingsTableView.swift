@@ -69,11 +69,12 @@ class IMAPSettingsTableView: UITableViewController  {
         if segue.identifier == "SMTPSettings" {
             mailSettings.serverhostIMAP = serverValue.text!
             mailSettings.transportSecurityIMAP = model.transportSecurityIMAP
-            let aux:String = portValue.text!
-            mailSettings.portIMAP = UInt16(aux)!
-            if let destination = segue.destinationViewController as? SMTPSettingsTableView {
-                destination.mailSettings = mailSettings
-                destination.appConfig = appConfig
+            if let aux = portValue.text {
+                //mailSettings.portIMAP! = UInt16(aux)!
+                if let destination = segue.destinationViewController as? SMTPSettingsTableView {
+                    destination.mailSettings = mailSettings
+                    destination.appConfig = appConfig
+                }
             }
         }
     }
