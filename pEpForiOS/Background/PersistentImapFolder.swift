@@ -34,7 +34,7 @@ class PersistentImapFolder: CWIMAPFolder {
         }
     }
 
-     var existsCount: UInt {
+     override var existsCount: UInt {
         get {
             return UInt(folder.existsCount)
         }
