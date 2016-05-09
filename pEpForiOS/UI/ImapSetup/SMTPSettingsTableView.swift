@@ -10,9 +10,10 @@ import UIKit
 
 public struct ModelSMTPSettingsInfoTable {
 
-    public var SMTPServer:String = "default.imap.server"
-    public var SMTPPort:UInt16 = 993
-    public var transportSecuritySMTP:String = "NONE"
+    public var SMTPServer: String = "default.imap.server"
+    public var SMTPPort: UInt16 = 993
+    public var transportSecuritySMTP: String = "NONE"
+    public var transportSmtp: ConnectionTransport?
 
     public init(SMTPServer:String,SMTPPort:UInt16,transportSecuritySMTP:String) {
         self.SMTPServer = SMTPServer
@@ -40,24 +41,48 @@ class SMTPSettingsTableView: UITableViewController {
         super.didReceiveMemoryWarning()
     }
 
+    /**
+     - Todo: Blueprint for updating the view from the model.
+     */
+    func updateView() {
+        if let transport = model.transportSmtp {
+            switch transport {
+            case .StartTLS:
+                self.transportSecurity.setTitle("Start TLS >", forState: .Normal)
+            default:
+                self.transportSecurity.setTitle("Default", forState: .Normal)
+            }
+        } else {
+            self.transportSecurity.setTitle("Default", forState: .Normal)
+        }
+    }
+
     @IBAction func alertWithSecurityValues(sender: AnyObject) {
-        let alertController = UIAlertController(title: "Security protocol", message: "Choose a Security protocol for your accont", preferredStyle: .ActionSheet)
-        let CancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in}
+        let alertController = UIAlertController(
+            title: NSLocalizedString("Security protocol", comment: ""),
+            message: NSLocalizedString("Choose a Security protocol for your accont", comment: ""),
+            preferredStyle: .ActionSheet)
+        let CancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         alertController.addAction(CancelAction)
         let StartTLSAction = UIAlertAction(title: "Start TLS", style: .Default) { (action) in
+            self.model.transportSmtp = ConnectionTransport.StartTLS
             self.transportSecurity.setTitle("Start TLS >", forState: .Normal)
         }
         alertController.addAction(StartTLSAction)
         let TLSAction = UIAlertAction(title: "TLS", style: .Default) { (action) in
+            self.model.transportSmtp = ConnectionTransport.TLS
             self.transportSecurity.setTitle("TLS >", forState: .Normal)
         }
         alertController.addAction(TLSAction)
-        let NONEAction = UIAlertAction(title: "NONE", style: .Default) { (action) in
-            self.transportSecurity.setTitle("NONE >", forState: .Normal)
+        let NONEAction = UIAlertAction(title: "Plain", style: .Default) { (action) in
+            self.model.transportSmtp = ConnectionTransport.Plain
+            self.transportSecurity.setTitle("Plain >", forState: .Normal)
         }
         alertController.addAction(NONEAction)
         self.presentViewController(alertController, animated: true) {}
         model.transportSecuritySMTP = (transportSecurity.titleLabel?.text)!
+
+        updateView()
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -65,17 +90,17 @@ class SMTPSettingsTableView: UITableViewController {
         let portSMTPAux:String = portValue.text!
         mailSettings.portSMTP = UInt16(portSMTPAux)!
 
-        /*var x = 3
-        let connect = ConnectInfo.init(email: mailSettings.email!, imapPassword: mailSettings.password!,
-        imapServerName: mailSettings.serverhostIMAP!, imapServerPort: mailSettings.portIMAP!,
-        imapTransport:ConnectionTransport(rawValue: x)!,smtpServerName: mailSettings.serverhostSMTP!,
-        smtpServerPort: mailSettings.portSMTP!, smtpTransport: ConnectionTransport.Plain)
+        let connect = ConnectInfo.init(
+            email: mailSettings.email!, imapPassword: mailSettings.password!,
+            imapServerName: mailSettings.serverhostIMAP!, imapServerPort: mailSettings.portIMAP!,
+            imapTransport: model.transportSmtp!, smtpServerName: mailSettings.serverhostSMTP!,
+            smtpServerPort: mailSettings.portSMTP!, smtpTransport: model.transportSmtp!)
 
-        _ = appConfig?.grandOperator.verifyConnection(connect, completionBlock: { (error) in
+        let _ = appConfig?.grandOperator.verifyConnection(connect, completionBlock: { (error) in
             GCD.onMain({
-                let account:IAccount = (self.appConfig?.model.insertAccountFromConnectInfo(connect))!
+                let account = (self.appConfig?.model.insertAccountFromConnectInfo(connect))!
             })
-        })*/
+        })
         if segue.identifier == "inboxMail" {
             if let destination = segue.destinationViewController as? EmailListViewController {
             }

@@ -8,6 +8,21 @@
 
 import Foundation
 
+extension ConnectionTransport {
+    static func fromInteger(i: Int) -> ConnectionTransport {
+        switch i {
+        case ConnectionTransport.Plain.rawValue:
+            return ConnectionTransport.Plain
+        case ConnectionTransport.StartTLS.rawValue:
+            return ConnectionTransport.StartTLS
+        case ConnectionTransport.TLS.rawValue:
+            return ConnectionTransport.TLS
+        default:
+            abort()
+        }
+    }
+}
+
 public enum AuthMethod: String {
     case Plain = "PLAIN"
     case Login = "LOGIN"
