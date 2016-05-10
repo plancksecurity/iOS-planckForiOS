@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="QvO-52-XkL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9M5-Am-Yi2">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -81,13 +81,13 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="bgm-ua-A0f"/>
                     <connections>
-                        <segue destination="WVm-RT-fSu" kind="show" id="mvg-RY-ehA"/>
-                        <segue destination="W0c-xN-b07" kind="show" identifier="userSettings" id="caz-QH-ZlS"/>
+                        <segue destination="WVm-RT-fSu" kind="show" identifier="composeMail" id="mvg-RY-ehA"/>
+                        <segue destination="YcO-Oc-XZx" kind="show" identifier="userSettings" id="s8x-oa-fif"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5260" y="1160"/>
+            <point key="canvasLocation" x="5328" y="1200"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="edm-0R-6oo">
@@ -104,7 +104,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dPp-Qc-zxQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5994" y="1560"/>
+            <point key="canvasLocation" x="6274" y="1212"/>
         </scene>
         <!--User Info Table View-->
         <scene sceneID="hJo-oO-Yib">
@@ -130,12 +130,12 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="ana@gmail.com" placeholder="rick.deckard@pep.li" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TPZ-TM-PaG">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="rick.deckard@pep.li" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TPZ-TM-PaG">
                                                     <rect key="frame" x="178" y="10" width="244" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="editingEmail:" destination="YcO-Oc-XZx" eventType="editingDidEnd" id="XJA-eH-oVe"/>
+                                                        <action selector="introducedEmail:" destination="YcO-Oc-XZx" eventType="editingDidEndOnExit" id="uM2-tA-X31"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -157,7 +157,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="rick" placeholder="rick.deckard" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Mt-BZ-h4K">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="rick.deckard" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Mt-BZ-h4K">
                                                     <rect key="frame" x="178" y="10" width="244" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -186,7 +186,7 @@
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                     <connections>
-                                                        <action selector="editingPassword:" destination="YcO-Oc-XZx" eventType="editingDidEnd" id="jQZ-kK-TF6"/>
+                                                        <action selector="introducedPassword:" destination="YcO-Oc-XZx" eventType="editingDidEndOnExit" id="eSA-ge-TgG"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -221,7 +221,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2vq-tw-UZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4363" y="317"/>
+            <point key="canvasLocation" x="6479" y="417"/>
         </scene>
         <!--Mail Table View-->
         <scene sceneID="f6A-Gu-Nbz">
@@ -344,6 +344,9 @@
                                                     <rect key="frame" x="216" y="10" width="244" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="introducedServer:" destination="dfm-hT-uzc" eventType="editingDidEndOnExit" id="xr9-WW-fDV"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -370,7 +373,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="textFieldDoneEditing:" destination="dfm-hT-uzc" eventType="editingDidEndOnExit" id="1ra-rY-yL2"/>
+                                                        <action selector="introducedPort:" destination="dfm-hT-uzc" eventType="editingDidEndOnExit" id="vgE-sV-Tum"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -422,7 +425,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Next" id="1VH-Wt-Y7U">
                             <connections>
                                 <action selector="changeToIMAPSettings:" destination="dfm-hT-uzc" id="Gos-tX-YXI"/>
-                                <segue destination="vub-1r-sQ6" kind="show" id="34d-Ry-fIJ"/>
+                                <segue destination="vub-1r-sQ6" kind="show" identifier="SMTPSettings" id="34d-Ry-fIJ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -435,7 +438,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4z3-a3-v23" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5341" y="329"/>
+            <point key="canvasLocation" x="5433" y="393"/>
         </scene>
         <!--Settings Table View-->
         <scene sceneID="zuo-Oy-4J7">
@@ -540,7 +543,7 @@
                     <navigationItem key="navigationItem" id="coQ-BM-t90">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="Tr2-5h-6JD">
                             <connections>
-                                <segue destination="kcA-RK-9Xg" kind="show" id="DPS-gV-wvz"/>
+                                <segue destination="9M5-Am-Yi2" kind="show" identifier="inboxMail" id="DPS-gV-wvz"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -553,46 +556,25 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBU-82-njk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6528" y="337"/>
+            <point key="canvasLocation" x="4376" y="457"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="8XS-Ti-ANJ">
+        <scene sceneID="IeL-ZT-hFD">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="W0c-xN-b07" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9M5-Am-Yi2" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="S0M-Vv-9Oa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0W3-Hd-BjN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="YcO-Oc-XZx" kind="relationship" relationship="rootViewController" id="sOJ-3W-NGN"/>
+                        <segue destination="kcA-RK-9Xg" kind="relationship" relationship="rootViewController" id="hmY-fr-kDT"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zN2-f5-MmC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GUF-lh-L23" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3551" y="317"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="pOj-iW-B0y">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QvO-52-XkL" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fsd-Jm-ya4">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="kcA-RK-9Xg" kind="relationship" relationship="rootViewController" id="JJi-lx-cu2"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jq9-hu-xl2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4006" y="1532"/>
+            <point key="canvasLocation" x="4376" y="1244"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="DPS-gV-wvz"/>
-    </inferredMetricsTieBreakers>
 </document>
