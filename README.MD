@@ -13,9 +13,19 @@ Choose homebrew or macports for installing.
 
 Import the root certificates of the community-driven CAcert project
 in order to deal with the Mercurial repositories via https; for Mac
-OS X follow the following (GUI or commandline) instructions:
+OS X follow (the GUI or commandline) instructions provided:
 
 http://wiki.cacert.org/FAQ/ImportRootCert#Mac_OS_X
+
+Before using, please check the authenticity of the certificate(s)
+downloaded.
+
+The fingerprints should be:
+
+* Class 1 PKI Key (SHA1): 13:5C:EC:36:F4:9C:B8:E9:3B:1A:B2:70:CD:80:88:46:76:CE:8F:33 
+* Class 3 PKI Key (SHA1): AD:7C:3F:64:FC:44:39:FE:F4:E9:0B:E8:F4:7C:6C:FA:8A:AD:FD:CE
+
+(Cf. http://www.cacert.org/index.php?id=3)
 
 ## Build instructions
 
