@@ -346,13 +346,15 @@ class ImapSyncTest: XCTestCase {
                 XCTAssertTrue(!del.errorOccurred)
                 XCTAssertTrue(del.messagePrefetched)
                 XCTAssertNotNil(del.message)
-                XCTAssertTrue(del.message!.isInitialized())
-                XCTAssertEqual(del.message!.UID(), UInt(message.uid!.integerValue))
-                XCTAssertNotNil(del.message!.content())
-                let data = del.message!.content() as? NSData
-                XCTAssertNotNil(data)
-                let s = String.init(data: data!, encoding: NSUTF8StringEncoding)
-                XCTAssertNotNil(s)
+                if let msg = del.message {
+                    XCTAssertTrue(msg.isInitialized())
+                    XCTAssertEqual(msg.UID(), UInt(message.uid!.integerValue))
+                    XCTAssertNotNil(msg.content())
+                    let data = msg.content() as? NSData
+                    XCTAssertNotNil(data)
+                    let s = String.init(data: data!, encoding: NSUTF8StringEncoding)
+                    XCTAssertNotNil(s)
+                }
             })
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
