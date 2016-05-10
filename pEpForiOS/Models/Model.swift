@@ -40,6 +40,11 @@ public protocol IModel {
                                   accountEmail: String) -> IFolder?
 
     func save()
+
+    /**
+     For debugging: Dumps some important DB contents.
+     */
+    func dumpDB()
 }
 
 public class Model: IModel {
@@ -210,14 +215,12 @@ public class Model: IModel {
     public func insertOrUpdateFolderName(
         folderName: String, folderType: Account.AccountType,
         accountEmail: String) -> IFolder? {
-        let p = folderPredicateByName(folderName, email: accountEmail)
-        if let folder = singleEntityWithName(Folder.entityName(), predicate: p) {
-            return folder as? Folder
+        if let folder = folderByName(folderName, email: accountEmail) {
+            return folder
         }
 
         if let account = accountByEmail(accountEmail) {
-            let folder = NSEntityDescription.insertNewObjectForEntityForName(
-                Folder.entityName(), inManagedObjectContext: context) as! Folder
+            var folder = insertFolderName(folderName, email: accountEmail)
             folder.account = account as! Account
             folder.name = folderName
             folder.folderType = folderType.rawValue
@@ -231,7 +234,7 @@ public class Model: IModel {
     }
 
     public func messagesByPredicate(predicate: NSPredicate) -> [IMessage]? {
-        return entitiesWithName(Message.entityName(), predicate: predicate) as? [Message]
+        return entitiesWithName(Message.entityName(), predicate: predicate)?.map() {$0 as! Message}
     }
 
     public func messageCountByPredicate(predicate: NSPredicate) -> Int {
@@ -243,7 +246,7 @@ public class Model: IModel {
     }
 
     public func foldersByPredicate(predicate: NSPredicate) -> [IFolder]? {
-        return entitiesWithName(Folder.entityName(), predicate: predicate) as? [Folder]
+        return entitiesWithName(Folder.entityName(), predicate: predicate)?.map() {$0 as! Folder}
     }
 
     public func folderByPredicate(predicate: NSPredicate) -> IFolder? {
@@ -295,4 +298,19 @@ public class Model: IModel {
             return nil
         }
     }
+
+    public func dumpDB() {
+        if let folders = foldersByPredicate(NSPredicate.init(value: true)) {
+            for folder in folders {
+                Log.info(comp, "Folder \(folder.name) \(folder.messages.count) messages accountType \(folder.account.accountType)")
+            }
+        }
+
+        if let messages = messagesByPredicate(NSPredicate.init(value: true)) {
+            for msg in messages {
+                Log.info(comp, "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages.count) accountType \(msg.folder.account.accountType)")
+            }
+        }
+    }
+
 }

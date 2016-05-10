@@ -16,10 +16,13 @@ class PersistentEmailCache: NSObject {
     let comp = "PersistentEmailCache"
     let connectInfo: ConnectInfo
     let grandOperator: IGrandOperator
+    let backgroundQueue: NSOperationQueue
 
-    init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
+    init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
+         backgroundQueue: NSOperationQueue) {
         self.grandOperator = grandOperator
         self.connectInfo = connectInfo
+        self.backgroundQueue = backgroundQueue
     }
 
     func saveMessage(message: CWIMAPMessage) {

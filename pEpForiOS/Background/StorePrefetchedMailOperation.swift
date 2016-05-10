@@ -68,13 +68,7 @@ public class StorePrefetchedMailOperation: BaseOperation {
 
         var mail = theMail!
 
-        if isFresh || mail.folder.name != folder.name {
-            mail.folder = folder
-        }
-
-        if isFresh || mail.folder.name != folder.name {
-            mail.folder = folder
-        }
+        mail.folder = folder
 
         if isFresh || mail.originationDate != message.receivedDate() {
             mail.originationDate = message.receivedDate()
