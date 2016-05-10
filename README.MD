@@ -2,10 +2,20 @@
 
 ## Prerequisites
 
+### Install Revision Control Systems used
+
 Choose homebrew or macports for installing.
 
 * git
 * Mercurial
+
+### Install CAcert root certificates
+
+Import the root certificates of the community-driven CAcert project
+in order to deal with the Mercurial repositories via https; for MAC
+OS X follow the following (GUI or commandline) instructions:
+
+http://wiki.cacert.org/FAQ/ImportRootCert#Mac_OS_X
 
 ## Build instructions
 
@@ -37,7 +47,7 @@ The core data model files are generated with mogenerator, using a modified templ
 ```
 cd ~/src # Use the same base path here as previously
 
-git clone https://github.com:dirkz/mogenerator.git
+git clone https://github.com/dirkz/mogenerator.git
 
 cd pEp_for_iOS
 
