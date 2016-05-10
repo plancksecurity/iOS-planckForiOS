@@ -10,6 +10,7 @@ import Foundation
 
 struct ImapState {
     var authenticationCompleted = false
+    var currentFolder: String?
 }
 
 public protocol ImapSyncDelegate {
@@ -124,6 +125,7 @@ public class ImapSync: Service, IImapSync {
     }
 
     public func openMailBox(name: String, prefetchMails: Bool) {
+        imapState.currentFolder = nil
         // Note: If you open a folder with PantomimeReadOnlyMode,
         // all messages will be prefetched by default,
         // independent of the prefetch parameter.
@@ -239,8 +241,10 @@ extension ImapSync: PantomimeFolderDelegate {
         delegate?.folderOpenCompleted(self, notification: notification)
         if let folder: CWFolder = (notification?.userInfo?["Folder"] as! CWFolder) {
             Log.info(comp, "folderOpenCompleted: \(folder.name())")
+            imapState.currentFolder = folder.name()
         } else {
             Log.info(comp, "folderOpenCompleted: \(notification)")
+            imapState.currentFolder = nil
         }
     }
 
