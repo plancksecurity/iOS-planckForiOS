@@ -18,7 +18,7 @@ OS X follow (the GUI or commandline) instructions provided:
 http://wiki.cacert.org/FAQ/ImportRootCert#Mac_OS_X
 
 Before using, please check the authenticity of the certificate(s)
-downloaded:
+downloaded.
 
 The fingerprints should be:
 
