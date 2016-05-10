@@ -39,6 +39,9 @@ public protocol IModel {
                                   folderType: Account.AccountType,
                                   accountEmail: String) -> IFolder?
 
+    func insertOrUpdateMessageReference(messageID: String) -> IMessageReference
+    func insertMessageReference(messageID: String) -> IMessageReference
+
     func save()
 
     /**
@@ -107,7 +110,7 @@ public class Model: IModel {
     public func existingMessage(msg: CWIMAPMessage) -> IMessage? {
         var predicates: [NSPredicate] = []
         if let msgId = msg.messageID() {
-            predicates.append(NSPredicate.init(format: "messageId = %@", msgId))
+            predicates.append(NSPredicate.init(format: "messageID = %@", msgId))
         }
         if msg.folder() != nil {
             predicates.append(NSPredicate.init(format: "uid = %d and folder.name = %@",
@@ -297,6 +300,22 @@ public class Model: IModel {
             Log.error(comp, error: err)
             return nil
         }
+    }
+
+    public func insertOrUpdateMessageReference(messageID: String) -> IMessageReference {
+        let p = NSPredicate.init(format: "messageID = %@", messageID)
+        if let ent = singleEntityWithName(MessageReference.entityName(), predicate: p) {
+            return ent as! MessageReference
+        } else {
+            return insertMessageReference(messageID)
+        }
+    }
+
+    public func insertMessageReference(messageID: String) -> IMessageReference {
+        let ref = NSEntityDescription.insertNewObjectForEntityForName(
+            MessageReference.entityName(), inManagedObjectContext: context) as! MessageReference
+        ref.messageID = messageID
+        return ref
     }
 
     public func dumpDB() {

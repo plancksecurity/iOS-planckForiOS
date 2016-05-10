@@ -76,8 +76,8 @@ public class StorePrefetchedMailOperation: BaseOperation {
         if isFresh || mail.subject != message.subject() {
             mail.subject = message.subject()
         }
-        if isFresh || mail.messageId != message.messageID() {
-            mail.messageId = message.messageID()
+        if isFresh || mail.messageID != message.messageID() {
+            mail.messageID = message.messageID()
         }
         if isFresh || mail.uid != message.UID() {
             mail.uid = message.UID()
@@ -110,17 +110,11 @@ public class StorePrefetchedMailOperation: BaseOperation {
         }
 
         // TODO: Test references
-        var messages = [IMessage]()
+        // TODO: Do the angle brackets (<>) belong to the messageID?
         if let msgRefs = message.allReferences() {
-            var idSet = Set<String>()
-            for ref in msgRefs {
-                idSet.insert(ref as! String)
-            }
-            for ref in idSet {
-                let predicate = NSPredicate.init(format: "messageId = %@", ref)
-                if let refMsg = model.messageByPredicate(predicate) {
-                    messages.append(refMsg)
-                }
+            for refID in msgRefs {
+                let ref = model.insertOrUpdateMessageReference(refID as! String)
+                (mail as! Message).addReferencesObject(ref as! MessageReference)
             }
         }
         return mail

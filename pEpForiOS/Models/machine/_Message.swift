@@ -8,7 +8,7 @@ public enum MessageAttributes: String {
     case fetched = "fetched"
     case longMessage = "longMessage"
     case longMessageFormatted = "longMessageFormatted"
-    case messageId = "messageId"
+    case messageID = "messageID"
     case messageNumber = "messageNumber"
     case originationDate = "originationDate"
     case subject = "subject"
@@ -35,7 +35,7 @@ public protocol _IMessage {
 
     var longMessageFormatted: String? { get set }
 
-    var messageId: String? { get set }
+    var messageID: String? { get set }
 
     var messageNumber: NSNumber? { get set }
 
@@ -98,7 +98,7 @@ public class _Message: BaseManagedObject, _IMessage {
     var longMessageFormatted: String?
 
     @NSManaged public
-    var messageId: String?
+    var messageID: String?
 
     @NSManaged public
     var messageNumber: NSNumber?
@@ -179,13 +179,13 @@ extension _Message {
         self.references = mutable.copy() as! NSOrderedSet
     }
 
-    func addReferencesObject(value: Message) {
+    func addReferencesObject(value: MessageReference) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
         mutable.addObject(value)
         self.references = mutable.copy() as! NSOrderedSet
     }
 
-    func removeReferencesObject(value: Message) {
+    func removeReferencesObject(value: MessageReference) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
         mutable.removeObject(value)
         self.references = mutable.copy() as! NSOrderedSet

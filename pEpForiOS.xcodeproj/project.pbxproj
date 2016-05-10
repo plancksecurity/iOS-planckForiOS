@@ -20,6 +20,8 @@
 		43248C4E1CC6266900AD3A7C /* PersistentEmailCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */; };
 		4325F3141CD8A8D200A10727 /* ConcurrentBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */; };
 		4333FBA51CD9FAC00093364F /* SmtpTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333FBA41CD9FAC00093364F /* SmtpTest.swift */; };
+		4345967F1CE227D9004E8735 /* _MessageReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345967E1CE227D9004E8735 /* _MessageReference.swift */; };
+		434596831CE227E6004E8735 /* MessageReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434596821CE227E6004E8735 /* MessageReference.swift */; };
 		434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */; };
 		435A77C11CC3CB4200133D16 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435A77C01CC3CB4200133D16 /* Regex.swift */; };
 		4367E26F1CD7360000B05F83 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367E26E1CD7360000B05F83 /* Model.swift */; };
@@ -148,6 +150,8 @@
 		43248C4D1CC6266900AD3A7C /* PersistentEmailCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentEmailCache.swift; sourceTree = "<group>"; };
 		4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentBaseOperation.swift; sourceTree = "<group>"; };
 		4333FBA41CD9FAC00093364F /* SmtpTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpTest.swift; sourceTree = "<group>"; };
+		4345967E1CE227D9004E8735 /* _MessageReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _MessageReference.swift; sourceTree = "<group>"; };
+		434596821CE227E6004E8735 /* MessageReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageReference.swift; sourceTree = "<group>"; };
 		435A77C01CC3CB4200133D16 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		4367E26E1CD7360000B05F83 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
@@ -389,6 +393,7 @@
 				431144BB1CC120220007639D /* Message.swift */,
 				43E58EB31CBF8301008AA7A7 /* Account.swift */,
 				43E58EB41CBF8301008AA7A7 /* Folder.swift */,
+				434596821CE227E6004E8735 /* MessageReference.swift */,
 				43E58EB51CBF8301008AA7A7 /* machine */,
 			);
 			path = Models;
@@ -402,6 +407,7 @@
 				431144BF1CC1202E0007639D /* _Message.swift */,
 				43E58EB61CBF8301008AA7A7 /* _Account.swift */,
 				43E58EB71CBF8301008AA7A7 /* _Folder.swift */,
+				4345967E1CE227D9004E8735 /* _MessageReference.swift */,
 			);
 			path = machine;
 			sourceTree = "<group>";
@@ -652,6 +658,7 @@
 				43248C4E1CC6266900AD3A7C /* PersistentEmailCache.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
+				4345967F1CE227D9004E8735 /* _MessageReference.swift in Sources */,
 				431144AC1CC0CCE30007639D /* GrandOperator.swift in Sources */,
 				431144C01CC1202E0007639D /* _Contact.swift in Sources */,
 				43980EF61CBD3EED00A7FC3C /* Mailbox.swift in Sources */,
@@ -670,6 +677,7 @@
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */,
 				43ED53761CC77F95006AB156 /* MailTableView.swift in Sources */,
+				434596831CE227E6004E8735 /* MessageReference.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				43ED53731CC77F95006AB156 /* MailCell.swift in Sources */,
 				43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */,

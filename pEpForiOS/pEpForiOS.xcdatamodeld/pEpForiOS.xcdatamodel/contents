@@ -12,6 +12,12 @@
         <attribute name="smtpTransport" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="smtpUsername" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="folders" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Folder" inverseName="account" inverseEntity="Folder" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="email"/>
+                <index value="accountType"/>
+            </compoundIndex>
+        </compoundIndexes>
     </entity>
     <entity name="Contact" representedClassName="Contact" syncable="YES">
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
@@ -33,7 +39,7 @@
         <attribute name="fetched" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="longMessage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longMessageFormatted" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="messageId" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="messageID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="messageNumber" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="originationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
@@ -42,13 +48,17 @@
         <relationship name="content" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MessageContent" inverseName="message" inverseEntity="MessageContent" syncable="YES"/>
         <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="messages" inverseEntity="Folder" syncable="YES"/>
         <relationship name="from" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="fromMessages" inverseEntity="Contact" syncable="YES"/>
-        <relationship name="referenced" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="references" inverseEntity="Message" syncable="YES"/>
-        <relationship name="references" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Message" inverseName="referenced" inverseEntity="Message" syncable="YES"/>
+        <relationship name="referenced" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" syncable="YES"/>
+        <relationship name="references" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MessageReference" inverseName="referencingMessage" inverseEntity="MessageReference" syncable="YES"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="toMessages" inverseEntity="Contact" syncable="YES"/>
     </entity>
     <entity name="MessageContent" representedClassName="MessageContent" syncable="YES">
         <attribute name="data" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="content" inverseEntity="Message" syncable="YES"/>
+    </entity>
+    <entity name="MessageReference" representedClassName="MessageReference" syncable="YES">
+        <attribute name="messageID" attributeType="String" syncable="YES"/>
+        <relationship name="referencingMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="references" inverseEntity="Message" syncable="YES"/>
     </entity>
     <elements>
         <element name="Account" positionX="-63" positionY="-18" width="128" height="210"/>
@@ -56,5 +66,6 @@
         <element name="Folder" positionX="-54" positionY="72" width="128" height="150"/>
         <element name="Message" positionX="-45" positionY="99" width="128" height="270"/>
         <element name="MessageContent" positionX="-45" positionY="135" width="128" height="75"/>
+        <element name="MessageReference" positionX="-45" positionY="135" width="128" height="75"/>
     </elements>
 </model>
