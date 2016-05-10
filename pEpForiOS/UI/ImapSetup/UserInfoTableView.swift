@@ -68,17 +68,16 @@ public class UserInfoTableView: UITableViewController {
         sender.resignFirstResponder()
     }
 
-    @
-    IBAction func editingEmail(sender: UITextField) {
+    @IBAction func introduceEmail(sender: UITextField) {
         model.emailTextExist = emailValue.text != ""
         updateView()
     }
 
-    @IBAction func editingPassword(sender: UITextField) {
+    @IBAction func introducedPassword(sender: UITextField) {
         model.passwordTextExist = passwordValue.text != ""
         updateView()
+
     }
+
+
 }
-
-  
-

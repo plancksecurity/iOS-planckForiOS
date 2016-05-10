@@ -135,7 +135,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="introducedEmail:" destination="YcO-Oc-XZx" eventType="editingDidEndOnExit" id="uM2-tA-X31"/>
+                                                        <action selector="introduceEmail:" destination="YcO-Oc-XZx" eventType="editingChanged" id="KY0-7f-wkm"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -186,7 +186,7 @@
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                     <connections>
-                                                        <action selector="introducedPassword:" destination="YcO-Oc-XZx" eventType="editingDidEndOnExit" id="eSA-ge-TgG"/>
+                                                        <action selector="introducedPassword:" destination="YcO-Oc-XZx" eventType="editingChanged" id="yMv-RJ-tLN"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -208,7 +208,7 @@
                     <navigationItem key="navigationItem" id="QS1-DH-6Lg">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="OEI-dm-im4">
                             <connections>
-                                <segue destination="dfm-hT-uzc" kind="push" identifier="IMAPSettings" id="QVB-Jy-Nv9"/>
+                                <segue destination="dfm-hT-uzc" kind="show" identifier="IMAPSettings" id="QVB-Jy-Nv9"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
