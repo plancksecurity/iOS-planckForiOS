@@ -12,7 +12,7 @@ Choose homebrew or macports for installing.
 ### Install CAcert root certificates
 
 Import the root certificates of the community-driven CAcert project
-in order to deal with the Mercurial repositories via https; for MAC
+in order to deal with the Mercurial repositories via https; for Mac
 OS X follow the following (GUI or commandline) instructions:
 
 http://wiki.cacert.org/FAQ/ImportRootCert#Mac_OS_X
