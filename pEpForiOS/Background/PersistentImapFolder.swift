@@ -51,8 +51,7 @@ class PersistentImapFolder: CWIMAPFolder {
         self.grandOperator = grandOperator
         self.mainContext = grandOperator.coreDataUtil.managedObjectContext
         self.cache = PersistentEmailCache.init(grandOperator: grandOperator,
-                                               connectInfo: connectInfo,
-                                               backgroundQueue: backgroundQueue)
+                                               connectInfo: connectInfo)
         super.init(name: name)
         self.setCacheManager(cache)
         self.folder = folderObject()

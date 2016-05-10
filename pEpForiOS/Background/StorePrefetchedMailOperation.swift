@@ -9,19 +9,26 @@
 import Foundation
 import CoreData
 
+/**
+ This can be used in a queue, or directly called with ```main()```. Choose
+ ```inBackground``` accordingly (true for queue, false if you call it synchronously).
+ */
 public class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
     let message: CWIMAPMessage
     let accountEmail: String
+    let inBackground: Bool
 
-    public init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage) {
+    public init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage,
+                inBackground: Bool) {
         self.accountEmail = accountEmail
         self.message = message
+        self.inBackground = inBackground
         super.init(grandOperator: grandOperator)
     }
 
     override public func main() {
-        let model = grandOperator.backgroundModel()
+        let model = inBackground ? grandOperator.backgroundModel() : grandOperator.model
         var addresses = message.recipients() as! [CWInternetAddress]
         if let from = message.from() {
             addresses.append(from)
@@ -31,8 +38,7 @@ public class StorePrefetchedMailOperation: BaseOperation {
         model.save()
     }
 
-    func insertOrUpdateMail(contacts: [String: IContact], message: CWIMAPMessage,
-                    model: IModel) -> IMessage? {
+    func folderFromModel(model: IModel) -> Folder? {
         guard let folderName = message.folder()?.name() else {
             grandOperator.setErrorForOperation(
                 self, error: Constants.errorCannotStoreMailWithoutFolder(comp))
@@ -46,6 +52,15 @@ public class StorePrefetchedMailOperation: BaseOperation {
                     self, error: Constants.errorFolderDoesNotExist(comp,
                         folderName: folderName))
                 return nil
+        }
+
+        return folder
+    }
+
+    func insertOrUpdateMail(contacts: [String: IContact], message: CWIMAPMessage,
+                    model: IModel) -> IMessage? {
+        guard let folder = folderFromModel(model) else {
+            return nil
         }
 
         var isFresh = false

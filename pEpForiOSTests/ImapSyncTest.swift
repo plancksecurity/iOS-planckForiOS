@@ -324,7 +324,10 @@ class ImapSyncTest: XCTestCase {
         if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
-            let message = folder.messages.anyObject() as! Message
+            guard let message = folder.messages.anyObject() as? Message else {
+                XCTAssertFalse(true, "No message stored")
+                return
+            }
             XCTAssertNotNil(message)
             XCTAssertNotNil(message.uid)
             XCTAssertTrue(message.uid?.intValue > 0)

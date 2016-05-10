@@ -28,7 +28,7 @@ struct UIState {
 }
 
 class EmailListViewController: UITableViewController {
-    let comp = "EmailListViewController"
+    let comp = " "
 
     var appConfig: AppConfig?
     var fetchController: NSFetchedResultsController?
