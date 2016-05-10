@@ -25,7 +25,7 @@ class PersistentEmailCache: NSObject {
     func saveMessage(message: CWIMAPMessage) {
         let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
                                                    accountEmail: connectInfo.email,
-                                                   message: message, inBackground: false)
+                                                   message: message)
         op.main()
     }
 }

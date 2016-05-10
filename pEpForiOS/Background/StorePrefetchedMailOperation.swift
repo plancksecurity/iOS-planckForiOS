@@ -10,25 +10,21 @@ import Foundation
 import CoreData
 
 /**
- This can be used in a queue, or directly called with ```main()```. Choose
- ```inBackground``` accordingly (true for queue, false if you call it synchronously).
+ This can be used in a queue, or directly called with ```main()```.
  */
 public class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
     let message: CWIMAPMessage
     let accountEmail: String
-    let inBackground: Bool
 
-    public init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage,
-                inBackground: Bool) {
+    public init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage) {
         self.accountEmail = accountEmail
         self.message = message
-        self.inBackground = inBackground
         super.init(grandOperator: grandOperator)
     }
 
     override public func main() {
-        let model = inBackground ? grandOperator.backgroundModel() : grandOperator.model
+        let model = NSThread.isMainThread() ? grandOperator.model : grandOperator.backgroundModel()
         var addresses = message.recipients() as! [CWInternetAddress]
         if let from = message.from() {
             addresses.append(from)

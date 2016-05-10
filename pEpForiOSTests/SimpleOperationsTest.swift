@@ -84,7 +84,7 @@ class SimpleOperationsTest: XCTestCase {
         message.setFolder(folder)
         let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
                                                    accountEmail: connectInfo.email,
-                                                   message: message, inBackground: true)
+                                                   message: message)
         let backgroundQueue = NSOperationQueue.init()
         backgroundQueue.addOperation(op)
         backgroundQueue.waitUntilAllOperationsAreFinished()
@@ -116,7 +116,7 @@ class SimpleOperationsTest: XCTestCase {
             message.setUID(UInt(i))
             let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
                                                        accountEmail: connectInfo.email,
-                                                       message: message, inBackground: true)
+                                                       message: message)
             operations.insert(op)
             op.completionBlock = {
                 operations.remove(op)
