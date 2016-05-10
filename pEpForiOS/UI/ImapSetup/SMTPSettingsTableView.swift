@@ -34,19 +34,18 @@ class SMTPSettingsTableView: UITableViewController {
         super.didReceiveMemoryWarning()
     }
 
-    /**
-     - Todo: Blueprint for updating the view from the model.
-     */
     func updateView() {
         if let transport = model.transportSmtp {
             switch transport {
             case .StartTLS:
                 self.transportSecurity.setTitle("Start TLS >", forState: .Normal)
+            case .Plain:
+                self.transportSecurity.setTitle("Plain >", forState: .Normal)
             default:
-                self.transportSecurity.setTitle("Default", forState: .Normal)
+                self.transportSecurity.setTitle("TLS", forState: .Normal)
             }
         } else {
-            self.transportSecurity.setTitle("Default", forState: .Normal)
+            self.transportSecurity.setTitle("Plain", forState: .Normal)
         }
     }
 
@@ -57,20 +56,24 @@ class SMTPSettingsTableView: UITableViewController {
             preferredStyle: .ActionSheet)
         let CancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         alertController.addAction(CancelAction)
+
         let StartTLSAction = UIAlertAction(title: "Start TLS", style: .Default) { (action) in
             self.model.transportSmtp = ConnectionTransport.StartTLS
+             self.updateView()
         }
         alertController.addAction(StartTLSAction)
         let TLSAction = UIAlertAction(title: "TLS", style: .Default) { (action) in
             self.model.transportSmtp = ConnectionTransport.TLS
+            self.updateView()
         }
         alertController.addAction(TLSAction)
         let NONEAction = UIAlertAction(title: "Plain", style: .Default) { (action) in
             self.model.transportSmtp = ConnectionTransport.Plain
+            self.updateView()
+
         }
         alertController.addAction(NONEAction)
         self.presentViewController(alertController, animated: true) {}
-        updateView()
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

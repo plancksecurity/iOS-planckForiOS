@@ -10,21 +10,17 @@ import UIKit
 
 class MailSettingParameters {
 
-    enum transportSecurity {
-        case None,TLS,StartTLS
-    }
-
     var email: String?
     var username: String?
     var password: String?
 
     var serverhostIMAP:String?
     var portIMAP:UInt16?
-    var transportSecurityIMAP:String?
+    var transportSecurityIMAP:ConnectionTransport?
 
     var serverhostSMTP:String?
     var portSMTP:UInt16?
-    var transportSecuritySMTP:String?
+    var transportSecuritySMTP:ConnectionTransport?
 
 }
 
