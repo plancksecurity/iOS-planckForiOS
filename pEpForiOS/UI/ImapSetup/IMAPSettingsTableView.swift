@@ -33,14 +33,11 @@ class IMAPSettingsTableView: UITableViewController  {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        serverValue.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-
-    @IBAction func textFieldDoneEditing(sender: AnyObject) {
-        sender.resignFirstResponder()
     }
 
     @IBAction func alertWithSecurityValues(sender: AnyObject) {
@@ -70,7 +67,7 @@ class IMAPSettingsTableView: UITableViewController  {
             mailSettings.serverhostIMAP = serverValue.text!
             mailSettings.transportSecurityIMAP = model.transportSecurityIMAP
             if let aux = portValue.text {
-                //mailSettings.portIMAP! = UInt16(aux)!
+                mailSettings.portIMAP = UInt16(aux)!
                 if let destination = segue.destinationViewController as? SMTPSettingsTableView {
                     destination.mailSettings = mailSettings
                     destination.appConfig = appConfig

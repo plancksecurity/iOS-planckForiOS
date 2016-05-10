@@ -27,7 +27,7 @@ class SMTPSettingsTableView: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        serverValue.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {

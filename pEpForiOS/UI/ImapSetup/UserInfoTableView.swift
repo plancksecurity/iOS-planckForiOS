@@ -42,6 +42,7 @@ public class UserInfoTableView: UITableViewController {
                 appConfig = appDelegate.appConfig
             }
         }
+        emailValue.becomeFirstResponder()
     }
 
     func updateView() {
