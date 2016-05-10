@@ -10,16 +10,9 @@ import UIKit
 
 public struct ModelSMTPSettingsInfoTable {
 
-    public var SMTPServer: String = "default.imap.server"
-    public var SMTPPort: UInt16 = 993
-    public var transportSecuritySMTP: String = "NONE"
+    public var SMTPServer: String?
+    public var SMTPPort: UInt16?
     public var transportSmtp: ConnectionTransport?
-
-    public init(SMTPServer:String,SMTPPort:UInt16,transportSecuritySMTP:String) {
-        self.SMTPServer = SMTPServer
-        self.SMTPPort = SMTPPort
-        self.transportSecuritySMTP = transportSecuritySMTP
-    }
 }
 
 class SMTPSettingsTableView: UITableViewController {
@@ -30,7 +23,7 @@ class SMTPSettingsTableView: UITableViewController {
 
     var appConfig: AppConfig?
     var mailSettings = MailSettingParameters()
-    var model = ModelSMTPSettingsInfoTable(SMTPServer:"default.imap.server",SMTPPort: 993,transportSecuritySMTP: "NONE")
+    var model = ModelSMTPSettingsInfoTable()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,22 +59,17 @@ class SMTPSettingsTableView: UITableViewController {
         alertController.addAction(CancelAction)
         let StartTLSAction = UIAlertAction(title: "Start TLS", style: .Default) { (action) in
             self.model.transportSmtp = ConnectionTransport.StartTLS
-            self.transportSecurity.setTitle("Start TLS >", forState: .Normal)
         }
         alertController.addAction(StartTLSAction)
         let TLSAction = UIAlertAction(title: "TLS", style: .Default) { (action) in
             self.model.transportSmtp = ConnectionTransport.TLS
-            self.transportSecurity.setTitle("TLS >", forState: .Normal)
         }
         alertController.addAction(TLSAction)
         let NONEAction = UIAlertAction(title: "Plain", style: .Default) { (action) in
             self.model.transportSmtp = ConnectionTransport.Plain
-            self.transportSecurity.setTitle("Plain >", forState: .Normal)
         }
         alertController.addAction(NONEAction)
         self.presentViewController(alertController, animated: true) {}
-        model.transportSecuritySMTP = (transportSecurity.titleLabel?.text)!
-
         updateView()
     }
 
@@ -102,8 +90,7 @@ class SMTPSettingsTableView: UITableViewController {
             })
         })
         if segue.identifier == "inboxMail" {
-            if let destination = segue.destinationViewController as? EmailListViewController {
-            }
+            if let destination = segue.destinationViewController as? EmailListViewController {}
         }
     }
 }

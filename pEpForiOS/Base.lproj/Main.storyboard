@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="QvO-52-XkL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="QvO-52-XkL">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -82,12 +82,12 @@
                     <navigationItem key="navigationItem" id="bgm-ua-A0f"/>
                     <connections>
                         <segue destination="WVm-RT-fSu" kind="show" id="mvg-RY-ehA"/>
-                        <segue destination="W0c-xN-b07" kind="presentation" identifier="userSettings" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="caz-QH-ZlS"/>
+                        <segue destination="W0c-xN-b07" kind="show" identifier="userSettings" id="caz-QH-ZlS"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4976" y="1398"/>
+            <point key="canvasLocation" x="5260" y="1160"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="edm-0R-6oo">
@@ -104,7 +104,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dPp-Qc-zxQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6002" y="1880"/>
+            <point key="canvasLocation" x="5994" y="1560"/>
         </scene>
         <!--User Info Table View-->
         <scene sceneID="hJo-oO-Yib">
@@ -324,24 +324,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="fin-NG-ADk">
-                            <rect key="frame" x="0.0" y="64" width="600" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <items>
-                                <navigationItem id="2zL-du-wEw">
-                                    <barButtonItem key="rightBarButtonItem" title="Next" id="5rL-Bc-ivQ">
-                                        <connections>
-                                            <segue destination="vub-1r-sQ6" kind="push" identifier="SMTPSettings" id="dfv-MQ-mj5"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </navigationItem>
-                            </items>
-                        </navigationBar>
                         <sections>
                             <tableViewSection headerTitle="" id="GYz-2C-zBn">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="yEs-RC-FK5" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="108" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="99" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yEs-RC-FK5" id="Kbm-32-bnt">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -366,7 +353,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="Xpq-Fu-Dd3" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="157" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="148" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xpq-Fu-Dd3" id="Luz-CL-ptS">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -394,7 +381,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="057-Jd-AD3" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="206" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="197" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="057-Jd-AD3" id="VC6-Uj-uQb">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -435,6 +422,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Next" id="1VH-Wt-Y7U">
                             <connections>
                                 <action selector="changeToIMAPSettings:" destination="dfm-hT-uzc" id="Gos-tX-YXI"/>
+                                <segue destination="vub-1r-sQ6" kind="show" id="34d-Ry-fIJ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -457,24 +445,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="Htg-A5-Yma">
-                            <rect key="frame" x="0.0" y="64" width="600" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <items>
-                                <navigationItem id="5L1-4D-BYx">
-                                    <barButtonItem key="rightBarButtonItem" title="Next" id="S9x-nb-lAt">
-                                        <connections>
-                                            <segue destination="QvO-52-XkL" kind="presentation" identifier="inboxMail" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="jww-sI-V0c"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </navigationItem>
-                            </items>
-                        </navigationBar>
                         <sections>
                             <tableViewSection headerTitle="" id="ngB-ai-2of">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="6kU-ew-kCV" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="108" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="99" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6kU-ew-kCV" id="eXm-f1-cNo">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -499,7 +474,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="XL7-h6-uwJ" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="157" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="148" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XL7-h6-uwJ" id="e4c-NT-9NK">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -524,7 +499,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="xIb-rc-iWj" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="206" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="197" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xIb-rc-iWj" id="mpo-zI-aeT">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -563,7 +538,11 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="coQ-BM-t90">
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="Tr2-5h-6JD"/>
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="Tr2-5h-6JD">
+                            <connections>
+                                <segue destination="kcA-RK-9Xg" kind="show" id="DPS-gV-wvz"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -610,7 +589,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jq9-hu-xl2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4094" y="1388"/>
+            <point key="canvasLocation" x="4006" y="1532"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="DPS-gV-wvz"/>
+    </inferredMetricsTieBreakers>
 </document>
