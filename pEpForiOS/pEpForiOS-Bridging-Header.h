@@ -26,4 +26,7 @@
 #import "Pantomime/CWInternetAddress.h"
 #import "Pantomime/NSData+Extensions.h"
 
+#import "Pantomime/CWMIMEMultipart.h"
+#import "Pantomime/CWMIMEUtility.h"
+
 #endif /* pEpForiOS_Bridging_Header_h */

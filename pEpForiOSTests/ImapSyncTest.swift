@@ -186,6 +186,9 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     override func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
         self.receivedFolderNames(sync, folderNames: sync.folderNames)
     }
+
+    override func messageChanged(sync: ImapSync, notification: NSNotification?) {
+    }
 }
 
 class ImapSyncTest: XCTestCase {
@@ -354,6 +357,58 @@ class ImapSyncTest: XCTestCase {
                     XCTAssertNotNil(data)
                 }
             })
+        } else {
+            XCTAssertTrue(false, "Expected persisted folder")
+        }
+    }
+
+    /**
+     Demonstrates parsing of MIME-Type/MessageContent.
+     */
+    func testFetchMailAll() {
+        let setup = PersistentSetup.init(coreDataUtil: coreDataUtil)
+        let sync = prefetchMails(setup)
+        if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
+            as? Folder {
+            XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
+
+            let del = TestImapSyncDelegate.init(fetchFolders: false, preFetchMails: false,
+                                                openInbox: false)
+            sync.delegate = del
+
+            for msg in folder.messages {
+                let message = msg as! Message
+                XCTAssertNotNil(message.uid)
+                XCTAssertTrue(message.uid!.intValue > 0)
+                XCTAssertNil(message.content)
+
+                del.messagePrefetchedExpectation = expectationWithDescription("messagePrefetched")
+
+                sync.fetchMailFromFolderNamed(ImapSync.defaultImapInboxName,
+                                              uid: message.uid!.integerValue)
+                waitForExpectationsWithTimeout(waitTime, handler: { error in
+                    XCTAssertNil(error)
+                    XCTAssertTrue(!del.errorOccurred)
+                    XCTAssertTrue(del.messagePrefetched)
+                    XCTAssertNotNil(del.message)
+                    if let msg = del.message {
+                        XCTAssertTrue(msg.isInitialized())
+                        XCTAssertEqual(msg.UID(), UInt(message.uid!.integerValue))
+                        XCTAssertNotNil(msg.content())
+                        let content = msg.content()
+                        XCTAssertNotNil(content)
+                        if let _ = content as? NSData {
+                            print("content NSData")
+                        } else if let _ = content as? NSString {
+                            print("content NSString")
+                        }  else if let _ = content as? CWMIMEMultipart {
+                            print("content CWMIMEMultipart")
+                        }  else if let _ = content as? CWMessage {
+                            print("content CWMessage")
+                        }
+                    }
+                })
+            }
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }
