@@ -8,11 +8,12 @@
 
 import UIKit
 
-public struct ModelSMTPSettingsInfoTable {
 
-    public var SMTPServer: String?
-    public var SMTPPort: UInt16?
-    public var transportSmtp: ConnectionTransport?
+
+protocol SecondDataEnteredDelegate: class {
+    func saveServerInformationSMTP(server:String?)
+    func savePortInformationSMTP(port: UInt16?)
+    func savePortTransportSMTP(transport: ConnectionTransport?)
 }
 
 class SMTPSettingsTableView: UITableViewController {
@@ -21,13 +22,15 @@ class SMTPSettingsTableView: UITableViewController {
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var transportSecurity: UIButton!
 
+    weak var delegate: SecondDataEnteredDelegate? = nil
+
     var appConfig: AppConfig?
-    var mailSettings = MailSettingParameters()
-    var model = ModelSMTPSettingsInfoTable()
+    var model: ModelUserInfoTable?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         serverValue.becomeFirstResponder()
+        updateView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,17 +38,22 @@ class SMTPSettingsTableView: UITableViewController {
     }
 
     func updateView() {
-        if let transport = model.transportSmtp {
+        serverValue.text = model?.serverSMTP
+        if (model!.portSMTP != nil) {
+            portValue.text = String(model!.portSMTP!)
+        }
+
+        if let transport = model!.transportSMTP {
             switch transport {
             case .StartTLS:
                 self.transportSecurity.setTitle("Start TLS >", forState: .Normal)
             case .Plain:
                 self.transportSecurity.setTitle("Plain >", forState: .Normal)
             default:
-                self.transportSecurity.setTitle("TLS", forState: .Normal)
+                self.transportSecurity.setTitle("TLS >", forState: .Normal)
             }
         } else {
-            self.transportSecurity.setTitle("Plain", forState: .Normal)
+            self.transportSecurity.setTitle("Plain >", forState: .Normal)
         }
     }
 
@@ -58,17 +66,20 @@ class SMTPSettingsTableView: UITableViewController {
         alertController.addAction(CancelAction)
 
         let StartTLSAction = UIAlertAction(title: "Start TLS", style: .Default) { (action) in
-            self.model.transportSmtp = ConnectionTransport.StartTLS
+             self.model!.transportSMTP = ConnectionTransport.StartTLS
+             self.delegate?.savePortTransportSMTP(ConnectionTransport.StartTLS)
              self.updateView()
         }
         alertController.addAction(StartTLSAction)
         let TLSAction = UIAlertAction(title: "TLS", style: .Default) { (action) in
-            self.model.transportSmtp = ConnectionTransport.TLS
+            self.model!.transportSMTP = ConnectionTransport.TLS
+            self.delegate?.savePortTransportSMTP(ConnectionTransport.TLS)
             self.updateView()
         }
         alertController.addAction(TLSAction)
         let NONEAction = UIAlertAction(title: "Plain", style: .Default) { (action) in
-            self.model.transportSmtp = ConnectionTransport.Plain
+            self.model!.transportSMTP = ConnectionTransport.Plain
+            self.delegate?.savePortTransportSMTP(ConnectionTransport.Plain)
             self.updateView()
 
         }
@@ -76,16 +87,22 @@ class SMTPSettingsTableView: UITableViewController {
         self.presentViewController(alertController, animated: true) {}
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        mailSettings.serverhostSMTP = serverValue.text!
-        let portSMTPAux:String = portValue.text!
-        mailSettings.portSMTP = UInt16(portSMTPAux)!
+    @IBAction func enteredServer(sender: AnyObject) {
+        model!.serverSMTP = serverValue.text!
+        delegate?.saveServerInformationSMTP(serverValue.text!)
+    }
 
+    @IBAction func enteredPort(sender: AnyObject) {
+        model!.portSMTP = UInt16(portValue.text!)
+        delegate?.savePortInformationSMTP(UInt16(portValue.text!))
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let connect = ConnectInfo.init(
-            email: mailSettings.email!, imapPassword: mailSettings.password!,
-            imapServerName: mailSettings.serverhostIMAP!, imapServerPort: mailSettings.portIMAP!,
-            imapTransport: model.transportSmtp!, smtpServerName: mailSettings.serverhostSMTP!,
-            smtpServerPort: mailSettings.portSMTP!, smtpTransport: model.transportSmtp!)
+            email: model!.email!, imapPassword: model!.password!,
+            imapServerName: model!.serverIMAP!, imapServerPort: model!.portIMAP!,
+            imapTransport: model!.transportIMAP!, smtpServerName: model!.serverSMTP!,
+            smtpServerPort: model!.portSMTP!, smtpTransport: model!.transportSMTP!)
 
         let _ = appConfig?.grandOperator.verifyConnection(connect, completionBlock: { (error) in
             GCD.onMain({
