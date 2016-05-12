@@ -5,6 +5,7 @@ import Foundation
 import CoreData
 
 public enum MessageAttributes: String {
+    case contentType = "contentType"
     case fetched = "fetched"
     case longMessage = "longMessage"
     case longMessageFormatted = "longMessageFormatted"
@@ -28,6 +29,8 @@ public enum MessageRelationships: String {
 public protocol _IMessage {
 
     // MARK: - Properties
+
+    var contentType: String? { get set }
 
     var fetched: NSNumber { get set }
 
@@ -87,6 +90,9 @@ public class _Message: BaseManagedObject, _IMessage {
     }
 
     // MARK: - Properties
+
+    @NSManaged public
+    var contentType: String?
 
     @NSManaged public
     var fetched: NSNumber
