@@ -92,7 +92,6 @@ public class ImapSync: Service, IImapSync {
 
     static public let defaultImapInboxName = "INBOX"
 
-    public var cache: EmailCache?
     public var delegate: ImapSyncDelegate?
     public var folderBuilder: CWFolderBuilding? {
         set {
@@ -131,9 +130,6 @@ public class ImapSync: Service, IImapSync {
         // independent of the prefetch parameter.
         if let folder = imapStore.folderForName(name, mode: PantomimeReadWriteMode,
                                                 prefetch: prefetchMails) {
-            if cache != nil {
-                folder.setCacheManager(cache!)
-            }
             Log.info(comp, "openMailBox \(folder.name())")
         }
     }

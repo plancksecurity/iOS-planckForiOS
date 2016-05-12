@@ -12,14 +12,13 @@ import CoreData
 /**
  A `CWFolder`/`CWIMAPFolder` that is backed by core data. Use on the main thread.
  */
-class PersistentImapFolder: CWIMAPFolder {
+class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     let comp = "PersistentImapFolder"
 
     let mainContext: NSManagedObjectContext
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
     let grandOperator: IGrandOperator
-    let cache: PersistentEmailCache
 
     /** The underlying core data object */
     var folder: IFolder!
@@ -50,11 +49,8 @@ class PersistentImapFolder: CWIMAPFolder {
         self.backgroundQueue = backgroundQueue
         self.grandOperator = grandOperator
         self.mainContext = grandOperator.coreDataUtil.managedObjectContext
-        self.cache = PersistentEmailCache.init(grandOperator: grandOperator,
-                                               connectInfo: connectInfo,
-                                               backgroundQueue: backgroundQueue)
         super.init(name: name)
-        self.setCacheManager(cache)
+        self.setCacheManager(self)
         self.folder = folderObject()
     }
 
@@ -149,5 +145,35 @@ class PersistentImapFolder: CWIMAPFolder {
         }
         Log.warn(comp, "lastUID no object found, returning 0")
         return 0
+    }
+
+    func invalidate() {
+    }
+
+    func synchronize() -> Bool {
+        return true
+    }
+
+    func messageWithUID(theUID: UInt) -> CWIMAPMessage? {
+        let p = NSPredicate.init(format: "uid = %d", theUID)
+        if let msg = grandOperator.model.messageByPredicate(p) {
+            return msg.imapMessage()
+        } else {
+            Log.warn(comp, "Could not fetch message with uid \(theUID)")
+            return nil
+        }
+    }
+
+    /**
+     - TODO
+     */
+    func removeMessageWithUID(theUID: UInt) {
+    }
+
+    func writeRecord(theRecord: CWCacheRecord?, message: CWIMAPMessage) {
+        let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
+                                                   accountEmail: connectInfo.email,
+                                                   message: message)
+        op.main()
     }
 }
