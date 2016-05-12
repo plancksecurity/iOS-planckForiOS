@@ -106,15 +106,13 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     /**
      This implementation assumes that the index is typically referred to by pantomime
      as the messageNumber.
-     - Todo: This must be synchronized with the fetching. The way it currently is
-     implemented is not feasible, since the messageIDs would have to be recomputed.
      */
     override func messageAtIndex(theIndex: UInt) -> CWMessage? {
         let p = NSPredicate.init(
             format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
             connectInfo.email, self.name(), theIndex)
         let msg = grandOperator.model.messageByPredicate(p)
-        return msg?.imapMessage()
+        return msg?.imapMessageWithFolder(self)
     }
 
     override func count() -> UInt {
@@ -157,7 +155,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     func messageWithUID(theUID: UInt) -> CWIMAPMessage? {
         let p = NSPredicate.init(format: "uid = %d", theUID)
         if let msg = grandOperator.model.messageByPredicate(p) {
-            return msg.imapMessage()
+            return msg.imapMessageWithFolder(self)
         } else {
             Log.warn(comp, "Could not fetch message with uid \(theUID)")
             return nil
@@ -175,5 +173,72 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                                                    accountEmail: connectInfo.email,
                                                    message: message)
         op.main()
+    }
+}
+
+public extension IMessage {
+    func internetAddressFromContact(contact: IContact) -> CWInternetAddress {
+        return CWInternetAddress.init(personal: contact.name, address: contact.email)
+
+    }
+
+    func collectContacts(contacts: NSOrderedSet,
+                         asPantomimeReceiverType receiverType: PantomimeRecipientType,
+                         inout intoTargetArray target: [CWInternetAddress]) {
+        for obj in contacts {
+            if let theContact = obj as? IContact {
+                let addr = internetAddressFromContact(theContact)
+                addr.setType(receiverType)
+                target.append(addr)
+            }
+        }
+    }
+
+    func imapMessageWithFolder(folder: CWIMAPFolder) -> CWIMAPMessage {
+        let msg = CWIMAPMessage.init()
+
+        if let date = originationDate {
+            msg.setReceivedDate(date)
+        }
+
+        if let sub = subject {
+            msg.setSubject(sub)
+        }
+
+        if let str = messageID {
+            msg.setMessageID(str)
+        }
+
+        if let uid = uid?.integerValue {
+            msg.setUID(UInt(uid))
+        }
+
+        if let msn = messageNumber?.integerValue {
+            msg.setMessageNumber(UInt(msn))
+        }
+
+        if let contact = from {
+            msg.setFrom(internetAddressFromContact(contact))
+        }
+
+        var recipients: [CWInternetAddress] = []
+        collectContacts(cc, asPantomimeReceiverType: PantomimeCcRecipient,
+                        intoTargetArray: &recipients)
+        collectContacts(bcc, asPantomimeReceiverType: PantomimeBccRecipient,
+                        intoTargetArray: &recipients)
+        collectContacts(to, asPantomimeReceiverType: PantomimeToRecipient,
+                        intoTargetArray: &recipients)
+        msg.setRecipients(recipients)
+
+        var refs: [String] = []
+        for ref in references {
+            let refString: String = (ref as! MessageReference).messageID
+            refs.append(refString)
+        }
+        msg.setReferences(refs)
+
+        msg.setFolder(folder)
+
+        return msg
     }
 }
