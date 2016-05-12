@@ -109,8 +109,7 @@ public class StorePrefetchedMailOperation: BaseOperation {
             mail.from = contacts[from.address()] as? Contact
         }
 
-        // TODO: Test references
-        // TODO: Do the angle brackets (<>) belong to the messageID?
+        // TODO: Remove angle brackets (<>) from messageIDs
         if let msgRefs = message.allReferences() {
             for refID in msgRefs {
                 let ref = model.insertOrUpdateMessageReference(refID as! String)
