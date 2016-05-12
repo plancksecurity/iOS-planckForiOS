@@ -10,6 +10,7 @@ public enum ContactAttributes: String {
 }
 
 public enum ContactRelationships: String {
+    case bccMessages = "bccMessages"
     case ccMessages = "ccMessages"
     case fromMessages = "fromMessages"
     case toMessages = "toMessages"
@@ -24,6 +25,8 @@ public protocol _IContact {
     var name: String? { get set }
 
     // MARK: - Relationships
+
+    var bccMessages: Message? { get set }
 
     var ccMessages: NSSet { get set }
 
@@ -65,6 +68,9 @@ public class _Contact: BaseManagedObject, _IContact {
     var name: String?
 
     // MARK: - Relationships
+
+    @NSManaged public
+    var bccMessages: Message?
 
     @NSManaged public
     var ccMessages: NSSet

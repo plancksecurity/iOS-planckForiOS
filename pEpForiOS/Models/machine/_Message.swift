@@ -17,6 +17,7 @@ public enum MessageAttributes: String {
 }
 
 public enum MessageRelationships: String {
+    case bcc = "bcc"
     case cc = "cc"
     case content = "content"
     case folder = "folder"
@@ -49,6 +50,8 @@ public protocol _IMessage {
     var uid: NSNumber? { get set }
 
     // MARK: - Relationships
+
+    var bcc: NSOrderedSet { get set }
 
     var cc: NSOrderedSet { get set }
 
@@ -121,6 +124,9 @@ public class _Message: BaseManagedObject, _IMessage {
     // MARK: - Relationships
 
     @NSManaged public
+    var bcc: NSOrderedSet
+
+    @NSManaged public
     var cc: NSOrderedSet
 
     @NSManaged public
@@ -140,6 +146,34 @@ public class _Message: BaseManagedObject, _IMessage {
 
     @NSManaged public
     var to: NSOrderedSet
+
+}
+
+extension _Message {
+
+    func addBcc(objects: NSOrderedSet) {
+        let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
+        mutable.unionOrderedSet(objects)
+        self.bcc = mutable.copy() as! NSOrderedSet
+    }
+
+    func removeBcc(objects: NSOrderedSet) {
+        let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
+        mutable.minusOrderedSet(objects)
+        self.bcc = mutable.copy() as! NSOrderedSet
+    }
+
+    func addBccObject(value: Contact) {
+        let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
+        mutable.addObject(value)
+        self.bcc = mutable.copy() as! NSOrderedSet
+    }
+
+    func removeBccObject(value: Contact) {
+        let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
+        mutable.removeObject(value)
+        self.bcc = mutable.copy() as! NSOrderedSet
+    }
 
 }
 
