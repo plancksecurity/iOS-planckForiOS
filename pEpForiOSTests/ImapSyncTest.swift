@@ -395,6 +395,9 @@ class ImapSyncTest: XCTestCase {
                         XCTAssertTrue(msg.isInitialized())
                         XCTAssertEqual(msg.UID(), UInt(message.uid!.integerValue))
                         XCTAssertNotNil(msg.content())
+                        if msg.contentType() != nil {
+                            print("contentType \(msg.contentType())")
+                        }
                         let content = msg.content()
                         XCTAssertNotNil(content)
                         if let _ = content as? NSData {

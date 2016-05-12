@@ -237,6 +237,8 @@ public extension IMessage {
         }
         msg.setReferences(refs)
 
+        msg.setContentType(contentType)
+
         msg.setFolder(folder)
 
         return msg

@@ -116,6 +116,9 @@ public class StorePrefetchedMailOperation: BaseOperation {
                 (mail as! Message).addReferencesObject(ref as! MessageReference)
             }
         }
+
+        mail.contentType = message.contentType()
+
         return mail
     }
 
