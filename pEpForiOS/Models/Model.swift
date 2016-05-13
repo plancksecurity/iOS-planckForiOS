@@ -41,6 +41,7 @@ public protocol IModel {
 
     func insertOrUpdateMessageReference(messageID: String) -> IMessageReference
     func insertMessageReference(messageID: String) -> IMessageReference
+    func insertOrUpdateMail(message: CWIMAPMessage, accountEmail: String) -> IMessage?
 
     func save()
 
@@ -316,6 +317,97 @@ public class Model: IModel {
             MessageReference.entityName(), inManagedObjectContext: context) as! MessageReference
         ref.messageID = messageID
         return ref
+    }
+
+    public func addContacts(contacts: [CWInternetAddress]) -> [String: IContact] {
+        var added: [String: IContact] = [:]
+        for address in contacts {
+            if let addr = insertOrUpdateContactEmail(address.address(),
+                                                     name: address.personal()) {
+                added[addr.email] = addr
+            } else {
+                Log.error(comp, error: Constants.errorCouldNotUpdateOrAddContact(comp,
+                    name: address.stringValue()))
+            }
+        }
+        return added
+    }
+
+    public func insertOrUpdateMail(message: CWIMAPMessage, accountEmail: String) -> IMessage? {
+        guard let folderName = message.folder()?.name() else {
+            return nil
+        }
+        guard let folder = folderByName(folderName, email: accountEmail) else {
+            return nil
+        }
+
+        var addresses = message.recipients() as! [CWInternetAddress]
+        if let from = message.from() {
+            addresses.append(from)
+        }
+        let contacts = addContacts(addresses)
+
+        var isFresh = false
+        var theMail: IMessage? = existingMessage(message)
+        if theMail == nil {
+            theMail = insertNewMessage()
+            isFresh = true
+        }
+
+        var mail = theMail!
+
+        mail.folder = folder as! Folder
+
+        if isFresh || mail.originationDate != message.receivedDate() {
+            mail.originationDate = message.receivedDate()
+        }
+        if isFresh || mail.subject != message.subject() {
+            mail.subject = message.subject()
+        }
+        if isFresh || mail.messageID != message.messageID() {
+            mail.messageID = message.messageID()
+        }
+        if isFresh || mail.uid != message.UID() {
+            mail.uid = message.UID()
+        }
+        if isFresh || mail.messageNumber != message.messageNumber() {
+            mail.messageNumber = message.messageNumber()
+        }
+
+        let ccs: NSMutableOrderedSet = []
+        let tos: NSMutableOrderedSet = []
+        for address in message.recipients() {
+            let addr = address as! CWInternetAddress
+            switch addr.type() {
+            case PantomimeCcRecipient:
+                ccs.addObject(contacts[addr.address()]! as! Contact)
+            case PantomimeToRecipient:
+                tos.addObject(contacts[addr.address()]! as! Contact)
+            default:
+                Log.warn(comp, "Unsupported recipient type \(addr.type)")
+            }
+        }
+        if isFresh || mail.cc != ccs {
+            mail.cc = ccs
+        }
+        if isFresh || mail.to != tos {
+            mail.to = tos
+        }
+        if let from = message.from() {
+            mail.from = contacts[from.address()] as? Contact
+        }
+
+        // TODO: Remove angle brackets (<>) from messageIDs
+        if let msgRefs = message.allReferences() {
+            for refID in msgRefs {
+                let ref = insertOrUpdateMessageReference(refID as! String)
+                (mail as! Message).addReferencesObject(ref as! MessageReference)
+            }
+        }
+
+        mail.contentType = message.contentType()
+
+        return mail
     }
 
     public func dumpDB() {

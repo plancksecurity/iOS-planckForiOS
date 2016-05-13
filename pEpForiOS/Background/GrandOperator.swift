@@ -63,6 +63,12 @@ public protocol IGrandOperator {
      Creates a new background model, confined to the current thread/queue
      */
     func backgroundModel() -> IModel
+
+    /**
+     - Returns: The model suitable for the caller, depending on whether this is called on the
+     main thread or not.
+     */
+    func operationModel() -> IModel
 }
 
 public class GrandOperator: IGrandOperator {
@@ -170,6 +176,11 @@ public class GrandOperator: IGrandOperator {
 
     public func backgroundModel() -> IModel {
         return Model.init(context: coreDataUtil.confinedManagedObjectContext())
+    }
+
+    public func operationModel() -> IModel {
+        let resultModel = NSThread.isMainThread() ? model : backgroundModel()
+        return resultModel
     }
 
     func createModel() -> IModel {
