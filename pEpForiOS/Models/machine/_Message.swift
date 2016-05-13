@@ -18,6 +18,7 @@ public enum MessageAttributes: String {
 }
 
 public enum MessageRelationships: String {
+    case attachments = "attachments"
     case bcc = "bcc"
     case cc = "cc"
     case content = "content"
@@ -53,6 +54,8 @@ public protocol _IMessage {
     var uid: NSNumber? { get set }
 
     // MARK: - Relationships
+
+    var attachments: NSOrderedSet { get set }
 
     var bcc: NSOrderedSet { get set }
 
@@ -130,6 +133,9 @@ public class _Message: BaseManagedObject, _IMessage {
     // MARK: - Relationships
 
     @NSManaged public
+    var attachments: NSOrderedSet
+
+    @NSManaged public
     var bcc: NSOrderedSet
 
     @NSManaged public
@@ -152,6 +158,34 @@ public class _Message: BaseManagedObject, _IMessage {
 
     @NSManaged public
     var to: NSOrderedSet
+
+}
+
+extension _Message {
+
+    func addAttachments(objects: NSOrderedSet) {
+        let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
+        mutable.unionOrderedSet(objects)
+        self.attachments = mutable.copy() as! NSOrderedSet
+    }
+
+    func removeAttachments(objects: NSOrderedSet) {
+        let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
+        mutable.minusOrderedSet(objects)
+        self.attachments = mutable.copy() as! NSOrderedSet
+    }
+
+    func addAttachmentsObject(value: Attachment) {
+        let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
+        mutable.addObject(value)
+        self.attachments = mutable.copy() as! NSOrderedSet
+    }
+
+    func removeAttachmentsObject(value: Attachment) {
+        let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
+        mutable.removeObject(value)
+        self.attachments = mutable.copy() as! NSOrderedSet
+    }
 
 }
 

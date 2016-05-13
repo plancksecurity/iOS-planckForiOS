@@ -353,6 +353,7 @@ class ImapSyncTest: XCTestCase {
                     XCTAssertTrue(msg.isInitialized())
                     XCTAssertEqual(msg.UID(), UInt(message.uid!.integerValue))
                     XCTAssertNotNil(msg.content())
+                    setup.model.insertOrUpdatePantomimeMail(msg, accountEmail: setup.connectionInfo.email)
                     let data = msg.content()
                     XCTAssertNotNil(data)
                 }
