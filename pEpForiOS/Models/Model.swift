@@ -41,7 +41,7 @@ public protocol IModel {
 
     func insertOrUpdateMessageReference(messageID: String) -> IMessageReference
     func insertMessageReference(messageID: String) -> IMessageReference
-    func insertOrUpdateMail(message: CWIMAPMessage, accountEmail: String) -> IMessage?
+    func insertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String) -> IMessage?
 
     func save()
 
@@ -333,7 +333,8 @@ public class Model: IModel {
         return added
     }
 
-    public func insertOrUpdateMail(message: CWIMAPMessage, accountEmail: String) -> IMessage? {
+    public func insertOrUpdatePantomimeMail(
+        message: CWIMAPMessage, accountEmail: String) -> IMessage? {
         guard let folderName = message.folder()?.name() else {
             return nil
         }
@@ -407,7 +408,28 @@ public class Model: IModel {
 
         mail.contentType = message.contentType()
 
+        addAttachmentsFromPantomimePart(message, targetMail: mail as! Message, level: 0)
+
         return mail
+    }
+
+    func addAttachmentsFromPantomimePart(part: CWPart, targetMail: Message, level: Int) {
+        guard let content = part.content() else {
+            return
+        }
+        print("uid \(targetMail.uid!) \(targetMail.originationDate!) (\(targetMail.subject!)) level \(level) part \(part.contentType()) \(part.filename())")
+        if let multiPart = content as? CWMIMEMultipart {
+            for i in 0..<multiPart.count() {
+                let subPart = multiPart.partAtIndex(UInt(i))
+                addAttachmentsFromPantomimePart(subPart, targetMail: targetMail, level: level + 1)
+            }
+        } else if let message = content as? CWMessage {
+            print("message inside")
+        } else if let string = content as? NSString {
+            print("string inside")
+        } else if let data = content as? NSData {
+            print("data inside")
+        }
     }
 
     public func dumpDB() {

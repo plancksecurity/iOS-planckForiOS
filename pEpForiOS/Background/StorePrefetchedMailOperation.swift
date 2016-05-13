@@ -25,7 +25,7 @@ public class StorePrefetchedMailOperation: BaseOperation {
 
     override public func main() {
         let model = grandOperator.operationModel()
-        if let mail = model.insertOrUpdateMail(message, accountEmail: accountEmail) {
+        if let mail = model.insertOrUpdatePantomimeMail(message, accountEmail: accountEmail) {
             model.save()
         } else {
             grandOperator.setErrorForOperation(self, error: Constants.errorCannotStoreMail(comp))
