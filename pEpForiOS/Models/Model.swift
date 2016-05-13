@@ -374,6 +374,9 @@ public class Model: IModel {
         if isFresh || mail.messageNumber != message.messageNumber() {
             mail.messageNumber = message.messageNumber()
         }
+        if isFresh || mail.boundary != message.boundary()?.asciiString() {
+            mail.boundary = message.boundary()?.asciiString()
+        }
 
         let ccs: NSMutableOrderedSet = []
         let tos: NSMutableOrderedSet = []

@@ -49,6 +49,10 @@ public extension IMessage {
             msg.setMessageNumber(UInt(msn))
         }
 
+        if let boundary = boundary {
+            msg.setBoundary(boundary.dataUsingEncoding(NSASCIIStringEncoding))
+        }
+
         if let contact = from {
             msg.setFrom(internetAddressFromContact(contact))
         }
