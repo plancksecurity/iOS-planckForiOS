@@ -28,6 +28,8 @@ public protocol IModel {
     func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount?
     func insertNewMessage() -> IMessage
     func insertTestAccount() -> IAccount?
+    func insertAttachmentWithContentType(
+        contentType: String?, filename: String?, data: NSData) -> _IAttachment
 
     func insertOrUpdateContactEmail(email: String, name: String?) -> IContact?
 
@@ -168,6 +170,16 @@ public class Model: IModel {
         } else {
             return nil
         }
+    }
+
+    public func insertAttachmentWithContentType(
+        contentType: String?, filename: String?, data: NSData) -> _IAttachment {
+        let attachment = NSEntityDescription.insertNewObjectForEntityForName(
+            Attachment.entityName(), inManagedObjectContext: context) as! Attachment
+        attachment.filename = filename
+        attachment.size = data.length
+        attachment.content.data = data
+        return attachment
     }
 
     public func setAccountAsLastUsed(account: IAccount) -> IAccount {
@@ -426,12 +438,22 @@ public class Model: IModel {
                 let subPart = multiPart.partAtIndex(UInt(i))
                 addAttachmentsFromPantomimePart(subPart, targetMail: targetMail, level: level + 1)
             }
-        } else if let message = content as? CWMessage {
-            print("message inside")
-        } else if let string = content as? NSString {
-            print("string inside")
-        } else if let data = content as? NSData {
-            print("data inside")
+        } else {
+            // TODO: Check for content type text/plain, and set longText etc. accordingly
+            // TODO: Check for content type charset
+            var contentData: NSData?
+            if let message = content as? CWMessage {
+                contentData = message.dataValue()
+            } else if let string = content as? NSString {
+                contentData = string.dataUsingEncoding(NSASCIIStringEncoding)
+            } else if let data = content as? NSData {
+                contentData = data
+            }
+            if let data = contentData {
+                let attachment = insertAttachmentWithContentType(
+                    part.contentType(), filename: part.filename(), data: data)
+                targetMail.addAttachmentsObject(attachment as! Attachment)
+            }
         }
     }
 

@@ -395,20 +395,8 @@ class ImapSyncTest: XCTestCase {
                         XCTAssertEqual(msg.UID(), UInt(message.uid!.integerValue))
                         XCTAssertNotNil(msg.content())
                         setup.model.insertOrUpdatePantomimeMail(msg, accountEmail: setup.connectionInfo.email)
-                        if msg.contentType() != nil {
-                            print("contentType \(msg.contentType())")
-                        }
                         let content = msg.content()
                         XCTAssertNotNil(content)
-                        if let _ = content as? NSData {
-                            print("content NSData")
-                        } else if let _ = content as? NSString {
-                            print("content NSString")
-                        }  else if let _ = content as? CWMIMEMultipart {
-                            print("content CWMIMEMultipart")
-                        }  else if let _ = content as? CWMessage {
-                            print("content CWMessage")
-                        }
                     }
                 })
             }

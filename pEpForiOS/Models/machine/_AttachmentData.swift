@@ -6,7 +6,6 @@ import CoreData
 
 public enum AttachmentDataAttributes: String {
     case data = "data"
-    case size = "size"
 }
 
 public enum AttachmentDataRelationships: String {
@@ -18,8 +17,6 @@ public protocol _IAttachmentData {
     // MARK: - Properties
 
     var data: NSData { get set }
-
-    var size: NSNumber { get set }
 
     // MARK: - Relationships
 
@@ -54,9 +51,6 @@ public class _AttachmentData: BaseManagedObject, _IAttachmentData {
 
     @NSManaged public
     var data: NSData
-
-    @NSManaged public
-    var size: NSNumber
 
     // MARK: - Relationships
 
