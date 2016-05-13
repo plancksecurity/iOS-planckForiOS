@@ -21,7 +21,6 @@ public enum MessageRelationships: String {
     case attachments = "attachments"
     case bcc = "bcc"
     case cc = "cc"
-    case content = "content"
     case folder = "folder"
     case from = "from"
     case referenced = "referenced"
@@ -60,8 +59,6 @@ public protocol _IMessage {
     var bcc: NSOrderedSet { get set }
 
     var cc: NSOrderedSet { get set }
-
-    var content: MessageContent? { get set }
 
     var folder: Folder { get set }
 
@@ -140,9 +137,6 @@ public class _Message: BaseManagedObject, _IMessage {
 
     @NSManaged public
     var cc: NSOrderedSet
-
-    @NSManaged public
-    var content: MessageContent?
 
     @NSManaged public
     var folder: Folder

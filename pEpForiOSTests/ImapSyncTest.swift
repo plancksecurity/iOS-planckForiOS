@@ -334,7 +334,6 @@ class ImapSyncTest: XCTestCase {
             XCTAssertNotNil(message)
             XCTAssertNotNil(message.uid)
             XCTAssertTrue(message.uid?.intValue > 0)
-            XCTAssertNil(message.content)
 
             let del = TestImapSyncDelegate.init(fetchFolders: false, preFetchMails: false,
                                                 openInbox: false)
@@ -381,7 +380,6 @@ class ImapSyncTest: XCTestCase {
                 let message = msg as! Message
                 XCTAssertNotNil(message.uid)
                 XCTAssertTrue(message.uid!.intValue > 0)
-                XCTAssertNil(message.content)
 
                 del.messagePrefetchedExpectation = expectationWithDescription("messagePrefetched")
 
