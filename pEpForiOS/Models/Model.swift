@@ -439,8 +439,9 @@ public class Model: IModel {
                 addAttachmentsFromPantomimePart(subPart, targetMail: targetMail, level: level + 1)
             }
         } else {
-            // TODO: Check for content type text/plain, and set longText etc. accordingly
-            // TODO: Check for content type charset
+            let isText = part.contentType() == nil ||
+                part.contentType()?.lowercaseString == Constants.contentTypeText
+            let isHtml = part.contentType()?.lowercaseString == Constants.contentTypeHtml
             var contentData: NSData?
             if let message = content as? CWMessage {
                 contentData = message.dataValue()
@@ -450,9 +451,15 @@ public class Model: IModel {
                 contentData = data
             }
             if let data = contentData {
-                let attachment = insertAttachmentWithContentType(
-                    part.contentType(), filename: part.filename(), data: data)
-                targetMail.addAttachmentsObject(attachment as! Attachment)
+                if isText && level == 1 && targetMail.longMessage == nil {
+                    targetMail.longMessage = data.toStringWithIANACharset(part.charset())
+                } else if isHtml && level == 1 && targetMail.longMessageFormatted == nil {
+                    targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
+                } else {
+                    let attachment = insertAttachmentWithContentType(
+                        part.contentType(), filename: part.filename(), data: data)
+                    targetMail.addAttachmentsObject(attachment as! Attachment)
+                }
             }
         }
     }

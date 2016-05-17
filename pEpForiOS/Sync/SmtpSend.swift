@@ -85,7 +85,7 @@ public class SmtpSend: Service {
         to.setType(PantomimeToRecipient)
         msg.addRecipient(to)
 
-        msg.setContentType("text/plain")
+        msg.setContentType(Constants.contentTypeText)
         msg.setContentTransferEncoding(PantomimeEncodingNone)
         msg.setCharset("utf-8")
         msg.setContent("This was sent by pantomime".dataUsingEncoding(NSUTF8StringEncoding))

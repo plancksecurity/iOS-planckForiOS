@@ -9,6 +9,12 @@
 import Foundation
 
 public class Constants {
+    /** MIME content type for plain text */
+    public static let contentTypeText = "text/plain"
+
+    /** MIME content type for HTML */
+    public static let contentTypeHtml = "text/html"
+
     public enum GeneralErrorCode: Int {
         case NotImplemented = 1000
         case IllegalState
