@@ -10,6 +10,8 @@ import Foundation
 import CoreData
 
 public class InMemoryCoreDataUtil: ICoreDataUtil {
+    let coreDataMerger = CoreDataMerger()
+
     public init() {
     }
 
@@ -52,6 +54,10 @@ public class InMemoryCoreDataUtil: ICoreDataUtil {
         var managedObjectContext = NSManagedObjectContext(
             concurrencyType: .MainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
+
+        // Watch for merges
+        self.coreDataMerger.managedObjectContext = managedObjectContext
+
         return managedObjectContext
     }()
 

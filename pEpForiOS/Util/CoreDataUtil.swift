@@ -22,16 +22,17 @@ public protocol ICoreDataUtil {
     func confinedManagedObjectContext() -> NSManagedObjectContext
 }
 
-public class CoreDataUtil: ICoreDataUtil {
-    static let comp = "CoreDataUtil"
-
+public class CoreDataMerger {
     var saveObserver: NSObjectProtocol!
+    var managedObjectContext: NSManagedObjectContext?
 
     public init() {
         saveObserver = NSNotificationCenter.defaultCenter().addObserverForName(
         NSManagedObjectContextDidSaveNotification, object: nil, queue: nil) {
             [unowned self] notification in
-            self.mergeContexts(notification)
+            if let context = self.managedObjectContext {
+                self.mergeContexts(notification, context: context)
+            }
         }
     }
 
@@ -39,11 +40,17 @@ public class CoreDataUtil: ICoreDataUtil {
         NSNotificationCenter.defaultCenter().removeObserver(saveObserver)
     }
 
-    public func mergeContexts(notification: NSNotification) {
+    public func mergeContexts(notification: NSNotification, context: NSManagedObjectContext) {
         dispatch_async(dispatch_get_main_queue(), {
-            self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+            context.mergeChangesFromContextDidSaveNotification(notification)
         })
     }
+}
+
+public class CoreDataUtil: ICoreDataUtil {
+    static let comp = "CoreDataUtil"
+
+    let coreDataMerger = CoreDataMerger()
 
     // MARK: - Core Data stack
 
@@ -93,6 +100,10 @@ public class CoreDataUtil: ICoreDataUtil {
         var managedObjectContext = NSManagedObjectContext(
             concurrencyType: .MainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
+
+        // Watch for merges
+        self.coreDataMerger.managedObjectContext = managedObjectContext
+
         return managedObjectContext
     }()
 
