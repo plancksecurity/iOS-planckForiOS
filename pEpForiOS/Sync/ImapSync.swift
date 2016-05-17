@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ImapState {
+public struct ImapState {
     var authenticationCompleted = false
     var currentFolder: String?
 }
@@ -26,6 +26,9 @@ public protocol ImapSyncDelegate {
     func folderOpenFailed(sync: ImapSync, notification: NSNotification?)
     func folderStatusCompleted(sync: ImapSync, notification: NSNotification?)
     func folderListCompleted(sync: ImapSync, notification: NSNotification?)
+
+    /** General error indicator */
+    func actionFailed(sync: ImapSync, error: NSError)
 }
 
 /**
@@ -47,6 +50,11 @@ public class DefaultImapSyncDelegate: ImapSyncDelegate {
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?)  {}
     public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {}
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {}
+    public func actionFailed(sync: ImapSync, error: NSError) {}
+}
+
+public enum ImapError: Int {
+    case FolderNotOpen = 1000
 }
 
 public protocol IImapSync {
@@ -109,7 +117,7 @@ public class ImapSync: Service, IImapSync {
         return nil
     }
 
-    private var imapState = ImapState()
+    public var imapState = ImapState()
 
     var imapStore: CWIMAPStore {
         get {
@@ -135,12 +143,21 @@ public class ImapSync: Service, IImapSync {
     }
 
     public func fetchMailFromFolderNamed(folderName: String, uid: Int) {
-        imapStore.sendCommand(
-            IMAP_UID_FETCH_HEADER_FIELDS_NOT, info: nil,
-            string: String.init(format: "UID FETCH %u:%u BODY.PEEK[HEADER.FIELDS.NOT (From To Cc Subject Date Message-ID References In-Reply-To)]", uid, uid))
-        imapStore.sendCommand(
-            IMAP_UID_FETCH_BODY_TEXT, info: nil,
-            string: String.init(format: "UID FETCH %u:%u BODY[TEXT]", uid, uid))
+        if folderName == imapState.currentFolder {
+            imapStore.sendCommand(
+                IMAP_UID_FETCH_HEADER_FIELDS_NOT, info: nil,
+                string: String.init(format: "UID FETCH %u:%u BODY.PEEK[HEADER.FIELDS.NOT (From To Cc Subject Date Message-ID References In-Reply-To)]", uid, uid))
+            imapStore.sendCommand(
+                IMAP_UID_FETCH_BODY_TEXT, info: nil,
+                string: String.init(format: "UID FETCH %u:%u BODY[TEXT]", uid, uid))
+        } else {
+            let error = NSError.init(
+                domain: comp, code: ImapError.FolderNotOpen.rawValue,
+                userInfo: [NSLocalizedDescriptionKey:
+                    NSLocalizedString("Folder not open for fetching mail",
+                        comment: "Error message when trying to fetch message from folder that ist not opened")])
+            delegate?.actionFailed(self, error: error)
+        }
     }
 
     private func dumpMethodName(methodName: String, notification: NSNotification?) {
@@ -166,16 +183,19 @@ extension ImapSync: CWServiceClient {
 
     @objc public func connectionLost(notification: NSNotification?) {
         dumpMethodName("connectionLost", notification: notification)
+        imapState.authenticationCompleted = false
         delegate?.connectionLost(self, notification: notification)
     }
 
     @objc public func connectionTerminated(notification: NSNotification?) {
         dumpMethodName("connectionTerminated", notification: notification)
+        imapState.authenticationCompleted = false
         delegate?.connectionTerminated(self, notification: notification)
     }
 
     @objc public func connectionTimedOut(notification: NSNotification?) {
         dumpMethodName("connectionTimedOut", notification: notification)
+        imapState.authenticationCompleted = false
         delegate?.connectionTimedOut(self, notification: notification)
     }
 

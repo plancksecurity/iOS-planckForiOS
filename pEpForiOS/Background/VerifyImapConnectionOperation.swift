@@ -10,9 +10,8 @@ import Foundation
 
 public class VerifyImapConnectionOperation: ConcurrentBaseOperation {
     let errorDomain = "VerifyImapConnectionOperation"
-
-    let connectInfo: ConnectInfo
     var imapSync: ImapSync!
+    let connectInfo: ConnectInfo
 
     init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
@@ -79,5 +78,9 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     }
 
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
+    }
+
+    public func actionFailed(sync: ImapSync, error: NSError) {
+        grandOperator.setErrorForOperation(self, error: error)
     }
 }

@@ -138,4 +138,62 @@ class SimpleOperationsTest: XCTestCase {
                 numMails)
         })
     }
+
+    func testFetchSingleMailsOperationSimple() {
+        testPrefetchMailsOperation()
+        let mails = grandOperator.operationModel().messagesByPredicate(NSPredicate.init(value: true))
+        let mail = mails![0] as! Message
+
+        let mailFetched = expectationWithDescription("mailFetched")
+
+        let op = FetchMailOperation.init(grandOperator: grandOperator,
+                                         connectInfo: connectInfo,
+                                         folderName: ImapSync.defaultImapInboxName,
+                                         uid: mail.uid!.integerValue)
+        op.completionBlock = {
+            mailFetched.fulfill()
+        }
+        op.start()
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertGreaterThan(
+                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 0)
+            XCTAssertGreaterThan(
+                self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 0)
+        })
+    }
+
+    func testFetchSingleMailsOperationChained() {
+        let mailFetched = expectationWithDescription("mailFetched")
+        let mailsPrefetched = expectationWithDescription("mailsPrefetched")
+
+        let op1 = PrefetchEmailsOperation.init(grandOperator: grandOperator,
+                                              connectInfo: connectInfo,
+                                              folder: ImapSync.defaultImapInboxName)
+        op1.completionBlock = {
+            mailsPrefetched.fulfill()
+        }
+
+        let op2 = FetchMailOperation.init(grandOperator: grandOperator,
+                                          connectInfo: connectInfo,
+                                          folderName: ImapSync.defaultImapInboxName,
+                                          uid: 10)
+        op2.completionBlock = {
+            mailFetched.fulfill()
+        }
+
+        op2.addDependency(op1)
+        let queue = NSOperationQueue.init()
+        queue.addOperation(op1)
+        queue.addOperation(op2)
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertGreaterThan(
+                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 0)
+            XCTAssertGreaterThan(
+                self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 0)
+        })
+    }
 }

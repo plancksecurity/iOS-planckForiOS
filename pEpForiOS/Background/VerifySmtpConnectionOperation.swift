@@ -10,9 +10,8 @@ import Foundation
 
 class VerifySmtpConnectionOperation: ConcurrentBaseOperation {
     let errorDomain = "VerifySmtpConnectionOperation"
-
-    let connectInfo: ConnectInfo
     var smtp: SmtpSend!
+    let connectInfo: ConnectInfo
 
     init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo

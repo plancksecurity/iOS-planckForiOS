@@ -34,9 +34,8 @@ public class ImapFolderBuilder: NSObject, CWFolderBuilding {
  */
 public class FetchFoldersOperation: ConcurrentBaseOperation {
     let comp = "FetchFoldersOperation"
-
-    let connectInfo: ConnectInfo
     var imapSync: ImapSync!
+    let connectInfo: ConnectInfo
     var folderBuilder: ImapFolderBuilder!
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
@@ -59,8 +58,8 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
         imapSync.start()
     }
 
-    func readFolderNames() {
-        if let folderNames = imapSync.folderNames {
+    func readFolderNamesFromImapSync(sync: ImapSync) {
+        if let folderNames = sync.folderNames {
             let op = StoreFoldersOperation.init(grandOperator: self.grandOperator,
                                                 folders: folderNames, email: self.connectInfo.email)
             backgroundQueue.addOperation(op)
@@ -73,7 +72,7 @@ extension FetchFoldersOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
-            readFolderNames()
+            readFolderNamesFromImapSync(sync)
         }
     }
 
@@ -124,6 +123,10 @@ extension FetchFoldersOperation: ImapSyncDelegate {
     }
 
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
-        readFolderNames()
+        readFolderNamesFromImapSync(sync)
+    }
+
+    public func actionFailed(sync: ImapSync, error: NSError) {
+        grandOperator.setErrorForOperation(self, error: error)
     }
 }

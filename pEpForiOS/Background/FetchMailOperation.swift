@@ -29,7 +29,12 @@ public class FetchMailOperation: ConcurrentBaseOperation {
         let imapSync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
         imapSync.delegate = self
         imapSync.folderBuilder = folderBuilder
-        imapSync.start()
+
+        if imapSync.imapState.authenticationCompleted == false {
+            imapSync.start()
+        } else {
+            imapSync.fetchMailFromFolderNamed(folderName, uid: uid)
+        }
     }
 }
 
@@ -57,16 +62,17 @@ extension FetchMailOperation: ImapSyncDelegate {
     }
 
     public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-        waitForFinished()
     }
 
     public func messageChanged(sync: ImapSync, notification: NSNotification?) {
     }
 
     public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+        waitForFinished()
     }
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
+        sync.fetchMailFromFolderNamed(folderName, uid: uid)
     }
 
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
@@ -76,5 +82,9 @@ extension FetchMailOperation: ImapSyncDelegate {
     }
 
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
+    }
+
+    public func actionFailed(sync: ImapSync, error: NSError) {
+        grandOperator.setErrorForOperation(self, error: error)
     }
 }

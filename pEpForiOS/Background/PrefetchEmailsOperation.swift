@@ -18,9 +18,8 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
     let comp = "PrefetchEmailsOperation"
 
     let connectInfo: ConnectInfo
-    var imapSync: ImapSync!
     var folderBuilder: ImapFolderBuilder!
-
+    var imapSync: ImapSync!
     let folderToOpen: String
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folder: String?) {
@@ -45,8 +44,13 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
         }
         imapSync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
         imapSync.delegate = self
-        imapSync.folderBuilder = folderBuilder
-        imapSync.start()
+        imapSync.folderBuilder = self.folderBuilder
+
+        if imapSync.imapState.authenticationCompleted == false {
+            imapSync.start()
+        } else {
+            imapSync.openMailBox(folderToOpen, prefetchMails: true)
+        }
     }
 
     func updateFolderNames(folderNames: [String]) {
@@ -99,5 +103,9 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
+    }
+
+    public func actionFailed(sync: ImapSync, error: NSError) {
+        grandOperator.setErrorForOperation(self, error: error)
     }
 }
