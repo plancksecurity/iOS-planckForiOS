@@ -12,14 +12,9 @@ import CoreData
 public class BaseOperation: NSOperation {
 
     let grandOperator: IGrandOperator
-    var myFinished: Bool = false
 
     public init(grandOperator: IGrandOperator) {
         self.grandOperator = grandOperator
         super.init()
-    }
-
-    func modelForContext(context: NSManagedObjectContext) -> IModel {
-        return Model.init(context: context)
     }
 }

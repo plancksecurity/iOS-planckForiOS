@@ -14,6 +14,7 @@ import Foundation
  */
 public class ConcurrentBaseOperation: BaseOperation {
     let backgroundQueue: NSOperationQueue
+    var myFinished: Bool = false
 
     public override init(grandOperator: IGrandOperator) {
         backgroundQueue = NSOperationQueue.init()

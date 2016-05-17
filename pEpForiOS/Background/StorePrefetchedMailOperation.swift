@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 /**
- This can be used in a queue, or directly called with ```main()```.
+ This can be used in a queue, or directly called with ```start()```.
  */
 public class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
@@ -25,7 +25,7 @@ public class StorePrefetchedMailOperation: BaseOperation {
 
     override public func main() {
         let model = grandOperator.operationModel()
-        if let mail = model.insertOrUpdatePantomimeMail(message, accountEmail: accountEmail) {
+        if model.insertOrUpdatePantomimeMail(message, accountEmail: accountEmail) != nil {
             model.save()
         } else {
             grandOperator.setErrorForOperation(self, error: Constants.errorCannotStoreMail(comp))

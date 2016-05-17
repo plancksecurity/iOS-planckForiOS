@@ -21,7 +21,7 @@ class StoreFoldersOperation: BaseOperation {
 
     override func main() {
         Log.warn(comp, "StoreFoldersOperation started")
-        let model = grandOperator.backgroundModel()
+        let model = grandOperator.operationModel()
         for folderName in foldersToStore {
             let folder = model.insertOrUpdateFolderName(
                 folderName, folderType: Account.AccountType.Imap, accountEmail: email)
