@@ -201,12 +201,12 @@ extension ImapSync: CWServiceClient {
 
     @objc public func folderPrefetchCompleted(notification: NSNotification?) {
         dumpMethodName("folderPrefetchCompleted", notification: notification)
-        delegate?.folderPrefetchCompleted(self, notification: notification)
         if let folder: CWFolder = (notification?.userInfo?["Folder"] as! CWFolder) {
             Log.info(comp, "prefetched folder: \(folder.name())")
         } else {
             Log.info(comp, "folderPrefetchCompleted: \(notification)")
         }
+        delegate?.folderPrefetchCompleted(self, notification: notification)
     }
 
     @objc public func messagePrefetchCompleted(notification: NSNotification?) {
@@ -254,7 +254,6 @@ extension ImapSync: CWServiceClient {
 
 extension ImapSync: PantomimeFolderDelegate {
     @objc public func folderOpenCompleted(notification: NSNotification?) {
-        delegate?.folderOpenCompleted(self, notification: notification)
         if let folder: CWFolder = (notification?.userInfo?["Folder"] as! CWFolder) {
             Log.info(comp, "folderOpenCompleted: \(folder.name())")
             imapState.currentFolder = folder.name()
@@ -262,15 +261,16 @@ extension ImapSync: PantomimeFolderDelegate {
             Log.info(comp, "folderOpenCompleted: \(notification)")
             imapState.currentFolder = nil
         }
+        delegate?.folderOpenCompleted(self, notification: notification)
     }
 
     @objc public func folderOpenFailed(notification: NSNotification?) {
-        delegate?.folderOpenFailed(self, notification: notification)
         if let folder: CWFolder = (notification?.userInfo?["Folder"] as! CWFolder) {
             Log.info(comp, "folderOpenFailed: \(folder.name())")
         } else {
             Log.info(comp, "folderOpenFailed: \(notification)")
         }
+        delegate?.folderOpenFailed(self, notification: notification)
     }
 
     @objc public func folderListCompleted(notification: NSNotification?) {

@@ -23,7 +23,7 @@ public protocol _IAttachment {
 
     var filename: String? { get set }
 
-    var size: NSNumber? { get set }
+    var size: NSNumber { get set }
 
     // MARK: - Relationships
 
@@ -65,7 +65,7 @@ public class _Attachment: BaseManagedObject, _IAttachment {
     var filename: String?
 
     @NSManaged public
-    var size: NSNumber?
+    var size: NSNumber
 
     // MARK: - Relationships
 

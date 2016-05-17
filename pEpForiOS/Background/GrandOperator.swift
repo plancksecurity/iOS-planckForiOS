@@ -47,6 +47,14 @@ public protocol IGrandOperator {
     func verifyConnection(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
+     Asynchronously fetches a mail by UID in the given folder.
+     This means that the complete message, with all
+     attachments, gets downloaded and persisted.
+     */
+    func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: Int,
+                                  completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
      Used by background operations to set an error.
      
      - parameter operation: The operation the error occurred
@@ -94,9 +102,13 @@ public class GrandOperator: IGrandOperator {
     func kickOffConcurrentOperation(operation op: NSOperation,
                                     completionBlock: GrandOperatorCompletionBlock?) {
         op.completionBlock = { [unowned self] in
-            let error = self.errors[op]
-            completionBlock?(error: error)
-            self.errors.removeValueForKey(op)
+            // Even for operations running on the main thread with main loop,
+            // that block will be called on some background queue.
+            GCD.onMain() {
+                let error = self.errors[op]
+                completionBlock?(error: error)
+                self.errors.removeValueForKey(op)
+            }
         }
         op.start()
     }
@@ -158,6 +170,13 @@ public class GrandOperator: IGrandOperator {
 
         verifyConnectionQueue.addOperation(op1)
         verifyConnectionQueue.addOperation(op2)
+    }
+
+    public func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: Int,
+                                         completionBlock: GrandOperatorCompletionBlock?) {
+        let op = FetchMailOperation.init(grandOperator: self, connectInfo: connectInfo,
+                                         folderName: folderName, uid: uid)
+        kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
     public func setErrorForOperation(operation: NSOperation, error: NSError) {

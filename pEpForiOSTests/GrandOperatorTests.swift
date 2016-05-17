@@ -151,4 +151,25 @@ class GrandOperatorTests: XCTestCase {
                 ImapSync.defaultImapInboxName.lowercaseString)
         })
     }
+
+    func testFetchMail() {
+        let theUID = 10
+        let exp = expectationWithDescription("mailFetched")
+        persistentSetup.grandOperator.fetchMailFromFolderNamed(
+            persistentSetup.connectionInfo,
+            folderName: ImapSync.defaultImapInboxName, uid: theUID, completionBlock: { error in
+                XCTAssertNil(error)
+                exp.fulfill()
+        })
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            let p = NSPredicate.init(value: true)
+            XCTAssertGreaterThan(
+                self.persistentSetup.grandOperator.model.messageCountByPredicate(p), 0)
+            let mail = self.persistentSetup.grandOperator.model.messageByPredicate(
+                NSPredicate.init(format: "uid = %d", theUID))
+            XCTAssertNotNil(mail)
+            XCTAssertEqual(mail?.uid, theUID)
+        })
+    }
 }

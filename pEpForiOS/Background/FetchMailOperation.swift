@@ -68,7 +68,13 @@ extension FetchMailOperation: ImapSyncDelegate {
     }
 
     public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-        waitForFinished()
+        if let message = notification?.userInfo?["Message"] as? CWIMAPMessage {
+            let op = StorePrefetchedMailOperation.init(grandOperator: grandOperator,
+                                                       accountEmail: connectInfo.email,
+                                                       message: message)
+            backgroundQueue.addOperation(op)
+            waitForFinished()
+        }
     }
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
@@ -86,5 +92,6 @@ extension FetchMailOperation: ImapSyncDelegate {
 
     public func actionFailed(sync: ImapSync, error: NSError) {
         grandOperator.setErrorForOperation(self, error: error)
+        waitForFinished()
     }
 }

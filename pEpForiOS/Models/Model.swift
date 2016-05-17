@@ -178,7 +178,10 @@ public class Model: IModel {
             Attachment.entityName(), inManagedObjectContext: context) as! Attachment
         attachment.filename = filename
         attachment.size = data.length
-        attachment.content.data = data
+        let attachmentData = NSEntityDescription.insertNewObjectForEntityForName(
+            AttachmentData.entityName(), inManagedObjectContext: context) as! AttachmentData
+        attachmentData.data = data
+        attachment.content = attachmentData
         return attachment
     }
 
@@ -432,34 +435,34 @@ public class Model: IModel {
         guard let content = part.content() else {
             return
         }
-        print("uid \(targetMail.uid!) \(targetMail.originationDate!) (\(targetMail.subject!)) level \(level) part \(part.contentType()) \(part.filename())")
+
+        let isText = part.contentType() == nil ||
+            part.contentType()?.lowercaseString == Constants.contentTypeText
+        let isHtml = part.contentType()?.lowercaseString == Constants.contentTypeHtml
+        var contentData: NSData?
+        if let message = content as? CWMessage {
+            contentData = message.dataValue()
+        } else if let string = content as? NSString {
+            contentData = string.dataUsingEncoding(NSASCIIStringEncoding)
+        } else if let data = content as? NSData {
+            contentData = data
+        }
+        if let data = contentData {
+            if isText && level < 2 && targetMail.longMessage == nil {
+                targetMail.longMessage = data.toStringWithIANACharset(part.charset())
+            } else if isHtml && level < 2 && targetMail.longMessageFormatted == nil {
+                targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
+            } else {
+                let attachment = insertAttachmentWithContentType(
+                    part.contentType(), filename: part.filename(), data: data)
+                targetMail.addAttachmentsObject(attachment as! Attachment)
+            }
+        }
+
         if let multiPart = content as? CWMIMEMultipart {
             for i in 0..<multiPart.count() {
                 let subPart = multiPart.partAtIndex(UInt(i))
                 addAttachmentsFromPantomimePart(subPart, targetMail: targetMail, level: level + 1)
-            }
-        } else {
-            let isText = part.contentType() == nil ||
-                part.contentType()?.lowercaseString == Constants.contentTypeText
-            let isHtml = part.contentType()?.lowercaseString == Constants.contentTypeHtml
-            var contentData: NSData?
-            if let message = content as? CWMessage {
-                contentData = message.dataValue()
-            } else if let string = content as? NSString {
-                contentData = string.dataUsingEncoding(NSASCIIStringEncoding)
-            } else if let data = content as? NSData {
-                contentData = data
-            }
-            if let data = contentData {
-                if isText && level == 1 && targetMail.longMessage == nil {
-                    targetMail.longMessage = data.toStringWithIANACharset(part.charset())
-                } else if isHtml && level == 1 && targetMail.longMessageFormatted == nil {
-                    targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
-                } else {
-                    let attachment = insertAttachmentWithContentType(
-                        part.contentType(), filename: part.filename(), data: data)
-                    targetMail.addAttachmentsObject(attachment as! Attachment)
-                }
             }
         }
     }

@@ -161,6 +161,13 @@ class SimpleOperationsTest: XCTestCase {
                 self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 0)
             XCTAssertGreaterThan(
                 self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 0)
+            let message = self.grandOperator.model.messageByPredicate(
+                NSPredicate.init(format: "uid = %d", mail.uid!.integerValue))
+            XCTAssertNotNil(message)
+            let hasTextMessage = message?.longMessage != nil
+            let hasHtml = message?.longMessageFormatted != nil
+            let hasAttachments = message?.attachments.count > 0
+            XCTAssertTrue(hasTextMessage || hasHtml || hasAttachments)
         })
     }
 
@@ -175,6 +182,7 @@ class SimpleOperationsTest: XCTestCase {
             mailsPrefetched.fulfill()
         }
 
+        // TODO: Chain in another operation to find out an existing UID
         let op2 = FetchMailOperation.init(grandOperator: grandOperator,
                                           connectInfo: connectInfo,
                                           folderName: ImapSync.defaultImapInboxName,
