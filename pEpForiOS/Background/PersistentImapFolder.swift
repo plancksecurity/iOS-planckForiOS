@@ -172,6 +172,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
                                                    accountEmail: connectInfo.email,
                                                    message: message)
-        op.start()
+        backgroundQueue.addOperation(op)
     }
 }
