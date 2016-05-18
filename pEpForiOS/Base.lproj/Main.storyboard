@@ -135,7 +135,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="introduceEmail:" destination="YcO-Oc-XZx" eventType="editingChanged" id="KY0-7f-wkm"/>
+                                                        <action selector="changeEmail:" destination="YcO-Oc-XZx" eventType="editingChanged" id="D7M-fJ-ilH"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -181,7 +181,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="introducedUsername:" destination="YcO-Oc-XZx" eventType="editingChanged" id="ZXd-f5-Ih7"/>
+                                                        <action selector="changeUsername:" destination="YcO-Oc-XZx" eventType="editingChanged" id="sok-OG-QFO"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -215,7 +215,7 @@
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                     <connections>
-                                                        <action selector="introducedPassword:" destination="YcO-Oc-XZx" eventType="editingChanged" id="yMv-RJ-tLN"/>
+                                                        <action selector="changePassword:" destination="YcO-Oc-XZx" eventType="editingChanged" id="7ZC-Ff-QXL"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -591,7 +591,7 @@
                     <navigationItem key="navigationItem" id="coQ-BM-t90">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="Tr2-5h-6JD">
                             <connections>
-                                <action selector="nextButtonTapped:" destination="vub-1r-sQ6" id="3WC-50-XSy"/>
+                                <action selector="nextButtonTapped:" destination="vub-1r-sQ6" id="dK4-HF-B8M"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

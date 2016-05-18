@@ -23,8 +23,8 @@ class SMTPSettingsTableView: UITableViewController {
 
     weak var delegate: SecondDataEnteredDelegate? = nil
 
-    var appConfig: AppConfig?
-    var model: ModelUserInfoTable?
+    var appConfig: AppConfig!
+    var model: ModelUserInfoTable!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,21 +38,17 @@ class SMTPSettingsTableView: UITableViewController {
 
     func updateView() {
         serverValue.text = model?.serverSMTP
-        if (model!.portSMTP != nil) {
-            portValue.text = String(model!.portSMTP!)
-        }
+        portValue.text = String(model.portSMTP)
 
-        if let transport = model!.transportSMTP {
-            switch transport {
-            case .StartTLS:
-                self.transportSecurity.setTitle("Start TLS >", forState: .Normal)
-            case .Plain:
-                self.transportSecurity.setTitle("Plain >", forState: .Normal)
-            default:
-                self.transportSecurity.setTitle("TLS >", forState: .Normal)
-            }
-        } else {
+        let transport = model.transportSMTP
+
+        switch transport {
+        case .StartTLS:
+            self.transportSecurity.setTitle("Start TLS >", forState: .Normal)
+        case .Plain:
             self.transportSecurity.setTitle("Plain >", forState: .Normal)
+        default:
+            self.transportSecurity.setTitle("TLS >", forState: .Normal)
         }
     }
 
@@ -92,8 +88,11 @@ class SMTPSettingsTableView: UITableViewController {
     }
 
     @IBAction func enteredPort(sender: AnyObject) {
-        model!.portSMTP = UInt16(portValue.text!)
-        delegate?.savePortInformationSMTP(UInt16(portValue.text!))
+        if let text = portValue.text {
+            if let port = UInt16(text) {
+                model.portSMTP = port
+            }
+        }
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -102,9 +101,9 @@ class SMTPSettingsTableView: UITableViewController {
     @IBAction func nextButtonTapped(sender: UIBarButtonItem) {
         let connect = ConnectInfo.init(
             email: model!.email!, imapPassword: model!.password!,
-            imapServerName: model!.serverIMAP!, imapServerPort: model!.portIMAP!,
-            imapTransport: model!.transportIMAP!, smtpServerName: model!.serverSMTP!,
-            smtpServerPort: model!.portSMTP!, smtpTransport: model!.transportSMTP!)
+            imapServerName: model!.serverIMAP!, imapServerPort: model!.portIMAP,
+            imapTransport: model!.transportIMAP, smtpServerName: model!.serverSMTP!,
+            smtpServerPort: model!.portSMTP, smtpTransport: model!.transportSMTP)
 
         appConfig?.grandOperator.verifyConnection(connect, completionBlock: { error in
             if error == nil {

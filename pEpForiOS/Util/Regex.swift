@@ -35,7 +35,7 @@ extension String {
      Basically checks for matches of "a@a", where a is an arbitrary character.
      - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
      */
-    public func isProboblyValidEmail() -> Bool {
+    public func isProbablyValidEmail() -> Bool {
         do {
             let internalExpression = try NSRegularExpression.init(pattern: ".*\\w+@\\w+.*", options: .CaseInsensitive)
             let matches = internalExpression.matchesInString(self, options: [], range: wholeRange())
