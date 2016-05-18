@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension ConnectionTransport {
-    static func fromInteger(i: Int) -> ConnectionTransport {
+public extension ConnectionTransport {
+    static public func fromInteger(i: Int) -> ConnectionTransport {
         switch i {
         case ConnectionTransport.Plain.rawValue:
             return ConnectionTransport.Plain
@@ -19,6 +19,18 @@ extension ConnectionTransport {
             return ConnectionTransport.TLS
         default:
             abort()
+        }
+    }
+
+    public func localizedString() -> String {
+        switch self {
+        case .Plain:
+            return NSLocalizedString("None", comment: "Transport security (ConnectionTransport)")
+        case .TLS:
+            return NSLocalizedString("TLS", comment: "Transport security (ConnectionTransport)")
+        case .StartTLS:
+            return NSLocalizedString("StartTLS",
+                                     comment: "Transport security (ConnectionTransport)")
         }
     }
 }
