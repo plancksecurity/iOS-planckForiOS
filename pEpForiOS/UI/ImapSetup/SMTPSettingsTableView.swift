@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 protocol SecondDataEnteredDelegate: class {
     func saveServerInformationSMTP(server:String?)
     func savePortInformationSMTP(port: UInt16?)
@@ -17,6 +15,7 @@ protocol SecondDataEnteredDelegate: class {
 }
 
 class SMTPSettingsTableView: UITableViewController {
+    let unwindToEmailListSegue = "unwindToEmailListSegue"
 
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
@@ -98,19 +97,29 @@ class SMTPSettingsTableView: UITableViewController {
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    }
+
+    @IBAction func nextButtonTapped(sender: UIBarButtonItem) {
         let connect = ConnectInfo.init(
             email: model!.email!, imapPassword: model!.password!,
             imapServerName: model!.serverIMAP!, imapServerPort: model!.portIMAP!,
             imapTransport: model!.transportIMAP!, smtpServerName: model!.serverSMTP!,
             smtpServerPort: model!.portSMTP!, smtpTransport: model!.transportSMTP!)
 
-        let _ = appConfig?.grandOperator.verifyConnection(connect, completionBlock: { (error) in
-            GCD.onMain({
-                let account = (self.appConfig?.model.insertAccountFromConnectInfo(connect))!
-            })
+        appConfig?.grandOperator.verifyConnection(connect, completionBlock: { error in
+            if error == nil {
+                GCD.onMain() {
+                    // save account, check for error
+                    if self.appConfig?.model.insertAccountFromConnectInfo(connect) != nil {
+                        // unwind back to INBOX on success
+                        self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: sender)
+                    } else {
+                        // TODO: Display error that account could not be saved
+                    }
+                }
+            } else {
+                // TODO: Display error message
+            }
         })
-        if segue.identifier == "inboxMail" {
-            if let destination = segue.destinationViewController as? EmailListViewController {}
-        }
     }
 }

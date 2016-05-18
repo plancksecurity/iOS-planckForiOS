@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9M5-Am-Yi2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9M5-Am-Yi2">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -319,10 +319,10 @@
             </objects>
             <point key="canvasLocation" x="3430" y="3539"/>
         </scene>
-        <!--Settings Table View-->
+        <!--IMAP Settings Table View-->
         <scene sceneID="hV9-Ts-Xp9">
             <objects>
-                <tableViewController storyboardIdentifier="IMAPSettingsTableView" id="dfm-hT-uzc" customClass="IMAPSettingsTableView" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="IMAPSettingsTableView" id="dfm-hT-uzc" userLabel="IMAP Settings Table View" customClass="IMAPSettingsTableView" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="174" sectionHeaderHeight="18" sectionFooterHeight="18" id="5wc-Fu-6na">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -443,10 +443,10 @@
             </objects>
             <point key="canvasLocation" x="5433" y="393"/>
         </scene>
-        <!--Settings Table View-->
+        <!--SMTP Settings-->
         <scene sceneID="zuo-Oy-4J7">
             <objects>
-                <tableViewController id="vub-1r-sQ6" customClass="SMTPSettingsTableView" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="vub-1r-sQ6" userLabel="SMTP Settings" customClass="SMTPSettingsTableView" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="174" sectionHeaderHeight="18" sectionFooterHeight="18" id="3t6-cN-af2">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -552,7 +552,7 @@
                     <navigationItem key="navigationItem" id="coQ-BM-t90">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="Tr2-5h-6JD">
                             <connections>
-                                <segue destination="9M5-Am-Yi2" kind="show" identifier="inboxMail" id="DPS-gV-wvz"/>
+                                <action selector="nextButtonTapped:" destination="vub-1r-sQ6" id="3WC-50-XSy"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -561,9 +561,11 @@
                         <outlet property="portValue" destination="LfP-KG-Zok" id="O7Z-b8-e6w"/>
                         <outlet property="serverValue" destination="HIi-Wv-jJs" id="yqf-Es-fSK"/>
                         <outlet property="transportSecurity" destination="Cjb-ue-OdU" id="W8X-Rm-6rK"/>
+                        <segue destination="0gr-Jf-mcA" kind="unwind" identifier="unwindToEmailListSegue" unwindAction="newAccountCreatedSegue:" id="Txh-mS-cIZ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBU-82-njk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="0gr-Jf-mcA" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="4376" y="457"/>
         </scene>

@@ -64,6 +64,9 @@ class EmailListViewController: UITableViewController {
         super.viewWillAppear(animated)
     }
 
+    @IBAction func newAccountCreatedSegue(segue: UIStoryboardSegue) {
+    }
+
     func prepareFetchRequest() {
         let predicates: [NSPredicate] = [NSPredicate.init(value: true)]
         let fetchRequest = NSFetchRequest.init(entityName: Message.entityName())
