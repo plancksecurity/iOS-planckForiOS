@@ -44,8 +44,13 @@ class EmailListViewController: UITableViewController {
         let account:IAccount? = appConfig!.model.fetchLastAccount()
         if (account == nil)  {
             self.performSegueWithIdentifier("userSettings", sender: self)
+        } else {
+            fetchMails()
         }
+        super.viewWillAppear(animated)
+    }
 
+    func fetchMails() {
         prepareFetchRequest()
 
         if let account = appConfig?.model.fetchLastAccount() {
@@ -58,13 +63,13 @@ class EmailListViewController: UITableViewController {
                         Log.info(self.comp, "Sync completed, error: \(error)")
                         self.updateUI()
                     })
-            })
+                })
             updateUI()
         }
-        super.viewWillAppear(animated)
     }
 
     @IBAction func newAccountCreatedSegue(segue: UIStoryboardSegue) {
+        fetchMails()
     }
 
     func prepareFetchRequest() {

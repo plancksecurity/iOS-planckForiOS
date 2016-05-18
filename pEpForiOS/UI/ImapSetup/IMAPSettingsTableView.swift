@@ -28,8 +28,8 @@ class IMAPSettingsTableView: UITableViewController  {
     var appConfig: AppConfig!
     var model: ModelUserInfoTable!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         serverValue.becomeFirstResponder()
         updateView()
     }
@@ -66,9 +66,10 @@ class IMAPSettingsTableView: UITableViewController  {
             title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
             style: .Cancel) { (action) in}
         alertController.addAction(cancelAction)
+        self.presentViewController(alertController, animated: true) {}
     }
 
-    @IBAction func editedPort(sender: UITextField) {
+    @IBAction func changePort(sender: UITextField) {
         if let text = portValue.text {
             if let port = UInt16(text) {
                 model.portIMAP = port
@@ -76,7 +77,7 @@ class IMAPSettingsTableView: UITableViewController  {
         }
     }
 
-    @IBAction func editedServer(sender: UITextField) {
+    @IBAction func changeServer(sender: UITextField) {
         model.serverIMAP = serverValue.text!
     }
 

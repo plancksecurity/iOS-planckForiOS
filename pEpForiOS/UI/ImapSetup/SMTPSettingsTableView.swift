@@ -8,11 +8,6 @@
 
 import UIKit
 
-protocol SecondDataEnteredDelegate: class {
-    func saveServerInformationSMTP(server:String?)
-    func savePortInformationSMTP(port: UInt16?)
-    func savePortTransportSMTP(transport: ConnectionTransport?)
-}
 
 class SMTPSettingsTableView: UITableViewController {
     let unwindToEmailListSegue = "unwindToEmailListSegue"
@@ -21,13 +16,11 @@ class SMTPSettingsTableView: UITableViewController {
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var transportSecurity: UIButton!
 
-    weak var delegate: SecondDataEnteredDelegate? = nil
-
     var appConfig: AppConfig!
     var model: ModelUserInfoTable!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         serverValue.becomeFirstResponder()
         updateView()
     }
@@ -37,57 +30,40 @@ class SMTPSettingsTableView: UITableViewController {
     }
 
     func updateView() {
-        serverValue.text = model?.serverSMTP
+        serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
-
-        let transport = model.transportSMTP
-
-        switch transport {
-        case .StartTLS:
-            self.transportSecurity.setTitle("Start TLS >", forState: .Normal)
-        case .Plain:
-            self.transportSecurity.setTitle("Plain >", forState: .Normal)
-        default:
-            self.transportSecurity.setTitle("TLS >", forState: .Normal)
-        }
+        transportSecurity.setTitle(model.transportSMTP.localizedString(), forState: .Normal)
     }
 
     @IBAction func alertWithSecurityValues(sender: AnyObject) {
         let alertController = UIAlertController(
-            title: NSLocalizedString("Security protocol", comment: ""),
-            message: NSLocalizedString("Choose a Security protocol for your accont", comment: ""),
+            title: NSLocalizedString("Transport protocol",
+                comment: "UI alert title for transport protocol"),
+            message: NSLocalizedString("Choose a Security protocol for your accont",
+                comment: "UI alert message for transport protocol"),
             preferredStyle: .ActionSheet)
-        let CancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        alertController.addAction(CancelAction)
 
-        let StartTLSAction = UIAlertAction(title: "Start TLS", style: .Default) { (action) in
-             self.model!.transportSMTP = ConnectionTransport.StartTLS
-             self.delegate?.savePortTransportSMTP(ConnectionTransport.StartTLS)
-             self.updateView()
-        }
-        alertController.addAction(StartTLSAction)
-        let TLSAction = UIAlertAction(title: "TLS", style: .Default) { (action) in
-            self.model!.transportSMTP = ConnectionTransport.TLS
-            self.delegate?.savePortTransportSMTP(ConnectionTransport.TLS)
+        let block: (ConnectionTransport) -> () = { transport in
+            self.model.transportSMTP = transport
             self.updateView()
         }
-        alertController.addAction(TLSAction)
-        let NONEAction = UIAlertAction(title: "Plain", style: .Default) { (action) in
-            self.model!.transportSMTP = ConnectionTransport.Plain
-            self.delegate?.savePortTransportSMTP(ConnectionTransport.Plain)
-            self.updateView()
 
-        }
-        alertController.addAction(NONEAction)
+        alertController.setupActionFromConnectionTransport(.Plain, block: block)
+        alertController.setupActionFromConnectionTransport(.TLS, block: block)
+        alertController.setupActionFromConnectionTransport(.StartTLS, block: block)
+
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
+            style: .Cancel) { (action) in}
+        alertController.addAction(cancelAction)
         self.presentViewController(alertController, animated: true) {}
     }
 
-    @IBAction func enteredServer(sender: AnyObject) {
-        model!.serverSMTP = serverValue.text!
-        delegate?.saveServerInformationSMTP(serverValue.text!)
+    @IBAction func changeServer(sender: UITextField) {
+        model.serverSMTP = sender.text
     }
 
-    @IBAction func enteredPort(sender: AnyObject) {
+    @IBAction func changePort(sender: UITextField) {
         if let text = portValue.text {
             if let port = UInt16(text) {
                 model.portSMTP = port
@@ -95,15 +71,9 @@ class SMTPSettingsTableView: UITableViewController {
         }
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    }
-
     @IBAction func nextButtonTapped(sender: UIBarButtonItem) {
-        let connect = ConnectInfo.init(
-            email: model!.email!, imapPassword: model!.password!,
-            imapServerName: model!.serverIMAP!, imapServerPort: model!.portIMAP,
-            imapTransport: model!.transportIMAP, smtpServerName: model!.serverSMTP!,
-            smtpServerPort: model!.portSMTP, smtpTransport: model!.transportSMTP)
+        let connect = ConnectInfo.init(email: model.email!, imapUsername: model.email!, smtpUsername: model.email!, imapPassword: model.password!, smtpPassword: model.password!, imapServerName: model.serverIMAP!, imapServerPort: model.portIMAP, imapTransport: model.transportIMAP, smtpServerName: model.serverSMTP!, smtpServerPort: model.portSMTP, smtpTransport: model.transportSMTP)
+
 
         appConfig?.grandOperator.verifyConnection(connect, completionBlock: { error in
             if error == nil {

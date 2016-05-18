@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9M5-Am-Yi2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9M5-Am-Yi2">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -387,7 +387,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="editedServer:" destination="dfm-hT-uzc" eventType="editingDidEnd" id="Dkv-Nl-fQE"/>
+                                                        <action selector="changeServer:" destination="dfm-hT-uzc" eventType="editingChanged" id="lci-fw-zRM"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -415,7 +415,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="editedPort:" destination="dfm-hT-uzc" eventType="editingChanged" id="ojd-Sr-VPc"/>
+                                                        <action selector="changePort:" destination="dfm-hT-uzc" eventType="editingChanged" id="c6m-sc-jgX"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -445,7 +445,7 @@
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="alertWithSecurityValues:" destination="dfm-hT-uzc" eventType="touchUpInside" id="gcv-NT-3RM"/>
+                                                        <action selector="alertWithSecurityValues:" destination="dfm-hT-uzc" eventType="touchUpInside" id="WMl-DM-9NL"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -511,7 +511,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="enteredServer:" destination="vub-1r-sQ6" eventType="editingDidEnd" id="ALo-Ep-SEK"/>
+                                                        <action selector="changeServer:" destination="vub-1r-sQ6" eventType="editingChanged" id="nwr-9m-Vfd"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -539,7 +539,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="enteredPort:" destination="vub-1r-sQ6" eventType="editingDidEnd" id="DRB-Ud-91H"/>
+                                                        <action selector="changePort:" destination="vub-1r-sQ6" eventType="editingChanged" id="Qpg-pK-nsw"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -570,7 +570,6 @@
                                                     </state>
                                                     <connections>
                                                         <action selector="alertWithSecurityValues:" destination="vub-1r-sQ6" eventType="touchUpInside" id="MGR-1W-sG4"/>
-                                                        <action selector="alertWithSecurityValues:" destination="dfm-hT-uzc" eventType="touchUpInside" id="hpE-uG-VtY"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
