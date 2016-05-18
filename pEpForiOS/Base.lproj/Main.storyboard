@@ -159,9 +159,6 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="titleName" destination="SCr-eb-mdn" id="Nk4-U5-xxW"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="wzw-Ix-clS" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="148" width="600" height="49"/>
@@ -256,9 +253,12 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="emailTitleTextField" destination="SCr-eb-mdn" id="rI6-lO-e0h"/>
                         <outlet property="emailValue" destination="TPZ-TM-PaG" id="VGE-mn-qoj"/>
+                        <outlet property="passwordTitleTextField" destination="xbE-mW-hjW" id="DEQ-6t-0T3"/>
                         <outlet property="passwordValue" destination="91l-1l-FuW" id="RJE-lb-Tv7"/>
-                        <outlet property="usernameValue" destination="5Mt-BZ-h4K" id="L4G-Ew-DRD"/>
+                        <outlet property="usernameTitleTextField" destination="3ti-b6-5l8" id="SVL-1B-iQC"/>
+                        <outlet property="usernameValue" destination="5Mt-BZ-h4K" id="GNy-Vp-PDk"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2vq-tw-UZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
