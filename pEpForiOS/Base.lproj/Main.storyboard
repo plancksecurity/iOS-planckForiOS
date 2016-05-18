@@ -224,7 +224,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2vq-tw-UZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6479" y="417"/>
+            <point key="canvasLocation" x="5319" y="321"/>
         </scene>
         <!--Mail Table View-->
         <scene sceneID="f6A-Gu-Nbz">
@@ -441,7 +441,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4z3-a3-v23" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5433" y="393"/>
+            <point key="canvasLocation" x="6129" y="329"/>
         </scene>
         <!--SMTP Settings-->
         <scene sceneID="zuo-Oy-4J7">
@@ -567,7 +567,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBU-82-njk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="0gr-Jf-mcA" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4376" y="457"/>
+            <point key="canvasLocation" x="6960" y="329"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="IeL-ZT-hFD">
@@ -585,7 +585,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GUF-lh-L23" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4376" y="1244"/>
+            <point key="canvasLocation" x="4456" y="1200"/>
         </scene>
     </scenes>
 </document>
