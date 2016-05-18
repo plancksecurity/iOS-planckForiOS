@@ -69,20 +69,26 @@ public protocol IConnectInfo {
 }
 
 public struct ConnectInfo: IConnectInfo {
-    public let email: String
-    public let imapUsername: String?
-    public let smtpUsername: String?
-    public let imapPassword: String?
-    public let smtpPassword: String?
-    public let imapServerName: String
-    public let imapServerPort: UInt16
-    public let imapTransport: ConnectionTransport
-    public let smtpServerName: String
-    public let smtpServerPort: UInt16
-    public let smtpTransport: ConnectionTransport
+    public var email: String
+    public var imapUsername: String?
+    public var smtpUsername: String?
+    public var imapPassword: String?
+    public var smtpPassword: String?
+    public var imapServerName: String
+    public var imapServerPort: UInt16 = 993
+    public var imapTransport: ConnectionTransport = .TLS
+    public var smtpServerName: String
+    public var smtpServerPort: UInt16 = 587
+    public var smtpTransport: ConnectionTransport = .StartTLS
 
     public var accountName: String {
         return email
+    }
+
+    public init(email: String, imapServerName: String, smtpServerName: String) {
+        self.email = email
+        self.imapServerName = imapServerName
+        self.smtpServerName = smtpServerName
     }
 
     public init(email: String, imapUsername: String?, smtpUsername: String?,
