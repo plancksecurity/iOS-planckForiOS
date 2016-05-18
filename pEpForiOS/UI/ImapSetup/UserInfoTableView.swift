@@ -12,6 +12,7 @@ public struct ModelUserInfoTable {
 
     public var emailTextExist: Bool = false
     public var passwordTextExist: Bool = false
+
     public var email: String?
     public var username: String?
     public var password: String?
@@ -22,8 +23,16 @@ public struct ModelUserInfoTable {
     public var portSMTP: UInt16?
     public var transportSMTP: ConnectionTransport?
 
-    public func shouldEnableNextButton()-> Bool {
-        return emailTextExist &&  passwordTextExist
+    public var isValidEmail: Bool {
+        return email != nil && email!.isProboblyValidEmail()
+    }
+
+    public var isValidPassword: Bool {
+        return password != nil && password!.characters.count > 0
+    }
+
+    public var isValiUser: Bool {
+        return isValidEmail && isValidPassword
     }
 }
 
@@ -52,7 +61,7 @@ public class UserInfoTableView: UITableViewController, DataEnteredDelegate {
 
 
     func updateView() {
-        self.navigationItem.rightBarButtonItem!.enabled = model!.shouldEnableNextButton()
+        self.navigationItem.rightBarButtonItem!.enabled = model!.isValiUser
     }
 
     override public func didReceiveMemoryWarning() {

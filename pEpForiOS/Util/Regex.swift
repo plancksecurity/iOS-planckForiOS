@@ -9,14 +9,14 @@
 import Foundation
 
 extension String {
-    func wholeRange() -> NSRange {
+    public func wholeRange() -> NSRange {
         return NSRange.init(location: 0, length: characters.count)
     }
 
-    func unquote() -> String {
+    public func unquote() -> String {
         do {
             let regex = try NSRegularExpression.init(
-                pattern: "^\\s*\"(.+)\"\\s*$", options: [])
+                pattern: "^\"(.*)\"$", options: [])
             if let match = regex.firstMatchInString(
                 self, options: [],
                 range: wholeRange()) {
@@ -28,6 +28,22 @@ extension String {
             Log.error("unquote", error: err)
         }
         return self
+    }
+
+    /**
+     Very rudimentary test whether this String is a valid email.
+     Basically checks for matches of "a@a", where a is an arbitrary character.
+     - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
+     */
+    public func isProboblyValidEmail() -> Bool {
+        do {
+            let internalExpression = try NSRegularExpression.init(pattern: ".*\\w+@\\w+.*", options: .CaseInsensitive)
+            let matches = internalExpression.matchesInString(self, options: [], range: wholeRange())
+            return matches.count == 1
+        } catch let err as NSError {
+            Log.error("String", error: err)
+            return false
+        }
     }
 }
 
