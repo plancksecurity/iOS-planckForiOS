@@ -145,8 +145,8 @@ class GrandOperatorTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             let p = NSPredicate.init(value: true)
-            XCTAssertGreaterThan(self.persistentSetup.grandOperator.model.folderCountByPredicate(p), 0)
-            XCTAssertEqual(self.persistentSetup.grandOperator.model.folderByName(
+            XCTAssertGreaterThan(self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(p), 0)
+            XCTAssertEqual(self.persistentSetup.grandOperator.operationModel().folderByName(
                 ImapSync.defaultImapInboxName, email: self.correct.email)?.name.lowercaseString,
                 ImapSync.defaultImapInboxName.lowercaseString)
         })
@@ -165,8 +165,8 @@ class GrandOperatorTests: XCTestCase {
             XCTAssertNil(error)
             let p = NSPredicate.init(value: true)
             XCTAssertGreaterThan(
-                self.persistentSetup.grandOperator.model.messageCountByPredicate(p), 0)
-            let mail = self.persistentSetup.grandOperator.model.messageByPredicate(
+                self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(p), 0)
+            let mail = self.persistentSetup.grandOperator.operationModel().messageByPredicate(
                 NSPredicate.init(format: "uid = %d", theUID))
             XCTAssertNotNil(mail)
             XCTAssertEqual(mail?.uid, theUID)

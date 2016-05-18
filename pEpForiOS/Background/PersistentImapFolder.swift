@@ -55,7 +55,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     func folderObject() -> IFolder {
-        if let folder = grandOperator.model.insertOrUpdateFolderName(
+        if let folder = grandOperator.operationModel().insertOrUpdateFolderName(
             name(), folderType: Account.AccountType.Imap, accountEmail: connectInfo.email) {
             return folder
         } else {
@@ -93,7 +93,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
      */
     override func allMessages() -> [AnyObject] {
         var result: [AnyObject] = []
-        if let messages = grandOperator.model.messagesByPredicate(self.predicateAllMessages()) {
+        if let messages = grandOperator.operationModel().messagesByPredicate(self.predicateAllMessages()) {
             for m in messages {
                 result.append(m as! AnyObject)
             }
@@ -111,12 +111,12 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         let p = NSPredicate.init(
             format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
             connectInfo.email, self.name(), theIndex)
-        let msg = grandOperator.model.messageByPredicate(p)
+        let msg = grandOperator.operationModel().messageByPredicate(p)
         return msg?.imapMessageWithFolder(self)
     }
 
     override func count() -> UInt {
-        let n = grandOperator.model.messageCountByPredicate(self.predicateAllMessages())
+        let n = grandOperator.operationModel().messageCountByPredicate(self.predicateAllMessages())
         return UInt(n)
     }
 
@@ -154,7 +154,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     func messageWithUID(theUID: UInt) -> CWIMAPMessage? {
         let p = NSPredicate.init(format: "uid = %d", theUID)
-        if let msg = grandOperator.model.messageByPredicate(p) {
+        if let msg = grandOperator.operationModel().messageByPredicate(p) {
             return msg.imapMessageWithFolder(self)
         } else {
             Log.warn(comp, "Could not fetch message with uid \(theUID)")

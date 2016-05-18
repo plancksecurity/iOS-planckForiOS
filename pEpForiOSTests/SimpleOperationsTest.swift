@@ -46,9 +46,9 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertGreaterThan(
-                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 0)
+                self.grandOperator.operationModel().folderCountByPredicate(NSPredicate.init(value: true)), 0)
             XCTAssertGreaterThan(
-                self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 0)
+                self.grandOperator.operationModel().messageCountByPredicate(NSPredicate.init(value: true)), 0)
         })
     }
 
@@ -65,18 +65,18 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertGreaterThan(
-                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 1)
-            XCTAssertEqual(self.grandOperator.model.folderByName(
+                self.grandOperator.operationModel().folderCountByPredicate(NSPredicate.init(value: true)), 1)
+            XCTAssertEqual(self.grandOperator.operationModel().folderByName(
                 ImapSync.defaultImapInboxName, email: self.connectInfo.email)?.name.lowercaseString,
                 ImapSync.defaultImapInboxName.lowercaseString)
         })
     }
 
     func testStoreSingleMail() {
-        grandOperator.model.insertOrUpdateFolderName(
+        grandOperator.operationModel().insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderType: Account.AccountType.Imap,
             accountEmail: connectInfo.email)
-        grandOperator.model.save()
+        grandOperator.operationModel().save()
 
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
         let message = CWIMAPMessage.init()
@@ -89,17 +89,17 @@ class SimpleOperationsTest: XCTestCase {
         backgroundQueue.addOperation(op)
         backgroundQueue.waitUntilAllOperationsAreFinished()
         XCTAssertEqual(
-            self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 1)
+            self.grandOperator.operationModel().messageCountByPredicate(NSPredicate.init(value: true)), 1)
     }
 
     func testStoreMultipleMails() {
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
         let numMails = 10
 
-        grandOperator.model.insertOrUpdateFolderName(
+        grandOperator.operationModel().insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderType: Account.AccountType.Imap,
             accountEmail: connectInfo.email)
-        grandOperator.model.save()
+        grandOperator.operationModel().save()
 
         let exp = expectationWithDescription("exp")
         var operations: Set<NSOperation> = []
@@ -132,9 +132,9 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertEqual(self.grandOperator.allErrors().count, 0)
             XCTAssertEqual(
-                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 1)
+                self.grandOperator.operationModel().folderCountByPredicate(NSPredicate.init(value: true)), 1)
             XCTAssertEqual(
-                self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)),
+                self.grandOperator.operationModel().messageCountByPredicate(NSPredicate.init(value: true)),
                 numMails)
         })
     }
@@ -158,10 +158,10 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertGreaterThan(
-                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 0)
+                self.grandOperator.operationModel().folderCountByPredicate(NSPredicate.init(value: true)), 0)
             XCTAssertGreaterThan(
-                self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 0)
-            let message = self.grandOperator.model.messageByPredicate(
+                self.grandOperator.operationModel().messageCountByPredicate(NSPredicate.init(value: true)), 0)
+            let message = self.grandOperator.operationModel().messageByPredicate(
                 NSPredicate.init(format: "uid = %d", mail.uid!.integerValue))
             XCTAssertNotNil(message)
             let hasTextMessage = message?.longMessage != nil
@@ -199,9 +199,9 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertGreaterThan(
-                self.grandOperator.model.folderCountByPredicate(NSPredicate.init(value: true)), 0)
+                self.grandOperator.operationModel().folderCountByPredicate(NSPredicate.init(value: true)), 0)
             XCTAssertGreaterThan(
-                self.grandOperator.model.messageCountByPredicate(NSPredicate.init(value: true)), 0)
+                self.grandOperator.operationModel().messageCountByPredicate(NSPredicate.init(value: true)), 0)
         })
     }
 }

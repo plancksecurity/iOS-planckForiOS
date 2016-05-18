@@ -16,11 +16,6 @@ public protocol IGrandOperator {
     var connectionManager: ConnectionManager { get }
 
     /**
-     The main model (for use on the main thread)
-     */
-    var model: IModel { get }
-
-    /**
      Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
      and the given folder and stores them into the persistent store.
 
@@ -68,11 +63,6 @@ public protocol IGrandOperator {
     func allErrors() -> [NSError]
 
     /**
-     Creates a new background model, confined to the current thread/queue
-     */
-    func backgroundModel() -> IModel
-
-    /**
      - Returns: The model suitable for the caller, depending on whether this is called on the
      main thread or not.
      */
@@ -90,8 +80,11 @@ public class GrandOperator: IGrandOperator {
     private let prefetchQueue = NSOperationQueue.init()
     private let verifyConnectionQueue = NSOperationQueue.init()
 
-    public lazy var model: IModel = {
-        return self.createModel()
+    /**
+     The main model (for use on the main thread)
+     */
+    private lazy var model: IModel = {
+        return Model.init(context: self.coreDataUtil.managedObjectContext)
     }()
 
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
@@ -193,16 +186,15 @@ public class GrandOperator: IGrandOperator {
         return errors
     }
 
-    public func backgroundModel() -> IModel {
+    /**
+     Creates a new background model, confined to the current thread/queue
+     */
+    private func backgroundModel() -> IModel {
         return Model.init(context: coreDataUtil.confinedManagedObjectContext())
     }
 
     public func operationModel() -> IModel {
         let resultModel = NSThread.isMainThread() ? model : backgroundModel()
         return resultModel
-    }
-
-    func createModel() -> IModel {
-        return Model.init(context: coreDataUtil.managedObjectContext)
     }
 }
