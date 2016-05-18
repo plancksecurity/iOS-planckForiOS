@@ -16,10 +16,10 @@ import pEpForiOS
  */
 class MiscTests: XCTestCase {
     func testValidEmail() {
-        XCTAssertFalse("".isProboblyValidEmail())
-        XCTAssertFalse("whe@@@uiae".isProboblyValidEmail())
-        XCTAssertTrue("whe@uiae".isProboblyValidEmail())
-        XCTAssertTrue("w@u".isProboblyValidEmail())
+        XCTAssertFalse("".isProbablyValidEmail())
+        XCTAssertFalse("whe@@@uiae".isProbablyValidEmail())
+        XCTAssertTrue("whe@uiae".isProbablyValidEmail())
+        XCTAssertTrue("w@u".isProbablyValidEmail())
     }
 
     func testUnquote() {
