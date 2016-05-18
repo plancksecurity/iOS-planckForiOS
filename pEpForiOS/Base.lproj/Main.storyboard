@@ -124,14 +124,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCr-eb-mdn">
-                                                    <rect key="frame" x="52" y="14" width="41" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCr-eb-mdn">
+                                                    <rect key="frame" x="8" y="14" width="41" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="rick.deckard@pep.li" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TPZ-TM-PaG">
-                                                    <rect key="frame" x="178" y="10" width="244" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="rick.deckard@pep.li" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TPZ-TM-PaG">
+                                                    <rect key="frame" x="59" y="17" width="533" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
@@ -139,6 +139,25 @@
                                                     </connections>
                                                 </textField>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="SCr-eb-mdn" firstAttribute="top" secondItem="ALh-ce-psL" secondAttribute="topMargin" constant="6" id="7oo-fv-Fut"/>
+                                                <constraint firstItem="TPZ-TM-PaG" firstAttribute="baseline" secondItem="SCr-eb-mdn" secondAttribute="baseline" id="OXW-0w-Syl"/>
+                                                <constraint firstItem="TPZ-TM-PaG" firstAttribute="leading" relation="lessThanOrEqual" secondItem="SCr-eb-mdn" secondAttribute="trailing" constant="10" id="UZ7-pP-5CD"/>
+                                                <constraint firstItem="TPZ-TM-PaG" firstAttribute="leading" secondItem="ALh-ce-psL" secondAttribute="leadingMargin" constant="170" id="c7g-rc-nzz"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="TPZ-TM-PaG" secondAttribute="trailing" id="cRo-h3-2DH"/>
+                                                <constraint firstItem="TPZ-TM-PaG" firstAttribute="top" secondItem="ALh-ce-psL" secondAttribute="topMargin" constant="2" id="ciE-tW-RBL"/>
+                                                <constraint firstItem="TPZ-TM-PaG" firstAttribute="leading" secondItem="SCr-eb-mdn" secondAttribute="trailing" constant="129" id="rBi-j9-GZl"/>
+                                                <constraint firstItem="SCr-eb-mdn" firstAttribute="leading" secondItem="ALh-ce-psL" secondAttribute="leadingMargin" id="wRE-u5-OCu"/>
+                                                <constraint firstItem="TPZ-TM-PaG" firstAttribute="leading" secondItem="SCr-eb-mdn" secondAttribute="trailing" constant="129" id="yD5-gR-Xaw"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="c7g-rc-nzz"/>
+                                                    <exclude reference="ciE-tW-RBL"/>
+                                                    <exclude reference="rBi-j9-GZl"/>
+                                                    <exclude reference="yD5-gR-Xaw"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="titleName" destination="SCr-eb-mdn" id="Nk4-U5-xxW"/>
@@ -151,14 +170,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ti-b6-5l8">
-                                                    <rect key="frame" x="53" y="14" width="79" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ti-b6-5l8">
+                                                    <rect key="frame" x="8" y="14" width="79" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="rick.deckard" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Mt-BZ-h4K">
-                                                    <rect key="frame" x="178" y="10" width="244" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="rick.deckard" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Mt-BZ-h4K">
+                                                    <rect key="frame" x="97" y="17" width="495" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
@@ -166,6 +185,13 @@
                                                     </connections>
                                                 </textField>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="5Mt-BZ-h4K" secondAttribute="trailing" id="3DS-NE-kS6"/>
+                                                <constraint firstItem="3ti-b6-5l8" firstAttribute="top" secondItem="iw0-fF-fSh" secondAttribute="topMargin" constant="6" id="58Z-hm-Lhj"/>
+                                                <constraint firstItem="5Mt-BZ-h4K" firstAttribute="baseline" secondItem="3ti-b6-5l8" secondAttribute="baseline" id="NSM-ok-Lsw"/>
+                                                <constraint firstItem="3ti-b6-5l8" firstAttribute="leading" secondItem="iw0-fF-fSh" secondAttribute="leadingMargin" id="TLQ-Tb-W7Q"/>
+                                                <constraint firstItem="5Mt-BZ-h4K" firstAttribute="leading" relation="lessThanOrEqual" secondItem="3ti-b6-5l8" secondAttribute="trailing" constant="10" id="izf-9H-jvH"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="titleName" destination="3ti-b6-5l8" id="Zde-4d-O8P"/>
@@ -178,14 +204,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbE-mW-hjW">
-                                                    <rect key="frame" x="55" y="13" width="74" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbE-mW-hjW">
+                                                    <rect key="frame" x="8" y="13" width="74" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="electricsheep23" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="91l-1l-FuW">
-                                                    <rect key="frame" x="178" y="8" width="244" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="electricsheep23" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="91l-1l-FuW">
+                                                    <rect key="frame" x="92" y="16" width="500" height="17"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                     <connections>
@@ -193,6 +219,19 @@
                                                     </connections>
                                                 </textField>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="91l-1l-FuW" secondAttribute="trailing" id="0jr-L3-Ptd"/>
+                                                <constraint firstItem="91l-1l-FuW" firstAttribute="leading" relation="lessThanOrEqual" secondItem="xbE-mW-hjW" secondAttribute="trailing" constant="10" id="MOT-VB-szA"/>
+                                                <constraint firstItem="91l-1l-FuW" firstAttribute="baseline" secondItem="xbE-mW-hjW" secondAttribute="baseline" id="Rjh-Fk-eAE"/>
+                                                <constraint firstItem="91l-1l-FuW" firstAttribute="top" secondItem="Tc7-0e-d7T" secondAttribute="topMargin" id="kdX-9U-XmC"/>
+                                                <constraint firstItem="xbE-mW-hjW" firstAttribute="top" secondItem="Tc7-0e-d7T" secondAttribute="topMargin" constant="5" id="m6x-ee-t5e"/>
+                                                <constraint firstItem="xbE-mW-hjW" firstAttribute="leading" secondItem="Tc7-0e-d7T" secondAttribute="leadingMargin" id="nRc-Zi-1V4"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="kdX-9U-XmC"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="fieldName" destination="91l-1l-FuW" id="yRj-32-D4p"/>
