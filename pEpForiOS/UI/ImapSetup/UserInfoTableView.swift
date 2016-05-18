@@ -55,24 +55,7 @@ public class UserInfoTableView: UITableViewController {
 
     public var model = ModelUserInfoTable()
 
-    var addedConstraints: [NSLayoutConstraint] = []
-
-    public static func alignViewWidths(
-        viewsToAlign: [UIView], parentView: UIView) -> [NSLayoutConstraint] {
-        var constraints: [NSLayoutConstraint] = []
-        var previousView: UIView? = nil
-        for v in viewsToAlign {
-            if let v1 = previousView {
-                let c = NSLayoutConstraint.init(item: v1, attribute: .Width, relatedBy: .Equal,
-                                                toItem: v, attribute: .Width, multiplier: 1.0,
-                                                constant: 0.0)
-                constraints.append(c)
-                parentView.addConstraint(c)
-            }
-            previousView = v
-        }
-        return constraints
-    }
+    let viewWidthAligner = ViewWidthsAligner()
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,12 +65,8 @@ public class UserInfoTableView: UITableViewController {
 
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if addedConstraints.count == 0 {
-            addedConstraints.appendContentsOf(
-                UserInfoTableView.alignViewWidths(
-                    [emailTitleTextField, usernameTitleTextField, passwordTitleTextField],
-                    parentView: self.view))
-        }
+        viewWidthAligner.alignViews([emailTitleTextField,
+            usernameTitleTextField, passwordTitleTextField], parentView: self.view)
     }
 
     public override func viewWillAppear(animated: Bool) {
