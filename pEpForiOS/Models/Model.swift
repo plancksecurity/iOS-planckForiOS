@@ -15,6 +15,11 @@ public protocol IModel {
     func messagesByPredicate(predicate: NSPredicate) -> [IMessage]?
     func messageCountByPredicate(predicate: NSPredicate) -> Int
 
+    /**
+     -Returns: The highest UID of the messages in the given folder.
+     */
+    func lastUidInFolderNamed(folderName: String) -> UInt
+
     func folderCountByPredicate(predicate: NSPredicate) -> Int
     func foldersByPredicate(predicate: NSPredicate) -> [IFolder]?
     func folderByPredicate(predicate: NSPredicate) -> IFolder?
@@ -258,6 +263,32 @@ public class Model: IModel {
 
     public func messageCountByPredicate(predicate: NSPredicate) -> Int {
         return countWithName(Message.entityName(), predicate: predicate)
+    }
+
+    public func lastUidInFolderNamed(folderName: String) -> UInt {
+        let fetch = NSFetchRequest.init(entityName: Message.entityName())
+        fetch.predicate = NSPredicate.init(format: "folder.name = %@", folderName)
+        fetch.fetchLimit = 1
+        fetch.sortDescriptors = [NSSortDescriptor.init(key: "uid", ascending: false)]
+        do {
+            let elems = try context.executeFetchRequest(fetch)
+            if elems.count > 0 {
+                if elems.count > 1 {
+                    Log.warn(comp, "lastUID has found more than one element")
+                }
+                if let msg = elems[0] as? Message {
+                    return UInt(msg.uid!.integerValue)
+                } else {
+                    Log.warn(comp, "Could not cast core data result to Message")
+                }
+            } else if elems.count > 0 {
+                Log.warn(comp, "lastUID has several objects with the same UID?")
+            }
+        } catch let error as NSError {
+            Log.error(comp, error: error)
+        }
+        Log.warn(comp, "lastUID no object found, returning 0")
+        return 0
     }
 
     public func folderCountByPredicate(predicate: NSPredicate) -> Int {

@@ -15,10 +15,10 @@ import CoreData
 class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     let comp = "PersistentImapFolder"
 
-    let mainContext: NSManagedObjectContext
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
     let grandOperator: IGrandOperator
+    let model: IModel
 
     /** The underlying core data object */
     var folder: IFolder!
@@ -29,7 +29,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
         set {
             folder.nextUID = newValue
-            CoreDataUtil.saveContext(managedObjectContext: mainContext)
+            model.save()
         }
     }
 
@@ -39,7 +39,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
         set {
             folder.existsCount = newValue
-            CoreDataUtil.saveContext(managedObjectContext: mainContext)
+            model.save()
         }
     }
 
@@ -48,7 +48,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         self.connectInfo = connectInfo
         self.backgroundQueue = backgroundQueue
         self.grandOperator = grandOperator
-        self.mainContext = grandOperator.coreDataUtil.managedObjectContext
+        self.model = grandOperator.operationModel()
         super.init(name: name)
         self.setCacheManager(self)
         self.folder = folderObject()
@@ -70,7 +70,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             folder.messages = []
         }
         folder.uidValidity = theUIDValidity
-        CoreDataUtil.saveContext(managedObjectContext: mainContext)
+        model.save()
     }
 
     override func UIDValidity() -> UInt {
@@ -121,28 +121,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     override func lastUID() -> UInt {
-        let fetch = NSFetchRequest.init(entityName: Message.entityName())
-        fetch.fetchLimit = 1
-        fetch.sortDescriptors = [NSSortDescriptor.init(key: "uid", ascending: false)]
-        do {
-            let elems = try mainContext.executeFetchRequest(fetch)
-            if elems.count > 0 {
-                if elems.count > 1 {
-                    Log.warn(comp, "lastUID has found more than one element")
-                }
-                if let msg = elems[0] as? Message {
-                    return UInt(msg.uid!.integerValue)
-                } else {
-                    Log.warn(comp, "Could not cast core data result to Message")
-                }
-            } else if elems.count > 0 {
-                Log.warn(comp, "lastUID has several objects with the same UID?")
-            }
-        } catch let error as NSError {
-            Log.error(comp, error: error)
-        }
-        Log.warn(comp, "lastUID no object found, returning 0")
-        return 0
+        return model.lastUidInFolderNamed(name())
     }
 
     func invalidate() {
