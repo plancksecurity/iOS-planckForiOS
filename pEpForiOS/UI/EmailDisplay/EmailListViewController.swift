@@ -31,7 +31,7 @@ class EmailListViewController: UITableViewController {
     let comp = " "
 
     var appConfig: AppConfig?
-    var fetchController: NSFetchedResultsController?
+    var fetchController: NSFetchedResultsController!
     let state = UIState()
 
     override func viewWillAppear(animated: Bool) {
@@ -40,6 +40,8 @@ class EmailListViewController: UITableViewController {
                 appConfig = appDelegate.appConfig
             }
         }
+
+        prepareFetchRequest()
 
         let account:IAccount? = appConfig!.model.fetchLastAccount()
         if (account == nil)  {
@@ -51,8 +53,6 @@ class EmailListViewController: UITableViewController {
     }
 
     func fetchMails() {
-        prepareFetchRequest()
-
         if let account = appConfig?.model.fetchLastAccount() {
             let connectInfo = account.connectInfo
 
@@ -103,7 +103,11 @@ class EmailListViewController: UITableViewController {
     // MARK: - UITableViewDataSource
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return (fetchController?.sections?.count)!
+        if let count = fetchController?.sections?.count {
+            return count
+        } else {
+            return 0
+        }
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -118,7 +122,8 @@ class EmailListViewController: UITableViewController {
 
     override func tableView(tableView: UITableView,
                             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("EmailListViewCell", forIndexPath: indexPath) as! EmailListViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(
+            "EmailListViewCell", forIndexPath: indexPath) as! EmailListViewCell
         configureCell(cell, indexPath: indexPath)
         return cell
     }
