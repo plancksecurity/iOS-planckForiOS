@@ -27,6 +27,13 @@ The fingerprints should be:
 
 (Cf. http://www.cacert.org/index.php?id=3)
 
+### Dependencies of prerequisites
+
+* pEpEngine: asn1c
+  ```
+  brew install asn1c
+  ```
+
 ## Build instructions
 
 ```
@@ -53,6 +60,8 @@ rebuilding see the respective scripts. But you should not have to do that for iO
 
 The core data model files are generated with mogenerator, using a modified template
 (for generating protocol definitions as well).
+
+You only need to regenerate them when there were changes in the model.
 
 ```
 cd ~/src # Use the same base path here as previously
