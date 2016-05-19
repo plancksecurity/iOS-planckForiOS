@@ -22,7 +22,7 @@ public class VerifyImapConnectionOperation: ConcurrentBaseOperation {
         if self.cancelled {
             return
         }
-        imapSync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
+        imapSync = grandOperator.connectionManager.emailSyncConnectionOneWay(connectInfo)
         imapSync.delegate = self
         imapSync.start()
     }

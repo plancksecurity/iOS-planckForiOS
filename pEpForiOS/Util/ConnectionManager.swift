@@ -31,6 +31,14 @@ public class ConnectionManager {
         return sync
     }
 
+    /**
+     - Returns: A one-way/throw-away IMAP sync connection, e.g., for testing/verifying
+      a connection.
+     */
+    public func emailSyncConnectionOneWay(connectInfo: ConnectInfo) -> ImapSync {
+        return ImapSync.init(connectInfo: connectInfo)
+    }
+
     public func smtpConnection(connectInfo: ConnectInfo) -> SmtpSend {
         // Don't cache
         return SmtpSend.init(connectInfo: connectInfo)
