@@ -28,38 +28,40 @@ class NewAccountSetupUITest: XCTestCase {
         super.tearDown()
     }
 
-    func testNewAccountSimple() {
+    /*
+     Use if you want to wait forever. May be useful for debugging.
+     */
+    func waitForever() {
+        expectationWithDescription("Never happens")
+        waitForExpectationsWithTimeout(3000, handler: nil)
+    }
+
+    func testNewAccountThatShouldFail() {
         // TODO: Use TestData
-        let imapPassword = "uiae"
         let imapServer = "uiae"
         let smtpServer = "uiae"
         let email = "some@email"
 
         let tablesQuery = XCUIApplication().tables
 
-        // TODO: Is using the accessibility identifier a better idea?
-        let tf1 = tablesQuery.cells.secureTextFields["Password"]
-        tf1.tap()
-        tf1.typeText("WRONG!")
+        var tf = tablesQuery.cells.textFields["email"]
+        tf.typeText(email)
 
-        let tf2 = tablesQuery.cells.textFields["Email"]
-        tf2.tap()
-        tf2.typeText(email)
+        tf = tablesQuery.cells.secureTextFields["password"]
+        tf.tap()
+        tf.typeText("WRONG!")
+
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
-        let tf3 = tablesQuery.textFields["IMAP Server"]
-        tf3.tap()
-        tf3.typeText(imapServer)
+        tf = tablesQuery.textFields["imapServer"]
+        tf.typeText(imapServer)
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
-        let tf4 = tablesQuery.textFields["SMTP Server"]
-        tf4.tap()
-        tf4.typeText(smtpServer)
-        XCUIApplication().navigationBars.buttons["Next"].tap()
+        tf = tablesQuery.textFields["smtpServer"]
+        tf.typeText(smtpServer)
+        let nextButton = XCUIApplication().navigationBars.buttons["Next"]
+        nextButton.tap()
 
-        /*
-        expectationWithDescription("Never happens")
-        waitForExpectationsWithTimeout(3000, handler: nil)
-         */
+        XCTAssertTrue(nextButton.exists)
     }
 }

@@ -36,7 +36,6 @@
 		43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 43980E2D1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld */; };
 		43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43980E301CBD0BCA00A7FC3C /* Assets.xcassets */; };
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
-		43980E4A1CBD0BCA00A7FC3C /* pEpForiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */; };
 		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
 		43980EE61CBD24B800A7FC3C /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE21CBD24B800A7FC3C /* ConnectInfo.swift */; };
 		43980EE71CBD24B800A7FC3C /* ImapSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE31CBD24B800A7FC3C /* ImapSync.swift */; };
@@ -175,7 +174,6 @@
 		43980E3A1CBD0BCA00A7FC3C /* pEpForiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpForiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E401CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980E451CBD0BCA00A7FC3C /* pEpForiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpForiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpForiOSUITests.swift; sourceTree = "<group>"; };
 		43980E4B1CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pantomime.xcodeproj; path = "../pantomime-iOS/Pantomime.xcodeproj"; sourceTree = "<group>"; };
 		43980EDF1CBD24B000A7FC3C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -330,7 +328,6 @@
 			isa = PBXGroup;
 			children = (
 				43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */,
-				43980E491CBD0BCA00A7FC3C /* pEpForiOSUITests.swift */,
 				43980E4B1CBD0BCA00A7FC3C /* Info.plist */,
 			);
 			path = pEpForiOSUITests;
@@ -723,7 +720,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */,
-				43980E4A1CBD0BCA00A7FC3C /* pEpForiOSUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
