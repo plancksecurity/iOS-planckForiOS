@@ -37,7 +37,6 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func testNewAccountThatShouldFail() {
-        // TODO: Use TestData
         let imapServer = "uiae"
         let smtpServer = "uiae"
         let email = "some@email"
@@ -63,5 +62,39 @@ class NewAccountSetupUITest: XCTestCase {
         nextButton.tap()
 
         XCTAssertTrue(nextButton.exists)
+    }
+
+    func testInsertNewWorkingAccount() {
+        let account = UITestData.workingAccount
+
+        let tablesQuery = XCUIApplication().tables
+
+        var tf = tablesQuery.cells.textFields["email"]
+        tf.typeText(account.email)
+
+        tf = tablesQuery.cells.secureTextFields["password"]
+        tf.tap()
+        tf.typeText(account.password)
+
+        XCUIApplication().navigationBars.buttons["Next"].tap()
+
+        tf = tablesQuery.textFields["imapServer"]
+        tf.typeText(account.serverName)
+        tf = tablesQuery.textFields["imapPort"]
+        tf.tap()
+        // TODO: Support alert for choosing transport
+        //tf.typeText(String(account.imapPort))
+        XCUIApplication().navigationBars.buttons["Next"].tap()
+
+        tf = tablesQuery.textFields["smtpServer"]
+        tf.typeText(account.serverName)
+        tf = tablesQuery.textFields["smtpPort"]
+        tf.tap()
+        // TODO: Support alert for choosing transport
+        //tf.typeText(String(account.smtpPort))
+        let nextButton = XCUIApplication().navigationBars.buttons["Next"]
+        nextButton.tap()
+
+        waitForever()
     }
 }
