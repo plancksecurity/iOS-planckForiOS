@@ -64,7 +64,7 @@ class NewAccountSetupUITest: XCTestCase {
         XCTAssertTrue(nextButton.exists)
     }
 
-    func testNewAccountWorking() {
+    func testInsertNewWorkingAccount() {
         let account = UITestData.workingAccount
 
         let tablesQuery = XCUIApplication().tables
@@ -95,6 +95,6 @@ class NewAccountSetupUITest: XCTestCase {
         let nextButton = XCUIApplication().navigationBars.buttons["Next"]
         nextButton.tap()
 
-        XCTAssertTrue(nextButton.exists)
+        waitForever()
     }
 }

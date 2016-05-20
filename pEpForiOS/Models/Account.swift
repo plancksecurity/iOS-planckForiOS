@@ -27,7 +27,7 @@ public class Account: _Account, IAccount {
 
     public var connectInfo: ConnectInfo {
         return ConnectInfo.init(
-            email: self.email, imapPassword: "",
+            email: self.email, imapPassword: nil,
             imapServerName: self.imapServerName,
             imapServerPort: UInt16(self.imapServerPort.integerValue),
             imapTransport: self.rawImapTransport,

@@ -120,7 +120,7 @@ public struct ConnectInfo: IConnectInfo {
         self.smtpTransport = smtpTransport
     }
 
-    public init(email: String, imapPassword: String,
+    public init(email: String, imapPassword: String?,
                 imapServerName: String, imapServerPort: UInt16, imapTransport: ConnectionTransport,
                 smtpServerName: String, smtpServerPort: UInt16, smtpTransport: ConnectionTransport) {
         self.email = email
