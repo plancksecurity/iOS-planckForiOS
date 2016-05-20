@@ -31,7 +31,7 @@ class EmailListViewController: UITableViewController {
     let comp = " "
 
     var appConfig: AppConfig?
-    var fetchController: NSFetchedResultsController!
+    var fetchController: NSFetchedResultsController?
     let state = UIState()
 
     override func viewWillAppear(animated: Bool) {
