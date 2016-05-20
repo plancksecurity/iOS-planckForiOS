@@ -1,0 +1,26 @@
+//
+//  UITestData.swift
+//  pEpForiOS
+//
+//  Created by Dirk Zimmermann on 20/05/16.
+//  Copyright © 2016 p≡p Security S.A. All rights reserved.
+//
+
+import Foundation
+
+struct Account {
+    var email: String
+    var serverName: String
+    var password: String
+    var imapPort: Int
+    var smtpPort: Int
+    var imapTransportSecurityId: String
+    var smtpTransportSecurityId: String
+}
+
+struct UITestData {
+    static let workingAccount = Account.init(
+        email: "email",
+        serverName: "email", password: "email", imapPort: 993, smtpPort: 587,
+        imapTransportSecurityId: "", smtpTransportSecurityId: "")
+}
