@@ -36,38 +36,19 @@ class NewAccountSetupUITest: XCTestCase {
         waitForExpectationsWithTimeout(3000, handler: nil)
     }
 
-    func testNewAccountThatShouldFail() {
-        let imapServer = "uiae"
-        let smtpServer = "uiae"
-        let email = "some@email"
+    /**
+     Clears the given text element.
+     */
+    func clearTextField(textField: XCUIElement) {
+        let string = textField.value as? String
+        XCTAssertNotNil(string)
 
-        let tablesQuery = XCUIApplication().tables
-
-        var tf = tablesQuery.cells.textFields["email"]
-        tf.typeText(email)
-
-        tf = tablesQuery.cells.secureTextFields["password"]
-        tf.tap()
-        tf.typeText("WRONG!")
-
-        XCUIApplication().navigationBars.buttons["Next"].tap()
-
-        tf = tablesQuery.textFields["imapServer"]
-        tf.typeText(imapServer)
-        XCUIApplication().navigationBars.buttons["Next"].tap()
-
-        tf = tablesQuery.textFields["smtpServer"]
-        tf.typeText(smtpServer)
-        let nextButton = XCUIApplication().navigationBars.buttons["Next"]
-        nextButton.tap()
-
-
-        XCTAssertTrue(nextButton.exists)
+        while (textField.value as? String)?.characters.count > 0 {
+            textField.typeText("\u{8}")
+        }
     }
 
-    func testInsertNewWorkingAccount() {
-        let account = UITestData.workingAccount
-
+    func newAccountSetup(account: Account) {
         let tablesQuery = XCUIApplication().tables
 
         var tf = tablesQuery.cells.textFields["email"]
@@ -80,22 +61,50 @@ class NewAccountSetupUITest: XCTestCase {
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
         tf = tablesQuery.textFields["imapServer"]
-        tf.typeText(account.serverName)
+        tf.typeText(account.imapServerName)
         tf = tablesQuery.textFields["imapPort"]
         tf.tap()
+        clearTextField(tf)
+        tf.typeText(String(account.imapPort))
+
+        tablesQuery.buttons["imapTransportSecurity"].tap()
+        let sheet = XCUIApplication().sheets["Transport protocol"]
+        sheet.collectionViews.buttons[account.imapTransportSecurityString].tap()
+
         // TODO: Support alert for choosing transport
-        //tf.typeText(String(account.imapPort))
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
         tf = tablesQuery.textFields["smtpServer"]
-        tf.typeText(account.serverName)
+        tf.typeText(account.smtpServerName)
         tf = tablesQuery.textFields["smtpPort"]
         tf.tap()
-        // TODO: Support alert for choosing transport
-        //tf.typeText(String(account.smtpPort))
+        clearTextField(tf)
+        tf.typeText(String(account.smtpPort))
+
+        tablesQuery.buttons["smtpTransportSecurity"].tap()
+        sheet.collectionViews.buttons[account.imapTransportSecurityString].tap()
+
         let nextButton = XCUIApplication().navigationBars.buttons["Next"]
         nextButton.tap()
+    }
 
+    func testNewAccountThatShouldFail() {
+        var account = UITestData.workingAccount
+        account.password = "CLEArlyWRong"
+        newAccountSetup(account)
+        // TODO: Verify error message
+        waitForever()
+    }
+
+    func testInsertNewWorkingAccount() {
+        let account = UITestData.workingAccount
+        newAccountSetup(account)
+        waitForever()
+    }
+
+    func testInsertNewYahooAccount() {
+        let account = UITestData.workingYahooAccount
+        newAccountSetup(account)
         waitForever()
     }
 }
