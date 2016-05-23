@@ -36,47 +36,19 @@ class NewAccountSetupUITest: XCTestCase {
         waitForExpectationsWithTimeout(3000, handler: nil)
     }
 
+    /**
+     Clears the given text element.
+     */
     func clearTextField(textField: XCUIElement) {
-        guard let _ = textField.value as? String else {
-            XCTFail("Tried to clear and enter text into a non string value")
-            return
-        }
+        let string = textField.value as? String
+        XCTAssertNotNil(string)
+
         while (textField.value as? String)?.characters.count > 0 {
             textField.typeText("\u{8}")
         }
     }
 
-    func testNewAccountThatShouldFail() {
-        let imapServer = "uiae"
-        let smtpServer = "uiae"
-        let email = "some@email"
-
-        let tablesQuery = XCUIApplication().tables
-
-        var tf = tablesQuery.cells.textFields["email"]
-        tf.typeText(email)
-
-        tf = tablesQuery.cells.secureTextFields["password"]
-        tf.tap()
-        tf.typeText("WRONG!")
-
-        XCUIApplication().navigationBars.buttons["Next"].tap()
-
-        tf = tablesQuery.textFields["imapServer"]
-        tf.typeText(imapServer)
-        XCUIApplication().navigationBars.buttons["Next"].tap()
-
-        tf = tablesQuery.textFields["smtpServer"]
-        tf.typeText(smtpServer)
-        let nextButton = XCUIApplication().navigationBars.buttons["Next"]
-        nextButton.tap()
-
-        XCTAssertTrue(nextButton.exists)
-    }
-
-    func testInsertNewWorkingAccount() {
-        let account = UITestData.workingAccount
-
+    func newAccountSetup(account: Account) {
         let tablesQuery = XCUIApplication().tables
 
         var tf = tablesQuery.cells.textFields["email"]
@@ -106,43 +78,25 @@ class NewAccountSetupUITest: XCTestCase {
         // TODO: Support alert for choosing transport
         let nextButton = XCUIApplication().navigationBars.buttons["Next"]
         nextButton.tap()
+    }
 
+    func testNewAccountThatShouldFail() {
+        var account = UITestData.workingAccount
+        account.password = "CLEArlyWRong"
+        newAccountSetup(account)
+        // TODO: Verify error message
+        waitForever()
+    }
+
+    func testInsertNewWorkingAccount() {
+        let account = UITestData.workingAccount
+        newAccountSetup(account)
         waitForever()
     }
 
     func testInsertNewYahooAccount() {
         let account = UITestData.workingYahooAccount
-
-        let tablesQuery = XCUIApplication().tables
-
-        var tf = tablesQuery.cells.textFields["email"]
-        tf.typeText(account.email)
-
-        tf = tablesQuery.cells.secureTextFields["password"]
-        tf.tap()
-        tf.typeText(account.password)
-
-        XCUIApplication().navigationBars.buttons["Next"].tap()
-
-        tf = tablesQuery.textFields["imapServer"]
-        tf.typeText(account.imapServerName)
-        tf = tablesQuery.textFields["imapPort"]
-        tf.tap()
-        clearTextField(tf)
-        tf.typeText(String(account.imapPort))
-        // TODO: Support alert for choosing transport
-        XCUIApplication().navigationBars.buttons["Next"].tap()
-
-        tf = tablesQuery.textFields["smtpServer"]
-        tf.typeText(account.smtpServerName)
-        tf = tablesQuery.textFields["smtpPort"]
-        tf.tap()
-        clearTextField(tf)
-        tf.typeText(String(account.smtpPort))
-        // TODO: Support alert for choosing transport
-        let nextButton = XCUIApplication().navigationBars.buttons["Next"]
-        nextButton.tap()
-
+        newAccountSetup(account)
         waitForever()
     }
 }
