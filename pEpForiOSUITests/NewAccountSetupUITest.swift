@@ -66,6 +66,11 @@ class NewAccountSetupUITest: XCTestCase {
         tf.tap()
         clearTextField(tf)
         tf.typeText(String(account.imapPort))
+
+        tablesQuery.buttons["imapTransportSecurity"].tap()
+        let sheet = XCUIApplication().sheets["Transport protocol"]
+        sheet.collectionViews.buttons[account.imapTransportSecurityString].tap()
+
         // TODO: Support alert for choosing transport
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
@@ -75,7 +80,10 @@ class NewAccountSetupUITest: XCTestCase {
         tf.tap()
         clearTextField(tf)
         tf.typeText(String(account.smtpPort))
-        // TODO: Support alert for choosing transport
+
+        tablesQuery.buttons["smtpTransportSecurity"].tap()
+        sheet.collectionViews.buttons[account.imapTransportSecurityString].tap()
+
         let nextButton = XCUIApplication().navigationBars.buttons["Next"]
         nextButton.tap()
     }

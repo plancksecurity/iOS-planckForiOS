@@ -15,20 +15,28 @@ struct Account {
     var password: String
     var imapPort: Int
     var smtpPort: Int
-    var imapTransportSecurityId: String
-    var smtpTransportSecurityId: String
+
+    /**
+     This unfortunately must correspond to the localized name on screen.
+     */
+    var imapTransportSecurityString: String
+
+    /**
+     This unfortunately must correspond to the localized name on screen.
+     */
+    var smtpTransportSecurityString: String
 }
 
 struct UITestData {
     static let workingAccount = Account.init(
         email: "email",
-        imapServerName: "serverName", smtpServerName: "serverName",
+        imapServerName: "server", smtpServerName: "server",
         password: "password", imapPort: 993, smtpPort: 587,
-        imapTransportSecurityId: "", smtpTransportSecurityId: "")
+        imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
 
     static let workingYahooAccount = Account.init(
         email: "email",
-        imapServerName: "serverName", smtpServerName: "serverName",
+        imapServerName: "server", smtpServerName: "server",
         password: "password", imapPort: 993, smtpPort: 587,
-        imapTransportSecurityId: "", smtpTransportSecurityId: "")
+        imapTransportSecurityString: "TLS", smtpTransportSecurityString: "TLS")
 }
