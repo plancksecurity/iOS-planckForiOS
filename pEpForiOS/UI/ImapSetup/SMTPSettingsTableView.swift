@@ -16,13 +16,32 @@ class SMTPSettingsTableView: UITableViewController {
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var transportSecurity: UIButton!
 
+    @IBOutlet weak var serverValueTextField: UILabel!
+    @IBOutlet weak var portValueTextField: UILabel!
+
     var appConfig: AppConfig!
     var model: ModelUserInfoTable!
 
-    override func viewWillAppear(animated: Bool) {
+    let viewWidthAligner = ViewWidthsAligner()
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 44
+    }
+
+    public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        serverValue.becomeFirstResponder()
+        if model.serverIMAP == nil {
+            serverValue.becomeFirstResponder()
+        }
         updateView()
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        viewWidthAligner.alignViews([serverValueTextField,
+            portValueTextField], parentView: self.view)
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,6 +52,12 @@ class SMTPSettingsTableView: UITableViewController {
         serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
         transportSecurity.setTitle(model.transportSMTP.localizedString(), forState: .Normal)
+    }
+
+    func showErrorMessage (message: String) {
+        let alertView = UIAlertController(title: NSLocalizedString("Error", comment: "the text in the title for the error message AlerView in account settings"), message: NSLocalizedString(message, comment: "the text for the error description message AlerView in account settings"), preferredStyle: .Alert)
+        alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "confirmation button text for error message AlertView in account settings"), style: .Default, handler: nil))
+        presentViewController(alertView, animated: true, completion: nil)
     }
 
     @IBAction func alertWithSecurityValues(sender: AnyObject) {
@@ -83,11 +108,11 @@ class SMTPSettingsTableView: UITableViewController {
                         // unwind back to INBOX on success
                         self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: sender)
                     } else {
-                        // TODO: Display error that account could not be saved
+                        self.showErrorMessage("Impossible load data to the account")
                     }
                 }
             } else {
-                // TODO: Display error message
+                self.showErrorMessage("Impossible to connect to the account")
             }
         })
     }

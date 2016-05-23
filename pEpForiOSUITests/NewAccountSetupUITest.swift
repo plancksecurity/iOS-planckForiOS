@@ -61,6 +61,7 @@ class NewAccountSetupUITest: XCTestCase {
         let nextButton = XCUIApplication().navigationBars.buttons["Next"]
         nextButton.tap()
 
+
         XCTAssertTrue(nextButton.exists)
     }
 

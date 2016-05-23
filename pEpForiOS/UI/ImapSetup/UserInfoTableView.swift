@@ -101,9 +101,9 @@ public class UserInfoTableView: UITableViewController {
 
     override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "IMAPSettings" {
-             let destination = segue.destinationViewController as! IMAPSettingsTableView
-                destination.appConfig = appConfig
-                destination.model = model
+            let destination = segue.destinationViewController as! IMAPSettingsTableView
+            destination.appConfig = appConfig
+            destination.model = model
         }
     }
 
@@ -122,30 +122,6 @@ public class UserInfoTableView: UITableViewController {
         updateView()
     }
 
-    /*
-    // protocols delegate
-    func saveServerInformation(server: String?) {
-        self.model.serverIMAP = server
-    }
 
-    func savePortInformation(port: UInt16?) {
-          self.model.portIMAP = port
-    }
 
-    func saveServerTransport(transport: ConnectionTransport?) {
-        self.model.transportIMAP = transport
-    }
-
-    func saveServerInformationSMTP(server: String?) {
-        self.model.serverSMTP = server
-    }
-
-    func savePortInformationSMTP(port: UInt16?) {
-        self.model.portSMTP = port
-    }
-
-    func saveServerTransportSMTP (transport: ConnectionTransport?) {
-        self.model.transportSMTP = transport
-    }
- */
 }
