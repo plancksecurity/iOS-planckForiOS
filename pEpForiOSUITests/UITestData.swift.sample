@@ -10,7 +10,8 @@ import Foundation
 
 struct Account {
     var email: String
-    var serverName: String
+    var imapServerName: String
+    var smtpServerName: String
     var password: String
     var imapPort: Int
     var smtpPort: Int
@@ -21,6 +22,13 @@ struct Account {
 struct UITestData {
     static let workingAccount = Account.init(
         email: "email",
-        serverName: "email", password: "email", imapPort: 993, smtpPort: 587,
+        imapServerName: "serverName", smtpServerName: "serverName",
+        password: "password", imapPort: 993, smtpPort: 587,
+        imapTransportSecurityId: "", smtpTransportSecurityId: "")
+
+    static let workingYahooAccount = Account.init(
+        email: "email",
+        imapServerName: "serverName", smtpServerName: "serverName",
+        password: "password", imapPort: 993, smtpPort: 587,
         imapTransportSecurityId: "", smtpTransportSecurityId: "")
 }

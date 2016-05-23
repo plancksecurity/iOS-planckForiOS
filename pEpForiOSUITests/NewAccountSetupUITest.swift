@@ -36,6 +36,16 @@ class NewAccountSetupUITest: XCTestCase {
         waitForExpectationsWithTimeout(3000, handler: nil)
     }
 
+    func clearTextField(textField: XCUIElement) {
+        guard let _ = textField.value as? String else {
+            XCTFail("Tried to clear and enter text into a non string value")
+            return
+        }
+        while (textField.value as? String)?.characters.count > 0 {
+            textField.typeText("\u{8}")
+        }
+    }
+
     func testNewAccountThatShouldFail() {
         let imapServer = "uiae"
         let smtpServer = "uiae"
@@ -79,19 +89,57 @@ class NewAccountSetupUITest: XCTestCase {
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
         tf = tablesQuery.textFields["imapServer"]
-        tf.typeText(account.serverName)
+        tf.typeText(account.imapServerName)
         tf = tablesQuery.textFields["imapPort"]
         tf.tap()
+        clearTextField(tf)
+        tf.typeText(String(account.imapPort))
         // TODO: Support alert for choosing transport
-        //tf.typeText(String(account.imapPort))
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
         tf = tablesQuery.textFields["smtpServer"]
-        tf.typeText(account.serverName)
+        tf.typeText(account.smtpServerName)
         tf = tablesQuery.textFields["smtpPort"]
         tf.tap()
+        clearTextField(tf)
+        tf.typeText(String(account.smtpPort))
         // TODO: Support alert for choosing transport
-        //tf.typeText(String(account.smtpPort))
+        let nextButton = XCUIApplication().navigationBars.buttons["Next"]
+        nextButton.tap()
+
+        waitForever()
+    }
+
+    func testInsertNewYahooAccount() {
+        let account = UITestData.workingYahooAccount
+
+        let tablesQuery = XCUIApplication().tables
+
+        var tf = tablesQuery.cells.textFields["email"]
+        tf.typeText(account.email)
+
+        tf = tablesQuery.cells.secureTextFields["password"]
+        tf.tap()
+        tf.typeText(account.password)
+
+        XCUIApplication().navigationBars.buttons["Next"].tap()
+
+        tf = tablesQuery.textFields["imapServer"]
+        tf.typeText(account.imapServerName)
+        tf = tablesQuery.textFields["imapPort"]
+        tf.tap()
+        clearTextField(tf)
+        tf.typeText(String(account.imapPort))
+        // TODO: Support alert for choosing transport
+        XCUIApplication().navigationBars.buttons["Next"].tap()
+
+        tf = tablesQuery.textFields["smtpServer"]
+        tf.typeText(account.smtpServerName)
+        tf = tablesQuery.textFields["smtpPort"]
+        tf.tap()
+        clearTextField(tf)
+        tf.typeText(String(account.smtpPort))
+        // TODO: Support alert for choosing transport
         let nextButton = XCUIApplication().navigationBars.buttons["Next"]
         nextButton.tap()
 
