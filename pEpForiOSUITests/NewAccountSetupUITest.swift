@@ -6,10 +6,7 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 import XCTest
-import pEpForiOS
 
 class NewAccountSetupUITest: XCTestCase {
     override func setUp() {

@@ -75,7 +75,6 @@
 		43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */; };
 		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
 		43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */; };
-		A11F95D71CF31ACE0035C6AB /* DebugUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11F95D61CF31ACE0035C6AB /* DebugUITest.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
 		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
 		A1B50A8A1CD271EC00B1A997 /* GrandOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A871CD271EC00B1A997 /* GrandOperatorTests.swift */; };
@@ -218,7 +217,6 @@
 		43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoTableView.swift; sourceTree = "<group>"; };
 		43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersOperation.swift; sourceTree = "<group>"; };
 		43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
-		A11F95D61CF31ACE0035C6AB /* DebugUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugUITest.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
 		A1B50A871CD271EC00B1A997 /* GrandOperatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorTests.swift; sourceTree = "<group>"; };
@@ -334,7 +332,6 @@
 				43980E4B1CBD0BCA00A7FC3C /* Info.plist */,
 				43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */,
 				43DA52701CEF3B0E0023D540 /* UITestData.swift */,
-				A11F95D61CF31ACE0035C6AB /* DebugUITest.swift */,
 			);
 			path = pEpForiOSUITests;
 			sourceTree = "<group>";
@@ -460,15 +457,15 @@
 		43ED53651CC77F95006AB156 /* ImapSetup */ = {
 			isa = PBXGroup;
 			children = (
+				43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */,
 				43ED53661CC77F95006AB156 /* IMAPSettingsTableView.swift */,
+				43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */,
 				43ED53671CC77F95006AB156 /* Mail.swift */,
 				43ED53681CC77F95006AB156 /* MailCell.swift */,
 				43ED53691CC77F95006AB156 /* MailList.swift */,
 				43ED536A1CC77F95006AB156 /* MailSettingParameters.swift */,
 				43ED536B1CC77F95006AB156 /* MailTableView.swift */,
 				43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */,
-				43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */,
-				43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */,
 			);
 			path = ImapSetup;
 			sourceTree = "<group>";
@@ -725,7 +722,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A11F95D71CF31ACE0035C6AB /* DebugUITest.swift in Sources */,
 				43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */,
 				43DA52711CEF3B0E0023D540 /* UITestData.swift in Sources */,
 			);

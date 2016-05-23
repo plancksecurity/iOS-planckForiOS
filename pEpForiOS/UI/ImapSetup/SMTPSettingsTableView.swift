@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SMTPSettingsTableView: UITableViewController {
+public class SMTPSettingsTableView: UITableViewController {
     let unwindToEmailListSegue = "unwindToEmailListSegue"
 
     @IBOutlet weak var serverValue: UITextField!
@@ -32,19 +32,19 @@ class SMTPSettingsTableView: UITableViewController {
 
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if model.serverIMAP == nil {
+        if model.serverSMTP == nil {
             serverValue.becomeFirstResponder()
         }
         updateView()
     }
 
-    override func viewDidAppear(animated: Bool) {
+    public override func viewDidAppear(animated: Bool) {
         super.viewWillAppear(animated)
         viewWidthAligner.alignViews([serverValueTextField,
             portValueTextField], parentView: self.view)
     }
 
-    override func didReceiveMemoryWarning() {
+    public override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
