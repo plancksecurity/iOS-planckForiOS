@@ -21,7 +21,7 @@ class GrandOperatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        persistentSetup = PersistentSetup.init(coreDataUtil: InMemoryCoreDataUtil())
+        persistentSetup = PersistentSetup.init()
     }
     
     /**

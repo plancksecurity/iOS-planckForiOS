@@ -50,6 +50,11 @@ public protocol IModel {
     func insertMessageReference(messageID: String) -> IMessageReference
     func insertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String) -> IMessage?
 
+    /**
+     - Returns: List of contact that match the given snippet (either in the name, or address)
+     */
+    func getContactsBySnippet(snippet: String) -> [Contact]
+
     func save()
 
     /**
@@ -496,6 +501,10 @@ public class Model: IModel {
                 addAttachmentsFromPantomimePart(subPart, targetMail: targetMail, level: level + 1)
             }
         }
+    }
+
+    public func getContactsBySnippet(snippet: String) -> [Contact] {
+        return []
     }
 
     public func dumpDB() {

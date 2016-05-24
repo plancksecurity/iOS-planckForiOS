@@ -14,16 +14,15 @@ import pEpForiOS
 class SimpleOperationsTest: XCTestCase {
     let waitTime: NSTimeInterval = 10
 
-    let coreDataUtil = InMemoryCoreDataUtil.init()
     var persistentSetup: PersistentSetup!
     var grandOperator: IGrandOperator!
     var connectInfo: ConnectInfo!
 
     override func setUp() {
         super.setUp()
-        persistentSetup = PersistentSetup.init(coreDataUtil: coreDataUtil)
+        persistentSetup = PersistentSetup.init()
         grandOperator = GrandOperator.init(connectionManager: ConnectionManager.init(),
-                                           coreDataUtil: coreDataUtil)
+                                           coreDataUtil: persistentSetup.coreDataUtil)
         connectInfo = TestData.connectInfo
     }
 

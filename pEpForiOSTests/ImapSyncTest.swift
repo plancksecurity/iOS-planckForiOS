@@ -12,6 +12,7 @@ import CoreData
 import pEpForiOS
 
 struct PersistentSetup {
+    let coreDataUtil: ICoreDataUtil
     let connectionInfo: ConnectInfo
     let connectionManager: ConnectionManager
     let backgroundQueue: NSOperationQueue
@@ -19,7 +20,11 @@ struct PersistentSetup {
     let folderBuilder: ImapFolderBuilder
     let model: IModel
 
-    init(coreDataUtil: ICoreDataUtil) {
+    /**
+     Sets up persistence with an in-memory core data backend.
+     */
+    init() {
+        coreDataUtil = InMemoryCoreDataUtil.init()
         connectionInfo = TestData.connectInfo
         backgroundQueue = NSOperationQueue.init()
         connectionManager = ConnectionManager.init()
@@ -287,7 +292,7 @@ class ImapSyncTest: XCTestCase {
     }
 
     func testPrefetchWithPersistence() {
-        let setup = PersistentSetup.init(coreDataUtil: coreDataUtil)
+        let setup = PersistentSetup.init()
         prefetchMails(setup)
     }
 
@@ -295,7 +300,7 @@ class ImapSyncTest: XCTestCase {
      Test for directly opening a mailbox without fetching folders or prefetching any mails.
      */
     func testOpenMailboxWithoutPrefetch() {
-        let setup = PersistentSetup.init(coreDataUtil: coreDataUtil)
+        let setup = PersistentSetup.init()
 
         let del = TestImapSyncDelegate.init(fetchFolders: false, preFetchMails: false,
                                             openInbox: true)
@@ -322,7 +327,7 @@ class ImapSyncTest: XCTestCase {
     }
 
     func testFetchMail() {
-        let setup = PersistentSetup.init(coreDataUtil: coreDataUtil)
+        let setup = PersistentSetup.init()
         let sync = prefetchMails(setup)
         if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder {
@@ -366,7 +371,7 @@ class ImapSyncTest: XCTestCase {
      Demonstrates parsing of MIME-Type/MessageContent.
      */
     func testFetchMailAll() {
-        let setup = PersistentSetup.init(coreDataUtil: coreDataUtil)
+        let setup = PersistentSetup.init()
         let sync = prefetchMails(setup)
         if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder {
