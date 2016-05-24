@@ -527,7 +527,10 @@ public class Model: IModel {
     }
 
     public func getContactsBySnippet(snippet: String) -> [Contact] {
-        return []
+        let p = NSPredicate.init(format: "email contains[cd] %@ or name contains[cd] %@",
+                                 snippet, snippet)
+        let contacts = entitiesWithName(Contact.entityName(), predicate: p) as! [Contact]
+        return contacts
     }
 
     public func dumpDB() {

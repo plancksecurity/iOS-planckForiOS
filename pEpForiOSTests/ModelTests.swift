@@ -18,7 +18,7 @@ class ModelTests: XCTestCase {
         persistentSetup = PersistentSetup.init()
 
         // Some contacts
-        for i in 1..<5 {
+        for i in 1...5 {
             let contact = persistentSetup.model.insertOrUpdateContactEmail(
                 "email\(i)@test.de", name: "name\(i)")
             XCTAssertNotNil(contact)
@@ -48,8 +48,8 @@ class ModelTests: XCTestCase {
     }
 
     func testSimpleContactSearch() {
-        var contacts = persistentSetup.model.getContactsBySnippet("test")
-        XCTAssertEqual(contacts.count, 10)
+        var contacts = persistentSetup.model.getContactsBySnippet("tes")
+        XCTAssertEqual(contacts.count, 5)
         contacts = persistentSetup.model.getContactsBySnippet("wha")
         XCTAssertEqual(contacts.count, 1)
         contacts = persistentSetup.model.getContactsBySnippet("Ano")
