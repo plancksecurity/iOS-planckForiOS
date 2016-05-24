@@ -223,7 +223,7 @@ extension ImapSync: CWServiceClient {
             password = pass
         } else {
             password = KeyChain.getPassword(connectInfo.email,
-                                            serverType: Account.AccountType.Imap.asString())
+                                            serverType: Account.AccountType.IMAP.asString())
         }
 
         imapStore.authenticate(connectInfo.getImapUsername(),

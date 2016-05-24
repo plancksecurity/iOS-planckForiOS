@@ -26,17 +26,31 @@ public protocol IModel {
     func folderByName(name: String, email: String) -> IFolder?
     func folderByName(name: String, email: String, folderType: Account.AccountType) -> IFolder?
 
+    /**
+     - Returns: The INBOX folder.
+     */
+    func folderInbox() -> IFolder?
+
+    /**
+     - Returns: The folder for sent mails.
+     */
+    func folderSentMails() -> IFolder?
+
+    /**
+     - Returns: The folder for saving draft mails.
+     */
+    func folderDrafts() -> IFolder?
+
     func accountByEmail(email: String) -> IAccount?
     func setAccountAsLastUsed(account: IAccount) -> IAccount
     func fetchLastAccount() -> IAccount?
 
     func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount?
     func insertNewMessage() -> IMessage
-    func insertTestAccount() -> IAccount?
     func insertAttachmentWithContentType(
         contentType: String?, filename: String?, data: NSData) -> _IAttachment
 
-    func insertOrUpdateContactEmail(email: String, name: String?) -> IContact?
+    func insertOrUpdateContactEmail(email: String, name: String?) -> IContact
 
     /**
      Inserts a folder of the given type.
@@ -161,10 +175,10 @@ public class Model: IModel {
     public func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount? {
         let account = newAccountFromConnectInfo(connectInfo)
         save()
-        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Imap.asString(),
-                          password: connectInfo.imapPassword!)
-        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.Smtp.asString(),
-                          password: connectInfo.getSmtpPassword()!)
+        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.IMAP.asString(),
+                          password: connectInfo.imapPassword)
+        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.SMTP.asString(),
+                          password: connectInfo.getSmtpPassword())
         return account
     }
 
@@ -172,14 +186,6 @@ public class Model: IModel {
         let mail = NSEntityDescription.insertNewObjectForEntityForName(
             Message.entityName(), inManagedObjectContext: context) as! Message
         return mail
-    }
-
-    public func insertTestAccount() -> IAccount? {
-        if let account = insertAccountFromConnectInfo(TestData.connectInfo) {
-            return setAccountAsLastUsed(account)
-        } else {
-            return nil
-        }
     }
 
     public func insertAttachmentWithContentType(
@@ -320,6 +326,29 @@ public class Model: IModel {
         return folderByPredicate(p)
     }
 
+    /**
+     Somewhat fuzzy predicate for getting a folder.
+     */
+    func folderFuzzyPredicateByName(folderName: String) -> NSPredicate {
+        let p = NSPredicate.init(format: "name contains[c] %@", folderName)
+        return p
+    }
+
+    public func folderInbox() -> IFolder? {
+        let p = NSPredicate.init(format: "name =[c] %@", ImapSync.defaultImapInboxName)
+        return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
+    }
+
+    public func folderSentMails() -> IFolder? {
+        let p = folderFuzzyPredicateByName("sent")
+        return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
+    }
+
+    public func folderDrafts() -> IFolder? {
+        let p = folderFuzzyPredicateByName("draft")
+        return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
+    }
+
     public func insertFolderName(name: String, email: String) -> IFolder {
         let folder = NSEntityDescription.insertNewObjectForEntityForName(
             Folder.entityName(), inManagedObjectContext: context) as! Folder
@@ -330,7 +359,7 @@ public class Model: IModel {
         return folder
     }
 
-    public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact? {
+    public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact {
         let fetch = NSFetchRequest.init(entityName:Contact.entityName())
         fetch.predicate = NSPredicate.init(format: "email == %@", email)
         do {
@@ -342,16 +371,14 @@ public class Model: IModel {
             } else if existing.count == 1 {
                 existing[0].updateFromEmail(email, name: name)
                 return existing[0]
-            } else {
-                var contact = NSEntityDescription.insertNewObjectForEntityForName(
-                    Contact.entityName(), inManagedObjectContext: context) as! Contact
-                contact.updateFromEmail(email, name: name)
-                return contact
             }
         } catch let err as NSError {
             Log.error(comp, error: err)
-            return nil
         }
+        var contact = NSEntityDescription.insertNewObjectForEntityForName(
+            Contact.entityName(), inManagedObjectContext: context) as! Contact
+        contact.updateFromEmail(email, name: name)
+        return contact
     }
 
     public func insertOrUpdateMessageReference(messageID: String) -> IMessageReference {
@@ -373,13 +400,9 @@ public class Model: IModel {
     public func addContacts(contacts: [CWInternetAddress]) -> [String: IContact] {
         var added: [String: IContact] = [:]
         for address in contacts {
-            if let addr = insertOrUpdateContactEmail(address.address(),
-                                                     name: address.personal()) {
-                added[addr.email] = addr
-            } else {
-                Log.error(comp, error: Constants.errorCouldNotUpdateOrAddContact(comp,
-                    name: address.stringValue()))
-            }
+            let addr = insertOrUpdateContactEmail(address.address(),
+                                                  name: address.personal())
+            added[addr.email] = addr
         }
         return added
     }
@@ -504,7 +527,10 @@ public class Model: IModel {
     }
 
     public func getContactsBySnippet(snippet: String) -> [Contact] {
-        return []
+        let p = NSPredicate.init(format: "email contains[cd] %@ or name contains[cd] %@",
+                                 snippet, snippet)
+        let contacts = entitiesWithName(Contact.entityName(), predicate: p) as! [Contact]
+        return contacts
     }
 
     public func dumpDB() {

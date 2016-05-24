@@ -50,6 +50,17 @@ public protocol IGrandOperator {
                                   completionBlock: GrandOperatorCompletionBlock?)
 
     /**
+     Sends the given mail via SMTP. Also saves it into the drafts folder. You
+     might have to trigger a fetch for that mail to appear in your drafts folder.
+     */
+    func sendMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
+     Saves the given email as a draft, both on the server and locally.
+     */
+    func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
      Used by background operations to set an error.
      
      - parameter operation: The operation the error occurred
@@ -163,6 +174,14 @@ public class GrandOperator: IGrandOperator {
 
         verifyConnectionQueue.addOperation(op1)
         verifyConnectionQueue.addOperation(op2)
+    }
+
+    public func sendMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
+        completionBlock?(error: Constants.errorNotImplemented(comp))
+    }
+
+    public func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
+        completionBlock?(error: Constants.errorNotImplemented(comp))
     }
 
     public func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: Int,

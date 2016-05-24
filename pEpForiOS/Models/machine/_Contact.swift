@@ -26,7 +26,7 @@ public protocol _IContact {
 
     // MARK: - Relationships
 
-    var bccMessages: Message? { get set }
+    var bccMessages: NSSet { get set }
 
     var ccMessages: NSSet { get set }
 
@@ -70,7 +70,7 @@ public class _Contact: BaseManagedObject, _IContact {
     // MARK: - Relationships
 
     @NSManaged public
-    var bccMessages: Message?
+    var bccMessages: NSSet
 
     @NSManaged public
     var ccMessages: NSSet
@@ -83,7 +83,35 @@ public class _Contact: BaseManagedObject, _IContact {
 
 }
 
-extension _Contact {
+public extension _Contact {
+
+    func addBccMessages(objects: NSSet) {
+        let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
+        mutable.unionSet(objects as Set<NSObject>)
+        self.bccMessages = mutable.copy() as! NSSet
+    }
+
+    func removeBccMessages(objects: NSSet) {
+        let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
+        mutable.minusSet(objects as Set<NSObject>)
+        self.bccMessages = mutable.copy() as! NSSet
+    }
+
+    func addBccMessagesObject(value: Message) {
+        let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
+        mutable.addObject(value)
+        self.bccMessages = mutable.copy() as! NSSet
+    }
+
+    func removeBccMessagesObject(value: Message) {
+        let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
+        mutable.removeObject(value)
+        self.bccMessages = mutable.copy() as! NSSet
+    }
+
+}
+
+public extension _Contact {
 
     func addCcMessages(objects: NSSet) {
         let mutable = self.ccMessages.mutableCopy() as! NSMutableSet
@@ -111,7 +139,7 @@ extension _Contact {
 
 }
 
-extension _Contact {
+public extension _Contact {
 
     func addFromMessages(objects: NSSet) {
         let mutable = self.fromMessages.mutableCopy() as! NSMutableSet
@@ -139,7 +167,7 @@ extension _Contact {
 
 }
 
-extension _Contact {
+public extension _Contact {
 
     func addToMessages(objects: NSSet) {
         let mutable = self.toMessages.mutableCopy() as! NSMutableSet

@@ -195,7 +195,7 @@ extension SmtpSend: CWServiceClient {
                     password = pass
                 } else {
                     password = KeyChain.getPassword(self.connectInfo.email,
-                        serverType: Account.AccountType.Smtp.asString())
+                        serverType: Account.AccountType.SMTP.asString())
                 }
                 self.smtp.authenticate(self.connectInfo.getSmtpUsername(),
                     password: password,

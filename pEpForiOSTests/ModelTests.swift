@@ -8,6 +8,8 @@
 
 import XCTest
 
+import pEpForiOS
+
 class ModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
 
@@ -15,7 +17,8 @@ class ModelTests: XCTestCase {
         super.setUp()
         persistentSetup = PersistentSetup.init()
 
-        for i in 1..<5 {
+        // Some contacts
+        for i in 1...5 {
             let contact = persistentSetup.model.insertOrUpdateContactEmail(
                 "email\(i)@test.de", name: "name\(i)")
             XCTAssertNotNil(contact)
@@ -23,6 +26,21 @@ class ModelTests: XCTestCase {
         let contact = persistentSetup.model.insertOrUpdateContactEmail(
             "wha@wawa.com", name: "Another")
         XCTAssertNotNil(contact)
+
+        let connectInfo = ConnectInfo.init(
+            email: "test001@peptest.ch", imapServerName: "imapServer",
+            smtpServerName: "smtpServer")
+        XCTAssertNotNil(persistentSetup.model.insertAccountFromConnectInfo(connectInfo))
+
+        // Some folders
+        XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
+            "INBOX", folderType: Account.AccountType.IMAP, accountEmail: "test001@peptest.ch"))
+        XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
+            "INBOX.Drafts", folderType: Account.AccountType.IMAP,
+            accountEmail: "test001@peptest.ch"))
+        XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
+            "INBOX.Sent Mails", folderType: Account.AccountType.IMAP,
+            accountEmail: "test001@peptest.ch"))
     }
 
     override func tearDown() {
@@ -30,11 +48,17 @@ class ModelTests: XCTestCase {
     }
 
     func testSimpleContactSearch() {
-        var contacts = persistentSetup.model.getContactsBySnippet("test")
-        XCTAssertEqual(contacts.count, 10)
+        var contacts = persistentSetup.model.getContactsBySnippet("tes")
+        XCTAssertEqual(contacts.count, 5)
         contacts = persistentSetup.model.getContactsBySnippet("wha")
         XCTAssertEqual(contacts.count, 1)
         contacts = persistentSetup.model.getContactsBySnippet("Ano")
         XCTAssertEqual(contacts.count, 1)
+    }
+
+    func testSpecialFolders() {
+        XCTAssertNotNil(persistentSetup.model.folderInbox())
+        XCTAssertNotNil(persistentSetup.model.folderSentMails())
+        XCTAssertNotNil(persistentSetup.model.folderDrafts())
     }
 }

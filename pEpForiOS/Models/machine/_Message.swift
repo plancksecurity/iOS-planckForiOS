@@ -155,7 +155,7 @@ public class _Message: BaseManagedObject, _IMessage {
 
 }
 
-extension _Message {
+public extension _Message {
 
     func addAttachments(objects: NSOrderedSet) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
@@ -183,7 +183,7 @@ extension _Message {
 
 }
 
-extension _Message {
+public extension _Message {
 
     func addBcc(objects: NSOrderedSet) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
@@ -211,7 +211,7 @@ extension _Message {
 
 }
 
-extension _Message {
+public extension _Message {
 
     func addCc(objects: NSOrderedSet) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
@@ -239,7 +239,7 @@ extension _Message {
 
 }
 
-extension _Message {
+public extension _Message {
 
     func addReferences(objects: NSOrderedSet) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
@@ -267,7 +267,7 @@ extension _Message {
 
 }
 
-extension _Message {
+public extension _Message {
 
     func addTo(objects: NSOrderedSet) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
