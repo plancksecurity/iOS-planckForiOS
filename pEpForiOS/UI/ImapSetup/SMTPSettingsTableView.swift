@@ -55,8 +55,14 @@ public class SMTPSettingsTableView: UITableViewController {
     }
 
     func showErrorMessage (message: String) {
-        let alertView = UIAlertController(title: NSLocalizedString("Error", comment: "the text in the title for the error message AlerView in account settings"), message: NSLocalizedString(message, comment: "the text for the error description message AlerView in account settings"), preferredStyle: .Alert)
-        alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "confirmation button text for error message AlertView in account settings"), style: .Default, handler: nil))
+        let alertView = UIAlertController(
+            title: NSLocalizedString("Error",
+                comment: "the text in the title for the error message AlerView in account settings"),
+            message:message, preferredStyle: .Alert)
+
+        alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok",
+            comment: "confirmation button text for error message AlertView in account settings"),
+            style: .Default, handler: nil))
         presentViewController(alertView, animated: true, completion: nil)
     }
 
@@ -97,8 +103,13 @@ public class SMTPSettingsTableView: UITableViewController {
     }
 
     @IBAction func nextButtonTapped(sender: UIBarButtonItem) {
-        let connect = ConnectInfo.init(email: model.email!, imapUsername: model.email!, smtpUsername: model.email!, imapPassword: model.password!, smtpPassword: model.password!, imapServerName: model.serverIMAP!, imapServerPort: model.portIMAP, imapTransport: model.transportIMAP, smtpServerName: model.serverSMTP!, smtpServerPort: model.portSMTP, smtpTransport: model.transportSMTP)
-
+        let connect = ConnectInfo.init(
+            email: model.email!, imapUsername: model.email!,
+            smtpUsername: model.email!, imapPassword: model.password!,
+            smtpPassword: model.password!, imapServerName: model.serverIMAP!,
+            imapServerPort: model.portIMAP, imapTransport: model.transportIMAP,
+            smtpServerName: model.serverSMTP!, smtpServerPort: model.portSMTP,
+            smtpTransport: model.transportSMTP)
 
         appConfig?.grandOperator.verifyConnection(connect, completionBlock: { error in
             if error == nil {
@@ -108,12 +119,16 @@ public class SMTPSettingsTableView: UITableViewController {
                         // unwind back to INBOX on success
                         self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: sender)
                     } else {
-                        self.showErrorMessage("Impossible load data to the account")
+                        self.showErrorMessage(NSLocalizedString("Could not save account", comment: ""))
                     }
                 }
             } else {
-                self.showErrorMessage("Impossible to connect to the account")
+                if let error = error?.localizedDescription {
+                    self.showErrorMessage(error)
+                } else {
+                    self.showErrorMessage(NSLocalizedString("Could not connect", comment: ""))
+                }
             }
-        })
+        })8
     }
 }
