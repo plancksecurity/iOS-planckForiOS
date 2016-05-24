@@ -113,7 +113,7 @@ public class _Account: BaseManagedObject, _IAccount {
 
 }
 
-extension _Account {
+public extension _Account {
 
     func addFolders(objects: NSSet) {
         let mutable = self.folders.mutableCopy() as! NSMutableSet

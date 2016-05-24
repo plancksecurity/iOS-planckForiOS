@@ -36,7 +36,7 @@ public protocol IModel {
     func insertAttachmentWithContentType(
         contentType: String?, filename: String?, data: NSData) -> _IAttachment
 
-    func insertOrUpdateContactEmail(email: String, name: String?) -> IContact?
+    func insertOrUpdateContactEmail(email: String, name: String?) -> IContact
 
     /**
      Inserts a folder of the given type.
@@ -330,7 +330,7 @@ public class Model: IModel {
         return folder
     }
 
-    public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact? {
+    public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact {
         let fetch = NSFetchRequest.init(entityName:Contact.entityName())
         fetch.predicate = NSPredicate.init(format: "email == %@", email)
         do {
@@ -342,16 +342,14 @@ public class Model: IModel {
             } else if existing.count == 1 {
                 existing[0].updateFromEmail(email, name: name)
                 return existing[0]
-            } else {
-                var contact = NSEntityDescription.insertNewObjectForEntityForName(
-                    Contact.entityName(), inManagedObjectContext: context) as! Contact
-                contact.updateFromEmail(email, name: name)
-                return contact
             }
         } catch let err as NSError {
             Log.error(comp, error: err)
-            return nil
         }
+        var contact = NSEntityDescription.insertNewObjectForEntityForName(
+            Contact.entityName(), inManagedObjectContext: context) as! Contact
+        contact.updateFromEmail(email, name: name)
+        return contact
     }
 
     public func insertOrUpdateMessageReference(messageID: String) -> IMessageReference {
@@ -373,13 +371,9 @@ public class Model: IModel {
     public func addContacts(contacts: [CWInternetAddress]) -> [String: IContact] {
         var added: [String: IContact] = [:]
         for address in contacts {
-            if let addr = insertOrUpdateContactEmail(address.address(),
-                                                     name: address.personal()) {
-                added[addr.email] = addr
-            } else {
-                Log.error(comp, error: Constants.errorCouldNotUpdateOrAddContact(comp,
-                    name: address.stringValue()))
-            }
+            let addr = insertOrUpdateContactEmail(address.address(),
+                                                  name: address.personal())
+            added[addr.email] = addr
         }
         return added
     }

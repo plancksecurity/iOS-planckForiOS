@@ -172,4 +172,24 @@ class GrandOperatorTests: XCTestCase {
             XCTAssertEqual(mail?.uid, theUID)
         })
     }
+
+    func testSendMail() {
+        var msg = persistentSetup.model.insertNewMessage()
+        msg.subject = "Subject"
+        msg.longMessage = "Message body"
+        let from = persistentSetup.model.insertOrUpdateContactEmail(
+            "test001@peptest.ch", name: "Test 001")
+        msg.from = from as? Contact
+        let to = persistentSetup.model.insertOrUpdateContactEmail(
+            "test002@peptest.ch", name: "Test 002")
+        (msg as! Message).addToObject(to as! Contact)
+        let exp = expectationWithDescription("mailFetched")
+        persistentSetup.grandOperator.sendMail(msg, completionBlock: { error in
+            XCTAssertNil(error)
+            exp.fulfill()
+        })
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+    }
 }

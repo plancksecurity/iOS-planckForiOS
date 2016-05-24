@@ -89,7 +89,7 @@ public class _Folder: BaseManagedObject, _IFolder {
 
 }
 
-extension _Folder {
+public extension _Folder {
 
     func addMessages(objects: NSSet) {
         let mutable = self.messages.mutableCopy() as! NSMutableSet
