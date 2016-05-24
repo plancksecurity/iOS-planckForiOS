@@ -73,7 +73,7 @@ class SimpleOperationsTest: XCTestCase {
 
     func testStoreSingleMail() {
         grandOperator.operationModel().insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, folderType: Account.AccountType.Imap,
+            ImapSync.defaultImapInboxName, folderType: Account.AccountType.IMAP,
             accountEmail: connectInfo.email)
         grandOperator.operationModel().save()
 
@@ -96,7 +96,7 @@ class SimpleOperationsTest: XCTestCase {
         let numMails = 10
 
         grandOperator.operationModel().insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, folderType: Account.AccountType.Imap,
+            ImapSync.defaultImapInboxName, folderType: Account.AccountType.IMAP,
             accountEmail: connectInfo.email)
         grandOperator.operationModel().save()
 

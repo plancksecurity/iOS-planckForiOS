@@ -24,7 +24,7 @@ class StoreFoldersOperation: BaseOperation {
         let model = grandOperator.operationModel()
         for folderName in foldersToStore {
             let folder = model.insertOrUpdateFolderName(
-                folderName, folderType: Account.AccountType.Imap, accountEmail: email)
+                folderName, folderType: Account.AccountType.IMAP, accountEmail: email)
             if folder == nil {
                 grandOperator.setErrorForOperation(
                     self,

@@ -97,45 +97,6 @@ public struct ConnectInfo: IConnectInfo {
         return email
     }
 
-    public init(email: String, imapServerName: String, smtpServerName: String) {
-        self.email = email
-        self.imapServerName = imapServerName
-        self.smtpServerName = smtpServerName
-    }
-
-    public init(email: String, imapUsername: String?, smtpUsername: String?,
-                imapPassword: String?, smtpPassword: String?,
-                imapServerName: String, imapServerPort: UInt16, imapTransport: ConnectionTransport,
-                smtpServerName: String, smtpServerPort: UInt16, smtpTransport: ConnectionTransport) {
-        self.email = email
-        self.imapUsername = imapUsername
-        self.smtpUsername = smtpUsername
-        self.imapPassword = imapPassword
-        self.smtpPassword = smtpPassword
-        self.imapServerName = imapServerName
-        self.imapServerPort = imapServerPort
-        self.imapTransport = imapTransport
-        self.smtpServerName = smtpServerName
-        self.smtpServerPort = smtpServerPort
-        self.smtpTransport = smtpTransport
-    }
-
-    public init(email: String, imapPassword: String?,
-                imapServerName: String, imapServerPort: UInt16, imapTransport: ConnectionTransport,
-                smtpServerName: String, smtpServerPort: UInt16, smtpTransport: ConnectionTransport) {
-        self.email = email
-        self.imapUsername = nil
-        self.smtpUsername = nil
-        self.imapPassword = imapPassword
-        self.smtpPassword = nil
-        self.imapServerName = imapServerName
-        self.imapServerPort = imapServerPort
-        self.imapTransport = imapTransport
-        self.smtpServerName = smtpServerName
-        self.smtpServerPort = smtpServerPort
-        self.smtpTransport = smtpTransport
-    }
-
     public func getSmtpUsername() -> String {
         if let username = smtpUsername {
             return username
@@ -155,6 +116,20 @@ public struct ConnectInfo: IConnectInfo {
             return password
         }
         return imapPassword
+    }
+}
+
+public extension ConnectInfo {
+    public init(email: String, imapPassword: String? = nil,
+                imapServerName: String, imapServerPort: UInt16 = 993,
+                imapTransport: ConnectionTransport = .TLS,
+                smtpServerName: String, smtpServerPort: UInt16 = 587,
+                smtpTransport: ConnectionTransport = .StartTLS)
+    {
+        self.init(email: email, imapUsername: nil, smtpUsername: nil, imapPassword: imapPassword,
+                  smtpPassword: nil, imapServerName: imapServerName, imapServerPort: imapServerPort,
+                  imapTransport: imapTransport, smtpServerName: smtpServerName,
+                  smtpServerPort: smtpServerPort, smtpTransport: smtpTransport)
     }
 }
 

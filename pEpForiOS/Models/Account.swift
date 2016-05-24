@@ -12,22 +12,25 @@ public class Account: _Account, IAccount {
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
 
     public enum AccountType: Int {
-        case Imap = 0
-        case Smtp = 1
+        case IMAP = 0
+        case SMTP = 1
 
         public func asString() -> String {
             switch self {
-            case .Imap:
+            case .IMAP:
                 return "IMAP"
-            case .Smtp:
+            case .SMTP:
                 return "SMTP"
             }
         }
     }
 
     public var connectInfo: ConnectInfo {
+        let passImap = KeyChain.getPassword(self.email, serverType: AccountType.IMAP.asString())
+        let passSmtp = KeyChain.getPassword(self.email, serverType: AccountType.SMTP.asString())
         return ConnectInfo.init(
-            email: self.email, imapPassword: nil,
+            email: email, imapUsername: imapUsername, smtpUsername: smtpUsername,
+            imapPassword: passImap, smtpPassword: passSmtp,
             imapServerName: self.imapServerName,
             imapServerPort: UInt16(self.imapServerPort.integerValue),
             imapTransport: self.rawImapTransport,

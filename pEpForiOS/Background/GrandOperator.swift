@@ -56,6 +56,11 @@ public protocol IGrandOperator {
     func sendMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
+     Saves the given email as a draft, both on the server and locally.
+     */
+    func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
      Used by background operations to set an error.
      
      - parameter operation: The operation the error occurred
@@ -172,6 +177,10 @@ public class GrandOperator: IGrandOperator {
     }
 
     public func sendMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
+        completionBlock?(error: Constants.errorNotImplemented(comp))
+    }
+
+    public func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
         completionBlock?(error: Constants.errorNotImplemented(comp))
     }
 

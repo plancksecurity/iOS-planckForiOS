@@ -73,13 +73,8 @@ class GrandOperatorTests: XCTestCase {
 
     func testVerifyConnectionSmtpAuthenticationFailed() {
         let exp = expectationWithDescription("verified")
-        let connectionInfo = ConnectInfo.init(
-            email: correct.email, imapUsername: correct.getImapUsername(),
-            smtpUsername: correct.getSmtpUsername(), imapPassword: correct.imapPassword,
-            smtpPassword: "wrong", imapServerName: correct.imapServerName,
-            imapServerPort: correct.imapServerPort, imapTransport: correct.imapTransport,
-            smtpServerName: correct.smtpServerName, smtpServerPort: correct.smtpServerPort,
-            smtpTransport: correct.smtpTransport)
+        var connectionInfo = correct
+        connectionInfo.smtpPassword = "WRONG!"
         persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
             exp.fulfill()
@@ -91,13 +86,8 @@ class GrandOperatorTests: XCTestCase {
 
     func testVerifyConnectionImapConnectionFailed() {
         let exp = expectationWithDescription("verified")
-        let connectionInfo = ConnectInfo.init(
-            email: correct.email, imapUsername: correct.getImapUsername(),
-            smtpUsername: correct.getSmtpUsername(), imapPassword: correct.imapPassword,
-            smtpPassword: correct.getSmtpPassword(), imapServerName: "noconnect",
-            imapServerPort: correct.imapServerPort, imapTransport: correct.imapTransport,
-            smtpServerName: correct.smtpServerName, smtpServerPort: correct.smtpServerPort,
-            smtpTransport: correct.smtpTransport)
+        var connectionInfo = correct
+        connectionInfo.imapServerName = "noconnect"
         persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
             exp.fulfill()
@@ -109,13 +99,8 @@ class GrandOperatorTests: XCTestCase {
 
     func testVerifyConnectionSmtpConnectionFailed() {
         let exp = expectationWithDescription("verified")
-        let connectionInfo = ConnectInfo.init(
-            email: correct.email, imapUsername: correct.getImapUsername(),
-            smtpUsername: correct.getSmtpUsername(), imapPassword: correct.imapPassword,
-            smtpPassword: correct.getSmtpPassword(), imapServerName: correct.imapServerName,
-            imapServerPort: correct.imapServerPort, imapTransport: correct.imapTransport,
-            smtpServerName: "noconnect", smtpServerPort: correct.smtpServerPort,
-            smtpTransport: correct.smtpTransport)
+        var connectionInfo = correct
+        connectionInfo.smtpServerName = "noconnect"
         persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
             exp.fulfill()
@@ -173,17 +158,34 @@ class GrandOperatorTests: XCTestCase {
         })
     }
 
-    func testSendMail() {
-        var msg = persistentSetup.model.insertNewMessage()
+    func createMail() -> Message {
+        var msg = persistentSetup.model.insertNewMessage() as! Message
         msg.subject = "Subject"
         msg.longMessage = "Message body"
         let from = persistentSetup.model.insertOrUpdateContactEmail(
-            "test001@peptest.ch", name: "Test 001")
-        msg.from = from as? Contact
+            "test001@peptest.ch", name: "Test 001") as! Contact
+        msg.from = from
         let to = persistentSetup.model.insertOrUpdateContactEmail(
-            "test002@peptest.ch", name: "Test 002")
-        (msg as! Message).addToObject(to as! Contact)
+            "test002@peptest.ch", name: "Test 002") as! Contact
+        msg.addToObject(to)
+        return msg
+    }
+
+    func testSendMail() {
+        let msg = createMail()
         let exp = expectationWithDescription("mailFetched")
+        persistentSetup.grandOperator.sendMail(msg, completionBlock: { error in
+            XCTAssertNil(error)
+            exp.fulfill()
+        })
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+    }
+
+    func testSaveDraft() {
+        let msg = createMail()
+        let exp = expectationWithDescription("draftSaved")
         persistentSetup.grandOperator.sendMail(msg, completionBlock: { error in
             XCTAssertNil(error)
             exp.fulfill()

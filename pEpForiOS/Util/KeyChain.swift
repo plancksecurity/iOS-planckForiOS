@@ -14,21 +14,26 @@ import Foundation
 public class KeyChain {
     static let comp = "KeyChain"
 
-    static func addEmail(email: String, serverType: String, password: String) -> Bool {
-        let query = [
-            kSecClass as String: kSecClassGenericPassword as String,
-            kSecAttrService as String: serverType,
-            kSecAttrAccount as String: email,
-            kSecValueData as String: password.dataUsingEncoding(NSUTF8StringEncoding)!]
+    static func addEmail(email: String, serverType: String, password: String?) -> Bool {
+        if let pass = password {
+            let query = [
+                kSecClass as String: kSecClassGenericPassword as String,
+                kSecAttrService as String: serverType,
+                kSecAttrAccount as String: email,
+                kSecValueData as String: pass.dataUsingEncoding(NSUTF8StringEncoding)!]
 
-        SecItemDelete(query)
+            SecItemDelete(query)
 
-        let status = SecItemAdd(query, nil)
-        if status != noErr {
-            Log.warn(comp, "Could not save password for \(email)")
+            let status = SecItemAdd(query, nil)
+            if status != noErr {
+                Log.warn(comp, "Could not save password for \(email)")
+                return false
+            }
+            return true
+        } else {
+            // no password, so nothing need to be done
             return false
         }
-        return true
     }
 
     static func getPassword(email: String, serverType: String) -> String? {
