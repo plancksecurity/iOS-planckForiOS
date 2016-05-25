@@ -159,7 +159,7 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func createMail() -> Message {
-        var msg = persistentSetup.model.insertNewMessage() as! Message
+        let msg = persistentSetup.model.insertNewMessage() as! Message
         msg.subject = "Subject"
         msg.longMessage = "Message body"
         let from = persistentSetup.model.insertOrUpdateContactEmail(

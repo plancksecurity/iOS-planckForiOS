@@ -20,7 +20,7 @@ func ==<T1: Equatable, T2: Equatable, T3: Equatable>(
 
 class ModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
-    let waitTime: NSTimeInterval = 1000
+    let waitTime: NSTimeInterval = 10
 
     override func setUp() {
         super.setUp()
