@@ -39,12 +39,14 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
     func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
 
     func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {
+        smtp.close()
         markAsFinished()
     }
 
     func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
         grandOperator.setErrorForOperation(self,
                                            error: Constants.errorAuthenticationFailed(errorDomain))
+        smtp.close()
         markAsFinished()
     }
 

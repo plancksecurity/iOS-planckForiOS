@@ -130,7 +130,7 @@ public class GrandOperator: IGrandOperator {
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
-    func handleVerificationCompletion(finished1: Bool, finished2: Bool,
+    func handleVerificationCompletionFinished1(finished1: Bool, finished2: Bool,
                                       op1: NSOperation, op2: NSOperation,
                                       completionBlock: GrandOperatorCompletionBlock?) {
         GCD.onMain({ // serialize
@@ -150,21 +150,21 @@ public class GrandOperator: IGrandOperator {
 
     public func verifyConnection(connectInfo: ConnectInfo,
                                  completionBlock: GrandOperatorCompletionBlock?) {
-        var finished1 = false
-        var finished2 = false
-
         let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
         let op2 = VerifySmtpConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
 
+        var finished1 = false
+        var finished2 = false
+
         let completion1 = {
             finished1 = true
-            self.handleVerificationCompletion(finished1, finished2: finished2,
+            self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
                                               op1: op1, op2: op2,
                                               completionBlock: completionBlock)
         }
         let completion2 = {
             finished2 = true
-            self.handleVerificationCompletion(finished1, finished2: finished2,
+            self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
                                               op1: op1, op2: op2,
                                               completionBlock: completionBlock)
         }
@@ -193,7 +193,10 @@ public class GrandOperator: IGrandOperator {
 
     public func setErrorForOperation(operation: NSOperation, error: NSError) {
         GCD.onMain({
-            self.errors[operation] = error
+            // First error wins
+            if self.errors[operation] == nil {
+                self.errors[operation] = error
+            }
         })
     }
 

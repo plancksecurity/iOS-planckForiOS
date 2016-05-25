@@ -37,9 +37,7 @@ public class Service: IService {
     }
 
     public func start() {
-        dispatch_async(dispatch_get_main_queue(), {
-            self.service.connectInBackgroundAndNotify()
-        })
+        self.service.connectInBackgroundAndNotify()
     }
 
     deinit {
@@ -63,5 +61,9 @@ public class Service: IService {
 
     public func bestAuthMethod()  -> AuthMethod {
         return bestAuthMethodFromList(service.supportedMechanisms() as! [String])
+    }
+
+    public func close() {
+        service.close()
     }
 }
