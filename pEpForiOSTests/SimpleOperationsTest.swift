@@ -127,7 +127,7 @@ class SimpleOperationsTest: XCTestCase {
             backgroundQueue.addOperation(op)
         }
 
-        waitForExpectationsWithTimeout(10, handler: { error in
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(self.grandOperator.allErrors().count, 0)
             XCTAssertEqual(

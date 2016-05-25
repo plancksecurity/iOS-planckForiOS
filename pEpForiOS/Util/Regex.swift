@@ -45,6 +45,18 @@ extension String {
             return false
         }
     }
+
+    public func contains(substring: String, ignoreCase: Bool = true,
+                         ignoreDiacritic: Bool = true) -> Bool {
+
+        if substring == "" { return true }
+        var options = NSStringCompareOptions()
+
+        if ignoreCase { options.unionInPlace(.CaseInsensitiveSearch) }
+        if ignoreDiacritic { options.unionInPlace(.DiacriticInsensitiveSearch) }
+
+        return self.rangeOfString(substring, options: options) != nil
+    }
 }
 
 class Regex {

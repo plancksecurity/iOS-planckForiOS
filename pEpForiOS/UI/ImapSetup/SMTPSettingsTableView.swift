@@ -129,6 +129,6 @@ public class SMTPSettingsTableView: UITableViewController {
                     self.showErrorMessage(NSLocalizedString("Could not connect", comment: ""))
                 }
             }
-        })8
+        })
     }
 }
