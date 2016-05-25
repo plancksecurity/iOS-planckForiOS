@@ -65,9 +65,9 @@ public protocol IModel {
     func insertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String) -> IMessage?
 
     /**
-     - Returns: List of contact that match the given snippet (either in the name, or address)
+     - Returns: List of contact that match the given snippet (either in the name, or address).
      */
-    func getContactsBySnippet(snippet: String) -> [Contact]
+    func contactsBySnippet(snippet: String) -> [IContact]
 
     func save()
 
@@ -526,10 +526,16 @@ public class Model: IModel {
         }
     }
 
-    public func getContactsBySnippet(snippet: String) -> [Contact] {
+    public func contactsBySnippet(snippet: String) -> [IContact] {
         let p = NSPredicate.init(format: "email contains[cd] %@ or name contains[cd] %@",
                                  snippet, snippet)
-        let contacts = entitiesWithName(Contact.entityName(), predicate: p) as! [Contact]
+        let entities = entitiesWithName(Contact.entityName(), predicate: p) as! [Contact]
+        var contacts: [IContact] = []
+        for ent in entities {
+            contacts.append(ent)
+        }
+        let abContacts = AddressBook.init().contactsBySnippet(snippet)
+        contacts.appendContentsOf(abContacts)
         return contacts
     }
 

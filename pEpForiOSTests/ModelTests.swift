@@ -29,7 +29,7 @@ class ModelTests: XCTestCase {
         // Some contacts
         for i in 1...5 {
             let contact = persistentSetup.model.insertOrUpdateContactEmail(
-                "email\(i)@test.de", name: "name\(i)")
+                "email\(i)@xtest.de", name: "name\(i)")
             XCTAssertNotNil(contact)
         }
         let contact = persistentSetup.model.insertOrUpdateContactEmail(
@@ -57,11 +57,11 @@ class ModelTests: XCTestCase {
     }
 
     func testSimpleContactSearch() {
-        XCTAssertEqual(persistentSetup.model.getContactsBySnippet("tes").count, 5)
-        XCTAssertEqual(persistentSetup.model.getContactsBySnippet("tEs").count, 5)
-        XCTAssertEqual(persistentSetup.model.getContactsBySnippet("wha").count, 1)
-        XCTAssertEqual(persistentSetup.model.getContactsBySnippet("Ano").count, 1)
-        XCTAssertEqual(persistentSetup.model.getContactsBySnippet("ANO").count, 1)
+        XCTAssertEqual(persistentSetup.model.contactsBySnippet("xtes").count, 5)
+        XCTAssertEqual(persistentSetup.model.contactsBySnippet("XtEs").count, 5)
+        XCTAssertEqual(persistentSetup.model.contactsBySnippet("wha").count, 1)
+        XCTAssertEqual(persistentSetup.model.contactsBySnippet("Ano").count, 1)
+        XCTAssertEqual(persistentSetup.model.contactsBySnippet("ANO").count, 1)
     }
 
     func testSpecialFolders() {
