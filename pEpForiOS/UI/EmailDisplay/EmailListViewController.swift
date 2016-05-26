@@ -39,8 +39,7 @@ class EmailListViewController: UITableViewController {
             if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
                 appConfig = appDelegate.appConfig
             }
-        }
-
+    }
         prepareFetchRequest()
 
         let account:IAccount? = appConfig!.model.fetchLastAccount()
@@ -151,6 +150,13 @@ class EmailListViewController: UITableViewController {
             } else {
                 putString(nil, toLabel: cell.dateLabel)
             }
+        }
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "composeSegue" {
+            let destination = segue.destinationViewController as! ComposeViewController
+            destination.appConfig = appConfig
         }
     }
 

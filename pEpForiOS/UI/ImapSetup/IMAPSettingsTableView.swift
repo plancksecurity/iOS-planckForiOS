@@ -51,6 +51,7 @@ class IMAPSettingsTableView: UITableViewController  {
         if model.serverIMAP == nil {
             serverValue.becomeFirstResponder()
         }
+        portValue.keyboardType = UIKeyboardType.NumberPad
         updateView()
     }
 

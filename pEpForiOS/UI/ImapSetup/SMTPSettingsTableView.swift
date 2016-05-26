@@ -35,6 +35,7 @@ public class SMTPSettingsTableView: UITableViewController {
         if model.serverSMTP == nil {
             serverValue.becomeFirstResponder()
         }
+        portValue.keyboardType = UIKeyboardType.NumberPad
         updateView()
     }
 
