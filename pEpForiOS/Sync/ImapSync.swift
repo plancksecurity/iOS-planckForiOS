@@ -93,6 +93,11 @@ public protocol IImapSync {
      The folder must be currently opened!
      */
     func fetchMailFromFolderNamed(folderName: String, uid: Int)
+
+    /**
+     Close the connection.
+     */
+    func close()
 }
 
 public class ImapSync: Service, IImapSync {

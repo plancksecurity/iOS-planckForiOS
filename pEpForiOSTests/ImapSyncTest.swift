@@ -206,6 +206,16 @@ class ImapSyncTest: XCTestCase {
         coreDataUtil = InMemoryCoreDataUtil()
     }
 
+    func waitForConnectionShutdown() {
+        for _ in 1...5 {
+            if CWTCPConnection.numberOfRunningConnections() == 0 {
+                break
+            }
+            NSThread.sleepForTimeInterval(0.2)
+        }
+        XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(), 0)
+    }
+
     func testConnectionFail() {
         let del = TestImapSyncDelegate.init()
         let conInfo = ConnectInfo.init(
@@ -224,6 +234,8 @@ class ImapSyncTest: XCTestCase {
             XCTAssertTrue(del.errorOccurred)
             XCTAssertTrue(del.connectionTimeout)
         })
+        sync.close()
+        waitForConnectionShutdown()
     }
 
     func testAuthSuccess() {
@@ -241,6 +253,8 @@ class ImapSyncTest: XCTestCase {
             XCTAssertTrue(!del.errorOccurred)
             XCTAssertTrue(del.authSuccess)
         })
+        sync.close()
+        waitForConnectionShutdown()
     }
 
     func testFetchFolders() {
@@ -259,6 +273,8 @@ class ImapSyncTest: XCTestCase {
             XCTAssertTrue(del.foldersFetched)
             XCTAssertTrue(del.folderNames.count > 0)
         })
+        sync.close()
+        waitForConnectionShutdown()
     }
 
     func prefetchMails(setup: PersistentSetup) -> ImapSync {
@@ -294,6 +310,9 @@ class ImapSyncTest: XCTestCase {
     func testPrefetchWithPersistence() {
         let setup = PersistentSetup.init()
         prefetchMails(setup)
+        // Closing of connections should be automatic here, since the ImapSync created
+        // in prefetchmails() went out of scope.
+        waitForConnectionShutdown()
     }
 
     /**
@@ -324,6 +343,8 @@ class ImapSyncTest: XCTestCase {
         let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder
         XCTAssertNotNil(folder, "Accessed folders should be created automatically")
+        sync.close()
+        waitForConnectionShutdown()
     }
 
     func testFetchMail() {
@@ -365,6 +386,8 @@ class ImapSyncTest: XCTestCase {
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }
+        sync.close()
+        waitForConnectionShutdown()
     }
 
     /**
@@ -408,6 +431,8 @@ class ImapSyncTest: XCTestCase {
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }
+        sync.close()
+        waitForConnectionShutdown()
     }
 
     func testImapSupportedAuthMethodsBasic() {

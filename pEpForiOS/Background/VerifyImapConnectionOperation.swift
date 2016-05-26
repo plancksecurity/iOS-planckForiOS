@@ -13,6 +13,15 @@ public class VerifyImapConnectionOperation: ConcurrentBaseOperation {
     var imapSync: ImapSync!
     let connectInfo: ConnectInfo
 
+    /**
+     Flag that the connection has already been finished, and was probably closed on request,
+     so any errors like "connection lost" after that are ignored.
+     This avoids the case where all went fine, then the
+     connection is closed, and some "connection lost" or similar is sent to the delegate,
+     and it sets an error.
+     */
+    var isFinishing: Bool = false
+
     init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
         super.init(grandOperator: grandOperator)
@@ -29,34 +38,58 @@ public class VerifyImapConnectionOperation: ConcurrentBaseOperation {
 }
 
 extension VerifyImapConnectionOperation: ImapSyncDelegate {
+    override func markAsFinished() {
+        self.isFinishing = true
+        super.markAsFinished()
+    }
+
+    func close(sync: ImapSync, finish: Bool) {
+        sync.close()
+        if finish {
+            markAsFinished()
+        }
+    }
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
-        markAsFinished()
+        self.isFinishing = true
+        close(sync, finish: true)
     }
 
     public func receivedFolderNames(sync: ImapSync, folderNames: [String]?) {
     }
 
     public func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self,
-                                           error: Constants.errorAuthenticationFailed(errorDomain))
-        markAsFinished()
+        if !isFinishing {
+            grandOperator.setErrorForOperation(
+                self, error: Constants.errorAuthenticationFailed(errorDomain))
+            close(sync, finish: true)
+        }
     }
 
     public func connectionLost(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorConnectionLost(errorDomain))
-        markAsFinished()
+        if !isFinishing {
+            grandOperator.setErrorForOperation(
+                self, error: Constants.errorConnectionLost(errorDomain))
+            isFinishing = true
+            markAsFinished()
+        }
     }
 
     public func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self,
-                                           error: Constants.errorConnectionTerminated(errorDomain))
-        markAsFinished()
+        if !isFinishing {
+            grandOperator.setErrorForOperation(
+                self, error: Constants.errorConnectionTerminated(errorDomain))
+            isFinishing = true
+            markAsFinished()
+        }
     }
 
     public func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorTimeout(errorDomain))
-        markAsFinished()
+        if !isFinishing {
+            grandOperator.setErrorForOperation(self, error: Constants.errorTimeout(errorDomain))
+            isFinishing = true
+            markAsFinished()
+        }
     }
 
     public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
@@ -81,6 +114,9 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     }
 
     public func actionFailed(sync: ImapSync, error: NSError) {
-        grandOperator.setErrorForOperation(self, error: error)
-    }
+        if !isFinishing {
+            grandOperator.setErrorForOperation(self, error: error)
+            close(sync, finish: true)
+        }
+   }
 }

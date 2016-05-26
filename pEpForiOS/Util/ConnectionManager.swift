@@ -43,4 +43,13 @@ public class ConnectionManager {
         // Don't cache
         return SmtpSend.init(connectInfo: connectInfo)
     }
+
+    /**
+     Forcefully closes all cached connections. Useful during tests.
+     */
+    public func closeAll() {
+        for (_, imap) in imapConnections {
+            imap.close()
+        }
+    }
 }

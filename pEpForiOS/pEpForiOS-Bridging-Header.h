@@ -13,6 +13,7 @@
 #import "Pantomime/CWFolder.h"
 #import "Pantomime/CWService.h"
 #import "Pantomime/CWConnection.h"
+#import "Pantomime/CWTCPConnection.h"
 #import "Pantomime/CWIMAPFolder.h"
 #import "Pantomime/CWCacheRecord.h"
 
