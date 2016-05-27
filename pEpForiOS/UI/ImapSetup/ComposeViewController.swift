@@ -31,7 +31,7 @@ class ComposeViewController: UITableViewController {
 
     func obtainMatchingContacts () {
         GCD.onMain  {
-            let pepContact = self.appConfig?.model.getContactsBySnippet(self.receiver.text!)
+            let pepContact = self.appConfig?.model.contactsBySnippet(self.receiver.text!)
             for contact in pepContact! {
                 self.possibleMatchingContacts.append(contact.displayString())
             }
