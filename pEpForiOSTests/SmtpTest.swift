@@ -38,12 +38,13 @@ class SmtpTest: XCTestCase {
                 XCTAssertEqual(smtp.bestAuthMethod(), AuthMethod.Login)
                 smtp.close()
             })
+            RetainChecker.runCheckerOnElements([smtp])
         }
+
         print("finished, refCounter.refCount \(refCounter.refCount)")
         XCTAssertEqual(refCounter.refCount, 0)
     }
 
-    /*
     func testTriggerNil() {
         for _ in 0...1000000 {
             testSimpleAuth()
@@ -60,5 +61,4 @@ class SmtpTest: XCTestCase {
         }
         XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(), 0)
     }
- */
 }

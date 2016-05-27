@@ -41,6 +41,7 @@ mkdir ~/src
 cd ~/src
 
 git clone https://github.com/fdik/libetpan
+git close https://github.com/facebook/FBRetainCycleDetector.git
 
 hg clone https://cacert.pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://cacert.pep.foundation/dev/repos/netpgp-et
