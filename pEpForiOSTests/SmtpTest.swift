@@ -37,7 +37,8 @@ class SmtpTest: XCTestCase {
         })
     }
 
-    func testT3riggerNil() {
+    /*
+    func testTriggerNil() {
         for _ in 0..<1000000000 {
             testSimpleAuth()
             waitForConnectionShutdown()
@@ -53,4 +54,5 @@ class SmtpTest: XCTestCase {
         }
         XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(), 0)
     }
+ */
 }
