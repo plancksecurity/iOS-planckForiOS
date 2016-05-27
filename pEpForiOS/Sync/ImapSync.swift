@@ -13,7 +13,7 @@ public struct ImapState {
     var currentFolder: String?
 }
 
-public protocol ImapSyncDelegate {
+public protocol ImapSyncDelegate: class {
     func authenticationCompleted(sync: ImapSync, notification: NSNotification?)
     func authenticationFailed(sync: ImapSync, notification: NSNotification?)
     func connectionLost(sync: ImapSync, notification: NSNotification?)
@@ -61,7 +61,7 @@ public protocol IImapSync {
     /**
      The delegate.
      */
-    var delegate: ImapSyncDelegate? { get set }
+    weak var delegate: ImapSyncDelegate? { get set }
 
     /**
      An instance of `CWFolderBuilding` can be used for persistence.

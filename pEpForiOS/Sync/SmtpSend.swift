@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol SmtpSendDelegate {
+public protocol SmtpSendDelegate: class {
     func messageSent(smtp: SmtpSend, theNotification: NSNotification?)
     func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?)
     func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?)
@@ -58,7 +58,7 @@ public class SmtpSend: Service {
     private let comp = "SmtpSend"
 
     private var smtpStatus: SmtpStatus = SmtpStatus.init()
-    public var delegate: SmtpSendDelegate?
+    weak public var delegate: SmtpSendDelegate?
 
     var smtp: CWSMTP {
         get {
