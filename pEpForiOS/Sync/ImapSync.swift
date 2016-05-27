@@ -105,7 +105,7 @@ public class ImapSync: Service, IImapSync {
 
     static public let defaultImapInboxName = "INBOX"
 
-    public var delegate: ImapSyncDelegate?
+    weak public var delegate: ImapSyncDelegate?
     public var folderBuilder: CWFolderBuilding? {
         set {
             imapStore.folderBuilder = newValue

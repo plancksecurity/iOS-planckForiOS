@@ -14,7 +14,7 @@ import CoreData
 import pEpForiOS
 
 class SmtpTest: XCTestCase {
-    let waitTime: NSTimeInterval = 10
+    let waitTime: NSTimeInterval = 1000
 
     func testSimpleAuth() {
         class MyDelegate: SmtpSendDefaultDelegate {
@@ -36,14 +36,16 @@ class SmtpTest: XCTestCase {
                 XCTAssertNil(error)
                 // Adapt this for different servers
                 XCTAssertEqual(smtp.bestAuthMethod(), AuthMethod.Login)
+                smtp.close()
             })
         }
         print("finished, refCounter.refCount \(refCounter.refCount)")
         XCTAssertEqual(refCounter.refCount, 0)
     }
 
+    /*
     func testTriggerNil() {
-        for _ in 0..<1000000000 {
+        for _ in 0...1000000 {
             testSimpleAuth()
             waitForConnectionShutdown()
         }
@@ -58,4 +60,5 @@ class SmtpTest: XCTestCase {
         }
         XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(), 0)
     }
+ */
 }

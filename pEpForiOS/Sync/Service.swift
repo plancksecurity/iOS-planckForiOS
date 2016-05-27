@@ -83,5 +83,6 @@ public class Service: IService {
 
     public func close() {
         service.close()
+        service.setDelegate(nil)
     }
 }

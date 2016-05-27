@@ -184,25 +184,21 @@ extension SmtpSend: CWServiceClient {
     @objc public func serviceInitialized(theNotification: NSNotification?) {
         dumpMethodName("serviceInitialized", notification: theNotification)
         delegate?.serviceInitialized(self, theNotification: theNotification)
-        GCD.onMain() { [weak self] in
-            if let myself = self {
-                if myself.connectInfo.smtpTransport == ConnectionTransport.StartTLS &&
-                    !myself.smtpStatus.haveStartedTLS {
-                    myself.smtpStatus.haveStartedTLS = true
-                    myself.smtp.startTLS()
-                } else {
-                    var password: String!
-                    if let pass = self?.connectInfo.smtpPassword {
-                        password = pass
-                    } else {
-                        password = KeyChain.getPassword(myself.connectInfo.email,
-                            serverType: Account.AccountType.SMTP.asString())
-                    }
-                    myself.smtp.authenticate(myself.connectInfo.getSmtpUsername(),
-                        password: password,
-                        mechanism: myself.bestAuthMethod().rawValue)
-                }
+        if self.connectInfo.smtpTransport == ConnectionTransport.StartTLS &&
+            !self.smtpStatus.haveStartedTLS {
+            self.smtpStatus.haveStartedTLS = true
+            self.smtp.startTLS()
+        } else {
+            var password: String!
+            if let pass = self.connectInfo.smtpPassword {
+                password = pass
+            } else {
+                password = KeyChain.getPassword(self.connectInfo.email,
+                                                serverType: Account.AccountType.SMTP.asString())
             }
+            self.smtp.authenticate(self.connectInfo.getSmtpUsername(),
+                                   password: password,
+                                   mechanism: self.bestAuthMethod().rawValue)
         }
     }
 
