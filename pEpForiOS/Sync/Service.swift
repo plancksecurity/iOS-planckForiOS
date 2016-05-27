@@ -31,6 +31,10 @@ public class Service: IService {
         service.setLogger(Log())
     }
 
+    deinit {
+        service.close()
+    }
+
     func createService() -> CWService {
         // This must be overridden!
         abort()
@@ -38,10 +42,6 @@ public class Service: IService {
 
     public func start() {
         self.service.connectInBackgroundAndNotify()
-    }
-
-    deinit {
-        service.close()
     }
 
     public func bestAuthMethodFromList(mechanisms: [String])  -> AuthMethod {

@@ -33,6 +33,24 @@ class SmtpTest: XCTestCase {
             XCTAssertNil(error)
             // Adapt this for different servers
             XCTAssertEqual(smtp.bestAuthMethod(), AuthMethod.Login)
+            smtp.close()
         })
+    }
+
+    func testT3riggerNil() {
+        for _ in 0..<1000000000 {
+            testSimpleAuth()
+            waitForConnectionShutdown()
+        }
+    }
+
+    func waitForConnectionShutdown() {
+        for _ in 1...5 {
+            if CWTCPConnection.numberOfRunningConnections() == 0 {
+                break
+            }
+            NSThread.sleepForTimeInterval(0.2)
+        }
+        XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(), 0)
     }
 }
