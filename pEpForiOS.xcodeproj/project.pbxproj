@@ -20,6 +20,7 @@
 		431144BD1CC120220007639D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144BB1CC120220007639D /* Message.swift */; };
 		431144C01CC1202E0007639D /* _Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144BE1CC1202E0007639D /* _Contact.swift */; };
 		431144C11CC1202E0007639D /* _Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144BF1CC1202E0007639D /* _Message.swift */; };
+		431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798721CF85181007DD655 /* TCPConnectionTest.swift */; };
 		431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */; };
 		4325F3141CD8A8D200A10727 /* ConcurrentBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */; };
 		4333FBA51CD9FAC00093364F /* SmtpTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333FBA41CD9FAC00093364F /* SmtpTest.swift */; };
@@ -159,6 +160,7 @@
 		431144BB1CC120220007639D /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		431144BE1CC1202E0007639D /* _Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Contact.swift; sourceTree = "<group>"; };
 		431144BF1CC1202E0007639D /* _Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Message.swift; sourceTree = "<group>"; };
+		431798721CF85181007DD655 /* TCPConnectionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPConnectionTest.swift; sourceTree = "<group>"; };
 		431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifySmtpConnectionOperation.swift; sourceTree = "<group>"; };
 		4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentBaseOperation.swift; sourceTree = "<group>"; };
 		4333FBA41CD9FAC00093364F /* SmtpTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpTest.swift; sourceTree = "<group>"; };
@@ -332,6 +334,7 @@
 				4333FBA41CD9FAC00093364F /* SmtpTest.swift */,
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
 				43C046B51CF42DCF00BD0D9D /* ModelTests.swift */,
+				431798721CF85181007DD655 /* TCPConnectionTest.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -725,6 +728,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */,
+				431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */,
 				43DBE8D71CF6F66F00306AAE /* GrandOperatorTests.swift in Sources */,
