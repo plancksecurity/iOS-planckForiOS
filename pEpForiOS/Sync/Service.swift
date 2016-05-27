@@ -20,6 +20,11 @@ public class Service: IService {
     public let ErrorAuthenticationFailed = 1000
     public let ErrorConnectionTimedOut = 1001
 
+    /**
+     For proving memory leaks.
+     */
+    public var refCounter: ReferenceCounter?
+
     let connectInfo: ConnectInfo
 
     var service: CWService!
@@ -45,6 +50,7 @@ public class Service: IService {
 
     deinit {
         service.close()
+        refCounter?.dec()
     }
 
     func createService() -> CWService {

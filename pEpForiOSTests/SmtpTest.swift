@@ -24,20 +24,24 @@ class SmtpTest: XCTestCase {
                 authenticatedExpectation?.fulfill()
             }
         }
-        let smtp = SmtpSend.init(connectInfo: TestData.connectInfo)
-        let del = MyDelegate.init()
-        del.authenticatedExpectation = expectationWithDescription("authenticatedExpectation")
-        smtp.delegate = del
-        smtp.start()
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
-            XCTAssertNil(error)
-            // Adapt this for different servers
-            XCTAssertEqual(smtp.bestAuthMethod(), AuthMethod.Login)
-            smtp.close()
-        })
+        let refCounter = ReferenceCounter.init(refCount: 1)
+        for _ in 1...1 {
+            let smtp = SmtpSend.init(connectInfo: TestData.connectInfo)
+            smtp.refCounter = refCounter
+            let del = MyDelegate.init()
+            del.authenticatedExpectation = expectationWithDescription("authenticatedExpectation")
+            smtp.delegate = del
+            smtp.start()
+            waitForExpectationsWithTimeout(waitTime, handler: { error in
+                XCTAssertNil(error)
+                // Adapt this for different servers
+                XCTAssertEqual(smtp.bestAuthMethod(), AuthMethod.Login)
+            })
+        }
+        print("finished, refCounter.refCount \(refCounter.refCount)")
+        XCTAssertEqual(refCounter.refCount, 0)
     }
 
-    /*
     func testTriggerNil() {
         for _ in 0..<1000000000 {
             testSimpleAuth()
@@ -54,5 +58,4 @@ class SmtpTest: XCTestCase {
         }
         XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(), 0)
     }
- */
 }

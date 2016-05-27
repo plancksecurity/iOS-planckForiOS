@@ -25,26 +25,15 @@ class TCPConnectionTest: XCTestCase {
      Test for verifying there are no retention cycles in CWTCPConnection
      */
     func testBasicConnection() {
-        class RefCount {
-            var ref: Int = 0
-
-            func inc() {
-                ref = ref + 1
-            }
-
-            func dec() {
-                ref = ref - 1
-            }
-        }
         class ConnectionDelegate: CWConnectionDelegate {
             weak var connection: CWTCPConnection?
-            var refCount: RefCount
+            var refCount: ReferenceCounter
             var expConnected: XCTestExpectation?
             var expReceivedEventRead: XCTestExpectation?
             var expReceivedEventWrite: XCTestExpectation?
             var expReceivedEventError: XCTestExpectation?
 
-            init(connection: CWTCPConnection, refCount: RefCount) {
+            init(connection: CWTCPConnection, refCount: ReferenceCounter) {
                 self.connection = connection
                 self.refCount = refCount
                 self.refCount.inc()
@@ -77,7 +66,7 @@ class TCPConnectionTest: XCTestCase {
                 refCount.dec()
             }
         }
-        let refCount = RefCount()
+        let refCount = ReferenceCounter()
         for _ in 1...1 {
             let connectInfo = TestData.connectInfo
             var connection: CWTCPConnection? = CWTCPConnection.init(
@@ -94,6 +83,6 @@ class TCPConnectionTest: XCTestCase {
                 connection = nil
             })
         }
-        XCTAssertEqual(refCount.ref, 0)
+        XCTAssertEqual(refCount.refCount, 0)
     }
 }
