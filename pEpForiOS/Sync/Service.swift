@@ -23,9 +23,21 @@ public class Service: IService {
     let connectInfo: ConnectInfo
 
     var service: CWService!
+    let blowupData: NSData
 
     public init(connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
+
+        let s: NSMutableString = ""
+        for _ in 1...10000 {
+            s.appendString("This is way too much!")
+        }
+        let someData = NSMutableData.init()
+        for _ in 1...100 {
+            someData.appendData(s.dataUsingEncoding(NSUTF8StringEncoding)!)
+        }
+        blowupData = NSData.init(data: someData)
+
         service = self.createService()
         service.setDelegate(self)
         service.setLogger(Log())
