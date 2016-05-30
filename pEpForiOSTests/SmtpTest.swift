@@ -14,8 +14,7 @@ import CoreData
 import pEpForiOS
 
 class SmtpTest: XCTestCase {
-    let waitTime: NSTimeInterval = 1000
-    let shouldTestMemoryLeak = false
+    let waitTime: NSTimeInterval = 10
 
     func testSimpleAuth() {
         class MyDelegate: SmtpSendDefaultDelegate {
@@ -41,27 +40,5 @@ class SmtpTest: XCTestCase {
             smtp = nil
         }
         XCTAssertEqual(Service.refCounter.refCount, 0)
-    }
-
-    /**
-     Provoking memory leak.
-     */
-    func testMemoryLeak() {
-        if shouldTestMemoryLeak {
-            for _ in 0...1000000 {
-                testSimpleAuth()
-                waitForConnectionShutdown()
-            }
-        }
-    }
-
-    func waitForConnectionShutdown() {
-        for _ in 1...5 {
-            if CWTCPConnection.numberOfRunningConnections() == 0 {
-                break
-            }
-            NSThread.sleepForTimeInterval(0.2)
-        }
-        XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(), 0)
     }
 }

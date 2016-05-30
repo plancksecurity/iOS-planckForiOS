@@ -207,8 +207,7 @@ class ImapSyncTest: XCTestCase {
     }
 
     override func tearDown() {
-        TestUtil.waitForConnectionShutdown()
-        XCTAssertEqual(Service.refCounter.refCount, 0)
+        TestUtil.waitForServiceShutdown()
         super.tearDown()
     }
 

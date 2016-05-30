@@ -26,8 +26,7 @@ class GrandOperatorTests: XCTestCase {
 
     override func tearDown() {
         persistentSetup = nil
-        TestUtil.waitForConnectionShutdown()
-        XCTAssertEqual(Service.refCounter.refCount, 0)
+        TestUtil.waitForServiceShutdown()
         super.tearDown()
     }
 

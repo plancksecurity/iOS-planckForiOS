@@ -19,8 +19,6 @@ class GrandOperatorVerifyTests: XCTestCase {
     let comp = "GrandOperatorVerifyTests"
 
     let waitTime: NSTimeInterval = 10
-    let connectonShutDownWaitTime: NSTimeInterval = 1
-    let numberOfTriesConnectonShutDown = 5
 
     let correct = TestData.connectInfo
     var persistentSetup: PersistentSetup!
@@ -32,8 +30,7 @@ class GrandOperatorVerifyTests: XCTestCase {
 
     override func tearDown() {
         persistentSetup = nil
-        TestUtil.waitForConnectionShutdown()
-        XCTAssertEqual(Service.refCounter.refCount, 0)
+        TestUtil.waitForServiceShutdown()
         super.tearDown()
     }
 

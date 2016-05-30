@@ -49,21 +49,6 @@ public class Service: IService {
         Service.refCounter.dec()
     }
 
-    /**
-     Allocate big chunks of data in order to clarify memory leak.
-     */
-    func signalMemoryLeak() {
-        let s: NSMutableString = ""
-        for _ in 1...10000 {
-            s.appendString("This is way too much!")
-        }
-        let someData = NSMutableData.init()
-        for _ in 1...100 {
-            someData.appendData(s.dataUsingEncoding(NSUTF8StringEncoding)!)
-        }
-        memoryLeakData = NSData.init(data: someData)
-    }
-
     func createService() -> CWService {
         // This must be overridden!
         abort()
