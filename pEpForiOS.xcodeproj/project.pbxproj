@@ -92,33 +92,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		431799311CF8A31A007DD655 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4317992C1CF8A31A007DD655 /* FBRetainCycleDetector.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 75BF0E181C5ADBCC00E0DAB6;
-			remoteInfo = FBRetainCycleDetector;
-		};
-		431799331CF8A31A007DD655 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4317992C1CF8A31A007DD655 /* FBRetainCycleDetector.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 75BF0E271C5ADCA200E0DAB6;
-			remoteInfo = FBRetainCycleDetectorTests;
-		};
 		434662CD1CBF808D0053FC48 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 43980E5A1CBD1B3E00A7FC3C;
 			remoteInfo = PantomimeStatic;
-		};
-		4374320F1CFC71AF000F8D35 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4317992C1CF8A31A007DD655 /* FBRetainCycleDetector.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 75BF0E171C5ADBCC00E0DAB6;
-			remoteInfo = FBRetainCycleDetector;
 		};
 		43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -187,7 +166,6 @@
 		431144BF1CC1202E0007639D /* _Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Message.swift; sourceTree = "<group>"; };
 		431798721CF85181007DD655 /* TCPConnectionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPConnectionTest.swift; sourceTree = "<group>"; };
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
-		4317992C1CF8A31A007DD655 /* FBRetainCycleDetector.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBRetainCycleDetector.xcodeproj; path = ../FBRetainCycleDetector/FBRetainCycleDetector.xcodeproj; sourceTree = "<group>"; };
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifySmtpConnectionOperation.swift; sourceTree = "<group>"; };
 		4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentBaseOperation.swift; sourceTree = "<group>"; };
@@ -316,15 +294,6 @@
 			path = Background;
 			sourceTree = "<group>";
 		};
-		4317992D1CF8A31A007DD655 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				431799321CF8A31A007DD655 /* FBRetainCycleDetector.framework */,
-				431799341CF8A31A007DD655 /* FBRetainCycleDetectorTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		437432061CFC49A4000F8D35 /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -406,7 +375,6 @@
 			children = (
 				43C046BE1CF48EA500BD0D9D /* AddressBook.framework */,
 				439D40781CC78A2D009A4E7C /* Raw */,
-				4317992C1CF8A31A007DD655 /* FBRetainCycleDetector.xcodeproj */,
 				43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */,
 				439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */,
 			);
@@ -556,7 +524,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				437432101CFC71AF000F8D35 /* PBXTargetDependency */,
 				439D406A1CC7883D009A4E7C /* PBXTargetDependency */,
 				434662CE1CBF808D0053FC48 /* PBXTargetDependency */,
 			);
@@ -638,10 +605,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 4317992D1CF8A31A007DD655 /* Products */;
-					ProjectRef = 4317992C1CF8A31A007DD655 /* FBRetainCycleDetector.xcodeproj */;
-				},
-				{
 					ProductGroup = 43E6A2791CBF802C00787A56 /* Products */;
 					ProjectRef = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
 				},
@@ -660,20 +623,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		431799321CF8A31A007DD655 /* FBRetainCycleDetector.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = FBRetainCycleDetector.framework;
-			remoteRef = 431799311CF8A31A007DD655 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		431799341CF8A31A007DD655 /* FBRetainCycleDetectorTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = FBRetainCycleDetectorTests.xctest;
-			remoteRef = 431799331CF8A31A007DD655 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		439D40661CC78825009A4E7C /* libpEpiOSAdapter.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -833,11 +782,6 @@
 			isa = PBXTargetDependency;
 			name = PantomimeStatic;
 			targetProxy = 434662CD1CBF808D0053FC48 /* PBXContainerItemProxy */;
-		};
-		437432101CFC71AF000F8D35 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FBRetainCycleDetector;
-			targetProxy = 4374320F1CFC71AF000F8D35 /* PBXContainerItemProxy */;
 		};
 		43980E3C1CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
