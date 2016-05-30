@@ -34,6 +34,7 @@
 		435A77C11CC3CB4200133D16 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435A77C01CC3CB4200133D16 /* Regex.swift */; };
 		4367E26F1CD7360000B05F83 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367E26E1CD7360000B05F83 /* Model.swift */; };
 		437431F61CFC2F14000F8D35 /* VerifyServiceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437431F51CFC2F14000F8D35 /* VerifyServiceOperation.swift */; };
+		4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4374320A1CFC49B1000F8D35 /* TestUtil.swift */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
 		43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
@@ -200,6 +201,7 @@
 		435A77C01CC3CB4200133D16 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		4367E26E1CD7360000B05F83 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		437431F51CFC2F14000F8D35 /* VerifyServiceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyServiceOperation.swift; sourceTree = "<group>"; };
+		4374320A1CFC49B1000F8D35 /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -323,6 +325,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		437432061CFC49A4000F8D35 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				4374320A1CFC49B1000F8D35 /* TestUtil.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +376,7 @@
 		43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				437432061CFC49A4000F8D35 /* Util */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				43DBE8D61CF6F66F00306AAE /* GrandOperatorTests.swift */,
 				A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */,
@@ -796,6 +807,7 @@
 				4317993C1CF8A3A0007DD655 /* RetainChecker.m in Sources */,
 				43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */,
 				431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */,
+				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */,
 				43DBE8D71CF6F66F00306AAE /* GrandOperatorTests.swift in Sources */,
