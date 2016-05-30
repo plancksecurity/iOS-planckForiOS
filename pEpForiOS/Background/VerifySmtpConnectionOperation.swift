@@ -8,23 +8,16 @@
 
 import Foundation
 
-class VerifySmtpConnectionOperation: ConcurrentBaseOperation {
+class VerifySmtpConnectionOperation: VerifyServiceOperation {
     let errorDomain = "VerifySmtpConnectionOperation"
-    var smtp: SmtpSend!
-    let connectInfo: ConnectInfo
-
-    init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
-        self.connectInfo = connectInfo
-        super.init(grandOperator: grandOperator)
-    }
 
     override func main() {
         if self.cancelled {
             return
         }
-        smtp = grandOperator.connectionManager.smtpConnection(connectInfo)
-        smtp.delegate = self
-        smtp.start()
+        service = grandOperator.connectionManager.smtpConnection(connectInfo)
+        (service as! SmtpSend).delegate = self
+        service.start()
     }
 }
 
@@ -39,37 +32,48 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
     func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
 
     func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {
-        smtp.close()
-        markAsFinished()
+        self.isFinishing = true
+        close(smtp, finish: true)
     }
 
     func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
-        grandOperator.setErrorForOperation(self,
-                                           error: Constants.errorAuthenticationFailed(errorDomain))
-        smtp.close()
-        markAsFinished()
+        if !isFinishing {
+            grandOperator.setErrorForOperation(self,
+                                               error: Constants.errorAuthenticationFailed(errorDomain))
+            close(smtp, finish: true)
+        }
     }
 
     func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?) {}
 
     func connectionLost(smtp: SmtpSend, theNotification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorConnectionLost(errorDomain))
-        markAsFinished()
+        if !isFinishing {
+            grandOperator.setErrorForOperation(self,
+                                               error: Constants.errorConnectionLost(errorDomain))
+            isFinishing = true
+            markAsFinished()
+        }
     }
 
     func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {
-        grandOperator.setErrorForOperation(self,
-                                           error: Constants.errorConnectionTerminated(errorDomain))
-        markAsFinished()
+        if !isFinishing {
+            grandOperator.setErrorForOperation(
+                self, error: Constants.errorConnectionTerminated(errorDomain))
+            isFinishing = true
+            markAsFinished()
+        }
     }
 
     func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorTimeout(errorDomain))
-        markAsFinished()
+        if !isFinishing {
+            grandOperator.setErrorForOperation(self,
+                                               error: Constants.errorTimeout(errorDomain))
+            isFinishing = true
+            markAsFinished()
+        }
     }
 
     func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?) {}
     func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?) {}
     func serviceReconnected(smtp: SmtpSend, theNotification: NSNotification?) {}
 }
-

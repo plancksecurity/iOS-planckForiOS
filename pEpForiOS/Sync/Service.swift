@@ -16,23 +16,43 @@ protocol IService {
  Base class for IMAP and SMTP implementations.
  */
 public class Service: IService {
+    public var comp: String { get { return "Service" } }
 
-    public let ErrorAuthenticationFailed = 1000
+    public let ErrorAuthenticationFailed = 10
     public let ErrorConnectionTimedOut = 1001
-
-    /**
-     For proving memory leaks.
-     */
-    public var refCounter: ReferenceCounter?
 
     let connectInfo: ConnectInfo
 
     var service: CWService!
-    let blowupData: NSData
+
+    /**
+     For proving memory leaks.
+     */
+    static public var refCounter = ReferenceCounter.init()
+
+    /**
+     Unnecessary data to trigger memory leak indicators.
+     */
+    var memoryLeakData: NSData?
 
     public init(connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
 
+        service = self.createService()
+        service.setDelegate(self)
+        service.setLogger(Log())
+        Service.refCounter.inc()
+    }
+
+    deinit {
+        service.close()
+        Service.refCounter.dec()
+    }
+
+    /**
+     Allocate big chunks of data in order to clarify memory leak.
+     */
+    func signalMemoryLeak() {
         let s: NSMutableString = ""
         for _ in 1...10000 {
             s.appendString("This is way too much!")
@@ -41,16 +61,7 @@ public class Service: IService {
         for _ in 1...100 {
             someData.appendData(s.dataUsingEncoding(NSUTF8StringEncoding)!)
         }
-        blowupData = NSData.init(data: someData)
-
-        service = self.createService()
-        service.setDelegate(self)
-        service.setLogger(Log())
-    }
-
-    deinit {
-        service.close()
-        refCounter?.dec()
+        memoryLeakData = NSData.init(data: someData)
     }
 
     func createService() -> CWService {
@@ -84,5 +95,9 @@ public class Service: IService {
     public func close() {
         service.close()
         service.setDelegate(nil)
+    }
+
+    public func dumpMethodName(methodName: String, notification: NSNotification?) {
+        Log.info(comp, "\(methodName): \(notification)")
     }
 }

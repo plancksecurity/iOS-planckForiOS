@@ -55,7 +55,7 @@ struct SmtpStatus {
 }
 
 public class SmtpSend: Service {
-    private let comp = "SmtpSend"
+    public override var comp: String { get { return "SmtpSend" } }
 
     private var smtpStatus: SmtpStatus = SmtpStatus.init()
     weak public var delegate: SmtpSendDelegate?
@@ -70,10 +70,6 @@ public class SmtpSend: Service {
         return CWSMTP.init(name: connectInfo.smtpServerName,
                            port: UInt32(connectInfo.smtpServerPort),
                            transport: connectInfo.smtpTransport)
-    }
-
-    private func dumpMethodName(methodName: String, notification: NSNotification?) {
-        Log.info(comp, "\(methodName): \(notification)")
     }
 
     private func createMessage() -> CWMessage {

@@ -8,32 +8,16 @@
 
 import Foundation
 
-public class VerifyImapConnectionOperation: ConcurrentBaseOperation {
+public class VerifyImapConnectionOperation: VerifyServiceOperation {
     let errorDomain = "VerifyImapConnectionOperation"
-    var imapSync: ImapSync!
-    let connectInfo: ConnectInfo
-
-    /**
-     Flag that the connection has already been finished, and was probably closed on request,
-     so any errors like "connection lost" after that are ignored.
-     This avoids the case where all went fine, then the
-     connection is closed, and some "connection lost" or similar is sent to the delegate,
-     and it sets an error.
-     */
-    var isFinishing: Bool = false
-
-    init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
-        self.connectInfo = connectInfo
-        super.init(grandOperator: grandOperator)
-    }
 
     public override func main() {
         if self.cancelled {
             return
         }
-        imapSync = grandOperator.connectionManager.emailSyncConnectionOneWay(connectInfo)
-        imapSync.delegate = self
-        imapSync.start()
+        service = grandOperator.connectionManager.emailSyncConnectionOneWay(connectInfo)
+        (service as! ImapSync).delegate = self
+        service.start()
     }
 }
 
@@ -41,13 +25,6 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     override func markAsFinished() {
         self.isFinishing = true
         super.markAsFinished()
-    }
-
-    func close(sync: ImapSync, finish: Bool) {
-        sync.close()
-        if finish {
-            markAsFinished()
-        }
     }
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {

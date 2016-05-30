@@ -101,7 +101,7 @@ public protocol IImapSync {
 }
 
 public class ImapSync: Service, IImapSync {
-    private let comp = "ImapSync"
+    public override var comp: String { get { return "ImapSync" } }
 
     static public let defaultImapInboxName = "INBOX"
 
@@ -163,10 +163,6 @@ public class ImapSync: Service, IImapSync {
                         comment: "Error message when trying to fetch message from folder that ist not opened")])
             delegate?.actionFailed(self, error: error)
         }
-    }
-
-    private func dumpMethodName(methodName: String, notification: NSNotification?) {
-        Log.info(comp, "\(methodName): \(notification)")
     }
 }
 
