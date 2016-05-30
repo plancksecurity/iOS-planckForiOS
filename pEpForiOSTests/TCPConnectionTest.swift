@@ -13,14 +13,6 @@ import pEpForiOS
 class TCPConnectionTest: XCTestCase {
     let waitTime: NSTimeInterval = 10
 
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-    }
-
     /**
      Test for verifying there are no retention cycles in CWTCPConnection
      */

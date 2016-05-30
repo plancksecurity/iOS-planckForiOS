@@ -30,4 +30,7 @@
 #import "Pantomime/CWMIMEMultipart.h"
 #import "Pantomime/CWMIMEUtility.h"
 
+#import <FBRetainCycleDetector/FBRetainCycleDetector.h>
+#import "RetainChecker.h"
+
 #endif /* pEpForiOS_Bridging_Header_h */

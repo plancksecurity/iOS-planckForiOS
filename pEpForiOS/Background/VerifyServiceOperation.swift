@@ -21,13 +21,17 @@ public class VerifyServiceOperation: ConcurrentBaseOperation {
      */
     var isFinishing: Bool = false
 
-    init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
+    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
         super.init(grandOperator: grandOperator)
     }
 
-    func close(sync: Service, finish: Bool) {
-        sync.close()
+    deinit {
+
+    }
+
+    func close(finish: Bool) {
+        service.close()
         if finish {
             markAsFinished()
         }

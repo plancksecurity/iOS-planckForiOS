@@ -29,7 +29,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         self.isFinishing = true
-        close(sync, finish: true)
+        close(true)
     }
 
     public func receivedFolderNames(sync: ImapSync, folderNames: [String]?) {
@@ -39,7 +39,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
         if !isFinishing {
             grandOperator.setErrorForOperation(
                 self, error: Constants.errorAuthenticationFailed(errorDomain))
-            close(sync, finish: true)
+            close(true)
         }
     }
 
@@ -93,7 +93,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     public func actionFailed(sync: ImapSync, error: NSError) {
         if !isFinishing {
             grandOperator.setErrorForOperation(self, error: error)
-            close(sync, finish: true)
+            close(true)
         }
    }
 }

@@ -22,7 +22,6 @@
 		431144C11CC1202E0007639D /* _Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144BF1CC1202E0007639D /* _Message.swift */; };
 		431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798721CF85181007DD655 /* TCPConnectionTest.swift */; };
 		431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798761CF87FE6007DD655 /* ReferenceCounter.swift */; };
-		4317993C1CF8A3A0007DD655 /* RetainChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 4317993B1CF8A3A0007DD655 /* RetainChecker.m */; };
 		431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */; };
 		4325F3141CD8A8D200A10727 /* ConcurrentBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */; };
 		4333FBA51CD9FAC00093364F /* SmtpTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333FBA41CD9FAC00093364F /* SmtpTest.swift */; };
@@ -35,6 +34,7 @@
 		4367E26F1CD7360000B05F83 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367E26E1CD7360000B05F83 /* Model.swift */; };
 		437431F61CFC2F14000F8D35 /* VerifyServiceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437431F51CFC2F14000F8D35 /* VerifyServiceOperation.swift */; };
 		4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4374320A1CFC49B1000F8D35 /* TestUtil.swift */; };
+		437432111CFC71FA000F8D35 /* RetainChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 4374320D1CFC716D000F8D35 /* RetainChecker.m */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
 		43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
@@ -106,19 +106,19 @@
 			remoteGlobalIDString = 75BF0E271C5ADCA200E0DAB6;
 			remoteInfo = FBRetainCycleDetectorTests;
 		};
-		431799371CF8A38F007DD655 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4317992C1CF8A31A007DD655 /* FBRetainCycleDetector.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 75BF0E171C5ADBCC00E0DAB6;
-			remoteInfo = FBRetainCycleDetector;
-		};
 		434662CD1CBF808D0053FC48 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 43980E5A1CBD1B3E00A7FC3C;
 			remoteInfo = PantomimeStatic;
+		};
+		4374320F1CFC71AF000F8D35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4317992C1CF8A31A007DD655 /* FBRetainCycleDetector.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 75BF0E171C5ADBCC00E0DAB6;
+			remoteInfo = FBRetainCycleDetector;
 		};
 		43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -189,8 +189,6 @@
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
 		4317992C1CF8A31A007DD655 /* FBRetainCycleDetector.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBRetainCycleDetector.xcodeproj; path = ../FBRetainCycleDetector/FBRetainCycleDetector.xcodeproj; sourceTree = "<group>"; };
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		4317993A1CF8A3A0007DD655 /* RetainChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetainChecker.h; sourceTree = "<group>"; };
-		4317993B1CF8A3A0007DD655 /* RetainChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetainChecker.m; sourceTree = "<group>"; };
 		431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifySmtpConnectionOperation.swift; sourceTree = "<group>"; };
 		4325F3131CD8A8D200A10727 /* ConcurrentBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentBaseOperation.swift; sourceTree = "<group>"; };
 		4333FBA41CD9FAC00093364F /* SmtpTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpTest.swift; sourceTree = "<group>"; };
@@ -202,6 +200,8 @@
 		4367E26E1CD7360000B05F83 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		437431F51CFC2F14000F8D35 /* VerifyServiceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyServiceOperation.swift; sourceTree = "<group>"; };
 		4374320A1CFC49B1000F8D35 /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
+		4374320C1CFC716D000F8D35 /* RetainChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetainChecker.h; sourceTree = "<group>"; };
+		4374320D1CFC716D000F8D35 /* RetainChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetainChecker.m; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -386,8 +386,6 @@
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
 				43C046B51CF42DCF00BD0D9D /* ModelTests.swift */,
 				431798721CF85181007DD655 /* TCPConnectionTest.swift */,
-				4317993A1CF8A3A0007DD655 /* RetainChecker.h */,
-				4317993B1CF8A3A0007DD655 /* RetainChecker.m */,
 				431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */,
 			);
 			path = pEpForiOSTests;
@@ -418,6 +416,8 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				4374320C1CFC716D000F8D35 /* RetainChecker.h */,
+				4374320D1CFC716D000F8D35 /* RetainChecker.m */,
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
 				A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */,
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
@@ -556,6 +556,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				437432101CFC71AF000F8D35 /* PBXTargetDependency */,
 				439D406A1CC7883D009A4E7C /* PBXTargetDependency */,
 				434662CE1CBF808D0053FC48 /* PBXTargetDependency */,
 			);
@@ -575,7 +576,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				431799381CF8A38F007DD655 /* PBXTargetDependency */,
 				43980E3C1CBD0BCA00A7FC3C /* PBXTargetDependency */,
 			);
 			name = pEpForiOSTests;
@@ -750,6 +750,7 @@
 				43E58EB91CBF8301008AA7A7 /* Folder.swift in Sources */,
 				4303DAE71CE62D2600D9C0AB /* Attachment.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
+				437432111CFC71FA000F8D35 /* RetainChecker.m in Sources */,
 				A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				4325F3141CD8A8D200A10727 /* ConcurrentBaseOperation.swift in Sources */,
@@ -804,7 +805,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4317993C1CF8A3A0007DD655 /* RetainChecker.m in Sources */,
 				43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */,
 				431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
@@ -829,15 +829,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		431799381CF8A38F007DD655 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FBRetainCycleDetector;
-			targetProxy = 431799371CF8A38F007DD655 /* PBXContainerItemProxy */;
-		};
 		434662CE1CBF808D0053FC48 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = PantomimeStatic;
 			targetProxy = 434662CD1CBF808D0053FC48 /* PBXContainerItemProxy */;
+		};
+		437432101CFC71AF000F8D35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FBRetainCycleDetector;
+			targetProxy = 4374320F1CFC71AF000F8D35 /* PBXContainerItemProxy */;
 		};
 		43980E3C1CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

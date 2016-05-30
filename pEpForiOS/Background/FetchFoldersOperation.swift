@@ -11,7 +11,7 @@ import Foundation
 public class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
-    let grandOperator: IGrandOperator
+    weak var grandOperator: IGrandOperator!
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
                 backgroundQueue: NSOperationQueue) {

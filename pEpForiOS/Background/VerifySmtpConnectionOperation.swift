@@ -33,14 +33,14 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
 
     func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {
         self.isFinishing = true
-        close(smtp, finish: true)
+        close(true)
     }
 
     func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
         if !isFinishing {
             grandOperator.setErrorForOperation(self,
                                                error: Constants.errorAuthenticationFailed(errorDomain))
-            close(smtp, finish: true)
+            close(true)
         }
     }
 

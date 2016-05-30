@@ -52,10 +52,6 @@ class ModelTests: XCTestCase {
             accountEmail: "test001@peptest.ch"))
     }
 
-    override func tearDown() {
-        super.tearDown()
-    }
-
     func testSimpleContactSearch() {
         XCTAssertEqual(persistentSetup.model.contactsBySnippet("xtes").count, 5)
         XCTAssertEqual(persistentSetup.model.contactsBySnippet("XtEs").count, 5)

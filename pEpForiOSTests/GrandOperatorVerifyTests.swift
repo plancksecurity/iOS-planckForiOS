@@ -21,7 +21,6 @@ class GrandOperatorVerifyTests: XCTestCase {
     let waitTime: NSTimeInterval = 10
     let connectonShutDownWaitTime: NSTimeInterval = 1
     let numberOfTriesConnectonShutDown = 5
-    var numberOfOpenTCPConnections = 0
 
     let correct = TestData.connectInfo
     var persistentSetup: PersistentSetup!
@@ -29,7 +28,45 @@ class GrandOperatorVerifyTests: XCTestCase {
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup.init()
-        numberOfOpenTCPConnections = CWTCPConnection.numberOfRunningConnections()
+    }
+
+    override func tearDown() {
+        persistentSetup = nil
+        TestUtil.waitForConnectionShutdown()
+        XCTAssertEqual(Service.refCounter.refCount, 0)
+        super.tearDown()
+    }
+
+    /**
+     Verifies that background operations get cleaned up after execution in a background queue.
+     */
+    func testSimpleBackgroundOperation() {
+        class BackgroundOp: NSOperation {
+            let expRun: XCTestExpectation
+            let expDeinit: XCTestExpectation
+
+            init(expRun: XCTestExpectation, expDeinit: XCTestExpectation) {
+                self.expRun = expRun
+                self.expDeinit = expDeinit
+            }
+
+            override func main() {
+                expRun.fulfill()
+            }
+
+            deinit {
+                expDeinit.fulfill()
+            }
+        }
+        let expRun = expectationWithDescription("run")
+        let expDeinit = expectationWithDescription("deinit")
+
+        let queue = NSOperationQueue.init()
+        queue.addOperation(BackgroundOp.init(expRun: expRun, expDeinit: expDeinit))
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
     }
 
     func testVerifyConnectionAllFailed() {
@@ -46,7 +83,6 @@ class GrandOperatorVerifyTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
         })
-        self.waitForConnectionShutdown()
     }
 
     func testVerifyConnectionImapAuthenticationFailed() {
@@ -65,7 +101,6 @@ class GrandOperatorVerifyTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
         })
-        self.waitForConnectionShutdown()
     }
 
     func testVerifyConnectionSmtpAuthenticationFailed() {
@@ -79,7 +114,6 @@ class GrandOperatorVerifyTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
         })
-        self.waitForConnectionShutdown()
     }
 
     func testVerifyConnectionImapConnectionFailed() {
@@ -93,7 +127,6 @@ class GrandOperatorVerifyTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
         })
-        self.waitForConnectionShutdown()
     }
 
     func testVerifyConnectionSmtpConnectionFailed() {
@@ -107,7 +140,6 @@ class GrandOperatorVerifyTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
         })
-        self.waitForConnectionShutdown()
     }
 
     func testVerifyConnectionOk() {
@@ -119,16 +151,5 @@ class GrandOperatorVerifyTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
         })
-        self.waitForConnectionShutdown()
-    }
-
-    func waitForConnectionShutdown() {
-        for _ in 1...self.numberOfTriesConnectonShutDown {
-            if CWTCPConnection.numberOfRunningConnections() == numberOfOpenTCPConnections {
-                break
-            }
-            NSThread.sleepForTimeInterval(self.connectonShutDownWaitTime)
-        }
-        XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(), numberOfOpenTCPConnections)
     }
 }

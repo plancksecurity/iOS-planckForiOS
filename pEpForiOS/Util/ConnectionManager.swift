@@ -9,11 +9,16 @@
 import Foundation
 
 public class ConnectionManager {
+    private let comp = "ConnectionManager"
     public var cacheImapConnections: Bool = true
 
     var imapConnections: [ConnectInfo: ImapSync] = [:]
 
     public init() {}
+
+    deinit {
+        closeAll()
+    }
 
     public func emailSyncConnection(connectInfo: ConnectInfo) -> ImapSync {
         if cacheImapConnections {
@@ -51,5 +56,6 @@ public class ConnectionManager {
         for (_, imap) in imapConnections {
             imap.close()
         }
+        imapConnections.removeAll()
     }
 }

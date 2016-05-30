@@ -24,6 +24,13 @@ class GrandOperatorTests: XCTestCase {
         persistentSetup = PersistentSetup.init()
     }
 
+    override func tearDown() {
+        persistentSetup = nil
+        TestUtil.waitForConnectionShutdown()
+        XCTAssertEqual(Service.refCounter.refCount, 0)
+        super.tearDown()
+    }
+
     /**
      Proof of concept for using managed object context in unit tests.
      */

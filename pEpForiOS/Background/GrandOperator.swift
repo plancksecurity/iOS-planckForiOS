@@ -10,7 +10,7 @@ import Foundation
 
 public typealias GrandOperatorCompletionBlock = (error: NSError?) -> Void
 
-public protocol IGrandOperator {
+public protocol IGrandOperator: class {
     var coreDataUtil: ICoreDataUtil { get }
 
     var connectionManager: ConnectionManager { get }
@@ -88,7 +88,6 @@ public class GrandOperator: IGrandOperator {
 
     private var errors: [NSOperation:NSError] = [:]
 
-    private let prefetchQueue = NSOperationQueue.init()
     private let verifyConnectionQueue = NSOperationQueue.init()
 
     /**
@@ -106,6 +105,9 @@ public class GrandOperator: IGrandOperator {
     func kickOffConcurrentOperation(operation op: NSOperation,
                                     completionBlock: GrandOperatorCompletionBlock?) {
         op.completionBlock = { [unowned self] in
+            // Resolve cyclic dependency
+            op.completionBlock = nil
+
             // Even for operations running on the main thread with main loop,
             // that block will be called on some background queue.
             GCD.onMain() {
@@ -133,21 +135,31 @@ public class GrandOperator: IGrandOperator {
     func handleVerificationCompletionFinished1(finished1: Bool, finished2: Bool,
                                       op1: NSOperation, op2: NSOperation,
                                       completionBlock: GrandOperatorCompletionBlock?) {
-        GCD.onMain({ // serialize
+        GCD.onMain({ [weak self] in // serialize
             if finished1 && finished2 {
+                // Dissolve the cyclic dependency between the operation,
+                // the completion block, and back.
+                op1.completionBlock = nil
+                op2.completionBlock = nil
+
                 var error: NSError? = nil
-                if let err = self.errors[op1] {
+                if let err = self?.errors[op1] {
                     error = err
-                } else if let err = self.errors[op2] {
+                } else if let err = self?.errors[op2] {
                     error = err
                 }
                 completionBlock?(error: error)
-                self.errors.removeValueForKey(op1)
-                self.errors.removeValueForKey(op2)
+                self?.errors.removeValueForKey(op1)
+                self?.errors.removeValueForKey(op2)
+
+                print("operationCount\(self?.verifyConnectionQueue.operationCount)")
             }
         })
     }
 
+    /**
+     This is leaking Service objects.
+     */
     public func verifyConnection(connectInfo: ConnectInfo,
                                  completionBlock: GrandOperatorCompletionBlock?) {
         let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
@@ -156,17 +168,20 @@ public class GrandOperator: IGrandOperator {
         var finished1 = false
         var finished2 = false
 
-        let completion1 = {
+        // Since the completion blocks retain op1 and op2, respectively,
+        // a cyclic dependency is created that prevents the deallocation of both.
+        // This must be resolved when both have finished.
+        let completion1 = { [weak self, unowned op1, unowned op2]  in
             finished1 = true
-            self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                                              op1: op1, op2: op2,
-                                              completionBlock: completionBlock)
+            self?.handleVerificationCompletionFinished1(finished1, finished2: finished2,
+                                                        op1: op1, op2: op2,
+                                                        completionBlock: completionBlock)
         }
-        let completion2 = {
+        let completion2 = {  [weak self]  in
             finished2 = true
-            self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                                              op1: op1, op2: op2,
-                                              completionBlock: completionBlock)
+            self?.handleVerificationCompletionFinished1(finished1, finished2: finished2,
+                                                        op1: op1, op2: op2,
+                                                        completionBlock: completionBlock)
         }
 
         op1.completionBlock = completion1

@@ -17,7 +17,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
-    let grandOperator: IGrandOperator
+    weak var grandOperator: IGrandOperator!
     let model: IModel
 
     /** The underlying core data object */

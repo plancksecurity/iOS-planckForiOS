@@ -27,7 +27,7 @@ class SmtpTest: XCTestCase {
         }
         XCTAssertEqual(Service.refCounter.refCount, 0)
         for _ in 1...1 {
-            let smtp = SmtpSend.init(connectInfo: TestData.connectInfo)
+            var smtp: SmtpSend! = SmtpSend.init(connectInfo: TestData.connectInfo)
             let del = MyDelegate.init()
             del.authenticatedExpectation = expectationWithDescription("authenticatedExpectation")
             smtp.delegate = del
@@ -38,9 +38,8 @@ class SmtpTest: XCTestCase {
                 XCTAssertEqual(smtp.bestAuthMethod(), AuthMethod.Login)
                 smtp.close()
             })
-            RetainChecker.runCheckerOnElements([smtp])
+            smtp = nil
         }
-
         XCTAssertEqual(Service.refCounter.refCount, 0)
     }
 
