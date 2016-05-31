@@ -28,7 +28,8 @@ struct UIState {
 }
 
 class EmailListViewController: UITableViewController {
-    let comp = " "
+    let comp = "EmailListViewController"
+    let segueShowEmail = "segueShowEmail"
 
     var appConfig: AppConfig?
     var fetchController: NSFetchedResultsController?
@@ -39,7 +40,7 @@ class EmailListViewController: UITableViewController {
             if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
                 appConfig = appDelegate.appConfig
             }
-    }
+        }
         prepareFetchRequest()
 
         let account:IAccount? = appConfig!.model.fetchLastAccount()
@@ -157,6 +158,16 @@ class EmailListViewController: UITableViewController {
         if segue.identifier == "composeSegue" {
             let destination = segue.destinationViewController as! ComposeViewController
             destination.appConfig = appConfig
+        } else if segue.identifier == segueShowEmail {
+            guard
+                let vc = segue.destinationViewController as? EmailViewController,
+                let cell = sender as? UITableViewCell,
+                let indexPath = self.tableView.indexPathForCell(cell),
+                let email = fetchController?.objectAtIndexPath(indexPath) as? Message else {
+                    return
+            }
+            vc.appConfig = appConfig
+            vc.message = email
         }
     }
 

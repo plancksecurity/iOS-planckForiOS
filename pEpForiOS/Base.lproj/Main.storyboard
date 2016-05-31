@@ -5,10 +5,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Email List View Controller-->
+        <!--Email List-->
         <scene sceneID="OWw-y9-SIo">
             <objects>
-                <tableViewController storyboardIdentifier="EmailListViewController" id="kcA-RK-9Xg" customClass="EmailListViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="EmailListViewController" title="Email List" id="kcA-RK-9Xg" customClass="EmailListViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="111" sectionHeaderHeight="28" sectionFooterHeight="28" id="smX-Ka-bhC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -70,6 +70,7 @@
                                     <outlet property="senderLabel" destination="tWZ-jW-sUg" id="lM6-YZ-J7S"/>
                                     <outlet property="subjectLabel" destination="5Py-55-oem" id="UtV-Po-SPg"/>
                                     <outlet property="summaryLabel" destination="BvI-Zi-zU6" id="oGG-8D-EeC"/>
+                                    <segue destination="SRN-tu-1xe" kind="showDetail" identifier="segueShowEmail" action="showViewController:sender:" id="kHr-31-LHx"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -88,7 +89,6 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="bgm-ua-A0f"/>
                     <connections>
-                        <segue destination="WVm-RT-fSu" kind="show" identifier="composeMail" id="mvg-RY-ehA"/>
                         <segue destination="In9-Bu-9j1" kind="presentation" identifier="userSettings" id="s8x-oa-fif"/>
                     </connections>
                 </tableViewController>
@@ -269,23 +269,6 @@
             </objects>
             <point key="canvasLocation" x="5990" y="2012"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="edm-0R-6oo">
-            <objects>
-                <viewController id="WVm-RT-fSu" sceneMemberID="viewController">
-                    <textView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" id="6wY-L9-wLp">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    </textView>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dPp-Qc-zxQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6274" y="1212"/>
-        </scene>
         <!--User Info Table View-->
         <scene sceneID="hJo-oO-Yib">
             <objects>
@@ -456,6 +439,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2vq-tw-UZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6131" y="321"/>
+        </scene>
+        <!--Email View-->
+        <scene sceneID="adb-B5-lMP">
+            <objects>
+                <tableViewController title="Email View" id="SRN-tu-1xe" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="VT8-Mx-k1z">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="45i-gJ-mep">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="45i-gJ-mep" id="wPb-yW-5k8">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="SRN-tu-1xe" id="2uh-vo-Fh7"/>
+                            <outlet property="delegate" destination="SRN-tu-1xe" id="8cv-42-scg"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lmA-rc-hEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6152" y="1120"/>
         </scene>
         <!--Mail Table View-->
         <scene sceneID="f6A-Gu-Nbz">
