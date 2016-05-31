@@ -324,7 +324,7 @@ class ImapSyncTest: XCTestCase {
 
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertTrue(!del.errorOccurred)
+            XCTAssertFalse(del.errorOccurred)
             XCTAssertTrue(del.folderOpenSuccess)
             XCTAssertFalse(del.folderPrefetchSuccess)
         })
