@@ -78,7 +78,7 @@ class SimpleOperationsTest: XCTestCase {
         op.start()
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertGreaterThan(
+            XCTAssertGreaterThanOrEqual(
                 self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(
                     NSPredicate.init(value: true)), 1)
             XCTAssertEqual(self.persistentSetup.grandOperator.operationModel().folderByName(
