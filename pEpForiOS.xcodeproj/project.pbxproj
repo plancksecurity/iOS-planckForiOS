@@ -83,7 +83,8 @@
 		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
 		A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */; };
 		A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */; };
-		A1D5943C1CF5FD5200296F74 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5943B1CF5FD5200296F74 /* ComposeViewController.swift */; };
+		A1D189F61CF87CF400746C15 /* AutocompleteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D189F51CF87CF400746C15 /* AutocompleteController.swift */; };
+		A1FF4EA81CFD9DFF0005C6BD /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -229,7 +230,8 @@
 		A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
 		A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorVerifyTests.swift; sourceTree = "<group>"; };
 		A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncTest.swift; sourceTree = "<group>"; };
-		A1D5943B1CF5FD5200296F74 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
+		A1D189F51CF87CF400746C15 /* AutocompleteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
+		A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -478,7 +480,8 @@
 				43ED536A1CC77F95006AB156 /* MailSettingParameters.swift */,
 				43ED536B1CC77F95006AB156 /* MailTableView.swift */,
 				43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */,
-				A1D5943B1CF5FD5200296F74 /* ComposeViewController.swift */,
+				A1D189F51CF87CF400746C15 /* AutocompleteController.swift */,
+				A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */,
 			);
 			path = ImapSetup;
 			sourceTree = "<group>";
@@ -673,12 +676,12 @@
 				A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				4325F3141CD8A8D200A10727 /* ConcurrentBaseOperation.swift in Sources */,
+				A1FF4EA81CFD9DFF0005C6BD /* ComposeViewController.swift in Sources */,
 				43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */,
 				43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */,
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */,
 				43980EE71CBD24B800A7FC3C /* ImapSync.swift in Sources */,
 				431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */,
-				A1D5943C1CF5FD5200296F74 /* ComposeViewController.swift in Sources */,
 				43980EE91CBD24B800A7FC3C /* TestData.swift in Sources */,
 				43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */,
 				4303DAE81CE62D2600D9C0AB /* AttachmentData.swift in Sources */,
@@ -711,6 +714,7 @@
 				43ED53761CC77F95006AB156 /* MailTableView.swift in Sources */,
 				434596831CE227E6004E8735 /* MessageReference.swift in Sources */,
 				434F84491CEB083B0055B7A9 /* FetchMailOperation.swift in Sources */,
+				A1D189F61CF87CF400746C15 /* AutocompleteController.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				43ED53731CC77F95006AB156 /* MailCell.swift in Sources */,
 				43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */,

@@ -12,6 +12,7 @@ import UIKit
 public class SMTPSettingsTableView: UITableViewController {
     let unwindToEmailListSegue = "unwindToEmailListSegue"
 
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var transportSecurity: UIButton!
@@ -112,13 +113,16 @@ public class SMTPSettingsTableView: UITableViewController {
             smtpServerName: model.serverSMTP!, smtpServerPort: model.portSMTP,
             smtpTransport: model.transportSMTP)
 
+        activityIndicatorView.startAnimating()
         appConfig?.grandOperator.verifyConnection(connect, completionBlock: { error in
             if error == nil {
                 GCD.onMain() {
                     // save account, check for error
                     if self.appConfig?.model.insertAccountFromConnectInfo(connect) != nil {
                         // unwind back to INBOX on success
+                        self.activityIndicatorView.stopAnimating()
                         self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: sender)
+
                     } else {
                         self.showErrorMessage(NSLocalizedString("Could not save account", comment: ""))
                     }
