@@ -74,7 +74,7 @@ class NewAccountSetupUITest: XCTestCase {
         tf.typeText(String(account.smtpPort))
 
         tablesQuery.buttons["smtpTransportSecurity"].tap()
-        sheet.collectionViews.buttons[account.imapTransportSecurityString].tap()
+        sheet.collectionViews.buttons[account.smtpTransportSecurityString].tap()
 
         let nextButton = XCUIApplication().navigationBars.buttons["Next"]
         nextButton.tap()
