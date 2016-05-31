@@ -11,18 +11,22 @@ import CoreData
 
 public protocol IModel {
     func existingMessage(msg: CWIMAPMessage) -> IMessage?
-    func messageByPredicate(predicate: NSPredicate) -> IMessage?
-    func messagesByPredicate(predicate: NSPredicate) -> [IMessage]?
-    func messageCountByPredicate(predicate: NSPredicate) -> Int
+    func messageByPredicate(predicate: NSPredicate?,
+                            sortDescriptors: [NSSortDescriptor]?) -> IMessage?
+    func messagesByPredicate(predicate: NSPredicate?,
+                             sortDescriptors: [NSSortDescriptor]?) -> [IMessage]?
+    func messageCountByPredicate(predicate: NSPredicate?) -> Int
 
     /**
      -Returns: The highest UID of the messages in the given folder.
      */
     func lastUidInFolderNamed(folderName: String) -> UInt
 
-    func folderCountByPredicate(predicate: NSPredicate) -> Int
-    func foldersByPredicate(predicate: NSPredicate) -> [IFolder]?
-    func folderByPredicate(predicate: NSPredicate) -> IFolder?
+    func folderCountByPredicate(predicate: NSPredicate?) -> Int
+    func foldersByPredicate(predicate: NSPredicate?,
+                            sortDescriptors: [NSSortDescriptor]?) -> [IFolder]?
+    func folderByPredicate(predicate: NSPredicate?,
+                           sortDescriptors: [NSSortDescriptor]?) -> IFolder?
     func folderByName(name: String, email: String) -> IFolder?
     func folderByName(name: String, email: String, folderType: Account.AccountType) -> IFolder?
 
@@ -88,9 +92,11 @@ public class Model: IModel {
         self.context = context
     }
 
-    func singleEntityWithName(name: String, predicate: NSPredicate) -> NSManagedObject? {
+    func singleEntityWithName(name: String, predicate: NSPredicate? = nil,
+                              sortDescriptors: [NSSortDescriptor]? = nil) -> NSManagedObject? {
         let fetch = NSFetchRequest.init(entityName: name)
         fetch.predicate = predicate
+        fetch.sortDescriptors = sortDescriptors
         do {
             let objs = try context.executeFetchRequest(fetch)
             if objs.count == 1 {
@@ -107,10 +113,13 @@ public class Model: IModel {
         return nil
     }
 
-    public func entitiesWithName(name: String,
-                                 predicate: NSPredicate) -> [NSManagedObject]? {
+    public func entitiesWithName(
+        name: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil)
+        -> [NSManagedObject]?
+    {
         let fetch = NSFetchRequest.init(entityName: name)
         fetch.predicate = predicate
+        fetch.sortDescriptors = sortDescriptors
         do {
             let objs = try context.executeFetchRequest(fetch)
             return objs as? [NSManagedObject]
@@ -121,7 +130,7 @@ public class Model: IModel {
     }
 
     public func countWithName(name: String,
-                              predicate: NSPredicate) -> Int {
+                              predicate: NSPredicate? = nil) -> Int {
         let fetch = NSFetchRequest.init(entityName: name)
         fetch.predicate = predicate
         var error: NSError?
@@ -264,15 +273,21 @@ public class Model: IModel {
         return nil
     }
 
-    public func messageByPredicate(predicate: NSPredicate) -> IMessage? {
+    public func messageByPredicate(predicate: NSPredicate? = nil) -> IMessage? {
+        return messageByPredicate(predicate, sortDescriptors: nil)
+    }
+
+    public func messageByPredicate(predicate: NSPredicate? = nil,
+                                   sortDescriptors: [NSSortDescriptor]? = nil) -> IMessage? {
         return singleEntityWithName(Message.entityName(), predicate: predicate) as? Message
     }
 
-    public func messagesByPredicate(predicate: NSPredicate) -> [IMessage]? {
+    public func messagesByPredicate(predicate: NSPredicate? = nil,
+                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [IMessage]? {
         return entitiesWithName(Message.entityName(), predicate: predicate)?.map() {$0 as! Message}
     }
 
-    public func messageCountByPredicate(predicate: NSPredicate) -> Int {
+    public func messageCountByPredicate(predicate: NSPredicate? = nil) -> Int {
         return countWithName(Message.entityName(), predicate: predicate)
     }
 
@@ -302,15 +317,17 @@ public class Model: IModel {
         return 0
     }
 
-    public func folderCountByPredicate(predicate: NSPredicate) -> Int {
+    public func folderCountByPredicate(predicate: NSPredicate? = nil) -> Int {
         return countWithName(Folder.entityName(), predicate: predicate)
     }
 
-    public func foldersByPredicate(predicate: NSPredicate) -> [IFolder]? {
+    public func foldersByPredicate(predicate: NSPredicate? = nil,
+                                   sortDescriptors: [NSSortDescriptor]? = nil) -> [IFolder]? {
         return entitiesWithName(Folder.entityName(), predicate: predicate)?.map() {$0 as! Folder}
     }
 
-    public func folderByPredicate(predicate: NSPredicate) -> IFolder? {
+    public func folderByPredicate(predicate: NSPredicate? = nil,
+                                  sortDescriptors: [NSSortDescriptor]? = nil) -> IFolder? {
         return singleEntityWithName(Folder.entityName(), predicate: predicate) as? Folder
     }
 

@@ -74,7 +74,8 @@ class GrandOperatorTests: XCTestCase {
             XCTAssertGreaterThan(
                 self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(p), 0)
             let mail = self.persistentSetup.grandOperator.operationModel().messageByPredicate(
-                NSPredicate.init(format: "uid = %d", TestData.existingUID))
+                NSPredicate.init(format: "uid = %d", TestData.existingUID),
+                sortDescriptors: nil)
             XCTAssertNotNil(mail)
             XCTAssertEqual(mail?.uid, TestData.existingUID)
         })

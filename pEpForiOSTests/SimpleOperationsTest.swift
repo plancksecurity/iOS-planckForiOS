@@ -161,7 +161,7 @@ class SimpleOperationsTest: XCTestCase {
     func testFetchSingleMailsOperationSimple() {
         testPrefetchMailsOperation()
         let mails = persistentSetup.grandOperator.operationModel().messagesByPredicate(
-            NSPredicate.init(value: true))
+            NSPredicate.init(value: true), sortDescriptors: nil)
         if mails?.count > 0 {
             let mail = mails![0] as! Message
 
@@ -185,7 +185,8 @@ class SimpleOperationsTest: XCTestCase {
                     self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
                         NSPredicate.init(value: true)), 0)
                 let message = self.persistentSetup.grandOperator.operationModel().messageByPredicate(
-                    NSPredicate.init(format: "uid = %d", mail.uid!.integerValue))
+                    NSPredicate.init(format: "uid = %d", mail.uid!.integerValue),
+                    sortDescriptors: nil)
                 XCTAssertNotNil(message)
                 let hasTextMessage = message?.longMessage != nil
                 let hasHtml = message?.longMessageFormatted != nil

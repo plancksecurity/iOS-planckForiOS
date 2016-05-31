@@ -287,7 +287,8 @@ class ImapSyncTest: XCTestCase {
 
         setup.backgroundQueue.waitUntilAllOperationsAreFinished()
 
-        if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
+        if let folder = setup.model.folderByPredicate(
+            setup.inboxFolderPredicate(), sortDescriptors: nil)
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
             XCTAssertLessThanOrEqual(folder.messages.count, Int(sync.maxPrefetchCount))
@@ -329,7 +330,8 @@ class ImapSyncTest: XCTestCase {
 
         setup.backgroundQueue.waitUntilAllOperationsAreFinished()
 
-        let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
+        let folder = setup.model.folderByPredicate(
+            setup.inboxFolderPredicate(), sortDescriptors: nil)
             as? Folder
         XCTAssertNotNil(folder, "Accessed folders should be created automatically")
         sync.close()
@@ -338,7 +340,8 @@ class ImapSyncTest: XCTestCase {
     func testFetchMail() {
         let setup = PersistentSetup.init()
         let sync = prefetchMails(setup)
-        if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
+        if let folder = setup.model.folderByPredicate(
+            setup.inboxFolderPredicate(), sortDescriptors: nil)
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
             guard let message = folder.messages.anyObject() as? Message else {
@@ -383,7 +386,8 @@ class ImapSyncTest: XCTestCase {
     func testFetchMailAll() {
         let setup = PersistentSetup.init()
         let sync = prefetchMails(setup)
-        if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
+        if let folder = setup.model.folderByPredicate(
+            setup.inboxFolderPredicate(), sortDescriptors: nil)
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
 

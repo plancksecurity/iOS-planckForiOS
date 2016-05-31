@@ -93,7 +93,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
      */
     override func allMessages() -> [AnyObject] {
         var result: [AnyObject] = []
-        if let messages = model.messagesByPredicate(self.predicateAllMessages()) {
+        if let messages = model.messagesByPredicate(self.predicateAllMessages(),
+                                                    sortDescriptors: nil) {
             for m in messages {
                 result.append(m as! AnyObject)
             }
@@ -111,7 +112,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         let p = NSPredicate.init(
             format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
             connectInfo.email, self.name(), theIndex)
-        let msg = model.messageByPredicate(p)
+        let msg = model.messageByPredicate(p, sortDescriptors: nil)
         return msg?.imapMessageWithFolder(self)
     }
 
@@ -133,7 +134,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     func messageWithUID(theUID: UInt) -> CWIMAPMessage? {
         let p = NSPredicate.init(format: "uid = %d", theUID)
-        if let msg = model.messageByPredicate(p) {
+        if let msg = model.messageByPredicate(p, sortDescriptors: nil) {
             return msg.imapMessageWithFolder(self)
         } else {
             return nil
