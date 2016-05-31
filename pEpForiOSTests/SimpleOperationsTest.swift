@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 
 class SimpleOperationsTest: XCTestCase {
-    let waitTime: NSTimeInterval = 10
+    let waitTime: NSTimeInterval = 1000
 
     var persistentSetup: PersistentSetup!
     var connectInfo: ConnectInfo!
@@ -162,35 +162,39 @@ class SimpleOperationsTest: XCTestCase {
         testPrefetchMailsOperation()
         let mails = persistentSetup.grandOperator.operationModel().messagesByPredicate(
             NSPredicate.init(value: true))
-        let mail = mails![0] as! Message
+        if mails?.count > 0 {
+            let mail = mails![0] as! Message
 
-        let mailFetched = expectationWithDescription("mailFetched")
+            let mailFetched = expectationWithDescription("mailFetched")
 
-        let op = FetchMailOperation.init(
-            grandOperator: persistentSetup.grandOperator,
-            connectInfo: connectInfo, folderName: ImapSync.defaultImapInboxName,
-            uid: mail.uid!.integerValue)
-        op.completionBlock = {
-            mailFetched.fulfill()
+            let op = FetchMailOperation.init(
+                grandOperator: persistentSetup.grandOperator,
+                connectInfo: connectInfo, folderName: ImapSync.defaultImapInboxName,
+                uid: mail.uid!.integerValue)
+            op.completionBlock = {
+                mailFetched.fulfill()
+            }
+            op.start()
+
+            waitForExpectationsWithTimeout(waitTime, handler: { error in
+                XCTAssertNil(error)
+                XCTAssertGreaterThan(
+                    self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(
+                        NSPredicate.init(value: true)), 0)
+                XCTAssertGreaterThan(
+                    self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
+                        NSPredicate.init(value: true)), 0)
+                let message = self.persistentSetup.grandOperator.operationModel().messageByPredicate(
+                    NSPredicate.init(format: "uid = %d", mail.uid!.integerValue))
+                XCTAssertNotNil(message)
+                let hasTextMessage = message?.longMessage != nil
+                let hasHtml = message?.longMessageFormatted != nil
+                let hasAttachments = message?.attachments.count > 0
+                XCTAssertTrue(hasTextMessage || hasHtml || hasAttachments)
+            })
+        } else {
+            XCTAssertTrue(false, "Expected mails")
         }
-        op.start()
-
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertGreaterThan(
-                self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(
-                    NSPredicate.init(value: true)), 0)
-            XCTAssertGreaterThan(
-                self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
-                    NSPredicate.init(value: true)), 0)
-            let message = self.persistentSetup.grandOperator.operationModel().messageByPredicate(
-                NSPredicate.init(format: "uid = %d", mail.uid!.integerValue))
-            XCTAssertNotNil(message)
-            let hasTextMessage = message?.longMessage != nil
-            let hasHtml = message?.longMessageFormatted != nil
-            let hasAttachments = message?.attachments.count > 0
-            XCTAssertTrue(hasTextMessage || hasHtml || hasAttachments)
-        })
     }
 
     func testFetchSingleMailsOperationChained() {
@@ -204,10 +208,9 @@ class SimpleOperationsTest: XCTestCase {
             mailsPrefetched.fulfill()
         }
 
-        // TODO: Chain in another operation to find out an existing UID
         let op2 = FetchMailOperation.init(
             grandOperator: persistentSetup.grandOperator, connectInfo: connectInfo,
-            folderName: ImapSync.defaultImapInboxName, uid: 10)
+            folderName: ImapSync.defaultImapInboxName, uid: TestData.existingUID)
         op2.completionBlock = {
             mailFetched.fulfill()
         }

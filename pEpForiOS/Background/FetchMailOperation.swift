@@ -42,7 +42,7 @@ extension FetchMailOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
-            sync.openMailBox(folderName, prefetchMails: false)
+            sync.openMailBox(folderName)
         }
     }
 

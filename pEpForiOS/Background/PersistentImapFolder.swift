@@ -136,7 +136,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         if let msg = model.messageByPredicate(p) {
             return msg.imapMessageWithFolder(self)
         } else {
-            Log.warn(comp, "Could not fetch message with uid \(theUID)")
             return nil
         }
     }

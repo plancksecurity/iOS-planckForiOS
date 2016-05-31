@@ -60,11 +60,11 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testFetchMail() {
-        let theUID = 10
         let exp = expectationWithDescription("mailFetched")
         persistentSetup.grandOperator.fetchMailFromFolderNamed(
             persistentSetup.connectionInfo,
-            folderName: ImapSync.defaultImapInboxName, uid: theUID, completionBlock: { error in
+            folderName: ImapSync.defaultImapInboxName, uid: TestData.existingUID,
+            completionBlock: { error in
                 XCTAssertNil(error)
                 exp.fulfill()
         })
@@ -74,9 +74,9 @@ class GrandOperatorTests: XCTestCase {
             XCTAssertGreaterThan(
                 self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(p), 0)
             let mail = self.persistentSetup.grandOperator.operationModel().messageByPredicate(
-                NSPredicate.init(format: "uid = %d", theUID))
+                NSPredicate.init(format: "uid = %d", TestData.existingUID))
             XCTAssertNotNil(mail)
-            XCTAssertEqual(mail?.uid, theUID)
+            XCTAssertEqual(mail?.uid, TestData.existingUID)
         })
     }
 

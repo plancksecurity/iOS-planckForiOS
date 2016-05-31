@@ -74,24 +74,12 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     let preFetchMails: Bool
     let openInbox: Bool
 
-    init(fetchFolders: Bool, preFetchMails: Bool, openInbox: Bool) {
+    init(fetchFolders: Bool = false, preFetchMails: Bool = false, openInbox: Bool = false) {
         self.fetchFolders = fetchFolders
         self.preFetchMails = preFetchMails
         self.openInbox = openInbox
         super.init()
         print("init() \(unsafeAddressOf(self))")
-    }
-
-    convenience override init() {
-        self.init(fetchFolders: false, preFetchMails: false, openInbox: false)
-    }
-
-    convenience init(fetchFolders: Bool) {
-        self.init(fetchFolders: fetchFolders, preFetchMails: false, openInbox: false)
-    }
-
-    convenience init(openInbox: Bool, demandStatus: Bool) {
-        self.init(fetchFolders: false, preFetchMails: false, openInbox: openInbox)
     }
 
     func fulfillError(kind: String) {
@@ -132,7 +120,7 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     func receivedFolderNames(sync: ImapSync, folderNames: [String]?) {
         if let folders = folderNames {
             self.folderNames = folders
-            sync.openMailBox(ImapSync.defaultImapInboxName, prefetchMails: preFetchMails)
+            sync.openMailBox(ImapSync.defaultImapInboxName)
             foldersFetched = true
             if let exp = foldersFetchedExpectation {
                 exp.fulfill()
@@ -142,7 +130,7 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
 
     override func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if openInbox {
-            sync.openMailBox(ImapSync.defaultImapInboxName, prefetchMails: false)
+            sync.openMailBox(ImapSync.defaultImapInboxName)
         } else if fetchFolders {
             if let folderNames = sync.folderNames {
                 receivedFolderNames(sync, folderNames: folderNames)
@@ -170,6 +158,14 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
         folderOpenSuccess = true
         if let exp = folderOpenSuccessExpectation {
             exp.fulfill()
+        }
+        if preFetchMails {
+            do {
+                try sync.syncMails()
+            } catch  {
+                folderPrefetchSuccess = false
+                folderPrefetchSuccessExpectation?.fulfill()
+            }
         }
     }
 
@@ -273,6 +269,7 @@ class ImapSyncTest: XCTestCase {
         let del = TestImapSyncDelegate.init(fetchFolders: true, preFetchMails: true,
                                             openInbox: false)
         let sync = ImapSync.init(connectInfo: setup.connectionInfo)
+        sync.maxPrefetchCount = 10
         sync.delegate = del
         sync.folderBuilder = setup.folderBuilder
 
@@ -293,6 +290,7 @@ class ImapSyncTest: XCTestCase {
         if let folder = setup.model.folderByPredicate(setup.inboxFolderPredicate())
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
+            XCTAssertLessThanOrEqual(folder.messages.count, Int(sync.maxPrefetchCount))
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }

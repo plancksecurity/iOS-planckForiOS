@@ -9,6 +9,10 @@
 import Foundation
 
 public class TestData {
+    /**
+    This must be an existing UID in the account `connectInfo`.
+    */
+    public static let existingUID = 10
 
     public static var connectInfo: ConnectInfo =
         ConnectInfo.init(email: "someemail@test.com",

@@ -18,6 +18,7 @@ public class Constants {
     public enum GeneralErrorCode: Int {
         case NotImplemented = 1000
         case IllegalState
+        case FolderNotOpen
     }
 
     public enum NetworkError: Int {
@@ -53,6 +54,23 @@ public class Constants {
                 NSString.init(format: NSLocalizedString("Unexpected state: %@",
                     comment: "General error description for operation that encountered an unexpected state/callback, e.g. a 'message received' when waiting for a list of folders"),
                     stateName)])
+        return error
+    }
+
+    static func errorIllegalState(component: String, errorMessage: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: errorMessage])
+        return error
+    }
+
+    static func errorFolderNotOpen(component: String, folderName: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: GeneralErrorCode.FolderNotOpen.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSString.init(format: NSLocalizedString("Folder is not open: %@",
+                    comment: "General error description for operation that needs an open folder, but there was none"),
+                    folderName)])
         return error
     }
 

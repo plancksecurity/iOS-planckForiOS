@@ -49,7 +49,7 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
         if imapSync.imapState.authenticationCompleted == false {
             imapSync.start()
         } else {
-            imapSync.openMailBox(folderToOpen, prefetchMails: true)
+            imapSync.openMailBox(folderToOpen)
         }
     }
 
@@ -64,7 +64,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
-            sync.openMailBox(folderToOpen, prefetchMails: true)
+            sync.openMailBox(folderToOpen)
         }
     }
 
@@ -94,6 +94,12 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
+        do {
+            try sync.syncMails()
+        } catch let err as NSError {
+            grandOperator.setErrorForOperation(self, error: err)
+            waitForFinished()
+        }
     }
 
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
