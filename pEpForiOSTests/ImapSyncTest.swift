@@ -286,8 +286,6 @@ class ImapSyncTest: XCTestCase {
             XCTAssertTrue(del.folderPrefetchSuccess)
         })
 
-        setup.backgroundQueue.waitUntilAllOperationsAreFinished()
-
         if let folder = setup.model.folderByPredicate(
             setup.inboxFolderPredicate(), sortDescriptors: nil)
             as? Folder {

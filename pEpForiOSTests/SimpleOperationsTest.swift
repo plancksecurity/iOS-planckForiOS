@@ -104,7 +104,6 @@ class SimpleOperationsTest: XCTestCase {
             accountEmail: connectInfo.email, message: message)
         let backgroundQueue = NSOperationQueue.init()
         backgroundQueue.addOperation(op)
-        backgroundQueue.waitUntilAllOperationsAreFinished()
         XCTAssertEqual(
             self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
                 NSPredicate.init(value: true)), 1)
