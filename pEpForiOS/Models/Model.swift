@@ -465,6 +465,7 @@ public class Model: IModel {
 
         var addresses = message.recipients() as! [CWInternetAddress]
         if let from = message.from() {
+            from.setType(PantomimeToRecipient)
             addresses.append(from)
         }
         let contacts = addContacts(addresses)
@@ -478,7 +479,7 @@ public class Model: IModel {
             case PantomimeToRecipient:
                 tos.addObject(contacts[addr.address()]! as! Contact)
             default:
-                Log.warn(comp, "Unsupported recipient type \(addr.type)")
+                Log.warn(comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
         }
         if isFresh || mail.cc != ccs {
