@@ -235,11 +235,14 @@ public class GrandOperator: IGrandOperator {
     }
 
     public func operationModel() -> IModel {
+        if NSThread.isMainThread() {
+            return model
+        }
         let threadDictionary = NSThread.currentThread().threadDictionary
         if let model = threadDictionary[GrandOperator.kOperationModel] {
             return model as! IModel
         }
-        let resultModel = NSThread.isMainThread() ? model : createBackgroundModel()
+        let resultModel = createBackgroundModel()
         threadDictionary.setValue(resultModel as? AnyObject, forKey: GrandOperator.kOperationModel)
         return resultModel
     }
