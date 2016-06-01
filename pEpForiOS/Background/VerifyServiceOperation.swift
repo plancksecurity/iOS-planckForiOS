@@ -26,10 +26,6 @@ public class VerifyServiceOperation: ConcurrentBaseOperation {
         super.init(grandOperator: grandOperator)
     }
 
-    deinit {
-
-    }
-
     func close(finish: Bool) {
         service.close()
         if finish {
