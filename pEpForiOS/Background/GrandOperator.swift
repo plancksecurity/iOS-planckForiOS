@@ -74,6 +74,8 @@ public protocol IGrandOperator: class {
     func allErrors() -> [NSError]
 
     /**
+     A model suitable for accessing core data from this thread, cached in thread-local
+     storage.
      - Returns: The model suitable for the caller, depending on whether this is called on the
      main thread or not.
      */
@@ -81,6 +83,11 @@ public protocol IGrandOperator: class {
 }
 
 public class GrandOperator: IGrandOperator {
+    /**
+     Key for accessing the model in thread-local storage.
+     */
+    static let kOperationModel = "kOperationModel"
+
     let comp = "GrandOperator"
 
     public let connectionManager: ConnectionManager
@@ -226,12 +233,17 @@ public class GrandOperator: IGrandOperator {
     /**
      Creates a new background model, confined to the current thread/queue
      */
-    private func backgroundModel() -> IModel {
+    private func createBackgroundModel() -> IModel {
         return Model.init(context: coreDataUtil.confinedManagedObjectContext())
     }
 
     public func operationModel() -> IModel {
-        let resultModel = NSThread.isMainThread() ? model : backgroundModel()
+        let threadDictionary = NSThread.currentThread().threadDictionary
+        if let model = threadDictionary[GrandOperator.kOperationModel] {
+            return model as! IModel
+        }
+        let resultModel = NSThread.isMainThread() ? model : createBackgroundModel()
+        threadDictionary.setValue(resultModel as? AnyObject, forKey: GrandOperator.kOperationModel)
         return resultModel
     }
 }

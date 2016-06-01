@@ -18,7 +18,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     let connectInfo: ConnectInfo
     let backgroundQueue: NSOperationQueue
     weak var grandOperator: IGrandOperator!
-    let model: IModel
 
     /** The underlying core data object */
     var folder: IFolder!
@@ -29,7 +28,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
         set {
             folder.nextUID = newValue
-            model.save()
+            grandOperator.operationModel().save()
         }
     }
 
@@ -39,7 +38,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
         set {
             folder.existsCount = newValue
-            model.save()
+            grandOperator.operationModel().save()
         }
     }
 
@@ -48,14 +47,13 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         self.connectInfo = connectInfo
         self.backgroundQueue = backgroundQueue
         self.grandOperator = grandOperator
-        self.model = grandOperator.operationModel()
         super.init(name: name)
         self.setCacheManager(self)
         self.folder = folderObject()
     }
 
     func folderObject() -> IFolder {
-        if let folder = model.insertOrUpdateFolderName(
+        if let folder = grandOperator.operationModel().insertOrUpdateFolderName(
             name(), folderType: Account.AccountType.IMAP, accountEmail: connectInfo.email) {
             return folder
         } else {
@@ -70,7 +68,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             folder.messages = []
         }
         folder.uidValidity = theUIDValidity
-        model.save()
+        grandOperator.operationModel().save()
     }
 
     override func UIDValidity() -> UInt {
@@ -87,14 +85,10 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return p
     }
 
-    /**
-     - Note: This must always be called from the main thread. As called by Pantomime, this should
-     be the case.
-     */
     override func allMessages() -> [AnyObject] {
         var result: [AnyObject] = []
-        if let messages = model.messagesByPredicate(self.predicateAllMessages(),
-                                                    sortDescriptors: nil) {
+        if let messages = grandOperator.operationModel().messagesByPredicate(
+            self.predicateAllMessages(), sortDescriptors: nil) {
             for m in messages {
                 result.append(m as! AnyObject)
             }
@@ -112,17 +106,17 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         let p = NSPredicate.init(
             format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
             connectInfo.email, self.name(), theIndex)
-        let msg = model.messageByPredicate(p, sortDescriptors: nil)
+        let msg = grandOperator.operationModel().messageByPredicate(p, sortDescriptors: nil)
         return msg?.imapMessageWithFolder(self)
     }
 
     override func count() -> UInt {
-        let n = model.messageCountByPredicate(self.predicateAllMessages())
+        let n = grandOperator.operationModel().messageCountByPredicate(self.predicateAllMessages())
         return UInt(n)
     }
 
     override func lastUID() -> UInt {
-        return model.lastUidInFolderNamed(name())
+        return grandOperator.operationModel().lastUidInFolderNamed(name())
     }
 
     func invalidate() {
@@ -134,7 +128,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     func messageWithUID(theUID: UInt) -> CWIMAPMessage? {
         let p = NSPredicate.init(format: "uid = %d", theUID)
-        if let msg = model.messageByPredicate(p, sortDescriptors: nil) {
+        if let msg = grandOperator.operationModel().messageByPredicate(p, sortDescriptors: nil) {
             return msg.imapMessageWithFolder(self)
         } else {
             return nil
