@@ -14,7 +14,7 @@ import pEpForiOS
 class GrandOperatorTests: XCTestCase {
     let comp = "GrandOperatorTests"
 
-    let waitTime: NSTimeInterval = 1000
+    let waitTime: NSTimeInterval = 10
 
     let correct = TestData.connectInfo
     var persistentSetup: PersistentSetup!
