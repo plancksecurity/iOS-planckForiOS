@@ -46,7 +46,7 @@ public protocol IGrandOperator: class {
      This means that the complete message, with all
      attachments, gets downloaded and persisted.
      */
-    func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: Int,
+    func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: UInt,
                                   completionBlock: GrandOperatorCompletionBlock?)
 
     /**
@@ -206,7 +206,7 @@ public class GrandOperator: IGrandOperator {
         completionBlock?(error: Constants.errorNotImplemented(comp))
     }
 
-    public func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: Int,
+    public func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: UInt,
                                          completionBlock: GrandOperatorCompletionBlock?) {
         let op = FetchMailOperation.init(grandOperator: self, connectInfo: connectInfo,
                                          folderName: folderName, uid: uid)

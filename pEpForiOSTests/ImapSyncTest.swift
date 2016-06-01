@@ -200,6 +200,7 @@ class ImapSyncTest: XCTestCase {
     override func setUp() {
         super.setUp()
         coreDataUtil = InMemoryCoreDataUtil()
+        TestUtil.adjustBaseLevel()
     }
 
     override func tearDown() {
@@ -359,7 +360,7 @@ class ImapSyncTest: XCTestCase {
             del.messagePrefetchedExpectation = expectationWithDescription("messagePrefetched")
 
             sync.fetchMailFromFolderNamed(ImapSync.defaultImapInboxName,
-                                          uid: message.uid!.integerValue)
+                                          uid: UInt(bitPattern: message.uid!.integerValue))
             waitForExpectationsWithTimeout(waitTime, handler: { error in
                 XCTAssertNil(error)
                 XCTAssertTrue(!del.errorOccurred)
@@ -403,7 +404,7 @@ class ImapSyncTest: XCTestCase {
                 del.messagePrefetchedExpectation = expectationWithDescription("messagePrefetched")
 
                 sync.fetchMailFromFolderNamed(ImapSync.defaultImapInboxName,
-                                              uid: message.uid!.integerValue)
+                                              uid: UInt(bitPattern: message.uid!.integerValue))
                 waitForExpectationsWithTimeout(waitTime, handler: { error in
                     XCTAssertNil(error)
                     XCTAssertTrue(!del.errorOccurred)

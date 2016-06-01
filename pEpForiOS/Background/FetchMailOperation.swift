@@ -11,10 +11,10 @@ import Foundation
 public class FetchMailOperation: ConcurrentBaseOperation {
     let connectInfo: ConnectInfo
     let folderName: String
-    let uid: Int
+    let uid: UInt
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folderName: String,
-                uid: Int) {
+                uid: UInt) {
         self.connectInfo = connectInfo
         self.folderName = folderName
         self.uid = uid

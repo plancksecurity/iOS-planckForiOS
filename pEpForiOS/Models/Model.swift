@@ -433,12 +433,6 @@ public class Model: IModel {
             return nil
         }
 
-        var addresses = message.recipients() as! [CWInternetAddress]
-        if let from = message.from() {
-            addresses.append(from)
-        }
-        let contacts = addContacts(addresses)
-
         var isFresh = false
         var theMail: IMessage? = existingMessage(message)
         if theMail == nil {
@@ -469,10 +463,15 @@ public class Model: IModel {
             mail.boundary = message.boundary()?.asciiString()
         }
 
+        var addresses = message.recipients() as! [CWInternetAddress]
+        if let from = message.from() {
+            addresses.append(from)
+        }
+        let contacts = addContacts(addresses)
+
         let ccs: NSMutableOrderedSet = []
         let tos: NSMutableOrderedSet = []
-        for address in message.recipients() {
-            let addr = address as! CWInternetAddress
+        for addr in addresses {
             switch addr.type() {
             case PantomimeCcRecipient:
                 ccs.addObject(contacts[addr.address()]! as! Contact)

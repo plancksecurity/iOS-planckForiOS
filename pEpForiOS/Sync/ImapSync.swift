@@ -101,7 +101,7 @@ public protocol IImapSync {
      Tries to fetch the the mail with the given UID from the folder with the given name.
      The folder must be currently opened!
      */
-    func fetchMailFromFolderNamed(folderName: String, uid: Int)
+    func fetchMailFromFolderNamed(folderName: String, uid: UInt)
 
     /**
      Close the connection.
@@ -175,7 +175,7 @@ public class ImapSync: Service, IImapSync {
         folder.prefetch()
     }
 
-    public func fetchMailFromFolderNamed(folderName: String, uid: Int) {
+    public func fetchMailFromFolderNamed(folderName: String, uid: UInt) {
         if folderName == imapState.currentFolder {
             imapStore.sendCommand(
                 IMAP_UID_FETCH_HEADER_FIELDS_NOT, info: nil,

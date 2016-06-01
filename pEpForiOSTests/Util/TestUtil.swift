@@ -15,17 +15,30 @@ class TestUtil {
     static let connectonShutDownWaitTime: NSTimeInterval = 1
     static let numberOfTriesConnectonShutDown = 5
 
+    static var initialNumberOfRunningConnections = 0
+    static var initialNumberOfServices = 0
+
+    /**
+     In case there are other connections open, call this function before relying on
+     `waitForConnectionShutdown` or `waitForServiceCleanup`
+     */
+    static func adjustBaseLevel() {
+        initialNumberOfRunningConnections = CWTCPConnection.numberOfRunningConnections()
+        initialNumberOfServices = Service.refCounter.refCount
+    }
+
     /**
      Waits and verifies that all connection threads are finished.
      */
     static func waitForConnectionShutdown() {
         for _ in 1...numberOfTriesConnectonShutDown {
-            if CWTCPConnection.numberOfRunningConnections() == 0 {
+            if CWTCPConnection.numberOfRunningConnections() == initialNumberOfRunningConnections {
                 break
             }
             NSThread.sleepForTimeInterval(connectonShutDownWaitTime)
         }
-        XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(), 0)
+        XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(),
+                       initialNumberOfRunningConnections)
     }
 
     /**
@@ -33,12 +46,12 @@ class TestUtil {
      */
     static func waitForServiceCleanup() {
         for _ in 1...numberOfTriesConnectonShutDown {
-            if Service.refCounter.refCount == 0 {
+            if Service.refCounter.refCount == initialNumberOfServices {
                 break
             }
             NSThread.sleepForTimeInterval(connectonShutDownWaitTime)
         }
-        XCTAssertEqual(Service.refCounter.refCount, 0)
+        XCTAssertEqual(Service.refCounter.refCount, initialNumberOfServices)
     }
 
     /**

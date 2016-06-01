@@ -30,4 +30,15 @@ class MiscTests: XCTestCase {
         XCTAssertEqual("\"\"".unquote(), "")
         XCTAssertEqual("uiae\"uiaeuiae\"".unquote(), "uiae\"uiaeuiae\"")
     }
+
+    func testSignedNumbers32() {
+        let u: UInt32 = UInt32.max
+        let s: Int32 = Int32(bitPattern: u)
+        let u1: UInt32 = UInt32(bitPattern: s)
+        XCTAssertEqual(u1, UInt32.max)
+
+        let n = NSNumber.init(int: s)
+        let u2: UInt32 = UInt32(bitPattern: n.intValue)
+        XCTAssertEqual(u2, UInt32.max)
+    }
 }

@@ -21,6 +21,7 @@ class SimpleOperationsTest: XCTestCase {
         super.setUp()
         persistentSetup = PersistentSetup.init()
         connectInfo = TestData.connectInfo
+        TestUtil.adjustBaseLevel()
     }
 
     override func tearDown() {
@@ -170,7 +171,7 @@ class SimpleOperationsTest: XCTestCase {
             let op = FetchMailOperation.init(
                 grandOperator: persistentSetup.grandOperator,
                 connectInfo: connectInfo, folderName: ImapSync.defaultImapInboxName,
-                uid: mail.uid!.integerValue)
+                uid: UInt(bitPattern: mail.uid!.integerValue))
             op.completionBlock = {
                 mailFetched.fulfill()
             }

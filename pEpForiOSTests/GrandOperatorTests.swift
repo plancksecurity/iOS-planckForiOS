@@ -14,7 +14,7 @@ import pEpForiOS
 class GrandOperatorTests: XCTestCase {
     let comp = "GrandOperatorTests"
 
-    let waitTime: NSTimeInterval = 10
+    let waitTime: NSTimeInterval = 1000
 
     let correct = TestData.connectInfo
     var persistentSetup: PersistentSetup!
@@ -22,6 +22,7 @@ class GrandOperatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup.init()
+        TestUtil.adjustBaseLevel()
     }
 
     override func tearDown() {
@@ -52,7 +53,8 @@ class GrandOperatorTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             let p = NSPredicate.init(value: true)
-            XCTAssertGreaterThan(self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(p), 0)
+            XCTAssertGreaterThan(
+                self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(p), 0)
             XCTAssertEqual(self.persistentSetup.grandOperator.operationModel().folderByName(
                 ImapSync.defaultImapInboxName, email: self.correct.email)?.name.lowercaseString,
                 ImapSync.defaultImapInboxName.lowercaseString)
