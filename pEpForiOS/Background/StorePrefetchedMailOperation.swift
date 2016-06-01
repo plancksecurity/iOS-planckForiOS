@@ -24,11 +24,17 @@ public class StorePrefetchedMailOperation: BaseOperation {
     }
 
     override public func main() {
-        let model = grandOperator.operationModel()
-        if model.insertOrUpdatePantomimeMail(message, accountEmail: accountEmail) != nil {
+        let privateMOC = privateContext()
+        privateMOC.performBlockAndWait({
+            let model = Model.init(context: privateMOC)
+            if model.insertOrUpdatePantomimeMail(
+                self.message, accountEmail: self.accountEmail) != nil {
+                model.save()
+            } else {
+                self.grandOperator.setErrorForOperation(self,
+                    error: Constants.errorCannotStoreMail(self.comp))
+            }
             model.save()
-        } else {
-            grandOperator.setErrorForOperation(self, error: Constants.errorCannotStoreMail(comp))
-        }
+        })
     }
 }

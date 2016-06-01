@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class StoreFoldersOperation: BaseOperation {
     let comp = "StoreFoldersOperation"
@@ -20,18 +21,20 @@ class StoreFoldersOperation: BaseOperation {
     }
 
     override func main() {
-        Log.warn(comp, "StoreFoldersOperation started")
-        let model = grandOperator.operationModel()
-        for folderName in foldersToStore {
-            let folder = model.insertOrUpdateFolderName(
-                folderName, folderType: Account.AccountType.IMAP, accountEmail: email)
-            if folder == nil {
-                grandOperator.setErrorForOperation(
-                    self,
-                    error: Constants.errorCouldNotStoreFolder(comp, name: folderName))
+        let privateMOC = privateContext()
+        privateMOC.performBlockAndWait({
+            let model = Model.init(context: privateMOC)
+            for folderName in self.foldersToStore {
+                let folder = model.insertOrUpdateFolderName(
+                    folderName, folderType: Account.AccountType.IMAP, accountEmail: self.email)
+                if folder == nil {
+                    self.grandOperator.setErrorForOperation(
+                        self,
+                        error: Constants.errorCouldNotStoreFolder(self.comp, name: folderName))
+                }
             }
-        }
-        model.save()
+            model.save()
+        })
         Log.warn(comp, "StoreFoldersOperation finished")
     }
 }
