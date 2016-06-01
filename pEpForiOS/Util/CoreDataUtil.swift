@@ -28,7 +28,8 @@ public class CoreDataMerger {
 
     public init() {
         saveObserver = NSNotificationCenter.defaultCenter().addObserverForName(
-        NSManagedObjectContextDidSaveNotification, object: nil, queue: nil) {
+        NSManagedObjectContextDidSaveNotification, object: nil,
+        queue: NSOperationQueue.mainQueue()) {
             [unowned self] notification in
             if let context = self.managedObjectContext {
                 self.mergeContexts(notification, context: context)
@@ -41,9 +42,7 @@ public class CoreDataMerger {
     }
 
     public func mergeContexts(notification: NSNotification, context: NSManagedObjectContext) {
-        dispatch_async(dispatch_get_main_queue(), {
-            context.mergeChangesFromContextDidSaveNotification(notification)
-        })
+        context.mergeChangesFromContextDidSaveNotification(notification)
     }
 }
 
