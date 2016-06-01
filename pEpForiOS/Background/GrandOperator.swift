@@ -164,9 +164,6 @@ public class GrandOperator: IGrandOperator {
         })
     }
 
-    /**
-     This is leaking Service objects.
-     */
     public func verifyConnection(connectInfo: ConnectInfo,
                                  completionBlock: GrandOperatorCompletionBlock?) {
         let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
