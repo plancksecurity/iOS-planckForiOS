@@ -18,8 +18,7 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
     let comp = "PrefetchEmailsOperation"
 
     let connectInfo: ConnectInfo
-    var folderBuilder: ImapFolderBuilder!
-    var imapSync: ImapSync!
+    var sync: ImapSync!
     let folderToOpen: String
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folder: String?) {
@@ -32,24 +31,29 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
 
 
         super.init(grandOperator: grandOperator)
-
-        folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                               connectInfo: connectInfo,
-                                               backgroundQueue: backgroundQueue)
     }
 
     override public func main() {
         if self.cancelled {
             return
         }
-        imapSync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
-        imapSync.delegate = self
-        imapSync.folderBuilder = self.folderBuilder
 
-        if imapSync.imapState.authenticationCompleted == false {
-            imapSync.start()
+        let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
+                                                   connectInfo: connectInfo,
+                                                   backgroundQueue: backgroundQueue)
+
+        sync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
+        sync.delegate = self
+        sync.folderBuilder = folderBuilder
+
+        if sync.imapState.authenticationCompleted == false {
+            sync.start()
         } else {
-            imapSync.openMailBox(folderToOpen)
+            if sync.imapState.currentFolder != nil {
+                syncMails(sync)
+            } else {
+                sync.openMailBox(folderToOpen)
+            }
         }
     }
 
@@ -57,6 +61,15 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
         let op = StoreFoldersOperation.init(grandOperator: self.grandOperator,
                                             folders: folderNames, email: self.connectInfo.email)
         backgroundQueue.addOperation(op)
+    }
+
+    func syncMails(sync: ImapSync) {
+        do {
+            try sync.syncMails()
+        } catch let err as NSError {
+            grandOperator.setErrorForOperation(self, error: err)
+            waitForFinished()
+        }
     }
 }
 
@@ -94,12 +107,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
-        do {
-            try sync.syncMails()
-        } catch let err as NSError {
-            grandOperator.setErrorForOperation(self, error: err)
-            waitForFinished()
-        }
+        syncMails(sync)
     }
 
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {

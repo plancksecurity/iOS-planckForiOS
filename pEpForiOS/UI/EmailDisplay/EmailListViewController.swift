@@ -11,20 +11,7 @@ import UIKit
 import CoreData
 
 struct UIState {
-    let runningOpsUser = NSMutableOrderedSet()
-    let runningOpsAuto = NSMutableOrderedSet()
-
-    func isSynching() -> Bool {
-        return runningOpsUser.count > 0 || runningOpsAuto.count > 0
-    }
-
-    func isSynchingAuto() -> Bool {
-        return runningOpsAuto.count > 0
-    }
-
-    func isSynchingUser() -> Bool {
-        return runningOpsUser.count > 0
-    }
+    var isSynching: Bool = false
 }
 
 class EmailListViewController: UITableViewController {
@@ -33,7 +20,14 @@ class EmailListViewController: UITableViewController {
 
     var appConfig: AppConfig?
     var fetchController: NSFetchedResultsController?
-    let state = UIState()
+    var state = UIState()
+
+    override func viewDidLoad() {
+        let refreshController = UIRefreshControl.init()
+        refreshController.addTarget(self, action: #selector(self.refresh(_:)),
+                                    forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl = refreshController
+    }
 
     override func viewWillAppear(animated: Bool) {
         if appConfig == nil {
@@ -47,20 +41,27 @@ class EmailListViewController: UITableViewController {
         if (account == nil)  {
             self.performSegueWithIdentifier("userSettings", sender: self)
         } else {
-            fetchMails()
+            fetchMailsRefreshControl()
         }
         super.viewWillAppear(animated)
     }
 
-    func fetchMails() {
+    func refresh(refreshControl: UIRefreshControl) {
+        fetchMailsRefreshControl(refreshControl)
+    }
+
+    func fetchMailsRefreshControl(refreshControl: UIRefreshControl? = nil) {
         if let account = appConfig?.model.fetchLastAccount() {
             let connectInfo = account.connectInfo
 
+            state.isSynching = true
             appConfig!.grandOperator.prefetchEmails(
                 connectInfo, folder: ImapSync.defaultImapInboxName, completionBlock: {
                     [unowned self] error in
                     GCD.onMain({
                         Log.info(self.comp, "Sync completed, error: \(error)")
+                        self.state.isSynching = false
+                        refreshControl?.endRefreshing()
                         self.updateUI()
                     })
                 })
@@ -69,7 +70,7 @@ class EmailListViewController: UITableViewController {
     }
 
     @IBAction func newAccountCreatedSegue(segue: UIStoryboardSegue) {
-        fetchMails()
+        fetchMailsRefreshControl()
     }
 
     func prepareFetchRequest() {
@@ -93,7 +94,7 @@ class EmailListViewController: UITableViewController {
     // MARK: - UI State
 
     func updateUI() {
-        if state.isSynching() {
+        if state.isSynching {
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         } else {
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
