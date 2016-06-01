@@ -8,10 +8,16 @@
 
 import UIKit
 
+public class ViewStatus {
+
+    public var activityIndicatorViewEnable = false
+}
 
 public class SMTPSettingsTableView: UITableViewController {
+
     let unwindToEmailListSegue = "unwindToEmailListSegue"
 
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var transportSecurity: UIButton!
@@ -23,6 +29,7 @@ public class SMTPSettingsTableView: UITableViewController {
     var model: ModelUserInfoTable!
 
     let viewWidthAligner = ViewWidthsAligner()
+    let status = ViewStatus()
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +60,12 @@ public class SMTPSettingsTableView: UITableViewController {
         serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
         transportSecurity.setTitle(model.transportSMTP.localizedString(), forState: .Normal)
+        if status.activityIndicatorViewEnable {
+            activityIndicatorView.startAnimating()
+        } else {
+            activityIndicatorView.stopAnimating()
+        }
+        self.navigationItem.rightBarButtonItem?.enabled = !(status.activityIndicatorViewEnable)
     }
 
     func showErrorMessage (message: String) {
@@ -112,13 +125,18 @@ public class SMTPSettingsTableView: UITableViewController {
             smtpServerName: model.serverSMTP!, smtpServerPort: model.portSMTP,
             smtpTransport: model.transportSMTP)
 
+        self.status.activityIndicatorViewEnable =  true
+        updateView()
         appConfig?.grandOperator.verifyConnection(connect, completionBlock: { error in
+            self.status.activityIndicatorViewEnable = false
+            self.updateView()
             if error == nil {
                 GCD.onMain() {
                     // save account, check for error
                     if self.appConfig?.model.insertAccountFromConnectInfo(connect) != nil {
                         // unwind back to INBOX on success
                         self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: sender)
+
                     } else {
                         self.showErrorMessage(NSLocalizedString("Could not save account", comment: ""))
                     }
