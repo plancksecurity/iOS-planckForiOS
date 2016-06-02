@@ -279,12 +279,14 @@ public class Model: IModel {
 
     public func messageByPredicate(predicate: NSPredicate? = nil,
                                    sortDescriptors: [NSSortDescriptor]? = nil) -> IMessage? {
-        return singleEntityWithName(Message.entityName(), predicate: predicate) as? Message
+        return singleEntityWithName(Message.entityName(), predicate: predicate,
+                                    sortDescriptors: sortDescriptors) as? Message
     }
 
     public func messagesByPredicate(predicate: NSPredicate? = nil,
                                     sortDescriptors: [NSSortDescriptor]? = nil) -> [IMessage]? {
-        return entitiesWithName(Message.entityName(), predicate: predicate)?.map() {$0 as! Message}
+        return entitiesWithName(Message.entityName(), predicate: predicate,
+            sortDescriptors: sortDescriptors)?.map() {$0 as! Message}
     }
 
     public func messageCountByPredicate(predicate: NSPredicate? = nil) -> Int {
@@ -323,12 +325,14 @@ public class Model: IModel {
 
     public func foldersByPredicate(predicate: NSPredicate? = nil,
                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [IFolder]? {
-        return entitiesWithName(Folder.entityName(), predicate: predicate)?.map() {$0 as! Folder}
+        return entitiesWithName(Folder.entityName(), predicate: predicate,
+            sortDescriptors: sortDescriptors)?.map() {$0 as! Folder}
     }
 
     public func folderByPredicate(predicate: NSPredicate? = nil,
                                   sortDescriptors: [NSSortDescriptor]? = nil) -> IFolder? {
-        return singleEntityWithName(Folder.entityName(), predicate: predicate) as? Folder
+        return singleEntityWithName(Folder.entityName(), predicate: predicate,
+                                    sortDescriptors: sortDescriptors) as? Folder
     }
 
     public func folderByName(name: String, email: String) -> IFolder? {
