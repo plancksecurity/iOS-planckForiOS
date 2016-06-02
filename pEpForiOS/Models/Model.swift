@@ -10,6 +10,8 @@ import Foundation
 import CoreData
 
 public protocol IModel {
+    var context: NSManagedObjectContext { get }
+
     func existingMessage(msg: CWIMAPMessage) -> IMessage?
     func messageByPredicate(predicate: NSPredicate?,
                             sortDescriptors: [NSSortDescriptor]?) -> IMessage?
@@ -86,7 +88,7 @@ public class Model: IModel {
 
     public static let CouldNotCreateFolder = 1000
 
-    let context: NSManagedObjectContext
+    public let context: NSManagedObjectContext
 
     public init(context: NSManagedObjectContext) {
         self.context = context

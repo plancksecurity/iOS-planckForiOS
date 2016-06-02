@@ -70,4 +70,10 @@ public class InMemoryCoreDataUtil: ICoreDataUtil {
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
     }
+
+    public func privateContext() -> NSManagedObjectContext {
+        let privateMOC = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        privateMOC.parentContext = managedObjectContext
+        return privateMOC
+    }
 }

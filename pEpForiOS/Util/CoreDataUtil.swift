@@ -16,10 +16,15 @@ public protocol ICoreDataUtil {
     var managedObjectContext: NSManagedObjectContext { get }
 
     /**
-     - returns: Another context that's suitable for background tasks, confined to the
+     - Returns: Another context that's suitable for background tasks, confined to the
      thread/queue it was called on.
      */
     func confinedManagedObjectContext() -> NSManagedObjectContext
+
+    /**
+     - Returns: A context of type `.PrivateQueueConcurrencyType`
+     */
+    func privateContext() -> NSManagedObjectContext
 }
 
 public class CoreDataMerger {
@@ -135,4 +140,9 @@ public class CoreDataUtil: ICoreDataUtil {
         return context
     }
 
+    public func privateContext() -> NSManagedObjectContext {
+        let privateMOC = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        privateMOC.parentContext = managedObjectContext
+        return privateMOC
+    }
 }

@@ -85,6 +85,11 @@ public protocol IGrandOperator: class {
      main thread or not.
      */
     func operationModel() -> IModel
+
+    /**
+     - Returns: A model built on a private context (`.PrivateQueueConcurrencyType`)
+     */
+    func backgroundModel() -> IModel
 }
 
 public class GrandOperator: IGrandOperator {
@@ -256,5 +261,9 @@ public class GrandOperator: IGrandOperator {
         let resultModel = createBackgroundModel()
         threadDictionary.setValue(resultModel as? AnyObject, forKey: GrandOperator.kOperationModel)
         return resultModel
+    }
+
+    public func backgroundModel() -> IModel {
+        return Model.init(context: coreDataUtil.privateContext())
     }
 }
