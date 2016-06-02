@@ -99,14 +99,22 @@ class SimpleOperationsTest: XCTestCase {
         let message = CWIMAPMessage.init()
         message.setFrom(CWInternetAddress.init(personal: "personal", address: "somemail@test.com"))
         message.setFolder(folder)
+
+        let exp = expectationWithDescription("stored")
         let op = StorePrefetchedMailOperation.init(
             grandOperator: self.persistentSetup.grandOperator,
             accountEmail: connectInfo.email, message: message)
+        op.completionBlock = {
+            exp.fulfill()
+        }
         let backgroundQueue = NSOperationQueue.init()
         backgroundQueue.addOperation(op)
-        XCTAssertEqual(
-            self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
-                NSPredicate.init(value: true)), 1)
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(
+                self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
+                    NSPredicate.init(value: true)), 1)
+        })
     }
 
     func testStoreMultipleMails() {
@@ -161,7 +169,8 @@ class SimpleOperationsTest: XCTestCase {
     func testFetchSingleMailsOperationSimple() {
         testPrefetchMailsOperation()
         let mails = persistentSetup.grandOperator.operationModel().messagesByPredicate(
-            NSPredicate.init(value: true), sortDescriptors: nil)
+            NSPredicate.init(value: true),
+            sortDescriptors: [NSSortDescriptor.init(key: "uid", ascending: true)])
         if mails?.count > 0 {
             let mail = mails![0] as! Message
 
