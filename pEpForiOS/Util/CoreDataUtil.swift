@@ -81,13 +81,13 @@ public class CoreDataUtil: ICoreDataUtil {
         do {
             try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil,
                                                        URL: url, options: nil)
-        } catch {
+        } catch let error as NSError {
             // Report any error we got.
             var dict = [String: AnyObject]()
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
 
-            dict[NSUnderlyingErrorKey] = error as! NSError
+            dict[NSUnderlyingErrorKey] = error
             let wrappedError = NSError(domain: comp, code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
