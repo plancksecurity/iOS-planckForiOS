@@ -39,6 +39,10 @@ class PersistentSetup {
         XCTAssertNotNil(account)
     }
 
+    deinit {
+        grandOperator.shutdown()
+    }
+
     func inboxFolderPredicate() -> NSPredicate {
         let p = NSPredicate.init(format: "account.email = %@ and name = %@",
                                  connectionInfo.email, ImapSync.defaultImapInboxName)

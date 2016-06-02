@@ -58,4 +58,11 @@ public class ConnectionManager {
         }
         imapConnections.removeAll()
     }
+
+    /**
+     Tests will use this to make sure there are no retain cycles.
+     */
+    public func shutdown() {
+        closeAll()
+    }
 }

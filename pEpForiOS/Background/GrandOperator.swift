@@ -16,6 +16,11 @@ public protocol IGrandOperator: class {
     var connectionManager: ConnectionManager { get }
 
     /**
+     Tests will use this to make sure there are no retain cycles.
+     */
+    func shutdown()
+
+    /**
      Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
      and the given folder and stores them into the persistent store.
 
@@ -107,6 +112,12 @@ public class GrandOperator: IGrandOperator {
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
+    }
+
+    public func shutdown() {
+        verifyConnectionQueue.cancelAllOperations()
+        connectionManager.shutdown()
+        errors.removeAll()
     }
 
     func kickOffConcurrentOperation(operation op: NSOperation,

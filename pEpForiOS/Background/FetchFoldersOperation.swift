@@ -25,6 +25,10 @@ public class ImapFolderBuilder: NSObject, CWFolderBuilding {
                                     connectInfo: connectInfo, backgroundQueue: backgroundQueue)
             as CWFolder
     }
+
+    deinit {
+        print("ImapFolderBuilder.deinit")
+    }
 }
 
 /**
@@ -63,6 +67,7 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
             let op = StoreFoldersOperation.init(grandOperator: self.grandOperator,
                                                 folders: folderNames, email: self.connectInfo.email)
             backgroundQueue.addOperation(op)
+
             waitForFinished()
         }
     }
