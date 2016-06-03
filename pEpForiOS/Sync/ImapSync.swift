@@ -98,12 +98,6 @@ public protocol IImapSync {
     func syncMails() throws
 
     /**
-     Tries to fetch the the mail with the given UID from the folder with the given name.
-     The folder must be currently opened!
-     */
-    func fetchMailFromFolderNamed(folderName: String, uid: UInt)
-
-    /**
      Close the connection.
      */
     func close()
@@ -173,24 +167,6 @@ public class ImapSync: Service, IImapSync {
             throw Constants.errorFolderNotOpen(comp, folderName: folderName)
         }
         folder.prefetch()
-    }
-
-    public func fetchMailFromFolderNamed(folderName: String, uid: UInt) {
-        if folderName == imapState.currentFolder {
-            imapStore.sendCommand(
-                IMAP_UID_FETCH_HEADER_FIELDS_NOT, info: nil,
-                string: String.init(format: "UID FETCH %u:%u BODY.PEEK[HEADER.FIELDS.NOT (From To Cc Subject Date Message-ID References In-Reply-To)]", uid, uid))
-            imapStore.sendCommand(
-                IMAP_UID_FETCH_BODY_TEXT, info: nil,
-                string: String.init(format: "UID FETCH %u:%u BODY[TEXT]", uid, uid))
-        } else {
-            let error = NSError.init(
-                domain: comp, code: ImapError.FolderNotOpen.rawValue,
-                userInfo: [NSLocalizedDescriptionKey:
-                    NSLocalizedString("Folder not open for fetching mail",
-                        comment: "Error message when trying to fetch message from folder that ist not opened")])
-            delegate?.actionFailed(self, error: error)
-        }
     }
 }
 

@@ -47,14 +47,6 @@ public protocol IGrandOperator: class {
     func verifyConnection(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asynchronously fetches a mail by UID in the given folder.
-     This means that the complete message, with all
-     attachments, gets downloaded and persisted.
-     */
-    func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: UInt,
-                                  completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
      Sends the given mail via SMTP. Also saves it into the drafts folder. You
      might have to trigger a fetch for that mail to appear in your drafts folder.
      */
@@ -218,13 +210,6 @@ public class GrandOperator: IGrandOperator {
 
     public func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
         completionBlock?(error: Constants.errorNotImplemented(comp))
-    }
-
-    public func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: UInt,
-                                         completionBlock: GrandOperatorCompletionBlock?) {
-        let op = FetchMailOperation.init(grandOperator: self, connectInfo: connectInfo,
-                                         folderName: folderName, uid: uid)
-        kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
     public func setErrorForOperation(operation: NSOperation, error: NSError) {

@@ -34,19 +34,7 @@ class EmailViewController: UITableViewController {
         fromLabel.text = message.from?.displayString()
         addToRecipients()
 
-        if message.fetched.boolValue {
-            extractMessageContent()
-        } else {
-            let folder = message.folder
-            let account = folder.account
-            if let suid = message.uid?.integerValue {
-                let uid = UInt(bitPattern: suid)
-                appConfig.grandOperator.fetchMailFromFolderNamed(
-                    account.connectInfo, folderName: folder.name, uid: uid,
-                    completionBlock: { error in
-                })
-            }
-        }
+        extractMessageContent()
     }
 
     func addToRecipients() {
