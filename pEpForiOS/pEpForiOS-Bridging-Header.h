@@ -34,7 +34,7 @@
 
 // pEp headers
 
-#import "PEPiOSAdapter.h"
-#import "PEPSession.h"
+#import "pEpiOSAdapter/PEPiOSAdapter.h"
+#import "pEpiOSAdapter/PEPSession.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */
