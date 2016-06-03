@@ -9,6 +9,8 @@
 #ifndef pEpForiOS_Bridging_Header_h
 #define pEpForiOS_Bridging_Header_h
 
+// Pantomime headers
+
 #import "Pantomime/CWConstants.h"
 #import "Pantomime/CWFolder.h"
 #import "Pantomime/CWService.h"
@@ -29,5 +31,10 @@
 
 #import "Pantomime/CWMIMEMultipart.h"
 #import "Pantomime/CWMIMEUtility.h"
+
+// pEp headers
+
+#import "PEPiOSAdapter.h"
+#import "PEPSession.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */
