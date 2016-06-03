@@ -151,26 +151,24 @@ public class GrandOperator: IGrandOperator {
     func handleVerificationCompletionFinished1(finished1: Bool, finished2: Bool,
                                       op1: NSOperation, op2: NSOperation,
                                       completionBlock: GrandOperatorCompletionBlock?) {
-        GCD.onMain({ [weak self] in // serialize
-            if finished1 && finished2 {
-                // Dissolve the cyclic dependency between the operation,
-                // the completion block, and back.
-                op1.completionBlock = nil
-                op2.completionBlock = nil
+        if finished1 && finished2 {
+            // Dissolve the cyclic dependency between the operation,
+            // the completion block, and back.
+            op1.completionBlock = nil
+            op2.completionBlock = nil
 
-                var error: NSError? = nil
-                if let err = self?.errors[op1] {
-                    error = err
-                } else if let err = self?.errors[op2] {
-                    error = err
-                }
-                completionBlock?(error: error)
-                self?.errors.removeValueForKey(op1)
-                self?.errors.removeValueForKey(op2)
-
-                print("operationCount\(self?.verifyConnectionQueue.operationCount)")
+            var error: NSError? = nil
+            if let err = self.errors[op1] {
+                error = err
+            } else if let err = self.errors[op2] {
+                error = err
             }
-        })
+            completionBlock?(error: error)
+            self.errors.removeValueForKey(op1)
+            self.errors.removeValueForKey(op2)
+
+            print("operationCount\(self.verifyConnectionQueue.operationCount)")
+        }
     }
 
     public func verifyConnection(connectInfo: ConnectInfo,
@@ -184,17 +182,21 @@ public class GrandOperator: IGrandOperator {
         // Since the completion blocks retain op1 and op2, respectively,
         // a cyclic dependency is created that prevents the deallocation of both.
         // This must be resolved when both have finished.
-        let completion1 = { [weak self, unowned op1, unowned op2]  in
-            finished1 = true
-            self?.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                                                        op1: op1, op2: op2,
-                                                        completionBlock: completionBlock)
+        let completion1 = {
+            GCD.onMain({ // serialize
+                finished1 = true
+                self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
+                    op1: op1, op2: op2,
+                    completionBlock: completionBlock)
+            })
         }
-        let completion2 = {  [weak self]  in
-            finished2 = true
-            self?.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                                                        op1: op1, op2: op2,
-                                                        completionBlock: completionBlock)
+        let completion2 = {
+            GCD.onMain({ // serialize
+                finished2 = true
+                self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
+                    op1: op1, op2: op2,
+                    completionBlock: completionBlock)
+            })
         }
 
         op1.completionBlock = completion1
