@@ -7,7 +7,6 @@ import CoreData
 public enum MessageAttributes: String {
     case boundary = "boundary"
     case contentType = "contentType"
-    case fetched = "fetched"
     case longMessage = "longMessage"
     case longMessageFormatted = "longMessageFormatted"
     case messageID = "messageID"
@@ -34,8 +33,6 @@ public protocol _IMessage {
     var boundary: String? { get set }
 
     var contentType: String? { get set }
-
-    var fetched: NSNumber { get set }
 
     var longMessage: String? { get set }
 
@@ -99,9 +96,6 @@ public class _Message: BaseManagedObject, _IMessage {
 
     @NSManaged public
     var contentType: String?
-
-    @NSManaged public
-    var fetched: NSNumber
 
     @NSManaged public
     var longMessage: String?
