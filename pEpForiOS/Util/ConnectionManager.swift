@@ -13,6 +13,7 @@ public class ConnectionManager {
     public var cacheImapConnections: Bool = true
 
     var imapConnections: [ConnectInfo: ImapSync] = [:]
+    weak var grandOperator: IGrandOperator!
 
     public init() {}
 
@@ -32,6 +33,10 @@ public class ConnectionManager {
         if cacheImapConnections {
             imapConnections[connectInfo] = sync
         }
+
+        let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
+                                                   connectInfo: connectInfo)
+        sync.folderBuilder = folderBuilder
 
         return sync
     }

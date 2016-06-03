@@ -16,7 +16,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     let comp = "PersistentImapFolder"
 
     let connectInfo: ConnectInfo
-    let backgroundQueue: NSOperationQueue
     let grandOperator: IGrandOperator
 
     /** The underlying core data object */
@@ -42,10 +41,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
-    init(name: String, grandOperator: IGrandOperator, connectInfo: ConnectInfo,
-         backgroundQueue: NSOperationQueue) {
+    init(name: String, grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
-        self.backgroundQueue = backgroundQueue
         self.grandOperator = grandOperator
         super.init(name: name)
         self.setCacheManager(self)
@@ -149,6 +146,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
                                                    accountEmail: connectInfo.email,
                                                    message: message)
-        backgroundQueue.addOperation(op)
+        op.start()
     }
 }

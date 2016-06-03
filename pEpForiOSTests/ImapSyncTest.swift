@@ -31,8 +31,7 @@ class PersistentSetup {
         grandOperator = GrandOperator.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                               connectInfo: connectionInfo,
-                                               backgroundQueue: backgroundQueue)
+                                               connectInfo: connectionInfo)
 
         model = Model.init(context: coreDataUtil.managedObjectContext)
         let account = model.insertAccountFromConnectInfo(connectionInfo)

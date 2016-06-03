@@ -23,8 +23,7 @@ public class FetchMailOperation: ConcurrentBaseOperation {
 
     public override func main() {
         let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                                   connectInfo: connectInfo,
-                                                   backgroundQueue: backgroundQueue)
+                                                   connectInfo: connectInfo)
 
         let imapSync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
         imapSync.delegate = self

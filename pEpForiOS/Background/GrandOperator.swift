@@ -117,6 +117,7 @@ public class GrandOperator: IGrandOperator {
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
+        self.connectionManager.grandOperator = self
     }
 
     public func shutdown() {

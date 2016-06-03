@@ -75,7 +75,7 @@ class GrandOperatorVerifyTests: XCTestCase {
             smtpServerName: "cant.connect", smtpServerPort: 516, smtpTransport: .TLS)
         persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
             XCTAssertNotNil(error)
-            XCTAssertTrue(error!.code == Constants.NetworkError.Timeout.rawValue)
+            XCTAssertTrue(error?.code == Constants.NetworkError.Timeout.rawValue)
             exp.fulfill()
         })
         waitForExpectationsWithTimeout(waitTime, handler: { error in
