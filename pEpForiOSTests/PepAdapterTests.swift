@@ -20,13 +20,14 @@ class PepAdapterTests: XCTestCase {
         super.tearDown()
     }
     
+
     func testMyself() {
         let me: NSMutableDictionary = [kPepAddress: "some@mail.com", kPepUsername: "This is me"]
         pEpSession.mySelf(me)
         XCTAssertNotNil(me[kPepUserID])
     }
 
-    func testPEpSession() {
+    func testPepSession() {
         XCTAssertNotNil(pEpSession)
     }
     
