@@ -60,17 +60,21 @@ class PepAdapterTests: XCTestCase {
         PEPiOSAdapter.stopKeyserverLookup()
     }
     
-    func testShowPepDirectories() {
+    func testPepPaths() {
         NSLog("Home folder: " + String(PEPUtil.pEpUrls["home"]))
         NSLog("pEp management DB file: " + String(PEPUtil.pEpUrls["pEpManagementDb"]))
         NSLog("GnuPG folder: " + String(PEPUtil.pEpUrls["gnupg"]))
         NSLog("Secring file: " + String(PEPUtil.pEpUrls["gnupgSecring"]))
         NSLog("Pubring file: " + String(PEPUtil.pEpUrls["gnupgPubring"]))
-        XCTAssertNotNil(PEPUtil.pEpUrls["home"])
-        XCTAssertNotNil(PEPUtil.pEpUrls["pEpManagementDb"])
-        XCTAssertNotNil(PEPUtil.pEpUrls["gnupg"])
-        XCTAssertNotNil(PEPUtil.pEpUrls["gnupgSecring"])
-        XCTAssertNotNil(PEPUtil.pEpUrls["gnupgPubring"])
+        
+        // Test if paths are not nil.
+        for key in PEPUtil.pEpUrls.keys {
+            XCTAssertNotNil(PEPUtil.pEpUrls[key])
+        }
+        // Test if paths exist.
+        for key in PEPUtil.pEpUrls.keys {
+            // TBD
+        }
     }
     
 }
