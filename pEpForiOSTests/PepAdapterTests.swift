@@ -9,6 +9,8 @@
 import XCTest
 
 class PepAdapterTests: XCTestCase {
+    let identity_me: NSMutableDictionary = [kPepAddress: "some@mail.com",
+                                            kPepUsername: "This is me"]
     var pEpSession: PEPSession!
     
     override func setUp() {
@@ -20,11 +22,11 @@ class PepAdapterTests: XCTestCase {
         super.tearDown()
     }
     
-
     func testMyself() {
-        let me: NSMutableDictionary = [kPepAddress: "some@mail.com", kPepUsername: "This is me"]
-        pEpSession.mySelf(me)
-        XCTAssertNotNil(me[kPepUserID])
+        // This includes that a new key is generated.
+        pEpSession.mySelf(identity_me)
+        NSLog("PGP fingerprint (me): " + String(identity_me[kPepFingerprint]!))
+        XCTAssertNotNil(identity_me[kPepUserID])
     }
 
     func testPepSession() {
@@ -33,10 +35,9 @@ class PepAdapterTests: XCTestCase {
     
     // XXX: Parts of this should be in PEPUtil module.
     func testKeyServerLookup() {
-        var identity: NSMutableDictionary
-        identity = [kPepUsername: "hernani",
-                    kPepAddress: "hernani@pep.foundation",
-                    kPepUserID: "2342"]
+        let identity: NSMutableDictionary = [kPepUsername: "hernani",
+                                             kPepAddress: "hernani@pep.foundation",
+                                             kPepUserID: "2342"]
         NSLog("Dict size: %d", identity.count)
         
         PEPiOSAdapter.startKeyserverLookup()
@@ -52,9 +53,9 @@ class PepAdapterTests: XCTestCase {
             NSLog("key = \(key)")
         }
         
-        XCTAssertTrue(identity.objectForKey("fpr") != nil,
-                      "A Fingerprint, there is!")
-        NSLog("PGP-Fingerprint: " + String(identity["fpr"]!))
+        XCTAssertTrue(identity.objectForKey(kPepFingerprint) != nil,
+                      "A fingerprint, there is!")
+        NSLog("PGP fingerprint (keyserver pubkey): " + String(identity[kPepFingerprint]!))
         
         PEPiOSAdapter.stopKeyserverLookup()
     }
