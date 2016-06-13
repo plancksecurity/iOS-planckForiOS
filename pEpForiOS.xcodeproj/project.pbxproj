@@ -158,7 +158,6 @@
 		4303DAE61CE62D2600D9C0AB /* AttachmentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentData.swift; sourceTree = "<group>"; };
 		4303DAEB1CE62D3700D9C0AB /* _Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Attachment.swift; sourceTree = "<group>"; };
 		4303DAEC1CE62D3700D9C0AB /* _AttachmentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _AttachmentData.swift; sourceTree = "<group>"; };
-		430C80D01D0EA6C400CD4582 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpTrustWords.bundle; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
 		431144A91CC0CB480007639D /* PrefetchEmailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetchEmailsOperation.swift; sourceTree = "<group>"; };
@@ -280,15 +279,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		430C80CF1D0EA6C400CD4582 /* pEpTrustWords */ = {
-			isa = PBXGroup;
-			children = (
-				430C80D01D0EA6C400CD4582 /* Info.plist */,
-			);
-			name = pEpTrustWords;
-			path = "../pEpEngine/build-mac/pEpTrustWords";
-			sourceTree = "<group>";
-		};
 		431144A61CC0CB0A0007639D /* Background */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,7 +309,6 @@
 			isa = PBXGroup;
 			children = (
 				430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */,
-				430C80CF1D0EA6C400CD4582 /* pEpTrustWords */,
 				43980ECE1CBD1CAD00A7FC3C /* Libraries */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
