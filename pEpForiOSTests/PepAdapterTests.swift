@@ -1,5 +1,5 @@
 //
-//  pEpTests.swift
+//  PepAdapterTests.swift
 //  pEpForiOS
 //
 //  Created by hernani on 03/06/16.
@@ -8,8 +8,8 @@
 
 import XCTest
 
-class pEpTests: XCTestCase {
-    var pEpSession: PEPSession?
+class PepAdapterTests: XCTestCase {
+    var pEpSession: PEPSession!
     
     override func setUp() {
         super.setUp()
@@ -20,6 +20,12 @@ class pEpTests: XCTestCase {
         super.tearDown()
     }
     
+    func testMyself() {
+        let me: NSMutableDictionary = [kPepAddress: "some@mail.com", kPepUsername: "This is me"]
+        pEpSession.mySelf(me)
+        XCTAssertNotNil(me[kPepUserID])
+    }
+
     func testPEpSession() {
         XCTAssertNotNil(pEpSession)
     }
