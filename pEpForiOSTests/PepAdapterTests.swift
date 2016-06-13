@@ -73,7 +73,7 @@ class PepAdapterTests: XCTestCase {
         }
         // Test if paths exist.
         for key in PEPUtil.pEpUrls.keys {
-            // TBD
+            XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(String(PEPUtil.pEpUrls[key])))
         }
     }
     
