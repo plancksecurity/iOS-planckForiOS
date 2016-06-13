@@ -32,15 +32,15 @@ class PepAdapterTests: XCTestCase {
     
     // XXX: Parts of this should be in PEPUtil module.
     func testKeyServerLookup() {
-        PEPiOSAdapter.startKeyserverLookup()
-        
-        var identity = NSMutableDictionary()
-        identity = ["username": "hernani",
-                    "address": "hernani@pep.foundation",
-                    "user_id": "2342"]
+        var identity: NSMutableDictionary
+        identity = [kPepUsername: "hernani",
+                    kPepAddress: "hernani@pep.foundation",
+                    kPepUserID: "2342"]
         NSLog("Dict size: %d", identity.count)
         
-        pEpSession!.updateIdentity(identity)
+        PEPiOSAdapter.startKeyserverLookup()
+        
+        pEpSession.updateIdentity(identity)
         
         XCTAssertTrue(identity.count > 3,
                       "Identity dictionary was "
