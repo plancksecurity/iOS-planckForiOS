@@ -44,20 +44,33 @@ class PepAdapterTests: XCTestCase {
         
         pEpSession.updateIdentity(identity)
         
+        NSLog("Dict size: %d", identity.count)
         XCTAssertTrue(identity.count > 3,
                       "Identity dictionary was "
                         + "(successfully) modified by reference.")
-        NSLog("Dict size: %d", identity.count)
+
         
         for key in identity.allKeys {
             NSLog("key = \(key)")
         }
         
-        XCTAssertTrue(identity.objectForKey(kPepFingerprint) != nil,
-                      "A fingerprint, there is!")
         NSLog("PGP fingerprint (keyserver pubkey): " + String(identity[kPepFingerprint]!))
+        XCTAssertTrue(identity[kPepFingerprint] != nil, "A fingerprint, there is!")
         
         PEPiOSAdapter.stopKeyserverLookup()
+    }
+    
+    func testShowPepDirectories() {
+        NSLog("Home folder: " + String(PEPUtil.pEpUrls["home"]))
+        NSLog("pEp management DB file: " + String(PEPUtil.pEpUrls["pEpManagementDb"]))
+        NSLog("GnuPG folder: " + String(PEPUtil.pEpUrls["gnupg"]))
+        NSLog("Secring file: " + String(PEPUtil.pEpUrls["gnupgSecring"]))
+        NSLog("Pubring file: " + String(PEPUtil.pEpUrls["gnupgPubring"]))
+        XCTAssertNotNil(PEPUtil.pEpUrls["home"])
+        XCTAssertNotNil(PEPUtil.pEpUrls["pEpManagementDb"])
+        XCTAssertNotNil(PEPUtil.pEpUrls["gnupg"])
+        XCTAssertNotNil(PEPUtil.pEpUrls["gnupgSecring"])
+        XCTAssertNotNil(PEPUtil.pEpUrls["gnupgPubring"])
     }
     
 }
