@@ -290,6 +290,15 @@ class ImapSyncTest: XCTestCase {
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
             XCTAssertLessThanOrEqual(folder.messages.count, Int(sync.maxPrefetchCount))
+            for msg in folder.messages {
+                if let m = msg as? Message {
+                    XCTAssertNotNil(m.subject)
+                    XCTAssertTrue(m.longMessage != nil || m.longMessageFormatted != nil ||
+                    m.attachments.count > 0)
+                } else {
+                    XCTAssertTrue(false, "Expected object of type Message")
+                }
+            }
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }
