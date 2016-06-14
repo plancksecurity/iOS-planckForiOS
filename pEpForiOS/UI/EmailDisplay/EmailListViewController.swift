@@ -60,6 +60,7 @@ class EmailListViewController: UITableViewController {
                     [unowned self] error in
                     GCD.onMain({
                         Log.info(self.comp, "Sync completed, error: \(error)")
+                        self.appConfig?.model.save()
                         self.state.isSynching = false
                         refreshControl?.endRefreshing()
                         self.updateUI()

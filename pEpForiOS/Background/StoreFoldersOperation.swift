@@ -21,7 +21,7 @@ class StoreFoldersOperation: BaseOperation {
     }
 
     override func main() {
-        let privateMOC = privateContext()
+        let privateMOC = grandOperator.coreDataUtil.privateContext()
         privateMOC.performBlockAndWait({
             let model = Model.init(context: privateMOC)
             for folderName in self.foldersToStore {

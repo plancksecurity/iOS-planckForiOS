@@ -16,10 +16,4 @@ public class BaseOperation: NSOperation {
         self.grandOperator = grandOperator
         super.init()
     }
-
-    public func privateContext() -> NSManagedObjectContext {
-        let privateMOC = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        privateMOC.parentContext = grandOperator.coreDataUtil.managedObjectContext
-        return privateMOC
-    }
 }

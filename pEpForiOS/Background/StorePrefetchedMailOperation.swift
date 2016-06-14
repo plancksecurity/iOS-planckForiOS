@@ -24,7 +24,7 @@ public class StorePrefetchedMailOperation: BaseOperation {
     }
 
     override public func main() {
-        let privateMOC = privateContext()
+        let privateMOC = grandOperator.coreDataUtil.privateContext()
         privateMOC.performBlockAndWait({
             let model = Model.init(context: privateMOC)
             if model.insertOrUpdatePantomimeMail(

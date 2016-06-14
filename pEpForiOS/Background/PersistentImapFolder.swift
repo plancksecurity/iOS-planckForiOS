@@ -127,16 +127,10 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return true
     }
 
-    func privateContext() -> NSManagedObjectContext {
-        let privateMOC = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        privateMOC.parentContext = grandOperator.coreDataUtil.managedObjectContext
-        return privateMOC
-    }
-
     func messageWithUID(theUID: UInt) -> CWIMAPMessage? {
         var result: CWIMAPMessage?
         let p = NSPredicate.init(format: "uid = %d", theUID)
-        let privateMOC = privateContext()
+        let privateMOC = grandOperator.coreDataUtil.privateContext()
         privateMOC.performBlockAndWait({
             let model = Model.init(context: privateMOC)
             if let msg = model.messageByPredicate(p, sortDescriptors: nil) {
