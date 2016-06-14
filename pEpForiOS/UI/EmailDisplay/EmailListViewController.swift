@@ -74,11 +74,12 @@ class EmailListViewController: UITableViewController {
     }
 
     func prepareFetchRequest() {
-        let predicates: [NSPredicate] = [NSPredicate.init(value: true)]
+        let predicates: [NSPredicate] = [NSPredicate.init(format: "bodyFetched = true")]
         let fetchRequest = NSFetchRequest.init(entityName: Message.entityName())
         fetchRequest.predicate = NSCompoundPredicate.init(
             andPredicateWithSubpredicates: predicates)
-        fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "originationDate", ascending: false)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "originationDate",
+            ascending: false)]
         fetchController = NSFetchedResultsController.init(
             fetchRequest: fetchRequest,
             managedObjectContext: appConfig!.coreDataUtil.managedObjectContext,

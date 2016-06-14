@@ -5,6 +5,7 @@ import Foundation
 import CoreData
 
 public enum MessageAttributes: String {
+    case bodyFetched = "bodyFetched"
     case boundary = "boundary"
     case contentType = "contentType"
     case longMessage = "longMessage"
@@ -29,6 +30,8 @@ public enum MessageRelationships: String {
 public protocol _IMessage {
 
     // MARK: - Properties
+
+    var bodyFetched: NSNumber { get set }
 
     var boundary: String? { get set }
 
@@ -90,6 +93,9 @@ public class _Message: BaseManagedObject, _IMessage {
     }
 
     // MARK: - Properties
+
+    @NSManaged public
+    var bodyFetched: NSNumber
 
     @NSManaged public
     var boundary: String?

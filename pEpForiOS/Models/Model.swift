@@ -450,6 +450,8 @@ public class Model: IModel {
 
         mail.folder = folder as! Folder
 
+        mail.bodyFetched = message.isInitialized()
+
         if isFresh || mail.originationDate != message.receivedDate() {
             mail.originationDate = message.receivedDate()
         }

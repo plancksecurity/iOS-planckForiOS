@@ -109,7 +109,7 @@ public class ImapSync: Service, IImapSync {
     static public let defaultImapInboxName = "INBOX"
 
     weak public var delegate: ImapSyncDelegate?
-    public var maxPrefetchCount: UInt = 50
+    public var maxPrefetchCount: UInt = 20
 
     public var folderBuilder: CWFolderBuilding? {
         set {
