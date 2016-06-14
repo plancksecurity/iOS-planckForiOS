@@ -24,7 +24,7 @@ class SmtpTest: XCTestCase {
                 authenticatedExpectation?.fulfill()
             }
         }
-        XCTAssertEqual(Service.refCounter.refCount, 0)
+        let count = Service.refCounter.refCount
         for _ in 1...1 {
             var smtp: SmtpSend! = SmtpSend.init(connectInfo: TestData.connectInfo)
             let del = MyDelegate.init()
@@ -39,6 +39,6 @@ class SmtpTest: XCTestCase {
             })
             smtp = nil
         }
-        XCTAssertEqual(Service.refCounter.refCount, 0)
+        XCTAssertEqual(Service.refCounter.refCount, count)
     }
 }
