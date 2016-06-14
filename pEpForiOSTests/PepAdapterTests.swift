@@ -54,7 +54,6 @@ class PepAdapterTests: XCTestCase {
             NSLog("key = \(key)")
         }
         
-        NSLog("PGP fingerprint (keyserver pubkey): " + String(identity[kPepFingerprint]!))
         XCTAssertTrue(identity[kPepFingerprint] != nil, "A fingerprint, there is!")
         
         PEPiOSAdapter.stopKeyserverLookup()
