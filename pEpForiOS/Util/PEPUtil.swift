@@ -24,4 +24,23 @@ public class PEPUtil {
                       "gnupg": gnupgUrl,
                       "gnupgSecring": gnupgSecringUrl,
                       "gnupgPubring": gnupgPubringUrl]
+    
+    // Delete pEp working data.
+    public static func pEpClean() -> Bool {
+        let pEpItemsToDelete: [String] = ["pEpManagementDb", "gnupg"]
+        
+        for key in pEpItemsToDelete {
+            let fileManager: NSFileManager = NSFileManager.defaultManager()
+            let itemToDelete: String = String(pEpUrls[key])
+            if fileManager.fileExistsAtPath(itemToDelete) {
+                do {
+                    try fileManager.removeItemAtPath(itemToDelete)
+                }
+                catch {
+                    return false
+                }
+            }
+        }
+        return true
+    }
 }

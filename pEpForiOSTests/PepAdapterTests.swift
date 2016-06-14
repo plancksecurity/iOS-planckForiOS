@@ -20,6 +20,8 @@ class PepAdapterTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
+        // XXX: To be tested later.
+        //XCTAssertTrue(PEPUtil.pEpClean())
     }
     
     func testMyself() {
