@@ -21,6 +21,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     /** The underlying core data object */
     var folder: IFolder!
 
+    let backgroundQueue = NSOperationQueue.init()
+
     override var nextUID: UInt {
         get {
             return UInt(folder.nextUID.integerValue)
@@ -149,9 +151,16 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     func writeRecord(theRecord: CWCacheRecord?, message: CWIMAPMessage) {
+        // Quickly store the most important email proporties
+        let opQuick = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
+                                                        accountEmail: connectInfo.email,
+                                                        message: message, quick: true)
+        opQuick.start()
+
+        // Do all the time-consuming details in the background
         let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
                                                    accountEmail: connectInfo.email,
-                                                   message: message)
-        op.start()
+                                                   message: message, quick: false)
+        backgroundQueue.addOperation(op)
     }
 }

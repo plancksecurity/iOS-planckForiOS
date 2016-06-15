@@ -293,8 +293,7 @@ class ImapSyncTest: XCTestCase {
             for msg in folder.messages {
                 if let m = msg as? Message {
                     XCTAssertNotNil(m.subject)
-                    XCTAssertTrue(m.longMessage != nil || m.longMessageFormatted != nil ||
-                    m.attachments.count > 0)
+                    XCTAssertNotNil(m.uid)
                 } else {
                     XCTAssertTrue(false, "Expected object of type Message")
                 }

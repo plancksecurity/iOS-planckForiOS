@@ -70,6 +70,17 @@ public protocol IModel {
     func insertMessageReference(messageID: String) -> IMessageReference
 
     /**
+     Quickly inserts essential parts of a pantomime into the store. Needed for networking,
+     where inserts should be quick and the persistent store should be up-to-date
+     nevertheless (especially in terms of UIDs, messageNumbers etc.)
+     - Returns: A tuple of the optional message just created or updated, and a Bool
+     for whether the mail already existed or has been freshly added (true for having been
+     freshly added).
+     */
+    func quickInsertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String)
+        -> (IMessage?, Bool)
+
+    /**
      Inserts the given pantomime mail object for the given account email into the store.
      Don't use this on the main thread as there is potentially a lot of processing involved
      (e.g., parsing of HTML and/or attachments).
@@ -443,13 +454,13 @@ public class Model: IModel {
         return added
     }
 
-    public func insertOrUpdatePantomimeMail(
-        message: CWIMAPMessage, accountEmail: String) -> IMessage? {
+    public func quickInsertOrUpdatePantomimeMail(message: CWIMAPMessage,
+                                                 accountEmail: String) -> (IMessage?, Bool) {
         guard let folderName = message.folder()?.name() else {
-            return nil
+            return (nil, false)
         }
         guard let folder = folderByName(folderName, email: accountEmail) else {
-            return nil
+            return (nil, false)
         }
 
         var isFresh = false
@@ -482,6 +493,16 @@ public class Model: IModel {
         }
         if isFresh || mail.boundary != message.boundary()?.asciiString() {
             mail.boundary = message.boundary()?.asciiString()
+        }
+        return (mail, false)
+    }
+
+    public func insertOrUpdatePantomimeMail(message: CWIMAPMessage,
+                                            accountEmail: String) -> IMessage? {
+        let (quickMail, isFresh) = quickInsertOrUpdatePantomimeMail(message,
+                                                                    accountEmail: accountEmail)
+        guard var mail = quickMail else {
+            return nil
         }
 
         var addresses = message.recipients() as! [CWInternetAddress]

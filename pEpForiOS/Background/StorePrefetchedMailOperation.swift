@@ -16,10 +16,13 @@ public class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
     let message: CWIMAPMessage
     let accountEmail: String
+    let quick: Bool
 
-    public init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage) {
+    public init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage,
+                quick: Bool = true) {
         self.accountEmail = accountEmail
         self.message = message
+        self.quick = quick
         super.init(grandOperator: grandOperator)
     }
 
@@ -27,8 +30,15 @@ public class StorePrefetchedMailOperation: BaseOperation {
         let privateMOC = grandOperator.coreDataUtil.privateContext()
         privateMOC.performBlockAndWait({
             let model = Model.init(context: privateMOC)
-            if model.insertOrUpdatePantomimeMail(
-                self.message, accountEmail: self.accountEmail) != nil {
+            var result: IMessage? = nil
+            if self.quick {
+                (result, _) = model.quickInsertOrUpdatePantomimeMail(
+                    self.message, accountEmail: self.accountEmail)
+            } else {
+                result = model.insertOrUpdatePantomimeMail(
+                    self.message, accountEmail: self.accountEmail)
+            }
+            if result != nil {
                 model.save()
             } else {
                 self.grandOperator.setErrorForOperation(self,
