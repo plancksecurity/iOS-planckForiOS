@@ -38,6 +38,10 @@
 		436C5A8E1CFEDF59006A195F /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		437431F61CFC2F14000F8D35 /* VerifyServiceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437431F51CFC2F14000F8D35 /* VerifyServiceOperation.swift */; };
 		4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4374320A1CFC49B1000F8D35 /* TestUtil.swift */; };
+		43800D931D112A0800821E34 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D8E1D112A0800821E34 /* TFHpple.m */; };
+		43800D941D112A0800821E34 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D901D112A0800821E34 /* TFHppleElement.m */; };
+		43800D951D112A0800821E34 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D921D112A0800821E34 /* XPathQuery.m */; };
+		43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
 		43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
@@ -190,6 +194,13 @@
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		437431F51CFC2F14000F8D35 /* VerifyServiceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyServiceOperation.swift; sourceTree = "<group>"; };
 		4374320A1CFC49B1000F8D35 /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
+		43800D8D1D112A0800821E34 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
+		43800D8E1D112A0800821E34 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
+		43800D8F1D112A0800821E34 /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
+		43800D901D112A0800821E34 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
+		43800D911D112A0800821E34 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
+		43800D921D112A0800821E34 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		43800D981D112A2A00821E34 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -261,6 +272,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
 				43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */,
 				439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */,
 				439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */,
@@ -314,6 +326,19 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		43800D8C1D112A0800821E34 /* HTMLParser */ = {
+			isa = PBXGroup;
+			children = (
+				43800D8D1D112A0800821E34 /* TFHpple.h */,
+				43800D8E1D112A0800821E34 /* TFHpple.m */,
+				43800D8F1D112A0800821E34 /* TFHppleElement.h */,
+				43800D901D112A0800821E34 /* TFHppleElement.m */,
+				43800D911D112A0800821E34 /* XPathQuery.h */,
+				43800D921D112A0800821E34 /* XPathQuery.m */,
+			);
+			path = HTMLParser;
+			sourceTree = "<group>";
+		};
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
@@ -339,6 +364,7 @@
 		43980E251CBD0BC900A7FC3C /* pEpForiOS */ = {
 			isa = PBXGroup;
 			children = (
+				43800D8C1D112A0800821E34 /* HTMLParser */,
 				431144A61CC0CB0A0007639D /* Background */,
 				43E58EB21CBF8301008AA7A7 /* Models */,
 				43980EE11CBD24B800A7FC3C /* Sync */,
@@ -387,7 +413,6 @@
 		43980ECE1CBD1CAD00A7FC3C /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				43C046BE1CF48EA500BD0D9D /* AddressBook.framework */,
 				439D40781CC78A2D009A4E7C /* Raw */,
 				43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */,
 				439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */,
@@ -442,6 +467,8 @@
 		439D40781CC78A2D009A4E7C /* Raw */ = {
 			isa = PBXGroup;
 			children = (
+				43C046BE1CF48EA500BD0D9D /* AddressBook.framework */,
+				43800D981D112A2A00821E34 /* libxml2.tbd */,
 				439D40731CC7897B009A4E7C /* libiconv.2.tbd */,
 				439D40711CC78958009A4E7C /* libbz2.tbd */,
 				439D406F1CC78930009A4E7C /* libz.tbd */,
@@ -727,6 +754,7 @@
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */,
 				43980EE71CBD24B800A7FC3C /* ImapSync.swift in Sources */,
 				431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */,
+				43800D931D112A0800821E34 /* TFHpple.m in Sources */,
 				43980EE91CBD24B800A7FC3C /* TestData.swift in Sources */,
 				43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */,
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
@@ -755,7 +783,9 @@
 				4303DAEE1CE62D3700D9C0AB /* _AttachmentData.swift in Sources */,
 				431144BD1CC120220007639D /* Message.swift in Sources */,
 				4303DAED1CE62D3700D9C0AB /* _Attachment.swift in Sources */,
+				43800D941D112A0800821E34 /* TFHppleElement.m in Sources */,
 				435A77C11CC3CB4200133D16 /* Regex.swift in Sources */,
+				43800D951D112A0800821E34 /* XPathQuery.m in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */,
 				43ED53761CC77F95006AB156 /* MailTableView.swift in Sources */,
@@ -882,7 +912,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework/";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework/",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -925,7 +958,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework/";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework/",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
