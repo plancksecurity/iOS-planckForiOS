@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 public class BaseOperation: NSOperation {
-    weak var grandOperator: IGrandOperator!
+    unowned var grandOperator: IGrandOperator
 
     public init(grandOperator: IGrandOperator) {
         self.grandOperator = grandOperator

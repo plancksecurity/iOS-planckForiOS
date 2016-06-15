@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 
 class SimpleOperationsTest: XCTestCase {
-    let waitTime: NSTimeInterval = 1000
+    let waitTime: NSTimeInterval = 10
 
     var persistentSetup: PersistentSetup!
     var connectInfo: ConnectInfo!
@@ -21,6 +21,7 @@ class SimpleOperationsTest: XCTestCase {
         super.setUp()
         persistentSetup = PersistentSetup.init()
         connectInfo = TestData.connectInfo
+        TestUtil.adjustBaseLevel()
     }
 
     override func tearDown() {
@@ -98,15 +99,22 @@ class SimpleOperationsTest: XCTestCase {
         let message = CWIMAPMessage.init()
         message.setFrom(CWInternetAddress.init(personal: "personal", address: "somemail@test.com"))
         message.setFolder(folder)
+
+        let exp = expectationWithDescription("stored")
         let op = StorePrefetchedMailOperation.init(
             grandOperator: self.persistentSetup.grandOperator,
             accountEmail: connectInfo.email, message: message)
+        op.completionBlock = {
+            exp.fulfill()
+        }
         let backgroundQueue = NSOperationQueue.init()
         backgroundQueue.addOperation(op)
-        backgroundQueue.waitUntilAllOperationsAreFinished()
-        XCTAssertEqual(
-            self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
-                NSPredicate.init(value: true)), 1)
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(
+                self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
+                    NSPredicate.init(value: true)), 1)
+        })
     }
 
     func testStoreMultipleMails() {
@@ -155,80 +163,6 @@ class SimpleOperationsTest: XCTestCase {
                 self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
                     NSPredicate.init(value: true)),
                 numMails)
-        })
-    }
-
-    func testFetchSingleMailsOperationSimple() {
-        testPrefetchMailsOperation()
-        let mails = persistentSetup.grandOperator.operationModel().messagesByPredicate(
-            NSPredicate.init(value: true), sortDescriptors: nil)
-        if mails?.count > 0 {
-            let mail = mails![0] as! Message
-
-            let mailFetched = expectationWithDescription("mailFetched")
-
-            let op = FetchMailOperation.init(
-                grandOperator: persistentSetup.grandOperator,
-                connectInfo: connectInfo, folderName: ImapSync.defaultImapInboxName,
-                uid: mail.uid!.integerValue)
-            op.completionBlock = {
-                mailFetched.fulfill()
-            }
-            op.start()
-
-            waitForExpectationsWithTimeout(waitTime, handler: { error in
-                XCTAssertNil(error)
-                XCTAssertGreaterThan(
-                    self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(
-                        NSPredicate.init(value: true)), 0)
-                XCTAssertGreaterThan(
-                    self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
-                        NSPredicate.init(value: true)), 0)
-                let message = self.persistentSetup.grandOperator.operationModel().messageByPredicate(
-                    NSPredicate.init(format: "uid = %d", mail.uid!.integerValue),
-                    sortDescriptors: nil)
-                XCTAssertNotNil(message)
-                let hasTextMessage = message?.longMessage != nil
-                let hasHtml = message?.longMessageFormatted != nil
-                let hasAttachments = message?.attachments.count > 0
-                XCTAssertTrue(hasTextMessage || hasHtml || hasAttachments)
-            })
-        } else {
-            XCTAssertTrue(false, "Expected mails")
-        }
-    }
-
-    func testFetchSingleMailsOperationChained() {
-        let mailFetched = expectationWithDescription("mailFetched")
-        let mailsPrefetched = expectationWithDescription("mailsPrefetched")
-
-        let op1 = PrefetchEmailsOperation.init(
-            grandOperator: persistentSetup.grandOperator, connectInfo: connectInfo,
-            folder: ImapSync.defaultImapInboxName)
-        op1.completionBlock = {
-            mailsPrefetched.fulfill()
-        }
-
-        let op2 = FetchMailOperation.init(
-            grandOperator: persistentSetup.grandOperator, connectInfo: connectInfo,
-            folderName: ImapSync.defaultImapInboxName, uid: TestData.existingUID)
-        op2.completionBlock = {
-            mailFetched.fulfill()
-        }
-
-        op2.addDependency(op1)
-        let queue = NSOperationQueue.init()
-        queue.addOperation(op1)
-        queue.addOperation(op2)
-
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertGreaterThan(
-                self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(
-                    NSPredicate.init(value: true)), 0)
-            XCTAssertGreaterThan(
-                self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
-                    NSPredicate.init(value: true)), 0)
         })
     }
 }

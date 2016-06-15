@@ -22,6 +22,7 @@ class GrandOperatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup.init()
+        TestUtil.adjustBaseLevel()
     }
 
     override func tearDown() {
@@ -52,32 +53,11 @@ class GrandOperatorTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             let p = NSPredicate.init(value: true)
-            XCTAssertGreaterThan(self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(p), 0)
+            XCTAssertGreaterThan(
+                self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(p), 0)
             XCTAssertEqual(self.persistentSetup.grandOperator.operationModel().folderByName(
                 ImapSync.defaultImapInboxName, email: self.correct.email)?.name.lowercaseString,
                 ImapSync.defaultImapInboxName.lowercaseString)
-        })
-    }
-
-    func testFetchMail() {
-        let exp = expectationWithDescription("mailFetched")
-        persistentSetup.grandOperator.fetchMailFromFolderNamed(
-            persistentSetup.connectionInfo,
-            folderName: ImapSync.defaultImapInboxName, uid: TestData.existingUID,
-            completionBlock: { error in
-                XCTAssertNil(error)
-                exp.fulfill()
-        })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
-            XCTAssertNil(error)
-            let p = NSPredicate.init(value: true)
-            XCTAssertGreaterThan(
-                self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(p), 0)
-            let mail = self.persistentSetup.grandOperator.operationModel().messageByPredicate(
-                NSPredicate.init(format: "uid = %d", TestData.existingUID),
-                sortDescriptors: nil)
-            XCTAssertNotNil(mail)
-            XCTAssertEqual(mail?.uid, TestData.existingUID)
         })
     }
 

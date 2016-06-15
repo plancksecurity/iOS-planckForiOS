@@ -48,9 +48,9 @@
         <relationship name="messages" toMany="YES" deletionRule="Cascade" destinationEntity="Message" inverseName="folder" inverseEntity="Message" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="Message" syncable="YES">
+        <attribute name="bodyFetched" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="boundary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="contentType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="fetched" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="longMessage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longMessageFormatted" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
@@ -58,12 +58,11 @@
         <attribute name="originationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
-        <relationship name="attachments" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES"/>
+        <relationship name="attachments" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES"/>
         <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="bccMessages" inverseEntity="Contact" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="ccMessages" inverseEntity="Contact" syncable="YES"/>
         <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="messages" inverseEntity="Folder" syncable="YES"/>
         <relationship name="from" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="fromMessages" inverseEntity="Contact" syncable="YES"/>
-        <relationship name="referenced" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" syncable="YES"/>
         <relationship name="references" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MessageReference" inverseName="referencingMessage" inverseEntity="MessageReference" syncable="YES"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="toMessages" inverseEntity="Contact" syncable="YES"/>
     </entity>
@@ -77,7 +76,7 @@
         <element name="AttachmentData" positionX="-36" positionY="144" width="128" height="75"/>
         <element name="Contact" positionX="-54" positionY="90" width="128" height="135"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="150"/>
-        <element name="Message" positionX="-45" positionY="99" width="128" height="315"/>
+        <element name="Message" positionX="-45" positionY="99" width="128" height="300"/>
         <element name="MessageReference" positionX="-45" positionY="135" width="128" height="75"/>
     </elements>
 </model>

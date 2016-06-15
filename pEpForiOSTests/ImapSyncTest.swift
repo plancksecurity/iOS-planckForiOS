@@ -31,12 +31,15 @@ class PersistentSetup {
         grandOperator = GrandOperator.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                               connectInfo: connectionInfo,
-                                               backgroundQueue: backgroundQueue)
+                                               connectInfo: connectionInfo)
 
         model = Model.init(context: coreDataUtil.managedObjectContext)
         let account = model.insertAccountFromConnectInfo(connectionInfo)
         XCTAssertNotNil(account)
+    }
+
+    deinit {
+        grandOperator.shutdown()
     }
 
     func inboxFolderPredicate() -> NSPredicate {
@@ -67,7 +70,6 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     var folderPrefetchSuccessExpectation: XCTestExpectation?
     var folderOpenSuccessExpectation: XCTestExpectation?
     var foldersFetchedExpectation: XCTestExpectation?
-    var messagePrefetchedExpectation: XCTestExpectation?
     var folderStatusCompletedExpectation: XCTestExpectation?
 
     let fetchFolders: Bool
@@ -172,9 +174,6 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
     override func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?)  {
         message = notification?.userInfo?["Message"] as? CWIMAPMessage
         messagePrefetched = true
-        if let exp = messagePrefetchedExpectation {
-            exp.fulfill()
-        }
     }
 
     override func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
@@ -200,6 +199,7 @@ class ImapSyncTest: XCTestCase {
     override func setUp() {
         super.setUp()
         coreDataUtil = InMemoryCoreDataUtil()
+        TestUtil.adjustBaseLevel()
     }
 
     override func tearDown() {
@@ -285,13 +285,19 @@ class ImapSyncTest: XCTestCase {
             XCTAssertTrue(del.folderPrefetchSuccess)
         })
 
-        setup.backgroundQueue.waitUntilAllOperationsAreFinished()
-
         if let folder = setup.model.folderByPredicate(
             setup.inboxFolderPredicate(), sortDescriptors: nil)
             as? Folder {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
             XCTAssertLessThanOrEqual(folder.messages.count, Int(sync.maxPrefetchCount))
+            for msg in folder.messages {
+                if let m = msg as? Message {
+                    XCTAssertNotNil(m.subject)
+                    XCTAssertNotNil(m.uid)
+                } else {
+                    XCTAssertTrue(false, "Expected object of type Message")
+                }
+            }
         } else {
             XCTAssertTrue(false, "Expected persisted folder")
         }
@@ -334,94 +340,6 @@ class ImapSyncTest: XCTestCase {
             setup.inboxFolderPredicate(), sortDescriptors: nil)
             as? Folder
         XCTAssertNotNil(folder, "Accessed folders should be created automatically")
-        sync.close()
-    }
-
-    func testFetchMail() {
-        let setup = PersistentSetup.init()
-        let sync = prefetchMails(setup)
-        if let folder = setup.model.folderByPredicate(
-            setup.inboxFolderPredicate(), sortDescriptors: nil)
-            as? Folder {
-            XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
-            guard let message = folder.messages.anyObject() as? Message else {
-                XCTAssertFalse(true, "No message stored")
-                return
-            }
-            XCTAssertNotNil(message)
-            XCTAssertNotNil(message.uid)
-            XCTAssertTrue(message.uid?.intValue > 0)
-
-            let del = TestImapSyncDelegate.init(fetchFolders: false, preFetchMails: false,
-                                                openInbox: false)
-            sync.delegate = del
-
-            del.messagePrefetchedExpectation = expectationWithDescription("messagePrefetched")
-
-            sync.fetchMailFromFolderNamed(ImapSync.defaultImapInboxName,
-                                          uid: message.uid!.integerValue)
-            waitForExpectationsWithTimeout(waitTime, handler: { error in
-                XCTAssertNil(error)
-                XCTAssertTrue(!del.errorOccurred)
-                XCTAssertTrue(del.messagePrefetched)
-                XCTAssertNotNil(del.message)
-                if let msg = del.message {
-                    XCTAssertTrue(msg.isInitialized())
-                    XCTAssertEqual(msg.UID(), UInt(message.uid!.integerValue))
-                    XCTAssertNotNil(msg.content())
-                    setup.model.insertOrUpdatePantomimeMail(msg, accountEmail: setup.connectionInfo.email)
-                    let data = msg.content()
-                    XCTAssertNotNil(data)
-                }
-            })
-        } else {
-            XCTAssertTrue(false, "Expected persisted folder")
-        }
-        sync.close()
-    }
-
-    /**
-     Demonstrates parsing of MIME-Type/MessageContent.
-     */
-    func testFetchMailAll() {
-        let setup = PersistentSetup.init()
-        let sync = prefetchMails(setup)
-        if let folder = setup.model.folderByPredicate(
-            setup.inboxFolderPredicate(), sortDescriptors: nil)
-            as? Folder {
-            XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
-
-            let del = TestImapSyncDelegate.init(fetchFolders: false, preFetchMails: false,
-                                                openInbox: false)
-            sync.delegate = del
-
-            for msg in folder.messages {
-                let message = msg as! Message
-                XCTAssertNotNil(message.uid)
-                XCTAssertTrue(message.uid!.intValue > 0)
-
-                del.messagePrefetchedExpectation = expectationWithDescription("messagePrefetched")
-
-                sync.fetchMailFromFolderNamed(ImapSync.defaultImapInboxName,
-                                              uid: message.uid!.integerValue)
-                waitForExpectationsWithTimeout(waitTime, handler: { error in
-                    XCTAssertNil(error)
-                    XCTAssertTrue(!del.errorOccurred)
-                    XCTAssertTrue(del.messagePrefetched)
-                    XCTAssertNotNil(del.message)
-                    if let msg = del.message {
-                        XCTAssertTrue(msg.isInitialized())
-                        XCTAssertEqual(msg.UID(), UInt(message.uid!.integerValue))
-                        XCTAssertNotNil(msg.content())
-                        setup.model.insertOrUpdatePantomimeMail(msg, accountEmail: setup.connectionInfo.email)
-                        let content = msg.content()
-                        XCTAssertNotNil(content)
-                    }
-                })
-            }
-        } else {
-            XCTAssertTrue(false, "Expected persisted folder")
-        }
         sync.close()
     }
 

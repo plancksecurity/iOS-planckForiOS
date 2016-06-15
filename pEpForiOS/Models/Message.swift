@@ -9,6 +9,14 @@ public class Message: _Message, IMessage {
 }
 
 public extension IMessage {
+    func allRecipienst() -> NSOrderedSet {
+        let recipients: NSMutableOrderedSet = []
+        recipients.addObjectsFromArray(to.array)
+        recipients.addObjectsFromArray(cc.array)
+        recipients.addObjectsFromArray(bcc.array)
+        return recipients
+    }
+
     func internetAddressFromContact(contact: IContact) -> CWInternetAddress {
         return CWInternetAddress.init(personal: contact.name, address: contact.email)
 

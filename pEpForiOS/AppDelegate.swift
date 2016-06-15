@@ -17,6 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let appConfig: AppConfig = AppConfig()
 
+    /**
+     Use for development. Remove all mails so they are fetched again.
+     */
+    func removeAllMails() {
+        let model = Model.init(context: appConfig.coreDataUtil.managedObjectContext)
+        if let folders = model.foldersByPredicate(NSPredicate.init(value: true)) {
+            for folder in folders {
+                model.context.deleteObject(folder as! NSManagedObject)
+            }
+            model.save()
+        }
+    }
+
     func application(application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [NSObject: AnyObject]?) -> Bool {
         setupDefaultSettings()

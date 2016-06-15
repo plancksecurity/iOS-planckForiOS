@@ -16,11 +16,12 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     let comp = "PersistentImapFolder"
 
     let connectInfo: ConnectInfo
-    let backgroundQueue: NSOperationQueue
-    weak var grandOperator: IGrandOperator!
+    let grandOperator: IGrandOperator
 
     /** The underlying core data object */
     var folder: IFolder!
+
+    let backgroundQueue = NSOperationQueue.init()
 
     override var nextUID: UInt {
         get {
@@ -42,14 +43,16 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
-    init(name: String, grandOperator: IGrandOperator, connectInfo: ConnectInfo,
-         backgroundQueue: NSOperationQueue) {
+    init(name: String, grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
-        self.backgroundQueue = backgroundQueue
         self.grandOperator = grandOperator
         super.init(name: name)
         self.setCacheManager(self)
         self.folder = folderObject()
+    }
+
+    deinit {
+        print("PersistentImapFolder")
     }
 
     func folderObject() -> IFolder {
@@ -127,12 +130,18 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     func messageWithUID(theUID: UInt) -> CWIMAPMessage? {
+        var result: CWIMAPMessage?
         let p = NSPredicate.init(format: "uid = %d", theUID)
-        if let msg = grandOperator.operationModel().messageByPredicate(p, sortDescriptors: nil) {
-            return msg.imapMessageWithFolder(self)
-        } else {
-            return nil
-        }
+        let privateMOC = grandOperator.coreDataUtil.privateContext()
+        privateMOC.performBlockAndWait({
+            let model = Model.init(context: privateMOC)
+            if let msg = model.messageByPredicate(p, sortDescriptors: nil) {
+                result = msg.imapMessageWithFolder(self)
+            } else {
+                result = nil
+            }
+        })
+        return result
     }
 
     /**
@@ -142,9 +151,16 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     func writeRecord(theRecord: CWCacheRecord?, message: CWIMAPMessage) {
+        // Quickly store the most important email proporties
+        let opQuick = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
+                                                        accountEmail: connectInfo.email,
+                                                        message: message, quick: true)
+        opQuick.start()
+
+        // Do all the time-consuming details in the background
         let op = StorePrefetchedMailOperation.init(grandOperator: self.grandOperator,
                                                    accountEmail: connectInfo.email,
-                                                   message: message)
+                                                   message: message, quick: false)
         backgroundQueue.addOperation(op)
     }
 }

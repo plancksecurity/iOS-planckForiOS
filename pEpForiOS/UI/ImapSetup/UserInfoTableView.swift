@@ -59,8 +59,7 @@ public class UserInfoTableView: UITableViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 44
+        UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
     public override func viewDidAppear(animated: Bool) {

@@ -16,6 +16,11 @@ public protocol IGrandOperator: class {
     var connectionManager: ConnectionManager { get }
 
     /**
+     Tests will use this to make sure there are no retain cycles.
+     */
+    func shutdown()
+
+    /**
      Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
      and the given folder and stores them into the persistent store.
 
@@ -40,14 +45,6 @@ public protocol IGrandOperator: class {
      a success when authentication was successful.
      */
     func verifyConnection(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
-     Asynchronously fetches a mail by UID in the given folder.
-     This means that the complete message, with all
-     attachments, gets downloaded and persisted.
-     */
-    func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: Int,
-                                  completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Sends the given mail via SMTP. Also saves it into the drafts folder. You
@@ -80,6 +77,11 @@ public protocol IGrandOperator: class {
      main thread or not.
      */
     func operationModel() -> IModel
+
+    /**
+     - Returns: A model built on a private context (`.PrivateQueueConcurrencyType`)
+     */
+    func backgroundModel() -> IModel
 }
 
 public class GrandOperator: IGrandOperator {
@@ -107,6 +109,13 @@ public class GrandOperator: IGrandOperator {
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
+        self.connectionManager.grandOperator = self
+    }
+
+    public func shutdown() {
+        verifyConnectionQueue.cancelAllOperations()
+        connectionManager.shutdown()
+        errors.removeAll()
     }
 
     func kickOffConcurrentOperation(operation op: NSOperation,
@@ -142,31 +151,26 @@ public class GrandOperator: IGrandOperator {
     func handleVerificationCompletionFinished1(finished1: Bool, finished2: Bool,
                                       op1: NSOperation, op2: NSOperation,
                                       completionBlock: GrandOperatorCompletionBlock?) {
-        GCD.onMain({ [weak self] in // serialize
-            if finished1 && finished2 {
-                // Dissolve the cyclic dependency between the operation,
-                // the completion block, and back.
-                op1.completionBlock = nil
-                op2.completionBlock = nil
+        if finished1 && finished2 {
+            // Dissolve the cyclic dependency between the operation,
+            // the completion block, and back.
+            op1.completionBlock = nil
+            op2.completionBlock = nil
 
-                var error: NSError? = nil
-                if let err = self?.errors[op1] {
-                    error = err
-                } else if let err = self?.errors[op2] {
-                    error = err
-                }
-                completionBlock?(error: error)
-                self?.errors.removeValueForKey(op1)
-                self?.errors.removeValueForKey(op2)
-
-                print("operationCount\(self?.verifyConnectionQueue.operationCount)")
+            var error: NSError? = nil
+            if let err = self.errors[op1] {
+                error = err
+            } else if let err = self.errors[op2] {
+                error = err
             }
-        })
+            completionBlock?(error: error)
+            self.errors.removeValueForKey(op1)
+            self.errors.removeValueForKey(op2)
+
+            print("operationCount\(self.verifyConnectionQueue.operationCount)")
+        }
     }
 
-    /**
-     This is leaking Service objects.
-     */
     public func verifyConnection(connectInfo: ConnectInfo,
                                  completionBlock: GrandOperatorCompletionBlock?) {
         let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
@@ -178,17 +182,21 @@ public class GrandOperator: IGrandOperator {
         // Since the completion blocks retain op1 and op2, respectively,
         // a cyclic dependency is created that prevents the deallocation of both.
         // This must be resolved when both have finished.
-        let completion1 = { [weak self, unowned op1, unowned op2]  in
-            finished1 = true
-            self?.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                                                        op1: op1, op2: op2,
-                                                        completionBlock: completionBlock)
+        let completion1 = {
+            GCD.onMain({ // serialize
+                finished1 = true
+                self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
+                    op1: op1, op2: op2,
+                    completionBlock: completionBlock)
+            })
         }
-        let completion2 = {  [weak self]  in
-            finished2 = true
-            self?.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                                                        op1: op1, op2: op2,
-                                                        completionBlock: completionBlock)
+        let completion2 = {
+            GCD.onMain({ // serialize
+                finished2 = true
+                self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
+                    op1: op1, op2: op2,
+                    completionBlock: completionBlock)
+            })
         }
 
         op1.completionBlock = completion1
@@ -204,13 +212,6 @@ public class GrandOperator: IGrandOperator {
 
     public func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
         completionBlock?(error: Constants.errorNotImplemented(comp))
-    }
-
-    public func fetchMailFromFolderNamed(connectInfo: ConnectInfo, folderName: String, uid: Int,
-                                         completionBlock: GrandOperatorCompletionBlock?) {
-        let op = FetchMailOperation.init(grandOperator: self, connectInfo: connectInfo,
-                                         folderName: folderName, uid: uid)
-        kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
     public func setErrorForOperation(operation: NSOperation, error: NSError) {
@@ -238,12 +239,19 @@ public class GrandOperator: IGrandOperator {
     }
 
     public func operationModel() -> IModel {
+        if NSThread.isMainThread() {
+            return model
+        }
         let threadDictionary = NSThread.currentThread().threadDictionary
         if let model = threadDictionary[GrandOperator.kOperationModel] {
             return model as! IModel
         }
-        let resultModel = NSThread.isMainThread() ? model : createBackgroundModel()
+        let resultModel = createBackgroundModel()
         threadDictionary.setValue(resultModel as? AnyObject, forKey: GrandOperator.kOperationModel)
         return resultModel
+    }
+
+    public func backgroundModel() -> IModel {
+        return Model.init(context: coreDataUtil.privateContext())
     }
 }

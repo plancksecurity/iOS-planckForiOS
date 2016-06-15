@@ -5,9 +5,9 @@ import Foundation
 import CoreData
 
 public enum MessageAttributes: String {
+    case bodyFetched = "bodyFetched"
     case boundary = "boundary"
     case contentType = "contentType"
-    case fetched = "fetched"
     case longMessage = "longMessage"
     case longMessageFormatted = "longMessageFormatted"
     case messageID = "messageID"
@@ -23,7 +23,6 @@ public enum MessageRelationships: String {
     case cc = "cc"
     case folder = "folder"
     case from = "from"
-    case referenced = "referenced"
     case references = "references"
     case to = "to"
 }
@@ -32,11 +31,11 @@ public protocol _IMessage {
 
     // MARK: - Properties
 
+    var bodyFetched: NSNumber { get set }
+
     var boundary: String? { get set }
 
     var contentType: String? { get set }
-
-    var fetched: NSNumber { get set }
 
     var longMessage: String? { get set }
 
@@ -63,8 +62,6 @@ public protocol _IMessage {
     var folder: Folder { get set }
 
     var from: Contact? { get set }
-
-    var referenced: Message? { get set }
 
     var references: NSOrderedSet { get set }
 
@@ -98,13 +95,13 @@ public class _Message: BaseManagedObject, _IMessage {
     // MARK: - Properties
 
     @NSManaged public
+    var bodyFetched: NSNumber
+
+    @NSManaged public
     var boundary: String?
 
     @NSManaged public
     var contentType: String?
-
-    @NSManaged public
-    var fetched: NSNumber
 
     @NSManaged public
     var longMessage: String?
@@ -143,9 +140,6 @@ public class _Message: BaseManagedObject, _IMessage {
 
     @NSManaged public
     var from: Contact?
-
-    @NSManaged public
-    var referenced: Message?
 
     @NSManaged public
     var references: NSOrderedSet

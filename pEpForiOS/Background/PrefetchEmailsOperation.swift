@@ -39,8 +39,7 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
         }
 
         let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                                   connectInfo: connectInfo,
-                                                   backgroundQueue: backgroundQueue)
+                                                   connectInfo: connectInfo)
 
         sync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
         sync.delegate = self
@@ -60,7 +59,7 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
     func updateFolderNames(folderNames: [String]) {
         let op = StoreFoldersOperation.init(grandOperator: self.grandOperator,
                                             folders: folderNames, email: self.connectInfo.email)
-        backgroundQueue.addOperation(op)
+        op.start()
     }
 
     func syncMails(sync: ImapSync) {

@@ -31,13 +31,13 @@ public class InMemoryCoreDataUtil: ICoreDataUtil {
             try coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil,
                                                        URL: nil, options: nil)
             return coordinator
-        } catch {
+        } catch let error as NSError {
             // Report any error we got.
             var dict = [String: AnyObject]()
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = "In memory store could not be created."
 
-            dict[NSUnderlyingErrorKey] = error as! NSError
+            dict[NSUnderlyingErrorKey] = error
             let wrappedError = NSError(domain: comp, code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -69,5 +69,11 @@ public class InMemoryCoreDataUtil: ICoreDataUtil {
         context.persistentStoreCoordinator = self.persistentStoreCoordinator
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
+    }
+
+    public func privateContext() -> NSManagedObjectContext {
+        let privateMOC = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        privateMOC.parentContext = managedObjectContext
+        return privateMOC
     }
 }

@@ -33,19 +33,19 @@ class IMAPSettingsTableView: UITableViewController  {
     var appConfig: AppConfig!
     var model: ModelUserInfoTable!
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44
     }
 
-    public override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(animated: Bool) {
         super.viewWillAppear(animated)
         viewWidthAligner.alignViews([serverValueTextField,
             portValueTextField], parentView: self.view)
     }
 
-    public override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         if model.serverIMAP == nil {

@@ -10,6 +10,8 @@ import Foundation
 import CoreData
 
 public protocol IModel {
+    var context: NSManagedObjectContext { get }
+
     func existingMessage(msg: CWIMAPMessage) -> IMessage?
     func messageByPredicate(predicate: NSPredicate?,
                             sortDescriptors: [NSSortDescriptor]?) -> IMessage?
@@ -66,7 +68,31 @@ public protocol IModel {
 
     func insertOrUpdateMessageReference(messageID: String) -> IMessageReference
     func insertMessageReference(messageID: String) -> IMessageReference
+
+    /**
+     Quickly inserts essential parts of a pantomime into the store. Needed for networking,
+     where inserts should be quick and the persistent store should be up-to-date
+     nevertheless (especially in terms of UIDs, messageNumbers etc.)
+     - Returns: A tuple of the optional message just created or updated, and a Bool
+     for whether the mail already existed or has been freshly added (true for having been
+     freshly added).
+     */
+    func quickInsertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String)
+        -> (IMessage?, Bool)
+
+    /**
+     Inserts the given pantomime mail object for the given account email into the store.
+     Don't use this on the main thread as there is potentially a lot of processing involved
+     (e.g., parsing of HTML and/or attachments).
+     - Return: The core data object as inserted into the store.
+     */
     func insertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String) -> IMessage?
+
+    /**
+     Deals with any HTML content an email might have, e.g., parse it into a snippet if there
+     is no plain text etc.
+     */
+    func setupHTMLContentForMail(mail: Message)
 
     /**
      - Returns: List of contact that match the given snippet (either in the name, or address).
@@ -86,7 +112,7 @@ public class Model: IModel {
 
     public static let CouldNotCreateFolder = 1000
 
-    let context: NSManagedObjectContext
+    public let context: NSManagedObjectContext
 
     public init(context: NSManagedObjectContext) {
         self.context = context
@@ -279,12 +305,14 @@ public class Model: IModel {
 
     public func messageByPredicate(predicate: NSPredicate? = nil,
                                    sortDescriptors: [NSSortDescriptor]? = nil) -> IMessage? {
-        return singleEntityWithName(Message.entityName(), predicate: predicate) as? Message
+        return singleEntityWithName(Message.entityName(), predicate: predicate,
+                                    sortDescriptors: sortDescriptors) as? Message
     }
 
     public func messagesByPredicate(predicate: NSPredicate? = nil,
                                     sortDescriptors: [NSSortDescriptor]? = nil) -> [IMessage]? {
-        return entitiesWithName(Message.entityName(), predicate: predicate)?.map() {$0 as! Message}
+        return entitiesWithName(Message.entityName(), predicate: predicate,
+            sortDescriptors: sortDescriptors)?.map() {$0 as! Message}
     }
 
     public func messageCountByPredicate(predicate: NSPredicate? = nil) -> Int {
@@ -323,12 +351,14 @@ public class Model: IModel {
 
     public func foldersByPredicate(predicate: NSPredicate? = nil,
                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [IFolder]? {
-        return entitiesWithName(Folder.entityName(), predicate: predicate)?.map() {$0 as! Folder}
+        return entitiesWithName(Folder.entityName(), predicate: predicate,
+            sortDescriptors: sortDescriptors)?.map() {$0 as! Folder}
     }
 
     public func folderByPredicate(predicate: NSPredicate? = nil,
                                   sortDescriptors: [NSSortDescriptor]? = nil) -> IFolder? {
-        return singleEntityWithName(Folder.entityName(), predicate: predicate) as? Folder
+        return singleEntityWithName(Folder.entityName(), predicate: predicate,
+                                    sortDescriptors: sortDescriptors) as? Folder
     }
 
     public func folderByName(name: String, email: String) -> IFolder? {
@@ -424,20 +454,14 @@ public class Model: IModel {
         return added
     }
 
-    public func insertOrUpdatePantomimeMail(
-        message: CWIMAPMessage, accountEmail: String) -> IMessage? {
+    public func quickInsertOrUpdatePantomimeMail(message: CWIMAPMessage,
+                                                 accountEmail: String) -> (IMessage?, Bool) {
         guard let folderName = message.folder()?.name() else {
-            return nil
+            return (nil, false)
         }
         guard let folder = folderByName(folderName, email: accountEmail) else {
-            return nil
+            return (nil, false)
         }
-
-        var addresses = message.recipients() as! [CWInternetAddress]
-        if let from = message.from() {
-            addresses.append(from)
-        }
-        let contacts = addContacts(addresses)
 
         var isFresh = false
         var theMail: IMessage? = existingMessage(message)
@@ -449,6 +473,8 @@ public class Model: IModel {
         var mail = theMail!
 
         mail.folder = folder as! Folder
+
+        mail.bodyFetched = message.isInitialized()
 
         if isFresh || mail.originationDate != message.receivedDate() {
             mail.originationDate = message.receivedDate()
@@ -468,18 +494,34 @@ public class Model: IModel {
         if isFresh || mail.boundary != message.boundary()?.asciiString() {
             mail.boundary = message.boundary()?.asciiString()
         }
+        return (mail, false)
+    }
+
+    public func insertOrUpdatePantomimeMail(message: CWIMAPMessage,
+                                            accountEmail: String) -> IMessage? {
+        let (quickMail, isFresh) = quickInsertOrUpdatePantomimeMail(message,
+                                                                    accountEmail: accountEmail)
+        guard var mail = quickMail else {
+            return nil
+        }
+
+        var addresses = message.recipients() as! [CWInternetAddress]
+        if let from = message.from() {
+            from.setType(PantomimeToRecipient)
+            addresses.append(from)
+        }
+        let contacts = addContacts(addresses)
 
         let ccs: NSMutableOrderedSet = []
         let tos: NSMutableOrderedSet = []
-        for address in message.recipients() {
-            let addr = address as! CWInternetAddress
+        for addr in addresses {
             switch addr.type() {
             case PantomimeCcRecipient:
                 ccs.addObject(contacts[addr.address()]! as! Contact)
             case PantomimeToRecipient:
                 tos.addObject(contacts[addr.address()]! as! Contact)
             default:
-                Log.warn(comp, "Unsupported recipient type \(addr.type)")
+                Log.warn(comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
         }
         if isFresh || mail.cc != ccs {
@@ -503,8 +545,20 @@ public class Model: IModel {
         mail.contentType = message.contentType()
 
         addAttachmentsFromPantomimePart(message, targetMail: mail as! Message, level: 0)
+        setupHTMLContentForMail(mail as! Message)
 
         return mail
+    }
+
+    public func setupHTMLContentForMail(mail: Message) {
+        if mail.longMessage == nil {
+            if let htmlString = mail.longMessageFormatted {
+                let htmlData = htmlString.dataUsingEncoding(NSUTF8StringEncoding)
+                let doc = TFHpple.init(data: htmlData, encoding: "UTF-8", isXML: false)
+                let elms = doc.searchWithXPathQuery("//body//text()[normalize-space()]")
+                print("found elms \(elms)")
+            }
+        }
     }
 
     func addAttachmentsFromPantomimePart(part: CWPart, targetMail: Message, level: Int) {

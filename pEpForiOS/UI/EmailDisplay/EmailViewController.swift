@@ -13,6 +13,16 @@ import UIKit
 
 class EmailViewController: UITableViewController {
 
+    struct UIState {
+        var loadingMail: Bool = false
+    }
+
+    @IBOutlet weak var toStackView: UIStackView!
+    @IBOutlet weak var fromLabel: UILabel!
+    @IBOutlet weak var contentWebView: UIWebView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+
+    let state = UIState()
     var appConfig: AppConfig!
     var message: Message!
     var model: ComposeViewControllerModel = ComposeViewControllerModel()
