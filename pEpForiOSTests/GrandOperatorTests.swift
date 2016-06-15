@@ -75,9 +75,12 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testSendMail() {
+        let account = persistentSetup.model.insertAccountFromConnectInfo(TestData.connectInfo)
+            as? Account
+        XCTAssertNotNil(account)
         let msg = createMail()
         let exp = expectationWithDescription("mailFetched")
-        persistentSetup.grandOperator.sendMail(msg, completionBlock: { error in
+        persistentSetup.grandOperator.sendMail(msg, account: account!, completionBlock: { error in
             XCTAssertNil(error)
             exp.fulfill()
         })
@@ -87,9 +90,12 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testSaveDraft() {
+        let account = persistentSetup.model.insertAccountFromConnectInfo(TestData.connectInfo)
+            as? Account
+        XCTAssertNotNil(account)
         let msg = createMail()
         let exp = expectationWithDescription("draftSaved")
-        persistentSetup.grandOperator.sendMail(msg, completionBlock: { error in
+        persistentSetup.grandOperator.sendMail(msg, account: account!, completionBlock: { error in
             XCTAssertNil(error)
             exp.fulfill()
         })
