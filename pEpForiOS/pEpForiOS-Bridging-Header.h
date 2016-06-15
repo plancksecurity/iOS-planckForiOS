@@ -9,7 +9,7 @@
 #ifndef pEpForiOS_Bridging_Header_h
 #define pEpForiOS_Bridging_Header_h
 
-// Pantomime headers
+#pragma mark -- Pantomime headers
 
 #import "Pantomime/CWConstants.h"
 #import "Pantomime/CWFolder.h"
@@ -32,9 +32,13 @@
 #import "Pantomime/CWMIMEMultipart.h"
 #import "Pantomime/CWMIMEUtility.h"
 
-// pEp headers
+#pragma mark -- pEp Headers
 
 #import "pEpiOSAdapter/PEPiOSAdapter.h"
 #import "pEpiOSAdapter/PEPSession.h"
+
+#pragma mark -- Misc
+
+#import "TFHpple.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */
