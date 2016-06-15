@@ -18,6 +18,10 @@ public class StorePrefetchedMailOperation: BaseOperation {
     let accountEmail: String
     let quick: Bool
 
+    /**
+     - parameter quick: Store only the most important properties (for true), or do it completely,
+     including attachments?
+     */
     public init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage,
                 quick: Bool = true) {
         self.accountEmail = accountEmail
