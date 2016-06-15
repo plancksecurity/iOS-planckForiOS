@@ -68,7 +68,20 @@ public protocol IModel {
 
     func insertOrUpdateMessageReference(messageID: String) -> IMessageReference
     func insertMessageReference(messageID: String) -> IMessageReference
+
+    /**
+     Inserts the given pantomime mail object for the given account email into the store.
+     Don't use this on the main thread as there is potentially a lot of processing involved
+     (e.g., parsing of HTML and/or attachments).
+     - Return: The core data object as inserted into the store.
+     */
     func insertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String) -> IMessage?
+
+    /**
+     Deals with any HTML content an email might have, e.g., parse it into a snippet if there
+     is no plain text etc.
+     */
+    func setupHTMLContentForMail(mail: Message)
 
     /**
      - Returns: List of contact that match the given snippet (either in the name, or address).
@@ -511,8 +524,20 @@ public class Model: IModel {
         mail.contentType = message.contentType()
 
         addAttachmentsFromPantomimePart(message, targetMail: mail as! Message, level: 0)
+        setupHTMLContentForMail(mail as! Message)
 
         return mail
+    }
+
+    public func setupHTMLContentForMail(mail: Message) {
+        if mail.longMessage == nil {
+            if let htmlString = mail.longMessageFormatted {
+                let htmlData = htmlString.dataUsingEncoding(NSUTF8StringEncoding)
+                let doc = TFHpple.init(data: htmlData, encoding: "UTF-8", isXML: false)
+                let elms = doc.searchWithXPathQuery("//body//text()[normalize-space()]")
+                print("found elms \(elms)")
+            }
+        }
     }
 
     func addAttachmentsFromPantomimePart(part: CWPart, targetMail: Message, level: Int) {
