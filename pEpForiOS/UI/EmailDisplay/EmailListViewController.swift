@@ -157,7 +157,7 @@ class EmailListViewController: UITableViewController {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "composeSegue" {
-            let destination = segue.destinationViewController as! ComposeViewController
+            let destination = segue.destinationViewController as! ComposeWithAutocompleteViewController
             destination.appConfig = appConfig
         } else if segue.identifier == segueShowEmail {
             guard
