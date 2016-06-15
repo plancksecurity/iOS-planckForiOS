@@ -11,7 +11,7 @@ import Foundation
 public class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let connectInfo: ConnectInfo
     let grandOperator: IGrandOperator
-    let backgroundQueue: NSOperationQueue
+    public let backgroundQueue: NSOperationQueue?
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
                 backgroundQueue: NSOperationQueue) {
@@ -20,9 +20,9 @@ public class ImapFolderBuilder: NSObject, CWFolderBuilding {
         self.backgroundQueue = backgroundQueue
     }
 
-    public func folderWithName(name: String!) -> CWFolder! {
+    public func folderWithName(name: String) -> CWFolder {
         return PersistentImapFolder(name: name, grandOperator: grandOperator,
-                                    connectInfo: connectInfo, backgroundQueue: backgroundQueue)
+                                    connectInfo: connectInfo, backgroundQueue: backgroundQueue!)
             as CWFolder
     }
 
