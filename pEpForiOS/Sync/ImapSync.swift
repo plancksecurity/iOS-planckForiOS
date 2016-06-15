@@ -212,6 +212,7 @@ extension ImapSync: CWServiceClient {
             Log.info(comp, "folderPrefetchCompleted: \(notification)")
         }
         if let bq = folderBuilder?.backgroundQueue {
+            // Wait until all newly synced mails are stored
             bq.waitUntilAllOperationsAreFinished()
         }
         delegate?.folderPrefetchCompleted(self, notification: notification)
