@@ -13,9 +13,9 @@ import pEpForiOS
 
 class PersistentSetup {
     let coreDataUtil: ICoreDataUtil
-    let connectionInfo: ConnectInfo
-    let connectionManager: ConnectionManager
-    let backgroundQueue: NSOperationQueue
+    let connectionInfo = TestData.connectInfo
+    let connectionManager = ConnectionManager.init()
+    let backgroundQueue = NSOperationQueue.init()
     let grandOperator: GrandOperator
     let folderBuilder: ImapFolderBuilder
     let model: IModel
@@ -25,13 +25,11 @@ class PersistentSetup {
      */
     init() {
         coreDataUtil = InMemoryCoreDataUtil.init()
-        connectionInfo = TestData.connectInfo
-        backgroundQueue = NSOperationQueue.init()
-        connectionManager = ConnectionManager.init()
         grandOperator = GrandOperator.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                               connectInfo: connectionInfo)
+                                               connectInfo: connectionInfo,
+                                               backgroundQueue: backgroundQueue)
 
         model = Model.init(context: coreDataUtil.managedObjectContext)
         let account = model.insertAccountFromConnectInfo(connectionInfo)

@@ -34,10 +34,6 @@ public class ConnectionManager {
             imapConnections[connectInfo] = sync
         }
 
-        let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                                   connectInfo: connectInfo)
-        sync.folderBuilder = folderBuilder
-
         return sync
     }
 

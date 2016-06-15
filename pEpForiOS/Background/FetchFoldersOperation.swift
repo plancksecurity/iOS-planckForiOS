@@ -11,15 +11,18 @@ import Foundation
 public class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let connectInfo: ConnectInfo
     let grandOperator: IGrandOperator
+    let backgroundQueue: NSOperationQueue
 
-    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
+    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
+                backgroundQueue: NSOperationQueue) {
         self.connectInfo = connectInfo
         self.grandOperator = grandOperator
+        self.backgroundQueue = backgroundQueue
     }
 
     public func folderWithName(name: String!) -> CWFolder! {
         return PersistentImapFolder(name: name, grandOperator: grandOperator,
-                                    connectInfo: connectInfo)
+                                    connectInfo: connectInfo, backgroundQueue: backgroundQueue)
             as CWFolder
     }
 
@@ -45,7 +48,8 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
         super.init(grandOperator: grandOperator)
 
         folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                               connectInfo: connectInfo)
+                                               connectInfo: connectInfo,
+                                               backgroundQueue: backgroundQueue)
     }
 
     public override func main() {

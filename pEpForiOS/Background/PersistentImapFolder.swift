@@ -21,7 +21,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     /** The underlying core data object */
     var folder: IFolder!
 
-    let backgroundQueue = NSOperationQueue.init()
+    let backgroundQueue: NSOperationQueue
 
     override var nextUID: UInt {
         get {
@@ -43,9 +43,11 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
-    init(name: String, grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
+    init(name: String, grandOperator: IGrandOperator, connectInfo: ConnectInfo,
+         backgroundQueue: NSOperationQueue) {
         self.connectInfo = connectInfo
         self.grandOperator = grandOperator
+        self.backgroundQueue = backgroundQueue
         super.init(name: name)
         self.setCacheManager(self)
         self.folder = folderObject()
