@@ -63,6 +63,8 @@ class PepAdapterTests: XCTestCase {
     }
     
     func testPepPaths() {
+        var error: NSError?
+        
         NSLog("Home folder: " + String(PEPUtil.pEpUrls["home"]))
         NSLog("pEp management DB file: " + String(PEPUtil.pEpUrls["pEpManagementDb"]))
         NSLog("GnuPG folder: " + String(PEPUtil.pEpUrls["gnupg"]))
@@ -75,7 +77,7 @@ class PepAdapterTests: XCTestCase {
         }
         // Test if paths exist.
         for key in PEPUtil.pEpUrls.keys {
-            XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(String(PEPUtil.pEpUrls[key])))
+            XCTAssertTrue(PEPUtil.pEpUrls[key]!.checkResourceIsReachableAndReturnError(&error))
         }
     }
     
