@@ -139,7 +139,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oer-VV-fel" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5367" y="2673.5"/>
+            <point key="canvasLocation" x="5216" y="2823"/>
         </scene>
         <!--Compose With Autocomplete View Controller-->
         <scene sceneID="YkL-8B-UDO">
@@ -201,8 +201,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cco:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gjx-AN-Ixp">
-                                                    <rect key="frame" x="8" y="11" width="36" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bcc:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gjx-AN-Ixp">
+                                                    <rect key="frame" x="10" y="11" width="34" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -276,11 +276,11 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bccTextField" destination="hSu-0v-Xag" id="jes-cw-eBH"/>
                         <outlet property="ccTextField" destination="pt3-yL-84D" id="pn7-e3-z5j"/>
-                        <outlet property="ccoTextField" destination="hSu-0v-Xag" id="mdD-E7-xBm"/>
                         <outlet property="longMessageTextField" destination="QnM-Q7-sNa" id="L13-Wp-wVY"/>
                         <outlet property="shortMessageTextField" destination="inY-XG-OMC" id="DZc-2j-e9t"/>
-                        <outlet property="toTextField" destination="HGI-37-dft" id="bwk-ht-NfS"/>
+                        <outlet property="toTextField" destination="HGI-37-dft" id="fiW-cc-bbC"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28t-ga-UrZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1007,6 +1007,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="f9E-Tw-5Vv"/>
+        <segue reference="S9M-df-9HQ"/>
     </inferredMetricsTieBreakers>
 </document>

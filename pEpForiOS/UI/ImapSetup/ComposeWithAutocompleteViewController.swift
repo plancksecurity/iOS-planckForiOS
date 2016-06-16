@@ -21,7 +21,7 @@ class ComposeWithAutocompleteViewController: UITableViewController {
 
     @IBOutlet weak var toTextField: UITextField!
     @IBOutlet weak var ccTextField: UITextField!
-    @IBOutlet weak var ccoTextField: UITextField!
+    @IBOutlet weak var bccTextField: UITextField!
     @IBOutlet weak var shortMessageTextField: UITextField!
     @IBOutlet weak var longMessageTextField: UITextView!
 
@@ -45,33 +45,44 @@ class ComposeWithAutocompleteViewController: UITableViewController {
         presentViewController(alertView, animated: true, completion: nil)
     }
 
-    func createMail() -> Message {
+    func createMail(subject: String,
+                    longMessage: String,
+                    toContactsSeparated: [String],
+                    ccContactsSeparated: [String],
+                    bccContactsSeparated: [String]) -> Message {
+
         let msg = appConfig?.model.insertNewMessage() as! Message
-        msg.subject = shortMessageTextField.text!
-        msg.longMessage = longMessageTextField.text!
-        /*let from = appConfig?.model.insertOrUpdateContactEmail(
-            "test001@peptest.ch", name: nil) as! Contact*/
-        //msg.from = from
-        let to = appConfig?.model.insertOrUpdateContactEmail(
-            toTextField.text!, name: nil) as! Contact
-        msg.addToObject(to)
-        let cc = appConfig?.model.insertOrUpdateContactEmail(
-            ccTextField.text!, name: nil) as! Contact
-        msg.addCcObject(cc)
-        let bbc = appConfig?.model.insertOrUpdateContactEmail(
-            ccoTextField.text!, name: nil) as! Contact
-        msg.addBccObject(bbc)
+        msg.subject = subject
+        msg.longMessage = longMessage
+        for toContact in toContactsSeparated {
+            let to = appConfig?.model.insertOrUpdateContactEmail(toContact, name: nil) as! Contact
+            msg.addToObject(to)
+        }
+        for ccContact in ccContactsSeparated {
+            let cc = appConfig?.model.insertOrUpdateContactEmail(ccContact, name: nil) as! Contact
+            msg.addCcObject(cc)
+        }
+        for bccContact in bccContactsSeparated {
+            let bbc = appConfig?.model.insertOrUpdateContactEmail(
+                bccContact, name: nil) as! Contact
+            msg.addBccObject(bbc)
+        }
         return msg
     }
 
     @IBAction func sendEmail(sender: AnyObject) {
-        let message = createMail()
+        let subject = shortMessageTextField.text!
+        let longMessage = longMessageTextField.text!
+        let toContactsSeparated = toTextField.text!.componentsSeparatedByString(";")
+        let ccContactsSeparated = ccTextField.text!.componentsSeparatedByString(";")
+        let bccContactsSeparated = bccTextField.text!.componentsSeparatedByString(";")
 
-        print("MESSAGE SUBJECT \(message.subject)\n")
-        print("MESSAGE LONG MESSAGE")
-        print(message.longMessage)
-        print("MESSAGE TO")
-        print(message.to)
+        let message = createMail(subject,
+                                 longMessage: longMessage,
+                                 toContactsSeparated: toContactsSeparated,
+                                 ccContactsSeparated: ccContactsSeparated,
+                                 bccContactsSeparated: bccContactsSeparated)
+
         if let account = appConfig?.model.fetchLastAccount() as? Account {
             appConfig?.grandOperator.sendMail(message, account:account, completionBlock: { (error) in
                 if error != nil {
