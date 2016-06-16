@@ -13,6 +13,7 @@ public class PEPUtil {
                                       NSProcessInfo.processInfo().environment["HOME"]!)
     private static let pEpManagementDbUrl =
                                          homeUrl.URLByAppendingPathComponent(".pEp_management.db")
+    private static let systemDbUrl = homeUrl.URLByAppendingPathComponent("system.db")
     private static let gnupgUrl = homeUrl.URLByAppendingPathComponent(".gnupg")
     private static let gnupgSecringUrl = gnupgUrl.URLByAppendingPathComponent("secring.gpg")
     private static let gnupgPubringUrl = gnupgUrl.URLByAppendingPathComponent("pubring.gpg")
@@ -21,13 +22,14 @@ public class PEPUtil {
     public static let pEpUrls: [String:NSURL] = [
                       "home": homeUrl,
                       "pEpManagementDb": pEpManagementDbUrl,
+                      "sytemDb": systemDbUrl,
                       "gnupg": gnupgUrl,
                       "gnupgSecring": gnupgSecringUrl,
                       "gnupgPubring": gnupgPubringUrl]
     
     // Delete pEp working data.
     public static func pEpClean() -> Bool {
-        let pEpItemsToDelete: [String] = ["pEpManagementDb", "gnupg"]
+        let pEpItemsToDelete: [String] = ["pEpManagementDb", "gnupg", "systemDb"]
         
         for key in pEpItemsToDelete {
             let fileManager: NSFileManager = NSFileManager.defaultManager()
