@@ -43,6 +43,7 @@ class PepAdapterTests: XCTestCase {
         NSLog("Dict size: %d", identity.count)
         
         PEPiOSAdapter.startKeyserverLookup()
+        sleep(2)
         
         pEpSession.updateIdentity(identity)
         
