@@ -21,6 +21,7 @@ class EmailListViewController: UITableViewController {
     var appConfig: AppConfig?
     var fetchController: NSFetchedResultsController?
     var state = UIState()
+    let dateFormatter = UIHelper.dateFormatterEmailList()
 
     override func viewDidLoad() {
         let refreshController = UIRefreshControl.init()
@@ -131,28 +132,17 @@ class EmailListViewController: UITableViewController {
         return cell
     }
 
-    func putString(string: String?, toLabel: UILabel) {
-        if string?.characters.count > 0 {
-            toLabel.hidden = false
-            toLabel.text = string!
-        } else {
-            toLabel.hidden = true
-        }
-    }
-
     func configureCell(cell: EmailListViewCell, indexPath: NSIndexPath) {
         if let email = fetchController?.objectAtIndexPath(indexPath) as? Message {
-            putString(email.from?.displayString(), toLabel: cell.senderLabel)
-            putString(email.subject, toLabel: cell.subjectLabel)
-            putString(nil, toLabel: cell.summaryLabel)
+            UIHelper.putString(email.from?.displayString(), toLabel: cell.senderLabel)
+            UIHelper.putString(email.subject, toLabel: cell.subjectLabel)
+            UIHelper.putString(nil, toLabel: cell.summaryLabel)
 
             if let originationDate = email.originationDate {
-                let formatter = NSDateFormatter.init()
-                formatter.dateStyle = .ShortStyle
-                formatter.timeStyle = .ShortStyle
-                putString(formatter.stringFromDate(originationDate), toLabel: cell.dateLabel)
+                UIHelper.putString(dateFormatter.stringFromDate(originationDate),
+                                   toLabel: cell.dateLabel)
             } else {
-                putString(nil, toLabel: cell.dateLabel)
+                UIHelper.putString(nil, toLabel: cell.dateLabel)
             }
         }
     }

@@ -21,4 +21,29 @@ class UIHelper {
         return l
     }
 
+    static func dateFormatterEmailList() -> NSDateFormatter {
+        let formatter = NSDateFormatter.init()
+        formatter.dateStyle = .ShortStyle
+        formatter.timeStyle = .ShortStyle
+        return formatter
+    }
+
+    static func dateFormatterEmailDetails() -> NSDateFormatter {
+        return dateFormatterEmailList()
+    }
+
+    /**
+     Put a String into a label. If the String is empty, hide the label.
+     */
+    static func putString(string: String?, toLabel: UILabel?) {
+        guard let label = toLabel else {
+            return
+        }
+        if string?.characters.count > 0 {
+            label.hidden = false
+            label.text = string!
+        } else {
+            label.hidden = true
+        }
+    }
 }

@@ -11,6 +11,7 @@
 		4303DAE81CE62D2600D9C0AB /* AttachmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAE61CE62D2600D9C0AB /* AttachmentData.swift */; };
 		4303DAED1CE62D3700D9C0AB /* _Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAEB1CE62D3700D9C0AB /* _Attachment.swift */; };
 		4303DAEE1CE62D3700D9C0AB /* _AttachmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAEC1CE62D3700D9C0AB /* _AttachmentData.swift */; };
+		43066CC51D1170C80015B181 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */; };

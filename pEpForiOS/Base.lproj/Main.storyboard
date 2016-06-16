@@ -469,7 +469,7 @@
                         <sections>
                             <tableViewSection id="Xh5-cP-g0F">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="53" id="45i-gJ-mep">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="53" id="45i-gJ-mep" userLabel="To">
                                         <rect key="frame" x="0.0" y="64" width="600" height="53"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="45i-gJ-mep" id="wPb-yW-5k8">
@@ -528,11 +528,11 @@
                         </barButtonItem>
                     </toolbarItems>
                     <connections>
-                        <outlet property="For" destination="nJi-P1-uMI" id="Xs2-x0-osB"/>
-                        <outlet property="To" destination="45i-gJ-mep" id="DKV-Ic-b42"/>
-                        <outlet property="date" destination="PCT-YP-0L6" id="PwT-kn-GyY"/>
-                        <outlet property="messageContent" destination="hWM-Ju-VeA" id="bVI-OA-Mi2"/>
-                        <outlet property="tittle" destination="RPp-U7-x22" id="ojy-vo-m8V"/>
+                        <outlet property="dateCell" destination="PCT-YP-0L6" id="XQ4-uw-dWs"/>
+                        <outlet property="forCell" destination="nJi-P1-uMI" id="zqm-2k-Yt0"/>
+                        <outlet property="messageContentCell" destination="hWM-Ju-VeA" id="y9q-u4-jBt"/>
+                        <outlet property="tittleCell" destination="RPp-U7-x22" id="4h8-kk-rsr"/>
+                        <outlet property="toCell" destination="45i-gJ-mep" id="6kw-ed-lik"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmA-rc-hEc" userLabel="First Responder" sceneMemberID="firstResponder"/>

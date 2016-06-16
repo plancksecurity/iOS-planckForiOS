@@ -39,7 +39,8 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
         }
 
         let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
-                                                   connectInfo: connectInfo)
+                                                   connectInfo: connectInfo,
+                                                   backgroundQueue: backgroundQueue)
 
         sync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
         sync.delegate = self

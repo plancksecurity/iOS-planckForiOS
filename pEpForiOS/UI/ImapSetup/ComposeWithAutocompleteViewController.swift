@@ -13,7 +13,6 @@ public class ComposeViewControllerModel {
     var to: String?
 }
 
-
 class ComposeWithAutocompleteViewController: UITableViewController {
 
     var appConfig: AppConfig?
@@ -103,4 +102,3 @@ class ComposeWithAutocompleteViewController: UITableViewController {
         }
     }
 }
-
