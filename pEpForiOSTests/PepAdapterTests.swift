@@ -20,8 +20,10 @@ class PepAdapterTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        // XXX: To be tested later.
-        //XCTAssertTrue(PEPUtil.pEpClean())
+    }
+
+    func testPepSession() {
+        XCTAssertNotNil(pEpSession)
     }
     
     func testMyself() {
@@ -29,10 +31,6 @@ class PepAdapterTests: XCTestCase {
         pEpSession.mySelf(identity_me)
         NSLog("PGP fingerprint (me): " + String(identity_me[kPepFingerprint]!))
         XCTAssertNotNil(identity_me[kPepUserID])
-    }
-
-    func testPepSession() {
-        XCTAssertNotNil(pEpSession)
     }
     
     // XXX: Parts of this should be in PEPUtil module.
@@ -43,7 +41,7 @@ class PepAdapterTests: XCTestCase {
         NSLog("Dict size: %d", identity.count)
         
         PEPiOSAdapter.startKeyserverLookup()
-        sleep(2)
+        sleep(4)
         
         pEpSession.updateIdentity(identity)
         
@@ -79,6 +77,11 @@ class PepAdapterTests: XCTestCase {
         for key in PEPUtil.pEpUrls.keys {
             XCTAssertTrue(PEPUtil.pEpUrls[key]!.checkResourceIsReachableAndReturnError(&error))
         }
+    }
+    
+    func testPepClean() {
+        // XXX: To test later
+        // XCTAssertTrue(PEPUtil.pEpClean())
     }
     
 }

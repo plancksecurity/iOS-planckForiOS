@@ -22,7 +22,7 @@ public class PEPUtil {
     public static let pEpUrls: [String:NSURL] = [
                       "home": homeUrl,
                       "pEpManagementDb": pEpManagementDbUrl,
-                      "sytemDb": systemDbUrl,
+                      "systemDb": systemDbUrl,
                       "gnupg": gnupgUrl,
                       "gnupgSecring": gnupgSecringUrl,
                       "gnupgPubring": gnupgPubringUrl]
@@ -30,13 +30,14 @@ public class PEPUtil {
     // Delete pEp working data.
     public static func pEpClean() -> Bool {
         let pEpItemsToDelete: [String] = ["pEpManagementDb", "gnupg", "systemDb"]
+        var error: NSError?
         
         for key in pEpItemsToDelete {
             let fileManager: NSFileManager = NSFileManager.defaultManager()
-            let itemToDelete: String = String(pEpUrls[key])
-            if fileManager.fileExistsAtPath(itemToDelete) {
+            let itemToDelete: NSURL = pEpUrls[key]!
+            if itemToDelete.checkResourceIsReachableAndReturnError(&error) {
                 do {
-                    try fileManager.removeItemAtPath(itemToDelete)
+                    try fileManager.removeItemAtURL(itemToDelete)
                 }
                 catch {
                     return false
