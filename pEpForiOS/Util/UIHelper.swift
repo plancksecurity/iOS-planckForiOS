@@ -46,4 +46,13 @@ class UIHelper {
             label.hidden = true
         }
     }
+
+    /**
+     Makes label bold, using the system font.
+     */
+    static func boldifyLabel(label: UILabel) {
+        let size = label.font.pointSize
+        let font = UIFont.boldSystemFontOfSize(size)
+        label.font = font
+    }
 }

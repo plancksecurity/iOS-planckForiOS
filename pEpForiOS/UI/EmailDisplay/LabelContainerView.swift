@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol LabelContainerViewDelegate: class {
+protocol LabelContainerViewDelegate: class {
 }
 
 /**
@@ -17,8 +17,8 @@ public protocol LabelContainerViewDelegate: class {
  when they are tapped.
  Useful for displaying Contacts.
  */
-public class LabelContainerView: UIView {
-    public weak var delegate: LabelContainerViewDelegate? = nil
+class LabelContainerView: UIView {
+    weak var delegate: LabelContainerViewDelegate? = nil
 
     let paddingX: CGFloat = 5.0
     let paddingY: CGFloat = 5.0
@@ -26,14 +26,23 @@ public class LabelContainerView: UIView {
     var labels: [UILabel] = [] {
         didSet {
             refresh()
+            invalidateIntrinsicContentSize()
         }
     }
     var frames: [UILabel:CGRect] = [:]
 
-    var lastKnownWidth: CGFloat = 0.0
-    var lastLabel: UILabel? = nil
+    var lastFrame: CGRect? = nil
 
-    public func refresh() {
+    override var bounds: CGRect {
+        didSet {
+            calculateFrames()
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    func refresh() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+
         for sub in subviews {
             sub.removeFromSuperview()
         }
@@ -59,37 +68,43 @@ public class LabelContainerView: UIView {
                     pos = lineWrap(pos, paddingX: paddingX, incY: paddingY + labelSize.height)
                 }
                 let frame = CGRect.init(origin: pos, size: labelSize)
+                lastFrame = frame
                 frames[label] = frame
                 pos.x = pos.x + paddingX + labelSize.width
             }
         }
     }
 
-    override public func layoutSubviews() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
         calculateFrames()
         for sub in subviews {
             if let label = sub as? UILabel {
                 if let frame = frames[label] {
                     label.frame = frame
                 }
-                lastLabel = label
             }
-        }
-        if self.bounds.width != lastKnownWidth {
-            invalidateIntrinsicContentSize()
         }
     }
 
-    override public func intrinsicContentSize() -> CGSize {
-        lastKnownWidth = self.bounds.width
-        if let l = lastLabel {
-            return CGSize.init(width: lastKnownWidth,
-                               height: l.frame.origin.y + l.frame.size.height + paddingY)
+    override func intrinsicContentSize() -> CGSize {
+        let width = self.bounds.width
+        let s = contentSizeWithWidth(width)
+        return s
+    }
+
+    func contentSizeWithWidth(width: CGFloat) ->  CGSize {
+        if let f = lastFrame {
+            // calculate exact
+            return CGSize.init(width: width,
+                               height: f.origin.y + f.size.height + paddingY)
+        } else {
+            // guess
+            let l = UILabel.init()
+            l.text = "Test"
+            return CGSize.init(width: width,
+                               height: l.bounds.size.height + paddingX + paddingY + 100)
         }
-        let l = UILabel.init()
-        l.text = "Test"
-        return CGSize.init(width: lastKnownWidth,
-                           height: l.bounds.size.height + paddingX + paddingY)
     }
 
     func lineWrap(pos: CGPoint, paddingX: CGFloat, incY: CGFloat) -> CGPoint {

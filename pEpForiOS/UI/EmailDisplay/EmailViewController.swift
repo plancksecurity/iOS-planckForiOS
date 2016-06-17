@@ -25,16 +25,17 @@ class EmailViewController: UITableViewController {
     @IBOutlet weak var dateCell: UITableViewCell!
     @IBOutlet weak var titleCell: UITableViewCell!
     @IBOutlet weak var messageContentCell: UITableViewCell!
-    @IBOutlet weak var toLabelContainer: LabelContainerView!
+    @IBOutlet weak var recipientView: RecipientView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIHelper.variableCellHeightsTableView(self.tableView)
         updateView()
     }
 
     func updateView() {
-        updateLabelContainer(toLabelContainer, contacts: message.to)
         fromCell.textLabel?.text = message.from?.displayString()
+        recipientView.message = message
 
         if let dateMessage = message.originationDate {
             UIHelper.putString(dateFormatter.stringFromDate(dateMessage),
@@ -42,18 +43,6 @@ class EmailViewController: UITableViewController {
         }
         titleCell.textLabel?.text = message.subject
         messageContentCell.textLabel?.text = message.longMessage
-    }
-
-    func updateLabelContainer(container: LabelContainerView, contacts: NSOrderedSet) {
-        var labels: [UILabel] = []
-        for contact in contacts {
-            if let c = contact as? Contact {
-                let label = UILabel.init()
-                label.text = c.displayString()
-                labels.append(label)
-            }
-        }
-        container.labels = labels
     }
 
     @IBAction func pressReply(sender: UIBarButtonItem) {

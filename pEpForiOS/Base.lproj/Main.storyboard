@@ -484,17 +484,29 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="52"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rja-MA-BS5" customClass="LabelContainerView" customModule="pEpForiOS" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="rja-MA-BS5" customClass="RecipientView" customModule="pEpForiOS" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="8" width="584" height="36"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="rja-MA-BS5" firstAttribute="bottom" secondItem="wPb-yW-5k8" secondAttribute="bottomMargin" id="09Z-us-Llo"/>
                                                 <constraint firstItem="rja-MA-BS5" firstAttribute="bottom" secondItem="wPb-yW-5k8" secondAttribute="bottomMargin" id="6cT-md-dW4"/>
                                                 <constraint firstItem="rja-MA-BS5" firstAttribute="top" secondItem="wPb-yW-5k8" secondAttribute="topMargin" id="DPn-zr-BMv"/>
                                                 <constraint firstItem="rja-MA-BS5" firstAttribute="leading" secondItem="wPb-yW-5k8" secondAttribute="leadingMargin" id="Iqv-Kh-fQ0"/>
+                                                <constraint firstItem="rja-MA-BS5" firstAttribute="leading" secondItem="wPb-yW-5k8" secondAttribute="leadingMargin" id="Zsw-Q3-z5Y"/>
+                                                <constraint firstItem="rja-MA-BS5" firstAttribute="trailing" secondItem="wPb-yW-5k8" secondAttribute="trailingMargin" id="bd4-uh-dv4"/>
+                                                <constraint firstItem="rja-MA-BS5" firstAttribute="top" secondItem="wPb-yW-5k8" secondAttribute="topMargin" id="fOo-6h-cwW"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="rja-MA-BS5" secondAttribute="trailing" id="gt6-AB-a8R"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="09Z-us-Llo"/>
+                                                    <exclude reference="DPn-zr-BMv"/>
+                                                    <exclude reference="Zsw-Q3-z5Y"/>
+                                                    <exclude reference="gt6-AB-a8R"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="PCT-YP-0L6">
@@ -543,9 +555,9 @@
                         <outlet property="dateCell" destination="PCT-YP-0L6" id="XQ4-uw-dWs"/>
                         <outlet property="fromCell" destination="nJi-P1-uMI" id="J3f-bP-omf"/>
                         <outlet property="messageContentCell" destination="hWM-Ju-VeA" id="y9q-u4-jBt"/>
+                        <outlet property="recipientView" destination="rja-MA-BS5" id="kZ6-Gy-mvo"/>
                         <outlet property="titleCell" destination="RPp-U7-x22" id="8t9-b5-h5V"/>
                         <outlet property="toCell" destination="45i-gJ-mep" id="6kw-ed-lik"/>
-                        <outlet property="toLabelContainer" destination="rja-MA-BS5" id="3rO-ee-9Z1"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmA-rc-hEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1020,6 +1032,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="f9E-Tw-5Vv"/>
+        <segue reference="S9M-df-9HQ"/>
     </inferredMetricsTieBreakers>
 </document>

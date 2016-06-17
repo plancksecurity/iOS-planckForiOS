@@ -28,6 +28,7 @@ class EmailListViewController: UITableViewController {
         refreshController.addTarget(self, action: #selector(self.refresh(_:)),
                                     forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshController
+        UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
     override func viewWillAppear(animated: Bool) {
