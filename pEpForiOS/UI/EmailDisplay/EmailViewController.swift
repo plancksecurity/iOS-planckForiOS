@@ -21,10 +21,11 @@ class EmailViewController: UITableViewController {
     let dateFormatter = UIHelper.dateFormatterEmailDetails()
 
     @IBOutlet weak var toCell: UITableViewCell!
-    @IBOutlet weak var forCell: UITableViewCell!
+    @IBOutlet weak var fromCell: UITableViewCell!
     @IBOutlet weak var dateCell: UITableViewCell!
-    @IBOutlet weak var tittleCell: UITableViewCell!
+    @IBOutlet weak var titleCell: UITableViewCell!
     @IBOutlet weak var messageContentCell: UITableViewCell!
+    @IBOutlet weak var toLabelContainer: LabelContainerView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,16 +33,27 @@ class EmailViewController: UITableViewController {
     }
 
     func updateView() {
-        let contactTo = message.to.firstObject as! Contact
-        toCell.textLabel?.text = contactTo.displayString()
-        forCell.textLabel?.text = message.from?.displayString()
+        updateLabelContainer(toLabelContainer, contacts: message.to)
+        fromCell.textLabel?.text = message.from?.displayString()
 
         if let dateMessage = message.originationDate {
             UIHelper.putString(dateFormatter.stringFromDate(dateMessage),
                                toLabel: dateCell.textLabel)
         }
-        tittleCell.textLabel?.text = message.subject
+        titleCell.textLabel?.text = message.subject
         messageContentCell.textLabel?.text = message.longMessage
+    }
+
+    func updateLabelContainer(container: LabelContainerView, contacts: NSOrderedSet) {
+        var labels: [UILabel] = []
+        for contact in contacts {
+            if let c = contact as? Contact {
+                let label = UILabel.init()
+                label.text = c.displayString()
+                labels.append(label)
+            }
+        }
+        container.labels = labels
     }
 
     @IBAction func pressReply(sender: UIBarButtonItem) {
