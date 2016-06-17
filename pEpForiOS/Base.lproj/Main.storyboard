@@ -81,7 +81,7 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="e6L-xz-NU2"/>
-                        <barButtonItem systemItem="compose" id="u8o-KA-6lO" customClass="composeSegue">
+                        <barButtonItem systemItem="compose" id="u8o-KA-6lO">
                             <connections>
                                 <segue destination="8bt-7R-jDE" kind="show" identifier="composeSegue" id="f9E-Tw-5Vv"/>
                             </connections>
