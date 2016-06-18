@@ -551,14 +551,15 @@ public class Model: IModel {
     }
 
     public func setupHTMLContentForMail(mail: Message) {
+        /*
         if mail.longMessage == nil {
             if let htmlString = mail.longMessageFormatted {
                 let htmlData = htmlString.dataUsingEncoding(NSUTF8StringEncoding)
                 let doc = TFHpple.init(data: htmlData, encoding: "UTF-8", isXML: false)
                 let elms = doc.searchWithXPathQuery("//body//text()[normalize-space()]")
-                print("found elms \(elms)")
             }
         }
+         */
     }
 
     func addAttachmentsFromPantomimePart(part: CWPart, targetMail: Message, level: Int) {
