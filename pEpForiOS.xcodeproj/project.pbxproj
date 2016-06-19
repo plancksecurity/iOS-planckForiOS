@@ -65,7 +65,6 @@
 		43A0E73D1D16C99900159F41 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7361D16C99900159F41 /* NSArray+PureLayout.m */; };
 		43A0E73E1D16C99900159F41 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7381D16C99900159F41 /* NSLayoutConstraint+PureLayout.m */; };
 		43A0E7421D16CA2700159F41 /* RecipientViewCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7411D16CA2700159F41 /* RecipientViewCellTableViewCell.swift */; };
-		43A0E7491D16D3D800159F41 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7481D16D3D800159F41 /* TableViewCell.swift */; };
 		43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */; };
 		43C046B61CF42DCF00BD0D9D /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C046B51CF42DCF00BD0D9D /* ModelTests.swift */; };
 		43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C046BC1CF48D6300BD0D9D /* AddressBook.swift */; };
@@ -247,7 +246,6 @@
 		43A0E73A1D16C99900159F41 /* PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayout.h; sourceTree = "<group>"; };
 		43A0E73B1D16C99900159F41 /* PureLayoutDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayoutDefines.h; sourceTree = "<group>"; };
 		43A0E7411D16CA2700159F41 /* RecipientViewCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientViewCellTableViewCell.swift; sourceTree = "<group>"; };
-		43A0E7481D16D3D800159F41 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewWidthsAligner.swift; sourceTree = "<group>"; };
 		43C046B51CF42DCF00BD0D9D /* ModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		43C046BC1CF48D6300BD0D9D /* AddressBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBook.swift; sourceTree = "<group>"; };
@@ -568,7 +566,6 @@
 		43ED53621CC77F95006AB156 /* EmailDisplay */ = {
 			isa = PBXGroup;
 			children = (
-				43A0E7481D16D3D800159F41 /* TableViewCell.swift */,
 				43C58E401D144B4000488A59 /* RecipientView.swift */,
 				43FC74B81D13E4CE0035B09B /* LabelContainerView.swift */,
 				43ED53631CC77F95006AB156 /* EmailListViewCell.swift */,
@@ -820,7 +817,6 @@
 				43980EF61CBD3EED00A7FC3C /* Mailbox.swift in Sources */,
 				43FC74B91D13E4CE0035B09B /* LabelContainerView.swift in Sources */,
 				43980EF81CBD402400A7FC3C /* CoreDataUtil.swift in Sources */,
-				43A0E7491D16D3D800159F41 /* TableViewCell.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */,
 				A1F46BEF1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift in Sources */,

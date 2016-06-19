@@ -11,7 +11,24 @@ import UIKit
 
 class EmailViewController: UITableViewController {
     struct UIState {
-        var loadingMail: Bool = false
+        var loadingMail = false
+    }
+
+    enum TableViewCells: Int {
+        case From = 0
+        case Recipients
+        case Subject
+        case Body
+        case Last
+
+        func cellId() -> String? {
+            switch self {
+            case .Recipients:
+                return "RecipientsCell"
+            default:
+                return nil
+            }
+        }
     }
 
     let state = UIState()
@@ -20,13 +37,6 @@ class EmailViewController: UITableViewController {
     var model: ComposeViewControllerModel = ComposeViewControllerModel()
     let dateFormatter = UIHelper.dateFormatterEmailDetails()
 
-    @IBOutlet weak var toCell: UITableViewCell!
-    @IBOutlet weak var fromCell: UITableViewCell!
-    @IBOutlet weak var dateCell: UITableViewCell!
-    @IBOutlet weak var titleCell: UITableViewCell!
-    @IBOutlet weak var messageContentCell: UITableViewCell!
-    @IBOutlet weak var recipientViewCell: TableViewCell!
-
     override func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(self.tableView)
@@ -34,16 +44,6 @@ class EmailViewController: UITableViewController {
     }
 
     func updateView() {
-        fromCell.textLabel?.text = message.from?.displayString()
-        //recipientViewCell.message = message
-        recipientViewCell.bodyLabel.text = "Hello, body!"
-
-        if let dateMessage = message.originationDate {
-            UIHelper.putString(dateFormatter.stringFromDate(dateMessage),
-                               toLabel: dateCell.textLabel)
-        }
-        titleCell.textLabel?.text = message.subject
-        messageContentCell.textLabel?.text = message.longMessage
     }
 
     @IBAction func pressReply(sender: UIBarButtonItem) {
@@ -90,4 +90,50 @@ class EmailViewController: UITableViewController {
             destination!.model = model
         }
     }*/
+
+    // MARK: UITableViewDataSource
+
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return TableViewCells.Last.rawValue - 1
+    }
+
+    override func tableView(tableView: UITableView,
+                            cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let kNormalCell = "NormalCell"
+        let kRecipientCell = "RecipientCell"
+
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kNormalCell)
+
+        if indexPath.row == TableViewCells.Recipients.rawValue {
+            let cell = tableView.dequeueReusableCellWithIdentifier(
+                kRecipientCell, forIndexPath: indexPath) as? RecipientViewCellTableViewCell
+            cell?.message = message
+            return cell!
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier(kNormalCell,
+                                                                   forIndexPath: indexPath)
+            return cell
+        }
+    }
+
+    // MARK: UITableViewDelegate
+
+    override func tableView(tableView: UITableView,
+                            estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        return 44.0
+    }
+
+    override func tableView(tableView: UITableView,
+                   heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            if let rv = cell as? RecipientViewCellTableViewCell {
+                return rv.intrinsicContentSize().height
+            }
+        }
+        return 44.0
+    }
 }

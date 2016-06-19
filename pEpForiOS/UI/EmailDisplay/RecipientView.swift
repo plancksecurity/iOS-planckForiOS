@@ -116,9 +116,6 @@ class RecipientView: UIView {
     }
 
     override func intrinsicContentSize() -> CGSize {
-        //return subViewsIntrinsicContentSize()
-        var size = self.bounds.size
-        size.height = 100
-        return size
+        return subViewsIntrinsicContentSize()
     }
 }

@@ -462,59 +462,21 @@
         <scene sceneID="adb-B5-lMP">
             <objects>
                 <tableViewController title="Email View" id="SRN-tu-1xe" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="VT8-Mx-k1z">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="VT8-Mx-k1z">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <sections>
-                            <tableViewSection id="Xh5-cP-g0F">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="nJi-P1-uMI">
-                                        <rect key="frame" x="0.0" y="64" width="600" height="60"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nJi-P1-uMI" id="V3T-bi-IEm">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="147" id="45i-gJ-mep" userLabel="To" customClass="TableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="124" width="600" height="147"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="45i-gJ-mep" id="wPb-yW-5k8">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="146"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="PCT-YP-0L6">
-                                        <rect key="frame" x="0.0" y="271" width="600" height="60"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PCT-YP-0L6" id="mSE-7o-6rj">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="76" id="RPp-U7-x22">
-                                        <rect key="frame" x="0.0" y="331" width="600" height="76"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RPp-U7-x22" id="F8C-Ki-pEt">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="284" id="hWM-Ju-VeA">
-                                        <rect key="frame" x="0.0" y="407" width="600" height="284"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hWM-Ju-VeA" id="kuc-PL-cJd">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="283"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="8bt-7R-jDE" kind="show" identifier="replySegue" id="S9M-df-9HQ"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipientCell" id="Lkg-rx-y1V" customClass="RecipientViewCellTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lkg-rx-y1V" id="eUJ-E3-gD9">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
                         <connections>
                             <outlet property="dataSource" destination="SRN-tu-1xe" id="2uh-vo-Fh7"/>
                             <outlet property="delegate" destination="SRN-tu-1xe" id="8cv-42-scg"/>
@@ -527,14 +489,6 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <connections>
-                        <outlet property="dateCell" destination="PCT-YP-0L6" id="XQ4-uw-dWs"/>
-                        <outlet property="fromCell" destination="nJi-P1-uMI" id="J3f-bP-omf"/>
-                        <outlet property="messageContentCell" destination="hWM-Ju-VeA" id="y9q-u4-jBt"/>
-                        <outlet property="recipientViewCell" destination="45i-gJ-mep" id="EXJ-dn-rdB"/>
-                        <outlet property="titleCell" destination="RPp-U7-x22" id="8t9-b5-h5V"/>
-                        <outlet property="toCell" destination="45i-gJ-mep" id="6kw-ed-lik"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmA-rc-hEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1007,7 +961,4 @@
             <point key="canvasLocation" x="5319" y="321"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="S9M-df-9HQ"/>
-    </inferredMetricsTieBreakers>
 </document>
