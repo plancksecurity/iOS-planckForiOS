@@ -477,40 +477,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="53" id="45i-gJ-mep" userLabel="To">
-                                        <rect key="frame" x="0.0" y="124" width="600" height="53"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="147" id="45i-gJ-mep" userLabel="To" customClass="TableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="124" width="600" height="147"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="45i-gJ-mep" id="wPb-yW-5k8">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="52"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="146"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="rja-MA-BS5" customClass="RecipientView" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="8" y="8" width="584" height="36"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </view>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="rja-MA-BS5" firstAttribute="bottom" secondItem="wPb-yW-5k8" secondAttribute="bottomMargin" id="09Z-us-Llo"/>
-                                                <constraint firstItem="rja-MA-BS5" firstAttribute="bottom" secondItem="wPb-yW-5k8" secondAttribute="bottomMargin" id="6cT-md-dW4"/>
-                                                <constraint firstItem="rja-MA-BS5" firstAttribute="top" secondItem="wPb-yW-5k8" secondAttribute="topMargin" id="DPn-zr-BMv"/>
-                                                <constraint firstItem="rja-MA-BS5" firstAttribute="leading" secondItem="wPb-yW-5k8" secondAttribute="leadingMargin" id="Iqv-Kh-fQ0"/>
-                                                <constraint firstItem="rja-MA-BS5" firstAttribute="leading" secondItem="wPb-yW-5k8" secondAttribute="leadingMargin" id="Zsw-Q3-z5Y"/>
-                                                <constraint firstItem="rja-MA-BS5" firstAttribute="trailing" secondItem="wPb-yW-5k8" secondAttribute="trailingMargin" id="bd4-uh-dv4"/>
-                                                <constraint firstItem="rja-MA-BS5" firstAttribute="top" secondItem="wPb-yW-5k8" secondAttribute="topMargin" id="fOo-6h-cwW"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="rja-MA-BS5" secondAttribute="trailing" id="gt6-AB-a8R"/>
-                                            </constraints>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="09Z-us-Llo"/>
-                                                    <exclude reference="DPn-zr-BMv"/>
-                                                    <exclude reference="Zsw-Q3-z5Y"/>
-                                                    <exclude reference="gt6-AB-a8R"/>
-                                                </mask>
-                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="PCT-YP-0L6">
-                                        <rect key="frame" x="0.0" y="177" width="600" height="60"/>
+                                        <rect key="frame" x="0.0" y="271" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PCT-YP-0L6" id="mSE-7o-6rj">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
@@ -518,7 +494,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="76" id="RPp-U7-x22">
-                                        <rect key="frame" x="0.0" y="237" width="600" height="76"/>
+                                        <rect key="frame" x="0.0" y="331" width="600" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RPp-U7-x22" id="F8C-Ki-pEt">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
@@ -526,7 +502,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="284" id="hWM-Ju-VeA">
-                                        <rect key="frame" x="0.0" y="313" width="600" height="284"/>
+                                        <rect key="frame" x="0.0" y="407" width="600" height="284"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hWM-Ju-VeA" id="kuc-PL-cJd">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="283"/>
@@ -555,7 +531,7 @@
                         <outlet property="dateCell" destination="PCT-YP-0L6" id="XQ4-uw-dWs"/>
                         <outlet property="fromCell" destination="nJi-P1-uMI" id="J3f-bP-omf"/>
                         <outlet property="messageContentCell" destination="hWM-Ju-VeA" id="y9q-u4-jBt"/>
-                        <outlet property="recipientView" destination="rja-MA-BS5" id="kZ6-Gy-mvo"/>
+                        <outlet property="recipientViewCell" destination="45i-gJ-mep" id="EXJ-dn-rdB"/>
                         <outlet property="titleCell" destination="RPp-U7-x22" id="8t9-b5-h5V"/>
                         <outlet property="toCell" destination="45i-gJ-mep" id="6kw-ed-lik"/>
                     </connections>

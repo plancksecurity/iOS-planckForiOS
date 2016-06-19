@@ -25,7 +25,7 @@ class EmailViewController: UITableViewController {
     @IBOutlet weak var dateCell: UITableViewCell!
     @IBOutlet weak var titleCell: UITableViewCell!
     @IBOutlet weak var messageContentCell: UITableViewCell!
-    @IBOutlet weak var recipientView: RecipientView!
+    @IBOutlet weak var recipientViewCell: TableViewCell!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,8 @@ class EmailViewController: UITableViewController {
 
     func updateView() {
         fromCell.textLabel?.text = message.from?.displayString()
-        recipientView.message = message
+        //recipientViewCell.message = message
+        recipientViewCell.bodyLabel.text = "Hello, body!"
 
         if let dateMessage = message.originationDate {
             UIHelper.putString(dateFormatter.stringFromDate(dateMessage),
