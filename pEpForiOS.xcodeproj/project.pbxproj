@@ -43,6 +43,7 @@
 		43800D951D112A0800821E34 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D921D112A0800821E34 /* XPathQuery.m */; };
 		43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
+		439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439680971D1855D400DA31D2 /* WebKit.framework */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
 		43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E2A1CBD0BC900A7FC3C /* Main.storyboard */; };
 		43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 43980E2D1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld */; };
@@ -65,12 +66,10 @@
 		43A0E73C1D16C99900159F41 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7341D16C99900159F41 /* ALView+PureLayout.m */; };
 		43A0E73D1D16C99900159F41 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7361D16C99900159F41 /* NSArray+PureLayout.m */; };
 		43A0E73E1D16C99900159F41 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7381D16C99900159F41 /* NSLayoutConstraint+PureLayout.m */; };
-		43A0E7421D16CA2700159F41 /* RecipientViewCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7411D16CA2700159F41 /* RecipientViewCellTableViewCell.swift */; };
 		43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */; };
 		43C046B61CF42DCF00BD0D9D /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C046B51CF42DCF00BD0D9D /* ModelTests.swift */; };
 		43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C046BC1CF48D6300BD0D9D /* AddressBook.swift */; };
 		43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C046BE1CF48EA500BD0D9D /* AddressBook.framework */; };
-		43C58E411D144B4000488A59 /* RecipientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C58E401D144B4000488A59 /* RecipientView.swift */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C6F3611CBE8153006A2A18 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F3601CBE8153006A2A18 /* Service.swift */; };
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
@@ -96,7 +95,6 @@
 		43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */; };
 		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
 		43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */; };
-		43FC74B91D13E4CE0035B09B /* LabelContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC74B81D13E4CE0035B09B /* LabelContainerView.swift */; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039A9D1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039A9E1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
@@ -211,6 +209,7 @@
 		43800D921D112A0800821E34 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
 		43800D981D112A2A00821E34 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
+		439680971D1855D400DA31D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43980E2B1CBD0BC900A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -247,12 +246,10 @@
 		43A0E7391D16C99900159F41 /* PureLayout+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PureLayout+Internal.h"; sourceTree = "<group>"; };
 		43A0E73A1D16C99900159F41 /* PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayout.h; sourceTree = "<group>"; };
 		43A0E73B1D16C99900159F41 /* PureLayoutDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayoutDefines.h; sourceTree = "<group>"; };
-		43A0E7411D16CA2700159F41 /* RecipientViewCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientViewCellTableViewCell.swift; sourceTree = "<group>"; };
 		43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewWidthsAligner.swift; sourceTree = "<group>"; };
 		43C046B51CF42DCF00BD0D9D /* ModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		43C046BC1CF48D6300BD0D9D /* AddressBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBook.swift; sourceTree = "<group>"; };
 		43C046BE1CF48EA500BD0D9D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		43C58E401D144B4000488A59 /* RecipientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientView.swift; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C6F3601CBE8153006A2A18 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
@@ -278,7 +275,6 @@
 		43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoTableView.swift; sourceTree = "<group>"; };
 		43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersOperation.swift; sourceTree = "<group>"; };
 		43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
-		43FC74B81D13E4CE0035B09B /* LabelContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelContainerView.swift; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMailOperation.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -295,6 +291,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
 				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
 				43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */,
 				439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */,
@@ -437,6 +434,7 @@
 		43980ECE1CBD1CAD00A7FC3C /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				439680971D1855D400DA31D2 /* WebKit.framework */,
 				43C046BE1CF48EA500BD0D9D /* AddressBook.framework */,
 				439D40781CC78A2D009A4E7C /* Raw */,
 				43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */,
@@ -568,12 +566,9 @@
 		43ED53621CC77F95006AB156 /* EmailDisplay */ = {
 			isa = PBXGroup;
 			children = (
-				43C58E401D144B4000488A59 /* RecipientView.swift */,
-				43FC74B81D13E4CE0035B09B /* LabelContainerView.swift */,
 				43ED53631CC77F95006AB156 /* EmailListViewCell.swift */,
 				43ED53641CC77F95006AB156 /* EmailListViewController.swift */,
 				431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */,
-				43A0E7411D16CA2700159F41 /* RecipientViewCellTableViewCell.swift */,
 				43404B471D17D36D00D8B6FF /* EmailHeaderView.swift */,
 			);
 			path = EmailDisplay;
@@ -814,12 +809,10 @@
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
 				4345967F1CE227D9004E8735 /* _MessageReference.swift in Sources */,
-				43A0E7421D16CA2700159F41 /* RecipientViewCellTableViewCell.swift in Sources */,
 				431144AC1CC0CCE30007639D /* GrandOperator.swift in Sources */,
 				431144C01CC1202E0007639D /* _Contact.swift in Sources */,
 				434F84451CEB018A0055B7A9 /* NSData+Extensions.swift in Sources */,
 				43980EF61CBD3EED00A7FC3C /* Mailbox.swift in Sources */,
-				43FC74B91D13E4CE0035B09B /* LabelContainerView.swift in Sources */,
 				43980EF81CBD402400A7FC3C /* CoreDataUtil.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */,
@@ -837,7 +830,6 @@
 				43800D941D112A0800821E34 /* TFHppleElement.m in Sources */,
 				435A77C11CC3CB4200133D16 /* Regex.swift in Sources */,
 				43800D951D112A0800821E34 /* XPathQuery.m in Sources */,
-				43C58E411D144B4000488A59 /* RecipientView.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */,
 				43ED53761CC77F95006AB156 /* MailTableView.swift in Sources */,

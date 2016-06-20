@@ -8,9 +8,12 @@
 
 import Foundation
 import UIKit
+import WebKit
 
 class EmailViewController: UIViewController {
     let segueReply = "segueReply"
+
+    let headerGapToContentY: CGFloat = 25
 
     struct UIState {
         var loadingMail = false
@@ -19,31 +22,55 @@ class EmailViewController: UIViewController {
     let state = UIState()
     var appConfig: AppConfig!
     let headerView = EmailHeaderView.init()
+    var webView: WKWebView!
 
     var message: Message!
 
     var model: ComposeViewControllerModel = ComposeViewControllerModel()
-    let dateFormatter = UIHelper.dateFormatterEmailDetails()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(headerView)
-    }
-
-    func update() {
-        headerView.message = message
-        headerView.update(view.bounds.size.width)
-        headerView.frame.size = headerView.preferredSize
-
-        if let navFrame = navigationController?.navigationBar.frame {
-            // Offset the view by navigation bar
-            headerView.frame.origin.y += navFrame.origin.y + navFrame.size.height
-        }
+        let config = WKWebViewConfiguration.init()
+        webView = WKWebView.init(frame: view.frame, configuration: config)
+        view.addSubview(webView)
+        webView.scrollView.addSubview(headerView)
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        update()
+        updateContents()
+    }
+
+    func updateContents() {
+        // If the contentInset.top is already set, this means the view never
+        // really disappeared. So there is nothing to update in that case.
+        if webView.scrollView.contentInset.top == 0 {
+            headerView.message = message
+            headerView.update(view.bounds.size.width)
+
+            loadWebViewContent()
+
+            let headerViewSize = headerView.preferredSize
+
+            let calculatedInsetTop = headerViewSize.height + headerGapToContentY
+            webView.scrollView.contentInset.top += calculatedInsetTop
+
+            headerView.frame = CGRect.init(origin: CGPoint.init(x: 0, y: -calculatedInsetTop),
+                                           size: headerViewSize)
+            webView.frame = CGRect.init(origin: CGPoint.init(x: 0, y: 0),
+                                        size: CGSize.init(width: view.bounds.size.width,
+                                            height: view.bounds.size.height))
+        }
+    }
+
+    func loadWebViewContent() {
+        if let url = NSURL.init(string: "file:///") {
+            if let s = message.longMessageFormatted {
+                webView.loadHTMLString(s, baseURL: url)
+            } else if let s = message.longMessage {
+                webView.loadHTMLString(s, baseURL: url)
+            }
+        }
     }
 
     @IBAction func pressReply(sender: UIBarButtonItem) {

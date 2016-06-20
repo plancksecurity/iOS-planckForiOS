@@ -9,18 +9,55 @@
 import UIKit
 
 class EmailHeaderView: UIView {
+    /**
+     Where to start laying out labels from the left.
+     */
     let insetsX: CGFloat = 5
+
+    /**
+     Some extra padding from the left when we have to break apart labels that belong together.
+     */
+    let insetsNewlineX: CGFloat = 5
+
+    /**
+     Where to start laying out labels from the top.
+     */
     let insetsY: CGFloat = 5
+
+    /** Horizontal gap between labels that belong in one row.
+     */
     let labelGapX: CGFloat = 5
+
+    /**
+     Vertical gap between lines of labels.
+     */
     let labelGapY: CGFloat = 5
+
+    /**
+     Vertical gap between different sections.
+     */
     let biggerLabelGapY: CGFloat = 10
 
+    /**
+     The size we need to layout all labels, dependent on the input width.
+     */
     var preferredSize: CGSize = CGSizeZero
 
+    /**
+     The last label we layed out on the left side.
+     */
     var lastLeftLabel: UILabel? = nil
 
     var message: Message!
 
+    let dateFormatter = UIHelper.dateFormatterEmailDetails()
+
+    /**
+     Layout the message header contents.
+
+     - Parameter width: The maximum width the layout should use. Very important for
+     determining line breaks.
+     */
     func update(width: CGFloat) {
         while subviews.count > 0 {
             subviews.first?.removeFromSuperview()
@@ -48,6 +85,17 @@ class EmailHeaderView: UIView {
                                 position: pos, width: width)
         }
 
+        if let date = message.originationDate {
+            pos = biggerNewline(pos)
+            let dateLabel = headerBaseLabelWithText(dateFormatter.stringFromDate(date),
+                                                    maxWidth: width)
+            dateLabel.frame.origin = pos
+            addSubview(dateLabel)
+            pos.x = labelGapX
+            pos.y += dateLabel.bounds.height
+            lastLeftLabel = dateLabel
+        }
+
         if let subject = message.subject {
             pos = biggerNewline(pos)
             let subjectLabel = headerBaseLabelWithText(subject, maxWidth: width)
@@ -55,6 +103,7 @@ class EmailHeaderView: UIView {
             addSubview(subjectLabel)
             pos.x = labelGapX
             pos.y += subjectLabel.bounds.height
+            lastLeftLabel = subjectLabel
         }
 
         preferredSize = CGSizeMake(width, pos.y)
@@ -68,6 +117,7 @@ class EmailHeaderView: UIView {
         let titleLabel = headerBaseLabelWithText(titleString)
         titleLabel.frame.origin = pos
         addSubview(titleLabel)
+        lastLeftLabel = titleLabel
         var lastUsedLabel = titleLabel
 
         for rec in recipients {
@@ -116,7 +166,7 @@ class EmailHeaderView: UIView {
             pos = rightLabel.frame.origin
         } else {
             // do a newline
-            pos.x = insetsX
+            pos.x = insetsX + insetsNewlineX
             pos.y = pos.y + leftLabel.bounds.height + labelGapY
             rightLabel.frame.origin = pos
             lastLeftLabel = rightLabel
