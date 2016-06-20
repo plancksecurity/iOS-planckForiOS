@@ -16,7 +16,10 @@ struct UIState {
 
 class EmailListViewController: UITableViewController {
     let comp = "EmailListViewController"
+
     let segueShowEmail = "segueShowEmail"
+    let segueCompose = "composeSegue"
+    let segueUserSettings = "userSettings"
 
     var appConfig: AppConfig?
     var fetchController: NSFetchedResultsController?
@@ -41,7 +44,7 @@ class EmailListViewController: UITableViewController {
 
         let account:IAccount? = appConfig!.model.fetchLastAccount()
         if (account == nil)  {
-            self.performSegueWithIdentifier("userSettings", sender: self)
+            self.performSegueWithIdentifier(segueUserSettings, sender: self)
         } else {
             fetchMailsRefreshControl()
         }
@@ -149,7 +152,7 @@ class EmailListViewController: UITableViewController {
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "composeSegue" {
+        if segue.identifier == segueCompose {
             let destination = segue.destinationViewController as! ComposeWithAutocompleteViewController
             destination.appConfig = appConfig
         } else if segue.identifier == segueShowEmail {

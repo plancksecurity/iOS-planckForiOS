@@ -9,41 +9,41 @@
 import Foundation
 import UIKit
 
-class EmailViewController: UITableViewController {
+class EmailViewController: UIViewController {
+    let segueReply = "segueReply"
+
     struct UIState {
         var loadingMail = false
     }
 
-    enum TableViewCells: Int {
-        case From = 0
-        case Recipients
-        case Subject
-        case Body
-        case Last
-
-        func cellId() -> String? {
-            switch self {
-            case .Recipients:
-                return "RecipientsCell"
-            default:
-                return nil
-            }
-        }
-    }
-
     let state = UIState()
     var appConfig: AppConfig!
+    let headerView = EmailHeaderView.init()
+
     var message: Message!
+
     var model: ComposeViewControllerModel = ComposeViewControllerModel()
     let dateFormatter = UIHelper.dateFormatterEmailDetails()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIHelper.variableCellHeightsTableView(self.tableView)
-        updateView()
+        view.addSubview(headerView)
     }
 
-    func updateView() {
+    func update() {
+        headerView.message = message
+        headerView.update(view.bounds.size.width)
+        headerView.frame.size = headerView.preferredSize
+
+        if let navFrame = navigationController?.navigationBar.frame {
+            // Offset the view by navigation bar
+            headerView.frame.origin.y += navFrame.origin.y + navFrame.size.height
+        }
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        update()
     }
 
     @IBAction func pressReply(sender: UIBarButtonItem) {
@@ -58,7 +58,7 @@ class EmailViewController: UITableViewController {
                 if let For = self.message.from?.name {
                    self.model.to = For
                 }
-                self.performSegueWithIdentifier("replySegue" , sender: self)
+                self.performSegueWithIdentifier(self.segueReply , sender: self)
         }
         alertViewWithoutTittle.addAction(alertActionReply)
 
@@ -84,56 +84,11 @@ class EmailViewController: UITableViewController {
         presentViewController(alertViewWithoutTittle, animated: true, completion: nil)
     }
 
-    /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "replySegue") {
-            let destination = segue.destinationViewController as? ComposeWithAutocompleteViewController;
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == segueReply) {
+            let destination = segue.destinationViewController
+                as? ComposeWithAutocompleteViewController;
             destination!.model = model
         }
-    }*/
-
-    // MARK: UITableViewDataSource
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return TableViewCells.Last.rawValue - 1
-    }
-
-    override func tableView(tableView: UITableView,
-                            cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let kNormalCell = "NormalCell"
-        let kRecipientCell = "RecipientCell"
-
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kNormalCell)
-
-        if indexPath.row == TableViewCells.Recipients.rawValue {
-            let cell = tableView.dequeueReusableCellWithIdentifier(
-                kRecipientCell, forIndexPath: indexPath) as? RecipientViewCellTableViewCell
-            cell?.message = message
-            return cell!
-        } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier(kNormalCell,
-                                                                   forIndexPath: indexPath)
-            return cell
-        }
-    }
-
-    // MARK: UITableViewDelegate
-
-    override func tableView(tableView: UITableView,
-                            estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return 44.0
-    }
-
-    override func tableView(tableView: UITableView,
-                   heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-            if let rv = cell as? RecipientViewCellTableViewCell {
-                return rv.intrinsicContentSize().height
-            }
-        }
-        return 44.0
     }
 }

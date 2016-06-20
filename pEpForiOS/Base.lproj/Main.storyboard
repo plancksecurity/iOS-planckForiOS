@@ -70,7 +70,7 @@
                                     <outlet property="senderLabel" destination="tWZ-jW-sUg" id="lM6-YZ-J7S"/>
                                     <outlet property="subjectLabel" destination="5Py-55-oem" id="UtV-Po-SPg"/>
                                     <outlet property="summaryLabel" destination="BvI-Zi-zU6" id="oGG-8D-EeC"/>
-                                    <segue destination="SRN-tu-1xe" kind="show" identifier="segueShowEmail" id="kHr-31-LHx"/>
+                                    <segue destination="hmh-E0-rIZ" kind="show" identifier="segueShowEmail" id="eQw-ce-cO2"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -458,41 +458,33 @@
             </objects>
             <point key="canvasLocation" x="6131" y="321"/>
         </scene>
-        <!--Email View-->
-        <scene sceneID="adb-B5-lMP">
+        <!--Email View Controller-->
+        <scene sceneID="0z1-AX-lGT">
             <objects>
-                <tableViewController title="Email View" id="SRN-tu-1xe" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="VT8-Mx-k1z">
+                <viewController id="hmh-E0-rIZ" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iMs-Xm-bn6"/>
+                        <viewControllerLayoutGuide type="bottom" id="WJm-FO-OmP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dMf-T9-hRp">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipientCell" id="Lkg-rx-y1V" customClass="RecipientViewCellTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lkg-rx-y1V" id="eUJ-E3-gD9">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="SRN-tu-1xe" id="2uh-vo-Fh7"/>
-                            <outlet property="delegate" destination="SRN-tu-1xe" id="8cv-42-scg"/>
-                        </connections>
-                    </tableView>
+                    </view>
                     <toolbarItems>
-                        <barButtonItem systemItem="reply" id="ifs-G2-Ixn">
+                        <barButtonItem systemItem="reply" id="yVa-8U-Zwf">
                             <connections>
-                                <action selector="pressReply:" destination="SRN-tu-1xe" id="oqM-Lb-d3c"/>
+                                <action selector="pressReply:" destination="hmh-E0-rIZ" id="r7L-GJ-9EU"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lmA-rc-hEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                    <connections>
+                        <segue destination="8bt-7R-jDE" kind="show" identifier="segueReply" id="G7I-xz-XDQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fut-HG-yfQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6240" y="1211"/>
+            <point key="canvasLocation" x="6232" y="1216"/>
         </scene>
         <!--Mail Table View-->
         <scene sceneID="f6A-Gu-Nbz">
@@ -961,4 +953,7 @@
             <point key="canvasLocation" x="5319" y="321"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="G7I-xz-XDQ"/>
+    </inferredMetricsTieBreakers>
 </document>
