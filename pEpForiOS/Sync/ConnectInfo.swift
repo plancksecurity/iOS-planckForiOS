@@ -81,6 +81,7 @@ public protocol IConnectInfo {
 }
 
 public struct ConnectInfo: IConnectInfo {
+    public var nameOfTheUser: String
     public var email: String
     public var imapUsername: String?
     public var smtpUsername: String?
@@ -120,14 +121,15 @@ public struct ConnectInfo: IConnectInfo {
 }
 
 public extension ConnectInfo {
-    public init(email: String, imapPassword: String? = nil,
+    public init(nameOfTheUser: String, email: String, imapPassword: String? = nil,
                 imapServerName: String, imapServerPort: UInt16 = 993,
                 imapTransport: ConnectionTransport = .TLS,
                 smtpServerName: String, smtpServerPort: UInt16 = 587,
                 smtpTransport: ConnectionTransport = .StartTLS)
     {
-        self.init(email: email, imapUsername: nil, smtpUsername: nil, imapPassword: imapPassword,
-                  smtpPassword: nil, imapServerName: imapServerName, imapServerPort: imapServerPort,
+        self.init(nameOfTheUser: nameOfTheUser, email: email, imapUsername: nil, smtpUsername: nil,
+                  imapPassword: imapPassword, smtpPassword: nil,
+                  imapServerName: imapServerName, imapServerPort: imapServerPort,
                   imapTransport: imapTransport, smtpServerName: smtpServerName,
                   smtpServerPort: smtpServerPort, smtpTransport: smtpTransport)
     }
@@ -142,7 +144,8 @@ extension ConnectInfo: Hashable {
 extension ConnectInfo: Equatable {}
 
 public func ==(l: ConnectInfo, r: ConnectInfo) -> Bool {
-    return l.email == r.email && l.imapUsername == r.imapUsername &&
+    return l.nameOfTheUser == r.nameOfTheUser && l.email == r.email &&
+        l.imapUsername == r.imapUsername &&
         l.imapTransport == r.imapTransport &&
         l.imapServerName == r.imapServerName && l.imapServerPort == r.imapServerPort &&
         l.smtpUsername == r.smtpUsername && l.smtpTransport == r.smtpTransport &&

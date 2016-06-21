@@ -11,6 +11,7 @@ public enum AccountAttributes: String {
     case imapServerPort = "imapServerPort"
     case imapTransport = "imapTransport"
     case imapUsername = "imapUsername"
+    case nameOfTheUser = "nameOfTheUser"
     case smtpServerName = "smtpServerName"
     case smtpServerPort = "smtpServerPort"
     case smtpTransport = "smtpTransport"
@@ -36,6 +37,8 @@ public protocol _IAccount {
     var imapTransport: NSNumber { get set }
 
     var imapUsername: String? { get set }
+
+    var nameOfTheUser: String { get set }
 
     var smtpServerName: String { get set }
 
@@ -93,6 +96,9 @@ public class _Account: BaseManagedObject, _IAccount {
 
     @NSManaged public
     var imapUsername: String?
+
+    @NSManaged public
+    var nameOfTheUser: String
 
     @NSManaged public
     var smtpServerName: String

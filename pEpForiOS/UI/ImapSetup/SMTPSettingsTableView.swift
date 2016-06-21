@@ -118,6 +118,7 @@ public class SMTPSettingsTableView: UITableViewController {
 
     @IBAction func nextButtonTapped(sender: UIBarButtonItem) {
         let connect = ConnectInfo.init(
+            nameOfTheUser: model.name!,
             email: model.email!, imapUsername: model.email!,
             smtpUsername: model.email!, imapPassword: model.password!,
             smtpPassword: model.password!, imapServerName: model.serverIMAP!,

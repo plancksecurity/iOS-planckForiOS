@@ -301,8 +301,55 @@
                         <sections>
                             <tableViewSection headerTitle="" id="tYU-l4-l1k">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="Muc-p7-eLR" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="bVb-5J-byT" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99" width="600" height="49"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bVb-5J-byT" id="oRT-T9-58D">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rI2-dc-sso">
+                                                    <rect key="frame" x="8" y="14" width="45" height="21"/>
+                                                    <accessibility key="accessibilityConfiguration">
+                                                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                                                    </accessibility>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fgm-Oc-eAi">
+                                                    <rect key="frame" x="63" y="17" width="529" height="17"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="nameOfTheUser" label="Your name"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                                    <connections>
+                                                        <action selector="changedName:" destination="YcO-Oc-XZx" eventType="editingChanged" id="JzB-Qf-BQT"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="fgm-Oc-eAi" firstAttribute="leading" secondItem="oRT-T9-58D" secondAttribute="leadingMargin" constant="170" id="90q-0U-tjd"/>
+                                                <constraint firstItem="fgm-Oc-eAi" firstAttribute="top" secondItem="oRT-T9-58D" secondAttribute="topMargin" constant="2" id="9IK-EI-BrW"/>
+                                                <constraint firstItem="rI2-dc-sso" firstAttribute="leading" secondItem="oRT-T9-58D" secondAttribute="leadingMargin" id="Bvw-Oj-3Xh"/>
+                                                <constraint firstItem="fgm-Oc-eAi" firstAttribute="leading" secondItem="rI2-dc-sso" secondAttribute="trailing" constant="129" id="LvX-kg-Trj"/>
+                                                <constraint firstItem="fgm-Oc-eAi" firstAttribute="baseline" secondItem="rI2-dc-sso" secondAttribute="baseline" id="Vez-C2-Aj3"/>
+                                                <constraint firstItem="rI2-dc-sso" firstAttribute="top" secondItem="oRT-T9-58D" secondAttribute="topMargin" constant="6" id="ZwP-aY-LWa"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="fgm-Oc-eAi" secondAttribute="trailing" id="rxF-Bh-BJP"/>
+                                                <constraint firstItem="fgm-Oc-eAi" firstAttribute="leading" secondItem="rI2-dc-sso" secondAttribute="trailing" constant="129" id="sZa-Mh-qb7"/>
+                                                <constraint firstItem="fgm-Oc-eAi" firstAttribute="leading" relation="lessThanOrEqual" secondItem="rI2-dc-sso" secondAttribute="trailing" constant="10" id="sy1-jo-1uh"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="90q-0U-tjd"/>
+                                                    <exclude reference="9IK-EI-BrW"/>
+                                                    <exclude reference="sZa-Mh-qb7"/>
+                                                    <exclude reference="LvX-kg-Trj"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="Muc-p7-eLR" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="148" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Muc-p7-eLR" id="ALh-ce-psL">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -349,7 +396,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="wzw-Ix-clS" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="148" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="197" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wzw-Ix-clS" id="iw0-fF-fSh">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -364,9 +411,9 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="rick.deckard" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Mt-BZ-h4K">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username for log in" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Mt-BZ-h4K">
                                                     <rect key="frame" x="97" y="17" width="495" height="17"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="username" label="Username"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="username" label="Username for Server"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                     <connections>
@@ -387,7 +434,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="x9C-Hc-Hvk" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="197" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="246" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x9C-Hc-Hvk" id="Tc7-0e-d7T">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -451,6 +498,8 @@
                     <connections>
                         <outlet property="emailTitleTextField" destination="SCr-eb-mdn" id="rI6-lO-e0h"/>
                         <outlet property="emailValue" destination="TPZ-TM-PaG" id="VGE-mn-qoj"/>
+                        <outlet property="nameTitleTextField" destination="rI2-dc-sso" id="cte-F9-YNd"/>
+                        <outlet property="nameValueTextField" destination="fgm-Oc-eAi" id="tCd-Jm-Hvo"/>
                         <outlet property="passwordTitleTextField" destination="xbE-mW-hjW" id="DEQ-6t-0T3"/>
                         <outlet property="passwordValue" destination="91l-1l-FuW" id="RJE-lb-Tv7"/>
                         <outlet property="usernameTitleTextField" destination="3ti-b6-5l8" id="SVL-1B-iQC"/>

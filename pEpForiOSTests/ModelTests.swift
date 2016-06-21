@@ -37,6 +37,7 @@ class ModelTests: XCTestCase {
         XCTAssertNotNil(contact)
 
         let connectInfo = ConnectInfo.init(
+            nameOfTheUser: "The User",
             email: "test001@peptest.ch", imapServerName: "imapServer",
             smtpServerName: "smtpServer")
         XCTAssertNotNil(persistentSetup.model.insertAccountFromConnectInfo(connectInfo))

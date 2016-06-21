@@ -11,6 +11,15 @@ import UIKit
 public class ModelUserInfoTable {
 
     public var email: String?
+
+    /**
+     The actual name of the user, or nick name.
+     */
+    public var name: String?
+
+    /**
+     An optional name for the servers, if needed.
+     */
     public var username: String?
     public var password: String?
     public var serverIMAP: String?
@@ -28,8 +37,12 @@ public class ModelUserInfoTable {
         return password != nil && password!.characters.count > 0
     }
 
+    public var isValidName: Bool {
+        return name?.characters.count >= 3
+    }
+
     public var isValidUser: Bool {
-        return isValidEmail && isValidPassword
+        return isValidName && isValidEmail && isValidPassword
     }
 
     public var isValidImap: Bool {
@@ -50,6 +63,8 @@ public class UserInfoTableView: UITableViewController {
     @IBOutlet weak var emailTitleTextField: UILabel!
     @IBOutlet weak var usernameTitleTextField: UILabel!
     @IBOutlet weak var passwordTitleTextField: UILabel!
+    @IBOutlet weak var nameValueTextField: UITextField!
+    @IBOutlet weak var nameTitleTextField: UILabel!
 
     var appConfig: AppConfig?
 
@@ -65,7 +80,7 @@ public class UserInfoTableView: UITableViewController {
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         viewWidthAligner.alignViews([emailTitleTextField,
-            usernameTitleTextField, passwordTitleTextField], parentView: self.view)
+            usernameTitleTextField, passwordTitleTextField, nameTitleTextField], parentView: self.view)
     }
 
     public override func viewWillAppear(animated: Bool) {
@@ -78,7 +93,7 @@ public class UserInfoTableView: UITableViewController {
         }
 
         if model.email == nil {
-            emailValue.becomeFirstResponder()
+            nameValueTextField.becomeFirstResponder()
         }
 
         updateView()
@@ -121,6 +136,8 @@ public class UserInfoTableView: UITableViewController {
         updateView()
     }
 
-
-
+    @IBAction func changedName(sender: UITextField) {
+        model.name = sender.text
+        updateView()
+    }
 }

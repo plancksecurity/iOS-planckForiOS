@@ -43,7 +43,11 @@ class NewAccountSetupUITest: XCTestCase {
     func newAccountSetup(account: Account) {
         let tablesQuery = XCUIApplication().tables
 
-        var tf = tablesQuery.cells.textFields["email"]
+        var tf = tablesQuery.cells.textFields["nameOfTheUser"]
+        tf.typeText(account.nameOfTheUser)
+
+        tf = tablesQuery.cells.textFields["email"]
+        tf.tap()
         tf.typeText(account.email)
 
         tf = tablesQuery.cells.secureTextFields["password"]

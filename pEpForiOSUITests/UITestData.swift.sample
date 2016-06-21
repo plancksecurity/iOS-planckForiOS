@@ -9,6 +9,7 @@
 import Foundation
 
 struct Account {
+    var name: String
     var email: String
     var imapServerName: String
     var smtpServerName: String
@@ -29,12 +30,14 @@ struct Account {
 
 struct UITestData {
     static let workingAccount = Account.init(
+        name: "name",
         email: "email",
         imapServerName: "server", smtpServerName: "server",
         password: "password", imapPort: 993, smtpPort: 587,
         imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
 
     static let workingYahooAccount = Account.init(
+        name: "name",
         email: "email",
         imapServerName: "server", smtpServerName: "server",
         password: "password", imapPort: 993, smtpPort: 587,

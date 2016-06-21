@@ -15,7 +15,8 @@ public class TestData {
     public static let existingUID: UInt = 10
 
     public static var connectInfo: ConnectInfo =
-        ConnectInfo.init(email: "someemail@test.com",
+        ConnectInfo.init(nameOfTheUser: "Some Name",
+                         email: "someemail@test.com",
                          imapPassword: "password",
                          imapServerName: "host.com", imapServerPort: 993,
                          imapTransport: .TLS,

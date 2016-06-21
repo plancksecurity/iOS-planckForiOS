@@ -193,7 +193,7 @@ public class Model: IModel {
     func newAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount {
         let account = NSEntityDescription.insertNewObjectForEntityForName(
             Account.entityName(), inManagedObjectContext: context) as! Account
-
+        account.nameOfTheUser = connectInfo.nameOfTheUser
         account.email = connectInfo.email
         account.imapUsername = connectInfo.imapUsername
         account.smtpUsername = connectInfo.smtpUsername

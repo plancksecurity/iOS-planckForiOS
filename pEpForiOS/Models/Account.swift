@@ -29,6 +29,7 @@ public class Account: _Account, IAccount {
         let passImap = KeyChain.getPassword(self.email, serverType: AccountType.IMAP.asString())
         let passSmtp = KeyChain.getPassword(self.email, serverType: AccountType.SMTP.asString())
         return ConnectInfo.init(
+            nameOfTheUser: nameOfTheUser,
             email: email, imapUsername: imapUsername, smtpUsername: smtpUsername,
             imapPassword: passImap, smtpPassword: passSmtp,
             imapServerName: self.imapServerName,
