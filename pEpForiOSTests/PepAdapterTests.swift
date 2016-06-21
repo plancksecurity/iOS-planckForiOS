@@ -8,6 +8,8 @@
 
 import XCTest
 
+import pEpForiOS
+
 class PepAdapterTests: XCTestCase {
     let identity_me: NSMutableDictionary = [kPepAddress: "some@mail.com",
                                             kPepUsername: "This is me"]
