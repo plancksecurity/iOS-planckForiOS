@@ -342,8 +342,8 @@
                                                 <mask key="constraints">
                                                     <exclude reference="90q-0U-tjd"/>
                                                     <exclude reference="9IK-EI-BrW"/>
-                                                    <exclude reference="sZa-Mh-qb7"/>
                                                     <exclude reference="LvX-kg-Trj"/>
+                                                    <exclude reference="sZa-Mh-qb7"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>

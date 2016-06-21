@@ -48,6 +48,8 @@ public protocol IModel {
     func folderDrafts() -> IFolder?
 
     func accountByEmail(email: String) -> IAccount?
+    func accountsByPredicate(predicate: NSPredicate?,
+                             sortDescriptors: [NSSortDescriptor]?) -> [Account]?
     func setAccountAsLastUsed(account: IAccount) -> IAccount
     func fetchLastAccount() -> IAccount?
 
@@ -264,6 +266,12 @@ public class Model: IModel {
         let predicate = NSPredicate.init(format: "email = %@", email)
         return singleEntityWithName(Account.entityName(), predicate: predicate)
             as? Account
+    }
+
+    public func accountsByPredicate(predicate: NSPredicate? = nil,
+                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [Account]? {
+        return entitiesWithName(Account.entityName(), predicate: predicate,
+            sortDescriptors: sortDescriptors)?.map() {$0 as! Account}
     }
 
     public func save() {

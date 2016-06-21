@@ -42,8 +42,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        Log.info(comp, "applicationDidEnterBackground")
+        appConfig.model.save()
+        if let accounts = appConfig.model.accountsByPredicate(nil, sortDescriptors: nil) {
+            for acc in accounts {
+                let email = acc.email
+                let bgId = application.beginBackgroundTaskWithExpirationHandler() {
+                    Log.info(self.comp, "Could not myself for \(email)")
+                }
+                PEPUtil.myselfFromAccount(acc) { identity in
+                    Log.info(self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
+                    application.endBackgroundTask(bgId)
+                }
+            }
+        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {

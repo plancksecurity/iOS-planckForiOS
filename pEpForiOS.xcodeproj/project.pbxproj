@@ -76,6 +76,7 @@
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DA52711CEF3B0E0023D540 /* UITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52701CEF3B0E0023D540 /* UITestData.swift */; };
 		43DBE8D71CF6F66F00306AAE /* GrandOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DBE8D61CF6F66F00306AAE /* GrandOperatorTests.swift */; };
+		43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */; };
 		43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB31CBF8301008AA7A7 /* Account.swift */; };
 		43E58EB91CBF8301008AA7A7 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB41CBF8301008AA7A7 /* Folder.swift */; };
 		43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB61CBF8301008AA7A7 /* _Account.swift */; };
@@ -96,8 +97,6 @@
 		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
 		43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
-		5D039A9D1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
-		5D039A9E1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
 		5D039AA31D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
 		5D039AA41D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
@@ -256,6 +255,7 @@
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DA52701CEF3B0E0023D540 /* UITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestData.swift; sourceTree = "<group>"; };
 		43DBE8D61CF6F66F00306AAE /* GrandOperatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorTests.swift; sourceTree = "<group>"; };
+		43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPMyselfOperation.swift; sourceTree = "<group>"; };
 		43E58EB31CBF8301008AA7A7 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		43E58EB41CBF8301008AA7A7 /* Folder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		43E58EB61CBF8301008AA7A7 /* _Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Account.swift; sourceTree = "<group>"; };
@@ -334,6 +334,7 @@
 				431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */,
 				43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */,
 				5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */,
+				43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -819,6 +820,7 @@
 				A1F46BEF1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift in Sources */,
 				43E58EBB1CBF8301008AA7A7 /* _Folder.swift in Sources */,
 				431144C11CC1202E0007639D /* _Message.swift in Sources */,
+				43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */,
 				43ED53721CC77F95006AB156 /* Mail.swift in Sources */,
 				4367E26F1CD7360000B05F83 /* Model.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
@@ -852,7 +854,6 @@
 				43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */,
 				431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
-				5D039A9D1D0EE7F900AD59EC /* PEPUtil.swift in Sources */,
 				5D039AA31D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */,
@@ -869,7 +870,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D039AA41D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */,
-				5D039A9E1D0EE7F900AD59EC /* PEPUtil.swift in Sources */,
 				43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */,
 				43DA52711CEF3B0E0023D540 /* UITestData.swift in Sources */,
 			);

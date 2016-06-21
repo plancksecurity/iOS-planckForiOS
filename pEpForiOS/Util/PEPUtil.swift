@@ -46,4 +46,27 @@ public class PEPUtil {
         }
         return true
     }
+
+    public static func identityFromAccount(account: Account,
+                                           isMyself: Bool = true) -> NSMutableDictionary {
+        let dict = NSMutableDictionary.init(capacity: 5)
+        dict[kPepUsername] = account.nameOfTheUser
+        dict[kPepAddress] = account.email
+        return dict
+    }
+
+    /**
+     Kicks off myself in the background, optionally notifies via block of termination/success.
+     */
+    public static func myselfFromAccount(account: Account,
+                                         block: ((identity: NSDictionary) -> Void)? = nil) {
+        let op = PEPMyselfOperation.init(account: account)
+        op.completionBlock = {
+            if let bl = block {
+                bl(identity: op.identity)
+            }
+        }
+        let queue = NSOperationQueue.init()
+        queue.addOperation(op)
+    }
 }

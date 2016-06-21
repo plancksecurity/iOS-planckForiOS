@@ -46,7 +46,13 @@ class EmailListViewController: UITableViewController {
         if (account == nil)  {
             self.performSegueWithIdentifier(segueUserSettings, sender: self)
         } else {
+            PEPUtil.myselfFromAccount(
+                account as! Account, block: { identity in
+                    Log.info(self.comp,
+                        "myself: \(identity[kPepAddress]) -> \(identity[kPepFingerprint])")
+            })
             fetchMailsRefreshControl()
+
         }
         super.viewWillAppear(animated)
     }
