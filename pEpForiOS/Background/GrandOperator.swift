@@ -41,6 +41,16 @@ public protocol IGrandOperator: class {
     func fetchFolders(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
+     Asynchronously local special folders, like Outbox, Sent etc.
+
+     - parameter accountEmail: The email of the account those folders belong to.
+     - parameter completionBlock: Will be called on completion of the operation, with
+     a non-nil error object if there was an error during execution.
+     */
+    func createSpecialLocalFolders(accountEmail: String,
+                                   completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
      Asynchronously verifies the given connection. Tests for IMAP and SMTP. The test is considered
      a success when authentication was successful.
      */
@@ -148,6 +158,13 @@ public class GrandOperator: IGrandOperator {
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
+    public func createSpecialLocalFolders(accountEmail: String,
+                                          completionBlock: GrandOperatorCompletionBlock?) {
+        let op = CreateLocalSpecialFoldersOperation.init(grandOperator: self,
+                                                         accountEmail: accountEmail)
+        kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
+    }
+
     func handleVerificationCompletionFinished1(finished1: Bool, finished2: Bool,
                                       op1: NSOperation, op2: NSOperation,
                                       completionBlock: GrandOperatorCompletionBlock?) {
@@ -206,7 +223,8 @@ public class GrandOperator: IGrandOperator {
         verifyConnectionQueue.addOperation(op2)
     }
 
-    public func sendMail(email: IMessage, account: Account, completionBlock: GrandOperatorCompletionBlock?) {
+    public func sendMail(email: IMessage, account: Account,
+                         completionBlock: GrandOperatorCompletionBlock?) {
         completionBlock?(error: Constants.errorNotImplemented(comp))
     }
 

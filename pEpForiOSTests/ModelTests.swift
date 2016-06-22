@@ -44,13 +44,11 @@ class ModelTests: XCTestCase {
 
         // Some folders
         XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-            "INBOX", folderType: Account.AccountType.IMAP, accountEmail: "test001@peptest.ch"))
+            "INBOX", accountEmail: "test001@peptest.ch"))
         XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-            "INBOX.Drafts", folderType: Account.AccountType.IMAP,
-            accountEmail: "test001@peptest.ch"))
+            "INBOX.Drafts", accountEmail: "test001@peptest.ch"))
         XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-            "INBOX.Sent Mails", folderType: Account.AccountType.IMAP,
-            accountEmail: "test001@peptest.ch"))
+            "INBOX.Sent Mails", accountEmail: "test001@peptest.ch"))
     }
 
     func testSimpleContactSearch() {

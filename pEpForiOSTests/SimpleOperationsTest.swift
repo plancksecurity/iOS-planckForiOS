@@ -91,8 +91,7 @@ class SimpleOperationsTest: XCTestCase {
 
     func testStoreSingleMail() {
         persistentSetup.grandOperator.operationModel().insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, folderType: Account.AccountType.IMAP,
-            accountEmail: connectInfo.email)
+            ImapSync.defaultImapInboxName, accountEmail: connectInfo.email)
         persistentSetup.grandOperator.operationModel().save()
 
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
@@ -122,8 +121,7 @@ class SimpleOperationsTest: XCTestCase {
         let numMails = 10
 
         persistentSetup.grandOperator.operationModel().insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, folderType: Account.AccountType.IMAP,
-            accountEmail: connectInfo.email)
+            ImapSync.defaultImapInboxName, accountEmail: connectInfo.email)
         persistentSetup.grandOperator.operationModel().save()
 
         let exp = expectationWithDescription("exp")
@@ -164,5 +162,29 @@ class SimpleOperationsTest: XCTestCase {
                     NSPredicate.init(value: true)),
                 numMails)
         })
+    }
+
+    func testCreateLocalSpecialFoldersOperation() {
+        if let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo) {
+            let expFoldersStored = expectationWithDescription("Folders stored")
+            let op = CreateLocalSpecialFoldersOperation.init(
+                grandOperator: persistentSetup.grandOperator, accountEmail: account.email)
+            let queue = NSOperationQueue.init()
+            op.completionBlock = {
+                expFoldersStored.fulfill()
+            }
+            queue.addOperation(op)
+            waitForExpectationsWithTimeout(waitTime, handler: { error in
+                XCTAssertNil(error)
+                if let folders = self.persistentSetup.model.foldersByPredicate(
+                    NSPredicate.init(value: true), sortDescriptors: nil) {
+                    XCTAssertEqual(folders.count, FolderType.allValuesToCreate.count)
+                } else {
+                    XCTAssertTrue(false, "Expected folders created")
+                }
+            })
+        } else {
+            XCTAssertTrue(false, "Expected account to be created")
+        }
     }
 }

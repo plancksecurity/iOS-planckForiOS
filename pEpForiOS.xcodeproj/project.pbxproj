@@ -76,6 +76,7 @@
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DA52711CEF3B0E0023D540 /* UITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52701CEF3B0E0023D540 /* UITestData.swift */; };
 		43DBE8D71CF6F66F00306AAE /* GrandOperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DBE8D61CF6F66F00306AAE /* GrandOperatorTests.swift */; };
+		43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */; };
 		43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */; };
 		43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB31CBF8301008AA7A7 /* Account.swift */; };
 		43E58EB91CBF8301008AA7A7 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB41CBF8301008AA7A7 /* Folder.swift */; };
@@ -255,6 +256,7 @@
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DA52701CEF3B0E0023D540 /* UITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestData.swift; sourceTree = "<group>"; };
 		43DBE8D61CF6F66F00306AAE /* GrandOperatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorTests.swift; sourceTree = "<group>"; };
+		43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLocalSpecialFoldersOperation.swift; sourceTree = "<group>"; };
 		43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPMyselfOperation.swift; sourceTree = "<group>"; };
 		43E58EB31CBF8301008AA7A7 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		43E58EB41CBF8301008AA7A7 /* Folder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 				43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */,
 				5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */,
 				43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */,
+				43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -406,9 +409,9 @@
 		43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
 				437432061CFC49A4000F8D35 /* Util */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
+				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
 				43DBE8D61CF6F66F00306AAE /* GrandOperatorTests.swift */,
 				A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */,
 				A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */,
@@ -788,6 +791,7 @@
 				4303DAE71CE62D2600D9C0AB /* Attachment.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
 				A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */,
+				43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				43404B481D17D36D00D8B6FF /* EmailHeaderView.swift in Sources */,
 				4325F3141CD8A8D200A10727 /* ConcurrentBaseOperation.swift in Sources */,

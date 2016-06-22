@@ -26,7 +26,7 @@ class StoreFoldersOperation: BaseOperation {
             let model = Model.init(context: privateMOC)
             for folderName in self.foldersToStore {
                 let folder = model.insertOrUpdateFolderName(
-                    folderName, folderType: Account.AccountType.IMAP, accountEmail: self.email)
+                    folderName, accountEmail: self.email)
                 if folder == nil {
                     self.grandOperator.setErrorForOperation(
                         self,
@@ -35,6 +35,5 @@ class StoreFoldersOperation: BaseOperation {
             }
             model.save()
         })
-        Log.warn(comp, "StoreFoldersOperation finished")
     }
 }

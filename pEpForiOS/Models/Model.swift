@@ -64,9 +64,7 @@ public protocol IModel {
      Inserts a folder of the given type.
      - Note: Caller is responsible for saving!
      */
-    func insertOrUpdateFolderName(folderName: String,
-                                  folderType: Account.AccountType,
-                                  accountEmail: String) -> IFolder?
+    func insertOrUpdateFolderName(folderName: String, accountEmail: String) -> IFolder?
 
     func insertOrUpdateMessageReference(messageID: String) -> IMessageReference
     func insertMessageReference(messageID: String) -> IMessageReference
@@ -290,9 +288,7 @@ public class Model: IModel {
         return NSPredicate.init(format: "account.email = %@ and name = %@", email, name)
     }
 
-    public func insertOrUpdateFolderName(
-        folderName: String, folderType: Account.AccountType,
-        accountEmail: String) -> IFolder? {
+    public func insertOrUpdateFolderName(folderName: String, accountEmail: String) -> IFolder? {
         if let folder = folderByName(folderName, email: accountEmail) {
             return folder
         }
@@ -301,7 +297,6 @@ public class Model: IModel {
             var folder = insertFolderName(folderName, email: accountEmail)
             folder.account = account as! Account
             folder.name = folderName
-            folder.folderType = folderType.rawValue
             return folder
         }
         return nil
