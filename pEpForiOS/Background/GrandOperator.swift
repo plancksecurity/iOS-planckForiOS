@@ -121,21 +121,30 @@ public class GrandOperator: IGrandOperator {
 
     public func chainOperations(operations: [BaseOperation],
                                 completionBlock: GrandOperatorCompletionBlock?) {
-        var finished: [NSOperation:Bool] = [:]
-        var errors: [NSError] = []
-
+        // Add dependencies
         var lastOp: NSOperation? = nil
         for op in operations {
             if let op1 = lastOp {
                 op.addDependency(op1)
             }
-            op.completionBlock = {
-                op.completionBlock = nil
-                finished[op] = true
-                errors.appendContentsOf(op.errors)
-            }
             backgroundQueue.addOperation(op)
             lastOp = op
+        }
+
+        // Since they all have a serial dependency, it's sufficient to monitor the last op
+        // for completion.
+        var errors: [NSError] = []
+        if let lastOp = operations.last {
+            lastOp.completionBlock = {
+                lastOp.completionBlock = nil
+                for op in operations {
+                    errors.appendContentsOf(op.errors)
+                }
+                // Only the first error will be reported
+                if let block = completionBlock {
+                    block(error: errors.first)
+                }
+            }
         }
     }
 

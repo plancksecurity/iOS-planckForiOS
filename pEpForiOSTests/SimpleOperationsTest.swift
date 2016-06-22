@@ -166,7 +166,7 @@ class SimpleOperationsTest: XCTestCase {
 
     func testCreateLocalSpecialFoldersOperation() {
         if let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo) {
-            let expFoldersStored = expectationWithDescription("Folders stored")
+            let expFoldersStored = expectationWithDescription("expFoldersStored")
             let op = CreateLocalSpecialFoldersOperation.init(
                 grandOperator: persistentSetup.grandOperator, accountEmail: account.email)
             let queue = NSOperationQueue.init()
@@ -182,6 +182,35 @@ class SimpleOperationsTest: XCTestCase {
                 } else {
                     XCTAssertTrue(false, "Expected folders created")
                 }
+            })
+        } else {
+            XCTAssertTrue(false, "Expected account to be created")
+        }
+    }
+
+    func testChainFolderFetching() {
+        if let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo) {
+            let op1 = CreateLocalSpecialFoldersOperation.init(
+                grandOperator: persistentSetup.grandOperator, accountEmail: account.email)
+            let op2 = FetchFoldersOperation.init(grandOperator: persistentSetup.grandOperator,
+                                                 connectInfo: connectInfo)
+            let expFoldersFetched = expectationWithDescription("expFoldersFetched")
+            persistentSetup.grandOperator.chainOperations(
+                [op1, op2],
+                completionBlock: { error in
+                    XCTAssertNil(error)
+                    expFoldersFetched.fulfill()
+            })
+            waitForExpectationsWithTimeout(waitTime, handler: { error in
+                XCTAssertNil(error)
+                if let folders = self.persistentSetup.model.foldersByPredicate(
+                    NSPredicate.init(value: true), sortDescriptors: nil) {
+                    XCTAssertGreaterThan(folders.count, FolderType.allValuesToCreate.count)
+                } else {
+                    XCTAssertTrue(false, "Expected folders created")
+                }
+                let folder = self.persistentSetup.model.folderInbox()
+                XCTAssertNotNil(folder)
             })
         } else {
             XCTAssertTrue(false, "Expected account to be created")
