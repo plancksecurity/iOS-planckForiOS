@@ -21,6 +21,16 @@ public protocol IGrandOperator: class {
     func shutdown()
 
     /**
+     Will *serially* invoke a list of operations, gathering all errors and sending them to
+     the completion block. For error handling it is assumed that all operations report them
+     to this instance of IGrandOperator.
+     - parameter operations: The list of operations to invoke in serial order.
+     - parameter completionBlock: The block to call when all ops have finished, together with
+     any error that ocurred.
+     */
+    func chainOperations(operations: [NSOperation], completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
      Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
      and the given folder and stores them into the persistent store.
 
@@ -108,6 +118,7 @@ public class GrandOperator: IGrandOperator {
     private var errors: [NSOperation:NSError] = [:]
 
     private let verifyConnectionQueue = NSOperationQueue.init()
+    private let backgroundQueue = NSOperationQueue.init()
 
     /**
      The main model (for use on the main thread)
@@ -120,6 +131,29 @@ public class GrandOperator: IGrandOperator {
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
         self.connectionManager.grandOperator = self
+    }
+
+    public func chainOperations(operations: [NSOperation],
+                                completionBlock: GrandOperatorCompletionBlock?) {
+        var finished: [NSOperation:Bool] = [:]
+        var errors: [NSError] = []
+
+        var lastOp: NSOperation? = nil
+        for op in operations {
+            if let op1 = lastOp {
+                op.addDependency(op1)
+            }
+            op.completionBlock = {
+                op.completionBlock = nil
+                finished[op] = true
+                if let err = self.errors[op] {
+                    errors.append(err)
+                    self.errors.removeValueForKey(op)
+                }
+            }
+            backgroundQueue.addOperation(op)
+            lastOp = op
+        }
     }
 
     public func shutdown() {

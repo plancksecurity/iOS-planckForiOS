@@ -31,6 +31,8 @@ public protocol IModel {
                            sortDescriptors: [NSSortDescriptor]?) -> IFolder?
     func folderByName(name: String, email: String) -> IFolder?
     func folderByName(name: String, email: String, folderType: Account.AccountType) -> IFolder?
+    func foldersForAccountEmail(accountEmail: String, predicate: NSPredicate?,
+                                sortDescriptors: [NSSortDescriptor]?) -> [IFolder]?
 
     /**
      - Returns: The INBOX folder.
@@ -374,6 +376,15 @@ public class Model: IModel {
         let p2 = NSPredicate.init(format: "folderType = %d", folderType.rawValue)
         let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
         return folderByPredicate(p)
+    }
+
+    public func foldersForAccountEmail(accountEmail: String, predicate: NSPredicate?,
+                                       sortDescriptors: [NSSortDescriptor]?) -> [IFolder]? {
+        var p1 = NSPredicate.init(format: "account.email = %@", accountEmail)
+        if let p2 = predicate {
+            p1 = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
+        }
+        return foldersByPredicate(p1, sortDescriptors: sortDescriptors)
     }
 
     /**

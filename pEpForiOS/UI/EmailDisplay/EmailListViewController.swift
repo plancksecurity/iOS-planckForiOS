@@ -21,7 +21,7 @@ class EmailListViewController: UITableViewController {
     let segueCompose = "composeSegue"
     let segueUserSettings = "userSettings"
 
-    var appConfig: AppConfig?
+    var appConfig: AppConfig!
     var fetchController: NSFetchedResultsController?
     var state = UIState()
     let dateFormatter = UIHelper.dateFormatterEmailList()
@@ -66,7 +66,8 @@ class EmailListViewController: UITableViewController {
             let connectInfo = account.connectInfo
 
             state.isSynching = true
-            appConfig!.grandOperator.prefetchEmails(
+
+            appConfig.grandOperator.prefetchEmails(
                 connectInfo, folder: ImapSync.defaultImapInboxName, completionBlock: {
                     [unowned self] error in
                     GCD.onMain({
