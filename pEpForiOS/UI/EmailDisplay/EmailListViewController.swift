@@ -72,7 +72,8 @@ class EmailListViewController: UITableViewController {
             if shouldFetchFolders {
                 shouldFetchFolders = false
                 operations.append(CreateLocalSpecialFoldersOperation.init(
-                    grandOperator: appConfig.grandOperator, accountEmail: account.email))
+                    coreDataUtil: appConfig.grandOperator.coreDataUtil,
+                    accountEmail: account.email))
                 operations.append(FetchFoldersOperation.init(
                     grandOperator: appConfig.grandOperator, connectInfo: connectInfo))
             }

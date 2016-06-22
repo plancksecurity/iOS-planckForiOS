@@ -183,7 +183,7 @@ public class GrandOperator: IGrandOperator {
 
     public func createSpecialLocalFolders(accountEmail: String,
                                           completionBlock: GrandOperatorCompletionBlock?) {
-        let op = CreateLocalSpecialFoldersOperation.init(grandOperator: self,
+        let op = CreateLocalSpecialFoldersOperation.init(coreDataUtil: coreDataUtil,
                                                          accountEmail: accountEmail)
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }

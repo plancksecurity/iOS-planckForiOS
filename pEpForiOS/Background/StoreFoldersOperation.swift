@@ -11,17 +11,19 @@ import CoreData
 
 class StoreFoldersOperation: BaseOperation {
     let comp = "StoreFoldersOperation"
+    let coreDataUtil: ICoreDataUtil
     let foldersToStore: [String]
     let email: String
 
-    init(grandOperator: IGrandOperator, folders: [String], email: String) {
+    init(coreDataUtil: ICoreDataUtil, folders: [String], email: String) {
+        self.coreDataUtil = coreDataUtil
         self.foldersToStore = folders
         self.email = email
-        super.init(grandOperator: grandOperator)
+        super.init()
     }
 
     override func main() {
-        let privateMOC = grandOperator.coreDataUtil.privateContext()
+        let privateMOC = coreDataUtil.privateContext()
         privateMOC.performBlockAndWait({
             let model = Model.init(context: privateMOC)
             for folderName in self.foldersToStore {

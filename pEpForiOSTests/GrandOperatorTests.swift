@@ -79,7 +79,8 @@ class GrandOperatorTests: XCTestCase {
             persistentSetup.connectionInfo) {
             var callbackNumber = 0
             let op1 = CreateLocalSpecialFoldersOperation.init(
-                grandOperator: persistentSetup.grandOperator, accountEmail: account.email)
+                coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
+                accountEmail: account.email)
             let op2 = FetchFoldersOperation.init(grandOperator: persistentSetup.grandOperator,
                                                  connectInfo: persistentSetup.connectionInfo)
             let expFoldersFetched = expectationWithDescription("expFoldersFetched")
@@ -99,7 +100,8 @@ class GrandOperatorTests: XCTestCase {
                 } else {
                     XCTAssertTrue(false, "Expected folders created")
                 }
-                let folder = self.persistentSetup.model.folderInbox()
+                let folder = self.persistentSetup.model.folderInboxForEmail(
+                    self.persistentSetup.connectionInfo.email)
                 XCTAssertNotNil(folder)
             })
         } else {

@@ -64,7 +64,7 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
 
     func readFolderNamesFromImapSync(sync: ImapSync) {
         if let folderNames = sync.folderNames {
-            let op = StoreFoldersOperation.init(grandOperator: self.grandOperator,
+            let op = StoreFoldersOperation.init(coreDataUtil: self.grandOperator.coreDataUtil,
                                                 folders: folderNames, email: self.connectInfo.email)
             backgroundQueue.addOperation(op)
 

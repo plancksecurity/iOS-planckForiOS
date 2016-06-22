@@ -101,7 +101,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let exp = expectationWithDescription("stored")
         let op = StorePrefetchedMailOperation.init(
-            grandOperator: self.persistentSetup.grandOperator,
+            coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
             accountEmail: connectInfo.email, message: message)
         op.completionBlock = {
             exp.fulfill()
@@ -138,7 +138,7 @@ class SimpleOperationsTest: XCTestCase {
             message.setFolder(folder)
             message.setUID(UInt(i))
             let op = StorePrefetchedMailOperation.init(
-                grandOperator: self.persistentSetup.grandOperator,
+                coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
                 accountEmail: connectInfo.email, message: message)
             operations.insert(op)
             op.completionBlock = {
@@ -168,7 +168,8 @@ class SimpleOperationsTest: XCTestCase {
         if let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo) {
             let expFoldersStored = expectationWithDescription("expFoldersStored")
             let op = CreateLocalSpecialFoldersOperation.init(
-                grandOperator: persistentSetup.grandOperator, accountEmail: account.email)
+                coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
+                accountEmail: account.email)
             let queue = NSOperationQueue.init()
             op.completionBlock = {
                 expFoldersStored.fulfill()

@@ -14,6 +14,7 @@ import CoreData
  */
 public class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
+    let coreDataUtil: ICoreDataUtil
     let message: CWIMAPMessage
     let accountEmail: String
     let quick: Bool
@@ -22,16 +23,17 @@ public class StorePrefetchedMailOperation: BaseOperation {
      - parameter quick: Store only the most important properties (for true), or do it completely,
      including attachments?
      */
-    public init(grandOperator: IGrandOperator, accountEmail: String, message: CWIMAPMessage,
+    public init(coreDataUtil: ICoreDataUtil, accountEmail: String, message: CWIMAPMessage,
                 quick: Bool = true) {
+        self.coreDataUtil = coreDataUtil
         self.accountEmail = accountEmail
         self.message = message
         self.quick = quick
-        super.init(grandOperator: grandOperator)
+        super.init()
     }
 
     override public func main() {
-        let privateMOC = grandOperator.coreDataUtil.privateContext()
+        let privateMOC = coreDataUtil.privateContext()
         privateMOC.performBlockAndWait({
             let model = Model.init(context: privateMOC)
             var result: IMessage? = nil
