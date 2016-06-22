@@ -10,7 +10,7 @@ import Foundation
 
 public class ConnectionManager {
     private let comp = "ConnectionManager"
-    public var cacheImapConnections: Bool = true
+    public var cacheImapConnections: Bool = false
 
     var imapConnections: [ConnectInfo: ImapSync] = [:]
     weak var grandOperator: IGrandOperator!

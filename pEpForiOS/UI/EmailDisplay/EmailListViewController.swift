@@ -25,6 +25,7 @@ class EmailListViewController: UITableViewController {
     var fetchController: NSFetchedResultsController?
     var state = UIState()
     let dateFormatter = UIHelper.dateFormatterEmailList()
+    var shouldFetchFolders = true
 
     override func viewDidLoad() {
         let refreshController = UIRefreshControl.init()
@@ -67,9 +68,20 @@ class EmailListViewController: UITableViewController {
 
             state.isSynching = true
 
-            appConfig.grandOperator.prefetchEmails(
-                connectInfo, folder: ImapSync.defaultImapInboxName, completionBlock: {
-                    [unowned self] error in
+            var operations: [BaseOperation] = []
+            if shouldFetchFolders {
+                shouldFetchFolders = false
+                operations.append(CreateLocalSpecialFoldersOperation.init(
+                    grandOperator: appConfig.grandOperator, accountEmail: account.email))
+                operations.append(FetchFoldersOperation.init(
+                    grandOperator: appConfig.grandOperator, connectInfo: connectInfo))
+            }
+            operations.append(PrefetchEmailsOperation.init(
+                grandOperator: appConfig.grandOperator, connectInfo: connectInfo,
+                folder: ImapSync.defaultImapInboxName))
+
+            appConfig.grandOperator.chainOperations(
+                operations, completionBlock: { [unowned self] error in
                     GCD.onMain({
                         Log.info(self.comp, "Sync completed, error: \(error)")
                         self.appConfig?.model.save()
@@ -77,7 +89,7 @@ class EmailListViewController: UITableViewController {
                         refreshControl?.endRefreshing()
                         self.updateUI()
                     })
-                })
+            })
             updateUI()
         }
     }
