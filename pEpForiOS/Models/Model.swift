@@ -37,17 +37,22 @@ public protocol IModel {
     /**
      - Returns: The INBOX folder.
      */
-    func folderInbox() -> IFolder?
+    func folderInboxForEmail(email: String) -> IFolder?
 
     /**
      - Returns: The folder for sent mails.
      */
-    func folderSentMails() -> IFolder?
+    func folderSentMailsForEmail(email: String) -> IFolder?
 
     /**
      - Returns: The folder for saving draft mails.
      */
-    func folderDrafts() -> IFolder?
+    func folderDraftsForEmail(email: String) -> IFolder?
+
+    /**
+     - Returns: The folder for storing unsent mails.
+     */
+    func folderLocalOutboxForEmail(email: String) -> IFolder?
 
     func accountByEmail(email: String) -> IAccount?
     func accountsByPredicate(predicate: NSPredicate?,
@@ -395,18 +400,31 @@ public class Model: IModel {
         return p
     }
 
-    public func folderInbox() -> IFolder? {
-        let p = NSPredicate.init(format: "name =[c] %@", ImapSync.defaultImapInboxName)
+    public func folderInboxForEmail(email: String) -> IFolder? {
+        let p1 = NSPredicate.init(format: "account.email = %@", email)
+        let p2 = NSPredicate.init(format: "name =[c] %@", ImapSync.defaultImapInboxName)
+        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
         return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
     }
 
-    public func folderSentMails() -> IFolder? {
-        let p = folderFuzzyPredicateByName("sent")
+    public func folderSentMailsForEmail(email: String) -> IFolder? {
+        let p1 = NSPredicate.init(format: "account.email = %@", email)
+        let p2 = folderFuzzyPredicateByName("sent")
+        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
         return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
     }
 
-    public func folderDrafts() -> IFolder? {
-        let p = folderFuzzyPredicateByName("draft")
+    public func folderDraftsForEmail(email: String) -> IFolder? {
+        let p1 = NSPredicate.init(format: "account.email = %@", email)
+        let p2 = folderFuzzyPredicateByName("draft")
+        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
+        return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
+    }
+
+    public func folderLocalOutboxForEmail(email: String) -> IFolder? {
+        let p1 = NSPredicate.init(format: "account.email = %@", email)
+        let p2 = NSPredicate.init(format: "folderType = %d", FolderType.LocalOutbox.rawValue)
+        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
         return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
     }
 
