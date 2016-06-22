@@ -45,8 +45,7 @@ public class StorePrefetchedMailOperation: BaseOperation {
             if result != nil {
                 model.save()
             } else {
-                self.grandOperator.setErrorForOperation(self,
-                    error: Constants.errorCannotStoreMail(self.comp))
+                self.errors.append(Constants.errorCannotStoreMail(self.comp))
             }
         })
     }

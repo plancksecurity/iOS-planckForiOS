@@ -143,6 +143,7 @@ class SimpleOperationsTest: XCTestCase {
             operations.insert(op)
             op.completionBlock = {
                 operations.remove(op)
+                XCTAssertEqual(op.errors.count, 0)
                 if backgroundQueue.operationCount == 0 && !fulfilled {
                     fulfilled = true
                     exp.fulfill()
@@ -153,7 +154,6 @@ class SimpleOperationsTest: XCTestCase {
 
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(self.persistentSetup.grandOperator.allErrors().count, 0)
             XCTAssertEqual(
                 self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(
                     NSPredicate.init(value: true)), 1)

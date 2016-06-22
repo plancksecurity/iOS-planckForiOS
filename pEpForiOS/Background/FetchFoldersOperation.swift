@@ -82,49 +82,43 @@ extension FetchFoldersOperation: ImapSyncDelegate {
     }
 
     public func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorAuthenticationFailed(comp))
+        errors.append(Constants.errorAuthenticationFailed(comp))
     }
 
     public func connectionLost(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorConnectionLost(comp))
+        errors.append(Constants.errorConnectionLost(comp))
     }
 
     public func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorConnectionTerminated(comp))
+        errors.append(Constants.errorConnectionTerminated(comp))
     }
 
     public func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorConnectionTimeout(comp))
+        errors.append(Constants.errorConnectionTimeout(comp))
     }
 
     public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
-            stateName: "folderPrefetchCompleted"))
+        errors.append(Constants.errorIllegalState(comp, stateName: "folderPrefetchCompleted"))
     }
 
     public func messageChanged(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
-            stateName: "messageChanged"))
+        errors.append(Constants.errorIllegalState(comp, stateName: "messageChanged"))
     }
 
     public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
-            stateName: "messagePrefetchCompleted"))
+        errors.append(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
     }
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
-            stateName: "folderOpenCompleted"))
+        errors.append(Constants.errorIllegalState(comp, stateName: "folderOpenCompleted"))
     }
 
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
-            stateName: "folderOpenFailed"))
+        errors.append(Constants.errorIllegalState(comp, stateName: "folderOpenFailed"))
     }
 
     public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
-        grandOperator.setErrorForOperation(self, error: Constants.errorIllegalState(comp,
-            stateName: "folderStatusCompleted"))
+        errors.append(Constants.errorIllegalState(comp, stateName: "folderStatusCompleted"))
     }
 
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
@@ -132,6 +126,6 @@ extension FetchFoldersOperation: ImapSyncDelegate {
     }
 
     public func actionFailed(sync: ImapSync, error: NSError) {
-        grandOperator.setErrorForOperation(self, error: error)
+        errors.append(error)
     }
 }

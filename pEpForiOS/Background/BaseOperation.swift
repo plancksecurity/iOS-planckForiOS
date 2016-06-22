@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 public class BaseOperation: NSOperation {
+    public var errors: [NSError] = []
     unowned var grandOperator: IGrandOperator
 
     public init(grandOperator: IGrandOperator) {

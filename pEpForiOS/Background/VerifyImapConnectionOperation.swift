@@ -37,16 +37,14 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
 
     public func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
         if !isFinishing {
-            grandOperator.setErrorForOperation(
-                self, error: Constants.errorAuthenticationFailed(errorDomain))
+            errors.append(Constants.errorAuthenticationFailed(errorDomain))
             close(true)
         }
     }
 
     public func connectionLost(sync: ImapSync, notification: NSNotification?) {
         if !isFinishing {
-            grandOperator.setErrorForOperation(
-                self, error: Constants.errorConnectionLost(errorDomain))
+            errors.append(Constants.errorConnectionLost(errorDomain))
             isFinishing = true
             markAsFinished()
         }
@@ -54,8 +52,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
 
     public func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
         if !isFinishing {
-            grandOperator.setErrorForOperation(
-                self, error: Constants.errorConnectionTerminated(errorDomain))
+            errors.append(Constants.errorConnectionTerminated(errorDomain))
             isFinishing = true
             markAsFinished()
         }
@@ -63,7 +60,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
 
     public func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
         if !isFinishing {
-            grandOperator.setErrorForOperation(self, error: Constants.errorTimeout(errorDomain))
+            errors.append(Constants.errorTimeout(errorDomain))
             isFinishing = true
             markAsFinished()
         }
@@ -92,7 +89,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
 
     public func actionFailed(sync: ImapSync, error: NSError) {
         if !isFinishing {
-            grandOperator.setErrorForOperation(self, error: error)
+            errors.append(error)
             close(true)
         }
    }

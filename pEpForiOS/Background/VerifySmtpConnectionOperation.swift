@@ -38,8 +38,7 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
 
     func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
         if !isFinishing {
-            grandOperator.setErrorForOperation(self,
-                                               error: Constants.errorAuthenticationFailed(errorDomain))
+            errors.append(Constants.errorAuthenticationFailed(errorDomain))
             close(true)
         }
     }
@@ -48,8 +47,7 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
 
     func connectionLost(smtp: SmtpSend, theNotification: NSNotification?) {
         if !isFinishing {
-            grandOperator.setErrorForOperation(self,
-                                               error: Constants.errorConnectionLost(errorDomain))
+            errors.append(Constants.errorConnectionLost(errorDomain))
             isFinishing = true
             markAsFinished()
         }
@@ -57,8 +55,7 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
 
     func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {
         if !isFinishing {
-            grandOperator.setErrorForOperation(
-                self, error: Constants.errorConnectionTerminated(errorDomain))
+            errors.append(Constants.errorConnectionTerminated(errorDomain))
             isFinishing = true
             markAsFinished()
         }
@@ -66,8 +63,7 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
 
     func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {
         if !isFinishing {
-            grandOperator.setErrorForOperation(self,
-                                               error: Constants.errorTimeout(errorDomain))
+            errors.append(Constants.errorTimeout(errorDomain))
             isFinishing = true
             markAsFinished()
         }

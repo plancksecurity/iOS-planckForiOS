@@ -28,7 +28,8 @@ public protocol IGrandOperator: class {
      - parameter completionBlock: The block to call when all ops have finished, together with
      any error that ocurred.
      */
-    func chainOperations(operations: [NSOperation], completionBlock: GrandOperatorCompletionBlock?)
+    func chainOperations(operations: [BaseOperation],
+                         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
@@ -78,19 +79,6 @@ public protocol IGrandOperator: class {
     func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Used by background operations to set an error.
-     
-     - parameter operation: The operation the error occurred
-     - parameter error: The error that occurred
-     */
-    func setErrorForOperation(operation: NSOperation, error: NSError)
-
-    /**
-     - returns: The list of all errors
-     */
-    func allErrors() -> [NSError]
-
-    /**
      A model suitable for accessing core data from this thread, cached in thread-local
      storage.
      - Returns: The model suitable for the caller, depending on whether this is called on the
@@ -115,8 +103,6 @@ public class GrandOperator: IGrandOperator {
     public let connectionManager: ConnectionManager
     public let coreDataUtil: ICoreDataUtil
 
-    private var errors: [NSOperation:NSError] = [:]
-
     private let verifyConnectionQueue = NSOperationQueue.init()
     private let backgroundQueue = NSOperationQueue.init()
 
@@ -133,7 +119,7 @@ public class GrandOperator: IGrandOperator {
         self.connectionManager.grandOperator = self
     }
 
-    public func chainOperations(operations: [NSOperation],
+    public func chainOperations(operations: [BaseOperation],
                                 completionBlock: GrandOperatorCompletionBlock?) {
         var finished: [NSOperation:Bool] = [:]
         var errors: [NSError] = []
@@ -146,10 +132,7 @@ public class GrandOperator: IGrandOperator {
             op.completionBlock = {
                 op.completionBlock = nil
                 finished[op] = true
-                if let err = self.errors[op] {
-                    errors.append(err)
-                    self.errors.removeValueForKey(op)
-                }
+                errors.appendContentsOf(op.errors)
             }
             backgroundQueue.addOperation(op)
             lastOp = op
@@ -159,21 +142,18 @@ public class GrandOperator: IGrandOperator {
     public func shutdown() {
         verifyConnectionQueue.cancelAllOperations()
         connectionManager.shutdown()
-        errors.removeAll()
     }
 
-    func kickOffConcurrentOperation(operation op: NSOperation,
+    func kickOffConcurrentOperation(operation op: BaseOperation,
                                     completionBlock: GrandOperatorCompletionBlock?) {
-        op.completionBlock = { [unowned self] in
+        op.completionBlock = {
             // Resolve cyclic dependency
             op.completionBlock = nil
 
             // Even for operations running on the main thread with main loop,
             // that block will be called on some background queue.
             GCD.onMain() {
-                let error = self.errors[op]
-                completionBlock?(error: error)
-                self.errors.removeValueForKey(op)
+                completionBlock?(error: op.errors.first)
             }
         }
         op.start()
@@ -200,7 +180,7 @@ public class GrandOperator: IGrandOperator {
     }
 
     func handleVerificationCompletionFinished1(finished1: Bool, finished2: Bool,
-                                      op1: NSOperation, op2: NSOperation,
+                                      op1: BaseOperation, op2: BaseOperation,
                                       completionBlock: GrandOperatorCompletionBlock?) {
         if finished1 && finished2 {
             // Dissolve the cyclic dependency between the operation,
@@ -209,16 +189,11 @@ public class GrandOperator: IGrandOperator {
             op2.completionBlock = nil
 
             var error: NSError? = nil
-            if let err = self.errors[op1] {
-                error = err
-            } else if let err = self.errors[op2] {
-                error = err
+            error = op1.errors.first
+            if error == nil {
+                error = op2.errors.first
             }
             completionBlock?(error: error)
-            self.errors.removeValueForKey(op1)
-            self.errors.removeValueForKey(op2)
-
-            print("operationCount\(self.verifyConnectionQueue.operationCount)")
         }
     }
 
@@ -264,23 +239,6 @@ public class GrandOperator: IGrandOperator {
 
     public func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
         completionBlock?(error: Constants.errorNotImplemented(comp))
-    }
-
-    public func setErrorForOperation(operation: NSOperation, error: NSError) {
-        GCD.onMain({
-            // First error wins
-            if self.errors[operation] == nil {
-                self.errors[operation] = error
-            }
-        })
-    }
-
-    public func allErrors() -> [NSError] {
-        var errors: [NSError] = []
-        for (_, err) in self.errors {
-            errors.append(err)
-        }
-        return errors
     }
 
     /**

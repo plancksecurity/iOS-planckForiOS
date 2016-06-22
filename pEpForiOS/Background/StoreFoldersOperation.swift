@@ -28,9 +28,8 @@ class StoreFoldersOperation: BaseOperation {
                 let folder = model.insertOrUpdateFolderName(
                     folderName, accountEmail: self.email)
                 if folder == nil {
-                    self.grandOperator.setErrorForOperation(
-                        self,
-                        error: Constants.errorCouldNotStoreFolder(self.comp, name: folderName))
+                    self.errors.append(Constants.errorCouldNotStoreFolder(self.comp,
+                        name: folderName))
                 }
             }
             model.save()

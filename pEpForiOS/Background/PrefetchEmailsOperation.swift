@@ -67,7 +67,7 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
         do {
             try sync.syncMails()
         } catch let err as NSError {
-            grandOperator.setErrorForOperation(self, error: err)
+            errors.append(err)
             waitForFinished()
         }
     }
@@ -120,6 +120,6 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func actionFailed(sync: ImapSync, error: NSError) {
-        grandOperator.setErrorForOperation(self, error: error)
+        errors.append(error)
     }
 }
