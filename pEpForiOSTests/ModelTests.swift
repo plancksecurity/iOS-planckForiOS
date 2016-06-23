@@ -21,6 +21,7 @@ func ==<T1: Equatable, T2: Equatable, T3: Equatable>(
 class ModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
     let waitTime: NSTimeInterval = 10
+    let accountEmail = "test001@peptest.ch"
 
     override func setUp() {
         super.setUp()
@@ -38,17 +39,17 @@ class ModelTests: XCTestCase {
 
         let connectInfo = ConnectInfo.init(
             nameOfTheUser: "The User",
-            email: "test001@peptest.ch", imapServerName: "imapServer",
+            email: accountEmail, imapServerName: "imapServer",
             smtpServerName: "smtpServer")
         XCTAssertNotNil(persistentSetup.model.insertAccountFromConnectInfo(connectInfo))
 
         // Some folders
         XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-            "INBOX", accountEmail: "test001@peptest.ch"))
+            "INBOX", accountEmail: accountEmail))
         XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-            "INBOX.Drafts", accountEmail: "test001@peptest.ch"))
+            "INBOX.Drafts", accountEmail: accountEmail))
         XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-            "INBOX.Sent Mails", accountEmail: "test001@peptest.ch"))
+            "INBOX.Sent Mails", accountEmail: accountEmail))
     }
 
     func testSimpleContactSearch() {
