@@ -63,8 +63,8 @@ public class UserInfoTableView: UITableViewController {
     @IBOutlet weak var emailTitleTextField: UILabel!
     @IBOutlet weak var usernameTitleTextField: UILabel!
     @IBOutlet weak var passwordTitleTextField: UILabel!
-    @IBOutlet weak var nameValueTextField: UITextField!
-    @IBOutlet weak var nameTitleTextField: UILabel!
+    @IBOutlet weak var nameOfTheUserValueTextField: UITextField!
+    @IBOutlet weak var nameOfTheUserTitleTextField: UILabel!
 
     var appConfig: AppConfig?
 
@@ -80,7 +80,7 @@ public class UserInfoTableView: UITableViewController {
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         viewWidthAligner.alignViews([emailTitleTextField,
-            usernameTitleTextField, passwordTitleTextField, nameTitleTextField], parentView: self.view)
+            usernameTitleTextField, passwordTitleTextField, nameOfTheUserTitleTextField], parentView: self.view)
     }
 
     public override func viewWillAppear(animated: Bool) {
@@ -93,7 +93,7 @@ public class UserInfoTableView: UITableViewController {
         }
 
         if model.email == nil {
-            nameValueTextField.becomeFirstResponder()
+            nameOfTheUserValueTextField.becomeFirstResponder()
         }
 
         updateView()

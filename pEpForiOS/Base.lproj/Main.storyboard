@@ -549,8 +549,55 @@
                         <sections>
                             <tableViewSection headerTitle="" id="tYU-l4-l1k">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="Muc-p7-eLR" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="ixi-Mt-3kg" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99" width="600" height="49"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ixi-Mt-3kg" id="wqB-dm-pDx">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUQ-RI-kfE">
+                                                    <rect key="frame" x="8" y="14" width="45" height="21"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="nameOfTheUser" label="Name of the user">
+                                                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                                                    </accessibility>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Rick Deckard" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g9y-3s-qnK">
+                                                    <rect key="frame" x="63" y="17" width="529" height="17"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="nameOfTheUser" label="Name"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                                    <connections>
+                                                        <action selector="changedName:" destination="YcO-Oc-XZx" eventType="editingChanged" id="Xhn-KG-Mzz"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="hUQ-RI-kfE" firstAttribute="top" secondItem="wqB-dm-pDx" secondAttribute="topMargin" constant="6" id="0hC-eR-kIC"/>
+                                                <constraint firstItem="g9y-3s-qnK" firstAttribute="leading" secondItem="wqB-dm-pDx" secondAttribute="leadingMargin" constant="170" id="2Wy-ix-zIb"/>
+                                                <constraint firstItem="hUQ-RI-kfE" firstAttribute="leading" secondItem="wqB-dm-pDx" secondAttribute="leadingMargin" id="5tf-wp-lhQ"/>
+                                                <constraint firstItem="g9y-3s-qnK" firstAttribute="leading" secondItem="hUQ-RI-kfE" secondAttribute="trailing" constant="129" id="HDY-JP-YVi"/>
+                                                <constraint firstItem="g9y-3s-qnK" firstAttribute="baseline" secondItem="hUQ-RI-kfE" secondAttribute="baseline" id="cY2-M7-E8B"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="g9y-3s-qnK" secondAttribute="trailing" id="cgC-vh-cxn"/>
+                                                <constraint firstItem="g9y-3s-qnK" firstAttribute="leading" secondItem="hUQ-RI-kfE" secondAttribute="trailing" constant="129" id="uzr-Qt-eBZ"/>
+                                                <constraint firstItem="g9y-3s-qnK" firstAttribute="top" secondItem="wqB-dm-pDx" secondAttribute="topMargin" constant="2" id="zEG-DL-YTI"/>
+                                                <constraint firstItem="g9y-3s-qnK" firstAttribute="leading" relation="lessThanOrEqual" secondItem="hUQ-RI-kfE" secondAttribute="trailing" constant="10" id="zIR-uP-2Wp"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="2Wy-ix-zIb"/>
+                                                    <exclude reference="zEG-DL-YTI"/>
+                                                    <exclude reference="HDY-JP-YVi"/>
+                                                    <exclude reference="uzr-Qt-eBZ"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="Muc-p7-eLR" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="148" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Muc-p7-eLR" id="ALh-ce-psL">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -597,7 +644,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="wzw-Ix-clS" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="148" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="197" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wzw-Ix-clS" id="iw0-fF-fSh">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -635,7 +682,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="49" id="x9C-Hc-Hvk" customClass="OneValueSettingCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="197" width="600" height="49"/>
+                                        <rect key="frame" x="0.0" y="246" width="600" height="49"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x9C-Hc-Hvk" id="Tc7-0e-d7T">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
@@ -699,6 +746,8 @@
                     <connections>
                         <outlet property="emailTitleTextField" destination="SCr-eb-mdn" id="rI6-lO-e0h"/>
                         <outlet property="emailValue" destination="TPZ-TM-PaG" id="VGE-mn-qoj"/>
+                        <outlet property="nameOfTheUserTitleTextField" destination="hUQ-RI-kfE" id="nBf-gx-UTF"/>
+                        <outlet property="nameOfTheUserValueTextField" destination="g9y-3s-qnK" id="RgD-ja-NUK"/>
                         <outlet property="passwordTitleTextField" destination="xbE-mW-hjW" id="DEQ-6t-0T3"/>
                         <outlet property="passwordValue" destination="91l-1l-FuW" id="RJE-lb-Tv7"/>
                         <outlet property="usernameTitleTextField" destination="3ti-b6-5l8" id="SVL-1B-iQC"/>
