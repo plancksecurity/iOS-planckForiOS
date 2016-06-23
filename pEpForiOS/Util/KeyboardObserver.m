@@ -17,7 +17,6 @@
 
 @implementation KeyboardObserver
 
-// Call this method somewhere in your view controller setup code.
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -38,7 +37,9 @@
      removeObserver:self name: UIKeyboardWillHideNotification object:nil];
 }
 
-// Called when the UIKeyboardDidShowNotification is sent.
+/**
+ Called when the UIKeyboardDidShowNotification is sent.
+ */
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     NSDictionary* info = [aNotification userInfo];
@@ -57,7 +58,9 @@
     }
 }
 
-// Called when the UIKeyboardWillHideNotification is sent
+/**
+ Called when the UIKeyboardWillHideNotification is sent.
+ */
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
