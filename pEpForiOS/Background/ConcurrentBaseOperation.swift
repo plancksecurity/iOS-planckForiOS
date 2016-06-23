@@ -12,7 +12,7 @@ import Foundation
  Base class for concurrent operations (operations that are not contained in a background queue
  and handle their own concurrency), that operate a background operation for additional tasks.
  */
-public class ConcurrentBaseOperation: GrandOperatorOperation {
+public class ConcurrentGrandOperatorOperation: GrandOperatorOperation {
     let backgroundQueue: NSOperationQueue
     var myFinished: Bool = false
 

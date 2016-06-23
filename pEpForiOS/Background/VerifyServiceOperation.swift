@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class VerifyServiceOperation: ConcurrentBaseOperation {
+public class VerifyServiceOperation: ConcurrentGrandOperatorOperation {
     var service: Service!
     let connectInfo: ConnectInfo
 

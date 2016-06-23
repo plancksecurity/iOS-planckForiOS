@@ -36,7 +36,7 @@ public class ImapFolderBuilder: NSObject, CWFolderBuilding {
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-public class FetchFoldersOperation: ConcurrentBaseOperation {
+public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
     let comp = "FetchFoldersOperation"
     var imapSync: ImapSync!
     let connectInfo: ConnectInfo

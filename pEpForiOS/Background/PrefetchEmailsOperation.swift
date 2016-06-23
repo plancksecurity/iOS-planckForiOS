@@ -14,7 +14,7 @@ import CoreData
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-public class PrefetchEmailsOperation: ConcurrentBaseOperation {
+public class PrefetchEmailsOperation: ConcurrentGrandOperatorOperation {
     let comp = "PrefetchEmailsOperation"
 
     let connectInfo: ConnectInfo
