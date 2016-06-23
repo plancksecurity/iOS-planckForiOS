@@ -41,5 +41,6 @@
 
 #import "TFHpple.h"
 #import "PureLayout.h"
+#import "KeyboardObserver.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */
