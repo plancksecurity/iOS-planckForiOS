@@ -26,12 +26,10 @@ class GrandOperatorVerifyTests: XCTestCase {
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup.init()
-        TestUtil.adjustBaseLevel()
     }
 
     override func tearDown() {
         persistentSetup = nil
-        TestUtil.waitForServiceShutdown()
         super.tearDown()
     }
 
