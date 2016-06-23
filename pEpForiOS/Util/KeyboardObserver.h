@@ -8,9 +8,9 @@
 
 @interface KeyboardObserver : NSObject
 
-@property (weak, nonatomic) UIView *view;
-@property (weak, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic) UITextField *activeTextField;
+@property (weak, nonatomic, nullable) UIView *view;
+@property (weak, nonatomic, nullable) UIScrollView *scrollView;
+@property (strong, nonatomic, nullable) UITextField *activeTextField;
 
 /**
  Call this method somewhere in your view controller setup code.
