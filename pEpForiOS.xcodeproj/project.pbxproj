@@ -47,6 +47,8 @@
 		4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */; };
 		4380F7C71D1BBD5D00326F62 /* SendMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C41D1BBD5D00326F62 /* SendMailOperation.swift */; };
 		4380F7C91D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C81D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift */; };
+		4380F7CB1D1BD8FE00326F62 /* PEPUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7CA1D1BD8FE00326F62 /* PEPUtilTests.swift */; };
+		4380F7CD1D1BDB1600326F62 /* PersistentSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7CC1D1BDB1600326F62 /* PersistentSetup.swift */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
 		439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439680971D1855D400DA31D2 /* WebKit.framework */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
@@ -219,6 +221,8 @@
 		4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptMailOperation.swift; sourceTree = "<group>"; };
 		4380F7C41D1BBD5D00326F62 /* SendMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMailOperation.swift; sourceTree = "<group>"; };
 		4380F7C81D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistEmailToIMAPOperation.swift; sourceTree = "<group>"; };
+		4380F7CA1D1BD8FE00326F62 /* PEPUtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtilTests.swift; sourceTree = "<group>"; };
+		4380F7CC1D1BDB1600326F62 /* PersistentSetup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentSetup.swift; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		439680971D1855D400DA31D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -360,6 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				4374320A1CFC49B1000F8D35 /* TestUtil.swift */,
+				4380F7CC1D1BDB1600326F62 /* PersistentSetup.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -446,6 +451,7 @@
 				43C046B51CF42DCF00BD0D9D /* ModelTests.swift */,
 				431798721CF85181007DD655 /* TCPConnectionTest.swift */,
 				431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */,
+				4380F7CA1D1BD8FE00326F62 /* PEPUtilTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -890,8 +896,10 @@
 				43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */,
 				431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
+				4380F7CB1D1BD8FE00326F62 /* PEPUtilTests.swift in Sources */,
 				5D039AA31D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
+				4380F7CD1D1BDB1600326F62 /* PersistentSetup.swift in Sources */,
 				A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */,
 				43DBE8D71CF6F66F00306AAE /* GrandOperatorTests.swift in Sources */,
 				4333FBA51CD9FAC00093364F /* SmtpTest.swift in Sources */,

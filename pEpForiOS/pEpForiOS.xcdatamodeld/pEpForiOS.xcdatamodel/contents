@@ -34,6 +34,7 @@
     <entity name="Contact" representedClassName="Contact" syncable="YES">
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="bccMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="bcc" inverseEntity="Message" syncable="YES"/>
         <relationship name="ccMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="cc" inverseEntity="Message" syncable="YES"/>
         <relationship name="fromMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="from" inverseEntity="Message" syncable="YES"/>
@@ -75,7 +76,7 @@
         <element name="Account" positionX="-63" positionY="-18" width="128" height="225"/>
         <element name="Attachment" positionX="-45" positionY="135" width="128" height="120"/>
         <element name="AttachmentData" positionX="-36" positionY="144" width="128" height="75"/>
-        <element name="Contact" positionX="-54" positionY="90" width="128" height="135"/>
+        <element name="Contact" positionX="-54" positionY="90" width="128" height="150"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="150"/>
         <element name="Message" positionX="-45" positionY="99" width="128" height="300"/>
         <element name="MessageReference" positionX="-45" positionY="135" width="128" height="75"/>

@@ -69,4 +69,68 @@ public class PEPUtil {
         let queue = NSOperationQueue.init()
         queue.addOperation(op)
     }
+
+    /**
+     Converts a core data contact to a pEp contact.
+     - Parameter contact: The core data contact object.
+     - Returns: An `NSMutableDictionary` contact for pEp.
+     */
+    public static func pepContact(contact: IContact) -> NSMutableDictionary {
+        let dict = NSMutableDictionary.init(capacity: 5)
+        if let name = contact.name {
+            dict[kPepUsername] = name
+        }
+        dict[kPepAddress] = contact.email
+        if let userID = contact.userID {
+            dict[kPepUserID] = userID
+        }
+        return dict
+    }
+
+    /**
+     Converts a core data attachment to a pEp attachment.
+     - Parameter contact: The core data attachment object.
+     - Returns: An `NSMutableDictionary` attachment for pEp.
+     */
+    public static func pepAttachment(attachment: IAttachment) -> NSMutableDictionary {
+        let dict = NSMutableDictionary.init(capacity: 5)
+
+        if let filename = attachment.filename {
+            dict[kPepMimeFilename] = filename
+        }
+        if let contentType = attachment.contentType {
+            dict[kPepMimeType] = contentType
+        }
+        dict[kPepMimeData] = attachment.content.data
+
+        return dict
+    }
+
+    /**
+     Converts a core data message into the format required by pEp.
+     - Parameter message: The core data message to convert
+     - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
+     */
+    public static func pepMail(message: IMessage) -> NSMutableDictionary {
+        let dict = NSMutableDictionary.init(capacity: 5)
+
+        if let subject = message.subject {
+            dict[kPepShortMessage] = subject
+        }
+
+        dict[kPepTo] = message.to.map() { pepContact($0 as! Contact) }
+        dict[kPepCC] = message.cc.map() { pepContact($0 as! Contact) }
+        dict[kPepBCC] = message.bcc.map() { pepContact($0 as! Contact) }
+
+        if let longMessage = message.longMessage {
+            dict[kPepLongMessage] = longMessage
+        }
+        if let longMessageFormatted = message.longMessageFormatted {
+            dict[kPepLongMessageFormatted] = longMessageFormatted
+        }
+
+        dict[kPepAttachments] = message.attachments.map() { pepAttachment($0 as! IAttachment) }
+
+        return dict
+    }
 }

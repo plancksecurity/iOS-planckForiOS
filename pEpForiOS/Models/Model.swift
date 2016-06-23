@@ -63,7 +63,7 @@ public protocol IModel {
     func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount?
     func insertNewMessage() -> IMessage
     func insertAttachmentWithContentType(
-        contentType: String?, filename: String?, data: NSData) -> _IAttachment
+        contentType: String?, filename: String?, data: NSData) -> IAttachment
 
     func insertOrUpdateContactEmail(email: String, name: String?) -> IContact
 
@@ -231,7 +231,7 @@ public class Model: IModel {
     }
 
     public func insertAttachmentWithContentType(
-        contentType: String?, filename: String?, data: NSData) -> _IAttachment {
+        contentType: String?, filename: String?, data: NSData) -> IAttachment {
         let attachment = NSEntityDescription.insertNewObjectForEntityForName(
             Attachment.entityName(), inManagedObjectContext: context) as! Attachment
         attachment.filename = filename
