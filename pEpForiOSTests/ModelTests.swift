@@ -61,12 +61,9 @@ class ModelTests: XCTestCase {
     }
 
     func testSpecialFolders() {
-        XCTAssertNotNil(persistentSetup.model.folderInboxForEmail(
-            persistentSetup.connectionInfo.email))
-        XCTAssertNotNil(persistentSetup.model.folderSentMailsForEmail(
-            persistentSetup.connectionInfo.email))
-        XCTAssertNotNil(persistentSetup.model.folderDraftsForEmail(
-            persistentSetup.connectionInfo.email))
+        XCTAssertNotNil(persistentSetup.model.folderInboxForEmail(accountEmail))
+        XCTAssertNotNil(persistentSetup.model.folderSentMailsForEmail(accountEmail))
+        XCTAssertNotNil(persistentSetup.model.folderDraftsForEmail(accountEmail))
     }
 
     func testSplitContactName() {
