@@ -43,7 +43,10 @@
 		43800D941D112A0800821E34 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D901D112A0800821E34 /* TFHppleElement.m */; };
 		43800D951D112A0800821E34 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D921D112A0800821E34 /* XPathQuery.m */; };
 		43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
-		4380F7B31D1BAE4A00326F62 /* SendMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7B21D1BAE4A00326F62 /* SendMailOperation.swift */; };
+		4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */; };
+		4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */; };
+		4380F7C71D1BBD5D00326F62 /* SendMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C41D1BBD5D00326F62 /* SendMailOperation.swift */; };
+		4380F7C91D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C81D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
 		439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439680971D1855D400DA31D2 /* WebKit.framework */; };
 		43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980E261CBD0BC900A7FC3C /* AppDelegate.swift */; };
@@ -212,7 +215,10 @@
 		43800D911D112A0800821E34 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
 		43800D921D112A0800821E34 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
 		43800D981D112A2A00821E34 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
-		4380F7B21D1BAE4A00326F62 /* SendMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMailOperation.swift; sourceTree = "<group>"; };
+		4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionData.swift; sourceTree = "<group>"; };
+		4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptMailOperation.swift; sourceTree = "<group>"; };
+		4380F7C41D1BBD5D00326F62 /* SendMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMailOperation.swift; sourceTree = "<group>"; };
+		4380F7C81D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistEmailToIMAPOperation.swift; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		439680971D1855D400DA31D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -330,6 +336,7 @@
 		431144A61CC0CB0A0007639D /* Background */ = {
 			isa = PBXGroup;
 			children = (
+				4380F7C11D1BBD5D00326F62 /* EncryptAndSend */,
 				4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */,
 				431144AB1CC0CCE20007639D /* GrandOperator.swift */,
 				431144B61CC11D6A0007639D /* BaseOperation.swift */,
@@ -345,7 +352,6 @@
 				5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */,
 				43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */,
 				43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */,
-				4380F7B21D1BAE4A00326F62 /* SendMailOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -369,6 +375,17 @@
 				43800D921D112A0800821E34 /* XPathQuery.m */,
 			);
 			path = HTMLParser;
+			sourceTree = "<group>";
+		};
+		4380F7C11D1BBD5D00326F62 /* EncryptAndSend */ = {
+			isa = PBXGroup;
+			children = (
+				4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */,
+				4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */,
+				4380F7C41D1BBD5D00326F62 /* SendMailOperation.swift */,
+				4380F7C81D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift */,
+			);
+			path = EncryptAndSend;
 			sourceTree = "<group>";
 		};
 		43980E1A1CBD0BC900A7FC3C = {
@@ -793,13 +810,14 @@
 				5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */,
 				43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */,
 				437431F61CFC2F14000F8D35 /* VerifyServiceOperation.swift in Sources */,
+				4380F7C71D1BBD5D00326F62 /* SendMailOperation.swift in Sources */,
+				4380F7C91D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFoldersOperation.swift in Sources */,
 				43C6F3611CBE8153006A2A18 /* Service.swift in Sources */,
 				439D407A1CC79423009A4E7C /* GCD.swift in Sources */,
 				43E58EB91CBF8301008AA7A7 /* Folder.swift in Sources */,
 				4303DAE71CE62D2600D9C0AB /* Attachment.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
-				4380F7B31D1BAE4A00326F62 /* SendMailOperation.swift in Sources */,
 				A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */,
 				43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
@@ -815,6 +833,7 @@
 				43980EE91CBD24B800A7FC3C /* TestData.swift in Sources */,
 				43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */,
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
+				4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */,
 				4303DAE81CE62D2600D9C0AB /* AttachmentData.swift in Sources */,
 				43980EE61CBD24B800A7FC3C /* ConnectInfo.swift in Sources */,
 				43ED53751CC77F95006AB156 /* MailSettingParameters.swift in Sources */,
@@ -851,6 +870,7 @@
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */,
 				43ED53761CC77F95006AB156 /* MailTableView.swift in Sources */,
+				4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */,
 				43A0E73C1D16C99900159F41 /* ALView+PureLayout.m in Sources */,
 				434596831CE227E6004E8735 /* MessageReference.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
