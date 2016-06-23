@@ -592,9 +592,9 @@
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="2Wy-ix-zIb"/>
-                                                    <exclude reference="zEG-DL-YTI"/>
                                                     <exclude reference="HDY-JP-YVi"/>
                                                     <exclude reference="uzr-Qt-eBZ"/>
+                                                    <exclude reference="zEG-DL-YTI"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
