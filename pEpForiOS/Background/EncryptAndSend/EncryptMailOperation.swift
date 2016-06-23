@@ -29,6 +29,10 @@ class EncryptMailOperation: BaseOperation {
                     Log.warn(self.comp, "Need valid email")
                     return
             }
+            let pepMailOrig = PEPUtil.pepMail(message)
+            let session = PEPSession.init()
+            let (unencrypted, encryptedBCC, pepMail) =
+                session.filterOutSpecialReceiversForPEPMail(pepMailOrig)
         })
     }
 }

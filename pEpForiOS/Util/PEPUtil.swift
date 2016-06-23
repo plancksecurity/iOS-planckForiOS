@@ -49,7 +49,7 @@ public class PEPUtil {
 
     public static func identityFromAccount(account: Account,
                                            isMyself: Bool = true) -> NSMutableDictionary {
-        let dict = NSMutableDictionary.init(capacity: 5)
+        let dict: NSMutableDictionary = [:]
         dict[kPepUsername] = account.nameOfTheUser
         dict[kPepAddress] = account.email
         return dict
@@ -76,7 +76,7 @@ public class PEPUtil {
      - Returns: An `NSMutableDictionary` contact for pEp.
      */
     public static func pepContact(contact: IContact) -> NSMutableDictionary {
-        let dict = NSMutableDictionary.init(capacity: 5)
+        let dict: NSMutableDictionary = [:]
         if let name = contact.name {
             dict[kPepUsername] = name
         }
@@ -93,7 +93,7 @@ public class PEPUtil {
      - Returns: An `NSMutableDictionary` attachment for pEp.
      */
     public static func pepAttachment(attachment: IAttachment) -> NSMutableDictionary {
-        let dict = NSMutableDictionary.init(capacity: 5)
+        let dict: NSMutableDictionary = [:]
 
         if let filename = attachment.filename {
             dict[kPepMimeFilename] = filename
@@ -112,7 +112,7 @@ public class PEPUtil {
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
     public static func pepMail(message: IMessage) -> NSMutableDictionary {
-        let dict = NSMutableDictionary.init(capacity: 5)
+        let dict: NSMutableDictionary = [:]
 
         if let subject = message.subject {
             dict[kPepShortMessage] = subject

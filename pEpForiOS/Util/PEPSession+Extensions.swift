@@ -1,0 +1,141 @@
+//
+//  PEPSession+Extensions.swift
+//  pEpForiOS
+//
+//  Created by Dirk Zimmermann on 23/06/16.
+//  Copyright © 2016 p≡p Security S.A. All rights reserved.
+//
+
+import Foundation
+
+public extension PEPSession {
+    /**
+     PEP predicate to run on a contact, given a session. Used for determining if a PEP contact
+     matches some criteria.
+     */
+    public typealias RecipientSortPredicate = (contact: NSMutableDictionary,
+        session: PEPSession) -> Bool
+
+    public enum RecipientType: Int, Hashable {
+        case To = 1
+        case CC
+        case BCC
+
+        public var hashValue: Int {
+            return rawValue
+        }
+    }
+
+    /**
+     A PEP contact bundled with its receiver type (like BCC or CC).
+     */
+    public class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
+        public let recipient: NSMutableDictionary
+        public let recipientType: RecipientType
+
+        public var description: String {
+            return "\(recipient[kPepAddress]) (\(recipientType))"
+        }
+
+        public init(recipient: NSMutableDictionary, recipientType: RecipientType) {
+            self.recipient = recipient
+            self.recipientType = recipientType
+        }
+
+        public var hashValue: Int {
+            return 31 &* recipient.hashValue &+ recipientType.hashValue
+        }
+    }
+
+    public func isUnencryptedPEPContact(contact: NSMutableDictionary,
+                                        from: NSMutableDictionary) -> Bool {
+        let fakeMail: NSMutableDictionary = [:]
+        fakeMail[kPepFrom] = from
+        fakeMail[kPepOutgoing] = true
+        fakeMail[kPepTo] = [contact]
+        fakeMail[kPepShortMessage] = "Subject"
+        fakeMail[kPepLongMessage]  = "Body"
+        let color = self.outgoingMessageColor(fakeMail)
+        return color.rawValue < PEP_rating_reliable.rawValue
+    }
+
+    /**
+     Sorts the receivers from a pEp mail into a set of ordered an unordered recipients.
+     - Parameter recipients: An `NSArray` of pEp contacts (`NSMutableDictionary`) taken
+     directly from a pEp mail (e.g., `pEpMail[kPepTo]`)
+     - Parameter recipientType: The recipient type the result should have (the method has to
+     know which type of recipients it was given).
+     - Parameter session: The pEp session.
+     - Parameter sortOutPredicate: A closure that, given a pEp contact and a session, will
+     return `true` if that recipient should be filtered out or `false` if not.
+     - Returns: A tuple of the unencrypted recipients, and the encrypted recipients.
+     Both elements are of type `NSOrderedSet` of `PEPRecipient`
+     */
+    func filterOutUnencryptedReceivers(
+        recipients: NSArray, recipientType: RecipientType, session: PEPSession,
+        sortOutPredicate: RecipientSortPredicate)
+        -> (unencryptedReceivers: [PEPRecipient], encryptedReceivers: [PEPRecipient]) {
+            let unencryptedReceivers = NSMutableOrderedSet()
+            let encryptedReceivers = NSMutableOrderedSet()
+
+            for contact in recipients {
+                if let c = contact as? NSMutableDictionary {
+                    let receiver = PEPRecipient.init(recipient: c, recipientType: recipientType)
+                    if sortOutPredicate(contact: c, session: session) {
+                        unencryptedReceivers.addObject(receiver)
+                    } else {
+                        encryptedReceivers.addObject(receiver)
+                    }
+                }
+            }
+
+            return (unencryptedReceivers: unencryptedReceivers.array.map({$0 as! PEPRecipient}),
+                    encryptedReceivers: encryptedReceivers.map({$0 as! PEPRecipient}))
+    }
+
+    /**
+     Removes all unencrypted receivers and encrypted BCC receivers from a given PEP mail.
+     - Parameter pepMail: The PEP mail
+     - Returns: A 3-tuple consisting of all unencrypted receivers, all encrypted BCCs,
+     the PEP mail without the unencrypted receivers
+     */
+    public func filterOutSpecialReceiversForPEPMail(pepMail: NSMutableDictionary)
+        -> (unencryptedReceivers: [PEPRecipient], encryptedBCC: [PEPRecipient],
+        pepMailPurged: NSMutableDictionary) {
+            let pepMailPurged = pepMail.mutableCopy() as! NSMutableDictionary
+
+            let session = PEPSession.init()
+
+            let unencryptedPredicate: RecipientSortPredicate = { contact, session in
+                return self.isUnencryptedPEPContact(
+                    contact, from: pepMail[kPepFrom] as! NSMutableDictionary)
+            }
+
+            let (unencryptedTo, encryptedTo) = filterOutUnencryptedReceivers(
+                pepMail[kPepTo] as! NSArray, recipientType: RecipientType.To, session: session,
+                sortOutPredicate: unencryptedPredicate)
+            pepMailPurged[kPepTo] = encryptedTo.map({$0.recipient}) as NSArray
+
+            let (unencryptedCC, encryptedCC) = filterOutUnencryptedReceivers(
+                pepMail[kPepCC] as! NSArray, recipientType: RecipientType.CC, session: session,
+                sortOutPredicate: unencryptedPredicate)
+            pepMailPurged[kPepCC] = encryptedCC.map({$0.recipient}) as NSArray
+
+            let (unencryptedBCC, encryptedBCC) = filterOutUnencryptedReceivers(
+                pepMail[kPepBCC] as! NSArray, recipientType: RecipientType.BCC, session: session,
+                sortOutPredicate: unencryptedPredicate)
+            pepMailPurged[kPepBCC] = []
+
+            var result = unencryptedTo
+            result.appendContentsOf(unencryptedCC)
+            result.appendContentsOf(unencryptedBCC)
+            return (result, encryptedBCC, pepMailPurged)
+    }
+}
+
+/**
+ Equatable for `PEPSession.PEPReceiver`.
+ */
+public func ==(lhs: PEPSession.PEPRecipient, rhs: PEPSession.PEPRecipient) -> Bool {
+    return lhs.recipientType == rhs.recipientType && lhs.recipient == rhs.recipient
+}
