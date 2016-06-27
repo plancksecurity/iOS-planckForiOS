@@ -234,6 +234,32 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="77" id="hWC-f7-mgz">
+                                        <rect key="frame" x="0.0" y="275" width="600" height="77"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hWC-f7-mgz" id="Ohn-VO-ptU">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="77"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" bounces="NO" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="glz-Fv-oX2">
+                                                    <rect key="frame" x="8" y="8" width="584" height="61"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="8bt-7R-jDE" id="P7z-fh-EZm"/>
+                                                    </connections>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="glz-Fv-oX2" firstAttribute="leading" secondItem="Ohn-VO-ptU" secondAttribute="leadingMargin" id="8L9-2U-NSg"/>
+                                                <constraint firstItem="glz-Fv-oX2" firstAttribute="top" secondItem="Ohn-VO-ptU" secondAttribute="topMargin" id="NBQ-bG-PaS"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="glz-Fv-oX2" secondAttribute="bottom" id="fbF-xA-bLj"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="glz-Fv-oX2" secondAttribute="trailing" id="sBv-k8-GT1"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -253,6 +279,7 @@
                     <connections>
                         <outlet property="bccTextField" destination="hSu-0v-Xag" id="jes-cw-eBH"/>
                         <outlet property="ccTextField" destination="pt3-yL-84D" id="pn7-e3-z5j"/>
+                        <outlet property="longMessageTextField" destination="glz-Fv-oX2" id="UML-tb-GRy"/>
                         <outlet property="shortMessageTextField" destination="inY-XG-OMC" id="DZc-2j-e9t"/>
                         <outlet property="toTextField" destination="HGI-37-dft" id="fiW-cc-bbC"/>
                     </connections>
