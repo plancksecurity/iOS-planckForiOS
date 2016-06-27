@@ -8,6 +8,10 @@
 
 import Foundation
 
+/**
+ Useful extensions for PEPSession, should move to the iOS Adapter if they prove usable
+ across apps.
+ */
 public extension PEPSession {
     /**
      PEP predicate to run on a contact, given a session. Used for determining if a PEP contact
@@ -97,11 +101,11 @@ public extension PEPSession {
      Removes all unencrypted receivers and encrypted BCC receivers from a given PEP mail.
      - Parameter pepMail: The PEP mail
      - Returns: A 3-tuple consisting of all unencrypted receivers, all encrypted BCCs,
-     the PEP mail without the unencrypted receivers
+     and an encryptable PEP mail without all the "unencrypted receivers" and the encrypted BCCs.
      */
     public func filterOutSpecialReceiversForPEPMail(pepMail: NSMutableDictionary)
         -> (unencryptedReceivers: [PEPRecipient], encryptedBCC: [PEPRecipient],
-        pepMailPurged: NSMutableDictionary) {
+        pepMailEncryptable: NSMutableDictionary) {
             let pepMailPurged = pepMail.mutableCopy() as! NSMutableDictionary
 
             let session = PEPSession.init()
@@ -130,6 +134,67 @@ public extension PEPSession {
             result.appendContentsOf(unencryptedCC)
             result.appendContentsOf(unencryptedBCC)
             return (result, encryptedBCC, pepMailPurged)
+    }
+
+    /**
+     Checks whether a given PEP mail has any recipients.
+     - Parameter pepMail: The PEP mail to check for recipients.
+     - Returns: true if the mail has any recipients, false otherwise.
+     */
+    func pepMailHasRecipients(pepMail: NSMutableDictionary) -> Bool {
+        let tos = pepMail[kPepTo] as! NSArray
+        let ccs = pepMail[kPepCC] as! NSArray
+        let bccs = pepMail[kPepBCC] as! NSArray
+        return tos.count > 0 || ccs.count > 0 || bccs.count > 0
+    }
+
+    /**
+     Sorts a given PEP mail into two buckets: One containing all encrypted mails
+     that should be sent, and one for all unencrypted ones.
+     - Parameter pepMail: The PEP mail to put into encryption/non-encryption buckets
+     - Returns: A tuple (encrypted, unencrypted) with the two buckets of mails.
+     */
+    public func bucketsForPEPMail(pepMail: NSMutableDictionary)
+        -> (encrypted: [NSMutableDictionary], unencrypted: [NSMutableDictionary]) {
+            let (unencryptedReceivers, encryptedBCC, pepMailPurged) =
+                filterOutSpecialReceiversForPEPMail(pepMail)
+
+            var encryptedMails: [NSMutableDictionary] = []
+            var unencryptedMails: [NSMutableDictionary] = []
+
+            if pepMailHasRecipients(pepMailPurged) {
+                encryptedMails.append(pepMailPurged)
+            }
+
+            let unencryptedMail = pepMailPurged.mutableCopy() as! NSMutableDictionary
+            unencryptedMails.append(unencryptedMail)
+
+            var tos: [NSMutableDictionary] = []
+            var ccs: [NSMutableDictionary] = []
+            var bccs: [NSMutableDictionary] = []
+            for r in unencryptedReceivers {
+                switch r.recipientType {
+                case .To:
+                    tos.append(r.recipient)
+                case .CC:
+                    ccs.append(r.recipient)
+                case .BCC:
+                    bccs.append(r.recipient)
+                }
+            }
+            unencryptedMail[kPepTo] = tos
+            unencryptedMail[kPepCC] = ccs
+            unencryptedMail[kPepBCC] = bccs
+
+            for bcc in encryptedBCC {
+                let mail = pepMailPurged.mutableCopy() as! NSMutableDictionary
+                mail[kPepTo] = []
+                mail[kPepCC] = []
+                mail[kPepBCC] = [bcc.recipient]
+                encryptedMails.append(mail)
+            }
+
+            return (encryptedMails, unencryptedMails)
     }
 }
 
