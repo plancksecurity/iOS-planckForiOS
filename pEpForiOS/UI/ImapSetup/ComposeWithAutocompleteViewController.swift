@@ -9,14 +9,14 @@
 import UIKit
 
 public class ComposeViewControllerModel {
-    var shortMessage: String?
-    var to: String?
+    var shortMessage: String? = nil
+    var to: String? = nil
 }
 
 class ComposeWithAutocompleteViewController: UITableViewController, UITextFieldDelegate {
 
     var appConfig: AppConfig?
-    var model: ComposeViewControllerModel?
+    var model = ComposeViewControllerModel.init()
 
     @IBOutlet weak var toTextField: UITextField!
     @IBOutlet weak var ccTextField: UITextField!
@@ -32,17 +32,15 @@ class ComposeWithAutocompleteViewController: UITableViewController, UITextFieldD
         super.didReceiveMemoryWarning()
     }
 
-
-
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         return true 
     }
 
     func updateView() {
-        if let subject = model!.shortMessage {
+        if let subject = model.shortMessage {
             shortMessageTextField.text = subject
         }
-        if let to = model!.to {
+        if let to = model.to {
             toTextField.text = to
         }
     }

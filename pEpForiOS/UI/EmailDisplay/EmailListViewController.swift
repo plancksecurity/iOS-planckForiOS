@@ -18,8 +18,8 @@ class EmailListViewController: UITableViewController {
     let comp = "EmailListViewController"
 
     let segueShowEmail = "segueShowEmail"
-    let segueCompose = "composeSegue"
-    let segueUserSettings = "userSettings"
+    let segueCompose = "segueCompose"
+    let segueUserSettings = "segueUserSettings"
 
     var appConfig: AppConfig!
     var fetchController: NSFetchedResultsController?
@@ -173,7 +173,8 @@ class EmailListViewController: UITableViewController {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == segueCompose {
-            let destination = segue.destinationViewController as! PruebaViewController
+            let destination = segue.destinationViewController
+                as! ComposeWithAutocompleteViewController
             destination.appConfig = appConfig
         } else if segue.identifier == segueShowEmail {
             guard
@@ -187,7 +188,6 @@ class EmailListViewController: UITableViewController {
             vc.message = email
         }
     }
-
 }
 
 extension EmailListViewController: NSFetchedResultsControllerDelegate {
