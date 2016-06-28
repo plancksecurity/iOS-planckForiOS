@@ -77,7 +77,8 @@ class PEPUtilTests: XCTestCase {
         message.addAttachmentsObject(a1 as! Attachment)
         message.addAttachmentsObject(a2 as! Attachment)
 
-        let pepMail = PEPUtil.pepMail(message)
+        let pepMail = PEPUtil.pepMail(message, outgoing: true)
+        XCTAssertEqual(pepMail[kPepOutgoing] as? Bool, true)
 
         XCTAssertEqual(pepMail[kPepTo]?[0] as? NSMutableDictionary, PEPUtil.pepContact(c1))
         XCTAssertEqual(pepMail[kPepCC]?[0] as? NSMutableDictionary, PEPUtil.pepContact(c2))

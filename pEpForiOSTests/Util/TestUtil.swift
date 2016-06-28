@@ -61,4 +61,72 @@ class TestUtil {
         TestUtil.waitForConnectionShutdown()
         TestUtil.waitForServiceCleanup()
     }
+
+    /**
+     Some code for accessing `NSBundle`s from Swift.
+     */
+    static func showBundles() {
+        for bundle in NSBundle.allBundles() {
+            dumpBundle(bundle)
+        }
+
+        let testBundle = NSBundle.init(forClass: PEPSessionTest.self)
+        dumpBundle(testBundle)
+    }
+
+    /**
+     Print some essential properties of a bundle to the console.
+     */
+    static func dumpBundle(bundle: NSBundle) {
+        print("bundle \(bundle.bundleIdentifier) \(bundle.bundlePath)")
+    }
+
+    /**
+     Import a key with the given file name from our own test bundle.
+     - Parameter session: The pEp session to import the key into.
+     - Parameter fileName: The file name of the key (complete with extension)
+     */
+    static func importKeyByFileName(session: PEPSession, fileName: String) {
+        let testBundle = NSBundle.init(forClass: PEPSessionTest.self)
+        guard let keyPath = testBundle.pathForResource(fileName, ofType: nil) else {
+            XCTAssertTrue(false, "Could not find key with file name \(fileName)")
+            return
+        }
+        guard let data = NSData.init(contentsOfFile: keyPath) else {
+            XCTAssertTrue(false, "Could not load key with file name \(fileName)")
+            return
+        }
+        guard let content = NSString.init(data: data, encoding: NSASCIIStringEncoding) else {
+            XCTAssertTrue(false, "Could not convert key with file name \(fileName) into data")
+            return
+        }
+        session.importKey(content as String)
+    }
+
+    static func setupSomeIdentities(session: PEPSession)
+        -> (identity: PEPContact, receiver1: PEPContact,
+        receiver2: PEPContact, receiver3: PEPContact,
+        receiver4: PEPContact) {
+            let identity: PEPContact = [:]
+            identity[kPepUsername] = "myself"
+            identity[kPepAddress] = "somewhere@overtherainbow.com"
+
+            let receiver1: PEPContact = [:]
+            receiver1[kPepUsername] = "receiver1"
+            receiver1[kPepAddress] = "receiver1@shopsmart.com"
+
+            let receiver2: PEPContact = [:]
+            receiver2[kPepUsername] = "receiver2"
+            receiver2[kPepAddress] = "receiver2@shopsmart.com"
+
+            let receiver3: PEPContact = [:]
+            receiver3[kPepUsername] = "receiver3"
+            receiver3[kPepAddress] = "receiver3@shopsmart.com"
+
+            let receiver4: PEPContact = [:]
+            receiver4[kPepUsername] = "receiver4"
+            receiver4[kPepAddress] = "receiver4@shopsmart.com"
+
+            return (identity, receiver1, receiver2, receiver3, receiver4)
+    }
 }

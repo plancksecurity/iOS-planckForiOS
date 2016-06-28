@@ -6,10 +6,16 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-public func optionalHashValue<T: Hashable>(someVar: T?) -> Int {
-    if let theVar = someVar {
-        return theVar.hashValue
-    } else {
-        return 0
+public class MiscUtil {
+    public static func optionalHashValue<T: Hashable>(someVar: T?) -> Int {
+        if let theVar = someVar {
+            return theVar.hashValue
+        } else {
+            return 0
+        }
+    }
+
+    public static func isNilOrEmptyNSArray(array: NSArray?) -> Bool {
+        return array == nil || array?.count == 0
     }
 }

@@ -15,9 +15,9 @@ import CoreData
  one for encrypting, one for sending the mails,
  and one for persisting the result on the IMAP server.
  */
-class EncryptionData {
+public class EncryptionData {
     /**
-     Needed for accessing core data in the background.
+     Needed for accessing core data.
      */
     let coreDataUtil: ICoreDataUtil
 
@@ -33,9 +33,22 @@ class EncryptionData {
      */
     let accountEmail: String
 
-    init(coreDataUtil: ICoreDataUtil, messageID: NSManagedObjectID, accountEmail: String) {
+    /**
+     Message to encrypt is meant for sending?
+     */
+    let outgoing: Bool
+
+    /**
+     After encryption has happened, all mails supposed to be sent are stored here.
+     This may include both encrypted and unencrypted messages, and should have a count > 0.
+     */
+    public var mailsToSend: [PEPMail] = []
+
+    public init(coreDataUtil: ICoreDataUtil, messageID: NSManagedObjectID, accountEmail: String,
+                outgoing: Bool = true) {
         self.coreDataUtil = coreDataUtil
         self.messageID = messageID
         self.accountEmail = accountEmail
+        self.outgoing = outgoing
     }
 }

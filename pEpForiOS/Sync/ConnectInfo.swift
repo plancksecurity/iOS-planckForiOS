@@ -137,11 +137,15 @@ public extension ConnectInfo {
 
 extension ConnectInfo: Hashable {
     public var hashValue: Int {
-        return 31 &* email.hashValue &+ optionalHashValue(imapUsername) &+
-            optionalHashValue(smtpUsername) &+ optionalHashValue(imapServerName) &+
-        optionalHashValue(imapServerPort) &+ optionalHashValue(smtpServerName) &+
-        optionalHashValue(smtpServerPort) &+ optionalHashValue(imapTransport) &+
-        optionalHashValue(smtpTransport)
+        return 31 &* email.hashValue &+
+            MiscUtil.optionalHashValue(imapUsername) &+
+            MiscUtil.optionalHashValue(smtpUsername) &+
+            MiscUtil.optionalHashValue(imapServerName) &+
+            MiscUtil.optionalHashValue(imapServerPort) &+
+            MiscUtil.optionalHashValue(smtpServerName) &+
+            MiscUtil.optionalHashValue(smtpServerPort) &+
+            MiscUtil.optionalHashValue(imapTransport) &+
+            MiscUtil.optionalHashValue(smtpTransport)
     }
 }
 

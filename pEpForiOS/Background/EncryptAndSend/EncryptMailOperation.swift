@@ -11,19 +11,18 @@ import UIKit
 /**
  Encrypts messages. Suitable for chaining with other operations that operate on `EncryptionData`.
  */
-class EncryptMailOperation: BaseOperation {
+public class EncryptMailOperation: BaseOperation {
     let comp = "EncryptMailOperation"
 
     let encryptionData: EncryptionData
 
-    init(encryptionData: EncryptionData) {
+    public init(encryptionData: EncryptionData) {
         self.encryptionData = encryptionData
     }
 
-    override func main() {
+    override public func main() {
         let privateMOC = encryptionData.coreDataUtil.privateContext()
         privateMOC.performBlockAndWait({
-            let model = Model.init(context: privateMOC)
             guard let message = privateMOC.objectWithID(self.encryptionData.messageID) as? Message
                 else {
                     Log.warn(self.comp, "Need valid email")
@@ -31,7 +30,7 @@ class EncryptMailOperation: BaseOperation {
             }
             let pepMailOrig = PEPUtil.pepMail(message)
             let session = PEPSession.init()
-            var mailsToSend: [PEPSession.PEPMail] = []
+            var mailsToSend: [PEPMail] = []
             let (mailsToEncrypt, mailsNotToEncrypt) = session.bucketsForPEPMail(pepMailOrig)
             mailsToSend.appendContentsOf(mailsNotToEncrypt)
 
@@ -39,7 +38,13 @@ class EncryptMailOperation: BaseOperation {
                 var encryptedMail: NSDictionary? = nil
                 session.encryptMessageDict(mail as [NSObject : AnyObject], extra: nil,
                     dest: &encryptedMail)
+                if let mail = encryptedMail {
+                    mailsToSend.append(mail as PEPMail)
+                } else {
+                    Log.warn(self.comp, "Could not encrypt message")
+                }
             }
+            self.encryptionData.mailsToSend = mailsToSend
         })
     }
 }

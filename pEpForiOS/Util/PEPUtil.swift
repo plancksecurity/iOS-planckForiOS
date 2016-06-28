@@ -9,6 +9,11 @@
 import Foundation
 
 public class PEPUtil {
+    /**
+     Mime type for the "Version" attachment of PGP/MIME.
+     */
+    public static let mimeTypePGPEncrypted = "application/pgp-encrypted"
+
     private static let homeUrl = NSURL(fileURLWithPath:
                                       NSProcessInfo.processInfo().environment["HOME"]!)
     private static let pEpManagementDbUrl =
@@ -111,7 +116,7 @@ public class PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
-    public static func pepMail(message: IMessage) -> PEPSession.PEPMail {
+    public static func pepMail(message: IMessage, outgoing: Bool = true) -> PEPMail {
         let dict: NSMutableDictionary = [:]
 
         if let subject = message.subject {
@@ -128,9 +133,38 @@ public class PEPUtil {
         if let longMessageFormatted = message.longMessageFormatted {
             dict[kPepLongMessageFormatted] = longMessageFormatted
         }
+        if let from = message.from {
+            dict[kPepFrom]  = self.pepContact(from)
+        }
+        dict[kPepOutgoing] = outgoing
 
         dict[kPepAttachments] = message.attachments.map() { pepAttachment($0 as! IAttachment) }
 
-        return dict as PEPSession.PEPMail
+        return dict as PEPMail
+    }
+
+    public static func insertPepContact(
+        pepContact: PEPContact, intoModel: IModel) -> IContact {
+        let contact = intoModel.insertOrUpdateContactEmail(
+            pepContact[kPepAddress] as! String,
+            name: pepContact[kPepUsername] as? String)
+        return contact
+    }
+
+    /**
+     For a PEPMail, checks whether it is PGP/MIME encrypted.
+     */
+    public static func isProbablyPGPMime(message: PEPMail) -> Bool {
+        var foundAttachmentPGPEncrypted = false
+        let attachments = message[kPepAttachments] as! NSArray
+        for atch in attachments {
+            if let filename = atch[kPepMimeType] as? String {
+                if filename.lowercaseString == mimeTypePGPEncrypted {
+                    foundAttachmentPGPEncrypted = true
+                    break
+                }
+            }
+        }
+        return foundAttachmentPGPEncrypted
     }
 }

@@ -9,64 +9,83 @@
 import Foundation
 
 /**
+ According to Swift, the parameters denoting a mail for encryption methods etc. are
+ not just of the type `NSDictionary`, but this.
+ - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
+ dealing with those. So I chose to rather pollute the namespace and have a working debugger.
+ */
+public typealias PEPMail = [NSObject : AnyObject]
+
+/**
+ Similar to `PEPMail`
+ */
+public typealias PEPContact = NSMutableDictionary
+
+/**
+ - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
+ dealing with those. So I chose to rather pollute the namespace and have a working debugger.
+ */
+public enum RecipientType: Int, Hashable {
+    case To = 1
+    case CC
+    case BCC
+
+    public var hashValue: Int {
+        return rawValue
+    }
+}
+
+/**
+ A PEP contact bundled with its receiver type (like BCC or CC).
+ - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
+ dealing with those. So I chose to rather pollute the namespace and have a working debugger.
+ */
+public class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
+    public let recipient: NSMutableDictionary
+    public let recipientType: RecipientType
+
+    public var description: String {
+        return "\(recipient[kPepAddress]) (\(recipientType))"
+    }
+
+    public init(recipient: NSMutableDictionary, recipientType: RecipientType) {
+        self.recipient = recipient
+        self.recipientType = recipientType
+    }
+
+    public var hashValue: Int {
+        return 31 &* recipient.hashValue &+ recipientType.hashValue
+    }
+}
+
+/**
  Useful extensions for PEPSession, should move to the iOS Adapter if they prove usable
  across apps.
  */
 public extension PEPSession {
     /**
-     According to Swift, the parameters denoting a mail for encryption methods etc. are
-     not just of the type `NSDictionary`, but this:
-     */
-    public typealias PEPMail = [NSObject : AnyObject]
-
-    /**
      PEP predicate to run on a contact, given a session. Used for determining if a PEP contact
      matches some criteria.
      */
-    public typealias RecipientSortPredicate = (contact: NSMutableDictionary,
+    public typealias RecipientSortPredicate = (contact: PEPContact,
         session: PEPSession) -> Bool
 
-    public enum RecipientType: Int, Hashable {
-        case To = 1
-        case CC
-        case BCC
-
-        public var hashValue: Int {
-            return rawValue
-        }
+    public func isUnencryptedPEPContact(contact: PEPContact,
+                                        from: PEPContact) -> Bool {
+        let color = outgoingContactColor(contact, from: from)
+        return color.rawValue < PEP_rating_reliable.rawValue
     }
 
-    /**
-     A PEP contact bundled with its receiver type (like BCC or CC).
-     */
-    public class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
-        public let recipient: NSMutableDictionary
-        public let recipientType: RecipientType
-
-        public var description: String {
-            return "\(recipient[kPepAddress]) (\(recipientType))"
-        }
-
-        public init(recipient: NSMutableDictionary, recipientType: RecipientType) {
-            self.recipient = recipient
-            self.recipientType = recipientType
-        }
-
-        public var hashValue: Int {
-            return 31 &* recipient.hashValue &+ recipientType.hashValue
-        }
-    }
-
-    public func isUnencryptedPEPContact(contact: NSMutableDictionary,
-                                        from: NSMutableDictionary) -> Bool {
+    public func outgoingContactColor(contact: PEPContact,
+                                     from: PEPContact) -> PEP_color {
         let fakeMail: NSMutableDictionary = [:]
         fakeMail[kPepFrom] = from
         fakeMail[kPepOutgoing] = true
         fakeMail[kPepTo] = [contact]
         fakeMail[kPepShortMessage] = "Subject"
         fakeMail[kPepLongMessage]  = "Body"
-        let color = self.outgoingMessageColor(fakeMail)
-        return color.rawValue < PEP_rating_reliable.rawValue
+        let color = outgoingMessageColor(fakeMail)
+        return color
     }
 
     /**
@@ -207,6 +226,6 @@ public extension PEPSession {
 /**
  Equatable for `PEPSession.PEPReceiver`.
  */
-public func ==(lhs: PEPSession.PEPRecipient, rhs: PEPSession.PEPRecipient) -> Bool {
+public func ==(lhs: PEPRecipient, rhs: PEPRecipient) -> Bool {
     return lhs.recipientType == rhs.recipientType && lhs.recipient == rhs.recipient
 }
