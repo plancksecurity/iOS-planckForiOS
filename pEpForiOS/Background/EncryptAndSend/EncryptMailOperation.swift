@@ -31,8 +31,15 @@ class EncryptMailOperation: BaseOperation {
             }
             let pepMailOrig = PEPUtil.pepMail(message)
             let session = PEPSession.init()
-            let (unencrypted, encryptedBCC, pepMail) =
-                session.filterOutSpecialReceiversForPEPMail(pepMailOrig)
+            var mailsToSend: [PEPSession.PEPMail] = []
+            let (mailsToEncrypt, mailsNotToEncrypt) = session.bucketsForPEPMail(pepMailOrig)
+            mailsToSend.appendContentsOf(mailsNotToEncrypt)
+
+            for mail in mailsToEncrypt {
+                var encryptedMail: NSDictionary? = nil
+                session.encryptMessageDict(mail as [NSObject : AnyObject], extra: nil,
+                    dest: &encryptedMail)
+            }
         })
     }
 }

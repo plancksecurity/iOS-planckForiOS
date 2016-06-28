@@ -111,7 +111,7 @@ public class PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
-    public static func pepMail(message: IMessage) -> NSMutableDictionary {
+    public static func pepMail(message: IMessage) -> PEPSession.PEPMail {
         let dict: NSMutableDictionary = [:]
 
         if let subject = message.subject {
@@ -131,6 +131,6 @@ public class PEPUtil {
 
         dict[kPepAttachments] = message.attachments.map() { pepAttachment($0 as! IAttachment) }
 
-        return dict
+        return dict as PEPSession.PEPMail
     }
 }

@@ -14,6 +14,12 @@ import Foundation
  */
 public extension PEPSession {
     /**
+     According to Swift, the parameters denoting a mail for encryption methods etc. are
+     not just of the type `NSDictionary`, but this:
+     */
+    public typealias PEPMail = [NSObject : AnyObject]
+
+    /**
      PEP predicate to run on a contact, given a session. Used for determining if a PEP contact
      matches some criteria.
      */
@@ -103,10 +109,10 @@ public extension PEPSession {
      - Returns: A 3-tuple consisting of all unencrypted receivers, all encrypted BCCs,
      and an encryptable PEP mail without all the "unencrypted receivers" and the encrypted BCCs.
      */
-    public func filterOutSpecialReceiversForPEPMail(pepMail: NSMutableDictionary)
+    public func filterOutSpecialReceiversForPEPMail(pepMail: PEPMail)
         -> (unencryptedReceivers: [PEPRecipient], encryptedBCC: [PEPRecipient],
-        pepMailEncryptable: NSMutableDictionary) {
-            let pepMailPurged = pepMail.mutableCopy() as! NSMutableDictionary
+        pepMailEncryptable: PEPMail) {
+            let pepMailPurged = NSMutableDictionary.init(dictionary: pepMail)
 
             let session = PEPSession.init()
 
@@ -133,7 +139,7 @@ public extension PEPSession {
             var result = unencryptedTo
             result.appendContentsOf(unencryptedCC)
             result.appendContentsOf(unencryptedBCC)
-            return (result, encryptedBCC, pepMailPurged)
+            return (result, encryptedBCC, pepMailPurged as PEPMail)
     }
 
     /**
@@ -141,7 +147,7 @@ public extension PEPSession {
      - Parameter pepMail: The PEP mail to check for recipients.
      - Returns: true if the mail has any recipients, false otherwise.
      */
-    func pepMailHasRecipients(pepMail: NSMutableDictionary) -> Bool {
+    func pepMailHasRecipients(pepMail: PEPMail) -> Bool {
         let tos = pepMail[kPepTo] as! NSArray
         let ccs = pepMail[kPepCC] as! NSArray
         let bccs = pepMail[kPepBCC] as! NSArray
@@ -154,21 +160,19 @@ public extension PEPSession {
      - Parameter pepMail: The PEP mail to put into encryption/non-encryption buckets
      - Returns: A tuple (encrypted, unencrypted) with the two buckets of mails.
      */
-    public func bucketsForPEPMail(pepMail: NSMutableDictionary)
-        -> (encrypted: [NSMutableDictionary], unencrypted: [NSMutableDictionary]) {
+    public func bucketsForPEPMail(pepMail: PEPMail)
+        -> (mailsToEncrypt: [PEPMail], mailsNotToEncrypt: [PEPMail]) {
             let (unencryptedReceivers, encryptedBCC, pepMailPurged) =
                 filterOutSpecialReceiversForPEPMail(pepMail)
 
-            var encryptedMails: [NSMutableDictionary] = []
-            var unencryptedMails: [NSMutableDictionary] = []
+            var encryptedMails: [PEPMail] = []
+            var unencryptedMails: [PEPMail] = []
 
             if pepMailHasRecipients(pepMailPurged) {
                 encryptedMails.append(pepMailPurged)
             }
 
-            let unencryptedMail = pepMailPurged.mutableCopy() as! NSMutableDictionary
-            unencryptedMails.append(unencryptedMail)
-
+            let unencryptedMail = NSMutableDictionary.init(dictionary: pepMailPurged)
             var tos: [NSMutableDictionary] = []
             var ccs: [NSMutableDictionary] = []
             var bccs: [NSMutableDictionary] = []
@@ -178,6 +182,7 @@ public extension PEPSession {
                     tos.append(r.recipient)
                 case .CC:
                     ccs.append(r.recipient)
+                    print("ccs: \(ccs)")
                 case .BCC:
                     bccs.append(r.recipient)
                 }
@@ -185,13 +190,14 @@ public extension PEPSession {
             unencryptedMail[kPepTo] = tos
             unencryptedMail[kPepCC] = ccs
             unencryptedMail[kPepBCC] = bccs
+            unencryptedMails.append(unencryptedMail as PEPMail)
 
             for bcc in encryptedBCC {
-                let mail = pepMailPurged.mutableCopy() as! NSMutableDictionary
+                let mail = NSMutableDictionary.init(dictionary: pepMailPurged)
                 mail[kPepTo] = []
                 mail[kPepCC] = []
                 mail[kPepBCC] = [bcc.recipient]
-                encryptedMails.append(mail)
+                encryptedMails.append(mail as PEPMail)
             }
 
             return (encryptedMails, unencryptedMails)

@@ -103,7 +103,7 @@ class PEPSessionTest: XCTestCase {
         pepMail[kPepLongMessage] = "Some body text"
 
         let (unencryptedReceivers, encryptedBCC, pepMailPurged)
-            = session.filterOutSpecialReceiversForPEPMail(pepMail)
+            = session.filterOutSpecialReceiversForPEPMail(pepMail as PEPSession.PEPMail)
         XCTAssertEqual(unencryptedReceivers,
                        [PEPSession.PEPRecipient.init(recipient: receiver1, recipientType: .To),
                         PEPSession.PEPRecipient.init(recipient: receiver2, recipientType: .CC),
@@ -130,7 +130,7 @@ class PEPSessionTest: XCTestCase {
         pepMail[kPepShortMessage] = "Subject"
         pepMail[kPepLongMessage] = "Some body text"
 
-        let (encrypted, unencrypted) = session.bucketsForPEPMail(pepMail)
+        let (encrypted, unencrypted) = session.bucketsForPEPMail(pepMail as PEPSession.PEPMail)
         XCTAssertEqual(encrypted.count, 2)
         XCTAssertEqual(unencrypted.count, 1)
 
@@ -165,7 +165,7 @@ class PEPSessionTest: XCTestCase {
         pepMail[kPepShortMessage] = "Subject"
         pepMail[kPepLongMessage] = "Some body text"
 
-        let (encrypted, unencrypted) = session.bucketsForPEPMail(pepMail)
+        let (encrypted, unencrypted) = session.bucketsForPEPMail(pepMail as PEPSession.PEPMail)
         XCTAssertEqual(encrypted.count, 3)
         XCTAssertEqual(unencrypted.count, 1)
 
