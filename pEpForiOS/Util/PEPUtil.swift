@@ -168,4 +168,41 @@ public class PEPUtil {
         }
         return foundAttachmentPGPEncrypted
     }
+
+    public static func addRecipients(recipients: [PEPContact], toIMAPMessage: CWIMAPMessage,
+                                     recipientType: PantomimeRecipientType) {
+        for c in recipients {
+            let address = CWInternetAddress.init()
+            if let email = c[kPepAddress] as? String {
+                address.setAddress(email)
+            }
+            if let name = c[kPepUsername] as? String {
+                address.setPersonal(name)
+            }
+            address.setType(recipientType)
+            toIMAPMessage.addRecipient(address)
+        }
+    }
+
+    /**
+     Converts a given `PEPMail` into the equivalent `CWIMAPMessage`.
+     */
+    public static func pepMailToPantomime(pepMail: PEPMail) -> CWIMAPMessage {
+        let message = CWIMAPMessage.init()
+
+        if let recipients = pepMail[kPepTo] as? NSArray {
+            addRecipients(recipients as! [PEPContact], toIMAPMessage: message,
+                          recipientType: .ToRecipient)
+        }
+        if let recipients = pepMail[kPepCC] as? NSArray {
+            addRecipients(recipients as! [PEPContact], toIMAPMessage: message,
+                          recipientType: .CcRecipient)
+        }
+        if let recipients = pepMail[kPepBCC] as? NSArray {
+            addRecipients(recipients as! [PEPContact], toIMAPMessage: message,
+                          recipientType: .BccRecipient)
+        }
+
+        return message
+    }
 }

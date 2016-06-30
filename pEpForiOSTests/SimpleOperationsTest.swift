@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 
 class SimpleOperationsTest: XCTestCase {
-    let waitTime: NSTimeInterval = 1000
+    let waitTime: NSTimeInterval = 10
 
     var persistentSetup: PersistentSetup!
     var connectInfo: ConnectInfo!
@@ -132,7 +132,7 @@ class SimpleOperationsTest: XCTestCase {
                 address: "somemail\(i)@test.com"))
             message.setSubject("Subject \(i)")
             message.setRecipients([CWInternetAddress.init(personal: "thisIsMe",
-                address: "myaddress@test.com", type: PantomimeToRecipient)])
+                address: "myaddress@test.com", type: .ToRecipient)])
             message.setFolder(folder)
             message.setUID(UInt(i))
             let op = StorePrefetchedMailOperation.init(

@@ -34,6 +34,11 @@ public extension IMessage {
         }
     }
 
+    /**
+     Convert the `Message` into an `CWIMAPMessage`, belonging to the given folder.
+     - Note: This does not handle attachments and many other fields. It's just for quickly
+     interfacing with Pantomime.
+     */
     func imapMessageWithFolder(folder: CWIMAPFolder) -> CWIMAPMessage {
         let msg = CWIMAPMessage.init()
 
@@ -66,11 +71,11 @@ public extension IMessage {
         }
 
         var recipients: [CWInternetAddress] = []
-        collectContacts(cc, asPantomimeReceiverType: PantomimeCcRecipient,
+        collectContacts(cc, asPantomimeReceiverType: .CcRecipient,
                         intoTargetArray: &recipients)
-        collectContacts(bcc, asPantomimeReceiverType: PantomimeBccRecipient,
+        collectContacts(bcc, asPantomimeReceiverType: .BccRecipient,
                         intoTargetArray: &recipients)
-        collectContacts(to, asPantomimeReceiverType: PantomimeToRecipient,
+        collectContacts(to, asPantomimeReceiverType: .ToRecipient,
                         intoTargetArray: &recipients)
         msg.setRecipients(recipients)
 

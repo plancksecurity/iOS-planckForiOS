@@ -572,7 +572,7 @@ public class Model: IModel {
 
         var addresses = message.recipients() as! [CWInternetAddress]
         if let from = message.from() {
-            from.setType(PantomimeToRecipient)
+            from.setType(.ToRecipient)
             addresses.append(from)
         }
         let contacts = addContacts(addresses)
@@ -581,9 +581,9 @@ public class Model: IModel {
         let tos: NSMutableOrderedSet = []
         for addr in addresses {
             switch addr.type() {
-            case PantomimeCcRecipient:
+            case .CcRecipient:
                 ccs.addObject(contacts[addr.address()]! as! Contact)
-            case PantomimeToRecipient:
+            case .ToRecipient:
                 tos.addObject(contacts[addr.address()]! as! Contact)
             default:
                 Log.warn(comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
