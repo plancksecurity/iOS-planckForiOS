@@ -14,6 +14,9 @@ import UIKit
 public class EncryptMailOperation: BaseOperation {
     let comp = "EncryptMailOperation"
 
+    /**
+     All the parameters for the operation come from here.
+     */
     let encryptionData: EncryptionData
 
     public init(encryptionData: EncryptionData) {
@@ -25,7 +28,15 @@ public class EncryptMailOperation: BaseOperation {
         privateMOC.performBlockAndWait({
             guard let message = privateMOC.objectWithID(self.encryptionData.messageID) as? Message
                 else {
-                    Log.warn(self.comp, "Need valid email")
+                    let error = Constants.errorInvalidParameter(
+                        self.comp,
+                        errorMessage:
+                        NSLocalizedString("Email for encryption could not be accessed",
+                            comment: "Error message when message to encrypt could not be found."))
+                    self.errors.append(error)
+                    Log.error(self.comp, error: Constants.errorInvalidParameter(
+                        self.comp,
+                        errorMessage:"Email for encryption could not be accessed"))
                     return
             }
             let pepMailOrig = PEPUtil.pepMail(message)
@@ -41,7 +52,15 @@ public class EncryptMailOperation: BaseOperation {
                 if let mail = encryptedMail {
                     mailsToSend.append(mail as PEPMail)
                 } else {
-                    Log.warn(self.comp, "Could not encrypt message")
+                    let error = Constants.errorInvalidParameter(
+                        self.comp,
+                        errorMessage:
+                        NSLocalizedString("Could not encrypt message",
+                            comment: "Error message when the engine failed to encrypt a message."))
+                    self.errors.append(error)
+                    Log.error(self.comp, error: Constants.errorInvalidParameter(
+                        self.comp,
+                        errorMessage: "Could not encrypt message"))
                 }
             }
             self.encryptionData.mailsToSend = mailsToSend

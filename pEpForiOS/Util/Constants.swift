@@ -18,7 +18,8 @@ public class Constants {
     public enum GeneralErrorCode: Int {
         case NotImplemented = 1000
         case IllegalState
-        case FolderNotOpen
+        case InvalidParameter
+        case OperationFailed
     }
 
     public enum NetworkError: Int {
@@ -64,9 +65,23 @@ public class Constants {
         return error
     }
 
+    static func errorInvalidParameter(component: String, errorMessage: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: GeneralErrorCode.InvalidParameter.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: errorMessage])
+        return error
+    }
+
+    static func errorOperationFailed(component: String, errorMessage: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: GeneralErrorCode.OperationFailed.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: errorMessage])
+        return error
+    }
+
     static func errorFolderNotOpen(component: String, folderName: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: GeneralErrorCode.FolderNotOpen.rawValue,
+            domain: component, code: GeneralErrorCode.IllegalState.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSString.init(format: NSLocalizedString("Folder is not open: %@",
                     comment: "General error description for operation that needs an open folder, but there was none"),

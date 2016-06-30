@@ -245,6 +245,7 @@ class SimpleOperationsTest: XCTestCase {
         mail.longMessageFormatted = "<b>HTML message</b>"
 
         let encryptionData = EncryptionData.init(
+            connectionManager: persistentSetup.connectionManager,
             coreDataUtil: persistentSetup.coreDataUtil, messageID: mail.objectID,
             accountEmail: account.email, outgoing: true)
         let encOp = EncryptMailOperation.init(encryptionData: encryptionData)
@@ -276,6 +277,49 @@ class SimpleOperationsTest: XCTestCase {
             }
             XCTAssertTrue(encounteredBCC)
             XCTAssertTrue(encounteredCC)
+            XCTAssertEqual(encOp.errors.count, 0)
         })
+    }
+
+    func testSendMailOperation() {
+        guard let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo) else {
+            XCTAssertTrue(false, "Expected account to be created")
+            return
+        }
+        let encryptionData = EncryptionData.init(
+            connectionManager: persistentSetup.connectionManager,
+            coreDataUtil: persistentSetup.coreDataUtil,
+            messageID: (account as! Account).objectID, // fake, but not needed for the test
+            accountEmail: account.email, outgoing: true)
+
+        let from = PEPUtil.identityFromAccount(account, isMyself: true)
+        let contact = NSMutableDictionary()
+        contact[kPepUsername] = "Test 001"
+        contact[kPepAddress] = "test001@peptest.ch"
+
+        // Build emails
+        let numMails = 5
+        for i in 1...numMails {
+            let fakeMail: NSMutableDictionary = [:]
+            fakeMail[kPepFrom] = from
+            fakeMail[kPepOutgoing] = true
+            fakeMail[kPepTo] = [contact]
+            fakeMail[kPepShortMessage] = "Subject \(i)"
+            fakeMail[kPepLongMessage]  = "Body \(i)"
+        }
+
+        let expMailsSent = expectationWithDescription("expMailsSent")
+
+        let sendOp = SendMailOperation.init(encryptionData: encryptionData)
+        sendOp.completionBlock = {
+            expMailsSent.fulfill()
+        }
+        let queue = NSOperationQueue.init()
+        queue.addOperation(sendOp)
+
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(sendOp.errors.count, numMails)
+       })
     }
 }

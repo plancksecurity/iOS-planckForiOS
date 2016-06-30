@@ -9,43 +9,86 @@
 import UIKit
 import CoreData
 
-class SendMailOperation: BaseOperation {
+public class SendMailOperation: ConcurrentBaseOperation {
     let comp = "SendMailOperation"
 
-    let coreDataUtil: ICoreDataUtil
-    let messageID: NSManagedObjectID
-    let accountEmail: String
+    /**
+     All the parameters for the operation come from here.
+     `mailsToSend` denotes the (pEp) mails that are about to be sent.
+     */
+    let encryptionData: EncryptionData
 
-    init(coreDataUtil: ICoreDataUtil, messageID: NSManagedObjectID, accountEmail: String) {
-        self.coreDataUtil = coreDataUtil
-        self.messageID = messageID
-        self.accountEmail = accountEmail
-        super.init()
+    /**
+     Store the SMTP object so that it does not get collected away.
+     */
+    var smtpSend: SmtpSend!
+
+    public init(encryptionData: EncryptionData) {
+        self.encryptionData = encryptionData
     }
 
-    convenience init(coreDataUtil: ICoreDataUtil, message: Message) {
-        self.init(coreDataUtil: coreDataUtil, messageID: message.objectID,
-                  accountEmail: message.folder.account.email)
-    }
-
-    override func main() {
-        let privateMOC = coreDataUtil.privateContext()
+    override public func main() {
+        let privateMOC = encryptionData.coreDataUtil.privateContext()
+        var connectInfo: ConnectInfo? = nil
         privateMOC.performBlockAndWait({
             let model = Model.init(context: privateMOC)
-            guard let message = privateMOC.objectWithID(self.messageID) as? Message else {
-                Log.warn(self.comp, "Need valid email")
+            guard let account = model.accountByEmail(self.encryptionData.accountEmail) else {
+                self.errors.append(Constants.errorInvalidParameter(
+                    self.comp,
+                    errorMessage: String.localizedStringWithFormat(
+                        NSLocalizedString("Could not get account by email: '%s'",
+                            comment: "Error message when account could not be retrieved"),
+                        self.encryptionData.accountEmail)))
+                Log.error(self.comp, error: Constants.errorInvalidParameter(
+                    self.comp,
+                    errorMessage:
+                    "Could not get account by email: \(self.encryptionData.accountEmail)"))
                 return
             }
-            guard let account = model.accountByEmail(self.accountEmail) else {
-                Log.warn(self.comp, "Need valid account")
-                return
-            }
-            guard let folder = model.folderLocalOutboxForEmail(self.accountEmail) as? Folder else {
-                Log.warn(self.comp, "Need account with local outbox folder")
-                return
-            }
-            message.folder = folder
-            model.save()
+            connectInfo = account.connectInfo
         })
+        if let ci = connectInfo {
+            smtpSend = encryptionData.connectionManager.smtpConnection(ci)
+            smtpSend.delegate = self
+            smtpSend.start()
+        } else {
+            markAsFinished()
+        }
     }
+}
+
+extension SendMailOperation: SmtpSendDelegate {
+    public func messageSent(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func connectionLost(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?) {}
+
+    public func serviceReconnected(smtp: SmtpSend, theNotification: NSNotification?) {}
 }

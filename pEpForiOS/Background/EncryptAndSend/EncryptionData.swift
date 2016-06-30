@@ -22,6 +22,11 @@ public class EncryptionData {
     let coreDataUtil: ICoreDataUtil
 
     /**
+     For getting a SMTP connection.
+     */
+    let connectionManager: ConnectionManager
+
+    /**
      The original unencrypted message ID. Needed as an object ID so it can be passed
      between operations.
      */
@@ -41,11 +46,18 @@ public class EncryptionData {
     /**
      After encryption has happened, all mails supposed to be sent are stored here.
      This may include both encrypted and unencrypted messages, and should have a count > 0.
+     Those mails can then be sent with `SendMailOperation`.
      */
     public var mailsToSend: [PEPMail] = []
 
-    public init(coreDataUtil: ICoreDataUtil, messageID: NSManagedObjectID, accountEmail: String,
-                outgoing: Bool = true) {
+    /**
+     After the `SendMailOperation` has done its job, all sent mails should be noted here.
+     */
+    public var mailsSent: [PEPMail] = []
+
+    public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil,
+                messageID: NSManagedObjectID, accountEmail: String, outgoing: Bool = true) {
+        self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
         self.messageID = messageID
         self.accountEmail = accountEmail

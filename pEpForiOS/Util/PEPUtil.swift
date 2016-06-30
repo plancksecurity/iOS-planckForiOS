@@ -52,11 +52,12 @@ public class PEPUtil {
         return true
     }
 
-    public static func identityFromAccount(account: Account,
+    public static func identityFromAccount(account: IAccount,
                                            isMyself: Bool = true) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
         dict[kPepUsername] = account.nameOfTheUser
         dict[kPepAddress] = account.email
+        dict[kPepIsMe] = isMyself
         return dict
     }
 
