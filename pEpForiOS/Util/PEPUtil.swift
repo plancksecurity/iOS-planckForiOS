@@ -10,9 +10,9 @@ import Foundation
 
 public class PEPUtil {
     /**
-     Mime type for the "Version" attachment of PGP/MIME.
+     Content type for MIME multipart/alternative.
      */
-    public static let mimeTypePGPEncrypted = "application/pgp-encrypted"
+    public static let kMimeTypeMultipartAlternative = "multipart/alternative"
 
     private static let homeUrl = NSURL(fileURLWithPath:
                                       NSProcessInfo.processInfo().environment["HOME"]!)
@@ -94,6 +94,18 @@ public class PEPUtil {
     }
 
     /**
+     Creates pEp contact from name and address.
+     */
+    public static func pepContactFromEmail(email: String, name: String? = nil) -> PEPContact {
+        let contact = NSMutableDictionary()
+        contact[kPepAddress] = email
+        if let n = name {
+            contact[kPepUsername] = n
+        }
+        return contact
+    }
+
+    /**
      Converts a core data attachment to a pEp attachment.
      - Parameter contact: The core data attachment object.
      - Returns: An `NSMutableDictionary` attachment for pEp.
@@ -137,6 +149,9 @@ public class PEPUtil {
         if let from = message.from {
             dict[kPepFrom]  = self.pepContact(from)
         }
+        if let messageID = message.messageID {
+            dict[kPepID] = messageID
+        }
         dict[kPepOutgoing] = outgoing
 
         dict[kPepAttachments] = message.attachments.map() { pepAttachment($0 as! IAttachment) }
@@ -160,7 +175,7 @@ public class PEPUtil {
         let attachments = message[kPepAttachments] as! NSArray
         for atch in attachments {
             if let filename = atch[kPepMimeType] as? String {
-                if filename.lowercaseString == mimeTypePGPEncrypted {
+                if filename.lowercaseString == Constants.contentTypePGPEncrypted {
                     foundAttachmentPGPEncrypted = true
                     break
                 }
@@ -169,40 +184,168 @@ public class PEPUtil {
         return foundAttachmentPGPEncrypted
     }
 
-    public static func addRecipients(recipients: [PEPContact], toIMAPMessage: CWIMAPMessage,
-                                     recipientType: PantomimeRecipientType) {
-        for c in recipients {
-            let address = CWInternetAddress.init()
-            if let email = c[kPepAddress] as? String {
-                address.setAddress(email)
+    /**
+     Converts a pEp contact dict to a pantomime address.
+     */
+    public static func pantomimeContactFromPepContact(contact: PEPContact) -> CWInternetAddress {
+        let address = CWInternetAddress.init()
+        if let email = contact[kPepAddress] as? String {
+            address.setAddress(email)
+        }
+        if let name = contact[kPepUsername] as? String {
+            address.setPersonal(name)
+        }
+        return address
+    }
+
+    /**
+     Converts a list of pEp contacts of a given receiver type to a list of pantomime recipients.
+     */
+    public static func makePantomimeRecipientsFromPepContacts(pepContacts: [PEPContact],
+                                      recipientType: PantomimeRecipientType)
+        -> [CWInternetAddress] {
+            var addresses: [CWInternetAddress] = []
+            for c in pepContacts {
+                let address = pantomimeContactFromPepContact(c)
+                address.setType(recipientType)
+                addresses.append(address)
             }
-            if let name = c[kPepUsername] as? String {
-                address.setPersonal(name)
-            }
-            address.setType(recipientType)
-            toIMAPMessage.addRecipient(address)
+            return addresses
+    }
+
+    public static func addPepContacts(recipients: [PEPContact], toPantomimeMessage: CWIMAPMessage,
+                                      recipientType: PantomimeRecipientType) {
+        let addresses = makePantomimeRecipientsFromPepContacts(
+            recipients, recipientType: recipientType)
+        for a in addresses {
+            toPantomimeMessage.addRecipient(a)
         }
     }
 
     /**
      Converts a given `PEPMail` into the equivalent `CWIMAPMessage`.
+     See https://tools.ietf.org/html/rfc2822 for a better understanding of some fields.
      */
-    public static func pepMailToPantomime(pepMail: PEPMail) -> CWIMAPMessage {
+    public static func pantomimeMailFromPep(pepMail: PEPMail) -> CWIMAPMessage {
         let message = CWIMAPMessage.init()
 
+        if let from = pepMail[kPepFrom] as? PEPContact {
+            let address = pantomimeContactFromPepContact(from)
+            message.setFrom(address)
+        }
+
         if let recipients = pepMail[kPepTo] as? NSArray {
-            addRecipients(recipients as! [PEPContact], toIMAPMessage: message,
+            addPepContacts(recipients as! [PEPContact], toPantomimeMessage: message,
                           recipientType: .ToRecipient)
         }
         if let recipients = pepMail[kPepCC] as? NSArray {
-            addRecipients(recipients as! [PEPContact], toIMAPMessage: message,
+            addPepContacts(recipients as! [PEPContact], toPantomimeMessage: message,
                           recipientType: .CcRecipient)
         }
         if let recipients = pepMail[kPepBCC] as? NSArray {
-            addRecipients(recipients as! [PEPContact], toIMAPMessage: message,
+            addPepContacts(recipients as! [PEPContact], toPantomimeMessage: message,
                           recipientType: .BccRecipient)
+        }
+        if let messageID = pepMail[kPepID] as? String {
+            message.setMessageID(messageID)
+        }
+        if let shortMsg = pepMail[kPepShortMessage] as? String {
+            message.setSubject(shortMsg)
+        }
+        if let refs = pepMail[kPepReferences] as? [AnyObject] {
+            message.setReferences(refs)
+        }
+        if let inReplyTo = pepMail[kPepReferences] as? NSArray {
+            let s = inReplyTo.componentsJoinedByString(" ")
+            message.setInReplyTo(s)
+        }
+
+        // deal with MIME type
+
+        let attachmentDictsOpt = pepMail[kPepAttachments] as? NSArray
+        if !MiscUtil.isNilOrEmptyNSArray(attachmentDictsOpt) {
+            // Create multipart mail
+            let multiPart = CWMIMEMultipart.init()
+            message.setContentType(Constants.contentTypeMultipartMixed)
+            message.setContent(multiPart)
+
+            let bodyPart = bodyPartFromPepMail(pepMail)
+            multiPart.addPart(bodyPart)
+
+            if let attachmentDicts = attachmentDictsOpt {
+                for attachmentDict in attachmentDicts {
+                    let part = CWPart.init()
+                    part.setContentType(attachmentDict[kPepMimeType] as? String)
+                    part.setContent(attachmentDict[kPepMimeData] as? NSData)
+                    part.setFilename(attachmentDict[kPepMimeFilename] as? String)
+                    multiPart.addPart(part)
+                }
+            }
+        } else {
+            if let body = bodyPartFromPepMail(pepMail) {
+                message.setContent(body.content())
+                message.setContentType(body.contentType())
+            }
         }
 
         return message
+    }
+
+    /**
+     Extracts the body of a pEp mail as a pantomime part object.
+     - Returns: Either a single CWPart,
+     if there is only one text content (either pure text or HTML),
+     or a "multipart/alternative" if there is both text and HTML,
+     or nil.
+     */
+    static func bodyPartFromPepMail(pepMail: PEPMail) -> CWPart? {
+        let bodyParts = bodyPartsFromPepMail(pepMail)
+        if bodyParts.count == 1 {
+            return bodyParts[0]
+        } else if bodyParts.count > 1 {
+            let partAlt = CWPart.init()
+            partAlt.setContentType(Constants.contentTypeMultipartAlternative)
+            let partMulti = CWMIMEMultipart.init()
+            for part in bodyParts {
+                partMulti.addPart(part)
+            }
+            partAlt.setContent(partMulti)
+            return partAlt
+        }
+        return nil
+    }
+
+    /**
+     Builds an optional pantomime part object from an optional text,
+     with the given content type.
+     Useful for creating text/HTML parts.
+     */
+    static func makePartFromText(text: String?, contentType: String) -> CWPart? {
+        if let t = text {
+            let part = CWPart.init()
+            part.setContentType(contentType)
+            part.setContent(t.dataUsingEncoding(NSUTF8StringEncoding))
+            return part
+        }
+        return nil
+    }
+
+    /**
+     Extracts text content from a pEp mail as a list of pantomime part object.
+     - Returns: A list of pantomime parts. This list can have 0, 1 or 2 elements.
+     */
+    static func bodyPartsFromPepMail(pepMail: PEPMail) -> [CWPart] {
+        var parts: [CWPart] = []
+
+        if let part = makePartFromText(pepMail[kPepLongMessage] as? String,
+                                       contentType: Constants.contentTypeText) {
+            parts.append(part)
+        }
+        if let part = makePartFromText(pepMail[kPepLongMessageFormatted] as? String,
+                                       contentType: Constants.contentTypeHtml) {
+            parts.append(part)
+        }
+
+        return parts
     }
 }

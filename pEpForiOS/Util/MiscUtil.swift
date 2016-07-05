@@ -18,4 +18,14 @@ public class MiscUtil {
     public static func isNilOrEmptyNSArray(array: NSArray?) -> Bool {
         return array == nil || array?.count == 0
     }
+
+    public static func isEmptyString(s: String?) -> Bool {
+        if s == nil {
+            return true
+        }
+        if s?.characters.count == 0 {
+            return true
+        }
+        return false
+    }
 }

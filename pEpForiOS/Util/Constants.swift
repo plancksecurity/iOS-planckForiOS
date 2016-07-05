@@ -15,6 +15,21 @@ public class Constants {
     /** MIME content type for HTML */
     public static let contentTypeHtml = "text/html"
 
+    /**
+     Mime type for the "Version" attachment of PGP/MIME.
+     */
+    public static let contentTypePGPEncrypted = "application/pgp-encrypted"
+
+    /**
+     Content type for MIME multipart/mixed.
+     */
+    public static let contentTypeMultipartMixed = "multipart/mixed"
+
+    /**
+     Content type for MIME multipart/alternative.
+     */
+    public static let contentTypeMultipartAlternative = "multipart/alternative"
+
     public enum GeneralErrorCode: Int {
         case NotImplemented = 1000
         case IllegalState

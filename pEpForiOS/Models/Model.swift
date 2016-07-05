@@ -107,10 +107,9 @@ public protocol IModel {
     func insertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String) -> IMessage?
 
     /**
-     Deals with any HTML content an email might have, e.g., parse it into a snippet if there
-     is no plain text etc.
+     Sets up the snippet.
      */
-    func setupHTMLContentForMail(mail: Message)
+    func setupSnippetForMail(mail: Message)
 
     /**
      - Returns: List of contact that match the given snippet (either in the name, or address).
@@ -193,8 +192,10 @@ public class Model: IModel {
             predicates.append(NSPredicate.init(format: "messageID = %@", msgId))
         }
         if msg.folder() != nil {
-            predicates.append(NSPredicate.init(format: "uid = %d and folder.name = %@",
-                msg.UID(), msg.folder()!.name()))
+            predicates.append(NSPredicate.init(format: "folder.name = %@", msg.folder()!.name()))
+        }
+        if msg.UID() > 0 {
+            predicates.append(NSPredicate.init(format: "uid = %d", msg.UID()))
         }
         if msg.subject() != nil && msg.receivedDate() != nil {
             predicates.append(NSPredicate.init(format: "subject = %@ and originationDate = %@",
@@ -261,6 +262,7 @@ public class Model: IModel {
         contentType: String?, filename: String?, data: NSData) -> IAttachment {
         let attachment = NSEntityDescription.insertNewObjectForEntityForName(
             Attachment.entityName(), inManagedObjectContext: context) as! Attachment
+        attachment.contentType = contentType
         attachment.filename = filename
         attachment.size = data.length
         let attachmentData = NSEntityDescription.insertNewObjectForEntityForName(
@@ -519,6 +521,11 @@ public class Model: IModel {
         return added
     }
 
+    /**
+     Inserts or updates a pantomime message into the data store with only the bare minimum of data.
+     - Returns: A tuple consisting of the message inserted and a Bool denoting whether this
+     message was just inserted (true) or an existing message was found (false).
+     */
     public func quickInsertOrUpdatePantomimeMail(message: CWIMAPMessage,
                                                  accountEmail: String) -> (IMessage?, Bool) {
         guard let folderName = message.folder()?.name() else {
@@ -570,36 +577,41 @@ public class Model: IModel {
             return nil
         }
 
-        var addresses = message.recipients() as! [CWInternetAddress]
         if let from = message.from() {
-            from.setType(.ToRecipient)
-            addresses.append(from)
+            let contactsFrom = addContacts([from])
+            let email = from.address()
+            let c = contactsFrom[email]
+            mail.from = c as? Contact
         }
+
+        let addresses = message.recipients() as! [CWInternetAddress]
         let contacts = addContacts(addresses)
 
-        let ccs: NSMutableOrderedSet = []
         let tos: NSMutableOrderedSet = []
+        let ccs: NSMutableOrderedSet = []
+        let bccs: NSMutableOrderedSet = []
         for addr in addresses {
             switch addr.type() {
-            case .CcRecipient:
-                ccs.addObject(contacts[addr.address()]! as! Contact)
             case .ToRecipient:
                 tos.addObject(contacts[addr.address()]! as! Contact)
+            case .CcRecipient:
+                ccs.addObject(contacts[addr.address()]! as! Contact)
+            case .BccRecipient:
+                bccs.addObject(contacts[addr.address()]! as! Contact)
             default:
                 Log.warn(comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
         }
-        if isFresh || mail.cc != ccs {
-            mail.cc = ccs
-        }
         if isFresh || mail.to != tos {
             mail.to = tos
         }
-        if let from = message.from() {
-            mail.from = contacts[from.address()] as? Contact
+        if isFresh || mail.cc != ccs {
+            mail.cc = ccs
+        }
+        if isFresh || mail.bcc != bccs {
+            mail.bcc = bccs
         }
 
-        // TODO: Remove angle brackets (<>) from messageIDs
         if let msgRefs = message.allReferences() {
             for refID in msgRefs {
                 let ref = insertOrUpdateMessageReference(refID as! String)
@@ -610,12 +622,12 @@ public class Model: IModel {
         mail.contentType = message.contentType()
 
         addAttachmentsFromPantomimePart(message, targetMail: mail as! Message, level: 0)
-        setupHTMLContentForMail(mail as! Message)
+        setupSnippetForMail(mail as! Message)
 
         return mail
     }
 
-    public func setupHTMLContentForMail(mail: Message) {
+    public func setupSnippetForMail(mail: Message) {
         /*
         if mail.longMessage == nil {
             if let htmlString = mail.longMessageFormatted {
@@ -632,8 +644,7 @@ public class Model: IModel {
             return
         }
 
-        let isText = part.contentType() == nil ||
-            part.contentType()?.lowercaseString == Constants.contentTypeText
+        let isText = part.contentType()?.lowercaseString == Constants.contentTypeText
         let isHtml = part.contentType()?.lowercaseString == Constants.contentTypeHtml
         var contentData: NSData?
         if let message = content as? CWMessage {
@@ -644,9 +655,11 @@ public class Model: IModel {
             contentData = data
         }
         if let data = contentData {
-            if isText && level < 2 && targetMail.longMessage == nil {
+            if isText && level < 3 && targetMail.longMessage == nil &&
+                MiscUtil.isEmptyString(part.filename()) {
                 targetMail.longMessage = data.toStringWithIANACharset(part.charset())
-            } else if isHtml && level < 2 && targetMail.longMessageFormatted == nil {
+            } else if isHtml && level < 3 && targetMail.longMessageFormatted == nil &&
+                MiscUtil.isEmptyString(part.filename()) {
                 targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
             } else {
                 let attachment = insertAttachmentWithContentType(

@@ -306,6 +306,7 @@ class SimpleOperationsTest: XCTestCase {
             fakeMail[kPepTo] = [contact]
             fakeMail[kPepShortMessage] = "Subject \(i)"
             fakeMail[kPepLongMessage]  = "Body \(i)"
+            encryptionData.mailsToSend.append(fakeMail as PEPMail)
         }
 
         let expMailsSent = expectationWithDescription("expMailsSent")

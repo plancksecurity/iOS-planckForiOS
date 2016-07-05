@@ -19,6 +19,9 @@ class PersistentSetup {
     let grandOperator: GrandOperator
     let folderBuilder: ImapFolderBuilder
     let model: IModel
+    var accountEmail: String {
+        return connectionInfo.email
+    }
 
     /**
      Sets up persistence with an in-memory core data backend.
