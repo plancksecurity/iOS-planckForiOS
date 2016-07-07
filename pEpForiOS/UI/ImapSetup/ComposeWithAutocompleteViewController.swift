@@ -32,10 +32,12 @@ class ComposeWithAutocompleteViewController: UITableViewController {
     @IBOutlet weak var ccTextField: UITextField!
     @IBOutlet weak var bccTextField: UITextField!
     @IBOutlet weak var shortMessageTextField: UITextField!
-    @IBOutlet weak var longMessageTextField: UITextField!
+    @IBOutlet weak var messageTableViewCell: UITableViewCell!
+    @IBOutlet weak var longMessageTextField: UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        longMessageTextField.resignFirstResponder()
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
@@ -59,19 +61,66 @@ class ComposeWithAutocompleteViewController: UITableViewController {
         let defaulHeight: CGFloat = 44
         if indexPath.row == textFieldRowNumber {
             if let cell = tableView.cellForRowAtIndexPath(indexPath) {
-                let cellSize = cell.bounds.size
+                var cellSize = cell.bounds.size
+                //cellSize.height = CGFloat.max
                 let wantedSize = longMessageTextField.sizeThatFits(cellSize)
-                return wantedSize.height
+                //longMessageTextField.bounds.size = cellSize
+                let wantedSizeContent = longMessageTextField.contentSize
+                return wantedSize.height + 64
             }
             return defaulHeight
         } else {
             return defaulHeight
         }
     }
+
+
+    func textView(textView: UITextView, shouldChangeTextInRange  range: NSRange, replacementText text: String) -> Bool {
+        textView.resignFirstResponder()
+        let previousMessageInput = self.longMessageTextField.text
+        //print(previousMessageInput)
+        self.longMessageTextField.text = previousMessageInput! + text
+
+
+        //let cell = tableView.cellForRowAtIndexPath(indexToReload)
+        //var cellSize = cell!.bounds.size
+        //let wantedSize = longMessageTextField.sizeThatFits(cellSize)
+        //cell?.bounds.width = wantedSize.width
+        //cell?.bounds.height = wantedSize.height
+
+        let indexToReload = NSIndexPath(forItem: 4, inSection: 0)
+        self.tableView.reloadRowsAtIndexPaths([indexToReload], withRowAnimation: UITableViewRowAnimation.Top)
+
+       // messageCellNSLayoutConstraint.constant = 0
+         //self.tableView.reloadData()
+        /*self.tableView.reloadRowsAtIndexPaths([indexToReload], withRowAnimation: UITableViewRowAnimation.Top)*/
+        //messageCellNSLayoutConstraint.constant = 500
+        return true
+    }
 }
 
-extension ComposeWithAutocompleteViewController: UITextFieldDelegate {
+/*extension ComposeWithAutocompleteViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         return false
     }
-}
+}*/
+
+/*extension UITextView {
+    func calculateContentSize() -> CGSize {
+        let contentSize = self.bounds.size
+        let contentInserts = self.contentInset
+        let contentainerInsets = self.textContainerInset
+
+        var maxWidth = contentSize.width
+        maxWidth -= 2.0 * self.textContainer.lineFragmentPadding
+        maxWidth -= contentInset.left + contentInset.right + contentainerInsets.left
+        + contentainerInsets.right
+
+        var selectable = self.selectable
+        self.selectable = true
+
+        let textSize = self.attributedText.boundingRectWithSize(CGSizeMake(maxWidth, CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
+
+        return contentSize
+    }
+}*/
