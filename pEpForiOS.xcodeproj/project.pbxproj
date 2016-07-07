@@ -26,6 +26,9 @@
 		431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798721CF85181007DD655 /* TCPConnectionTest.swift */; };
 		431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798761CF87FE6007DD655 /* ReferenceCounter.swift */; };
 		431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */; };
+		431AE5D51D2EC0C000F609D3 /* ComposeWithAutocompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D41D2EC0C000F609D3 /* ComposeWithAutocompleteViewController.swift */; };
+		431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */; };
+		431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
 		43249DAF1D2E69CA00863ED3 /* Trustwords.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43249DAD1D2E69CA00863ED3 /* Trustwords.storyboard */; };
 		4325F3141CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */; };
@@ -121,7 +124,6 @@
 		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
 		A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */; };
 		A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */; };
-		A1F46BEF1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F46BEE1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift */; };
 		A1FF4EA81CFD9DFF0005C6BD /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -204,6 +206,9 @@
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifySmtpConnectionOperation.swift; sourceTree = "<group>"; };
+		431AE5D41D2EC0C000F609D3 /* ComposeWithAutocompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeWithAutocompleteViewController.swift; sourceTree = "<group>"; };
+		431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
+		431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyCell.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		43249DAE1D2E69CA00863ED3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Trustwords.storyboard; sourceTree = "<group>"; };
 		4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentGrandOperatorOperation.swift; sourceTree = "<group>"; };
@@ -315,7 +320,6 @@
 		A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorVerifyTests.swift; sourceTree = "<group>"; };
 		A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncTest.swift; sourceTree = "<group>"; };
 		A1D189F51CF87CF400746C15 /* AutocompleteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
-		A1F46BEE1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposeWithAutocompleteViewController.swift; path = UI/ImapSetup/ComposeWithAutocompleteViewController.swift; sourceTree = "<group>"; };
 		A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -374,6 +378,16 @@
 				43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */,
 			);
 			path = Background;
+			sourceTree = "<group>";
+		};
+		431AE5D11D2EC0A700F609D3 /* Compose */ = {
+			isa = PBXGroup;
+			children = (
+				431AE5D41D2EC0C000F609D3 /* ComposeWithAutocompleteViewController.swift */,
+				431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */,
+				431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */,
+			);
+			path = Compose;
 			sourceTree = "<group>";
 		};
 		437432061CFC49A4000F8D35 /* Util */ = {
@@ -440,7 +454,6 @@
 				43E58EB21CBF8301008AA7A7 /* Models */,
 				43980EE11CBD24B800A7FC3C /* Sync */,
 				43ED53611CC77F95006AB156 /* UI */,
-				A1F46BEE1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift */,
 				43980EDE1CBD24B000A7FC3C /* Util */,
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
@@ -624,6 +637,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				431AE5D11D2EC0A700F609D3 /* Compose */,
 				43ED53621CC77F95006AB156 /* EmailDisplay */,
 				43ED53651CC77F95006AB156 /* ImapSetup */,
 			);
@@ -844,6 +858,7 @@
 				43ED53741CC77F95006AB156 /* MailList.swift in Sources */,
 				43E58EC61CBF8365008AA7A7 /* BaseManagedObject.swift in Sources */,
 				5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */,
+				431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */,
 				431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */,
 				431144AA1CC0CB480007639D /* PrefetchEmailsOperation.swift in Sources */,
 				5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */,
@@ -886,6 +901,7 @@
 				43A0E73E1D16C99900159F41 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
+				431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */,
 				43727F101D1ADF7A00F210DB /* GrandOperatorOperation.swift in Sources */,
 				4345967F1CE227D9004E8735 /* _MessageReference.swift in Sources */,
 				431144AC1CC0CCE30007639D /* GrandOperator.swift in Sources */,
@@ -895,8 +911,8 @@
 				43980EF81CBD402400A7FC3C /* CoreDataUtil.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */,
-				A1F46BEF1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift in Sources */,
 				43E58EBB1CBF8301008AA7A7 /* _Folder.swift in Sources */,
+				431AE5D51D2EC0C000F609D3 /* ComposeWithAutocompleteViewController.swift in Sources */,
 				431144C11CC1202E0007639D /* _Message.swift in Sources */,
 				43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */,
 				43ED53721CC77F95006AB156 /* Mail.swift in Sources */,

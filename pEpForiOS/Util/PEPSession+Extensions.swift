@@ -33,6 +33,19 @@ public enum RecipientType: Int, Hashable {
     public var hashValue: Int {
         return rawValue
     }
+
+    public static func fromRawValue(value: Int) -> RecipientType {
+        switch value {
+        case 1:
+            return .To
+        case 2:
+            return .CC
+        case 3:
+            return .BCC
+        default:
+            return .To
+        }
+    }
 }
 
 /**
