@@ -13,16 +13,11 @@ public class ComposeViewControllerModel {
     var to: String? = nil
 }
 
-/**
- TODO:
-  - Figure out how to react text changes from the user
-  - When text changes, how to notify the table view so that it updates the height of just
-    the right cell? Does reloadRowsAtIndexPaths work well?
-  - How to correctly deal with ENTER so that it always enters newlines?
-  - What about keyboard handling: User taps any key, do you have to make sure the right
-    position of the text is still visible?
- */
 class ComposeWithAutocompleteViewController: UITableViewController {
+    /**
+     The index of the cell containing the body of the message for the user to write.
+     Must be synchronized with the storyboard.
+     */
     let textFieldRowNumber = 4
 
     var appConfig: AppConfig?
@@ -54,73 +49,30 @@ class ComposeWithAutocompleteViewController: UITableViewController {
         }
     }
 
+    // MARK: -- UITextViewDelegate
+
+    func textViewDidChange(textView: UITextView) {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
     // MARK: -- UITableViewDelegate
 
     override func tableView(tableView: UITableView,
                    heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let defaulHeight: CGFloat = 44
         if indexPath.row == textFieldRowNumber {
             if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+                let inset = longMessageTextField.textContainerInset
+                let lineFragmentPadding = longMessageTextField.textContainer.lineFragmentPadding
                 var cellSize = cell.bounds.size
-                //cellSize.height = CGFloat.max
+                cellSize.width -= (inset.left + inset.right + 2 * lineFragmentPadding)
+                cellSize.height = CGFloat.max
                 let wantedSize = longMessageTextField.sizeThatFits(cellSize)
-                //longMessageTextField.bounds.size = cellSize
-                let wantedSizeContent = longMessageTextField.contentSize
-                return wantedSize.height + 64
+                return wantedSize.height + inset.bottom + inset.top
             }
-            return defaulHeight
-        } else {
-            return defaulHeight
         }
-    }
 
-
-    func textView(textView: UITextView, shouldChangeTextInRange  range: NSRange, replacementText text: String) -> Bool {
-        textView.resignFirstResponder()
-        let previousMessageInput = self.longMessageTextField.text
-        //print(previousMessageInput)
-        self.longMessageTextField.text = previousMessageInput! + text
-
-
-        //let cell = tableView.cellForRowAtIndexPath(indexToReload)
-        //var cellSize = cell!.bounds.size
-        //let wantedSize = longMessageTextField.sizeThatFits(cellSize)
-        //cell?.bounds.width = wantedSize.width
-        //cell?.bounds.height = wantedSize.height
-
-        let indexToReload = NSIndexPath(forItem: 4, inSection: 0)
-        self.tableView.reloadRowsAtIndexPaths([indexToReload], withRowAnimation: UITableViewRowAnimation.Top)
-
-       // messageCellNSLayoutConstraint.constant = 0
-         //self.tableView.reloadData()
-        /*self.tableView.reloadRowsAtIndexPaths([indexToReload], withRowAnimation: UITableViewRowAnimation.Top)*/
-        //messageCellNSLayoutConstraint.constant = 500
-        return true
+        // Default if we don't have a better values, or for other cells
+        return 44
     }
 }
-
-/*extension ComposeWithAutocompleteViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        return false
-    }
-}*/
-
-/*extension UITextView {
-    func calculateContentSize() -> CGSize {
-        let contentSize = self.bounds.size
-        let contentInserts = self.contentInset
-        let contentainerInsets = self.textContainerInset
-
-        var maxWidth = contentSize.width
-        maxWidth -= 2.0 * self.textContainer.lineFragmentPadding
-        maxWidth -= contentInset.left + contentInset.right + contentainerInsets.left
-        + contentainerInsets.right
-
-        var selectable = self.selectable
-        self.selectable = true
-
-        let textSize = self.attributedText.boundingRectWithSize(CGSizeMake(maxWidth, CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
-
-        return contentSize
-    }
-}*/

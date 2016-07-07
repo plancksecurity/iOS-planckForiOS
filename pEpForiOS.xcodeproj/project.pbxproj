@@ -315,7 +315,7 @@
 		A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorVerifyTests.swift; sourceTree = "<group>"; };
 		A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncTest.swift; sourceTree = "<group>"; };
 		A1D189F51CF87CF400746C15 /* AutocompleteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
-		A1F46BEE1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeWithAutocompleteViewController.swift; sourceTree = "<group>"; };
+		A1F46BEE1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposeWithAutocompleteViewController.swift; path = UI/ImapSetup/ComposeWithAutocompleteViewController.swift; sourceTree = "<group>"; };
 		A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -440,6 +440,7 @@
 				43E58EB21CBF8301008AA7A7 /* Models */,
 				43980EE11CBD24B800A7FC3C /* Sync */,
 				43ED53611CC77F95006AB156 /* UI */,
+				A1F46BEE1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift */,
 				43980EDE1CBD24B000A7FC3C /* Util */,
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
@@ -654,7 +655,6 @@
 				43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */,
 				A1D189F51CF87CF400746C15 /* AutocompleteController.swift */,
 				A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */,
-				A1F46BEE1CFEF9A800AF2BEC /* ComposeWithAutocompleteViewController.swift */,
 				A15724E61D1430FF00122D27 /* PruebaViewController.swift */,
 			);
 			path = ImapSetup;
