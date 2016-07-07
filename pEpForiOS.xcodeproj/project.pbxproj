@@ -27,6 +27,7 @@
 		431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798761CF87FE6007DD655 /* ReferenceCounter.swift */; };
 		431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
+		43249DAF1D2E69CA00863ED3 /* Trustwords.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43249DAD1D2E69CA00863ED3 /* Trustwords.storyboard */; };
 		4325F3141CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */; };
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
 		4333FBA51CD9FAC00093364F /* SmtpTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333FBA41CD9FAC00093364F /* SmtpTest.swift */; };
@@ -204,6 +205,7 @@
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifySmtpConnectionOperation.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
+		43249DAE1D2E69CA00863ED3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Trustwords.storyboard; sourceTree = "<group>"; };
 		4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentGrandOperatorOperation.swift; sourceTree = "<group>"; };
 		432F7D601D2102F10094F097 /* PEPSessionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionTest.swift; sourceTree = "<group>"; };
 		4333FBA41CD9FAC00093364F /* SmtpTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpTest.swift; sourceTree = "<group>"; };
@@ -441,6 +443,7 @@
 				43980EDE1CBD24B000A7FC3C /* Util */,
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
+				43249DAD1D2E69CA00863ED3 /* Trustwords.storyboard */,
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
 				43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
@@ -809,6 +812,7 @@
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
 				430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */,
+				43249DAF1D2E69CA00863ED3 /* Trustwords.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -979,6 +983,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		43249DAD1D2E69CA00863ED3 /* Trustwords.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43249DAE1D2E69CA00863ED3 /* Base */,
+			);
+			name = Trustwords.storyboard;
+			sourceTree = "<group>";
+		};
 		43980E2A1CBD0BC900A7FC3C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
