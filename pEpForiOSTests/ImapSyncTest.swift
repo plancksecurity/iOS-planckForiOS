@@ -169,7 +169,11 @@ class ImapSyncTest: XCTestCase {
         super.tearDown()
     }
 
-    func testConnectionFail() {
+    /**
+     Trying to connect to a host that surely doesn't exist should fail fast, but
+     note there might be networks where this is not the case.
+     */
+    func testConnectionFailFast() {
         let del = TestImapSyncDelegate.init()
         let conInfo = ConnectInfo.init(
             nameOfTheUser: "The User",
