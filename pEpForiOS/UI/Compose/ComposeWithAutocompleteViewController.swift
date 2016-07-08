@@ -21,6 +21,8 @@ class ComposeWithAutocompleteViewController: UITableViewController {
 
     var appConfig: AppConfig?
     var model = ComposeViewControllerModel.init()
+    var longBodyMessageTextView: UITextView? = nil
+    var recipientCells: [RecipientType:RecipientCell] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,22 +51,34 @@ class ComposeWithAutocompleteViewController: UITableViewController {
         if indexPath.row < bodyTextFieldRowNumber {
             let cell = tableView.dequeueReusableCellWithIdentifier("RecipientCell", forIndexPath: indexPath) as! RecipientCell
             cell.recipientType = RecipientType.fromRawValue(indexPath.row + 1)
+
+            // Cache the cell for later use
+            recipientCells[cell.recipientType] = cell
+
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("MessageBodyCell", forIndexPath: indexPath) as! MessageBodyCell
             cell.bodyTextView.delegate = self
+
+            // Store the body text field for later
+            longBodyMessageTextView = cell.bodyTextView
+
             return cell
         }
     }
 }
 
+// MARK: -- UITextViewDelegate
+
 extension ComposeWithAutocompleteViewController: UITextViewDelegate {
     func textViewDidChange(textView: UITextView) {
-        let currentOffset = tableView.contentOffset
-        UIView.setAnimationsEnabled(false)
-        tableView.beginUpdates()
-        tableView.endUpdates()
-        UIView.setAnimationsEnabled(true)
-        tableView.setContentOffset(currentOffset, animated: false)
+        if textView == longBodyMessageTextView {
+            let currentOffset = tableView.contentOffset
+            UIView.setAnimationsEnabled(false)
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            UIView.setAnimationsEnabled(true)
+            tableView.setContentOffset(currentOffset, animated: false)
+        }
     }
 }
