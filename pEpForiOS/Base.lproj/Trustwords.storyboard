@@ -3,12 +3,13 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Trustword View Controller-->
         <scene sceneID="59B-HU-n6l">
             <objects>
-                <viewController id="gLq-6s-dzb" sceneMemberID="viewController">
+                <viewController id="gLq-6s-dzb" customClass="TrustwordViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oKM-cP-pQZ"/>
                         <viewControllerLayoutGuide type="bottom" id="IVe-en-1AE"/>
@@ -17,43 +18,76 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="APROVING CHIMERIC GRIPPING SLATED CONVERT CROSSBARING CARMELLA CANDRA" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pja-JU-Dxy">
-                                <rect key="frame" x="144" y="241" width="313" height="159"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="APROVING CHIMERIC GRIPPING SLATED CONVERT CROSSBARING CARMELLA CANDRA" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pja-JU-Dxy">
+                                <rect key="frame" x="143" y="247" width="313" height="159"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="159" id="FRW-fe-8HQ"/>
+                                    <constraint firstAttribute="width" constant="313" id="us5-IT-PmK"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jQJ-IS-AZ6">
-                                <rect key="frame" x="211" y="413" width="136" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jQJ-IS-AZ6">
+                                <rect key="frame" x="211" y="417" width="136" height="30"/>
                                 <state key="normal" title="Confirm Trustwords"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ctp-OQ-zbt">
-                                <rect key="frame" x="211" y="466" width="126" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ctp-OQ-zbt">
+                                <rect key="frame" x="211" y="470" width="126" height="30"/>
                                 <state key="normal" title="Wrong Trustwords"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Partner" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjT-Ye-LB0">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Partner" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjT-Ye-LB0">
                                 <rect key="frame" x="28" y="86" width="57" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Myself" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fRF-FV-wsf">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Myself" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fRF-FV-wsf">
                                 <rect key="frame" x="28" y="129" width="51" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Ask your partner: What are your Trustwords? Then compare to the correct answer below" translatesAutoresizingMaskIntoConstraints="NO" id="0DS-2G-A5c">
-                                <rect key="frame" x="28" y="173" width="400" height="47"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Ask your partner: What are your Trustwords? Then compare to the correct answer below" translatesAutoresizingMaskIntoConstraints="NO" id="0DS-2G-A5c">
+                                <rect key="frame" x="28" y="200" width="400" height="47"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="400" id="47H-Bm-u7H"/>
+                                    <constraint firstAttribute="height" constant="47" id="Lsn-V9-qYX"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="47H-Bm-u7H"/>
+                                        <exclude reference="Lsn-V9-qYX"/>
+                                    </mask>
+                                </variation>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0DS-2G-A5c" firstAttribute="top" secondItem="fRF-FV-wsf" secondAttribute="bottom" constant="50" id="BA1-7Y-5o2"/>
+                            <constraint firstItem="0DS-2G-A5c" firstAttribute="leading" secondItem="zjm-Jy-Z4M" secondAttribute="leadingMargin" constant="8" id="FQ3-Hc-ryo"/>
+                            <constraint firstItem="vjT-Ye-LB0" firstAttribute="leading" secondItem="zjm-Jy-Z4M" secondAttribute="leadingMargin" constant="8" id="Jr2-jd-fNH"/>
+                            <constraint firstItem="pja-JU-Dxy" firstAttribute="top" secondItem="0DS-2G-A5c" secondAttribute="bottom" id="T8a-kF-nkm"/>
+                            <constraint firstItem="Ctp-OQ-zbt" firstAttribute="leading" secondItem="zjm-Jy-Z4M" secondAttribute="leadingMargin" constant="191" id="V1F-x7-e9e"/>
+                            <constraint firstItem="fRF-FV-wsf" firstAttribute="leading" secondItem="zjm-Jy-Z4M" secondAttribute="leadingMargin" constant="8" id="VIh-cm-Bhv"/>
+                            <constraint firstItem="jQJ-IS-AZ6" firstAttribute="leading" secondItem="zjm-Jy-Z4M" secondAttribute="leadingMargin" constant="191" id="W3W-6V-rNb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="0DS-2G-A5c" secondAttribute="trailing" constant="152" id="ZnK-B5-fVI"/>
+                            <constraint firstItem="vjT-Ye-LB0" firstAttribute="top" secondItem="oKM-cP-pQZ" secondAttribute="bottom" constant="22" id="ca9-sT-F5C"/>
+                            <constraint firstItem="jQJ-IS-AZ6" firstAttribute="top" secondItem="pja-JU-Dxy" secondAttribute="bottom" constant="11" id="d4f-hq-lsz"/>
+                            <constraint firstItem="IVe-en-1AE" firstAttribute="top" secondItem="Ctp-OQ-zbt" secondAttribute="bottom" constant="56" id="dSm-75-cMe"/>
+                            <constraint firstItem="pja-JU-Dxy" firstAttribute="leading" secondItem="zjm-Jy-Z4M" secondAttribute="leadingMargin" constant="123" id="dwS-uW-dMh"/>
+                            <constraint firstItem="Ctp-OQ-zbt" firstAttribute="top" secondItem="jQJ-IS-AZ6" secondAttribute="bottom" constant="23" id="kbj-Gy-sDE"/>
+                            <constraint firstItem="fRF-FV-wsf" firstAttribute="top" secondItem="vjT-Ye-LB0" secondAttribute="bottom" constant="22" id="rfd-hw-HGQ"/>
+                        </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="ExplanationTextView" destination="0DS-2G-A5c" id="0e2-dN-vX8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FIr-c1-ugH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
