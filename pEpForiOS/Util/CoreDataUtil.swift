@@ -93,7 +93,7 @@ public class CoreDataUtil: ICoreDataUtil {
             let wrappedError = NSError(domain: CoreDataUtil.comp, code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            Log.error(CoreDataUtil.comp, error: wrappedError)
+            Log.errorComponent(CoreDataUtil.comp, error: wrappedError)
             abort()
         }
 
@@ -129,7 +129,7 @@ public class CoreDataUtil: ICoreDataUtil {
                 // Replace this implementation with code to handle the error appropriately.
                 // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
-                Log.error(CoreDataUtil.comp, error: nserror)
+                Log.errorComponent(CoreDataUtil.comp, error: nserror)
                 abort()
             }
         }

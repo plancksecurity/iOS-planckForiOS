@@ -33,8 +33,8 @@ public class EncryptMailOperation: BaseOperation {
                         errorMessage:
                         NSLocalizedString("Email for encryption could not be accessed",
                             comment: "Error message when message to encrypt could not be found."))
-                    self.errors.append(error)
-                    Log.error(self.comp, error: Constants.errorInvalidParameter(
+                    self.addError(error)
+                    Log.errorComponent(self.comp, error: Constants.errorInvalidParameter(
                         self.comp,
                         errorMessage:"Email for encryption could not be accessed"))
                     return
@@ -57,8 +57,8 @@ public class EncryptMailOperation: BaseOperation {
                         errorMessage:
                         NSLocalizedString("Could not encrypt message",
                             comment: "Error message when the engine failed to encrypt a message."))
-                    self.errors.append(error)
-                    Log.error(self.comp, error: Constants.errorInvalidParameter(
+                    self.addError(error)
+                    Log.errorComponent(self.comp, error: Constants.errorInvalidParameter(
                         self.comp,
                         errorMessage: "Could not encrypt message"))
                 }

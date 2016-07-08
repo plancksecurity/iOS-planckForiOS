@@ -147,11 +147,11 @@ public class Model: IModel {
             } else if objs.count == 0 {
                 return nil
             } else {
-                Log.warn(comp, "Several objects (\(name)) found for predicate: \(predicate)")
+                Log.warnComponent(comp, "Several objects (\(name)) found for predicate: \(predicate)")
                 return objs[0] as? NSManagedObject
             }
         } catch let err as NSError {
-            Log.error(comp, error: err)
+            Log.errorComponent(comp, error: err)
         }
         return nil
     }
@@ -167,7 +167,7 @@ public class Model: IModel {
             let objs = try context.executeFetchRequest(fetch)
             return objs as? [NSManagedObject]
         } catch let err as NSError {
-            Log.error(comp, error: err)
+            Log.errorComponent(comp, error: err)
         }
         return nil
     }
@@ -179,7 +179,7 @@ public class Model: IModel {
         var error: NSError?
         let number = context.countForFetchRequest(fetch, error: &error)
         if let err = error {
-            Log.error(comp, error: err)
+            Log.errorComponent(comp, error: err)
         }
         if number != NSNotFound {
             return number
@@ -244,14 +244,14 @@ public class Model: IModel {
 
     public func insertNewMessageForSendingFromAccountEmail(email: String) -> IMessage? {
         guard let account = accountByEmail(email) else {
-            Log.warn(comp, "No account with email found: \(email)")
+            Log.warnComponent(comp, "No account with email found: \(email)")
             return nil
         }
         var message = insertNewMessage()
         let contact = insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
         message.from = contact as? Contact
         guard let folder = folderLocalOutboxForEmail(account.email) else {
-            Log.warn(comp, "Expected outbox folder to exist")
+            Log.warnComponent(comp, "Expected outbox folder to exist")
             return nil
         }
         message.folder = folder as! Folder
@@ -314,7 +314,7 @@ public class Model: IModel {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                Log.error(CoreDataUtil.comp, error: nserror)
+                Log.errorComponent(CoreDataUtil.comp, error: nserror)
                 abort()
             }
         }
@@ -367,20 +367,20 @@ public class Model: IModel {
             let elems = try context.executeFetchRequest(fetch)
             if elems.count > 0 {
                 if elems.count > 1 {
-                    Log.warn(comp, "lastUID has found more than one element")
+                    Log.warnComponent(comp, "lastUID has found more than one element")
                 }
                 if let msg = elems[0] as? Message {
                     return UInt(msg.uid!.integerValue)
                 } else {
-                    Log.warn(comp, "Could not cast core data result to Message")
+                    Log.warnComponent(comp, "Could not cast core data result to Message")
                 }
             } else if elems.count > 0 {
-                Log.warn(comp, "lastUID has several objects with the same UID?")
+                Log.warnComponent(comp, "lastUID has several objects with the same UID?")
             }
         } catch let error as NSError {
-            Log.error(comp, error: error)
+            Log.errorComponent(comp, error: error)
         }
-        Log.warn(comp, "lastUID no object found, returning 0")
+        Log.warnComponent(comp, "lastUID no object found, returning 0")
         return 0
     }
 
@@ -479,7 +479,7 @@ public class Model: IModel {
         do {
             var existing = try context.executeFetchRequest(fetch) as! [Contact]
             if existing.count > 1 {
-                Log.warn(comp, "Duplicate contacts with address \(email)")
+                Log.warnComponent(comp, "Duplicate contacts with address \(email)")
                 existing[0].updateFromEmail(email, name: name)
                 return existing[0]
             } else if existing.count == 1 {
@@ -487,7 +487,7 @@ public class Model: IModel {
                 return existing[0]
             }
         } catch let err as NSError {
-            Log.error(comp, error: err)
+            Log.errorComponent(comp, error: err)
         }
         var contact = NSEntityDescription.insertNewObjectForEntityForName(
             Contact.entityName(), inManagedObjectContext: context) as! Contact
@@ -599,7 +599,7 @@ public class Model: IModel {
             case .BccRecipient:
                 bccs.addObject(contacts[addr.address()]! as! Contact)
             default:
-                Log.warn(comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
+                Log.warnComponent(comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
         }
         if isFresh || mail.to != tos {
@@ -692,13 +692,17 @@ public class Model: IModel {
     public func dumpDB() {
         if let folders = foldersByPredicate(NSPredicate.init(value: true)) {
             for folder in folders {
-                Log.info(comp, "Folder \(folder.name) \(folder.messages.count) messages accountType \(folder.account.accountType)")
+                Log.infoComponent(
+                    comp,
+                    "Folder \(folder.name) \(folder.messages.count) messages accountType \(folder.account.accountType)")
             }
         }
 
         if let messages = messagesByPredicate(NSPredicate.init(value: true)) {
             for msg in messages {
-                Log.info(comp, "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages.count) accountType \(msg.folder.account.accountType)")
+                Log.infoComponent(
+                    comp,
+                    "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages.count) accountType \(msg.folder.account.accountType)")
             }
         }
     }

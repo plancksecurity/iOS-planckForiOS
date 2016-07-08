@@ -42,16 +42,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        Log.info(comp, "applicationDidEnterBackground")
+        Log.infoComponent(comp, "applicationDidEnterBackground")
         appConfig.model.save()
         if let accounts = appConfig.model.accountsByPredicate(nil, sortDescriptors: nil) {
             for acc in accounts {
                 let email = acc.email
                 let bgId = application.beginBackgroundTaskWithExpirationHandler() {
-                    Log.info(self.comp, "Could not myself for \(email)")
+                    Log.infoComponent(self.comp, "Could not myself for \(email)")
                 }
                 PEPUtil.myselfFromAccount(acc) { identity in
-                    Log.info(self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
+                    Log.infoComponent(self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
                     application.endBackgroundTask(bgId)
                 }
             }

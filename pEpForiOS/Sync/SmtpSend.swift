@@ -94,6 +94,13 @@ public class SmtpSend: Service {
         smtp.setMessage(createMessage())
         smtp.sendMessage()
     }
+
+    /**
+     Resets the connection. Do this for each mail.
+     */
+    public func reset() {
+        smtp.reset()
+    }
 }
 
 extension SmtpSend: TransportClient {

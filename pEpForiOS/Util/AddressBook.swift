@@ -48,7 +48,7 @@ public class AddressBook {
         do {
             splitRegex = try NSRegularExpression.init(pattern: "(\\w+)", options: [])
         } catch let err as NSError {
-            Log.error(comp, error: err)
+            Log.errorComponent(comp, error: err)
         }
         authorizationStatus = determineStatus()
     }
@@ -196,7 +196,7 @@ public class AddressBook {
         }
         guard let theAddressBook = addressBook
             else {
-                Log.warn(comp, "Could not open address book, although authorized")
+                Log.warnComponent(comp, "Could not open address book, although authorized")
                 return result
         }
         let people: NSArray = ABAddressBookCopyArrayOfAllPeople(theAddressBook).takeRetainedValue()

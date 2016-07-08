@@ -14,28 +14,28 @@ import Foundation
     private static let disallow: Set<String> = []
 
     /** Somewhat verbose */
-    static public func info(component: String, _ content: String) {
+    static public func infoComponent(component: String, _ content: String) {
         if !disallow.contains(component) {
             print("\(component): \(content)")
         }
     }
 
     /** More important */
-    static public func warn(component: String, _ content: String) {
+    static public func warnComponent(component: String, _ content: String) {
         if !disallow.contains(component) {
             print("\(component): \(content)")
         }
     }
 
-    static public func error(component: String, error: NSError) {
+    static public func errorComponent(component: String, error: NSError) {
         print("\(component): Error: \(error)")
     }
 
     @objc public func infoComponent(component: String!, message: String!) {
-        Log.info(component, message)
+        Log.infoComponent(component, message)
     }
 
     @objc public func warnComponent(component: String!, message: String!) {
-        Log.warn(component, message)
+        Log.warnComponent(component, message)
     }
 }

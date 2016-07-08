@@ -14,4 +14,8 @@ import CoreData
  */
 public class BaseOperation: NSOperation {
     public var errors: [NSError] = []
+
+    public func addError(error: NSError) {
+        errors.append(error)
+    }
 }

@@ -152,7 +152,7 @@ public class ImapSync: Service, IImapSync {
         // all messages will be prefetched by default,
         // independent of the prefetch parameter.
         if let folder = imapStore.folderForName(name, mode: PantomimeReadWriteMode) {
-            Log.info(comp, "openMailBox \(folder.name())")
+            Log.infoComponent(comp, "openMailBox \(folder.name())")
         }
     }
 
@@ -207,9 +207,9 @@ extension ImapSync: CWServiceClient {
     @objc public func folderPrefetchCompleted(notification: NSNotification?) {
         dumpMethodName("folderPrefetchCompleted", notification: notification)
         if let folder: CWFolder = (notification?.userInfo?["Folder"] as! CWFolder) {
-            Log.info(comp, "prefetched folder: \(folder.name())")
+            Log.infoComponent(comp, "prefetched folder: \(folder.name())")
         } else {
-            Log.info(comp, "folderPrefetchCompleted: \(notification)")
+            Log.infoComponent(comp, "folderPrefetchCompleted: \(notification)")
         }
         if let bq = folderBuilder?.backgroundQueue {
             // Wait until all newly synced mails are stored
@@ -264,10 +264,10 @@ extension ImapSync: CWServiceClient {
 extension ImapSync: PantomimeFolderDelegate {
     @objc public func folderOpenCompleted(notification: NSNotification?) {
         if let folder: CWFolder = (notification?.userInfo?["Folder"] as! CWFolder) {
-            Log.info(comp, "folderOpenCompleted: \(folder.name())")
+            Log.infoComponent(comp, "folderOpenCompleted: \(folder.name())")
             imapState.currentFolder = folder.name()
         } else {
-            Log.info(comp, "folderOpenCompleted: \(notification)")
+            Log.infoComponent(comp, "folderOpenCompleted: \(notification)")
             imapState.currentFolder = nil
         }
         delegate?.folderOpenCompleted(self, notification: notification)
@@ -275,9 +275,9 @@ extension ImapSync: PantomimeFolderDelegate {
 
     @objc public func folderOpenFailed(notification: NSNotification?) {
         if let folder: CWFolder = (notification?.userInfo?["Folder"] as! CWFolder) {
-            Log.info(comp, "folderOpenFailed: \(folder.name())")
+            Log.infoComponent(comp, "folderOpenFailed: \(folder.name())")
         } else {
-            Log.info(comp, "folderOpenFailed: \(notification)")
+            Log.infoComponent(comp, "folderOpenFailed: \(notification)")
         }
         delegate?.folderOpenFailed(self, notification: notification)
     }

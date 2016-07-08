@@ -49,7 +49,7 @@ class EmailListViewController: UITableViewController {
         } else {
             PEPUtil.myselfFromAccount(
                 account as! Account, block: { identity in
-                    Log.info(self.comp,
+                    Log.infoComponent(self.comp,
                         "myself: \(identity[kPepAddress]) -> \(identity[kPepFingerprint])")
             })
             fetchMailsRefreshControl()
@@ -84,7 +84,7 @@ class EmailListViewController: UITableViewController {
             appConfig.grandOperator.chainOperations(
                 operations, completionBlock: { [unowned self] error in
                     GCD.onMain({
-                        Log.info(self.comp, "Sync completed, error: \(error)")
+                        Log.infoComponent(self.comp, "Sync completed, error: \(error)")
                         self.appConfig?.model.save()
                         self.state.isSynching = false
                         refreshControl?.endRefreshing()
@@ -114,7 +114,7 @@ class EmailListViewController: UITableViewController {
         do {
             try fetchController?.performFetch()
         } catch let err as NSError {
-            Log.error(comp, error: err)
+            Log.errorComponent(comp, error: err)
         }
     }
 
@@ -207,7 +207,7 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             tableView.deleteSections(NSIndexSet.init(index: sectionIndex),
                                      withRowAnimation: .Fade)
         default:
-            Log.info(comp, "unhandled changeSectionType: \(type)")
+            Log.infoComponent(comp, "unhandled changeSectionType: \(type)")
         }
     }
 
@@ -224,7 +224,7 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             if let cell = tableView.cellForRowAtIndexPath(indexPath!) {
                 self.configureCell(cell as! EmailListViewCell, indexPath: indexPath!)
             } else {
-                Log.warn(comp, "Could not find cell for changed indexPath: \(indexPath!)")
+                Log.warnComponent(comp, "Could not find cell for changed indexPath: \(indexPath!)")
             }
         case .Move:
             if newIndexPath != indexPath {

@@ -47,6 +47,7 @@ public class EncryptionData {
      After encryption has happened, all mails supposed to be sent are stored here.
      This may include both encrypted and unencrypted messages, and should have a count > 0.
      Those mails can then be sent with `SendMailOperation`.
+     When `SendMailOperation` executes, mails will move from `mailsToSend` to `mailsSent`.
      */
     public var mailsToSend: [PEPMail] = []
 

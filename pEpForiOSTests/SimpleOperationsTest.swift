@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 
 class SimpleOperationsTest: XCTestCase {
-    let waitTime: NSTimeInterval = 10
+    let waitTime: NSTimeInterval = 1000
 
     var persistentSetup: PersistentSetup!
     var connectInfo: ConnectInfo!
@@ -320,7 +320,8 @@ class SimpleOperationsTest: XCTestCase {
 
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(sendOp.errors.count, numMails)
+            XCTAssertEqual(sendOp.errors.count, 0)
+            XCTAssertEqual(encryptionData.mailsSent.count, numMails)
        })
     }
 }

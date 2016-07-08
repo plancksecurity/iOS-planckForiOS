@@ -83,6 +83,6 @@ public class Service: IService {
     }
 
     public func dumpMethodName(methodName: String, notification: NSNotification?) {
-        Log.info(comp, "\(methodName): \(notification)")
+        Log.infoComponent(comp, "\(methodName): \(notification)")
     }
 }

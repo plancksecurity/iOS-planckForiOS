@@ -53,6 +53,18 @@ public class Constants {
         case CouldNotStoreFolder
     }
 
+    public enum SmtpErrorCode: Int {
+        case MessageNotSent = 4000
+        case TransactionInitiationFailed
+        case RecipientIdentificationFailed
+        case TransactionResetFailed
+        case AuthenticationFailed
+        case ConnectionLost
+        case ConnectionTerminated
+        case ConnectionTimedOut
+        case RequestCancelled
+    }
+
     static func errorNotImplemented(component: String) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
@@ -186,6 +198,16 @@ public class Constants {
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Connection timed out",
                     comment: "General error description for a timed out connection")])
+        return error
+    }
+
+    static func errorSmtp(component: String, code: SmtpErrorCode) -> NSError {
+        let error = NSError.init(
+            domain: component, code: code.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                String.init(format:
+                    NSLocalizedString("SMTP Error (%d)", comment: ""),
+                    code.rawValue) ])
         return error
     }
 }

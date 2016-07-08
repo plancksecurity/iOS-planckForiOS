@@ -29,7 +29,7 @@ public class CreateLocalSpecialFoldersOperation: BaseOperation {
                     accountEmail: self.accountEmail) {
                     folder.folderType = kind.rawValue
                 } else  {
-                    self.errors.append(Constants.errorCouldNotStoreFolder(self.comp,
+                    self.addError(Constants.errorCouldNotStoreFolder(self.comp,
                         name: folderName))
                 }
             }

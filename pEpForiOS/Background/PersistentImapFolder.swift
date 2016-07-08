@@ -68,8 +68,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     override func setUIDValidity(theUIDValidity: UInt) {
         if folder.uidValidity != theUIDValidity {
-            Log.warn(comp,
-                     "UIValidity changed, deleting all messages. Folder \(folder.name)")
+            Log.warnComponent(comp,
+                              "UIValidity changed, deleting all messages. Folder \(folder.name)")
             folder.messages = []
         }
         folder.uidValidity = theUIDValidity

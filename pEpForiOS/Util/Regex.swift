@@ -25,7 +25,7 @@ extension String {
                 return name
             }
         } catch let err as NSError {
-            Log.error("unquote", error: err)
+            Log.errorComponent("unquote", error: err)
         }
         return self
     }
@@ -41,7 +41,7 @@ extension String {
             let matches = internalExpression.matchesInString(self, options: [], range: wholeRange())
             return matches.count == 1
         } catch let err as NSError {
-            Log.error("String", error: err)
+            Log.errorComponent("String", error: err)
             return false
         }
     }
@@ -70,7 +70,7 @@ class Regex {
             try internalExpression = NSRegularExpression.init(
                 pattern: pattern, options: options)
         } catch let err as NSError {
-            Log.error(comp, error: err)
+            Log.errorComponent(comp, error: err)
             return nil
         }
     }

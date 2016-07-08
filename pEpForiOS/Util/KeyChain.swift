@@ -26,7 +26,7 @@ public class KeyChain {
 
             let status = SecItemAdd(query, nil)
             if status != noErr {
-                Log.warn(comp, "Could not save password for \(email)")
+                Log.warnComponent(comp, "Could not save password for \(email)")
                 return false
             }
             return true
@@ -46,13 +46,13 @@ public class KeyChain {
         var result: AnyObject?
         let status = SecItemCopyMatching(query, &result)
         if status != noErr {
-            Log.warn(comp, "Could not get password for \(email)")
+            Log.warnComponent(comp, "Could not get password for \(email)")
         }
         if result != nil {
             let str = String.init(data: result as! NSData, encoding: NSUTF8StringEncoding)
             return str
         } else {
-            Log.warn(comp, "No password found for \(email)")
+            Log.warnComponent(comp, "No password found for \(email)")
             return nil
         }
     }

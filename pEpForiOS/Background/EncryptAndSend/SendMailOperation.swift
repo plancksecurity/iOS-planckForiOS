@@ -23,6 +23,11 @@ public class SendMailOperation: ConcurrentBaseOperation {
      */
     var smtpSend: SmtpSend!
 
+    /**
+     The mail currently under processing (send).
+     */
+    var currentPepMailToSend: PEPMail? = nil
+
     public init(encryptionData: EncryptionData) {
         self.encryptionData = encryptionData
     }
@@ -39,7 +44,7 @@ public class SendMailOperation: ConcurrentBaseOperation {
                         NSLocalizedString("Could not get account by email: '%s'",
                             comment: "Error message when account could not be retrieved"),
                         self.encryptionData.accountEmail)))
-                Log.error(self.comp, error: Constants.errorInvalidParameter(
+                Log.errorComponent(self.comp, error: Constants.errorInvalidParameter(
                     self.comp,
                     errorMessage:
                     "Could not get account by email: \(self.encryptionData.accountEmail)"))
@@ -55,38 +60,101 @@ public class SendMailOperation: ConcurrentBaseOperation {
             markAsFinished()
         }
     }
+
+    func sendNextMailOrMarkAsFinished() {
+        if encryptionData.mailsToSend.count > 0 {
+            currentPepMailToSend = encryptionData.mailsToSend.removeLast()
+            let pantMail = PEPUtil.pantomimeMailFromPep(currentPepMailToSend!)
+            smtpSend.smtp.setRecipients(nil)
+            smtpSend.smtp.setMessageData(nil)
+            smtpSend.smtp.setMessage(pantMail)
+            smtpSend.smtp.sendMessage()
+            return
+        }
+        // No emails left
+        markAsFinished()
+    }
+
+    func handleNextMail() {
+        if let lastSentMail = currentPepMailToSend {
+            encryptionData.mailsSent.append(lastSentMail)
+        }
+        sendNextMailOrMarkAsFinished()
+    }
 }
 
 extension SendMailOperation: SmtpSendDelegate {
-    public func messageSent(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func messageSent(smtp: SmtpSend, theNotification: NSNotification?) {
+        handleNextMail()
+    }
 
-    public func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?) {
+        let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.MessageNotSent)
+        addError(error)
+        Log.infoComponent(comp, "messageNotSent: \(error)")
+    }
 
     public func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
 
-    public func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
+        let error = Constants.errorSmtp(comp,
+                                        code: Constants.SmtpErrorCode.TransactionInitiationFailed)
+        addError(error)
+        Log.infoComponent(comp, "transactionInitiationFailed: \(error)")
+    }
 
     public func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
 
-    public func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
+        let error = Constants.errorSmtp(comp,
+                                        code: Constants.SmtpErrorCode.RecipientIdentificationFailed)
+        addError(error)
+        Log.infoComponent(comp, "recipientIdentificationCompleted: \(error)")
+    }
 
     public func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
 
-    public func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?) {
+        let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.TransactionResetFailed)
+        addError(error)
+        Log.infoComponent(comp, "transactionResetFailed: \(error)")
+    }
 
-    public func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {
+        handleNextMail()
+    }
 
-    public func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
+        let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.AuthenticationFailed)
+        addError(error)
+        Log.infoComponent(comp, "authenticationFailed: \(error)")
+    }
 
     public func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?) {}
 
-    public func connectionLost(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func connectionLost(smtp: SmtpSend, theNotification: NSNotification?) {
+        let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.ConnectionLost)
+        addError(error)
+        Log.infoComponent(comp, "connectionEstablished: \(error)")
+    }
 
-    public func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {
+        let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.ConnectionTerminated)
+        addError(error)
+        Log.infoComponent(comp, "connectionTerminated: \(error)")
+    }
 
-    public func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {
+        let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.ConnectionTimedOut)
+        addError(error)
+        Log.infoComponent(comp, "connectionTimedOut: \(error)")
+    }
 
-    public func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?) {}
+    public func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?) {
+        let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.RequestCancelled)
+        addError(error)
+        Log.infoComponent(comp, "requestCancelled: \(error)")
+    }
 
     public func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?) {}
 
