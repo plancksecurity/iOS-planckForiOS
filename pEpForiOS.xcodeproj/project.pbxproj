@@ -31,6 +31,8 @@
 		431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
 		4325F3141CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */; };
+		432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */; };
+		432722251D33F2FD009EC395 /* TrustWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722231D33F2FD009EC395 /* TrustWordsViewController.swift */; };
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
 		4333FBA51CD9FAC00093364F /* SmtpTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333FBA41CD9FAC00093364F /* SmtpTest.swift */; };
 		43404B481D17D36D00D8B6FF /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43404B471D17D36D00D8B6FF /* EmailHeaderView.swift */; };
@@ -123,9 +125,7 @@
 		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
 		A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */; };
 		A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */; };
-		A1F459E31D2FD27B00B82B9B /* TrustWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F459E21D2FD27B00B82B9B /* TrustWordsViewController.swift */; };
 		A1F459E71D2FEA2600B82B9B /* Trustwords.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F459E61D2FEA2600B82B9B /* Trustwords.storyboard */; };
-		A1F459EF1D33A94E00B82B9B /* TrustWordsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F459EE1D33A94E00B82B9B /* TrustWordsViewCell.swift */; };
 		A1FF4EA81CFD9DFF0005C6BD /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -213,6 +213,8 @@
 		431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyCell.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentGrandOperatorOperation.swift; sourceTree = "<group>"; };
+		432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewCell.swift; sourceTree = "<group>"; };
+		432722231D33F2FD009EC395 /* TrustWordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewController.swift; sourceTree = "<group>"; };
 		432F7D601D2102F10094F097 /* PEPSessionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionTest.swift; sourceTree = "<group>"; };
 		4333FBA41CD9FAC00093364F /* SmtpTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpTest.swift; sourceTree = "<group>"; };
 		43404B471D17D36D00D8B6FF /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
@@ -321,9 +323,7 @@
 		A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorVerifyTests.swift; sourceTree = "<group>"; };
 		A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncTest.swift; sourceTree = "<group>"; };
 		A1D189F51CF87CF400746C15 /* AutocompleteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
-		A1F459E21D2FD27B00B82B9B /* TrustWordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewController.swift; sourceTree = "<group>"; };
 		A1F459E61D2FEA2600B82B9B /* Trustwords.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Trustwords.storyboard; path = Util/Trustwords.storyboard; sourceTree = "<group>"; };
-		A1F459EE1D33A94E00B82B9B /* TrustWordsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewCell.swift; sourceTree = "<group>"; };
 		A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -392,6 +392,15 @@
 				431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */,
 			);
 			path = Compose;
+			sourceTree = "<group>";
+		};
+		4327221F1D33F2CB009EC395 /* Trustwords */ = {
+			isa = PBXGroup;
+			children = (
+				432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */,
+				432722231D33F2FD009EC395 /* TrustWordsViewController.swift */,
+			);
+			path = Trustwords;
 			sourceTree = "<group>";
 		};
 		437432061CFC49A4000F8D35 /* Util */ = {
@@ -641,7 +650,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				A1F459E81D2FF02700B82B9B /* Handshacking */,
+				4327221F1D33F2CB009EC395 /* Trustwords */,
 				431AE5D11D2EC0A700F609D3 /* Compose */,
 				43ED53621CC77F95006AB156 /* EmailDisplay */,
 				43ED53651CC77F95006AB156 /* ImapSetup */,
@@ -677,15 +686,6 @@
 				A15724E61D1430FF00122D27 /* PruebaViewController.swift */,
 			);
 			path = ImapSetup;
-			sourceTree = "<group>";
-		};
-		A1F459E81D2FF02700B82B9B /* Handshacking */ = {
-			isa = PBXGroup;
-			children = (
-				A1F459E21D2FD27B00B82B9B /* TrustWordsViewController.swift */,
-				A1F459EE1D33A94E00B82B9B /* TrustWordsViewCell.swift */,
-			);
-			name = Handshacking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -879,7 +879,6 @@
 				43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */,
 				437431F61CFC2F14000F8D35 /* VerifyServiceOperation.swift in Sources */,
 				4380F7C71D1BBD5D00326F62 /* SendMailOperation.swift in Sources */,
-				A1F459E31D2FD27B00B82B9B /* TrustWordsViewController.swift in Sources */,
 				4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */,
 				4380F7C91D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFoldersOperation.swift in Sources */,
@@ -896,9 +895,9 @@
 				A1FF4EA81CFD9DFF0005C6BD /* ComposeViewController.swift in Sources */,
 				43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */,
 				43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */,
+				432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */,
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */,
 				43980EE71CBD24B800A7FC3C /* ImapSync.swift in Sources */,
-				A1F459EF1D33A94E00B82B9B /* TrustWordsViewCell.swift in Sources */,
 				431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */,
 				43800D931D112A0800821E34 /* TFHpple.m in Sources */,
 				43980EE91CBD24B800A7FC3C /* TestData.swift in Sources */,
@@ -917,6 +916,7 @@
 				43A0E73E1D16C99900159F41 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
+				432722251D33F2FD009EC395 /* TrustWordsViewController.swift in Sources */,
 				431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */,
 				43727F101D1ADF7A00F210DB /* GrandOperatorOperation.swift in Sources */,
 				4345967F1CE227D9004E8735 /* _MessageReference.swift in Sources */,
