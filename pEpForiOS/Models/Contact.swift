@@ -4,6 +4,25 @@ public protocol IContact: _IContact {
     func displayString() -> String
 }
 
+/**
+ For sharing core data contacts between threads, when the core data identity is not important.
+ */
+public class ContactDAO: IContact {
+    public var email: String
+    public var name: String?
+    public var userID: String?
+    public var bccMessages: NSSet = NSSet()
+    public var ccMessages: NSSet = NSSet()
+    public var fromMessages: NSSet = NSSet()
+    public var toMessages: NSSet = NSSet()
+
+    init(contact: IContact) {
+        email = contact.email
+        name = contact.name
+        userID = contact.userID
+    }
+}
+
 extension IContact {
     public func displayString() -> String {
         if self.name?.characters.count > 0 {

@@ -117,7 +117,8 @@ class EmailViewController: UIViewController {
         if (segue.identifier == segueReply) {
             let destination = segue.destinationViewController
                 as? ComposeWithAutocompleteViewController;
-            destination!.model = model
+            destination?.appConfig = appConfig
+            destination?.model = model
         }
         if (segue.identifier == segueTrustWords) {
             let destination = segue.destinationViewController as? TrustWordsViewController

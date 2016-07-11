@@ -20,6 +20,7 @@ class ComposeWithAutocompleteViewController: UITableViewController {
     let bodyTextFieldRowNumber = 3
 
     var appConfig: AppConfig?
+
     var model = ComposeViewControllerModel.init()
     var longBodyMessageTextView: UITextView? = nil
     var recipientCells: [RecipientType:RecipientCell] = [:]
@@ -49,8 +50,21 @@ class ComposeWithAutocompleteViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row < bodyTextFieldRowNumber {
-            let cell = tableView.dequeueReusableCellWithIdentifier("RecipientCell", forIndexPath: indexPath) as! RecipientCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(
+                "RecipientCell", forIndexPath: indexPath) as! RecipientCell
             cell.recipientType = RecipientType.fromRawValue(indexPath.row + 1)
+            if cell.searchBar == nil {
+                if let sb = self.storyboard {
+                    if let searchResultsController = sb.instantiateViewControllerWithIdentifier(
+                        "ContactsSearchResultsController") as? ContactsSearchResultsController {
+                        searchResultsController.appConfig = appConfig
+                        let searchController = UISearchController.init(
+                            searchResultsController: searchResultsController)
+                        searchController.searchResultsUpdater = self
+                        cell.searchController = searchController
+                    }
+                }
+            }
 
             // Cache the cell for later use
             recipientCells[cell.recipientType] = cell
@@ -79,6 +93,15 @@ extension ComposeWithAutocompleteViewController: UITextViewDelegate {
             tableView.endUpdates()
             UIView.setAnimationsEnabled(true)
             tableView.setContentOffset(currentOffset, animated: false)
+        }
+    }
+}
+
+extension ComposeWithAutocompleteViewController: UISearchResultsUpdating {
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        if let searchResultsController = searchController.searchResultsController
+            as? ContactsSearchResultsController {
+            searchResultsController.searchSnippet = searchController.searchBar.text
         }
     }
 }
