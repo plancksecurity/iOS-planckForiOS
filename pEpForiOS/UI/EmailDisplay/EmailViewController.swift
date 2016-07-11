@@ -12,6 +12,8 @@ import WebKit
 
 class EmailViewController: UIViewController {
     let segueReply = "segueReply"
+    let segueTrustWords = "segueTrustWords"
+
 
     let headerGapToContentY: CGFloat = 25
 
@@ -116,6 +118,20 @@ class EmailViewController: UIViewController {
             let destination = segue.destinationViewController
                 as? ComposeWithAutocompleteViewController;
             destination!.model = model
+        }
+        if (segue.identifier == segueTrustWords) {
+            let destination = segue.destinationViewController as? TrustWordsViewController
+            destination?.allRecipients = self.message.allRecipienst()
+            /*if let emailToContacts = self.message.from {
+                destination!.emailToContacts = emailToContacts
+            }
+            if let emailCcContacts = self.message.cc {
+                destination!.emailCcContacts = emailCcContacts
+            }
+            if let emailCcoContacts = self.message.cc {
+                destination!.emailCcoContacts = emailCcoContacts
+            }*/
+
         }
     }
 }

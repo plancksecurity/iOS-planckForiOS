@@ -200,11 +200,7 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="VPF-Wy-8RY">
-                        <barButtonItem key="rightBarButtonItem" title="Send" id="whn-9f-Amb">
-                            <connections>
-                                <segue destination="znh-D7-4wj" kind="show" identifier="segueTrustwords" id="h0g-sS-xpY"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="whn-9f-Amb"/>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28t-ga-UrZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -718,11 +714,83 @@
                                 <segue destination="e7z-y6-7Zf" kind="show" id="QfT-MZ-EhP"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="O3J-Mr-T4Y"/>
+                        <barButtonItem title="pEp" id="5eH-31-eed">
+                            <connections>
+                                <segue destination="2d7-Da-IgM" kind="show" identifier="segueTrustWords" id="bY7-gu-tb1"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmA-rc-hEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6240" y="1211"/>
+        </scene>
+        <!--Trust Words View Controller-->
+        <scene sceneID="N0g-A9-3RW">
+            <objects>
+                <tableViewController id="2d7-Da-IgM" customClass="TrustWordsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ose-7m-slm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="trustwordsCell" id="NUY-Vz-tpg" customClass="TrustWordsViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NUY-Vz-tpg" id="Aqd-T5-1MR">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irB-0r-1CK">
+                                            <rect key="frame" x="231" y="7" width="77" height="30"/>
+                                            <state key="normal" title="Handshake"/>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ana@pep-security.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9J-om-lrb">
+                                            <rect key="frame" x="33" y="11" width="178" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="irB-0r-1CK" firstAttribute="leading" secondItem="c9J-om-lrb" secondAttribute="trailing" constant="20" id="1xH-uj-LQp"/>
+                                        <constraint firstItem="c9J-om-lrb" firstAttribute="baseline" secondItem="irB-0r-1CK" secondAttribute="baseline" id="5iA-m1-T8N"/>
+                                        <constraint firstItem="irB-0r-1CK" firstAttribute="leading" secondItem="c9J-om-lrb" secondAttribute="trailing" constant="8" symbolic="YES" id="8PN-02-VZh"/>
+                                        <constraint firstItem="irB-0r-1CK" firstAttribute="baseline" secondItem="c9J-om-lrb" secondAttribute="baseline" id="8v2-oz-r6m"/>
+                                        <constraint firstItem="irB-0r-1CK" firstAttribute="leading" secondItem="Aqd-T5-1MR" secondAttribute="leading" constant="194" id="CC6-Ca-AZm"/>
+                                        <constraint firstItem="c9J-om-lrb" firstAttribute="leading" secondItem="Aqd-T5-1MR" secondAttribute="leadingMargin" constant="25" id="Wj7-TV-qK5"/>
+                                        <constraint firstItem="c9J-om-lrb" firstAttribute="top" secondItem="Aqd-T5-1MR" secondAttribute="topMargin" constant="3" id="bRs-Mv-YRj"/>
+                                        <constraint firstItem="irB-0r-1CK" firstAttribute="top" secondItem="c9J-om-lrb" secondAttribute="top" id="cbh-gx-CYc"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="irB-0r-1CK" secondAttribute="trailing" id="p1Z-W3-3qz"/>
+                                        <constraint firstItem="irB-0r-1CK" firstAttribute="top" secondItem="Aqd-T5-1MR" secondAttribute="topMargin" id="xTf-r4-dbN"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="5iA-m1-T8N"/>
+                                            <exclude reference="8PN-02-VZh"/>
+                                            <exclude reference="CC6-Ca-AZm"/>
+                                            <exclude reference="cbh-gx-CYc"/>
+                                            <exclude reference="p1Z-W3-3qz"/>
+                                            <exclude reference="xTf-r4-dbN"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="handshakeContactUILabel" destination="c9J-om-lrb" id="Tfm-Uv-TbO"/>
+                                    <outlet property="handshakeUIButton" destination="irB-0r-1CK" id="RhJ-S4-XmR"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="2d7-Da-IgM" id="pPe-6V-wHm"/>
+                            <outlet property="delegate" destination="2d7-Da-IgM" id="ana-s0-5Ra"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nbp-Fh-kKt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6520" y="1995"/>
         </scene>
         <!--Mail Table View-->
         <scene sceneID="f6A-Gu-Nbz">
@@ -1189,14 +1257,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQF-fa-tkQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5319" y="321"/>
-        </scene>
-        <!--Trustwords-->
-        <scene sceneID="Eed-CE-Qdd">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Trustwords" id="znh-D7-4wj" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3A4-sp-Az2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5054" y="2752"/>
         </scene>
     </scenes>
 </document>
