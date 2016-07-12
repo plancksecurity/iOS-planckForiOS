@@ -13,6 +13,7 @@ public enum MessageAttributes: String {
     case messageID = "messageID"
     case messageNumber = "messageNumber"
     case originationDate = "originationDate"
+    case pepColor = "pepColor"
     case subject = "subject"
     case uid = "uid"
 }
@@ -46,6 +47,8 @@ public protocol _IMessage {
     var messageNumber: NSNumber? { get set }
 
     var originationDate: NSDate? { get set }
+
+    var pepColor: NSNumber { get set }
 
     var subject: String? { get set }
 
@@ -117,6 +120,9 @@ public class _Message: BaseManagedObject, _IMessage {
 
     @NSManaged public
     var originationDate: NSDate?
+
+    @NSManaged public
+    var pepColor: NSNumber
 
     @NSManaged public
     var subject: String?

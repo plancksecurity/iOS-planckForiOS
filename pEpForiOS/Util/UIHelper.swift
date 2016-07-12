@@ -55,4 +55,11 @@ class UIHelper {
         let font = UIFont.boldSystemFontOfSize(size)
         label.font = font
     }
+
+    /**
+     Get the color for a privacy status from the PEP_color.
+     */
+    static func backgroundColorFromPepColor(pepColor: PrivacyColor) -> UIColor? {
+        return UIColor.redColor()
+    }
 }

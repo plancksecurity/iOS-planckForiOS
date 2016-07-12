@@ -8,6 +8,13 @@
 
 import Foundation
 
+public enum PrivacyColor {
+    case NoColor
+    case Green
+    case Red
+    case Yellow
+}
+
 public class PEPUtil {
     /**
      Content type for MIME multipart/alternative.
@@ -347,5 +354,17 @@ public class PEPUtil {
         }
 
         return parts
+    }
+
+    static func colorRatingForContact(contact: IContact) -> PEP_color {
+        return PEP_rating_undefined
+    }
+
+    static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor {
+        return .NoColor
+    }
+
+    static func pepColorRatingFromInt(i: Int) -> PEP_color {
+        return PEP_rating_undefined
     }
 }
