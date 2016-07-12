@@ -788,25 +788,29 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irB-0r-1CK">
-                                            <rect key="frame" x="231" y="7" width="77" height="30"/>
+                                            <rect key="frame" x="511" y="12" width="77" height="19.5"/>
                                             <state key="normal" title="Handshake"/>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ana@pep-security.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9J-om-lrb">
-                                            <rect key="frame" x="33" y="11" width="178" height="21"/>
+                                            <rect key="frame" x="12" y="12" width="178" height="19.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="irB-0r-1CK" firstAttribute="leading" secondItem="c9J-om-lrb" secondAttribute="trailing" constant="20" id="1xH-uj-LQp"/>
+                                        <constraint firstItem="irB-0r-1CK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="c9J-om-lrb" secondAttribute="trailing" constant="4" id="1xH-uj-LQp"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="c9J-om-lrb" secondAttribute="bottom" constant="4" id="3KA-4c-aya"/>
                                         <constraint firstItem="c9J-om-lrb" firstAttribute="baseline" secondItem="irB-0r-1CK" secondAttribute="baseline" id="5iA-m1-T8N"/>
                                         <constraint firstItem="irB-0r-1CK" firstAttribute="leading" secondItem="c9J-om-lrb" secondAttribute="trailing" constant="8" symbolic="YES" id="8PN-02-VZh"/>
                                         <constraint firstItem="irB-0r-1CK" firstAttribute="baseline" secondItem="c9J-om-lrb" secondAttribute="baseline" id="8v2-oz-r6m"/>
                                         <constraint firstItem="irB-0r-1CK" firstAttribute="leading" secondItem="Aqd-T5-1MR" secondAttribute="leading" constant="194" id="CC6-Ca-AZm"/>
-                                        <constraint firstItem="c9J-om-lrb" firstAttribute="leading" secondItem="Aqd-T5-1MR" secondAttribute="leadingMargin" constant="25" id="Wj7-TV-qK5"/>
-                                        <constraint firstItem="c9J-om-lrb" firstAttribute="top" secondItem="Aqd-T5-1MR" secondAttribute="topMargin" constant="3" id="bRs-Mv-YRj"/>
+                                        <constraint firstItem="c9J-om-lrb" firstAttribute="leading" secondItem="Aqd-T5-1MR" secondAttribute="leadingMargin" constant="4" id="Wj7-TV-qK5"/>
+                                        <constraint firstItem="c9J-om-lrb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Aqd-T5-1MR" secondAttribute="topMargin" constant="4" id="bRs-Mv-YRj"/>
+                                        <constraint firstItem="irB-0r-1CK" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Aqd-T5-1MR" secondAttribute="topMargin" constant="4" id="cPI-Br-DEi"/>
                                         <constraint firstItem="irB-0r-1CK" firstAttribute="top" secondItem="c9J-om-lrb" secondAttribute="top" id="cbh-gx-CYc"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="irB-0r-1CK" secondAttribute="bottom" constant="4" id="lfP-hS-dSv"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="irB-0r-1CK" secondAttribute="trailing" constant="4" id="nzX-pJ-TU0"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="irB-0r-1CK" secondAttribute="trailing" id="p1Z-W3-3qz"/>
                                         <constraint firstItem="irB-0r-1CK" firstAttribute="top" secondItem="Aqd-T5-1MR" secondAttribute="topMargin" id="xTf-r4-dbN"/>
                                     </constraints>
