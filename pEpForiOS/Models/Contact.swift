@@ -9,17 +9,21 @@ public protocol IContact: _IContact {
  */
 public class ContactDAO: IContact {
     public var email: String
-    public var name: String?
-    public var userID: String?
+    public var name: String? = nil
+    public var userID: String? = nil
     public var bccMessages: NSSet = NSSet()
     public var ccMessages: NSSet = NSSet()
     public var fromMessages: NSSet = NSSet()
     public var toMessages: NSSet = NSSet()
 
-    init(contact: IContact) {
+    public init(contact: IContact) {
         email = contact.email
         name = contact.name
         userID = contact.userID
+    }
+
+    public init(email: String) {
+        self.email = email
     }
 }
 

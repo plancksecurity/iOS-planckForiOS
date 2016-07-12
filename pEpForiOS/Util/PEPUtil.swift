@@ -356,15 +356,18 @@ public class PEPUtil {
         return parts
     }
 
-    static func colorRatingForContact(contact: IContact) -> PEP_color {
-        return PEP_rating_undefined
+    public static func colorRatingForContact(contact: IContact) -> PEP_color {
+        let pepC = pepContact(contact)
+        let session = PEPSession.init()
+        let color = session.identityColor(pepC)
+        return color
     }
 
-    static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor {
+    public static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor {
         return .NoColor
     }
 
-    static func pepColorRatingFromInt(i: Int) -> PEP_color {
+    public static func pepColorRatingFromInt(i: Int) -> PEP_color {
         return PEP_rating_undefined
     }
 }

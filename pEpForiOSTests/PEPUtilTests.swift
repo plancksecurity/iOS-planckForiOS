@@ -11,6 +11,8 @@ import XCTest
 import pEpForiOS
 
 class PEPUtilTests: XCTestCase {
+    let waitTime: NSTimeInterval = 10
+
     var persistentSetup: PersistentSetup!
 
     override func setUp() {
@@ -326,5 +328,30 @@ class PEPUtilTests: XCTestCase {
             XCTAssertEqual(attachments?.count, 2)
             XCTAssertEqual(pepMail, pepMailOrig)
         }
+    }
+
+    func testColorRatingForContact() {
+        let unknownContact = ContactDAO.init(email: "unknownuser@peptest.ch")
+        XCTAssertEqual(PEPUtil.colorRatingForContact(unknownContact), PEP_rating_undefined)
+
+        // Create myself
+        let expMyselfFinished = expectationWithDescription("expMyselfFinished")
+        let account = persistentSetup.model.accountByEmail(persistentSetup.accountEmail)
+        var identityMyself: NSDictionary? = nil
+        PEPUtil.myselfFromAccount(account as! Account, block: { identity in
+            expMyselfFinished.fulfill()
+            identityMyself = identity
+        })
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(identityMyself)
+            XCTAssertNotNil(identityMyself?[kPepFingerprint])
+        })
+
+        // Check rating for myself, should be at least yellow
+        let contact = PEPUtil.insertPepContact(
+            identityMyself?.mutableCopy() as! PEPContact, intoModel: persistentSetup.model)
+        let rating = PEPUtil.colorRatingForContact(contact)
+        XCTAssertGreaterThanOrEqual(rating.rawValue, PEP_rating_reliable.rawValue)
     }
 }
