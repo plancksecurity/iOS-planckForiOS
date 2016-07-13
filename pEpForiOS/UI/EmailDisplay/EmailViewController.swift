@@ -122,6 +122,7 @@ class EmailViewController: UIViewController {
         }
         if (segue.identifier == segueTrustWords) {
             let destination = segue.destinationViewController as? TrustWordsViewController
+            destination?.message = self.message
             destination?.allRecipients = self.message.allRecipienst()
             /*if let emailToContacts = self.message.from {
                 destination!.emailToContacts = emailToContacts

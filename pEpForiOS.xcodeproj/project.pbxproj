@@ -127,6 +127,7 @@
 		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
 		A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */; };
 		A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */; };
+		A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */; };
 		A1F459E71D2FEA2600B82B9B /* Trustwords.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F459E61D2FEA2600B82B9B /* Trustwords.storyboard */; };
 		A1FF4EA81CFD9DFF0005C6BD /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -326,6 +327,7 @@
 		A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
 		A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorVerifyTests.swift; sourceTree = "<group>"; };
 		A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncTest.swift; sourceTree = "<group>"; };
+		A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailSecurityTableViewCell.swift; sourceTree = "<group>"; };
 		A1D189F51CF87CF400746C15 /* AutocompleteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
 		A1F459E61D2FEA2600B82B9B /* Trustwords.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Trustwords.storyboard; path = Util/Trustwords.storyboard; sourceTree = "<group>"; };
 		A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
@@ -403,6 +405,7 @@
 			children = (
 				432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */,
 				432722231D33F2FD009EC395 /* TrustWordsViewController.swift */,
+				A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */,
 			);
 			path = Trustwords;
 			sourceTree = "<group>";
@@ -962,6 +965,7 @@
 				43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */,
 				43ED53761CC77F95006AB156 /* MailTableView.swift in Sources */,
 				4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */,
+				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
 				43A0E73C1D16C99900159F41 /* ALView+PureLayout.m in Sources */,
 				434596831CE227E6004E8735 /* MessageReference.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
