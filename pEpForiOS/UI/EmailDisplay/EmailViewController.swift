@@ -28,8 +28,6 @@ class EmailViewController: UIViewController {
 
     var message: Message!
 
-    var model: ComposeViewControllerModel = ComposeViewControllerModel()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         let config = WKWebViewConfiguration.init()
@@ -80,13 +78,6 @@ class EmailViewController: UIViewController {
         let alertActionReply = UIAlertAction (title: NSLocalizedString("Reply",
             comment: "Reply button text for reply action in AlertView in the screen with the message details"),
                                               style: .Default) { (action) in
-                //self.model.shortMessage = self.message.subject
-                if let subject = self.message.subject {
-                    self.model.shortMessage = subject
-                }
-                if let For = self.message.from?.name {
-                   self.model.to = For
-                }
                 self.performSegueWithIdentifier(self.segueReply , sender: self)
         }
         alertViewWithoutTittle.addAction(alertActionReply)
@@ -118,7 +109,6 @@ class EmailViewController: UIViewController {
             let destination = segue.destinationViewController
                 as? ComposeWithAutocompleteViewController;
             destination?.appConfig = appConfig
-            destination?.model = model
         }
         if (segue.identifier == segueTrustWords) {
             let destination = segue.destinationViewController as? TrustWordsViewController

@@ -177,7 +177,8 @@ public class AddressBook {
         let contactName = ABRecordCopyCompositeName(contact).takeRetainedValue() as String
         let emailMultiOpt = ABRecordCopyValue(contact, kABPersonEmailProperty)?.takeRetainedValue()
         if let emailMulti = emailMultiOpt {
-            if let emails: NSArray = ABMultiValueCopyArrayOfAllValues(emailMulti)?.takeUnretainedValue() {
+            if let emails: NSArray =
+                ABMultiValueCopyArrayOfAllValues(emailMulti)?.takeUnretainedValue() {
                 for email in emails {
                     if let emailString = email as? String {
                         result.append(AddressbookContact.init(email: emailString, name: contactName))

@@ -14,9 +14,9 @@ class ContactTableViewCell: UITableViewCell {
     var contact: IContact? = nil {
         didSet {
             if let c = contact {
-                labelContactDisplayName.text = c.displayString()
+                labelContactDisplayName.text = c.completeDisplayString()
             } else {
-                labelContactDisplayName.text = ""
+                labelContactDisplayName.text = "Null Contact"
             }
         }
     }

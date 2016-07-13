@@ -677,7 +677,8 @@ public class Model: IModel {
     }
 
     public func contactsBySnippet(snippet: String) -> [IContact] {
-        let p = NSPredicate.init(format: "email contains[cd] %@ or name contains[cd] %@",
+        let p = NSPredicate.init(format: "email != nil and email != \"\" and " +
+            "(email contains[cd] %@ or name contains[cd] %@)",
                                  snippet, snippet)
         let entities = entitiesWithName(Contact.entityName(), predicate: p) as! [Contact]
         var contacts: [IContact] = []

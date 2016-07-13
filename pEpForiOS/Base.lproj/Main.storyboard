@@ -157,13 +157,13 @@
         <scene sceneID="YkL-8B-UDO">
             <objects>
                 <tableViewController id="8bt-7R-jDE" customClass="ComposeWithAutocompleteViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="K3w-ql-tda">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="K3w-ql-tda">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipientCell" id="WQx-T2-rJ2" customClass="RecipientCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WQx-T2-rJ2" id="5Vs-0n-XCD">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -175,15 +175,25 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bdq-Ap-nv5">
+                                            <rect key="frame" x="35.5" y="8" width="554.5" height="27.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
+                                        </textField>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Bdq-Ap-nv5" secondAttribute="bottom" id="7wc-85-lrI"/>
                                         <constraint firstItem="LPO-ud-4gZ" firstAttribute="top" secondItem="5Vs-0n-XCD" secondAttribute="topMargin" id="9tn-eS-A0b"/>
                                         <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="LPO-ud-4gZ" secondAttribute="bottom" constant="4" id="Ffl-Ol-bqc"/>
+                                        <constraint firstItem="Bdq-Ap-nv5" firstAttribute="baseline" secondItem="LPO-ud-4gZ" secondAttribute="baseline" id="Fln-6d-zUq"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="LPO-ud-4gZ" secondAttribute="bottom" id="L7W-WT-Fnt"/>
+                                        <constraint firstItem="Bdq-Ap-nv5" firstAttribute="leading" secondItem="LPO-ud-4gZ" secondAttribute="trailing" constant="4" id="Tqm-Y8-Wi1"/>
                                         <constraint firstItem="LPO-ud-4gZ" firstAttribute="centerY" secondItem="5Vs-0n-XCD" secondAttribute="centerY" id="UH7-bo-NYE"/>
                                         <constraint firstItem="LPO-ud-4gZ" firstAttribute="centerY" secondItem="5Vs-0n-XCD" secondAttribute="centerY" id="WLZ-9T-tTl"/>
                                         <constraint firstItem="LPO-ud-4gZ" firstAttribute="top" secondItem="5Vs-0n-XCD" secondAttribute="topMargin" id="XNN-Qc-1iu"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Bdq-Ap-nv5" secondAttribute="trailing" constant="2" id="cJk-oc-wF2"/>
                                         <constraint firstItem="LPO-ud-4gZ" firstAttribute="leading" secondItem="5Vs-0n-XCD" secondAttribute="leadingMargin" id="gYL-KY-ThM"/>
+                                        <constraint firstItem="Bdq-Ap-nv5" firstAttribute="top" secondItem="5Vs-0n-XCD" secondAttribute="topMargin" id="hsN-wW-m0x"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="LPO-ud-4gZ" secondAttribute="bottom" id="xem-FB-qdC"/>
                                         <constraint firstItem="LPO-ud-4gZ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5Vs-0n-XCD" secondAttribute="topMargin" constant="4" id="xho-N4-V85"/>
                                     </constraints>
@@ -196,15 +206,17 @@
                                             <exclude reference="XNN-Qc-1iu"/>
                                             <exclude reference="xem-FB-qdC"/>
                                             <exclude reference="xho-N4-V85"/>
+                                            <exclude reference="Fln-6d-zUq"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="recipientTextField" destination="Bdq-Ap-nv5" id="HUi-OZ-2Ui"/>
                                     <outlet property="recipientTypeLabel" destination="LPO-ud-4gZ" id="GZ2-zx-LvZ"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MessageBodyCell" id="lDN-Hh-Smf" customClass="MessageBodyCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="157.5" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="136" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lDN-Hh-Smf" id="cFr-N0-CDs">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -228,13 +240,30 @@
                                     <outlet property="bodyTextView" destination="hqv-cv-ye5" id="5bw-Zg-TOT"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="s7Q-4K-t8E">
-                                <rect key="frame" x="0.0" y="201.5" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactTableViewCell" id="Oat-5x-SrF" customClass="ContactTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="180" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s7Q-4K-t8E" id="ZTD-O0-c4f">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Oat-5x-SrF" id="yAo-eZ-vhj">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spU-Ny-si1">
+                                            <rect key="frame" x="8" y="8" width="584" height="27.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="spU-Ny-si1" secondAttribute="trailing" id="2W6-1V-6rl"/>
+                                        <constraint firstItem="spU-Ny-si1" firstAttribute="top" secondItem="yAo-eZ-vhj" secondAttribute="topMargin" id="F19-Yp-oOi"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="spU-Ny-si1" secondAttribute="bottom" id="KbH-iw-vQO"/>
+                                        <constraint firstItem="spU-Ny-si1" firstAttribute="leading" secondItem="yAo-eZ-vhj" secondAttribute="leadingMargin" id="nEX-bN-UDI"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="labelContactDisplayName" destination="spU-Ny-si1" id="svX-dc-Wcn"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>

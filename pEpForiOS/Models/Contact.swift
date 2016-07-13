@@ -1,7 +1,15 @@
 import Foundation
 
 public protocol IContact: _IContact {
+    /**
+     Short display string, only the user's name if possible.
+     */
     func displayString() -> String
+
+    /**
+     The complete name and email, if possible.
+     */
+    func completeDisplayString() -> String
 }
 
 /**
@@ -34,6 +42,13 @@ extension IContact {
         } else {
             return email
         }
+    }
+
+    public func completeDisplayString() -> String {
+        if let name = self.name {
+            return "\(name) <\(email)>"
+        }
+        return email
     }
 
     public mutating func updateFromEmail(email: String, name: String?) {
