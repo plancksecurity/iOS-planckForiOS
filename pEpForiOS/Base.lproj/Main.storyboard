@@ -838,7 +838,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x1d-Md-75b">
-                                            <rect key="frame" x="12" y="4" width="42" height="21"/>
+                                            <rect key="frame" x="12" y="4" width="42" height="27.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -847,6 +847,7 @@
                                     <constraints>
                                         <constraint firstItem="x1d-Md-75b" firstAttribute="leading" secondItem="Wky-08-VfS" secondAttribute="leadingMargin" constant="4" id="47C-H3-i2Q"/>
                                         <constraint firstAttribute="topMargin" secondItem="x1d-Md-75b" secondAttribute="top" constant="4" id="EdG-Ua-eaE"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="x1d-Md-75b" secondAttribute="bottom" constant="4" id="W2v-Nl-r2F"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

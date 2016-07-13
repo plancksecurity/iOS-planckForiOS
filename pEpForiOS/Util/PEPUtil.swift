@@ -363,11 +363,48 @@ public class PEPUtil {
         return color
     }
 
-    public static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor {
-        return .NoColor
+    public static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor? {
+        switch pepColorRating {
+        case PEP_rating_undefined, PEP_rating_cannot_decrypt, PEP_rating_have_no_key, PEP_rating_unencrypted, PEP_rating_unencrypted_for_some,  PEP_rating_unreliable:
+            return PrivacyColor.NoColor
+        case PEP_rating_reliable, PEP_rating_yellow:
+            return PrivacyColor.Yellow
+        case PEP_rating_trusted, PEP_rating_trusted_and_anonymized, PEP_rating_fully_anonymous, PEP_rating_green:
+            return PrivacyColor.Green
+        case PEP_rating_mistrust, PEP_rating_red, PEP_rating_b0rken, PEP_rating_under_attack:
+            return PrivacyColor.Red
+        default:
+            return nil
+        }
     }
 
     public static func pepColorRatingFromInt(i: Int) -> PEP_color {
-        return PEP_rating_undefined
+        if (i == 0) {
+            return PEP_rating_undefined
+        } else if (i == 1) {
+            return PEP_rating_cannot_decrypt
+        } else if (i == 2) {
+            return PEP_rating_have_no_key
+        } else if (i == 3) {
+            return PEP_rating_unencrypted
+        } else if (i == 4) {
+            return PEP_rating_unencrypted_for_some
+        } else if (i == 5) {
+            return PEP_rating_unreliable
+        } else if (i == 6) {
+            return PEP_rating_reliable
+        } else if (i == 7) {
+            return PEP_rating_trusted
+        } else if (i == 8) {
+            return PEP_rating_trusted_and_anonymized
+        } else if (i == 9) {
+            return PEP_rating_undefined
+        } else if (i == -1) {
+            return PEP_rating_mistrust
+        } else if (i == -2) {
+            return PEP_rating_b0rken
+        } else {
+            return PEP_rating_under_attack
+        }
     }
 }
