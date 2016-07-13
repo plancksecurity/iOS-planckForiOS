@@ -87,6 +87,9 @@ class ComposeWithAutocompleteViewController: UITableViewController {
     override func tableView(tableView: UITableView,
                             viewForHeaderInSection section: Int) -> UIView? {
         if model.mode == UIModel.Mode.Search && section == 0 {
+            // We are reusing an ordinary cell as a header, this might lead to:
+            // "no index path for table cell being reused".
+            // Can probably ignored.
             return model.recipientCell
         }
         return nil
@@ -105,6 +108,9 @@ class ComposeWithAutocompleteViewController: UITableViewController {
             if let cell = model.recipientCell {
                 let c = model.contacts[indexPath.row]
                 if var text = cell.recipientTextField.text?.finishedRecipientPart() {
+                    if text != "" && !text.matchesPattern(",\\s*$") {
+                        text += ", "
+                    }
                     text += c.email + ", "
                     cell.recipientTextField.text = text
                 }
@@ -200,11 +206,23 @@ extension ComposeWithAutocompleteViewController: UITextFieldDelegate {
     func textField(textField: UITextField,
                    shouldChangeCharactersInRange range: NSRange,
                                                  replacementString string: String) -> Bool {
+        let justComma = ", "
+        let newline = "\n"
+
         if let cell = recipientCells[textField] {
             if let text = textField.text {
                 if string == " " {
-                    let newText = text.stringByReplacingCharactersInRange(range, withString: ", ")
-                    textField.text = newText
+                    let newText = text.stringByReplacingCharactersInRange(range,
+                                                                          withString: justComma)
+                    if newText != justComma && !text.matchesPattern("\(justComma)$") {
+                        // TODO: Evaluate all emais before!
+                        textField.text = newText
+                    }
+                    resetTableViewToNormal()
+                    return false
+                }
+                if string == newline {
+                    resetTableViewToNormal()
                     return false
                 }
                 let newText = text.stringByReplacingCharactersInRange(range, withString: string)

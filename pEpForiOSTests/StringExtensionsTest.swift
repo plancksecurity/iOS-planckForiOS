@@ -29,4 +29,14 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual("finished1, finished2, finished3, non terminado".finishedRecipientPart(),
                        "finished1, finished2, finished3")
     }
+
+    func testMatchesPattern() {
+        XCTAssertEqual("uiaeuiae, ".matchesPattern(", $"), true)
+        XCTAssertEqual("uiaeuiae, uiae".matchesPattern(", $"), false)
+        XCTAssertEqual("uiaeuiae, uiae".matchesPattern(",\\w*$"), false)
+        XCTAssertEqual("uiaeuiae,".matchesPattern(",\\s*$"), true)
+        XCTAssertEqual("uiaeuiae, ".matchesPattern(",\\s*$"), true)
+        XCTAssertEqual("uiaeuiae,  ".matchesPattern(",\\s*$"), true)
+        XCTAssertEqual("uiaeuiae,  .".matchesPattern(",\\s*$"), false)
+    }
 }
