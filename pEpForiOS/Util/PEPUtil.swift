@@ -15,6 +15,19 @@ public enum PrivacyColor {
     case Yellow
 }
 
+var pepColorDiccionary: [Int32: PEP_color] = [PEP_rating_undefined.rawValue: PEP_rating_undefined,
+                                              PEP_rating_cannot_decrypt.rawValue: PEP_rating_cannot_decrypt,
+                                              PEP_rating_have_no_key.rawValue: PEP_rating_have_no_key,
+                                              PEP_rating_unencrypted.rawValue: PEP_rating_unencrypted,
+                                              PEP_rating_unencrypted_for_some.rawValue:  PEP_rating_unencrypted_for_some,
+                                              PEP_rating_unreliable.rawValue: PEP_rating_unreliable,
+                                              PEP_rating_reliable.rawValue: PEP_rating_reliable,
+                                              PEP_rating_trusted.rawValue: PEP_rating_trusted,
+                                              PEP_rating_trusted_and_anonymized.rawValue: PEP_rating_trusted_and_anonymized,
+                                              PEP_rating_fully_anonymous.rawValue: PEP_rating_fully_anonymous,
+                                              PEP_rating_mistrust.rawValue: PEP_rating_mistrust,
+                                              PEP_rating_b0rken.rawValue: PEP_rating_b0rken,
+                                              PEP_rating_under_attack.rawValue: PEP_rating_under_attack]
 public class PEPUtil {
     /**
      Content type for MIME multipart/alternative.
@@ -378,33 +391,11 @@ public class PEPUtil {
         }
     }
 
-    public static func pepColorRatingFromInt(i: Int) -> PEP_color {
-        if (i == 0) {
-            return PEP_rating_undefined
-        } else if (i == 1) {
-            return PEP_rating_cannot_decrypt
-        } else if (i == 2) {
-            return PEP_rating_have_no_key
-        } else if (i == 3) {
-            return PEP_rating_unencrypted
-        } else if (i == 4) {
-            return PEP_rating_unencrypted_for_some
-        } else if (i == 5) {
-            return PEP_rating_unreliable
-        } else if (i == 6) {
-            return PEP_rating_reliable
-        } else if (i == 7) {
-            return PEP_rating_trusted
-        } else if (i == 8) {
-            return PEP_rating_trusted_and_anonymized
-        } else if (i == 9) {
-            return PEP_rating_undefined
-        } else if (i == -1) {
-            return PEP_rating_mistrust
-        } else if (i == -2) {
-            return PEP_rating_b0rken
-        } else {
-            return PEP_rating_under_attack
+    public static func pepColorRatingFromInt(i: Int) -> PEP_color? {
+        let int32 = Int32(i)
+        if let aux = pepColorDiccionary[int32] {
+            return aux
         }
+        return nil
     }
 }
