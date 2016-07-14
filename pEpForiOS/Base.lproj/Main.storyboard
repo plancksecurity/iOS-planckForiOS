@@ -866,8 +866,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x1d-Md-75b">
-                                            <rect key="frame" x="12" y="4" width="42" height="27.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security tittle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x1d-Md-75b">
+                                            <rect key="frame" x="12" y="4" width="102" height="27.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -881,6 +881,30 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="mailSecurityUILabel" destination="x1d-Md-75b" id="SyX-Fc-ApG"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="mailSecurityExplanationLabelCell" id="sQl-io-CjQ" customClass="LabelMailExplantionSecurityTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="180" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sQl-io-CjQ" id="rRf-0n-OEF">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security explanation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S6T-H8-eCy">
+                                            <rect key="frame" x="12" y="4" width="156" height="27.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="S6T-H8-eCy" firstAttribute="leading" secondItem="rRf-0n-OEF" secondAttribute="leadingMargin" constant="4" id="eF7-8i-1w9"/>
+                                        <constraint firstAttribute="topMargin" secondItem="S6T-H8-eCy" secondAttribute="top" constant="4" id="r0n-7H-rtr"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="S6T-H8-eCy" secondAttribute="bottom" constant="4" id="yAg-14-eeI"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="mailExplanationSecurityUILabel" destination="S6T-H8-eCy" id="JGh-6s-V9a"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

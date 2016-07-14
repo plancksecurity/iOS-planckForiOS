@@ -129,6 +129,7 @@
 		A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */; };
 		A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */; };
 		A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */; };
+		A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */; };
 		A1F459E71D2FEA2600B82B9B /* Trustwords.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F459E61D2FEA2600B82B9B /* Trustwords.storyboard */; };
 		A1FF4EA81CFD9DFF0005C6BD /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -331,6 +332,7 @@
 		A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncTest.swift; sourceTree = "<group>"; };
 		A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailSecurityTableViewCell.swift; sourceTree = "<group>"; };
 		A1D189F51CF87CF400746C15 /* AutocompleteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
+		A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailExplantionSecurityTableViewCell.swift; sourceTree = "<group>"; };
 		A1F459E61D2FEA2600B82B9B /* Trustwords.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Trustwords.storyboard; path = Util/Trustwords.storyboard; sourceTree = "<group>"; };
 		A1FF4EA71CFD9DFF0005C6BD /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -410,6 +412,7 @@
 				432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */,
 				432722231D33F2FD009EC395 /* TrustWordsViewController.swift */,
 				A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */,
+				A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */,
 			);
 			path = Trustwords;
 			sourceTree = "<group>";
@@ -968,6 +971,7 @@
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
+				A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				43ED53781CC77F95006AB156 /* SMTPSettingsTableView.swift in Sources */,
 			);

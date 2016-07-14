@@ -70,7 +70,13 @@ class TrustWordsViewController: UITableViewController {
             cell.mailSecurityUILabel.text = "hola"
             return cell
         }
-        let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell", forIndexPath: indexPath) as! TrustWordsViewCell
+        if (indexPath.row == 1) {
+            let cell = tableView.dequeueReusableCellWithIdentifier("mailSecurityExplanationLabelCell", forIndexPath: indexPath) as!
+                LabelMailExplantionSecurityTableViewCell
+            cell.mailExplanationSecurityUILabel.text = "hola"
+            return cell
+        }
+    let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell", forIndexPath: indexPath) as! TrustWordsViewCell
             if let allContact = allRecipients {
                 let contact :Contact  = allContact[indexPath.row] as! Contact
                 cell.handshakeContactUILabel.text = contact.displayString()
