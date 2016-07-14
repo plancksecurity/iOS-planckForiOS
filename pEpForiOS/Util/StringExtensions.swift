@@ -36,18 +36,35 @@ public extension String {
 
     /**
      Very rudimentary test whether this String is a valid email.
-     Basically checks for matches of "a@a", where a is an arbitrary character.
      - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
      */
     public func isProbablyValidEmail() -> Bool {
         do {
-            let internalExpression = try NSRegularExpression.init(pattern: ".*\\w+@\\w+.*", options: .CaseInsensitive)
+            let internalExpression = try NSRegularExpression.init(
+                pattern: "^[^@,]+@[^@,]+$", options: .CaseInsensitive)
             let matches = internalExpression.matchesInString(self, options: [], range: wholeRange())
             return matches.count == 1
         } catch let err as NSError {
             Log.errorComponent("String", error: err)
             return false
         }
+    }
+
+    /**
+     Contains a String like e.g. "email1, email2, email3", only probably valid emails?
+     - Parameter delimiter: The delimiter that separates the emails.
+     - Returns: True if all email parts yield true with `isProbablyValidEmail`.
+     */
+    public func isProbablyValidEmailListSeparatedBy(delimiter: String = ",") -> Bool {
+        let emails = self.componentsSeparatedByString(delimiter).map({
+            $0.trimmedWhiteSpace()
+        })
+        for e in emails {
+            if e.matchesPattern("\(delimiter)") || !e.isProbablyValidEmail() {
+                return false
+            }
+        }
+        return true
     }
 
     public func contains(substring: String, ignoreCase: Bool = true,
@@ -136,6 +153,29 @@ public extension String {
             Log.errorComponent(String.comp, error: err)
         }
         return false
+    }
+
+    /**
+     Removes a matching pattern from the end of the String. Note that the '$' will be added
+     by this method.
+     */
+    public func removeTrailingPattern(pattern: String) -> String {
+        do {
+            let regex = try NSRegularExpression.init(pattern: "(.*?)\(pattern)$", options: [])
+            let matches = regex.matchesInString(self, options: [], range: wholeRange())
+            if matches.count == 1 {
+                let m = matches[0]
+                let r = m.rangeAtIndex(1)
+                if r.location != NSNotFound {
+                    let s = self as NSString
+                    let result = s.substringWithRange(r)
+                    return result
+                }
+            }
+        } catch let err as NSError {
+            Log.errorComponent(String.comp, error: err)
+        }
+        return self
     }
 }
 

@@ -29,6 +29,12 @@ class ComposeWithAutocompleteViewController: UITableViewController {
 
     var model: UIModel = UIModel.init()
 
+    let newline = "\n"
+    let justComma = ","
+    let commaWithSpace: String
+
+    @IBOutlet weak var sendButton: UIBarButtonItem!
+
     /**
      The index of the cell containing the body of the message for the user to write.
      */
@@ -37,7 +43,21 @@ class ComposeWithAutocompleteViewController: UITableViewController {
     var appConfig: AppConfig?
 
     var longBodyMessageTextView: UITextView? = nil
-    var recipientCells: [UITextField:RecipientCell] = [:]
+
+    /**
+     The recipient cells, mapped by their text field for fast access.
+     */
+    var recipientCellsByTextField = [UITextField: RecipientCell]()
+
+    /**
+     The recipient cells, mapped by their index row.
+     */
+    var recipientCells = [Int: RecipientCell]()
+
+    required init?(coder aDecoder: NSCoder) {
+        commaWithSpace = "\(justComma) "
+        super.init(coder: aDecoder)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,13 +68,18 @@ class ComposeWithAutocompleteViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        updateSendButtonFromView()
+    }
+
     func updateContacts() {
         if let snippet = model.searchSnippet {
             if let privateMOC = appConfig?.coreDataUtil.privateContext() {
                 privateMOC.performBlock() {
                     let modelBackground = Model.init(context: privateMOC)
                     let contacts = modelBackground.contactsBySnippet(snippet).map() {
-                        ContactDAO.init(contact: $0) as IContact
+                        AddressbookContact.init(contact: $0) as IContact
                     }
                     GCD.onMain() {
                         self.model.contacts.removeAll()
@@ -71,6 +96,27 @@ class ComposeWithAutocompleteViewController: UITableViewController {
         model.mode = .Normal
         model.contacts = []
         tableView.reloadData()
+    }
+
+    /**
+     Checks all recipient fields for validity, and updates the Send button accordingly.
+     */
+    func updateSendButtonFromView() {
+        var allEmpty = true
+        var allCorrect = true
+        for (_, cell) in recipientCells {
+            let tf = cell.recipientTextField
+            if let text = tf.text {
+                if text != "" {
+                    allEmpty = false
+                    let trailingRemoved = text.removeTrailingPattern("\(justComma)\\s*")
+                    if !trailingRemoved.isProbablyValidEmailListSeparatedBy(justComma) {
+                        allCorrect = false
+                    }
+                }
+            }
+        }
+        sendButton.enabled = !allEmpty && allCorrect
     }
 
     // MARK: -- UITableViewDelegate
@@ -115,6 +161,7 @@ class ComposeWithAutocompleteViewController: UITableViewController {
                     cell.recipientTextField.text = text
                 }
             }
+            updateSendButtonFromView()
             resetTableViewToNormal()
         }
     }
@@ -159,7 +206,8 @@ class ComposeWithAutocompleteViewController: UITableViewController {
                 cell.recipientTextField.delegate = self
 
                 // Cache the cell for later use
-                recipientCells[cell.recipientTextField] = cell
+                recipientCellsByTextField[cell.recipientTextField] = cell
+                recipientCells[indexPath.row] = cell
 
                 return cell
             } else {
@@ -203,26 +251,48 @@ extension ComposeWithAutocompleteViewController: UITextViewDelegate {
 // MARK: -- UITextFieldDelegate (for any recipient text field)
 
 extension ComposeWithAutocompleteViewController: UITextFieldDelegate {
+    func isFreshlyEnteredTextProbablyEmail(oldText: String, newText: String,
+                                           delimiter: String) -> Bool {
+        return newText != "\(delimiter) " && !oldText.matchesPattern("\(delimiter) $") &&
+            newText.removeTrailingPattern(
+                "\(delimiter)\\s*").isProbablyValidEmailListSeparatedBy(delimiter)
+    }
+
+    /**
+     Gets the identity colors of all emails in a given String, and sets the text field's
+     `attributedText` attribute correspondingly.
+     */
+    func colorEmailTextField(textField: UITextField, emailString: String, delimiter: String) {
+        if let context = appConfig?.coreDataUtil.privateContext() {
+            context.performBlock() {
+                let emails = emailString.componentsSeparatedByString(
+                    delimiter).map({$0.trimmedWhiteSpace()})
+            }
+        }
+    }
+
     func textField(textField: UITextField,
                    shouldChangeCharactersInRange range: NSRange,
                                                  replacementString string: String) -> Bool {
-        let justComma = ", "
-        let newline = "\n"
-
-        if let cell = recipientCells[textField] {
+        if let cell = recipientCellsByTextField[textField] {
             if let text = textField.text {
                 if string == " " {
-                    let newText = text.stringByReplacingCharactersInRange(range,
-                                                                          withString: justComma)
-                    if newText != justComma && !text.matchesPattern("\(justComma)$") {
-                        // TODO: Evaluate all emais before!
+                    let newText = text.stringByReplacingCharactersInRange(
+                        range, withString: commaWithSpace)
+                    if isFreshlyEnteredTextProbablyEmail(
+                        text, newText: newText, delimiter: justComma) {
                         textField.text = newText
+                        resetTableViewToNormal()
                     }
-                    resetTableViewToNormal()
+                    updateSendButtonFromView()
                     return false
                 }
                 if string == newline {
-                    resetTableViewToNormal()
+                    if isFreshlyEnteredTextProbablyEmail(
+                        text, newText: text, delimiter: justComma) {
+                        resetTableViewToNormal()
+                    }
+                    updateSendButtonFromView()
                     return false
                 }
                 let newText = text.stringByReplacingCharactersInRange(range, withString: string)
@@ -234,6 +304,7 @@ extension ComposeWithAutocompleteViewController: UITextFieldDelegate {
                     // Maybe the changing of hierarchy (due to the mode change)
                     // interferes with the replacement.
                     textField.text = newText.finishedRecipientPart()
+                    updateSendButtonFromView()
                     return false
                 } else {
                     model.searchSnippet = lastPart
@@ -244,6 +315,7 @@ extension ComposeWithAutocompleteViewController: UITextFieldDelegate {
                 }
             }
         }
+        updateSendButtonFromView()
         return true
     }
 }

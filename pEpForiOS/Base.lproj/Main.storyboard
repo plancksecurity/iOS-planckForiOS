@@ -276,6 +276,9 @@
                     <navigationItem key="navigationItem" id="VPF-Wy-8RY">
                         <barButtonItem key="rightBarButtonItem" title="Send" id="whn-9f-Amb"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="sendButton" destination="whn-9f-Amb" id="12l-JN-IwB"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28t-ga-UrZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
