@@ -265,7 +265,7 @@ extension ComposeWithAutocompleteViewController: UITextFieldDelegate {
     func colorEmailTextField(textField: UITextField, emailString: String, delimiter: String) {
         if let context = appConfig?.coreDataUtil.privateContext() {
             context.performBlock() {
-                let emails = emailString.componentsSeparatedByString(
+                let _ = emailString.componentsSeparatedByString(
                     delimiter).map({$0.trimmedWhiteSpace()})
             }
         }
