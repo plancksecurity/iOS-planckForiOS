@@ -184,6 +184,9 @@ public class AddressBook {
         return false
     }
 
+    /**
+     - Returns: An `IContact` for each email address of a given address book contact.
+     */
     func addressBookContactToContacts(contact: ABRecordRef) -> [IContact] {
         var result: [IContact] = []
         let identifier = ABRecordGetRecordID(contact)
@@ -194,7 +197,8 @@ public class AddressBook {
                 ABMultiValueCopyArrayOfAllValues(emailMulti)?.takeUnretainedValue() {
                 for email in emails {
                     if let emailString = email as? String {
-                        result.append(AddressbookContact.init(email: emailString, name: contactName))
+                        result.append(AddressbookContact.init(
+                            email: emailString, name: contactName, addressBookID: identifier))
                     }
                 }
             }
@@ -202,6 +206,10 @@ public class AddressBook {
         return result
     }
 
+    /**
+     - Returns: All contacts with an email address found in the address book as `IContact`.
+     If there are several emails for a contact, several contacts are returned.
+     */
     func contactsByPredicate(predicate: NSPredicate) -> [IContact] {
         var result: [IContact] = []
 
@@ -224,6 +232,18 @@ public class AddressBook {
         return result
     }
 
+    /**
+     -Returns: All contacts found in the address book with an email address.
+     If there are several emails for a contact, several contacts are returned.
+     */
+    func allContacts() -> [IContact] {
+        return contactsByPredicate(NSPredicate.init(value: true))
+    }
+
+    /**
+     - Returns: All contacts with an email that match the given snippet in either email or name.
+     If there are several emails for a contact, several contacts are returned.
+     */
     public func contactsBySnippet(snippet: String) -> [IContact] {
         let p = NSPredicate.init(block: { (record: ABRecordRef, bindings) in
             let contacts = self.addressBookContactToContacts(record)

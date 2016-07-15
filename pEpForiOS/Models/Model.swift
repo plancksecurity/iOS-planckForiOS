@@ -12,6 +12,9 @@ import CoreData
 public protocol IModel {
     var context: NSManagedObjectContext { get }
 
+    func contactsByPredicate(predicate: NSPredicate?,
+                             sortDescriptors: [NSSortDescriptor]?) -> [IContact]?
+
     func existingMessage(msg: CWIMAPMessage) -> IMessage?
     func messageByPredicate(predicate: NSPredicate?,
                             sortDescriptors: [NSSortDescriptor]?) -> IMessage?
@@ -78,6 +81,7 @@ public protocol IModel {
 
     func insertOrUpdateContactEmail(email: String, name: String?, addressBookID: Int32?) -> IContact
     func insertOrUpdateContactEmail(email: String, name: String?) -> IContact
+    func insertOrUpdateContact(contact: IContact) -> IContact
 
     /**
      Inserts a folder of the given type.
@@ -113,7 +117,7 @@ public protocol IModel {
     func setupSnippetForMail(mail: Message)
 
     /**
-     - Returns: List of contact that match the given snippet (either in the name, or address).
+     - Returns: List of contact that match the given snippet (either in the name, or email).
      */
     func contactsBySnippet(snippet: String) -> [IContact]
 
@@ -187,6 +191,13 @@ public class Model: IModel {
         }
         return 0
     }
+
+    public func contactsByPredicate(predicate: NSPredicate?,
+                                    sortDescriptors: [NSSortDescriptor]?) -> [IContact]? {
+        return entitiesWithName(Contact.entityName(), predicate: predicate,
+            sortDescriptors: sortDescriptors)?.map() {$0 as! IContact}
+    }
+
     public func existingMessage(msg: CWIMAPMessage) -> IMessage? {
         var predicates: [NSPredicate] = []
         if let msgId = msg.messageID() {
@@ -501,6 +512,11 @@ public class Model: IModel {
         return self.insertOrUpdateContactEmail(email, name: name, addressBookID: nil)
     }
 
+    public func insertOrUpdateContact(contact: IContact) -> IContact {
+        return self.insertOrUpdateContactEmail(
+            contact.email, name: contact.name, addressBookID: contact.addressBookID?.intValue)
+    }
+
     public func insertOrUpdateMessageReference(messageID: String) -> IMessageReference {
         let p = NSPredicate.init(format: "messageID = %@", messageID)
         if let ent = singleEntityWithName(MessageReference.entityName(), predicate: p) {
@@ -686,14 +702,12 @@ public class Model: IModel {
         let p = NSPredicate.init(format: "email != nil and email != \"\" and " +
             "(email contains[cd] %@ or name contains[cd] %@)",
                                  snippet, snippet)
-        let entities = entitiesWithName(Contact.entityName(), predicate: p) as! [Contact]
-        var contacts: [IContact] = []
-        for ent in entities {
-            contacts.append(ent)
+        if let contacts = contactsByPredicate(
+            p, sortDescriptors: [NSSortDescriptor.init(key: "name", ascending: true),
+                NSSortDescriptor.init(key: "email", ascending: true)]) {
+            return contacts
         }
-        let abContacts = AddressBook.init().contactsBySnippet(snippet)
-        contacts.appendContentsOf(abContacts)
-        return contacts
+        return []
     }
 
     public func dumpDB() {
