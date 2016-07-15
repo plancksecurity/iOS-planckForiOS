@@ -22,15 +22,27 @@ public enum AddressBookStatus {
 public struct AddressbookContact: IContact {
     public var email: String
     public var name: String?
-    public var userID: String?
+    public var addressBookID: NSNumber?
     public var bccMessages: NSSet = []
     public var ccMessages: NSSet = []
     public var toMessages: NSSet = []
     public var fromMessages: NSSet = []
 
-    public init(email: String, name: String) {
+    public init(email: String, name: String?, addressBookID: Int32? = nil) {
         self.email = email
         self.name = name
+        if let ident = addressBookID {
+            self.addressBookID = NSNumber.init(int: ident)
+        }
+    }
+
+    public init(contact: IContact) {
+        self.init(email: contact.email, name: contact.name,
+                  addressBookID: contact.addressBookID?.intValue)
+    }
+
+    public init(email: String) {
+        self.email = email
     }
 }
 
@@ -174,6 +186,7 @@ public class AddressBook {
 
     func addressBookContactToContacts(contact: ABRecordRef) -> [IContact] {
         var result: [IContact] = []
+        let identifier = ABRecordGetRecordID(contact)
         let contactName = ABRecordCopyCompositeName(contact).takeRetainedValue() as String
         let emailMultiOpt = ABRecordCopyValue(contact, kABPersonEmailProperty)?.takeRetainedValue()
         if let emailMulti = emailMultiOpt {

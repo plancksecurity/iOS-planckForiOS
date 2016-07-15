@@ -5,9 +5,9 @@ import Foundation
 import CoreData
 
 public enum ContactAttributes: String {
+    case addressBookID = "addressBookID"
     case email = "email"
     case name = "name"
-    case userID = "userID"
 }
 
 public enum ContactRelationships: String {
@@ -21,11 +21,11 @@ public protocol _IContact {
 
     // MARK: - Properties
 
+    var addressBookID: NSNumber? { get set }
+
     var email: String { get set }
 
     var name: String? { get set }
-
-    var userID: String? { get set }
 
     // MARK: - Relationships
 
@@ -65,13 +65,13 @@ public class _Contact: BaseManagedObject, _IContact {
     // MARK: - Properties
 
     @NSManaged public
+    var addressBookID: NSNumber?
+
+    @NSManaged public
     var email: String
 
     @NSManaged public
     var name: String?
-
-    @NSManaged public
-    var userID: String?
 
     // MARK: - Relationships
 

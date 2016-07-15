@@ -107,8 +107,8 @@ public class PEPUtil {
             dict[kPepUsername] = name
         }
         dict[kPepAddress] = contact.email
-        if let userID = contact.userID {
-            dict[kPepUserID] = userID
+        if let addressBookID = contact.addressBookID {
+            dict[kPepUserID] = String(addressBookID)
         }
         return dict
     }
@@ -179,11 +179,16 @@ public class PEPUtil {
         return dict as PEPMail
     }
 
-    public static func insertPepContact(
-        pepContact: PEPContact, intoModel: IModel) -> IContact {
-        let contact = intoModel.insertOrUpdateContactEmail(
+    public static func insertPepContact(pepContact: PEPContact, intoModel: IModel) -> IContact {
+        var contact = intoModel.insertOrUpdateContactEmail(
             pepContact[kPepAddress] as! String,
-            name: pepContact[kPepUsername] as? String)
+            name: pepContact[kPepUsername] as? String,
+            addressBookID: nil)
+        if let ident = pepContact[kPepID] as? String {
+            if let i = Int32(ident) {
+                contact.addressBookID = NSNumber.init(int: i)
+            }
+        }
         return contact
     }
 

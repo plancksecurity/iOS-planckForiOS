@@ -117,16 +117,18 @@ class PruebaViewController: UIViewController, UITableViewDelegate, UITableViewDa
         msg.subject = subject
         msg.longMessage = longMessage
         for toContact in toContactsSeparated {
-            let to = appConfig?.model.insertOrUpdateContactEmail(toContact, name: nil) as! Contact
+            let to = appConfig?.model.insertOrUpdateContactEmail(toContact, name: nil,
+                                                                 addressBookID: nil) as! Contact
             msg.addToObject(to)
         }
         for ccContact in ccContactsSeparated {
-            let cc = appConfig?.model.insertOrUpdateContactEmail(ccContact, name: nil) as! Contact
+            let cc = appConfig?.model.insertOrUpdateContactEmail(ccContact, name: nil,
+                addressBookID: nil) as! Contact
             msg.addCcObject(cc)
         }
         for bccContact in bccContactsSeparated {
             let bbc = appConfig?.model.insertOrUpdateContactEmail(
-                bccContact, name: nil) as! Contact
+                bccContact, name: nil, addressBookID: nil) as! Contact
             msg.addBccObject(bbc)
         }
         return msg

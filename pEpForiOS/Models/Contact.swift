@@ -12,29 +12,6 @@ public protocol IContact: _IContact {
     func completeDisplayString() -> String
 }
 
-/**
- For sharing core data contacts between threads, when the core data identity is not important.
- */
-public class ContactDAO: IContact {
-    public var email: String
-    public var name: String? = nil
-    public var userID: String? = nil
-    public var bccMessages: NSSet = NSSet()
-    public var ccMessages: NSSet = NSSet()
-    public var fromMessages: NSSet = NSSet()
-    public var toMessages: NSSet = NSSet()
-
-    public init(contact: IContact) {
-        email = contact.email
-        name = contact.name
-        userID = contact.userID
-    }
-
-    public init(email: String) {
-        self.email = email
-    }
-}
-
 extension IContact {
     public func displayString() -> String {
         if self.name?.characters.count > 0 {
@@ -51,12 +28,18 @@ extension IContact {
         return email
     }
 
-    public mutating func updateFromEmail(email: String, name: String?) {
+    public mutating func updateFromEmail(
+        email: String, name: String?, addressBookID: Int32? = nil) {
         self.email = email
         if let personal = name {
             self.name = personal.unquote()
         } else {
             self.name = nil
+        }
+        if let ident = addressBookID {
+            self.addressBookID = NSNumber.init(int: ident)
+        } else {
+            self.addressBookID = nil
         }
     }
 }

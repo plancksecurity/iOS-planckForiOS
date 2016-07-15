@@ -26,14 +26,14 @@ class PEPUtilTests: XCTestCase {
 
     func testPepContact() {
         var c1 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some.com", name: "Whatever")
-        c1.userID = "someUserID"
+            "some@some.com", name: "Whatever", addressBookID: 1)
 
         let pepC1 = PEPUtil.pepContact(c1)
 
         XCTAssertEqual(pepC1[kPepAddress] as? String, c1.email)
         XCTAssertEqual(pepC1[kPepUsername] as? String, c1.name)
-        XCTAssertEqual(pepC1[kPepUserID] as? String, c1.userID)
+        XCTAssertNotNil(pepC1[kPepUserID])
+        XCTAssertEqual(pepC1[kPepUserID] as? String, String(c1.addressBookID!))
     }
 
     func testPepAttachment() {
@@ -51,12 +51,12 @@ class PEPUtilTests: XCTestCase {
 
     func testPepMail() {
         var c1 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some.com", name: "Whatever")
-        c1.userID = "someUserID"
+            "some@some.com", name: "Whatever", addressBookID: nil)
+        c1.addressBookID = 1
 
         var c2 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some2.com", name: "Whatever2")
-        c2.userID = "someUserID"
+            "some@some2.com", name: "Whatever2", addressBookID: nil)
+        c2.addressBookID = 2
 
         let data1 = "Just some plaintext".dataUsingEncoding(NSUTF8StringEncoding)!
         let a1 = persistentSetup.model.insertAttachmentWithContentType(
@@ -331,7 +331,7 @@ class PEPUtilTests: XCTestCase {
     }
 
     func testColorRatingForContact() {
-        let unknownContact = ContactDAO.init(email: "unknownuser@peptest.ch")
+        let unknownContact = AddressbookContact.init(email: "unknownuser@peptest.ch")
         XCTAssertEqual(PEPUtil.colorRatingForContact(unknownContact), PEP_rating_undefined)
 
         // Create myself

@@ -30,11 +30,11 @@ class ModelTests: XCTestCase {
         // Some contacts
         for i in 1...5 {
             let contact = persistentSetup.model.insertOrUpdateContactEmail(
-                "email\(i)@xtest.de", name: "name\(i)")
+                "email\(i)@xtest.de", name: "name\(i)", addressBookID: nil)
             XCTAssertNotNil(contact)
         }
         let contact = persistentSetup.model.insertOrUpdateContactEmail(
-            "wha@wawa.com", name: "Another")
+            "wha@wawa.com", name: "Another", addressBookID: nil)
         XCTAssertNotNil(contact)
 
         let connectInfo = ConnectInfo.init(

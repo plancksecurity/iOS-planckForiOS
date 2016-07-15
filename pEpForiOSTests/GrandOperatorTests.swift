@@ -64,10 +64,10 @@ class GrandOperatorTests: XCTestCase {
         msg.subject = "Subject"
         msg.longMessage = "Message body"
         let from = persistentSetup.model.insertOrUpdateContactEmail(
-            "test001@peptest.ch", name: "Test 001") as! Contact
+            "test001@peptest.ch", name: "Test 001", addressBookID: nil) as! Contact
         msg.from = from
         let to = persistentSetup.model.insertOrUpdateContactEmail(
-            "test002@peptest.ch", name: "Test 002") as! Contact
+            "test002@peptest.ch", name: "Test 002", addressBookID: nil) as! Contact
         msg.addToObject(to)
         return msg
     }
