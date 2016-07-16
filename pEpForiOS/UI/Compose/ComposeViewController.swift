@@ -1,5 +1,5 @@
 //
-//  ComposeWithAutocompleteViewController.swift
+//  ComposeViewController.swift
 //  pEpForiOS
 //
 //  Created by ana on 1/6/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ComposeWithAutocompleteViewController: UITableViewController {
+class ComposeViewController: UITableViewController {
     struct UIModel {
         enum Mode {
             case Normal
@@ -235,7 +235,7 @@ class ComposeWithAutocompleteViewController: UITableViewController {
 
 // MARK: -- UITextViewDelegate (for body text)
 
-extension ComposeWithAutocompleteViewController: UITextViewDelegate {
+extension ComposeViewController: UITextViewDelegate {
     func textViewDidChange(textView: UITextView) {
         if textView == longBodyMessageTextView {
             let currentOffset = tableView.contentOffset
@@ -250,7 +250,7 @@ extension ComposeWithAutocompleteViewController: UITextViewDelegate {
 
 // MARK: -- UITextFieldDelegate (for any recipient text field)
 
-extension ComposeWithAutocompleteViewController: UITextFieldDelegate {
+extension ComposeViewController: UITextFieldDelegate {
     func isFreshlyEnteredTextProbablyEmail(oldText: String, newText: String,
                                            delimiter: String) -> Bool {
         return newText != "\(delimiter) " && !oldText.matchesPattern("\(delimiter) $") &&

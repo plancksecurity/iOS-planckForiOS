@@ -100,10 +100,10 @@
             </objects>
             <point key="canvasLocation" x="5328" y="1200"/>
         </scene>
-        <!--Compose With Autocomplete View Controller-->
+        <!--Compose View Controller-->
         <scene sceneID="YkL-8B-UDO">
             <objects>
-                <tableViewController id="8bt-7R-jDE" customClass="ComposeWithAutocompleteViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="8bt-7R-jDE" customClass="ComposeViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="K3w-ql-tda">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -107,7 +107,7 @@ class EmailViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == segueReply) {
             let destination = segue.destinationViewController
-                as? ComposeWithAutocompleteViewController;
+                as? ComposeViewController;
             destination?.appConfig = appConfig
         }
         if (segue.identifier == segueTrustWords) {
