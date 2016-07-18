@@ -86,11 +86,6 @@ class ComposeViewController: UITableViewController {
      */
     var currentOutgoingRatingOperation: OutgoingMessageColorOperation?
 
-    /**
-     The default tint color of our navigation bar.
-     */
-    var defaultNavigationBarTintColor: UIColor?
-
     required init?(coder aDecoder: NSCoder) {
         commaWithSpace = "\(justComma) "
         emptyBodyTextMessage = NSLocalizedString(
@@ -102,7 +97,6 @@ class ComposeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(tableView)
-        defaultNavigationBarTintColor = self.navigationController?.navigationBar.tintColor
     }
 
     override func didReceiveMemoryWarning() {
@@ -185,14 +179,14 @@ class ComposeViewController: UITableViewController {
                 if !op.cancelled {
                     if let pepColor = op.pepColor {
                         let color = PEPUtil.abstractPepColorFromPepColor(pepColor)
-                        Log.infoComponent(self.comp, "Have pEp color (\(pepColor)) color \(color)")
                         GCD.onMain() {
+                            var image: UIImage?
                             if let uiColor = UIHelper.composeTintColorFromPepColor(color) {
-                                self.navigationController?.navigationBar.tintColor = uiColor
-                            } else {
-                                self.navigationController?.navigationBar.tintColor =
-                                    self.defaultNavigationBarTintColor
+                                image = UIHelper.imageFromColor(uiColor)
+
                             }
+                            self.sendButton.setBackgroundImage(image, forState: .Normal,
+                                barMetrics: UIBarMetrics.Default)
                         }
                     } else {
                         Log.warnComponent(self.comp, "Could not get outgoing message color")

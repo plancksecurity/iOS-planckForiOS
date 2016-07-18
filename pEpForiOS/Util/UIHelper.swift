@@ -78,4 +78,20 @@ class UIHelper {
             return nil
         }
     }
+
+    /**
+     Creates a 1x1 point size image filled with the given color. Useful for giving buttons
+     a background color.
+     */
+    static func imageFromColor(color: UIColor) -> UIImage {
+        let rect = CGRect.init(origin: CGPoint.init(x: 0, y: 0),
+                               size: CGSize.init(width: 1, height: 1))
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetFillColorWithColor(context, color.CGColor)
+        CGContextFillRect(context, rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img
+    }
 }
