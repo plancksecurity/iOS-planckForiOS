@@ -82,7 +82,13 @@ class TrustWordsViewController: UITableViewController {
             if let allContact = allRecipients {
                 let contact :Contact  = allContact[indexPath.row] as! Contact
                 cell.handshakeContactUILabel.text = contact.displayString()
+                var pepColor = PEPUtil.colorRatingForContact(contact)
+                if let privateColor = PEPUtil.abstractPepColorFromPepColor(pepColor) {
+                    cell.backgroundColor = paintingMailStatus(privateColor)
+                }
             }
+
+
         return cell
     }
 
