@@ -41,7 +41,7 @@ class PEPSessionTest: XCTestCase {
                         PEPRecipient.init(recipient: receiver2, recipientType: .CC),
                         PEPRecipient.init(recipient: receiver3, recipientType: .BCC)])
         XCTAssertEqual(encryptedBCC,
-                       [PEPRecipient.init(recipient: identity, recipientType: .BCC)])
+                       [PEPRecipient.init(recipient: identity as PEPContact, recipientType: .BCC)])
         XCTAssertEqual(pepMailPurged[kPepTo]
             as? NSArray, NSArray.init(array: [identity]))
         XCTAssertEqual(pepMailPurged[kPepCC] as? NSArray, NSArray.init(array: [identity]))

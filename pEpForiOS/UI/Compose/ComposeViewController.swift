@@ -29,20 +29,47 @@ class ComposeViewController: UITableViewController {
 
     var model: UIModel = UIModel.init()
 
+    let comp = "ComposeViewController"
+
+    /** Constant that is used for checking user input on recipient text fields */
     let newline = "\n"
+
+    /** Constant for string delimiter in recipient email addresses */
     let justComma = ","
+
+    /**
+     When the user is editing recipients and presses <SPACE>, this text is entered instead.
+     */
     let commaWithSpace: String
+
+    /**
+     The message to appear in the body text when it's empty.
+     */
+    let emptyBodyTextMessage: String
 
     @IBOutlet weak var sendButton: UIBarButtonItem!
 
     /**
-     The index of the cell containing the body of the message for the user to write.
+     The row number of the cell containing the body of the message for the user to write.
      */
-    let bodyTextFieldRowNumber = 3
+    let subjectRowNumber = 3
+
+    /**
+     The row number of the cell containing the subject of the message.
+     */
+    let bodyTextRowNumber = 4
 
     var appConfig: AppConfig?
 
+    /**
+     A reference to the long body text view, contained in a table view cell.
+     */
     var longBodyMessageTextView: UITextView? = nil
+
+    /**
+     A reference to the subject text field.
+     */
+    var subjectTextField: UITextField? = nil
 
     /**
      The recipient cells, mapped by their text field for fast access.
@@ -54,8 +81,16 @@ class ComposeViewController: UITableViewController {
      */
     var recipientCells = [Int: RecipientCell]()
 
+    /**
+     Always cache the operation for the latest color check, so we don't overtaxt the system.
+     */
+    var currentOutgoingRatingOperation: OutgoingMessageColorOperation?
+
     required init?(coder aDecoder: NSCoder) {
         commaWithSpace = "\(justComma) "
+        emptyBodyTextMessage = NSLocalizedString(
+            "Enter text here",
+            comment: "Placeholder text for where the user should enter the email body text")
         super.init(coder: aDecoder)
     }
 
@@ -70,7 +105,7 @@ class ComposeViewController: UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updateSendButtonFromView()
+        updateViewFromRecipients()
     }
 
     func updateContacts() {
@@ -100,8 +135,9 @@ class ComposeViewController: UITableViewController {
 
     /**
      Checks all recipient fields for validity, and updates the Send button accordingly.
+     - Returns: A Bool whether the send button was enabled or not.
      */
-    func updateSendButtonFromView() {
+    func updateSendButtonFromView() -> Bool {
         var allEmpty = true
         var allCorrect = true
         for (_, cell) in recipientCells {
@@ -117,6 +153,93 @@ class ComposeViewController: UITableViewController {
             }
         }
         sendButton.enabled = !allEmpty && allCorrect
+        return sendButton.enabled
+    }
+
+    /**
+     Whenever one of the recipients field changes, call this to validate them,
+     update colors, etc.
+     */
+    func updateViewFromRecipients() {
+        // Checking mail color only makes sense if you can actually send that mail,
+        // hence the if.
+        if updateSendButtonFromView() {
+            if let op = currentOutgoingRatingOperation {
+                // We have an existing op, let's check it it's still running and
+                // don't do anything in that case.
+                if op.executing {
+                    op.cancel()
+                    Log.warnComponent(comp, "Won't check outgoing color, already one in operation")
+                    return
+                }
+            }
+            let op = OutgoingMessageColorOperation()
+            op.pepMail = pepMailFromViewForCheckingRating()
+            op.completionBlock = {
+                if !op.cancelled {
+                    if let pepColor = op.pepColor {
+                        let color = PEPUtil.abstractPepColorFromPepColor(pepColor)
+                        let uiColor = UIHelper.composeTintColorFromPepColor(color)
+                        Log.infoComponent(self.comp, "Have pEp color (\(pepColor)) color \(color)")
+                        GCD.onMain() {
+                        }
+                    } else {
+                        Log.warnComponent(self.comp, "Could not get outgoing message color")
+                    }
+                }
+            }
+            op.start()
+        }
+    }
+
+    /**
+     Builds a pEp mail dictionary from all the related views. This is just a quick
+     method for checking the pEp color rating, it's not exhaustive!
+     */
+    func pepMailFromViewForCheckingRating() -> PEPMail {
+        var message = PEPMail()
+        for (_, cell) in recipientCells {
+            let tf = cell.recipientTextField
+            if let text = tf.text {
+                if text != "" {
+                    let mailStrings1 = text.componentsSeparatedByString(justComma).map() {
+                        $0.trimmedWhiteSpace()
+                    }
+                    let mailStrings2 = mailStrings1.filter() {
+                        $0 != ""
+                    }
+                    let contacts = mailStrings2.map() {
+                        return PEPUtil.pepContactFromEmail($0)
+                        }
+                    if contacts.count > 0 {
+                        var pepKey: String? = nil
+                        switch cell.recipientType {
+                        case .To:
+                            pepKey = kPepTo
+                        case .CC:
+                            pepKey = kPepCC
+                        case .BCC:
+                            pepKey = kPepBCC
+                        }
+                        if let key = pepKey {
+                            message[key] = contacts
+                        }
+                    }
+                }
+            }
+        }
+        if let account = appConfig?.currentAccount {
+            message[kPepFrom] = PEPUtil.pepContactFromEmail(
+                account.email, name: account.nameOfTheUser)
+        }
+        if let subjectText = subjectTextField?.text {
+            message[kPepShortMessage] = subjectText
+        }
+        if let bodyText = longBodyMessageTextView?.text {
+            message[kPepLongMessage] = bodyText
+        }
+        message[kPepOutgoing] = true
+        return message
     }
 
     // MARK: -- UITableViewDelegate
@@ -161,7 +284,7 @@ class ComposeViewController: UITableViewController {
                     cell.recipientTextField.text = text
                 }
             }
-            updateSendButtonFromView()
+            updateViewFromRecipients()
             resetTableViewToNormal()
         }
     }
@@ -184,7 +307,7 @@ class ComposeViewController: UITableViewController {
     override func tableView(tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
         if model.mode == UIModel.Mode.Normal {
-            return bodyTextFieldRowNumber + 1
+            return bodyTextRowNumber + 1
         } else {
             return model.contacts.count
         }
@@ -193,12 +316,13 @@ class ComposeViewController: UITableViewController {
     override func tableView(tableView: UITableView,
                             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let recipientCellID = "RecipientCell"
+        let subjectTableViewCellID = "SubjectTableViewCell"
         let messageBodyCellID = "MessageBodyCell"
         let contactTableViewCellID = "ContactTableViewCell"
 
         if model.mode == UIModel.Mode.Normal {
             // Normal mode
-            if indexPath.row < bodyTextFieldRowNumber {
+            if indexPath.row < subjectRowNumber {
                 // Recipient cell
                 let cell = tableView.dequeueReusableCellWithIdentifier(
                     recipientCellID, forIndexPath: indexPath) as! RecipientCell
@@ -213,13 +337,21 @@ class ComposeViewController: UITableViewController {
                 recipientCells[indexPath.row] = cell
 
                 return cell
-            } else {
+            } else if indexPath.row == subjectRowNumber {
+                // subject cell
+                let cell = tableView.dequeueReusableCellWithIdentifier(
+                    subjectTableViewCellID, forIndexPath: indexPath) as! SubjectTableViewCell
+                // Store for later access
+                subjectTextField = cell.subjectTextField
+                return cell
+            } else { // if indexPath.row == bodyTextRowNumber
                 // Body message cell
                 let cell = tableView.dequeueReusableCellWithIdentifier(
                     messageBodyCellID, forIndexPath: indexPath) as! MessageBodyCell
+                cell.bodyTextView.text = emptyBodyTextMessage
                 cell.bodyTextView.delegate = self
 
-                // Store the body text field for later
+                // Store the body text field for later access
                 longBodyMessageTextView = cell.bodyTextView
 
                 return cell
@@ -249,6 +381,24 @@ extension ComposeViewController: UITextViewDelegate {
             tableView.setContentOffset(currentOffset, animated: false)
         }
     }
+
+    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+        if textView == longBodyMessageTextView {
+            if longBodyMessageTextView?.text == emptyBodyTextMessage {
+                longBodyMessageTextView?.text = ""
+            }
+        }
+        return true
+    }
+
+    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+        if textView == longBodyMessageTextView {
+            if longBodyMessageTextView?.text == "" || longBodyMessageTextView?.text == nil {
+                longBodyMessageTextView?.text = emptyBodyTextMessage
+            }
+        }
+        return true
+    }
 }
 
 // MARK: -- UITextFieldDelegate (for any recipient text field)
@@ -275,7 +425,7 @@ extension ComposeViewController: UITextFieldDelegate {
     }
 
     @objc func recipientTextHasChanged(textField: UITextField) {
-        updateSendButtonFromView()
+        updateViewFromRecipients()
     }
 
     func textField(textField: UITextField,

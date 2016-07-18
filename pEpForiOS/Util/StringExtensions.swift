@@ -121,7 +121,7 @@ public extension String {
      */
     public func trimmedWhiteSpace() -> String {
         do {
-            let regex = try NSRegularExpression.init(pattern: "^\\s*?(\\S+)\\s*?$",
+            let regex = try NSRegularExpression.init(pattern: "^\\s*?(\\S*)\\s*?$",
                                                      options: [])
             let matches = regex.matchesInString(self, options: [],
                                           range: NSMakeRange(0, self.characters.count))

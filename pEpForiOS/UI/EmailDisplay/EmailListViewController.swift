@@ -43,10 +43,11 @@ class EmailListViewController: UITableViewController {
         }
         prepareFetchRequest()
 
-        let account:IAccount? = appConfig!.model.fetchLastAccount()
+        let account:IAccount? = appConfig.model.fetchLastAccount()
         if (account == nil)  {
             self.performSegueWithIdentifier(segueUserSettings, sender: self)
         } else {
+            appConfig.currentAccount = account
             PEPUtil.myselfFromAccount(
                 account as! Account, block: { identity in
                     Log.infoComponent(self.comp,
@@ -108,7 +109,7 @@ class EmailListViewController: UITableViewController {
             ascending: false)]
         fetchController = NSFetchedResultsController.init(
             fetchRequest: fetchRequest,
-            managedObjectContext: appConfig!.coreDataUtil.managedObjectContext,
+            managedObjectContext: appConfig.coreDataUtil.managedObjectContext,
             sectionNameKeyPath: nil, cacheName: nil)
         fetchController?.delegate = self
         do {

@@ -166,7 +166,7 @@ public class PEPUtil {
         if let n = name {
             contact[kPepUsername] = n
         }
-        return contact
+        return contact as PEPContact
     }
 
     /**
@@ -421,11 +421,11 @@ public class PEPUtil {
     public static func colorRatingForContact(contact: IContact) -> PEP_color {
         let pepC = pepContact(contact)
         let session = PEPSession.init()
-        let color = session.identityColor(pepC)
+        let color = session.identityColor(pepC as [NSObject : AnyObject])
         return color
     }
 
-    public static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor? {
+    public static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor {
         switch pepColorRating {
         case PEP_rating_undefined, PEP_rating_cannot_decrypt, PEP_rating_have_no_key, PEP_rating_unencrypted, PEP_rating_unencrypted_for_some,  PEP_rating_unreliable:
             return PrivacyColor.NoColor
@@ -435,8 +435,6 @@ public class PEPUtil {
             return PrivacyColor.Green
         case PEP_rating_mistrust, PEP_rating_red, PEP_rating_b0rken, PEP_rating_under_attack:
             return PrivacyColor.Red
-        default:
-            return nil
         }
     }
 

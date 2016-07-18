@@ -109,8 +109,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipientCell" id="WQx-T2-rJ2" customClass="RecipientCell" customModule="pEpForiOS" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactTableViewCell" id="Oat-5x-SrF" customClass="ContactTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Oat-5x-SrF" id="yAo-eZ-vhj">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spU-Ny-si1">
+                                            <rect key="frame" x="8" y="8" width="584" height="27.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="spU-Ny-si1" secondAttribute="trailing" id="2W6-1V-6rl"/>
+                                        <constraint firstItem="spU-Ny-si1" firstAttribute="top" secondItem="yAo-eZ-vhj" secondAttribute="topMargin" id="F19-Yp-oOi"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="spU-Ny-si1" secondAttribute="bottom" id="KbH-iw-vQO"/>
+                                        <constraint firstItem="spU-Ny-si1" firstAttribute="leading" secondItem="yAo-eZ-vhj" secondAttribute="leadingMargin" id="nEX-bN-UDI"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="labelContactDisplayName" destination="spU-Ny-si1" id="svX-dc-Wcn"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RecipientCell" id="WQx-T2-rJ2" customClass="RecipientCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="136" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WQx-T2-rJ2" id="5Vs-0n-XCD">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -162,14 +187,38 @@
                                     <outlet property="recipientTypeLabel" destination="LPO-ud-4gZ" id="GZ2-zx-LvZ"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MessageBodyCell" id="lDN-Hh-Smf" customClass="MessageBodyCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="136" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubjectTableViewCell" id="Tlh-rm-oK1" customClass="SubjectTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="180" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tlh-rm-oK1" id="vMd-wF-7Ft">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Subject" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="J53-pV-HVD">
+                                            <rect key="frame" x="8" y="8" width="584" height="27.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="J53-pV-HVD" secondAttribute="trailing" id="Mkk-e8-eQX"/>
+                                        <constraint firstItem="J53-pV-HVD" firstAttribute="top" secondItem="vMd-wF-7Ft" secondAttribute="topMargin" id="Uhx-qn-RpK"/>
+                                        <constraint firstItem="J53-pV-HVD" firstAttribute="leading" secondItem="vMd-wF-7Ft" secondAttribute="leadingMargin" id="neX-pe-IhC"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="J53-pV-HVD" secondAttribute="bottom" id="sAe-to-NgW"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="subjectTextField" destination="J53-pV-HVD" id="os5-gb-ZEP"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MessageBodyCell" id="lDN-Hh-Smf" customClass="MessageBodyCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="224" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lDN-Hh-Smf" id="cFr-N0-CDs">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" scrollEnabled="NO" text="Enter Text" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hqv-cv-ye5">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hqv-cv-ye5">
                                             <rect key="frame" x="8" y="8" width="584" height="27.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -185,31 +234,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="bodyTextView" destination="hqv-cv-ye5" id="5bw-Zg-TOT"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactTableViewCell" id="Oat-5x-SrF" customClass="ContactTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="180" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Oat-5x-SrF" id="yAo-eZ-vhj">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spU-Ny-si1">
-                                            <rect key="frame" x="8" y="8" width="584" height="27.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="spU-Ny-si1" secondAttribute="trailing" id="2W6-1V-6rl"/>
-                                        <constraint firstItem="spU-Ny-si1" firstAttribute="top" secondItem="yAo-eZ-vhj" secondAttribute="topMargin" id="F19-Yp-oOi"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="spU-Ny-si1" secondAttribute="bottom" id="KbH-iw-vQO"/>
-                                        <constraint firstItem="spU-Ny-si1" firstAttribute="leading" secondItem="yAo-eZ-vhj" secondAttribute="leadingMargin" id="nEX-bN-UDI"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="labelContactDisplayName" destination="spU-Ny-si1" id="svX-dc-Wcn"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

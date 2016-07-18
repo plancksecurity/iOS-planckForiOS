@@ -57,9 +57,25 @@ class UIHelper {
     }
 
     /**
-     Get the color for a privacy status from the PEP_color.
+     Get the UIColor for a privacy status from the `PrivacyColor`.
      */
     static func backgroundColorFromPepColor(pepColor: PrivacyColor) -> UIColor? {
         return UIColor.redColor()
+    }
+
+    /**
+     Get the UIColor for a compose view navigation controller tint color.
+     */
+    static func composeTintColorFromPepColor(pepColor: PrivacyColor) -> UIColor? {
+        switch pepColor {
+        case .Green:
+            return UIColor.greenColor()
+        case .Yellow:
+            return UIColor.yellowColor()
+        case .Red:
+            return UIColor.redColor()
+        case .NoColor:
+            return nil
+        }
     }
 }

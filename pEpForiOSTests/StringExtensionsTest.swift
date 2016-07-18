@@ -31,6 +31,8 @@ class StringExtensionsTest: XCTestCase {
 
     func testTrimWhiteSpace() {
         XCTAssertEqual("".trimmedWhiteSpace(), "")
+        XCTAssertEqual(" ".trimmedWhiteSpace(), "")
+        XCTAssertEqual("   ".trimmedWhiteSpace(), "")
         XCTAssertEqual("    abc".trimmedWhiteSpace(), "abc")
         XCTAssertEqual("    abc\t".trimmedWhiteSpace(), "abc")
         XCTAssertEqual("    abc \t ".trimmedWhiteSpace(), "abc")
@@ -71,5 +73,10 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertFalse(
             "email1@test.com, email2@test.com, email, test@com".isProbablyValidEmailListSeparatedBy(
             ","))
+    }
+
+    func testComponentsSeparatedBy() {
+        // This behavior is somewhat odd. Want to make sure it's documented.
+        XCTAssertEqual("".componentsSeparatedByString(","), [""])
     }
 }

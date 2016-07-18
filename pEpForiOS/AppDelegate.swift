@@ -45,6 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         Log.infoComponent(comp, "applicationDidEnterBackground")
         appConfig.model.save()
+
+        // Do mySelf on all accounts
         if let accounts = appConfig.model.accountsByPredicate(nil, sortDescriptors: nil) {
             for acc in accounts {
                 let email = acc.email

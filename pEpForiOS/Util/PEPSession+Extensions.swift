@@ -19,7 +19,7 @@ public typealias PEPMail = [NSObject : AnyObject]
 /**
  Similar to `PEPMail`
  */
-public typealias PEPContact = NSMutableDictionary
+public typealias PEPContact = [NSObject : AnyObject]
 
 /**
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
@@ -54,20 +54,20 @@ public enum RecipientType: Int, Hashable {
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
 public class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
-    public let recipient: NSMutableDictionary
+    public let recipient: PEPContact
     public let recipientType: RecipientType
 
     public var description: String {
         return "\(recipient[kPepAddress]) (\(recipientType))"
     }
 
-    public init(recipient: NSMutableDictionary, recipientType: RecipientType) {
+    public init(recipient: PEPContact, recipientType: RecipientType) {
         self.recipient = recipient
         self.recipientType = recipientType
     }
 
     public var hashValue: Int {
-        return 31 &* recipient.hashValue &+ recipientType.hashValue
+        return 31 &* (recipient as NSDictionary).hashValue &+ recipientType.hashValue
     }
 }
 
@@ -97,7 +97,7 @@ public extension PEPSession {
         fakeMail[kPepTo] = [contact]
         fakeMail[kPepShortMessage] = "Subject"
         fakeMail[kPepLongMessage]  = "Body"
-        let color = outgoingMessageColor(fakeMail)
+        let color = outgoingMessageColor(fakeMail as [NSObject : AnyObject])
         return color
     }
 
@@ -121,7 +121,7 @@ public extension PEPSession {
             let encryptedReceivers = NSMutableOrderedSet()
 
             for contact in recipients {
-                if let c = contact as? NSMutableDictionary {
+                if let c = contact as? PEPContact {
                     let receiver = PEPRecipient.init(recipient: c, recipientType: recipientType)
                     if sortOutPredicate(contact: c, session: session) {
                         unencryptedReceivers.addObject(receiver)
@@ -150,7 +150,7 @@ public extension PEPSession {
 
             let unencryptedPredicate: RecipientSortPredicate = { contact, session in
                 return self.isUnencryptedPEPContact(
-                    contact, from: pepMail[kPepFrom] as! NSMutableDictionary)
+                    contact, from: pepMail[kPepFrom] as! PEPContact)
             }
 
             let (unencryptedTo, encryptedTo) = filterOutUnencryptedReceivers(
@@ -205,9 +205,9 @@ public extension PEPSession {
             }
 
             let unencryptedMail = NSMutableDictionary.init(dictionary: pepMailPurged)
-            var tos: [NSMutableDictionary] = []
-            var ccs: [NSMutableDictionary] = []
-            var bccs: [NSMutableDictionary] = []
+            var tos: [PEPContact] = []
+            var ccs: [PEPContact] = []
+            var bccs: [PEPContact] = []
             for r in unencryptedReceivers {
                 switch r.recipientType {
                 case .To:
@@ -240,5 +240,6 @@ public extension PEPSession {
  Equatable for `PEPSession.PEPReceiver`.
  */
 public func ==(lhs: PEPRecipient, rhs: PEPRecipient) -> Bool {
-    return lhs.recipientType == rhs.recipientType && lhs.recipient == rhs.recipient
+    return lhs.recipientType == rhs.recipientType &&
+        (lhs.recipient as NSDictionary).isEqualToDictionary(rhs.recipient as [NSObject : AnyObject])
 }

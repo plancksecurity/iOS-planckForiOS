@@ -43,7 +43,6 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
         self.preFetchMails = preFetchMails
         self.openInbox = openInbox
         super.init()
-        print("init() \(unsafeAddressOf(self))")
     }
 
     func fulfillError(kind: String) {

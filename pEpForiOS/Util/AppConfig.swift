@@ -13,7 +13,7 @@ import Foundation
  */
 class AppConfig: NSObject {
 
-    let coreDataUtil: CoreDataUtil = CoreDataUtil()
+    let coreDataUtil: ICoreDataUtil = CoreDataUtil()
     let connectionManager: ConnectionManager
     let grandOperator: IGrandOperator
 
@@ -22,6 +22,11 @@ class AppConfig: NSObject {
      to the main thread's `NSManagedObjectContext`.
      */
     let model: IModel
+
+    /**
+     As soon as the UI has at least one account that is in use, this is set here.
+     */
+    var currentAccount: IAccount? = nil
 
     override init() {
         connectionManager = ConnectionManager()

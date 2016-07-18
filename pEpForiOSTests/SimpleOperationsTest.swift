@@ -237,7 +237,7 @@ class SimpleOperationsTest: XCTestCase {
         mail.addToObject(
             PEPUtil.insertPepContact(receiver1, intoModel: model) as! Contact)
         mail.addCcObject(
-            PEPUtil.insertPepContact(identity, intoModel: model) as! Contact)
+            PEPUtil.insertPepContact(identity as PEPContact, intoModel: model) as! Contact)
         mail.addBccObject(
             PEPUtil.insertPepContact(receiver4, intoModel: model) as! Contact)
         mail.subject = "Subject"

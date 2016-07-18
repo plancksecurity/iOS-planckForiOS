@@ -9,9 +9,15 @@
 import UIKit
 
 class PEPMyselfOperation: NSOperation {
+    /**
+     When the operation has run, this will be updated and contain the fingerprint
+     (`kPepFingerprint`).
+     */
     let identity: NSMutableDictionary
 
     init(account: Account) {
+        // It's important that we do this on the caller's thread,
+        // b/c we access core data.
         identity = PEPUtil.identityFromAccount(account, isMyself: true)
     }
 
