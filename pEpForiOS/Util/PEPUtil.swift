@@ -42,19 +42,20 @@ func == (peColorRight: PEP_color_hashable, peColorLeft: PEP_color_hashable) -> B
     return peColorRight.idHashable == peColorLeft.idHashable
 }
 
-var pepColorDiccionary: [Int32: PEP_color] = [PEP_rating_undefined.rawValue: PEP_rating_undefined,
-                                              PEP_rating_cannot_decrypt.rawValue: PEP_rating_cannot_decrypt,
-                                              PEP_rating_have_no_key.rawValue: PEP_rating_have_no_key,
-                                              PEP_rating_unencrypted.rawValue: PEP_rating_unencrypted,
-                                              PEP_rating_unencrypted_for_some.rawValue:  PEP_rating_unencrypted_for_some,
-                                              PEP_rating_unreliable.rawValue: PEP_rating_unreliable,
-                                              PEP_rating_reliable.rawValue: PEP_rating_reliable,
-                                              PEP_rating_trusted.rawValue: PEP_rating_trusted,
-                                              PEP_rating_trusted_and_anonymized.rawValue: PEP_rating_trusted_and_anonymized,
-                                              PEP_rating_fully_anonymous.rawValue: PEP_rating_fully_anonymous,
-                                              PEP_rating_mistrust.rawValue: PEP_rating_mistrust,
-                                              PEP_rating_b0rken.rawValue: PEP_rating_b0rken,
-                                              PEP_rating_under_attack.rawValue: PEP_rating_under_attack]
+var pepColorDiccionary: [Int32: PEP_color] =
+    [PEP_rating_undefined.rawValue: PEP_rating_undefined,
+     PEP_rating_cannot_decrypt.rawValue: PEP_rating_cannot_decrypt,
+     PEP_rating_have_no_key.rawValue: PEP_rating_have_no_key,
+     PEP_rating_unencrypted.rawValue: PEP_rating_unencrypted,
+     PEP_rating_unencrypted_for_some.rawValue:  PEP_rating_unencrypted_for_some,
+     PEP_rating_unreliable.rawValue: PEP_rating_unreliable,
+     PEP_rating_reliable.rawValue: PEP_rating_reliable,
+     PEP_rating_trusted.rawValue: PEP_rating_trusted,
+     PEP_rating_trusted_and_anonymized.rawValue: PEP_rating_trusted_and_anonymized,
+     PEP_rating_fully_anonymous.rawValue: PEP_rating_fully_anonymous,
+     PEP_rating_mistrust.rawValue: PEP_rating_mistrust,
+     PEP_rating_b0rken.rawValue: PEP_rating_b0rken,
+     PEP_rating_under_attack.rawValue: PEP_rating_under_attack]
 
 var pepExplanationDiccionary: [PEP_color_hashable: String] =
     [PEP_color_hashable(idHashable: Int(PEP_rating_under_attack.rawValue),pepColor: PEP_rating_under_attack): "Under Attack",
@@ -427,23 +428,37 @@ public class PEPUtil {
 
     public static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor {
         switch pepColorRating {
-        case PEP_rating_undefined, PEP_rating_cannot_decrypt, PEP_rating_have_no_key, PEP_rating_unencrypted, PEP_rating_unencrypted_for_some,  PEP_rating_unreliable:
-            return PrivacyColor.NoColor
-        case PEP_rating_reliable, PEP_rating_yellow:
-            return PrivacyColor.Yellow
-        case PEP_rating_trusted, PEP_rating_trusted_and_anonymized, PEP_rating_fully_anonymous, PEP_rating_green:
-            return PrivacyColor.Green
-        case PEP_rating_mistrust, PEP_rating_red, PEP_rating_b0rken, PEP_rating_under_attack:
-            return PrivacyColor.Red
+        case PEP_rating_undefined,
+             PEP_rating_cannot_decrypt,
+             PEP_rating_have_no_key,
+             PEP_rating_unencrypted,
+             PEP_rating_unencrypted_for_some,
+             PEP_rating_unreliable:
+            return .NoColor
+        case PEP_rating_reliable,
+             PEP_rating_yellow:
+            return .Yellow
+        case PEP_rating_trusted,
+             PEP_rating_green,
+             PEP_rating_trusted_and_anonymized,
+             PEP_rating_fully_anonymous:
+            return .Green
+        case PEP_rating_mistrust,
+             PEP_rating_red,
+             PEP_rating_b0rken,
+             PEP_rating_under_attack:
+            return .Red
+
+        // TODO: Is this a Swift bug? The code would be safer without a default, in case
+        // PEP_color gains elements.
+        default:
+            return .NoColor
         }
     }
 
     public static func pepColorRatingFromInt(i: Int) -> PEP_color? {
         let int32 = Int32(i)
-        if let aux = pepColorDiccionary[int32] {
-            return aux
-        }
-        return nil
+        return pepColorDiccionary[int32]
     }
 
     public static func pepExplanationToHash(pepColor: PEP_color) -> String? {

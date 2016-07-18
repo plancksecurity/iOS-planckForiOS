@@ -51,19 +51,16 @@ class TrustWordsViewController: UITableViewController {
         if (indexPath.row == 0) {
              let cell = tableView.dequeueReusableCellWithIdentifier("mailSecurityLabelCell", forIndexPath: indexPath) as! LabelMailSecurityTableViewCell
             if let m = message {
+                // default
+                let defaultLabel = UILabel()
+                defaultLabel.text = "temp"
+                cell.backgroundColor = defaultLabel.backgroundColor
+
                 let mailPepColor = m.pepColor.integerValue
-                let pepColor = PEPUtil.pepColorRatingFromInt(mailPepColor)
-                if let pc = pepColor {
+                if let pc = PEPUtil.pepColorRatingFromInt(mailPepColor) {
                     let privateColor = PEPUtil.abstractPepColorFromPepColor(pc)
-                    if let c = privateColor {
-                        let uiColor = paintingMailStatus(c)
-                        if let uic = uiColor {
-                            cell.backgroundColor = uic
-                        }
-                    } else {
-                        let defaultLabel = UILabel()
-                        defaultLabel.text = "temp"
-                        cell.backgroundColor = defaultLabel.backgroundColor
+                    if let uiColor = paintingMailStatus(privateColor) {
+                        cell.backgroundColor = uiColor
                     }
                 }
             }
