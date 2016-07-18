@@ -72,8 +72,13 @@ class TrustWordsViewController: UITableViewController {
         }
         if (indexPath.row == 1) {
             let cell = tableView.dequeueReusableCellWithIdentifier("mailSecurityExplanationLabelCell", forIndexPath: indexPath) as!
-                LabelMailExplantionSecurityTableViewCell
-            cell.mailExplanationSecurityUILabel.text = "hola"
+            LabelMailExplantionSecurityTableViewCell
+            if let m = message {
+                let mailPepColor = m.pepColor.integerValue
+                if let pepColor = PEPUtil.pepColorRatingFromInt(mailPepColor) {
+                    cell.mailExplanationSecurityUILabel.text = PEPUtil.pepExplanationToHash(pepColor)
+                }
+            }
             return cell
         }
     let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell", forIndexPath: indexPath) as! TrustWordsViewCell
@@ -84,16 +89,5 @@ class TrustWordsViewController: UITableViewController {
         return cell
     }
 
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
