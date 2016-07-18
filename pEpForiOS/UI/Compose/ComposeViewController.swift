@@ -204,6 +204,9 @@ class ComposeViewController: UITableViewController {
                     recipientCellID, forIndexPath: indexPath) as! RecipientCell
                 cell.recipientType = RecipientType.fromRawValue(indexPath.row + 1)
                 cell.recipientTextField.delegate = self
+                cell.recipientTextField.addTarget(
+                    self, action: #selector(self.recipientTextHasChanged),
+                    forControlEvents: .EditingChanged)
 
                 // Cache the cell for later use
                 recipientCellsByTextField[cell.recipientTextField] = cell
@@ -271,6 +274,10 @@ extension ComposeViewController: UITextFieldDelegate {
         }
     }
 
+    @objc func recipientTextHasChanged(textField: UITextField) {
+        updateSendButtonFromView()
+    }
+
     func textField(textField: UITextField,
                    shouldChangeCharactersInRange range: NSRange,
                                                  replacementString string: String) -> Bool {
@@ -284,7 +291,6 @@ extension ComposeViewController: UITextFieldDelegate {
                         textField.text = newText
                         resetTableViewToNormal()
                     }
-                    updateSendButtonFromView()
                     return false
                 }
                 if string == newline {
@@ -292,7 +298,6 @@ extension ComposeViewController: UITextFieldDelegate {
                         text, newText: text, delimiter: justComma) {
                         resetTableViewToNormal()
                     }
-                    updateSendButtonFromView()
                     return false
                 }
                 let newText = text.stringByReplacingCharactersInRange(range, withString: string)
@@ -302,9 +307,9 @@ extension ComposeViewController: UITextFieldDelegate {
 
                     // For some reason, we have to do that manually.
                     // Maybe the changing of hierarchy (due to the mode change)
-                    // interferes with the replacement.
+                    // interferes with the replacement that would happen when
+                    // returning true.
                     textField.text = newText.finishedRecipientPart()
-                    updateSendButtonFromView()
                     return false
                 } else {
                     model.searchSnippet = lastPart
@@ -312,10 +317,11 @@ extension ComposeViewController: UITextFieldDelegate {
                     model.contacts = []
                     model.recipientCell = cell
                     updateContacts()
+                    return true
                 }
             }
         }
-        updateSendButtonFromView()
+        // If the tf is not a recipient tf, or if the text is still nil
         return true
     }
 }
