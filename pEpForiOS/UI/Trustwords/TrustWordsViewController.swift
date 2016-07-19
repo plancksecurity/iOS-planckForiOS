@@ -12,10 +12,14 @@ class TrustWordsViewController: UITableViewController {
 
     var allRecipients: NSOrderedSet?
     var message: Message?
+    var firstReload = true
+    var defaultBackground: UIColor?
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(self.tableView)
+        firstReload = true
         
     }
 
@@ -52,10 +56,11 @@ class TrustWordsViewController: UITableViewController {
              let cell = tableView.dequeueReusableCellWithIdentifier("mailSecurityLabelCell", forIndexPath: indexPath) as! LabelMailSecurityTableViewCell
             if let m = message {
                 // default
-                let defaultLabel = UILabel()
-                defaultLabel.text = "temp"
-                cell.backgroundColor = defaultLabel.backgroundColor
-
+                if (firstReload) {
+                    defaultBackground = cell.backgroundColor
+                    firstReload = false
+                }
+                cell.backgroundColor = defaultBackground
                 let mailPepColor = m.pepColor.integerValue
                 if let pc = PEPUtil.pepColorRatingFromInt(mailPepColor) {
                     let privateColor = PEPUtil.abstractPepColorFromPepColor(pc)
@@ -82,13 +87,10 @@ class TrustWordsViewController: UITableViewController {
             if let allContact = allRecipients {
                 let contact :Contact  = allContact[indexPath.row] as! Contact
                 cell.handshakeContactUILabel.text = contact.displayString()
-                var pepColor = PEPUtil.colorRatingForContact(contact)
-                if let privateColor = PEPUtil.abstractPepColorFromPepColor(pepColor) {
-                    cell.backgroundColor = paintingMailStatus(privateColor)
-                }
+                let pepColor = PEPUtil.colorRatingForContact(contact)
+                let privateColor = PEPUtil.abstractPepColorFromPepColor(pepColor)
+                cell.backgroundColor = paintingMailStatus(privateColor)
             }
-
-
         return cell
     }
 
