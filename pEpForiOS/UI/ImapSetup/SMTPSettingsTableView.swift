@@ -15,6 +15,7 @@ public class ViewStatus {
 
 public class SMTPSettingsTableView: UITableViewController {
 
+    let comp = "SMTPSettingsTableView"
     let unwindToEmailListSegue = "unwindToEmailListSegue"
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
@@ -131,24 +132,29 @@ public class SMTPSettingsTableView: UITableViewController {
         appConfig?.grandOperator.verifyConnection(connect, completionBlock: { error in
             self.status.activityIndicatorViewEnable = false
             self.updateView()
-            if error == nil {
+
+            guard let err = error else {
                 GCD.onMain() {
                     // save account, check for error
-                    if self.appConfig?.model.insertAccountFromConnectInfo(connect) != nil {
-                        // unwind back to INBOX on success
-                        self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: sender)
-
-                    } else {
-                        self.showErrorMessage(NSLocalizedString("Could not save account", comment: ""))
+                    guard let model = self.appConfig?.model else {
+                        self.showErrorMessage(
+                            String(format:
+                                NSLocalizedString("Internal Error: %d",
+                                    comment: "Internal error display, with error number"),
+                                Constants.InternalErrorCode.NoModel.rawValue))
+                        Log.warnComponent(self.comp, "Could not access model")
+                        return
                     }
+                    let account = model.insertAccountFromConnectInfo(connect)
+                    let _ = model.insertOrUpdateContactEmail(account.email,
+                        name: account.nameOfTheUser)
+
+                    // unwind back to INBOX on success
+                    self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: sender)
                 }
-            } else {
-                if let error = error?.localizedDescription {
-                    self.showErrorMessage(error)
-                } else {
-                    self.showErrorMessage(NSLocalizedString("Could not connect", comment: ""))
-                }
+                return
             }
+            self.showErrorMessage(err.localizedDescription)
         })
     }
 }

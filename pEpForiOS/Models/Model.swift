@@ -68,7 +68,7 @@ public protocol IModel {
     func setAccountAsLastUsed(account: IAccount) -> IAccount
     func fetchLastAccount() -> IAccount?
 
-    func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount?
+    func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount
     func insertNewMessage() -> IMessage
 
     /**
@@ -238,7 +238,7 @@ public class Model: IModel {
         return account
     }
 
-    public func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount? {
+    public func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount {
         let account = newAccountFromConnectInfo(connectInfo)
         save()
         KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.IMAP.asString(),

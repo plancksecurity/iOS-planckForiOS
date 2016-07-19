@@ -65,6 +65,13 @@ public class Constants {
         case RequestCancelled
     }
 
+    /**
+     Some errors shown to the user which are actually internal.
+     */
+    public enum InternalErrorCode: Int {
+        case NoModel = 5000
+    }
+
     static func errorNotImplemented(component: String) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
