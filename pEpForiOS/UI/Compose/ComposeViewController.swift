@@ -253,7 +253,7 @@ class ComposeViewController: UITableViewController {
         return message
     }
 
-    func populateMessageWithViewData(message: IMessage, fromEmail: String,
+    func populateMessageWithViewData(message: IMessage, account: IAccount,
                                      model: IModel) -> IMessage {
         // Make a "copy", which really should be the same reference
         var msg = message
@@ -268,10 +268,10 @@ class ComposeViewController: UITableViewController {
         msg.longMessageFormatted = nil
 
         msg.references = []
-        msg.folder = model.folderDraftsForEmail(fromEmail) as! Folder
 
         // from
-        msg.from = model.insertOrUpdateContactEmail(fromEmail, name: nil) as? Contact
+        msg.from = model.insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
+            as? Contact
 
         // recipients
         for (_, cell) in recipientCells {
@@ -319,9 +319,6 @@ class ComposeViewController: UITableViewController {
     // MARK: -- Actions
 
     @IBAction func sendButtonTapped(sender: UIBarButtonItem) {
-        if messageToSend == nil {
-            messageToSend = appConfig?.model.insertNewMessage()
-        }
         guard let m = messageToSend else {
             Log.warnComponent(comp, "Really need a non-nil messageToSend")
             return
@@ -334,8 +331,12 @@ class ComposeViewController: UITableViewController {
             Log.warnComponent(comp, "Really need a non-nil currentAccount")
             return
         }
+        if messageToSend == nil {
+            messageToSend = appConfig?.model.insertNewMessageForSendingFromAccountEmail(
+                account.email)
+        }
 
-        let msg = populateMessageWithViewData(m, fromEmail: account.email, model: appC.model)
+        let msg = populateMessageWithViewData(m, account: account, model: appC.model)
 
         appC.grandOperator.sendMail(
             msg, account: account as! Account, completionBlock: { error in

@@ -241,12 +241,27 @@ public class GrandOperator: IGrandOperator {
         verifyConnectionQueue.addOperation(op2)
     }
 
-    public func sendMail(email: IMessage, account: Account,
+    public func sendMail(message: IMessage, account: Account,
                          completionBlock: GrandOperatorCompletionBlock?) {
-        completionBlock?(error: Constants.errorNotImplemented(comp))
+        let encryptionData = EncryptionData.init(
+            connectionManager: connectionManager, coreDataUtil: coreDataUtil,
+            messageID: (message as! Message).objectID, accountEmail: account.email)
+        let opEncrypt = EncryptMailOperation.init(encryptionData: encryptionData)
+        let opSend = SendMailOperation.init(encryptionData: encryptionData)
+        opSend.addDependency(opEncrypt)
+        opSend.completionBlock = {
+            Log.errorComponent(self.comp, error: Constants.errorNotImplemented(self.comp)) // test
+            var firstError = opEncrypt.errors.first
+            if firstError == nil {
+                firstError = opSend.errors.first
+            }
+            completionBlock?(error: firstError)
+        }
+        backgroundQueue.addOperation(opSend)
+        backgroundQueue.addOperation(opEncrypt)
     }
 
-    public func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
+    public func saveDraftMail(message: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
         completionBlock?(error: Constants.errorNotImplemented(comp))
     }
 

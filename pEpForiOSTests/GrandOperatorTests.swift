@@ -73,38 +73,35 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testChainFolderFetching() {
-        if let account = persistentSetup.model.insertAccountFromConnectInfo(
-            persistentSetup.connectionInfo) {
-            var callbackNumber = 0
-            let op1 = CreateLocalSpecialFoldersOperation.init(
-                coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
-                accountEmail: account.email)
-            let op2 = FetchFoldersOperation.init(grandOperator: persistentSetup.grandOperator,
-                                                 connectInfo: persistentSetup.connectionInfo)
-            let expFoldersFetched = expectationWithDescription("expFoldersFetched")
-            persistentSetup.grandOperator.chainOperations(
-                [op1, op2],
-                completionBlock: { error in
-                    XCTAssertNil(error)
-                    XCTAssertEqual(callbackNumber, 0)
-                    callbackNumber += 1
-                    expFoldersFetched.fulfill()
-            })
-            waitForExpectationsWithTimeout(waitTime, handler: { error in
+        let account = persistentSetup.model.insertAccountFromConnectInfo(
+            persistentSetup.connectionInfo)
+        var callbackNumber = 0
+        let op1 = CreateLocalSpecialFoldersOperation.init(
+            coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
+            accountEmail: account.email)
+        let op2 = FetchFoldersOperation.init(grandOperator: persistentSetup.grandOperator,
+                                             connectInfo: persistentSetup.connectionInfo)
+        let expFoldersFetched = expectationWithDescription("expFoldersFetched")
+        persistentSetup.grandOperator.chainOperations(
+            [op1, op2],
+            completionBlock: { error in
                 XCTAssertNil(error)
-                if let folders = self.persistentSetup.model.foldersByPredicate(
-                    NSPredicate.init(value: true), sortDescriptors: nil) {
-                    XCTAssertGreaterThan(folders.count, FolderType.allValuesToCreate.count)
-                } else {
-                    XCTAssertTrue(false, "Expected folders created")
-                }
-                let folder = self.persistentSetup.model.folderInboxForEmail(
-                    self.persistentSetup.connectionInfo.email)
-                XCTAssertNotNil(folder)
-            })
-        } else {
-            XCTAssertTrue(false, "Expected account to be created")
-        }
+                XCTAssertEqual(callbackNumber, 0)
+                callbackNumber += 1
+                expFoldersFetched.fulfill()
+        })
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            if let folders = self.persistentSetup.model.foldersByPredicate(
+                NSPredicate.init(value: true), sortDescriptors: nil) {
+                XCTAssertGreaterThan(folders.count, FolderType.allValuesToCreate.count)
+            } else {
+                XCTAssertTrue(false, "Expected folders created")
+            }
+            let folder = self.persistentSetup.model.folderInboxForEmail(
+                self.persistentSetup.connectionInfo.email)
+            XCTAssertNotNil(folder)
+        })
     }
 
     func testSendMail() {

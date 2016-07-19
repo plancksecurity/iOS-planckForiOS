@@ -141,9 +141,9 @@ public extension PEPSession {
      - Returns: A 3-tuple consisting of all unencrypted receivers, all encrypted BCCs,
      and an encryptable PEP mail without all the "unencrypted receivers" and the encrypted BCCs.
      */
-    public func filterOutSpecialReceiversForPEPMail(pepMail: PEPMail)
-        -> (unencryptedReceivers: [PEPRecipient], encryptedBCC: [PEPRecipient],
-        pepMailEncryptable: PEPMail) {
+    public func filterOutSpecialReceiversForPEPMail(
+        pepMail: PEPMail) -> (unencryptedReceivers: [PEPRecipient],
+        encryptedBCC: [PEPRecipient], pepMailEncryptable: PEPMail) {
             let pepMailPurged = NSMutableDictionary.init(dictionary: pepMail)
 
             let session = PEPSession.init()
@@ -192,47 +192,47 @@ public extension PEPSession {
      - Parameter pepMail: The PEP mail to put into encryption/non-encryption buckets
      - Returns: A tuple (encrypted, unencrypted) with the two buckets of mails.
      */
-    public func bucketsForPEPMail(pepMail: PEPMail)
-        -> (mailsToEncrypt: [PEPMail], mailsNotToEncrypt: [PEPMail]) {
-            let (unencryptedReceivers, encryptedBCC, pepMailPurged) =
-                filterOutSpecialReceiversForPEPMail(pepMail)
+    public func bucketsForPEPMail(
+        pepMail: PEPMail) -> (mailsToEncrypt: [PEPMail], mailsNotToEncrypt: [PEPMail]) {
+        let (unencryptedReceivers, encryptedBCC, pepMailPurged) =
+            filterOutSpecialReceiversForPEPMail(pepMail)
 
-            var encryptedMails: [PEPMail] = []
-            var unencryptedMails: [PEPMail] = []
+        var encryptedMails: [PEPMail] = []
+        var unencryptedMails: [PEPMail] = []
 
-            if pepMailHasRecipients(pepMailPurged) {
-                encryptedMails.append(pepMailPurged)
+        if pepMailHasRecipients(pepMailPurged) {
+            encryptedMails.append(pepMailPurged)
+        }
+
+        let unencryptedMail = NSMutableDictionary.init(dictionary: pepMailPurged)
+        var tos: [PEPContact] = []
+        var ccs: [PEPContact] = []
+        var bccs: [PEPContact] = []
+        for r in unencryptedReceivers {
+            switch r.recipientType {
+            case .To:
+                tos.append(r.recipient)
+            case .CC:
+                ccs.append(r.recipient)
+                print("ccs: \(ccs)")
+            case .BCC:
+                bccs.append(r.recipient)
             }
+        }
+        unencryptedMail[kPepTo] = tos
+        unencryptedMail[kPepCC] = ccs
+        unencryptedMail[kPepBCC] = bccs
+        unencryptedMails.append(unencryptedMail as PEPMail)
 
-            let unencryptedMail = NSMutableDictionary.init(dictionary: pepMailPurged)
-            var tos: [PEPContact] = []
-            var ccs: [PEPContact] = []
-            var bccs: [PEPContact] = []
-            for r in unencryptedReceivers {
-                switch r.recipientType {
-                case .To:
-                    tos.append(r.recipient)
-                case .CC:
-                    ccs.append(r.recipient)
-                    print("ccs: \(ccs)")
-                case .BCC:
-                    bccs.append(r.recipient)
-                }
-            }
-            unencryptedMail[kPepTo] = tos
-            unencryptedMail[kPepCC] = ccs
-            unencryptedMail[kPepBCC] = bccs
-            unencryptedMails.append(unencryptedMail as PEPMail)
+        for bcc in encryptedBCC {
+            let mail = NSMutableDictionary.init(dictionary: pepMailPurged)
+            mail[kPepTo] = []
+            mail[kPepCC] = []
+            mail[kPepBCC] = [bcc.recipient]
+            encryptedMails.append(mail as PEPMail)
+        }
 
-            for bcc in encryptedBCC {
-                let mail = NSMutableDictionary.init(dictionary: pepMailPurged)
-                mail[kPepTo] = []
-                mail[kPepCC] = []
-                mail[kPepBCC] = [bcc.recipient]
-                encryptedMails.append(mail as PEPMail)
-            }
-
-            return (encryptedMails, unencryptedMails)
+        return (encryptedMails, unencryptedMails)
     }
 }
 

@@ -163,10 +163,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testCreateLocalSpecialFoldersOperation() {
-        guard let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo) else {
-            XCTAssertTrue(false, "Expected account to be created")
-            return
-        }
+        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
         let expFoldersStored = expectationWithDescription("expFoldersStored")
         let op = CreateLocalSpecialFoldersOperation.init(
             coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
@@ -190,22 +187,18 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testEncryptMailOperation() {
-        guard let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo) else {
-            XCTAssertTrue(false, "Expected account to be created")
-            return
-        }
-
+        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
         let model = persistentSetup.model
-        let op = CreateLocalSpecialFoldersOperation.init(
+        let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation.init(
             coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
             accountEmail: account.email)
         let expFoldersStored = expectationWithDescription("expFoldersStored")
-        op.completionBlock = {
+        opCreateSpecialFolders.completionBlock = {
             expFoldersStored.fulfill()
         }
 
         let queue = NSOperationQueue.init()
-        queue.addOperation(op)
+        queue.addOperation(opCreateSpecialFolders)
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
         })
@@ -219,6 +212,7 @@ class SimpleOperationsTest: XCTestCase {
             return
         }
         XCTAssertNotNil(message.from)
+        XCTAssertNotNil(message.folder)
 
         let session = PEPSession.init()
 
@@ -243,6 +237,8 @@ class SimpleOperationsTest: XCTestCase {
         mail.subject = "Subject"
         mail.longMessage = "Long Message"
         mail.longMessageFormatted = "<b>HTML message</b>"
+
+        model.save()
 
         let encryptionData = EncryptionData.init(
             connectionManager: persistentSetup.connectionManager,
@@ -282,10 +278,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSendMailOperation() {
-        guard let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo) else {
-            XCTAssertTrue(false, "Expected account to be created")
-            return
-        }
+        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
         let encryptionData = EncryptionData.init(
             connectionManager: persistentSetup.connectionManager,
             coreDataUtil: persistentSetup.coreDataUtil,
@@ -323,5 +316,26 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertEqual(sendOp.errors.count, 0)
             XCTAssertEqual(encryptionData.mailsSent.count, numMails)
        })
+    }
+
+    /**
+     It's important to always provide the correct kPepUserID for a local account ID.
+     */
+    func testSimpleOutgoingMailColor() {
+        let session = PEPSession.init()
+        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        let myself = identity.mutableCopy() as! NSMutableDictionary
+        session.mySelf(myself)
+        XCTAssertNotNil(myself[kPepFingerprint])
+
+        let color2 = session.outgoingContactColor(myself as PEPContact,
+                                                  from: myself as PEPContact)
+        XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
+
+        myself.removeObjectForKey(kPepUserID)
+
+        let color1 = session.outgoingContactColor(myself as PEPContact,
+                                                 from: myself as PEPContact)
+        XCTAssertLessThanOrEqual(color1.rawValue, PEP_rating_reliable.rawValue)
     }
 }
