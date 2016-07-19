@@ -245,7 +245,11 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="VPF-Wy-8RY">
-                        <barButtonItem key="rightBarButtonItem" title="Send" id="whn-9f-Amb"/>
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="whn-9f-Amb">
+                            <connections>
+                                <action selector="sendButtonTapped:" destination="8bt-7R-jDE" id="nvY-gc-nB5"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="sendButton" destination="whn-9f-Amb" id="12l-JN-IwB"/>

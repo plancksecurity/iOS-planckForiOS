@@ -19,7 +19,7 @@ public enum AddressBookStatus {
 /**
  With this we are compatible with our model layer, but don't have a dependency on Core Data.
  */
-public struct AddressbookContact: IContact {
+public class AddressbookContact: NSObject, IContact {
     public var email: String
     public var name: String?
     public var addressBookID: NSNumber?
@@ -36,13 +36,13 @@ public struct AddressbookContact: IContact {
         }
     }
 
-    public init(contact: IContact) {
+    convenience public init(contact: IContact) {
         self.init(email: contact.email, name: contact.name,
                   addressBookID: contact.addressBookID?.intValue)
     }
 
-    public init(email: String) {
-        self.email = email
+    convenience public init(email: String) {
+        self.init(email: email, name: nil, addressBookID: nil)
     }
 }
 

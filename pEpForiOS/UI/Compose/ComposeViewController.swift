@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ComposeViewController: UITableViewController {
     struct UIModel {
@@ -85,6 +86,11 @@ class ComposeViewController: UITableViewController {
      Always cache the operation for the latest color check, so we don't overtaxt the system.
      */
     var currentOutgoingRatingOperation: OutgoingMessageColorOperation?
+
+    /**
+     The message we're constructing
+     */
+    var messageToSend: IMessage?
 
     required init?(coder aDecoder: NSCoder) {
         commaWithSpace = "\(justComma) "
@@ -247,9 +253,117 @@ class ComposeViewController: UITableViewController {
         return message
     }
 
+    func populateMessageWithViewData(message: IMessage, fromEmail: String,
+                                     model: IModel) -> IMessage {
+        // Make a "copy", which really should be the same reference
+        var msg = message
+
+        // reset
+        msg.to = []
+        msg.cc = []
+        msg.bcc = []
+
+        msg.subject = nil
+        msg.longMessage = nil
+        msg.longMessageFormatted = nil
+
+        msg.references = []
+        msg.folder = model.folderDraftsForEmail(fromEmail) as! Folder
+
+        // from
+        msg.from = model.insertOrUpdateContactEmail(fromEmail, name: nil) as? Contact
+
+        // recipients
+        for (_, cell) in recipientCells {
+            let tf = cell.recipientTextField
+            if let text = tf.text {
+                if text != "" {
+                    let mailStrings1 = text.componentsSeparatedByString(justComma).map() {
+                        $0.trimmedWhiteSpace()
+                    }
+                    let mailStrings2 = mailStrings1.filter() {
+                        $0 != ""
+                    }
+                    let contacts: [IContact] = mailStrings2.map() {
+                        let c = model.insertOrUpdateContactEmail($0, name: nil)
+                        return c
+                    }
+                    if contacts.count > 0 {
+                        let set = NSOrderedSet.init(array: contacts.map() {$0 as AnyObject})
+                        switch cell.recipientType {
+                        case .To:
+                            msg.to = set
+                        case .CC:
+                            msg.cc = set
+                        case .BCC:
+                            msg.bcc = set
+                        }
+                    }
+                }
+            }
+        }
+
+        if let subjectText = subjectTextField?.text {
+            msg.subject = subjectText
+        }
+
+        if let bodyText = longBodyMessageTextView?.text {
+            msg.longMessage = bodyText
+        }
+
+        // So far, we don't have references. Once we add reply, we will have.
+
+        return msg
+    }
+
+    // MARK: -- Actions
+
+    @IBAction func sendButtonTapped(sender: UIBarButtonItem) {
+        if messageToSend == nil {
+            messageToSend = appConfig?.model.insertNewMessage()
+        }
+        guard let m = messageToSend else {
+            Log.warnComponent(comp, "Really need a non-nil messageToSend")
+            return
+        }
+        guard let appC = appConfig else {
+            Log.warnComponent(comp, "Really need a non-nil appConfig")
+            return
+        }
+        guard let account = appC.currentAccount else {
+            Log.warnComponent(comp, "Really need a non-nil currentAccount")
+            return
+        }
+
+        let msg = populateMessageWithViewData(m, fromEmail: account.email, model: appC.model)
+
+        appC.grandOperator.sendMail(
+            msg, account: account as! Account, completionBlock: { error in
+                if let e = error {
+                    Log.errorComponent(self.comp, error: e)
+                    // show error
+                    GCD.onMain() {
+                        let alert = UIAlertController.init(
+                            title: NSLocalizedString("Error sending message",
+                                comment: "Title for the 'Error sending mail' dialog"),
+                            message: e.localizedDescription,
+                            preferredStyle: .Alert)
+                        let okAction = UIAlertAction.init(
+                            title: NSLocalizedString("Ok", comment: "Confirm mail sending error"),
+                            style: .Default, handler: nil)
+                        alert.addAction(okAction)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
+                } else {
+                    // dismiss the whole controller?
+                }
+        })
+    }
+
     // MARK: -- UITableViewDelegate
 
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(tableView: UITableView,
+                            heightForHeaderInSection section: Int) -> CGFloat {
         if model.mode == UIModel.Mode.Search {
             if let cell = model.recipientCell {
                 return cell.bounds.height

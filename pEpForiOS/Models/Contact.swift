@@ -28,7 +28,7 @@ extension IContact {
         return email
     }
 
-    public mutating func updateFromEmail(
+    public func updateFromEmail(
         email: String, name: String?, addressBookID: Int32? = nil) {
         self.email = email
         if let personal = name {

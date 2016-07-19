@@ -502,7 +502,7 @@ public class Model: IModel {
         } catch let err as NSError {
             Log.errorComponent(comp, error: err)
         }
-        var contact = NSEntityDescription.insertNewObjectForEntityForName(
+        let contact = NSEntityDescription.insertNewObjectForEntityForName(
             Contact.entityName(), inManagedObjectContext: context) as! Contact
         contact.updateFromEmail(email, name: name, addressBookID: addressBookID)
         return contact

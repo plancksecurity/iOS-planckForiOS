@@ -17,7 +17,7 @@ public enum ContactRelationships: String {
     case toMessages = "toMessages"
 }
 
-public protocol _IContact {
+@objc public protocol _IContact {
 
     // MARK: - Properties
 
