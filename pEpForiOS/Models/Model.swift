@@ -496,7 +496,7 @@ public class Model: IModel {
                 existing[0].updateFromEmail(email, name: name, addressBookID: addressBookID)
                 return existing[0]
             } else if existing.count == 1 {
-                existing[0].updateFromEmail(email, name: name)
+                existing[0].updateFromEmail(email, name: name, addressBookID: addressBookID)
                 return existing[0]
             }
         } catch let err as NSError {
