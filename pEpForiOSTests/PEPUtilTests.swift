@@ -30,7 +30,7 @@ class PEPUtilTests: XCTestCase {
     }
 
     func testPepContact() {
-        var c1 = persistentSetup.model.insertOrUpdateContactEmail(
+        let c1 = persistentSetup.model.insertOrUpdateContactEmail(
             "some@some.com", name: "Whatever")
         c1.addressBookID = 1
 
@@ -56,11 +56,11 @@ class PEPUtilTests: XCTestCase {
     }
 
     func testPepMail() {
-        var c1 = persistentSetup.model.insertOrUpdateContactEmail(
+        let c1 = persistentSetup.model.insertOrUpdateContactEmail(
             "some@some.com", name: "Whatever")
         c1.addressBookID = 1
 
-        var c2 = persistentSetup.model.insertOrUpdateContactEmail(
+        let c2 = persistentSetup.model.insertOrUpdateContactEmail(
             "some@some2.com", name: "Whatever2")
         c2.addressBookID = 2
 
