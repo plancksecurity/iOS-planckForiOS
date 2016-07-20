@@ -14,12 +14,29 @@ class TrustWordsViewController: UITableViewController {
     var message: Message?
     var firstReload = true
     var defaultBackground: UIColor?
+    var stringRecipients:[String]!
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(self.tableView)
         firstReload = true
+        if let m = self.message {
+            allRecipients = m.allRecipienst()
+        }
+        print (" ALL CONTACT:")
+        for contact in allRecipients! {
+            let contactAux = contact as! Contact
+            let name = contactAux.displayString()
+            print (name)
+        }
+       /* if let m = message {
+            let recipients = m.allRecipienst()
+            for contact in recipients {
+                var contactString = contact.displayString
+                stringRecipients.append(contact.displayString())
+            }
+        }*/
         
     }
 
@@ -42,7 +59,8 @@ class TrustWordsViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let allContact = allRecipients {
-            return allContact.count
+            let lenght = allContact.count + 2
+            return lenght
         }
         return 2
     }
@@ -73,8 +91,10 @@ class TrustWordsViewController: UITableViewController {
             return cell
         }
         if (indexPath.row == 1) {
-            let cell = tableView.dequeueReusableCellWithIdentifier("mailSecurityExplanationLabelCell", forIndexPath: indexPath) as!
+            let cell = tableView.dequeueReusableCellWithIdentifier(
+                "mailSecurityExplanationLabelCell", forIndexPath: indexPath) as!
             LabelMailExplantionSecurityTableViewCell
+
             if let m = message {
                 let mailPepColor = m.pepColor.integerValue
                 if let pepColor = PEPUtil.pepColorRatingFromInt(mailPepColor) {
@@ -83,16 +103,22 @@ class TrustWordsViewController: UITableViewController {
             }
             return cell
         }
-    let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell", forIndexPath: indexPath) as! TrustWordsViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
+                                                           forIndexPath: indexPath) as! TrustWordsViewCell
             if let allContact = allRecipients {
-                let contact :Contact  = allContact[indexPath.row] as! Contact
+                print ("INDEX:\(indexPath.row)")
+                let index = indexPath.row - 2
+                print ("INDEX - 2 :\(index)")
+                let contact :Contact  = allContact[indexPath.row-2] as! Contact
                 cell.handshakeContactUILabel.text = contact.displayString()
+                 print ("CONTACT: \(contact)")
+                if contact.name == nil {
+                    contact.name = "TOFU"
+                }
                 let pepColor = PEPUtil.colorRatingForContact(contact)
                 let privateColor = PEPUtil.abstractPepColorFromPepColor(pepColor)
                 cell.backgroundColor = paintingMailStatus(privateColor)
             }
         return cell
     }
-
-
 }
