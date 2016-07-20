@@ -40,7 +40,19 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(pepC1[kPepUsername] as? String, c1.name)
         XCTAssertNotNil(pepC1[kPepUserID])
         XCTAssertEqual(pepC1[kPepUserID] as? String, String(c1.addressBookID!))
-    }
+
+        let c2 = AddressbookContact.init(email: "some@email.com")
+        let pepC2 = PEPUtil.pepContact(c2)
+        XCTAssertEqual(pepC2[kPepAddress] as? String, c2.email)
+        XCTAssertEqual(pepC2[kPepUsername] as? String, "some")
+        XCTAssertNil(pepC2[kPepUserID])
+
+        let c3 = AddressbookContact.init(email: "some_iaeuiae@email.com")
+        let pepC3 = PEPUtil.pepContact(c3)
+        XCTAssertEqual(pepC3[kPepAddress] as? String, c3.email)
+        XCTAssertEqual(pepC3[kPepUsername] as? String, "some_iaeuiae")
+        XCTAssertNil(pepC3[kPepUserID])
+}
 
     func testPepAttachment() {
         let data = "Just some plaintext".dataUsingEncoding(NSUTF8StringEncoding)!

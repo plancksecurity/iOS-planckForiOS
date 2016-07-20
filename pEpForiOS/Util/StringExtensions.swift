@@ -67,6 +67,28 @@ public extension String {
         return true
     }
 
+    /**
+     - Returns: The name part of an email, e.g. "test@blah.com" -> "test"
+     */
+    public func namePartOfEmail() -> String? {
+        do {
+            let regex = try NSRegularExpression.init(pattern: "^([^@]+)@", options: [])
+            let matches = regex.matchesInString(self, options: [], range: wholeRange())
+            if matches.count == 1 {
+                let m = matches[0]
+                let r = m.rangeAtIndex(1)
+                if r.location != NSNotFound {
+                    let s = self as NSString
+                    let result = s.substringWithRange(r)
+                    return result
+                }
+            }
+        } catch let err as NSError {
+            Log.errorComponent(String.comp, error: err)
+        }
+        return nil
+    }
+
     public func contains(substring: String, ignoreCase: Bool = true,
                          ignoreDiacritic: Bool = true) -> Bool {
 

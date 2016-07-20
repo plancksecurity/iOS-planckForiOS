@@ -150,6 +150,12 @@ public class PEPUtil {
         let dict: NSMutableDictionary = [:]
         if let name = contact.name {
             dict[kPepUsername] = name
+        } else {
+            if let nick = contact.email.namePartOfEmail() {
+                dict[kPepUsername] = nick
+            } else {
+                dict[kPepUsername] = contact.email
+            }
         }
         dict[kPepAddress] = contact.email
         if contact.isMySelf.boolValue {
