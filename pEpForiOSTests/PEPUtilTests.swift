@@ -13,6 +13,11 @@ import pEpForiOS
 class PEPUtilTests: XCTestCase {
     let waitTime: NSTimeInterval = 10
 
+    /**
+     Those keys in contacts should not interfere with equality tests.
+     */
+    let keysNotToCompare = ["username", "me"]
+
     var persistentSetup: PersistentSetup!
 
     override func setUp() {
@@ -26,7 +31,8 @@ class PEPUtilTests: XCTestCase {
 
     func testPepContact() {
         var c1 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some.com", name: "Whatever", addressBookID: 1)
+            "some@some.com", name: "Whatever")
+        c1.addressBookID = 1
 
         let pepC1 = PEPUtil.pepContact(c1)
 
@@ -51,11 +57,11 @@ class PEPUtilTests: XCTestCase {
 
     func testPepMail() {
         var c1 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some.com", name: "Whatever", addressBookID: nil)
+            "some@some.com", name: "Whatever")
         c1.addressBookID = 1
 
         var c2 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some2.com", name: "Whatever2", addressBookID: nil)
+            "some@some2.com", name: "Whatever2")
         c2.addressBookID = 2
 
         let data1 = "Just some plaintext".dataUsingEncoding(NSUTF8StringEncoding)!
@@ -96,12 +102,13 @@ class PEPUtilTests: XCTestCase {
     }
 
     func testPantomimeMailFromPep() {
-        let receiverToEmail = "test002@peptest.ch"
-        let receiverCCEmail = "test003@peptest.ch"
-        let receiverBCCEmail = "test004@peptest.ch"
+        let receiverToEmail = "unittest.ios.1@peptest.ch"
+        let receiverCCEmail = "unittest.ios.2@peptest.ch"
+        let receiverBCCEmail = "unittest.ios.3@peptest.ch"
 
         let pepMailOrig = NSMutableDictionary()
-        pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("test001@peptest.ch", name: "Test 001")
+        pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
+                                                            name: "Unit 004")
         pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail(receiverToEmail)] as [AnyObject]
         pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail(receiverCCEmail)] as [AnyObject]
         pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail(receiverBCCEmail)] as [AnyObject]
@@ -163,10 +170,14 @@ class PEPUtilTests: XCTestCase {
 
         // Create pEp mail dict
         let pepMailOrig = NSMutableDictionary()
-        pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("test001@peptest.ch", name: "Test 001")
-        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail("test002@peptest.ch")] as [AnyObject]
-        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("test003@peptest.ch")] as [AnyObject]
-        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail("test004@peptest.ch")] as [AnyObject]
+        pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
+                                                            name: "Unit 4")
+        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail("unittest.ios.2@peptest.ch")]
+            as [AnyObject]
+        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("unittest.ios.3@peptest.ch")]
+            as [AnyObject]
+        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch")]
+            as [AnyObject]
         pepMailOrig[kPepShortMessage] = "Subject"
         pepMailOrig[kPepLongMessage] = "Some Text"
         pepMailOrig[kPepLongMessageFormatted] = "<b>Some HTML</b>"
@@ -206,7 +217,11 @@ class PEPUtilTests: XCTestCase {
             let attachments = pepMail[kPepAttachments] as? NSArray
             XCTAssertTrue(attachments == nil || attachments?.count == 0)
             pepMail[kPepAttachments] = nil
-            XCTAssertEqual(pepMail, pepMailOrig)
+            let pepMail2 = TestUtil.removeUnneededKeysForComparison(
+                keysNotToCompare, fromMail: pepMail)
+            let pepMailOrig2 = TestUtil.removeUnneededKeysForComparison(
+                keysNotToCompare, fromMail: pepMailOrig)
+            XCTAssertEqual(pepMail2, pepMailOrig2)
         }
     }
 
@@ -224,10 +239,14 @@ class PEPUtilTests: XCTestCase {
 
         // Create pEp mail dict
         let pepMailOrig = NSMutableDictionary()
-        pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("test001@peptest.ch", name: "Test 001")
-        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail("test002@peptest.ch")] as [AnyObject]
-        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("test003@peptest.ch")] as [AnyObject]
-        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail("test004@peptest.ch")] as [AnyObject]
+        pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
+                                                            name: "Test 001")
+        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail("unittest.ios.1@peptest.ch")]
+            as [AnyObject]
+        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("unittest.ios.2@peptest.ch")]
+            as [AnyObject]
+        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail("unittest.ios.3@peptest.ch")]
+            as [AnyObject]
         pepMailOrig[kPepShortMessage] = subject
         pepMailOrig[kPepLongMessage] = longMessage
         pepMailOrig[kPepLongMessageFormatted] = longMessageFormatted
@@ -321,12 +340,18 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(modelAttachment1!.filename, attachmentFilename1)
         XCTAssertEqual(modelAttachment2!.filename, attachmentFilename2)
 
+        XCTAssertNotNil(message)
+
         // Convert back to pEp
         if let m = message {
             var pepMail = PEPUtil.pepMail(m)
             let attachments = pepMail[kPepAttachments] as? NSArray
             XCTAssertEqual(attachments?.count, 2)
-            XCTAssertEqual(pepMail, pepMailOrig)
+            let pepMail2 = TestUtil.removeUnneededKeysForComparison(
+                keysNotToCompare, fromMail: pepMail)
+            let pepMailOrig2 = TestUtil.removeUnneededKeysForComparison(
+                keysNotToCompare, fromMail: pepMailOrig)
+            XCTAssertEqual(pepMail2, pepMailOrig2)
         }
     }
 

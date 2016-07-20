@@ -130,4 +130,54 @@ class TestUtil {
             return (identity, receiver1 as PEPContact, receiver2 as PEPContact,
                     receiver3 as PEPContact, receiver4 as PEPContact)
     }
+
+    /**
+     Removes some (not so important) keys recursively from dictionaries
+     so they don't interfere with `isEqual`.
+     */
+    static func removeUnneededKeysForComparison(
+        keys: [String], fromMail: NSDictionary) -> NSDictionary {
+        let m = fromMail.mutableCopy() as! NSMutableDictionary
+        for k in keys {
+            m.removeObjectForKey(k)
+        }
+        var replacements: [(NSCopying, NSCopying)] = []
+        for (k, v) in m {
+            if v.isKindOfClass(NSDictionary) {
+                replacements.append((k as! NSCopying,
+                    removeUnneededKeysForComparison(keys, fromMail: v as! NSDictionary)))
+            } else if v.isKindOfClass((NSArray)) {
+                let ar = v as! NSArray
+                let fn: AnyObject -> AnyObject = { element in
+                    if element.isKindOfClass(NSDictionary) {
+                        return self.removeUnneededKeysForComparison(
+                            keys, fromMail: element as! NSDictionary)
+                    } else {
+                        return element
+                    }
+                }
+                let newArray = ar.map(fn)
+                replacements.append((k as! NSCopying, newArray))
+            }
+        }
+        for (k, v) in replacements {
+            m[k] = v
+        }
+        return m as NSDictionary
+    }
+
+    /**
+     Dumps some diff between two NSDirectories to the console.
+     */
+    static func diffDictionaries(dict1: NSDictionary, dict2: NSDictionary) {
+        for (k,v1) in dict1 {
+            if let v2 = dict2[k as! NSCopying] {
+                if !v1.isEqual(v2) {
+                    print("Difference in '\(k)': '\(v2)' <-> '\(v1)'")
+                }
+            } else {
+                print("Only in pepMail: \(k)")
+            }
+        }
+    }
 }

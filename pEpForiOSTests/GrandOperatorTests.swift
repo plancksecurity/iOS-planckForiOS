@@ -64,10 +64,10 @@ class GrandOperatorTests: XCTestCase {
         msg.subject = "Subject"
         msg.longMessage = "Message body"
         let from = persistentSetup.model.insertOrUpdateContactEmail(
-            "test001@peptest.ch", name: "Test 001", addressBookID: nil) as! Contact
+            "unittest.ios.4@peptest.ch", name: "UnitTestiOS 4") as! Contact
         msg.from = from
         let to = persistentSetup.model.insertOrUpdateContactEmail(
-            "test002@peptest.ch", name: "Test 002", addressBookID: nil) as! Contact
+            "unittest.ios.3@peptest.ch", name: "UnitTestiOS 3") as! Contact
         msg.addToObject(to)
         return msg
     }
@@ -125,7 +125,7 @@ class GrandOperatorTests: XCTestCase {
         XCTAssertNotNil(account)
         let msg = createMail()
         let exp = expectationWithDescription("draftSaved")
-        persistentSetup.grandOperator.sendMail(msg, account: account!, completionBlock: { error in
+        persistentSetup.grandOperator.saveDraftMail(msg, completionBlock: { error in
             XCTAssertNil(error)
             exp.fulfill()
         })

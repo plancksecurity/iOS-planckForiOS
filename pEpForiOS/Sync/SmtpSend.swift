@@ -75,9 +75,10 @@ public class SmtpSend: Service {
     private func createMessage() -> CWMessage {
         let msg = CWMessage.init()
         msg.setSubject("Subject Message")
-        msg.setFrom(CWInternetAddress.init(personal: "Test 001", address: "test001@peptest.ch"))
+        msg.setFrom(CWInternetAddress.init(personal: "Unit 004",
+            address: "unittest.ios.4@peptest.ch"))
 
-        let to = CWInternetAddress.init(personal: "Test 002", address: "test002@peptest.ch")
+        let to = CWInternetAddress.init(personal: "Unit 001", address: "unittest.ios.1@peptest.ch")
         to.setType(.ToRecipient)
         msg.addRecipient(to)
 

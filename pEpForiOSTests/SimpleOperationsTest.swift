@@ -287,8 +287,8 @@ class SimpleOperationsTest: XCTestCase {
 
         let from = PEPUtil.identityFromAccount(account, isMyself: true)
         let contact = NSMutableDictionary()
-        contact[kPepUsername] = "Test 001"
-        contact[kPepAddress] = "test001@peptest.ch"
+        contact[kPepUsername] = "Unit 001"
+        contact[kPepAddress] = "unittest.ios.1@peptest.ch"
 
         // Build emails
         let numMails = 5

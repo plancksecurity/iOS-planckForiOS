@@ -142,7 +142,7 @@ public class PEPUtil {
     }
 
     /**
-     Converts a core data contact to a pEp contact.
+     Converts an IContact (possibly from core data) to a pEp contact.
      - Parameter contact: The core data contact object.
      - Returns: An `NSMutableDictionary` contact for pEp.
      */
@@ -152,8 +152,13 @@ public class PEPUtil {
             dict[kPepUsername] = name
         }
         dict[kPepAddress] = contact.email
-        if let addressBookID = contact.addressBookID {
-            dict[kPepUserID] = String(addressBookID)
+        if contact.isMySelf.boolValue {
+            dict[kPepIsMe] = true
+        } else {
+            // Only use an address book ID if this contact is not "ourselves"
+            if let addressBookID = contact.addressBookID {
+                dict[kPepUserID] = String(addressBookID)
+            }
         }
         return dict
     }
@@ -212,6 +217,7 @@ public class PEPUtil {
             dict[kPepLongMessageFormatted] = longMessageFormatted
         }
         if let from = message.from {
+            from.isMySelf = true
             dict[kPepFrom]  = self.pepContact(from)
         }
         if let messageID = message.messageID {
@@ -225,10 +231,9 @@ public class PEPUtil {
     }
 
     public static func insertPepContact(pepContact: PEPContact, intoModel: IModel) -> IContact {
-        var contact = intoModel.insertOrUpdateContactEmail(
+        let contact = intoModel.insertOrUpdateContactEmail(
             pepContact[kPepAddress] as! String,
-            name: pepContact[kPepUsername] as? String,
-            addressBookID: nil)
+            name: pepContact[kPepUsername] as? String)
         if let ident = pepContact[kPepID] as? String {
             if let i = Int32(ident) {
                 contact.addressBookID = NSNumber.init(int: i)

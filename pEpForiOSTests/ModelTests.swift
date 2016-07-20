@@ -21,7 +21,7 @@ func ==<T1: Equatable, T2: Equatable, T3: Equatable>(
 class ModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
     let waitTime: NSTimeInterval = 10
-    let accountEmail = "test001@peptest.ch"
+    let accountEmail = "unittest.ios.4@peptest.ch"
 
     override func setUp() {
         super.setUp()
@@ -30,11 +30,11 @@ class ModelTests: XCTestCase {
         // Some contacts
         for i in 1...5 {
             let contact = persistentSetup.model.insertOrUpdateContactEmail(
-                "email\(i)@xtest.de", name: "name\(i)", addressBookID: nil)
+                "email\(i)@xtest.de", name: "name\(i)")
             XCTAssertNotNil(contact)
         }
         let contact = persistentSetup.model.insertOrUpdateContactEmail(
-            "wha@wawa.com", name: "Another", addressBookID: nil)
+            "wha@wawa.com", name: "Another")
         XCTAssertNotNil(contact)
 
         let connectInfo = ConnectInfo.init(

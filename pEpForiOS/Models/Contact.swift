@@ -28,18 +28,15 @@ extension IContact {
         return email
     }
 
-    public func updateFromEmail(
-        email: String, name: String?, addressBookID: Int32? = nil) {
-        self.email = email
+    /**
+     Updates that contact's name if the new value is non-nil and the existing
+     value is nil. Otherwise, the original one is kept.
+     */
+    public func updateName(name: String?) {
         if let personal = name {
-            self.name = personal.unquote()
-        } else {
-            self.name = nil
-        }
-        if let ident = addressBookID {
-            self.addressBookID = NSNumber.init(int: ident)
-        } else {
-            self.addressBookID = nil
+            if self.name == nil {
+                self.name = personal.unquote()
+            }
         }
     }
 }

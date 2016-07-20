@@ -23,6 +23,7 @@ public class AddressbookContact: NSObject, IContact {
     public var email: String
     public var name: String?
     public var addressBookID: NSNumber?
+    public var isMySelf: NSNumber
     public var bccMessages: NSSet = []
     public var ccMessages: NSSet = []
     public var toMessages: NSSet = []
@@ -31,6 +32,7 @@ public class AddressbookContact: NSObject, IContact {
     public init(email: String, name: String?, addressBookID: Int32? = nil) {
         self.email = email
         self.name = name
+        self.isMySelf = NSNumber.init(booleanLiteral: false)
         if let ident = addressBookID {
             self.addressBookID = NSNumber.init(int: ident)
         }

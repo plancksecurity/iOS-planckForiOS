@@ -79,7 +79,6 @@ public protocol IModel {
     func insertAttachmentWithContentType(
         contentType: String?, filename: String?, data: NSData) -> IAttachment
 
-    func insertOrUpdateContactEmail(email: String, name: String?, addressBookID: Int32?) -> IContact
     func insertOrUpdateContactEmail(email: String, name: String?) -> IContact
     func insertOrUpdateContact(contact: IContact) -> IContact
 
@@ -485,18 +484,17 @@ public class Model: IModel {
         return folder
     }
 
-    public func insertOrUpdateContactEmail(
-        email: String, name: String?, addressBookID: Int32?) -> IContact {
+    public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact {
         let fetch = NSFetchRequest.init(entityName:Contact.entityName())
         fetch.predicate = NSPredicate.init(format: "email == %@", email)
         do {
             var existing = try context.executeFetchRequest(fetch) as! [Contact]
             if existing.count > 1 {
                 Log.warnComponent(comp, "Duplicate contacts with address \(email)")
-                existing[0].updateFromEmail(email, name: name, addressBookID: addressBookID)
+                existing[0].updateName(name)
                 return existing[0]
             } else if existing.count == 1 {
-                existing[0].updateFromEmail(email, name: name, addressBookID: addressBookID)
+                existing[0].updateName(name)
                 return existing[0]
             }
         } catch let err as NSError {
@@ -504,17 +502,14 @@ public class Model: IModel {
         }
         let contact = NSEntityDescription.insertNewObjectForEntityForName(
             Contact.entityName(), inManagedObjectContext: context) as! Contact
-        contact.updateFromEmail(email, name: name, addressBookID: addressBookID)
+        contact.email = email
+        contact.name = name
         return contact
-    }
-
-    public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact {
-        return self.insertOrUpdateContactEmail(email, name: name, addressBookID: nil)
     }
 
     public func insertOrUpdateContact(contact: IContact) -> IContact {
         return self.insertOrUpdateContactEmail(
-            contact.email, name: contact.name, addressBookID: contact.addressBookID?.intValue)
+            contact.email, name: contact.name)
     }
 
     public func insertOrUpdateMessageReference(messageID: String) -> IMessageReference {

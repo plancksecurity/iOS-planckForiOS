@@ -7,6 +7,7 @@ import CoreData
 public enum ContactAttributes: String {
     case addressBookID = "addressBookID"
     case email = "email"
+    case isMySelf = "isMySelf"
     case name = "name"
 }
 
@@ -24,6 +25,8 @@ public enum ContactRelationships: String {
     var addressBookID: NSNumber? { get set }
 
     var email: String { get set }
+
+    var isMySelf: NSNumber { get set }
 
     var name: String? { get set }
 
@@ -69,6 +72,9 @@ public class _Contact: BaseManagedObject, _IContact {
 
     @NSManaged public
     var email: String
+
+    @NSManaged public
+    var isMySelf: NSNumber
 
     @NSManaged public
     var name: String?

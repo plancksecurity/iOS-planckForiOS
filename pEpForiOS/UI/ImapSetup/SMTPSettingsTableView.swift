@@ -146,8 +146,10 @@ public class SMTPSettingsTableView: UITableViewController {
                         return
                     }
                     let account = model.insertAccountFromConnectInfo(connect)
-                    let _ = model.insertOrUpdateContactEmail(account.email,
+                    let contact = model.insertOrUpdateContactEmail(account.email,
                         name: account.nameOfTheUser)
+                    // Mark that contact as mySelf
+                    contact.isMySelf = NSNumber.init(booleanLiteral: true)
 
                     // unwind back to INBOX on success
                     self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: sender)
