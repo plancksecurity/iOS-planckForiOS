@@ -79,6 +79,27 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(unencrypted[0][kPepBCC] as? NSArray, [receiver3])
     }
 
+    func testPEPMailBucketsWithSingleEncryptedMail() {
+        let session = PEPSession.init()
+        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        session.mySelf(identity)
+        XCTAssertNotNil(identity[kPepFingerprint])
+
+        let pepMail: NSMutableDictionary = [:]
+        pepMail[kPepFrom] = identity
+        pepMail[kPepTo] = [identity]
+        pepMail[kPepShortMessage] = "Subject"
+        pepMail[kPepLongMessage] = "Some body text"
+
+        let (encrypted, unencrypted) = session.bucketsForPEPMail(pepMail as PEPMail)
+        XCTAssertEqual(encrypted.count, 1)
+        XCTAssertEqual(unencrypted.count, 0)
+
+        XCTAssertEqual(encrypted[0][kPepTo] as? NSArray, [identity])
+        XCTAssertNil(encrypted[0][kPepCC])
+        XCTAssertNil(encrypted[0][kPepBCC])
+    }
+
     func testPEPMailBuckets2() {
         let session = PEPSession.init()
 

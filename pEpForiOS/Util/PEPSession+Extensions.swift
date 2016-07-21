@@ -153,25 +153,35 @@ public extension PEPSession {
                     contact, from: pepMail[kPepFrom] as! PEPContact)
             }
 
-            let (unencryptedTo, encryptedTo) = filterOutUnencryptedReceivers(
-                pepMail[kPepTo] as! NSArray, recipientType: RecipientType.To, session: session,
-                sortOutPredicate: unencryptedPredicate)
-            pepMailPurged[kPepTo] = encryptedTo.map({$0.recipient}) as NSArray
+            var unencrypted: [PEPRecipient] = []
 
-            let (unencryptedCC, encryptedCC) = filterOutUnencryptedReceivers(
-                pepMail[kPepCC] as! NSArray, recipientType: RecipientType.CC, session: session,
-                sortOutPredicate: unencryptedPredicate)
-            pepMailPurged[kPepCC] = encryptedCC.map({$0.recipient}) as NSArray
+            if let tos = pepMail[kPepTo] as? NSArray {
+                let (unencryptedTo, encryptedTo) = filterOutUnencryptedReceivers(
+                    tos, recipientType: RecipientType.To, session: session,
+                    sortOutPredicate: unencryptedPredicate)
+                pepMailPurged[kPepTo] = encryptedTo.map({$0.recipient}) as NSArray
+                unencrypted.appendContentsOf(unencryptedTo)
+            }
 
-            let (unencryptedBCC, encryptedBCC) = filterOutUnencryptedReceivers(
-                pepMail[kPepBCC] as! NSArray, recipientType: RecipientType.BCC, session: session,
-                sortOutPredicate: unencryptedPredicate)
-            pepMailPurged[kPepBCC] = []
+            if let ccs = pepMail[kPepCC] as? NSArray {
+                let (unencryptedCC, encryptedCC) = filterOutUnencryptedReceivers(
+                    ccs, recipientType: RecipientType.CC, session: session,
+                    sortOutPredicate: unencryptedPredicate)
+                pepMailPurged[kPepCC] = encryptedCC.map({$0.recipient}) as NSArray
+                unencrypted.appendContentsOf(unencryptedCC)
+            }
 
-            var result = unencryptedTo
-            result.appendContentsOf(unencryptedCC)
-            result.appendContentsOf(unencryptedBCC)
-            return (result, encryptedBCC, pepMailPurged as PEPMail)
+            var resultEncryptedBCC: [PEPRecipient] = []
+            if let bccs = pepMail[kPepBCC] as? NSArray {
+                let (unencryptedBCC, encryptedBCC) = filterOutUnencryptedReceivers(
+                    bccs, recipientType: RecipientType.BCC, session: session,
+                    sortOutPredicate: unencryptedPredicate)
+                pepMailPurged[kPepBCC] = []
+                unencrypted.appendContentsOf(unencryptedBCC)
+                resultEncryptedBCC.appendContentsOf(encryptedBCC)
+            }
+
+            return (unencrypted, resultEncryptedBCC, pepMailPurged as PEPMail)
     }
 
     /**
@@ -180,10 +190,11 @@ public extension PEPSession {
      - Returns: true if the mail has any recipients, false otherwise.
      */
     func pepMailHasRecipients(pepMail: PEPMail) -> Bool {
-        let tos = pepMail[kPepTo] as! NSArray
-        let ccs = pepMail[kPepCC] as! NSArray
-        let bccs = pepMail[kPepBCC] as! NSArray
-        return tos.count > 0 || ccs.count > 0 || bccs.count > 0
+        let tos = pepMail[kPepTo] as? NSArray
+        let ccs = pepMail[kPepCC] as? NSArray
+        let bccs = pepMail[kPepBCC] as? NSArray
+        return (tos != nil && tos!.count > 0) || (ccs != nil && ccs!.count > 0) ||
+            (bccs != nil && bccs!.count > 0)
     }
 
     /**
@@ -204,25 +215,27 @@ public extension PEPSession {
             encryptedMails.append(pepMailPurged)
         }
 
-        let unencryptedMail = NSMutableDictionary.init(dictionary: pepMailPurged)
-        var tos: [PEPContact] = []
-        var ccs: [PEPContact] = []
-        var bccs: [PEPContact] = []
-        for r in unencryptedReceivers {
-            switch r.recipientType {
-            case .To:
-                tos.append(r.recipient)
-            case .CC:
-                ccs.append(r.recipient)
-                print("ccs: \(ccs)")
-            case .BCC:
-                bccs.append(r.recipient)
+        if unencryptedReceivers.count > 0 {
+            let unencryptedMail = NSMutableDictionary.init(dictionary: pepMailPurged)
+            var tos: [PEPContact] = []
+            var ccs: [PEPContact] = []
+            var bccs: [PEPContact] = []
+            for r in unencryptedReceivers {
+                switch r.recipientType {
+                case .To:
+                    tos.append(r.recipient)
+                case .CC:
+                    ccs.append(r.recipient)
+                    print("ccs: \(ccs)")
+                case .BCC:
+                    bccs.append(r.recipient)
+                }
             }
+            unencryptedMail[kPepTo] = tos
+            unencryptedMail[kPepCC] = ccs
+            unencryptedMail[kPepBCC] = bccs
+            unencryptedMails.append(unencryptedMail as PEPMail)
         }
-        unencryptedMail[kPepTo] = tos
-        unencryptedMail[kPepCC] = ccs
-        unencryptedMail[kPepBCC] = bccs
-        unencryptedMails.append(unencryptedMail as PEPMail)
 
         for bcc in encryptedBCC {
             let mail = NSMutableDictionary.init(dictionary: pepMailPurged)
