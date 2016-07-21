@@ -399,6 +399,7 @@ class ComposeViewController: UITableViewController {
                     // show error
                     GCD.onMain() {
                         self.model.networkActivity = false
+                        self.updateNetworkActivity()
 
                         let alert = UIAlertController.init(
                             title: NSLocalizedString("Error sending message",

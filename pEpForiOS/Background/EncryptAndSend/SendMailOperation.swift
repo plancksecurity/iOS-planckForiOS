@@ -92,6 +92,7 @@ extension SendMailOperation: SmtpSendDelegate {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.MessageNotSent)
         addError(error)
         Log.infoComponent(comp, "messageNotSent: \(error)")
+        markAsFinished()
     }
 
     public func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
@@ -101,6 +102,7 @@ extension SendMailOperation: SmtpSendDelegate {
                                         code: Constants.SmtpErrorCode.TransactionInitiationFailed)
         addError(error)
         Log.infoComponent(comp, "transactionInitiationFailed: \(error)")
+        markAsFinished()
     }
 
     public func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
@@ -109,7 +111,8 @@ extension SendMailOperation: SmtpSendDelegate {
         let error = Constants.errorSmtp(comp,
                                         code: Constants.SmtpErrorCode.RecipientIdentificationFailed)
         addError(error)
-        Log.infoComponent(comp, "recipientIdentificationCompleted: \(error)")
+        Log.infoComponent(comp, "recipientIdentificationFailed: \(error)")
+        markAsFinished()
     }
 
     public func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
@@ -118,6 +121,7 @@ extension SendMailOperation: SmtpSendDelegate {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.TransactionResetFailed)
         addError(error)
         Log.infoComponent(comp, "transactionResetFailed: \(error)")
+        markAsFinished()
     }
 
     public func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {
@@ -128,6 +132,7 @@ extension SendMailOperation: SmtpSendDelegate {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.AuthenticationFailed)
         addError(error)
         Log.infoComponent(comp, "authenticationFailed: \(error)")
+        markAsFinished()
     }
 
     public func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?) {}
@@ -136,24 +141,28 @@ extension SendMailOperation: SmtpSendDelegate {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.ConnectionLost)
         addError(error)
         Log.infoComponent(comp, "connectionEstablished: \(error)")
+        markAsFinished()
     }
 
     public func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.ConnectionTerminated)
         addError(error)
         Log.infoComponent(comp, "connectionTerminated: \(error)")
+        markAsFinished()
     }
 
     public func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.ConnectionTimedOut)
         addError(error)
         Log.infoComponent(comp, "connectionTimedOut: \(error)")
+        markAsFinished()
     }
 
     public func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.RequestCancelled)
         addError(error)
         Log.infoComponent(comp, "requestCancelled: \(error)")
+        markAsFinished()
     }
 
     public func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?) {}
