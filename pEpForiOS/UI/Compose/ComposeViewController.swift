@@ -16,7 +16,7 @@ class ComposeViewController: UITableViewController {
             case Search
         }
 
-        var mode: Mode = .Normal
+        var tableMode: Mode = .Normal
 
         var searchSnippet: String? = nil
 
@@ -25,12 +25,22 @@ class ComposeViewController: UITableViewController {
          */
         var contacts: [IContact] = []
 
+        /**
+         The recipient cell that is currently used for contact completion.
+         */
         var recipientCell: RecipientCell? = nil
+
+        /**
+         Is there network activity (e.g., sending the mail?)
+         */
+        var networkActivity = false
     }
 
     var model: UIModel = UIModel.init()
 
     let comp = "ComposeViewController"
+
+    let unwindToEmailListMailSentSegue = "unwindToEmailListMailSentSegue"
 
     /** Constant that is used for checking user input on recipient text fields */
     let newline = "\n"
@@ -92,6 +102,22 @@ class ComposeViewController: UITableViewController {
      */
     var messageToSend: IMessage?
 
+    /**
+     For determining if we give the focus to the to text field.
+     */
+    var firstTimeToCellWasCreated = false
+
+    /**
+     For showing sending mail activity.
+     */
+    lazy var activityIndicator = UIActivityIndicatorView.init(activityIndicatorStyle: .Gray)
+
+    /**
+     This originally contains the send button. We need that when exchanging the send
+     button for the activity indicator.
+     */
+    var originalRightBarButtonItem: UIBarButtonItem?
+
     required init?(coder aDecoder: NSCoder) {
         delimiterWithSpace = "\(recipientStringDelimiter) "
         emptyBodyTextMessage = NSLocalizedString(
@@ -134,7 +160,7 @@ class ComposeViewController: UITableViewController {
 
     func resetTableViewToNormal() {
         model.searchSnippet = ""
-        model.mode = .Normal
+        model.tableMode = .Normal
         model.contacts = []
         tableView.reloadData()
     }
@@ -204,6 +230,25 @@ class ComposeViewController: UITableViewController {
     }
 
     /**
+     If there is network activity, show it.
+     */
+    func updateNetworkActivity() {
+        if model.networkActivity {
+            if originalRightBarButtonItem == nil {
+                // save the origignal
+                originalRightBarButtonItem = navigationItem.rightBarButtonItem
+            }
+            activityIndicator.startAnimating()
+            let barButtonWithActivity = UIBarButtonItem.init(customView: activityIndicator)
+            navigationItem.rightBarButtonItem = barButtonWithActivity
+        } else {
+            // restore the original
+            navigationItem.rightBarButtonItem = originalRightBarButtonItem
+            activityIndicator.stopAnimating()
+        }
+    }
+
+    /**
      Builds a pEp mail dictionary from all the related views. This is just a quick
      method for checking the pEp color rating, it's not exhaustive!
      */
@@ -219,9 +264,13 @@ class ComposeViewController: UITableViewController {
                     let mailStrings2 = mailStrings1.filter() {
                         $0 != ""
                     }
-                    let contacts = mailStrings2.map() {
-                        return PEPUtil.pepContactFromEmail($0)
+                    let model = appConfig?.model
+                    let contacts: [PEPContact] = mailStrings2.map() {
+                        if let c = model?.contactByEmail($0) {
+                            return PEPUtil.pepContact(c)
                         }
+                        return PEPUtil.pepContactFromEmail($0, name: $0.namePartOfEmail())
+                    }
                     if contacts.count > 0 {
                         var pepKey: String? = nil
                         switch cell.recipientType {
@@ -319,10 +368,6 @@ class ComposeViewController: UITableViewController {
     // MARK: -- Actions
 
     @IBAction func sendButtonTapped(sender: UIBarButtonItem) {
-        guard let m = messageToSend else {
-            Log.warnComponent(comp, "Really need a non-nil messageToSend")
-            return
-        }
         guard let appC = appConfig else {
             Log.warnComponent(comp, "Really need a non-nil appConfig")
             return
@@ -331,12 +376,21 @@ class ComposeViewController: UITableViewController {
             Log.warnComponent(comp, "Really need a non-nil currentAccount")
             return
         }
+
         if messageToSend == nil {
             messageToSend = appConfig?.model.insertNewMessageForSendingFromAccountEmail(
                 account.email)
         }
 
+        guard let m = messageToSend else {
+            Log.warnComponent(comp, "Really need a non-nil messageToSend")
+            return
+        }
+
         let msg = populateMessageWithViewData(m, account: account, model: appC.model)
+
+        model.networkActivity = true
+        updateNetworkActivity()
 
         appC.grandOperator.sendMail(
             msg, account: account as! Account, completionBlock: { error in
@@ -344,6 +398,8 @@ class ComposeViewController: UITableViewController {
                     Log.errorComponent(self.comp, error: e)
                     // show error
                     GCD.onMain() {
+                        self.model.networkActivity = false
+
                         let alert = UIAlertController.init(
                             title: NSLocalizedString("Error sending message",
                                 comment: "Title for the 'Error sending mail' dialog"),
@@ -357,6 +413,12 @@ class ComposeViewController: UITableViewController {
                     }
                 } else {
                     // dismiss the whole controller?
+                    GCD.onMain() {
+                        self.model.networkActivity = false
+                        self.updateNetworkActivity()
+                        self.performSegueWithIdentifier(self.unwindToEmailListMailSentSegue,
+                            sender: sender)
+                    }
                 }
         })
     }
@@ -365,7 +427,7 @@ class ComposeViewController: UITableViewController {
 
     override func tableView(tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
-        if model.mode == UIModel.Mode.Search {
+        if model.tableMode == UIModel.Mode.Search {
             if let cell = model.recipientCell {
                 return cell.bounds.height
             }
@@ -375,7 +437,7 @@ class ComposeViewController: UITableViewController {
 
     override func tableView(tableView: UITableView,
                             viewForHeaderInSection section: Int) -> UIView? {
-        if model.mode == UIModel.Mode.Search && section == 0 {
+        if model.tableMode == UIModel.Mode.Search && section == 0 {
             // We are reusing an ordinary cell as a header, this might lead to:
             // "no index path for table cell being reused".
             // Can probably ignored.
@@ -386,14 +448,14 @@ class ComposeViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView,
                    forSection section: Int) {
-        if model.mode == UIModel.Mode.Search && section == 0 {
+        if model.tableMode == UIModel.Mode.Search && section == 0 {
             model.recipientCell?.recipientTextField.becomeFirstResponder()
         }
     }
 
     override func tableView(tableView: UITableView,
                             didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if model.mode == UIModel.Mode.Search {
+        if model.tableMode == UIModel.Mode.Search {
             if let cell = model.recipientCell {
                 let c = model.contacts[indexPath.row]
                 if var text = cell.recipientTextField.text?.finishedRecipientPart() {
@@ -412,7 +474,7 @@ class ComposeViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell,
                             forRowAtIndexPath indexPath: NSIndexPath) {
-        if model.mode == UIModel.Mode.Normal {
+        if model.tableMode == UIModel.Mode.Normal {
             if let cell = model.recipientCell {
                 cell.recipientTextField.becomeFirstResponder()
             }
@@ -427,7 +489,7 @@ class ComposeViewController: UITableViewController {
 
     override func tableView(tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
-        if model.mode == UIModel.Mode.Normal {
+        if model.tableMode == UIModel.Mode.Normal {
             return bodyTextRowNumber + 1
         } else {
             return model.contacts.count
@@ -441,7 +503,7 @@ class ComposeViewController: UITableViewController {
         let messageBodyCellID = "MessageBodyCell"
         let contactTableViewCellID = "ContactTableViewCell"
 
-        if model.mode == UIModel.Mode.Normal {
+        if model.tableMode == UIModel.Mode.Normal {
             // Normal mode
             if indexPath.row < subjectRowNumber {
                 // Recipient cell
@@ -452,6 +514,12 @@ class ComposeViewController: UITableViewController {
                 cell.recipientTextField.addTarget(
                     self, action: #selector(self.recipientTextHasChanged),
                     forControlEvents: .EditingChanged)
+
+                if cell.recipientType == .To &&
+                    recipientCellsByTextField[cell.recipientTextField] == nil {
+                    // First time the cell got created, give it focus
+                    cell.recipientTextField.becomeFirstResponder()
+                }
 
                 // Cache the cell for later use
                 recipientCellsByTextField[cell.recipientTextField] = cell
@@ -633,7 +701,7 @@ extension ComposeViewController: UITextFieldDelegate {
                     return false
                 } else {
                     model.searchSnippet = lastPart
-                    model.mode = .Search
+                    model.tableMode = .Search
                     model.contacts = []
                     model.recipientCell = cell
                     updateContacts()

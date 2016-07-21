@@ -100,6 +100,10 @@ class EmailListViewController: UITableViewController {
         fetchMailsRefreshControl()
     }
 
+    @IBAction func mailSentSegue(segue: UIStoryboardSegue) {
+        print("Mail sent!")
+    }
+
     func prepareFetchRequest() {
         let predicates: [NSPredicate] = [NSPredicate.init(format: "bodyFetched = true")]
         let fetchRequest = NSFetchRequest.init(entityName: Message.entityName())

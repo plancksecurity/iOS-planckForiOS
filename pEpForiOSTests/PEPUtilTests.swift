@@ -100,12 +100,14 @@ class PEPUtilTests: XCTestCase {
         let pepMail = PEPUtil.pepMail(message, outgoing: true)
         XCTAssertEqual(pepMail[kPepOutgoing] as? Bool, true)
 
-        XCTAssertEqual(pepMail[kPepTo]?[0] as? NSMutableDictionary, PEPUtil.pepContact(c1))
-        XCTAssertEqual(pepMail[kPepCC]?[0] as? NSMutableDictionary, PEPUtil.pepContact(c2))
+        XCTAssertEqual(pepMail[kPepTo]?[0] as? NSDictionary,
+                       PEPUtil.pepContact(c1))
+        XCTAssertEqual(pepMail[kPepCC]?[0] as? NSDictionary,
+                       PEPUtil.pepContact(c2))
 
-        XCTAssertEqual(pepMail[kPepAttachments]?[0] as? NSMutableDictionary,
+        XCTAssertEqual(pepMail[kPepAttachments]?[0] as? NSDictionary,
                        PEPUtil.pepAttachment(a1))
-        XCTAssertEqual(pepMail[kPepAttachments]?[1] as? NSMutableDictionary,
+        XCTAssertEqual(pepMail[kPepAttachments]?[1] as? NSDictionary,
                        PEPUtil.pepAttachment(a2))
 
         XCTAssertEqual(pepMail[kPepShortMessage] as? String, message.subject)
@@ -121,9 +123,12 @@ class PEPUtilTests: XCTestCase {
         let pepMailOrig = NSMutableDictionary()
         pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
                                                             name: "Unit 004")
-        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail(receiverToEmail)] as [AnyObject]
-        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail(receiverCCEmail)] as [AnyObject]
-        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail(receiverBCCEmail)] as [AnyObject]
+        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail(receiverToEmail,
+            name: "receiverTo")] as [AnyObject]
+        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail(receiverCCEmail,
+                               name: "receiverCC")] as [AnyObject]
+        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail(receiverBCCEmail,
+                                name: "receiverBCC")] as [AnyObject]
         pepMailOrig[kPepShortMessage] = "Subject"
         pepMailOrig[kPepLongMessage] = "Some Text"
         pepMailOrig[kPepLongMessageFormatted] = "<b>Some HTML</b>"
@@ -184,11 +189,13 @@ class PEPUtilTests: XCTestCase {
         let pepMailOrig = NSMutableDictionary()
         pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
                                                             name: "Unit 4")
-        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail("unittest.ios.2@peptest.ch")]
+        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail("unittest.ios.2@peptest.ch",
+            name: "unit 2")]
+        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("unittest.ios.3@peptest.ch",
+            name: "unit 3")]
             as [AnyObject]
-        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("unittest.ios.3@peptest.ch")]
-            as [AnyObject]
-        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch")]
+        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
+            name: "unit 4")]
             as [AnyObject]
         pepMailOrig[kPepShortMessage] = "Subject"
         pepMailOrig[kPepLongMessage] = "Some Text"
@@ -252,13 +259,13 @@ class PEPUtilTests: XCTestCase {
         // Create pEp mail dict
         let pepMailOrig = NSMutableDictionary()
         pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
-                                                            name: "Test 001")
-        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail("unittest.ios.1@peptest.ch")]
-            as [AnyObject]
-        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("unittest.ios.2@peptest.ch")]
-            as [AnyObject]
-        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail("unittest.ios.3@peptest.ch")]
-            as [AnyObject]
+                                                            name: "unit 4")
+        pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail("unittest.ios.1@peptest.ch",
+            name: "unit 1")]
+        pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("unittest.ios.2@peptest.ch",
+            name: "unit 2")]
+        pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail("unittest.ios.3@peptest.ch",
+            name: "unit 3")]
         pepMailOrig[kPepShortMessage] = subject
         pepMailOrig[kPepLongMessage] = longMessage
         pepMailOrig[kPepLongMessageFormatted] = longMessageFormatted

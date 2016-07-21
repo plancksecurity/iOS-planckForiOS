@@ -70,7 +70,7 @@ public extension String {
     /**
      - Returns: The name part of an email, e.g. "test@blah.com" -> "test"
      */
-    public func namePartOfEmail() -> String? {
+    public func namePartOfEmail() -> String {
         do {
             let regex = try NSRegularExpression.init(pattern: "^([^@]+)@", options: [])
             let matches = regex.matchesInString(self, options: [], range: wholeRange())
@@ -86,7 +86,7 @@ public extension String {
         } catch let err as NSError {
             Log.errorComponent(String.comp, error: err)
         }
-        return nil
+        return self.stringByReplacingOccurrencesOfString("@", withString: "_")
     }
 
     public func contains(substring: String, ignoreCase: Bool = true,

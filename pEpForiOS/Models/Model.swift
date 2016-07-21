@@ -198,7 +198,7 @@ public class Model: IModel {
     }
 
     public func contactByEmail(email: String) -> IContact? {
-        if let contacts = contactsByPredicate(NSPredicate.init(format: "email = %s", email), sortDescriptors: nil) {
+        if let contacts = contactsByPredicate(NSPredicate.init(format: "email = %@", email), sortDescriptors: nil) {
             if contacts.count == 1 {
                 return contacts[0]
             } else if contacts.count == 0 {

@@ -37,6 +37,7 @@ class TestUtil {
             }
             NSThread.sleepForTimeInterval(connectonShutDownWaitTime)
         }
+        // This only works if there are no accounts configured in the app.
         XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(),
                        initialNumberOfRunningConnections)
     }
@@ -51,6 +52,7 @@ class TestUtil {
             }
             NSThread.sleepForTimeInterval(connectonShutDownWaitTime)
         }
+        // This only works if there are no accounts configured in the app.
         XCTAssertEqual(Service.refCounter.refCount, initialNumberOfServices)
     }
 

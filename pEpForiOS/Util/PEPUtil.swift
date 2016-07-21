@@ -15,19 +15,6 @@ public enum PrivacyColor {
     case Yellow
 }
 
-/*extension PEP_color: Hashable{
-    //var stringProperty:PEP_color { return self }
-    public var hashValue: PEP_color {
-        get {
-            return self
-        }
-    }
-}
-
-public func == (peColorRight: PEP_color, peColorLeft: PEP_color) -> Bool {
-    return peColorRight == peColorLeft
-}*/
-
 class PEP_color_hashable: Hashable {
     var idHashable:Int
     var pepColor: PEP_color
@@ -146,16 +133,12 @@ public class PEPUtil {
      - Parameter contact: The core data contact object.
      - Returns: An `NSMutableDictionary` contact for pEp.
      */
-    public static func pepContact(contact: IContact) -> NSMutableDictionary {
+    public static func pepContact(contact: IContact) -> PEPContact {
         let dict: NSMutableDictionary = [:]
         if let name = contact.name {
             dict[kPepUsername] = name
         } else {
-            if let nick = contact.email.namePartOfEmail() {
-                dict[kPepUsername] = nick
-            } else {
-                dict[kPepUsername] = contact.email
-            }
+            dict[kPepUsername] = contact.email.namePartOfEmail()
         }
         dict[kPepAddress] = contact.email
         if contact.isMySelf.boolValue {
@@ -166,18 +149,17 @@ public class PEPUtil {
                 dict[kPepUserID] = String(addressBookID)
             }
         }
-        return dict
+        return dict as PEPContact
     }
 
     /**
-     Creates pEp contact from name and address.
+     Creates pEp contact from name and address. Useful for tests where you don't want
+     more data filled in.
      */
-    public static func pepContactFromEmail(email: String, name: String? = nil) -> PEPContact {
+    public static func pepContactFromEmail(email: String, name: String) -> PEPContact {
         let contact = NSMutableDictionary()
         contact[kPepAddress] = email
-        if let n = name {
-            contact[kPepUsername] = n
-        }
+        contact[kPepUsername] = name
         return contact as PEPContact
     }
 
@@ -434,7 +416,7 @@ public class PEPUtil {
         let pepC = pepContact(contact)
         let session = PEPSession.init()
         let color = session.identityColor(pepC as [NSObject : AnyObject])
-        return PEP_rating_reliable
+        return color
     }
 
     public static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor {
