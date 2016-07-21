@@ -234,6 +234,7 @@ class ComposeViewController: UITableViewController {
      */
     func updateNetworkActivity() {
         if model.networkActivity {
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             if originalRightBarButtonItem == nil {
                 // save the origignal
                 originalRightBarButtonItem = navigationItem.rightBarButtonItem
@@ -242,6 +243,7 @@ class ComposeViewController: UITableViewController {
             let barButtonWithActivity = UIBarButtonItem.init(customView: activityIndicator)
             navigationItem.rightBarButtonItem = barButtonWithActivity
         } else {
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             // restore the original
             navigationItem.rightBarButtonItem = originalRightBarButtonItem
             activityIndicator.stopAnimating()
