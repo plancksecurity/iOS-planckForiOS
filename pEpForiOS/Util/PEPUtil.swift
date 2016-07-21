@@ -434,7 +434,7 @@ public class PEPUtil {
         let pepC = pepContact(contact)
         let session = PEPSession.init()
         let color = session.identityColor(pepC as [NSObject : AnyObject])
-        return color
+        return PEP_rating_reliable
     }
 
     public static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor {

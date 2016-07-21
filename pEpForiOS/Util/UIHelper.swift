@@ -64,9 +64,27 @@ class UIHelper {
     }
 
     /**
-     Get the UIColor for a compose view navigation controller tint color.
+     Get the UIColor for the background image of a send button for an (abstract) pEp color.
      */
-    static func composeTintColorFromPepColor(pepColor: PrivacyColor) -> UIColor? {
+    static func sendButtonBackgroundColorFromPepColor(pepColor: PrivacyColor) -> UIColor? {
+        switch pepColor {
+        case .Green:
+            return UIColor.greenColor()
+        case .Yellow:
+            return UIColor.yellowColor()
+        case .Red:
+            return UIColor.redColor()
+        case .NoColor:
+            return nil
+        }
+    }
+
+    /**
+     Get the UIColor for a recipient (in a text field) for an (abstract) pEp color.
+     This might, or might not, be the same,
+     as `sendButtonBackgroundColorFromPepColor:PrivacyColor`.
+     */
+    static func recipientTextColorFromPepColor(pepColor: PrivacyColor) -> UIColor? {
         switch pepColor {
         case .Green:
             return UIColor.greenColor()

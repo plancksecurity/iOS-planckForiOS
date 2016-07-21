@@ -36,12 +36,12 @@ class ComposeViewController: UITableViewController {
     let newline = "\n"
 
     /** Constant for string delimiter in recipient email addresses */
-    let justComma = ","
+    let recipientStringDelimiter = ","
 
     /**
      When the user is editing recipients and presses <SPACE>, this text is entered instead.
      */
-    let commaWithSpace: String
+    let delimiterWithSpace: String
 
     /**
      The message to appear in the body text when it's empty.
@@ -93,7 +93,7 @@ class ComposeViewController: UITableViewController {
     var messageToSend: IMessage?
 
     required init?(coder aDecoder: NSCoder) {
-        commaWithSpace = "\(justComma) "
+        delimiterWithSpace = "\(recipientStringDelimiter) "
         emptyBodyTextMessage = NSLocalizedString(
             "Enter text here",
             comment: "Placeholder text for where the user should enter the email body text")
@@ -151,8 +151,8 @@ class ComposeViewController: UITableViewController {
             if let text = tf.text {
                 if text != "" {
                     allEmpty = false
-                    let trailingRemoved = text.removeTrailingPattern("\(justComma)\\s*")
-                    if !trailingRemoved.isProbablyValidEmailListSeparatedBy(justComma) {
+                    let trailingRemoved = text.removeTrailingPattern("\(recipientStringDelimiter)\\s*")
+                    if !trailingRemoved.isProbablyValidEmailListSeparatedBy(recipientStringDelimiter) {
                         allCorrect = false
                     }
                 }
@@ -187,9 +187,9 @@ class ComposeViewController: UITableViewController {
                         let color = PEPUtil.abstractPepColorFromPepColor(pepColor)
                         GCD.onMain() {
                             var image: UIImage?
-                            if let uiColor = UIHelper.composeTintColorFromPepColor(color) {
+                            if let uiColor = UIHelper.sendButtonBackgroundColorFromPepColor(
+                                color) {
                                 image = UIHelper.imageFromColor(uiColor)
-
                             }
                             self.sendButton.setBackgroundImage(image, forState: .Normal,
                                 barMetrics: UIBarMetrics.Default)
@@ -213,7 +213,7 @@ class ComposeViewController: UITableViewController {
             let tf = cell.recipientTextField
             if let text = tf.text {
                 if text != "" {
-                    let mailStrings1 = text.componentsSeparatedByString(justComma).map() {
+                    let mailStrings1 = text.componentsSeparatedByString(recipientStringDelimiter).map() {
                         $0.trimmedWhiteSpace()
                     }
                     let mailStrings2 = mailStrings1.filter() {
@@ -278,7 +278,7 @@ class ComposeViewController: UITableViewController {
             let tf = cell.recipientTextField
             if let text = tf.text {
                 if text != "" {
-                    let mailStrings1 = text.componentsSeparatedByString(justComma).map() {
+                    let mailStrings1 = text.componentsSeparatedByString(recipientStringDelimiter).map() {
                         $0.trimmedWhiteSpace()
                     }
                     let mailStrings2 = mailStrings1.filter() {
@@ -402,6 +402,7 @@ class ComposeViewController: UITableViewController {
                     }
                     text += c.email + ", "
                     cell.recipientTextField.text = text
+                    colorReceiverTextField(cell.recipientTextField)
                 }
             }
             updateViewFromRecipients()
@@ -531,21 +532,70 @@ extension ComposeViewController: UITextFieldDelegate {
                 "\(delimiter)\\s*").isProbablyValidEmailListSeparatedBy(delimiter)
     }
 
-    /**
-     Gets the identity colors of all emails in a given String, and sets the text field's
-     `attributedText` attribute correspondingly.
-     */
-    func colorEmailTextField(textField: UITextField, emailString: String, delimiter: String) {
-        if let context = appConfig?.coreDataUtil.privateContext() {
-            context.performBlock() {
-                let _ = emailString.componentsSeparatedByString(
-                    delimiter).map({$0.trimmedWhiteSpace()})
+    func attibutedStringFromEmailsWithColors(
+        emailsAndColor: [(String, UIColor?)]) -> NSMutableAttributedString {
+        let string = NSMutableAttributedString()
+        let spacerString = NSAttributedString.init(string: self.delimiterWithSpace)
+        for (email, color) in emailsAndColor {
+            if string.length > 0 {
+                string.appendAttributedString(spacerString)
+            }
+            let emailString: NSAttributedString?
+            if let c = color {
+                emailString = NSAttributedString.init(
+                    string: email, attributes: [NSBackgroundColorAttributeName: c])
+            } else {
+                emailString = NSAttributedString.init(string: email)
+            }
+            if let es = emailString {
+                string.appendAttributedString(es)
+            }
+        }
+        return string
+    }
+
+    func colorReceiverTextField(textField: UITextField) {
+        if let text = textField.text {
+            let endsWithDelimiter = text.matchesPattern("\(recipientStringDelimiter)\\s*$")
+            print("text: \(text), endsWithDelimiter: \(endsWithDelimiter)")
+            if let context = appConfig?.coreDataUtil.privateContext() {
+                context.performBlock() {
+                    let model = Model.init(context: context)
+                    let emails = text.componentsSeparatedByString(
+                        self.recipientStringDelimiter).map({$0.trimmedWhiteSpace()})
+                    let emailsFiltered = emails.filter() { element in
+                        return element != ""
+                    }
+                    var emailsAndColor: [(String, UIColor?)] = []
+                    for email in emailsFiltered {
+                        if let contact = model.contactByEmail(email) {
+                            let rating = PEPUtil.colorRatingForContact(contact)
+                            let pepColor = PEPUtil.abstractPepColorFromPepColor(rating)
+                            let uiColor = UIHelper.recipientTextColorFromPepColor(pepColor)
+                            emailsAndColor.append((email, uiColor))
+                        }
+                    }
+                    if emailsAndColor.count > 0 {
+                        let coloredString = self.attibutedStringFromEmailsWithColors(
+                            emailsAndColor)
+                        if endsWithDelimiter {
+                            coloredString.appendAttributedString(
+                                NSAttributedString.init(string: self.delimiterWithSpace,
+                                attributes: nil))
+                        }
+                        GCD.onMain() {
+                            textField.attributedText = coloredString
+                            print("coloredString: \(coloredString)")
+                        }
+                    }
+                }
             }
         }
     }
 
     @objc func recipientTextHasChanged(textField: UITextField) {
         updateViewFromRecipients()
+        colorReceiverTextField(textField)
     }
 
     func textField(textField: UITextField,
@@ -555,9 +605,9 @@ extension ComposeViewController: UITextFieldDelegate {
             if let text = textField.text {
                 if string == " " {
                     let newText = text.stringByReplacingCharactersInRange(
-                        range, withString: commaWithSpace)
+                        range, withString: delimiterWithSpace)
                     if isFreshlyEnteredTextProbablyEmail(
-                        text, newText: newText, delimiter: justComma) {
+                        text, newText: newText, delimiter: recipientStringDelimiter) {
                         textField.text = newText
                         resetTableViewToNormal()
                     }
@@ -565,7 +615,7 @@ extension ComposeViewController: UITextFieldDelegate {
                 }
                 if string == newline {
                     if isFreshlyEnteredTextProbablyEmail(
-                        text, newText: text, delimiter: justComma) {
+                        text, newText: text, delimiter: recipientStringDelimiter) {
                         resetTableViewToNormal()
                     }
                     return false

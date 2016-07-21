@@ -12,6 +12,11 @@ import CoreData
 public protocol IModel {
     var context: NSManagedObjectContext { get }
 
+    /**
+     Retrieve a contact by email, without updating anything.
+     */
+    func contactByEmail(email: String) -> IContact?
+
     func contactsByPredicate(predicate: NSPredicate?,
                              sortDescriptors: [NSSortDescriptor]?) -> [IContact]?
 
@@ -80,6 +85,7 @@ public protocol IModel {
         contentType: String?, filename: String?, data: NSData) -> IAttachment
 
     func insertOrUpdateContactEmail(email: String, name: String?) -> IContact
+    func insertOrUpdateContactEmail(email: String) -> IContact
     func insertOrUpdateContact(contact: IContact) -> IContact
 
     /**
@@ -189,6 +195,20 @@ public class Model: IModel {
             return number
         }
         return 0
+    }
+
+    public func contactByEmail(email: String) -> IContact? {
+        if let contacts = contactsByPredicate(NSPredicate.init(format: "email = %s", email), sortDescriptors: nil) {
+            if contacts.count == 1 {
+                return contacts[0]
+            } else if contacts.count == 0 {
+                return nil
+            } else {
+                Log.warnComponent(comp, "Several contacts found for email: \(email)")
+                return contacts[0]
+            }
+        }
+        return nil
     }
 
     public func contactsByPredicate(predicate: NSPredicate?,
@@ -505,6 +525,10 @@ public class Model: IModel {
         contact.email = email
         contact.name = name
         return contact
+    }
+
+    public func insertOrUpdateContactEmail(email: String) -> IContact {
+        return insertOrUpdateContactEmail(email, name: nil)
     }
 
     public func insertOrUpdateContact(contact: IContact) -> IContact {
