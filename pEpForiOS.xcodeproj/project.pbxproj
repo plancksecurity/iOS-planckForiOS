@@ -125,6 +125,8 @@
 		5D039AA31D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
 		5D039AA41D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
+		A13D71771D3FBCA1006F7CE4 /* DetailTrustWordsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13D71761D3FBCA1006F7CE4 /* DetailTrustWordsViewCell.swift */; };
+		A15448C71D40D5CF0035D18F /* VerboseTrustWordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15448C61D40D5CF0035D18F /* VerboseTrustWordViewController.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
 		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
 		A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */; };
@@ -327,6 +329,8 @@
 		43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMailOperation.swift; sourceTree = "<group>"; };
+		A13D71761D3FBCA1006F7CE4 /* DetailTrustWordsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTrustWordsViewCell.swift; sourceTree = "<group>"; };
+		A15448C61D40D5CF0035D18F /* VerboseTrustWordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerboseTrustWordViewController.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
 		A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorVerifyTests.swift; sourceTree = "<group>"; };
@@ -414,6 +418,8 @@
 				432722231D33F2FD009EC395 /* TrustWordsViewController.swift */,
 				A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */,
 				A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */,
+				A13D71761D3FBCA1006F7CE4 /* DetailTrustWordsViewCell.swift */,
+				A15448C61D40D5CF0035D18F /* VerboseTrustWordViewController.swift */,
 			);
 			path = Trustwords;
 			sourceTree = "<group>";
@@ -894,6 +900,7 @@
 				437431F61CFC2F14000F8D35 /* VerifyServiceOperation.swift in Sources */,
 				4380F7C71D1BBD5D00326F62 /* SendMailOperation.swift in Sources */,
 				4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */,
+				A15448C71D40D5CF0035D18F /* VerboseTrustWordViewController.swift in Sources */,
 				4380F7C91D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFoldersOperation.swift in Sources */,
 				43C6F3611CBE8153006A2A18 /* Service.swift in Sources */,
@@ -955,6 +962,7 @@
 				431144BD1CC120220007639D /* Message.swift in Sources */,
 				4303DAED1CE62D3700D9C0AB /* _Attachment.swift in Sources */,
 				43800D941D112A0800821E34 /* TFHppleElement.m in Sources */,
+				A13D71771D3FBCA1006F7CE4 /* DetailTrustWordsViewCell.swift in Sources */,
 				43800D951D112A0800821E34 /* XPathQuery.m in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */,

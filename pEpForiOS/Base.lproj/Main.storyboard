@@ -494,7 +494,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="O3J-Mr-T4Y"/>
                         <barButtonItem title="pEp" id="5eH-31-eed">
                             <connections>
-                                <segue destination="2d7-Da-IgM" kind="show" identifier="segueTrustWords" id="bY7-gu-tb1"/>
+                                <segue destination="2d7-Da-IgM" kind="show" identifier="segueTrustWordsContactList" id="bY7-gu-tb1"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
@@ -522,6 +522,9 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irB-0r-1CK">
                                             <rect key="frame" x="511" y="12" width="77" height="20"/>
                                             <state key="normal" title="Handshake"/>
+                                            <connections>
+                                                <segue destination="gYb-wo-vld" kind="show" identifier="segueTrustWords" id="iuV-7N-J9M"/>
+                                            </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ana.rebollo@pep-security.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9J-om-lrb">
                                             <rect key="frame" x="12" y="12" width="234" height="19"/>
@@ -620,6 +623,85 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nbp-Fh-kKt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6520" y="1995"/>
+        </scene>
+        <!--Verbose Trust Word View Controller-->
+        <scene sceneID="loz-nd-tDE">
+            <objects>
+                <viewController id="tE5-Yu-E7R" customClass="VerboseTrustWordViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="78P-vq-ikp"/>
+                        <viewControllerLayoutGuide type="bottom" id="LRu-aZ-pPh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Qzq-Kq-qZj">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Partner:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r5E-Cu-8MB">
+                                <rect key="frame" x="28" y="72" width="62" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpv-mC-Xby">
+                                <rect key="frame" x="28" y="101" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Myself:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nyw-ui-LwF">
+                                <rect key="frame" x="28" y="142" width="56" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z9S-WB-6Yo">
+                                <rect key="frame" x="28" y="171" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Ask your partner: What are your trustword? then compare to the correct answer shown below." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ySR-Tp-THe">
+                                <rect key="frame" x="28" y="214" width="513" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="HOLA ADEU HOLA HOLA" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="T4Y-aP-ZIf">
+                                <rect key="frame" x="28" y="287" width="513" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Rpv-mC-Xby" firstAttribute="leading" secondItem="r5E-Cu-8MB" secondAttribute="leading" id="0pI-fr-EaO"/>
+                            <constraint firstItem="r5E-Cu-8MB" firstAttribute="top" secondItem="78P-vq-ikp" secondAttribute="bottom" constant="8" id="BBX-bK-k7Y"/>
+                            <constraint firstItem="r5E-Cu-8MB" firstAttribute="leading" secondItem="Qzq-Kq-qZj" secondAttribute="leadingMargin" constant="8" id="BiS-Sd-ZGg"/>
+                            <constraint firstItem="Nyw-ui-LwF" firstAttribute="top" secondItem="Rpv-mC-Xby" secondAttribute="bottom" constant="8" id="GO9-oK-4n9"/>
+                            <constraint firstItem="Rpv-mC-Xby" firstAttribute="top" secondItem="r5E-Cu-8MB" secondAttribute="bottom" constant="8" id="IM2-fn-Vxd"/>
+                            <constraint firstItem="Z9S-WB-6Yo" firstAttribute="top" secondItem="Nyw-ui-LwF" secondAttribute="bottom" constant="8" id="IdF-Fo-76t"/>
+                            <constraint firstItem="Nyw-ui-LwF" firstAttribute="top" secondItem="Rpv-mC-Xby" secondAttribute="bottom" constant="20" id="JOS-8F-KNW"/>
+                            <constraint firstItem="Z9S-WB-6Yo" firstAttribute="leading" secondItem="Nyw-ui-LwF" secondAttribute="leading" id="eu0-eK-nJx"/>
+                            <constraint firstItem="Nyw-ui-LwF" firstAttribute="leading" secondItem="Rpv-mC-Xby" secondAttribute="leading" id="mfr-Ec-IaG"/>
+                            <constraint firstItem="Nyw-ui-LwF" firstAttribute="leading" secondItem="Rpv-mC-Xby" secondAttribute="leading" id="ofm-Nr-eke"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="GO9-oK-4n9"/>
+                                <exclude reference="mfr-Ec-IaG"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="NO8-OS-KlG"/>
+                    <connections>
+                        <outlet property="myselfUILabel" destination="Nyw-ui-LwF" id="YaN-pS-vIG"/>
+                        <outlet property="partnerUILabel" destination="Rpv-mC-Xby" id="JBs-5I-WgH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Q4-7U-x6J" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7990" y="1984"/>
         </scene>
         <!--IMAP Settings Table View-->
         <scene sceneID="hV9-Ts-Xp9">
@@ -993,6 +1075,68 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQF-fa-tkQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5319" y="321"/>
+        </scene>
+        <!--Detail Trust Words View Cell-->
+        <scene sceneID="Eqt-0v-hcU">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="gYb-wo-vld" customClass="DetailTrustWordsViewCell" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="HGM-pP-GXa">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="tE5-Yu-E7R" kind="relationship" relationship="viewControllers" id="a8R-ns-TTF"/>
+                        <segue destination="nE5-jd-eYl" kind="relationship" relationship="viewControllers" id="ZPd-CB-Nz1"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b5m-4K-iCW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7287" y="1995"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="fBa-Ct-Nrg">
+            <objects>
+                <viewController id="nE5-jd-eYl" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TGp-0l-yaY"/>
+                        <viewControllerLayoutGuide type="bottom" id="gyZ-KZ-LfA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="69U-ev-fjG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="HOAL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHf-uh-sUR">
+                                <rect key="frame" x="40" y="86" width="45" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="GQW-NC-v7S"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Le-Gg-Fjj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7530" y="2739"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="WDd-0Z-GKR">
+            <objects>
+                <viewController id="pev-B2-uaW" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cod-O3-pYQ"/>
+                        <viewControllerLayoutGuide type="bottom" id="EQi-cU-uEc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YQE-XV-fXd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h2Z-Z2-WEy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
 </document>

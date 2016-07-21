@@ -12,7 +12,7 @@ import WebKit
 
 class EmailViewController: UIViewController {
     let segueReply = "segueReply"
-    let segueTrustWords = "segueTrustWords"
+    let segueTrustWordsContactList = "segueTrustWordsContactList"
 
 
     let headerGapToContentY: CGFloat = 25
@@ -110,7 +110,7 @@ class EmailViewController: UIViewController {
                 as? ComposeViewController;
             destination?.appConfig = appConfig
         }
-        if (segue.identifier == segueTrustWords) {
+        if (segue.identifier == segueTrustWordsContactList) {
             let destination = segue.destinationViewController as? TrustWordsViewController
             destination?.message = self.message
         }
