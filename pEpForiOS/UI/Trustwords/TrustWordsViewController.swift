@@ -86,7 +86,8 @@ class TrustWordsViewController: UITableViewController {
             if let m = message {
                 if let mailPepColor = m.pepColor?.integerValue {
                     if let pepColor = PEPUtil.pepColorRatingFromInt(mailPepColor) {
-                        cell.mailExplanationSecurityUILabel.text = PEPUtil.pepExplanationToHash(pepColor)
+                        cell.mailExplanationSecurityUILabel.text =
+                            PEPUtil.pepExplanationFromColor(pepColor)
 
                     }
                 }
@@ -96,13 +97,10 @@ class TrustWordsViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
                                                            forIndexPath: indexPath) as! TrustWordsViewCell
             if let allContact = allRecipients {
-                let index = indexPath.row - 2
+                let _ = indexPath.row - 2
                 let contact :Contact  = allContact[indexPath.row-2] as! Contact
                 cell.handshakeContactUILabel.text = contact.displayString()
                 cell.handshakeUIButton.tag = indexPath.row
-                if contact.name == nil {
-                    contact.name = "TOFU"
-                }
                 let pepColor = PEPUtil.colorRatingForContact(contact)
                 let privateColor = PEPUtil.abstractPepColorFromPepColor(pepColor)
                 cell.backgroundColor = paintingMailStatus(privateColor)

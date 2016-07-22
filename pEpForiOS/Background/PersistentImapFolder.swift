@@ -95,7 +95,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         if let messages = grandOperator.operationModel().messagesByPredicate(
             self.predicateAllMessages(), sortDescriptors: nil) {
             for m in messages {
-                result.append(m as! AnyObject)
+                result.append(m as AnyObject)
             }
             return result
         } else {

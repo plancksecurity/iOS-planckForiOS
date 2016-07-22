@@ -25,7 +25,7 @@ public class CreateLocalSpecialFoldersOperation: BaseOperation {
             let model = Model.init(context: privateMOC)
             for kind in FolderType.allValuesToCreate {
                 let folderName = kind.folderName()
-                if var folder = model.insertOrUpdateFolderName(folderName,
+                if let folder = model.insertOrUpdateFolderName(folderName,
                     accountEmail: self.accountEmail) {
                     folder.folderType = kind.rawValue
                 } else  {

@@ -15,21 +15,7 @@ public enum PrivacyColor {
     case Yellow
 }
 
-class PEP_color_hashable: Hashable {
-    var idHashable:Int
-    var pepColor: PEP_color
-    var hashValue: Int {return self.idHashable}
-    init(idHashable: Int, pepColor: PEP_color) {
-        self.idHashable = idHashable
-        self.pepColor = pepColor
-    }
-}
-
-func == (peColorRight: PEP_color_hashable, peColorLeft: PEP_color_hashable) -> Bool {
-    return peColorRight.idHashable == peColorLeft.idHashable
-}
-
-var pepColorDiccionary: [Int32: PEP_color] =
+var pepColorDictionary: [Int32: PEP_color] =
     [PEP_rating_undefined.rawValue: PEP_rating_undefined,
      PEP_rating_cannot_decrypt.rawValue: PEP_rating_cannot_decrypt,
      PEP_rating_have_no_key.rawValue: PEP_rating_have_no_key,
@@ -44,9 +30,10 @@ var pepColorDiccionary: [Int32: PEP_color] =
      PEP_rating_b0rken.rawValue: PEP_rating_b0rken,
      PEP_rating_under_attack.rawValue: PEP_rating_under_attack]
 
-var pepExplanationDiccionary: [PEP_color_hashable: String] =
-    [PEP_color_hashable(idHashable: Int(PEP_rating_under_attack.rawValue),pepColor: PEP_rating_under_attack): "Under Attack",
-     PEP_color_hashable(idHashable: Int(PEP_rating_b0rken.rawValue),pepColor: PEP_rating_b0rken): "-",
+var pepExplanationDictionary: [Int32: String] =
+    [PEP_rating_under_attack.rawValue: "Under Attack",
+     PEP_rating_b0rken.rawValue: "-"
+        /*,
      PEP_color_hashable(idHashable: Int(PEP_rating_mistrust.rawValue),pepColor: PEP_rating_mistrust): "Mistrusted",
      PEP_color_hashable(idHashable: Int(PEP_rating_fully_anonymous.rawValue),pepColor: PEP_rating_fully_anonymous): "Secure & Trusted",
      PEP_color_hashable(idHashable: Int(PEP_rating_trusted_and_anonymized.rawValue),pepColor: PEP_rating_trusted_and_anonymized):  "Secure & Trusted",
@@ -57,7 +44,9 @@ var pepExplanationDiccionary: [PEP_color_hashable: String] =
      PEP_color_hashable(idHashable: Int(PEP_rating_unencrypted.rawValue),pepColor: PEP_rating_unencrypted): "Unsecure",
      PEP_color_hashable(idHashable: Int(PEP_rating_have_no_key.rawValue),pepColor: PEP_rating_have_no_key): "Cannot Decrypt",
      PEP_color_hashable(idHashable: Int(PEP_rating_cannot_decrypt.rawValue),pepColor: PEP_rating_cannot_decrypt): "Cannot Decrypt",
-     PEP_color_hashable(idHashable: Int(PEP_rating_undefined.rawValue),pepColor: PEP_rating_undefined): "Unknown"]
+     PEP_color_hashable(idHashable: Int(PEP_rating_undefined.rawValue),pepColor: PEP_rating_undefined): "Unknown"
+         */
+]
 
 
 public class PEPUtil {
@@ -453,15 +442,11 @@ public class PEPUtil {
 
     public static func pepColorRatingFromInt(i: Int) -> PEP_color? {
         let int32 = Int32(i)
-        return pepColorDiccionary[int32]
+        return pepColorDictionary[int32]
     }
 
-    public static func pepExplanationToHash(pepColor: PEP_color) -> String? {
-        let pepColorHash = PEP_color_hashable(idHashable: Int(pepColor.rawValue), pepColor: pepColor)
-        if let aux = pepExplanationDiccionary[pepColorHash] {
-            return aux
-        }
-        return nil
+    public static func pepExplanationFromColor(pepColor: PEP_color) -> String? {
+        return pepExplanationDictionary[pepColor.rawValue]
     }
 
     public static func sessionOrReuse(session: PEPSession?) -> PEPSession {
