@@ -25,22 +25,6 @@ class TrustWordsViewController: UITableViewController {
         if let m = self.message {
             allRecipients = m.allRecipienst()
         }
-        self.navigationController?.toolbar.hidden = true
-
-        print (" ALL CONTACT:")
-        for contact in allRecipients! {
-            let contactAux = contact as! Contact
-            let name = contactAux.displayString()
-            print (name)
-        }
-       /* if let m = message {
-            let recipients = m.allRecipienst()
-            for contact in recipients {
-                var contactString = contact.displayString
-                stringRecipients.append(contact.displayString())
-            }
-        }*/
-        
     }
 
     func paintingMailStatus(privateColor: PrivacyColor) -> UIColor? {
@@ -125,12 +109,5 @@ class TrustWordsViewController: UITableViewController {
                 cell.backgroundColor = paintingMailStatus(privateColor)
             }
         return cell
-    }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == segueTrustWords) {
-            let destination = segue.destinationViewController
-                as? DetailTrustWordsViewCell;
-            destination?.message = self.message
-        }
     }
 }
