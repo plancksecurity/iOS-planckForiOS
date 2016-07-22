@@ -56,7 +56,7 @@ class PEPUtilTests: XCTestCase {
 
     func testPepAttachment() {
         let data = "Just some plaintext".dataUsingEncoding(NSUTF8StringEncoding)!
-        var a1 = persistentSetup.model.insertAttachmentWithContentType(
+        let a1 = persistentSetup.model.insertAttachmentWithContentType(
             "text/plain", filename: "excel.txt",
             data: data)
 
@@ -397,5 +397,32 @@ class PEPUtilTests: XCTestCase {
             identityMyself?.mutableCopy() as! PEPContact, intoModel: persistentSetup.model)
         let rating = PEPUtil.colorRatingForContact(contact)
         XCTAssertGreaterThanOrEqual(rating.rawValue, PEP_rating_reliable.rawValue)
+    }
+
+    func testTrustwords() {
+        XCTAssertEqual("0".compare("000"), NSComparisonResult.OrderedAscending)
+        XCTAssertEqual("111".compare("000"), NSComparisonResult.OrderedDescending)
+
+        let fpr1 = "DB4713183660A12ABAFA7714EBE90D44146F62F4"
+        let fpr2 = "4ABE3AAF59AC32CFE4F86500A9411D176FF00E97"
+
+        let session = PEPSession.init()
+
+        XCTAssertEqual(
+            PEPUtil.shortTrustwordsForFpr(fpr1, language: "en", session: session),
+            "BAPTISMAL BERTRAND DIVERSITY SCOTSWOMAN TRANSDUCER")
+        XCTAssertEqual(
+            PEPUtil.shortTrustwordsForFpr(fpr2, language: "en", session: session),
+            "FROZE EDGEWISE HOTHEADED DERREK BRITNI")
+        XCTAssertEqual(fpr1.compare(fpr2), NSComparisonResult.OrderedDescending)
+
+        let dict1 = [kPepFingerprint: fpr1, kPepUserID: "1", kPepAddress: "email1",
+                     kPepUsername: "1"]
+        let dict2 = [kPepFingerprint: fpr2, kPepUserID: "2", kPepAddress: "email2",
+                     kPepUsername: "2"]
+        let words = PEPUtil.trustwordsForIdentity1(dict1, identity2: dict2,
+                                                   language: "en", session: session)
+        XCTAssertEqual(words,
+                       "FROZE EDGEWISE HOTHEADED DERREK BRITNI BAPTISMAL BERTRAND DIVERSITY SCOTSWOMAN TRANSDUCER")
     }
 }

@@ -463,4 +463,50 @@ public class PEPUtil {
         }
         return nil
     }
+
+    public static func sessionOrReuse(session: PEPSession?) -> PEPSession {
+        if session == nil {
+            return PEPSession.init()
+        }
+        return session!
+    }
+
+    /**
+     - Returns: The short trustwords for a fingerprint as one single String.
+     */
+    public static func shortTrustwordsForFpr(fpr: String, language: String,
+                                             session: PEPSession?) -> String {
+        let words = sessionOrReuse(session).trustwords(
+            fpr, forLanguage: language, shortened: true) as! [String]
+        return words.joinWithSeparator(" ")
+    }
+
+    public static func trustwordsForIdentity1(identity1: PEPContact,
+                                              identity2: PEPContact,
+                                              language: String,
+                                              session: PEPSession?) -> String? {
+        let theSession = sessionOrReuse(session)
+        let dict1 = NSMutableDictionary.init(dictionary: identity1)
+        let dict2 = NSMutableDictionary.init(dictionary: identity2)
+        theSession.updateIdentity(dict1)
+        theSession.updateIdentity(dict2)
+
+        guard let fpr1 = dict1[kPepFingerprint] as? String else {
+            return nil
+        }
+        guard let fpr2 = dict2[kPepFingerprint] as? String else {
+            return nil
+        }
+
+        let trustwords1 = shortTrustwordsForFpr(fpr1, language: language, session: session)
+        let trustwords2 = shortTrustwordsForFpr(fpr2, language: language, session: session)
+
+        let comp = fpr1.compare(fpr2)
+        switch comp {
+        case .OrderedAscending, .OrderedSame:
+            return "\(trustwords1) \(trustwords2)"
+        default:
+            return "\(trustwords2) \(trustwords1)"
+        }
+    }
 }
