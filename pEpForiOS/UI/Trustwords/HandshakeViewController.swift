@@ -11,6 +11,9 @@ import UIKit
 class HandshakeViewController: UIViewController, UITextViewDelegate {
 
     var message: Message?
+    var partner: Contact?
+
+
     
     @IBOutlet weak var trustwordsUITextView: UITextView!
     @IBOutlet weak var myselfUILabel: UILabel!
@@ -18,6 +21,12 @@ class HandshakeViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.trustwordsUITextView.delegate = self
+        if let p = partner {
+            partnerUILabel.text = p.displayString()
+        }
+       // var myself = pepContact()
+       // var partner = pepContact()
+       // PEPUtil.trustwordsForIdentity1(myself, identity2: partner, language: "en", session: nil)
     }
 
     override func didReceiveMemoryWarning() {

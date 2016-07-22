@@ -15,7 +15,7 @@ class TrustWordsViewController: UITableViewController {
     var firstReload = true
     var defaultBackground: UIColor?
     var stringRecipients:[String]!
-    var segueTrustWords = "segueTrustWords"
+    var handshakeSegue = "handshakeSegue"
 
 
     override func viewDidLoad() {
@@ -87,6 +87,7 @@ class TrustWordsViewController: UITableViewController {
                 if let mailPepColor = m.pepColor?.integerValue {
                     if let pepColor = PEPUtil.pepColorRatingFromInt(mailPepColor) {
                         cell.mailExplanationSecurityUILabel.text = PEPUtil.pepExplanationToHash(pepColor)
+
                     }
                 }
             }
@@ -95,12 +96,10 @@ class TrustWordsViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
                                                            forIndexPath: indexPath) as! TrustWordsViewCell
             if let allContact = allRecipients {
-                print ("INDEX:\(indexPath.row)")
                 let index = indexPath.row - 2
-                print ("INDEX - 2 :\(index)")
                 let contact :Contact  = allContact[indexPath.row-2] as! Contact
                 cell.handshakeContactUILabel.text = contact.displayString()
-                 print ("CONTACT: \(contact)")
+                cell.handshakeUIButton.tag = indexPath.row
                 if contact.name == nil {
                     contact.name = "TOFU"
                 }
@@ -110,4 +109,18 @@ class TrustWordsViewController: UITableViewController {
             }
         return cell
     }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == handshakeSegue) {
+            let index = sender.tag
+            if let  allRecipientsAux = allRecipients {
+                let contact = allRecipientsAux[index-2] as! Contact
+                if let destination = segue.destinationViewController as? HandshakeViewController {
+                    destination.partner = contact
+            }
+            }
+        }
+    }
+
+
 }

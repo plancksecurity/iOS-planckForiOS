@@ -523,7 +523,7 @@
                                             <rect key="frame" x="511" y="12" width="77" height="20"/>
                                             <state key="normal" title="Handshake"/>
                                             <connections>
-                                                <segue destination="tE5-Yu-E7R" kind="show" id="T9i-Pr-e5f"/>
+                                                <segue destination="tE5-Yu-E7R" kind="show" identifier="handshakeSegue" id="T9i-Pr-e5f"/>
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ana.rebollo@pep-security.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9J-om-lrb">
