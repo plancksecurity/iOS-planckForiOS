@@ -12,7 +12,7 @@ public enum MessageReferenceRelationships: String {
     case referencingMessage = "referencingMessage"
 }
 
-public protocol _IMessageReference {
+@objc public protocol _IMessageReference {
 
     // MARK: - Properties
 

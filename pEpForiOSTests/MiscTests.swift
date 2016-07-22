@@ -27,23 +27,4 @@ class MiscTests: XCTestCase {
         let u2: UInt32 = UInt32(bitPattern: n.intValue)
         XCTAssertEqual(u2, UInt32.max)
     }
-
-    func testAddressBookTransfer() {
-        let expAddressBookTransfered = expectationWithDescription("expAddressBookTransfered")
-        let persistentSetup = PersistentSetup.init()
-        let context = persistentSetup.coreDataUtil.privateContext()
-        var contactsCount = 0
-        MiscUtil.transferAddressBook(context, blockFinished: { contacts in
-            XCTAssertGreaterThan(contacts.count, 0)
-            contactsCount = contacts.count
-            expAddressBookTransfered.fulfill()
-        })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
-        let model = persistentSetup.model
-        let contacts = model.contactsByPredicate(NSPredicate.init(value: true),
-                                                 sortDescriptors: [])
-        XCTAssertEqual(contacts?.count, contactsCount)
-    }
 }

@@ -28,7 +28,7 @@ public enum MessageRelationships: String {
     case to = "to"
 }
 
-public protocol _IMessage {
+@objc public protocol _IMessage {
 
     // MARK: - Properties
 
@@ -48,7 +48,7 @@ public protocol _IMessage {
 
     var originationDate: NSDate? { get set }
 
-    var pepColor: NSNumber { get set }
+    var pepColor: NSNumber? { get set }
 
     var subject: String? { get set }
 
@@ -122,7 +122,7 @@ public class _Message: BaseManagedObject, _IMessage {
     var originationDate: NSDate?
 
     @NSManaged public
-    var pepColor: NSNumber
+    var pepColor: NSNumber?
 
     @NSManaged public
     var subject: String?

@@ -222,10 +222,11 @@ public class PEPUtil {
         let contact = intoModel.insertOrUpdateContactEmail(
             pepContact[kPepAddress] as! String,
             name: pepContact[kPepUsername] as? String)
-        if let ident = pepContact[kPepID] as? String {
-            if let i = Int32(ident) {
-                contact.addressBookID = NSNumber.init(int: i)
-            }
+        if let isMySelf = pepContact[kPepIsMe] as? Bool {
+            contact.isMySelf = isMySelf
+        }
+        if let pepID = pepContact[kPepUserID] as? String {
+            contact.pepID = pepID
         }
         return contact
     }

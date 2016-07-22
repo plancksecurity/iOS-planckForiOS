@@ -82,11 +82,12 @@ class TrustWordsViewController: UITableViewController {
                     firstReload = false
                 }
                 cell.backgroundColor = defaultBackground
-                let mailPepColor = m.pepColor.integerValue
-                if let pc = PEPUtil.pepColorRatingFromInt(mailPepColor) {
-                    let privateColor = PEPUtil.abstractPepColorFromPepColor(pc)
-                    if let uiColor = paintingMailStatus(privateColor) {
-                        cell.backgroundColor = uiColor
+                if let mailPepColor = m.pepColor?.integerValue {
+                    if let pc = PEPUtil.pepColorRatingFromInt(mailPepColor) {
+                        let privateColor = PEPUtil.abstractPepColorFromPepColor(pc)
+                        if let uiColor = paintingMailStatus(privateColor) {
+                            cell.backgroundColor = uiColor
+                        }
                     }
                 }
             }
@@ -99,9 +100,10 @@ class TrustWordsViewController: UITableViewController {
             LabelMailExplantionSecurityTableViewCell
 
             if let m = message {
-                let mailPepColor = m.pepColor.integerValue
-                if let pepColor = PEPUtil.pepColorRatingFromInt(mailPepColor) {
-                    cell.mailExplanationSecurityUILabel.text = PEPUtil.pepExplanationToHash(pepColor)
+                if let mailPepColor = m.pepColor?.integerValue {
+                    if let pepColor = PEPUtil.pepColorRatingFromInt(mailPepColor) {
+                        cell.mailExplanationSecurityUILabel.text = PEPUtil.pepExplanationToHash(pepColor)
+                    }
                 }
             }
             return cell

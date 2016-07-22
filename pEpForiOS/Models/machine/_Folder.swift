@@ -17,7 +17,7 @@ public enum FolderRelationships: String {
     case messages = "messages"
 }
 
-public protocol _IFolder {
+@objc public protocol _IFolder {
 
     // MARK: - Properties
 

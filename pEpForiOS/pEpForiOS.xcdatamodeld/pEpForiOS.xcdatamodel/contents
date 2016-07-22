@@ -36,6 +36,7 @@
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="isMySelf" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pepID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="bccMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="bcc" inverseEntity="Message" syncable="YES"/>
         <relationship name="ccMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="cc" inverseEntity="Message" syncable="YES"/>
         <relationship name="fromMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="from" inverseEntity="Message" syncable="YES"/>
@@ -59,7 +60,7 @@
         <attribute name="messageID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="messageNumber" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="originationDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="pepColor" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="pepColor" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
         <relationship name="attachments" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES"/>
@@ -78,7 +79,7 @@
         <element name="Account" positionX="-63" positionY="-18" width="128" height="225"/>
         <element name="Attachment" positionX="-45" positionY="135" width="128" height="120"/>
         <element name="AttachmentData" positionX="-36" positionY="144" width="128" height="75"/>
-        <element name="Contact" positionX="-54" positionY="90" width="128" height="165"/>
+        <element name="Contact" positionX="-54" positionY="90" width="128" height="180"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="150"/>
         <element name="Message" positionX="-45" positionY="99" width="128" height="315"/>
         <element name="MessageReference" positionX="-45" positionY="135" width="128" height="75"/>

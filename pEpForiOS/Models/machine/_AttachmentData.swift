@@ -12,7 +12,7 @@ public enum AttachmentDataRelationships: String {
     case attachment = "attachment"
 }
 
-public protocol _IAttachmentData {
+@objc public protocol _IAttachmentData {
 
     // MARK: - Properties
 

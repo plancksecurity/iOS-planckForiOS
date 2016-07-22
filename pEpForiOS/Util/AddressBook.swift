@@ -23,6 +23,7 @@ public class AddressbookContact: NSObject, IContact {
     public var email: String
     public var name: String?
     public var addressBookID: NSNumber?
+    public var pepID: String?
     public var isMySelf: NSNumber
     public var bccMessages: NSSet = []
     public var ccMessages: NSSet = []

@@ -21,9 +21,12 @@ public protocol IGrandOperator: class {
     func shutdown()
 
     /**
-     Will *serially* invoke a list of operations, gathering all errors and sending them to
-     the completion block. For error handling it is assumed that all operations report them
-     to this instance of IGrandOperator.
+     Will *serially* invoke a list of operations, gathering all errors, and calling
+     the completion block when the last operation has finished.
+     *All* operations are executed, even if one in the chain fails. If there are errors,
+     only the first will be reported to the completion block.
+     This is most useful if the scheduled operations don't have direct dependencies to
+     each other.
      - parameter operations: The list of operations to invoke in serial order.
      - parameter completionBlock: The block to call when all ops have finished, together with
      any error that ocurred.

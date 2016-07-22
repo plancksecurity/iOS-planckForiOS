@@ -15,7 +15,7 @@ public enum AttachmentRelationships: String {
     case message = "message"
 }
 
-public protocol _IAttachment {
+@objc public protocol _IAttachment {
 
     // MARK: - Properties
 

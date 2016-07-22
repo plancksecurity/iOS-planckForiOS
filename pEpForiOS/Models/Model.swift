@@ -278,7 +278,7 @@ public class Model: IModel {
             Log.warnComponent(comp, "No account with email found: \(email)")
             return nil
         }
-        var message = insertNewMessage()
+        let message = insertNewMessage()
         let contact = insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
         message.from = contact as? Contact
         guard let folder = folderLocalOutboxForEmail(account.email) else {
@@ -361,7 +361,7 @@ public class Model: IModel {
         }
 
         if let account = accountByEmail(accountEmail) {
-            var folder = insertFolderName(folderName, email: accountEmail)
+            let folder = insertFolderName(folderName, email: accountEmail)
             folder.account = account as! Account
             folder.name = folderName
             return folder
@@ -532,8 +532,15 @@ public class Model: IModel {
     }
 
     public func insertOrUpdateContact(contact: IContact) -> IContact {
-        return self.insertOrUpdateContactEmail(
+        let c = self.insertOrUpdateContactEmail(
             contact.email, name: contact.name)
+        if let abID = contact.addressBookID {
+            c.addressBookID = abID
+        }
+        if let pepID = contact.pepID {
+            c.pepID = pepID
+        }
+        return c
     }
 
     public func insertOrUpdateMessageReference(messageID: String) -> IMessageReference {
@@ -583,7 +590,7 @@ public class Model: IModel {
             isFresh = true
         }
 
-        var mail = theMail!
+        let mail = theMail!
 
         mail.folder = folder as! Folder
 
@@ -614,7 +621,7 @@ public class Model: IModel {
                                             accountEmail: String) -> IMessage? {
         let (quickMail, isFresh) = quickInsertOrUpdatePantomimeMail(message,
                                                                     accountEmail: accountEmail)
-        guard var mail = quickMail else {
+        guard let mail = quickMail else {
             return nil
         }
 
@@ -746,5 +753,4 @@ public class Model: IModel {
             }
         }
     }
-
 }

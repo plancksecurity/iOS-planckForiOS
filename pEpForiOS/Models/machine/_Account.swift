@@ -22,7 +22,7 @@ public enum AccountRelationships: String {
     case folders = "folders"
 }
 
-public protocol _IAccount {
+@objc public protocol _IAccount {
 
     // MARK: - Properties
 

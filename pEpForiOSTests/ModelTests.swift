@@ -77,6 +77,24 @@ class ModelTests: XCTestCase {
         XCTAssertTrue(ab.splitContactNameInTuple("uiae   xvlc") == ("uiae", nil, "xvlc"))
     }
 
+    func runAddressBookTest(testBlock: () -> (), addressBook: AddressBook) {
+        // We need authorization for this test to work
+        if addressBook.authorizationStatus == .NotDetermined {
+            let exp = expectationWithDescription("granted")
+            addressBook.authorize({ ab in
+                exp.fulfill()
+            })
+            waitForExpectationsWithTimeout(waitTime, handler: { error in
+                XCTAssertNil(error)
+                XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
+                testBlock()
+            })
+        } else {
+            XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
+            testBlock()
+        }
+    }
+
     func testAddressbook() {
         let ab = AddressBook()
 
@@ -103,21 +121,32 @@ class ModelTests: XCTestCase {
             XCTAssertEqual(ab.contactsBySnippet("This").count, 1)
             XCTAssertEqual(ab.contactsBySnippet("test").count, 4)
         }
+        runAddressBookTest(testBlock, addressBook: ab)
+    }
 
-        // We need authorization for this test to work
-        if ab.authorizationStatus == .NotDetermined {
-            let exp = expectationWithDescription("granted")
-            ab.authorize({ ab in
-                exp.fulfill()
+    func testAddressBookTransfer() {
+        let ab = AddressBook()
+
+        let testBlock = {
+            let expAddressBookTransfered = self.expectationWithDescription(
+                "expAddressBookTransfered")
+            let persistentSetup = PersistentSetup.init()
+            let context = persistentSetup.coreDataUtil.privateContext()
+            var contactsCount = 0
+            MiscUtil.transferAddressBook(context, blockFinished: { contacts in
+                XCTAssertGreaterThan(contacts.count, 0)
+                contactsCount = contacts.count
+                expAddressBookTransfered.fulfill()
             })
-            waitForExpectationsWithTimeout(waitTime, handler: { error in
+            self.waitForExpectationsWithTimeout(self.waitTime, handler: { error in
                 XCTAssertNil(error)
-                XCTAssertTrue(ab.authorizationStatus == .Authorized)
-                testBlock()
             })
-        } else {
-            XCTAssertTrue(ab.authorizationStatus == .Authorized)
-            testBlock()
+            let model = persistentSetup.model
+            let contacts = model.contactsByPredicate(NSPredicate.init(value: true),
+                                                     sortDescriptors: [])
+            XCTAssertEqual(contacts?.count, contactsCount)
         }
+
+        runAddressBookTest(testBlock, addressBook: ab)
     }
 }

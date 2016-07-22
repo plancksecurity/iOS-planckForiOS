@@ -9,6 +9,7 @@ public enum ContactAttributes: String {
     case email = "email"
     case isMySelf = "isMySelf"
     case name = "name"
+    case pepID = "pepID"
 }
 
 public enum ContactRelationships: String {
@@ -29,6 +30,8 @@ public enum ContactRelationships: String {
     var isMySelf: NSNumber { get set }
 
     var name: String? { get set }
+
+    var pepID: String? { get set }
 
     // MARK: - Relationships
 
@@ -78,6 +81,9 @@ public class _Contact: BaseManagedObject, _IContact {
 
     @NSManaged public
     var name: String?
+
+    @NSManaged public
+    var pepID: String?
 
     // MARK: - Relationships
 

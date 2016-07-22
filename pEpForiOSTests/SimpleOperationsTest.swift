@@ -207,7 +207,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertTrue(false, "Expected outbox to exist")
             return
         }
-        guard var message = model.insertNewMessageForSendingFromAccountEmail(account.email) else {
+        guard let message = model.insertNewMessageForSendingFromAccountEmail(account.email) else {
             XCTAssertTrue(false, "Expected message to be created")
             return
         }
@@ -227,6 +227,10 @@ class SimpleOperationsTest: XCTestCase {
 
         message.folder = outboxFolder as! Folder
 
+        // We can encrypt to identity (ourselves) and receiver4.
+        // So we should receive 3 mails:
+        // One encrypted to identity (CC), one encrypted to receiver4 (BCC),
+        // and one unencrypted to receiver1 (TO).
         let mail = message as! Message
         mail.addToObject(
             PEPUtil.insertPepContact(receiver1, intoModel: model) as! Contact)
@@ -253,7 +257,7 @@ class SimpleOperationsTest: XCTestCase {
         queue.addOperation(encOp)
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertGreaterThan(encryptionData.mailsToSend.count, 0)
+            XCTAssertEqual(encryptionData.mailsToSend.count, 3)
             var encounteredBCC = false
             var encounteredCC = false
             for msg in encryptionData.mailsToSend {

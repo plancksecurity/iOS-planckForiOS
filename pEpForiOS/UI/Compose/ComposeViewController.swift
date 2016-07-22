@@ -307,7 +307,7 @@ class ComposeViewController: UITableViewController {
     func populateMessageWithViewData(message: IMessage, account: IAccount,
                                      model: IModel) -> IMessage {
         // Make a "copy", which really should be the same reference
-        var msg = message
+        let msg = message
 
         // reset
         msg.to = []
