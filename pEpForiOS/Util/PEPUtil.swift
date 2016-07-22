@@ -388,6 +388,7 @@ public class PEPUtil {
             let part = CWPart.init()
             part.setContentType(contentType)
             part.setContent(t.dataUsingEncoding(NSUTF8StringEncoding))
+            part.setCharset("UTF-8")
             return part
         }
         return nil
