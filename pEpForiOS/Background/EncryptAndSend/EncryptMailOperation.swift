@@ -42,12 +42,16 @@ public class EncryptMailOperation: BaseOperation {
             let pepMailOrig = PEPUtil.pepMail(message)
             let session = PEPSession.init()
             var mailsToSend: [PEPMail] = []
-            let (mailsToEncrypt, mailsNotToEncrypt) = session.bucketsForPEPMail(pepMailOrig)
-            mailsToSend.appendContentsOf(mailsNotToEncrypt)
+            let (mailsToEncrypt, mailsUnencrypted) = session.bucketsForPEPMail(pepMailOrig)
 
-            for mail in mailsToEncrypt {
+            // They should all get the pEp treatment, even though they don't all get encrypted.
+            // E.g., for receiving the public key as attachment.
+            var allMails = mailsToEncrypt
+            allMails.appendContentsOf(mailsUnencrypted)
+
+            for origMail in allMails {
                 var encryptedMail: NSDictionary? = nil
-                session.encryptMessageDict(mail as [NSObject : AnyObject], extra: nil,
+                session.encryptMessageDict(origMail as [NSObject : AnyObject], extra: nil,
                     dest: &encryptedMail)
                 if let mail = encryptedMail {
                     mailsToSend.append(mail as PEPMail)

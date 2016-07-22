@@ -199,7 +199,9 @@ public extension PEPSession {
 
     /**
      Sorts a given PEP mail into two buckets: One containing all encrypted mails
-     that should be sent, and one for all unencrypted ones.
+     that should be sent, and one for all unencrypted ones. The encrypted BCCs each get
+     an email in the encrypted list. All contacts that can't be encrypted land in the
+     unencrypted bucket.
      - Parameter pepMail: The PEP mail to put into encryption/non-encryption buckets
      - Returns: A tuple (encrypted, unencrypted) with the two buckets of mails.
      */
