@@ -55,7 +55,20 @@ public protocol IGrandOperator: class {
     func fetchFolders(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asynchronously local special folders, like Outbox, Sent etc.
+     Asychronously fetches mails for the given `ConnectInfo`
+     and the given folder and stores them into the persistent store.
+     Will also decrypt them, and fetch folders if necessary.
+
+     - parameter connectInfo: Denotes the server and other connection parameters
+     - parameter completionBlock: Will be called on completion of the operation, with
+     a non-nil error object if there was an error during execution.
+     */
+    func fetchEmailsAndDecryptConnectInfo(
+        connectInfo: ConnectInfo, folderName: String?, fetchFolders: Bool,
+        completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
+     Asynchronously create local special folders, like Outbox, Sent etc.
 
      - parameter accountEmail: The email of the account those folders belong to.
      - parameter completionBlock: Will be called on completion of the operation, with
@@ -182,6 +195,33 @@ public class GrandOperator: IGrandOperator {
                              completionBlock: GrandOperatorCompletionBlock?) {
         let op = FetchFoldersOperation.init(grandOperator: self, connectInfo: connectInfo)
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
+    }
+
+    public func fetchEmailsAndDecryptConnectInfo(
+        connectInfo: ConnectInfo, folderName: String?, fetchFolders: Bool,
+        completionBlock: GrandOperatorCompletionBlock?) {
+        var operations: [BaseOperation] = []
+        if fetchFolders {
+            operations.append(CreateLocalSpecialFoldersOperation.init(
+                coreDataUtil: coreDataUtil,
+                accountEmail: connectInfo.email))
+            operations.append(FetchFoldersOperation.init(
+                grandOperator: self, connectInfo: connectInfo))
+        }
+        operations.append(PrefetchEmailsOperation.init(
+            grandOperator: self, connectInfo: connectInfo,
+            folder: ImapSync.defaultImapInboxName))
+
+        operations.append(DecryptMailOperation.init(coreDataUtil: coreDataUtil))
+
+        chainOperations(
+            operations, completionBlock: { error in
+                GCD.onMain({
+                    if let block = completionBlock {
+                        block(error: error)
+                    }
+                })
+        })
     }
 
     public func createSpecialLocalFolders(accountEmail: String,

@@ -122,8 +122,6 @@
 		43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
-		5D039AA31D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
-		5D039AA41D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
@@ -987,7 +985,6 @@
 				431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
 				4380F7CB1D1BD8FE00326F62 /* PEPUtilTests.swift in Sources */,
-				5D039AA31D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				4380F7CD1D1BDB1600326F62 /* PersistentSetup.swift in Sources */,
@@ -1005,7 +1002,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D039AA41D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */,
 				43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */,
 				43DA52711CEF3B0E0023D540 /* UITestData.swift in Sources */,
 			);

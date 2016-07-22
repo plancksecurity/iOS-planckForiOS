@@ -69,29 +69,17 @@ class EmailListViewController: UITableViewController {
 
             state.isSynching = true
 
-            var operations: [BaseOperation] = []
-            if shouldFetchFolders {
-                shouldFetchFolders = false
-                operations.append(CreateLocalSpecialFoldersOperation.init(
-                    coreDataUtil: appConfig.grandOperator.coreDataUtil,
-                    accountEmail: account.email))
-                operations.append(FetchFoldersOperation.init(
-                    grandOperator: appConfig.grandOperator, connectInfo: connectInfo))
-            }
-            operations.append(PrefetchEmailsOperation.init(
-                grandOperator: appConfig.grandOperator, connectInfo: connectInfo,
-                folder: ImapSync.defaultImapInboxName))
-
-            appConfig.grandOperator.chainOperations(
-                operations, completionBlock: { [unowned self] error in
-                    GCD.onMain({
-                        Log.infoComponent(self.comp, "Sync completed, error: \(error)")
-                        self.appConfig?.model.save()
-                        self.state.isSynching = false
-                        refreshControl?.endRefreshing()
-                        self.updateUI()
-                    })
+            appConfig.grandOperator.fetchEmailsAndDecryptConnectInfo(
+                connectInfo, folderName: nil, fetchFolders: shouldFetchFolders,
+                completionBlock: { error in
+                    Log.infoComponent(self.comp, "Sync completed, error: \(error)")
+                    self.appConfig?.model.save()
+                    self.state.isSynching = false
+                    refreshControl?.endRefreshing()
+                    self.updateUI()
             })
+
+            shouldFetchFolders = false
             updateUI()
         }
     }
@@ -105,7 +93,9 @@ class EmailListViewController: UITableViewController {
     }
 
     func prepareFetchRequest() {
-        let predicates: [NSPredicate] = [NSPredicate.init(format: "bodyFetched = true")]
+        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
+        let predicateDecrypted = NSPredicate.init(format: "pepColor != nil")
+        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted]
         let fetchRequest = NSFetchRequest.init(entityName: Message.entityName())
         fetchRequest.predicate = NSCompoundPredicate.init(
             andPredicateWithSubpredicates: predicates)

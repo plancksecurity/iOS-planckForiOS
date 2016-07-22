@@ -50,6 +50,8 @@ var pepExplanationDictionary: [Int32: String] =
 
 
 public class PEPUtil {
+    static let comp = "PEPUtil"
+
     /**
      Content type for MIME multipart/alternative.
      */
@@ -436,6 +438,7 @@ public class PEPUtil {
         // TODO: Is this a Swift bug? The code would be safer without a default, in case
         // PEP_color gains elements.
         default:
+            Log.warnComponent(self.comp, "Unsupported color rating")
             return .NoColor
         }
     }
@@ -493,5 +496,36 @@ public class PEPUtil {
         default:
             return "\(trustwords2) \(trustwords1)"
         }
+    }
+
+    /**
+     Overwrites an existing message with properties from the pEp mail dictionary.
+     Used after a mail has been decrypted.
+     That means that for now, recipients are not overwritten, because they don't
+     change after decrypt (until the engine handles the communication layer too).
+     What can change is body text, subject, attachments.
+     Optional fields (`kPepOptFields`) might have to be taken care of later.
+     Caller is responsible for saving the model!
+     */
+    public static func updateMessage(message: IMessage, fromPepMail: PEPMail,
+                                     pepColorRating: PEP_color, model: IModel) {
+        message.pepColor = NSNumber.init(int: pepColorRating.rawValue)
+        message.subject = fromPepMail[kPepShortMessage] as? String
+        message.longMessage = fromPepMail[kPepLongMessage] as? String
+        message.longMessageFormatted = fromPepMail[kPepLongMessageFormatted] as? String
+
+        var attachments = [AnyObject]()
+        if let attachmentDicts = fromPepMail[kPepAttachments] as? NSArray {
+            for atDict in attachmentDicts {
+                if let data = atDict[kPepMimeData] as? NSData {
+                    let attach = model.insertAttachmentWithContentType(
+                        atDict[kPepMimeType] as? String,
+                        filename: atDict[kPepMimeFilename] as? String,
+                        data: data)
+                    attachments.append(attach)
+                }
+            }
+        }
+        message.attachments = NSOrderedSet.init(array: attachments)
     }
 }
