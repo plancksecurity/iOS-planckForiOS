@@ -425,7 +425,7 @@ public class PEPUtil {
         return color
     }
 
-    public static func abstractPepColorFromPepColor(pepColorRating: PEP_color) -> PrivacyColor {
+    public static func colorFromPepColorRating(pepColorRating: PEP_color) -> PrivacyColor {
         switch pepColorRating {
         case PEP_rating_undefined,
              PEP_rating_cannot_decrypt,
