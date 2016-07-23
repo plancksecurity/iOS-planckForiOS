@@ -182,4 +182,23 @@ class TestUtil {
             }
         }
     }
+
+    static func runAddressBookTest(testBlock: () -> (), addressBook: AddressBook,
+                                   testCase: XCTestCase, waitTime: NSTimeInterval) {
+        // We need authorization for this test to work
+        if addressBook.authorizationStatus == .NotDetermined {
+            let exp = testCase.expectationWithDescription("granted")
+            addressBook.authorize({ ab in
+                exp.fulfill()
+            })
+            testCase.waitForExpectationsWithTimeout(waitTime, handler: { error in
+                XCTAssertNil(error)
+                XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
+                testBlock()
+            })
+        } else {
+            XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
+            testBlock()
+        }
+    }
 }

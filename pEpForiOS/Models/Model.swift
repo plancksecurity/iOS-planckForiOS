@@ -537,8 +537,8 @@ public class Model: IModel {
         if let abID = contact.addressBookID {
             c.addressBookID = abID
         }
-        if let pepID = contact.pepID {
-            c.pepID = pepID
+        if let pepUserID = contact.pepUserID {
+            c.pepUserID = pepUserID
         }
         return c
     }

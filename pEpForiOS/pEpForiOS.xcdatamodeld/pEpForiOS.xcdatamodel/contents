@@ -36,7 +36,7 @@
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="isMySelf" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="pepID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pepUserID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="bccMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="bcc" inverseEntity="Message" syncable="YES"/>
         <relationship name="ccMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="cc" inverseEntity="Message" syncable="YES"/>
         <relationship name="fromMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="from" inverseEntity="Message" syncable="YES"/>

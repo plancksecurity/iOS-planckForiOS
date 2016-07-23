@@ -425,4 +425,69 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(words,
                        "FROZE EDGEWISE HOTHEADED DERREK BRITNI BAPTISMAL BERTRAND DIVERSITY SCOTSWOMAN TRANSDUCER")
     }
+
+    func testUnencryptedReceivers() {
+        let session = PEPSession.init()
+
+        let (origIdentity, _, _, _, receiver4) =
+            TestUtil.setupSomeIdentities(session)
+        let identity = origIdentity.mutableCopy() as! NSMutableDictionary
+        session.mySelf(identity)
+        XCTAssertNotNil(identity[kPepFingerprint])
+
+        // Import public key for receiver4
+        TestUtil.importKeyByFileName(
+            session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
+
+        XCTAssertFalse(session.isUnencryptedPEPContact(
+            identity as PEPContact, from: identity as PEPContact))
+
+        XCTAssertFalse(session.isUnencryptedPEPContact(
+            receiver4, from: identity as PEPContact))
+
+        // Setting the correct identity (especially if myself) is absolutely vital
+        // for determining encryption!
+        origIdentity[kPepUserID] = identity[kPepUserID]
+        XCTAssertFalse(session.isUnencryptedPEPContact(
+            origIdentity as PEPContact, from: identity as PEPContact))
+    }
+
+    func testInsertPepContact() {
+        var addressBookContact: IContact?
+        let ab = AddressBook.init()
+        let context = persistentSetup.coreDataUtil.privateContext()
+
+        let testBlock = {
+            let contacts = ab.allContacts()
+            XCTAssertGreaterThanOrEqual(contacts.count, 1)
+            if let first = contacts.first {
+                addressBookContact = first
+            }
+
+            let expAddressBookTransfered = self.expectationWithDescription(
+                "expAddressBookTransfered")
+            MiscUtil.transferAddressBook(context, blockFinished: { contacts in
+                XCTAssertGreaterThan(contacts.count, 0)
+                expAddressBookTransfered.fulfill()
+            })
+            self.waitForExpectationsWithTimeout(self.waitTime, handler: { error in
+                XCTAssertNil(error)
+            })
+        }
+
+        TestUtil.runAddressBookTest(testBlock, addressBook: ab, testCase: self,
+                                    waitTime: waitTime)
+        XCTAssertNotNil(addressBookContact)
+
+        let pepContact = NSMutableDictionary()
+        pepContact[kPepAddress] = addressBookContact?.email
+        let contact = PEPUtil.insertPepContact(pepContact as PEPContact,
+                                               intoModel: persistentSetup.model)
+        XCTAssertNotNil(contact.pepUserID)
+        XCTAssertNotNil(contact.addressBookID)
+
+        if let abID = contact.addressBookID {
+            XCTAssertEqual(contact.pepUserID, String(abID))
+        }
+    }
 }

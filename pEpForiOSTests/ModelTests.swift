@@ -77,24 +77,6 @@ class ModelTests: XCTestCase {
         XCTAssertTrue(ab.splitContactNameInTuple("uiae   xvlc") == ("uiae", nil, "xvlc"))
     }
 
-    func runAddressBookTest(testBlock: () -> (), addressBook: AddressBook) {
-        // We need authorization for this test to work
-        if addressBook.authorizationStatus == .NotDetermined {
-            let exp = expectationWithDescription("granted")
-            addressBook.authorize({ ab in
-                exp.fulfill()
-            })
-            waitForExpectationsWithTimeout(waitTime, handler: { error in
-                XCTAssertNil(error)
-                XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
-                testBlock()
-            })
-        } else {
-            XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
-            testBlock()
-        }
-    }
-
     func testAddressbook() {
         let ab = AddressBook()
 
@@ -121,7 +103,8 @@ class ModelTests: XCTestCase {
             XCTAssertEqual(ab.contactsBySnippet("This").count, 1)
             XCTAssertEqual(ab.contactsBySnippet("test").count, 4)
         }
-        runAddressBookTest(testBlock, addressBook: ab)
+        TestUtil.runAddressBookTest(testBlock, addressBook: ab, testCase: self,
+                                    waitTime: waitTime)
     }
 
     func testAddressBookTransfer() {
@@ -147,6 +130,7 @@ class ModelTests: XCTestCase {
             XCTAssertEqual(contacts?.count, contactsCount)
         }
 
-        runAddressBookTest(testBlock, addressBook: ab)
+        TestUtil.runAddressBookTest(testBlock, addressBook: ab, testCase: self,
+                                    waitTime: waitTime)
     }
 }

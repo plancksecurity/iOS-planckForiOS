@@ -134,8 +134,12 @@ public class PEPUtil {
         dict[kPepAddress] = contact.email
         if contact.isMySelf.boolValue {
             dict[kPepIsMe] = true
+        }
+
+        if let pepUserID = contact.pepUserID {
+            dict[kPepUserID] = pepUserID
         } else {
-            // Only use an address book ID if this contact is not "ourselves"
+            // Only use an address book ID if this contact has no pEp ID
             if let addressBookID = contact.addressBookID {
                 dict[kPepUserID] = String(addressBookID)
             }
@@ -216,8 +220,17 @@ public class PEPUtil {
         if let isMySelf = pepContact[kPepIsMe] as? Bool {
             contact.isMySelf = isMySelf
         }
-        if let pepID = pepContact[kPepUserID] as? String {
-            contact.pepID = pepID
+
+        // The only case where the kPepUserID is already set, should
+        // be as a result of mySelf().
+        if let pepUserID = pepContact[kPepUserID] as? String {
+            contact.pepUserID = pepUserID
+        }
+        // If there is no pEp ID yet, try to use an addressbook ID
+        if contact.pepUserID == nil {
+            if let abID = contact.addressBookID?.intValue {
+                contact.pepUserID = String(abID)
+            }
         }
         return contact
     }
