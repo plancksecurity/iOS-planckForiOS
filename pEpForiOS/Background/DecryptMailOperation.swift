@@ -39,7 +39,8 @@ public class DecryptMailOperation: BaseOperation {
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
                     pepMail, dest: &pepDecryptedMail, keys: &keys)
-                Log.warnComponent(self.comp, "Decrypted mail with color \(color)")
+                Log.warnComponent(self.comp,
+                    "Decrypted mail \(mail.logString()) with color \(color)")
 
                 switch color {
                 case PEP_rating_undefined,
@@ -70,7 +71,8 @@ public class DecryptMailOperation: BaseOperation {
                     break
                 // TODO: Again, why is the default needed when all cases are there?
                 default:
-                    Log.warnComponent(self.comp, "No default action for decrypted mail")
+                    Log.warnComponent(self.comp,
+                        "No default action for decrypted mail \(mail.logString())")
                 }
             }
             model.save()

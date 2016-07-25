@@ -92,4 +92,32 @@ public extension IMessage {
 
         return msg
     }
+
+    /**
+     -Returns: Some string that identifies a mail, useful for logging.
+     */
+    func logString() -> String {
+        let string = NSMutableString()
+
+        let append = {
+            if string.length > 1 {
+                string.appendString(", ")
+            }
+        }
+
+        string.appendString("(")
+        if let msgID = messageID {
+            append()
+            string.appendString("messageID: \(msgID)")
+        }
+        if let uid = uid?.integerValue {
+            string.appendString("\(uid)")
+        }
+        if let oDate = originationDate {
+            append()
+            string.appendString("date: \(oDate)")
+        }
+        string.appendString(")")
+        return string as String
+    }
 }
