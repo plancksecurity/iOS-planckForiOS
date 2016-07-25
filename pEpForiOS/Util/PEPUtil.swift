@@ -520,8 +520,8 @@ public class PEPUtil {
      Optional fields (`kPepOptFields`) might have to be taken care of later.
      Caller is responsible for saving the model!
      */
-    public static func updateMessage(message: IMessage, fromPepMail: PEPMail,
-                                     pepColorRating: PEP_color?, model: IModel) {
+    public static func updateDecryptedMessage(message: IMessage, fromPepMail: PEPMail,
+                                              pepColorRating: PEP_color?, model: IModel) {
         if let color = pepColorRating {
             message.pepColor = NSNumber.init(int: color.rawValue)
         } else {
@@ -567,7 +567,7 @@ public class PEPUtil {
      Caller is responsible for saving the model!
      */
     public static func updateWholeMessage(message: IMessage, fromPepMail: PEPMail, model: IModel) {
-        updateMessage(message, fromPepMail: fromPepMail, pepColorRating: nil,
+        updateDecryptedMessage(message, fromPepMail: fromPepMail, pepColorRating: nil,
                       model: model)
         message.to = orderedContactSetFromPepContactArray(
             fromPepMail[kPepTo] as? NSArray, model: model)

@@ -66,7 +66,7 @@ public class DecryptMailOperation: BaseOperation {
                 PEP_rating_trusted,
                 PEP_rating_trusted_and_anonymized,
                 PEP_rating_fully_anonymous:
-                    PEPUtil.updateMessage(mail, fromPepMail: pepDecryptedMail as! PEPMail,
+                    PEPUtil.updateDecryptedMessage(mail, fromPepMail: pepDecryptedMail as! PEPMail,
                         pepColorRating: color, model: model)
                     break
                 // TODO: Again, why is the default needed when all cases are there?
