@@ -186,7 +186,10 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
-    func testEncryptMailOperation() {
+    func createBasicMail() -> (NSOperationQueue, IAccount, IModel, IMessage,
+        (identity: NSMutableDictionary, receiver1: PEPContact,
+        receiver2: PEPContact, receiver3: PEPContact,
+        receiver4: PEPContact))? {
         let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
         let model = persistentSetup.model
         let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation.init(
@@ -205,18 +208,18 @@ class SimpleOperationsTest: XCTestCase {
 
         guard let outboxFolder = model.folderLocalOutboxForEmail(account.email) else {
             XCTAssertTrue(false, "Expected outbox to exist")
-            return
+            return nil
         }
         guard let message = model.insertNewMessageForSendingFromAccountEmail(account.email) else {
             XCTAssertTrue(false, "Expected message to be created")
-            return
+            return nil
         }
         XCTAssertNotNil(message.from)
         XCTAssertNotNil(message.folder)
 
         let session = PEPSession.init()
 
-        let (identity, receiver1, _, _, receiver4) =
+        let (identity, receiver1, receiver2, receiver3, receiver4) =
             TestUtil.setupSomeIdentities(session)
         session.mySelf(identity)
         XCTAssertNotNil(identity[kPepFingerprint])
@@ -226,6 +229,17 @@ class SimpleOperationsTest: XCTestCase {
             session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
 
         message.folder = outboxFolder as! Folder
+
+        return (queue, account, model, message,
+                (identity, receiver1, receiver2, receiver3, receiver4))
+    }
+
+    func testEncryptMailOperation() {
+        guard let (queue, account, model, message,
+                   (identity, receiver1, _, _, receiver4)) = createBasicMail() else {
+            XCTAssertTrue(false)
+            return
+        }
 
         // We can encrypt to identity (ourselves) and receiver4.
         // So we should receive 3 mails:
@@ -278,6 +292,76 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertTrue(encounteredBCC)
             XCTAssertTrue(encounteredCC)
             XCTAssertEqual(encOp.errors.count, 0)
+        })
+    }
+
+    func testSimpleDecryptMailOperation() {
+        guard let (queue, account, model, message,
+                   (identity, _, _, _, _)) = createBasicMail() else {
+                    XCTAssertTrue(false)
+                    return
+        }
+
+        let subject = "Subject"
+        let longMessage = "Long Message"
+        let longMessageFormatted = "<b>HTML message</b>"
+
+        // We can encrypt to identity (ourselves) and receiver4.
+        // So we should receive 3 mails:
+        // One encrypted to identity (CC), one encrypted to receiver4 (BCC),
+        // and one unencrypted to receiver1 (TO).
+        let mail = message as! Message
+        mail.addToObject(
+            PEPUtil.insertPepContact(identity as PEPContact, intoModel: model) as! Contact)
+        mail.subject = subject
+        mail.longMessage = longMessage
+        mail.longMessageFormatted = longMessageFormatted
+
+        model.save()
+
+        let encryptionData = EncryptionData.init(
+            connectionManager: persistentSetup.connectionManager,
+            coreDataUtil: persistentSetup.coreDataUtil, messageID: mail.objectID,
+            accountEmail: account.email, outgoing: true)
+        let encOp = EncryptMailOperation.init(encryptionData: encryptionData)
+
+        let expEncrypted = expectationWithDescription("expEncrypted")
+        encOp.completionBlock = {
+            expEncrypted.fulfill()
+        }
+        queue.addOperation(encOp)
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        XCTAssertEqual(encryptionData.mailsToSend.count, 1)
+        PEPUtil.isProbablyPGPMime(encryptionData.mailsToSend[0])
+
+        persistentSetup.model.deleteMail(mail)
+        let inboxFolder = model.insertOrUpdateFolderName(ImapSync.defaultImapInboxName,
+                                                         accountEmail: account.email)
+
+        let newMail = model.insertNewMessage()
+        newMail.folder = inboxFolder as! Folder
+        PEPUtil.updateWholeMessage(newMail,
+                                   fromPepMail: encryptionData.mailsToSend[0], model: model)
+
+        XCTAssertNotEqual(newMail.subject, subject)
+        XCTAssertNotEqual(newMail.longMessage, longMessage)
+        XCTAssertNotEqual(newMail.longMessageFormatted, longMessageFormatted)
+
+        let expDecrypted = expectationWithDescription("expDecrypted")
+        let decrOp = DecryptMailOperation.init(
+            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
+        decrOp.completionBlock = {
+            expDecrypted.fulfill()
+        }
+        queue.addOperation(decrOp)
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertNotEqual(newMail.subject, subject)
+            XCTAssertNotEqual(newMail.longMessage, longMessage)
+            XCTAssertNotEqual(newMail.longMessageFormatted, longMessageFormatted)
         })
     }
 

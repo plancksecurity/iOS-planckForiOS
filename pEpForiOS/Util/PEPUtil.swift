@@ -521,8 +521,12 @@ public class PEPUtil {
      Caller is responsible for saving the model!
      */
     public static func updateMessage(message: IMessage, fromPepMail: PEPMail,
-                                     pepColorRating: PEP_color, model: IModel) {
-        message.pepColor = NSNumber.init(int: pepColorRating.rawValue)
+                                     pepColorRating: PEP_color?, model: IModel) {
+        if let color = pepColorRating {
+            message.pepColor = NSNumber.init(int: color.rawValue)
+        } else {
+            message.pepColor = nil
+        }
         message.subject = fromPepMail[kPepShortMessage] as? String
         message.longMessage = fromPepMail[kPepLongMessage] as? String
         message.longMessageFormatted = fromPepMail[kPepLongMessageFormatted] as? String
@@ -540,5 +544,42 @@ public class PEPUtil {
             }
         }
         message.attachments = NSOrderedSet.init(array: attachments)
+    }
+
+    /**
+     - Returns: An NSOrderedSet that contains all elements of `array`. If `array` is nil,
+     the ordered set is empty.
+     */
+    public static func orderedContactSetFromPepContactArray(
+        array: NSArray?, model: IModel) -> NSOrderedSet {
+        if let ar = array {
+            let contacts: [AnyObject] = ar.map() {
+                let contact = insertPepContact($0 as! PEPContact, intoModel: model)
+                return contact
+            }
+            return NSOrderedSet.init(array: contacts)
+        }
+        return NSOrderedSet()
+    }
+
+    /**
+     Completely updates a freshly inserted message from a pEp mail dictionary. Useful for tests.
+     Caller is responsible for saving the model!
+     */
+    public static func updateWholeMessage(message: IMessage, fromPepMail: PEPMail, model: IModel) {
+        updateMessage(message, fromPepMail: fromPepMail, pepColorRating: nil,
+                      model: model)
+        message.to = orderedContactSetFromPepContactArray(
+            fromPepMail[kPepTo] as? NSArray, model: model)
+        message.cc = orderedContactSetFromPepContactArray(
+            fromPepMail[kPepCC] as? NSArray, model: model)
+        message.bcc = orderedContactSetFromPepContactArray(
+            fromPepMail[kPepBCC] as? NSArray, model: model)
+
+        message.longMessage = fromPepMail[kPepLongMessage] as? String
+        message.longMessageFormatted = fromPepMail[kPepLongMessageFormatted] as? String
+
+        // TODO: Map the following:
+        // kPepSent, kPepReceived, kPepReplyTo, kPepInReplyTo, kPepReferences, kPepOptFields
     }
 }

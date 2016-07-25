@@ -29,12 +29,12 @@ public enum FolderType: Int {
 
     /**
      Each kind has a human-readable name you can use to create a local folder object.
-     All except the Default, where you really should use the name from the server.
+     All except the Default, where you really should use `ImapSync.defaultImapInboxName`.
      */
     public func folderName() -> String {
         switch self {
         case .Default:
-            // Don't use this, use the name from the server!
+            // Don't actually use this for the INBOX, always use `ImapSync.defaultImapInboxName`!
             return "Default"
         case .LocalDraft:
             return "Local Drafts"

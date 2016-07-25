@@ -132,6 +132,11 @@ public protocol IModel {
      For debugging: Dumps some important DB contents.
      */
     func dumpDB()
+
+    /**
+     Deletes the given mail from the store.
+     */
+    func deleteMail(message: IMessage)
 }
 
 public class Model: IModel {
@@ -752,5 +757,9 @@ public class Model: IModel {
                     "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages.count) accountType \(msg.folder.account.accountType)")
             }
         }
+    }
+
+    public func deleteMail(message: IMessage) {
+        context.deleteObject(message as! Message)
     }
 }
