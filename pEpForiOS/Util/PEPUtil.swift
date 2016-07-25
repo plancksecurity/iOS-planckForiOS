@@ -32,21 +32,20 @@ var pepColorDictionary: [Int32: PEP_color] =
 
 var pepExplanationDictionary: [Int32: String] =
     [PEP_rating_under_attack.rawValue: "Under Attack",
-     PEP_rating_b0rken.rawValue: "-"
-        /*,
-     PEP_color_hashable(idHashable: Int(PEP_rating_mistrust.rawValue),pepColor: PEP_rating_mistrust): "Mistrusted",
-     PEP_color_hashable(idHashable: Int(PEP_rating_fully_anonymous.rawValue),pepColor: PEP_rating_fully_anonymous): "Secure & Trusted",
-     PEP_color_hashable(idHashable: Int(PEP_rating_trusted_and_anonymized.rawValue),pepColor: PEP_rating_trusted_and_anonymized):  "Secure & Trusted",
-     PEP_color_hashable(idHashable: Int(PEP_rating_trusted.rawValue),pepColor: PEP_rating_trusted): "Secure & Trusted",
-     PEP_color_hashable(idHashable: Int(PEP_rating_reliable.rawValue),pepColor: PEP_rating_reliable): "Secure",
-     PEP_color_hashable(idHashable: Int(PEP_rating_unreliable.rawValue),pepColor: PEP_rating_unreliable): "Unreliable Security",
-     PEP_color_hashable(idHashable: Int(PEP_rating_unencrypted_for_some.rawValue),pepColor: PEP_rating_unencrypted_for_some): "Unsecure for Some",
-     PEP_color_hashable(idHashable: Int(PEP_rating_unencrypted.rawValue),pepColor: PEP_rating_unencrypted): "Unsecure",
-     PEP_color_hashable(idHashable: Int(PEP_rating_have_no_key.rawValue),pepColor: PEP_rating_have_no_key): "Cannot Decrypt",
-     PEP_color_hashable(idHashable: Int(PEP_rating_cannot_decrypt.rawValue),pepColor: PEP_rating_cannot_decrypt): "Cannot Decrypt",
-     PEP_color_hashable(idHashable: Int(PEP_rating_undefined.rawValue),pepColor: PEP_rating_undefined): "Unknown"
-         */
-]
+    PEP_rating_b0rken.rawValue: "-",
+    PEP_rating_mistrust.rawValue: "Mistrusted",
+
+    PEP_rating_fully_anonymous.rawValue: "Secure & Trusted",
+
+    PEP_rating_trusted_and_anonymized.rawValue: "Secure & Trusted",
+    PEP_rating_trusted.rawValue: "Secure & Trusted",
+    PEP_rating_reliable.rawValue: "Secure",
+    PEP_rating_unreliable.rawValue: "Unreliable Security",
+    PEP_rating_unencrypted_for_some.rawValue: "Unsecure for Some",
+    PEP_rating_unencrypted.rawValue: "Unsecure",
+    PEP_rating_have_no_key.rawValue: "Cannot Decrypt",
+    PEP_rating_cannot_decrypt.rawValue: "Cannot Decrypt",
+    PEP_rating_undefined.rawValue: "Unknown"]
 
 
 public class PEPUtil {

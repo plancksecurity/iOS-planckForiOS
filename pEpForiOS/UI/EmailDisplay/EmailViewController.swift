@@ -113,6 +113,7 @@ class EmailViewController: UIViewController {
         if (segue.identifier == segueTrustWordsContactList) {
             let destination = segue.destinationViewController as? TrustWordsViewController
             destination?.message = self.message
+            destination?.appConfig = appConfig
         }
     }
 }

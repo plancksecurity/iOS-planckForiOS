@@ -16,6 +16,7 @@ class TrustWordsViewController: UITableViewController {
     var defaultBackground: UIColor?
     var stringRecipients:[String]!
     var handshakeSegue = "handshakeSegue"
+    var appConfig: AppConfig!
 
 
     override func viewDidLoad() {
@@ -115,6 +116,7 @@ class TrustWordsViewController: UITableViewController {
                 let contact = allRecipientsAux[index-2] as! Contact
                 if let destination = segue.destinationViewController as? HandshakeViewController {
                     destination.partner = contact
+                    destination.appConfig = appConfig
             }
             }
         }

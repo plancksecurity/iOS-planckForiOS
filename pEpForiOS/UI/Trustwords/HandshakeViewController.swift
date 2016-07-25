@@ -12,6 +12,7 @@ class HandshakeViewController: UIViewController, UITextViewDelegate {
 
     var message: Message?
     var partner: Contact?
+    var appConfig: AppConfig!
 
 
     
@@ -21,11 +22,16 @@ class HandshakeViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.trustwordsUITextView.delegate = self
+        var aux = appConfig.currentAccount
+
+
         if let p = partner {
             partnerUILabel.text = p.displayString()
+            myselfUILabel.text = aux?.email
         }
        // var myself = pepContact()
        // var partner = pepContact()
+
        // PEPUtil.trustwordsForIdentity1(myself, identity2: partner, language: "en", session: nil)
     }
 
