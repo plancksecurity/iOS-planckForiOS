@@ -461,8 +461,8 @@ public class PEPUtil {
         return pepColorDictionary[int32]
     }
 
-    public static func pepExplanationFromColor(pepColor: PEP_color) -> String? {
-        return pepExplanationDictionary[pepColor.rawValue]
+    public static func pepExplanationFromColor(pepColorRating: PEP_color) -> String? {
+        return pepExplanationDictionary[pepColorRating.rawValue]
     }
 
     public static func sessionOrReuse(session: PEPSession?) -> PEPSession {
@@ -523,9 +523,9 @@ public class PEPUtil {
     public static func updateDecryptedMessage(message: IMessage, fromPepMail: PEPMail,
                                               pepColorRating: PEP_color?, model: IModel) {
         if let color = pepColorRating {
-            message.pepColor = NSNumber.init(int: color.rawValue)
+            message.pepColorRating = NSNumber.init(int: color.rawValue)
         } else {
-            message.pepColor = nil
+            message.pepColorRating = nil
         }
         message.subject = fromPepMail[kPepShortMessage] as? String
         message.longMessage = fromPepMail[kPepLongMessage] as? String

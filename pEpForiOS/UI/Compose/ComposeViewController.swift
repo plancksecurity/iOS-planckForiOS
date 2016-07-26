@@ -209,7 +209,7 @@ class ComposeViewController: UITableViewController {
             op.pepMail = pepMailFromViewForCheckingRating()
             op.completionBlock = {
                 if !op.cancelled {
-                    if let pepColor = op.pepColor {
+                    if let pepColor = op.pepColorRating {
                         let color = PEPUtil.colorFromPepColorRating(pepColor)
                         GCD.onMain() {
                             var image: UIImage?

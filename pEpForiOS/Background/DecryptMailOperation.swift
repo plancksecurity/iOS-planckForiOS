@@ -23,7 +23,7 @@ public class DecryptMailOperation: BaseOperation {
             let session = PEPSession.init()
 
             guard let mails = model.entitiesWithName(Message.entityName(),
-                predicate: NSPredicate.init(format: "pepColor == nil"),
+                predicate: NSPredicate.init(format: "pepColorRating == nil"),
                 sortDescriptors: [NSSortDescriptor.init(key: "originationDate", ascending: true)])
                 else {
                     return
@@ -52,7 +52,7 @@ public class DecryptMailOperation: BaseOperation {
                 case PEP_rating_unencrypted,
                 PEP_rating_unencrypted_for_some:
                     // Set the color, nothing else to update
-                    mail.pepColor = NSNumber.init(int: color.rawValue)
+                    mail.pepColorRating = NSNumber.init(int: color.rawValue)
                     break
                 case PEP_rating_unreliable,
                 PEP_rating_mistrust,

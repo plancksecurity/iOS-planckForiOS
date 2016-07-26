@@ -94,7 +94,7 @@ class EmailListViewController: UITableViewController {
 
     func prepareFetchRequest() {
         let predicateBody = NSPredicate.init(format: "bodyFetched = true")
-        let predicateDecrypted = NSPredicate.init(format: "pepColor != nil")
+        let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
         let predicates: [NSPredicate] = [predicateBody, predicateDecrypted]
         let fetchRequest = NSFetchRequest.init(entityName: Message.entityName())
         fetchRequest.predicate = NSCompoundPredicate.init(

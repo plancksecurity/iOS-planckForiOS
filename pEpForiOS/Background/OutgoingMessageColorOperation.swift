@@ -17,13 +17,13 @@ class OutgoingMessageColorOperation: NSOperation {
     /**
      Output: The pEp color rating for the mail.
      */
-    var pepColor: PEP_color?
+    var pepColorRating: PEP_color?
 
     override func main() {
         if let mail = pepMail {
-            pepColor = nil
+            pepColorRating = nil
             let session = PEPSession.init()
-            pepColor = session.outgoingMessageColor(mail)
+            pepColorRating = session.outgoingMessageColor(mail)
         }
     }
 }
