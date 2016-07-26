@@ -426,7 +426,7 @@ class PEPUtilTests: XCTestCase {
                        "FROZE EDGEWISE HOTHEADED DERREK BRITNI BAPTISMAL BERTRAND DIVERSITY SCOTSWOMAN TRANSDUCER")
     }
 
-    func testUnencryptedReceivers() {
+    func testEncryptedReceivers() {
         let session = PEPSession.init()
 
         let (origIdentity, _, _, _, receiver4) =
@@ -439,17 +439,13 @@ class PEPUtilTests: XCTestCase {
         TestUtil.importKeyByFileName(
             session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
 
-        XCTAssertFalse(session.isUnencryptedPEPContact(
+        // This might fail the first time the test is run
+        // (see ENGINE-41)
+        XCTAssertTrue(session.isEncryptedPEPContact(
             identity as PEPContact, from: identity as PEPContact))
 
-        XCTAssertFalse(session.isUnencryptedPEPContact(
+        XCTAssertTrue(session.isEncryptedPEPContact(
             receiver4, from: identity as PEPContact))
-
-        // Setting the correct identity (especially if myself) is absolutely vital
-        // for determining encryption!
-        origIdentity[kPepUserID] = identity[kPepUserID]
-        XCTAssertFalse(session.isUnencryptedPEPContact(
-            origIdentity as PEPContact, from: identity as PEPContact))
     }
 
     func testInsertPepContact() {
@@ -466,10 +462,12 @@ class PEPUtilTests: XCTestCase {
 
             let expAddressBookTransfered = self.expectationWithDescription(
                 "expAddressBookTransfered")
+
             MiscUtil.transferAddressBook(context, blockFinished: { contacts in
                 XCTAssertGreaterThan(contacts.count, 0)
                 expAddressBookTransfered.fulfill()
             })
+
             self.waitForExpectationsWithTimeout(self.waitTime, handler: { error in
                 XCTAssertNil(error)
             })
@@ -479,15 +477,17 @@ class PEPUtilTests: XCTestCase {
                                     waitTime: waitTime)
         XCTAssertNotNil(addressBookContact)
 
-        let pepContact = NSMutableDictionary()
-        pepContact[kPepAddress] = addressBookContact?.email
-        let contact = PEPUtil.insertPepContact(pepContact as PEPContact,
-                                               intoModel: persistentSetup.model)
-        XCTAssertNotNil(contact.pepUserID)
-        XCTAssertNotNil(contact.addressBookID)
+        if let abContact = addressBookContact {
+            let pepContact = NSMutableDictionary()
+            pepContact[kPepAddress] = abContact.email
+            let contact = PEPUtil.insertPepContact(pepContact as PEPContact,
+                                                   intoModel: persistentSetup.model)
+            XCTAssertNotNil(contact.pepUserID)
+            XCTAssertNotNil(contact.addressBookID)
 
-        if let abID = contact.addressBookID {
-            XCTAssertEqual(contact.pepUserID, String(abID))
+            if let abID = contact.addressBookID {
+                XCTAssertEqual(contact.pepUserID, String(abID))
+            }
         }
     }
 }

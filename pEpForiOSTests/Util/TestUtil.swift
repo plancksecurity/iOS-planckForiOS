@@ -194,11 +194,10 @@ class TestUtil {
             testCase.waitForExpectationsWithTimeout(waitTime, handler: { error in
                 XCTAssertNil(error)
                 XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
-                testBlock()
             })
         } else {
             XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
-            testBlock()
         }
+        testBlock()
     }
 }

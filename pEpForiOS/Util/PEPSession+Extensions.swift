@@ -83,10 +83,21 @@ public extension PEPSession {
     public typealias RecipientSortPredicate = (contact: PEPContact,
         session: PEPSession) -> Bool
 
+    /**
+     - Returns: True if a mail from `from` to `contact` would be encrypted.
+     */
+    public func isEncryptedPEPContact(contact: PEPContact,
+                                      from: PEPContact) -> Bool {
+        let color = outgoingContactColor(contact, from: from)
+        return color.rawValue >= PEP_rating_reliable.rawValue
+    }
+
+    /**
+     - Returns: False if a mail from `from` to `contact` would be encrypted.
+     */
     public func isUnencryptedPEPContact(contact: PEPContact,
                                         from: PEPContact) -> Bool {
-        let color = outgoingContactColor(contact, from: from)
-        return color.rawValue < PEP_rating_reliable.rawValue
+        return !isEncryptedPEPContact(contact, from: from)
     }
 
     public func outgoingContactColor(contact: PEPContact,
