@@ -24,7 +24,7 @@
         <attribute name="contentType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="filename" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="size" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="AttachmentData" inverseName="attachment" inverseEntity="AttachmentData" syncable="YES"/>
+        <relationship name="content" maxCount="1" deletionRule="Cascade" destinationEntity="AttachmentData" inverseName="attachment" inverseEntity="AttachmentData" syncable="YES"/>
         <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="attachments" inverseEntity="Message" syncable="YES"/>
     </entity>
     <entity name="AttachmentData" representedClassName="AttachmentData" syncable="YES">

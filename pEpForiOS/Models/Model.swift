@@ -137,8 +137,21 @@ public protocol IModel {
      Deletes the given mail from the store.
      */
     func deleteMail(message: IMessage)
+
+    /**
+     Deletes the given attachment from the store.
+     */
+    func deleteAttachment(attachment: IAttachment)
+
+    /**
+     Deletes all attachments from the given mail.
+     */
+    func deleteAttachmentsFromMessage(message: IMessage)
 }
 
+/**
+ Core data implementation
+ */
 public class Model: IModel {
     let comp = "Model"
 
@@ -760,6 +773,25 @@ public class Model: IModel {
     }
 
     public func deleteMail(message: IMessage) {
-        context.deleteObject(message as! Message)
+        if let msg = message as? Message {
+            context.deleteObject(msg)
+        }
+    }
+
+    public func deleteAttachment(attachment: IAttachment) {
+        if let a = attachment as? Attachment {
+            context.deleteObject(a)
+        }
+    }
+
+    public func deleteAttachmentsFromMessage(message: IMessage) {
+        if let msg = message as? Message {
+            for a in msg.attachments {
+                context.deleteObject(a as! Attachment)
+            }
+            message.attachments = NSOrderedSet()
+        } else {
+            message.attachments = NSOrderedSet()
+        }
     }
 }

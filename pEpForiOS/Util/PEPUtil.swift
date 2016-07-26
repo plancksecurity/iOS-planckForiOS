@@ -531,6 +531,9 @@ public class PEPUtil {
         message.longMessage = fromPepMail[kPepLongMessage] as? String
         message.longMessageFormatted = fromPepMail[kPepLongMessageFormatted] as? String
 
+        // Remove existing attachments, this doesn't happen automatically with core data
+        model.deleteAttachmentsFromMessage(message)
+
         var attachments = [AnyObject]()
         if let attachmentDicts = fromPepMail[kPepAttachments] as? NSArray {
             for atDict in attachmentDicts {
