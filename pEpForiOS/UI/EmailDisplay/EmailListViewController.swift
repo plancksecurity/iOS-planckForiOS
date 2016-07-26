@@ -99,7 +99,7 @@ class EmailListViewController: UITableViewController {
         let fetchRequest = NSFetchRequest.init(entityName: Message.entityName())
         fetchRequest.predicate = NSCompoundPredicate.init(
             andPredicateWithSubpredicates: predicates)
-        fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "originationDate",
+        fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "receivedDate",
             ascending: false)]
         fetchController = NSFetchedResultsController.init(
             fetchRequest: fetchRequest,
@@ -157,8 +157,8 @@ class EmailListViewController: UITableViewController {
             UIHelper.putString(email.subject, toLabel: cell.subjectLabel)
             UIHelper.putString(nil, toLabel: cell.summaryLabel)
 
-            if let originationDate = email.originationDate {
-                UIHelper.putString(dateFormatter.stringFromDate(originationDate),
+            if let receivedDate = email.receivedDate {
+                UIHelper.putString(dateFormatter.stringFromDate(receivedDate),
                                    toLabel: cell.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: cell.dateLabel)

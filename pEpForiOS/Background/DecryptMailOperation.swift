@@ -24,7 +24,7 @@ public class DecryptMailOperation: BaseOperation {
 
             guard let mails = model.entitiesWithName(Message.entityName(),
                 predicate: NSPredicate.init(format: "pepColorRating == nil"),
-                sortDescriptors: [NSSortDescriptor.init(key: "originationDate", ascending: true)])
+                sortDescriptors: [NSSortDescriptor.init(key: "receivedDate", ascending: true)])
                 else {
                     return
             }

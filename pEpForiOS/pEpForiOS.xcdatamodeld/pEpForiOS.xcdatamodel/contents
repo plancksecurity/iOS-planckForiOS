@@ -59,8 +59,8 @@
         <attribute name="longMessageFormatted" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="messageNumber" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
-        <attribute name="originationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="pepColorRating" optional="YES" attributeType="Integer 16" syncable="YES"/>
+        <attribute name="receivedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
         <relationship name="attachments" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES"/>

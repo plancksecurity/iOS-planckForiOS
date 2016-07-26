@@ -247,7 +247,7 @@ public class Model: IModel {
             predicates.append(NSPredicate.init(format: "uid = %d", msg.UID()))
         }
         if msg.subject() != nil && msg.receivedDate() != nil {
-            predicates.append(NSPredicate.init(format: "subject = %@ and originationDate = %@",
+            predicates.append(NSPredicate.init(format: "subject = %@ and receivedDate = %@",
                 msg.subject()!, msg.receivedDate()!))
         }
         let pred = NSCompoundPredicate.init(andPredicateWithSubpredicates: predicates)
@@ -614,8 +614,8 @@ public class Model: IModel {
 
         mail.bodyFetched = message.isInitialized()
 
-        if isFresh || mail.originationDate != message.receivedDate() {
-            mail.originationDate = message.receivedDate()
+        if isFresh || mail.receivedDate != message.receivedDate() {
+            mail.receivedDate = message.receivedDate()
         }
         if isFresh || mail.subject != message.subject() {
             mail.subject = message.subject()

@@ -12,8 +12,8 @@ public enum MessageAttributes: String {
     case longMessageFormatted = "longMessageFormatted"
     case messageID = "messageID"
     case messageNumber = "messageNumber"
-    case originationDate = "originationDate"
     case pepColorRating = "pepColorRating"
+    case receivedDate = "receivedDate"
     case subject = "subject"
     case uid = "uid"
 }
@@ -46,9 +46,9 @@ public enum MessageRelationships: String {
 
     var messageNumber: NSNumber? { get set }
 
-    var originationDate: NSDate? { get set }
-
     var pepColorRating: NSNumber? { get set }
+
+    var receivedDate: NSDate? { get set }
 
     var subject: String? { get set }
 
@@ -119,10 +119,10 @@ public class _Message: BaseManagedObject, _IMessage {
     var messageNumber: NSNumber?
 
     @NSManaged public
-    var originationDate: NSDate?
+    var pepColorRating: NSNumber?
 
     @NSManaged public
-    var pepColorRating: NSNumber?
+    var receivedDate: NSDate?
 
     @NSManaged public
     var subject: String?

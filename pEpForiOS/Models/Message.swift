@@ -42,7 +42,7 @@ public extension IMessage {
     func imapMessageWithFolder(folder: CWIMAPFolder) -> CWIMAPMessage {
         let msg = CWIMAPMessage.init()
 
-        if let date = originationDate {
+        if let date = receivedDate {
             msg.setReceivedDate(date)
         }
 
@@ -113,7 +113,7 @@ public extension IMessage {
         if let uid = uid?.integerValue {
             string.appendString("\(uid)")
         }
-        if let oDate = originationDate {
+        if let oDate = receivedDate {
             append()
             string.appendString("date: \(oDate)")
         }
