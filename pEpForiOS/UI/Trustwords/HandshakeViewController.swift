@@ -14,25 +14,28 @@ class HandshakeViewController: UIViewController, UITextViewDelegate {
     var partner: Contact?
     var appConfig: AppConfig!
 
-
+   //var myselfPepContact = PEPUtil.pepContact(myselfContact)
     
     @IBOutlet weak var trustwordsUITextView: UITextView!
     @IBOutlet weak var myselfUILabel: UILabel!
     @IBOutlet weak var partnerUILabel: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.trustwordsUITextView.delegate = self
-        var aux = appConfig.currentAccount
-
-
         if let p = partner {
-            partnerUILabel.text = p.displayString()
-            myselfUILabel.text = aux?.email
+            let partnerPepContact = PEPUtil.pepContact(p)
+            let myselfEmail = appConfig.currentAccount!.email
+            let myselfContact = appConfig.model.contactByEmail(myselfEmail)
+            if let m = myselfContact {
+                let myselfContactPepContact = PEPUtil.pepContact(m)
+                myselfUILabel.text = myselfEmail
+                partnerUILabel.text = p.displayString()
+                trustwordsUITextView.text = PEPUtil.trustwordsForIdentity1(
+                    myselfContactPepContact, identity2: partnerPepContact,
+                    language: "en", session: nil)
+            }
         }
-       // var myself = pepContact()
-       // var partner = pepContact()
-
-       // PEPUtil.trustwordsForIdentity1(myself, identity2: partner, language: "en", session: nil)
     }
 
     override func didReceiveMemoryWarning() {

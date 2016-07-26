@@ -339,7 +339,7 @@
                                                     <rect key="frame" x="59" y="17" width="533" height="17"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="email" label="Email"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress"/>
                                                     <connections>
                                                         <action selector="changeEmail:" destination="YcO-Oc-XZx" eventType="editingChanged" id="D7M-fJ-ilH"/>
                                                     </connections>

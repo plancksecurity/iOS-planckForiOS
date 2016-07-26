@@ -117,6 +117,7 @@ class TrustWordsViewController: UITableViewController {
                 if let destination = segue.destinationViewController as? HandshakeViewController {
                     destination.partner = contact
                     destination.appConfig = appConfig
+                    destination.message = message
             }
             }
         }
