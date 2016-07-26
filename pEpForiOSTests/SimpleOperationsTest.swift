@@ -402,7 +402,7 @@ class SimpleOperationsTest: XCTestCase {
         let queue = NSOperationQueue.init()
         queue.addOperation(sendOp)
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(waitTime * 2, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(sendOp.errors.count, 0)
             XCTAssertEqual(encryptionData.mailsSent.count, numMails)
