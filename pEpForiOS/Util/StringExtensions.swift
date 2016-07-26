@@ -92,7 +92,10 @@ public extension String {
     public func contains(substring: String, ignoreCase: Bool = true,
                          ignoreDiacritic: Bool = true) -> Bool {
 
-        if substring == "" { return true }
+        if substring == "" {
+            return true
+        }
+
         var options = NSStringCompareOptions()
 
         if ignoreCase { options.unionInPlace(.CaseInsensitiveSearch) }

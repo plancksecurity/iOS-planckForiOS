@@ -346,9 +346,12 @@ class SimpleOperationsTest: XCTestCase {
         PEPUtil.updateWholeMessage(newMail,
                                    fromPepMail: encryptionData.mailsToSend[0], model: model)
 
-        XCTAssertNotEqual(newMail.subject, subject)
-        XCTAssertNotEqual(newMail.longMessage, longMessage)
-        XCTAssertNotEqual(newMail.longMessageFormatted, longMessageFormatted)
+        XCTAssertEqual(newMail.subject, "pEp")
+        XCTAssertNotNil(newMail.longMessage)
+        if let lm = newMail.longMessage {
+            XCTAssertTrue(lm.contains("p≡p"))
+        }
+        XCTAssertNil(newMail.longMessageFormatted)
 
         let expDecrypted = expectationWithDescription("expDecrypted")
         let decrOp = DecryptMailOperation.init(
