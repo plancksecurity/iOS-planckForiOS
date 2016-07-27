@@ -22,13 +22,18 @@ public class DecryptMailOperation: BaseOperation {
             let model = Model.init(context: context)
             let session = PEPSession.init()
 
+            let predicateColor = NSPredicate.init(format: "pepColorRating == nil")
+            let predicateBodyFetched = NSPredicate.init(format: "bodyFetched == 1")
+
             guard let mails = model.entitiesWithName(Message.entityName(),
-                predicate: NSPredicate.init(format: "pepColorRating == nil"),
+                predicate: NSCompoundPredicate.init(
+                    andPredicateWithSubpredicates: [predicateColor, predicateBodyFetched]),
                 sortDescriptors: [NSSortDescriptor.init(key: "receivedDate", ascending: true)])
                 else {
                     return
             }
 
+            var modelChanged = false
             for m in mails {
                 guard let mail = m as? IMessage else {
                     Log.warnComponent(self.comp, "Could not cast mail to IMessage")
@@ -53,6 +58,7 @@ public class DecryptMailOperation: BaseOperation {
                 PEP_rating_unencrypted_for_some:
                     // Set the color, nothing else to update
                     mail.pepColorRating = NSNumber.init(int: color.rawValue)
+                    modelChanged = true
                     break
                 case PEP_rating_unreliable,
                 PEP_rating_mistrust,
@@ -68,6 +74,7 @@ public class DecryptMailOperation: BaseOperation {
                 PEP_rating_fully_anonymous:
                     PEPUtil.updateDecryptedMessage(mail, fromPepMail: pepDecryptedMail as! PEPMail,
                         pepColorRating: color, model: model)
+                    modelChanged = true
                     break
                 // TODO: Again, why is the default needed when all cases are there?
                 default:
@@ -75,7 +82,9 @@ public class DecryptMailOperation: BaseOperation {
                         "No default action for decrypted mail \(mail.logString())")
                 }
             }
-            model.save()
+            if modelChanged {
+                model.save()
+            }
         }
     }
 }

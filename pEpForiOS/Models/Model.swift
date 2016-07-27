@@ -650,6 +650,8 @@ public class Model: IModel {
             mail.from = c as? Contact
         }
 
+        mail.bodyFetched = message.isInitialized()
+
         let addresses = message.recipients() as! [CWInternetAddress]
         let contacts = addContacts(addresses)
 
@@ -687,8 +689,12 @@ public class Model: IModel {
 
         mail.contentType = message.contentType()
 
-        addAttachmentsFromPantomimePart(message, targetMail: mail as! Message, level: 0)
-        setupSnippetForMail(mail as! Message)
+        if mail.bodyFetched.integerValue == 1 {
+            // Parsing attachments only makes sense once pantomime has received the
+            // mail body. Same goes for the snippet.
+            addAttachmentsFromPantomimePart(message, targetMail: mail as! Message, level: 0)
+            setupSnippetForMail(mail as! Message)
+        }
 
         return mail
     }
