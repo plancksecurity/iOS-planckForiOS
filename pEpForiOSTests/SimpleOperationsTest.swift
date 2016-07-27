@@ -306,10 +306,6 @@ class SimpleOperationsTest: XCTestCase {
         let longMessage = "Long Message"
         let longMessageFormatted = "<b>HTML message</b>"
 
-        // We can encrypt to identity (ourselves) and receiver4.
-        // So we should receive 3 mails:
-        // One encrypted to identity (CC), one encrypted to receiver4 (BCC),
-        // and one unencrypted to receiver1 (TO).
         let mail = message as! Message
         mail.addToObject(
             PEPUtil.insertPepContact(identity as PEPContact, intoModel: model) as! Contact)

@@ -148,6 +148,7 @@ public class SMTPSettingsTableView: UITableViewController {
                     let account = model.insertAccountFromConnectInfo(connect)
                     let contact = model.insertOrUpdateContactEmail(account.email,
                         name: account.nameOfTheUser)
+
                     // Mark that contact as mySelf
                     contact.isMySelf = NSNumber.init(booleanLiteral: true)
 

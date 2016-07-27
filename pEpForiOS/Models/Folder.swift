@@ -27,6 +27,21 @@ public enum FolderType: Int {
      */
     public static let allValuesToCreate = [LocalDraft, LocalOutbox, LocalSent]
 
+    public static func fromInt(folderTypeInt: Int) -> FolderType? {
+        switch folderTypeInt {
+        case FolderType.Default.rawValue:
+            return .Default
+        case FolderType.LocalDraft.rawValue:
+            return .LocalDraft
+        case FolderType.LocalOutbox.rawValue:
+            return .LocalOutbox
+        case FolderType.LocalSent.rawValue:
+            return .LocalSent
+        default:
+            return nil
+        }
+    }
+
     /**
      Each kind has a human-readable name you can use to create a local folder object.
      All except the Default, where you really should use `ImapSync.defaultImapInboxName`.
@@ -42,6 +57,22 @@ public enum FolderType: Int {
             return "Local Outbox"
         case .LocalSent:
             return "Local Sent"
+        }
+    }
+
+    /**
+     Is a mail in that folder typically outgoing?
+     */
+    public func isOutgoing() -> Bool {
+        switch self {
+        case .Default:
+            return false
+        case .LocalDraft:
+            return true
+        case .LocalOutbox:
+            return true
+        case .LocalSent:
+            return true
         }
     }
 }

@@ -199,7 +199,6 @@ public class PEPUtil {
             dict[kPepLongMessageFormatted] = longMessageFormatted
         }
         if let from = message.from {
-            from.isMySelf = true
             dict[kPepFrom]  = self.pepContact(from)
         }
         if let messageID = message.messageID {

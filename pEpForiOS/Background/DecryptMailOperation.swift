@@ -39,7 +39,17 @@ public class DecryptMailOperation: BaseOperation {
                     Log.warnComponent(self.comp, "Could not cast mail to IMessage")
                     continue
                 }
-                let pepMail = PEPUtil.pepMail(mail)
+
+                var outgoing = false
+                let folderTypeNum = mail.folder.folderType
+                let folderTypeInt = folderTypeNum.integerValue
+                if let folderType = FolderType.fromInt(folderTypeInt) {
+                    outgoing = folderType.isOutgoing()
+                } else {
+                    outgoing = false
+                }
+
+                let pepMail = PEPUtil.pepMail(mail, outgoing: outgoing)
                 var pepDecryptedMail: NSDictionary?
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
