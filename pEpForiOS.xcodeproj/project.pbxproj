@@ -253,7 +253,7 @@
 		4380F7EE1D1C1C7300326F62 /* PEPSession+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPSession+Extensions.swift"; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		439680971D1855D400DA31D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		43980E231CBD0BC900A7FC3C /* p≡p.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "p≡p.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43980E231CBD0BC900A7FC3C /* pEp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pEp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43980E2B1CBD0BC900A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43980E2E1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = pEpForiOS.xcdatamodel; sourceTree = "<group>"; };
@@ -467,7 +467,7 @@
 		43980E241CBD0BC900A7FC3C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43980E231CBD0BC900A7FC3C /* p≡p.app */,
+				43980E231CBD0BC900A7FC3C /* pEp.app */,
 				43980E3A1CBD0BCA00A7FC3C /* pEpForiOSTests.xctest */,
 				43980E451CBD0BCA00A7FC3C /* pEpForiOSUITests.xctest */,
 			);
@@ -705,9 +705,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		43980E221CBD0BC900A7FC3C /* p≡p */ = {
+		43980E221CBD0BC900A7FC3C /* pEp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "p≡p" */;
+			buildConfigurationList = 43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEp" */;
 			buildPhases = (
 				43980E1F1CBD0BC900A7FC3C /* Sources */,
 				43980E201CBD0BC900A7FC3C /* Frameworks */,
@@ -719,9 +719,9 @@
 				439D406A1CC7883D009A4E7C /* PBXTargetDependency */,
 				434662CE1CBF808D0053FC48 /* PBXTargetDependency */,
 			);
-			name = "p≡p";
+			name = pEp;
 			productName = pEpForiOS;
-			productReference = 43980E231CBD0BC900A7FC3C /* p≡p.app */;
+			productReference = 43980E231CBD0BC900A7FC3C /* pEp.app */;
 			productType = "com.apple.product-type.application";
 		};
 		43980E391CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
@@ -807,7 +807,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				43980E221CBD0BC900A7FC3C /* p≡p */,
+				43980E221CBD0BC900A7FC3C /* pEp */,
 				43980E391CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				43980E441CBD0BCA00A7FC3C /* pEpForiOSUITests */,
 			);
@@ -1017,12 +1017,12 @@
 		};
 		43980E3C1CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 43980E221CBD0BC900A7FC3C /* p≡p */;
+			target = 43980E221CBD0BC900A7FC3C /* pEp */;
 			targetProxy = 43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
 		};
 		43980E471CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 43980E221CBD0BC900A7FC3C /* p≡p */;
+			target = 43980E221CBD0BC900A7FC3C /* pEp */;
 			targetProxy = 43980E461CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
 		};
 		439D406A1CC7883D009A4E7C /* PBXTargetDependency */ = {
@@ -1248,7 +1248,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "p≡p" */ = {
+		43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				43980E4F1CBD0BCA00A7FC3C /* Debug */,
