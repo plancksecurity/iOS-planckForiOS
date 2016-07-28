@@ -30,8 +30,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func applicationDirectory() -> NSURL? {
+        let fm = NSFileManager.defaultManager()
+        let dirs = fm.URLsForDirectory(.LibraryDirectory, inDomains: .UserDomainMask)
+        return dirs.first
+    }
+
     func application(application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [NSObject: AnyObject]?) -> Bool {
+        Log.warnComponent(comp, "Library url: \(applicationDirectory())")
         transferAddressBook()
         setupDefaultSettings()
         return true
