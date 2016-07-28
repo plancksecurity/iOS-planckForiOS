@@ -54,7 +54,7 @@ public class ModelUserInfoTable {
     }
 }
 
-public class UserInfoTableView: UITableViewController {
+public class UserInfoTableView: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var emailValue: UITextField!
     @IBOutlet weak var usernameValue: UITextField!
@@ -67,6 +67,7 @@ public class UserInfoTableView: UITableViewController {
     @IBOutlet weak var nameOfTheUserTitleTextField: UILabel!
 
     var appConfig: AppConfig?
+    var IMAPSettings = "IMAPSettings"
 
     public var model = ModelUserInfoTable()
 
@@ -74,6 +75,7 @@ public class UserInfoTableView: UITableViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+        passwordValue.delegate = self
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
@@ -119,6 +121,13 @@ public class UserInfoTableView: UITableViewController {
             destination.appConfig = appConfig
             destination.model = model
         }
+    }
+
+    public func textFieldShouldReturn(passwordValue: UITextField) -> Bool {
+        if (model.isValidUser) {
+            self.performSegueWithIdentifier(self.IMAPSettings, sender: passwordValue)
+        }
+        return true;
     }
 
     @IBAction func changeEmail(sender: UITextField) {
