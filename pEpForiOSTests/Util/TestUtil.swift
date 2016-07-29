@@ -105,6 +105,20 @@ class TestUtil {
         session.importKey(content as String)
     }
 
+    static func loadDataWithFileName(fileName: String) -> NSData? {
+        let testBundle = NSBundle.init(forClass: PEPSessionTest.self)
+
+        guard let keyPath = testBundle.pathForResource(fileName, ofType: nil) else {
+            XCTAssertTrue(false, "Could not find file named \(fileName)")
+            return nil
+        }
+        guard let data = NSData.init(contentsOfFile: keyPath) else {
+            XCTAssertTrue(false, "Could not load file named \(fileName)")
+            return nil
+        }
+        return data
+    }
+
     static func setupSomeIdentities(session: PEPSession)
         -> (identity: NSMutableDictionary, receiver1: PEPContact,
         receiver2: PEPContact, receiver3: PEPContact,

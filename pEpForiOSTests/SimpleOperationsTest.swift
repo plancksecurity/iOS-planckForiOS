@@ -277,16 +277,16 @@ class SimpleOperationsTest: XCTestCase {
             for msg in encryptionData.mailsToSend {
                 if msg[kPepBCC]?.count > 0 {
                     encounteredBCC = true
-                    XCTAssertTrue(PEPUtil.isProbablyPGPMime(msg))
+                    XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(msg))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepTo] as? NSArray))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepCC] as? NSArray))
                 } else if msg[kPepCC]?.count > 0 {
                     encounteredCC = true
-                    XCTAssertTrue(PEPUtil.isProbablyPGPMime(msg))
+                    XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(msg))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepTo] as? NSArray))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepBCC] as? NSArray))
                 } else {
-                    XCTAssertFalse(PEPUtil.isProbablyPGPMime(msg))
+                    XCTAssertFalse(PEPUtil.isProbablyPGPMimePepMail(msg))
                 }
             }
             XCTAssertTrue(encounteredBCC)
@@ -331,7 +331,7 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         XCTAssertEqual(encryptionData.mailsToSend.count, 1)
-        PEPUtil.isProbablyPGPMime(encryptionData.mailsToSend[0])
+        PEPUtil.isProbablyPGPMimePepMail(encryptionData.mailsToSend[0])
 
         persistentSetup.model.deleteMail(mail)
         let inboxFolder = model.insertOrUpdateFolderName(ImapSync.defaultImapInboxName,

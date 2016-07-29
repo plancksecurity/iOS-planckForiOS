@@ -1,0 +1,78 @@
+Return-Path: <dirk@pep-project.org>
+X-Original-To: test005@peptest.ch
+Delivered-To: test005@peptest.ch
+X-No-Auth: unauthenticated sender
+X-No-Relay: not in my network
+Received: from dragon.pibit.ch (dragon.pibit.ch [94.231.81.244])
+by vm-adsy-ppa-mail-01.adfinis-sygroup.ch (Postfix) with ESMTPS id E39562F4
+for <test005@peptest.ch>; Fri, 29 Jul 2016 15:31:07 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+by dragon.pibit.ch (Postfix) with ESMTP id 5A736171C05E
+for <test005@peptest.ch>; Fri, 29 Jul 2016 15:31:07 +0200 (CEST)
+Received: from dragon.pibit.ch ([127.0.0.1])
+by localhost (dragon.pibit.ch [127.0.0.1]) (amavisd-new, port 10024)
+with ESMTP id zP0Jd-KygRKm for <test005@peptest.ch>;
+Fri, 29 Jul 2016 15:31:04 +0200 (CEST)
+Received: from macbookd.local (184.red-88-1-28.dynamicip.rima-tde.net [88.1.28.184])
+by dragon.pibit.ch (Postfix) with ESMTPSA id 997BE171C035
+for <test005@peptest.ch>; Fri, 29 Jul 2016 15:31:03 +0200 (CEST)
+To: test005@peptest.ch
+From: Dirk Zimmermann <dirk@pep-project.org>
+Subject: Encrypted
+Message-ID: <88ddccd5-92dd-b333-dbd2-a836c1a42b41@pep-project.org>
+Date: Fri, 29 Jul 2016 15:30:59 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0)
+Gecko/20100101 Thunderbird/45.2.0
+MIME-Version: 1.0
+Content-Type: multipart/encrypted;
+protocol="application/pgp-encrypted";
+boundary="Mqx6XLCbBFAfRmVsfaExSAnMA3n7l4QRk"
+
+This is an OpenPGP/MIME encrypted message (RFC 4880 and 3156)
+--Mqx6XLCbBFAfRmVsfaExSAnMA3n7l4QRk
+Content-Type: application/pgp-encrypted
+Content-Description: PGP/MIME version identification
+
+Version: 1
+
+--Mqx6XLCbBFAfRmVsfaExSAnMA3n7l4QRk
+Content-Type: application/octet-stream; name="encrypted.asc"
+Content-Description: OpenPGP encrypted message
+Content-Disposition: inline; filename="encrypted.asc"
+
+-----BEGIN PGP MESSAGE-----
+
+hQIMA6SEiS8JiJuNARAAlAlz6IQAapWvKotEnHwA9CAcRAT1imVypw/eULVnrld/
+KMv+DHJB7hag4rIcYjfyR998NWb6L3y+Wl1Pb/XCHU2Fk8m3R+xYCKXNPXtlQX9A
+8LpMMeHuilJnT2CRI0vBfhjA5nW+/w1YHP50ae+2D8Dydw7CQ2iF+Cgr5pJNyeFo
+FTZoVDYrIi90PJpxKuEfnV9HISSQHzd6ibKFXHsmYQmp2COkbi3Pfh3bWrOKT2B5
+/NXIrzjxGVXaIMe733EV2GAoQFeVlZkaFlIPxmRcivzRKVVzTtw1d27ogQAvaOZu
+fROlTTQpuWUP9EsseeMaAXnjMDXoHXqdKWEqPx+ZXyii1gwnBDAqWqHSjUk6gnPZ
+GZ/hmBt4vJTR8DVo4oTlyULKngmO8kMFsfYbUXiIz3sPpIBnvb+hXUTo6Cq0xjZk
+xbhjIAXpmwzneOvRzcCOfQmg0c8/ENDN6UiImvcFZbmgNy2BwSrt6H9fooJIuGFe
+99sBj2Qkm3EOZULaCr+0eCILjUQsLrQb753NC+rWzJSwy472zzozixeO/DyIvC7R
+eR0KC4fuI9RzdTl4JnF4ViduotwOUbwBjNhpPQ+PNAzYCdNb4ejZZr3wCnO7h+fB
+eC2vOJ7Hf0UB/fm8A1qkudt6BbeUvcnNiktuGpuqawbt9EY+ShN4pQBUswVc9TyF
+AgwDDB/JAnuULgUBD/42SnRov3K368kkLcO/d4ZJu8CeeEgO2wzTW4PiI0OMGGY8
+50Pp1TlxJdz8QatE69ZEFQ0VKa9DVHMi6XoWkK9/hmbhXK9c54W17qDv5dEJ2Hok
+e0oudWSSRy3TKw5Bd8JzWcNbG68ZqSwGl6hBWy0sJpWUrmFkI+4v3D4SRx+Zn1ob
+iusQxc2TdFGs9TQ7KZzLK0WYHUZbVvhYjFPJ1aYPmc9ty6zrpcywkz1fZ+anpIzV
+oub5feD18Eo3sosZBsU1Ox7AxwIJdH18jv+j9PXprV2tZMiBkYzZdv90AGnd3R40
+9UZG1PfHu19RJTgc5E7pW/DCx2CnKtBRUZ9GR+9gA8m20vK5EMU3ZRpZYfm7Ciez
+jMSArc+zhJn7A3E36VxlmOQ0Hi860etMw2sCxa1ECXkVRoUIi4N8q0oCMA0NTUYr
+lCUulQLgktRiuFGhHL2kHTGGyMg/WDpT3lPqq9VJeIdLFJYlhujZtTr+tT7JorAf
+z4aUVkmkSHqN3EFsPqAYsfFGWaRlefd6SeEqTai2uktcMoMhl/gsssvpH2n1HL+4
+la5cYqTygp/TNb7ErwWUVMGPMWhgr1ySoUuRZ76J/ebIcZGhOEklp8wVakzdQk/y
+Ak4hsP/80vKTl9sf+zwy/Q+rnuIK4L9X5zLE89eLl0svVUchX1XqR8J0JsT4RNLA
+rwGwWT/o4HlQF0JH3LoTMvDPWFeJ3M27hhiEZlh37qJc9ft1Zf4IkczEF5cL1XPM
+iqVkjHZGxeV8DeBeqh5S8jMePIGZ+XuzgmI5Z4dysynJWqfK/gVii8j9Q3QvVN6g
+beQdeoxJs7CL+sda/kJtH3SlG0awjoDBYUr5VBUSjjKwHjtU2tnQqzREmwqdxeMw
+QZvnNnKrLL7PTuhjDajQ13lvjEIS52MG9DQnkOUw6N0mDUe9zmiqcGngZDf5OpuX
+rjtsEN5KDrWl3PSz1c0E9PJKfvHrhtbOdH6VEOco+r/5HIJXPasXWzuAemCWXDhv
++Z1nRvTZm6KUYAKq775QBUFwJslM0e6HARbBmYkOex/sT8IdSCOVokOemMhuNLVg
+4CXwqgwEdf9NYT2YnnznjLywvNeORA5LPrY7Wpv1UpCAiESCNerl+xV46ESd3zXl
+PKPVvta/qVUXtFP2CPG9r+M0l7DfO9K1CosTITLD+hM=
+=ctsk
+-----END PGP MESSAGE-----
+
+--Mqx6XLCbBFAfRmVsfaExSAnMA3n7l4QRk--

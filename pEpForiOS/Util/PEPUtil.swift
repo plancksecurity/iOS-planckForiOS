@@ -236,7 +236,7 @@ public class PEPUtil {
     /**
      For a PEPMail, checks whether it is PGP/MIME encrypted.
      */
-    public static func isProbablyPGPMime(message: PEPMail) -> Bool {
+    public static func isProbablyPGPMimePepMail(message: PEPMail) -> Bool {
         var foundAttachmentPGPEncrypted = false
         let attachments = message[kPepAttachments] as! NSArray
         for atch in attachments {
@@ -335,13 +335,22 @@ public class PEPUtil {
 
         let attachmentDictsOpt = pepMail[kPepAttachments] as? NSArray
         if !MiscUtil.isNilOrEmptyNSArray(attachmentDictsOpt) {
+            let encrypted = isProbablyPGPMimePepMail(pepMail)
+
             // Create multipart mail
             let multiPart = CWMIMEMultipart.init()
-            message.setContentType(Constants.contentTypeMultipartMixed)
+            if encrypted {
+                message.setContentType(Constants.contentTypeMultipartEncrypted)
+                message.setParameter(Constants.protocolPGPEncrypted, forKey: "protocol")
+            } else {
+                message.setContentType(Constants.contentTypeMultipartMixed)
+            }
             message.setContent(multiPart)
 
-            let bodyPart = bodyPartFromPepMail(pepMail)
-            multiPart.addPart(bodyPart)
+            if !encrypted {
+                let bodyPart = bodyPartFromPepMail(pepMail)
+                multiPart.addPart(bodyPart)
+            }
 
             if let attachmentDicts = attachmentDictsOpt {
                 for attachmentDict in attachmentDicts {

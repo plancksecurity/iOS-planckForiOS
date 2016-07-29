@@ -26,6 +26,16 @@ public class Constants {
     public static let contentTypeMultipartMixed = "multipart/mixed"
 
     /**
+     Content type for MIME multipart/encrypted.
+     */
+    public static let contentTypeMultipartEncrypted = "multipart/encrypted"
+
+    /**
+     Protocol for PGP/MIME application/pgp-encrypted.
+     */
+    public static let protocolPGPEncrypted = "application/pgp-encrypted"
+
+    /**
      Content type for MIME multipart/alternative.
      */
     public static let contentTypeMultipartAlternative = "multipart/alternative"
