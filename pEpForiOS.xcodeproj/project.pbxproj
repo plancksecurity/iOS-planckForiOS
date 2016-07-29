@@ -123,6 +123,8 @@
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
+		A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */; };
+		A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */; };
 		A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
 		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
@@ -326,6 +328,8 @@
 		43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMailOperation.swift; sourceTree = "<group>"; };
+		A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeLabelTableViewCell.swift; sourceTree = "<group>"; };
+		A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTexViewTableViewCell.swift; sourceTree = "<group>"; };
 		A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeViewController.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
@@ -415,6 +419,8 @@
 				A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */,
 				A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */,
 				A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */,
+				A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */,
+				A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */,
 			);
 			path = Trustwords;
 			sourceTree = "<group>";
@@ -908,6 +914,7 @@
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				43404B481D17D36D00D8B6FF /* EmailHeaderView.swift in Sources */,
 				436F8E101D367039007E9829 /* StringExtensions.swift in Sources */,
+				A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */,
 				4325F3141CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift in Sources */,
 				43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */,
 				43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */,
@@ -927,6 +934,7 @@
 				43ED53751CC77F95006AB156 /* MailSettingParameters.swift in Sources */,
 				43B2660D1D252C93009D57E8 /* ConcurrentBaseOperation.swift in Sources */,
 				4380F7EF1D1C1C7300326F62 /* PEPSession+Extensions.swift in Sources */,
+				A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */,
 				4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */,
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
 				43A0E73E1D16C99900159F41 /* NSLayoutConstraint+PureLayout.m in Sources */,
