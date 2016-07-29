@@ -293,6 +293,11 @@ public class PEPUtil {
      See https://tools.ietf.org/html/rfc2822 for a better understanding of some fields.
      */
     public static func pantomimeMailFromPep(pepMail: PEPMail) -> CWIMAPMessage {
+        if let rawMessageData = pepMail[kPepRawMessage] as? NSData {
+            let message = CWIMAPMessage.init(data: rawMessageData)
+            return message
+        }
+
         let message = CWIMAPMessage.init()
 
         if let from = pepMail[kPepFrom] as? PEPContact {
