@@ -211,12 +211,16 @@ class PEPUtilTests: XCTestCase {
 
         // Convert to model
         let message = persistentSetup.model.insertOrUpdatePantomimeMail(
-            pantMail, accountEmail: persistentSetup.connectionInfo.email)
+            pantMail, accountEmail: persistentSetup.connectionInfo.email,
+            forceParseAttachments: true)
 
         // Check model
         XCTAssertNotNil(message)
         XCTAssertNotNil(message?.from)
         XCTAssertNotNil(message?.messageID)
+        XCTAssertEqual(message?.longMessage, pepMailOrig[kPepLongMessage] as? String)
+        XCTAssertEqual(message?.longMessageFormatted, pepMailOrig[kPepLongMessageFormatted]
+            as? String)
 
         XCTAssertEqual(message?.to.count, 1)
         let tosOpt = message?.to
@@ -240,6 +244,7 @@ class PEPUtilTests: XCTestCase {
                 keysNotToCompare, fromMail: pepMail)
             let pepMailOrig2 = TestUtil.removeUnneededKeysForComparison(
                 keysNotToCompare, fromMail: pepMailOrig)
+            TestUtil.diffDictionaries(pepMail2, dict2: pepMailOrig2)
             XCTAssertEqual(pepMail2, pepMailOrig2)
         }
     }
@@ -321,7 +326,8 @@ class PEPUtilTests: XCTestCase {
 
         // Convert to model
         let message = persistentSetup.model.insertOrUpdatePantomimeMail(
-            pantMail, accountEmail: persistentSetup.connectionInfo.email)
+            pantMail, accountEmail: persistentSetup.connectionInfo.email,
+            forceParseAttachments: true)
 
         // Check model
         XCTAssertNotNil(message)

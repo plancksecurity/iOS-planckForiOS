@@ -109,12 +109,18 @@ public protocol IModel {
         -> (IMessage?, Bool)
 
     /**
-     Inserts the given pantomime mail object for the given account email into the store.
+     Converts a pantomime mail to an IMessage and stores it.
      Don't use this on the main thread as there is potentially a lot of processing involved
      (e.g., parsing of HTML and/or attachments).
-     - Return: The core data object as inserted into the store.
+     - Parameter message: The pantomime message to insert.
+     - Parameter accountEmail: The email for the account this email is supposed to be stored
+     for.
+     - Parameter forceParseAttachments: If true, this will parse the attachments even
+     if the pantomime has not been initialized yet (useful for testing only).
+     - Returns: The newly created or updated IMessage
      */
-    func insertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String) -> IMessage?
+    func insertOrUpdatePantomimeMail(message: CWIMAPMessage, accountEmail: String,
+                                     forceParseAttachments: Bool) -> IMessage?
 
     /**
      Sets up the snippet.
@@ -635,8 +641,9 @@ public class Model: IModel {
         return (mail, false)
     }
 
-    public func insertOrUpdatePantomimeMail(message: CWIMAPMessage,
-                                            accountEmail: String) -> IMessage? {
+    public func insertOrUpdatePantomimeMail(
+        message: CWIMAPMessage, accountEmail: String,
+        forceParseAttachments: Bool = false) -> IMessage? {
         let (quickMail, isFresh) = quickInsertOrUpdatePantomimeMail(message,
                                                                     accountEmail: accountEmail)
         guard let mail = quickMail else {
@@ -689,7 +696,7 @@ public class Model: IModel {
 
         mail.contentType = message.contentType()
 
-        if mail.bodyFetched.integerValue == 1 {
+        if forceParseAttachments || mail.bodyFetched.integerValue == 1 {
             // Parsing attachments only makes sense once pantomime has received the
             // mail body. Same goes for the snippet.
             addAttachmentsFromPantomimePart(message, targetMail: mail as! Message, level: 0)

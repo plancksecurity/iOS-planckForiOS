@@ -134,7 +134,7 @@ class TestUtil {
     }
 
     /**
-     Removes some (not so important) keys recursively from dictionaries
+     Recursively removes some (not so important) keys from dictionaries
      so they don't interfere with `isEqual`.
      */
     static func removeUnneededKeysForComparison(
@@ -178,7 +178,12 @@ class TestUtil {
                     print("Difference in '\(k)': '\(v2)' <-> '\(v1)'")
                 }
             } else {
-                print("Only in pepMail: \(k)")
+                print("Only in dict1: \(k)")
+            }
+        }
+        for (k,_) in dict2 {
+            if dict1[k as! NSCopying] == nil {
+                print("Only in dict2: \(k)")
             }
         }
     }
