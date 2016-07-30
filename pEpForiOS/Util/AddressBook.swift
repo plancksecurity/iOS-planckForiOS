@@ -293,4 +293,27 @@ public class AddressBook {
             return authorizationStatus
         }
     }
+
+    static func transferAddressBook(addressBook: AddressBook, coreDataUtil: ICoreDataUtil) {
+        if addressBook.authorizationStatus == .Authorized {
+            MiscUtil.transferAddressBook(coreDataUtil.privateContext(),
+                                         blockFinished: nil)
+        }
+    }
+
+    /**
+     Asks for addressbook acces and tries to transfer all contacts from there.
+     Note: Call this from the main thread!
+     */
+    public static func checkAndTransfer(coreDataUtil: ICoreDataUtil) {
+        let addressBook = AddressBook.init()
+        let status = addressBook.authorizationStatus
+        if status == .NotDetermined {
+            addressBook.authorize() { ab in
+                transferAddressBook(ab, coreDataUtil: coreDataUtil)
+            }
+        } else {
+            transferAddressBook(addressBook, coreDataUtil: coreDataUtil)
+        }
+    }
 }
