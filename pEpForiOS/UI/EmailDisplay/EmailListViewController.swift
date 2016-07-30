@@ -180,7 +180,7 @@ class EmailListViewController: UITableViewController {
             }
             UIHelper.putString(email.from?.displayString(), toLabel: cell.senderLabel)
             UIHelper.putString(email.subject, toLabel: cell.subjectLabel)
-            UIHelper.putString(nil, toLabel: cell.summaryLabel)
+            UIHelper.putString(email.longMessage, toLabel: cell.summaryLabel)
 
             if let receivedDate = email.receivedDate {
                 UIHelper.putString(dateFormatter.stringFromDate(receivedDate),
