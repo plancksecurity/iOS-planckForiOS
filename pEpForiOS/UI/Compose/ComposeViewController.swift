@@ -210,7 +210,7 @@ class ComposeViewController: UITableViewController {
             op.completionBlock = {
                 if !op.cancelled {
                     if let pepColor = op.pepColorRating {
-                        let color = PEPUtil.colorFromPepColorRating(pepColor)
+                        let color = PEPUtil.privacyColorFromPepColorRating(pepColor)
                         GCD.onMain() {
                             var image: UIImage?
                             if let uiColor = UIHelper.sendButtonBackgroundColorFromPepColor(
@@ -640,9 +640,8 @@ extension ComposeViewController: UITextFieldDelegate {
                     var emailsAndColor: [(String, UIColor?)] = []
                     for email in emailsFiltered {
                         if let contact = model.contactByEmail(email) {
-                            let rating = PEPUtil.colorRatingForContact(contact)
-                            let pepColor = PEPUtil.colorFromPepColorRating(rating)
-                            let uiColor = UIHelper.recipientTextColorFromPepColor(pepColor)
+                            let privacyColor = PEPUtil.privacyColorForContact(contact)
+                            let uiColor = UIHelper.recipientTextColorFromPepColor(privacyColor)
                             emailsAndColor.append((email, uiColor))
                         }
                     }

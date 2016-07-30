@@ -430,14 +430,31 @@ public class PEPUtil {
         return parts
     }
 
-    public static func colorRatingForContact(contact: IContact) -> PEP_color {
+    public static func colorRatingForContact(contact: IContact,
+                                             session: PEPSession? = nil) -> PEP_color {
+        var theSession: PEPSession! = session
+        if theSession == nil {
+            theSession = PEPSession.init()
+        }
+
         let pepC = pepContact(contact)
-        let session = PEPSession.init()
-        let color = session.identityColor(pepC as [NSObject : AnyObject])
+        let color = theSession.identityColor(pepC as [NSObject : AnyObject])
         return color
     }
 
-    public static func colorFromPepColorRating(pepColorRating: PEP_color) -> PrivacyColor {
+    public static func privacyColorForContact(contact: IContact,
+                                              session: PEPSession? = nil) -> PrivacyColor {
+        var theSession: PEPSession! = session
+        if theSession == nil {
+            theSession = PEPSession.init()
+        }
+
+        let pepC = pepContact(contact)
+        let color = theSession.identityColor(pepC as [NSObject : AnyObject])
+        return privacyColorFromPepColorRating(color)
+    }
+
+    public static func privacyColorFromPepColorRating(pepColorRating: PEP_color) -> PrivacyColor {
         switch pepColorRating {
         case PEP_rating_undefined,
              PEP_rating_cannot_decrypt,
