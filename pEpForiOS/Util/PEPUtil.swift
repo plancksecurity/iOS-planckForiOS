@@ -485,8 +485,11 @@ public class PEPUtil {
         }
     }
 
-    public static func pepColorRatingFromInt(i: Int) -> PEP_color? {
-        let int32 = Int32(i)
+    public static func colorRatingFromInt(i: Int?) -> PEP_color? {
+        guard let theInt = i else {
+            return nil
+        }
+        let int32 = Int32(theInt)
         return pepColorDictionary[int32]
     }
 

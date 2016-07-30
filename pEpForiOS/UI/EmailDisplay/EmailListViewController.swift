@@ -27,6 +27,17 @@ class EmailListViewController: UITableViewController {
     let dateFormatter = UIHelper.dateFormatterEmailList()
     var shouldFetchFolders = true
 
+    /**
+     The default background color for an email cell, as determined the first time a cell is
+     created.
+     */
+    var defaultCellBackgroundColor: UIColor?
+
+    /**
+     Indicates whether `defaultCellBackgroundColor` has been determined or not.
+     */
+    var determinedCellBackgroundColor: Bool = false
+
     override func viewDidLoad() {
         let refreshController = UIRefreshControl.init()
         refreshController.addTarget(self, action: #selector(self.refresh(_:)),
@@ -147,12 +158,26 @@ class EmailListViewController: UITableViewController {
                             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(
             "EmailListViewCell", forIndexPath: indexPath) as! EmailListViewCell
+        if !determinedCellBackgroundColor {
+            defaultCellBackgroundColor = cell.backgroundColor
+            determinedCellBackgroundColor = true
+        }
         configureCell(cell, indexPath: indexPath)
         return cell
     }
 
     func configureCell(cell: EmailListViewCell, indexPath: NSIndexPath) {
         if let email = fetchController?.objectAtIndexPath(indexPath) as? Message {
+            if let colorRating = PEPUtil.colorRatingFromInt(email.pepColorRating?.integerValue) {
+                let privacyColor = PEPUtil.privacyColorFromPepColorRating(colorRating)
+                if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor) {
+                    cell.backgroundColor = uiColor
+                } else {
+                    if determinedCellBackgroundColor {
+                        cell.backgroundColor = defaultCellBackgroundColor
+                    }
+                }
+            }
             UIHelper.putString(email.from?.displayString(), toLabel: cell.senderLabel)
             UIHelper.putString(email.subject, toLabel: cell.subjectLabel)
             UIHelper.putString(nil, toLabel: cell.summaryLabel)

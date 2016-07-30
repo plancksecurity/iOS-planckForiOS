@@ -70,7 +70,7 @@ class TrustWordsViewController: UITableViewController {
                 }
                 cell.backgroundColor = defaultBackground
                 if let mailPepColor = m.pepColorRating?.integerValue {
-                    if let pc = PEPUtil.pepColorRatingFromInt(mailPepColor) {
+                    if let pc = PEPUtil.colorRatingFromInt(mailPepColor) {
                         let privateColor = PEPUtil.privacyColorFromPepColorRating(pc)
                         if let uiColor = paintingMailStatus(privateColor) {
                             cell.backgroundColor = uiColor
@@ -88,7 +88,7 @@ class TrustWordsViewController: UITableViewController {
 
             if let m = message {
                 if let mailPepColor = m.pepColorRating?.integerValue {
-                    if let pepColor = PEPUtil.pepColorRatingFromInt(mailPepColor) {
+                    if let pepColor = PEPUtil.colorRatingFromInt(mailPepColor) {
                         cell.mailExplanationSecurityUILabel.text =
                             PEPUtil.pepExplanationFromColor(pepColor)
 
