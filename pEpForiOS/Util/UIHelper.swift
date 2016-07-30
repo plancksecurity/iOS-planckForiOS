@@ -57,13 +57,6 @@ class UIHelper {
     }
 
     /**
-     Get the UIColor for a privacy status from the `PrivacyColor`.
-     */
-    static func backgroundColorFromPepColor(pepColor: PrivacyColor) -> UIColor? {
-        return UIColor.redColor()
-    }
-
-    /**
      Get the UIColor for the background image of a send button for an (abstract) pEp color.
      */
     static func sendButtonBackgroundColorFromPepColor(pepColor: PrivacyColor) -> UIColor? {
@@ -80,11 +73,11 @@ class UIHelper {
     }
 
     /**
-     Get the UIColor for a recipient (in a text field) for an (abstract) pEp color.
+     Get the UIColor for an identity (in a text field or label) for an (abstract) pEp color.
      This might, or might not, be the same,
      as `sendButtonBackgroundColorFromPepColor:PrivacyColor`.
      */
-    static func recipientTextColorFromPepColor(pepColor: PrivacyColor) -> UIColor? {
+    static func textBackgroundUIColorFromPrivacyColor(pepColor: PrivacyColor) -> UIColor? {
         switch pepColor {
         case .Green:
             return UIColor.greenColor()
@@ -94,6 +87,20 @@ class UIHelper {
             return UIColor.redColor()
         case .NoColor:
             return nil
+        }
+    }
+
+    /**
+     Gives the label a background color depending on the given privacy color.
+     If the privacy color is `PrivacyColor.NoColor` the default color is used.
+     */
+    static func setBackgroundColor(
+        privacyColor: PrivacyColor, forLabel label: UILabel, defaultColor: UIColor?) {
+        if privacyColor != PrivacyColor.NoColor {
+            let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor)
+            label.backgroundColor = uiColor
+        } else {
+            label.backgroundColor = defaultColor
         }
     }
 

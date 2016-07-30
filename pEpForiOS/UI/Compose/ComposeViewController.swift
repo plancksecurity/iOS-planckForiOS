@@ -607,12 +607,12 @@ extension ComposeViewController: UITextFieldDelegate {
         emailsAndColor: [(String, UIColor?)]) -> NSMutableAttributedString {
         let string = NSMutableAttributedString()
         let spacerString = NSAttributedString.init(string: self.delimiterWithSpace)
-        for (email, color) in emailsAndColor {
+        for (email, uiColor) in emailsAndColor {
             if string.length > 0 {
                 string.appendAttributedString(spacerString)
             }
             let emailString: NSAttributedString?
-            if let c = color {
+            if let c = uiColor {
                 emailString = NSAttributedString.init(
                     string: email, attributes: [NSBackgroundColorAttributeName: c])
             } else {
@@ -641,7 +641,8 @@ extension ComposeViewController: UITextFieldDelegate {
                     for email in emailsFiltered {
                         if let contact = model.contactByEmail(email) {
                             let privacyColor = PEPUtil.privacyColorForContact(contact)
-                            let uiColor = UIHelper.recipientTextColorFromPepColor(privacyColor)
+                            let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(
+                                privacyColor)
                             emailsAndColor.append((email, uiColor))
                         }
                     }
