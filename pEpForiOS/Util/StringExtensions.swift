@@ -181,12 +181,43 @@ public extension String {
     }
 
     /**
+     - Returns: True if this String consists only of whitespace.
+     */
+    public func isOnlyWhiteSpace() -> Bool {
+        let whiteSpacePattern = "^\\s*$"
+        return matchesPattern(whiteSpacePattern)
+    }
+
+    /**
      Removes a matching pattern from the end of the String. Note that the '$' will be added
      by this method.
      */
     public func removeTrailingPattern(pattern: String) -> String {
         do {
             let regex = try NSRegularExpression.init(pattern: "(.*?)\(pattern)$", options: [])
+            let matches = regex.matchesInString(self, options: [], range: wholeRange())
+            if matches.count == 1 {
+                let m = matches[0]
+                let r = m.rangeAtIndex(1)
+                if r.location != NSNotFound {
+                    let s = self as NSString
+                    let result = s.substringWithRange(r)
+                    return result
+                }
+            }
+        } catch let err as NSError {
+            Log.errorComponent(String.comp, error: err)
+        }
+        return self
+    }
+
+    /**
+     Removes a matching pattern from the beginning of the String. Note that the '^' will be added
+     by this method.
+     */
+    public func removeLeadingPattern(pattern: String) -> String {
+        do {
+            let regex = try NSRegularExpression.init(pattern: "^\(pattern)(.*?)$", options: [])
             let matches = regex.matchesInString(self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]

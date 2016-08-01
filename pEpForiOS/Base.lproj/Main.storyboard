@@ -141,50 +141,22 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPO-ud-4gZ">
-                                            <rect key="frame" x="8" y="11" width="24" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bdq-Ap-nv5" customClass="EmailTextField" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="36" y="8" width="554" height="27"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yQo-H9-ejL">
+                                            <rect key="frame" x="8" y="8" width="584" height="27"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
-                                        </textField>
+                                        </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Bdq-Ap-nv5" secondAttribute="bottom" id="7wc-85-lrI"/>
-                                        <constraint firstItem="LPO-ud-4gZ" firstAttribute="top" secondItem="5Vs-0n-XCD" secondAttribute="topMargin" id="9tn-eS-A0b"/>
-                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="LPO-ud-4gZ" secondAttribute="bottom" constant="4" id="Ffl-Ol-bqc"/>
-                                        <constraint firstItem="Bdq-Ap-nv5" firstAttribute="baseline" secondItem="LPO-ud-4gZ" secondAttribute="baseline" id="Fln-6d-zUq"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="LPO-ud-4gZ" secondAttribute="bottom" id="L7W-WT-Fnt"/>
-                                        <constraint firstItem="Bdq-Ap-nv5" firstAttribute="leading" secondItem="LPO-ud-4gZ" secondAttribute="trailing" constant="4" id="Tqm-Y8-Wi1"/>
-                                        <constraint firstItem="LPO-ud-4gZ" firstAttribute="centerY" secondItem="5Vs-0n-XCD" secondAttribute="centerY" id="UH7-bo-NYE"/>
-                                        <constraint firstItem="LPO-ud-4gZ" firstAttribute="centerY" secondItem="5Vs-0n-XCD" secondAttribute="centerY" id="WLZ-9T-tTl"/>
-                                        <constraint firstItem="LPO-ud-4gZ" firstAttribute="top" secondItem="5Vs-0n-XCD" secondAttribute="topMargin" id="XNN-Qc-1iu"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Bdq-Ap-nv5" secondAttribute="trailing" constant="2" id="cJk-oc-wF2"/>
-                                        <constraint firstItem="LPO-ud-4gZ" firstAttribute="leading" secondItem="5Vs-0n-XCD" secondAttribute="leadingMargin" id="gYL-KY-ThM"/>
-                                        <constraint firstItem="Bdq-Ap-nv5" firstAttribute="top" secondItem="5Vs-0n-XCD" secondAttribute="topMargin" id="hsN-wW-m0x"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="LPO-ud-4gZ" secondAttribute="bottom" id="xem-FB-qdC"/>
-                                        <constraint firstItem="LPO-ud-4gZ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5Vs-0n-XCD" secondAttribute="topMargin" constant="4" id="xho-N4-V85"/>
+                                        <constraint firstItem="yQo-H9-ejL" firstAttribute="top" secondItem="5Vs-0n-XCD" secondAttribute="topMargin" id="36k-Qz-pBy"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="yQo-H9-ejL" secondAttribute="trailing" id="5Jf-tz-yB5"/>
+                                        <constraint firstItem="yQo-H9-ejL" firstAttribute="leading" secondItem="5Vs-0n-XCD" secondAttribute="leadingMargin" id="fHs-Tf-VtC"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="yQo-H9-ejL" secondAttribute="bottom" id="zN5-4b-6Of"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="9tn-eS-A0b"/>
-                                            <exclude reference="Ffl-Ol-bqc"/>
-                                            <exclude reference="L7W-WT-Fnt"/>
-                                            <exclude reference="WLZ-9T-tTl"/>
-                                            <exclude reference="XNN-Qc-1iu"/>
-                                            <exclude reference="xem-FB-qdC"/>
-                                            <exclude reference="xho-N4-V85"/>
-                                            <exclude reference="Fln-6d-zUq"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="recipientTextField" destination="Bdq-Ap-nv5" id="HUi-OZ-2Ui"/>
-                                    <outlet property="recipientTypeLabel" destination="LPO-ud-4gZ" id="GZ2-zx-LvZ"/>
+                                    <outlet property="recipientTextView" destination="yQo-H9-ejL" id="P12-a4-mVn"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubjectTableViewCell" id="Tlh-rm-oK1" customClass="SubjectTableViewCell" customModule="pEpForiOS" customModuleProvider="target">

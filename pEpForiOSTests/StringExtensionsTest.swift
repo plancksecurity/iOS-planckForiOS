@@ -51,18 +51,34 @@ class StringExtensionsTest: XCTestCase {
     }
 
     func testMatchesPattern() {
-        XCTAssertEqual("uiaeuiae, ".matchesPattern(", $"), true)
-        XCTAssertEqual("uiaeuiae, uiae".matchesPattern(", $"), false)
-        XCTAssertEqual("uiaeuiae, uiae".matchesPattern(",\\w*$"), false)
-        XCTAssertEqual("uiaeuiae,".matchesPattern(",\\s*$"), true)
-        XCTAssertEqual("uiaeuiae, ".matchesPattern(",\\s*$"), true)
-        XCTAssertEqual("uiaeuiae,  ".matchesPattern(",\\s*$"), true)
-        XCTAssertEqual("uiaeuiae,  .".matchesPattern(",\\s*$"), false)
+        XCTAssertTrue("uiaeuiae, ".matchesPattern(", $"))
+        XCTAssertFalse("uiaeuiae, uiae".matchesPattern(", $"))
+        XCTAssertFalse("uiaeuiae, uiae".matchesPattern(",\\w*$"))
+        XCTAssertTrue("uiaeuiae,".matchesPattern(",\\s*$"))
+        XCTAssertTrue("uiaeuiae, ".matchesPattern(",\\s*$"))
+        XCTAssertTrue("uiaeuiae,  ".matchesPattern(",\\s*$"))
+        XCTAssertFalse("uiaeuiae,  .".matchesPattern(",\\s*$"))
+
+        let whiteSpacePattern = "^\\s*$"
+        XCTAssertTrue("".matchesPattern(whiteSpacePattern))
+        XCTAssertTrue("   ".matchesPattern(whiteSpacePattern))
+        XCTAssertFalse(" uiae  ".matchesPattern(whiteSpacePattern))
+    }
+
+    func testIsOnlyWhitespace() {
+        XCTAssertTrue("   ".isOnlyWhiteSpace())
+        XCTAssertTrue("".isOnlyWhiteSpace())
+        XCTAssertFalse(" ui ".isOnlyWhiteSpace())
     }
 
     func testRemoveTrailingPattern() {
         XCTAssertEqual("just@email1.com, ".removeTrailingPattern(",\\s*"), "just@email1.com")
         XCTAssertEqual("just@email1.com,   ".removeTrailingPattern(",\\s*"), "just@email1.com")
+    }
+
+    func testRemoveLeadingPattern() {
+        XCTAssertEqual("To: test005@peptest.ch".removeLeadingPattern("\\w*:\\s*"),
+                       "test005@peptest.ch")
     }
 
     func testIsProbablyValidEmailList() {

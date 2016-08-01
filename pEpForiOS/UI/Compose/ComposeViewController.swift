@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ComposeViewController: UITableViewController {
+public class ComposeViewController: UITableViewController {
     struct UIModel {
         enum Mode {
             case Normal
@@ -53,6 +53,8 @@ class ComposeViewController: UITableViewController {
      */
     let delimiterWithSpace: String
 
+    let delimiterChars: NSCharacterSet = NSCharacterSet.init(charactersInString: ":,")
+
     /**
      The message to appear in the body text when it's empty.
      */
@@ -85,7 +87,7 @@ class ComposeViewController: UITableViewController {
     /**
      The recipient cells, mapped by their text field for fast access.
      */
-    var recipientCellsByTextField = [UITextField: RecipientCell]()
+    var recipientCellsByTextView = [UITextView: RecipientCell]()
 
     /**
      The recipient cells, mapped by their index row.
@@ -118,24 +120,34 @@ class ComposeViewController: UITableViewController {
      */
     var originalRightBarButtonItem: UIBarButtonItem?
 
-    required init?(coder aDecoder: NSCoder) {
+    /**
+     Queue for background operations, like checking outgoing message color.
+     */
+    let operationQueue = NSOperationQueue()
+
+    let trailingPattern: String
+
+    let leadingPattern = "\\w*:\\s*"
+
+    required public init?(coder aDecoder: NSCoder) {
         delimiterWithSpace = "\(recipientStringDelimiter) "
+         trailingPattern = "\(recipientStringDelimiter)\\s*"
         emptyBodyTextMessage = NSLocalizedString(
             "Enter text here",
             comment: "Placeholder text for where the user should enter the email body text")
         super.init(coder: aDecoder)
     }
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(tableView)
     }
 
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         updateViewFromRecipients()
     }
@@ -173,19 +185,33 @@ class ComposeViewController: UITableViewController {
         var allEmpty = true
         var allCorrect = true
         for (_, cell) in recipientCells {
-            let tf = cell.recipientTextField
+            let tf = cell.recipientTextView
             if let text = tf.text {
-                if text != "" {
+                let trailingRemoved = text.removeTrailingPattern(trailingPattern)
+                let leadingRemoved = trailingRemoved.removeLeadingPattern(leadingPattern)
+                if !leadingRemoved.isOnlyWhiteSpace() {
                     allEmpty = false
-                    let trailingRemoved = text.removeTrailingPattern("\(recipientStringDelimiter)\\s*")
-                    if !trailingRemoved.isProbablyValidEmailListSeparatedBy(recipientStringDelimiter) {
+                    if !leadingRemoved.isProbablyValidEmailListSeparatedBy(
+                        recipientStringDelimiter) {
                         allCorrect = false
                     }
                 }
             }
         }
         sendButton.enabled = !allEmpty && allCorrect
+        if !sendButton.enabled {
+            setPrivacyColor(.NoColor, toSendButton: sendButton)
+        }
         return sendButton.enabled
+    }
+
+    func setPrivacyColor(color: PrivacyColor, toSendButton: UIBarButtonItem) {
+        var image: UIImage?
+        if let uiColor = UIHelper.sendButtonBackgroundColorFromPepColor(color) {
+            image = UIHelper.imageFromColor(uiColor)
+        }
+        self.sendButton.setBackgroundImage(image, forState: .Normal,
+                                           barMetrics: UIBarMetrics.Default)
     }
 
     /**
@@ -196,14 +222,11 @@ class ComposeViewController: UITableViewController {
         // Checking mail color only makes sense if you can actually send that mail,
         // hence the if.
         if updateSendButtonFromView() {
-            if let op = currentOutgoingRatingOperation {
-                // We have an existing op, let's check it it's still running and
-                // don't do anything in that case.
-                if op.executing {
-                    op.cancel()
-                    Log.warnComponent(comp, "Won't check outgoing color, already one in operation")
-                    return
-                }
+            if operationQueue.operationCount > 0 {
+                // We have an existing ops, let's cancel them and don't do anything else
+                operationQueue.cancelAllOperations()
+                Log.warnComponent(comp, "Won't check outgoing color, already one in operation")
+                return
             }
             let op = OutgoingMessageColorOperation()
             op.pepMail = pepMailFromViewForCheckingRating()
@@ -212,20 +235,14 @@ class ComposeViewController: UITableViewController {
                     if let pepColor = op.pepColorRating {
                         let color = PEPUtil.privacyColorFromPepColorRating(pepColor)
                         GCD.onMain() {
-                            var image: UIImage?
-                            if let uiColor = UIHelper.sendButtonBackgroundColorFromPepColor(
-                                color) {
-                                image = UIHelper.imageFromColor(uiColor)
-                            }
-                            self.sendButton.setBackgroundImage(image, forState: .Normal,
-                                barMetrics: UIBarMetrics.Default)
+                            self.setPrivacyColor(color, toSendButton: self.sendButton)
                         }
                     } else {
                         Log.warnComponent(self.comp, "Could not get outgoing message color")
                     }
                 }
             }
-            op.start()
+            operationQueue.addOperation(op)
         }
     }
 
@@ -257,14 +274,17 @@ class ComposeViewController: UITableViewController {
     func pepMailFromViewForCheckingRating() -> PEPMail {
         var message = PEPMail()
         for (_, cell) in recipientCells {
-            let tf = cell.recipientTextField
+            let tf = cell.recipientTextView
             if let text = tf.text {
-                if text != "" {
-                    let mailStrings1 = text.componentsSeparatedByString(recipientStringDelimiter).map() {
-                        $0.trimmedWhiteSpace()
+                let mailStrings0 = text.removeLeadingPattern(leadingPattern)
+                if !mailStrings0.isOnlyWhiteSpace() {
+                    let mailStrings1 = mailStrings0.componentsSeparatedByString(
+                        recipientStringDelimiter).map() {
+                            $0.trimmedWhiteSpace()
                     }
+
                     let mailStrings2 = mailStrings1.filter() {
-                        $0 != ""
+                        !$0.isOnlyWhiteSpace()
                     }
                     let model = appConfig?.model
                     let contacts: [PEPContact] = mailStrings2.map() {
@@ -274,17 +294,19 @@ class ComposeViewController: UITableViewController {
                         return PEPUtil.pepContactFromEmail($0, name: $0.namePartOfEmail())
                     }
                     if contacts.count > 0 {
-                        var pepKey: String? = nil
-                        switch cell.recipientType {
-                        case .To:
-                            pepKey = kPepTo
-                        case .CC:
-                            pepKey = kPepCC
-                        case .BCC:
-                            pepKey = kPepBCC
-                        }
-                        if let key = pepKey {
-                            message[key] = contacts
+                        if let rt = cell.recipientType {
+                            var pepKey: String? = nil
+                            switch rt {
+                            case .To:
+                                pepKey = kPepTo
+                            case .CC:
+                                pepKey = kPepCC
+                            case .BCC:
+                                pepKey = kPepBCC
+                            }
+                            if let key = pepKey {
+                                message[key] = contacts
+                            }
                         }
                     }
                 }
@@ -326,28 +348,31 @@ class ComposeViewController: UITableViewController {
 
         // recipients
         for (_, cell) in recipientCells {
-            let tf = cell.recipientTextField
-            if let text = tf.text {
-                if text != "" {
+            let tf = cell.recipientTextView
+            if var text = tf.text {
+                text = text.removeLeadingPattern(leadingPattern)
+                if !text.isOnlyWhiteSpace() {
                     let mailStrings1 = text.componentsSeparatedByString(recipientStringDelimiter).map() {
                         $0.trimmedWhiteSpace()
                     }
                     let mailStrings2 = mailStrings1.filter() {
-                        $0 != ""
+                        !$0.isOnlyWhiteSpace()
                     }
                     let contacts: [IContact] = mailStrings2.map() {
                         let c = model.insertOrUpdateContactEmail($0, name: nil)
                         return c
                     }
                     if contacts.count > 0 {
-                        let set = NSOrderedSet.init(array: contacts.map() {$0 as AnyObject})
-                        switch cell.recipientType {
-                        case .To:
-                            msg.to = set
-                        case .CC:
-                            msg.cc = set
-                        case .BCC:
-                            msg.bcc = set
+                        if let rt = cell.recipientType {
+                            let set = NSOrderedSet.init(array: contacts.map() {$0 as AnyObject})
+                            switch rt {
+                            case .To:
+                                msg.to = set
+                            case .CC:
+                                msg.cc = set
+                            case .BCC:
+                                msg.bcc = set
+                            }
                         }
                     }
                 }
@@ -428,7 +453,7 @@ class ComposeViewController: UITableViewController {
 
     // MARK: -- UITableViewDelegate
 
-    override func tableView(tableView: UITableView,
+    override public func tableView(tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
         if model.tableMode == UIModel.Mode.Search {
             if let cell = model.recipientCell {
@@ -438,7 +463,7 @@ class ComposeViewController: UITableViewController {
         return 0
     }
 
-    override func tableView(tableView: UITableView,
+    override public func tableView(tableView: UITableView,
                             viewForHeaderInSection section: Int) -> UIView? {
         if model.tableMode == UIModel.Mode.Search && section == 0 {
             // We are reusing an ordinary cell as a header, this might lead to:
@@ -449,25 +474,26 @@ class ComposeViewController: UITableViewController {
         return nil
     }
 
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView,
+    override public func tableView(tableView: UITableView, willDisplayHeaderView view: UIView,
                    forSection section: Int) {
         if model.tableMode == UIModel.Mode.Search && section == 0 {
-            model.recipientCell?.recipientTextField.becomeFirstResponder()
+            model.recipientCell?.recipientTextView.becomeFirstResponder()
         }
     }
 
-    override func tableView(tableView: UITableView,
+    override public func tableView(tableView: UITableView,
                             didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if model.tableMode == UIModel.Mode.Search {
             if let cell = model.recipientCell {
                 let c = model.contacts[indexPath.row]
-                if var text = cell.recipientTextField.text?.finishedRecipientPart() {
-                    if text != "" && !text.matchesPattern(",\\s*$") {
-                        text += ", "
-                    }
-                    text += c.email + ", "
-                    cell.recipientTextField.text = text
-                    colorReceiverTextField(cell.recipientTextField)
+                if let r = ComposeViewController.currentRecipientRangeFromText(
+                    cell.recipientTextView.text,
+                    aroundCaretPosition: cell.recipientTextView.selectedRange.location) {
+                    let newString = cell.recipientTextView.text.stringByReplacingCharactersInRange(
+                        r, withString: " \(c.email)")
+                    let replacement = "\(newString)\(delimiterWithSpace)"
+                    cell.recipientTextView.text = replacement
+                    colorRecipients(cell.recipientTextView)
                 }
             }
             updateViewFromRecipients()
@@ -475,22 +501,22 @@ class ComposeViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell,
+    override public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell,
                             forRowAtIndexPath indexPath: NSIndexPath) {
         if model.tableMode == UIModel.Mode.Normal {
             if let cell = model.recipientCell {
-                cell.recipientTextField.becomeFirstResponder()
+                cell.recipientTextView.becomeFirstResponder()
             }
         }
     }
 
     // MARK: -- UITableViewDataSource
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView,
+    override public func tableView(tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
         if model.tableMode == UIModel.Mode.Normal {
             return bodyTextRowNumber + 1
@@ -499,7 +525,7 @@ class ComposeViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView,
+    override public func tableView(tableView: UITableView,
                             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let recipientCellID = "RecipientCell"
         let subjectTableViewCellID = "SubjectTableViewCell"
@@ -512,21 +538,20 @@ class ComposeViewController: UITableViewController {
                 // Recipient cell
                 let cell = tableView.dequeueReusableCellWithIdentifier(
                     recipientCellID, forIndexPath: indexPath) as! RecipientCell
-                cell.recipientType = RecipientType.fromRawValue(indexPath.row + 1)
-                cell.recipientTextField.delegate = self
-                cell.recipientTextField.addTarget(
-                    self, action: #selector(self.recipientTextHasChanged),
-                    forControlEvents: .EditingChanged)
 
-                if cell.recipientType == .To &&
-                    recipientCellsByTextField[cell.recipientTextField] == nil {
-                    // First time the cell got created, give it focus
-                    cell.recipientTextField.becomeFirstResponder()
+                if cell.recipientType == nil {
+                    cell.recipientType = RecipientType.fromRawValue(indexPath.row + 1)
+                    cell.recipientTextView.delegate = self
+
+                    // Cache the cell for later use
+                    recipientCellsByTextView[cell.recipientTextView] = cell
+                    recipientCells[indexPath.row] = cell
+
+                    if cell.recipientType == .To {
+                        // First time the cell got created, give it focus
+                        cell.recipientTextView.becomeFirstResponder()
+                    }
                 }
-
-                // Cache the cell for later use
-                recipientCellsByTextField[cell.recipientTextField] = cell
-                recipientCells[indexPath.row] = cell
 
                 return cell
             } else if indexPath.row == subjectRowNumber {
@@ -558,12 +583,157 @@ class ComposeViewController: UITableViewController {
             return cell
         }
     }
+
+    // MARK: -- Handling recipient text input
+
+    public static func currentRecipientRangeFromText(
+        text: NSString, aroundCaretPosition: Int) -> NSRange? {
+        let comma: UnicodeScalar = ","
+        let colon: UnicodeScalar = ":"
+        var start = -1
+        var end = -1
+
+        // We want the character that just was changed "under the cursor"
+        let location = aroundCaretPosition - 1
+
+        var maxIndex = text.length
+        if maxIndex == 0 {
+            return nil
+        }
+
+        maxIndex = maxIndex - 1
+
+        if location > maxIndex {
+            return nil
+        }
+
+        var index = location
+
+        // Check if the user just entered a comma or colon. If yes, that's it.
+        let ch = text.characterAtIndex(index)
+        if UInt32(ch) == comma.value || UInt32(ch) == colon.value {
+            return nil
+        }
+
+        // find beginning
+        while true {
+            if index < 0 {
+                start = 0
+                break
+            }
+            let ch = text.characterAtIndex(index)
+            if UInt32(ch) == comma.value || UInt32(ch) == colon.value {
+                start = index + 1
+                break
+            }
+            index = index - 1
+        }
+
+        // find end
+        index = location
+        while true {
+            if index >= maxIndex {
+                end = maxIndex + 1
+                break
+            }
+            let ch = text.characterAtIndex(index)
+            if UInt32(ch) == comma.value {
+                end = index
+                break
+            }
+            index = index + 1
+        }
+
+        if end != -1 && start != -1 {
+            let r = NSRange.init(location: start, length: end - start)
+            if r.location >= 0 && r.location + r.length <= text.length {
+                return r
+            }
+        }
+
+        return nil
+    }
+
+    /**
+     Tries to determine the currently edited part in a recipient text, given the
+     text and the last known caret position.
+     */
+    public static func extractRecipientFromText(
+        text: NSString, aroundCaretPosition: Int) -> String? {
+        if let r = self.currentRecipientRangeFromText(
+            text, aroundCaretPosition: aroundCaretPosition) {
+            return text.substringWithRange(r).trimmedWhiteSpace()
+        }
+        return nil
+    }
+
+    /**
+     Gives contacts in the given text view.
+     */
+    func colorRecipients(textView: UITextView) {
+        let parts = textView.text.componentsSeparatedByCharactersInSet(delimiterChars)
+        if parts.count == 0 {
+            return
+        }
+        guard let ap = appConfig else {
+            return
+        }
+        let model = Model.init(context: ap.coreDataUtil.privateContext())
+        model.context.performBlock() {
+            let session = PEPSession.init()
+            var firstPart = true
+            let s = NSMutableAttributedString()
+            for p in parts {
+                let thePart = p.trimmedWhiteSpace()
+                if thePart.isEmpty {
+                    firstPart = false
+                    continue
+                }
+                if firstPart {
+                    firstPart = false
+                    let attributed = NSAttributedString.init(string: thePart,
+                        attributes: nil)
+                    s.appendAttributedString(attributed)
+                    s.appendAttributedString(NSAttributedString.init(string: ": ",
+                        attributes: nil))
+                } else {
+                    var attributes: [String : AnyObject]? = nil
+                    if let c = model.contactByEmail(thePart) {
+                        let color = PEPUtil.privacyColorForContact(c, session: session)
+                        if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(color) {
+                            attributes = [:]
+                            attributes![NSBackgroundColorAttributeName] = uiColor
+                        }
+                    }
+                    let attributed = NSAttributedString.init(string: thePart,
+                        attributes: attributes)
+                    s.appendAttributedString(attributed)
+                    s.appendAttributedString(NSAttributedString.init(
+                        string: self.delimiterWithSpace,
+                        attributes: nil))
+                }
+            }
+            GCD.onMain() {
+                textView.attributedText = s
+            }
+        }
+    }
+
+    func updateSearch(textView: UITextView) {
+        if let searchSnippet = ComposeViewController.extractRecipientFromText(
+            textView.text, aroundCaretPosition: textView.selectedRange.location) {
+            model.searchSnippet = searchSnippet
+            model.tableMode  = .Search
+            model.recipientCell = recipientCellsByTextView[textView]
+            updateContacts()
+        }
+    }
 }
 
-// MARK: -- UITextViewDelegate (for body text)
+// MARK: -- UITextViewDelegate
 
 extension ComposeViewController: UITextViewDelegate {
-    func textViewDidChange(textView: UITextView) {
+    public func textViewDidChange(textView: UITextView) {
         if textView == longBodyMessageTextView {
             let currentOffset = tableView.contentOffset
             UIView.setAnimationsEnabled(false)
@@ -571,10 +741,34 @@ extension ComposeViewController: UITextViewDelegate {
             tableView.endUpdates()
             UIView.setAnimationsEnabled(true)
             tableView.setContentOffset(currentOffset, animated: false)
+        } else if let _ = recipientCellsByTextView[textView] {
+            updateSearch(textView)
         }
     }
 
-    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange,
+                  replacementText text: String) -> Bool {
+        if let recipientCell = recipientCellsByTextView[textView] {
+            // Disallow if check is infringing on the "readonly" part, like "To: "
+            if range.location < recipientCell.minimumCaretLocation {
+                updateViewFromRecipients()
+                return false
+            }
+            if text == newline {
+                resetTableViewToNormal()
+                let newString = textView.text.stringByReplacingCharactersInRange(
+                    range, withString: delimiterWithSpace)
+                textView.text = newString
+                colorRecipients(textView)
+                updateViewFromRecipients()
+                return false
+            }
+            updateViewFromRecipients()
+        }
+        return true
+    }
+
+    public func textViewShouldBeginEditing(textView: UITextView) -> Bool {
         if textView == longBodyMessageTextView {
             if longBodyMessageTextView?.text == emptyBodyTextMessage {
                 longBodyMessageTextView?.text = ""
@@ -583,7 +777,7 @@ extension ComposeViewController: UITextViewDelegate {
         return true
     }
 
-    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+    public func textViewShouldEndEditing(textView: UITextView) -> Bool {
         if textView == longBodyMessageTextView {
             if longBodyMessageTextView?.text == "" || longBodyMessageTextView?.text == nil {
                 longBodyMessageTextView?.text = emptyBodyTextMessage
@@ -623,96 +817,5 @@ extension ComposeViewController: UITextFieldDelegate {
             }
         }
         return string
-    }
-
-    func colorReceiverTextField(textField: UITextField) {
-        if let text = textField.text {
-            let endsWithDelimiter = text.matchesPattern("\(recipientStringDelimiter)\\s*$")
-            print("text: \(text), endsWithDelimiter: \(endsWithDelimiter)")
-            if let context = appConfig?.coreDataUtil.privateContext() {
-                context.performBlock() {
-                    let model = Model.init(context: context)
-                    let emails = text.componentsSeparatedByString(
-                        self.recipientStringDelimiter).map({$0.trimmedWhiteSpace()})
-                    let emailsFiltered = emails.filter() { element in
-                        return element != ""
-                    }
-                    var emailsAndColor: [(String, UIColor?)] = []
-                    for email in emailsFiltered {
-                        if let contact = model.contactByEmail(email) {
-                            let privacyColor = PEPUtil.privacyColorForContact(contact)
-                            let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(
-                                privacyColor)
-                            emailsAndColor.append((email, uiColor))
-                        }
-                    }
-                    if emailsAndColor.count > 0 {
-                        let coloredString = self.attibutedStringFromEmailsWithColors(
-                            emailsAndColor)
-                        if endsWithDelimiter {
-                            coloredString.appendAttributedString(
-                                NSAttributedString.init(string: self.delimiterWithSpace,
-                                attributes: nil))
-                        }
-                        GCD.onMain() {
-                            textField.attributedText = coloredString
-                            print("coloredString: \(coloredString)")
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @objc func recipientTextHasChanged(textField: UITextField) {
-        updateViewFromRecipients()
-        colorReceiverTextField(textField)
-    }
-
-    func textField(textField: UITextField,
-                   shouldChangeCharactersInRange range: NSRange,
-                                                 replacementString string: String) -> Bool {
-        if let cell = recipientCellsByTextField[textField] {
-            if let text = textField.text {
-                if string == " " {
-                    let newText = text.stringByReplacingCharactersInRange(
-                        range, withString: delimiterWithSpace)
-                    if isFreshlyEnteredTextProbablyEmail(
-                        text, newText: newText, delimiter: recipientStringDelimiter) {
-                        textField.text = newText
-                        resetTableViewToNormal()
-                    }
-                    return false
-                }
-                if string == newline {
-                    if isFreshlyEnteredTextProbablyEmail(
-                        text, newText: text, delimiter: recipientStringDelimiter) {
-                        resetTableViewToNormal()
-                    }
-                    return false
-                }
-                let newText = text.stringByReplacingCharactersInRange(range, withString: string)
-                let lastPart = newText.unfinishedRecipientPart()
-                if lastPart == "" {
-                    resetTableViewToNormal()
-
-                    // For some reason, we have to do that manually.
-                    // Maybe the changing of hierarchy (due to the mode change)
-                    // interferes with the replacement that would happen when
-                    // returning true.
-                    textField.text = newText.finishedRecipientPart()
-                    return false
-                } else {
-                    model.searchSnippet = lastPart
-                    model.tableMode = .Search
-                    model.contacts = []
-                    model.recipientCell = cell
-                    updateContacts()
-                    return true
-                }
-            }
-        }
-        // If the tf is not a recipient tf, or if the text is still nil
-        return true
     }
 }

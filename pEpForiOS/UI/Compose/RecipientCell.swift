@@ -9,24 +9,30 @@
 import UIKit
 
 public class RecipientCell: UITableViewCell {
-    let distanceRecipientTypeLabelSearchBox: CGFloat = 8
-    let topBottomMinimumDistance: CGFloat = 4
+    @IBOutlet weak var recipientTextView: UITextView!
 
-    @IBOutlet weak var recipientTypeLabel: UILabel!
-    @IBOutlet weak var recipientTextField: UITextField!
+    var minimumCaretLocation: Int?
+    var titleText: String?
+    var message: Message!
 
-    var recipientType: RecipientType = .To {
+    var recipientType: RecipientType? = nil {
         didSet {
-            switch recipientType {
-            case .To:
-                recipientTypeLabel.text = NSLocalizedString("To:", comment: "ComposeView")
-            case .CC:
-                recipientTypeLabel.text = NSLocalizedString("CC:", comment: "ComposeView")
-            case .BCC:
-                recipientTypeLabel.text = NSLocalizedString("BCC:", comment: "ComposeView")
+            if let rt = recipientType {
+                switch rt {
+                case .To:
+                    titleText = NSLocalizedString("To: ", comment: "ComposeView")
+                    minimumCaretLocation = (titleText! as NSString).length
+                    recipientTextView.text = titleText
+                case .CC:
+                    titleText = NSLocalizedString("CC: ", comment: "ComposeView")
+                    minimumCaretLocation = (titleText! as NSString).length
+                    recipientTextView.text = titleText
+                case .BCC:
+                    titleText = NSLocalizedString("BCC: ", comment: "ComposeView")
+                    minimumCaretLocation = (titleText! as NSString).length
+                    recipientTextView.text = titleText
+                }
             }
         }
     }
-
-    var message: Message!
 }
