@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9M5-Am-Yi2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9M5-Am-Yi2">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -663,7 +663,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="rC4-w0-03O">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rC4-w0-03O">
                                             <rect key="frame" x="8" y="8" width="584" height="27"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -681,35 +681,47 @@
                                     <outlet property="handshakeTextView" destination="rC4-w0-03O" id="Af0-bk-1xV"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="buttonCell" id="c83-ZB-1CR" customClass="HandshakeTexViewTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="handshakeButton" selectionStyle="default" indentationWidth="10" reuseIdentifier="buttonCell" id="5Mz-XF-lAy" customClass="HandshakeButtonTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="180" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c83-ZB-1CR" id="e7M-v3-gd7">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Mz-XF-lAy" id="10a-O2-3KB">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vtw-ht-HpD">
-                                            <rect key="frame" x="8" y="8" width="584" height="27"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Aul-rl-4R4">
+                                            <rect key="frame" x="295" y="5" width="10" height="33"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gdK-Qg-sG2">
-                                            <rect key="frame" x="277" y="7" width="46" height="30"/>
-                                            <state key="normal" title="Button"/>
+                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sR9-Ic-0s8">
+                                            <rect key="frame" x="4" y="8" width="55" height="30"/>
+                                            <state key="normal" title="Confirm"/>
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="gdK-Qg-sG2" firstAttribute="centerX" secondItem="e7M-v3-gd7" secondAttribute="centerX" id="5LG-Fz-Y7c"/>
-                                        <constraint firstItem="vtw-ht-HpD" firstAttribute="leading" secondItem="e7M-v3-gd7" secondAttribute="leadingMargin" id="5m6-Wm-Bzd"/>
-                                        <constraint firstItem="vtw-ht-HpD" firstAttribute="top" secondItem="e7M-v3-gd7" secondAttribute="topMargin" id="CYM-sg-qcd"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="vtw-ht-HpD" secondAttribute="trailing" id="Ejb-Dn-cwe"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="vtw-ht-HpD" secondAttribute="bottom" id="GYu-2b-bvP"/>
-                                        <constraint firstItem="gdK-Qg-sG2" firstAttribute="centerY" secondItem="vtw-ht-HpD" secondAttribute="centerY" id="KLb-G4-1RP"/>
+                                        <constraint firstItem="Aul-rl-4R4" firstAttribute="centerY" secondItem="10a-O2-3KB" secondAttribute="centerY" id="De2-yO-VXk"/>
+                                        <constraint firstItem="sR9-Ic-0s8" firstAttribute="top" secondItem="10a-O2-3KB" secondAttribute="topMargin" id="NO9-FK-h8a"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Aul-rl-4R4" secondAttribute="trailing" id="QQM-F4-m8O"/>
+                                        <constraint firstItem="sR9-Ic-0s8" firstAttribute="centerY" secondItem="Aul-rl-4R4" secondAttribute="centerY" id="UNE-4t-kK6"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Aul-rl-4R4" secondAttribute="bottom" id="dyI-ea-m37"/>
+                                        <constraint firstItem="Aul-rl-4R4" firstAttribute="top" secondItem="10a-O2-3KB" secondAttribute="topMargin" id="eih-1E-8dC"/>
+                                        <constraint firstItem="Aul-rl-4R4" firstAttribute="leading" secondItem="10a-O2-3KB" secondAttribute="leadingMargin" id="fNf-Re-1YH"/>
+                                        <constraint firstItem="Aul-rl-4R4" firstAttribute="centerX" secondItem="10a-O2-3KB" secondAttribute="centerX" id="fvV-hx-wFR"/>
+                                        <constraint firstItem="sR9-Ic-0s8" firstAttribute="leading" secondItem="10a-O2-3KB" secondAttribute="leadingMargin" id="oJV-75-Wmz"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="UNE-4t-kK6"/>
+                                            <exclude reference="QQM-F4-m8O"/>
+                                            <exclude reference="dyI-ea-m37"/>
+                                            <exclude reference="eih-1E-8dC"/>
+                                            <exclude reference="fNf-Re-1YH"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="handshakeTextView" destination="vtw-ht-HpD" id="LAh-LO-btX"/>
+                                    <outlet property="handshakeConfirmButton" destination="sR9-Ic-0s8" id="8Aa-53-ine"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
