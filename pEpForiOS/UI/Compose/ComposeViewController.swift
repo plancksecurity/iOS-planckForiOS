@@ -125,9 +125,30 @@ public class ComposeViewController: UITableViewController {
      */
     let operationQueue = NSOperationQueue()
 
+    /** Pattern for removing any trailing "," and whitespace from recipients */
     let trailingPattern: String
 
+    /** Pattern for removing the title part, like "To: " */
     let leadingPattern = "\\w*:\\s*"
+
+    enum ComposeMode {
+        /** Plain old compose */
+        case Normal
+
+        /** Reply to from */
+        case ReplyFrom
+    }
+
+    /**
+     Choose whether this should be a simple compose, or reply, forward etc.
+     */
+    var composeMode: ComposeMode = .Normal
+
+    /**
+     For certain values of `composeMode`, there will be an email to act on
+     (like reply, forward). This is it.
+     */
+    var originalMessage: IMessage?
 
     required public init?(coder aDecoder: NSCoder) {
         delimiterWithSpace = "\(recipientStringDelimiter) "
@@ -525,6 +546,18 @@ public class ComposeViewController: UITableViewController {
         }
     }
 
+    /**
+     - Returns: The original message to be replied on, if it's a reply.
+     */
+    func replyFromMessage() -> IMessage? {
+        if composeMode == .ReplyFrom {
+            if let om = originalMessage {
+                return om
+            }
+        }
+        return nil
+    }
+
     override public func tableView(tableView: UITableView,
                             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let recipientCellID = "RecipientCell"
@@ -548,8 +581,17 @@ public class ComposeViewController: UITableViewController {
                     recipientCells[indexPath.row] = cell
 
                     if cell.recipientType == .To {
-                        // First time the cell got created, give it focus
-                        cell.recipientTextView.becomeFirstResponder()
+                        if let om = replyFromMessage() {
+                            if let from = om.from {
+                                cell.recipientTextView.text =
+                                    "\(String.orEmpty(cell.titleText)) \(from.email)"
+                                updateViewFromRecipients()
+                                colorRecipients(cell.recipientTextView)
+                            }
+                        } else {
+                            // First time the cell got created, give it focus
+                            cell.recipientTextView.becomeFirstResponder()
+                        }
                     }
                 }
 
@@ -560,6 +602,11 @@ public class ComposeViewController: UITableViewController {
                     subjectTableViewCellID, forIndexPath: indexPath) as! SubjectTableViewCell
                 // Store for later access
                 subjectTextField = cell.subjectTextField
+
+                // Give the subject the focus, if it's not a pure compose
+                if composeMode != .Normal {
+                    subjectTextField?.becomeFirstResponder()
+                }
                 return cell
             } else { // if indexPath.row == bodyTextRowNumber
                 // Body message cell

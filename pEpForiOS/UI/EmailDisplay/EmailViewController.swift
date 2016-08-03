@@ -11,9 +11,11 @@ import UIKit
 import WebKit
 
 class EmailViewController: UIViewController {
-    let segueReply = "segueReply"
-    let segueTrustWordsContactList = "segueTrustWordsContactList"
+    /** Segue name for replying to the sender (from) */
+    let segueReplyFrom = "segueReplyFrom"
 
+    /** Segue for invoking the trustwords controller */
+    let segueTrustWordsContactList = "segueTrustWordsContactList"
 
     let headerGapToContentY: CGFloat = 25
 
@@ -26,7 +28,7 @@ class EmailViewController: UIViewController {
     let headerView = EmailHeaderView.init()
     var webView: WKWebView!
 
-    var message: Message!
+    var message: IMessage!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,10 +80,11 @@ class EmailViewController: UIViewController {
         let alertActionReply = UIAlertAction (title: NSLocalizedString("Reply",
             comment: "Reply button text for reply action in AlertView in the screen with the message details"),
                                               style: .Default) { (action) in
-                self.performSegueWithIdentifier(self.segueReply , sender: self)
+                self.performSegueWithIdentifier(self.segueReplyFrom , sender: self)
         }
         alertViewWithoutTittle.addAction(alertActionReply)
 
+        /*
         let alertActionReplyAll = UIAlertAction(
             title: NSLocalizedString("Reply All",
                 comment: "Reply all button text for reply all action in AlertView in the screen with the message details"),
@@ -93,6 +96,7 @@ class EmailViewController: UIViewController {
                 comment: "Forward button text for forward action in AlertView in the screen with the message details"),
             style: .Default) { (action) in }
         alertViewWithoutTittle.addAction(alertActionForward)
+         */
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel",
@@ -105,10 +109,12 @@ class EmailViewController: UIViewController {
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == segueReply) {
+        if (segue.identifier == segueReplyFrom) {
             let destination = segue.destinationViewController
                 as? ComposeViewController;
+            destination?.composeMode = .ReplyFrom
             destination?.appConfig = appConfig
+            destination?.originalMessage = message
         }
         if (segue.identifier == segueTrustWordsContactList) {
             let destination = segue.destinationViewController as? TrustWordsViewController

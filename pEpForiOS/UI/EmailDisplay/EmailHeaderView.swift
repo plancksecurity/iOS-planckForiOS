@@ -48,7 +48,7 @@ class EmailHeaderView: UIView {
      */
     var lastLeftLabel: UILabel? = nil
 
-    var message: Message!
+    var message: IMessage!
 
     let dateFormatter = UIHelper.dateFormatterEmailDetails()
 

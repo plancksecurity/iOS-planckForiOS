@@ -233,6 +233,16 @@ public extension String {
         }
         return self
     }
+
+    /**
+    - Returns: The given string or "" (the empty `String`) if that `String` is nil.
+     */
+    public static func orEmpty(string: String?) -> String {
+        if let s = string {
+            return s
+        }
+        return ""
+    }
 }
 
 class Regex {
