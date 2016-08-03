@@ -120,10 +120,11 @@ class EmailHeaderView: UIView {
         lastLeftLabel = titleLabel
         var lastUsedLabel = titleLabel
 
+        let session = PEPSession.init()
         for rec in recipients {
             if let contact = rec as? Contact {
                 let recLabel = recipientBaseLabelWithText(contact.displayString())
-                let privacyColor = PEPUtil.privacyColorForContact(contact)
+                let privacyColor = PEPUtil.privacyColorForContact(contact, session: session)
                 UIHelper.setBackgroundColor(
                     privacyColor, forLabel: recLabel, defaultColor: recLabel.backgroundColor)
                 pos = putAdjacentLeftLabel(lastUsedLabel, rightLabel: recLabel, atLeftPos: pos,

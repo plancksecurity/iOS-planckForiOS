@@ -17,6 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let appConfig: AppConfig = AppConfig()
 
+    /** Keep open at all times */
+    var firstSession: PEPSession?
+
     /**
      Use for development. Remove all mails so they are fetched again.
      */
@@ -38,7 +41,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [NSObject: AnyObject]?) -> Bool {
+
+        // Open the first session from the main thread and keep it open
+        firstSession = PEPSession.init()
+
         Log.warnComponent(comp, "Library url: \(applicationDirectory())")
+
         AddressBook.checkAndTransfer(appConfig.coreDataUtil)
         setupDefaultSettings()
         return true
@@ -55,20 +63,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Do mySelf on all accounts
         if let accounts = appConfig.model.accountsByPredicate(nil, sortDescriptors: nil) {
+            let bgId = application.beginBackgroundTaskWithExpirationHandler() {
+                Log.infoComponent(self.comp, "Could not complete all myself in background")
+                self.appConfig.model.save()
+
+                // Shutdown pEp engine
+                self.firstSession = nil
+            }
             for acc in accounts {
                 let email = acc.email
-                let bgId = application.beginBackgroundTaskWithExpirationHandler() {
-                    Log.infoComponent(self.comp, "Could not myself for \(email)")
-                }
                 PEPUtil.myselfFromAccount(acc) { identity in
                     Log.infoComponent(self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
                     application.endBackgroundTask(bgId)
                 }
             }
+            self.appConfig.model.save()
+
+            // Shutdown pEp engine
+            firstSession = nil
         }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
+        // Open the first session from the main thread and keep it open
+        firstSession = PEPSession.init()
+
         AddressBook.checkAndTransfer(appConfig.coreDataUtil)
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
