@@ -8,11 +8,12 @@
 
 import UIKit
 
-class HandshakeViewController: UITableViewController {
+class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegate {
 
     var message: IMessage?
     var partner: Contact?
     var appConfig: AppConfig!
+    var hexamode: Bool = false
 
     let myselfLabel = 0
     let myselfContact = 1
@@ -63,6 +64,7 @@ class HandshakeViewController: UITableViewController {
             return cell
         }
         else if (indexPath.row == trustwords) {
+
             let cell = tableView.dequeueReusableCellWithIdentifier("trustwordCell", forIndexPath: indexPath) as! HandshakeTexViewTableViewCell
             if let p = partner {
                 let partnerPepContact = PEPUtil.pepContact(p)
@@ -70,9 +72,16 @@ class HandshakeViewController: UITableViewController {
                 let myselfContact = appConfig.model.contactByEmail(myselfEmail)
                 if let m = myselfContact {
                     let myselfContactPepContact = PEPUtil.pepContact(m)
-                    cell.handshakeTextView.text = PEPUtil.trustwordsForIdentity1(
+                    let recognizer = UITapGestureRecognizer(target: self, action:Selector("handleTap:"))
+                    recognizer.delegate = self
+                    cell.handshakeTextView.addGestureRecognizer(recognizer)
+                    if !hexamode {
+                        cell.handshakeTextView.text = PEPUtil.trustwordsForIdentity1(
                         myselfContactPepContact, identity2: partnerPepContact,
                         language: "en", session: nil)
+                    } else {
+                        cell.handshakeTextView.text = "0x0009 0x0002 0x0003"
+                    }
                 }
             }
             return cell
@@ -86,11 +95,9 @@ class HandshakeViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.dequeueReusableCellWithIdentifier("trustwordCell", forIndexPath: indexPath) as! HandshakeTexViewTableViewCell
-        if (indexPath.row == trustwords) {
-            cell.handshakeTextView.text = "0X23434 0X123424"
-        }
+    @IBAction func handleTap(sender: UITapGestureRecognizer) {
+        hexamode = !hexamode
+        self.tableView.reloadData()
     }
 }
 

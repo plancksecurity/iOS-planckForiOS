@@ -635,13 +635,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rC4-w0-03O">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="aaaa" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rC4-w0-03O">
                                             <rect key="frame" x="8" y="8" width="584" height="27"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                     </subviews>
+                                    <gestureRecognizers/>
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="rC4-w0-03O" secondAttribute="trailing" id="GHr-PA-Ujk"/>
                                         <constraint firstItem="rC4-w0-03O" firstAttribute="top" secondItem="dqb-4y-aM1" secondAttribute="topMargin" id="XnV-us-Zb2"/>
