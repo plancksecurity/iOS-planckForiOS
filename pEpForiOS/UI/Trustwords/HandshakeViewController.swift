@@ -10,7 +10,7 @@ import UIKit
 
 class HandshakeViewController: UITableViewController {
 
-    var message: Message?
+    var message: IMessage?
     var partner: Contact?
     var appConfig: AppConfig!
 

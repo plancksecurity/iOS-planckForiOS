@@ -11,7 +11,7 @@ import UIKit
 class TrustWordsViewController: UITableViewController {
 
     var allRecipients: NSOrderedSet?
-    var message: Message?
+    var message: IMessage?
     var firstReload = true
     var defaultBackground: UIColor?
     var stringRecipients:[String]!
