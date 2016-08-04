@@ -100,4 +100,14 @@ public struct ReplyUtil {
         }
         return footer()
     }
+
+    public static func replySubjectForMail(mail: IMessage) -> String {
+        if let subject = mail.subject {
+            let re = NSLocalizedString(
+                "Re: ", comment: "The 'Re:' that gets appended to the subject line")
+            return "\(re) \(subject)"
+        } else {
+            return ""
+        }
+    }
 }

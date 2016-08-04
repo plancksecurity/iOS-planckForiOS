@@ -598,10 +598,10 @@ public class ComposeViewController: UITableViewController {
                 // Store for later access
                 subjectTextField = cell.subjectTextField
 
-                // Give the subject the focus, if it's not a pure compose
-                if composeMode != .Normal {
-                    subjectTextField?.becomeFirstResponder()
+                if let m = replyFromMessage() {
+                    subjectTextField?.text = ReplyUtil.replySubjectForMail(m)
                 }
+
                 return cell
             } else { // if indexPath.row == bodyTextRowNumber
                 // Body message cell
@@ -618,6 +618,11 @@ public class ComposeViewController: UITableViewController {
                     cell.bodyTextView.text = text
                 } else {
                     cell.bodyTextView.text = "\n\n\(ReplyUtil.footer())"
+                }
+
+                // Give it the focus, if it's not a pure compose
+                if composeMode != .Normal {
+                    cell.bodyTextView.becomeFirstResponder()
                 }
 
                 return cell
