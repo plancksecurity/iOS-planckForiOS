@@ -35,6 +35,8 @@
 		432722251D33F2FD009EC395 /* TrustWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722231D33F2FD009EC395 /* TrustWordsViewController.swift */; };
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
 		4333FBA51CD9FAC00093364F /* SmtpTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333FBA41CD9FAC00093364F /* SmtpTest.swift */; };
+		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
+		433BCD971D5388DF00DD98EF /* ReplyMailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD961D5388DF00DD98EF /* ReplyMailTests.swift */; };
 		43404B481D17D36D00D8B6FF /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43404B471D17D36D00D8B6FF /* EmailHeaderView.swift */; };
 		4340F5F91D363BE6006A5C82 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4340F5F81D363BE6006A5C82 /* ContactTableViewCell.swift */; };
 		4345967F1CE227D9004E8735 /* _MessageReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345967E1CE227D9004E8735 /* _MessageReference.swift */; };
@@ -226,6 +228,8 @@
 		432722231D33F2FD009EC395 /* TrustWordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewController.swift; sourceTree = "<group>"; };
 		432F7D601D2102F10094F097 /* PEPSessionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionTest.swift; sourceTree = "<group>"; };
 		4333FBA41CD9FAC00093364F /* SmtpTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpTest.swift; sourceTree = "<group>"; };
+		433BCD941D5388C100DD98EF /* ReplyUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyUtil.swift; sourceTree = "<group>"; };
+		433BCD961D5388DF00DD98EF /* ReplyMailTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyMailTests.swift; sourceTree = "<group>"; };
 		43404B471D17D36D00D8B6FF /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
 		4340F5F81D363BE6006A5C82 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		4345967E1CE227D9004E8735 /* _MessageReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _MessageReference.swift; sourceTree = "<group>"; };
@@ -529,6 +533,7 @@
 				436F8E131D36706A007E9829 /* StringExtensionsTest.swift */,
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
+				433BCD961D5388DF00DD98EF /* ReplyMailTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -558,6 +563,7 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				433BCD941D5388C100DD98EF /* ReplyUtil.swift */,
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
 				A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */,
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
@@ -992,6 +998,7 @@
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
+				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
 				43ED53781CC77F95006AB156 /* SMTPSettingsTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1001,6 +1008,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */,
+				433BCD971D5388DF00DD98EF /* ReplyMailTests.swift in Sources */,
 				431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */,
 				438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,

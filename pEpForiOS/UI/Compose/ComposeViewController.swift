@@ -58,7 +58,7 @@ public class ComposeViewController: UITableViewController {
     /**
      The message to appear in the body text when it's empty.
      */
-    let emptyBodyTextMessage: String
+    let sentByPep: String
 
     @IBOutlet weak var sendButton: UIBarButtonItem!
 
@@ -137,6 +137,9 @@ public class ComposeViewController: UITableViewController {
 
         /** Reply to from */
         case ReplyFrom
+
+        /** Reply to all */
+        case ReplyAll
     }
 
     /**
@@ -153,9 +156,9 @@ public class ComposeViewController: UITableViewController {
     required public init?(coder aDecoder: NSCoder) {
         delimiterWithSpace = "\(recipientStringDelimiter) "
          trailingPattern = "\(recipientStringDelimiter)\\s*"
-        emptyBodyTextMessage = NSLocalizedString(
-            "Enter text here",
-            comment: "Placeholder text for where the user should enter the email body text")
+        sentByPep = NSLocalizedString(
+            "Sent with p≡p",
+            comment: "Mail footer/default text")
         super.init(coder: aDecoder)
     }
 
@@ -558,6 +561,29 @@ public class ComposeViewController: UITableViewController {
         return nil
     }
 
+    func quoteText(text: String) -> String {
+        let newLineCS = NSCharacterSet.init(charactersInString: newline)
+        let lines = text.componentsSeparatedByCharactersInSet(newLineCS)
+        let quoted = lines.map() {
+            return "> \($0)"
+        }
+        let quotedText = quoted.joinWithSeparator(newline)
+        return quotedText
+    }
+
+    func quotedMailTextForMail(mail: IMessage) -> String {
+        if let text = mail.longMessage {
+            let replyAll = composeMode == .ReplyAll
+
+            let quotedText = quoteText(text)
+            let citation: String? = ReplyUtil.citationHeaderForMessage(mail, replyAll: replyAll)
+            if let c = citation {
+                return "\n\(sentByPep)\n\n\(c)\n\n\(quotedText)"
+            }
+        }
+        return sentByPep
+    }
+
     override public func tableView(tableView: UITableView,
                             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let recipientCellID = "RecipientCell"
@@ -612,11 +638,17 @@ public class ComposeViewController: UITableViewController {
                 // Body message cell
                 let cell = tableView.dequeueReusableCellWithIdentifier(
                     messageBodyCellID, forIndexPath: indexPath) as! MessageBodyCell
-                cell.bodyTextView.text = emptyBodyTextMessage
                 cell.bodyTextView.delegate = self
 
                 // Store the body text field for later access
                 longBodyMessageTextView = cell.bodyTextView
+
+                if let om = replyFromMessage() {
+                    let text = quotedMailTextForMail(om)
+                    cell.bodyTextView.text = text
+                } else {
+                    cell.bodyTextView.text = "\n\n\(sentByPep)"
+                }
 
                 return cell
             }
@@ -817,7 +849,7 @@ extension ComposeViewController: UITextViewDelegate {
 
     public func textViewShouldBeginEditing(textView: UITextView) -> Bool {
         if textView == longBodyMessageTextView {
-            if longBodyMessageTextView?.text == emptyBodyTextMessage {
+            if longBodyMessageTextView?.text == sentByPep {
                 longBodyMessageTextView?.text = ""
             }
         }
@@ -827,7 +859,7 @@ extension ComposeViewController: UITextViewDelegate {
     public func textViewShouldEndEditing(textView: UITextView) -> Bool {
         if textView == longBodyMessageTextView {
             if longBodyMessageTextView?.text == "" || longBodyMessageTextView?.text == nil {
-                longBodyMessageTextView?.text = emptyBodyTextMessage
+                longBodyMessageTextView?.text = sentByPep
             }
         }
         return true

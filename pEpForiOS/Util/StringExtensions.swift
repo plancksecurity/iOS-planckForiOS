@@ -243,6 +243,13 @@ public extension String {
         }
         return ""
     }
+
+    /**
+     - Returns: True if the given string starts with the given prefix.
+     */
+    public func startsWith(prefix: String) -> Bool {
+        return matchesPattern("^\(prefix)")
+    }
 }
 
 class Regex {
