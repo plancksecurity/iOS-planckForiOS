@@ -30,13 +30,11 @@ var pepColorDictionary: [Int32: PEP_color] =
      PEP_rating_b0rken.rawValue: PEP_rating_b0rken,
      PEP_rating_under_attack.rawValue: PEP_rating_under_attack]
 
-var pepExplanationDictionary: [Int32: String] =
+var pepTittleDictionary: [Int32: String] =
     [PEP_rating_under_attack.rawValue: "Under Attack",
-    PEP_rating_b0rken.rawValue: "-",
+    PEP_rating_b0rken.rawValue: "Ooops: Internal problem",
     PEP_rating_mistrust.rawValue: "Mistrusted",
-
     PEP_rating_fully_anonymous.rawValue: "Secure & Trusted",
-
     PEP_rating_trusted_and_anonymized.rawValue: "Secure & Trusted",
     PEP_rating_trusted.rawValue: "Secure & Trusted",
     PEP_rating_reliable.rawValue: "Secure",
@@ -46,6 +44,69 @@ var pepExplanationDictionary: [Int32: String] =
     PEP_rating_have_no_key.rawValue: "Cannot Decrypt",
     PEP_rating_cannot_decrypt.rawValue: "Cannot Decrypt",
     PEP_rating_undefined.rawValue: "Unknown"]
+
+
+var pepExplanationDictionary: [Int32: String] =
+    [PEP_rating_under_attack.rawValue:
+        "This message is not secure and has been tampered with.",
+     PEP_rating_b0rken.rawValue:
+        "-",
+     PEP_rating_mistrust.rawValue:
+        "This message has a communication partner that has previously been marked as mistrusted.",
+     PEP_rating_fully_anonymous.rawValue:
+        "This message is secure and trusted.",
+     PEP_rating_trusted_and_anonymized.rawValue:
+        "This message is secure and trusted.",
+     PEP_rating_trusted.rawValue:
+        "This message is secure and trusted.",
+     PEP_rating_reliable.rawValue:
+        "This message is secure but you still need to verify the"
+        + "identity of your communication partner.",
+     PEP_rating_unreliable.rawValue:
+        "This message has unreliable protection",
+     PEP_rating_unencrypted_for_some.rawValue:
+        "This message is unsecure for some communication partners.",
+     PEP_rating_unencrypted.rawValue:
+        "This message is unsecure.",
+     PEP_rating_have_no_key.rawValue:
+        "This message cannot be decrypted because the key is not available.",
+     PEP_rating_cannot_decrypt.rawValue:
+        "This message cannot be decrypted.",
+     PEP_rating_undefined.rawValue:
+        "This message does not contain enough information to determine if it is secure."]
+
+
+var pepSuggestionDictionary: [Int32: String] =
+    [PEP_rating_under_attack.rawValue:
+        "Separately verify the content of this message with your communication partner.",
+     PEP_rating_b0rken.rawValue: "-",
+     PEP_rating_mistrust.rawValue:
+        "Re-establish the connection with your communication partner and try"
+        + "to complete another handshake.",
+     PEP_rating_fully_anonymous.rawValue:
+        "No action needed!",
+     PEP_rating_trusted_and_anonymized.rawValue:
+        "No action needed!",
+     PEP_rating_trusted.rawValue:
+        "No action needed!",
+     PEP_rating_reliable.rawValue:
+        "Complete a handshake with your communication partner. A handshake is needed only once per"
+            + "partner and will ensure secure and trusted communication.",
+     PEP_rating_unreliable.rawValue:
+        "This message has no reliable encryption or no signature. Ask your communication"
+            + "partner to upgrade their encryption solution or install p≡p.",
+     PEP_rating_unencrypted_for_some.rawValue:
+        "Make sure the privacy status for each communication partner listed is at least secure",
+     PEP_rating_unencrypted.rawValue:
+        "Please ask your communication partner to use an encryption solution or install p≡p.",
+     PEP_rating_have_no_key.rawValue:
+        "If this message was addressed to you, please inform the sender"
+        + "that you don't have the key.",
+     PEP_rating_cannot_decrypt.rawValue:
+        "If this message was addressed to you, please inform the sender"
+        + "that you don't have the key.",
+     PEP_rating_undefined.rawValue:
+        "Please add the necessary information."]
 
 
 public class PEPUtil {
@@ -486,7 +547,7 @@ public class PEPUtil {
     }
 
     public static func pepExplanationFromColor(pepColorRating: PEP_color) -> String? {
-        return pepExplanationDictionary[pepColorRating.rawValue]
+        return pepTittleDictionary[pepColorRating.rawValue]
     }
 
     public static func sessionOrReuse(session: PEPSession?) -> PEPSession {
