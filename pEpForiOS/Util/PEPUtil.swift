@@ -432,11 +432,7 @@ public class PEPUtil {
 
     public static func colorRatingForContact(contact: IContact,
                                              session: PEPSession? = nil) -> PEP_color {
-        var theSession: PEPSession! = session
-        if theSession == nil {
-            theSession = PEPSession.init()
-        }
-
+        let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
         let color = theSession.identityColor(pepC as [NSObject : AnyObject])
         return color
@@ -444,11 +440,7 @@ public class PEPUtil {
 
     public static func privacyColorForContact(contact: IContact,
                                               session: PEPSession? = nil) -> PrivacyColor {
-        var theSession: PEPSession! = session
-        if theSession == nil {
-            theSession = PEPSession.init()
-        }
-
+        let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
         let color = theSession.identityColor(pepC as [NSObject : AnyObject])
         return privacyColorFromPepColorRating(color)
@@ -616,5 +608,38 @@ public class PEPUtil {
 
         // TODO: Map the following:
         // kPepSent, kPepReceived, kPepReplyTo, kPepInReplyTo, kPepReferences, kPepOptFields
+    }
+
+    /**
+     - Returns: A non-optional session from an optional one. If the input session is nil,
+     one is created on the spot.
+     */
+    public static func useOrCreateSession(session: PEPSession?) -> PEPSession {
+        if let s = session {
+            return s
+        }
+        return PEPSession.init()
+    }
+
+    /**
+     - Returns: The fingerprint for a contact.
+     */
+    public static func fingprprintForContact(
+        contact: IContact, session: PEPSession? = nil) -> String? {
+        let pepC = pepContact(contact)
+        return fingprprintForPepContact(pepC)
+    }
+
+    /**
+     - Returns: The fingerprint for a pEp contact.
+     */
+    public static func fingprprintForPepContact(
+        contact: PEPContact, session: PEPSession? = nil) -> String? {
+        let pepDict = NSMutableDictionary.init(dictionary: contact)
+
+        let theSession = useOrCreateSession(session)
+        theSession.updateIdentity(pepDict)
+
+        return pepDict[kPepFingerprint] as? String
     }
 }
