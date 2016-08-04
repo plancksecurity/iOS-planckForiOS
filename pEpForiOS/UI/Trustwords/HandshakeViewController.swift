@@ -8,6 +8,12 @@
 
 import UIKit
 
+extension String {
+    func insert(string:String,ind:Int) -> String {
+        return  String(self.characters.prefix(ind)) + string + String(self.characters.suffix(self.characters.count-ind))
+    }
+}
+
 class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegate {
 
     var message: IMessage?
@@ -72,7 +78,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                 let myselfContact = appConfig.model.contactByEmail(myselfEmail)
                 if let m = myselfContact {
                     let myselfContactPepContact = PEPUtil.pepContact(m)
-                    let recognizer = UITapGestureRecognizer(target: self, action:Selector("handleTap:"))
+                    let recognizer = UITapGestureRecognizer(target: self, action:#selector(HandshakeViewController.handleTap(_:)))
                     recognizer.delegate = self
                     cell.handshakeTextView.addGestureRecognizer(recognizer)
                     if !hexamode {
@@ -80,7 +86,10 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                         myselfContactPepContact, identity2: partnerPepContact,
                         language: "en", session: nil)
                     } else {
-                        cell.handshakeTextView.text = "0x0009 0x0002 0x0003"
+                        let myselfFingerprints = PEPUtil.fingprprintForContact(myselfContact!)
+                        let partnerFingerprints = PEPUtil.fingprprintForContact(partner!)
+                        let bothFingerprints = "\(partnerFingerprints!) \n \(myselfFingerprints!)"
+                        cell.handshakeTextView.text = bothFingerprints
                     }
                 }
             }
