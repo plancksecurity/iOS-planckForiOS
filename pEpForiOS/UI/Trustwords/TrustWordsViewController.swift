@@ -99,7 +99,6 @@ class TrustWordsViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
                                                            forIndexPath: indexPath) as! TrustWordsViewCell
             if let allContact = allRecipients {
-                let _ = indexPath.row - 2
                 let contact: Contact  = allContact[indexPath.row-2] as! Contact
                 cell.handshakeContactUILabel.text = contact.displayString()
                 cell.handshakeUIButton.tag = indexPath.row
