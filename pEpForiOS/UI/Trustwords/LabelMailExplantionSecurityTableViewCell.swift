@@ -10,6 +10,7 @@ import UIKit
 
 class LabelMailExplantionSecurityTableViewCell: UITableViewCell {
     @IBOutlet weak var mailExplanationSecurityUILabel: UILabel!
+    @IBOutlet weak var moreInfoUIButton: UIButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()

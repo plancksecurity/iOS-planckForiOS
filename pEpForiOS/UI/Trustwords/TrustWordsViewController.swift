@@ -109,6 +109,26 @@ class TrustWordsViewController: UITableViewController {
         return cell
     }
 
+    func showErrorMessage (message: String) {
+        let alertView = UIAlertController(title: NSLocalizedString("Suggestion",comment: "Suggestion tittle"),
+                                          message:NSLocalizedString(message, comment: "Suggestion"), preferredStyle: .Alert)
+        alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok",comment: "confirm  button text"),
+            style: .Default, handler: nil))
+        presentViewController(alertView, animated: true, completion: nil)
+    }
+
+    @IBAction func showMoreInfo(sender: AnyObject) {
+        if let m = message {
+            if let mailPepColor = m.pepColorRating?.integerValue {
+                if let pepColor = PEPUtil.colorRatingFromInt(mailPepColor) {
+                    if let suggestion = PEPUtil.pepSuggestionFromColor(pepColor) {
+                        self.showErrorMessage(suggestion)
+                    }
+                }
+            }
+        }
+    }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == handshakeSegue) {
             let index = sender.tag
@@ -122,6 +142,7 @@ class TrustWordsViewController: UITableViewController {
             }
         }
     }
+
 
 
 }

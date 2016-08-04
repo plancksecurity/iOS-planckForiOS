@@ -554,6 +554,10 @@ public class PEPUtil {
         return pepExplanationDictionary[pepColorRating.rawValue]
     }
 
+    public static func pepSuggestionFromColor(pepColorRating: PEP_color) -> String? {
+        return pepSuggestionDictionary[pepColorRating.rawValue]
+    }
+
     public static func sessionOrReuse(session: PEPSession?) -> PEPSession {
         if session == nil {
             return PEPSession.init()

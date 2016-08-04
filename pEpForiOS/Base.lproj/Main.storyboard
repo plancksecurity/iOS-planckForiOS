@@ -574,15 +574,30 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8AX-lF-xUL">
+                                            <rect key="frame" x="215" y="9" width="22" height="22"/>
+                                            <connections>
+                                                <action selector="showMoreInfo:" destination="2d7-Da-IgM" eventType="touchUpInside" id="MyZ-yv-EEK"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="8AX-lF-xUL" firstAttribute="leading" secondItem="S6T-H8-eCy" secondAttribute="trailing" constant="47" id="SAE-xj-rrf"/>
                                         <constraint firstItem="S6T-H8-eCy" firstAttribute="leading" secondItem="rRf-0n-OEF" secondAttribute="leadingMargin" constant="4" id="eF7-8i-1w9"/>
+                                        <constraint firstItem="8AX-lF-xUL" firstAttribute="top" secondItem="rRf-0n-OEF" secondAttribute="topMargin" constant="1" id="nPi-hf-kDJ"/>
                                         <constraint firstAttribute="topMargin" secondItem="S6T-H8-eCy" secondAttribute="top" constant="4" id="r0n-7H-rtr"/>
+                                        <constraint firstItem="8AX-lF-xUL" firstAttribute="bottom" secondItem="S6T-H8-eCy" secondAttribute="bottom" id="v8w-f2-Sqj"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="S6T-H8-eCy" secondAttribute="bottom" constant="4" id="yAg-14-eeI"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="v8w-f2-Sqj"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="mailExplanationSecurityUILabel" destination="S6T-H8-eCy" id="JGh-6s-V9a"/>
+                                    <outlet property="moreInfoUIButton" destination="8AX-lF-xUL" id="Awl-2S-K3k"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -635,8 +650,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="aaaa" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rC4-w0-03O">
-                                            <rect key="frame" x="8" y="8" width="584" height="27"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" editable="NO" text="TextView" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rC4-w0-03O">
+                                            <rect key="frame" x="8" y="8" width="584" height="33"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
