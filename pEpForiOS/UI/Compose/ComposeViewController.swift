@@ -55,11 +55,6 @@ public class ComposeViewController: UITableViewController {
 
     let delimiterChars: NSCharacterSet = NSCharacterSet.init(charactersInString: ":,")
 
-    /**
-     The message to appear in the body text when it's empty.
-     */
-    let sentByPep: String
-
     @IBOutlet weak var sendButton: UIBarButtonItem!
 
     /**
@@ -156,9 +151,6 @@ public class ComposeViewController: UITableViewController {
     required public init?(coder aDecoder: NSCoder) {
         delimiterWithSpace = "\(recipientStringDelimiter) "
          trailingPattern = "\(recipientStringDelimiter)\\s*"
-        sentByPep = NSLocalizedString(
-            "Sent with p≡p",
-            comment: "Mail footer/default text")
         super.init(coder: aDecoder)
     }
 
@@ -561,29 +553,6 @@ public class ComposeViewController: UITableViewController {
         return nil
     }
 
-    func quoteText(text: String) -> String {
-        let newLineCS = NSCharacterSet.init(charactersInString: newline)
-        let lines = text.componentsSeparatedByCharactersInSet(newLineCS)
-        let quoted = lines.map() {
-            return "> \($0)"
-        }
-        let quotedText = quoted.joinWithSeparator(newline)
-        return quotedText
-    }
-
-    func quotedMailTextForMail(mail: IMessage) -> String {
-        if let text = mail.longMessage {
-            let replyAll = composeMode == .ReplyAll
-
-            let quotedText = quoteText(text)
-            let citation: String? = ReplyUtil.citationHeaderForMessage(mail, replyAll: replyAll)
-            if let c = citation {
-                return "\n\(sentByPep)\n\n\(c)\n\n\(quotedText)"
-            }
-        }
-        return sentByPep
-    }
-
     override public func tableView(tableView: UITableView,
                             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let recipientCellID = "RecipientCell"
@@ -643,11 +612,12 @@ public class ComposeViewController: UITableViewController {
                 // Store the body text field for later access
                 longBodyMessageTextView = cell.bodyTextView
 
+                let replyAll = composeMode == .ReplyAll
                 if let om = replyFromMessage() {
-                    let text = quotedMailTextForMail(om)
+                    let text = ReplyUtil.quotedMailTextForMail(om, replyAll: replyAll)
                     cell.bodyTextView.text = text
                 } else {
-                    cell.bodyTextView.text = "\n\n\(sentByPep)"
+                    cell.bodyTextView.text = "\n\n\(ReplyUtil.footer())"
                 }
 
                 return cell
@@ -845,56 +815,5 @@ extension ComposeViewController: UITextViewDelegate {
             updateViewFromRecipients()
         }
         return true
-    }
-
-    public func textViewShouldBeginEditing(textView: UITextView) -> Bool {
-        if textView == longBodyMessageTextView {
-            if longBodyMessageTextView?.text == sentByPep {
-                longBodyMessageTextView?.text = ""
-            }
-        }
-        return true
-    }
-
-    public func textViewShouldEndEditing(textView: UITextView) -> Bool {
-        if textView == longBodyMessageTextView {
-            if longBodyMessageTextView?.text == "" || longBodyMessageTextView?.text == nil {
-                longBodyMessageTextView?.text = sentByPep
-            }
-        }
-        return true
-    }
-}
-
-// MARK: -- UITextFieldDelegate (for any recipient text field)
-
-extension ComposeViewController: UITextFieldDelegate {
-    func isFreshlyEnteredTextProbablyEmail(oldText: String, newText: String,
-                                           delimiter: String) -> Bool {
-        return newText != "\(delimiter) " && !oldText.matchesPattern("\(delimiter) $") &&
-            newText.removeTrailingPattern(
-                "\(delimiter)\\s*").isProbablyValidEmailListSeparatedBy(delimiter)
-    }
-
-    func attibutedStringFromEmailsWithColors(
-        emailsAndColor: [(String, UIColor?)]) -> NSMutableAttributedString {
-        let string = NSMutableAttributedString()
-        let spacerString = NSAttributedString.init(string: self.delimiterWithSpace)
-        for (email, uiColor) in emailsAndColor {
-            if string.length > 0 {
-                string.appendAttributedString(spacerString)
-            }
-            let emailString: NSAttributedString?
-            if let c = uiColor {
-                emailString = NSAttributedString.init(
-                    string: email, attributes: [NSBackgroundColorAttributeName: c])
-            } else {
-                emailString = NSAttributedString.init(string: email)
-            }
-            if let es = emailString {
-                string.appendAttributedString(es)
-            }
-        }
-        return string
     }
 }

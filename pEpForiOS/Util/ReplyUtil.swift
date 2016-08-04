@@ -10,12 +10,23 @@ import UIKit
 
 public struct ReplyUtil {
     static let nameSeparator = ", "
+    static let newline = "\n"
 
     public static func replyNameFromContact(contact: IContact) -> String {
         if let name = contact.name {
             return name
         }
         return contact.email
+    }
+
+    public static func quoteText(text: String) -> String {
+        let newLineCS = NSCharacterSet.init(charactersInString: newline)
+        let lines = text.componentsSeparatedByCharactersInSet(newLineCS)
+        let quoted = lines.map() {
+            return "> \($0)"
+        }
+        let quotedText = quoted.joinWithSeparator(newline)
+        return quotedText
     }
 
     public static func citationHeaderForMessage(message: IMessage, replyAll: Bool) -> String {
@@ -72,5 +83,21 @@ public struct ReplyUtil {
                     comment: "Reply to multiple contacts, without date")
             }
         }
+    }
+
+    public static func footer() -> String {
+        return NSLocalizedString("Sent with p≡p",
+                                 comment: "Mail footer/default text")
+    }
+
+    public static func quotedMailTextForMail(mail: IMessage, replyAll: Bool) -> String {
+        if let text = mail.longMessage {
+            let quotedText = quoteText(text)
+            let citation: String? = citationHeaderForMessage(mail, replyAll: replyAll)
+            if let c = citation {
+                return "\n\(footer())\n\n\(c)\n\n\(quotedText)"
+            }
+        }
+        return footer()
     }
 }
