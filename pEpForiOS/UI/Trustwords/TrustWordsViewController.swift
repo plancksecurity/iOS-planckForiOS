@@ -75,10 +75,10 @@ class TrustWordsViewController: UITableViewController {
                         if let uiColor = paintingMailStatus(privateColor) {
                             cell.backgroundColor = uiColor
                         }
+                        cell.mailSecurityUILabel.text = PEPUtil.pepTittleFromColor(pc)
                     }
                 }
             }
-            cell.mailSecurityUILabel.text = "hola"
             return cell
         }
         if (indexPath.row == 1) {
@@ -91,7 +91,6 @@ class TrustWordsViewController: UITableViewController {
                     if let pepColor = PEPUtil.colorRatingFromInt(mailPepColor) {
                         cell.mailExplanationSecurityUILabel.text =
                             PEPUtil.pepExplanationFromColor(pepColor)
-
                     }
                 }
             }
