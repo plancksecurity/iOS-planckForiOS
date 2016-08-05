@@ -30,50 +30,53 @@ var pepColorDictionary: [Int32: PEP_color] =
      PEP_rating_b0rken.rawValue: PEP_rating_b0rken,
      PEP_rating_under_attack.rawValue: PEP_rating_under_attack]
 
-var pepTittleDictionary: [Int32: String] =
-    [PEP_rating_under_attack.rawValue: "Under Attack",
-    PEP_rating_b0rken.rawValue: "Ooops: Internal problem",
-    PEP_rating_mistrust.rawValue: "Mistrusted",
-    PEP_rating_fully_anonymous.rawValue: "Secure & Trusted",
-    PEP_rating_trusted_and_anonymized.rawValue: "Secure & Trusted",
-    PEP_rating_trusted.rawValue: "Secure & Trusted",
-    PEP_rating_reliable.rawValue: "Secure",
-    PEP_rating_unreliable.rawValue: "Unreliable Security",
-    PEP_rating_unencrypted_for_some.rawValue: "Unsecure for Some",
-    PEP_rating_unencrypted.rawValue: "Unsecure",
-    PEP_rating_have_no_key.rawValue: "Cannot Decrypt",
-    PEP_rating_cannot_decrypt.rawValue: "Cannot Decrypt",
-    PEP_rating_undefined.rawValue: "Unknown"]
+var pepTitleDictionary: [Int32: String] =
+    [PEP_rating_under_attack.rawValue: NSLocalizedString("Under Attack", comment: " "),
+    PEP_rating_b0rken.rawValue: NSLocalizedString("Ooops: Internal problem", comment: " "),
+    PEP_rating_mistrust.rawValue: NSLocalizedString("Mistrusted", comment: " "),
+    PEP_rating_fully_anonymous.rawValue: NSLocalizedString("Secure & Trusted", comment: " "),
+    PEP_rating_trusted_and_anonymized.rawValue: NSLocalizedString("Secure & Trusted", comment: " "),
+    PEP_rating_trusted.rawValue: NSLocalizedString("Secure & Trusted", comment: " "),
+    PEP_rating_reliable.rawValue: NSLocalizedString("Secure", comment: " "),
+    PEP_rating_unreliable.rawValue: NSLocalizedString("Unreliable Security", comment: " "),
+    PEP_rating_unencrypted_for_some.rawValue: NSLocalizedString("Unsecure for Some", comment: " "),
+    PEP_rating_unencrypted.rawValue: NSLocalizedString("Unsecure", comment: " "),
+    PEP_rating_have_no_key.rawValue: NSLocalizedString("Cannot Decrypt", comment: " "),
+    PEP_rating_cannot_decrypt.rawValue: NSLocalizedString("Cannot Decrypt", comment: " "),
+    PEP_rating_undefined.rawValue: NSLocalizedString("Unknown",comment: " ")]
 
 
 var pepExplanationDictionary: [Int32: String] =
     [PEP_rating_under_attack.rawValue:
-        "This message is not secure and has been tampered with.",
+        NSLocalizedString("This message is not secure and has been tampered with.", comment: " "),
      PEP_rating_b0rken.rawValue:
-        "-",
+        NSLocalizedString("-", comment: " "),
      PEP_rating_mistrust.rawValue:
-        "This message has a communication partner that has previously been marked as mistrusted.",
+        NSLocalizedString("This message has a communication partner that has", comment: " ") +
+        NSLocalizedString("previously been marked as mistrusted.", comment: " "),
      PEP_rating_fully_anonymous.rawValue:
-        "This message is secure and trusted.",
+        NSLocalizedString("This message is secure and trusted.", comment: " "),
      PEP_rating_trusted_and_anonymized.rawValue:
-        "This message is secure and trusted.",
+        NSLocalizedString("This message is secure and trusted.", comment: " "),
      PEP_rating_trusted.rawValue:
-        "This message is secure and trusted.",
+        NSLocalizedString("This message is secure and trusted.", comment: " "),
      PEP_rating_reliable.rawValue:
-        "This message is secure but you still need to verify the"
-        + "identity of your communication partner.",
+        NSLocalizedString("This message is secure but you still need to verify the", comment: " ")
+        + NSLocalizedString("identity of your communication partner.", comment: " "),
      PEP_rating_unreliable.rawValue:
-        "This message has unreliable protection",
+        NSLocalizedString("This message has unreliable protection", comment: " "),
      PEP_rating_unencrypted_for_some.rawValue:
-        "This message is unsecure for some communication partners.",
+        NSLocalizedString("This message is unsecure for some communication partners.", comment: " "),
      PEP_rating_unencrypted.rawValue:
-        "This message is unsecure.",
+        NSLocalizedString("This message is unsecure.", comment: " "),
      PEP_rating_have_no_key.rawValue:
-        "This message cannot be decrypted because the key is not available.",
+        NSLocalizedString("This message cannot be decrypted", comment: " ") +
+        NSLocalizedString("because the key is not available.", comment: " "),
      PEP_rating_cannot_decrypt.rawValue:
-        "This message cannot be decrypted.",
+        NSLocalizedString("This message cannot be decrypted.", comment: " "),
      PEP_rating_undefined.rawValue:
-        "This message does not contain enough information to determine if it is secure."]
+        NSLocalizedString("This message does not contain enough information to", comment: " ") +
+        NSLocalizedString("determine if it is secure.",  comment: " ")]
 
 
 var pepSuggestionDictionary: [Int32: String] =
@@ -546,29 +549,16 @@ public class PEPUtil {
         return pepColorDictionary[int32]
     }
 
-    public static func pepTittleFromColor(pepColorRating: PEP_color) -> String? {
-        var localizedTitle = NSLocalizedString(" ", comment: " ")
-        if let tittle = pepTittleDictionary[pepColorRating.rawValue] {
-               localizedTitle = NSLocalizedString(tittle, comment:" ")
-        }
-        return localizedTitle
+    public static func pepTitleFromColor(pepColorRating: PEP_color) -> String? {
+        return pepTitleDictionary[pepColorRating.rawValue]
     }
 
     public static func pepExplanationFromColor(pepColorRating: PEP_color) -> String? {
-        var localizedExplanation = NSLocalizedString(" ", comment: " ")
-        if let explanation = pepExplanationDictionary[pepColorRating.rawValue] {
-            localizedExplanation = NSLocalizedString(explanation, comment:" ")
-        }
-        return localizedExplanation
+        return pepExplanationDictionary[pepColorRating.rawValue]
     }
 
     public static func pepSuggestionFromColor(pepColorRating: PEP_color) -> String? {
-
-        var localizedSuggestion = NSLocalizedString(" ", comment: " ")
-        if let suggestion = pepSuggestionDictionary[pepColorRating.rawValue] {
-            localizedSuggestion = NSLocalizedString(suggestion, comment:" ")
-        }
-        return localizedSuggestion
+        return pepSuggestionDictionary[pepColorRating.rawValue]
     }
 
     public static func sessionOrReuse(session: PEPSession?) -> PEPSession {

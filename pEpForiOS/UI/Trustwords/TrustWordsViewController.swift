@@ -73,7 +73,7 @@ class TrustWordsViewController: UITableViewController {
                         if let uiColor = paintingMailStatus(privateColor) {
                             cell.backgroundColor = uiColor
                         }
-                        cell.mailSecurityUILabel.text = PEPUtil.pepTittleFromColor(pc)
+                        cell.mailSecurityUILabel.text = PEPUtil.pepTitleFromColor(pc)
                     }
                 }
             }
