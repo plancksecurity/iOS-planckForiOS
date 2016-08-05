@@ -68,12 +68,14 @@
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="ccMessages" inverseEntity="Contact" syncable="YES"/>
         <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="messages" inverseEntity="Folder" syncable="YES"/>
         <relationship name="from" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="fromMessages" inverseEntity="Contact" syncable="YES"/>
-        <relationship name="references" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MessageReference" inverseName="referencingMessage" inverseEntity="MessageReference" syncable="YES"/>
+        <relationship name="messageReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MessageReference" inverseName="message" inverseEntity="MessageReference" syncable="YES"/>
+        <relationship name="references" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MessageReference" inverseName="referencingMessages" inverseEntity="MessageReference" syncable="YES"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="toMessages" inverseEntity="Contact" syncable="YES"/>
     </entity>
     <entity name="MessageReference" representedClassName="MessageReference" syncable="YES">
         <attribute name="messageID" attributeType="String" syncable="YES"/>
-        <relationship name="referencingMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="references" inverseEntity="Message" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="messageReference" inverseEntity="Message" syncable="YES"/>
+        <relationship name="referencingMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="references" inverseEntity="Message" syncable="YES"/>
     </entity>
     <elements>
         <element name="Account" positionX="-63" positionY="-18" width="128" height="225"/>
@@ -81,7 +83,7 @@
         <element name="AttachmentData" positionX="-36" positionY="144" width="128" height="75"/>
         <element name="Contact" positionX="-54" positionY="90" width="128" height="180"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="150"/>
-        <element name="Message" positionX="-45" positionY="99" width="128" height="315"/>
-        <element name="MessageReference" positionX="-45" positionY="135" width="128" height="75"/>
+        <element name="Message" positionX="-45" positionY="99" width="128" height="330"/>
+        <element name="MessageReference" positionX="-45" positionY="135" width="128" height="90"/>
     </elements>
 </model>

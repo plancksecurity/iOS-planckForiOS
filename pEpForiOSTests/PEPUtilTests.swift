@@ -182,8 +182,17 @@ class PEPUtilTests: XCTestCase {
     }
 
     func testPepToPantomimeToPepWithoutAttachments() {
-        persistentSetup.model.insertOrUpdateFolderName(
+        let messageID2 = "messageID2"
+        let message2Subject = "hah!"
+        let messageIDs = ["messageID1", messageID2, "messageID3"]
+
+        let folder = persistentSetup.model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, accountEmail: persistentSetup.accountEmail)
+
+        let msg = persistentSetup.model.insertNewMessage()
+        msg.folder = folder as! Folder
+        msg.messageID = messageID2
+        msg.subject = message2Subject
 
         // Create pEp mail dict
         let pepMailOrig = NSMutableDictionary()
@@ -202,12 +211,14 @@ class PEPUtilTests: XCTestCase {
         pepMailOrig[kPepLongMessageFormatted] = "<b>Some HTML</b>"
         pepMailOrig[kPepID] = "<message001@peptest.ch>"
         pepMailOrig[kPepOutgoing] = true
+        pepMailOrig[kPepReferences] = messageIDs
 
         // Convert to pantomime
         let pantMail = PEPUtil.pantomimeMailFromPep(pepMailOrig as PEPMail)
         pantMail.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
 
         XCTAssertNotNil(pantMail.from())
+        XCTAssertEqual(pantMail.allReferences() as! [String], messageIDs)
 
         // Convert to model
         let message = persistentSetup.model.insertOrUpdatePantomimeMail(
@@ -221,6 +232,20 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(message?.longMessage, pepMailOrig[kPepLongMessage] as? String)
         XCTAssertEqual(message?.longMessageFormatted, pepMailOrig[kPepLongMessageFormatted]
             as? String)
+        XCTAssertEqual(message?.references.count, messageIDs.count)
+        if let m = message {
+            var counter = 0
+            for ref in m.references {
+                XCTAssertEqual(ref.messageID, messageIDs[counter])
+                if counter == 1 {
+                    XCTAssertNotNil(ref as? MessageReference)
+                    if let r = ref as? MessageReference {
+                        XCTAssertNotNil(r.message)
+                    }
+                }
+                counter = counter + 1
+            }
+        }
 
         XCTAssertEqual(message?.to.count, 1)
         let tosOpt = message?.to

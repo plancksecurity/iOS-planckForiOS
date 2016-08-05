@@ -9,7 +9,8 @@ public enum MessageReferenceAttributes: String {
 }
 
 public enum MessageReferenceRelationships: String {
-    case referencingMessage = "referencingMessage"
+    case message = "message"
+    case referencingMessages = "referencingMessages"
 }
 
 @objc public protocol _IMessageReference {
@@ -20,7 +21,9 @@ public enum MessageReferenceRelationships: String {
 
     // MARK: - Relationships
 
-    var referencingMessage: Message? { get set }
+    var message: Message? { get set }
+
+    var referencingMessages: NSSet { get set }
 
 }
 
@@ -55,7 +58,38 @@ public class _MessageReference: BaseManagedObject, _IMessageReference {
     // MARK: - Relationships
 
     @NSManaged public
-    var referencingMessage: Message?
+    var message: Message?
+
+    @NSManaged public
+    var referencingMessages: NSSet
+
+}
+
+public extension _MessageReference {
+
+    func addReferencingMessages(objects: NSSet) {
+        let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
+        mutable.unionSet(objects as Set<NSObject>)
+        self.referencingMessages = mutable.copy() as! NSSet
+    }
+
+    func removeReferencingMessages(objects: NSSet) {
+        let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
+        mutable.minusSet(objects as Set<NSObject>)
+        self.referencingMessages = mutable.copy() as! NSSet
+    }
+
+    func addReferencingMessagesObject(value: Message) {
+        let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
+        mutable.addObject(value)
+        self.referencingMessages = mutable.copy() as! NSSet
+    }
+
+    func removeReferencingMessagesObject(value: Message) {
+        let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
+        mutable.removeObject(value)
+        self.referencingMessages = mutable.copy() as! NSSet
+    }
 
 }
 

@@ -393,10 +393,6 @@ public class Model: IModel {
         return nil
     }
 
-    public func messageByPredicate(predicate: NSPredicate? = nil) -> IMessage? {
-        return messageByPredicate(predicate, sortDescriptors: nil)
-    }
-
     public func messageByPredicate(predicate: NSPredicate? = nil,
                                    sortDescriptors: [NSSortDescriptor]? = nil) -> IMessage? {
         return singleEntityWithName(Message.entityName(), predicate: predicate,
@@ -411,6 +407,11 @@ public class Model: IModel {
 
     public func messageCountByPredicate(predicate: NSPredicate? = nil) -> Int {
         return countWithName(Message.entityName(), predicate: predicate)
+    }
+
+    public func messageByMessageID(messageID: String) -> IMessage? {
+        let predicate = NSPredicate.init(format: "messageID = %@", messageID)
+        return messageByPredicate(predicate, sortDescriptors: nil)
     }
 
     public func lastUidInFolderNamed(folderName: String) -> UInt {
@@ -580,6 +581,9 @@ public class Model: IModel {
         let ref = NSEntityDescription.insertNewObjectForEntityForName(
             MessageReference.entityName(), inManagedObjectContext: context) as! MessageReference
         ref.messageID = messageID
+        if let msg = messageByMessageID(messageID) {
+            ref.message = msg as? Message
+        }
         return ref
     }
 

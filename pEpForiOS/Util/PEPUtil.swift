@@ -272,6 +272,14 @@ public class PEPUtil {
 
         dict[kPepAttachments] = message.attachments.map() { pepAttachment($0 as! IAttachment) }
 
+        var refs = [String]()
+        for ref in message.references {
+            refs.append(ref.messageID)
+        }
+        if refs.count > 0 {
+            dict[kPepReferences] = refs
+        }
+
         return dict as PEPMail
     }
 
@@ -389,10 +397,6 @@ public class PEPUtil {
         }
         if let refs = pepMail[kPepReferences] as? [AnyObject] {
             message.setReferences(refs)
-        }
-        if let inReplyTo = pepMail[kPepReferences] as? NSArray {
-            let s = inReplyTo.componentsJoinedByString(" ")
-            message.setInReplyTo(s)
         }
 
         // deal with MIME type
