@@ -57,8 +57,6 @@ class TrustWordsViewController: UITableViewController {
         return 1
     }
 
-    
-
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (indexPath.row == 0) {
              let cell = tableView.dequeueReusableCellWithIdentifier("mailSecurityLabelCell", forIndexPath: indexPath) as! LabelMailSecurityTableViewCell

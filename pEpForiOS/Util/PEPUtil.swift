@@ -547,15 +547,28 @@ public class PEPUtil {
     }
 
     public static func pepTittleFromColor(pepColorRating: PEP_color) -> String? {
-        return pepTittleDictionary[pepColorRating.rawValue]
+        var localizedTitle = NSLocalizedString(" ", comment: " ")
+        if let tittle = pepTittleDictionary[pepColorRating.rawValue] {
+               localizedTitle = NSLocalizedString(tittle, comment:" ")
+        }
+        return localizedTitle
     }
 
     public static func pepExplanationFromColor(pepColorRating: PEP_color) -> String? {
-        return pepExplanationDictionary[pepColorRating.rawValue]
+        var localizedExplanation = NSLocalizedString(" ", comment: " ")
+        if let explanation = pepExplanationDictionary[pepColorRating.rawValue] {
+            localizedExplanation = NSLocalizedString(explanation, comment:" ")
+        }
+        return localizedExplanation
     }
 
     public static func pepSuggestionFromColor(pepColorRating: PEP_color) -> String? {
-        return pepSuggestionDictionary[pepColorRating.rawValue]
+
+        var localizedSuggestion = NSLocalizedString(" ", comment: " ")
+        if let suggestion = pepSuggestionDictionary[pepColorRating.rawValue] {
+            localizedSuggestion = NSLocalizedString(suggestion, comment:" ")
+        }
+        return localizedSuggestion
     }
 
     public static func sessionOrReuse(session: PEPSession?) -> PEPSession {
