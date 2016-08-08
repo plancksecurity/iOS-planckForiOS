@@ -53,8 +53,11 @@ hg clone https://cacert.pep.foundation/dev/repos/pEpiOSAdapter
 
 hg clone https://cacert.pep-security.ch/dev/repos/pEp_for_iOS/
 
-# For testing server access, this is temporary:
+# Set up working account for unit tests. After copying, fill in working account:
 cp ./pEpForiOS/Sync/TestData.swift.sample ./pEpForiOS/Sync/TestData.swift
+
+# Set up working account for UI tests. After copying, fill in working account:
+cp ./pEpForiOSUITests/UITestData.swift.sample ./pEpForiOSUITests/UITestData.swift
 ```
 
 Note that netpgp includes a static openssl, and pEpEngine a static libcurl. For
