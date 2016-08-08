@@ -102,6 +102,10 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
         }
     }
 
+    /*@IBAction func confirmTrustwords(sender: AnyObject) {
+        PEPUtil.
+    }*/
+
     @IBAction func handleTap(sender: UITapGestureRecognizer) {
         hexamode = !hexamode
         self.tableView.reloadData()

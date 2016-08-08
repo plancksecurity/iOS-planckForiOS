@@ -688,6 +688,9 @@
                                             <state key="highlighted">
                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
+                                            <connections>
+                                                <action selector="confirmTrustwords:" destination="Nl7-KN-0hf" eventType="touchUpInside" id="lAo-mD-1cT"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OE7-HO-jeo">
                                             <rect key="frame" x="538" y="8" width="46" height="30"/>
