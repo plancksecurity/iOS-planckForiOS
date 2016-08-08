@@ -118,14 +118,26 @@ class TrustWordsViewController: UITableViewController {
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
                                                            forIndexPath: indexPath) as! TrustWordsViewCell
-            let contact: Contact  = allRecipientsFiltered[indexPath.row-numberOfStaticCell] as! Contact
+            let contactIndex = indexPath.row-numberOfStaticCell
+            let contact: Contact  = allRecipientsFiltered[contactIndex] as! Contact
             //cell.handshakeContactUILabel.text = contact.displayString()
-            cell.handshakeUIButton.enabled = !otherMyselfAccount.containsObject(contact)
 
             cell.handshakeContactUILabel.text = contact.email
-            cell.handshakeUIButton.tag = indexPath.row
+            cell.handshakeUIButton.tag = contactIndex
             let privacyColor = PEPUtil.privacyColorForContact(contact)
             cell.backgroundColor = paintingMailStatus(privacyColor)
+
+            cell.handshakeUIButton.enabled = !otherMyselfAccount.containsObject(contact)
+            switch privacyColor {
+            case .NoColor:
+                cell.handshakeUIButton.enabled = false
+            case .Red:
+                cell.handshakeUIButton.setTitle(NSLocalizedString("Trust Again", comment: "handshake"), forState: .Normal)
+            case .Green:
+                cell.handshakeUIButton.setTitle(NSLocalizedString("Reset trust", comment: "handshake"), forState: .Normal)
+            case .Yellow:
+                break
+            }
             return cell
         }
     }
@@ -150,30 +162,15 @@ class TrustWordsViewController: UITableViewController {
         }
     }
 
-  /*  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == handshakeSegue) {
-            let index = sender.tag
-            if let  allRecipientsAux = allRecipients {
-                if index > 2 {
-                    let contact = allRecipientsAux[index-3] as! Contact
-                    if let destination = segue.destinationViewController as? HandshakeViewController {
-                        destination.partner = contact
-                        destination.appConfig = appConfig
-                        destination.message = message
-                    }
+            let contactIndex = sender.tag
+                let contact = allRecipientsFiltered[contactIndex] as! Contact
+                if let destination = segue.destinationViewController as? HandshakeViewController {
+                    destination.partner = contact
+                    destination.appConfig = appConfig
+                    destination.message = message
                 }
-                else {
-                    if let m = message, _ = m.from {
-                        let contact = m.from!
-                        if let destination = segue.destinationViewController as? HandshakeViewController {
-                            destination.partner = contact
-                            destination.appConfig = appConfig
-                            destination.message = message
-                        }
-                    }
-                }
-
             }
-        }
-    }*/
+    }
 }
