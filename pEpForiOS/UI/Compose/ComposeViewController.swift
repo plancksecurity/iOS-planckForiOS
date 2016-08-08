@@ -342,24 +342,24 @@ public class ComposeViewController: UITableViewController {
         return message
     }
 
+    /**
+     Updates the given message with data from the view.
+     */
     func populateMessageWithViewData(message: IMessage, account: IAccount,
-                                     model: IModel) -> IMessage {
-        // Make a "copy", which really should be the same reference
-        let msg = message
-
+                                     model: IModel) {
         // reset
-        msg.to = []
-        msg.cc = []
-        msg.bcc = []
+        message.to = []
+        message.cc = []
+        message.bcc = []
 
-        msg.subject = nil
-        msg.longMessage = nil
-        msg.longMessageFormatted = nil
+        message.subject = nil
+        message.longMessage = nil
+        message.longMessageFormatted = nil
 
-        msg.references = []
+        message.references = []
 
         // from
-        msg.from = model.insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
+        message.from = model.insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
             as? Contact
 
         // recipients
@@ -383,11 +383,11 @@ public class ComposeViewController: UITableViewController {
                             let set = NSOrderedSet.init(array: contacts.map() {$0 as AnyObject})
                             switch rt {
                             case .To:
-                                msg.to = set
+                                message.to = set
                             case .CC:
-                                msg.cc = set
+                                message.cc = set
                             case .BCC:
-                                msg.bcc = set
+                                message.bcc = set
                             }
                         }
                     }
@@ -396,16 +396,38 @@ public class ComposeViewController: UITableViewController {
         }
 
         if let subjectText = subjectTextField?.text {
-            msg.subject = subjectText
+            message.subject = subjectText
         }
 
         if let bodyText = longBodyMessageTextView?.text {
-            msg.longMessage = bodyText
+            message.longMessage = bodyText
+        }
+    }
+
+    /**
+     Updates the given message with data from the original message,
+     if it exists (e.g., reply)
+     */
+    func populateMessageWithReplyData(message: IMessage) {
+        guard let om = replyFromMessage() else {
+            return
         }
 
-        // So far, we don't have references. Once we add reply, we will have.
+        guard let model = appConfig?.model else {
+            Log.warnComponent(comp, "Can't do anything without model")
+            return
+        }
 
-        return msg
+        message.references = om.references
+
+        // Handle references (see https://cr.yp.to/immhf/thread.html)
+        if let references = message.references.mutableCopy() as? NSMutableOrderedSet {
+            if let omid = om.messageID {
+                let ref = model.insertOrUpdateMessageReference(omid)
+                references.addObject(ref)
+                message.references = references
+            }
+        }
     }
 
     // MARK: -- Actions
@@ -425,12 +447,13 @@ public class ComposeViewController: UITableViewController {
                 account.email)
         }
 
-        guard let m = messageToSend else {
+        guard let msg = messageToSend else {
             Log.warnComponent(comp, "Really need a non-nil messageToSend")
             return
         }
 
-        let msg = populateMessageWithViewData(m, account: account, model: appC.model)
+        populateMessageWithViewData(msg, account: account, model: appC.model)
+        populateMessageWithReplyData(msg)
 
         model.networkActivity = true
         updateNetworkActivity()

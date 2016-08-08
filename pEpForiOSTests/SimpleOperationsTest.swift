@@ -260,7 +260,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let encryptionData = EncryptionData.init(
             connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.coreDataUtil, messageID: mail.objectID,
+            coreDataUtil: persistentSetup.coreDataUtil, coreDataMessageID: mail.objectID,
             accountEmail: account.email, outgoing: true)
         let encOp = EncryptMailOperation.init(encryptionData: encryptionData)
 
@@ -317,7 +317,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let encryptionData = EncryptionData.init(
             connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.coreDataUtil, messageID: mail.objectID,
+            coreDataUtil: persistentSetup.coreDataUtil, coreDataMessageID: mail.objectID,
             accountEmail: account.email, outgoing: true)
         let encOp = EncryptMailOperation.init(encryptionData: encryptionData)
 
@@ -369,7 +369,7 @@ class SimpleOperationsTest: XCTestCase {
         let encryptionData = EncryptionData.init(
             connectionManager: persistentSetup.connectionManager,
             coreDataUtil: persistentSetup.coreDataUtil,
-            messageID: (account as! Account).objectID, // fake, but not needed for the test
+            coreDataMessageID: (account as! Account).objectID, // fake, but not needed for the test
             accountEmail: account.email, outgoing: true)
 
         let from = PEPUtil.identityFromAccount(account, isMyself: true)

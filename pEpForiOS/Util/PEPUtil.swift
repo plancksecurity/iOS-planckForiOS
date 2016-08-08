@@ -420,9 +420,22 @@ public class PEPUtil {
         if let shortMsg = pepMail[kPepShortMessage] as? String {
             message.setSubject(shortMsg)
         }
+
+        // Go over all references and inReplyTo, and add all the uniques
+        // as references, with the inReplyTo last
+        // (https://cr.yp.to/immhf/thread.html)
+        let allRefsAdded = NSMutableOrderedSet()
         if let refs = pepMail[kPepReferences] as? [AnyObject] {
-            message.setReferences(refs)
+            for ref in refs {
+                allRefsAdded.addObject(ref)
+            }
         }
+        if let inReplyTos = pepMail[kPepInReplyTo] as? [AnyObject] {
+            for inReplyTo in inReplyTos {
+                allRefsAdded.addObject(inReplyTo)
+            }
+        }
+        message.setReferences(allRefsAdded.array)
 
         // deal with MIME type
 

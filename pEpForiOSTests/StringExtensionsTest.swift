@@ -95,4 +95,11 @@ class StringExtensionsTest: XCTestCase {
         // This behavior is somewhat odd. Want to make sure it's documented.
         XCTAssertEqual("".componentsSeparatedByString(","), [""])
     }
+
+    func testRemoveAngleBrackets() {
+        XCTAssertEqual("messageid".removeAngleBrackets(), "messageid")
+        XCTAssertEqual("<messageid@someserver>".removeAngleBrackets(), "messageid@someserver")
+        XCTAssertEqual("  <messageid@someserver>  ".removeAngleBrackets(),
+                       "messageid@someserver")
+    }
 }

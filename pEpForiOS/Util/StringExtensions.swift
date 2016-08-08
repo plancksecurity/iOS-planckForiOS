@@ -250,6 +250,27 @@ public extension String {
     public func startsWith(prefix: String) -> Bool {
         return matchesPattern("^\(prefix)")
     }
+
+    /**
+     Removes "<" from the start, and ">" from the end. Useful for cleaning
+     up message IDs if you really need that.
+     */
+    public func removeAngleBrackets() -> String {
+        do {
+            let regex = try NSRegularExpression.init(
+                pattern: "^\\s*<(.*)>\\s*$", options: [])
+            if let match = regex.firstMatchInString(
+                self, options: [],
+                range: wholeRange()) {
+                let r1 = match.rangeAtIndex(1)
+                let name = (self as NSString).substringWithRange(r1)
+                return name
+            }
+        } catch let err as NSError {
+            Log.errorComponent("removeAngleBrackets", error: err)
+        }
+        return self
+    }
 }
 
 class Regex {

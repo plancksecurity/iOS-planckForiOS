@@ -26,7 +26,8 @@ public class EncryptMailOperation: BaseOperation {
     override public func main() {
         let privateMOC = encryptionData.coreDataUtil.privateContext()
         privateMOC.performBlockAndWait({
-            guard let message = privateMOC.objectWithID(self.encryptionData.messageID) as? Message
+            guard let message = privateMOC.objectWithID(
+                self.encryptionData.coreDataMessageID) as? Message
                 else {
                     let error = Constants.errorInvalidParameter(
                         self.comp,

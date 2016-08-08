@@ -288,7 +288,7 @@ public class GrandOperator: IGrandOperator {
                          completionBlock: GrandOperatorCompletionBlock?) {
         let encryptionData = EncryptionData.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil,
-            messageID: (message as! Message).objectID, accountEmail: account.email)
+            coreDataMessageID: (message as! Message).objectID, accountEmail: account.email)
         let opEncrypt = EncryptMailOperation.init(encryptionData: encryptionData)
         let opSend = SendMailOperation.init(encryptionData: encryptionData)
         opSend.addDependency(opEncrypt)

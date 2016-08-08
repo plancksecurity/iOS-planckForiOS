@@ -30,7 +30,7 @@ public class EncryptionData {
      The original unencrypted message ID. Needed as an object ID so it can be passed
      between operations.
      */
-    let messageID: NSManagedObjectID
+    let coreDataMessageID: NSManagedObjectID
 
     /**
      The email of the account this message belongs to, in case the folder and account
@@ -57,10 +57,11 @@ public class EncryptionData {
     public var mailsSent: [PEPMail] = []
 
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil,
-                messageID: NSManagedObjectID, accountEmail: String, outgoing: Bool = true) {
+                coreDataMessageID: NSManagedObjectID, accountEmail: String,
+                outgoing: Bool = true) {
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
-        self.messageID = messageID
+        self.coreDataMessageID = coreDataMessageID
         self.accountEmail = accountEmail
         self.outgoing = outgoing
     }

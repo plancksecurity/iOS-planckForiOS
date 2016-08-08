@@ -691,11 +691,20 @@ public class Model: IModel {
             mail.bcc = bccs
         }
 
-        if let msgRefs = message.allReferences() {
-            for refID in msgRefs {
-                let ref = insertOrUpdateMessageReference(refID as! String)
-                (mail as! Message).addReferencesObject(ref as! MessageReference)
+        let referenceStrings = NSMutableOrderedSet()
+        if let pantomimeRefs = message.allReferences() {
+            for ref in pantomimeRefs {
+                referenceStrings.addObject(ref)
             }
+        }
+        // Append inReplyTo to references (https://cr.yp.to/immhf/thread.html)
+        if let inReplyTo = message.inReplyTo() {
+            referenceStrings.addObject(inReplyTo)
+        }
+
+        for refID in referenceStrings {
+            let ref = insertOrUpdateMessageReference(refID as! String)
+            (mail as! Message).addReferencesObject(ref as! MessageReference)
         }
 
         mail.contentType = message.contentType()

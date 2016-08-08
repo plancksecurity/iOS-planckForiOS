@@ -16,7 +16,7 @@ class PEPUtilTests: XCTestCase {
     /**
      Those keys in contacts should not interfere with equality tests.
      */
-    let keysNotToCompare = ["username", "me"]
+    let keysNotToCompare = [kPepUsername, kPepIsMe, kPepInReplyTo, kPepReferences]
 
     var persistentSetup: PersistentSetup!
 
@@ -184,7 +184,11 @@ class PEPUtilTests: XCTestCase {
     func testPepToPantomimeToPepWithoutAttachments() {
         let messageID2 = "messageID2"
         let message2Subject = "hah!"
+        let inReplyTo = "inReplyTo"
         let messageIDs = ["messageID1", messageID2, "messageID3"]
+
+        var referenced = messageIDs
+        referenced.append(inReplyTo)
 
         let folder = persistentSetup.model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, accountEmail: persistentSetup.accountEmail)
@@ -211,6 +215,7 @@ class PEPUtilTests: XCTestCase {
         pepMailOrig[kPepLongMessageFormatted] = "<b>Some HTML</b>"
         pepMailOrig[kPepID] = "<message001@peptest.ch>"
         pepMailOrig[kPepOutgoing] = true
+        pepMailOrig[kPepInReplyTo] = [inReplyTo]
         pepMailOrig[kPepReferences] = messageIDs
 
         // Convert to pantomime
@@ -218,7 +223,7 @@ class PEPUtilTests: XCTestCase {
         pantMail.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
 
         XCTAssertNotNil(pantMail.from())
-        XCTAssertEqual(pantMail.allReferences() as! [String], messageIDs)
+        XCTAssertEqual(pantMail.allReferences() as! [String], referenced)
 
         // Convert to model
         let message = persistentSetup.model.insertOrUpdatePantomimeMail(
@@ -232,11 +237,11 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(message?.longMessage, pepMailOrig[kPepLongMessage] as? String)
         XCTAssertEqual(message?.longMessageFormatted, pepMailOrig[kPepLongMessageFormatted]
             as? String)
-        XCTAssertEqual(message?.references.count, messageIDs.count)
+        XCTAssertEqual(message?.references.count, referenced.count)
         if let m = message {
             var counter = 0
             for ref in m.references {
-                XCTAssertEqual(ref.messageID, messageIDs[counter])
+                XCTAssertEqual(ref.messageID, referenced[counter])
                 if counter == 1 {
                     XCTAssertNotNil(ref as? MessageReference)
                     if let r = ref as? MessageReference {
@@ -262,6 +267,8 @@ class PEPUtilTests: XCTestCase {
         // Convert back to pEp
         if let m = message {
             var pepMail = PEPUtil.pepMail(m)
+            XCTAssertNil(pepMail[kPepInReplyTo])
+            XCTAssertEqual(pepMail[kPepReferences] as! [String], referenced)
             let attachments = pepMail[kPepAttachments] as? NSArray
             XCTAssertTrue(attachments == nil || attachments?.count == 0)
             pepMail[kPepAttachments] = nil
