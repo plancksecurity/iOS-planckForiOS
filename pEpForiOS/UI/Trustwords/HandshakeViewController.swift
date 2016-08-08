@@ -100,13 +100,6 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             return cell
 
         }
-        /*if (indexPath.row == confirmButton) {
-            let cell = tableView.dequeueReusableCellWithIdentifier("handshakeButton", forIndexPath: indexPath) as! HandshakeButtonTableViewCell
-            cell.handshakeConfirmButton.setTitle("Confirm", forState: UIControlState.Normal)
-            return cell
-
-        }*/
-        //return cell
     }
 
     @IBAction func handleTap(sender: UITapGestureRecognizer) {

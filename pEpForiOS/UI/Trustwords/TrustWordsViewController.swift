@@ -10,21 +10,35 @@ import UIKit
 
 class TrustWordsViewController: UITableViewController {
 
-    var allRecipients: NSOrderedSet?
+
     var message: IMessage?
+    var allRecipientsFiltered = [IContact]()
     var firstReload = true
     var defaultBackground: UIColor?
     var stringRecipients:[String]!
     var handshakeSegue = "handshakeSegue"
     var appConfig: AppConfig!
+    let numberOfStaticCell = 2
 
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(animated: Bool) {
+        let allRecipients: NSMutableOrderedSet?
+        super.viewWillAppear(animated)
         UIHelper.variableCellHeightsTableView(self.tableView)
         firstReload = true
         if let m = self.message {
-            allRecipients = m.allRecipienst()
+            allRecipients = m.allRecipienst().mutableCopy() as? NSMutableOrderedSet
+            if let ar = allRecipients {
+                if let myself = m.from {
+                    ar.addObject(myself)
+                }
+                for contact in ar {
+                    if let c = contact as? IContact {
+                        if (!c.isMySelf.boolValue) {
+                            allRecipientsFiltered.append(c)
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -46,11 +60,8 @@ class TrustWordsViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let allContact = allRecipients {
-            let lenght = allContact.count + 3
-            return lenght
-        }
-        return 3
+        let lenght = allRecipientsFiltered.count + numberOfStaticCell
+        return lenght
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -78,8 +89,7 @@ class TrustWordsViewController: UITableViewController {
                 }
             }
             return cell
-        }
-        if (indexPath.row == 1) {
+        } else if (indexPath.row == 1) {
             let cell = tableView.dequeueReusableCellWithIdentifier(
                 "mailSecurityExplanationLabelCell", forIndexPath: indexPath) as!
             LabelMailExplantionSecurityTableViewCell
@@ -93,29 +103,17 @@ class TrustWordsViewController: UITableViewController {
                 }
             }
             return cell
-        }
-        if (indexPath.row == 2) {
-            let cell = tableView.dequeueReusableCellWithIdentifier(
-                "trustwordsCell", forIndexPath: indexPath) as!
-            TrustWordsViewCell
-
-            if let m = message {
-                cell.handshakeContactUILabel.text = m.from?.displayString()
-                cell.handshakeUIButton.tag = indexPath.row
-                return cell
-            }
-        }
-        let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
                                                            forIndexPath: indexPath) as! TrustWordsViewCell
-            if let allContact = allRecipients {
-                let contact: Contact  = allContact[indexPath.row-3] as! Contact
-                cell.handshakeContactUILabel.text = contact.displayString()
-                cell.handshakeUIButton.tag = indexPath.row
-                let privacyColor = PEPUtil.privacyColorForContact(contact)
-                cell.backgroundColor = paintingMailStatus(privacyColor)
-            }
-
-        return cell
+            let contact: Contact  = allRecipientsFiltered[indexPath.row-numberOfStaticCell] as! Contact
+            //cell.handshakeContactUILabel.text = contact.displayString()
+            cell.handshakeContactUILabel.text = contact.email
+            cell.handshakeUIButton.tag = indexPath.row
+            let privacyColor = PEPUtil.privacyColorForContact(contact)
+            cell.backgroundColor = paintingMailStatus(privacyColor)
+            return cell
+        }
     }
 
     func showErrorMessage (message: String) {
@@ -138,7 +136,7 @@ class TrustWordsViewController: UITableViewController {
         }
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+  /*  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == handshakeSegue) {
             let index = sender.tag
             if let  allRecipientsAux = allRecipients {
@@ -163,5 +161,5 @@ class TrustWordsViewController: UITableViewController {
 
             }
         }
-    }
+    }*/
 }
