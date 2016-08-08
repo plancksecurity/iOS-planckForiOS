@@ -653,8 +653,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" editable="NO" text="TextView" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rC4-w0-03O">
-                                            <rect key="frame" x="8" y="8" width="584" height="33"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="TextView" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rC4-w0-03O">
+                                            <rect key="frame" x="8" y="8" width="584" height="27"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -672,47 +672,52 @@
                                     <outlet property="handshakeTextView" destination="rC4-w0-03O" id="Af0-bk-1xV"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="handshakeButton" selectionStyle="default" indentationWidth="10" reuseIdentifier="buttonCell" id="5Mz-XF-lAy" customClass="HandshakeButtonTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="handshakeButton" id="p7C-sA-VWH" customClass="HandshakeButtonTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="180" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Mz-XF-lAy" id="10a-O2-3KB">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p7C-sA-VWH" id="exZ-9t-tMI">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Aul-rl-4R4">
-                                            <rect key="frame" x="295" y="5" width="10" height="33"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        </textView>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sR9-Ic-0s8">
-                                            <rect key="frame" x="4" y="8" width="55" height="30"/>
-                                            <state key="normal" title="Confirm"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Di1-jI-BSU">
+                                            <rect key="frame" x="16" y="8" width="46" height="30"/>
+                                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <state key="normal" title="Button"/>
+                                            <state key="highlighted">
+                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OE7-HO-jeo">
+                                            <rect key="frame" x="538" y="8" width="46" height="30"/>
+                                            <state key="normal" title="Button"/>
                                         </button>
                                     </subviews>
+                                    <gestureRecognizers/>
                                     <constraints>
-                                        <constraint firstItem="Aul-rl-4R4" firstAttribute="centerY" secondItem="10a-O2-3KB" secondAttribute="centerY" id="De2-yO-VXk"/>
-                                        <constraint firstItem="sR9-Ic-0s8" firstAttribute="top" secondItem="10a-O2-3KB" secondAttribute="topMargin" id="NO9-FK-h8a"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Aul-rl-4R4" secondAttribute="trailing" id="QQM-F4-m8O"/>
-                                        <constraint firstItem="sR9-Ic-0s8" firstAttribute="centerY" secondItem="Aul-rl-4R4" secondAttribute="centerY" id="UNE-4t-kK6"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Aul-rl-4R4" secondAttribute="bottom" id="dyI-ea-m37"/>
-                                        <constraint firstItem="Aul-rl-4R4" firstAttribute="top" secondItem="10a-O2-3KB" secondAttribute="topMargin" id="eih-1E-8dC"/>
-                                        <constraint firstItem="Aul-rl-4R4" firstAttribute="leading" secondItem="10a-O2-3KB" secondAttribute="leadingMargin" id="fNf-Re-1YH"/>
-                                        <constraint firstItem="Aul-rl-4R4" firstAttribute="centerX" secondItem="10a-O2-3KB" secondAttribute="centerX" id="fvV-hx-wFR"/>
-                                        <constraint firstItem="sR9-Ic-0s8" firstAttribute="leading" secondItem="10a-O2-3KB" secondAttribute="leadingMargin" id="oJV-75-Wmz"/>
+                                        <constraint firstAttribute="topMargin" secondItem="Di1-jI-BSU" secondAttribute="top" id="Cat-iy-bVd"/>
+                                        <constraint firstItem="Di1-jI-BSU" firstAttribute="centerX" secondItem="exZ-9t-tMI" secondAttribute="centerX" id="M1i-rZ-VQo"/>
+                                        <constraint firstAttribute="topMargin" secondItem="Di1-jI-BSU" secondAttribute="top" id="Qvf-wX-P18"/>
+                                        <constraint firstItem="Di1-jI-BSU" firstAttribute="leading" secondItem="exZ-9t-tMI" secondAttribute="leadingMargin" id="Vhg-lD-Lwr"/>
+                                        <constraint firstItem="OE7-HO-jeo" firstAttribute="baseline" secondItem="Di1-jI-BSU" secondAttribute="baseline" id="ZFf-iG-d8H"/>
+                                        <constraint firstItem="OE7-HO-jeo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Di1-jI-BSU" secondAttribute="trailing" constant="5" id="nrE-uo-ZKR"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="OE7-HO-jeo" secondAttribute="trailing" constant="8" id="pn2-QN-f1j"/>
+                                        <constraint firstItem="Di1-jI-BSU" firstAttribute="leading" secondItem="exZ-9t-tMI" secondAttribute="leadingMargin" constant="8" id="rx2-3w-38o"/>
+                                        <constraint firstItem="OE7-HO-jeo" firstAttribute="top" secondItem="Di1-jI-BSU" secondAttribute="bottom" constant="8" id="ubX-aB-Qkx"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="UNE-4t-kK6"/>
-                                            <exclude reference="QQM-F4-m8O"/>
-                                            <exclude reference="dyI-ea-m37"/>
-                                            <exclude reference="eih-1E-8dC"/>
-                                            <exclude reference="fNf-Re-1YH"/>
+                                            <exclude reference="M1i-rZ-VQo"/>
+                                            <exclude reference="Qvf-wX-P18"/>
+                                            <exclude reference="Vhg-lD-Lwr"/>
+                                            <exclude reference="ubX-aB-Qkx"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="handshakeConfirmButton" destination="sR9-Ic-0s8" id="8Aa-53-ine"/>
+                                    <outlet property="confirmUIButton" destination="Di1-jI-BSU" id="j5M-zr-Xg3"/>
+                                    <outlet property="deniedUIButton" destination="OE7-HO-jeo" id="6rZ-5e-qyb"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

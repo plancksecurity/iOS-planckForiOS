@@ -11,7 +11,8 @@ import UIKit
 class HandshakeButtonTableViewCell: UITableViewCell {
 
 
-    @IBOutlet weak var handshakeConfirmButton: UIButton!
+    @IBOutlet weak var confirmUIButton: UIButton!
+    @IBOutlet weak var deniedUIButton: UIButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()

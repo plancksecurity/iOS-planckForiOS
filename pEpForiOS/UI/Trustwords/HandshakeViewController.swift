@@ -39,14 +39,14 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return 7
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell();
+        //let cell = UITableViewCell();
         if (indexPath.row == myselfLabel) {
             let cell = tableView.dequeueReusableCellWithIdentifier("contactCell", forIndexPath: indexPath) as! HandshakeLabelTableViewCell
             cell.handshakeLabel.text = "Myself:"
@@ -68,8 +68,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             let cell = tableView.dequeueReusableCellWithIdentifier("trustwordCell", forIndexPath: indexPath) as! HandshakeTexViewTableViewCell
             cell.handshakeTextView.text = "Ask your partner: What are your trustword? then compare to the correct answer shown below."
             return cell
-        }
-        else if (indexPath.row == trustwords) {
+        } else if (indexPath.row == trustwords) {
 
             let cell = tableView.dequeueReusableCellWithIdentifier("trustwordCell", forIndexPath: indexPath) as! HandshakeTexViewTableViewCell
             if let p = partner {
@@ -94,6 +93,12 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                 }
             }
             return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("handshakeButton", forIndexPath: indexPath) as! HandshakeButtonTableViewCell
+            cell.confirmUIButton.setTitle("Confirm trustwords", forState: UIControlState.Normal)
+            cell.deniedUIButton.setTitle("Wrong trustwords", forState: UIControlState.Normal)
+            return cell
+
         }
         /*if (indexPath.row == confirmButton) {
             let cell = tableView.dequeueReusableCellWithIdentifier("handshakeButton", forIndexPath: indexPath) as! HandshakeButtonTableViewCell
@@ -101,7 +106,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             return cell
 
         }*/
-        return cell
+        //return cell
     }
 
     @IBAction func handleTap(sender: UITapGestureRecognizer) {
