@@ -47,10 +47,10 @@ class TrustWordsViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let allContact = allRecipients {
-            let lenght = allContact.count + 2
+            let lenght = allContact.count + 3
             return lenght
         }
-        return 2
+        return 3
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -94,15 +94,27 @@ class TrustWordsViewController: UITableViewController {
             }
             return cell
         }
+        if (indexPath.row == 2) {
+            let cell = tableView.dequeueReusableCellWithIdentifier(
+                "trustwordsCell", forIndexPath: indexPath) as!
+            TrustWordsViewCell
+
+            if let m = message {
+                cell.handshakeContactUILabel.text = m.from?.displayString()
+                cell.handshakeUIButton.tag = indexPath.row
+                return cell
+            }
+        }
         let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
                                                            forIndexPath: indexPath) as! TrustWordsViewCell
             if let allContact = allRecipients {
-                let contact: Contact  = allContact[indexPath.row-2] as! Contact
+                let contact: Contact  = allContact[indexPath.row-3] as! Contact
                 cell.handshakeContactUILabel.text = contact.displayString()
                 cell.handshakeUIButton.tag = indexPath.row
                 let privacyColor = PEPUtil.privacyColorForContact(contact)
                 cell.backgroundColor = paintingMailStatus(privacyColor)
             }
+
         return cell
     }
 
@@ -130,16 +142,26 @@ class TrustWordsViewController: UITableViewController {
         if (segue.identifier == handshakeSegue) {
             let index = sender.tag
             if let  allRecipientsAux = allRecipients {
-                let contact = allRecipientsAux[index-2] as! Contact
-                if let destination = segue.destinationViewController as? HandshakeViewController {
-                    destination.partner = contact
-                    destination.appConfig = appConfig
-                    destination.message = message
-            }
+                if index > 2 {
+                    let contact = allRecipientsAux[index-3] as! Contact
+                    if let destination = segue.destinationViewController as? HandshakeViewController {
+                        destination.partner = contact
+                        destination.appConfig = appConfig
+                        destination.message = message
+                    }
+                }
+                else {
+                    if let m = message, _ = m.from {
+                        let contact = m.from!
+                        if let destination = segue.destinationViewController as? HandshakeViewController {
+                            destination.partner = contact
+                            destination.appConfig = appConfig
+                            destination.message = message
+                        }
+                    }
+                }
+
             }
         }
     }
-
-
-
 }
