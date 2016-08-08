@@ -95,7 +95,7 @@ public struct ReplyUtil {
             let quotedText = quoteText(text)
             let citation: String? = citationHeaderForMessage(mail, replyAll: replyAll)
             if let c = citation {
-                return "\n\(footer())\n\n\(c)\n\n\(quotedText)"
+                return "\n\n\(footer())\n\n\(c)\n\n\(quotedText)"
             }
         }
         return footer()

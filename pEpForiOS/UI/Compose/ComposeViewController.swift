@@ -639,8 +639,10 @@ public class ComposeViewController: UITableViewController {
                 if let om = replyFromMessage() {
                     let text = ReplyUtil.quotedMailTextForMail(om, replyAll: replyAll)
                     cell.bodyTextView.text = text
+                    cell.bodyTextView.selectedRange = NSRange.init(location: 0, length: 0)
                 } else {
                     cell.bodyTextView.text = "\n\n\(ReplyUtil.footer())"
+                    cell.bodyTextView.selectedRange = NSRange.init(location: 0, length: 0)
                 }
 
                 // Give it the focus, if it's not a pure compose
