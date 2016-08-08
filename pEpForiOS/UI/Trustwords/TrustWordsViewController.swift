@@ -13,6 +13,7 @@ class TrustWordsViewController: UITableViewController {
 
     var message: IMessage?
     var allRecipientsFiltered = [IContact]()
+    var otherMyselfAccount = NSMutableSet()
     var firstReload = true
     var defaultBackground: UIColor?
     var stringRecipients:[String]!
@@ -21,8 +22,13 @@ class TrustWordsViewController: UITableViewController {
     let numberOfStaticCell = 2
 
     override func viewWillAppear(animated: Bool) {
-        let allRecipients: NSMutableOrderedSet?
+
         super.viewWillAppear(animated)
+
+        let allRecipients: NSMutableOrderedSet?
+
+        otherMyselfAccount.removeAllObjects()
+        allRecipientsFiltered.removeAll()
         UIHelper.variableCellHeightsTableView(self.tableView)
         firstReload = true
         if let m = self.message {
@@ -35,6 +41,12 @@ class TrustWordsViewController: UITableViewController {
                     if let c = contact as? IContact {
                         if (!c.isMySelf.boolValue) {
                             allRecipientsFiltered.append(c)
+                        }
+                        else {
+                            if(appConfig.currentAccount?.email != c.email) {
+                                allRecipientsFiltered.append(c)
+                                otherMyselfAccount.addObject(c)
+                            }
                         }
                     }
                 }
@@ -108,6 +120,8 @@ class TrustWordsViewController: UITableViewController {
                                                            forIndexPath: indexPath) as! TrustWordsViewCell
             let contact: Contact  = allRecipientsFiltered[indexPath.row-numberOfStaticCell] as! Contact
             //cell.handshakeContactUILabel.text = contact.displayString()
+            cell.handshakeUIButton.enabled = !otherMyselfAccount.containsObject(contact)
+
             cell.handshakeContactUILabel.text = contact.email
             cell.handshakeUIButton.tag = indexPath.row
             let privacyColor = PEPUtil.privacyColorForContact(contact)
