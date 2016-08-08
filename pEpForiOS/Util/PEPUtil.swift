@@ -770,6 +770,24 @@ public class PEPUtil {
     }
 
     /**
+     Trust that contact (yellow to green).
+     */
+    public static func trustContact(contact: IContact, session: PEPSession? = nil) {
+        let pepC = pepContact(contact)
+        let theSession = useOrCreateSession(session)
+        theSession.trustPersonalKey(pepC)
+    }
+
+    /**
+     Mistrust the identity (yellow to red)
+     */
+    public static func mistrustContact(contact: IContact, session: PEPSession? = nil) {
+        let pepC = pepContact(contact)
+        let theSession = useOrCreateSession(session)
+        theSession.keyCompromized(pepC)
+    }
+
+    /**
      Resets the trust for the given contact. Use both for trusting again after
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
