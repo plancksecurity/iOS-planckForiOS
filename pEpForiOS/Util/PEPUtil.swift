@@ -768,4 +768,14 @@ public class PEPUtil {
 
         return pepDict[kPepFingerprint] as? String
     }
+
+    /**
+     Resets the trust for the given contact. Use both for trusting again after
+     mistrusting a key, and for mistrusting a key after you have first trusted it.
+     */
+    public static func resetTrustForContact(contact: IContact, session: PEPSession? = nil) {
+        let pepC = pepContact(contact)
+        let theSession = useOrCreateSession(session)
+        theSession.keyResetTrust(pepC)
+    }
 }
