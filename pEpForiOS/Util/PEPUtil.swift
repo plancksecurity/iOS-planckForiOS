@@ -208,11 +208,19 @@ public class PEPUtil {
     }
 
     /**
-     Converts an IContact (possibly from core data) to a pEp contact.
+     Calls `mutablePepContact` and converts result.
+     - Returns: The result from calling `mutablePepContact` converted to a `PEPContact`
+     */
+    public static func pepContact(contact: IContact) -> PEPContact {
+        return mutablePepContact(contact) as PEPContact
+    }
+
+    /**
+     Converts an IContact (possibly from core data) to a pEp contact (as `NSMutableDictionary`).
      - Parameter contact: The core data contact object.
      - Returns: An `NSMutableDictionary` contact for pEp.
      */
-    public static func pepContact(contact: IContact) -> PEPContact {
+    public static func mutablePepContact(contact: IContact) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
         if let name = contact.name {
             dict[kPepUsername] = name
@@ -232,7 +240,7 @@ public class PEPUtil {
                 dict[kPepUserID] = String(addressBookID)
             }
         }
-        return dict as PEPContact
+        return dict
     }
 
     /**
@@ -774,9 +782,9 @@ public class PEPUtil {
      */
     public static func trustContact(contact: IContact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
-        let pepC = (pepContact(contact) as NSDictionary).mutableCopy() as! NSMutableDictionary
+        let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)
-        theSession.trustPersonalKey(pepC as PEPContact)
+        theSession.trustPersonalKey(pepC)
     }
 
     /**
@@ -784,9 +792,9 @@ public class PEPUtil {
      */
     public static func mistrustContact(contact: IContact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
-        let pepC = (pepContact(contact) as NSDictionary).mutableCopy() as! NSMutableDictionary
+        let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)
-        theSession.keyCompromized(pepC as PEPContact)
+        theSession.keyCompromized(pepC)
     }
 
     /**
@@ -795,8 +803,8 @@ public class PEPUtil {
      */
     public static func resetTrustForContact(contact: IContact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
-        let pepC = (pepContact(contact) as NSDictionary).mutableCopy() as! NSMutableDictionary
+        let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)
-        theSession.keyResetTrust(pepC as PEPContact)
+        theSession.keyResetTrust(pepC)
     }
 }

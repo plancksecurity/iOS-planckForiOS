@@ -544,4 +544,24 @@ class PEPUtilTests: XCTestCase {
         XCTAssertNotNil(PEPUtil.fingprprintForContact(contact, session: session))
         XCTAssertNotNil(PEPUtil.fingprprintForPepContact(receiver4, session: session))
     }
+
+    /**
+     Just test that there is no crash calling trust functions.
+     */
+    func testTrustPersonalKey() {
+        let session = PEPSession.init()
+
+        let (_, _, _, _, receiver4) =
+            TestUtil.setupSomeIdentities(session)
+
+        // Import public key for receiver4
+        TestUtil.importKeyByFileName(
+            session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
+
+        let contact = PEPUtil.insertPepContact(receiver4, intoModel: persistentSetup.model)
+
+        PEPUtil.trustContact(contact)
+        PEPUtil.resetTrustForContact(contact)
+        PEPUtil.mistrustContact(contact)
+    }
 }
