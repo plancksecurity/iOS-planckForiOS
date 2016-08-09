@@ -101,7 +101,11 @@ class TrustWordsViewController: UITableViewController {
                         if let uiColor = paintingMailStatus(privateColor) {
                             cell.backgroundColor = uiColor
                         }
-                        cell.mailSecurityUILabel.text = PEPUtil.pepTitleFromColor(pc)
+                        let securityTitleText = PEPUtil.pepTitleFromColor(pc)
+                        let lenghtOfSecurityLabel = securityTitleText?.characters.count
+                        let attributedString = NSMutableAttributedString(string:securityTitleText!)
+                        attributedString.addAttribute(NSLinkAttributeName, value: "https://", range: NSRange(location: 0, length: lenghtOfSecurityLabel!))
+                        cell.mailSecurityUILabel.attributedText = attributedString
                     }
                 }
             }
