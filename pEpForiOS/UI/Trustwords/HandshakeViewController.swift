@@ -50,11 +50,13 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
         if (indexPath.row == myselfLabel) {
             let cell = tableView.dequeueReusableCellWithIdentifier("contactCell", forIndexPath: indexPath) as! HandshakeLabelTableViewCell
             cell.handshakeLabel.text = NSLocalizedString("Myself:", comment: "Myself label, handshake")
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         } else if (indexPath.row == myselfContact) {
             let cell = tableView.dequeueReusableCellWithIdentifier("contactCell", forIndexPath: indexPath) as! HandshakeLabelTableViewCell
             let myselfEmail = appConfig.currentAccount!.email
             cell.handshakeLabel.text = myselfEmail
+            cell.selectionStyle = UITableViewCellSelectionStyle.None;
             return cell
         } else if (indexPath.row == partnerLabel) {
             let cell = tableView.dequeueReusableCellWithIdentifier("contactCell", forIndexPath: indexPath) as! HandshakeLabelTableViewCell
@@ -102,9 +104,12 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
         }
     }
 
-    /*@IBAction func confirmTrustwords(sender: AnyObject) {
-        PEPUtil.
-    }*/
+    @IBAction func confirmTrustwords(sender: AnyObject) {
+        if let p = partner {
+            print("USER ID: \(p.pepUserID)")
+            PEPUtil.trustContact(p)
+        }
+    }
 
     @IBAction func handleTap(sender: UITapGestureRecognizer) {
         hexamode = !hexamode
