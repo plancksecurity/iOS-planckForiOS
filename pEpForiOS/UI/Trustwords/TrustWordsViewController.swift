@@ -165,12 +165,12 @@ class TrustWordsViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == handshakeSegue) {
             let contactIndex = sender.tag
-                let contact = allRecipientsFiltered[contactIndex] as! Contact
-                if let destination = segue.destinationViewController as? HandshakeViewController {
-                    destination.partner = contact
-                    destination.appConfig = appConfig
-                    destination.message = message
-                }
+            let contact = allRecipientsFiltered[contactIndex] as! Contact
+            if let destination = segue.destinationViewController as? HandshakeViewController {
+                destination.partner = contact
+                destination.appConfig = appConfig
+                destination.message = message
             }
+        }
     }
 }
