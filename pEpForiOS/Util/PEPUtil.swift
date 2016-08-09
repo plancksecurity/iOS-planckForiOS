@@ -342,8 +342,11 @@ public class PEPUtil {
      For a PEPMail, checks whether it is PGP/MIME encrypted.
      */
     public static func isProbablyPGPMimePepMail(message: PEPMail) -> Bool {
+        guard let attachments = message[kPepAttachments] as? NSArray else {
+            return false
+        }
+
         var foundAttachmentPGPEncrypted = false
-        let attachments = message[kPepAttachments] as! NSArray
         for atch in attachments {
             if let filename = atch[kPepMimeType] as? String {
                 if filename.lowercaseString == Constants.contentTypePGPEncrypted {
