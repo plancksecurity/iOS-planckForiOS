@@ -773,18 +773,20 @@ public class PEPUtil {
      Trust that contact (yellow to green).
      */
     public static func trustContact(contact: IContact, session: PEPSession? = nil) {
-        let pepC = pepContact(contact)
         let theSession = useOrCreateSession(session)
-        theSession.trustPersonalKey(pepC)
+        let pepC = (pepContact(contact) as NSDictionary).mutableCopy() as! NSMutableDictionary
+        theSession.updateIdentity(pepC)
+        theSession.trustPersonalKey(pepC as PEPContact)
     }
 
     /**
      Mistrust the identity (yellow to red)
      */
     public static func mistrustContact(contact: IContact, session: PEPSession? = nil) {
-        let pepC = pepContact(contact)
         let theSession = useOrCreateSession(session)
-        theSession.keyCompromized(pepC)
+        let pepC = (pepContact(contact) as NSDictionary).mutableCopy() as! NSMutableDictionary
+        theSession.updateIdentity(pepC)
+        theSession.keyCompromized(pepC as PEPContact)
     }
 
     /**
@@ -792,8 +794,9 @@ public class PEPUtil {
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
     public static func resetTrustForContact(contact: IContact, session: PEPSession? = nil) {
-        let pepC = pepContact(contact)
         let theSession = useOrCreateSession(session)
-        theSession.keyResetTrust(pepC)
+        let pepC = (pepContact(contact) as NSDictionary).mutableCopy() as! NSMutableDictionary
+        theSession.updateIdentity(pepC)
+        theSession.keyResetTrust(pepC as PEPContact)
     }
 }
