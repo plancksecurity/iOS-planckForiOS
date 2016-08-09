@@ -9,20 +9,24 @@
 import UIKit
 
 class TrustWordsViewController: UITableViewController {
-
-
-    var message: IMessage?
-    var allRecipientsFiltered = [IContact]()
-    var otherMyselfAccount = NSMutableSet()
-    var firstReload = true
-    var defaultBackground: UIColor?
-    var stringRecipients:[String]!
-    var handshakeSegue = "handshakeSegue"
     var appConfig: AppConfig!
-    let numberOfStaticCell = 2
+    var message: IMessage?
+
+    /** All recipients to be able to do a handshake */
+    var allRecipientsFiltered = [IContact]()
+
+    /** A set of accounts from the same user on the device with another email */
+    var otherMyselfAccount = NSMutableSet()
+
+    var firstReload = true
+
+    /** The default background color of a fresh cell */
+    var defaultBackground: UIColor?
+
+    let handshakeSegue = "handshakeSegue"
+    let numberOfStaticCells = 2
 
     override func viewWillAppear(animated: Bool) {
-
         super.viewWillAppear(animated)
 
         let allRecipients: NSMutableOrderedSet?
@@ -30,7 +34,6 @@ class TrustWordsViewController: UITableViewController {
         otherMyselfAccount.removeAllObjects()
         allRecipientsFiltered.removeAll()
         UIHelper.variableCellHeightsTableView(self.tableView)
-        firstReload = true
         if let m = self.message {
             allRecipients = m.allRecipienst().mutableCopy() as? NSMutableOrderedSet
             if let ar = allRecipients {
@@ -39,14 +42,13 @@ class TrustWordsViewController: UITableViewController {
                 }
                 for contact in ar {
                     if let c = contact as? IContact {
-                        if (!c.isMySelf.boolValue) {
-                            allRecipientsFiltered.append(c)
-                        }
-                        else {
-                            if(appConfig.currentAccount?.email != c.email) {
+                        if c.isMySelf.boolValue {
+                            if appConfig.currentAccount?.email != c.email {
                                 allRecipientsFiltered.append(c)
                                 otherMyselfAccount.addObject(c)
                             }
+                        } else {
+                            allRecipientsFiltered.append(c)
                         }
                     }
                 }
@@ -72,7 +74,7 @@ class TrustWordsViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let lenght = allRecipientsFiltered.count + numberOfStaticCell
+        let lenght = allRecipientsFiltered.count + numberOfStaticCells
         return lenght
     }
 
@@ -82,13 +84,16 @@ class TrustWordsViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (indexPath.row == 0) {
-             let cell = tableView.dequeueReusableCellWithIdentifier("mailSecurityLabelCell", forIndexPath: indexPath) as! LabelMailSecurityTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("mailSecurityLabelCell", forIndexPath: indexPath) as!
+            LabelMailSecurityTableViewCell
+
+            // Store the background color if this is the first cell
+            if (firstReload) {
+                defaultBackground = cell.backgroundColor
+                firstReload = false
+            }
+
             if let m = message {
-                // default
-                if (firstReload) {
-                    defaultBackground = cell.backgroundColor
-                    firstReload = false
-                }
                 cell.backgroundColor = defaultBackground
                 if let mailPepColor = m.pepColorRating?.integerValue {
                     if let pc = PEPUtil.colorRatingFromInt(mailPepColor) {
@@ -118,7 +123,7 @@ class TrustWordsViewController: UITableViewController {
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
                                                            forIndexPath: indexPath) as! TrustWordsViewCell
-            let contactIndex = indexPath.row-numberOfStaticCell
+            let contactIndex = indexPath.row-numberOfStaticCells
             let contact: Contact  = allRecipientsFiltered[contactIndex] as! Contact
             //cell.handshakeContactUILabel.text = contact.displayString()
 
@@ -132,9 +137,11 @@ class TrustWordsViewController: UITableViewController {
             case .NoColor:
                 cell.handshakeUIButton.enabled = false
             case .Red:
-                cell.handshakeUIButton.setTitle(NSLocalizedString("Trust Again", comment: "handshake"), forState: .Normal)
+                cell.handshakeUIButton.setTitle(
+                    NSLocalizedString("Trust Again", comment: "handshake"), forState: .Normal)
             case .Green:
-                cell.handshakeUIButton.setTitle(NSLocalizedString("Reset trust", comment: "handshake"), forState: .Normal)
+                cell.handshakeUIButton.setTitle(
+                    NSLocalizedString("Reset trust", comment: "handshake"), forState: .Normal)
             case .Yellow:
                 break
             }
@@ -143,9 +150,11 @@ class TrustWordsViewController: UITableViewController {
     }
 
     func showErrorMessage (message: String) {
-        let alertView = UIAlertController(title: NSLocalizedString("Suggestion",comment: "Suggestion tittle"),
-                                          message:NSLocalizedString(message, comment: "Suggestion"), preferredStyle: .Alert)
-        alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok",comment: "confirm  button text"),
+        let alertView = UIAlertController(
+            title: NSLocalizedString("Suggestion",comment: "Suggestion tittle"),
+            message:NSLocalizedString(message, comment: "Suggestion"), preferredStyle: .Alert)
+        alertView.addAction(UIAlertAction(
+            title: NSLocalizedString("Ok",comment: "confirm  button text"),
             style: .Default, handler: nil))
         presentViewController(alertView, animated: true, completion: nil)
     }
