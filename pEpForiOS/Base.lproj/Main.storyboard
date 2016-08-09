@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9M5-Am-Yi2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="9M5-Am-Yi2">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -548,17 +548,27 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security tittle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x1d-Md-75b">
-                                            <rect key="frame" x="12" y="4" width="102" height="27"/>
+                                            <rect key="frame" x="8" y="11" width="584" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="x1d-Md-75b" secondAttribute="trailing" id="2tX-Nu-4FU"/>
                                         <constraint firstItem="x1d-Md-75b" firstAttribute="leading" secondItem="Wky-08-VfS" secondAttribute="leadingMargin" constant="4" id="47C-H3-i2Q"/>
                                         <constraint firstAttribute="topMargin" secondItem="x1d-Md-75b" secondAttribute="top" constant="4" id="EdG-Ua-eaE"/>
+                                        <constraint firstItem="x1d-Md-75b" firstAttribute="leading" secondItem="Wky-08-VfS" secondAttribute="leadingMargin" id="QL1-Zr-Sll"/>
+                                        <constraint firstItem="x1d-Md-75b" firstAttribute="centerY" secondItem="Wky-08-VfS" secondAttribute="centerY" id="W02-rf-FXJ"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="x1d-Md-75b" secondAttribute="bottom" constant="4" id="W2v-Nl-r2F"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="47C-H3-i2Q"/>
+                                            <exclude reference="EdG-Ua-eaE"/>
+                                            <exclude reference="W2v-Nl-r2F"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="mailSecurityUILabel" destination="x1d-Md-75b" id="SyX-Fc-ApG"/>
@@ -571,36 +581,29 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security explanation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S6T-H8-eCy">
-                                            <rect key="frame" x="12" y="4" width="156" height="27"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8AX-lF-xUL">
-                                            <rect key="frame" x="215" y="9" width="22" height="22"/>
-                                            <connections>
-                                                <action selector="showMoreInfo:" destination="2d7-Da-IgM" eventType="touchUpInside" id="MyZ-yv-EEK"/>
-                                            </connections>
-                                        </button>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ges-7V-rhw">
+                                            <rect key="frame" x="8" y="8" width="584" height="33"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <attributedString key="attributedText">
+                                                <fragment content="Explanation">
+                                                    <attributes>
+                                                        <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" address="YES"/>
+                                        </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="8AX-lF-xUL" firstAttribute="leading" secondItem="S6T-H8-eCy" secondAttribute="trailing" constant="47" id="SAE-xj-rrf"/>
-                                        <constraint firstItem="S6T-H8-eCy" firstAttribute="leading" secondItem="rRf-0n-OEF" secondAttribute="leadingMargin" constant="4" id="eF7-8i-1w9"/>
-                                        <constraint firstItem="8AX-lF-xUL" firstAttribute="top" secondItem="rRf-0n-OEF" secondAttribute="topMargin" constant="1" id="nPi-hf-kDJ"/>
-                                        <constraint firstAttribute="topMargin" secondItem="S6T-H8-eCy" secondAttribute="top" constant="4" id="r0n-7H-rtr"/>
-                                        <constraint firstItem="8AX-lF-xUL" firstAttribute="bottom" secondItem="S6T-H8-eCy" secondAttribute="bottom" id="v8w-f2-Sqj"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="S6T-H8-eCy" secondAttribute="bottom" constant="4" id="yAg-14-eeI"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Ges-7V-rhw" secondAttribute="bottom" id="0RI-mJ-J4S"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Ges-7V-rhw" secondAttribute="trailing" id="O7S-FM-YXd"/>
+                                        <constraint firstItem="Ges-7V-rhw" firstAttribute="leading" secondItem="rRf-0n-OEF" secondAttribute="leadingMargin" id="TWj-Ic-3bg"/>
+                                        <constraint firstItem="Ges-7V-rhw" firstAttribute="top" secondItem="rRf-0n-OEF" secondAttribute="topMargin" id="ZDY-pu-JZC"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="v8w-f2-Sqj"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="mailExplanationSecurityUILabel" destination="S6T-H8-eCy" id="JGh-6s-V9a"/>
-                                    <outlet property="moreInfoUIButton" destination="8AX-lF-xUL" id="Awl-2S-K3k"/>
+                                    <outlet property="mailExplanationSecurityUILabel" destination="Ges-7V-rhw" id="45u-cs-b3M"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

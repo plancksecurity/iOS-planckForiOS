@@ -111,6 +111,7 @@ class TrustWordsViewController: UITableViewController {
                 "mailSecurityExplanationLabelCell", forIndexPath: indexPath) as!
             LabelMailExplantionSecurityTableViewCell
 
+            cell.mailExplanationSecurityUILabel.text = ""
             if let m = message {
                 if let mailPepColor = m.pepColorRating?.integerValue {
                     if let pepColor = PEPUtil.colorRatingFromInt(mailPepColor) {
@@ -125,9 +126,8 @@ class TrustWordsViewController: UITableViewController {
                                                            forIndexPath: indexPath) as! TrustWordsViewCell
             let contactIndex = indexPath.row-numberOfStaticCells
             let contact: Contact  = allRecipientsFiltered[contactIndex] as! Contact
-            //cell.handshakeContactUILabel.text = contact.displayString()
 
-            cell.handshakeContactUILabel.text = contact.email
+            cell.handshakeContactUILabel.text = contact.displayString()
             cell.handshakeUIButton.tag = contactIndex
             let privacyColor = PEPUtil.privacyColorForContact(contact)
             cell.backgroundColor = paintingMailStatus(privacyColor)
