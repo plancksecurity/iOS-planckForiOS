@@ -66,11 +66,27 @@ class EmailViewController: UIViewController {
     }
 
     func loadWebViewContent() {
+        let fontSize = UIFont.systemFontSize()
+        let font = UIFont.systemFontOfSize(fontSize)
+        let fontFamily = font.familyName
+
         if let url = NSURL.init(string: "file:///") {
-            if let s = message.longMessageFormatted {
-                webView.loadHTMLString(s, baseURL: url)
-            } else if let s = message.longMessage {
-                webView.loadHTMLString(s, baseURL: url)
+            if let s = message.longMessage {
+                let s2 = s.stringByReplacingOccurrencesOfString("\n", withString: "<br>")
+                let html: String = "<!DOCTYPE html>"
+                    + "<html>"
+                    + "<head>"
+                    + "<meta name=\"viewport\" content=\"initial-scale=1.0\" />"
+                    + "<style>"
+                    + "body {font-size: \(fontSize); font-family: '\(fontFamily)'}"
+                    + "</style>"
+                    + "</head>"
+                    + "<body>"
+                    + s2
+                    + "</body>"
+                    + "</html>"
+
+                webView.loadHTMLString(html, baseURL: url)
             }
         }
     }
