@@ -8,11 +8,7 @@
 
 import UIKit
 
-extension String {
-    func insert(string:String,ind:Int) -> String {
-        return  String(self.characters.prefix(ind)) + string + String(self.characters.suffix(self.characters.count-ind))
-    }
-}
+
 
 class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegate {
 
@@ -32,6 +28,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(tableView)
+     
 
     }
 
@@ -88,7 +85,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                     } else {
                         let myselfFingerprints = PEPUtil.fingprprintForContact(myselfContact!)
                         let partnerFingerprints = PEPUtil.fingprprintForContact(partner!)
-                        let bothFingerprints = "\(partnerFingerprints!) \n \(myselfFingerprints!)"
+                        let bothFingerprints = "\(fingerprintFormat(partnerFingerprints!))\n\n\(fingerprintFormat(myselfFingerprints!))"
                         cell.handshakeTextView.text = bothFingerprints
                     }
                 }
@@ -101,6 +98,24 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             return cell
 
         }
+    }
+
+    func fingerprintFormat(fingerprint: String) -> String {
+        let medio = fingerprint.characters.count/2
+        var result = String()
+        var cont = 0
+        for character in fingerprint.characters {
+            cont += 1
+            result.append(character)
+            if cont % 4 == 0 {
+                result.append(" " as Character)
+                result.append(" " as Character)
+            }
+            if cont == medio {
+                result.append("\n" as Character)
+            }
+        }
+        return result
     }
 
     @IBAction func confirmTrustwords(sender: AnyObject) {
