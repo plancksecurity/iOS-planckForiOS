@@ -415,14 +415,14 @@ class SimpleOperationsTest: XCTestCase {
         session.mySelf(myself)
         XCTAssertNotNil(myself[kPepFingerprint])
 
-        let color2 = session.outgoingContactColor(myself as PEPContact,
-                                                  from: myself as PEPContact)
+        let color2 = session.outgoingColorFrom(myself as PEPContact,
+                                               to: myself as PEPContact)
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
 
         myself.removeObjectForKey(kPepUserID)
 
-        let color1 = session.outgoingContactColor(myself as PEPContact,
-                                                 from: myself as PEPContact)
+        let color1 = session.outgoingColorFrom(myself as PEPContact,
+                                                 to: myself as PEPContact)
         XCTAssertLessThanOrEqual(color1.rawValue, PEP_rating_reliable.rawValue)
     }
 }

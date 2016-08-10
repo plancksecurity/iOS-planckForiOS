@@ -483,7 +483,7 @@ class PEPUtilTests: XCTestCase {
             identity as PEPContact, from: identity as PEPContact))
 
         XCTAssertTrue(session.isEncryptedPEPContact(
-            receiver4, from: identity as PEPContact))
+            receiver4 as PEPContact, from: identity as PEPContact))
     }
 
     func testInsertPepContact() {
@@ -563,5 +563,6 @@ class PEPUtilTests: XCTestCase {
         PEPUtil.trustContact(contact)
         PEPUtil.resetTrustForContact(contact)
         PEPUtil.mistrustContact(contact)
+        PEPUtil.resetTrustForContact(contact)
     }
 }

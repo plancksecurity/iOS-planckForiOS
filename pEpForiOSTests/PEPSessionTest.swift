@@ -124,17 +124,19 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(encrypted.count, 3)
         XCTAssertEqual(unencrypted.count, 1)
 
-        XCTAssertEqual(encrypted[0][kPepTo] as? NSArray, [identity])
-        XCTAssertEqual(encrypted[0][kPepCC] as? NSArray, [identity])
-        XCTAssertEqual(encrypted[0][kPepBCC] as? NSArray, [])
+        if encrypted.count == 3 {
+            XCTAssertEqual(encrypted[0][kPepTo] as? NSArray, [identity])
+            XCTAssertEqual(encrypted[0][kPepCC] as? NSArray, [identity])
+            XCTAssertEqual(encrypted[0][kPepBCC] as? NSArray, [])
 
-        XCTAssertEqual(encrypted[1][kPepTo] as? NSArray, [])
-        XCTAssertEqual(encrypted[1][kPepCC] as? NSArray, [])
-        XCTAssertEqual(encrypted[1][kPepBCC] as? NSArray, [identity])
+            XCTAssertEqual(encrypted[1][kPepTo] as? NSArray, [])
+            XCTAssertEqual(encrypted[1][kPepCC] as? NSArray, [])
+            XCTAssertEqual(encrypted[1][kPepBCC] as? NSArray, [identity])
 
-        XCTAssertEqual(encrypted[2][kPepTo] as? NSArray, [])
-        XCTAssertEqual(encrypted[2][kPepCC] as? NSArray, [])
-        XCTAssertEqual(encrypted[2][kPepBCC] as? NSArray, [receiver4])
+            XCTAssertEqual(encrypted[2][kPepTo] as? NSArray, [])
+            XCTAssertEqual(encrypted[2][kPepCC] as? NSArray, [])
+            XCTAssertEqual(encrypted[2][kPepBCC] as? NSArray, [receiver4])
+        }
 
         XCTAssertEqual(unencrypted[0][kPepTo] as? NSArray, [receiver1])
         XCTAssertEqual(unencrypted[0][kPepCC] as? NSArray, [receiver2])

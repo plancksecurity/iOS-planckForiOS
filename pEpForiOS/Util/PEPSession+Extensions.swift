@@ -88,7 +88,7 @@ public extension PEPSession {
      */
     public func isEncryptedPEPContact(contact: PEPContact,
                                       from: PEPContact) -> Bool {
-        let color = outgoingContactColor(contact, from: from)
+        let color = outgoingColorFrom(from, to: contact)
         return color.rawValue >= PEP_rating_reliable.rawValue
     }
 
@@ -98,18 +98,6 @@ public extension PEPSession {
     public func isUnencryptedPEPContact(contact: PEPContact,
                                         from: PEPContact) -> Bool {
         return !isEncryptedPEPContact(contact, from: from)
-    }
-
-    public func outgoingContactColor(contact: PEPContact,
-                                     from: PEPContact) -> PEP_color {
-        let fakeMail: NSMutableDictionary = [:]
-        fakeMail[kPepFrom] = from
-        fakeMail[kPepOutgoing] = true
-        fakeMail[kPepTo] = [contact]
-        fakeMail[kPepShortMessage] = "Subject"
-        fakeMail[kPepLongMessage]  = "Body"
-        let color = outgoingMessageColor(fakeMail as [NSObject : AnyObject])
-        return color
     }
 
     /**
