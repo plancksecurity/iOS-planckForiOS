@@ -28,6 +28,7 @@ class TrustWordsViewController: UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.tableView.reloadData()
 
         let allRecipients: NSMutableOrderedSet?
 
@@ -37,8 +38,8 @@ class TrustWordsViewController: UITableViewController {
         if let m = self.message {
             allRecipients = m.allRecipienst().mutableCopy() as? NSMutableOrderedSet
             if let ar = allRecipients {
-                if let myself = m.from {
-                    ar.addObject(myself)
+                if let f = m.from {
+                    ar.addObject(f)
                 }
                 for contact in ar {
                     if let c = contact as? IContact {
@@ -137,17 +138,19 @@ class TrustWordsViewController: UITableViewController {
             cell.backgroundColor = paintingMailStatus(privacyColor)
 
             cell.handshakeUIButton.enabled = !otherMyselfAccount.containsObject(contact)
+
             switch privacyColor {
             case .NoColor:
                 cell.handshakeUIButton.enabled = false
             case .Red:
                 cell.handshakeUIButton.setTitle(
-                    NSLocalizedString("Trust Again", comment: "handshake"), forState: .Normal)
+                    NSLocalizedString("Trust Again", comment: "handshake red"), forState: .Normal)
             case .Green:
                 cell.handshakeUIButton.setTitle(
-                    NSLocalizedString("Reset trust", comment: "handshake"), forState: .Normal)
+                    NSLocalizedString("Reset trust", comment: "handshake green"), forState: .Normal)
             case .Yellow:
-                break
+                cell.handshakeUIButton.setTitle(
+                    NSLocalizedString("Handshake", comment: "handshake yellow"), forState: .Normal)
             }
             return cell
         }
@@ -172,6 +175,17 @@ class TrustWordsViewController: UITableViewController {
                     }
                 }
             }
+        }
+    }
+
+    @IBAction func goToHandshakeScreen(sender: AnyObject) {
+        let contactIndex = sender.tag
+        let contact = allRecipientsFiltered[contactIndex] as! Contact
+        if PEPUtil.privacyColorForContact(contact) == .Red || PEPUtil.privacyColorForContact(contact) == .Green {
+            PEPUtil.resetTrustForContact(contact)
+            self.tableView.reloadData()
+        } else {
+            performSegueWithIdentifier(handshakeSegue, sender: sender)
         }
     }
 
