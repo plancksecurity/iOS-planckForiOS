@@ -10,4 +10,10 @@ import UIKit
 
 class MessageBodyCell: UITableViewCell {
     @IBOutlet weak var bodyTextView: UITextView!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.selectionStyle = UITableViewCellSelectionStyle.None
+    }
+    
 }

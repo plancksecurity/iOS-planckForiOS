@@ -11,6 +11,11 @@ import UIKit
 class ContactTableViewCell: UITableViewCell {
     @IBOutlet weak var labelContactDisplayName: UILabel!
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.selectionStyle = UITableViewCellSelectionStyle.None
+    }
+
     var contact: IContact? = nil {
         didSet {
             if let c = contact {

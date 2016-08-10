@@ -15,6 +15,11 @@ public class RecipientCell: UITableViewCell {
     var titleText: String?
     var message: Message!
 
+    override public func awakeFromNib() {
+        super.awakeFromNib()
+        self.selectionStyle = UITableViewCellSelectionStyle.None
+    }
+    
     var recipientType: RecipientType? = nil {
         didSet {
             if let rt = recipientType {

@@ -501,8 +501,8 @@
                                                 <segue destination="Nl7-KN-0hf" kind="show" identifier="handshakeSegue" id="ZvZ-xd-ZgP"/>
                                             </connections>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9J-om-lrb">
-                                            <rect key="frame" x="12" y="12" width="234" height="19"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9J-om-lrb">
+                                            <rect key="frame" x="12" y="12" width="61" height="19"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -548,7 +548,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security tittle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x1d-Md-75b">
-                                            <rect key="frame" x="8" y="11" width="584" height="21"/>
+                                            <rect key="frame" x="8" y="11" width="102" height="21"/>
                                             <gestureRecognizers/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -559,7 +559,6 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="x1d-Md-75b" secondAttribute="trailing" id="2tX-Nu-4FU"/>
                                         <constraint firstItem="x1d-Md-75b" firstAttribute="leading" secondItem="Wky-08-VfS" secondAttribute="leadingMargin" constant="4" id="47C-H3-i2Q"/>
                                         <constraint firstAttribute="topMargin" secondItem="x1d-Md-75b" secondAttribute="top" constant="4" id="EdG-Ua-eaE"/>
                                         <constraint firstItem="x1d-Md-75b" firstAttribute="leading" secondItem="Wky-08-VfS" secondAttribute="leadingMargin" id="QL1-Zr-Sll"/>
@@ -585,9 +584,12 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ges-7V-rhw">
-                                            <rect key="frame" x="8" y="8" width="584" height="33"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ges-7V-rhw">
+                                            <rect key="frame" x="8" y="8" width="584" height="27"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <accessibility key="accessibilityConfiguration">
+                                                <accessibilityTraits key="traits" notEnabled="YES"/>
+                                            </accessibility>
                                             <attributedString key="attributedText">
                                                 <fragment content="Explanation">
                                                     <attributes>
