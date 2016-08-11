@@ -148,6 +148,11 @@ public class ComposeViewController: UITableViewController {
      */
     var originalMessage: IMessage?
 
+    /**
+     The original text attributes from a recipient cell text.
+     */
+    var recipientTextAttributes: [String : AnyObject]?
+
     required public init?(coder aDecoder: NSCoder) {
         delimiterWithSpace = "\(recipientStringDelimiter) "
          trailingPattern = "\(recipientStringDelimiter)\\s*"
@@ -594,6 +599,14 @@ public class ComposeViewController: UITableViewController {
                     cell.recipientType = RecipientType.fromRawValue(indexPath.row + 1)
                     cell.recipientTextView.delegate = self
 
+                    if recipientTextAttributes == nil {
+                        var attributeRange: NSRange = NSMakeRange(0, 1)
+                        recipientTextAttributes =
+                            cell.recipientTextView.attributedText.attributesAtIndex(
+                                0, longestEffectiveRange: &attributeRange,
+                                inRange: NSRange.init(location: 0, length: 1))
+                    }
+
                     // Cache the cell for later use
                     recipientCellsByTextView[cell.recipientTextView] = cell
                     recipientCells[indexPath.row] = cell
@@ -747,7 +760,7 @@ public class ComposeViewController: UITableViewController {
     }
 
     /**
-     Gives contacts in the given text view.
+     Gives contacts in the given text view the pEp color rating.
      */
     func colorRecipients(textView: UITextView) {
         let parts = textView.text.componentsSeparatedByCharactersInSet(delimiterChars)
@@ -757,11 +770,16 @@ public class ComposeViewController: UITableViewController {
         guard let ap = appConfig else {
             return
         }
+        guard let origAttributes = recipientTextAttributes else {
+            return
+        }
+
         let model = Model.init(context: ap.coreDataUtil.privateContext())
+
         model.context.performBlock() {
+            let recipientText = NSMutableAttributedString.init()
             let session = PEPSession.init()
             var firstPart = true
-            let s = NSMutableAttributedString()
             for p in parts {
                 let thePart = p.trimmedWhiteSpace()
                 if thePart.isEmpty {
@@ -771,29 +789,28 @@ public class ComposeViewController: UITableViewController {
                 if firstPart {
                     firstPart = false
                     let attributed = NSAttributedString.init(string: thePart,
-                        attributes: nil)
-                    s.appendAttributedString(attributed)
-                    s.appendAttributedString(NSAttributedString.init(string: ": ",
-                        attributes: nil))
+                        attributes: origAttributes)
+                    recipientText.appendAttributedString(attributed)
+                    recipientText.appendAttributedString(NSAttributedString.init(string: ": ",
+                        attributes: origAttributes))
                 } else {
-                    var attributes: [String : AnyObject]? = nil
+                    var attributes = origAttributes
                     if let c = model.contactByEmail(thePart) {
                         let color = PEPUtil.privacyColorForContact(c, session: session)
                         if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(color) {
-                            attributes = [:]
-                            attributes![NSBackgroundColorAttributeName] = uiColor
+                            attributes[NSBackgroundColorAttributeName] = uiColor
                         }
                     }
                     let attributed = NSAttributedString.init(string: thePart,
                         attributes: attributes)
-                    s.appendAttributedString(attributed)
-                    s.appendAttributedString(NSAttributedString.init(
+                    recipientText.appendAttributedString(attributed)
+                    recipientText.appendAttributedString(NSAttributedString.init(
                         string: self.delimiterWithSpace,
-                        attributes: nil))
+                        attributes: origAttributes))
                 }
             }
             GCD.onMain() {
-                textView.attributedText = s
+                textView.attributedText = recipientText
             }
         }
     }

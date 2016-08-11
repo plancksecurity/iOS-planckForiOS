@@ -273,6 +273,12 @@ public extension String {
     }
 }
 
+public extension NSAttributedString {
+    public func wholeRange() -> NSRange {
+        return NSRange.init(location: 0, length: length)
+    }
+}
+
 class Regex {
     let comp = "Regex"
     let internalExpression: NSRegularExpression
