@@ -72,7 +72,8 @@ class EmailViewController: UIViewController {
 
         if let url = NSURL.init(string: "file:///") {
             if let s = message.longMessage {
-                let s2 = s.stringByReplacingOccurrencesOfString("\n", withString: "<br>")
+                let s2 = s.stringByReplacingOccurrencesOfString("\r\n", withString: "<br>")
+                let s3 = s2.stringByReplacingOccurrencesOfString("\n", withString: "<br>")
                 let html: String = "<!DOCTYPE html>"
                     + "<html>"
                     + "<head>"
@@ -82,7 +83,7 @@ class EmailViewController: UIViewController {
                     + "</style>"
                     + "</head>"
                     + "<body>"
-                    + s2
+                    + s3
                     + "</body>"
                     + "</html>"
 

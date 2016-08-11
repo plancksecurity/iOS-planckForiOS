@@ -213,6 +213,7 @@ public class GrandOperator: IGrandOperator {
             folder: ImapSync.defaultImapInboxName))
 
         operations.append(DecryptMailOperation.init(coreDataUtil: coreDataUtil))
+        operations.append(HTMLConvertOperation.init(coreDataUtil: coreDataUtil))
 
         chainOperations(
             operations, completionBlock: { error in
