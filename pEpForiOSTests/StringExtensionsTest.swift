@@ -29,7 +29,7 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual("uiae\"uiaeuiae\"".unquote(), "uiae\"uiaeuiae\"")
     }
 
-    func testTrimWhiteSpace() {
+    func testTrimmedWhiteSpace() {
         XCTAssertEqual("".trimmedWhiteSpace(), "")
         XCTAssertEqual(" ".trimmedWhiteSpace(), "")
         XCTAssertEqual("   ".trimmedWhiteSpace(), "")
@@ -38,6 +38,19 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual("    abc \t ".trimmedWhiteSpace(), "abc")
         XCTAssertEqual("abc   ".trimmedWhiteSpace(), "abc")
         XCTAssertEqual(" finished2".trimmedWhiteSpace(), "finished2")
+
+        XCTAssertEqual("".trimmedWhiteSpace(), "")
+        XCTAssertEqual(" ".trimmedWhiteSpace(), "")
+        XCTAssertEqual("uze".trimmedWhiteSpace(), "uze")
+        XCTAssertEqual("\nuze".trimmedWhiteSpace(), "uze")
+        XCTAssertEqual("\nuze\r\n".trimmedWhiteSpace(), "uze")
+        XCTAssertEqual("\r\n\nuze\r\n".trimmedWhiteSpace(), "uze")
+        XCTAssertEqual("\n\r\n\nuze\r\n".trimmedWhiteSpace(), "uze")
+
+        XCTAssertEqual("\r\n\r\n\nuze\r\n".trimmedWhiteSpace(), "uze")
+        XCTAssertEqual("\r\n\r\n\r\n\nuze\r\n".trimmedWhiteSpace(), "uze")
+        XCTAssertEqual("\r\n\r\n\r\nuze".trimmedWhiteSpace(), "uze")
+        XCTAssertEqual("\r\n\r\n\r\n\nuze\r\n\r\r\r\n\r\n".trimmedWhiteSpace(), "uze")
     }
 
     func testFinishedRecipientPart() {
@@ -101,5 +114,21 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual("<messageid@someserver>".removeAngleBrackets(), "messageid@someserver")
         XCTAssertEqual("  <messageid@someserver>  ".removeAngleBrackets(),
                        "messageid@someserver")
+    }
+
+    func testExtractTextFromHTML() {
+        var html = "<html>\r\n  <head>\r\n\r\n"
+            + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
+            + "</head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n"
+            + "<p>HTML! <b>Yes!</b><br>\r\n"
+            + "</p>\r\n  </body>\r\n</html>\r\n"
+        XCTAssertEqual(html.extractTextFromHTML(), "HTML! Yes!")
+
+        html = "<html>\r\n  <head>\r\n\r\n"
+            + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
+            + "</head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n"
+            + "<p>HTML! <b>Yes!</b><br>\r\n"
+            + "</p><p>Whatever. New paragraph.</p>\r\n  </body>\r\n</html>\r\n"
+        XCTAssertEqual(html.extractTextFromHTML(), "HTML! Yes! Whatever. New paragraph.")
     }
 }

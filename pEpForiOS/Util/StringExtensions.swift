@@ -145,25 +145,46 @@ public extension String {
      Trims whitespace from back and front.
      */
     public func trimmedWhiteSpace() -> String {
+        enum ScanState {
+            case Start
+            case Middle
+            case End
+        }
+
+        var state = ScanState.Start
+        var result = ""
+
+        // With a regex there are problems with "\r\n" at the beginning of the String,
+        // so solve that part manually.
+        for ch in characters {
+            if state == .Start {
+                if !ch.isWhitespace() {
+                    state = .Middle
+                    result.append(ch)
+                }
+            } else {
+                result.append(ch)
+            }
+        }
+
         do {
-            let regex = try NSRegularExpression.init(pattern: "^\\s*?(\\S*)\\s*?$",
+            let regex = try NSRegularExpression.init(pattern: "^(\\S*+)\\s*$",
                                                      options: [])
-            let matches = regex.matchesInString(self, options: [],
-                                          range: NSMakeRange(0, self.characters.count))
+            let matches = regex.matchesInString(result, options: [], range: result.wholeRange())
             if matches.count > 0 {
                 let m = matches[0]
                 let r = m.rangeAtIndex(1)
                 if r.location != NSNotFound {
-                    let s = self as NSString
+                    let s = result as NSString
                     let result = s.substringWithRange(r)
                     return result
                 }
             }
-
-        } catch let err as NSError {
+        }
+        catch let err as NSError {
             Log.errorComponent(String.comp, error: err)
         }
-        return self
+        return result
     }
 
     /**
@@ -271,11 +292,43 @@ public extension String {
         }
         return self
     }
+
+    public func extractTextFromHTML() -> String {
+        let htmlData = dataUsingEncoding(NSUTF8StringEncoding)
+        let doc = TFHpple.init(data: htmlData, encoding: "UTF-8", isXML: false)
+        let elms = doc.searchWithXPathQuery("//body//*[text()]")
+
+        var result = ""
+        for tmp in elms {
+            if let e = tmp as? TFHppleElement {
+                let s = e.content.trimmedWhiteSpace()
+                if !s.isEmpty {
+                    if e.tagName == "p" {
+                        result.appendContentsOf("\n\(s)\n")
+                    } else if e.tagName == "b" {
+                        result.appendContentsOf("*\(s)*")
+                    }
+                }
+            }
+        }
+        return result
+    }
 }
 
 public extension NSAttributedString {
     public func wholeRange() -> NSRange {
         return NSRange.init(location: 0, length: length)
+    }
+}
+
+public extension Character {
+    public func isWhitespace() -> Bool {
+        switch self {
+        case " ", "\t", "\n", "\r", "\r\n":
+            return true
+        default:
+            return false
+        }
     }
 }
 
