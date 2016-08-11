@@ -25,11 +25,10 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
     let trustwords = 5
     let confirmButton = 6
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(tableView)
-     
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -94,9 +93,12 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("handshakeButton", forIndexPath: indexPath) as! HandshakeButtonTableViewCell
             cell.confirmUIButton.setTitle(NSLocalizedString("Confirm trustwords", comment: "confirm button, handshake"), forState: UIControlState.Normal)
+            cell.confirmUIButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+            cell.confirmUIButton.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0)
             cell.deniedUIButton.setTitle(NSLocalizedString("Wrong trustwords", comment: "wrong trustwords button, handshake"), forState: UIControlState.Normal)
+            cell.deniedUIButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+            cell.deniedUIButton.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0)
             return cell
-
         }
     }
 
