@@ -123,11 +123,6 @@ public protocol IModel {
                                      forceParseAttachments: Bool) -> IMessage?
 
     /**
-     Sets up the snippet.
-     */
-    func setupSnippetForMail(mail: Message)
-
-    /**
      - Returns: List of contact that match the given snippet (either in the name, or email).
      */
     func contactsBySnippet(snippet: String) -> [IContact]
@@ -713,22 +708,9 @@ public class Model: IModel {
             // Parsing attachments only makes sense once pantomime has received the
             // mail body. Same goes for the snippet.
             addAttachmentsFromPantomimePart(message, targetMail: mail as! Message, level: 0)
-            setupSnippetForMail(mail as! Message)
         }
 
         return mail
-    }
-
-    public func setupSnippetForMail(mail: Message) {
-        /*
-        if mail.longMessage == nil {
-            if let htmlString = mail.longMessageFormatted {
-                let htmlData = htmlString.dataUsingEncoding(NSUTF8StringEncoding)
-                let doc = TFHpple.init(data: htmlData, encoding: "UTF-8", isXML: false)
-                let elms = doc.searchWithXPathQuery("//body//text()[normalize-space()]")
-            }
-        }
-         */
     }
 
     func addAttachmentsFromPantomimePart(part: CWPart, targetMail: Message, level: Int) {

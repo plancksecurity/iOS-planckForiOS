@@ -180,12 +180,20 @@ class EmailListViewController: UITableViewController {
             }
             UIHelper.putString(email.from?.displayString(), toLabel: cell.senderLabel)
             UIHelper.putString(email.subject, toLabel: cell.subjectLabel)
+            /*
             if let text = email.longMessage {
                 let theText = text.replaceNewLinesWith(" ")
                 UIHelper.putString(theText, toLabel: cell.summaryLabel)
             } else {
-                UIHelper.putString(email.longMessageFormatted, toLabel: cell.summaryLabel)
+ */
+            if let html = email.longMessageFormatted {
+                var text = html.extractTextFromHTML()
+                text = text.replaceNewLinesWith(" ")
+                UIHelper.putString(text, toLabel: cell.summaryLabel)
+            } else {
+                UIHelper.putString(nil, toLabel: cell.summaryLabel)
             }
+        //}
 
             if let receivedDate = email.receivedDate {
                 UIHelper.putString(dateFormatter.stringFromDate(receivedDate),
