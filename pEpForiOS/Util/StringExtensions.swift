@@ -293,22 +293,37 @@ public extension String {
         return self
     }
 
+    /**
+     Text from HTML, useful for creating snippets of a mail.
+     */
     public func extractTextFromHTML() -> String {
         let htmlData = dataUsingEncoding(NSUTF8StringEncoding)
         let doc = TFHpple.init(data: htmlData, encoding: "UTF-8", isXML: false)
-        let elms = doc.searchWithXPathQuery("//body//*[text()]")
+        let elms = doc.searchWithXPathQuery("//body//text()[normalize-space()]")
 
         var result = ""
         for tmp in elms {
             if let e = tmp as? TFHppleElement {
                 let s = e.content.trimmedWhiteSpace()
                 if !s.isEmpty {
-                    if e.tagName == "p" {
-                        result.appendContentsOf("\n\(s)\n")
-                    } else if e.tagName == "b" {
-                        result.appendContentsOf("*\(s)*")
+                    if result.characters.count > 0 {
+                        result.append(" " as Character)
                     }
+                    result.appendContentsOf(s)
                 }
+            }
+        }
+        return result
+    }
+
+    public func replaceNewLinesWith(delimiter: String) -> String {
+        var result = ""
+
+        for ch in characters {
+            if !ch.isNewline() {
+                result.append(ch)
+            } else {
+                result.appendContentsOf(delimiter)
             }
         }
         return result
@@ -325,6 +340,15 @@ public extension Character {
     public func isWhitespace() -> Bool {
         switch self {
         case " ", "\t", "\n", "\r", "\r\n":
+            return true
+        default:
+            return false
+        }
+    }
+
+    public func isNewline() -> Bool {
+        switch self {
+        case "\n", "\r", "\r\n":
             return true
         default:
             return false
