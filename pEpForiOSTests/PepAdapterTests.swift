@@ -40,24 +40,20 @@ class PepAdapterTests: XCTestCase {
         let identity: NSMutableDictionary = [kPepUsername: "hernani",
                                              kPepAddress: "hernani@pep.foundation",
                                              kPepUserID: "2342"]
-        NSLog("Dict size: %d", identity.count)
-        
         PEPiOSAdapter.startKeyserverLookup()
         sleep(4)
         
         pEpSession.updateIdentity(identity)
         
-        NSLog("Dict size: %d", identity.count)
         XCTAssertTrue(identity.count > 3,
                       "Identity dictionary was "
                         + "(successfully) modified by reference.")
 
-        
         for key in identity.allKeys {
             NSLog("key = \(key)")
         }
         
-        XCTAssertTrue(identity[kPepFingerprint] != nil, "A fingerprint, there is!")
+        XCTAssertNotNil(identity[kPepFingerprint], "A fingerprint, there is!")
         
         PEPiOSAdapter.stopKeyserverLookup()
     }
