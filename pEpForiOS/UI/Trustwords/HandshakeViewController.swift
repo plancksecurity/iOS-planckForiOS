@@ -83,9 +83,11 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                         language: "en", session: nil)
                     } else {
                         let myselfFingerprints = PEPUtil.fingprprintForContact(myselfContact!)
+
                         let partnerFingerprints = PEPUtil.fingprprintForContact(partner!)
                         let bothFingerprints = "\(fingerprintFormat(partnerFingerprints!))\n\n\(fingerprintFormat(myselfFingerprints!))"
                         cell.handshakeTextView.text = bothFingerprints
+                        cell.handshakeTextView.font = UIFont(name: "Menlo", size: UIFont.systemFontSize())
                     }
                 }
             }
