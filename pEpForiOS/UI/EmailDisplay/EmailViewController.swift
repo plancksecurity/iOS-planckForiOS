@@ -46,9 +46,10 @@ class EmailViewController: UIViewController {
     func updateContents() {
         // If the contentInset.top is already set, this means the view never
         // really disappeared. So there is nothing to update in that case.
+        headerView.message = message
+        headerView.update(view.bounds.size.width)
+
         if webView.scrollView.contentInset.top == 0 {
-            headerView.message = message
-            headerView.update(view.bounds.size.width)
 
             loadWebViewContent()
 
