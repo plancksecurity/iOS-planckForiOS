@@ -257,4 +257,14 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
     }
+
+    override func tableView(tableView: UITableView,
+                            commitEditingStyle editingStyle: UITableViewCellEditingStyle,
+                                               forRowAtIndexPath indexPath: NSIndexPath) {
+        // TODO: Delete from the server and managed errors
+        if editingStyle == .Delete {
+            let managedObject = fetchController?.objectAtIndexPath(indexPath) as? Message
+            fetchController?.managedObjectContext.deleteObject(managedObject!)
+        }
+    }
 }
