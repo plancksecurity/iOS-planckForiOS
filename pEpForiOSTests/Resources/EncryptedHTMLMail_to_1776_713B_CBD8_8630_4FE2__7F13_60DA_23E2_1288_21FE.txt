@@ -1,0 +1,79 @@
+To: Unit Test 4 <unittest.ios.4@peptest.ch>
+From: Test 005 <test005@peptest.ch>
+Subject: Some HTML encrypted and signed
+Message-ID: <f6c3d1ee-43fb-c828-1a0b-22b8292d036f@peptest.ch>
+Date: Tue, 16 Aug 2016 12:05:56 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0)
+Gecko/20100101 Thunderbird/45.2.0
+MIME-Version: 1.0
+Content-Type: multipart/encrypted;
+protocol="application/pgp-encrypted";
+boundary="1u6tDCl0AJgFNlUaC7ubHsUg1IM7J3QSM"
+
+This is an OpenPGP/MIME encrypted message (RFC 4880 and 3156)
+--1u6tDCl0AJgFNlUaC7ubHsUg1IM7J3QSM
+Content-Type: application/pgp-encrypted
+Content-Description: PGP/MIME version identification
+
+Version: 1
+
+--1u6tDCl0AJgFNlUaC7ubHsUg1IM7J3QSM
+Content-Type: application/octet-stream; name="encrypted.asc"
+Content-Description: OpenPGP encrypted message
+Content-Disposition: inline; filename="encrypted.asc"
+
+-----BEGIN PGP MESSAGE-----
+
+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
+PWMFPxt4uSTEKWZxKb36
+=EKML
+-----END PGP MESSAGE-----
+
+--1u6tDCl0AJgFNlUaC7ubHsUg1IM7J3QSM--

@@ -133,4 +133,22 @@ class ModelTests: XCTestCase {
         TestUtil.runAddressBookTest(testBlock, addressBook: ab, testCase: self,
                                     waitTime: waitTime)
     }
+
+    func testInsertOrUpdatePantomimeMail() {
+        guard let data = TestUtil.loadDataWithFileName("UnencryptedHTMLMail.txt") else {
+            XCTAssertTrue(false)
+            return
+        }
+        let message = CWIMAPMessage.init(data: data)
+        message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        let model = persistentSetup.model
+        let msg = model.insertOrUpdatePantomimeMail(
+            message, accountEmail: persistentSetup.accountEmail,
+            forceParseAttachments: true)
+        XCTAssertNotNil(msg)
+        if let m = msg {
+            XCTAssertNotNil(m.longMessage)
+            XCTAssertNotNil(m.longMessageFormatted)
+        }
+    }
 }
