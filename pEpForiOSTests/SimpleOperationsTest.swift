@@ -418,11 +418,5 @@ class SimpleOperationsTest: XCTestCase {
         let color2 = session.outgoingColorFrom(myself as PEPContact,
                                                to: myself as PEPContact)
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
-
-        myself.removeObjectForKey(kPepUserID)
-
-        let color1 = session.outgoingColorFrom(myself as PEPContact,
-                                                 to: myself as PEPContact)
-        XCTAssertLessThanOrEqual(color1.rawValue, PEP_rating_reliable.rawValue)
     }
 }
