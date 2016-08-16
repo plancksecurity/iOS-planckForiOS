@@ -6,12 +6,12 @@ import CoreData
 
 public enum AttachmentAttributes: String {
     case contentType = "contentType"
+    case data = "data"
     case filename = "filename"
     case size = "size"
 }
 
 public enum AttachmentRelationships: String {
-    case content = "content"
     case message = "message"
 }
 
@@ -21,13 +21,13 @@ public enum AttachmentRelationships: String {
 
     var contentType: String? { get set }
 
+    var data: NSData? { get set }
+
     var filename: String? { get set }
 
     var size: NSNumber { get set }
 
     // MARK: - Relationships
-
-    var content: AttachmentData { get set }
 
     var message: Message { get set }
 
@@ -62,15 +62,15 @@ public class _Attachment: BaseManagedObject, _IAttachment {
     var contentType: String?
 
     @NSManaged public
+    var data: NSData?
+
+    @NSManaged public
     var filename: String?
 
     @NSManaged public
     var size: NSNumber
 
     // MARK: - Relationships
-
-    @NSManaged public
-    var content: AttachmentData
 
     @NSManaged public
     var message: Message

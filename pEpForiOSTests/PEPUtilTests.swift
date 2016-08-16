@@ -64,7 +64,7 @@ class PEPUtilTests: XCTestCase {
 
         XCTAssertEqual(pepA1[kPepMimeFilename] as? String, a1.filename)
         XCTAssertEqual(pepA1[kPepMimeType] as? String, a1.contentType)
-        XCTAssertEqual(pepA1[kPepMimeData] as? NSData, a1.content.data)
+        XCTAssertEqual(pepA1[kPepMimeData] as? NSData, a1.data)
     }
 
     func testPepMail() {

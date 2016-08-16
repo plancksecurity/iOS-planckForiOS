@@ -151,4 +151,13 @@ class ModelTests: XCTestCase {
             XCTAssertNotNil(m.longMessageFormatted)
         }
     }
+            let encData = attach.data
+            if let data = encData {
+                if let s = String.init(data: data, encoding: NSASCIIStringEncoding) {
+                    XCTAssertTrue(s.contains("-----BEGIN PGP MESSAGE-----"))
+                    XCTAssertTrue(s.startsWith("-----BEGIN PGP MESSAGE-----"))
+                } else {
+                    XCTAssertTrue(false)
+                }
+        identity[kPepFingerprint] = "1776713BCBD886304FE27F1360DA23E2128821FE"
 }

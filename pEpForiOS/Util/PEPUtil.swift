@@ -268,7 +268,7 @@ public class PEPUtil {
         if let contentType = attachment.contentType {
             dict[kPepMimeType] = contentType
         }
-        dict[kPepMimeData] = attachment.content.data
+        dict[kPepMimeData] = attachment.data
 
         return dict
     }

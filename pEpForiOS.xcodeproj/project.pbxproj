@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4303DAE71CE62D2600D9C0AB /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAE51CE62D2600D9C0AB /* Attachment.swift */; };
-		4303DAE81CE62D2600D9C0AB /* AttachmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAE61CE62D2600D9C0AB /* AttachmentData.swift */; };
 		4303DAED1CE62D3700D9C0AB /* _Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAEB1CE62D3700D9C0AB /* _Attachment.swift */; };
-		4303DAEE1CE62D3700D9C0AB /* _AttachmentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAEC1CE62D3700D9C0AB /* _AttachmentData.swift */; };
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */; };
@@ -205,9 +203,7 @@
 
 /* Begin PBXFileReference section */
 		4303DAE51CE62D2600D9C0AB /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
-		4303DAE61CE62D2600D9C0AB /* AttachmentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentData.swift; sourceTree = "<group>"; };
 		4303DAEB1CE62D3700D9C0AB /* _Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Attachment.swift; sourceTree = "<group>"; };
-		4303DAEC1CE62D3700D9C0AB /* _AttachmentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _AttachmentData.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpTrustWords.bundle; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
 		431144A91CC0CB480007639D /* PrefetchEmailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetchEmailsOperation.swift; sourceTree = "<group>"; };
@@ -663,7 +659,6 @@
 				4367E26E1CD7360000B05F83 /* Model.swift */,
 				43E58EC51CBF8365008AA7A7 /* BaseManagedObject.swift */,
 				4303DAE51CE62D2600D9C0AB /* Attachment.swift */,
-				4303DAE61CE62D2600D9C0AB /* AttachmentData.swift */,
 				431144BA1CC120220007639D /* Contact.swift */,
 				431144BB1CC120220007639D /* Message.swift */,
 				43E58EB31CBF8301008AA7A7 /* Account.swift */,
@@ -678,7 +673,6 @@
 			isa = PBXGroup;
 			children = (
 				4303DAEB1CE62D3700D9C0AB /* _Attachment.swift */,
-				4303DAEC1CE62D3700D9C0AB /* _AttachmentData.swift */,
 				431144BE1CC1202E0007639D /* _Contact.swift */,
 				431144BF1CC1202E0007639D /* _Message.swift */,
 				43E58EB61CBF8301008AA7A7 /* _Account.swift */,
@@ -959,7 +953,6 @@
 				43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */,
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
 				4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */,
-				4303DAE81CE62D2600D9C0AB /* AttachmentData.swift in Sources */,
 				43B3E46E1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift in Sources */,
 				43980EE61CBD24B800A7FC3C /* ConnectInfo.swift in Sources */,
 				435B42411D211E5900119048 /* MiscUtil.swift in Sources */,
@@ -993,7 +986,6 @@
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				439C4D411CD27B0E0099A27F /* VerifyImapConnectionOperation.swift in Sources */,
 				43A0E73D1D16C99900159F41 /* NSArray+PureLayout.m in Sources */,
-				4303DAEE1CE62D3700D9C0AB /* _AttachmentData.swift in Sources */,
 				431144BD1CC120220007639D /* Message.swift in Sources */,
 				4303DAED1CE62D3700D9C0AB /* _Attachment.swift in Sources */,
 				43800D941D112A0800821E34 /* TFHppleElement.m in Sources */,

@@ -22,14 +22,10 @@
     </entity>
     <entity name="Attachment" representedClassName="Attachment" syncable="YES">
         <attribute name="contentType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="filename" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="size" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <relationship name="content" maxCount="1" deletionRule="Cascade" destinationEntity="AttachmentData" inverseName="attachment" inverseEntity="AttachmentData" syncable="YES"/>
         <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="attachments" inverseEntity="Message" syncable="YES"/>
-    </entity>
-    <entity name="AttachmentData" representedClassName="AttachmentData" syncable="YES">
-        <attribute name="data" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <relationship name="attachment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Attachment" inverseName="content" inverseEntity="Attachment" syncable="YES"/>
     </entity>
     <entity name="Contact" representedClassName="Contact" syncable="YES">
         <attribute name="addressBookID" optional="YES" attributeType="Integer 32" indexed="YES" syncable="YES"/>
@@ -80,7 +76,6 @@
     <elements>
         <element name="Account" positionX="-63" positionY="-18" width="128" height="225"/>
         <element name="Attachment" positionX="-45" positionY="135" width="128" height="120"/>
-        <element name="AttachmentData" positionX="-36" positionY="144" width="128" height="75"/>
         <element name="Contact" positionX="-54" positionY="90" width="128" height="180"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="150"/>
         <element name="Message" positionX="-45" positionY="99" width="128" height="330"/>

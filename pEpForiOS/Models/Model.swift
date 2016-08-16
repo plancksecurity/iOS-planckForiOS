@@ -315,10 +315,7 @@ public class Model: IModel {
         attachment.contentType = contentType
         attachment.filename = filename
         attachment.size = data.length
-        let attachmentData = NSEntityDescription.insertNewObjectForEntityForName(
-            AttachmentData.entityName(), inManagedObjectContext: context) as! AttachmentData
-        attachmentData.data = data
-        attachment.content = attachmentData
+        attachment.data = data
         return attachment
     }
 
