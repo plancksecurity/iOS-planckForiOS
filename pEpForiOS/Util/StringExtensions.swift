@@ -168,7 +168,7 @@ public extension String {
         }
 
         do {
-            let regex = try NSRegularExpression.init(pattern: "^(\\S*+)\\s*$",
+            let regex = try NSRegularExpression.init(pattern: "^(.*?)\\s*$",
                                                      options: [])
             let matches = regex.matchesInString(result, options: [], range: result.wholeRange())
             if matches.count > 0 {

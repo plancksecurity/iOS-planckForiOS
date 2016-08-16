@@ -51,6 +51,7 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual("\r\n\r\n\r\n\nuze\r\n".trimmedWhiteSpace(), "uze")
         XCTAssertEqual("\r\n\r\n\r\nuze".trimmedWhiteSpace(), "uze")
         XCTAssertEqual("\r\n\r\n\r\n\nuze\r\n\r\r\r\n\r\n".trimmedWhiteSpace(), "uze")
+        XCTAssertEqual("Whatever New ".trimmedWhiteSpace(), "Whatever New")
     }
 
     func testFinishedRecipientPart() {
@@ -130,5 +131,13 @@ class StringExtensionsTest: XCTestCase {
             + "<p>HTML! <b>Yes!</b><br>\r\n"
             + "</p><p>Whatever. New paragraph.</p>\r\n  </body>\r\n</html>\r\n"
         XCTAssertEqual(html.extractTextFromHTML(), "HTML! Yes! Whatever. New paragraph.")
+
+        html = "<html>\r\n  <head>\r\n\r\n"
+            + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
+            + "</head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n"
+            + "<p>HTML! <b>Yes!</b><br>\r\n"
+            + "</p><p>Whatever. New <b>bold</b> paragraph.</p>\r\n  </body>\r\n</html>\r\n"
+        XCTAssertEqual(
+            html.extractTextFromHTML(), "HTML! Yes! Whatever. New bold paragraph.")
     }
 }

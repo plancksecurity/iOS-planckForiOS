@@ -60,7 +60,6 @@ public class HTMLConvertOperation: BaseOperation {
         let context = coreDataUtil.privateContext()
         context.performBlock() {
             let model = Model.init(context: context)
-            self.removeTextFromMails(model)
 
             let predicateHasHTML = NSPredicate.init(
                 format: "longMessageFormatted != nil or longMessageFormatted != %@", "")
