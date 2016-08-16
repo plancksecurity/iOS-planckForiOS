@@ -24,6 +24,7 @@ public enum MessageRelationships: String {
     case cc = "cc"
     case folder = "folder"
     case from = "from"
+    case messageReference = "messageReference"
     case references = "references"
     case to = "to"
 }
@@ -65,6 +66,8 @@ public enum MessageRelationships: String {
     var folder: Folder { get set }
 
     var from: Contact? { get set }
+
+    var messageReference: MessageReference? { get set }
 
     var references: NSOrderedSet { get set }
 
@@ -146,6 +149,9 @@ public class _Message: BaseManagedObject, _IMessage {
 
     @NSManaged public
     var from: Contact?
+
+    @NSManaged public
+    var messageReference: MessageReference?
 
     @NSManaged public
     var references: NSOrderedSet

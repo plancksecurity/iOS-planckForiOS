@@ -151,13 +151,65 @@ class ModelTests: XCTestCase {
             XCTAssertNotNil(m.longMessageFormatted)
         }
     }
+
+    func testInsertOrUpdatePantomimeMailEncrypted() {
+        guard let data = TestUtil.loadDataWithFileName(
+            "EncryptedHTMLMail_to_1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.txt") else {
+            XCTAssertTrue(false)
+            return
+        }
+        let message = CWIMAPMessage.init(data: data)
+        message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        let model = persistentSetup.model
+        guard let theMsg = model.insertOrUpdatePantomimeMail(
+            message, accountEmail: persistentSetup.accountEmail,
+            forceParseAttachments: true) else {
+                XCTAssertTrue(false)
+                return
+        }
+        XCTAssertNil(theMsg.longMessage)
+        XCTAssertNil(theMsg.longMessageFormatted)
+        XCTAssertEqual(theMsg.attachments.count, 2)
+
+        let encAttachment = theMsg.attachments[1] as? IAttachment
+        XCTAssertNotNil(encAttachment)
+        if let attach = encAttachment {
             let encData = attach.data
+            XCTAssertNotNil(encData)
             if let data = encData {
                 if let s = String.init(data: data, encoding: NSASCIIStringEncoding) {
                     XCTAssertTrue(s.contains("-----BEGIN PGP MESSAGE-----"))
-                    XCTAssertTrue(s.startsWith("-----BEGIN PGP MESSAGE-----"))
                 } else {
                     XCTAssertTrue(false)
                 }
+            } else {
+                XCTAssertTrue(false)
+            }
+        } else {
+            XCTAssertTrue(false)
+        }
+
+        let session = PEPSession.init()
+
+        // Import public key for myself
+        TestUtil.importKeyByFileName(
+            session, fileName: "1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.asc")
+
+        let identity = NSMutableDictionary()
+        identity[kPepUsername] = "myself"
+        identity[kPepAddress] = "unittest.ios.4@peptest.ch"
         identity[kPepFingerprint] = "1776713BCBD886304FE27F1360DA23E2128821FE"
+        session.mySelf(identity)
+        XCTAssertNotNil(identity[kPepFingerprint])
+        XCTAssertEqual(
+            identity[kPepFingerprint] as? String,
+            "1776713BCBD886304FE27F1360DA23E2128821FE")
+
+        let dict = PEPUtil.pepMail(theMsg)
+        var pepDecryptedMail: NSDictionary?
+        var keys: NSArray?
+        let color = session.decryptMessageDict(
+            dict, dest: &pepDecryptedMail, keys: &keys)
+        XCTAssertGreaterThanOrEqual(color.rawValue, PEP_rating_reliable.rawValue)
+    }
 }

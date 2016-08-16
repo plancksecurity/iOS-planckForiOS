@@ -4,11 +4,11 @@ Subject: Some HTML encrypted and signed
 Message-ID: <f6c3d1ee-43fb-c828-1a0b-22b8292d036f@peptest.ch>
 Date: Tue, 16 Aug 2016 12:05:56 +0200
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0)
-Gecko/20100101 Thunderbird/45.2.0
+ Gecko/20100101 Thunderbird/45.2.0
 MIME-Version: 1.0
 Content-Type: multipart/encrypted;
-protocol="application/pgp-encrypted";
-boundary="1u6tDCl0AJgFNlUaC7ubHsUg1IM7J3QSM"
+ protocol="application/pgp-encrypted";
+ boundary="1u6tDCl0AJgFNlUaC7ubHsUg1IM7J3QSM"
 
 This is an OpenPGP/MIME encrypted message (RFC 4880 and 3156)
 --1u6tDCl0AJgFNlUaC7ubHsUg1IM7J3QSM
