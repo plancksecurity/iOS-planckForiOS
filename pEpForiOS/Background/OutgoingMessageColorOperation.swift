@@ -17,7 +17,7 @@ class OutgoingMessageColorOperation: NSOperation {
     /**
      Output: The pEp color rating for the mail.
      */
-    var pepColorRating: PEP_color?
+    var pepColorRating: PEP_rating?
 
     override func main() {
         if let mail = pepMail {

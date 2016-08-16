@@ -9,9 +9,9 @@
 import Foundation
 
 /**
- Simple `Hashable` implementation so PEP_color can be put into dictionaries.
+ Simple `Hashable` implementation so PEP_rating can be put into dictionaries.
  */
-extension PEP_color: Hashable {
+extension PEP_rating: Hashable {
     public var hashValue: Int {
         return Int(rawValue)
     }
@@ -25,9 +25,9 @@ public enum PrivacyColor {
 }
 
 /**
- For translating integer values into `PEP_color`.
+ For translating integer values into `PEP_rating`.
  */
-let pepColorDictionary: [Int32: PEP_color] =
+let pepColorDictionary: [Int32: PEP_rating] =
     [PEP_rating_undefined.rawValue: PEP_rating_undefined,
      PEP_rating_cannot_decrypt.rawValue: PEP_rating_cannot_decrypt,
      PEP_rating_have_no_key.rawValue: PEP_rating_have_no_key,
@@ -45,7 +45,7 @@ let pepColorDictionary: [Int32: PEP_color] =
 /**
  All privacy status strings, i18n ready.
  */
-let pepPricacyStatusTranslations: [PEP_color: (String, String, String)] =
+let pepPricacyStatusTranslations: [PEP_rating: (String, String, String)] =
     [PEP_rating_under_attack:
         (NSLocalizedString("Under Attack",
             comment: "Privacy status title"),
@@ -548,7 +548,7 @@ public class PEPUtil {
     }
 
     public static func colorRatingForContact(contact: IContact,
-                                             session: PEPSession? = nil) -> PEP_color {
+                                             session: PEPSession? = nil) -> PEP_rating {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
         let color = theSession.identityColor(pepC as [NSObject : AnyObject])
@@ -563,7 +563,7 @@ public class PEPUtil {
         return privacyColorFromPepColorRating(color)
     }
 
-    public static func privacyColorFromPepColorRating(pepColorRating: PEP_color) -> PrivacyColor {
+    public static func privacyColorFromPepColorRating(pepColorRating: PEP_rating) -> PrivacyColor {
         switch pepColorRating {
         case PEP_rating_undefined,
              PEP_rating_cannot_decrypt,
@@ -572,29 +572,26 @@ public class PEPUtil {
              PEP_rating_unencrypted_for_some,
              PEP_rating_unreliable:
             return .NoColor
-        case PEP_rating_reliable,
-             PEP_rating_yellow:
+        case PEP_rating_reliable:
             return .Yellow
         case PEP_rating_trusted,
-             PEP_rating_green,
              PEP_rating_trusted_and_anonymized,
              PEP_rating_fully_anonymous:
             return .Green
         case PEP_rating_mistrust,
-             PEP_rating_red,
              PEP_rating_b0rken,
              PEP_rating_under_attack:
             return .Red
 
         // TODO: Is this a Swift bug? The code would be safer without a default, in case
-        // PEP_color gains elements.
+        // PEP_rating gains elements.
         default:
             Log.warnComponent(self.comp, "Unsupported color rating")
             return .NoColor
         }
     }
 
-    public static func colorRatingFromInt(i: Int?) -> PEP_color? {
+    public static func colorRatingFromInt(i: Int?) -> PEP_rating? {
         guard let theInt = i else {
             return nil
         }
@@ -602,7 +599,7 @@ public class PEPUtil {
         return pepColorDictionary[int32]
     }
 
-    public static func pepTitleFromColor(pepColorRating: PEP_color) -> String? {
+    public static func pepTitleFromColor(pepColorRating: PEP_rating) -> String? {
         if let (title, _, _) = pepPricacyStatusTranslations[pepColorRating] {
             return title
         }
@@ -610,7 +607,7 @@ public class PEPUtil {
         return nil
     }
 
-    public static func pepExplanationFromColor(pepColorRating: PEP_color) -> String? {
+    public static func pepExplanationFromColor(pepColorRating: PEP_rating) -> String? {
         if let (_, explanation, _) = pepPricacyStatusTranslations[pepColorRating] {
             return explanation
         }
@@ -618,7 +615,7 @@ public class PEPUtil {
         return nil
     }
 
-    public static func pepSuggestionFromColor(pepColorRating: PEP_color) -> String? {
+    public static func pepSuggestionFromColor(pepColorRating: PEP_rating) -> String? {
         if let (_, _, suggestion) = pepPricacyStatusTranslations[pepColorRating] {
             return suggestion
         }
@@ -682,7 +679,7 @@ public class PEPUtil {
      Caller is responsible for saving the model!
      */
     public static func updateDecryptedMessage(message: IMessage, fromPepMail: PEPMail,
-                                              pepColorRating: PEP_color?, model: IModel) {
+                                              pepColorRating: PEP_rating?, model: IModel) {
         if let color = pepColorRating {
             message.pepColorRating = NSNumber.init(int: color.rawValue)
         } else {

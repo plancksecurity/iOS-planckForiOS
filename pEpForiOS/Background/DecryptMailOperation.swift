@@ -72,13 +72,10 @@ public class DecryptMailOperation: BaseOperation {
                     break
                 case PEP_rating_unreliable,
                 PEP_rating_mistrust,
-                PEP_rating_red,
                 PEP_rating_under_attack,
                 PEP_rating_reliable,
-                PEP_rating_yellow,
                 PEP_rating_reliable,
                 PEP_rating_trusted,
-                PEP_rating_green,
                 PEP_rating_trusted,
                 PEP_rating_trusted_and_anonymized,
                 PEP_rating_fully_anonymous:
