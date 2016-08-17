@@ -17,13 +17,6 @@ extension PEP_rating: Hashable {
     }
 }
 
-public enum PrivacyColor {
-    case NoColor
-    case Green
-    case Red
-    case Yellow
-}
-
 /**
  For translating integer values into `PEP_rating`.
  */
@@ -556,39 +549,15 @@ public class PEPUtil {
     }
 
     public static func privacyColorForContact(contact: IContact,
-                                              session: PEPSession? = nil) -> PrivacyColor {
+                                              session: PEPSession? = nil) -> PEP_color {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
         let color = theSession.identityColor(pepC as [NSObject : AnyObject])
-        return privacyColorFromPepColorRating(color)
+        return colorFromPepRating(color)
     }
 
-    public static func privacyColorFromPepColorRating(pepColorRating: PEP_rating) -> PrivacyColor {
-        switch pepColorRating {
-        case PEP_rating_undefined,
-             PEP_rating_cannot_decrypt,
-             PEP_rating_have_no_key,
-             PEP_rating_unencrypted,
-             PEP_rating_unencrypted_for_some,
-             PEP_rating_unreliable:
-            return .NoColor
-        case PEP_rating_reliable:
-            return .Yellow
-        case PEP_rating_trusted,
-             PEP_rating_trusted_and_anonymized,
-             PEP_rating_fully_anonymous:
-            return .Green
-        case PEP_rating_mistrust,
-             PEP_rating_b0rken,
-             PEP_rating_under_attack:
-            return .Red
-
-        // TODO: Is this a Swift bug? The code would be safer without a default, in case
-        // PEP_rating gains elements.
-        default:
-            Log.warnComponent(self.comp, "Unsupported color rating")
-            return .NoColor
-        }
+    public static func colorFromPepRating(pepColorRating: PEP_rating) -> PEP_color {
+        return color_from_rating(pepColorRating)
     }
 
     public static func colorRatingFromInt(i: Int?) -> PEP_rating? {

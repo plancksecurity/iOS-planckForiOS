@@ -221,12 +221,12 @@ public class ComposeViewController: UITableViewController {
         }
         sendButton.enabled = !allEmpty && allCorrect
         if !sendButton.enabled {
-            setPrivacyColor(.NoColor, toSendButton: sendButton)
+            setPrivacyColor(PEP_color_no_color, toSendButton: sendButton)
         }
         return sendButton.enabled
     }
 
-    func setPrivacyColor(color: PrivacyColor, toSendButton: UIBarButtonItem) {
+    func setPrivacyColor(color: PEP_color, toSendButton: UIBarButtonItem) {
         var image: UIImage?
         if let uiColor = UIHelper.sendButtonBackgroundColorFromPepColor(color) {
             image = UIHelper.imageFromColor(uiColor)
@@ -254,7 +254,7 @@ public class ComposeViewController: UITableViewController {
             op.completionBlock = {
                 if !op.cancelled {
                     if let pepColor = op.pepColorRating {
-                        let color = PEPUtil.privacyColorFromPepColorRating(pepColor)
+                        let color = PEPUtil.colorFromPepRating(pepColor)
                         GCD.onMain() {
                             self.setPrivacyColor(color, toSendButton: self.sendButton)
                         }

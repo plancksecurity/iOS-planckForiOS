@@ -57,19 +57,6 @@ class TrustWordsViewController: UITableViewController {
         }
     }
 
-    func paintingMailStatus(privateColor: PrivacyColor) -> UIColor? {
-        switch privateColor {
-        case .Green:
-            return UIColor.greenColor()
-        case .Yellow:
-            return  UIColor.yellowColor()
-        case .Red:
-            return  UIColor.redColor()
-        case .NoColor:
-            return nil
-        }
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -98,8 +85,9 @@ class TrustWordsViewController: UITableViewController {
                 cell.backgroundColor = defaultBackground
                 if let mailPepColor = m.pepColorRating?.integerValue {
                     if let pc = PEPUtil.colorRatingFromInt(mailPepColor) {
-                        let privateColor = PEPUtil.privacyColorFromPepColorRating(pc)
-                        if let uiColor = paintingMailStatus(privateColor) {
+                        let privateColor = PEPUtil.colorFromPepRating(pc)
+                        if let uiColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
+                            privateColor) {
                             cell.backgroundColor = uiColor
                         }
                         let securityTitleText = PEPUtil.pepTitleFromColor(pc)
@@ -135,22 +123,23 @@ class TrustWordsViewController: UITableViewController {
             cell.handshakeContactUILabel.text = contact.displayString()
             cell.handshakeUIButton.tag = contactIndex
             let privacyColor = PEPUtil.privacyColorForContact(contact)
-            cell.backgroundColor = paintingMailStatus(privacyColor)
+            cell.backgroundColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
+                privacyColor)
 
             cell.handshakeUIButton.enabled = !otherMyselfAccount.containsObject(contact)
 
             switch privacyColor {
-            case .NoColor:
-                cell.handshakeUIButton.enabled = false
-            case .Red:
+            case PEP_color_red:
                 cell.handshakeUIButton.setTitle(
                     NSLocalizedString("Trust Again", comment: "handshake red"), forState: .Normal)
-            case .Green:
+            case PEP_color_green:
                 cell.handshakeUIButton.setTitle(
                     NSLocalizedString("Reset trust", comment: "handshake green"), forState: .Normal)
-            case .Yellow:
+            case PEP_color_yellow:
                 cell.handshakeUIButton.setTitle(
                     NSLocalizedString("Handshake", comment: "handshake yellow"), forState: .Normal)
+            default:
+                cell.handshakeUIButton.enabled = false
             }
             return cell
         }
@@ -180,8 +169,9 @@ class TrustWordsViewController: UITableViewController {
 
     @IBAction func goToHandshakeScreen(sender: AnyObject) {
         let contactIndex = sender.tag
-        let contact = allRecipientsFiltered[contactIndex] as! Contact
-        if PEPUtil.privacyColorForContact(contact) == .Red || PEPUtil.privacyColorForContact(contact) == .Green {
+        let contact = allRecipientsFiltered[contactIndex]
+        let pepColor = PEPUtil.privacyColorForContact(contact)
+        if pepColor == PEP_color_red || pepColor == PEP_color_green {
             PEPUtil.resetTrustForContact(contact)
             self.tableView.reloadData()
         } else {
