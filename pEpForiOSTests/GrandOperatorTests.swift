@@ -109,7 +109,7 @@ class GrandOperatorTests: XCTestCase {
             as? Account
         XCTAssertNotNil(account)
         let msg = createMail()
-        let exp = expectationWithDescription("mailFetched")
+        let exp = expectationWithDescription("mailSent")
         persistentSetup.grandOperator.sendMail(msg, account: account!, completionBlock: { error in
             XCTAssertNil(error)
             exp.fulfill()
