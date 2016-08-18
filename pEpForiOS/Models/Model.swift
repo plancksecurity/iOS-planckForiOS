@@ -374,13 +374,23 @@ public class Model: IModel {
         folder.name = name
         folder.account = account as! Account
 
+        // Default value
+        folder.folderType = NSNumber.init(integer: FolderType.Normal.rawValue)
+
         if name.uppercaseString == ImapSync.defaultImapInboxName.uppercaseString {
             folder.folderType = NSNumber.init(integer: FolderType.Inbox.rawValue)
         } else {
             for ty in FolderType.allValuesToCheckFromServer {
-                if name.matchesPattern("\(ty.folderName())",
-                                       reOptions: [.CaseInsensitive]) {
-                    folder.folderType = NSNumber.init(integer: ty.rawValue)
+                var foundMatch = false
+                for theName in ty.folderNames() {
+                    if name.matchesPattern("\(theName)",
+                                           reOptions: [.CaseInsensitive]) {
+                        folder.folderType = NSNumber.init(integer: ty.rawValue)
+                        foundMatch = true
+                        break
+                    }
+                }
+                if foundMatch {
                     break
                 }
             }

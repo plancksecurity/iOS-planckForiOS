@@ -7,9 +7,14 @@ import CoreData
  */
 public enum FolderType: Int {
     /**
+     Just some folder, nothing special.
+     */
+    case Normal = 0
+
+    /**
      The incoming folder mirrored from server. E.g., INBOX.
      */
-    case Inbox = 0
+    case Inbox
 
     /**
      Contains emails that are currently in progress, still being worked on by the user.
@@ -42,6 +47,16 @@ public enum FolderType: Int {
     case Trash
 
     /**
+     Remote Archive folder
+     */
+    case Archive
+
+    /**
+     Remote Spam folder
+     */
+    case Spam
+
+    /**
      The list of folder kinds that have to be created locally
      */
     public static let allValuesToCreate = [LocalDraft, LocalOutbox, LocalSent]
@@ -55,6 +70,8 @@ public enum FolderType: Int {
 
     public static func fromInt(folderTypeInt: Int) -> FolderType? {
         switch folderTypeInt {
+        case FolderType.Normal.rawValue:
+            return .Normal
         case FolderType.Inbox.rawValue:
             return .Inbox
         case FolderType.LocalDraft.rawValue:
@@ -69,34 +86,54 @@ public enum FolderType: Int {
             return .Sent
         case FolderType.Trash.rawValue:
             return .Trash
+        case FolderType.Archive.rawValue:
+            return .Archive
+        case FolderType.Spam.rawValue:
+            return .Spam
         default:
             return nil
         }
     }
 
     /**
-     Each kind has a human-readable name you can use to create a local folder object.
-     All except the Default, where you really should use `ImapSync.defaultImapInboxName`.
-     - Note: This is used *only* for the local-only special folders.
+     Each folder type has one or more human-readable name you can use to match
+     remote folder names.
+     - Note: This is used *only* for the local-only special folders, and for fuzzy-matching
+     against a known folder type when fetching from the remote server.
      */
-    public func folderName() -> String {
+    public func folderNames() -> [String] {
         switch self {
+        case .Normal:
+            return ["Normal"]
         case .Inbox:
             // Don't actually use this for the INBOX, always use `ImapSync.defaultImapInboxName`!
-            return "Inbox"
+            return ["Inbox"]
         case .LocalDraft:
-            return "Local Drafts"
+            return ["Local Drafts"]
         case .LocalOutbox:
-            return "Local Outbox"
+            return ["Local Outbox"]
         case .LocalSent:
-            return "Local Sent"
+            return ["Local Sent"]
         case .Sent:
-            return "Sent"
+            return ["Sent"]
         case .Drafts:
-            return "Drafts"
+            return ["Drafts"]
         case .Trash:
-            return "Trash"
+            return ["Trash"]
+        case .Archive:
+            return ["Archive"]
+        case .Spam:
+            return ["Spam", "Junk"]
         }
+    }
+
+    /**
+     Each kind has a human-readable name you can use to create a local folder object.
+     - Note: This is used *only* for the local-only special folders, and for fuzzy-matching
+     against a known folder type when fetching from the remote server.
+     */
+    public func folderName() -> String {
+        return folderNames()[0]
     }
 
     /**
@@ -104,7 +141,7 @@ public enum FolderType: Int {
      */
     public func isOutgoing() -> Bool {
         switch self {
-        case .Inbox, .Trash:
+        case .Inbox, .Trash, .Normal, .Spam, .Archive:
             return false
         case .LocalDraft, .LocalOutbox, .LocalSent, .Sent, .Drafts:
             return true
