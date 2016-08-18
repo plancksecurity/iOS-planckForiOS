@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class StoreFoldersOperation: BaseOperation {
+class StoreFoldersOperation: ConcurrentBaseOperation {
     let comp = "StoreFoldersOperation"
     let coreDataUtil: ICoreDataUtil
     let foldersToStore: [String]
@@ -24,7 +24,7 @@ class StoreFoldersOperation: BaseOperation {
 
     override func main() {
         let privateMOC = coreDataUtil.privateContext()
-        privateMOC.performBlockAndWait({
+        privateMOC.performBlock({
             let model = Model.init(context: privateMOC)
             for folderName in self.foldersToStore {
                 let folder = model.insertOrUpdateFolderName(
@@ -35,6 +35,7 @@ class StoreFoldersOperation: BaseOperation {
                 }
             }
             model.save()
+            self.markAsFinished()
         })
     }
 }

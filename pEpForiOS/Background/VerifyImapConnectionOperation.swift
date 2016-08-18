@@ -87,6 +87,9 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
     }
 
+    public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {
+    }
+
     public func actionFailed(sync: ImapSync, error: NSError) {
         if !isFinishing {
             errors.append(error)

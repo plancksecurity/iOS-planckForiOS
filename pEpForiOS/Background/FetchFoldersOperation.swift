@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 public class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let connectInfo: ConnectInfo
@@ -41,9 +42,13 @@ public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
     var imapSync: ImapSync!
     let connectInfo: ConnectInfo
     var folderBuilder: ImapFolderBuilder!
+    let coreDataUtil: ICoreDataUtil
+    lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
+    lazy var model: IModel = Model.init(context: self.privateMOC)
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
+        coreDataUtil = grandOperator.coreDataUtil
 
         super.init(grandOperator: grandOperator)
 
@@ -63,11 +68,7 @@ public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
     }
 
     func readFolderNamesFromImapSync(sync: ImapSync) {
-        if let folderNames = sync.folderNames {
-            let op = StoreFoldersOperation.init(coreDataUtil: self.grandOperator.coreDataUtil,
-                                                folders: folderNames, email: self.connectInfo.email)
-            backgroundQueue.addOperation(op)
-
+        if let _ = sync.folderNames {
             waitForFinished()
         }
     }
@@ -123,6 +124,23 @@ extension FetchFoldersOperation: ImapSyncDelegate {
 
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
         readFolderNamesFromImapSync(sync)
+    }
+
+    public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {
+        guard let userInfo = notification?.userInfo else {
+            return
+        }
+        guard let folderInfo = userInfo[PantomimeFolderInfo] else {
+            return
+        }
+        guard let folderName = folderInfo[PantomimeFolderNameKey] as? String else {
+            return
+        }
+
+        let op = StoreFoldersOperation.init(
+            coreDataUtil: coreDataUtil, folders: [folderName],
+            email: self.connectInfo.email)
+        backgroundQueue.addOperation(op)
     }
 
     public func actionFailed(sync: ImapSync, error: NSError) {
