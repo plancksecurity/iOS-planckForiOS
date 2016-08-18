@@ -384,6 +384,19 @@ public class Model: IModel {
             Folder.entityName(), inManagedObjectContext: context) as! Folder
         folder.name = name
         folder.account = account as! Account
+
+        if name.uppercaseString == ImapSync.defaultImapInboxName.uppercaseString {
+            folder.folderType = NSNumber.init(integer: FolderType.Inbox.rawValue)
+        } else {
+            for ty in FolderType.allValuesToCheckFromServer {
+                if name.matchesPattern("\(ty.folderName())",
+                                       reOptions: [.CaseInsensitive]) {
+                    folder.folderType = NSNumber.init(integer: ty.rawValue)
+                    break
+                }
+            }
+        }
+
         return folder
     }
 

@@ -188,11 +188,22 @@ public extension String {
     }
 
     /**
-     Does this String match the given regex pattern?
+     Does this String match the given regex pattern? Without any options.
+     - Parameter pattern: The pattern to match.
      */
     public func matchesPattern(pattern: String) -> Bool {
+        return matchesPattern(pattern, reOptions: [])
+    }
+
+    /**
+     Does this String match the given regex pattern?
+     - Parameter pattern: The pattern to match.
+     - Parameter reOptions: Options given to the regular expression init.
+     */
+    public func matchesPattern(
+        pattern: String, reOptions: NSRegularExpressionOptions) -> Bool {
         do {
-            let regex = try NSRegularExpression.init(pattern: pattern, options: [])
+            let regex = try NSRegularExpression.init(pattern: pattern, options: reOptions)
             let matches = regex.matchesInString(self, options: [], range: wholeRange())
             return matches.count > 0
         } catch let err as NSError {
