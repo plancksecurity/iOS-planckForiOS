@@ -183,7 +183,8 @@ class SimpleOperationsTest: XCTestCase {
                     return
             }
             XCTAssertEqual(folders.count, FolderType.allValuesToCreate.count)
-            let outbox = self.persistentSetup.model.folderLocalOutboxForEmail(account.email)
+            let outbox = self.persistentSetup.model.folderByType(
+                FolderType.LocalOutbox, email: account.email)
             XCTAssertNotNil(outbox, "Expected outbox to exist")
         })
     }
@@ -208,7 +209,8 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
         })
 
-        guard let outboxFolder = model.folderLocalOutboxForEmail(account.email) else {
+        guard let outboxFolder = model.folderByType(
+            FolderType.LocalOutbox, email: account.email) else {
             XCTAssertTrue(false, "Expected outbox to exist")
             return nil
         }

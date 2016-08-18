@@ -60,10 +60,13 @@ class ModelTests: XCTestCase {
         XCTAssertEqual(persistentSetup.model.contactsBySnippet("ANO").count, 1)
     }
 
-    func testSpecialFolders() {
-        XCTAssertNotNil(persistentSetup.model.folderInboxForEmail(accountEmail))
-        XCTAssertNotNil(persistentSetup.model.folderSentMailsForEmail(accountEmail))
-        XCTAssertNotNil(persistentSetup.model.folderDraftsForEmail(accountEmail))
+    func testFolderLookUp() {
+        XCTAssertNotNil(persistentSetup.model.folderByType(
+            FolderType.Inbox, email: accountEmail))
+        XCTAssertNotNil(persistentSetup.model.folderByType(
+            FolderType.Sent, email: accountEmail))
+        XCTAssertNotNil(persistentSetup.model.folderByType(
+            FolderType.Drafts, email: accountEmail))
     }
 
     func testSplitContactName() {

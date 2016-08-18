@@ -61,6 +61,10 @@ public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
         if self.cancelled {
             return
         }
+
+        // Serialize all folder storage to prevent duplicates
+        backgroundQueue.maxConcurrentOperationCount = 1
+
         imapSync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
         imapSync.delegate = self
         imapSync.folderBuilder = folderBuilder

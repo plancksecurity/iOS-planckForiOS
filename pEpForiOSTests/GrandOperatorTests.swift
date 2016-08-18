@@ -98,8 +98,8 @@ class GrandOperatorTests: XCTestCase {
             } else {
                 XCTAssertTrue(false, "Expected folders created")
             }
-            let folder = self.persistentSetup.model.folderInboxForEmail(
-                self.persistentSetup.connectionInfo.email)
+            let folder = self.persistentSetup.model.folderByType(
+                FolderType.Inbox, email: self.persistentSetup.connectionInfo.email)
             XCTAssertNotNil(folder)
         })
     }

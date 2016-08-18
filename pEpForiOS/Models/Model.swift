@@ -43,29 +43,9 @@ public protocol IModel {
                                 sortDescriptors: [NSSortDescriptor]?) -> [IFolder]?
 
     /**
-     Predicate for searching for a special folder by account email and type.
+     - Returns: The folder of the given type, if any.
      */
-    func folderPredicateByAccountEmail(email: String, folderType: FolderType) -> NSPredicate
-
-    /**
-     - Returns: The INBOX folder.
-     */
-    func folderInboxForEmail(email: String) -> IFolder?
-
-    /**
-     - Returns: The folder for sent mails.
-     */
-    func folderSentMailsForEmail(email: String) -> IFolder?
-
-    /**
-     - Returns: The folder for saving draft mails.
-     */
-    func folderDraftsForEmail(email: String) -> IFolder?
-
-    /**
-     - Returns: The folder for storing unsent mails.
-     */
-    func folderLocalOutboxForEmail(email: String) -> IFolder?
+    func folderByType(type: FolderType, email: String) -> IFolder?
 
     func accountByEmail(email: String) -> IAccount?
     func accountsByPredicate(predicate: NSPredicate?,
@@ -308,7 +288,7 @@ public class Model: IModel {
         let message = insertNewMessage()
         let contact = insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
         message.from = contact as? Contact
-        guard let folder = folderLocalOutboxForEmail(account.email) else {
+        guard let folder = folderByType(FolderType.LocalOutbox, email: account.email) else {
             Log.warnComponent(comp, "Expected outbox folder to exist")
             return nil
         }
@@ -380,8 +360,13 @@ public class Model: IModel {
     }
 
     func insertFolderName(name: String, account: IAccount) -> IFolder {
+        if let folder = folderByName(name, email: account.email) {
+            return folder
+        }
+
         let folder = NSEntityDescription.insertNewObjectForEntityForName(
             Folder.entityName(), inManagedObjectContext: context) as! Folder
+
         folder.name = name
         folder.account = account as! Account
 
@@ -528,37 +513,10 @@ public class Model: IModel {
         return p
     }
 
-    public func folderPredicateByAccountEmail(email: String, folderType: FolderType)
-        -> NSPredicate {
-            let p1 = NSPredicate.init(format: "account.email = %@", email)
-            let p2 = NSPredicate.init(format: "folderType = %d", folderType.rawValue)
-            let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
-            return p
-    }
-
-    public func folderInboxForEmail(email: String) -> IFolder? {
-        let p1 = NSPredicate.init(format: "account.email = %@", email)
-        let p2 = NSPredicate.init(format: "name =[c] %@", ImapSync.defaultImapInboxName)
+    public func folderByType(type: FolderType, email: String) -> IFolder? {
+        let p1 = NSPredicate.init(format: "account.email == %@", email)
+        let p2 = NSPredicate.init(format: "folderType == %d", type.rawValue)
         let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
-        return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
-    }
-
-    public func folderSentMailsForEmail(email: String) -> IFolder? {
-        let p1 = NSPredicate.init(format: "account.email = %@", email)
-        let p2 = folderFuzzyPredicateByName("sent")
-        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
-        return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
-    }
-
-    public func folderDraftsForEmail(email: String) -> IFolder? {
-        let p1 = NSPredicate.init(format: "account.email = %@", email)
-        let p2 = folderFuzzyPredicateByName("draft")
-        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
-        return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
-    }
-
-    public func folderLocalOutboxForEmail(email: String) -> IFolder? {
-        let p = folderPredicateByAccountEmail(email, folderType: FolderType.LocalOutbox)
         return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
     }
 
