@@ -191,7 +191,8 @@ class PEPUtilTests: XCTestCase {
         referenced.append(inReplyTo)
 
         let folder = persistentSetup.model.insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, accountEmail: persistentSetup.accountEmail)
+            ImapSync.defaultImapInboxName, folderSeparator: nil,
+            accountEmail: persistentSetup.accountEmail)
 
         let msg = persistentSetup.model.insertNewMessage()
         msg.folder = folder as! Folder
@@ -286,7 +287,8 @@ class PEPUtilTests: XCTestCase {
      */
     func testPepToPantomimeToPepWithAttachments() {
         persistentSetup.model.insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, accountEmail: persistentSetup.accountEmail)
+            ImapSync.defaultImapInboxName, folderSeparator: nil,
+            accountEmail: persistentSetup.accountEmail)
 
         // Some mail constants for later comparison
         let subject = "Subject"

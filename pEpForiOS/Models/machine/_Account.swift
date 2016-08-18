@@ -7,6 +7,7 @@ import CoreData
 public enum AccountAttributes: String {
     case accountType = "accountType"
     case email = "email"
+    case folderSeparator = "folderSeparator"
     case imapServerName = "imapServerName"
     case imapServerPort = "imapServerPort"
     case imapTransport = "imapTransport"
@@ -29,6 +30,8 @@ public enum AccountRelationships: String {
     var accountType: NSNumber { get set }
 
     var email: String { get set }
+
+    var folderSeparator: String? { get set }
 
     var imapServerName: String { get set }
 
@@ -84,6 +87,9 @@ public class _Account: BaseManagedObject, _IAccount {
 
     @NSManaged public
     var email: String
+
+    @NSManaged public
+    var folderSeparator: String?
 
     @NSManaged public
     var imapServerName: String

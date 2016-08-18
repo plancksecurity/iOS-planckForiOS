@@ -59,7 +59,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     func folderObject() -> IFolder {
         if let folder = grandOperator.operationModel().insertOrUpdateFolderName(
-            name(), accountEmail: connectInfo.email) {
+            name(), folderSeparator: nil, accountEmail: connectInfo.email) {
             return folder
         } else {
             abort()

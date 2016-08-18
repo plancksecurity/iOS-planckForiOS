@@ -136,8 +136,12 @@ extension FetchFoldersOperation: ImapSyncDelegate {
         guard let folderName = folderInfoDict[PantomimeFolderNameKey] as? String else {
             return
         }
+        guard let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey]
+            as? String else {
+            return
+        }
 
-        let folderInfo = FolderInfo.init(name: folderName, separator: "")
+        let folderInfo = FolderInfo.init(name: folderName, separator: folderSeparator)
         let op = StoreFolderOperation.init(
             coreDataUtil: coreDataUtil, folderInfo: folderInfo,
             email: self.connectInfo.email)

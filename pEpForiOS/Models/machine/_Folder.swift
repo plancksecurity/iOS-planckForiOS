@@ -14,7 +14,9 @@ public enum FolderAttributes: String {
 
 public enum FolderRelationships: String {
     case account = "account"
+    case children = "children"
     case messages = "messages"
+    case parent = "parent"
 }
 
 @objc public protocol _IFolder {
@@ -35,7 +37,11 @@ public enum FolderRelationships: String {
 
     var account: Account { get set }
 
+    var children: NSOrderedSet { get set }
+
     var messages: NSSet { get set }
+
+    var parent: Folder? { get set }
 
 }
 
@@ -85,7 +91,41 @@ public class _Folder: BaseManagedObject, _IFolder {
     var account: Account
 
     @NSManaged public
+    var children: NSOrderedSet
+
+    @NSManaged public
     var messages: NSSet
+
+    @NSManaged public
+    var parent: Folder?
+
+}
+
+public extension _Folder {
+
+    func addChildren(objects: NSOrderedSet) {
+        let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
+        mutable.unionOrderedSet(objects)
+        self.children = mutable.copy() as! NSOrderedSet
+    }
+
+    func removeChildren(objects: NSOrderedSet) {
+        let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
+        mutable.minusOrderedSet(objects)
+        self.children = mutable.copy() as! NSOrderedSet
+    }
+
+    func addChildrenObject(value: Folder) {
+        let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
+        mutable.addObject(value)
+        self.children = mutable.copy() as! NSOrderedSet
+    }
+
+    func removeChildrenObject(value: Folder) {
+        let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
+        mutable.removeObject(value)
+        self.children = mutable.copy() as! NSOrderedSet
+    }
 
 }
 

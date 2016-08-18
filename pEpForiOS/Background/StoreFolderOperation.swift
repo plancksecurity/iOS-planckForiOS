@@ -32,7 +32,8 @@ class StoreFolderOperation: ConcurrentBaseOperation {
         privateMOC.performBlock({
             let model = Model.init(context: privateMOC)
             let folder = model.insertOrUpdateFolderName(
-                self.folderInfo.name, accountEmail: self.email)
+                self.folderInfo.name, folderSeparator: self.folderInfo.separator,
+                accountEmail: self.email)
             if folder == nil {
                 self.errors.append(Constants.errorCouldNotStoreFolder(self.comp,
                     name: self.folderInfo.name))

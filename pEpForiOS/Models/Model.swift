@@ -89,10 +89,18 @@ public protocol IModel {
     func insertOrUpdateContact(contact: IContact) -> IContact
 
     /**
-     Inserts a folder of the given type.
-     - Note: Caller is responsible for saving!
+     Inserts a folder of the given type, creating the whole hierarchy if necessary.
+     - Note: Caller is responsible for saving the model!
+     - Parameter folderName: The name of the folder
+     - Parameter folderSeparator: The folder separator, for determining hierarchy.
+     If this is nil, the folder will be created as-is, with searching for a parent.
+     If this is non-nil, the folder name will be interpreted as a path, and the
+     result will be the creation of a hierarchical folder structure (if the folder
+     is not a root folder).
+     - Parameter accountEmail: The email of the account this folder belongs to.
      */
-    func insertOrUpdateFolderName(folderName: String, accountEmail: String) -> IFolder?
+    func insertOrUpdateFolderName(folderName: String, folderSeparator: String?,
+                                  accountEmail: String) -> IFolder?
 
     func insertOrUpdateMessageReference(messageID: String) -> IMessageReference
     func insertMessageReference(messageID: String) -> IMessageReference
@@ -371,16 +379,46 @@ public class Model: IModel {
         return NSPredicate.init(format: "account.email = %@ and name = %@", email, name)
     }
 
-    public func insertOrUpdateFolderName(folderName: String, accountEmail: String) -> IFolder? {
+    func insertFolderName(name: String, account: IAccount) -> IFolder {
+        let folder = NSEntityDescription.insertNewObjectForEntityForName(
+            Folder.entityName(), inManagedObjectContext: context) as! Folder
+        folder.name = name
+        folder.account = account as! Account
+        return folder
+    }
+
+    public func insertOrUpdateFolderName(folderName: String, folderSeparator: String?,
+                                         accountEmail: String) -> IFolder? {
         if let folder = folderByName(folderName, email: accountEmail) {
             return folder
         }
 
         if let account = accountByEmail(accountEmail) {
-            let folder = insertFolderName(folderName, email: accountEmail)
-            folder.account = account as! Account
-            folder.name = folderName
-            return folder
+            if let separator = folderSeparator {
+                account.folderSeparator = folderSeparator
+
+                // Create folder hierarchy if necessary
+                var pathsSoFar = [String]()
+                var parentFolder: Folder? = nil
+                let paths = folderName.componentsSeparatedByString(separator)
+                for p in paths {
+                    pathsSoFar.append(p)
+                    let pathName = (pathsSoFar as NSArray).componentsJoinedByString(
+                        separator)
+                    let folder = insertFolderName(pathName, account: account)
+                    folder.parent = parentFolder
+                    if let pf = parentFolder {
+                        pf.addChildrenObject(folder as! Folder)
+                    }
+                    parentFolder = folder as? Folder
+                }
+                return parentFolder
+            } else {
+                // Just create the folder as-is, can't check for hierarchy
+                let folder = insertFolderName(folderName, account: account)
+                return folder
+            }
+
         }
         return nil
     }
@@ -509,16 +547,6 @@ public class Model: IModel {
     public func folderLocalOutboxForEmail(email: String) -> IFolder? {
         let p = folderPredicateByAccountEmail(email, folderType: FolderType.LocalOutbox)
         return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
-    }
-
-    public func insertFolderName(name: String, email: String) -> IFolder {
-        let folder = NSEntityDescription.insertNewObjectForEntityForName(
-            Folder.entityName(), inManagedObjectContext: context) as! Folder
-        folder.name = name
-        if let account = accountByEmail(email) as? Account {
-            folder.account = account
-        }
-        return folder
     }
 
     public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact {

@@ -3,6 +3,7 @@
     <entity name="Account" representedClassName="Account" syncable="YES">
         <attribute name="accountType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="folderSeparator" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imapServerName" attributeType="String" syncable="YES"/>
         <attribute name="imapServerPort" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="imapTransport" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -45,7 +46,9 @@
         <attribute name="nextUID" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="uidValidity" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="folders" inverseEntity="Account" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder" syncable="YES"/>
         <relationship name="messages" toMany="YES" deletionRule="Cascade" destinationEntity="Message" inverseName="folder" inverseEntity="Message" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="children" inverseEntity="Folder" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="Message" syncable="YES">
         <attribute name="bodyFetched" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
@@ -74,10 +77,10 @@
         <relationship name="referencingMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="references" inverseEntity="Message" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Account" positionX="-63" positionY="-18" width="128" height="225"/>
+        <element name="Account" positionX="-63" positionY="-18" width="128" height="240"/>
         <element name="Attachment" positionX="-45" positionY="135" width="128" height="120"/>
         <element name="Contact" positionX="-54" positionY="90" width="128" height="180"/>
-        <element name="Folder" positionX="-54" positionY="72" width="128" height="150"/>
+        <element name="Folder" positionX="-54" positionY="72" width="128" height="180"/>
         <element name="Message" positionX="-45" positionY="99" width="128" height="330"/>
         <element name="MessageReference" positionX="-45" positionY="135" width="128" height="90"/>
     </elements>

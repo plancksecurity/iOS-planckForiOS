@@ -89,7 +89,8 @@ class SimpleOperationsTest: XCTestCase {
 
     func testStoreSingleMail() {
         persistentSetup.grandOperator.operationModel().insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, accountEmail: connectInfo.email)
+            ImapSync.defaultImapInboxName, folderSeparator: nil,
+            accountEmail: connectInfo.email)
         persistentSetup.grandOperator.operationModel().save()
 
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
@@ -119,7 +120,8 @@ class SimpleOperationsTest: XCTestCase {
         let numMails = 10
 
         persistentSetup.grandOperator.operationModel().insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, accountEmail: connectInfo.email)
+            ImapSync.defaultImapInboxName, folderSeparator: nil,
+            accountEmail: connectInfo.email)
         persistentSetup.grandOperator.operationModel().save()
 
         let exp = expectationWithDescription("exp")
@@ -334,8 +336,9 @@ class SimpleOperationsTest: XCTestCase {
         PEPUtil.isProbablyPGPMimePepMail(encryptionData.mailsToSend[0])
 
         persistentSetup.model.deleteMail(mail)
-        let inboxFolder = model.insertOrUpdateFolderName(ImapSync.defaultImapInboxName,
-                                                         accountEmail: account.email)
+        let inboxFolder = model.insertOrUpdateFolderName(
+            ImapSync.defaultImapInboxName, folderSeparator: nil,
+            accountEmail: account.email)
 
         let newMail = model.insertNewMessage()
         newMail.folder = inboxFolder as! Folder
