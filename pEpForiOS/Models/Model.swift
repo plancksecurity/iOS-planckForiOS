@@ -265,6 +265,10 @@ public class Model: IModel {
     }
 
     public func insertAccountFromConnectInfo(connectInfo: ConnectInfo) -> IAccount {
+        if let ac = accountByEmail(connectInfo.email) {
+            return ac
+        }
+
         let account = newAccountFromConnectInfo(connectInfo)
         save()
         KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.IMAP.asString(),
