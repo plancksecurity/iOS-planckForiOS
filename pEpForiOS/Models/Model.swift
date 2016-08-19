@@ -49,7 +49,7 @@ public protocol IModel {
 
     func accountByEmail(email: String) -> IAccount?
     func accountsByPredicate(predicate: NSPredicate?,
-                             sortDescriptors: [NSSortDescriptor]?) -> [Account]?
+                             sortDescriptors: [NSSortDescriptor]?) -> [IAccount]?
     func setAccountAsLastUsed(account: IAccount) -> IAccount
     func fetchLastAccount() -> IAccount?
 
@@ -342,9 +342,9 @@ public class Model: IModel {
     }
 
     public func accountsByPredicate(predicate: NSPredicate? = nil,
-                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [Account]? {
+                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [IAccount]? {
         return entitiesWithName(Account.entityName(), predicate: predicate,
-            sortDescriptors: sortDescriptors)?.map() {$0 as! Account}
+            sortDescriptors: sortDescriptors)?.map() {$0 as! IAccount}
     }
 
     public func save() {

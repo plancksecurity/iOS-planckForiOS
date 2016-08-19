@@ -188,7 +188,7 @@ public class PEPUtil {
     /**
      Kicks off myself in the background, optionally notifies via block of termination/success.
      */
-    public static func myselfFromAccount(account: Account,
+    public static func myselfFromAccount(account: IAccount,
                                          block: ((identity: NSDictionary) -> Void)? = nil) {
         let op = PEPMyselfOperation.init(account: account)
         op.completionBlock = {

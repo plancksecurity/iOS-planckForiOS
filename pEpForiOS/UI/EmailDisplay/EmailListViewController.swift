@@ -10,22 +10,35 @@ import Foundation
 import UIKit
 import CoreData
 
-struct UIState {
-    var isSynching: Bool = false
+struct EmailListConfig {
+    let appConfig: AppConfig
+
+    /** Set to whatever criteria you want to have mails displayed */
+    let predicate: NSPredicate?
+
+    /** The sort descriptors to be used for displaying emails */
+    let sortDescriptors: [NSSortDescriptor]?
+
+    /** If suitable, the main account for certain operations, like refreshing mails */
+    let account: IAccount?
 }
 
 class EmailListViewController: UITableViewController {
+    struct UIState {
+        var isSynching: Bool = false
+    }
+    
     let comp = "EmailListViewController"
 
     let segueShowEmail = "segueShowEmail"
     let segueCompose = "segueCompose"
     let segueUserSettings = "segueUserSettings"
 
-    var appConfig: AppConfig!
+    var config: EmailListConfig!
+
     var fetchController: NSFetchedResultsController?
     var state = UIState()
     let dateFormatter = UIHelper.dateFormatterEmailList()
-    var shouldFetchFolders = true
 
     /**
      The default background color for an email cell, as determined the first time a cell is
@@ -47,26 +60,7 @@ class EmailListViewController: UITableViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
-        if appConfig == nil {
-            if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-                appConfig = appDelegate.appConfig
-            }
-        }
         prepareFetchRequest()
-
-        let account:IAccount? = appConfig.model.fetchLastAccount()
-        if (account == nil)  {
-            self.performSegueWithIdentifier(segueUserSettings, sender: self)
-        } else {
-            appConfig.currentAccount = account
-            PEPUtil.myselfFromAccount(
-                account as! Account, block: { identity in
-                    Log.infoComponent(self.comp,
-                        "myself: \(identity[kPepAddress]) -> \(identity[kPepFingerprint])")
-            })
-            fetchMailsRefreshControl()
-
-        }
         super.viewWillAppear(animated)
     }
 
@@ -75,22 +69,22 @@ class EmailListViewController: UITableViewController {
     }
 
     func fetchMailsRefreshControl(refreshControl: UIRefreshControl? = nil) {
-        if let account = appConfig?.model.fetchLastAccount() {
+        if let account = config.account {
             let connectInfo = account.connectInfo
 
             state.isSynching = true
 
-            appConfig.grandOperator.fetchEmailsAndDecryptConnectInfo(
-                connectInfo, folderName: nil, fetchFolders: shouldFetchFolders,
+            config.appConfig.grandOperator.fetchEmailsAndDecryptConnectInfo(
+                connectInfo, folderName: nil, fetchFolders: false,
                 completionBlock: { error in
+                    // TODO: Show errors
                     Log.infoComponent(self.comp, "Sync completed, error: \(error)")
-                    self.appConfig?.model.save()
+                    self.config.appConfig.model.save()
                     self.state.isSynching = false
                     refreshControl?.endRefreshing()
                     self.updateUI()
             })
 
-            shouldFetchFolders = false
             updateUI()
         }
     }
@@ -100,21 +94,15 @@ class EmailListViewController: UITableViewController {
     }
 
     @IBAction func mailSentSegue(segue: UIStoryboardSegue) {
-        print("Mail sent!")
     }
 
     func prepareFetchRequest() {
-        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
-        let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
-        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted]
         let fetchRequest = NSFetchRequest.init(entityName: Message.entityName())
-        fetchRequest.predicate = NSCompoundPredicate.init(
-            andPredicateWithSubpredicates: predicates)
-        fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "receivedDate",
-            ascending: false)]
+        fetchRequest.predicate = config.predicate
+        fetchRequest.sortDescriptors = config.sortDescriptors
         fetchController = NSFetchedResultsController.init(
             fetchRequest: fetchRequest,
-            managedObjectContext: appConfig.coreDataUtil.managedObjectContext,
+            managedObjectContext: config.appConfig.coreDataUtil.managedObjectContext,
             sectionNameKeyPath: nil, cacheName: nil)
         fetchController?.delegate = self
         do {
@@ -206,7 +194,7 @@ class EmailListViewController: UITableViewController {
         if segue.identifier == segueCompose {
             let destination = segue.destinationViewController
                 as! ComposeViewController
-            destination.appConfig = appConfig
+            destination.appConfig = config.appConfig
         } else if segue.identifier == segueShowEmail {
             guard
                 let vc = segue.destinationViewController as? EmailViewController,
@@ -215,7 +203,7 @@ class EmailListViewController: UITableViewController {
                 let email = fetchController?.objectAtIndexPath(indexPath) as? Message else {
                     return
             }
-            vc.appConfig = appConfig
+            vc.appConfig = config.appConfig
             vc.message = email
         }
     }

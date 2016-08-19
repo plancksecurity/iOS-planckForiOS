@@ -27,6 +27,7 @@
 		431AE5D51D2EC0C000F609D3 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D41D2EC0C000F609D3 /* ComposeViewController.swift */; };
 		431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */; };
 		431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */; };
+		431B0B9A1D6734DF0082D0DB /* AccountsFoldersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B0B991D6734DF0082D0DB /* AccountsFoldersTableViewController.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
 		4325F3141CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */; };
 		432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */; };
@@ -222,6 +223,7 @@
 		431AE5D41D2EC0C000F609D3 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
 		431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyCell.swift; sourceTree = "<group>"; };
+		431B0B991D6734DF0082D0DB /* AccountsFoldersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsFoldersTableViewController.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentGrandOperatorOperation.swift; sourceTree = "<group>"; };
 		432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewCell.swift; sourceTree = "<group>"; };
@@ -424,6 +426,14 @@
 				43B3E46D1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift */,
 			);
 			path = Compose;
+			sourceTree = "<group>";
+		};
+		431B0B961D6734BF0082D0DB /* AccountsAndFolders */ = {
+			isa = PBXGroup;
+			children = (
+				431B0B991D6734DF0082D0DB /* AccountsFoldersTableViewController.swift */,
+			);
+			path = AccountsAndFolders;
 			sourceTree = "<group>";
 		};
 		4327221F1D33F2CB009EC395 /* Trustwords */ = {
@@ -694,6 +704,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				431B0B961D6734BF0082D0DB /* AccountsAndFolders */,
 				4327221F1D33F2CB009EC395 /* Trustwords */,
 				431AE5D11D2EC0A700F609D3 /* Compose */,
 				43ED53621CC77F95006AB156 /* EmailDisplay */,
@@ -991,6 +1002,7 @@
 				43800D941D112A0800821E34 /* TFHppleElement.m in Sources */,
 				43800D951D112A0800821E34 /* XPathQuery.m in Sources */,
 				A13D9F611D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift in Sources */,
+				431B0B9A1D6734DF0082D0DB /* AccountsFoldersTableViewController.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */,
 				43ED53761CC77F95006AB156 /* MailTableView.swift in Sources */,

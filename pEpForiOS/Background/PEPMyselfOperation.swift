@@ -15,7 +15,7 @@ class PEPMyselfOperation: NSOperation {
      */
     let identity: NSMutableDictionary
 
-    init(account: Account) {
+    init(account: IAccount) {
         // It's important that we do this on the caller's thread,
         // b/c we access core data.
         identity = PEPUtil.identityFromAccount(account, isMyself: true)
