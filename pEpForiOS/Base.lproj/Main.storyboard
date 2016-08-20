@@ -85,7 +85,7 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="e6L-xz-NU2"/>
-                        <barButtonItem systemItem="compose" id="u8o-KA-6lO" customClass="composeSegue">
+                        <barButtonItem systemItem="compose" id="u8o-KA-6lO">
                             <connections>
                                 <segue destination="8bt-7R-jDE" kind="show" identifier="segueCompose" id="TnR-me-YgK"/>
                             </connections>
@@ -1171,6 +1171,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="GPW-U8-tyH"/>
+        <segue reference="TnR-me-YgK"/>
     </inferredMetricsTieBreakers>
 </document>
