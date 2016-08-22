@@ -94,10 +94,6 @@ class EmailListViewController: UITableViewController {
         }
     }
 
-    @IBAction func newAccountCreatedSegue(segue: UIStoryboardSegue) {
-        fetchMailsRefreshControl()
-    }
-
     @IBAction func mailSentSegue(segue: UIStoryboardSegue) {
     }
 

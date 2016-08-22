@@ -27,6 +27,9 @@ class AccountsFoldersTableViewController: UITableViewController {
     /** Our vanilla table view cell */
     let standardCell = "standardCell"
 
+    /** Two sections, one for the folders, one for the accounts */
+    let numberOfSections = 2
+
     /** The index of the section where important folders are listed */
     let folderSection = 0
 
@@ -50,7 +53,7 @@ class AccountsFoldersTableViewController: UITableViewController {
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: standardCell)
 
         let refreshController = UIRefreshControl.init()
-        refreshController.addTarget(self, action: #selector(self.refresh(_:)),
+        refreshController.addTarget(self, action: #selector(self.refreshMailsControl),
                                     forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshController
 
@@ -89,6 +92,10 @@ class AccountsFoldersTableViewController: UITableViewController {
         } else {
             doMyself()
         }
+
+        // Refresh needed after new account is setup
+        tableView.reloadData()
+
         refreshMailsControl()
         super.viewWillAppear(animated)
     }
@@ -109,10 +116,6 @@ class AccountsFoldersTableViewController: UITableViewController {
                 backgroundQueue.addOperation(op)
             }
         }
-    }
-
-    func refresh(refreshControl: UIRefreshControl) {
-        refreshMailsControl(refreshControl)
     }
 
     func refreshMailsControl(refreshControl: UIRefreshControl? = nil) {
@@ -160,10 +163,14 @@ class AccountsFoldersTableViewController: UITableViewController {
         }
     }
 
+    @IBAction func newAccountCreatedSegue(segue: UIStoryboardSegue) {
+        refreshMailsControl()
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return numberOfSections
     }
 
     override func tableView(
