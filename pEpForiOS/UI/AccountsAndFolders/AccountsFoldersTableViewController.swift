@@ -124,6 +124,7 @@ class AccountsFoldersTableViewController: UITableViewController {
             return
         }
 
+        var errorShown = false
         for account in accounts {
             let connectInfo = account.connectInfo
 
@@ -133,6 +134,12 @@ class AccountsFoldersTableViewController: UITableViewController {
                 connectInfo, folderName: nil, fetchFolders: shouldFetchFolders,
                 completionBlock: { error in
                     Log.infoComponent(self.comp, "Sync completed, error: \(error)")
+                    if let err = error {
+                        if !errorShown { // Only show the first error encountered
+                            UIHelper.displayError(err, controller: self)
+                            errorShown = true
+                        }
+                    }
                     ac.model.save()
                     self.state.accountsSyncing.removeObject(account)
                     self.updateUI()
@@ -260,7 +267,8 @@ class AccountsFoldersTableViewController: UITableViewController {
 
             emailListConfig = EmailListConfig.init(
                 appConfig: ac, predicate: predicate,
-                sortDescriptors: sortDescriptors, account: accounts[indexPath.row])
+                sortDescriptors: sortDescriptors, account: accounts[indexPath.row],
+                folderName: ImapSync.defaultImapInboxName)
 
             self.performSegueWithIdentifier(segueEmailList, sender: self)
         } else {

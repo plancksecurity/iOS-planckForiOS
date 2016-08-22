@@ -19,8 +19,11 @@ struct EmailListConfig {
     /** The sort descriptors to be used for displaying emails */
     let sortDescriptors: [NSSortDescriptor]?
 
-    /** If suitable, the main account for certain operations, like refreshing mails */
+    /** If applicable, the main account for certain operations, like refreshing mails */
     let account: IAccount?
+
+    /** If applicable, the folder name to sync */
+    let folderName: String?
 }
 
 class EmailListViewController: UITableViewController {
@@ -75,10 +78,12 @@ class EmailListViewController: UITableViewController {
             state.isSynching = true
 
             config.appConfig.grandOperator.fetchEmailsAndDecryptConnectInfo(
-                connectInfo, folderName: nil, fetchFolders: false,
+                connectInfo, folderName: config.folderName, fetchFolders: false,
                 completionBlock: { error in
-                    // TODO: Show errors
                     Log.infoComponent(self.comp, "Sync completed, error: \(error)")
+                    if let err = error {
+                        UIHelper.displayError(err, controller: self)
+                    }
                     self.config.appConfig.model.save()
                     self.state.isSynching = false
                     refreshControl?.endRefreshing()

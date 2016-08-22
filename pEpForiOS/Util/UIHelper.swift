@@ -126,4 +126,33 @@ class UIHelper {
         UIGraphicsEndImageContext()
         return img
     }
+
+    /**
+     Displays an alert showing an error, with just on ok button and no other interaction.
+     */
+    static func displayError(error: NSError, controller: UIViewController,
+                             title: String? = nil) {
+        let message = error.localizedDescription
+        displayErrorMessage(message, controller: controller, title: title)
+    }
+
+    /**
+     Displays an alert showing a message, with just on ok button and no other interaction.
+     */
+    static func displayErrorMessage(errorMessage: String, controller: UIViewController,
+                             title: String? = nil) {
+        var theTitle: String! = title
+        if theTitle == nil {
+            theTitle = NSLocalizedString(
+                "Error", comment: "General error alert title")
+        }
+        let alert = UIAlertController.init(
+            title: theTitle, message: errorMessage, preferredStyle: .Alert)
+        let okTitle = NSLocalizedString(
+            "Ok", comment: "OK for error alert (no other interaction possible)")
+        let action = UIAlertAction.init(
+            title: okTitle, style: .Default, handler: nil)
+        alert.addAction(action)
+        controller.presentViewController(alert, animated: true, completion: nil)
+    }
 }

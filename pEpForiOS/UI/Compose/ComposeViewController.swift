@@ -472,16 +472,10 @@ public class ComposeViewController: UITableViewController {
                         self.model.networkActivity = false
                         self.updateNetworkActivity()
 
-                        let alert = UIAlertController.init(
+                        UIHelper.displayError(
+                            e, controller: self,
                             title: NSLocalizedString("Error sending message",
-                                comment: "Title for the 'Error sending mail' dialog"),
-                            message: e.localizedDescription,
-                            preferredStyle: .Alert)
-                        let okAction = UIAlertAction.init(
-                            title: NSLocalizedString("Ok", comment: "Confirm mail sending error"),
-                            style: .Default, handler: nil)
-                        alert.addAction(okAction)
-                        self.presentViewController(alert, animated: true, completion: nil)
+                                comment: "Title for the 'Error sending mail' dialog"))
                     }
                 } else {
                     // dismiss the whole controller?

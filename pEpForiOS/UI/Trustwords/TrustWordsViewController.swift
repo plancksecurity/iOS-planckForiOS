@@ -145,14 +145,11 @@ class TrustWordsViewController: UITableViewController {
         }
     }
 
-    func showErrorMessage (message: String) {
-        let alertView = UIAlertController(
-            title: NSLocalizedString("Suggestion",comment: "Suggestion tittle"),
-            message:NSLocalizedString(message, comment: "Suggestion"), preferredStyle: .Alert)
-        alertView.addAction(UIAlertAction(
-            title: NSLocalizedString("Ok",comment: "confirm  button text"),
-            style: .Default, handler: nil))
-        presentViewController(alertView, animated: true, completion: nil)
+    func showSuggestionMessage (message: String) {
+        // Abuse error display
+        UIHelper.displayErrorMessage(
+            message, controller: self,
+            title: NSLocalizedString("Suggestion",comment: "Suggestion tittle"))
     }
 
     @IBAction func showMoreInfo(sender: AnyObject) {
@@ -160,7 +157,7 @@ class TrustWordsViewController: UITableViewController {
             if let mailPepColor = m.pepColorRating?.integerValue {
                 if let pepColor = PEPUtil.colorRatingFromInt(mailPepColor) {
                     if let suggestion = PEPUtil.pepSuggestionFromColor(pepColor) {
-                        self.showErrorMessage(suggestion)
+                        self.showSuggestionMessage(suggestion)
                     }
                 }
             }
