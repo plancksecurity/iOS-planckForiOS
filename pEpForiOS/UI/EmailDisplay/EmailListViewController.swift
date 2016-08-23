@@ -19,7 +19,7 @@ struct EmailListConfig {
     /** The sort descriptors to be used for displaying emails */
     let sortDescriptors: [NSSortDescriptor]?
 
-    /** If applicable, the main account for certain operations, like refreshing mails */
+    /** If applicable, the accounts to refresh from */
     let account: IAccount?
 
     /** If applicable, the folder name to sync */

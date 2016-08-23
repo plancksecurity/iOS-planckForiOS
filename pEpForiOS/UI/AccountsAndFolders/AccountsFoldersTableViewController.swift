@@ -1,5 +1,5 @@
 //
-//  AccountsFoldersTableViewController.swift
+//  AccountsFoldersViewController.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 19/08/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AccountsFoldersTableViewController: UITableViewController {
+class AccountsFoldersViewController: UITableViewController {
     struct UIState {
         var isSynching: Bool {
             return accountsSyncing.count > 0
@@ -16,13 +16,16 @@ class AccountsFoldersTableViewController: UITableViewController {
         var accountsSyncing = NSMutableSet()
     }
 
-    let comp = "AccountsFoldersTableViewController"
+    let comp = "AccountsFoldersViewController"
 
     /** Segue to the new account setup */
     let segueSetupNewAccount = "segueSetupNewAccount"
 
     /** The segue to the `EmailListViewController` */
     let segueEmailList = "segueEmailList"
+
+    /** The segue to the folder list */
+    let segueFolderList = "segueFolderList"
 
     /** Our vanilla table view cell */
     let standardCell = "standardCell"
@@ -177,7 +180,7 @@ class AccountsFoldersTableViewController: UITableViewController {
         tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == folderSection {
             // Number of important folders to display, which at the moment
-            // is equal to the number of accounts (number of inboxes)
+            // is equal to the number of                                                                                                       (number of inboxes)
             return accounts.count
         } else {
             return accounts.count
@@ -257,16 +260,34 @@ class AccountsFoldersTableViewController: UITableViewController {
 
     // MARK: - Table view delegate
 
+    /**
+     Basic predicate for listing all emails from any INBOX.
+     */
+    func basicInboxPredicate() -> NSPredicate {
+        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
+        let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
+        let predicateInbox = NSPredicate.init(
+            format: "folder.folderType = %d", FolderType.Inbox.rawValue)
+        let predicates: [NSPredicate] = [
+            predicateBody, predicateDecrypted, predicateInbox
+        ]
+        let predicate = NSCompoundPredicate.init(
+            andPredicateWithSubpredicates: predicates)
+        return predicate
+    }
+
     override func tableView(tableView: UITableView,
                             didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == folderSection {
             guard let ac = appConfig else {
                 return
             }
+            let account = accounts[indexPath.row]
 
-            let predicateBody = NSPredicate.init(format: "bodyFetched = true")
-            let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
-            let predicates: [NSPredicate] = [predicateBody, predicateDecrypted]
+            let predicateInbox = basicInboxPredicate()
+            let predicateAccount = NSPredicate.init(
+                format: "folder.account.email = %@", account.email)
+            let predicates: [NSPredicate] = [predicateInbox, predicateAccount]
             let predicate = NSCompoundPredicate.init(
                 andPredicateWithSubpredicates: predicates)
             let sortDescriptors = [NSSortDescriptor.init(key: "receivedDate",
@@ -274,7 +295,7 @@ class AccountsFoldersTableViewController: UITableViewController {
 
             emailListConfig = EmailListConfig.init(
                 appConfig: ac, predicate: predicate,
-                sortDescriptors: sortDescriptors, account: accounts[indexPath.row],
+                sortDescriptors: sortDescriptors, account: account,
                 folderName: ImapSync.defaultImapInboxName)
 
             self.performSegueWithIdentifier(segueEmailList, sender: self)
