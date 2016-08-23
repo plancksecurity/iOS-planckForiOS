@@ -76,9 +76,10 @@ class EmailListViewController: UITableViewController {
             let connectInfo = account.connectInfo
 
             state.isSynching = true
+            updateUI()
 
-            config.appConfig.grandOperator.fetchEmailsAndDecryptConnectInfo(
-                connectInfo, folderName: config.folderName, fetchFolders: false,
+            config.appConfig.grandOperator.fetchEmailsAndDecryptConnectInfos(
+                [connectInfo], folderName: config.folderName, fetchFolders: false,
                 completionBlock: { error in
                     Log.infoComponent(self.comp, "Sync completed, error: \(error)")
                     if let err = error {
@@ -89,8 +90,6 @@ class EmailListViewController: UITableViewController {
                     refreshControl?.endRefreshing()
                     self.updateUI()
             })
-
-            updateUI()
         }
     }
 

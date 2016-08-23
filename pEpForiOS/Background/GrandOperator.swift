@@ -55,16 +55,16 @@ public protocol IGrandOperator: class {
     func fetchFolders(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asychronously fetches mails for the given `ConnectInfo`
-     and the given folder and stores them into the persistent store.
+     Asychronously fetches mails for the given `ConnectInfo`s
+     and the given folder name and stores them into the persistent store.
      Will also decrypt them, and fetch folders if necessary.
 
      - parameter connectInfo: Denotes the server and other connection parameters
      - parameter completionBlock: Will be called on completion of the operation, with
      a non-nil error object if there was an error during execution.
      */
-    func fetchEmailsAndDecryptConnectInfo(
-        connectInfo: ConnectInfo, folderName: String?, fetchFolders: Bool,
+    func fetchEmailsAndDecryptConnectInfos(
+        connectInfos: [ConnectInfo], folderName: String?, fetchFolders: Bool,
         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
@@ -197,22 +197,33 @@ public class GrandOperator: IGrandOperator {
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
-    public func fetchEmailsAndDecryptConnectInfo(
-        connectInfo: ConnectInfo, folderName: String?, fetchFolders: Bool,
+    public func fetchEmailsAndDecryptConnectInfos(
+        connectInfos: [ConnectInfo], folderName: String?, fetchFolders: Bool,
         completionBlock: GrandOperatorCompletionBlock?) {
-        var operations: [BaseOperation] = []
-        if fetchFolders {
-            operations.append(CreateLocalSpecialFoldersOperation.init(
-                coreDataUtil: coreDataUtil,
-                accountEmail: connectInfo.email))
-            operations.append(FetchFoldersOperation.init(
-                grandOperator: self, connectInfo: connectInfo))
-        }
-        operations.append(PrefetchEmailsOperation.init(
-            grandOperator: self, connectInfo: connectInfo,
-            folder: ImapSync.defaultImapInboxName))
+        var operations = [BaseOperation]()
+        var fetchOperations = [BaseOperation]()
 
-        operations.append(DecryptMailOperation.init(coreDataUtil: coreDataUtil))
+        for connectInfo in connectInfos {
+            if fetchFolders {
+                operations.append(CreateLocalSpecialFoldersOperation.init(
+                    coreDataUtil: coreDataUtil,
+                    accountEmail: connectInfo.email))
+                operations.append(FetchFoldersOperation.init(
+                    grandOperator: self, connectInfo: connectInfo))
+            }
+            let fetchOp = PrefetchEmailsOperation.init(
+                grandOperator: self, connectInfo: connectInfo,
+                folder: ImapSync.defaultImapInboxName)
+            fetchOperations.append(fetchOp)
+            operations.append(fetchOp)
+        }
+
+        // Wait with the decryption until all mails have been downloaded.
+        let decryptOp = DecryptMailOperation.init(coreDataUtil: coreDataUtil)
+        for fetchOp in fetchOperations {
+            decryptOp.addDependency(fetchOp)
+        }
+        operations.append(decryptOp)
 
         chainOperations(
             operations, completionBlock: { error in

@@ -10,10 +10,7 @@ import UIKit
 
 class AccountsFoldersViewController: UITableViewController {
     struct UIState {
-        var isSynching: Bool {
-            return accountsSyncing.count > 0
-        }
-        var accountsSyncing = NSMutableSet()
+        var isSynching = false
     }
 
     let comp = "AccountsFoldersViewController"
@@ -130,29 +127,22 @@ class AccountsFoldersViewController: UITableViewController {
             return
         }
 
-        var errorShown = false
-        for account in accounts {
-            let connectInfo = account.connectInfo
+        let connectInfos = accounts.map({return $0.connectInfo})
 
-            state.accountsSyncing.addObject(account)
+        state.isSynching = true
+        updateUI()
 
-            ac.grandOperator.fetchEmailsAndDecryptConnectInfo(
-                connectInfo, folderName: nil, fetchFolders: shouldFetchFolders,
-                completionBlock: { error in
-                    Log.infoComponent(self.comp, "Sync completed, error: \(error)")
-                    if let err = error {
-                        if !errorShown { // Only show the first error encountered
-                            UIHelper.displayError(err, controller: self)
-                            errorShown = true
-                        }
-                    }
-                    ac.model.save()
-                    self.state.accountsSyncing.removeObject(account)
-                    self.updateUI()
-            })
-
-            updateUI()
-        }
+        ac.grandOperator.fetchEmailsAndDecryptConnectInfos(
+            connectInfos, folderName: nil, fetchFolders: shouldFetchFolders,
+            completionBlock: { error in
+                Log.infoComponent(self.comp, "Sync completed, error: \(error)")
+                if let err = error {
+                    UIHelper.displayError(err, controller: self)
+                }
+                ac.model.save()
+                self.state.isSynching = false
+                self.updateUI()
+        })
         shouldFetchFolders = false
     }
 
