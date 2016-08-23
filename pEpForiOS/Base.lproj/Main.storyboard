@@ -456,6 +456,34 @@
             </objects>
             <point key="canvasLocation" x="6244" y="-395"/>
         </scene>
+        <!--Folder List View Controller-->
+        <scene sceneID="wde-zx-Tav">
+            <objects>
+                <tableViewController id="CjB-Qi-fcW" customClass="FolderListViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="grG-gQ-KdL">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="qrl-EG-Khc">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qrl-EG-Khc" id="tKl-fS-UuG">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="CjB-Qi-fcW" id="QLP-YH-gS6"/>
+                            <outlet property="delegate" destination="CjB-Qi-fcW" id="YtQ-Qx-I8h"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wgp-fk-alI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6196" y="421"/>
+        </scene>
         <!--Email View-->
         <scene sceneID="adb-B5-lMP">
             <objects>
@@ -1140,30 +1168,12 @@
                     <connections>
                         <segue destination="YcO-Oc-XZx" kind="show" identifier="segueSetupNewAccount" id="Mw5-Mc-48W"/>
                         <segue destination="kcA-RK-9Xg" kind="show" identifier="segueEmailList" id="Soh-zf-Qvc"/>
-                        <segue destination="q4v-QL-AoQ" kind="show" id="obY-6l-MCn"/>
+                        <segue destination="CjB-Qi-fcW" kind="show" identifier="segueFolderList" id="T2p-hS-5G3"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5484" y="421"/>
-        </scene>
-        <!--Folder List View Controller-->
-        <scene sceneID="rN2-K4-7Ad">
-            <objects>
-                <viewController id="q4v-QL-AoQ" customClass="FolderListViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="tnd-I1-9gl"/>
-                        <viewControllerLayoutGuide type="bottom" id="avO-XI-srN"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="M5L-WQ-2Xe">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rcs-t6-yAA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6206" y="421"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dXO-Q2-oVZ">

@@ -18,6 +18,8 @@ public protocol ICoreDataUtil {
     /**
      - Returns: Another context that's suitable for background tasks, confined to the
      thread/queue it was called on.
+     - Note: Since that is getting deprecated, and can cause problems,
+     please prefer `privateContext`.
      */
     func confinedManagedObjectContext() -> NSManagedObjectContext
 

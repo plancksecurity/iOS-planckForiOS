@@ -9,9 +9,33 @@
 import UIKit
 
 class FolderListViewController: UITableViewController {
+    struct FolderListConfig {
+        let account: IAccount
+        let appConfig: AppConfig
+    }
+
+    /** Our vanilla table view cell */
+    let standardCell = "standardCell"
+
+    var config: FolderListConfig!
+
+    var folderItems: [FolderModelOperation.FolderItem] = []
+
+    struct UIState {
+        var isUpdating = false
+    }
+
+    var state = UIState()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: standardCell)
+
+        let refreshController = UIRefreshControl.init()
+        refreshController.addTarget(self, action: #selector(self.refreshFoldersControl),
+                                    forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl = refreshController
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -20,32 +44,66 @@ class FolderListViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        updateModelFromDataBase()
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    func updateModelFromDataBase() {
+        let op = FolderModelOperation.init(
+            account: config.account, coreDataUtil: config.appConfig.coreDataUtil)
+        op.completionBlock = {
+            self.folderItems = op.folderItems
+            self.tableView.reloadData()
+        }
+        op.start()
+    }
+
+    func refreshFoldersControl(refreshControl: UIRefreshControl? = nil) {
+        state.isUpdating = true
+        updateUI()
+        config.appConfig.grandOperator.fetchFolders(
+            config.account.connectInfo, completionBlock: { error in
+                self.state.isUpdating = false
+                self.updateUI()
+                self.tableView.reloadData()
+        })
+    }
+
+    func updateUI() {
+        if state.isUpdating {
+            self.refreshControl?.beginRefreshing()
+        } else {
+            self.refreshControl?.endRefreshing()
+        }
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = state.isUpdating
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    override func tableView(
+        tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return folderItems.count
     }
 
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(
+            standardCell, forIndexPath: indexPath)
 
-        // Configure the cell...
+        let fi = folderItems[indexPath.row]
+        cell.textLabel?.text = fi.name
 
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -81,6 +139,15 @@ class FolderListViewController: UITableViewController {
         return true
     }
     */
+
+    // MARK: - Table view delegate
+
+    override func tableView(
+        tableView: UITableView,
+        indentationLevelForRowAtIndexPath indexPath: NSIndexPath) -> Int {
+        let fi = folderItems[indexPath.row]
+        return fi.level
+    }
 
     /*
     // MARK: - Navigation

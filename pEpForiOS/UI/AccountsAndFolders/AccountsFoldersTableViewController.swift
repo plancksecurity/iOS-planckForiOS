@@ -9,10 +9,6 @@
 import UIKit
 
 class AccountsFoldersViewController: UITableViewController {
-    struct UIState {
-        var isSynching = false
-    }
-
     let comp = "AccountsFoldersViewController"
 
     /** Segue to the new account setup */
@@ -33,11 +29,14 @@ class AccountsFoldersViewController: UITableViewController {
     /** The index of the section where important folders are listed */
     let folderSection = 0
 
-    var appConfig: AppConfig?
+    var appConfig: AppConfig!
     var accounts = [IAccount]()
 
     /** For email list configuration */
     var emailListConfig: EmailListConfig?
+
+    /** For folder list configuration */
+    var folderListConfig: FolderListViewController.FolderListConfig?
 
     /** For starting mySelf() */
     var backgroundQueue = NSOperationQueue.init()
@@ -45,7 +44,13 @@ class AccountsFoldersViewController: UITableViewController {
     /** When this view is first shown, it will fetch folders as well. */
     var shouldFetchFolders = true
 
+    struct UIState {
+        var isSynching = false
+    }
+
     var state = UIState.init()
+
+    var shouldRefreshMail = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,18 +79,7 @@ class AccountsFoldersViewController: UITableViewController {
             appConfig = appDelegate.appConfig
         }
 
-        guard let ac = appConfig else {
-            super.viewWillAppear(animated)
-            return
-        }
-
-        let model = ac.model
-        accounts.removeAll()
-        if let allAccounts = model.accountsByPredicate(
-            NSPredicate.init(value: true),
-            sortDescriptors: [NSSortDescriptor.init(key: "email", ascending: true)]) {
-            accounts.appendContentsOf(allAccounts)
-        }
+        updateModel()
 
         if accounts.isEmpty {
             self.performSegueWithIdentifier(segueSetupNewAccount, sender: self)
@@ -93,16 +87,29 @@ class AccountsFoldersViewController: UITableViewController {
             doMyself()
         }
 
-        // Refresh needed after new account is setup
-        tableView.reloadData()
+        if shouldRefreshMail {
+            refreshMailsControl()
+            shouldRefreshMail = false
+        }
 
-        refreshMailsControl()
         super.viewWillAppear(animated)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func updateModel() {
+        guard let model = appConfig?.model else {
+            return
+        }
+        if let allAccounts = model.accountsByPredicate(
+            NSPredicate.init(value: true),
+            sortDescriptors: [NSSortDescriptor.init(key: "email", ascending: true)]) {
+            accounts = allAccounts
+        }
+        tableView.reloadData()
     }
 
     func doMyself() {
@@ -157,6 +164,10 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     @IBAction func newAccountCreatedSegue(segue: UIStoryboardSegue) {
+        // load new account
+        updateModel()
+        doMyself()
+
         refreshMailsControl()
     }
 
@@ -290,6 +301,9 @@ class AccountsFoldersViewController: UITableViewController {
 
             self.performSegueWithIdentifier(segueEmailList, sender: self)
         } else {
+            folderListConfig = FolderListViewController.FolderListConfig.init(
+                account: accounts[indexPath.row], appConfig: appConfig)
+            self.performSegueWithIdentifier(segueFolderList, sender: self)
         }
     }
 
@@ -302,6 +316,12 @@ class AccountsFoldersViewController: UITableViewController {
                 return
             }
             vc.config = emailListConfig
+        } else if segue.identifier == segueFolderList {
+            guard let vc = segue.destinationViewController as?
+                FolderListViewController else {
+                    return
+            }
+            vc.config = folderListConfig
         }
     }
 }
