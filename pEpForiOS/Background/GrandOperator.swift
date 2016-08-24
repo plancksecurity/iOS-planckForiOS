@@ -213,7 +213,7 @@ public class GrandOperator: IGrandOperator {
 
             let fetchOp = PrefetchEmailsOperation.init(
                 grandOperator: self, connectInfo: connectInfo,
-                folder: ImapSync.defaultImapInboxName)
+                folder: folderName)
             fetchOperations.append(fetchOp)
             operations.append(fetchOp)
         }
