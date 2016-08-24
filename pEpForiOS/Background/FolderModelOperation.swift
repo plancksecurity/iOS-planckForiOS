@@ -19,6 +19,7 @@ public class FolderModelOperation: ConcurrentBaseOperation {
         public let name: String
         public let type: FolderType
         public let level: Int
+        public let numberOfMessages: Int
     }
 
     /** The account email for which to load all the folders */
@@ -65,7 +66,8 @@ public class FolderModelOperation: ConcurrentBaseOperation {
     func processFolder(folder: IFolder, level: Int) {
         let item = FolderItem.init(
             objectID: (folder as! Folder).objectID, name: folder.name,
-            type: FolderType.fromNumber(folder.folderType)!, level: level)
+            type: FolderType.fromNumber(folder.folderType)!, level: level,
+            numberOfMessages: folder.children.count)
         folderItems.append(item)
 
         for fol in folder.children {

@@ -160,7 +160,7 @@ public enum FolderType: Int {
      */
     public func isRemote() -> Bool {
         switch self {
-        case .LocalSent, .LocalDraft, .LocalDraft:
+        case .LocalSent, .LocalDraft, .LocalOutbox:
             return false
         default:
             return true

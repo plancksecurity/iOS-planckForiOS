@@ -57,15 +57,23 @@ class EmailListViewController: UITableViewController {
      */
     var determinedCellBackgroundColor: Bool = false
 
+    var refreshController: UIRefreshControl!
+
     override func viewDidLoad() {
-        let refreshController = UIRefreshControl.init()
+        refreshController = UIRefreshControl.init()
         refreshController.addTarget(self, action: #selector(self.fetchMailsRefreshControl(_:)),
                                     forControlEvents: UIControlEvents.ValueChanged)
-        self.refreshControl = refreshController
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
     override func viewWillAppear(animated: Bool) {
+        // Disable fetching if there is no account
+        if config.account != nil {
+            self.refreshControl = refreshController
+        } else {
+            self.refreshControl = nil
+        }
+
         prepareFetchRequest()
         if config.syncOnAppear {
             fetchMailsRefreshControl()
@@ -92,6 +100,9 @@ class EmailListViewController: UITableViewController {
                     refreshControl?.endRefreshing()
                     self.updateUI()
             })
+        } else {
+            state.isSynching = false
+            updateUI()
         }
     }
 
@@ -119,8 +130,10 @@ class EmailListViewController: UITableViewController {
     func updateUI() {
         if state.isSynching {
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            self.refreshControl?.beginRefreshing()
         } else {
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            self.refreshControl?.endRefreshing()
         }
     }
 

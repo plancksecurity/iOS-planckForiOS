@@ -107,7 +107,11 @@ class FolderListViewController: UITableViewController {
             standardCell, forIndexPath: indexPath)
 
         let fi = folderItems[indexPath.row]
-        cell.textLabel?.text = fi.name
+        if fi.numberOfMessages > 0 {
+            cell.textLabel?.text = "\(fi.name) (\(fi.numberOfMessages))"
+        } else {
+            cell.textLabel?.text = fi.name
+        }
         cell.accessoryType = .DisclosureIndicator
 
         return cell
