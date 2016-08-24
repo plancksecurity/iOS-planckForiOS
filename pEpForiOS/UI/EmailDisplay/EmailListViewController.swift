@@ -281,4 +281,12 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             fetchController?.managedObjectContext.deleteObject(managedObject!)
         }
     }
+
+    override func tableView(tableView: UITableView,titleForDeleteConfirmationButtonForRowAtIndexPath
+                            indexPath: NSIndexPath)-> String? {
+
+        let title = "Erase"
+        let comment = "Erase button title in swipe action on EmailListViewController"
+        return NSLocalizedString(title, comment: comment)
+    }
 }
