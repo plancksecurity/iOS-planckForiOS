@@ -90,11 +90,6 @@ public class ComposeViewController: UITableViewController {
     var recipientCells = [Int: RecipientCell]()
 
     /**
-     Always cache the operation for the latest color check, so we don't overtaxt the system.
-     */
-    var currentOutgoingRatingOperation: OutgoingMessageColorOperation?
-
-    /**
      The message we're constructing
      */
     var messageToSend: IMessage?
@@ -292,7 +287,7 @@ public class ComposeViewController: UITableViewController {
      Builds a pEp mail dictionary from all the related views. This is just a quick
      method for checking the pEp color rating, it's not exhaustive!
      */
-    func pepMailFromViewForCheckingRating() -> PEPMail {
+    func pepMailFromViewForCheckingRating() -> PEPMail? {
         var message = PEPMail()
         for (_, cell) in recipientCells {
             let tf = cell.recipientTextView
@@ -333,10 +328,14 @@ public class ComposeViewController: UITableViewController {
                 }
             }
         }
-        if let account = appConfig?.currentAccount {
-            message[kPepFrom] = PEPUtil.pepContactFromEmail(
-                account.email, name: account.nameOfTheUser)
+
+        guard let account = appConfig?.currentAccount else {
+            Log.warnComponent(comp, "Need valid account for determining pEp rating")
+            return nil
         }
+        message[kPepFrom] = PEPUtil.pepContactFromEmail(
+            account.email, name: account.nameOfTheUser)
+
         if let subjectText = subjectTextField?.text {
             message[kPepShortMessage] = subjectText
         }

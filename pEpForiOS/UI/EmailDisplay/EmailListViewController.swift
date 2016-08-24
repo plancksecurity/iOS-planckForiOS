@@ -20,7 +20,7 @@ class EmailListViewController: UITableViewController {
         /** The sort descriptors to be used for displaying emails */
         let sortDescriptors: [NSSortDescriptor]?
 
-        /** If applicable, the accounts to refresh from */
+        /** If applicable, the account to refresh from */
         let account: IAccount?
 
         /** If applicable, the folder name to sync */
@@ -206,6 +206,9 @@ class EmailListViewController: UITableViewController {
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Make sure the current account is set, if defined
+        config.appConfig.currentAccount = config.account
+
         if segue.identifier == segueCompose {
             let destination = segue.destinationViewController
                 as! ComposeViewController
