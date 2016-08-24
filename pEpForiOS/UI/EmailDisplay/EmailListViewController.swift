@@ -10,23 +10,23 @@ import Foundation
 import UIKit
 import CoreData
 
-struct EmailListConfig {
-    let appConfig: AppConfig
-
-    /** Set to whatever criteria you want to have mails displayed */
-    let predicate: NSPredicate?
-
-    /** The sort descriptors to be used for displaying emails */
-    let sortDescriptors: [NSSortDescriptor]?
-
-    /** If applicable, the accounts to refresh from */
-    let account: IAccount?
-
-    /** If applicable, the folder name to sync */
-    let folderName: String?
-}
-
 class EmailListViewController: UITableViewController {
+    struct EmailListConfig {
+        let appConfig: AppConfig
+
+        /** Set to whatever criteria you want to have mails displayed */
+        let predicate: NSPredicate?
+
+        /** The sort descriptors to be used for displaying emails */
+        let sortDescriptors: [NSSortDescriptor]?
+
+        /** If applicable, the accounts to refresh from */
+        let account: IAccount?
+
+        /** If applicable, the folder name to sync */
+        let folderName: String?
+    }
+
     struct UIState {
         var isSynching: Bool = false
     }

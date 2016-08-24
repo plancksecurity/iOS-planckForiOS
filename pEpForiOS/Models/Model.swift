@@ -136,6 +136,11 @@ public protocol IModel {
      Deletes all attachments from the given mail.
      */
     func deleteAttachmentsFromMessage(message: IMessage)
+
+    /**
+     - Returns: A predicate for all viewable emails.
+     */
+    func basicMessagePredicate() -> NSPredicate
 }
 
 /**
@@ -811,5 +816,14 @@ public class Model: IModel {
         } else {
             message.attachments = NSOrderedSet()
         }
+    }
+
+    public func basicMessagePredicate() -> NSPredicate {
+        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
+        let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
+        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted]
+        let predicate = NSCompoundPredicate.init(
+            andPredicateWithSubpredicates: predicates)
+        return predicate
     }
 }

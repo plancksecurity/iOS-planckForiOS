@@ -95,6 +95,13 @@ public enum FolderType: Int {
         }
     }
 
+    public static func fromNumber(num: NSNumber?) -> FolderType? {
+        if let n = num {
+            return fromInt(n.integerValue)
+        }
+        return nil
+    }
+
     /**
      Each folder type has one or more human-readable name you can use to match
      remote folder names.
@@ -144,6 +151,18 @@ public enum FolderType: Int {
         case .Inbox, .Trash, .Normal, .Spam, .Archive:
             return false
         case .LocalDraft, .LocalOutbox, .LocalSent, .Sent, .Drafts:
+            return true
+        }
+    }
+
+    /**
+     - Returns: true for any folder that is not just local.
+     */
+    public func isRemote() -> Bool {
+        switch self {
+        case .LocalSent, .LocalDraft, .LocalDraft:
+            return false
+        default:
             return true
         }
     }

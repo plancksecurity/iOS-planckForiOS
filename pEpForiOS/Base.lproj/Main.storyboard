@@ -479,6 +479,9 @@
                             <outlet property="delegate" destination="CjB-Qi-fcW" id="YtQ-Qx-I8h"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="kcA-RK-9Xg" kind="show" identifier="segueShowEmails" id="65D-pi-pr8"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wgp-fk-alI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1200,6 +1203,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="65D-pi-pr8"/>
         <segue reference="TnR-me-YgK"/>
     </inferredMetricsTieBreakers>
 </document>

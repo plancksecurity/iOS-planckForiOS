@@ -17,6 +17,7 @@ public class FolderModelOperation: ConcurrentBaseOperation {
     public struct FolderItem {
         public let objectID: NSManagedObjectID
         public let name: String
+        public let type: FolderType
         public let level: Int
     }
 
@@ -63,7 +64,8 @@ public class FolderModelOperation: ConcurrentBaseOperation {
 
     func processFolder(folder: IFolder, level: Int) {
         let item = FolderItem.init(
-            objectID: (folder as! Folder).objectID, name: folder.name, level: level)
+            objectID: (folder as! Folder).objectID, name: folder.name,
+            type: FolderType.fromNumber(folder.folderType)!, level: level)
         folderItems.append(item)
 
         for fol in folder.children {

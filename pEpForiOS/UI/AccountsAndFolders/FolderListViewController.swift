@@ -14,8 +14,13 @@ class FolderListViewController: UITableViewController {
         let appConfig: AppConfig
     }
 
+    var emailListConfig: EmailListViewController.EmailListConfig? = nil
+
     /** Our vanilla table view cell */
     let standardCell = "standardCell"
+
+    /** The segue to the email list view for a folder. */
+    let segueShowEmails = "segueShowEmails"
 
     var config: FolderListConfig!
 
@@ -58,8 +63,10 @@ class FolderListViewController: UITableViewController {
         let op = FolderModelOperation.init(
             account: config.account, coreDataUtil: config.appConfig.coreDataUtil)
         op.completionBlock = {
-            self.folderItems = op.folderItems
-            self.tableView.reloadData()
+            GCD.onMain() {
+                self.folderItems = op.folderItems
+                self.tableView.reloadData()
+            }
         }
         op.start()
     }
@@ -101,6 +108,7 @@ class FolderListViewController: UITableViewController {
 
         let fi = folderItems[indexPath.row]
         cell.textLabel?.text = fi.name
+        cell.accessoryType = .DisclosureIndicator
 
         return cell
     }
@@ -149,13 +157,43 @@ class FolderListViewController: UITableViewController {
         return fi.level
     }
 
-    /*
+    override func tableView(tableView: UITableView,
+                            didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let fi = folderItems[indexPath.row]
+
+        let predicateBasic = config.appConfig.model.basicMessagePredicate()
+        let predicateAccount = NSPredicate.init(
+            format: "folder.account.email = %@", config.account.email)
+        let predicateFolder = NSPredicate.init(
+            format: "folder.name = %@", fi.name)
+
+        // If the folder is just local, then don't let the email list view sync.
+        var account: IAccount? = nil
+        if fi.type.isRemote() {
+            account = config.account
+        }
+
+        emailListConfig = EmailListViewController.EmailListConfig.init(
+            appConfig: config.appConfig,
+            predicate: NSCompoundPredicate.init(
+                andPredicateWithSubpredicates: [predicateBasic, predicateAccount,
+                    predicateFolder]),
+            sortDescriptors: [NSSortDescriptor.init(
+                key: "receivedDate", ascending: false)],
+            account: account, folderName: fi.name)
+
+        performSegueWithIdentifier(segueShowEmails, sender: self)
+    }
+
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == segueShowEmails {
+            guard let vc = segue.destinationViewController as?
+                EmailListViewController else {
+                return
+            }
+            vc.config = emailListConfig
+        }
     }
-    */
 }

@@ -33,7 +33,7 @@ class AccountsFoldersViewController: UITableViewController {
     var accounts = [IAccount]()
 
     /** For email list configuration */
-    var emailListConfig: EmailListConfig?
+    var emailListConfig: EmailListViewController.EmailListConfig?
 
     /** For folder list configuration */
     var folderListConfig: FolderListViewController.FolderListConfig?
@@ -262,13 +262,10 @@ class AccountsFoldersViewController: UITableViewController {
      Basic predicate for listing all emails from any INBOX.
      */
     func basicInboxPredicate() -> NSPredicate {
-        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
-        let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
+        let predicateBasic = appConfig.model.basicMessagePredicate()
         let predicateInbox = NSPredicate.init(
             format: "folder.folderType = %d", FolderType.Inbox.rawValue)
-        let predicates: [NSPredicate] = [
-            predicateBody, predicateDecrypted, predicateInbox
-        ]
+        let predicates: [NSPredicate] = [predicateBasic, predicateInbox]
         let predicate = NSCompoundPredicate.init(
             andPredicateWithSubpredicates: predicates)
         return predicate
@@ -291,7 +288,7 @@ class AccountsFoldersViewController: UITableViewController {
             let sortDescriptors = [NSSortDescriptor.init(key: "receivedDate",
                 ascending: false)]
 
-            emailListConfig = EmailListConfig.init(
+            emailListConfig = EmailListViewController.EmailListConfig.init(
                 appConfig: ac, predicate: predicate,
                 sortDescriptors: sortDescriptors, account: account,
                 folderName: ImapSync.defaultImapInboxName)
