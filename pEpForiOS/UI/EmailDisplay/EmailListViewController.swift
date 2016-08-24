@@ -279,10 +279,11 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             { (action, indexPath) in
                 print("Store tapped")
             }
-        let titleStore = "Store"
-        let commentStore = "Store button title in swipe action on EmailListViewController"
-        let storedDeleteTitle = NSLocalizedString(titleStore, comment: commentStore)
-        let storeAction = UITableViewRowAction(style: .Default, title: storedDeleteTitle,
+        let localizedStoreTitle = NSLocalizedString(
+            "Store",
+            comment: "Store button title in swipe action on EmailListViewController")
+
+        let storeAction = UITableViewRowAction(style: .Default, title: localizedStoreTitle,
          handler: storeCompletionHandler)
         storeAction.backgroundColor = UIColor.blueColor()
 
@@ -291,9 +292,9 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
                 let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? Message
                 self.fetchController?.managedObjectContext.deleteObject(managedObject!)
             }
-        let titleErase = "Erase"
-        let commentErase = "Erase button title in swipe action on EmailListViewController"
-        let localizedDeleteTitle = NSLocalizedString(titleErase, comment: commentErase)
+        let localizedDeleteTitle = NSLocalizedString(
+            "Erase",
+            comment: "Erase button title in swipe action on EmailListViewController")
         let deleteAction = UITableViewRowAction(style: .Default, title: localizedDeleteTitle,
                                                 handler: deleteCompletionHandler)
         return [storeAction, deleteAction]
