@@ -272,14 +272,6 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         tableView.endUpdates()
     }
 
-    override func tableView(tableView: UITableView,titleForDeleteConfirmationButtonForRowAtIndexPath
-                            indexPath: NSIndexPath)-> String? {
-
-        let title = "Erase"
-        let comment = "Erase button title in swipe action on EmailListViewController"
-        return NSLocalizedString(title, comment: comment)
-    }
-
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath
                   indexPath: NSIndexPath)-> [UITableViewRowAction]? {
 
@@ -288,12 +280,18 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             print("Edit tapped")
         })
         editAction.backgroundColor = UIColor.blueColor()
+        let titleStore = "Store"
+        let commentStore = "Store button title in swipe action on EmailListViewController"
+        editAction.title = NSLocalizedString(titleStore, comment: commentStore)
 
         let deleteAction = UITableViewRowAction(style: .Default, title: "Delete",
                                                 handler: { (action, indexPath) in
             let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? Message
             self.fetchController?.managedObjectContext.deleteObject(managedObject!)
         })
+        let title = "Erase"
+        let comment = "Erase button title in swipe action on EmailListViewController"
+        editAction.title = NSLocalizedString(title, comment: comment)
         return [editAction, deleteAction]
     }
 }
