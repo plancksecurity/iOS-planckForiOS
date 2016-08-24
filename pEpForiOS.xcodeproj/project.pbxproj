@@ -142,7 +142,6 @@
 		A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */; };
 		A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */; };
 		A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */; };
-		A1F459E71D2FEA2600B82B9B /* Trustwords.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F459E61D2FEA2600B82B9B /* Trustwords.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -357,7 +356,6 @@
 		A1B50A881CD271EC00B1A997 /* ImapSyncTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncTest.swift; sourceTree = "<group>"; };
 		A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailSecurityTableViewCell.swift; sourceTree = "<group>"; };
 		A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailExplantionSecurityTableViewCell.swift; sourceTree = "<group>"; };
-		A1F459E61D2FEA2600B82B9B /* Trustwords.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Trustwords.storyboard; path = Util/Trustwords.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -523,7 +521,6 @@
 				43ED53611CC77F95006AB156 /* UI */,
 				43980EDE1CBD24B000A7FC3C /* Util */,
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
-				A1F459E61D2FEA2600B82B9B /* Trustwords.storyboard */,
 				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
 				43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */,
@@ -898,7 +895,6 @@
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
 				430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */,
-				A1F459E71D2FEA2600B82B9B /* Trustwords.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
