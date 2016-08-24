@@ -74,8 +74,6 @@ class AccountsFoldersViewController: UITableViewController {
 
         if accounts.isEmpty {
             self.performSegueWithIdentifier(segueSetupNewAccount, sender: self)
-        } else {
-            doMyself()
         }
 
         if shouldRefreshMail {
