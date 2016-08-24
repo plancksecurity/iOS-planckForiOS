@@ -180,7 +180,7 @@ class FolderListViewController: UITableViewController {
                     predicateFolder]),
             sortDescriptors: [NSSortDescriptor.init(
                 key: "receivedDate", ascending: false)],
-            account: account, folderName: fi.name)
+            account: account, folderName: fi.name, syncOnAppear: true)
 
         performSegueWithIdentifier(segueShowEmails, sender: self)
     }

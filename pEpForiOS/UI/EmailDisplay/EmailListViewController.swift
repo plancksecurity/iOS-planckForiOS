@@ -25,6 +25,9 @@ class EmailListViewController: UITableViewController {
 
         /** If applicable, the folder name to sync */
         let folderName: String?
+
+        /** Should there be a sync directly when the view appears? */
+        let syncOnAppear: Bool
     }
 
     struct UIState {
@@ -56,7 +59,7 @@ class EmailListViewController: UITableViewController {
 
     override func viewDidLoad() {
         let refreshController = UIRefreshControl.init()
-        refreshController.addTarget(self, action: #selector(self.refresh(_:)),
+        refreshController.addTarget(self, action: #selector(self.fetchMailsRefreshControl(_:)),
                                     forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshController
         UIHelper.variableCellHeightsTableView(self.tableView)
@@ -64,11 +67,10 @@ class EmailListViewController: UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         prepareFetchRequest()
+        if config.syncOnAppear {
+            fetchMailsRefreshControl()
+        }
         super.viewWillAppear(animated)
-    }
-
-    func refresh(refreshControl: UIRefreshControl) {
-        fetchMailsRefreshControl(refreshControl)
     }
 
     func fetchMailsRefreshControl(refreshControl: UIRefreshControl? = nil) {

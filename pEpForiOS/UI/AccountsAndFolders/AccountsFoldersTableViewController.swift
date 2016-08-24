@@ -291,7 +291,8 @@ class AccountsFoldersViewController: UITableViewController {
             emailListConfig = EmailListViewController.EmailListConfig.init(
                 appConfig: ac, predicate: predicate,
                 sortDescriptors: sortDescriptors, account: account,
-                folderName: ImapSync.defaultImapInboxName)
+                folderName: ImapSync.defaultImapInboxName,
+                syncOnAppear: false)
 
             self.performSegueWithIdentifier(segueEmailList, sender: self)
         } else {
