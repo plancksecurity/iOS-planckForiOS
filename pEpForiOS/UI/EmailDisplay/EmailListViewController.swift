@@ -272,21 +272,28 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         tableView.endUpdates()
     }
 
-    override func tableView(tableView: UITableView,
-                            commitEditingStyle editingStyle: UITableViewCellEditingStyle,
-                                               forRowAtIndexPath indexPath: NSIndexPath) {
-        // TODO: Delete from the server and managed errors
-        if editingStyle == .Delete {
-            let managedObject = fetchController?.objectAtIndexPath(indexPath) as? Message
-            fetchController?.managedObjectContext.deleteObject(managedObject!)
-        }
-    }
-
     override func tableView(tableView: UITableView,titleForDeleteConfirmationButtonForRowAtIndexPath
                             indexPath: NSIndexPath)-> String? {
 
         let title = "Erase"
         let comment = "Erase button title in swipe action on EmailListViewController"
         return NSLocalizedString(title, comment: comment)
+    }
+
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath
+                  indexPath: NSIndexPath)-> [UITableViewRowAction]? {
+
+        let editAction = UITableViewRowAction(style: .Default, title: "Edit",
+                                              handler: { (action, indexPath) in
+            print("Edit tapped")
+        })
+        editAction.backgroundColor = UIColor.blueColor()
+
+        let deleteAction = UITableViewRowAction(style: .Default, title: "Delete",
+                                                handler: { (action, indexPath) in
+            let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? Message
+            self.fetchController?.managedObjectContext.deleteObject(managedObject!)
+        })
+        return [editAction, deleteAction]
     }
 }
