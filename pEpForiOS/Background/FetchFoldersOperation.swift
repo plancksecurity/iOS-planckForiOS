@@ -46,7 +46,15 @@ public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
     lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
     lazy var model: IModel = Model.init(context: self.privateMOC)
 
-    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
+    /**
+     If this is true, the local folders will get checked, and only if important
+     folders don't exist, the folders will get synced.
+     */
+    let onlyUpdateIfNecessary: Bool
+
+    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
+                onlyUpdateIfNecessary: Bool) {
+        self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.connectInfo = connectInfo
         coreDataUtil = grandOperator.coreDataUtil
 
@@ -57,6 +65,11 @@ public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
                                                backgroundQueue: backgroundQueue)
     }
 
+    convenience public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
+        self.init(grandOperator: grandOperator,
+                  connectInfo: connectInfo, onlyUpdateIfNecessary: false)
+    }
+
     public override func main() {
         if self.cancelled {
             return
@@ -65,6 +78,29 @@ public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
         // Serialize all folder storage to prevent duplicates
         backgroundQueue.maxConcurrentOperationCount = 1
 
+        if onlyUpdateIfNecessary {
+            // Check if the local folder list is fairly complete
+            privateMOC.performBlock({
+                var needSync = false
+                let requiredTypes: [FolderType] = [.Inbox, .Sent, .Drafts, .Trash]
+                for ty in requiredTypes {
+                    if self.model.folderByType(ty, email: self.connectInfo.email) == nil {
+                        needSync = true
+                        break
+                    }
+                }
+                if needSync {
+                    self.startSync()
+                } else {
+                    self.markAsFinished()
+                }
+            })
+        } else {
+            startSync()
+        }
+    }
+
+    func startSync() {
         imapSync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
         imapSync.delegate = self
         imapSync.folderBuilder = folderBuilder

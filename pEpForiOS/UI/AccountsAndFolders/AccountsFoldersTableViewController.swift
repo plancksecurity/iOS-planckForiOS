@@ -41,9 +41,6 @@ class AccountsFoldersViewController: UITableViewController {
     /** For starting mySelf() */
     var backgroundQueue = NSOperationQueue.init()
 
-    /** When this view is first shown, it will fetch folders as well. */
-    var shouldFetchFolders = true
-
     struct UIState {
         var isSynching = false
     }
@@ -140,7 +137,7 @@ class AccountsFoldersViewController: UITableViewController {
         updateUI()
 
         ac.grandOperator.fetchEmailsAndDecryptConnectInfos(
-            connectInfos, folderName: nil, fetchFolders: shouldFetchFolders,
+            connectInfos, folderName: nil,
             completionBlock: { error in
                 Log.infoComponent(self.comp, "Sync completed, error: \(error)")
                 if let err = error {
@@ -150,7 +147,6 @@ class AccountsFoldersViewController: UITableViewController {
                 self.state.isSynching = false
                 self.updateUI()
         })
-        shouldFetchFolders = false
     }
 
     func updateUI() {
@@ -166,6 +162,7 @@ class AccountsFoldersViewController: UITableViewController {
     @IBAction func newAccountCreatedSegue(segue: UIStoryboardSegue) {
         // load new account
         updateModel()
+
         doMyself()
 
         refreshMailsControl()

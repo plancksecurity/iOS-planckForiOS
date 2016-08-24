@@ -64,7 +64,7 @@ public protocol IGrandOperator: class {
      a non-nil error object if there was an error during execution.
      */
     func fetchEmailsAndDecryptConnectInfos(
-        connectInfos: [ConnectInfo], folderName: String?, fetchFolders: Bool,
+        connectInfos: [ConnectInfo], folderName: String?,
         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
@@ -193,24 +193,24 @@ public class GrandOperator: IGrandOperator {
 
     public func fetchFolders(connectInfo: ConnectInfo,
                              completionBlock: GrandOperatorCompletionBlock?) {
-        let op = FetchFoldersOperation.init(grandOperator: self, connectInfo: connectInfo)
+        let op = FetchFoldersOperation.init(
+            grandOperator: self, connectInfo: connectInfo, onlyUpdateIfNecessary: false)
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
     public func fetchEmailsAndDecryptConnectInfos(
-        connectInfos: [ConnectInfo], folderName: String?, fetchFolders: Bool,
+        connectInfos: [ConnectInfo], folderName: String?,
         completionBlock: GrandOperatorCompletionBlock?) {
         var operations = [BaseOperation]()
         var fetchOperations = [BaseOperation]()
 
         for connectInfo in connectInfos {
-            if fetchFolders {
-                operations.append(CreateLocalSpecialFoldersOperation.init(
-                    coreDataUtil: coreDataUtil,
-                    accountEmail: connectInfo.email))
-                operations.append(FetchFoldersOperation.init(
-                    grandOperator: self, connectInfo: connectInfo))
-            }
+            operations.append(CreateLocalSpecialFoldersOperation.init(
+                coreDataUtil: coreDataUtil,
+                accountEmail: connectInfo.email))
+            operations.append(FetchFoldersOperation.init(
+                grandOperator: self, connectInfo: connectInfo, onlyUpdateIfNecessary: true))
+
             let fetchOp = PrefetchEmailsOperation.init(
                 grandOperator: self, connectInfo: connectInfo,
                 folder: ImapSync.defaultImapInboxName)

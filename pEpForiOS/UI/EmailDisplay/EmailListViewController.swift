@@ -79,7 +79,7 @@ class EmailListViewController: UITableViewController {
             updateUI()
 
             config.appConfig.grandOperator.fetchEmailsAndDecryptConnectInfos(
-                [connectInfo], folderName: config.folderName, fetchFolders: false,
+                [connectInfo], folderName: config.folderName,
                 completionBlock: { error in
                     Log.infoComponent(self.comp, "Sync completed, error: \(error)")
                     if let err = error {
