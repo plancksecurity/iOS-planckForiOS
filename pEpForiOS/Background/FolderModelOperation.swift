@@ -64,10 +64,11 @@ public class FolderModelOperation: ConcurrentBaseOperation {
     }
 
     func processFolder(folder: IFolder, level: Int) {
+        // TODO: numberOfMessages really should be the number of unread messages
         let item = FolderItem.init(
             objectID: (folder as! Folder).objectID, name: folder.name,
             type: FolderType.fromNumber(folder.folderType)!, level: level,
-            numberOfMessages: folder.children.count)
+            numberOfMessages: 0)
         folderItems.append(item)
 
         for fol in folder.children {
