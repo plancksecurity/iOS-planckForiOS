@@ -275,23 +275,29 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath
                   indexPath: NSIndexPath)-> [UITableViewRowAction]? {
 
-        let editAction = UITableViewRowAction(style: .Default, title: "Edit",
-                                              handler: { (action, indexPath) in
-            print("Edit tapped")
-        })
-        editAction.backgroundColor = UIColor.blueColor()
+        let storeCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+            { (action, indexPath) in
+                print("Store tapped")
+            }
         let titleStore = "Store"
         let commentStore = "Store button title in swipe action on EmailListViewController"
-        editAction.title = NSLocalizedString(titleStore, comment: commentStore)
+        let storedDeleteTitle = NSLocalizedString(titleStore, comment: commentStore)
+        let storeAction = UITableViewRowAction(style: .Default, title: storedDeleteTitle,
+         handler: storeCompletionHandler)
+        storeAction.backgroundColor = UIColor.blueColor()
 
-        let deleteAction = UITableViewRowAction(style: .Default, title: "Delete",
-                                                handler: { (action, indexPath) in
-            let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? Message
-            self.fetchController?.managedObjectContext.deleteObject(managedObject!)
-        })
-        let title = "Erase"
-        let comment = "Erase button title in swipe action on EmailListViewController"
-        editAction.title = NSLocalizedString(title, comment: comment)
-        return [editAction, deleteAction]
+        let deleteCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+            { (action, indexPath) in
+                let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? Message
+                self.fetchController?.managedObjectContext.deleteObject(managedObject!)
+            }
+        let titleErase = "Erase"
+        let commentErase = "Erase button title in swipe action on EmailListViewController"
+        let localizedDeleteTitle = NSLocalizedString(titleErase, comment: commentErase)
+        let deleteAction = UITableViewRowAction(style: .Default, title: localizedDeleteTitle,
+                                                handler: deleteCompletionHandler)
+        return [storeAction, deleteAction]
     }
+
+
 }
