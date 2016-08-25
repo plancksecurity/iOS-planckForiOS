@@ -38,7 +38,7 @@ public class PrefetchEmailsOperation: ConcurrentGrandOperatorOperation {
             return
         }
 
-        let folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
+        let folderBuilder = ImapFolderBuilder.init(coreDataUtil: grandOperator.coreDataUtil,
                                                    connectInfo: connectInfo,
                                                    backgroundQueue: backgroundQueue)
 

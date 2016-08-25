@@ -11,18 +11,18 @@ import CoreData
 
 public class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let connectInfo: ConnectInfo
-    let grandOperator: IGrandOperator
+    let coreDataUtil: ICoreDataUtil
     public let backgroundQueue: NSOperationQueue?
 
-    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
+    public init(coreDataUtil: ICoreDataUtil, connectInfo: ConnectInfo,
                 backgroundQueue: NSOperationQueue) {
         self.connectInfo = connectInfo
-        self.grandOperator = grandOperator
+        self.coreDataUtil = coreDataUtil
         self.backgroundQueue = backgroundQueue
     }
 
     public func folderWithName(name: String) -> CWFolder {
-        return PersistentImapFolder(name: name, grandOperator: grandOperator,
+        return PersistentImapFolder(name: name, coreDataUtil: coreDataUtil,
                                     connectInfo: connectInfo, backgroundQueue: backgroundQueue!)
             as CWFolder
     }
@@ -37,10 +37,11 @@ public class ImapFolderBuilder: NSObject, CWFolderBuilding {
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
+public class FetchFoldersOperation: ConcurrentBaseOperation {
     let comp = "FetchFoldersOperation"
     var imapSync: ImapSync!
     let connectInfo: ConnectInfo
+    let connectionManager: ConnectionManager
     var folderBuilder: ImapFolderBuilder!
     let coreDataUtil: ICoreDataUtil
     lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
@@ -57,10 +58,11 @@ public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.connectInfo = connectInfo
         coreDataUtil = grandOperator.coreDataUtil
+        self.connectionManager = grandOperator.connectionManager
 
-        super.init(grandOperator: grandOperator)
+        super.init()
 
-        folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
+        folderBuilder = ImapFolderBuilder.init(coreDataUtil: coreDataUtil,
                                                connectInfo: connectInfo,
                                                backgroundQueue: backgroundQueue)
     }
@@ -101,7 +103,7 @@ public class FetchFoldersOperation: ConcurrentGrandOperatorOperation {
     }
 
     func startSync() {
-        imapSync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
+        imapSync = connectionManager.emailSyncConnection(connectInfo)
         imapSync.delegate = self
         imapSync.folderBuilder = folderBuilder
         imapSync.start()

@@ -30,7 +30,7 @@ class PersistentSetup {
         coreDataUtil = InMemoryCoreDataUtil.init()
         grandOperator = GrandOperator.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
-        folderBuilder = ImapFolderBuilder.init(grandOperator: grandOperator,
+        folderBuilder = ImapFolderBuilder.init(coreDataUtil: coreDataUtil,
                                                connectInfo: connectionInfo,
                                                backgroundQueue: backgroundQueue)
 

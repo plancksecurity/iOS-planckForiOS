@@ -153,7 +153,7 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
 }
 
 class ImapSyncTest: XCTestCase {
-    let waitTime: NSTimeInterval = 10
+    let waitTime: NSTimeInterval = 1000
 
     var coreDataUtil: InMemoryCoreDataUtil!
 
