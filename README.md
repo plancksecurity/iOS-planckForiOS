@@ -38,6 +38,18 @@ The fingerprints should be:
   brew install mogenerator
   ```
 
+### Other dependecies
+
+#### pEpEngine: [yml2](https://fdik.org/yml/toolchain)
+
+Clone into your home directory:
+
+```
+pushd ~
+hg clone https://cacert.pep.foundation/dev/repos/yml2/
+popd
+```
+
 ## Build instructions
 
 ```
