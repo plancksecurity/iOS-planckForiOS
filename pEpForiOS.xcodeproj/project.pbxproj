@@ -29,7 +29,6 @@
 		431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */; };
 		431B0B9A1D6734DF0082D0DB /* AccountsFoldersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B0B991D6734DF0082D0DB /* AccountsFoldersTableViewController.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
-		4325F3141CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */; };
 		432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */; };
 		432722251D33F2FD009EC395 /* TrustWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722231D33F2FD009EC395 /* TrustWordsViewController.swift */; };
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
@@ -48,7 +47,6 @@
 		436F8E101D367039007E9829 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E0F1D367039007E9829 /* StringExtensions.swift */; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
 		436F8E1B1D369B3F007E9829 /* EmailTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E1A1D369B3F007E9829 /* EmailTextField.swift */; };
-		43727F101D1ADF7A00F210DB /* GrandOperatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43727F0F1D1ADF7A00F210DB /* GrandOperatorOperation.swift */; };
 		437431F61CFC2F14000F8D35 /* VerifyServiceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437431F51CFC2F14000F8D35 /* VerifyServiceOperation.swift */; };
 		4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4374320A1CFC49B1000F8D35 /* TestUtil.swift */; };
 		43800D931D112A0800821E34 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D8E1D112A0800821E34 /* TFHpple.m */; };
@@ -226,7 +224,6 @@
 		431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyCell.swift; sourceTree = "<group>"; };
 		431B0B991D6734DF0082D0DB /* AccountsFoldersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsFoldersTableViewController.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
-		4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentGrandOperatorOperation.swift; sourceTree = "<group>"; };
 		432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewCell.swift; sourceTree = "<group>"; };
 		432722231D33F2FD009EC395 /* TrustWordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewController.swift; sourceTree = "<group>"; };
 		432F7D601D2102F10094F097 /* PEPSessionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionTest.swift; sourceTree = "<group>"; };
@@ -245,7 +242,6 @@
 		436F8E0F1D367039007E9829 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
 		436F8E1A1D369B3F007E9829 /* EmailTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailTextField.swift; sourceTree = "<group>"; };
-		43727F0F1D1ADF7A00F210DB /* GrandOperatorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorOperation.swift; sourceTree = "<group>"; };
 		437431F51CFC2F14000F8D35 /* VerifyServiceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyServiceOperation.swift; sourceTree = "<group>"; };
 		4374320A1CFC49B1000F8D35 /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
 		43800D8D1D112A0800821E34 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
@@ -399,8 +395,6 @@
 				431144AB1CC0CCE20007639D /* GrandOperator.swift */,
 				431144B61CC11D6A0007639D /* BaseOperation.swift */,
 				43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */,
-				43727F0F1D1ADF7A00F210DB /* GrandOperatorOperation.swift */,
-				4325F3131CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift */,
 				431144A91CC0CB480007639D /* PrefetchEmailsOperation.swift */,
 				431144B41CC0FCA40007639D /* StoreFolderOperation.swift */,
 				431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */,
@@ -956,7 +950,6 @@
 				436F8E101D367039007E9829 /* StringExtensions.swift in Sources */,
 				A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */,
 				4339477B1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift in Sources */,
-				4325F3141CD8A8D200A10727 /* ConcurrentGrandOperatorOperation.swift in Sources */,
 				43980E2F1CBD0BCA00A7FC3C /* pEpForiOS.xcdatamodeld in Sources */,
 				43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */,
 				432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */,
@@ -982,7 +975,6 @@
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
 				432722251D33F2FD009EC395 /* TrustWordsViewController.swift in Sources */,
 				431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */,
-				43727F101D1ADF7A00F210DB /* GrandOperatorOperation.swift in Sources */,
 				4345967F1CE227D9004E8735 /* _MessageReference.swift in Sources */,
 				431144AC1CC0CCE30007639D /* GrandOperator.swift in Sources */,
 				431144C01CC1202E0007639D /* _Contact.swift in Sources */,

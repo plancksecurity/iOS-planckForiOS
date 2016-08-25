@@ -8,9 +8,10 @@
 
 import Foundation
 
-public class VerifyServiceOperation: ConcurrentGrandOperatorOperation {
+public class VerifyServiceOperation: ConcurrentBaseOperation {
     var service: Service!
     let connectInfo: ConnectInfo
+    let connectionManager: ConnectionManager
 
     /**
      Flag that the connection has already been finished, and was probably closed on request,
@@ -23,7 +24,8 @@ public class VerifyServiceOperation: ConcurrentGrandOperatorOperation {
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
-        super.init(grandOperator: grandOperator)
+        self.connectionManager = grandOperator.connectionManager
+        super.init()
     }
 
     func close(finish: Bool) {

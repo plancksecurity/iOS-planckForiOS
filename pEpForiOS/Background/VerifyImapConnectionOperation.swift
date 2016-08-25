@@ -15,7 +15,7 @@ public class VerifyImapConnectionOperation: VerifyServiceOperation {
         if self.cancelled {
             return
         }
-        service = grandOperator.connectionManager.emailSyncConnectionOneWay(connectInfo)
+        service = connectionManager.emailSyncConnectionOneWay(connectInfo)
         (service as! ImapSync).delegate = self
         service.start()
     }

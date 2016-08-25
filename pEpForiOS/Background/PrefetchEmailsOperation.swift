@@ -14,23 +14,25 @@ import CoreData
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-public class PrefetchEmailsOperation: ConcurrentGrandOperatorOperation {
+public class PrefetchEmailsOperation: ConcurrentBaseOperation {
     let comp = "PrefetchEmailsOperation"
 
     let connectInfo: ConnectInfo
     var sync: ImapSync!
     let folderToOpen: String
+    let coreDataUtil: ICoreDataUtil
+    let connectionManager: ConnectionManager
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folder: String?) {
         self.connectInfo = connectInfo
+        self.coreDataUtil = grandOperator.coreDataUtil
+        self.connectionManager = grandOperator.connectionManager
         if let folder = folder {
             folderToOpen = folder
         } else {
             folderToOpen = ImapSync.defaultImapInboxName
         }
-
-
-        super.init(grandOperator: grandOperator)
+        super.init()
     }
 
     override public func main() {
@@ -38,11 +40,11 @@ public class PrefetchEmailsOperation: ConcurrentGrandOperatorOperation {
             return
         }
 
-        let folderBuilder = ImapFolderBuilder.init(coreDataUtil: grandOperator.coreDataUtil,
+        let folderBuilder = ImapFolderBuilder.init(coreDataUtil: coreDataUtil,
                                                    connectInfo: connectInfo,
                                                    backgroundQueue: backgroundQueue)
 
-        sync = grandOperator.connectionManager.emailSyncConnection(connectInfo)
+        sync = connectionManager.emailSyncConnection(connectInfo)
         sync.delegate = self
         sync.folderBuilder = folderBuilder
 

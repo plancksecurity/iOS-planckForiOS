@@ -15,7 +15,7 @@ class VerifySmtpConnectionOperation: VerifyServiceOperation {
         if self.cancelled {
             return
         }
-        service = grandOperator.connectionManager.smtpConnection(connectInfo)
+        service = connectionManager.smtpConnection(connectInfo)
         (service as! SmtpSend).delegate = self
         service.start()
     }
