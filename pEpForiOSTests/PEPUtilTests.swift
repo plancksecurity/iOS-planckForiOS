@@ -488,6 +488,9 @@ class PEPUtilTests: XCTestCase {
             receiver4 as PEPContact, from: identity as PEPContact))
     }
 
+    /**
+     This needs access to the addressbook, otherwise it will just fail.
+     */
     func testInsertPepContact() {
         var addressBookContact: IContact?
         let ab = AddressBook.init()
@@ -495,7 +498,7 @@ class PEPUtilTests: XCTestCase {
 
         let testBlock = {
             let contacts = ab.allContacts()
-            XCTAssertGreaterThanOrEqual(contacts.count, 1)
+            XCTAssertGreaterThan(contacts.count, 0)
             if let first = contacts.first {
                 addressBookContact = first
             }
