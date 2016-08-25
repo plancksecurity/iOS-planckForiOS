@@ -59,6 +59,29 @@ class EmailListViewController: UITableViewController {
 
     var refreshController: UIRefreshControl!
 
+    func dummyIsReadedMessage (indexPath: NSIndexPath)-> Bool{
+
+        if (indexPath.row < 2) {
+            return true
+        } else if (indexPath.row > 2 || indexPath.row < 4) {
+            return false;
+        }
+        else {
+            return true
+        }
+    }
+
+    func dummyIsImportantMessage(indexPath: NSIndexPath)-> Bool {
+        if (indexPath.row < 2) {
+            return false
+        } else if (indexPath.row > 2 || indexPath.row < 4) {
+            return true;
+        }
+        else {
+            return true
+        }
+    }
+
     override func viewDidLoad() {
         refreshController = UIRefreshControl.init()
         refreshController.addTarget(self, action: #selector(self.fetchMailsRefreshControl(_:)),
@@ -277,18 +300,21 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
 
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath
                   indexPath: NSIndexPath)-> [UITableViewRowAction]? {
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! EmailListViewCell
 
-        let storeCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+        let isFlagCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
             { (action, indexPath) in
-                print("Store tapped")
+                cell.isImportantImage.hidden = false
+                cell.isImportantImage.backgroundColor = UIColor.orangeColor()
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             }
-        let localizedStoreTitle = NSLocalizedString(
-            "Store",
-            comment: "Store button title in swipe action on EmailListViewController")
+        let localizedIsFlagTitle = NSLocalizedString(
+            "Flag",
+            comment: "Flag button title in swipe action on EmailListViewController")
 
-        let storeAction = UITableViewRowAction(style: .Default, title: localizedStoreTitle,
-         handler: storeCompletionHandler)
-        storeAction.backgroundColor = UIColor.blueColor()
+        let isFlagAction = UITableViewRowAction(style: .Default, title: localizedIsFlagTitle,
+         handler: isFlagCompletionHandler)
+        isFlagAction.backgroundColor = UIColor.orangeColor()
 
         let deleteCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
             { (action, indexPath) in
@@ -300,8 +326,19 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             comment: "Erase button title in swipe action on EmailListViewController")
         let deleteAction = UITableViewRowAction(style: .Default, title: localizedDeleteTitle,
                                                 handler: deleteCompletionHandler)
-        return [storeAction, deleteAction]
+
+        let isReadCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+            { (action, indexPath) in
+                cell.isImportantImage.hidden = false
+                cell.isImportantImage.backgroundColor = UIColor.blueColor()
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+            }
+        let localizedisReadTitle = NSLocalizedString(
+            "Read",
+            comment: "Read button title in swipe action on EmailListViewController")
+        let isReadAction = UITableViewRowAction(style: .Default, title: localizedisReadTitle,
+                                                handler: isReadCompletionHandler)
+        isReadAction.backgroundColor = UIColor.blueColor()
+        return [deleteAction,isFlagAction,isReadAction]
     }
-
-
 }
