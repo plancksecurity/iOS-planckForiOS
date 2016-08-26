@@ -136,6 +136,9 @@ class FolderListViewController: UITableViewController {
             account = config.account
         }
 
+        // Start syncing emails when it's not an inbox (which was just synced already)
+        let syncOnAppear = fi.type != .Inbox
+
         emailListConfig = EmailListViewController.EmailListConfig.init(
             appConfig: config.appConfig,
             predicate: NSCompoundPredicate.init(
@@ -143,7 +146,7 @@ class FolderListViewController: UITableViewController {
                     predicateFolder]),
             sortDescriptors: [NSSortDescriptor.init(
                 key: "receivedDate", ascending: false)],
-            account: account, folderName: fi.name, syncOnAppear: true)
+            account: account, folderName: fi.name, syncOnAppear: syncOnAppear)
 
         performSegueWithIdentifier(segueShowEmails, sender: self)
     }
