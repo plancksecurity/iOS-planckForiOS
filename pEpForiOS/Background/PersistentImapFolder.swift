@@ -170,8 +170,11 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     func messageWithUID(theUID: UInt) -> CWIMAPMessage? {
         var result: CWIMAPMessage?
-        let p = NSPredicate.init(format: "uid = %d", theUID)
         privateMOC.performBlockAndWait({
+            let pUid = NSPredicate.init(format: "uid = %d", theUID)
+            let pFolderName = NSPredicate.init(format: "folder.name = %@", self.folder.name)
+            let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolderName])
+
             if let msg = self.model.messageByPredicate(p, sortDescriptors: nil) {
                 result = msg.imapMessageWithFolder(self)
             } else {
