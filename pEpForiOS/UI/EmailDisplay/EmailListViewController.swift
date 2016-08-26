@@ -60,11 +60,11 @@ class EmailListViewController: UITableViewController {
     var refreshController: UIRefreshControl!
 
     func isReadedMessage(message: IMessage)-> Bool {
-        return true
+        return message.flagRead.boolValue
     }
 
     func isImportantMessage(message: IMessage)-> Bool {
-        return true
+        return message.flagFlagged.boolValue
     }
 
     override func viewDidLoad() {
@@ -292,11 +292,11 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         tableView.endUpdates()
     }
 
-    func createIsFlagAction(activeFlag: Bool, cell: EmailListViewCell) -> UITableViewRowAction {
+    func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
         var localizedIsFlagTitle = " "
-        if (activeFlag) {
+        if (isImportantMessage(message)) {
             localizedIsFlagTitle = NSLocalizedString("Flag",
             comment: "Flag button title in swipe action on EmailListViewController")
         } else {
@@ -309,7 +309,7 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             { (action, indexPath) in
                 //cell.isImportantImage.hidden = false
                 //cell.isImportantImage.backgroundColor = UIColor.orangeColor()
-                // TODO: setImportantMessage()
+
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             }
         // creating the action
@@ -340,11 +340,11 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         return deleteAction
     }
 
-    func createIsReadAction (isRead: Bool, cell: EmailListViewCell) -> UITableViewRowAction {
+    func createIsReadAction (message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
         var localizedisReadTitle = " "
-        if (isRead) {
+        if (isReadedMessage(message)) {
             localizedisReadTitle = NSLocalizedString("Read",
             comment: "Read button title in swipe action on EmailListViewController")
         } else {
@@ -372,11 +372,11 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
 
         let cell = tableView.cellForRowAtIndexPath(indexPath) as! EmailListViewCell
         let email = fetchController?.objectAtIndexPath(indexPath) as! Message
-        let isImportant = isImportantMessage(email)
-        let isRead = isReadedMessage(email)
-        let isFlagAction = createIsFlagAction(isImportant, cell: cell)
+
+
+        let isFlagAction = createIsFlagAction(email, cell: cell)
         let deleteAction = createDeleteAction(cell)
-        let isReadAction = createIsReadAction(isRead, cell: cell)
+        let isReadAction = createIsReadAction(email, cell: cell)
         return [deleteAction,isFlagAction,isReadAction]
     }
 }
