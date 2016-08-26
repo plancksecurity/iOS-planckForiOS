@@ -406,12 +406,6 @@ public class Model: IModel {
 
     public func insertOrUpdateFolderName(folderName: String, folderSeparator: String?,
                                          accountEmail: String) -> IFolder? {
-        if let folders = foldersByPredicate(NSPredicate.init(value: true)) {
-            for fo in folders {
-                print("Found folder: \(fo.name) email: \(fo.account.email)")
-            }
-        }
-
         if let folder = folderByName(folderName, email: accountEmail) {
             return folder
         }

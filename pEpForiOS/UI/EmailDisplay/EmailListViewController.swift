@@ -153,7 +153,6 @@ class EmailListViewController: UITableViewController {
     func updateUI() {
         if state.isSynching {
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-            self.refreshControl?.beginRefreshing()
         } else {
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             self.refreshControl?.endRefreshing()
