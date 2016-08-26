@@ -24,6 +24,8 @@
 
 #import "Pantomime/CWIMAPStore.h"
 #import "Pantomime/CWIMAPMessage.h"
+#import "Pantomime/CWMessage.h"
+#import "Pantomime/CWFlags.h"
 
 #import "Pantomime/CWSMTP.h"
 #import "Pantomime/CWInternetAddress.h"

@@ -652,6 +652,17 @@ public class Model: IModel {
         if isFresh || mail.boundary != message.boundary()?.asciiString() {
             mail.boundary = message.boundary()?.asciiString()
         }
+
+        // sync flags
+        if let flags = message.flags() {
+            mail.flagSeen = flags.contain(.Seen)
+            mail.flagAnswered = flags.contain(.Answered)
+            mail.flagFlagged = flags.contain(.Flagged)
+            mail.flagDeleted = flags.contain(.Deleted)
+            mail.flagDraft = flags.contain(.Draft)
+            mail.flagRecent = flags.contain(.Recent)
+        }
+
         return (mail, false)
     }
 
@@ -819,9 +830,11 @@ public class Model: IModel {
     }
 
     public func basicMessagePredicate() -> NSPredicate {
-        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
         let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
-        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted]
+        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
+        let predicateNotDeleted = NSPredicate.init(format: "flagDeleted = false")
+        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted,
+                                         predicateNotDeleted]
         let predicate = NSCompoundPredicate.init(
             andPredicateWithSubpredicates: predicates)
         return predicate

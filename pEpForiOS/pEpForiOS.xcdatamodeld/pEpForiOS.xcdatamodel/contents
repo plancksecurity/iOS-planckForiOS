@@ -54,6 +54,13 @@
         <attribute name="bodyFetched" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="boundary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="contentType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="flagAnswered" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="flagDeleted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="flagDraft" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="flagFlagged" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="flagRead" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
+        <attribute name="flagRecent" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="flagSeen" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="longMessage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longMessageFormatted" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
@@ -81,7 +88,7 @@
         <element name="Attachment" positionX="-45" positionY="135" width="128" height="120"/>
         <element name="Contact" positionX="-54" positionY="90" width="128" height="180"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="180"/>
-        <element name="Message" positionX="-45" positionY="99" width="128" height="330"/>
+        <element name="Message" positionX="-45" positionY="99" width="128" height="435"/>
         <element name="MessageReference" positionX="-45" positionY="135" width="128" height="90"/>
     </elements>
 </model>

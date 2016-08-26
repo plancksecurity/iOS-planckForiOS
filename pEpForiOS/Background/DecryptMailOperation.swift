@@ -23,11 +23,13 @@ public class DecryptMailOperation: BaseOperation {
             let session = PEPSession.init()
 
             let predicateColor = NSPredicate.init(format: "pepColorRating == nil")
-            let predicateBodyFetched = NSPredicate.init(format: "bodyFetched == 1")
+            let predicateBodyFetched = NSPredicate.init(format: "bodyFetched = true")
+            let predicateNotDeleted = NSPredicate.init(format: "flagDeleted = false")
 
             guard let mails = model.entitiesWithName(Message.entityName(),
                 predicate: NSCompoundPredicate.init(
-                    andPredicateWithSubpredicates: [predicateColor, predicateBodyFetched]),
+                    andPredicateWithSubpredicates: [predicateColor, predicateBodyFetched,
+                        predicateNotDeleted]),
                 sortDescriptors: [NSSortDescriptor.init(key: "receivedDate", ascending: true)])
                 else {
                     return

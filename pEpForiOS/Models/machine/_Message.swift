@@ -8,6 +8,13 @@ public enum MessageAttributes: String {
     case bodyFetched = "bodyFetched"
     case boundary = "boundary"
     case contentType = "contentType"
+    case flagAnswered = "flagAnswered"
+    case flagDeleted = "flagDeleted"
+    case flagDraft = "flagDraft"
+    case flagFlagged = "flagFlagged"
+    case flagRead = "flagRead"
+    case flagRecent = "flagRecent"
+    case flagSeen = "flagSeen"
     case longMessage = "longMessage"
     case longMessageFormatted = "longMessageFormatted"
     case messageID = "messageID"
@@ -38,6 +45,20 @@ public enum MessageRelationships: String {
     var boundary: String? { get set }
 
     var contentType: String? { get set }
+
+    var flagAnswered: NSNumber? { get set }
+
+    var flagDeleted: NSNumber? { get set }
+
+    var flagDraft: NSNumber? { get set }
+
+    var flagFlagged: NSNumber? { get set }
+
+    var flagRead: NSNumber? { get set }
+
+    var flagRecent: NSNumber? { get set }
+
+    var flagSeen: NSNumber? { get set }
 
     var longMessage: String? { get set }
 
@@ -108,6 +129,27 @@ public class _Message: BaseManagedObject, _IMessage {
 
     @NSManaged public
     var contentType: String?
+
+    @NSManaged public
+    var flagAnswered: NSNumber?
+
+    @NSManaged public
+    var flagDeleted: NSNumber?
+
+    @NSManaged public
+    var flagDraft: NSNumber?
+
+    @NSManaged public
+    var flagFlagged: NSNumber?
+
+    @NSManaged public
+    var flagRead: NSNumber?
+
+    @NSManaged public
+    var flagRecent: NSNumber?
+
+    @NSManaged public
+    var flagSeen: NSNumber?
 
     @NSManaged public
     var longMessage: String?

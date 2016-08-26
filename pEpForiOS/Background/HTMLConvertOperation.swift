@@ -61,17 +61,16 @@ public class HTMLConvertOperation: BaseOperation {
         context.performBlock() {
             let model = Model.init(context: context)
 
+            let pBasic = model.basicMessagePredicate()
             let predicateHasHTML = NSPredicate.init(
                 format: "longMessageFormatted != nil or longMessageFormatted != %@", "")
             let predicateHasNoLongMessage = NSPredicate.init(
                 format: "longMessage == nil or longMessage == %@", "")
-            let predicateColor = NSPredicate.init(format: "pepColorRating != nil")
-            let predicateBodyFetched = NSPredicate.init(format: "bodyFetched == 1")
 
             guard let mails = model.entitiesWithName(Message.entityName(),
                 predicate: NSCompoundPredicate.init(
-                    andPredicateWithSubpredicates: [predicateHasHTML, predicateHasNoLongMessage,
-                        predicateColor, predicateBodyFetched]),
+                    andPredicateWithSubpredicates: [pBasic, predicateHasHTML,
+                        predicateHasNoLongMessage]),
                 sortDescriptors: [NSSortDescriptor.init(key: "receivedDate", ascending: true)])
                 else {
                     return
