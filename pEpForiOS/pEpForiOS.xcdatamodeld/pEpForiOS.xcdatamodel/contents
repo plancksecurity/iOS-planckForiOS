@@ -54,13 +54,13 @@
         <attribute name="bodyFetched" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="boundary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="contentType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="flagAnswered" attributeType="Boolean" indexed="YES" syncable="YES"/>
-        <attribute name="flagDeleted" attributeType="Boolean" indexed="YES" syncable="YES"/>
-        <attribute name="flagDraft" attributeType="Boolean" indexed="YES" syncable="YES"/>
-        <attribute name="flagFlagged" attributeType="Boolean" indexed="YES" syncable="YES"/>
-        <attribute name="flagRead" attributeType="Boolean" defaultValueString="0" indexed="YES" syncable="YES"/>
-        <attribute name="flagRecent" attributeType="Boolean" indexed="YES" syncable="YES"/>
-        <attribute name="flagSeen" attributeType="Boolean" indexed="YES" syncable="YES"/>
+        <attribute name="flagAnswered" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagDeleted" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagDraft" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagFlagged" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagRead" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagRecent" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagSeen" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="longMessage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longMessageFormatted" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
