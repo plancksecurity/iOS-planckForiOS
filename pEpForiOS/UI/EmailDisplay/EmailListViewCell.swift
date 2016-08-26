@@ -20,12 +20,8 @@ class EmailListViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.None
-        isImportantImage.hidden = true
         isImportantImage.layer.cornerRadius = isImportantImage.frame.size.width / 2
         isImportantImage.clipsToBounds = true
         isImportantImage.layer.borderWidth = 2
-        isImportantImage.layer.borderColor = UIColor(red:255/255.0, green:165/255.0, blue:0/255.0, alpha: 1.0).CGColor
-
     }
-
 }

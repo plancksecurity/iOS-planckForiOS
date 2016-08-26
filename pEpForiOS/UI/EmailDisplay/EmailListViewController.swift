@@ -59,27 +59,12 @@ class EmailListViewController: UITableViewController {
 
     var refreshController: UIRefreshControl!
 
-    func dummyIsReadedMessage (indexPath: NSIndexPath)-> Bool{
-
-        if (indexPath.row < 2) {
-            return true
-        } else if (indexPath.row > 2 || indexPath.row < 4) {
-            return false;
-        }
-        else {
-            return true
-        }
+    func isReadedMessage(message: IMessage)-> Bool {
+        return true
     }
 
-    func dummyIsImportantMessage(indexPath: NSIndexPath)-> Bool {
-        if (indexPath.row < 2) {
-            return false
-        } else if (indexPath.row > 2 || indexPath.row < 4) {
-            return true;
-        }
-        else {
-            return true
-        }
+    func isImportantMessage(message: IMessage)-> Bool {
+        return true
     }
 
     override func viewDidLoad() {
@@ -192,6 +177,7 @@ class EmailListViewController: UITableViewController {
     }
 
     func configureCell(cell: EmailListViewCell, indexPath: NSIndexPath) {
+        cell.isImportantImage.hidden = true
         if let email = fetchController?.objectAtIndexPath(indexPath) as? Message {
             if let colorRating = PEPUtil.colorRatingFromInt(email.pepColorRating?.integerValue) {
                 let privacyColor = PEPUtil.colorFromPepRating(colorRating)
@@ -223,6 +209,15 @@ class EmailListViewController: UITableViewController {
                                    toLabel: cell.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: cell.dateLabel)
+            }
+
+            if (isImportantMessage(email)) {
+                cell.isImportantImage.hidden = false
+                cell.isImportantImage.backgroundColor = UIColor.orangeColor()
+            }
+            if (isReadedMessage(email)) {
+                cell.isImportantImage.hidden = false
+                cell.isImportantImage.backgroundColor = UIColor.blueColor()
             }
         }
     }
@@ -297,47 +292,91 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         tableView.endUpdates()
     }
 
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath
-                  indexPath: NSIndexPath)-> [UITableViewRowAction]? {
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! EmailListViewCell
+    func createIsFlagAction(activeFlag: Bool, cell: EmailListViewCell) -> UITableViewRowAction {
 
+        // preparing the title action to show when user swipe
+        var localizedIsFlagTitle = " "
+        if (activeFlag) {
+            localizedIsFlagTitle = NSLocalizedString("Flag",
+            comment: "Flag button title in swipe action on EmailListViewController")
+        } else {
+            localizedIsFlagTitle = NSLocalizedString("Unflag",
+            comment: "unflag button title in swipe action on EmailListViewController")
+        }
+
+        // preparing action to trigger when user swipe
         let isFlagCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
             { (action, indexPath) in
-                cell.isImportantImage.hidden = false
-                cell.isImportantImage.backgroundColor = UIColor.orangeColor()
+                //cell.isImportantImage.hidden = false
+                //cell.isImportantImage.backgroundColor = UIColor.orangeColor()
+                // TODO: setImportantMessage()
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             }
-        let localizedIsFlagTitle = NSLocalizedString(
-            "Flag",
-            comment: "Flag button title in swipe action on EmailListViewController")
-
+        // creating the action
         let isFlagAction = UITableViewRowAction(style: .Default, title: localizedIsFlagTitle,
-         handler: isFlagCompletionHandler)
+                                                handler: isFlagCompletionHandler)
+        // changing default action color
         isFlagAction.backgroundColor = UIColor.orangeColor()
+
+        return isFlagAction
+    }
+
+    func createDeleteAction (cell: EmailListViewCell) -> UITableViewRowAction {
+
+        // preparing the title action to show when user swipe
+        let localizedDeleteTitle = NSLocalizedString("Erase",
+        comment: "Erase button title in swipe action on EmailListViewController")
 
         let deleteCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
             { (action, indexPath) in
                 let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? Message
                 self.fetchController?.managedObjectContext.deleteObject(managedObject!)
             }
-        let localizedDeleteTitle = NSLocalizedString(
-            "Erase",
-            comment: "Erase button title in swipe action on EmailListViewController")
+
+        // creating the action
         let deleteAction = UITableViewRowAction(style: .Default, title: localizedDeleteTitle,
                                                 handler: deleteCompletionHandler)
 
+        return deleteAction
+    }
+
+    func createIsReadAction (isRead: Bool, cell: EmailListViewCell) -> UITableViewRowAction {
+
+        // preparing the title action to show when user swipe
+        var localizedisReadTitle = " "
+        if (isRead) {
+            localizedisReadTitle = NSLocalizedString("Read",
+            comment: "Read button title in swipe action on EmailListViewController")
+        } else {
+            localizedisReadTitle = NSLocalizedString("Unread",
+            comment: "Unread button title in swipe action on EmailListViewController")
+        }
+
+        // creating the action
         let isReadCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
             { (action, indexPath) in
-                cell.isImportantImage.hidden = false
-                cell.isImportantImage.backgroundColor = UIColor.blueColor()
+                //cell.isImportantImage.hidden = false
+                //cell.isImportantImage.backgroundColor = UIColor.blueColor()
+               // TODO: setReadMessage()
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             }
-        let localizedisReadTitle = NSLocalizedString(
-            "Read",
-            comment: "Read button title in swipe action on EmailListViewController")
         let isReadAction = UITableViewRowAction(style: .Default, title: localizedisReadTitle,
                                                 handler: isReadCompletionHandler)
         isReadAction.backgroundColor = UIColor.blueColor()
+
+        return isReadAction
+    }
+
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath
+                  indexPath: NSIndexPath)-> [UITableViewRowAction]? {
+
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! EmailListViewCell
+        let email = fetchController?.objectAtIndexPath(indexPath) as! Message
+        let isImportant = isImportantMessage(email)
+        let isRead = isReadedMessage(email)
+        let isFlagAction = createIsFlagAction(isImportant, cell: cell)
+        let deleteAction = createDeleteAction(cell)
+        let isReadAction = createIsReadAction(isRead, cell: cell)
         return [deleteAction,isFlagAction,isReadAction]
     }
 }
