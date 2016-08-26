@@ -46,19 +46,19 @@ public enum MessageRelationships: String {
 
     var contentType: String? { get set }
 
-    var flagAnswered: NSNumber? { get set }
+    var flagAnswered: NSNumber { get set }
 
-    var flagDeleted: NSNumber? { get set }
+    var flagDeleted: NSNumber { get set }
 
-    var flagDraft: NSNumber? { get set }
+    var flagDraft: NSNumber { get set }
 
-    var flagFlagged: NSNumber? { get set }
+    var flagFlagged: NSNumber { get set }
 
-    var flagRead: NSNumber? { get set }
+    var flagRead: NSNumber { get set }
 
-    var flagRecent: NSNumber? { get set }
+    var flagRecent: NSNumber { get set }
 
-    var flagSeen: NSNumber? { get set }
+    var flagSeen: NSNumber { get set }
 
     var longMessage: String? { get set }
 
@@ -131,25 +131,25 @@ public class _Message: BaseManagedObject, _IMessage {
     var contentType: String?
 
     @NSManaged public
-    var flagAnswered: NSNumber?
+    var flagAnswered: NSNumber
 
     @NSManaged public
-    var flagDeleted: NSNumber?
+    var flagDeleted: NSNumber
 
     @NSManaged public
-    var flagDraft: NSNumber?
+    var flagDraft: NSNumber
 
     @NSManaged public
-    var flagFlagged: NSNumber?
+    var flagFlagged: NSNumber
 
     @NSManaged public
-    var flagRead: NSNumber?
+    var flagRead: NSNumber
 
     @NSManaged public
-    var flagRecent: NSNumber?
+    var flagRecent: NSNumber
 
     @NSManaged public
-    var flagSeen: NSNumber?
+    var flagSeen: NSNumber
 
     @NSManaged public
     var longMessage: String?

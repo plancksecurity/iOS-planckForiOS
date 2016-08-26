@@ -54,13 +54,13 @@
         <attribute name="bodyFetched" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="boundary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="contentType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="flagAnswered" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="flagDeleted" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="flagDraft" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="flagFlagged" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="flagRead" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
-        <attribute name="flagRecent" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="flagSeen" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="flagAnswered" attributeType="Boolean" indexed="YES" syncable="YES"/>
+        <attribute name="flagDeleted" attributeType="Boolean" indexed="YES" syncable="YES"/>
+        <attribute name="flagDraft" attributeType="Boolean" indexed="YES" syncable="YES"/>
+        <attribute name="flagFlagged" attributeType="Boolean" indexed="YES" syncable="YES"/>
+        <attribute name="flagRead" attributeType="Boolean" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="flagRecent" attributeType="Boolean" indexed="YES" syncable="YES"/>
+        <attribute name="flagSeen" attributeType="Boolean" indexed="YES" syncable="YES"/>
         <attribute name="longMessage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longMessageFormatted" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
