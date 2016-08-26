@@ -390,6 +390,13 @@ public class PEPUtil {
     }
 
     /**
+     Converts a given `IMessage` into the equivalent `CWIMAPMessage`.
+     */
+    public static func pantomimeMailFromMessage(message: IMessage) -> CWIMAPMessage {
+        return pantomimeMailFromPep(pepMail(message))
+    }
+
+    /**
      Converts a given `PEPMail` into the equivalent `CWIMAPMessage`.
      See https://tools.ietf.org/html/rfc2822 for a better understanding of some fields.
      */

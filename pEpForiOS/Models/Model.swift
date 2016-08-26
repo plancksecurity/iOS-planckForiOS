@@ -47,6 +47,11 @@ public protocol IModel {
      */
     func folderByType(type: FolderType, email: String) -> IFolder?
 
+    /**
+     - Returns: The folder of the given type, if any.
+     */
+    func folderByType(type: FolderType, account: IAccount) -> IFolder?
+
     func accountByEmail(email: String) -> IAccount?
     func accountsByPredicate(predicate: NSPredicate?,
                              sortDescriptors: [NSSortDescriptor]?) -> [IAccount]?
@@ -539,6 +544,10 @@ public class Model: IModel {
         return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
     }
 
+    public func folderByType(type: FolderType, account: IAccount) -> IFolder? {
+        return folderByType(type, email: account.email)
+    }
+
     public func insertOrUpdateContactEmail(email: String, name: String?) -> IContact {
         let fetch = NSFetchRequest.init(entityName:Contact.entityName())
         fetch.predicate = NSPredicate.init(format: "email == %@", email)
@@ -608,9 +617,11 @@ public class Model: IModel {
     }
 
     /**
-     Inserts or updates a pantomime message into the data store with only the bare minimum of data.
-     - Returns: A tuple consisting of the message inserted and a Bool denoting whether this
-     message was just inserted (true) or an existing message was found (false).
+     Inserts or updates a pantomime message into the data store with only the bare minimum
+     of data.
+     - Returns: A tuple consisting of the message inserted and a Bool denoting
+     whether this message was just inserted (true)
+     or an existing message was found (false).
      */
     public func quickInsertOrUpdatePantomimeMail(message: CWIMAPMessage,
                                                  accountEmail: String) -> (IMessage?, Bool) {

@@ -142,7 +142,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         privateMOC.performBlockAndWait({
             msg = self.model.messageByPredicate(p, sortDescriptors: nil)
         })
-        return msg?.imapMessageWithFolder(self)
+        return msg?.pantomimeMessageWithFolder(self)
     }
 
     override func count() -> UInt {
@@ -176,7 +176,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolderName])
 
             if let msg = self.model.messageByPredicate(p, sortDescriptors: nil) {
-                result = msg.imapMessageWithFolder(self)
+                result = msg.pantomimeMessageWithFolder(self)
             } else {
                 result = nil
             }

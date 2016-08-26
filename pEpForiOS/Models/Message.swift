@@ -36,10 +36,10 @@ public extension IMessage {
 
     /**
      Convert the `Message` into an `CWIMAPMessage`, belonging to the given folder.
-     - Note: This does not handle attachments and many other fields. It's just for quickly
-     interfacing with Pantomime.
+     - Note: This does not handle attachments and many other fields.
+     *It's just for quickly interfacing with Pantomime.*
      */
-    func imapMessageWithFolder(folder: CWIMAPFolder) -> CWIMAPMessage {
+    func pantomimeMessageWithFolder(folder: CWIMAPFolder) -> CWIMAPMessage {
         let msg = CWIMAPMessage.init()
 
         if let date = receivedDate {
