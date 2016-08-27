@@ -27,6 +27,7 @@ public protocol ImapSyncDelegate: class {
     func folderStatusCompleted(sync: ImapSync, notification: NSNotification?)
     func folderListCompleted(sync: ImapSync, notification: NSNotification?)
     func folderNameParsed(sync: ImapSync, notification: NSNotification?)
+    func folderAppendCompleted(sync: ImapSync, notification: NSNotification?)
 
     /** General error indicator */
     func actionFailed(sync: ImapSync, error: NSError)
@@ -51,8 +52,10 @@ public class DefaultImapSyncDelegate: ImapSyncDelegate {
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?)  {}
     public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {}
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {}
-    public func actionFailed(sync: ImapSync, error: NSError) {}
     public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {}
+    public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {}
+
+    public func actionFailed(sync: ImapSync, error: NSError) {}
 }
 
 public enum ImapError: Int {
@@ -292,5 +295,10 @@ extension ImapSync: PantomimeFolderDelegate {
     @objc public func folderNameParsed(notification: NSNotification?) {
         dumpMethodName("folderNameParsed", notification: notification)
         delegate?.folderNameParsed(self, notification: notification)
+    }
+
+    @objc public func folderAppendCompleted(notification: NSNotification?) {
+        dumpMethodName("folderAppendCompleted", notification: notification)
+        delegate?.folderAppendCompleted(self, notification: notification)
     }
 }

@@ -194,7 +194,8 @@ public class GrandOperator: IGrandOperator {
     public func fetchFolders(connectInfo: ConnectInfo,
                              completionBlock: GrandOperatorCompletionBlock?) {
         let op = FetchFoldersOperation.init(
-            grandOperator: self, connectInfo: connectInfo, onlyUpdateIfNecessary: false)
+            connectInfo: connectInfo, coreDataUtil: coreDataUtil,
+            connectionManager: connectionManager, onlyUpdateIfNecessary: false)
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
@@ -209,7 +210,8 @@ public class GrandOperator: IGrandOperator {
                 coreDataUtil: coreDataUtil,
                 accountEmail: connectInfo.email))
             operations.append(FetchFoldersOperation.init(
-                grandOperator: self, connectInfo: connectInfo, onlyUpdateIfNecessary: true))
+                connectInfo: connectInfo, coreDataUtil: coreDataUtil,
+                connectionManager: connectionManager, onlyUpdateIfNecessary: true))
 
             let fetchOp = PrefetchEmailsOperation.init(
                 grandOperator: self, connectInfo: connectInfo,

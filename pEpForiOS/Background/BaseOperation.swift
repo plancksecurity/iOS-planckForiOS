@@ -18,4 +18,8 @@ public class BaseOperation: NSOperation {
     public func addError(error: NSError) {
         errors.append(error)
     }
+
+    public func hasErrors() -> Bool {
+        return !errors.isEmpty
+    }
 }

@@ -68,8 +68,10 @@ class SimpleOperationsTest: XCTestCase {
     func testFetchFoldersOperation() {
         let foldersFetched = expectationWithDescription("foldersFetched")
 
-        let op = FetchFoldersOperation.init(grandOperator: persistentSetup.grandOperator,
-                                            connectInfo: connectInfo)
+        let op = FetchFoldersOperation.init(
+            connectInfo: connectInfo,
+            coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
+            connectionManager: persistentSetup.grandOperator.connectionManager)
         op.completionBlock = {
             foldersFetched.fulfill()
         }
@@ -77,17 +79,20 @@ class SimpleOperationsTest: XCTestCase {
         op.start()
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertGreaterThanOrEqual(
-                self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(
-                    NSPredicate.init(value: true)), 1)
-            XCTAssertEqual(self.persistentSetup.grandOperator.operationModel().folderByName(
-                ImapSync.defaultImapInboxName,
-                email: self.connectInfo.email)?.name.lowercaseString,
-                ImapSync.defaultImapInboxName.lowercaseString)
         })
+
+        XCTAssertGreaterThanOrEqual(
+            self.persistentSetup.model.folderCountByPredicate(
+                NSPredicate.init(value: true)), 1)
+        XCTAssertEqual(self.persistentSetup.model.folderByName(
+            ImapSync.defaultImapInboxName,
+            email: self.connectInfo.email)?.name.lowercaseString,
+                       ImapSync.defaultImapInboxName.lowercaseString)
+        XCTAssertNotNil(persistentSetup.model.folderByType(
+            .Sent, account: persistentSetup.account))
     }
 
-    func testStoreSingleMail() {
+    func testStorePrefetchedMailOperation() {
         persistentSetup.grandOperator.operationModel().insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderSeparator: nil,
             accountEmail: connectInfo.email)
@@ -165,11 +170,10 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testCreateLocalSpecialFoldersOperation() {
-        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
         let expFoldersStored = expectationWithDescription("expFoldersStored")
         let op = CreateLocalSpecialFoldersOperation.init(
             coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
-            accountEmail: account.email)
+            accountEmail: connectInfo.email)
         let queue = NSOperationQueue.init()
         op.completionBlock = {
             expFoldersStored.fulfill()
@@ -184,58 +188,59 @@ class SimpleOperationsTest: XCTestCase {
             }
             XCTAssertEqual(folders.count, FolderType.allValuesToCreate.count)
             let outbox = self.persistentSetup.model.folderByType(
-                FolderType.LocalOutbox, email: account.email)
+                FolderType.LocalOutbox, email: self.connectInfo.email)
             XCTAssertNotNil(outbox, "Expected outbox to exist")
         })
     }
 
-    func createBasicMail() -> (NSOperationQueue, IAccount, IModel, IMessage,
+    func createBasicMail() -> (
+        NSOperationQueue, IAccount, IModel, IMessage,
         (identity: NSMutableDictionary, receiver1: PEPContact,
         receiver2: PEPContact, receiver3: PEPContact,
         receiver4: PEPContact))? {
-        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
-        let model = persistentSetup.model
-        let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation.init(
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
-            accountEmail: account.email)
-        let expFoldersStored = expectationWithDescription("expFoldersStored")
-        opCreateSpecialFolders.completionBlock = {
-            expFoldersStored.fulfill()
-        }
+            let model = persistentSetup.model
+            let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation.init(
+                coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
+                accountEmail: connectInfo.email)
+            let expFoldersStored = expectationWithDescription("expFoldersStored")
+            opCreateSpecialFolders.completionBlock = {
+                expFoldersStored.fulfill()
+            }
 
-        let queue = NSOperationQueue.init()
-        queue.addOperation(opCreateSpecialFolders)
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
+            let queue = NSOperationQueue.init()
+            queue.addOperation(opCreateSpecialFolders)
+            waitForExpectationsWithTimeout(waitTime, handler: { error in
+                XCTAssertNil(error)
+            })
 
-        guard let outboxFolder = model.folderByType(
-            FolderType.LocalOutbox, email: account.email) else {
-            XCTAssertTrue(false, "Expected outbox to exist")
-            return nil
-        }
-        guard let message = model.insertNewMessageForSendingFromAccountEmail(account.email) else {
-            XCTAssertTrue(false, "Expected message to be created")
-            return nil
-        }
-        XCTAssertNotNil(message.from)
-        XCTAssertNotNil(message.folder)
+            guard let outboxFolder = model.folderByType(
+                FolderType.LocalOutbox, email: connectInfo.email) else {
+                    XCTAssertTrue(false, "Expected outbox to exist")
+                    return nil
+            }
+            guard let message = model.insertNewMessageForSendingFromAccountEmail(
+                connectInfo.email) else {
+                    XCTAssertTrue(false, "Expected message to be created")
+                    return nil
+            }
+            XCTAssertNotNil(message.from)
+            XCTAssertNotNil(message.folder)
 
-        let session = PEPSession.init()
+            let session = PEPSession.init()
 
-        let (identity, receiver1, receiver2, receiver3, receiver4) =
-            TestUtil.setupSomeIdentities(session)
-        session.mySelf(identity)
-        XCTAssertNotNil(identity[kPepFingerprint])
+            let (identity, receiver1, receiver2, receiver3, receiver4) =
+                TestUtil.setupSomeIdentities(session)
+            session.mySelf(identity)
+            XCTAssertNotNil(identity[kPepFingerprint])
 
-        // Import public key for receiver4
-        TestUtil.importKeyByFileName(
-            session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
+            // Import public key for receiver4
+            TestUtil.importKeyByFileName(
+                session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
 
-        message.folder = outboxFolder as! Folder
+            message.folder = outboxFolder as! Folder
 
-        return (queue, account, model, message,
-                (identity, receiver1, receiver2, receiver3, receiver4))
+            return (queue, persistentSetup.account, model, message,
+                    (identity, receiver1, receiver2, receiver3, receiver4))
     }
 
     func testEncryptMailOperation() {
@@ -370,14 +375,14 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSendMailOperation() {
-        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
         let encryptionData = EncryptionData.init(
             connectionManager: persistentSetup.connectionManager,
             coreDataUtil: persistentSetup.coreDataUtil,
-            coreDataMessageID: (account as! Account).objectID, // fake, but not needed for the test
-            accountEmail: account.email, outgoing: true)
+            // fake, but not needed for the test
+            coreDataMessageID: (persistentSetup.account as! Account).objectID,
+            accountEmail: persistentSetup.account.email, outgoing: true)
 
-        let from = PEPUtil.identityFromAccount(account, isMyself: true)
+        let from = PEPUtil.identityFromAccount(persistentSetup.account, isMyself: true)
         let contact = NSMutableDictionary()
         contact[kPepUsername] = "Unit 001"
         contact[kPepAddress] = "unittest.ios.1@peptest.ch"
@@ -426,11 +431,9 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testFolderModelOperationEmpty() {
-        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
-
         let expFoldersLoaded = expectationWithDescription("foldersLoaded")
         let op = FolderModelOperation.init(
-            account: account, coreDataUtil: persistentSetup.coreDataUtil)
+            account: persistentSetup.account, coreDataUtil: persistentSetup.coreDataUtil)
         op.completionBlock = {
             expFoldersLoaded.fulfill()
         }
@@ -448,13 +451,11 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testFolderModelOperation() {
-        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
-
         let separator = "."
         let children = NSMutableOrderedSet()
         guard let parentFolder = persistentSetup.model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderSeparator: separator,
-            accountEmail: account.email) else {
+            accountEmail: persistentSetup.account.email) else {
                 XCTAssertTrue(false)
                 return
         }
@@ -469,7 +470,8 @@ class SimpleOperationsTest: XCTestCase {
                            draftsFolderName, junkFolderName]
         for name in folderNames {
             if  let subFolder = persistentSetup.model.insertOrUpdateFolderName(
-                name, folderSeparator: separator, accountEmail: account.email) {
+                name, folderSeparator: separator,
+                accountEmail: persistentSetup.account.email) {
                 subFolder.parent = parentFolder as? Folder
                 children.addObject(subFolder)
             } else {
@@ -479,7 +481,7 @@ class SimpleOperationsTest: XCTestCase {
         parentFolder.children = children
         let expFoldersLoaded = expectationWithDescription("foldersLoaded")
         let op = FolderModelOperation.init(
-            account: account, coreDataUtil: persistentSetup.coreDataUtil)
+            account: persistentSetup.account, coreDataUtil: persistentSetup.coreDataUtil)
         op.completionBlock = {
             expFoldersLoaded.fulfill()
         }
@@ -508,6 +510,48 @@ class SimpleOperationsTest: XCTestCase {
 
             XCTAssertEqual(op.folderItems[4].name, junkFolderName)
             XCTAssertEqual(op.folderItems[4].level, 1)
+        })
+    }
+
+    func testAppendMessageOperation() {
+        // Fetch remote folders first
+        testFetchFoldersOperation()
+
+        let c1 = persistentSetup.model.insertOrUpdateContactEmail(
+            "some@some.com", name: "Whatever")
+        c1.addressBookID = 1
+
+        let c2 = persistentSetup.model.insertOrUpdateContactEmail(
+            "some@some2.com", name: "Whatever2")
+        c2.addressBookID = 2
+
+        let message = persistentSetup.model.insertNewMessage() as! Message
+        message.subject = "Some subject"
+        message.longMessage = "Long message"
+        message.longMessageFormatted = "<h1>Long HTML</h1>"
+
+        message.addToObject(c1 as! Contact)
+        message.addCcObject(c2 as! Contact)
+
+        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
+        let sentFolder = persistentSetup.model.folderByType(.Sent, account: account)
+            as! Folder
+
+        let op = AppendMessageOperation.init(
+            message: message, account: persistentSetup.account,
+            targetFolder: sentFolder,
+            connectionManager: persistentSetup.connectionManager,
+            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
+
+        let messageAppended = expectationWithDescription("messageAppended")
+        op.completionBlock = {
+            messageAppended.fulfill()
+        }
+
+        op.start()
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
         })
     }
 }

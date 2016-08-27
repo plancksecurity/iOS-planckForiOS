@@ -6,8 +6,18 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+/**
+ This is the base for concurrent `NSOperation`s, that is operations
+ that handle asynchronicity themselves, and are typically not finished when `main()` ends.
+ Instead, they spawn their own threads or use other forms of asynchronicity.
+ */
 public class ConcurrentBaseOperation: BaseOperation {
+    /**
+     If you need to spawn child operations (that is, subtasks that should be waited upon),
+     schedule them on this queue.
+     */
     let backgroundQueue = NSOperationQueue.init()
+
     var myFinished: Bool = false
 
     public override var executing: Bool {
@@ -22,6 +32,11 @@ public class ConcurrentBaseOperation: BaseOperation {
         return myFinished && backgroundQueue.operationCount == 0
     }
 
+    /**
+     If you scheduled operations on `backgroundQueue`, use this to 'wait' for them
+     to finish and then signal `finished`.
+     Although this method has 'wait' in the name, it certainly does not block.
+     */
     func waitForFinished() {
         if backgroundQueue.operationCount == 0 {
             markAsFinished()
@@ -47,6 +62,10 @@ public class ConcurrentBaseOperation: BaseOperation {
         }
     }
 
+    /**
+     Use this if you didn't schedule any operations on `backgroundQueue` and want
+     to signal the end of this operation.
+     */
     func markAsFinished() {
         willChangeValueForKey("isFinished")
         myFinished = true

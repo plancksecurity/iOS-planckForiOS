@@ -22,6 +22,7 @@ class PersistentSetup {
     var accountEmail: String {
         return connectionInfo.email
     }
+    let account: IAccount
 
     /**
      Sets up persistence with an in-memory core data backend.
@@ -35,8 +36,7 @@ class PersistentSetup {
                                                backgroundQueue: backgroundQueue)
 
         model = Model.init(context: coreDataUtil.managedObjectContext)
-        let account = model.insertAccountFromConnectInfo(connectionInfo)
-        XCTAssertNotNil(account)
+        account = model.insertAccountFromConnectInfo(connectionInfo)
     }
 
     deinit {

@@ -57,7 +57,7 @@ public enum AuthMethod: String {
 /**
  Holds connection info (like server, port etc.) for IMAP and SMTP.
  */
-public protocol IConnectInfo {
+public protocol IConnectInfo: Hashable {
     var email: String { get }
     var imapUsername: String? { get }
     var smtpUsername: String? { get }

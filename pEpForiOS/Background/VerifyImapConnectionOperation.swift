@@ -66,29 +66,23 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
         }
     }
 
-    public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-    }
+    public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {}
 
-    public func messageChanged(sync: ImapSync, notification: NSNotification?) {
-    }
+    public func messageChanged(sync: ImapSync, notification: NSNotification?) {}
 
-    public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-    }
+    public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {}
 
-    public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
-    }
+    public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {}
 
-    public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
-    }
+    public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {}
 
-    public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
-    }
+    public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {}
 
-    public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
-    }
+    public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {}
 
-    public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {
-    }
+    public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {}
+
+    public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {}
 
     public func actionFailed(sync: ImapSync, error: NSError) {
         if !isFinishing {

@@ -53,12 +53,12 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo,
-                onlyUpdateIfNecessary: Bool) {
+    public init(connectInfo: ConnectInfo, coreDataUtil: ICoreDataUtil,
+                connectionManager: ConnectionManager, onlyUpdateIfNecessary: Bool) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.connectInfo = connectInfo
-        coreDataUtil = grandOperator.coreDataUtil
-        self.connectionManager = grandOperator.connectionManager
+        self.coreDataUtil = coreDataUtil
+        self.connectionManager = connectionManager
 
         super.init()
 
@@ -67,9 +67,10 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
                                                backgroundQueue: backgroundQueue)
     }
 
-    convenience public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
-        self.init(grandOperator: grandOperator,
-                  connectInfo: connectInfo, onlyUpdateIfNecessary: false)
+    convenience public init(connectInfo: ConnectInfo, coreDataUtil: ICoreDataUtil,
+                            connectionManager: ConnectionManager) {
+        self.init(connectInfo: connectInfo, coreDataUtil: coreDataUtil,
+                  connectionManager: connectionManager, onlyUpdateIfNecessary: false)
     }
 
     public override func main() {
@@ -189,6 +190,8 @@ extension FetchFoldersOperation: ImapSyncDelegate {
             email: self.connectInfo.email)
         backgroundQueue.addOperation(op)
     }
+
+    public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {}
 
     public func actionFailed(sync: ImapSync, error: NSError) {
         addError(error)

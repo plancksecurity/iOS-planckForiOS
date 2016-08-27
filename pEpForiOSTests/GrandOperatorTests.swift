@@ -51,9 +51,10 @@ class GrandOperatorTests: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             let p = NSPredicate.init(value: true)
+            let model = self.persistentSetup.grandOperator.operationModel()
             XCTAssertGreaterThan(
-                self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(p), 0)
-            XCTAssertEqual(self.persistentSetup.grandOperator.operationModel().folderByName(
+                model.folderCountByPredicate(p), 0)
+            XCTAssertEqual(model.folderByName(
                 ImapSync.defaultImapInboxName, email: self.correct.email)?.name.lowercaseString,
                 ImapSync.defaultImapInboxName.lowercaseString)
         })
@@ -79,8 +80,10 @@ class GrandOperatorTests: XCTestCase {
         let op1 = CreateLocalSpecialFoldersOperation.init(
             coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
             accountEmail: account.email)
-        let op2 = FetchFoldersOperation.init(grandOperator: persistentSetup.grandOperator,
-                                             connectInfo: persistentSetup.connectionInfo)
+        let op2 = FetchFoldersOperation.init(
+            connectInfo: persistentSetup.connectionInfo,
+            coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
+            connectionManager: persistentSetup.grandOperator.connectionManager)
         let expFoldersFetched = expectationWithDescription("expFoldersFetched")
         persistentSetup.grandOperator.chainOperations(
             [op1, op2],
