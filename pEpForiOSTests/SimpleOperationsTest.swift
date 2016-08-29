@@ -538,7 +538,7 @@ class SimpleOperationsTest: XCTestCase {
         let sentFolder = persistentSetup.model.folderByType(.Sent, account: account)
             as! Folder
 
-        let op = AppendMessageOperation.init(
+        let op = AppendSingleMessageOperation.init(
             message: message, account: persistentSetup.account,
             targetFolder: sentFolder,
             connectionManager: persistentSetup.connectionManager,

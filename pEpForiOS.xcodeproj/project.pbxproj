@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */; };
 		4303DAE71CE62D2600D9C0AB /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAE51CE62D2600D9C0AB /* Attachment.swift */; };
 		4303DAED1CE62D3700D9C0AB /* _Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAEB1CE62D3700D9C0AB /* _Attachment.swift */; };
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
@@ -109,7 +110,7 @@
 		43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */; };
 		43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */; };
 		43E42FF71D7096E400164CB1 /* DeleteMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */; };
-		43E430191D70AC8900164CB1 /* AppendMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E430181D70AC8900164CB1 /* AppendMessageOperation.swift */; };
+		43E430191D70AC8900164CB1 /* AppendSingleMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */; };
 		43E58EB81CBF8301008AA7A7 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB31CBF8301008AA7A7 /* Account.swift */; };
 		43E58EB91CBF8301008AA7A7 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB41CBF8301008AA7A7 /* Folder.swift */; };
 		43E58EBA1CBF8301008AA7A7 /* _Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EB61CBF8301008AA7A7 /* _Account.swift */; };
@@ -204,6 +205,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveSentMessageOperation.swift; path = ../SaveSentMessageOperation.swift; sourceTree = "<group>"; };
 		4303DAE51CE62D2600D9C0AB /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		4303DAEB1CE62D3700D9C0AB /* _Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Attachment.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpTrustWords.bundle; sourceTree = "<group>"; };
@@ -324,7 +326,7 @@
 		43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLocalSpecialFoldersOperation.swift; sourceTree = "<group>"; };
 		43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPMyselfOperation.swift; sourceTree = "<group>"; };
 		43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteMessageOperation.swift; sourceTree = "<group>"; };
-		43E430181D70AC8900164CB1 /* AppendMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendMessageOperation.swift; sourceTree = "<group>"; };
+		43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendSingleMessageOperation.swift; sourceTree = "<group>"; };
 		43E58EB31CBF8301008AA7A7 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		43E58EB41CBF8301008AA7A7 /* Folder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		43E58EB61CBF8301008AA7A7 /* _Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Account.swift; sourceTree = "<group>"; };
@@ -413,7 +415,7 @@
 				4339477A1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift */,
 				43D8C5B71D6C611F005DC51F /* FolderModelOperation.swift */,
 				43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */,
-				43E430181D70AC8900164CB1 /* AppendMessageOperation.swift */,
+				43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -484,6 +486,7 @@
 				4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */,
 				4380F7C41D1BBD5D00326F62 /* SendMailOperation.swift */,
 				4380F7C81D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift */,
+				430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */,
 			);
 			path = EncryptAndSend;
 			sourceTree = "<group>";
@@ -993,13 +996,14 @@
 				43E58EBB1CBF8301008AA7A7 /* _Folder.swift in Sources */,
 				431AE5D51D2EC0C000F609D3 /* ComposeViewController.swift in Sources */,
 				431144C11CC1202E0007639D /* _Message.swift in Sources */,
+				430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */,
 				436F8E1B1D369B3F007E9829 /* EmailTextField.swift in Sources */,
 				43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */,
 				43ED53721CC77F95006AB156 /* Mail.swift in Sources */,
 				4367E26F1CD7360000B05F83 /* Model.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				439C4D411CD27B0E0099A27F /* VerifyImapConnectionOperation.swift in Sources */,
-				43E430191D70AC8900164CB1 /* AppendMessageOperation.swift in Sources */,
+				43E430191D70AC8900164CB1 /* AppendSingleMessageOperation.swift in Sources */,
 				43A0E73D1D16C99900159F41 /* NSArray+PureLayout.m in Sources */,
 				431144BD1CC120220007639D /* Message.swift in Sources */,
 				4303DAED1CE62D3700D9C0AB /* _Attachment.swift in Sources */,

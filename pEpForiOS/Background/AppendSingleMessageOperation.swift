@@ -1,5 +1,5 @@
 //
-//  AppendMessageOperation.swift
+//  AppendSingleMessageOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 26/08/16.
@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-public class AppendMessageOperation: ConcurrentBaseOperation {
+public class AppendSingleMessageOperation: ConcurrentBaseOperation {
     let comp = "ConcurrentBaseOperation"
 
     let messageID: NSManagedObjectID
@@ -59,7 +59,7 @@ public class AppendMessageOperation: ConcurrentBaseOperation {
     }
 }
 
-extension AppendMessageOperation: ImapSyncDelegate {
+extension AppendSingleMessageOperation: ImapSyncDelegate {
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
             let folder = CWIMAPFolder.init(name: targetFolderName)
