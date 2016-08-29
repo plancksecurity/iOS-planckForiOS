@@ -57,7 +57,6 @@
 		4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */; };
 		4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */; };
 		4380F7C71D1BBD5D00326F62 /* SendMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C41D1BBD5D00326F62 /* SendMailOperation.swift */; };
-		4380F7C91D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C81D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift */; };
 		4380F7CB1D1BD8FE00326F62 /* PEPUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7CA1D1BD8FE00326F62 /* PEPUtilTests.swift */; };
 		4380F7CD1D1BDB1600326F62 /* PersistentSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7CC1D1BDB1600326F62 /* PersistentSetup.swift */; };
 		4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7DA1D1BFB3100326F62 /* KeyboardObserver.m */; };
@@ -258,7 +257,6 @@
 		4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionData.swift; sourceTree = "<group>"; };
 		4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptMailOperation.swift; sourceTree = "<group>"; };
 		4380F7C41D1BBD5D00326F62 /* SendMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMailOperation.swift; sourceTree = "<group>"; };
-		4380F7C81D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistEmailToIMAPOperation.swift; sourceTree = "<group>"; };
 		4380F7CA1D1BD8FE00326F62 /* PEPUtilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtilTests.swift; sourceTree = "<group>"; };
 		4380F7CC1D1BDB1600326F62 /* PersistentSetup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentSetup.swift; sourceTree = "<group>"; };
 		4380F7D91D1BFB3100326F62 /* KeyboardObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardObserver.h; sourceTree = "<group>"; };
@@ -485,7 +483,6 @@
 				4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */,
 				4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */,
 				4380F7C41D1BBD5D00326F62 /* SendMailOperation.swift */,
-				4380F7C81D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift */,
 				430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */,
 			);
 			path = EncryptAndSend;
@@ -944,7 +941,6 @@
 				4380F7C71D1BBD5D00326F62 /* SendMailOperation.swift in Sources */,
 				4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */,
 				A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */,
-				4380F7C91D1BBD9D00326F62 /* PersistEmailToIMAPOperation.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */,
 				43C6F3611CBE8153006A2A18 /* Service.swift in Sources */,
 				439864481D6C486200D0FDE1 /* FolderListViewController.swift in Sources */,
