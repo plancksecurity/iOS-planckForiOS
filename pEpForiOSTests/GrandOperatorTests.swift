@@ -14,7 +14,7 @@ import pEpForiOS
 class GrandOperatorTests: XCTestCase {
     let comp = "GrandOperatorTests"
 
-    let waitTime: NSTimeInterval = 10
+    let waitTime: NSTimeInterval = 1000
 
     let correct = TestData.connectInfo
     var persistentSetup: PersistentSetup!
@@ -110,6 +110,8 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testSendMail() {
+        testFetchFolders()
+
         let account = persistentSetup.model.insertAccountFromConnectInfo(TestData.connectInfo)
             as? Account
         XCTAssertNotNil(account)

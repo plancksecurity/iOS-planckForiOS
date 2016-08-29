@@ -52,6 +52,12 @@ public class EncryptionData {
     public var mailsToSend: [PEPMail] = []
 
     /**
+     After encryption, the original mail will be stored here, in encrypted form.
+     This is the message that should be stored then in the sent folder.
+     */
+    public var mailEncryptedForSelf: PEPMail?
+
+    /**
      After the `SendMailOperation` has done its job, all sent mails should be noted here.
      */
     public var mailsSent: [PEPMail] = []

@@ -61,6 +61,7 @@ public class Constants {
         case CannotStoreMail
         case CouldNotUpdateOrAddContact
         case CouldNotStoreFolder
+        case CannotFindAccountForEmail
     }
 
     public enum SmtpErrorCode: Int {
@@ -80,6 +81,13 @@ public class Constants {
      */
     public enum InternalErrorCode: Int {
         case NoModel = 5000
+    }
+
+    /**
+     Errors dealing with the pEp engine.
+     */
+    public enum PepErrorCode: Int {
+        case EncryptionError = 6000
     }
 
     static func errorNotImplemented(component: String) -> NSError {
@@ -173,6 +181,18 @@ public class Constants {
         return error
     }
 
+    static func errorCannotFindAccountForEmail(
+        component: String, email: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.CannotFindAccountForEmail.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                String.init(format: NSLocalizedString(
+                    "Cannot find account for email: %@", comment:
+                    "Error description when not being able to fetch account by email"),
+                    email)])
+        return error
+    }
+
     static func errorTimeout(component: String) -> NSError {
         let error = NSError.init(
             domain: component, code: NetworkError.Timeout.rawValue,
@@ -224,7 +244,17 @@ public class Constants {
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format:
                     NSLocalizedString("SMTP Error (%d)", comment: ""),
-                    code.rawValue) ])
+                    code.rawValue)])
+        return error
+    }
+
+    static func errorEncryption(component: String, status: PEP_STATUS) -> NSError {
+        let error = NSError.init(
+            domain: component, code: PepErrorCode.EncryptionError.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
+                "Could not encrypt message, pEp status: %d",
+                comment: "Error message when the engine failed to encrypt a message."),
+                status.rawValue)])
         return error
     }
 }

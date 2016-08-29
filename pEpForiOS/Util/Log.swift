@@ -31,6 +31,10 @@ import Foundation
         print("\(component): Error: \(error)")
     }
 
+    static public func errorComponent(component: String, errorString: String) {
+        print("\(component): \(errorString)")
+    }
+
     @objc public func infoComponent(component: String!, message: String!) {
         Log.infoComponent(component, message)
     }

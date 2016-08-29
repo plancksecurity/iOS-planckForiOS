@@ -29,7 +29,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testVerifyConnection() {
-        let expCompleted = expectationWithDescription("completed")
+        let expCompleted = expectationWithDescription("expCompleted")
         let op = VerifyImapConnectionOperation.init(grandOperator: persistentSetup.grandOperator,
                                                     connectInfo: persistentSetup.connectionInfo)
         op.completionBlock = {
@@ -44,13 +44,13 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testPrefetchMailsOperation() {
-        let mailsPrefetched = expectationWithDescription("mailsPrefetched")
+        let expMailsPrefetched = expectationWithDescription("expMailsPrefetched")
 
         let op = PrefetchEmailsOperation.init(grandOperator: persistentSetup.grandOperator,
                                               connectInfo: connectInfo,
                                               folder: ImapSync.defaultImapInboxName)
         op.completionBlock = {
-            mailsPrefetched.fulfill()
+            expMailsPrefetched.fulfill()
         }
 
         op.start()
@@ -67,14 +67,14 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testFetchFoldersOperation() {
-        let foldersFetched = expectationWithDescription("foldersFetched")
+        let expFoldersFetched = expectationWithDescription("expFoldersFetched")
 
         let op = FetchFoldersOperation.init(
             connectInfo: connectInfo,
             coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
             connectionManager: persistentSetup.grandOperator.connectionManager)
         op.completionBlock = {
-            foldersFetched.fulfill()
+            expFoldersFetched.fulfill()
         }
 
         op.start()
@@ -104,12 +104,12 @@ class SimpleOperationsTest: XCTestCase {
         message.setFrom(CWInternetAddress.init(personal: "personal", address: "somemail@test.com"))
         message.setFolder(folder)
 
-        let exp = expectationWithDescription("stored")
+        let expStored = expectationWithDescription("expStored")
         let op = StorePrefetchedMailOperation.init(
             coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
             accountEmail: connectInfo.email, message: message)
         op.completionBlock = {
-            exp.fulfill()
+            expStored.fulfill()
         }
         let backgroundQueue = NSOperationQueue.init()
         backgroundQueue.addOperation(op)
@@ -130,7 +130,7 @@ class SimpleOperationsTest: XCTestCase {
             accountEmail: connectInfo.email)
         persistentSetup.model.save()
 
-        let exp = expectationWithDescription("exp")
+        let expMailsStored = expectationWithDescription("expMailsStored")
         var operations: Set<NSOperation> = []
         let backgroundQueue = NSOperationQueue.init()
         var fulfilled = false
@@ -152,7 +152,7 @@ class SimpleOperationsTest: XCTestCase {
                 XCTAssertEqual(op.errors.count, 0)
                 if backgroundQueue.operationCount == 0 && !fulfilled {
                     fulfilled = true
-                    exp.fulfill()
+                    expMailsStored.fulfill()
                 }
             }
             backgroundQueue.addOperation(op)
@@ -432,7 +432,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testFolderModelOperationEmpty() {
-        let expFoldersLoaded = expectationWithDescription("foldersLoaded")
+        let expFoldersLoaded = expectationWithDescription("expFoldersLoaded")
         let op = FolderModelOperation.init(
             account: persistentSetup.account, coreDataUtil: persistentSetup.coreDataUtil)
         op.completionBlock = {
@@ -480,7 +480,7 @@ class SimpleOperationsTest: XCTestCase {
             }
         }
         parentFolder.children = children
-        let expFoldersLoaded = expectationWithDescription("foldersLoaded")
+        let expFoldersLoaded = expectationWithDescription("expFoldersLoaded")
         let op = FolderModelOperation.init(
             account: persistentSetup.account, coreDataUtil: persistentSetup.coreDataUtil)
         op.completionBlock = {
@@ -535,18 +535,18 @@ class SimpleOperationsTest: XCTestCase {
         message.addCcObject(c2 as! Contact)
 
         let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
-        let sentFolder = persistentSetup.model.folderByType(.Sent, account: account)
+        let targetFolder = persistentSetup.model.folderByType(.Drafts, account: account)
             as! Folder
 
         let op = AppendSingleMessageOperation.init(
             message: message, account: persistentSetup.account,
-            targetFolder: sentFolder,
+            targetFolder: targetFolder,
             connectionManager: persistentSetup.connectionManager,
             coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
 
-        let messageAppended = expectationWithDescription("messageAppended")
+        let expMessageAppended = expectationWithDescription("expMessageAppended")
         op.completionBlock = {
-            messageAppended.fulfill()
+            expMessageAppended.fulfill()
         }
 
         op.start()

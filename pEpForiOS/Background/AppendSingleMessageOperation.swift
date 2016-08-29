@@ -74,26 +74,32 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
 
     public func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorAuthenticationFailed(comp))
+        markAsFinished()
     }
 
     public func connectionLost(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorConnectionLost(comp))
+        markAsFinished()
     }
 
     public func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorConnectionTerminated(comp))
+        markAsFinished()
     }
 
     public func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorConnectionTimeout(comp))
+        markAsFinished()
     }
 
     public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderPrefetchCompleted"))
+        markAsFinished()
     }
 
     public func messageChanged(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
+        markAsFinished()
     }
 
     public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
@@ -102,19 +108,28 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderOpenCompleted"))
+        markAsFinished()
     }
 
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderOpenFailed"))
+        markAsFinished()
     }
 
     public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderStatusCompleted"))
+        markAsFinished()
     }
 
-    public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {}
+    public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderListCompleted"))
+        markAsFinished()
+    }
 
-    public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {}
+    public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderNameParsed"))
+        markAsFinished()
+    }
 
     public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {
         markAsFinished()
@@ -122,5 +137,6 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
 
     public func actionFailed(sync: ImapSync, error: NSError) {
         addError(error)
+        markAsFinished()
     }
 }

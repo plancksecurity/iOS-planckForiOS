@@ -294,19 +294,28 @@ public class GrandOperator: IGrandOperator {
         let encryptionData = EncryptionData.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil,
             coreDataMessageID: (message as! Message).objectID, accountEmail: account.email)
+
         let opEncrypt = EncryptMailOperation.init(encryptionData: encryptionData)
         let opSend = SendMailOperation.init(encryptionData: encryptionData)
+        let opSaveSent = SaveSentMessageOperation.init(encryptionData: encryptionData)
+
+        opSaveSent.addDependency(opSend)
         opSend.addDependency(opEncrypt)
-        opSend.completionBlock = {
-            Log.errorComponent(self.comp, error: Constants.errorNotImplemented(self.comp)) // test
-            var firstError = opEncrypt.errors.first
-            if firstError == nil {
-                firstError = opSend.errors.first
+
+        opSaveSent.completionBlock = {
+            var firstError: NSError?
+            for op in [opEncrypt, opSend, opSaveSent] {
+                if let err = op.errors.first {
+                    firstError = err
+                    break
+                }
             }
             completionBlock?(error: firstError)
         }
-        backgroundQueue.addOperation(opSend)
+
         backgroundQueue.addOperation(opEncrypt)
+        backgroundQueue.addOperation(opSend)
+        backgroundQueue.addOperation(opSaveSent)
     }
 
     public func saveDraftMail(message: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
