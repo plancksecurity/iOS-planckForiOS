@@ -264,6 +264,11 @@ extension ImapSync: CWServiceClient {
         dumpMethodName("folderStatusCompleted", notification: notification)
         delegate?.folderStatusCompleted(self, notification: notification)
     }
+
+    @objc public func actionFailed(notification: NSNotification?) {
+        dumpMethodName("actionFailed", notification: notification)
+        delegate?.folderStatusCompleted(self, notification: notification)
+    }
 }
 
 extension ImapSync: PantomimeFolderDelegate {
