@@ -90,6 +90,14 @@ public class Constants {
         case EncryptionError = 6000
     }
 
+    /**
+     Errors dealing with IMAP.
+     */
+    public enum ImapErrorCode: Int {
+        case UnknownError = 7000
+        case BadResponseError
+    }
+
     static func errorNotImplemented(component: String) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
@@ -255,6 +263,24 @@ public class Constants {
                 "Could not encrypt message, pEp status: %d",
                 comment: "Error message when the engine failed to encrypt a message."),
                 status.rawValue)])
+        return error
+    }
+
+    static func errorImapUnknown(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: ImapErrorCode.UnknownError.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
+                "Unknown IMAP error", comment: "Unknown IMAP error.")])
+        return error
+    }
+
+    static func errorImapBadResponse(component: String, response: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: PepErrorCode.EncryptionError.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
+                "Bad response from server: @%",
+                comment: "Error message for a bad IMAP response."),
+                response)])
         return error
     }
 }

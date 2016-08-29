@@ -267,7 +267,24 @@ extension ImapSync: CWServiceClient {
 
     @objc public func actionFailed(notification: NSNotification?) {
         dumpMethodName("actionFailed", notification: notification)
-        delegate?.folderStatusCompleted(self, notification: notification)
+
+        let unknownError = Constants.errorImapUnknown(comp)
+
+        guard let userInfo = notification?.userInfo else {
+            delegate?.actionFailed(self, error: unknownError)
+            return
+        }
+        guard let errorInfoDict = userInfo[PantomimeErrorInfo] else {
+            delegate?.actionFailed(self, error: unknownError)
+            return
+        }
+        guard let message = errorInfoDict[PantomimeBadResponseInfoKey] as? String else {
+            delegate?.actionFailed(self, error: unknownError)
+            return
+        }
+
+        delegate?.actionFailed(self, error: Constants.errorImapBadResponse(
+            comp, response: message))
     }
 }
 
