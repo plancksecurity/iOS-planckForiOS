@@ -48,16 +48,18 @@ class GrandOperatorTests: XCTestCase {
             XCTAssertNil(error)
             exp.fulfill()
         })
+
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
-            let p = NSPredicate.init(value: true)
-            let model = self.persistentSetup.grandOperator.operationModel()
-            XCTAssertGreaterThan(
-                model.folderCountByPredicate(p), 0)
-            XCTAssertEqual(model.folderByName(
-                ImapSync.defaultImapInboxName, email: self.correct.email)?.name.lowercaseString,
-                ImapSync.defaultImapInboxName.lowercaseString)
         })
+
+        let p = NSPredicate.init(value: true)
+        let model = self.persistentSetup.model
+        XCTAssertGreaterThan(
+            model.folderCountByPredicate(p), 0)
+        XCTAssertEqual(model.folderByName(
+            ImapSync.defaultImapInboxName, email: self.correct.email)?.name.lowercaseString,
+                       ImapSync.defaultImapInboxName.lowercaseString)
     }
 
     func createMail() -> Message {

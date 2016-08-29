@@ -56,13 +56,14 @@ class SimpleOperationsTest: XCTestCase {
         op.start()
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertGreaterThan(
-                self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(
-                    NSPredicate.init(value: true)), 0)
-            XCTAssertGreaterThan(
-                self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
-                    NSPredicate.init(value: true)), 0)
         })
+
+        XCTAssertGreaterThan(
+            self.persistentSetup.model.folderCountByPredicate(
+                NSPredicate.init(value: true)), 0)
+        XCTAssertGreaterThan(
+            self.persistentSetup.model.messageCountByPredicate(
+                NSPredicate.init(value: true)), 0)
     }
 
     func testFetchFoldersOperation() {
@@ -93,10 +94,10 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testStorePrefetchedMailOperation() {
-        persistentSetup.grandOperator.operationModel().insertOrUpdateFolderName(
+        persistentSetup.model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderSeparator: nil,
             accountEmail: connectInfo.email)
-        persistentSetup.grandOperator.operationModel().save()
+        persistentSetup.model.save()
 
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
         let message = CWIMAPMessage.init()
@@ -115,7 +116,7 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
-                self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
+                self.persistentSetup.model.messageCountByPredicate(
                     NSPredicate.init(value: true)), 1)
         })
     }
@@ -124,10 +125,10 @@ class SimpleOperationsTest: XCTestCase {
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
         let numMails = 10
 
-        persistentSetup.grandOperator.operationModel().insertOrUpdateFolderName(
+        persistentSetup.model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderSeparator: nil,
             accountEmail: connectInfo.email)
-        persistentSetup.grandOperator.operationModel().save()
+        persistentSetup.model.save()
 
         let exp = expectationWithDescription("exp")
         var operations: Set<NSOperation> = []
@@ -160,10 +161,10 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectationsWithTimeout(waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
-                self.persistentSetup.grandOperator.operationModel().folderCountByPredicate(
+                self.persistentSetup.model.folderCountByPredicate(
                     NSPredicate.init(value: true)), 1)
             XCTAssertEqual(
-                self.persistentSetup.grandOperator.operationModel().messageCountByPredicate(
+                self.persistentSetup.model.messageCountByPredicate(
                     NSPredicate.init(value: true)),
                 numMails)
         })

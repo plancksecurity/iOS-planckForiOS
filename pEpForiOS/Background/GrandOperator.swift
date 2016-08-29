@@ -95,14 +95,6 @@ public protocol IGrandOperator: class {
     func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     A model suitable for accessing core data from this thread, cached in thread-local
-     storage.
-     - Returns: The model suitable for the caller, depending on whether this is called on the
-     main thread or not.
-     */
-    func operationModel() -> IModel
-
-    /**
      - Returns: A model built on a private context (`.PrivateQueueConcurrencyType`)
      */
     func backgroundModel() -> IModel
@@ -326,19 +318,6 @@ public class GrandOperator: IGrandOperator {
      */
     private func createBackgroundModel() -> IModel {
         return Model.init(context: coreDataUtil.confinedManagedObjectContext())
-    }
-
-    public func operationModel() -> IModel {
-        if NSThread.isMainThread() {
-            return model
-        }
-        let threadDictionary = NSThread.currentThread().threadDictionary
-        if let model = threadDictionary[GrandOperator.kOperationModel] {
-            return model as! IModel
-        }
-        let resultModel = createBackgroundModel()
-        threadDictionary.setValue(resultModel as? AnyObject, forKey: GrandOperator.kOperationModel)
-        return resultModel
     }
 
     public func backgroundModel() -> IModel {
