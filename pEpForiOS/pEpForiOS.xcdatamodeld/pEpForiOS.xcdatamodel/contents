@@ -61,6 +61,7 @@
         <attribute name="flagRead" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="flagRecent" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="flagSeen" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagsFromServer" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="longMessage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longMessageFormatted" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
@@ -88,7 +89,7 @@
         <element name="Attachment" positionX="-45" positionY="135" width="128" height="120"/>
         <element name="Contact" positionX="-54" positionY="90" width="128" height="180"/>
         <element name="Folder" positionX="-54" positionY="72" width="128" height="180"/>
-        <element name="Message" positionX="-45" positionY="99" width="128" height="435"/>
+        <element name="Message" positionX="-45" positionY="99" width="128" height="450"/>
         <element name="MessageReference" positionX="-45" positionY="135" width="128" height="90"/>
     </elements>
 </model>
