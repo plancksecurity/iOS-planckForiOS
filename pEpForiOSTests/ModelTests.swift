@@ -179,4 +179,19 @@ class ModelTests: XCTestCase {
         m.flagRead = true
         XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Seen))
     }
+
+    func testCWFlagsAsShort() {
+        let fl = CWFlags.init()
+        fl.add(.Recent)
+        XCTAssertEqual(fl.rawFlagsAsShort(), 8)
+
+        fl.add(.Answered)
+        XCTAssertEqual(fl.rawFlagsAsShort(), 9)
+
+        fl.add(.Deleted)
+        XCTAssertEqual(fl.rawFlagsAsShort(), 41)
+
+        fl.add(.Seen)
+        XCTAssertEqual(fl.rawFlagsAsShort(), 57)
+    }
 }
