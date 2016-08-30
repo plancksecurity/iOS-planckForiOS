@@ -120,4 +120,26 @@ public extension IMessage {
         string.appendString(")")
         return string as String
     }
+
+    /**
+     Call this after any update to the flags. Cannot currently be automated
+     with `didSet` etc. because of the use of protocols.
+     */
+    public func updateFlags() {
+        let cwFlags = CWFlags.init()
+        let allFlags: [(Bool, PantomimeFlag)] = [
+            (flagSeen.boolValue, PantomimeFlag.Seen),
+            (flagDraft.boolValue, PantomimeFlag.Draft),
+            (flagRecent.boolValue, PantomimeFlag.Recent),
+            (flagDeleted.boolValue, PantomimeFlag.Deleted),
+            (flagAnswered.boolValue, PantomimeFlag.Answered),
+            (flagFlagged.boolValue, PantomimeFlag.Flagged)]
+        for (p, f) in allFlags {
+            if p {
+                cwFlags.add(f)
+            }
+        }
+        flags = NSNumber.init(short: cwFlags.rawFlagsAsShort())
+    }
+
 }

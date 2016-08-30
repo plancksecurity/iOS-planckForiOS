@@ -176,7 +176,7 @@ class ModelTests: XCTestCase {
         m.flagDraft = true
         XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Draft))
 
-        m.flagRead = true
+        m.flagSeen = true
         XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Seen))
     }
 
@@ -193,5 +193,16 @@ class ModelTests: XCTestCase {
 
         fl.add(.Seen)
         XCTAssertEqual(fl.rawFlagsAsShort(), 57)
+    }
+
+    func testAutomaticFlagsUpdate() {
+        let m = persistentSetup.model.insertNewMessage()
+        XCTAssertEqual(m.flags.shortValue, 0)
+
+        for fl in [] {
+
+        }
+        m.flagDeleted = true
+        XCTAssertEqual(m.flags.shortValue, 32)
     }
 }

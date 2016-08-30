@@ -58,8 +58,8 @@
         <attribute name="flagDeleted" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="flagDraft" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="flagFlagged" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="flagRead" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="flagRecent" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flags" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="flagSeen" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="flagsFromServer" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="longMessage" optional="YES" attributeType="String" syncable="YES"/>

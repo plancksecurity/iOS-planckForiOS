@@ -622,20 +622,13 @@ public class Model: IModel {
     }
 
     public func pantomimeFlagsFromMessage(message: IMessage) -> CWFlags {
-        let flags = CWFlags.init()
-        let allFlags: [(Bool, PantomimeFlag)] = [
-            (message.flagRead.boolValue, PantomimeFlag.Seen),
-            (message.flagDraft.boolValue, PantomimeFlag.Draft),
-            (message.flagRecent.boolValue, PantomimeFlag.Recent),
-            (message.flagDeleted.boolValue, PantomimeFlag.Deleted),
-            (message.flagAnswered.boolValue, PantomimeFlag.Answered),
-            (message.flagFlagged.boolValue, PantomimeFlag.Flagged)]
-        for (p, f) in allFlags {
-            if p {
-                flags.add(f)
-            }
+        if let fl = PantomimeFlag.init(rawValue: UInt(message.flags.integerValue)) {
+            return CWFlags.init(flags: fl)
         }
-        return flags
+        Log.errorComponent(
+            comp, errorString:
+            "Could not convert \(message.flags.integerValue) to PantomimeFlag")
+        return CWFlags.init()
     }
 
     /**

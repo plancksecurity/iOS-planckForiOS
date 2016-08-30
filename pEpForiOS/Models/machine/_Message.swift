@@ -12,9 +12,9 @@ public enum MessageAttributes: String {
     case flagDeleted = "flagDeleted"
     case flagDraft = "flagDraft"
     case flagFlagged = "flagFlagged"
-    case flagRead = "flagRead"
     case flagRecent = "flagRecent"
     case flagSeen = "flagSeen"
+    case flags = "flags"
     case flagsFromServer = "flagsFromServer"
     case longMessage = "longMessage"
     case longMessageFormatted = "longMessageFormatted"
@@ -55,11 +55,11 @@ public enum MessageRelationships: String {
 
     var flagFlagged: NSNumber { get set }
 
-    var flagRead: NSNumber { get set }
-
     var flagRecent: NSNumber { get set }
 
     var flagSeen: NSNumber { get set }
+
+    var flags: NSNumber { get set }
 
     var flagsFromServer: NSNumber { get set }
 
@@ -146,13 +146,13 @@ public class _Message: BaseManagedObject, _IMessage {
     var flagFlagged: NSNumber
 
     @NSManaged public
-    var flagRead: NSNumber
-
-    @NSManaged public
     var flagRecent: NSNumber
 
     @NSManaged public
     var flagSeen: NSNumber
+
+    @NSManaged public
+    var flags: NSNumber
 
     @NSManaged public
     var flagsFromServer: NSNumber
