@@ -91,6 +91,11 @@ public protocol IModel {
     func insertMessageReference(messageID: String) -> IMessageReference
 
     /**
+     - Returns: A `CWFlags object`.
+     */
+    func pantomimeFlagsFromMessage(message: IMessage) -> CWFlags
+
+    /**
      Quickly inserts essential parts of a pantomime into the store. Needed for networking,
      where inserts should be quick and the persistent store should be up-to-date
      nevertheless (especially in terms of UIDs, messageNumbers etc.)
@@ -614,6 +619,23 @@ public class Model: IModel {
             added[addr.email] = addr
         }
         return added
+    }
+
+    public func pantomimeFlagsFromMessage(message: IMessage) -> CWFlags {
+        let flags = CWFlags.init()
+        let allFlags: [(Bool, PantomimeFlag)] = [
+            (message.flagRead.boolValue, PantomimeFlag.Seen),
+            (message.flagDraft.boolValue, PantomimeFlag.Draft),
+            (message.flagRecent.boolValue, PantomimeFlag.Recent),
+            (message.flagDeleted.boolValue, PantomimeFlag.Deleted),
+            (message.flagAnswered.boolValue, PantomimeFlag.Answered),
+            (message.flagFlagged.boolValue, PantomimeFlag.Flagged)]
+        for (p, f) in allFlags {
+            if p {
+                flags.add(f)
+            }
+        }
+        return flags
     }
 
     /**

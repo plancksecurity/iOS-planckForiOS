@@ -154,4 +154,29 @@ class ModelTests: XCTestCase {
             XCTAssertNotNil(m.longMessageFormatted)
         }
     }
+
+    func testPantomimeFlagsFromMessage() {
+        let m = persistentSetup.model.insertNewMessage()
+        m.flagFlagged = true
+
+        for f: PantomimeFlag in [.Answered, .Deleted, .Draft, .Recent, .Seen] {
+            XCTAssertFalse(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(f))
+        }
+        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Flagged))
+
+        m.flagAnswered = true
+        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Answered))
+
+        m.flagDeleted = true
+        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Deleted))
+
+        m.flagRecent = true
+        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Recent))
+
+        m.flagDraft = true
+        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Draft))
+
+        m.flagRead = true
+        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Seen))
+    }
 }
