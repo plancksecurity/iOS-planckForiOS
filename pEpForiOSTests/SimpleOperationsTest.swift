@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 
 class SimpleOperationsTest: XCTestCase {
-    let waitTime: NSTimeInterval = 10
+    let waitTime: NSTimeInterval = 1000
 
     var persistentSetup: PersistentSetup!
     var connectInfo: ConnectInfo!
@@ -554,5 +554,30 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
         })
+    }
+
+    func testSyncFlagsToServerOperation() {
+        testPrefetchMailsOperation()
+
+        guard let inbox = persistentSetup.model.folderByType(
+            .Inbox, email: persistentSetup.accountEmail) else {
+                XCTAssertTrue(false)
+                return
+        }
+        let op = SyncFlagsToServerOperation.init(
+            folder: inbox, connectionManager: persistentSetup.connectionManager,
+            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
+        let expEmailsSynced = expectationWithDescription("expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
+        })
+
+        XCTAssertEqual(op.numberOfMessagesSynced, 0)
     }
 }
