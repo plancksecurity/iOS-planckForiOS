@@ -195,14 +195,29 @@ class ModelTests: XCTestCase {
         XCTAssertEqual(fl.rawFlagsAsShort(), 57)
     }
 
-    func testAutomaticFlagsUpdate() {
+    func testUpdateFlags() {
         let m = persistentSetup.model.insertNewMessage()
         XCTAssertEqual(m.flags.shortValue, 0)
 
-        for fl in [] {
-
+        var valuesSoFar: Int16 = 0
+        for fl in [PantomimeFlag.Answered, .Draft, .Flagged, .Recent, .Seen, .Deleted] {
+            switch fl {
+            case .Answered:
+                m.flagAnswered = true
+            case .Draft:
+                m.flagDraft = true
+            case .Flagged:
+                m.flagFlagged = true
+            case .Recent:
+                m.flagRecent = true
+            case .Seen:
+                m.flagSeen = true
+            case .Deleted:
+                m.flagDeleted = true
+            }
+            valuesSoFar += Int(fl.rawValue)
+            m.updateFlags()
+            XCTAssertEqual(m.flags.shortValue, valuesSoFar)
         }
-        m.flagDeleted = true
-        XCTAssertEqual(m.flags.shortValue, 32)
     }
 }
