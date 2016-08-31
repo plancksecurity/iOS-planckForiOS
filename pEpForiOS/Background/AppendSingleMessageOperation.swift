@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 public class AppendSingleMessageOperation: ConcurrentBaseOperation {
-    let comp = "ConcurrentBaseOperation"
+    let comp = "AppendSingleMessageOperation"
 
     let messageID: NSManagedObjectID
     let targetFolderID: NSManagedObjectID
