@@ -28,7 +28,7 @@ public protocol IModel {
     func messageCountByPredicate(predicate: NSPredicate?) -> Int
 
     /**
-     -Returns: The highest UID of the messages in the given folder.
+     - Returns: The highest UID of the messages in the given folder.
      */
     func lastUidInFolderNamed(folderName: String) -> UInt
 

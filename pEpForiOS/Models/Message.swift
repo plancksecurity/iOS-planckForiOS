@@ -94,7 +94,7 @@ public extension IMessage {
     }
 
     /**
-     -Returns: Some string that identifies a mail, useful for logging.
+     - Returns: Some string that identifies a mail, useful for logging.
      */
     func logString() -> String {
         let string = NSMutableString()
