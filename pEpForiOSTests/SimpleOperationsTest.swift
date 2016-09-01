@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 
 class SimpleOperationsTest: XCTestCase {
-    let waitTime: NSTimeInterval = 1000
+    let waitTime: NSTimeInterval = 10
 
     var persistentSetup: PersistentSetup!
     var connectInfo: ConnectInfo!

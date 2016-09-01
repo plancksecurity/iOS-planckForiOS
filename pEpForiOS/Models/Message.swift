@@ -181,17 +181,18 @@ public extension IMessage {
         let pantomimeMail = CWIMAPMessage.init()
         pantomimeMail.setUID(UInt(uid.integerValue))
 
-        var dict: [NSObject : AnyObject] = ["Messages": NSArray.init(object: pantomimeMail)]
+        var dict: [NSObject : AnyObject] = [PantomimeMessagesKey:
+            NSArray.init(object: pantomimeMail)]
 
         var result = "UID STORE \(uid) "
         if flags.integerValue == 0 && flagsFromServer != 0 {
             let flagsString = Message.flagsStringFromNumber(flagsFromServer)
             result += "-FLAGS.SILENT (\(flagsString))"
-            dict["Flags"] = Message.pantomimeFlagsFromNumber(flagsFromServer)
+            dict[PantomimeFlagsKey] = Message.pantomimeFlagsFromNumber(flagsFromServer)
         } else {
             let flagsString = Message.flagsStringFromNumber(flags)
             result += "+FLAGS.SILENT (\(flagsString))"
-            dict["Flags"] = Message.pantomimeFlagsFromNumber(flags)
+            dict[PantomimeFlagsKey] = Message.pantomimeFlagsFromNumber(flags)
         }
         return (command: result, dictionary: dict)
     }

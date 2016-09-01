@@ -28,6 +28,11 @@ public protocol IModel {
     func messageCountByPredicate(predicate: NSPredicate?) -> Int
 
     /**
+     - Returns: A message with the given UID and folder name, if found.
+     */
+    func messageByUID(uid: Int, folderName: String) -> IMessage?
+
+    /**
      - Returns: The highest UID of the messages in the given folder.
      */
     func lastUidInFolderNamed(folderName: String) -> UInt
@@ -459,6 +464,10 @@ public class Model: IModel {
 
     public func messageCountByPredicate(predicate: NSPredicate? = nil) -> Int {
         return countWithName(Message.entityName(), predicate: predicate)
+    }
+
+    public func messageByUID(uid: Int, folderName: String) -> IMessage? {
+        return messageByPredicate(NSPredicate.init(format: "uid = %d", uid))
     }
 
     public func messageByMessageID(messageID: String) -> IMessage? {

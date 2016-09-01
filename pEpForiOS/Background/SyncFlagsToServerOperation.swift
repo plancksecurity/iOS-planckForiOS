@@ -63,12 +63,18 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         imapSync.imapStore.sendCommand(
             IMAP_UID_STORE, info: dict as [NSObject : AnyObject], string: cmd)
     }
+
+    func errorOperation(localizedMessage: String, logMessage: String) {
+        markAsFinished()
+        addError(Constants.errorOperationFailed(comp, errorMessage: localizedMessage))
+        Log.errorComponent(comp, errorString: logMessage)
+    }
 }
 
 extension SyncFlagsToServerOperation: ImapSyncDelegate {
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
-            syncNextMessage()
+            sync.openMailBox(targetFolderName)
         }
     }
 
@@ -107,8 +113,7 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
     }
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderOpenCompleted"))
-        markAsFinished()
+        syncNextMessage()
     }
 
     public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
@@ -137,6 +142,50 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
     }
 
     public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {
+        guard let n = notification else {
+            errorOperation(NSLocalizedString(
+                "UID STORE: Response with missing notification object",
+                comment: "Technical error"), logMessage:
+                "messageStoreCompleted with nil notification")
+            return
+        }
+        privateMOC.performBlock() {
+            guard let dict = n.userInfo else {
+                self.errorOperation(NSLocalizedString(
+                    "UID STORE: Response with missing user info",
+                    comment: "Technical error"),
+                    logMessage: "messageStoreCompleted notification without user info")
+                return
+            }
+            guard let cwMessages = dict[PantomimeMessagesKey] as? [CWIMAPMessage] else {
+                self.errorOperation(NSLocalizedString(
+                    "UID STORE: Response without messages",
+                    comment: "Technical error"),
+                    logMessage: "messageStoreCompleted no messages")
+                return
+            }
+            for cw in cwMessages {
+                if let msg = self.model.messageByUID(Int(cw.UID()),
+                    folderName: self.targetFolderName) {
+                    if let flags = cw.flags() {
+                        msg.flags = NSNumber.init(short: flags.rawFlagsAsShort())
+                        msg.flagsFromServer = msg.flags
+                    } else {
+                        self.errorOperation(NSLocalizedString(
+                            "UID STORE: Response for message without flags",
+                            comment: "Technical error"), logMessage:
+                            "messageStoreCompleted message without flags, UID: \(cw.UID())")
+                    }
+                } else {
+                    self.errorOperation(NSLocalizedString(
+                        "UID STORE: Response for message that can't be found",
+                        comment: "Technical error"), logMessage:
+                        "messageStoreCompleted message not found, UID: \(cw.UID())")
+                }
+            }
+            self.model.save()
+            self.numberOfMessagesSynced += 1
+        }
         syncNextMessage()
     }
 
