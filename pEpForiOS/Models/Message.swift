@@ -171,15 +171,24 @@ public extension IMessage {
         return Message.pantomimeFlagsFromNumber(flagsFromServer)
     }
 
-    public func storeCommandForUpdate() -> String {
+    /**
+     - Returns: A tuple consisting of an IMAP command string for updating
+     the flags for this message, and a dictionary suitable for using pantomime
+     for the actual execution.
+     */
+    public func storeCommandForUpdate() -> (String, [NSObject : AnyObject]) {
+        var dict: [NSObject : AnyObject] = ["Messages": NSArray.init(object: self)]
+
         var result = "UID STORE \(uid) "
         if flags.integerValue == 0 && flagsFromServer != 0 {
             let flagsString = Message.flagsStringFromNumber(flagsFromServer)
-            result += "-FLAGS (\(flagsString))"
+            result += "-FLAGS.SILENT (\(flagsString))"
+            dict["Flags"] = Message.pantomimeFlagsFromNumber(flagsFromServer)
         } else {
             let flagsString = Message.flagsStringFromNumber(flags)
-            result += "+FLAGS (\(flagsString))"
+            result += "+FLAGS.SILENT (\(flagsString))"
+            dict["Flags"] = Message.pantomimeFlagsFromNumber(flags)
         }
-        return result
+        return (command: result, dictionary: dict)
     }
 }

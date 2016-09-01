@@ -556,7 +556,7 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
-    func testSyncFlagsToServerOperation() {
+    func testSyncFlagsToServerOperationEmpty() {
         testPrefetchMailsOperation()
 
         guard let inbox = persistentSetup.model.folderByType(
@@ -579,5 +579,40 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         XCTAssertEqual(op.numberOfMessagesSynced, 0)
+    }
+
+    func testSyncFlagsToServerOperation() {
+        testPrefetchMailsOperation()
+
+        guard let inbox = persistentSetup.model.folderByType(
+            .Inbox, email: persistentSetup.accountEmail) else {
+                XCTAssertTrue(false)
+                return
+        }
+
+        for elm in inbox.messages {
+            guard let m = elm as? IMessage else {
+                XCTAssertTrue(false)
+                break
+            }
+            m.flagSeen = NSNumber.init(bool: !m.flagSeen.boolValue)
+            m.updateFlags()
+        }
+
+        let op = SyncFlagsToServerOperation.init(
+            folder: inbox, connectionManager: persistentSetup.connectionManager,
+            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
+        let expEmailsSynced = expectationWithDescription("expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectationsWithTimeout(waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
+        })
+
+        XCTAssertEqual(op.numberOfMessagesSynced, inbox.messages.count)
     }
 }

@@ -238,27 +238,30 @@ class ModelTests: XCTestCase {
         m.flagsFromServer = 0
         m.flagDeleted = true
         m.updateFlags()
-        XCTAssertEqual(m.storeCommandForUpdate(), "UID STORE 1024 +FLAGS (\\Deleted)")
+        XCTAssertEqual(m.storeCommandForUpdate().0,
+                       "UID STORE 1024 +FLAGS.SILENT (\\Deleted)")
 
         // Check if 'difference' is taken into account
         m.flagsFromServer = NSNumber.init(short: CWFlags.init(
             flags: PantomimeFlag.Deleted).rawFlagsAsShort())
         m.updateFlags()
-        XCTAssertEqual(m.storeCommandForUpdate(), "UID STORE 1024 +FLAGS (\\Deleted)")
+        XCTAssertEqual(m.storeCommandForUpdate().0,
+                       "UID STORE 1024 +FLAGS.SILENT (\\Deleted)")
 
         m.flagAnswered = true
         m.updateFlags()
-        XCTAssertEqual(m.storeCommandForUpdate(),
-                       "UID STORE 1024 +FLAGS (\\Answered \\Deleted)")
+        XCTAssertEqual(m.storeCommandForUpdate().0,
+                       "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Deleted)")
 
         m.flagSeen = true
         m.updateFlags()
-        XCTAssertEqual(m.storeCommandForUpdate(),
-                       "UID STORE 1024 +FLAGS (\\Answered \\Seen \\Deleted)")
+        XCTAssertEqual(m.storeCommandForUpdate().0,
+                       "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Seen \\Deleted)")
 
         m.flagFlagged = true
         m.updateFlags()
-        XCTAssertEqual(m.storeCommandForUpdate(),
-                       "UID STORE 1024 +FLAGS (\\Answered \\Flagged \\Seen \\Deleted)")
+        XCTAssertEqual(
+            m.storeCommandForUpdate().0,
+            "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")
     }
 }

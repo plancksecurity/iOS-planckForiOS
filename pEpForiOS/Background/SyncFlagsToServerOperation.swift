@@ -59,6 +59,9 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     }
 
     func updateFlagsForMessage(message: IMessage) {
+        let (cmd, dict) = message.storeCommandForUpdate()
+        imapSync.imapStore.sendCommand(
+            IMAP_UID_STORE, info: dict as [NSObject : AnyObject], string: cmd)
     }
 }
 
