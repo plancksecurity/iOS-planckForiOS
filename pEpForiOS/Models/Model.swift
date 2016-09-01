@@ -91,11 +91,6 @@ public protocol IModel {
     func insertMessageReference(messageID: String) -> IMessageReference
 
     /**
-     - Returns: A `CWFlags object`.
-     */
-    func pantomimeFlagsFromMessage(message: IMessage) -> CWFlags
-
-    /**
      Quickly inserts essential parts of a pantomime into the store. Needed for networking,
      where inserts should be quick and the persistent store should be up-to-date
      nevertheless (especially in terms of UIDs, messageNumbers etc.)
@@ -483,7 +478,7 @@ public class Model: IModel {
                     Log.warnComponent(comp, "lastUID has found more than one element")
                 }
                 if let msg = elems[0] as? Message {
-                    return UInt(msg.uid!.integerValue)
+                    return UInt(msg.uid.integerValue)
                 } else {
                     Log.warnComponent(comp, "Could not cast core data result to Message")
                 }
@@ -619,16 +614,6 @@ public class Model: IModel {
             added[addr.email] = addr
         }
         return added
-    }
-
-    public func pantomimeFlagsFromMessage(message: IMessage) -> CWFlags {
-        if let fl = PantomimeFlag.init(rawValue: UInt(message.flags.integerValue)) {
-            return CWFlags.init(flags: fl)
-        }
-        Log.errorComponent(
-            comp, errorString:
-            "Could not convert \(message.flags.integerValue) to PantomimeFlag")
-        return CWFlags.init()
     }
 
     /**

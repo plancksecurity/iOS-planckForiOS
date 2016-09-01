@@ -6,6 +6,25 @@ public protocol IMessage: _IMessage {
 
 @objc(Message)
 public class Message: _Message, IMessage {
+    /**
+     - Returns: A `CWFlags object` for the given `NSNumber`
+     */
+    static public func pantomimeFlagsFromNumber(flags: NSNumber) -> CWFlags {
+        if let fl = PantomimeFlag.init(rawValue: UInt(flags.integerValue)) {
+            return CWFlags.init(flags: fl)
+        }
+        Log.errorComponent(
+            "Message", errorString:
+            "Could not convert \(flags.integerValue) to PantomimeFlag")
+        return CWFlags.init()
+    }
+
+    /**
+     - Returns: The current flags as String, like "\Deleted \Answered"
+     */
+    static func flagsStringFromNumber(flags: NSNumber) -> String {
+        return pantomimeFlagsFromNumber(flags).asString()
+    }
 }
 
 public extension IMessage {
@@ -54,9 +73,7 @@ public extension IMessage {
             msg.setMessageID(str)
         }
 
-        if let uid = uid?.integerValue {
-            msg.setUID(UInt(uid))
-        }
+        msg.setUID(UInt(uid))
 
         if let msn = messageNumber?.integerValue {
             msg.setMessageNumber(UInt(msn))
@@ -110,9 +127,7 @@ public extension IMessage {
             append()
             string.appendString("messageID: \(msgID)")
         }
-        if let uid = uid?.integerValue {
-            string.appendString("\(uid)")
-        }
+        string.appendString("\(uid.integerValue)")
         if let oDate = receivedDate {
             append()
             string.appendString("date: \(oDate)")
@@ -142,4 +157,29 @@ public extension IMessage {
         flags = NSNumber.init(short: cwFlags.rawFlagsAsShort())
     }
 
+    /**
+     - Returns: `flags` as `CWFlags`
+     */
+    public func pantomimeFlags() -> CWFlags {
+        return Message.pantomimeFlagsFromNumber(flags)
+    }
+
+    /**
+     - Returns: `flagsFromServer` as `CWFlags`
+     */
+    public func pantomimeFlagsFromServer() -> CWFlags {
+        return Message.pantomimeFlagsFromNumber(flagsFromServer)
+    }
+
+    public func storeCommandForUpdate() -> String {
+        var result = "UID STORE \(uid) "
+        if flags.integerValue == 0 && flagsFromServer != 0 {
+            let flagsString = Message.flagsStringFromNumber(flagsFromServer)
+            result += "-FLAGS (\(flagsString))"
+        } else {
+            let flagsString = Message.flagsStringFromNumber(flags)
+            result += "+FLAGS (\(flagsString))"
+        }
+        return result
+    }
 }

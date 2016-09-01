@@ -158,26 +158,37 @@ class ModelTests: XCTestCase {
     func testPantomimeFlagsFromMessage() {
         let m = persistentSetup.model.insertNewMessage()
         m.flagFlagged = true
+        m.updateFlags()
 
         for f: PantomimeFlag in [.Answered, .Deleted, .Draft, .Recent, .Seen] {
-            XCTAssertFalse(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(f))
+            XCTAssertFalse(m.pantomimeFlags().contain(f))
         }
-        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Flagged))
+        XCTAssertTrue(m.pantomimeFlags().contain(.Flagged))
 
         m.flagAnswered = true
-        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Answered))
+        XCTAssertFalse(m.pantomimeFlags().contain(.Answered))
+        m.updateFlags()
+        XCTAssertTrue(m.pantomimeFlags().contain(.Answered))
 
         m.flagDeleted = true
-        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Deleted))
+        XCTAssertFalse(m.pantomimeFlags().contain(.Deleted))
+        m.updateFlags()
+        XCTAssertTrue(m.pantomimeFlags().contain(.Deleted))
 
         m.flagRecent = true
-        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Recent))
+        XCTAssertFalse(m.pantomimeFlags().contain(.Recent))
+        m.updateFlags()
+        XCTAssertTrue(m.pantomimeFlags().contain(.Recent))
 
         m.flagDraft = true
-        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Draft))
+        XCTAssertFalse(m.pantomimeFlags().contain(.Draft))
+        m.updateFlags()
+        XCTAssertTrue(m.pantomimeFlags().contain(.Draft))
 
         m.flagSeen = true
-        XCTAssertTrue(persistentSetup.model.pantomimeFlagsFromMessage(m).contain(.Seen))
+        XCTAssertFalse(m.pantomimeFlags().contain(.Seen))
+        m.updateFlags()
+        XCTAssertTrue(m.pantomimeFlags().contain(.Seen))
     }
 
     func testCWFlagsAsShort() {
@@ -219,5 +230,35 @@ class ModelTests: XCTestCase {
             m.updateFlags()
             XCTAssertEqual(m.flags.shortValue, valuesSoFar)
         }
+    }
+
+    func testStoreCommandForUpdate() {
+        let m = persistentSetup.model.insertNewMessage()
+        m.uid = 1024
+        m.flagsFromServer = 0
+        m.flagDeleted = true
+        m.updateFlags()
+        XCTAssertEqual(m.storeCommandForUpdate(), "UID STORE 1024 +FLAGS (\\Deleted)")
+
+        // Check if 'difference' is taken into account
+        m.flagsFromServer = NSNumber.init(short: CWFlags.init(
+            flags: PantomimeFlag.Deleted).rawFlagsAsShort())
+        m.updateFlags()
+        XCTAssertEqual(m.storeCommandForUpdate(), "UID STORE 1024 +FLAGS (\\Deleted)")
+
+        m.flagAnswered = true
+        m.updateFlags()
+        XCTAssertEqual(m.storeCommandForUpdate(),
+                       "UID STORE 1024 +FLAGS (\\Answered \\Deleted)")
+
+        m.flagSeen = true
+        m.updateFlags()
+        XCTAssertEqual(m.storeCommandForUpdate(),
+                       "UID STORE 1024 +FLAGS (\\Answered \\Seen \\Deleted)")
+
+        m.flagFlagged = true
+        m.updateFlags()
+        XCTAssertEqual(m.storeCommandForUpdate(),
+                       "UID STORE 1024 +FLAGS (\\Answered \\Flagged \\Seen \\Deleted)")
     }
 }

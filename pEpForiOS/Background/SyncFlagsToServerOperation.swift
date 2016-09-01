@@ -59,7 +59,6 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     }
 
     func updateFlagsForMessage(message: IMessage) {
-
     }
 }
 

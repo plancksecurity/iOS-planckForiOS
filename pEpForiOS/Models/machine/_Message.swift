@@ -77,7 +77,7 @@ public enum MessageRelationships: String {
 
     var subject: String? { get set }
 
-    var uid: NSNumber? { get set }
+    var uid: NSNumber { get set }
 
     // MARK: - Relationships
 
@@ -179,7 +179,7 @@ public class _Message: BaseManagedObject, _IMessage {
     var subject: String?
 
     @NSManaged public
-    var uid: NSNumber?
+    var uid: NSNumber
 
     // MARK: - Relationships
 
