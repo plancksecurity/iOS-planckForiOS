@@ -28,6 +28,8 @@ public protocol ImapSyncDelegate: class {
     func folderListCompleted(sync: ImapSync, notification: NSNotification?)
     func folderNameParsed(sync: ImapSync, notification: NSNotification?)
     func folderAppendCompleted(sync: ImapSync, notification: NSNotification?)
+    func messageStoreCompleted(sync: ImapSync, notification: NSNotification?)
+    func messageStoreFailed(sync: ImapSync, notification: NSNotification?)
 
     /** General error indicator */
     func actionFailed(sync: ImapSync, error: NSError)
@@ -54,6 +56,8 @@ public class DefaultImapSyncDelegate: ImapSyncDelegate {
     public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {}
     public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {}
     public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {}
+    public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {}
+    public func messageStoreFailed(sync: ImapSync, notification: NSNotification?) {}
 
     public func actionFailed(sync: ImapSync, error: NSError) {}
 }
@@ -285,6 +289,16 @@ extension ImapSync: CWServiceClient {
 
         delegate?.actionFailed(self, error: Constants.errorImapBadResponse(
             comp, response: message))
+    }
+
+    @objc public func messageStoreCompleted(notification: NSNotification?) {
+        dumpMethodName("messageStoreCompleted", notification: notification)
+        delegate?.messageStoreCompleted(self, notification: notification)
+    }
+
+    @objc public func messageStoreFailed(notification: NSNotification?) {
+        dumpMethodName("messageStoreFailed", notification: notification)
+        delegate?.messageStoreFailed(self, notification: notification)
     }
 }
 

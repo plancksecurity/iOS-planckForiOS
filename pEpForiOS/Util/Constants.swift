@@ -96,6 +96,7 @@ public class Constants {
     public enum ImapErrorCode: Int {
         case UnknownError = 7000
         case BadResponseError
+        case MessageStoreFailed
     }
 
     static func errorNotImplemented(component: String) -> NSError {
@@ -276,11 +277,20 @@ public class Constants {
 
     static func errorImapBadResponse(component: String, response: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: PepErrorCode.EncryptionError.rawValue,
+            domain: component, code: ImapErrorCode.BadResponseError.rawValue,
             userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
                 "Bad response from server: @%",
                 comment: "Error message for a bad IMAP response."),
                 response)])
+        return error
+    }
+
+    static func errorMessageStoreFailed(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: ImapErrorCode.MessageStoreFailed.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
+                "IMAP: Could not update flags",
+                comment: "IMAP error when flags could not be stored")])
         return error
     }
 }

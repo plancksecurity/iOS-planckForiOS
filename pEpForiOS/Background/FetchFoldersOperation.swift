@@ -193,7 +193,18 @@ extension FetchFoldersOperation: ImapSyncDelegate {
 
     public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {}
 
+    public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "messageStoreCompleted"))
+        markAsFinished()
+    }
+
+    public func messageStoreFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "messageStoreFailed"))
+        markAsFinished()
+    }
+
     public func actionFailed(sync: ImapSync, error: NSError) {
         addError(error)
+        markAsFinished()
     }
 }

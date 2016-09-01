@@ -177,7 +177,11 @@ public extension IMessage {
      for the actual execution.
      */
     public func storeCommandForUpdate() -> (String, [NSObject : AnyObject]) {
-        var dict: [NSObject : AnyObject] = ["Messages": NSArray.init(object: self)]
+        // Construct a very minimal pantomime dummy for the info dictionary
+        let pantomimeMail = CWIMAPMessage.init()
+        pantomimeMail.setUID(UInt(uid.integerValue))
+
+        var dict: [NSObject : AnyObject] = ["Messages": NSArray.init(object: pantomimeMail)]
 
         var result = "UID STORE \(uid) "
         if flags.integerValue == 0 && flagsFromServer != 0 {

@@ -136,6 +136,15 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {
+        syncNextMessage()
+    }
+
+    public func messageStoreFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorMessageStoreFailed(comp))
+        markAsFinished()
+    }
+
     public func actionFailed(sync: ImapSync, error: NSError) {
         addError(error)
         markAsFinished()

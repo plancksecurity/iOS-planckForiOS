@@ -153,6 +153,16 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "messageStoreCompleted"))
+        markAsFinished()
+    }
+
+    public func messageStoreFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "messageStoreFailed"))
+        markAsFinished()
+    }
+
     public func actionFailed(sync: ImapSync, error: NSError) {
         addError(error)
         markAsFinished()
