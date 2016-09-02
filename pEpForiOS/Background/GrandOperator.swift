@@ -93,11 +93,6 @@ public protocol IGrandOperator: class {
      Saves the given email as a draft, both on the server and locally.
      */
     func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
-     - Returns: A model built on a private context (`.PrivateQueueConcurrencyType`)
-     */
-    func backgroundModel() -> IModel
 }
 
 public class GrandOperator: IGrandOperator {
@@ -327,9 +322,5 @@ public class GrandOperator: IGrandOperator {
      */
     private func createBackgroundModel() -> IModel {
         return Model.init(context: coreDataUtil.confinedManagedObjectContext())
-    }
-
-    public func backgroundModel() -> IModel {
-        return Model.init(context: coreDataUtil.privateContext())
     }
 }
