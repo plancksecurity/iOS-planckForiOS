@@ -35,22 +35,33 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     }
 
     public override func main() {
-        self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
-        self.imapSync.delegate = self
-        self.imapSync.start()
+        privateMOC.performBlock() {
+            // Immediately check for work. If there is none, bail out
+            if let _ = self.nextMessageToBeSynced() {
+                self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+                self.imapSync.delegate = self
+                self.imapSync.start()
+            } else {
+                self.markAsFinished()
+            }
+        }
+    }
+
+    func nextMessageToBeSynced() -> IMessage? {
+        let pFlagsChanged = NSPredicate.init(format: "flags != flagsFromServer")
+        let pFolder = NSPredicate.init(format: "folder.name = %@",
+                                       self.targetFolderName)
+        let p = NSCompoundPredicate.init(
+            andPredicateWithSubpredicates: [pFlagsChanged, pFolder])
+        let messages = self.model.messagesByPredicate(
+            p, sortDescriptors: [NSSortDescriptor.init(
+                key: "receivedDate", ascending: true)])
+        return messages?.first
     }
 
     func syncNextMessage() {
         privateMOC.performBlock() {
-            let pFlagsChanged = NSPredicate.init(format: "flags != flagsFromServer")
-            let pFolder = NSPredicate.init(format: "folder.name = %@",
-                self.targetFolderName)
-            let p = NSCompoundPredicate.init(
-                andPredicateWithSubpredicates: [pFlagsChanged, pFolder])
-            let messages = self.model.messagesByPredicate(
-                p, sortDescriptors: [NSSortDescriptor.init(
-                    key: "receivedDate", ascending: true)])
-            guard let m = messages?.first else {
+            guard let m = self.nextMessageToBeSynced() else {
                 self.markAsFinished()
                 return
             }

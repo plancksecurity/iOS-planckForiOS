@@ -60,6 +60,7 @@ class EmailListViewController: UITableViewController {
     var refreshController: UIRefreshControl!
 
     func isReadedMessage(message: IMessage)-> Bool {
+        message.updateFlags()
         return message.flagSeen.boolValue
     }
 
