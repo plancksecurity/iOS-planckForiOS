@@ -93,6 +93,12 @@ public protocol IGrandOperator: class {
      Saves the given email as a draft, both on the server and locally.
      */
     func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
+     Syncs all mails' flags in the given folder that are out of date to the server.
+     */
+    func syncFlagsToServerForFolder(folder: IFolder,
+                                    completionBlock: GrandOperatorCompletionBlock?)
 }
 
 public class GrandOperator: IGrandOperator {
@@ -315,5 +321,17 @@ public class GrandOperator: IGrandOperator {
 
     public func saveDraftMail(message: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
         completionBlock?(error: Constants.errorNotImplemented(comp))
+    }
+
+    public func syncFlagsToServerForFolder(folder: IFolder,
+                                           completionBlock: GrandOperatorCompletionBlock?) {
+        let op = SyncFlagsToServerOperation.init(
+            folder: folder, connectionManager: connectionManager,
+            coreDataUtil: coreDataUtil)
+        op.completionBlock = {
+            let firstError = op.errors.first
+            completionBlock?(error: firstError)
+        }
+        backgroundQueue.addOperation(op)
     }
 }
