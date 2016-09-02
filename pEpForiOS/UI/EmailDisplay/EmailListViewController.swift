@@ -298,19 +298,23 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         // preparing the title action to show when user swipe
         var localizedIsFlagTitle = " "
         if (isImportantMessage(message)) {
+            localizedIsFlagTitle = NSLocalizedString("Unflag",
+            comment: "Unflag button title in swipe action on EmailListViewController")
+        } else {
             localizedIsFlagTitle = NSLocalizedString("Flag",
             comment: "Flag button title in swipe action on EmailListViewController")
-        } else {
-            localizedIsFlagTitle = NSLocalizedString("Unflag",
-            comment: "unflag button title in swipe action on EmailListViewController")
         }
 
         // preparing action to trigger when user swipe
         let isFlagCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
             { (action, indexPath) in
-                //cell.isImportantImage.hidden = false
-                //cell.isImportantImage.backgroundColor = UIColor.orangeColor()
-
+                if (self.isImportantMessage(message)) {
+                    message.flagFlagged = false
+                    message.updateFlags()
+                } else {
+                    message.flagFlagged = true
+                    message.updateFlags()
+                }
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             }
         // creating the action
@@ -332,8 +336,7 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             { (action, indexPath) in
                 let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? IMessage
                 managedObject?.flagDeleted = true
-                // UPDATING THE FLAGS
-                //managedObject?
+                managedObject?.updateFlags()
             }
 
         // creating the action
@@ -348,19 +351,23 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         // preparing the title action to show when user swipe
         var localizedisReadTitle = " "
         if (isReadedMessage(message)) {
-            localizedisReadTitle = NSLocalizedString("Read",
-            comment: "Read button title in swipe action on EmailListViewController")
-        } else {
             localizedisReadTitle = NSLocalizedString("Unread",
             comment: "Unread button title in swipe action on EmailListViewController")
+        } else {
+            localizedisReadTitle = NSLocalizedString("Read",
+            comment: "Read button title in swipe action on EmailListViewController")
         }
 
         // creating the action
         let isReadCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
             { (action, indexPath) in
-                //cell.isImportantImage.hidden = false
-                //cell.isImportantImage.backgroundColor = UIColor.blueColor()
-               // TODO: setReadMessage()
+                if (self.isReadedMessage(message)) {
+                    message.flagSeen = false
+                    message.updateFlags()
+                } else {
+                    message.flagSeen = true
+                    message.updateFlags()
+                }
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             }
         let isReadAction = UITableViewRowAction(style: .Default, title: localizedisReadTitle,
@@ -375,7 +382,6 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
 
         let cell = tableView.cellForRowAtIndexPath(indexPath) as! EmailListViewCell
         let email = fetchController?.objectAtIndexPath(indexPath) as! Message
-
 
         let isFlagAction = createIsFlagAction(email, cell: cell)
         let deleteAction = createDeleteAction(cell)
