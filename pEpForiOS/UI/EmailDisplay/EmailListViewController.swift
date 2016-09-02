@@ -330,8 +330,10 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
 
         let deleteCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
             { (action, indexPath) in
-                let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? Message
-                self.fetchController?.managedObjectContext.deleteObject(managedObject!)
+                let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? IMessage
+                managedObject?.flagDeleted = true
+                // UPDATING THE FLAGS
+                //managedObject?
             }
 
         // creating the action
