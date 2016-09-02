@@ -316,11 +316,4 @@ public class GrandOperator: IGrandOperator {
     public func saveDraftMail(message: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
         completionBlock?(error: Constants.errorNotImplemented(comp))
     }
-
-    /**
-     Creates a new background model, confined to the current thread/queue
-     */
-    private func createBackgroundModel() -> IModel {
-        return Model.init(context: coreDataUtil.confinedManagedObjectContext())
-    }
 }
