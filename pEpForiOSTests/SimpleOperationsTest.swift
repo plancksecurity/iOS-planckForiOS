@@ -595,7 +595,7 @@ class SimpleOperationsTest: XCTestCase {
                 XCTAssertTrue(false)
                 break
             }
-            m.flagSeen = NSNumber.init(bool: !m.flagSeen.boolValue)
+            m.flagFlagged = NSNumber.init(bool: !m.flagFlagged.boolValue)
             m.updateFlags()
         }
 
