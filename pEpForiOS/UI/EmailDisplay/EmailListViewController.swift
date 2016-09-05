@@ -32,6 +32,7 @@ class EmailListViewController: UITableViewController {
 
     struct UIState {
         var isSynching: Bool = false
+        var isSynchingFlags: Bool = false
     }
     
     let comp = "EmailListViewController"
@@ -60,7 +61,6 @@ class EmailListViewController: UITableViewController {
     var refreshController: UIRefreshControl!
 
     func isReadedMessage(message: IMessage)-> Bool {
-        message.updateFlags()
         return message.flagSeen.boolValue
     }
 
@@ -293,6 +293,15 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         tableView.endUpdates()
     }
 
+    func syncFlagsToServer(message: IMessage) {
+        if (self.state.isSynching == false) {
+            self.state.isSynching = true
+            self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
+                message.folder,
+                completionBlock: { error in})
+        }
+    }
+
     func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
@@ -315,6 +324,7 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
                     message.flagFlagged = true
                     message.updateFlags()
                 }
+                self.syncFlagsToServer(message)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             }
         // creating the action
@@ -337,6 +347,7 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
                 let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? IMessage
                 managedObject?.flagDeleted = true
                 managedObject?.updateFlags()
+                self.syncFlagsToServer(managedObject!)
             }
 
         // creating the action
@@ -368,6 +379,7 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
                     message.flagSeen = true
                     message.updateFlags()
                 }
+                self.syncFlagsToServer(message)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             }
         let isReadAction = UITableViewRowAction(style: .Default, title: localizedisReadTitle,
