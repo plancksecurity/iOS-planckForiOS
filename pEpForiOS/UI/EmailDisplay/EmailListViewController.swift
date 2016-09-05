@@ -32,7 +32,7 @@ class EmailListViewController: UITableViewController {
 
     struct UIState {
         var isSynching: Bool = false
-        var isSynchingFlags: Bool = false
+        var activeServerPetition: Bool = false
     }
     
     let comp = "EmailListViewController"
@@ -217,8 +217,7 @@ class EmailListViewController: UITableViewController {
                 cell.isImportantImage.backgroundColor = UIColor.orangeColor()
             }
             if (isReadedMessage(email)) {
-                cell.isImportantImage.hidden = false
-                cell.isImportantImage.backgroundColor = UIColor.blueColor()
+                cell.isImportantImage.hidden = true
             }
         }
     }
@@ -294,8 +293,8 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
     }
 
     func syncFlagsToServer(message: IMessage) {
-        if (self.state.isSynching == false) {
-            self.state.isSynching = true
+        if (self.state.activeServerPetition == false) {
+            self.state.activeServerPetition = true
             self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
                 message.folder,
                 completionBlock: { error in})
