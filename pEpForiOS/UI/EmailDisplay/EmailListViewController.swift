@@ -178,7 +178,6 @@ class EmailListViewController: UITableViewController {
     }
 
     func configureCell(cell: EmailListViewCell, indexPath: NSIndexPath) {
-        cell.isImportantImage.hidden = true
         if let email = fetchController?.objectAtIndexPath(indexPath) as? Message {
             if let colorRating = PEPUtil.colorRatingFromInt(email.pepColorRating?.integerValue) {
                 let privacyColor = PEPUtil.colorFromPepRating(colorRating)
@@ -213,10 +212,12 @@ class EmailListViewController: UITableViewController {
             }
 
             if (isImportantMessage(email)) {
+                print("Este mensaje es importe!!!!")
                 cell.isImportantImage.hidden = false
                 cell.isImportantImage.backgroundColor = UIColor.orangeColor()
             }
             if (isReadedMessage(email)) {
+                print("Este mensaje esta leido!!!!  \(email.flagSeen.boolValue)")
                 cell.isImportantImage.hidden = true
             }
         }
