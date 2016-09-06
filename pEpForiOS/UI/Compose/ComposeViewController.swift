@@ -9,7 +9,8 @@
 import UIKit
 import CoreData
 
-public class ComposeViewController: UITableViewController {
+public class ComposeViewController: UITableViewController, UIImagePickerControllerDelegate,
+                                    UINavigationControllerDelegate {
     struct UIModel {
         enum Mode {
             case Normal
@@ -488,8 +489,34 @@ public class ComposeViewController: UITableViewController {
         })
     }
 
-    // MARK: -- UITableViewDelegate
+    @IBAction func attachedField(sender: AnyObject) {
 
+        let attachedAlertView = UIAlertController()
+        attachedAlertView.title = "AttachedFiles"
+        attachedAlertView.message = "Choose one option"
+        let videosAction = UIAlertAction(title: "Documents", style: UIAlertActionStyle.Default) {
+            UIAlertAction in
+        }
+        attachedAlertView.addAction(videosAction)
+
+        let documentAction = UIAlertAction(title: "Photos", style: UIAlertActionStyle.Default) {
+            UIAlertAction in
+        }
+        attachedAlertView.addAction(documentAction)
+        let photosAction = UIAlertAction(title: "Videos", style: UIAlertActionStyle.Default) {
+            UIAlertAction in
+            let possibleAttachedImages = UIImagePickerController.init()
+            possibleAttachedImages.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
+            possibleAttachedImages.delegate = self
+            possibleAttachedImages.allowsEditing = false
+            possibleAttachedImages.sourceType = .PhotoLibrary
+            self.presentViewController(possibleAttachedImages, animated: true, completion: nil)
+        }
+        attachedAlertView.addAction(photosAction)
+        presentViewController(attachedAlertView, animated: true, completion: nil)
+    }
+
+    // MARK: -- UITableViewDelegate
     override public func tableView(tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
         if model.tableMode == UIModel.Mode.Search {
