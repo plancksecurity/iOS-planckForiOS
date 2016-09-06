@@ -47,6 +47,7 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
     let comp = "ComposeViewController"
 
     let unwindToEmailListMailSentSegue = "unwindToEmailListMailSentSegue"
+    @IBOutlet weak var attachedButton: UIButton!
 
     /** Constant that is used for checking user input on recipient text fields */
     let newline = "\n"
@@ -925,6 +926,14 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
             model.recipientCell = recipientCellsByTextView[textView]
             updateContacts()
         }
+    }
+
+    public func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo
+                            info: [String : AnyObject]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            print(pickedImage)
+        }
+        dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
