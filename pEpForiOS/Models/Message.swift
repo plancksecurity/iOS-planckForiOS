@@ -177,6 +177,8 @@ public extension IMessage {
      - Returns: A tuple consisting of an IMAP command string for updating
      the flags for this message, and a dictionary suitable for using pantomime
      for the actual execution.
+     - Note: The generated command will always simply overwrite the flags version
+     on the server with the local one.
      */
     public func storeCommandForUpdate() -> (String, [NSObject : AnyObject]) {
         // Construct a very minimal pantomime dummy for the info dictionary
@@ -187,15 +189,10 @@ public extension IMessage {
             NSArray.init(object: pantomimeMail)]
 
         var result = "UID STORE \(uid) "
-        if flags.integerValue == 0 && flagsFromServer != 0 {
-            let flagsString = Message.flagsStringFromNumber(flagsFromServer)
-            result += "-FLAGS.SILENT (\(flagsString))"
-            dict[PantomimeFlagsKey] = Message.pantomimeFlagsFromNumber(flagsFromServer)
-        } else {
-            let flagsString = Message.flagsStringFromNumber(flags)
-            result += "+FLAGS.SILENT (\(flagsString))"
-            dict[PantomimeFlagsKey] = Message.pantomimeFlagsFromNumber(flags)
-        }
+        let flagsString = Message.flagsStringFromNumber(flags)
+        result += "FLAGS.SILENT (\(flagsString))"
+
+        dict[PantomimeFlagsKey] = Message.pantomimeFlagsFromNumber(flags)
         return (command: result, dictionary: dict)
     }
 }
