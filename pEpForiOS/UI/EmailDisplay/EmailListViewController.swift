@@ -211,13 +211,16 @@ class EmailListViewController: UITableViewController {
                 UIHelper.putString(nil, toLabel: cell.dateLabel)
             }
 
+            if (isImportantMessage(email) && isReadedMessage(email)) {
+                cell.isImportantImage.backgroundColor = UIColor.blueColor()
+                cell.isImportantImage.layer.borderWidth = 2
+                cell.isImportantImage.layer.borderColor = UIColor.orangeColor().CGColor
+            }
             if (isImportantMessage(email)) {
-                print("Este mensaje es importe!!!!")
                 cell.isImportantImage.hidden = false
                 cell.isImportantImage.backgroundColor = UIColor.orangeColor()
             }
             if (isReadedMessage(email)) {
-                print("Este mensaje esta leido!!!!  \(email.flagSeen.boolValue)")
                 cell.isImportantImage.hidden = true
             }
         }

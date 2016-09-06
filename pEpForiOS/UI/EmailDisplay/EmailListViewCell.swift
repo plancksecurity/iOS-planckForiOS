@@ -25,7 +25,6 @@ class EmailListViewCell: UITableViewCell {
         isImportantImage.layer.cornerRadius = isImportantImage.frame.size.width / 2
         isImportantImage.clipsToBounds = true
 
-        isImportantImage.layer.borderWidth = 2
         isImportantImage.hidden = false
         isImportantImage.backgroundColor = UIColor.blueColor()
     }
