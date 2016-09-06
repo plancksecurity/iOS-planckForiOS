@@ -492,26 +492,40 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
     @IBAction func attachedField(sender: AnyObject) {
 
         let attachedAlertView = UIAlertController()
-        attachedAlertView.title = "AttachedFiles"
-        attachedAlertView.message = "Choose one option"
-        let videosAction = UIAlertAction(title: "Documents", style: UIAlertActionStyle.Default) {
-            UIAlertAction in
-        }
+        attachedAlertView.title = NSLocalizedString("AttachedFiles",
+                          comment: "Title for attached files alert view")
+        attachedAlertView.message = NSLocalizedString("Choose one option",
+        comment: "Message for attached alert view")
+
+        let videosAction = UIAlertAction(
+            title: NSLocalizedString("Videos",
+            comment: "Title for Video action in attached files alert view"),
+            style: UIAlertActionStyle.Default) {
+                UIAlertAction in
+            }
         attachedAlertView.addAction(videosAction)
 
-        let documentAction = UIAlertAction(title: "Photos", style: UIAlertActionStyle.Default) {
+        let documentAction = UIAlertAction(
+            title: NSLocalizedString(
+                "Documents",
+                comment: "Title for document action in attached files alert view"),
+            style: UIAlertActionStyle.Default) {
             UIAlertAction in
         }
         attachedAlertView.addAction(documentAction)
-        let photosAction = UIAlertAction(title: "Videos", style: UIAlertActionStyle.Default) {
+
+        let photosAction = UIAlertAction(title: NSLocalizedString(
+            "Photo",
+            comment: "Title for photos action in attached files alert view"),
+            style: UIAlertActionStyle.Default) {
             UIAlertAction in
-            let possibleAttachedImages = UIImagePickerController.init()
-            possibleAttachedImages.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
-            possibleAttachedImages.delegate = self
-            possibleAttachedImages.allowsEditing = false
-            possibleAttachedImages.sourceType = .PhotoLibrary
-            self.presentViewController(possibleAttachedImages, animated: true, completion: nil)
-        }
+                let possibleAttachedImages = UIImagePickerController.init()
+                possibleAttachedImages.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
+                possibleAttachedImages.delegate = self
+                possibleAttachedImages.allowsEditing = false
+                possibleAttachedImages.sourceType = .PhotoLibrary
+                self.presentViewController(possibleAttachedImages, animated: true, completion: nil)
+            }
         attachedAlertView.addAction(photosAction)
         presentViewController(attachedAlertView, animated: true, completion: nil)
     }
