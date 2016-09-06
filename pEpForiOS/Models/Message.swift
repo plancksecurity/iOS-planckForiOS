@@ -107,6 +107,8 @@ public extension IMessage {
 
         msg.setFolder(folder)
 
+        msg.setFlags(CWFlags.init(number: flags))
+
         return msg
     }
 

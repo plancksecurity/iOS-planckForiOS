@@ -676,6 +676,7 @@ public class Model: IModel {
         // sync flags
         if let flags = message.flags() {
             mail.flagsFromServer = NSNumber.init(short: flags.rawFlagsAsShort())
+            mail.flags = mail.flagsFromServer
             mail.flagSeen = flags.contain(.Seen)
             mail.flagAnswered = flags.contain(.Answered)
             mail.flagFlagged = flags.contain(.Flagged)
