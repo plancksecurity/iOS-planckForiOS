@@ -24,6 +24,7 @@
 		431144C11CC1202E0007639D /* _Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144BF1CC1202E0007639D /* _Message.swift */; };
 		431798731CF85181007DD655 /* TCPConnectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798721CF85181007DD655 /* TCPConnectionTest.swift */; };
 		431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798761CF87FE6007DD655 /* ReferenceCounter.swift */; };
+		4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */; };
 		431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */; };
 		431AE5D51D2EC0C000F609D3 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D41D2EC0C000F609D3 /* ComposeViewController.swift */; };
 		431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */; };
@@ -222,6 +223,7 @@
 		431798721CF85181007DD655 /* TCPConnectionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPConnectionTest.swift; sourceTree = "<group>"; };
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageToAttachmentOperation.swift; sourceTree = "<group>"; };
 		431ACE661CD35356009EA48E /* VerifySmtpConnectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifySmtpConnectionOperation.swift; sourceTree = "<group>"; };
 		431AE5D41D2EC0C000F609D3 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 				43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */,
 				43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */,
 				43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */,
+				4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -1025,6 +1028,7 @@
 				43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */,
+				4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
 				43ED53781CC77F95006AB156 /* SMTPSettingsTableView.swift in Sources */,

@@ -35,6 +35,11 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
          Is there network activity (e.g., sending the mail?)
          */
         var networkActivity = false
+
+        /**
+         If there are attachments, they should be stored here, and displayed in the view.
+         */
+        var attachments = [SimpleAttachment]()
     }
 
     var model: UIModel = UIModel.init()
@@ -169,6 +174,23 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if let forwardedMessage = forwardedMessage() {
+            // If we forward a message, add its contents as data
+            if let ac = appConfig {
+                let op = MessageToAttachmentOperation.init(
+                    message: forwardedMessage, coreDataUtil: ac.coreDataUtil)
+                op.completionBlock = {
+                    GCD.onMain() {
+                        if let attch = op.attachment {
+                            self.model.attachments.append(attch)
+                            // TODO: Update display!
+                        }
+                    }
+                }
+                operationQueue.addOperation(op)
+            }
+        }
+
         updateViewFromRecipients()
     }
 
@@ -426,16 +448,45 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
             return
         }
 
-        message.references = om.references
+        setupMessageReferences(om, message: message, model: model)
+    }
 
-        // Handle references (see https://cr.yp.to/immhf/thread.html)
+    /**
+     Sets up the references between a parent message (i.e., a message replied to),
+     and a child message (i.e., the message containing the reply).
+     See https://cr.yp.to/immhf/thread.html for general strategy.
+     */
+    func setupMessageReferences(parent: IMessage, message: IMessage, model: IModel) {
+        // Inherit all references from the parent
+        message.references = parent.references
+
+        // Add the parent to the references
         if let references = message.references.mutableCopy() as? NSMutableOrderedSet {
-            if let omid = om.messageID {
+            if let omid = parent.messageID {
                 let ref = model.insertOrUpdateMessageReference(omid)
                 references.addObject(ref)
                 message.references = references
             }
         }
+    }
+
+    /**
+     Updates the given message with data from the forwarded message,
+     if it exists. That means mainly the references.
+     - Note: The forwarded mail attachment was already added to the model,
+     it will be handled by the general attachment handling in another function.
+     */
+    func populateMessageWithForwardedData(message: IMessage) {
+        guard let om = forwardedMessage() else {
+            return
+        }
+
+        guard let model = appConfig?.model else {
+            Log.warnComponent(comp, "Can't do anything without model")
+            return
+        }
+
+        // TODO: Message references needed?
     }
 
     // MARK: -- Actions
@@ -462,6 +513,7 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
         populateMessageWithViewData(msg, account: account, model: appC.model)
         populateMessageWithReplyData(msg)
+        populateMessageWithForwardedData(msg)
 
         model.networkActivity = true
         updateNetworkActivity()
@@ -618,6 +670,18 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         return nil
     }
 
+    /**
+     - Returns: The message that has to be forwarded.
+     */
+    func forwardedMessage() -> IMessage? {
+        if composeMode == .Forward {
+            if let om = originalMessage {
+                return om
+            }
+        }
+        return nil
+    }
+
     override public func tableView(tableView: UITableView,
                             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let recipientCellID = "RecipientCell"
@@ -695,8 +759,9 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     cell.bodyTextView.selectedRange = NSRange.init(location: 0, length: 0)
                 }
 
-                // Give it the focus, if it's not a pure compose
-                if composeMode != .Normal {
+                // Give it the focus, if it's not a reply. For non-replies, the to text field
+                // will get the focus.
+                if composeMode == .ReplyFrom || composeMode == .ReplyAll {
                     cell.bodyTextView.becomeFirstResponder()
                 }
 
