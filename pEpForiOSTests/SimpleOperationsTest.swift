@@ -595,6 +595,8 @@ class SimpleOperationsTest: XCTestCase {
                 XCTAssertTrue(false)
                 break
             }
+            XCTAssertNotNil(m.subject)
+            XCTAssertGreaterThan(m.uid.integerValue, 0)
             m.flagFlagged = NSNumber.init(bool: !m.flagFlagged.boolValue)
             m.updateFlags()
         }
