@@ -641,37 +641,21 @@ public class Model: IModel {
             return (nil, false)
         }
 
-        var isFresh = false
         var theMail: IMessage? = existingMessage(message)
         if theMail == nil {
             theMail = insertNewMessage()
-            isFresh = true
         }
 
         let mail = theMail!
 
         mail.folder = folder as! Folder
-
         mail.bodyFetched = message.isInitialized()
-
-        if isFresh || mail.receivedDate != message.receivedDate() {
-            mail.receivedDate = message.receivedDate()
-        }
-        if isFresh || mail.subject != message.subject() {
-            mail.subject = message.subject()
-        }
-        if isFresh || mail.messageID != message.messageID() {
-            mail.messageID = message.messageID()
-        }
-        if isFresh || mail.uid != message.UID() {
-            mail.uid = message.UID()
-        }
-        if isFresh || mail.messageNumber != message.messageNumber() {
-            mail.messageNumber = message.messageNumber()
-        }
-        if isFresh || mail.boundary != message.boundary()?.asciiString() {
-            mail.boundary = message.boundary()?.asciiString()
-        }
+        mail.receivedDate = message.receivedDate()
+        mail.subject = message.subject()
+        mail.messageID = message.messageID()
+        mail.uid = message.UID()
+        mail.messageNumber = message.messageNumber()
+        mail.boundary = message.boundary()?.asciiString()
 
         // sync flags
         if let flags = message.flags() {
