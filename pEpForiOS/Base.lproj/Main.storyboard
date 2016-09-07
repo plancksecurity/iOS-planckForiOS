@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MkG-yt-QmY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MkG-yt-QmY">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -533,11 +533,12 @@
                     </toolbarItems>
                     <connections>
                         <segue destination="8bt-7R-jDE" kind="show" identifier="segueReplyFrom" id="GPW-U8-tyH"/>
+                        <segue destination="8bt-7R-jDE" kind="show" identifier="segueForward" id="E2j-Ld-4K8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmA-rc-hEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6324" y="1176"/>
+            <point key="canvasLocation" x="6352" y="1176"/>
         </scene>
         <!--Trust Words View Controller-->
         <scene sceneID="N0g-A9-3RW">
@@ -1231,6 +1232,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="65D-pi-pr8"/>
-        <segue reference="GPW-U8-tyH"/>
+        <segue reference="E2j-Ld-4K8"/>
     </inferredMetricsTieBreakers>
 </document>

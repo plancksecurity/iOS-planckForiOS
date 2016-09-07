@@ -131,6 +131,9 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
         /** Reply to all */
         case ReplyAll
+
+        /** Forward */
+        case Forward
     }
 
     /**
