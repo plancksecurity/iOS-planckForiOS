@@ -32,7 +32,7 @@ class EmailListViewController: UITableViewController {
 
     struct UIState {
         var isSynching: Bool = false
-        var activeServerPetition: Bool = false
+        var isServerActive: Bool = false
     }
     
     let comp = "EmailListViewController"
@@ -212,16 +212,19 @@ class EmailListViewController: UITableViewController {
             }
 
             if (isImportantMessage(email) && isReadedMessage(email)) {
-                cell.isImportantImage.backgroundColor = UIColor.blueColor()
-                cell.isImportantImage.layer.borderWidth = 2
-                cell.isImportantImage.layer.borderColor = UIColor.orangeColor().CGColor
-            }
-            if (isImportantMessage(email)) {
                 cell.isImportantImage.hidden = false
                 cell.isImportantImage.backgroundColor = UIColor.orangeColor()
             }
-            if (isReadedMessage(email)) {
-                cell.isImportantImage.hidden = true
+            else if (isImportantMessage(email) && !isReadedMessage(email)) {
+                cell.isImportantImage.hidden = false
+                cell.isImportantImage.backgroundColor = UIColor.blueColor()
+                cell.isImportantImage.layer.borderWidth = 2
+                cell.isImportantImage.layer.borderColor = UIColor.orangeColor().CGColor
+            } else if (!isImportantMessage(email) && isReadedMessage(email)) {
+                    cell.isImportantImage.hidden = true
+            } else if (!isImportantMessage(email) && !isReadedMessage(email)) {
+                cell.isImportantImage.hidden = false
+                cell.isImportantImage.backgroundColor = UIColor.blueColor()
             }
         }
     }
@@ -297,11 +300,13 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
     }
 
     func syncFlagsToServer(message: IMessage) {
-        if (self.state.activeServerPetition == false) {
-            self.state.activeServerPetition = true
+        if (self.state.isServerActive == false) {
+            self.state.isServerActive = true
             self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
                 message.folder,
-                completionBlock: { error in})
+                completionBlock: { error in
+                    self.state.isServerActive = false
+                })
         }
     }
 
@@ -322,11 +327,11 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
             { (action, indexPath) in
                 if (self.isImportantMessage(message)) {
                     message.flagFlagged = false
-                    message.updateFlags()
+
                 } else {
                     message.flagFlagged = true
-                    message.updateFlags()
                 }
+                message.updateFlags()
                 self.syncFlagsToServer(message)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
             }
@@ -356,7 +361,6 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         // creating the action
         let deleteAction = UITableViewRowAction(style: .Default, title: localizedDeleteTitle,
                                                 handler: deleteCompletionHandler)
-
         return deleteAction
     }
 
