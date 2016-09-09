@@ -189,16 +189,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="J53-pV-HVD">
-                                            <rect key="frame" x="8" y="8" width="584" height="27"/>
+                                            <rect key="frame" x="8" y="18" width="584" height="7"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="J53-pV-HVD" secondAttribute="trailing" id="Mkk-e8-eQX"/>
-                                        <constraint firstItem="J53-pV-HVD" firstAttribute="top" secondItem="vMd-wF-7Ft" secondAttribute="topMargin" id="Uhx-qn-RpK"/>
+                                        <constraint firstItem="J53-pV-HVD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vMd-wF-7Ft" secondAttribute="topMargin" constant="10" id="Uhx-qn-RpK"/>
                                         <constraint firstItem="J53-pV-HVD" firstAttribute="leading" secondItem="vMd-wF-7Ft" secondAttribute="leadingMargin" id="neX-pe-IhC"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="J53-pV-HVD" secondAttribute="bottom" id="sAe-to-NgW"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="J53-pV-HVD" secondAttribute="bottom" constant="10" id="sAe-to-NgW"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <accessibility key="accessibilityConfiguration">
