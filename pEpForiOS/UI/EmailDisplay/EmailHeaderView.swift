@@ -66,19 +66,19 @@ class EmailHeaderView: UIView {
         var pos = CGPointMake(insetsX, insetsY)
         pos = addFromAtPosition(pos, width: width)
 
-        if message.to.count > 0 {
+        if message.to?.count > 0 {
             pos = addRecipients(message.to,
                                 title: NSLocalizedString("To",
                                     comment: "Header label for email display"),
                                 position: pos, width: width)
         }
-        if message.cc.count > 0 {
+        if message.cc?.count > 0 {
             pos = addRecipients(message.cc,
                                 title: NSLocalizedString("Cc",
                                     comment: "Header label for email display"),
                                 position: pos, width: width)
         }
-        if message.bcc.count > 0 {
+        if message.bcc?.count > 0 {
             pos = addRecipients(message.bcc,
                                 title: NSLocalizedString("Bcc",
                                     comment: "Header label for email display"),
@@ -109,8 +109,11 @@ class EmailHeaderView: UIView {
         preferredSize = CGSizeMake(width, pos.y)
     }
 
-    func addRecipients(recipients: NSOrderedSet, title: String, position: CGPoint,
+    func addRecipients(recipients: NSOrderedSet?, title: String, position: CGPoint,
                        width: CGFloat) -> CGPoint {
+        guard let recs = recipients else {
+            return position
+        }
         var pos = newline(position)
 
         let titleString = "\(title):"
@@ -121,7 +124,7 @@ class EmailHeaderView: UIView {
         var lastUsedLabel = titleLabel
 
         let session = PEPSession.init()
-        for rec in recipients {
+        for rec in recs {
             if let contact = rec as? Contact {
                 let recLabel = recipientBaseLabelWithText(contact.displayString())
                 let privacyColor = PEPUtil.privacyColorForContact(contact, session: session)

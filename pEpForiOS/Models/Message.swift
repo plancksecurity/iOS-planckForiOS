@@ -30,9 +30,9 @@ public class Message: _Message, IMessage {
 public extension IMessage {
     func allRecipienst() -> NSOrderedSet {
         let recipients: NSMutableOrderedSet = []
-        recipients.addObjectsFromArray(to.array)
-        recipients.addObjectsFromArray(cc.array)
-        recipients.addObjectsFromArray(bcc.array)
+        recipients.addObjectsFromOptionalArray(to?.array)
+        recipients.addObjectsFromOptionalArray(cc?.array)
+        recipients.addObjectsFromOptionalArray(bcc?.array)
         return recipients
     }
 
@@ -41,14 +41,16 @@ public extension IMessage {
 
     }
 
-    func collectContacts(contacts: NSOrderedSet,
+    func collectContacts(contacts: NSOrderedSet?,
                          asPantomimeReceiverType receiverType: PantomimeRecipientType,
                                                  inout intoTargetArray target: [CWInternetAddress]) {
-        for obj in contacts {
-            if let theContact = obj as? IContact {
-                let addr = internetAddressFromContact(theContact)
-                addr.setType(receiverType)
-                target.append(addr)
+        if let cs = contacts {
+            for obj in cs {
+                if let theContact = obj as? IContact {
+                    let addr = internetAddressFromContact(theContact)
+                    addr.setType(receiverType)
+                    target.append(addr)
+                }
             }
         }
     }
@@ -97,9 +99,11 @@ public extension IMessage {
         msg.setRecipients(recipients)
 
         var refs: [String] = []
-        for ref in references {
-            let refString: String = (ref as! MessageReference).messageID
-            refs.append(refString)
+        if let theRefs = references {
+            for ref in theRefs {
+                let refString: String = (ref as! MessageReference).messageID
+                refs.append(refString)
+            }
         }
         msg.setReferences(refs)
 
