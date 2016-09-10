@@ -32,7 +32,7 @@ class EmailListViewController: UITableViewController {
 
     struct UIState {
         var isSynching: Bool = false
-        var isServerActive: Bool = false
+        var isSyncingFlagsActive: Bool = false
     }
     
     let comp = "EmailListViewController"
@@ -300,12 +300,12 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
     }
 
     func syncFlagsToServer(message: IMessage) {
-        if (self.state.isServerActive == false) {
-            self.state.isServerActive = true
+        if (self.state.isSyncingFlagsActive == false) {
+            self.state.isSyncingFlagsActive = true
             self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
                 message.folder,
                 completionBlock: { error in
-                    self.state.isServerActive = false
+                    self.state.isSyncingFlagsActive = false
                 })
         }
     }

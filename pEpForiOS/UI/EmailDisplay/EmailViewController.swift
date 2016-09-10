@@ -24,9 +24,10 @@ class EmailViewController: UIViewController {
 
     struct UIState {
         var loadingMail = false
+        var syncingFlags = false
     }
 
-    let state = UIState()
+    var state = UIState()
     var appConfig: AppConfig!
     let headerView = EmailHeaderView.init()
     var webView: WKWebView!
@@ -46,14 +47,29 @@ class EmailViewController: UIViewController {
         updateContents()
     }
 
+    func syncFlagsToServer(message: IMessage) {
+        if (state.syncingFlags == false) {
+            state.syncingFlags = true
+            appConfig.grandOperator.syncFlagsToServerForFolder(
+                message.folder,
+                completionBlock: { error in
+                    self.state.syncingFlags = false
+            })
+        }
+    }
+
     func updateContents() {
         // If the contentInset.top is already set, this means the view never
         // really disappeared. So there is nothing to update in that case.
         headerView.message = message
         headerView.update(view.bounds.size.width)
 
-        if webView.scrollView.contentInset.top == 0 {
+        // Mark as read. Duh!
+        message.flagSeen = true
+        message.updateFlags()
+        appConfig.model.save()
 
+        if webView.scrollView.contentInset.top == 0 {
             loadWebViewContent()
 
             let headerViewSize = headerView.preferredSize
