@@ -278,9 +278,9 @@ public class PEPUtil {
             dict[kPepShortMessage] = subject
         }
 
-        dict[kPepTo] = message.to?.map({ return pepContact($0 as! IContact) })
-        dict[kPepCC] = message.cc?.map({ return pepContact($0 as! IContact) })
-        dict[kPepBCC] = message.bcc?.map({ return pepContact($0 as! IContact) })
+        dict[kPepTo] = message.to.map() { pepContact($0 as! Contact) }
+        dict[kPepCC] = message.cc.map() { pepContact($0 as! Contact) }
+        dict[kPepBCC] = message.bcc.map() { pepContact($0 as! Contact) }
 
         if let longMessage = message.longMessage {
             dict[kPepLongMessage] = longMessage
@@ -299,10 +299,8 @@ public class PEPUtil {
         dict[kPepAttachments] = message.attachments.map() { pepAttachment($0 as! IAttachment) }
 
         var refs = [String]()
-        if let messageRefs = message.references {
-            for ref in messageRefs {
-                refs.append(ref.messageID)
-            }
+        for ref in message.references {
+            refs.append(ref.messageID)
         }
         if refs.count > 0 {
             dict[kPepReferences] = refs

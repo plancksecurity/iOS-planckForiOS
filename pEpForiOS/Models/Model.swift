@@ -846,11 +846,3 @@ public class Model: IModel {
         return predicate
     }
 }
-
-extension NSMutableOrderedSet {
-    func addObjectsFromOptionalArray(array: [AnyObject]?) {
-        if let ar = array {
-            addObjectsFromArray(ar)
-        }
-    }
-}

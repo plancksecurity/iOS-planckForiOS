@@ -71,11 +71,9 @@ public class FolderModelOperation: ConcurrentBaseOperation {
             numberOfMessages: 0)
         folderItems.append(item)
 
-        if let children = folder.children {
-            for fol in children {
-                if let f = fol as? IFolder {
-                    processFolder(f, level: level + 1)
-                }
+        for fol in folder.children {
+            if let f = fol as? IFolder {
+                processFolder(f, level: level + 1)
             }
         }
     }

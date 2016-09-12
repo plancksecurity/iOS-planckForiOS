@@ -9,15 +9,6 @@
 #ifndef pEpForiOS_Bridging_Header_h
 #define pEpForiOS_Bridging_Header_h
 
-#pragma mark -- Core Data
-
-#import "Models/machine/_Account.h"
-#import "Models/machine/_Attachment.h"
-#import "Models/machine/_Contact.h"
-#import "Models/machine/_Folder.h"
-#import "Models/machine/_Message.h"
-#import "Models/machine/_MessageReference.h"
-
 #pragma mark -- Pantomime headers
 
 #import "Pantomime/CWConstants.h"

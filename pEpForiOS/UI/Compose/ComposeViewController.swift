@@ -462,7 +462,7 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         message.references = parent.references
 
         // Add the parent to the references
-        if let references = message.references?.mutableCopy() as? NSMutableOrderedSet {
+        if let references = message.references.mutableCopy() as? NSMutableOrderedSet {
             if let omid = parent.messageID {
                 let ref = model.insertOrUpdateMessageReference(omid)
                 references.addObject(ref)

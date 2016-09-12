@@ -238,32 +238,30 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(message?.longMessage, pepMailOrig[kPepLongMessage] as? String)
         XCTAssertEqual(message?.longMessageFormatted, pepMailOrig[kPepLongMessageFormatted]
             as? String)
-        XCTAssertEqual(message?.references?.count, referenced.count)
+        XCTAssertEqual(message?.references.count, referenced.count)
         if let m = message {
             var counter = 0
-            if let refs = m.references {
-                for ref in refs {
-                    XCTAssertEqual(ref.messageID, referenced[counter])
-                    if counter == 1 {
-                        XCTAssertNotNil(ref as? MessageReference)
-                        if let r = ref as? MessageReference {
-                            XCTAssertNotNil(r.message)
-                        }
+            for ref in m.references {
+                XCTAssertEqual(ref.messageID, referenced[counter])
+                if counter == 1 {
+                    XCTAssertNotNil(ref as? MessageReference)
+                    if let r = ref as? MessageReference {
+                        XCTAssertNotNil(r.message)
                     }
-                    counter = counter + 1
                 }
+                counter = counter + 1
             }
         }
 
-        XCTAssertEqual(message?.to?.count, 1)
+        XCTAssertEqual(message?.to.count, 1)
         let tosOpt = message?.to
         XCTAssertNotNil(tosOpt)
 
-        XCTAssertEqual(message?.cc?.count, 1)
+        XCTAssertEqual(message?.cc.count, 1)
         let ccsOpt = message?.cc
         XCTAssertNotNil(ccsOpt)
 
-        XCTAssertEqual(message?.bcc?.count, 1)
+        XCTAssertEqual(message?.bcc.count, 1)
         let bccsOpt = message?.bcc
         XCTAssertNotNil(bccsOpt)
 
@@ -374,15 +372,15 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(message?.longMessage, longMessage)
         XCTAssertEqual(message?.longMessageFormatted, longMessageFormatted)
 
-        XCTAssertEqual(message?.to?.count, 1)
+        XCTAssertEqual(message?.to.count, 1)
         let tosOpt = message?.to
         XCTAssertNotNil(tosOpt)
 
-        XCTAssertEqual(message?.cc?.count, 1)
+        XCTAssertEqual(message?.cc.count, 1)
         let ccsOpt = message?.cc
         XCTAssertNotNil(ccsOpt)
 
-        XCTAssertEqual(message?.bcc?.count, 1)
+        XCTAssertEqual(message?.bcc.count, 1)
         let bccsOpt = message?.bcc
         XCTAssertNotNil(bccsOpt)
 
