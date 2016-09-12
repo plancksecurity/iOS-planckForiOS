@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Email List-->
@@ -242,11 +243,18 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="VPF-Wy-8RY">
-                        <barButtonItem key="rightBarButtonItem" title="Send" id="whn-9f-Amb">
-                            <connections>
-                                <action selector="sendButtonTapped:" destination="8bt-7R-jDE" id="nvY-gc-nB5"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Send" id="whn-9f-Amb">
+                                <connections>
+                                    <action selector="sendButtonTapped:" destination="8bt-7R-jDE" id="nvY-gc-nB5"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="add" id="kiC-d0-eOT">
+                                <connections>
+                                    <action selector="attachedField:" destination="8bt-7R-jDE" id="41M-lg-8lC"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="sendButton" destination="whn-9f-Amb" id="12l-JN-IwB"/>
