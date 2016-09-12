@@ -56,6 +56,7 @@ popd
 mkdir ~/src
 cd ~/src
 
+git clone https://github.com/chiunam/CTAssetsPickerController.git
 git clone https://github.com/fdik/libetpan
 
 hg clone https://cacert.pep.foundation/dev/repos/pantomime-iOS/

@@ -9,7 +9,11 @@
 #ifndef pEpForiOS_Bridging_Header_h
 #define pEpForiOS_Bridging_Header_h
 
-#pragma mark -- Pantomime headers
+#pragma mark -- CTAssetsPickerController Headers
+
+#import "CTAssetsPickerController/CTAssetsGridView.h"
+
+#pragma mark -- Pantomime Headers
 
 #import "Pantomime/CWConstants.h"
 #import "Pantomime/CWFolder.h"
