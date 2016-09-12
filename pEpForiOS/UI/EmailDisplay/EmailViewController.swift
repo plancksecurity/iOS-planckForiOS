@@ -74,8 +74,8 @@ class EmailViewController: UIViewController {
     }
 
     func loadWebViewContent() {
-        let fontSize = UIFont.systemFontSize()
-        let font = UIFont.systemFontOfSize(fontSize)
+        let font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+        let fontSize = font.pointSize
         let fontFamily = font.familyName
 
         if let url = NSURL.init(string: "file:///") {
