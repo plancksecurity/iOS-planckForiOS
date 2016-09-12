@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ComposeViewHelper {
+public class ComposeViewHelper {
     /**
      Builds a pEp mail dictionary from all the related views. This is just a quick
      method for checking the pEp color rating, it's not exhaustive!
      */
-    static func pepMailFromViewForCheckingRating(vc: ComposeViewController) -> PEPMail? {
+    public static func pepMailFromViewForCheckingRating(vc: ComposeViewController) -> PEPMail? {
             var message = PEPMail()
             for (_, cell) in vc.recipientCells {
                 let tf = cell.recipientTextView

@@ -27,23 +27,23 @@ class MiscTests: XCTestCase {
     }
 
     func testExtractRecipientFromText() {
-        XCTAssertNil(ComposeViewController.extractRecipientFromText("", aroundCaretPosition: 5))
-        XCTAssertNil(ComposeViewController.extractRecipientFromText("01", aroundCaretPosition: 3))
-        XCTAssertNil(ComposeViewController.extractRecipientFromText("001,002",
+        XCTAssertNil(ComposeViewHelper.extractRecipientFromText("", aroundCaretPosition: 5))
+        XCTAssertNil(ComposeViewHelper.extractRecipientFromText("01", aroundCaretPosition: 3))
+        XCTAssertNil(ComposeViewHelper.extractRecipientFromText("001,002",
             aroundCaretPosition: 4))
-        XCTAssertEqual(ComposeViewController.extractRecipientFromText(
+        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
             "001,002", aroundCaretPosition: 5), "002")
-        XCTAssertEqual(ComposeViewController.extractRecipientFromText(
+        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
             "001, 002 ", aroundCaretPosition: 6), "002")
-        XCTAssertNil(ComposeViewController.extractRecipientFromText(
+        XCTAssertNil(ComposeViewHelper.extractRecipientFromText(
             "to: 001, 002 ", aroundCaretPosition: 3))
-        XCTAssertEqual(ComposeViewController.extractRecipientFromText(
+        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
             "to: 001, 002 ", aroundCaretPosition: 4), "001")
-        XCTAssertEqual(ComposeViewController.extractRecipientFromText(
+        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
             "to: 001, 002 ", aroundCaretPosition: 7), "001")
-        XCTAssertNil(ComposeViewController.extractRecipientFromText(
+        XCTAssertNil(ComposeViewHelper.extractRecipientFromText(
             "to: 001, 002 ", aroundCaretPosition: 8))
-        XCTAssertEqual(ComposeViewController.extractRecipientFromText(
+        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
             "to: 001, 002 ", aroundCaretPosition: 9), "002")
     }
 }
