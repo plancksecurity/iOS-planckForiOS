@@ -11,7 +11,7 @@ import UIKit
 class SubjectTableViewCell: UITableViewCell {
     @IBOutlet weak var subjectTextField: UITextField!
 
-    override public func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.None
     }
