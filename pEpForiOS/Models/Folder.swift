@@ -17,19 +17,9 @@ public enum FolderType: Int {
     case Inbox
 
     /**
-     Contains emails that are currently in progress, still being worked on by the user.
-     */
-    case LocalDraft
-
-    /**
      Contains emails that have not been sent, but should. User has tappend send button.
      */
     case LocalOutbox
-
-    /**
-     Local sent folder
-     */
-    case LocalSent
 
     /**
      Remote sent folder
@@ -59,7 +49,7 @@ public enum FolderType: Int {
     /**
      The list of folder kinds that have to be created locally
      */
-    public static let allValuesToCreate = [LocalDraft, LocalOutbox, LocalSent]
+    public static let allValuesToCreate = [LocalOutbox]
 
     /**
      A list of types to check folders from remote server for categorization.
@@ -74,12 +64,8 @@ public enum FolderType: Int {
             return .Normal
         case FolderType.Inbox.rawValue:
             return .Inbox
-        case FolderType.LocalDraft.rawValue:
-            return .LocalDraft
         case FolderType.LocalOutbox.rawValue:
             return .LocalOutbox
-        case FolderType.LocalSent.rawValue:
-            return .LocalSent
         case FolderType.Sent.rawValue:
             return .Sent
         case FolderType.Drafts.rawValue:
@@ -115,12 +101,8 @@ public enum FolderType: Int {
         case .Inbox:
             // Don't actually use this for the INBOX, always use `ImapSync.defaultImapInboxName`!
             return ["Inbox"]
-        case .LocalDraft:
-            return ["Local Drafts"]
         case .LocalOutbox:
-            return ["Local Outbox"]
-        case .LocalSent:
-            return ["Local Sent"]
+            return ["Outbox"]
         case .Sent:
             return ["Sent"]
         case .Drafts:
@@ -150,7 +132,7 @@ public enum FolderType: Int {
         switch self {
         case .Inbox, .Trash, .Normal, .Spam, .Archive:
             return false
-        case .LocalDraft, .LocalOutbox, .LocalSent, .Sent, .Drafts:
+        case .LocalOutbox, .Sent, .Drafts:
             return true
         }
     }
@@ -160,7 +142,7 @@ public enum FolderType: Int {
      */
     public func isRemote() -> Bool {
         switch self {
-        case .LocalSent, .LocalDraft, .LocalOutbox:
+        case .LocalOutbox:
             return false
         default:
             return true
