@@ -178,15 +178,9 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
             for cw in cwMessages {
                 if let msg = self.model.messageByUID(Int(cw.UID()),
                     folderName: self.targetFolderName) {
-                    if let flags = cw.flags() {
-                        msg.flags = NSNumber.init(short: flags.rawFlagsAsShort())
-                        msg.flagsFromServer = msg.flags
-                    } else {
-                        self.errorOperation(NSLocalizedString(
-                            "UID STORE: Response for message without flags",
-                            comment: "Technical error"), logMessage:
-                            "messageStoreCompleted message without flags, UID: \(cw.UID())")
-                    }
+                    let flags = cw.flags()
+                    msg.flags = NSNumber.init(short: flags.rawFlagsAsShort())
+                    msg.flagsFromServer = msg.flags
                 } else {
                     self.errorOperation(NSLocalizedString(
                         "UID STORE: Response for message that can't be found",

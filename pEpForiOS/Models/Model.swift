@@ -658,16 +658,15 @@ public class Model: IModel {
         mail.boundary = message.boundary()?.asciiString()
 
         // sync flags
-        if let flags = message.flags() {
-            mail.flagsFromServer = NSNumber.init(short: flags.rawFlagsAsShort())
-            mail.flags = mail.flagsFromServer
-            mail.flagSeen = flags.contain(.Seen)
-            mail.flagAnswered = flags.contain(.Answered)
-            mail.flagFlagged = flags.contain(.Flagged)
-            mail.flagDeleted = flags.contain(.Deleted)
-            mail.flagDraft = flags.contain(.Draft)
-            mail.flagRecent = flags.contain(.Recent)
-        }
+        let flags = message.flags()
+        mail.flagsFromServer = NSNumber.init(short: flags.rawFlagsAsShort())
+        mail.flags = mail.flagsFromServer
+        mail.flagSeen = flags.contain(.Seen)
+        mail.flagAnswered = flags.contain(.Answered)
+        mail.flagFlagged = flags.contain(.Flagged)
+        mail.flagDeleted = flags.contain(.Deleted)
+        mail.flagDraft = flags.contain(.Draft)
+        mail.flagRecent = flags.contain(.Recent)
 
         return (mail, false)
     }

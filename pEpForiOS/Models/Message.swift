@@ -107,7 +107,8 @@ public extension IMessage {
 
         msg.setFolder(folder)
 
-        msg.setFlags(CWFlags.init(number: flags))
+        // Avoid roundtrips to the server, just set the flags directly.
+        msg.flags().replaceWithFlags(CWFlags.init(number: flags))
 
         return msg
     }

@@ -140,9 +140,15 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testSyncFlags() {
-        //testPrefetchMailsOperation()
-        /*
-        persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(<#T##connectInfos: [ConnectInfo]##[ConnectInfo]#>, folderName: <#T##String?#>, completionBlock: <#T##GrandOperatorCompletionBlock?##GrandOperatorCompletionBlock?##(error: NSError?) -> Void#>)
+        let emailsFetched = expectationWithDescription("emailsFetched")
+        persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(
+            [persistentSetup.connectionInfo], folderName: nil, completionBlock: { error in
+                XCTAssertNil(error)
+                emailsFetched.fulfill()
+        })
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
 
         guard let inbox = persistentSetup.model.folderByType(
             .Inbox, email: persistentSetup.accountEmail) else {
@@ -150,52 +156,29 @@ class GrandOperatorTests: XCTestCase {
                 return
         }
 
+        var expectations = [XCTestExpectation]()
+        var counter = 0
         for elm in inbox.messages {
             guard let m = elm as? IMessage else {
                 XCTAssertTrue(false)
                 break
             }
-            m.flagSeen = NSNumber.init(bool: !m.flagSeen.boolValue)
+            m.flagFlagged = NSNumber.init(bool: !m.flagFlagged.boolValue)
             m.updateFlags()
+
+            let exp = expectationWithDescription("flagsSynced\(counter)")
+            expectations.append(exp)
+            counter += 1
+            /*
+            persistentSetup.grandOperator.syncFlagsToServerForFolder(
+                m.folder, completionBlock: { error in
+                    XCTAssertNil(error)
+                    exp.fulfill()
+            })
+             */
         }
-
-        var ops = [SyncFlagsToServerOperation]()
-        for _ in 1...3 {
-            let op = SyncFlagsToServerOperation.init(
-                folder: inbox, connectionManager: persistentSetup.connectionManager,
-                coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
-            let expEmailsSynced = expectationWithDescription("expEmailsSynced")
-            op.completionBlock = {
-                expEmailsSynced.fulfill()
-            }
-            ops.append(op)
-        }
-
-        let backgroundQueue = NSOperationQueue.init()
-
-        // Serialize all ops
-        backgroundQueue.maxConcurrentOperationCount = 1
-
-        for op in ops {
-            backgroundQueue.addOperation(op)
-        }
-
         waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            for op in ops {
-                XCTAssertFalse(op.hasErrors())
-            }
         })
-
-        var first = true
-        for op in ops {
-            if first {
-                XCTAssertEqual(op.numberOfMessagesSynced, inbox.messages.count)
-                first = false
-            } else {
-                XCTAssertEqual(op.numberOfMessagesSynced, 0)
-            }
-        }
-         */
     }
 }
