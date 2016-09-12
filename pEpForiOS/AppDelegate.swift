@@ -39,6 +39,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return dirs.first
     }
 
+    func dumpFontSizes() {
+        let styles = [UIFontTextStyleBody, UIFontTextStyleCaption1, UIFontTextStyleCaption2,
+                      UIFontTextStyleFootnote, UIFontTextStyleHeadline, UIFontTextStyleSubheadline]
+        for sty in styles {
+            let font = UIFont.preferredFontForTextStyle(sty)
+            print("\(sty) \(font)")
+        }
+    }
+
     func application(application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [NSObject: AnyObject]?) -> Bool {
 

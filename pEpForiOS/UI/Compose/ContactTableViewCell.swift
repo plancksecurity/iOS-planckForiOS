@@ -14,6 +14,7 @@ class ContactTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.None
+        labelContactDisplayName.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
     }
 
     var contact: IContact? = nil {

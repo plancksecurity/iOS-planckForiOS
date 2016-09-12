@@ -650,6 +650,9 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     recipientCellsByTextView[cell.recipientTextView] = cell
                     recipientCells[indexPath.row] = cell
 
+                    cell.recipientTextView.font = UIFont.preferredFontForTextStyle(
+                        UIFontTextStyleBody)
+
                     if cell.recipientType == .To {
                         if let om = replyFromMessage() {
                             if let from = om.from {
@@ -673,6 +676,8 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                 // Store for later access
                 subjectTextField = cell.subjectTextField
 
+                cell.subjectTextField.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+
                 if let m = replyFromMessage() {
                     subjectTextField?.text = ReplyUtil.replySubjectForMail(m)
                 }
@@ -686,6 +691,8 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
                 // Store the body text field for later access
                 longBodyMessageTextView = cell.bodyTextView
+
+                cell.bodyTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
 
                 let replyAll = composeMode == .ReplyAll
                 if let om = replyFromMessage() {
