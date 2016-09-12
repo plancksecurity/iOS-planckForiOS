@@ -24,7 +24,6 @@ class EmailViewController: UIViewController {
 
     struct UIState {
         var loadingMail = false
-        var syncingFlags = false
     }
 
     var state = UIState()
@@ -48,14 +47,11 @@ class EmailViewController: UIViewController {
     }
 
     func syncFlagsToServer(message: IMessage) {
-        if (state.syncingFlags == false) {
-            state.syncingFlags = true
-            appConfig.grandOperator.syncFlagsToServerForFolder(
-                message.folder,
-                completionBlock: { error in
-                    self.state.syncingFlags = false
-            })
-        }
+        appConfig.grandOperator.syncFlagsToServerForFolder(
+            message.folder,
+            completionBlock: { error in
+                // TODO: Show error
+        })
     }
 
     func updateContents() {

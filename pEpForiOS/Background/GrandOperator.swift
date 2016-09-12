@@ -35,17 +35,6 @@ public protocol IGrandOperator: class {
                          completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asychronously prefetches emails (headers, like subject, to, etc.) for the given `ConnectInfo`
-     and the given folder and stores them into the persistent store.
-
-     - parameter connectInfo: Denotes the server and other connection parameters
-     - parameter completionBlock: Will be called on completion of the operation, with
-     a non-nil error object if there was an error during execution.
-     */
-    func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
-                        completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
      Asynchronously fetches the folder list.
 
      - parameter connectInfo: Denotes the server and other connection parameters
@@ -122,6 +111,11 @@ public class GrandOperator: IGrandOperator {
         return Model.init(context: self.coreDataUtil.managedObjectContext)
     }()
 
+    /**
+     Used for storing running flag sync operations to avoid duplicate work.
+     */
+    private var flagSyncOperations = [String: BaseOperation]()
+
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
@@ -175,13 +169,6 @@ public class GrandOperator: IGrandOperator {
             }
         }
         op.start()
-    }
-
-    public func prefetchEmails(connectInfo: ConnectInfo, folder: String?,
-                        completionBlock: GrandOperatorCompletionBlock?) {
-        let op = PrefetchEmailsOperation.init(grandOperator: self, connectInfo: connectInfo,
-                                              folder: folder)
-        kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
     public func fetchFolders(connectInfo: ConnectInfo,
@@ -325,13 +312,23 @@ public class GrandOperator: IGrandOperator {
 
     public func syncFlagsToServerForFolder(folder: IFolder,
                                            completionBlock: GrandOperatorCompletionBlock?) {
-        let op = SyncFlagsToServerOperation.init(
-            folder: folder, connectionManager: connectionManager,
-            coreDataUtil: coreDataUtil)
-        op.completionBlock = {
-            let firstError = op.errors.first
+        let hashable = folder.hashableID()
+        var operation: BaseOperation? = flagSyncOperations[hashable]
+        let blockOrig = operation?.completionBlock
+
+        if operation == nil {
+            operation = SyncFlagsToServerOperation.init(
+                folder: folder, connectionManager: connectionManager,
+                coreDataUtil: coreDataUtil)
+        }
+
+        operation?.completionBlock = {
+            blockOrig?()
+            let firstError = operation?.errors.first
             completionBlock?(error: firstError)
         }
-        backgroundQueue.addOperation(op)
+        if let op = operation {
+            backgroundQueue.addOperation(op)
+        }
     }
 }

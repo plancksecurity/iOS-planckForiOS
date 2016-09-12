@@ -174,3 +174,13 @@ public protocol IFolder: _IFolder {
 @objc(Folder)
 public class Folder: _Folder, IFolder {
 }
+
+public extension IFolder {
+    /**
+     Extracts a unique String ID that you can use as a key in dictionaries.
+     - Returns: A (hashable) String that is unique for each folder.
+     */
+    public func hashableID() -> String {
+        return "\(folderType.integerValue) \(name) \(account.email)"
+    }
+}
