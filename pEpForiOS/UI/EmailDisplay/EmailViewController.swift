@@ -46,14 +46,6 @@ class EmailViewController: UIViewController {
         updateContents()
     }
 
-    func syncFlagsToServer(message: IMessage) {
-        appConfig.grandOperator.syncFlagsToServerForFolder(
-            message.folder,
-            completionBlock: { error in
-                // TODO: Show error
-        })
-    }
-
     func updateContents() {
         // If the contentInset.top is already set, this means the view never
         // really disappeared. So there is nothing to update in that case.

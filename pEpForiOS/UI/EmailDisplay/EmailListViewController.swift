@@ -302,7 +302,9 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
             message.folder,
             completionBlock: { error in
-                // TODO: Show error
+                if let err = error {
+                    UIHelper.displayError(err, controller: self)
+                }
         })
     }
 
