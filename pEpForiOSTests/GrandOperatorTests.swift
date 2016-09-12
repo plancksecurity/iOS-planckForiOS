@@ -14,8 +14,6 @@ import pEpForiOS
 class GrandOperatorTests: XCTestCase {
     let comp = "GrandOperatorTests"
 
-    let waitTime: NSTimeInterval = 1000
-
     let correct = TestData.connectInfo
     var persistentSetup: PersistentSetup!
 
@@ -49,7 +47,7 @@ class GrandOperatorTests: XCTestCase {
             exp.fulfill()
         })
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
@@ -95,7 +93,7 @@ class GrandOperatorTests: XCTestCase {
                 callbackNumber += 1
                 expFoldersFetched.fulfill()
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             if let folders = self.persistentSetup.model.foldersByPredicate(
                 NSPredicate.init(value: true), sortDescriptors: nil) {
@@ -121,7 +119,7 @@ class GrandOperatorTests: XCTestCase {
             XCTAssertNil(error)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -136,7 +134,7 @@ class GrandOperatorTests: XCTestCase {
             XCTAssertNil(error)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -182,7 +180,7 @@ class GrandOperatorTests: XCTestCase {
             backgroundQueue.addOperation(op)
         }
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             for op in ops {
                 XCTAssertFalse(op.hasErrors())

@@ -15,8 +15,6 @@ import pEpForiOS
  Tests for things not covered elsewhere.
  */
 class MiscTests: XCTestCase {
-    let waitTime: NSTimeInterval = 10
-
     func testSignedNumbers32() {
         let u: UInt32 = UInt32.max
         let s: Int32 = Int32(bitPattern: u)

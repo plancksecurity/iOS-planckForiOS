@@ -153,8 +153,6 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
 }
 
 class ImapSyncTest: XCTestCase {
-    let waitTime: NSTimeInterval = 1000
-
     var coreDataUtil: InMemoryCoreDataUtil!
 
     override func setUp() {
@@ -186,7 +184,7 @@ class ImapSyncTest: XCTestCase {
 
         sync.start()
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertTrue(del.errorOccurred)
             XCTAssertTrue(del.connectionTimeout)
@@ -204,7 +202,7 @@ class ImapSyncTest: XCTestCase {
 
         sync.start()
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertTrue(!del.errorOccurred)
             XCTAssertTrue(del.authSuccess)
@@ -222,7 +220,7 @@ class ImapSyncTest: XCTestCase {
 
         sync.start()
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertTrue(!del.errorOccurred)
             XCTAssertTrue(del.foldersFetched)
@@ -244,7 +242,7 @@ class ImapSyncTest: XCTestCase {
 
         sync.start()
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertTrue(!del.errorOccurred)
             XCTAssertTrue(del.folderOpenSuccess)
@@ -293,7 +291,7 @@ class ImapSyncTest: XCTestCase {
 
         sync.start()
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(del.errorOccurred)
             XCTAssertTrue(del.folderOpenSuccess)
@@ -326,7 +324,7 @@ class ImapSyncTest: XCTestCase {
 
         sync.start()
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertTrue(!del.errorOccurred)
             XCTAssertTrue(del.authSuccess)

@@ -12,8 +12,6 @@ import CoreData
 import pEpForiOS
 
 class SimpleOperationsTest: XCTestCase {
-    let waitTime: NSTimeInterval = 10
-
     var persistentSetup: PersistentSetup!
     var connectInfo: ConnectInfo!
 
@@ -38,7 +36,7 @@ class SimpleOperationsTest: XCTestCase {
 
         NSOperationQueue.init().addOperation(op)
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -54,7 +52,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         op.start()
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
@@ -78,7 +76,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         op.start()
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
@@ -113,7 +111,7 @@ class SimpleOperationsTest: XCTestCase {
         }
         let backgroundQueue = NSOperationQueue.init()
         backgroundQueue.addOperation(op)
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
                 self.persistentSetup.model.messageCountByPredicate(
@@ -158,7 +156,7 @@ class SimpleOperationsTest: XCTestCase {
             backgroundQueue.addOperation(op)
         }
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
                 self.persistentSetup.model.folderCountByPredicate(
@@ -180,7 +178,7 @@ class SimpleOperationsTest: XCTestCase {
             expFoldersStored.fulfill()
         }
         queue.addOperation(op)
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             guard let folders = self.persistentSetup.model.foldersByPredicate(
                 NSPredicate.init(value: true), sortDescriptors: nil) else {
@@ -210,7 +208,7 @@ class SimpleOperationsTest: XCTestCase {
 
             let queue = NSOperationQueue.init()
             queue.addOperation(opCreateSpecialFolders)
-            waitForExpectationsWithTimeout(waitTime, handler: { error in
+            waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
             })
 
@@ -279,7 +277,7 @@ class SimpleOperationsTest: XCTestCase {
             expEncrypted.fulfill()
         }
         queue.addOperation(encOp)
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(encryptionData.mailsToSend.count, 3)
             var encounteredBCC = false
@@ -336,7 +334,7 @@ class SimpleOperationsTest: XCTestCase {
             expEncrypted.fulfill()
         }
         queue.addOperation(encOp)
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
@@ -367,7 +365,7 @@ class SimpleOperationsTest: XCTestCase {
             expDecrypted.fulfill()
         }
         queue.addOperation(decrOp)
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNotEqual(newMail.subject, subject)
             XCTAssertNotEqual(newMail.longMessage, longMessage)
@@ -409,7 +407,7 @@ class SimpleOperationsTest: XCTestCase {
         let queue = NSOperationQueue.init()
         queue.addOperation(sendOp)
 
-        waitForExpectationsWithTimeout(waitTime * 2, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime * 2, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(sendOp.errors.count, 0)
             XCTAssertEqual(encryptionData.mailsSent.count, numMails)
@@ -442,7 +440,7 @@ class SimpleOperationsTest: XCTestCase {
         let backgroundQueue = NSOperationQueue.init()
         backgroundQueue.addOperation(op)
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
                 self.persistentSetup.model.folderCountByPredicate(
@@ -490,7 +488,7 @@ class SimpleOperationsTest: XCTestCase {
         let backgroundQueue = NSOperationQueue.init()
         backgroundQueue.addOperation(op)
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
                 self.persistentSetup.model.folderCountByPredicate(
@@ -550,7 +548,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         op.start()
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
         })
@@ -573,7 +571,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         op.start()
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
         })
@@ -610,7 +608,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         op.start()
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
         })
@@ -662,7 +660,7 @@ class SimpleOperationsTest: XCTestCase {
             backgroundQueue.addOperation(op)
         }
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             for op in ops {
                 XCTAssertFalse(op.hasErrors())

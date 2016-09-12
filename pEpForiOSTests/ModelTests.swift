@@ -20,7 +20,6 @@ func ==<T1: Equatable, T2: Equatable, T3: Equatable>(
 
 class ModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
-    let waitTime: NSTimeInterval = 10
     let accountEmail = "unittest.ios.4@peptest.ch"
 
     override func setUp() {
@@ -107,7 +106,7 @@ class ModelTests: XCTestCase {
             XCTAssertEqual(ab.contactsBySnippet("test").count, 4)
         }
         TestUtil.runAddressBookTest(testBlock, addressBook: ab, testCase: self,
-                                    waitTime: waitTime)
+                                    waitTime: TestUtil.waitTime)
     }
 
     func testAddressBookTransfer() {
@@ -124,7 +123,7 @@ class ModelTests: XCTestCase {
                 contactsCount = contacts.count
                 expAddressBookTransfered.fulfill()
             })
-            self.waitForExpectationsWithTimeout(self.waitTime, handler: { error in
+            self.waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
             })
             let model = persistentSetup.model
@@ -134,7 +133,7 @@ class ModelTests: XCTestCase {
         }
 
         TestUtil.runAddressBookTest(testBlock, addressBook: ab, testCase: self,
-                                    waitTime: waitTime)
+                                    waitTime: TestUtil.waitTime)
     }
 
     func testInsertOrUpdatePantomimeMail() {
@@ -239,29 +238,29 @@ class ModelTests: XCTestCase {
         m.flagDeleted = true
         m.updateFlags()
         XCTAssertEqual(m.storeCommandForUpdate().0,
-                       "UID STORE 1024 +FLAGS.SILENT (\\Deleted)")
+                       "UID STORE 1024 FLAGS.SILENT (\\Deleted)")
 
         // Check if 'difference' is taken into account
         m.flagsFromServer = NSNumber.init(short: CWFlags.init(
             flags: PantomimeFlag.Deleted).rawFlagsAsShort())
         m.updateFlags()
         XCTAssertEqual(m.storeCommandForUpdate().0,
-                       "UID STORE 1024 +FLAGS.SILENT (\\Deleted)")
+                       "UID STORE 1024 FLAGS.SILENT (\\Deleted)")
 
         m.flagAnswered = true
         m.updateFlags()
         XCTAssertEqual(m.storeCommandForUpdate().0,
-                       "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Deleted)")
+                       "UID STORE 1024 FLAGS.SILENT (\\Answered \\Deleted)")
 
         m.flagSeen = true
         m.updateFlags()
         XCTAssertEqual(m.storeCommandForUpdate().0,
-                       "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Seen \\Deleted)")
+                       "UID STORE 1024 FLAGS.SILENT (\\Answered \\Seen \\Deleted)")
 
         m.flagFlagged = true
         m.updateFlags()
         XCTAssertEqual(
             m.storeCommandForUpdate().0,
-            "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")
+            "UID STORE 1024 FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")
     }
 }

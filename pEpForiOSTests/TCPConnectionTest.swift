@@ -11,8 +11,6 @@ import XCTest
 import pEpForiOS
 
 class TCPConnectionTest: XCTestCase {
-    let waitTime: NSTimeInterval = 10
-
     /**
      Test for verifying there are no retention cycles in CWTCPConnection
      */
@@ -70,7 +68,7 @@ class TCPConnectionTest: XCTestCase {
             delegate.expReceivedEventWrite = expectationWithDescription("write")
             connection?.delegate = delegate
             connection?.connect()
-            waitForExpectationsWithTimeout(waitTime, handler: { error in
+            waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
                 connection = nil
             })

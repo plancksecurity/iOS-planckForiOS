@@ -18,8 +18,6 @@ import pEpForiOS
 class GrandOperatorVerifyTests: XCTestCase {
     let comp = "GrandOperatorVerifyTests"
 
-    let waitTime: NSTimeInterval = 10
-
     let correct = TestData.connectInfo
     var persistentSetup: PersistentSetup!
 
@@ -60,7 +58,7 @@ class GrandOperatorVerifyTests: XCTestCase {
         let queue = NSOperationQueue.init()
         queue.addOperation(BackgroundOp.init(expRun: expRun, expDeinit: expDeinit))
 
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -77,7 +75,7 @@ class GrandOperatorVerifyTests: XCTestCase {
             XCTAssertTrue(error?.code == Constants.NetworkError.Timeout.rawValue)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -96,7 +94,7 @@ class GrandOperatorVerifyTests: XCTestCase {
             XCTAssertEqual(error!.code, Constants.NetworkError.AuthenticationFailed.rawValue)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -109,7 +107,7 @@ class GrandOperatorVerifyTests: XCTestCase {
             XCTAssertNotNil(error)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -122,7 +120,7 @@ class GrandOperatorVerifyTests: XCTestCase {
             XCTAssertNotNil(error)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -135,7 +133,7 @@ class GrandOperatorVerifyTests: XCTestCase {
             XCTAssertNotNil(error)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -146,7 +144,7 @@ class GrandOperatorVerifyTests: XCTestCase {
             XCTAssertNil(error)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }

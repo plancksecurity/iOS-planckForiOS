@@ -11,8 +11,6 @@ import XCTest
 import pEpForiOS
 
 class PEPUtilTests: XCTestCase {
-    let waitTime: NSTimeInterval = 10
-
     /**
      Those keys in contacts should not interfere with equality tests.
      */
@@ -426,7 +424,7 @@ class PEPUtilTests: XCTestCase {
             expMyselfFinished.fulfill()
             identityMyself = identity
         })
-        waitForExpectationsWithTimeout(waitTime, handler: { error in
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNotNil(identityMyself)
             XCTAssertNotNil(identityMyself?[kPepFingerprint])
@@ -511,13 +509,13 @@ class PEPUtilTests: XCTestCase {
                 expAddressBookTransfered.fulfill()
             })
 
-            self.waitForExpectationsWithTimeout(self.waitTime, handler: { error in
+            self.waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
             })
         }
 
         TestUtil.runAddressBookTest(testBlock, addressBook: ab, testCase: self,
-                                    waitTime: waitTime)
+                                    waitTime: TestUtil.waitTime)
         XCTAssertNotNil(addressBookContact)
 
         if let abContact = addressBookContact {

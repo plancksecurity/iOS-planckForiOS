@@ -12,6 +12,11 @@ import XCTest
 import pEpForiOS
 
 class TestUtil {
+    /**
+     The maximum time most tests are allowed to run.
+     */
+    static let waitTime: NSTimeInterval = 10
+
     static let connectonShutDownWaitTime: NSTimeInterval = 1
     static let numberOfTriesConnectonShutDown = 5
 
@@ -210,7 +215,7 @@ class TestUtil {
             addressBook.authorize({ ab in
                 exp.fulfill()
             })
-            testCase.waitForExpectationsWithTimeout(waitTime, handler: { error in
+            testCase.waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
                 XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
             })

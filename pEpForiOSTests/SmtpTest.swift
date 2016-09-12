@@ -14,8 +14,6 @@ import CoreData
 import pEpForiOS
 
 class SmtpTest: XCTestCase {
-    let waitTime: NSTimeInterval = 10
-
     func testSimpleAuth() {
         class MyDelegate: SmtpSendDefaultDelegate {
             var authenticatedExpectation: XCTestExpectation?
@@ -31,7 +29,7 @@ class SmtpTest: XCTestCase {
             del.authenticatedExpectation = expectationWithDescription("authenticatedExpectation")
             smtp.delegate = del
             smtp.start()
-            waitForExpectationsWithTimeout(waitTime, handler: { error in
+            waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
                 // Adapt this for different servers
                 XCTAssertEqual(smtp.bestAuthMethod(), AuthMethod.Login)
