@@ -169,13 +169,11 @@ class GrandOperatorTests: XCTestCase {
             let exp = expectationWithDescription("flagsSynced\(counter)")
             expectations.append(exp)
             counter += 1
-            /*
             persistentSetup.grandOperator.syncFlagsToServerForFolder(
                 m.folder, completionBlock: { error in
                     XCTAssertNil(error)
                     exp.fulfill()
             })
-             */
         }
         waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
