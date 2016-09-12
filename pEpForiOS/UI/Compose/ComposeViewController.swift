@@ -47,7 +47,6 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
     let comp = "ComposeViewController"
 
     let unwindToEmailListMailSentSegue = "unwindToEmailListMailSentSegue"
-    @IBOutlet weak var attachedButton: UIButton!
 
     /** Constant that is used for checking user input on recipient text fields */
     let newline = "\n"
@@ -63,6 +62,7 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
     let delimiterChars: NSCharacterSet = NSCharacterSet.init(charactersInString: ":,")
 
     @IBOutlet weak var sendButton: UIBarButtonItem!
+    @IBOutlet weak var attachedButton: UIButton!
 
     /**
      The row number of the cell containing the body of the message for the user to write.
@@ -253,8 +253,8 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         if let uiColor = UIHelper.sendButtonBackgroundColorFromPepColor(color) {
             image = UIHelper.imageFromColor(uiColor)
         }
-        self.sendButton.setBackgroundImage(image, forState: .Normal,
-                                           barMetrics: UIBarMetrics.Default)
+        toSendButton.setBackgroundImage(image, forState: .Normal,
+                                        barMetrics: UIBarMetrics.Default)
     }
 
     /**
@@ -272,7 +272,7 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                 return
             }
             let op = OutgoingMessageColorOperation()
-            op.pepMail = pepMailFromViewForCheckingRating()
+            op.pepMail = ComposeViewHelper.pepMailFromViewForCheckingRating(self)
             op.completionBlock = {
                 if !op.cancelled {
                     if let pepColor = op.pepColorRating {
@@ -308,69 +308,6 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
             navigationItem.rightBarButtonItem = originalRightBarButtonItem
             activityIndicator.stopAnimating()
         }
-    }
-
-    /**
-     Builds a pEp mail dictionary from all the related views. This is just a quick
-     method for checking the pEp color rating, it's not exhaustive!
-     */
-    func pepMailFromViewForCheckingRating() -> PEPMail? {
-        var message = PEPMail()
-        for (_, cell) in recipientCells {
-            let tf = cell.recipientTextView
-            if let text = tf.text {
-                let mailStrings0 = text.removeLeadingPattern(leadingPattern)
-                if !mailStrings0.isOnlyWhiteSpace() {
-                    let mailStrings1 = mailStrings0.componentsSeparatedByString(
-                        recipientStringDelimiter).map() {
-                            $0.trimmedWhiteSpace()
-                    }
-
-                    let mailStrings2 = mailStrings1.filter() {
-                        !$0.isOnlyWhiteSpace()
-                    }
-                    let model = appConfig?.model
-                    let contacts: [PEPContact] = mailStrings2.map() {
-                        if let c = model?.contactByEmail($0) {
-                            return PEPUtil.pepContact(c)
-                        }
-                        return PEPUtil.pepContactFromEmail($0, name: $0.namePartOfEmail())
-                    }
-                    if contacts.count > 0 {
-                        if let rt = cell.recipientType {
-                            var pepKey: String? = nil
-                            switch rt {
-                            case .To:
-                                pepKey = kPepTo
-                            case .CC:
-                                pepKey = kPepCC
-                            case .BCC:
-                                pepKey = kPepBCC
-                            }
-                            if let key = pepKey {
-                                message[key] = contacts
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        guard let account = appConfig?.currentAccount else {
-            Log.warnComponent(comp, "Need valid account for determining pEp rating")
-            return nil
-        }
-        message[kPepFrom] = PEPUtil.pepContactFromEmail(
-            account.email, name: account.nameOfTheUser)
-
-        if let subjectText = subjectTextField?.text {
-            message[kPepShortMessage] = subjectText
-        }
-        if let bodyText = longBodyMessageTextView?.text {
-            message[kPepLongMessage] = bodyText
-        }
-        message[kPepOutgoing] = true
-        return message
     }
 
     /**
@@ -620,7 +557,7 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         if model.tableMode == UIModel.Mode.Search {
             if let cell = model.recipientCell {
                 let c = model.contacts[indexPath.row]
-                if let r = ComposeViewController.currentRecipientRangeFromText(
+                if let r = ComposeViewHelper.currentRecipientRangeFromText(
                     cell.recipientTextView.text,
                     aroundCaretPosition: cell.recipientTextView.selectedRange.location) {
                     let newString = cell.recipientTextView.text.stringByReplacingCharactersInRange(
@@ -781,87 +718,6 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
     // MARK: -- Handling recipient text input
 
-    public static func currentRecipientRangeFromText(
-        text: NSString, aroundCaretPosition: Int) -> NSRange? {
-        let comma: UnicodeScalar = ","
-        let colon: UnicodeScalar = ":"
-        var start = -1
-        var end = -1
-
-        // We want the character that just was changed "under the cursor"
-        let location = aroundCaretPosition - 1
-
-        var maxIndex = text.length
-        if maxIndex == 0 {
-            return nil
-        }
-
-        maxIndex = maxIndex - 1
-
-        if location > maxIndex {
-            return nil
-        }
-
-        var index = location
-
-        // Check if the user just entered a comma or colon. If yes, that's it.
-        let ch = text.characterAtIndex(index)
-        if UInt32(ch) == comma.value || UInt32(ch) == colon.value {
-            return nil
-        }
-
-        // find beginning
-        while true {
-            if index < 0 {
-                start = 0
-                break
-            }
-            let ch = text.characterAtIndex(index)
-            if UInt32(ch) == comma.value || UInt32(ch) == colon.value {
-                start = index + 1
-                break
-            }
-            index = index - 1
-        }
-
-        // find end
-        index = location
-        while true {
-            if index >= maxIndex {
-                end = maxIndex + 1
-                break
-            }
-            let ch = text.characterAtIndex(index)
-            if UInt32(ch) == comma.value {
-                end = index
-                break
-            }
-            index = index + 1
-        }
-
-        if end != -1 && start != -1 {
-            let r = NSRange.init(location: start, length: end - start)
-            if r.location >= 0 && r.location + r.length <= text.length {
-                return r
-            }
-        }
-
-        return nil
-    }
-
-    /**
-     Tries to determine the currently edited part in a recipient text, given the
-     text and the last known caret position.
-     */
-    public static func extractRecipientFromText(
-        text: NSString, aroundCaretPosition: Int) -> String? {
-        if let r = self.currentRecipientRangeFromText(
-            text, aroundCaretPosition: aroundCaretPosition) {
-            return text.substringWithRange(r).trimmedWhiteSpace()
-        }
-        return nil
-    }
-
     /**
      Gives contacts in the given text view the pEp color rating.
      */
@@ -919,7 +775,7 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
     }
 
     func updateSearch(textView: UITextView) {
-        if let searchSnippet = ComposeViewController.extractRecipientFromText(
+        if let searchSnippet = ComposeViewHelper.extractRecipientFromText(
             textView.text, aroundCaretPosition: textView.selectedRange.location) {
             model.searchSnippet = searchSnippet
             model.tableMode  = .Search
