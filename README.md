@@ -56,11 +56,6 @@ popd
 mkdir ~/src
 cd ~/src
 
-git clone https://github.com/chiunam/CTAssetsPickerController.git
-pushd CTAssetsPickerController
-./create_bundle.sh
-popd
-
 git clone https://github.com/fdik/libetpan
 
 hg clone https://cacert.pep.foundation/dev/repos/pantomime-iOS/
