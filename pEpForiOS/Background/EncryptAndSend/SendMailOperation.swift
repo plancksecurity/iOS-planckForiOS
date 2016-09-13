@@ -38,19 +38,39 @@ public class SendMailOperation: ConcurrentBaseOperation {
         privateMOC.performBlockAndWait({
             let model = Model.init(context: privateMOC)
             guard let account = model.accountByEmail(self.encryptionData.accountEmail) else {
-                self.errors.append(Constants.errorInvalidParameter(
+                self.handleEntryError(Constants.errorInvalidParameter(
                     self.comp,
                     errorMessage: String.localizedStringWithFormat(
                         NSLocalizedString("Could not get account by email: '%s'",
                             comment: "Error message when account could not be retrieved"),
-                        self.encryptionData.accountEmail)))
-                Log.errorComponent(self.comp, error: Constants.errorInvalidParameter(
-                    self.comp,
-                    errorMessage:
-                    "Could not get account by email: \(self.encryptionData.accountEmail)"))
+                        self.encryptionData.accountEmail)),
+                    message: "Could not get account by email: \(self.encryptionData.accountEmail)")
                 return
             }
             connectInfo = account.connectInfo
+
+            guard let outFolder = model.folderByType(.LocalOutbox, email: account.email) else {
+                let error = Constants.errorInvalidParameter(
+                    self.comp, errorMessage: NSLocalizedString("Could not access outbox",
+                        comment: "Internal error"))
+                self.handleEntryError(error, message: "Could not access outbox")
+                return
+            }
+
+            guard let message = privateMOC.objectWithID(
+                self.encryptionData.coreDataMessageID) as? Message else {
+                    let error = Constants.errorInvalidParameter(
+                        self.comp,
+                        errorMessage:
+                        NSLocalizedString("Email for encryption could not be accessed",
+                            comment: "Error message when message to encrypt could not be found."))
+                    self.handleEntryError(error,
+                        message: "Email for encryption could not be accessed")
+                    return
+            }
+
+            message.folder = outFolder as! Folder
+            CoreDataUtil.saveContext(managedObjectContext: privateMOC)
         })
         if let ci = connectInfo {
             smtpSend = encryptionData.connectionManager.smtpConnection(ci)
@@ -81,6 +101,20 @@ public class SendMailOperation: ConcurrentBaseOperation {
         }
         sendNextMailOrMarkAsFinished()
     }
+
+    /**
+     Indicates an error setting up the operation. For now, this is handled
+     the same as any other error, but that might change.
+     */
+    func handleEntryError(error: NSError, message: String) {
+        handleError(error, message: message)
+    }
+
+    func handleError(error: NSError, message: String) {
+        addError(error)
+        Log.errorComponent(comp, errorString: message, error: error)
+        markAsFinished()
+    }
 }
 
 extension SendMailOperation: SmtpSendDelegate {
@@ -90,9 +124,7 @@ extension SendMailOperation: SmtpSendDelegate {
 
     public func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.MessageNotSent)
-        addError(error)
-        Log.infoComponent(comp, "messageNotSent: \(error)")
-        markAsFinished()
+        handleError(error, message: "messageNotSent")
     }
 
     public func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
@@ -100,9 +132,7 @@ extension SendMailOperation: SmtpSendDelegate {
     public func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp,
                                         code: Constants.SmtpErrorCode.TransactionInitiationFailed)
-        addError(error)
-        Log.infoComponent(comp, "transactionInitiationFailed: \(error)")
-        markAsFinished()
+        handleError(error, message: "transactionInitiationFailed")
     }
 
     public func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
@@ -110,18 +140,14 @@ extension SendMailOperation: SmtpSendDelegate {
     public func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp,
                                         code: Constants.SmtpErrorCode.RecipientIdentificationFailed)
-        addError(error)
-        Log.infoComponent(comp, "recipientIdentificationFailed: \(error)")
-        markAsFinished()
+        handleError(error, message: "recipientIdentificationFailed")
     }
 
     public func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
 
     public func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.TransactionResetFailed)
-        addError(error)
-        Log.infoComponent(comp, "transactionResetFailed: \(error)")
-        markAsFinished()
+        handleError(error, message: "transactionResetFailed")
     }
 
     public func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {
@@ -130,39 +156,29 @@ extension SendMailOperation: SmtpSendDelegate {
 
     public func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.AuthenticationFailed)
-        addError(error)
-        Log.infoComponent(comp, "authenticationFailed: \(error)")
-        markAsFinished()
+        handleError(error, message: "authenticationFailed")
     }
 
     public func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?) {}
 
     public func connectionLost(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.ConnectionLost)
-        addError(error)
-        Log.infoComponent(comp, "connectionEstablished: \(error)")
-        markAsFinished()
+        handleError(error, message: "connectionEstablished")
     }
 
     public func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.ConnectionTerminated)
-        addError(error)
-        Log.infoComponent(comp, "connectionTerminated: \(error)")
-        markAsFinished()
+        handleError(error, message: "connectionTerminated")
     }
 
     public func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.ConnectionTimedOut)
-        addError(error)
-        Log.infoComponent(comp, "connectionTimedOut: \(error)")
-        markAsFinished()
+        handleError(error, message: "connectionTimedOut")
     }
 
     public func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.RequestCancelled)
-        addError(error)
-        Log.infoComponent(comp, "requestCancelled: \(error)")
-        markAsFinished()
+        handleError(error, message: "requestCancelled")
     }
 
     public func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?) {}

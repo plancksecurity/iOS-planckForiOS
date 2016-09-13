@@ -107,21 +107,71 @@ class GrandOperatorTests: XCTestCase {
         })
     }
 
+    func createSpecialFolders(account: IAccount) {
+        let expSpecialFoldersCreated = expectationWithDescription("expSpecialFoldersCreated")
+        persistentSetup.grandOperator.createSpecialLocalFolders(
+            account.email, completionBlock: { error in
+                XCTAssertNil(error)
+                expSpecialFoldersCreated.fulfill()
+        })
+
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+    }
+
     func testSendMail() {
         testFetchFolders()
 
-        let account = persistentSetup.model.insertAccountFromConnectInfo(TestData.connectInfo)
-            as? Account
-        XCTAssertNotNil(account)
+        guard let account = persistentSetup.model.insertAccountFromConnectInfo(
+            TestData.connectInfo) as? Account else {
+                XCTAssertTrue(false)
+                return
+        }
+
+        createSpecialFolders(account)
+
         let msg = createMail()
         let exp = expectationWithDescription("mailSent")
-        persistentSetup.grandOperator.sendMail(msg, account: account!, completionBlock: { error in
+        persistentSetup.grandOperator.sendMail(msg, account: account, completionBlock: { error in
             XCTAssertNil(error)
             exp.fulfill()
         })
         waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
+    }
+
+    func testSendMailFail() {
+        testFetchFolders()
+
+        guard let account = persistentSetup.model.insertAccountFromConnectInfo(
+            TestData.connectInfoWrongPassword) as? Account else {
+                XCTAssertTrue(false)
+                return
+        }
+
+        createSpecialFolders(account)
+
+        guard let outFolder = persistentSetup.model.folderByType(
+            .LocalOutbox, email:account.email) else {
+                XCTAssertTrue(false)
+                return
+        }
+
+        XCTAssertEqual(outFolder.messages.count, 0)
+
+        let msg = createMail()
+        let exp = expectationWithDescription("mailSent")
+        persistentSetup.grandOperator.sendMail(msg, account: account, completionBlock: { error in
+            XCTAssertNotNil(error)
+            exp.fulfill()
+        })
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        XCTAssertEqual(outFolder.messages.count, 1)
     }
 
     func testSaveDraft() {
