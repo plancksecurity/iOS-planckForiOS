@@ -374,11 +374,12 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSendMailOperation() {
+        let message = persistentSetup.model.insertNewMessage()
+
         let encryptionData = EncryptionData.init(
             connectionManager: persistentSetup.connectionManager,
             coreDataUtil: persistentSetup.coreDataUtil,
-            // fake, but not needed for the test
-            coreDataMessageID: (persistentSetup.account as! Account).objectID,
+            coreDataMessageID: (message as! Message).objectID,
             accountEmail: persistentSetup.account.email, outgoing: true)
 
         let from = PEPUtil.identityFromAccount(persistentSetup.account, isMyself: true)
@@ -400,11 +401,18 @@ class SimpleOperationsTest: XCTestCase {
 
         let expMailsSent = expectationWithDescription("expMailsSent")
 
+        let opSpecialFolders = CreateLocalSpecialFoldersOperation.init(
+            coreDataUtil: persistentSetup.coreDataUtil,
+            accountEmail: persistentSetup.account.email)
+
         let sendOp = SendMailOperation.init(encryptionData: encryptionData)
         sendOp.completionBlock = {
             expMailsSent.fulfill()
         }
+        sendOp.addDependency(opSpecialFolders)
+
         let queue = NSOperationQueue.init()
+        queue.addOperation(opSpecialFolders)
         queue.addOperation(sendOp)
 
         waitForExpectationsWithTimeout(TestUtil.waitTime * 2, handler: { error in

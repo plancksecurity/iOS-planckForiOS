@@ -35,7 +35,7 @@ public class SendMailOperation: ConcurrentBaseOperation {
     override public func main() {
         let privateMOC = encryptionData.coreDataUtil.privateContext()
         var connectInfo: ConnectInfo? = nil
-        privateMOC.performBlockAndWait({
+        privateMOC.performBlock() {
             let model = Model.init(context: privateMOC)
             guard let account = model.accountByEmail(self.encryptionData.accountEmail) else {
                 self.handleEntryError(Constants.errorInvalidParameter(
@@ -71,13 +71,14 @@ public class SendMailOperation: ConcurrentBaseOperation {
 
             message.folder = outFolder as! Folder
             CoreDataUtil.saveContext(managedObjectContext: privateMOC)
-        })
-        if let ci = connectInfo {
-            smtpSend = encryptionData.connectionManager.smtpConnection(ci)
-            smtpSend.delegate = self
-            smtpSend.start()
-        } else {
-            markAsFinished()
+
+            if let ci = connectInfo {
+                self.smtpSend = self.encryptionData.connectionManager.smtpConnection(ci)
+                self.smtpSend.delegate = self
+                self.smtpSend.start()
+            } else {
+                self.markAsFinished()
+            }
         }
     }
 
