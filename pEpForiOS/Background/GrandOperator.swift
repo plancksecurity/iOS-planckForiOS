@@ -81,7 +81,8 @@ public protocol IGrandOperator: class {
     /**
      Saves the given email as a draft, both on the server and locally.
      */
-    func saveDraftMail(email: IMessage, completionBlock: GrandOperatorCompletionBlock?)
+    func saveDraftMail(message: IMessage, account: Account,
+                       completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Syncs all mails' flags in the given folder that are out of date to the server.
@@ -306,8 +307,22 @@ public class GrandOperator: IGrandOperator {
         backgroundQueue.addOperation(opSaveSent)
     }
 
-    public func saveDraftMail(message: IMessage, completionBlock: GrandOperatorCompletionBlock?) {
-        completionBlock?(error: Constants.errorNotImplemented(comp))
+    public func saveDraftMail(message: IMessage, account: Account,
+                              completionBlock: GrandOperatorCompletionBlock?) {
+        guard let folder = model.folderByType(.Drafts, email: account.email) else {
+            completionBlock?(error: Constants.errorInvalidParameter(self.comp,
+                errorMessage: "Did not find the drafts folder"))
+            return
+        }
+        let opStore = AppendSingleMessageOperation.init(
+            message: message, account: account, targetFolder: folder,
+            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
+        opStore.completionBlock = {
+            GCD.onMain() {
+                completionBlock?(error: opStore.errors.first)
+            }
+        }
+        backgroundQueue.addOperation(opStore)
     }
 
     public func syncFlagsToServerForFolder(folder: IFolder,

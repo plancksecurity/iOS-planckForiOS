@@ -182,18 +182,61 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testSaveDraft() {
-        let account = persistentSetup.model.insertAccountFromConnectInfo(TestData.connectInfo)
-            as? Account
-        XCTAssertNotNil(account)
-        let msg = createMail()
-        let exp = expectationWithDescription("draftSaved")
-        persistentSetup.grandOperator.saveDraftMail(msg, completionBlock: { error in
+        guard let account = persistentSetup.model.insertAccountFromConnectInfo(
+            TestData.connectInfo) as? Account else {
+                XCTAssertTrue(false)
+                return
+        }
+
+        let expFoldersFetched = expectationWithDescription("foldersFetched")
+        persistentSetup.grandOperator.fetchFolders(correct, completionBlock: { error in
             XCTAssertNil(error)
-            exp.fulfill()
+            expFoldersFetched.fulfill()
         })
         waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
+
+        guard let draftsFolder = persistentSetup.model.folderByType(
+            .Drafts, email: account.email) else {
+                XCTAssertTrue(false)
+                return
+        }
+
+        let expDraftsFetched = expectationWithDescription("expDraftsFetched")
+        persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(
+            [account.connectInfo], folderName: draftsFolder.name, completionBlock: { error in
+                XCTAssertNil(error)
+                expDraftsFetched.fulfill()
+        })
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        let numDrafts = draftsFolder.messages.count
+
+        let msg = createMail()
+        let expDraftSaved = expectationWithDescription("expDraftSaved")
+        persistentSetup.grandOperator.saveDraftMail(
+            msg, account: account, completionBlock: { error in
+                XCTAssertNil(error)
+                expDraftSaved.fulfill()
+        })
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        let expDraftsFetched2 = expectationWithDescription("expDraftsFetched2")
+        persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(
+            [account.connectInfo], folderName: draftsFolder.name, completionBlock: { error in
+                XCTAssertNil(error)
+                expDraftsFetched2.fulfill()
+        })
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        XCTAssertGreaterThan(draftsFolder.messages.count, numDrafts)
     }
 
     func testSyncFlags() {
