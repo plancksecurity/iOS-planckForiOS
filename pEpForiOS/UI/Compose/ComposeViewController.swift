@@ -72,12 +72,12 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var attachedButton: UIButton!
 
     /**
-     The row number of the cell containing the body of the message for the user to write.
+     The row number of the cell containing the subject of the message for the user to write.
      */
     let subjectRowNumber = 3
 
     /**
-     The row number of the cell containing the subject of the message.
+     The row number of the cell containing the body of the message.
      */
     let bodyTextRowNumber = 4
 
@@ -744,6 +744,15 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     cell.bodyTextView.becomeFirstResponder()
                 }
 
+                if !model.attachments.isEmpty {
+                    for attachment in model.attachments {
+                        let textAttachment = NSTextAttachment.init()
+                        let image = UIImage.init(data:attachment.data)
+                        textAttachment.image = image
+                        let attrAtachement = NSAttributedString.init(attachment: textAttachment)
+                        cell.bodyTextView.attributedText = attrAtachement;
+                    }
+                }
                 return cell
             }
         } else {
@@ -839,7 +848,9 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                 }
             }
         }
-            dismissViewControllerAnimated(true, completion: nil)
+        let indexPath = NSIndexPath(forRow: bodyTextRowNumber, inSection: 0)
+        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
 
