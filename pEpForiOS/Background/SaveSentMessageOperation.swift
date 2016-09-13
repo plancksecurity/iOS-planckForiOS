@@ -150,7 +150,12 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
     }
 
     public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {
-        markAsFinished()
+        privateMOC.performBlock() {
+            let message = self.privateMOC.objectWithID(self.encryptionData.coreDataMessageID)
+            self.privateMOC.deleteObject(message)
+            CoreDataUtil.saveContext(managedObjectContext: self.privateMOC)
+            self.markAsFinished()
+        }
     }
 
     public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {

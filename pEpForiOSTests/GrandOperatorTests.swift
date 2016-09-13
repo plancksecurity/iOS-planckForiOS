@@ -131,6 +131,13 @@ class GrandOperatorTests: XCTestCase {
 
         createSpecialFolders(account)
 
+        guard let outFolder = persistentSetup.model.folderByType(
+            .LocalOutbox, email:account.email) else {
+                XCTAssertTrue(false)
+                return
+        }
+        XCTAssertEqual(outFolder.messages.count, 0)
+
         let msg = createMail()
         let exp = expectationWithDescription("mailSent")
         persistentSetup.grandOperator.sendMail(msg, account: account, completionBlock: { error in
@@ -140,6 +147,7 @@ class GrandOperatorTests: XCTestCase {
         waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
+        XCTAssertEqual(outFolder.messages.count, 0)
     }
 
     func testSendMailFail() {
@@ -158,7 +166,6 @@ class GrandOperatorTests: XCTestCase {
                 XCTAssertTrue(false)
                 return
         }
-
         XCTAssertEqual(outFolder.messages.count, 0)
 
         let msg = createMail()
