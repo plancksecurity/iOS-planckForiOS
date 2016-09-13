@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+//import NSEvent
 
 public class ComposeViewController: UITableViewController, UIImagePickerControllerDelegate,
                                     UINavigationControllerDelegate {
@@ -793,11 +794,29 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
     public func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo
                             info: [String : AnyObject]) {
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            print(pickedImage)
+
+        if let attachedImageURL = info[UIImagePickerControllerReferenceURL] as? NSURL {
+            if let dataAttachedImage =  NSData.init(contentsOfURL: attachedImageURL) {
+                if let attachedImageMediaType = info[UIImagePickerControllerMediaType] as? String {
+                    let simpleAttachmentImage = SimpleAttachment.init(
+                        filename: attachedImageURL.absoluteString,
+                        contentType: attachedImageMediaType,
+                        data:dataAttachedImage)
+                    model.attachments.append(simpleAttachmentImage)
+                }
+            }
         }
-        dismissViewControllerAnimated(true, completion: nil)
+            dismissViewControllerAnimated(true, completion: nil)
     }
+
+
+
+    /*public func detectMouseLocation() {
+        let mouseLocation = NSEvent.mouseLocation();
+        print( "Mouse Location X,Y = \(mouseLocation)" )
+        print( "Mouse Location X = \(mouseLocation.x)" )
+        print( "Mouse Location Y = \(mouseLocation.y)" )
+    }*/
 }
 
 // MARK: -- UITextViewDelegate
