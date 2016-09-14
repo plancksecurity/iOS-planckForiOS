@@ -41,6 +41,12 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
          If there are attachments, they should be stored here, and displayed in the view.
          */
         var attachments = [SimpleAttachment]()
+
+        /**
+         Set to `true` as soon as the user has changed the body text, or added a recipient.
+         Used for determining whether a draft should be stored.
+         */
+        var isDirty = true
     }
 
     var model: UIModel = UIModel.init()
@@ -185,7 +191,7 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     GCD.onMain() {
                         if let attch = op.attachment {
                             self.model.attachments.append(attch)
-                            // TODO: Update display!
+                            // TODO: Update attachment display!
                         }
                     }
                 }
@@ -833,6 +839,7 @@ extension ComposeViewController: UITextViewDelegate {
         } else if let _ = recipientCellsByTextView[textView] {
             updateSearch(textView)
         }
+        model.isDirty = true
     }
 
     public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange,
@@ -850,10 +857,16 @@ extension ComposeViewController: UITextViewDelegate {
                 textView.text = newString
                 colorRecipients(textView)
                 updateViewFromRecipients()
+
+                // Email was modified.
+                // Set this here because in this case textViewDidChange won't catch it.
+                model.isDirty = true
+
                 return false
             }
             updateViewFromRecipients()
         }
+        // setting the model to dirty will be handled by textViewDidChange
         return true
     }
 }
