@@ -783,4 +783,24 @@ public class PEPUtil {
         theSession.updateIdentity(pepC)
         theSession.keyResetTrust(pepC)
     }
+
+    /**
+     Checks the given pEp status and the given encrypted mail for errors and
+     logs them.
+     - Returns: A tuple of the encrypted mail and an error. Both can be nil.
+     */
+    static func checkPepStatus( comp: String, status: PEP_STATUS,
+                                encryptedMail: NSDictionary?) -> (NSDictionary?, NSError?) {
+        if encryptedMail != nil && status == PEP_UNENCRYPTED {
+            // Don't interpret that as an error
+            return (encryptedMail, nil)
+        }
+        if encryptedMail == nil || status != PEP_STATUS_OK {
+            let error = Constants.errorEncryption(comp, status: status)
+            Log.errorComponent(comp, error: Constants.errorInvalidParameter(
+                comp, errorMessage: "Could not encrypt message, pEp status \(status)"))
+            return (encryptedMail, error)
+        }
+        return (encryptedMail, nil)
+    }
 }

@@ -66,8 +66,10 @@ public class EncryptMailOperation: ConcurrentBaseOperation {
                 let pepStatus = session.encryptMessageDict(
                     origMail as [NSObject : AnyObject], extra: nil,
                     dest: &encryptedMail)
-                if let mail = self.checkPepStatus(pepStatus, encryptedMail: encryptedMail) {
-                    mailsToSend.append(mail as PEPMail)
+                let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: pepStatus,
+                    encryptedMail: encryptedMail)
+                if let m = mail {
+                    mailsToSend.append(m as PEPMail)
                 }
             }
             self.encryptionData.mailsToSend = mailsToSend
@@ -78,32 +80,13 @@ public class EncryptMailOperation: ConcurrentBaseOperation {
             var encryptedMail: NSDictionary? = nil
             let status = session.encryptMessageDict(
                 pepMailOrig, identity: ident, dest: &encryptedMail)
-            if let mail = self.checkPepStatus(status, encryptedMail: encryptedMail) {
-                self.encryptionData.mailEncryptedForSelf = mail as PEPMail
+            let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
+                encryptedMail: encryptedMail)
+            if let m = mail {
+                self.encryptionData.mailEncryptedForSelf = m as PEPMail
             }
 
             self.markAsFinished()
         })
-    }
-
-    /**
-     Checks the given pEp status and the given encrypted mail for errors and
-     logs them.
-     - Returns: The encrypted mail, which might be nil.
-     */
-    func checkPepStatus(
-        status: PEP_STATUS, encryptedMail: NSDictionary?) -> NSDictionary? {
-        if encryptedMail != nil && status == PEP_UNENCRYPTED {
-            // Don't interpret that as an error
-            return encryptedMail
-        }
-        if encryptedMail == nil || status != PEP_STATUS_OK {
-            let error = Constants.errorEncryption(self.comp, status: status)
-            self.addError(error)
-            Log.errorComponent(self.comp, error: Constants.errorInvalidParameter(
-                self.comp,
-                errorMessage: "Could not encrypt message, pEp status \(status)"))
-        }
-        return encryptedMail
     }
 }

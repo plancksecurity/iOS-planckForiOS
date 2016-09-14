@@ -14,6 +14,8 @@ public class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
     let messageID: NSManagedObjectID
     let targetFolderID: NSManagedObjectID
+    let accountID: NSManagedObjectID
+
     let connectInfo: ConnectInfo
 
     let connectionManager: ConnectionManager
@@ -30,8 +32,10 @@ public class AppendSingleMessageOperation: ConcurrentBaseOperation {
     public init(message: IMessage, account: IAccount, targetFolder: IFolder,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.messageID = (message as! Message).objectID
-        self.connectInfo = account.connectInfo
         self.targetFolderID = (targetFolder as! Folder).objectID
+        self.accountID = (account as! Account).objectID
+
+        self.connectInfo = account.connectInfo
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
     }
@@ -48,13 +52,31 @@ public class AppendSingleMessageOperation: ConcurrentBaseOperation {
                 else {
                     return
             }
+            guard let account = self.privateMOC.objectWithID(self.accountID) as?
+                IAccount
+                else {
+                    return
+            }
 
             self.targetFolderName = targetFolder.name
-            self.cwMessageToAppend = PEPUtil.pantomimeMailFromMessage(message)
 
-            self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
-            self.imapSync.delegate = self
-            self.imapSync.start()
+            // Encrypt mail
+            let session = PEPSession.init()
+            let ident = PEPUtil.identityFromAccount(account, isMyself: true)
+                as [NSObject : AnyObject]
+            let pepMailOrig = PEPUtil.pepMail(message)
+            var encryptedMail: NSDictionary? = nil
+            let status = session.encryptMessageDict(
+                pepMailOrig, identity: ident, dest: &encryptedMail)
+            let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
+                encryptedMail: encryptedMail)
+            if let m = mail {
+                // Append the email
+                self.cwMessageToAppend = PEPUtil.pantomimeMailFromPep(m as PEPMail)
+                self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+                self.imapSync.delegate = self
+                self.imapSync.start()
+            }
         })
     }
 }
