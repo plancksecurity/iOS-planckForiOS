@@ -153,7 +153,7 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
         privateMOC.performBlock() {
             let message = self.privateMOC.objectWithID(self.encryptionData.coreDataMessageID)
             self.privateMOC.deleteObject(message)
-            CoreDataUtil.saveContext(managedObjectContext: self.privateMOC)
+            CoreDataUtil.saveContext(self.privateMOC)
             self.markAsFinished()
         }
     }

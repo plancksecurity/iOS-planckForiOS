@@ -43,22 +43,25 @@ public class AppendSingleMessageOperation: ConcurrentBaseOperation {
     override public func main() {
         privateMOC.performBlock({
             guard let message = self.privateMOC.objectWithID(self.messageID) as?
-                IMessage
-                else {
+                IMessage else {
                     return
             }
             guard let targetFolder = self.privateMOC.objectWithID(self.targetFolderID) as?
-                IFolder
-                else {
+                Folder else {
                     return
             }
             guard let account = self.privateMOC.objectWithID(self.accountID) as?
-                IAccount
-                else {
+                IAccount else {
                     return
             }
 
+            message.folder = targetFolder
+
+            // In case the append fails, the mail will be easy to find
+            message.uid = 0
+
             self.targetFolderName = targetFolder.name
+            CoreDataUtil.saveContext(self.privateMOC)
 
             // Encrypt mail
             let session = PEPSession.init()
@@ -154,7 +157,11 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
     }
 
     public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {
-        markAsFinished()
+        privateMOC.performBlock({
+            let message = self.privateMOC.objectWithID(self.messageID)
+            self.privateMOC.deleteObject(message)
+            self.markAsFinished()
+        })
     }
 
     public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {

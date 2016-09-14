@@ -131,6 +131,9 @@ class EmailListViewController: UITableViewController {
             return
         }
         print("compose aborted, saving draft")
+        config.appConfig.grandOperator.saveDraftMail(
+            msg, account: msg.folder.account, completionBlock: { error in
+        })
     }
 
     func prepareFetchRequest() {

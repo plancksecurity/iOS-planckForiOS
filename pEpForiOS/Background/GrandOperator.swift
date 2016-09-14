@@ -81,7 +81,7 @@ public protocol IGrandOperator: class {
     /**
      Saves the given email as a draft, both on the server and locally.
      */
-    func saveDraftMail(message: IMessage, account: Account,
+    func saveDraftMail(message: IMessage, account: IAccount,
                        completionBlock: GrandOperatorCompletionBlock?)
 
     /**
@@ -307,7 +307,7 @@ public class GrandOperator: IGrandOperator {
         backgroundQueue.addOperation(opSaveSent)
     }
 
-    public func saveDraftMail(message: IMessage, account: Account,
+    public func saveDraftMail(message: IMessage, account: IAccount,
                               completionBlock: GrandOperatorCompletionBlock?) {
         guard let folder = model.folderByType(.Drafts, email: account.email) else {
             completionBlock?(error: Constants.errorInvalidParameter(self.comp,

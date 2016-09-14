@@ -118,12 +118,12 @@ public class CoreDataUtil: ICoreDataUtil {
     // MARK: - Core Data Saving support
 
     public func saveContext () {
-        CoreDataUtil.saveContext(managedObjectContext: managedObjectContext)
+        CoreDataUtil.saveContext(managedObjectContext)
     }
 
     // MARK: - Extensions
 
-    public static func saveContext(managedObjectContext managedObjectContext: NSManagedObjectContext) {
+    public static func saveContext(managedObjectContext: NSManagedObjectContext) {
         if managedObjectContext.hasChanges {
             do {
                 try managedObjectContext.save()

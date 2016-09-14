@@ -70,7 +70,7 @@ public class SendMailOperation: ConcurrentBaseOperation {
             }
 
             message.folder = outFolder as! Folder
-            CoreDataUtil.saveContext(managedObjectContext: privateMOC)
+            CoreDataUtil.saveContext(privateMOC)
 
             if let ci = connectInfo {
                 self.smtpSend = self.encryptionData.connectionManager.smtpConnection(ci)
