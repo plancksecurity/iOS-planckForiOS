@@ -202,6 +202,33 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         updateViewFromRecipients()
     }
 
+    public override func viewDidAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        overrideBackButton()
+    }
+
+    func overrideBackButton() {
+        let barButton = UIBarButtonItem.init(
+            title: NSLocalizedString("Cancel", comment: "Abort the of message composition"),
+            style: .Plain, target: self, action: #selector(handleSaveDraftQuery))
+        navigationItem.backBarButtonItem = barButton
+    }
+
+    func handleSaveDraftQuery() {
+        let alert = UIAlertController.init(
+            title: nil, message: nil, preferredStyle: .ActionSheet)
+
+        let action = UIAlertAction.init(
+            title: NSLocalizedString(
+                "Cancel", comment: "Abort the abort of message composition :)"),
+            style: .Cancel, handler: { action in
+                print("cancel")
+        })
+        alert.addAction(action)
+
+        presentViewController(alert, animated: true, completion: nil)
+    }
+
     func updateContacts() {
         if let snippet = model.searchSnippet {
             if let privateMOC = appConfig?.coreDataUtil.privateContext() {
