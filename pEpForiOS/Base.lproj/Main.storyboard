@@ -1209,10 +1209,10 @@
             </objects>
             <point key="canvasLocation" x="5484" y="421"/>
         </scene>
-        <!--Custom Navigation View Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="dXO-Q2-oVZ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="MkG-yt-QmY" customClass="CustomNavigationViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="MkG-yt-QmY" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="fif-Hj-SqX">
