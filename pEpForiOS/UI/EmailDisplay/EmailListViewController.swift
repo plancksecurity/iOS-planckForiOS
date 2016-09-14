@@ -59,6 +59,11 @@ class EmailListViewController: UITableViewController {
 
     var refreshController: UIRefreshControl!
 
+    /**
+     The message that should be saved as a draft when compose gets aborted.
+     */
+    var draftMessageToStore: IMessage?
+
     func isReadedMessage(message: IMessage)-> Bool {
         return message.flagSeen.boolValue
     }
@@ -115,6 +120,17 @@ class EmailListViewController: UITableViewController {
     }
 
     @IBAction func mailSentSegue(segue: UIStoryboardSegue) {
+    }
+
+    @IBAction func backFromComposeWithoutSavingDraftSegue(segue: UIStoryboardSegue) {
+    }
+
+    @IBAction func backFromComposeSaveDraftSegue(segue: UIStoryboardSegue) {
+        // TODO: Save draft
+        guard let msg = draftMessageToStore else {
+            return
+        }
+        print("compose aborted, saving draft")
     }
 
     func prepareFetchRequest() {

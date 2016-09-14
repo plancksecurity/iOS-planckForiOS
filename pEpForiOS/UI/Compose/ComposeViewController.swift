@@ -53,7 +53,20 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
     let comp = "ComposeViewController"
 
+    /**
+     Segue name back to email list when email was sent successfully.
+     */
     let unwindToEmailListMailSentSegue = "unwindToEmailListMailSentSegue"
+
+    /**
+     Segue name back to email list when a draft mail should be stored.
+     */
+    let unwindToEmailListSaveDraftSegue = "unwindToEmailListSaveDraftSegue"
+
+    /**
+     Segue name back to email list, doing nothing else.
+     */
+    let unwindToEmailListSegue = "unwindToEmailListSegue"
 
     /** Constant that is used for checking user input on recipient text fields */
     let newline = "\n"
@@ -203,9 +216,19 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         updateViewFromRecipients()
     }
 
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == unwindToEmailListSaveDraftSegue {
+            guard let vc = segue.destinationViewController as? EmailListViewController else {
+                return
+            }
+            vc.draftMessageToStore = messageForSending()
+        } else if segue.identifier == unwindToEmailListSegue {
+        }
+    }
+
     func overrideBackButton() {
         let barButton = UIBarButtonItem.init(
-            title: NSLocalizedString("Cancel", comment: "Abort the of message composition"),
+            title: NSLocalizedString("Cancel", comment: "Abort the message composition"),
             style: .Plain, target: self, action: #selector(handleSaveDraftQuery))
         navigationItem.leftBarButtonItem = barButton
     }
@@ -215,17 +238,33 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
             let alert = UIAlertController.init(
                 title: nil, message: nil, preferredStyle: .ActionSheet)
 
-            let action = UIAlertAction.init(
+            let actionDelete = UIAlertAction.init(
+                title: NSLocalizedString(
+                    "Delete Draft", comment: "Cancel message composition without save"),
+                style: .Destructive, handler: { alert in
+                    self.performSegueWithIdentifier(self.unwindToEmailListSegue,
+                        sender: nil)
+            })
+            alert.addAction(actionDelete)
+
+            let actionSave = UIAlertAction.init(
+                title: NSLocalizedString(
+                    "Save Draft", comment: "Save draft message"),
+                style: .Default, handler: { alert in
+                    self.performSegueWithIdentifier(self.unwindToEmailListSaveDraftSegue,
+                        sender: nil)
+            })
+            alert.addAction(actionSave)
+
+            let actionCancel = UIAlertAction.init(
                 title: NSLocalizedString(
                     "Cancel", comment: "Abort the abort of message composition :)"),
-                style: .Cancel, handler: { action in
-                    print("cancel")
-            })
-            alert.addAction(action)
+                style: .Cancel, handler: nil)
+            alert.addAction(actionCancel)
 
             presentViewController(alert, animated: true, completion: nil)
         } else {
-            navigationController?.popViewControllerAnimated(true)
+            self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: nil)
         }
     }
 
@@ -461,34 +500,51 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         // TODO: Message references needed?
     }
 
-    // MARK: -- Actions
-
-    @IBAction func sendButtonTapped(sender: UIBarButtonItem) {
+    func messageForSending() -> IMessage? {
         guard let appC = appConfig else {
-            Log.warnComponent(comp, "Really need a non-nil appConfig")
-            return
+            Log.warnComponent(
+                comp, "Really need a non-nil appConfig for creating send message")
+            return nil
         }
         guard let account = appC.currentAccount else {
             Log.warnComponent(comp, "Really need a non-nil currentAccount")
-            return
+            return nil
         }
 
         if messageToSend == nil {
-            messageToSend = appConfig?.model.insertNewMessageForSendingFromAccountEmail(
+            messageToSend = appC.model.insertNewMessageForSendingFromAccountEmail(
                 account.email)
         }
 
         guard let msg = messageToSend else {
             Log.warnComponent(comp, "Really need a non-nil messageToSend")
-            return
+            return nil
         }
 
         populateMessageWithViewData(msg, account: account, model: appC.model)
         populateMessageWithReplyData(msg)
         populateMessageWithForwardedData(msg)
 
+        return msg
+    }
+
+    // MARK: -- Actions
+
+    @IBAction func sendButtonTapped(sender: UIBarButtonItem) {
         model.networkActivity = true
         updateNetworkActivity()
+
+        guard let appC = appConfig else {
+            Log.warnComponent(comp, "Really need a non-nil appConfig for sending mail")
+            return
+        }
+        guard let account = appC.currentAccount else {
+            Log.warnComponent(comp, "Really need a non-nil currentAccount for sending mail")
+            return
+        }
+        guard let msg = messageForSending() else {
+            return
+        }
 
         appC.grandOperator.sendMail(
             msg, account: account as! Account, completionBlock: { error in
@@ -712,6 +768,8 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
                 cell.subjectTextField.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
 
+                cell.subjectTextField.delegate = self
+
                 if let m = replyFromMessage() {
                     subjectTextField?.text = ReplyUtil.replySubjectForMail(m)
                 }
@@ -905,6 +963,15 @@ extension ComposeViewController: UITextViewDelegate {
             updateViewFromRecipients()
         }
         // setting the model to dirty will be handled by textViewDidChange
+        return true
+    }
+}
+
+extension ComposeViewController: UITextFieldDelegate {
+    public func textField(
+        textField: UITextField, shouldChangeCharactersInRange range: NSRange,
+        replacementString string: String) -> Bool {
+        model.isDirty = true
         return true
     }
 }
