@@ -97,6 +97,7 @@ public class Constants {
         case UnknownError = 7000
         case BadResponseError
         case MessageStoreFailed
+        case FolderCreateFailed
     }
 
     static func errorNotImplemented(component: String) -> NSError {
@@ -291,6 +292,16 @@ public class Constants {
             userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
                 "IMAP: Could not update flags",
                 comment: "IMAP error when flags could not be stored")])
+        return error
+    }
+
+    static func errorFolderCreateFailed(component: String, name: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: ImapErrorCode.FolderCreateFailed.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                String.init(format: NSLocalizedString(
+                    "IMAP: Could not create folder '%@'",
+                    comment: "IMAP error when folder could not be created"), name)])
         return error
     }
 }

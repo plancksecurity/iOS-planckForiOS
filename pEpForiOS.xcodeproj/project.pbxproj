@@ -43,6 +43,7 @@
 		4340F5F91D363BE6006A5C82 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4340F5F81D363BE6006A5C82 /* ContactTableViewCell.swift */; };
 		4345967F1CE227D9004E8735 /* _MessageReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4345967E1CE227D9004E8735 /* _MessageReference.swift */; };
 		434596831CE227E6004E8735 /* MessageReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434596821CE227E6004E8735 /* MessageReference.swift */; };
+		43463AAE1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43463AAD1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift */; };
 		434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */; };
 		4346D33C1D86E2E50017E24E /* ComposeViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4346D33B1D86E2E50017E24E /* ComposeViewHelper.swift */; };
 		434F84451CEB018A0055B7A9 /* NSData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */; };
@@ -243,6 +244,7 @@
 		4340F5F81D363BE6006A5C82 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		4345967E1CE227D9004E8735 /* _MessageReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _MessageReference.swift; sourceTree = "<group>"; };
 		434596821CE227E6004E8735 /* MessageReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageReference.swift; sourceTree = "<group>"; };
+		43463AAD1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckAndCreateFolderOfTypeOperation.swift; sourceTree = "<group>"; };
 		4346D33B1D86E2E50017E24E /* ComposeViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewHelper.swift; sourceTree = "<group>"; };
 		434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+Extensions.swift"; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 				43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */,
 				43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */,
 				4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */,
+				43463AAD1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -1023,6 +1026,7 @@
 				4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */,
 				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
 				43A0E73C1D16C99900159F41 /* ALView+PureLayout.m in Sources */,
+				43463AAE1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift in Sources */,
 				4340F5F91D363BE6006A5C82 /* ContactTableViewCell.swift in Sources */,
 				434596831CE227E6004E8735 /* MessageReference.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,

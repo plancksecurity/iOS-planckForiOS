@@ -286,14 +286,17 @@ public class GrandOperator: IGrandOperator {
 
         let opEncrypt = EncryptMailOperation.init(encryptionData: encryptionData)
         let opSend = SendMailOperation.init(encryptionData: encryptionData)
+        let opCreateSentFolder = CheckAndCreateFolderOfTypeOperation.init(
+            account: account, folderType: .Drafts, connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         let opSaveSent = SaveSentMessageOperation.init(encryptionData: encryptionData)
 
         opSaveSent.addDependency(opSend)
+        opSaveSent.addDependency(opCreateSentFolder)
         opSend.addDependency(opEncrypt)
 
         opSaveSent.completionBlock = {
             var firstError: NSError?
-            for op in [opEncrypt, opSend, opSaveSent] {
+            for op in [opEncrypt, opSend, opCreateSentFolder, opSaveSent] {
                 if let err = op.errors.first {
                     firstError = err
                     break
@@ -304,6 +307,7 @@ public class GrandOperator: IGrandOperator {
 
         backgroundQueue.addOperation(opEncrypt)
         backgroundQueue.addOperation(opSend)
+        backgroundQueue.addOperation(opCreateSentFolder)
         backgroundQueue.addOperation(opSaveSent)
     }
 
@@ -314,14 +318,28 @@ public class GrandOperator: IGrandOperator {
                 errorMessage: "Did not find the drafts folder"))
             return
         }
+
+        let opCreateDraftFolder = CheckAndCreateFolderOfTypeOperation.init(
+            account: account, folderType: .Drafts, connectionManager: connectionManager, coreDataUtil: coreDataUtil)
+
         let opStore = AppendSingleMessageOperation.init(
             message: message, account: account, targetFolder: folder,
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         opStore.completionBlock = {
             GCD.onMain() {
-                completionBlock?(error: opStore.errors.first)
+                var firstError: NSError?
+                for op in [opCreateDraftFolder, opStore] {
+                    if let err = op.errors.first {
+                        firstError = err
+                        break
+                    }
+                }
+                completionBlock?(error: firstError)
             }
         }
+        opStore.addDependency(opCreateDraftFolder)
+
+        backgroundQueue.addOperation(opCreateDraftFolder)
         backgroundQueue.addOperation(opStore)
     }
 

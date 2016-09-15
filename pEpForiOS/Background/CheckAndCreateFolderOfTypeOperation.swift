@@ -1,91 +1,60 @@
 //
-//  SaveSentMessageOperation.swift
+//  CheckAndCreateFolderOfTypeOperation.swift
 //  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 29/08/16.
+//  Created by Dirk Zimmermann on 15/09/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-public class SaveSentMessageOperation: ConcurrentBaseOperation {
-    let comp = "SaveSentMessageOperation"
-
-    /**
-     All the parameters for the operation come from here.
-     */
-    let encryptionData: EncryptionData
-
-    lazy var privateMOC: NSManagedObjectContext =
-        self.encryptionData.coreDataUtil.privateContext()
-    lazy var model: IModel = Model.init(context: self.privateMOC)
-
+/**
+ Can be run before operations that operate on folders, like "save draft"
+ (with a dependency), to make sure that folder does exist.
+ */
+public class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
+    let comp = "CheckAndCreateFolderOfTypeOperation"
+    let folderType: FolderType
+    let coreDataUtil: ICoreDataUtil
+    let accountEmail: String
+    let connectInfo: ConnectInfo
+    let connectionManager: ConnectionManager
+    let folderName: String
     var imapSync: ImapSync!
 
-    /**
-     If the sent folder could be determined, this will contain the IMAP name.
-     */
-    var targetFolderName: String!
+    lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
+    lazy var model: IModel = Model.init(context: self.privateMOC)
 
-    /**
-     If there was an encrypted mail, this is the raw data.
-     */
-    var rawMessageData: NSData!
-
-    public init(encryptionData: EncryptionData) {
-        self.encryptionData = encryptionData
+    public init(account: IAccount, folderType: FolderType,
+                connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
+        self.accountEmail = account.email
+        self.connectInfo = account.connectInfo
+        self.folderType = folderType
+        self.folderName = folderType.folderName()
+        self.connectionManager = connectionManager
+        self.coreDataUtil = coreDataUtil
+        super.init()
     }
 
     public override func main() {
-        privateMOC.performBlock({
-            guard let account = self.model.accountByEmail(
-                self.encryptionData.accountEmail) else {
-                    self.addError(Constants.errorCannotFindAccountForEmail(
-                        self.comp, email: self.encryptionData.accountEmail))
-                    return
-            }
-
-            guard let sentFolder = self.model.folderByType(.Sent, account: account) else {
-                let msg = NSLocalizedString(
-                    "No sent folder available", comment:
-                    "Error message when no sent folder exists")
-                self.addError(Constants.errorInvalidParameter(self.comp, errorMessage: msg))
-                Log.errorComponent(self.comp,
-                    errorString: "No sent folder available")
+        privateMOC.performBlock() {
+            let folder = self.model.folderByType(self.folderType, email: self.accountEmail)
+            if folder == nil {
+                self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+                self.imapSync.delegate = self
+                self.imapSync.start()
+            } else {
                 self.markAsFinished()
-                return
             }
-
-            guard let msg = self.encryptionData.mailEncryptedForSelf else {
-                let msg = NSLocalizedString(
-                    "Could not save sent mail: Not encrypted", comment:
-                    "Error message when no encrypted mail was given for saving as sent")
-                self.addError(Constants.errorOperationFailed(self.comp, errorMessage: msg))
-                Log.errorComponent(self.comp,
-                    errorString: "Could not save sent mail: Not encrypted")
-                self.markAsFinished()
-                return
-            }
-
-            self.targetFolderName = sentFolder.name
-            let cwMessage = PEPUtil.pantomimeMailFromPep(msg)
-            self.rawMessageData = cwMessage.dataValue()
-
-            self.imapSync = self.encryptionData.connectionManager.emailSyncConnection(
-                account.connectInfo)
-            self.imapSync.delegate = self
-            self.imapSync.start()
-        })
+        }
     }
 }
 
-extension SaveSentMessageOperation: ImapSyncDelegate {
+extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
-            let folder = CWIMAPFolder.init(name: targetFolderName)
-            folder.setStore(sync.imapStore)
-            folder.appendMessageFromRawSource(rawMessageData, flags: nil, internalDate: nil)
+            sync.createFolderWithName(folderName)
         }
     }
 
@@ -150,12 +119,8 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
     }
 
     public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {
-        privateMOC.performBlock() {
-            let message = self.privateMOC.objectWithID(self.encryptionData.coreDataMessageID)
-            self.privateMOC.deleteObject(message)
-            CoreDataUtil.saveContext(self.privateMOC)
-            self.markAsFinished()
-        }
+        addError(Constants.errorIllegalState(comp, stateName: "folderAppendCompleted"))
+        markAsFinished()
     }
 
     public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {
@@ -169,12 +134,11 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
     }
 
     public func folderCreateCompleted(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderCreateCompleted"))
         markAsFinished()
     }
 
     public func folderCreateFailed(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderCreateFailed"))
+        addError(Constants.errorFolderCreateFailed(comp, name: folderName))
         markAsFinished()
     }
 

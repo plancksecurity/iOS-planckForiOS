@@ -129,6 +129,7 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
 
     public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
+        markAsFinished()
     }
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
@@ -171,6 +172,16 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
 
     public func messageStoreFailed(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageStoreFailed"))
+        markAsFinished()
+    }
+
+    public func folderCreateCompleted(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderCreateCompleted"))
+        markAsFinished()
+    }
+
+    public func folderCreateFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderCreateFailed"))
         markAsFinished()
     }
 

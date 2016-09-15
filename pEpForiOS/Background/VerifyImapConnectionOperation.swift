@@ -128,6 +128,16 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderCreateCompleted(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(errorDomain, stateName: "folderCreateCompleted"))
+        markAsFinished()
+    }
+
+    public func folderCreateFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(errorDomain, stateName: "folderCreateFailed"))
+        markAsFinished()
+    }
+
     public func actionFailed(sync: ImapSync, error: NSError) {
         if !isFinishing {
             errors.append(error)

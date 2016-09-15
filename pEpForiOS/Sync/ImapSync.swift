@@ -30,6 +30,8 @@ public protocol ImapSyncDelegate: class {
     func folderAppendCompleted(sync: ImapSync, notification: NSNotification?)
     func messageStoreCompleted(sync: ImapSync, notification: NSNotification?)
     func messageStoreFailed(sync: ImapSync, notification: NSNotification?)
+    func folderCreateCompleted(sync: ImapSync, notification: NSNotification?)
+    func folderCreateFailed(sync: ImapSync, notification: NSNotification?)
 
     /** General error indicator */
     func actionFailed(sync: ImapSync, error: NSError)
@@ -58,6 +60,8 @@ public class DefaultImapSyncDelegate: ImapSyncDelegate {
     public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {}
     public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {}
     public func messageStoreFailed(sync: ImapSync, notification: NSNotification?) {}
+    public func folderCreateCompleted(sync: ImapSync, notification: NSNotification?) {}
+    public func folderCreateFailed(sync: ImapSync, notification: NSNotification?) {}
 
     public func actionFailed(sync: ImapSync, error: NSError) {}
 }
@@ -105,6 +109,11 @@ public protocol IImapSync {
      Sync the mails from the curently selected folder.
      */
     func syncMails() throws
+
+    /**
+     Creates a new folder on the server.
+     */
+    func createFolderWithName(folderName: String)
 
     /**
      Close the connection.
@@ -176,6 +185,13 @@ public class ImapSync: Service, IImapSync {
             throw Constants.errorFolderNotOpen(comp, folderName: folderName)
         }
         folder.prefetch()
+    }
+
+    public func createFolderWithName(folderName: String) {
+        // The only relevant parameter here is folderName, all others are
+        // ignored by pantomime.
+        imapStore.createFolderWithName(folderName, type: PantomimeFormatFolder,
+                                       contents: nil)
     }
 }
 
@@ -299,6 +315,11 @@ extension ImapSync: CWServiceClient {
     @objc public func messageStoreFailed(notification: NSNotification?) {
         dumpMethodName("messageStoreFailed", notification: notification)
         delegate?.messageStoreFailed(self, notification: notification)
+    }
+
+    @objc public func folderCreateCompleted(notification: NSNotification?) {
+        dumpMethodName("folderCreateCompleted", notification: notification)
+        delegate?.folderCreateCompleted(self, notification: notification)
     }
 }
 
