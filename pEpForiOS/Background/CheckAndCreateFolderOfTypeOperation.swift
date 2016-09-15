@@ -20,14 +20,23 @@ public class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     let accountEmail: String
     let connectInfo: ConnectInfo
     let connectionManager: ConnectionManager
-    let folderName: String
+    var folderName: String
     var imapSync: ImapSync!
+
+    /**
+     Used to keep track of attempts. First try to create top-level,
+     after that try to create under "INBOX", then give up.
+     */
+    var numberOfFailures = 0
+
+    let folderSeparator: String?
 
     lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
     lazy var model: IModel = Model.init(context: self.privateMOC)
 
     public init(account: IAccount, folderType: FolderType,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
+        self.folderSeparator = account.folderSeparator
         self.accountEmail = account.email
         self.connectInfo = account.connectInfo
         self.folderType = folderType
@@ -134,10 +143,28 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
     }
 
     public func folderCreateCompleted(sync: ImapSync, notification: NSNotification?) {
-        markAsFinished()
+        privateMOC.performBlock() {
+            if self.model.insertOrUpdateFolderName(
+                self.folderName, folderSeparator: self.folderSeparator,
+                accountEmail: self.accountEmail) == nil {
+                self.addError(Constants.errorFolderCreateFailed(self.comp,
+                    name: self.folderName))
+            }
+            self.markAsFinished()
+        }
     }
 
     public func folderCreateFailed(sync: ImapSync, notification: NSNotification?) {
+        if !self.cancelled {
+            if numberOfFailures == 0 {
+                if let fs = folderSeparator {
+                    self.folderName = "INBOX\(fs)\(folderName)"
+                    sync.createFolderWithName(folderName)
+                    numberOfFailures += 1
+                    return
+                }
+            }
+        }
         addError(Constants.errorFolderCreateFailed(comp, name: folderName))
         markAsFinished()
     }

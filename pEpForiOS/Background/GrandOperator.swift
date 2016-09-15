@@ -313,17 +313,11 @@ public class GrandOperator: IGrandOperator {
 
     public func saveDraftMail(message: IMessage, account: IAccount,
                               completionBlock: GrandOperatorCompletionBlock?) {
-        guard let folder = model.folderByType(.Drafts, email: account.email) else {
-            completionBlock?(error: Constants.errorInvalidParameter(self.comp,
-                errorMessage: "Did not find the drafts folder"))
-            return
-        }
-
         let opCreateDraftFolder = CheckAndCreateFolderOfTypeOperation.init(
             account: account, folderType: .Drafts, connectionManager: connectionManager, coreDataUtil: coreDataUtil)
 
         let opStore = AppendSingleMessageOperation.init(
-            message: message, account: account, targetFolder: folder,
+            message: message, account: account, folderType: .Drafts,
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         opStore.completionBlock = {
             GCD.onMain() {

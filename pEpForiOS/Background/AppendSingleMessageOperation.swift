@@ -13,7 +13,10 @@ public class AppendSingleMessageOperation: ConcurrentBaseOperation {
     let comp = "AppendSingleMessageOperation"
 
     let messageID: NSManagedObjectID
-    let targetFolderID: NSManagedObjectID
+
+    let targetFolderID: NSManagedObjectID?
+    let folderType: FolderType?
+
     let accountID: NSManagedObjectID
 
     let connectInfo: ConnectInfo
@@ -29,15 +32,39 @@ public class AppendSingleMessageOperation: ConcurrentBaseOperation {
     var cwMessageToAppend: CWIMAPMessage!
     var targetFolderName: String!
 
-    public init(message: IMessage, account: IAccount, targetFolder: IFolder,
+    public init(message: IMessage, account: IAccount, targetFolder: IFolder?,
+                folderType: FolderType?,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.messageID = (message as! Message).objectID
-        self.targetFolderID = (targetFolder as! Folder).objectID
+
+        if let folder = targetFolder {
+            self.targetFolderID = (folder as! Folder).objectID
+        } else {
+            self.targetFolderID = nil
+        }
+        self.folderType = folderType
+
         self.accountID = (account as! Account).objectID
 
         self.connectInfo = account.connectInfo
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
+    }
+
+    convenience public init(message: IMessage, account: IAccount, targetFolder: IFolder,
+                            connectionManager: ConnectionManager,
+                            coreDataUtil: ICoreDataUtil) {
+        self.init(message: message, account: account, targetFolder: targetFolder,
+                  folderType: nil, connectionManager: connectionManager,
+                  coreDataUtil: coreDataUtil)
+    }
+
+    convenience public init(message: IMessage, account: IAccount, folderType: FolderType,
+                            connectionManager: ConnectionManager,
+                            coreDataUtil: ICoreDataUtil) {
+        self.init(message: message, account: account, targetFolder: nil,
+                  folderType: folderType, connectionManager: connectionManager,
+                  coreDataUtil: coreDataUtil)
     }
 
     override public func main() {
@@ -46,13 +73,21 @@ public class AppendSingleMessageOperation: ConcurrentBaseOperation {
                 IMessage else {
                     return
             }
-            guard let targetFolder = self.privateMOC.objectWithID(self.targetFolderID) as?
-                Folder else {
-                    return
-            }
             guard let account = self.privateMOC.objectWithID(self.accountID) as?
                 IAccount else {
                     return
+            }
+            var tf: Folder?
+            if let ft = self.folderType {
+                tf = self.model.folderByType(ft, email: account.email) as? Folder
+            } else if let folderID = self.targetFolderID {
+                tf = self.privateMOC.objectWithID(folderID) as? Folder
+            }
+
+            guard let targetFolder = tf else {
+                self.addError(Constants.errorCannotStoreMail(self.comp))
+                self.markAsFinished()
+                return
             }
 
             message.folder = targetFolder
