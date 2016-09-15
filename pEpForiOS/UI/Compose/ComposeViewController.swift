@@ -797,11 +797,10 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
                 if !model.attachments.isEmpty {
                     for attachment in model.attachments {
-                        let textAttachment = NSTextAttachment.init()
-                        let image = UIImage.init(data:attachment.data)
-                        textAttachment.image = image
-                        let attrAtachement = NSAttributedString.init(attachment: textAttachment)
-                        cell.bodyTextView.attributedText = attrAtachement;
+                        let textAttachment = NSTextAttachment()
+                        textAttachment.image = attachment.image
+                        let imageString = NSAttributedString(attachment:textAttachment)
+                        cell.bodyTextView.attributedText = imageString;
                     }
                 }
                 return cell
@@ -887,31 +886,19 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
     public func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo
                             info: [String : AnyObject]) {
-
-        if let attachedImageURL = info[UIImagePickerControllerReferenceURL] as? NSURL {
-            if let dataAttachedImage =  NSData.init(contentsOfURL: attachedImageURL) {
-                if let attachedImageMediaType = info[UIImagePickerControllerMediaType] as? String {
-                    let simpleAttachmentImage = SimpleAttachment.init(
-                        filename: attachedImageURL.absoluteString,
-                        contentType: attachedImageMediaType,
-                        data:dataAttachedImage)
-                    model.attachments.append(simpleAttachmentImage)
-                }
-            }
+        guard let attachedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return
         }
+        let simpleAttachmentImage = SimpleAttachment.init(filename:nil,
+                                                          contentType: "image/JPEG",
+                                                          data:nil,
+                                                          image:attachedImage)
+        model.attachments.append(simpleAttachmentImage)
         let indexPath = NSIndexPath(forRow: bodyTextRowNumber, inSection: 0)
+        //self.tableView.reloadData()
         self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
         dismissViewControllerAnimated(true, completion: nil)
     }
-
-
-
-    /*public func detectMouseLocation() {
-        let mouseLocation = NSEvent.mouseLocation();
-        print( "Mouse Location X,Y = \(mouseLocation)" )
-        print( "Mouse Location X = \(mouseLocation.x)" )
-        print( "Mouse Location Y = \(mouseLocation.y)" )
-    }*/
 }
 
 // MARK: -- UITextViewDelegate

@@ -13,9 +13,10 @@ import CoreData
  Simple pojo for attachments.
  */
 public struct SimpleAttachment {
-    let filename: String
-    let contentType: String
-    let data: NSData
+    let filename: String?
+    let contentType: String?
+    let data: NSData?
+    let image: UIImage?
 }
 
 /**
@@ -59,7 +60,7 @@ public class MessageToAttachmentOperation: ConcurrentBaseOperation {
             return
         }
         attachment = SimpleAttachment.init(
-            filename: "mail.eml", contentType: "message/rfc822", data: data)
+            filename: "mail.eml", contentType: "message/rfc822", data: data , image: nil)
     }
 
     func errorMessage(localizedMessage: String, logMessage: String) {
