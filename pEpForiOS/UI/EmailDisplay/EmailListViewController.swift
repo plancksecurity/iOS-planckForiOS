@@ -124,19 +124,17 @@ class EmailListViewController: UITableViewController {
     }
 
     @IBAction func backFromComposeSaveDraftSegue(segue: UIStoryboardSegue) {
-        // TODO: Save draft
         guard let msg = draftMessageToStore else {
             return
         }
-        print("compose aborted, saving draft")
 
         state.isSynching = true
         updateUI()
 
         config.appConfig.grandOperator.saveDraftMail(
             msg, account: msg.folder.account, completionBlock: { error in
-                UIHelper.displayError(error, controller: self)
                 GCD.onMain() {
+                    UIHelper.displayError(error, controller: self)
                     self.state.isSynching = false
                     self.updateUI()
                 }
