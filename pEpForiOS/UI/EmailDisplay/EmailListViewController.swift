@@ -105,9 +105,7 @@ class EmailListViewController: UITableViewController {
                 [connectInfo], folderName: config.folderName,
                 completionBlock: { error in
                     Log.infoComponent(self.comp, "Sync completed, error: \(error)")
-                    if let err = error {
-                        UIHelper.displayError(err, controller: self)
-                    }
+                    UIHelper.displayError(error, controller: self)
                     self.config.appConfig.model.save()
                     self.state.isSynching = false
                     refreshControl?.endRefreshing()
@@ -131,8 +129,17 @@ class EmailListViewController: UITableViewController {
             return
         }
         print("compose aborted, saving draft")
+
+        state.isSynching = true
+        updateUI()
+
         config.appConfig.grandOperator.saveDraftMail(
             msg, account: msg.folder.account, completionBlock: { error in
+                UIHelper.displayError(error, controller: self)
+                GCD.onMain() {
+                    self.state.isSynching = false
+                    self.updateUI()
+                }
         })
     }
 
@@ -321,9 +328,7 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
         self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
             message.folder,
             completionBlock: { error in
-                if let err = error {
-                    UIHelper.displayError(err, controller: self)
-                }
+                UIHelper.displayError(error, controller: self)
         })
     }
 

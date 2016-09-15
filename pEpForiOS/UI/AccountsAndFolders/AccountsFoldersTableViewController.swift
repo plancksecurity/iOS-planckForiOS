@@ -132,9 +132,7 @@ class AccountsFoldersViewController: UITableViewController {
             connectInfos, folderName: nil,
             completionBlock: { error in
                 Log.infoComponent(self.comp, "Sync completed, error: \(error)")
-                if let err = error {
-                    UIHelper.displayError(err, controller: self)
-                }
+                UIHelper.displayError(error, controller: self)
                 ac.model.save()
                 self.state.isSynching = false
                 self.updateUI()

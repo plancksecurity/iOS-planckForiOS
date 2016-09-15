@@ -548,23 +548,16 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
         appC.grandOperator.sendMail(
             msg, account: account as! Account, completionBlock: { error in
-                if let e = error {
-                    Log.errorComponent(self.comp, error: e)
-                    // show error
-                    GCD.onMain() {
-                        self.model.networkActivity = false
-                        self.updateNetworkActivity()
+                Log.errorComponent(self.comp, error: error)
+                GCD.onMain() {
+                    self.model.networkActivity = false
+                    self.updateNetworkActivity()
 
-                        UIHelper.displayError(
-                            e, controller: self,
-                            title: NSLocalizedString("Error sending message",
-                                comment: "Title for the 'Error sending mail' dialog"))
-                    }
-                } else {
-                    // dismiss the whole controller?
-                    GCD.onMain() {
-                        self.model.networkActivity = false
-                        self.updateNetworkActivity()
+                    UIHelper.displayError(
+                        error, controller: self,
+                        title: NSLocalizedString("Error sending message",
+                            comment: "Title for the 'Error sending mail' dialog"))
+                    if error == nil {
                         self.performSegueWithIdentifier(self.unwindToEmailListMailSentSegue,
                             sender: sender)
                     }

@@ -130,10 +130,12 @@ class UIHelper {
     /**
      Displays an alert showing an error, with just on ok button and no other interaction.
      */
-    static func displayError(error: NSError, controller: UIViewController,
+    static func displayError(error: NSError?, controller: UIViewController,
                              title: String? = nil) {
-        let message = error.localizedDescription
-        displayErrorMessage(message, controller: controller, title: title)
+        if let err = error {
+            let message = err.localizedDescription
+            displayErrorMessage(message, controller: controller, title: title)
+        }
     }
 
     /**

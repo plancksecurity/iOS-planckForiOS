@@ -27,8 +27,10 @@ import Foundation
         }
     }
 
-    static public func errorComponent(component: String, error: NSError) {
-        print("\(component): Error: \(error)")
+    static public func errorComponent(component: String, error: NSError?) {
+        if let err = error {
+            print("\(component): Error: \(err)")
+        }
     }
 
     static public func errorComponent(component: String, errorString: String, error: NSError) {
