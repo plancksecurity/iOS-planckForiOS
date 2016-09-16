@@ -156,8 +156,8 @@ public class ComposeViewHelper {
     /**
      * Puts the emails from the contacts into a recipient text field.
      */
-    public static func transferContacts(contacts: [IContact], toTextField textField: UITextView,
-                                        titleText: String?) {
+    public static func transferContacts(
+        contacts: [IContact], toTextField textField: UITextView, titleText: String?) {
         textField.text = "\(String.orEmpty(titleText)) "
         for c in contacts {
             textField.text = textField.text + "\(c.email), "
