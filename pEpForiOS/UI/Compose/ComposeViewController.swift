@@ -802,6 +802,10 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     subjectTextField?.text = ReplyUtil.replySubjectForMail(m)
                 }
 
+                if let m = composeFromDraftMessage() {
+                    subjectTextField?.text = m.subject
+                }
+
                 return cell
             } else { // if indexPath.row == bodyTextRowNumber
                 // Body message cell
@@ -824,8 +828,12 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     cell.bodyTextView.selectedRange = NSRange.init(location: 0, length: 0)
                 }
 
-                // Give it the focus, if it's not a reply. For non-replies, the to text field
-                // will get the focus.
+                if let om = composeFromDraftMessage() {
+                    cell.bodyTextView.text = om.longMessage
+                }
+
+                // Give it the focus, if it's not a reply. For non-replies, the to text
+                // field will get the focus.
                 if composeMode == .ReplyFrom || composeMode == .ReplyAll {
                     cell.bodyTextView.becomeFirstResponder()
                 }
