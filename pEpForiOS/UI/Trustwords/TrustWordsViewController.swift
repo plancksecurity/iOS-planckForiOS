@@ -149,7 +149,7 @@ class TrustWordsViewController: UITableViewController {
         // Abuse error display
         UIHelper.displayErrorMessage(
             message, controller: self,
-            title: NSLocalizedString("Suggestion",comment: "Suggestion tittle"))
+            title: NSLocalizedString("pEp",comment: "Suggestion tittle"))
     }
 
     @IBAction func showMoreInfo(sender: AnyObject) {
