@@ -193,7 +193,10 @@ public class AddressBook {
     func addressBookContactToContacts(contact: ABRecordRef) -> [IContact] {
         var result: [IContact] = []
         let identifier = ABRecordGetRecordID(contact)
-        let contactName = ABRecordCopyCompositeName(contact).takeRetainedValue() as String
+        var contactName: String? = nil
+        if let contactNameRef = ABRecordCopyCompositeName(contact) {
+            contactName = contactNameRef.takeRetainedValue() as String
+        }
         let emailMultiOpt = ABRecordCopyValue(contact, kABPersonEmailProperty)?.takeRetainedValue()
         if let emailMulti = emailMultiOpt {
             if let emails: NSArray =
