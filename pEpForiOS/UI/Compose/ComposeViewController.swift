@@ -899,10 +899,10 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         guard let attachedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return
         }
-        let simpleAttachmentImage = SimpleAttachment.init(filename:nil,
+        let simpleAttachmentImage = SimpleAttachment.init(filename: nil,
                                                           contentType: "image/JPEG",
-                                                          data:nil,
-                                                          image:attachedImage)
+                                                          data: nil,
+                                                          image: attachedImage)
         model.attachments.append(simpleAttachmentImage)
         let indexPath = NSIndexPath(forRow: bodyTextRowNumber, inSection: 0)
         self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
