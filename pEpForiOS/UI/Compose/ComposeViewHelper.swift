@@ -152,4 +152,16 @@ public class ComposeViewHelper {
         }
         return nil
     }
+    /**
+     Return the correct container rectangle for a giving width to maintain the aspect ratio
+     - Returns: the new container rectangle.
+     */
+}
+
+public extension UIViewController {
+    public func obtainContainerToMaintainRatio(fixedWidth: CGFloat, rectangle: CGSize) -> CGRect {
+        let fixRatio = rectangle.width / rectangle.height
+        let newHeight = fixedWidth / fixRatio
+        return CGRect(x: 0, y: 0, width: fixedWidth, height: newHeight)
+    }
 }

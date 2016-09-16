@@ -797,10 +797,20 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
                 if !model.attachments.isEmpty {
                     for attachment in model.attachments {
+                        guard let image = attachment.image else {
+                            continue
+                        }
                         let textAttachment = NSTextAttachment()
-                        textAttachment.image = attachment.image
+                        textAttachment.image = image
                         let imageString = NSAttributedString(attachment:textAttachment)
-                        cell.bodyTextView.attributedText = imageString;
+                        cell.bodyTextView.attributedText = imageString
+                        textAttachment.bounds = obtainContainerToMaintainRatio(
+                            cell.bodyTextView.bounds.width,
+                            rectangle: image.size)
+                        let range = cell.bodyTextView.selectedTextRange
+                        //let range = range?.end
+
+                        //print(range)
                     }
                 }
                 return cell
@@ -895,8 +905,8 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                                                           image:attachedImage)
         model.attachments.append(simpleAttachmentImage)
         let indexPath = NSIndexPath(forRow: bodyTextRowNumber, inSection: 0)
-        //self.tableView.reloadData()
         self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
+
         dismissViewControllerAnimated(true, completion: nil)
     }
 }
