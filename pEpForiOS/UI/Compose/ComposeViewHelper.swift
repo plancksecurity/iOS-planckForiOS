@@ -154,7 +154,7 @@ public class ComposeViewHelper {
     }
 
     /**
-     Puts the emails from the contacts into a recipient text field.
+     * Puts the emails from the contacts into a recipient text field.
      */
     public static func transferContacts(contacts: [IContact], toTextField textField: UITextView,
                                         titleText: String?) {
@@ -166,6 +166,10 @@ public class ComposeViewHelper {
 }
 
 public extension UIViewController {
+    /**
+     Return the correct container rectangle for a giving width to maintain the aspect ratio.
+     - Returns: The new container rectangle.
+     */
     public func obtainContainerToMaintainRatio(fixedWidth: CGFloat, rectangle: CGSize) -> CGRect {
         let fixRatio = rectangle.width / rectangle.height
         let newHeight = fixedWidth / fixRatio
