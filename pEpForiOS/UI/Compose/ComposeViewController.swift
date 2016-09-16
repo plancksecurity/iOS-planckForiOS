@@ -751,19 +751,38 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     cell.recipientTextView.font = UIFont.preferredFontForTextStyle(
                         UIFontTextStyleBody)
 
+                    var changedRecipients = false
+
+                    // Handle message compose for all recipient fields
+                    if let composeMessage = composeFromDraftMessage() {
+                        let contacts = ComposeViewHelper.contactsForRecipientType(
+                            cell.recipientType, fromMessage: composeMessage)
+                        if contacts.count > 0 {
+                            changedRecipients = true
+                        }
+                        ComposeViewHelper.transferContacts(
+                            contacts, toTextField: cell.recipientTextView,
+                            titleText: cell.titleText)
+                    }
+
+                    // Handle reply to for .To
                     if cell.recipientType == .To {
                         if let om = replyFromMessage() {
                             if let from = om.from {
                                 ComposeViewHelper.transferContacts(
                                     [from], toTextField: cell.recipientTextView,
                                     titleText: cell.titleText)
-                                updateViewFromRecipients()
-                                colorRecipients(cell.recipientTextView)
+                                changedRecipients = true
                             }
                         } else {
                             // First time the cell got created, give it focus
                             cell.recipientTextView.becomeFirstResponder()
                         }
+                    }
+
+                    if changedRecipients {
+                        updateViewFromRecipients()
+                        colorRecipients(cell.recipientTextView)
                     }
                 }
 

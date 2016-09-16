@@ -160,8 +160,35 @@ public class ComposeViewHelper {
         contacts: [IContact], toTextField textField: UITextView, titleText: String?) {
         textField.text = "\(String.orEmpty(titleText)) "
         for c in contacts {
-            textField.text = textField.text + "\(c.email), "
+            textField.text = "\(textField.text)\(c.email), "
         }
+    }
+
+    /**
+     - Returns: The array of `IContact`s for a given recipient type and message.
+     */
+    public static func contactsForRecipientType(
+        recipientType: RecipientType?, fromMessage message: IMessage) -> [IContact] {
+        guard let rt = recipientType else {
+            return []
+        }
+        switch rt {
+        case .To:
+            return orderedSetToContacts(message.to)
+        case .CC:
+            return orderedSetToContacts(message.cc)
+        case .BCC:
+            return orderedSetToContacts(message.bcc)
+        }
+    }
+
+    /**
+     Converts an `NSOrderedSet` into an array of `IContact`.
+     Putting this into a function prevents a compiler crash with Swift 2.2 that
+     occurs when putting this inline.
+     */
+    public static func orderedSetToContacts(theSet: NSOrderedSet) -> [IContact] {
+        return theSet.map({ $0 as! IContact })
     }
 }
 
