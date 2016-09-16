@@ -152,10 +152,17 @@ public class ComposeViewHelper {
         }
         return nil
     }
+
     /**
-     Return the correct container rectangle for a giving width to maintain the aspect ratio
-     - Returns: the new container rectangle.
+     Puts the emails from the contacts into a recipient text field.
      */
+    public static func transferContacts(contacts: [IContact], toTextField textField: UITextView,
+                                        titleText: String?) {
+        textField.text = "\(String.orEmpty(titleText)) "
+        for c in contacts {
+            textField.text = textField.text + "\(c.email), "
+        }
+    }
 }
 
 public extension UIViewController {

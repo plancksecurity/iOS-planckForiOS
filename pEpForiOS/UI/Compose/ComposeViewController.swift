@@ -703,6 +703,18 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         return nil
     }
 
+    /**
+     - Returns: The draft message that should be used as a base for the compose.
+     */
+    func composeFromDraftMessage() -> IMessage? {
+        if composeMode == .ComposeDraft {
+            if let om = originalMessage {
+                return om
+            }
+        }
+        return nil
+    }
+
     override public func tableView(tableView: UITableView,
                             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let recipientCellID = "RecipientCell"
@@ -739,8 +751,9 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     if cell.recipientType == .To {
                         if let om = replyFromMessage() {
                             if let from = om.from {
-                                cell.recipientTextView.text =
-                                    "\(String.orEmpty(cell.titleText)) \(from.email)"
+                                ComposeViewHelper.transferContacts(
+                                    [from], toTextField: cell.recipientTextView,
+                                    titleText: cell.titleText)
                                 updateViewFromRecipients()
                                 colorRecipients(cell.recipientTextView)
                             }
