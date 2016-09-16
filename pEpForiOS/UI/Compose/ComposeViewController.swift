@@ -736,14 +736,6 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     cell.recipientType = RecipientType.fromRawValue(indexPath.row + 1)
                     cell.recipientTextView.delegate = self
 
-                    if recipientTextAttributes == nil {
-                        var attributeRange: NSRange = NSMakeRange(0, 1)
-                        recipientTextAttributes =
-                            cell.recipientTextView.attributedText.attributesAtIndex(
-                                0, longestEffectiveRange: &attributeRange,
-                                inRange: NSRange.init(location: 0, length: 1))
-                    }
-
                     // Cache the cell for later use
                     recipientCellsByTextView[cell.recipientTextView] = cell
                     recipientCells[indexPath.row] = cell
@@ -778,6 +770,14 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                             // First time the cell got created, give it focus
                             cell.recipientTextView.becomeFirstResponder()
                         }
+                    }
+
+                    if recipientTextAttributes == nil {
+                        var attributeRange: NSRange = NSMakeRange(0, 1)
+                        recipientTextAttributes =
+                            cell.recipientTextView.attributedText.attributesAtIndex(
+                                0, longestEffectiveRange: &attributeRange,
+                                inRange: NSRange.init(location: 0, length: 1))
                     }
 
                     if changedRecipients {
