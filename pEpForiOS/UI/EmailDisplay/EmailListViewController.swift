@@ -64,6 +64,12 @@ class EmailListViewController: UITableViewController {
      */
     var draftMessageToStore: IMessage?
 
+    /**
+     When the user taps on a draft email, this is the message that was selected
+     and should be given to the compose view.
+     */
+    var draftMessageToCompose: IMessage?
+
     func isReadedMessage(message: IMessage)-> Bool {
         return message.flagSeen.boolValue
     }
@@ -200,6 +206,29 @@ class EmailListViewController: UITableViewController {
         return cell
     }
 
+    // MARK: - UITableViewDelegate
+
+    override func tableView(tableView: UITableView,
+                            didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        draftMessageToCompose = nil
+
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+
+        if let fn = config.folderName, let ac = config.account,
+            let folder = config.appConfig.model.folderByName(fn, email: ac.email) {
+            if folder.folderType.integerValue == FolderType.Drafts.rawValue {
+                draftMessageToCompose = fetchController?.objectAtIndexPath(indexPath)
+                    as? IMessage
+                performSegueWithIdentifier(segueCompose, sender: cell)
+                return
+            }
+        }
+
+        performSegueWithIdentifier(segueShowEmail, sender: cell)
+    }
+
+    // MARK: - Misc
+
     func configureCell(cell: EmailListViewCell, indexPath: NSIndexPath) {
         if let email = fetchController?.objectAtIndexPath(indexPath) as? Message {
             if let colorRating = PEPUtil.colorRatingFromInt(email.pepColorRating?.integerValue) {
@@ -260,6 +289,10 @@ class EmailListViewController: UITableViewController {
             let destination = segue.destinationViewController
                 as! ComposeViewController
             destination.appConfig = config.appConfig
+            if let draft = draftMessageToCompose {
+                destination.originalMessage = draft
+                destination.composeMode = .ComposeDraft
+            }
         } else if segue.identifier == segueShowEmail {
             guard
                 let vc = segue.destinationViewController as? EmailViewController,

@@ -97,7 +97,6 @@
                                     <outlet property="senderLabel" destination="tWZ-jW-sUg" id="lM6-YZ-J7S"/>
                                     <outlet property="subjectLabel" destination="5Py-55-oem" id="UtV-Po-SPg"/>
                                     <outlet property="summaryLabel" destination="BvI-Zi-zU6" id="oGG-8D-EeC"/>
-                                    <segue destination="SRN-tu-1xe" kind="show" identifier="segueShowEmail" id="kHr-31-LHx"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -115,10 +114,13 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="bgm-ua-A0f"/>
+                    <connections>
+                        <segue destination="SRN-tu-1xe" kind="show" identifier="segueShowEmail" id="Ovv-97-Yig"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5484" y="1176"/>
+            <point key="canvasLocation" x="5566" y="1168"/>
         </scene>
         <!--Compose View Controller-->
         <scene sceneID="YkL-8B-UDO">
@@ -1236,7 +1238,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Soh-zf-Qvc"/>
         <segue reference="TnR-me-YgK"/>
+        <segue reference="65D-pi-pr8"/>
     </inferredMetricsTieBreakers>
 </document>

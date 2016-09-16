@@ -160,6 +160,9 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
         /** Forward */
         case Forward
+
+        /** Composing a previously drafted email */
+        case ComposeDraft
     }
 
     /**
@@ -169,7 +172,7 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
 
     /**
      For certain values of `composeMode`, there will be an email to act on
-     (like reply, forward). This is it.
+     (like reply, forward, compose draft). This is it.
      */
     var originalMessage: IMessage?
 
