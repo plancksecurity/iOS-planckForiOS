@@ -188,7 +188,7 @@ public class PEPUtil {
     /**
      Kicks off myself in the background, optionally notifies via block of termination/success.
      */
-    public static func myselfFromAccount(account: IAccount,
+    public static func myselfFromAccount(account: IAccount, queue: NSOperationQueue,
                                          block: ((identity: NSDictionary) -> Void)? = nil) {
         let op = PEPMyselfOperation.init(account: account)
         op.completionBlock = {
@@ -196,7 +196,6 @@ public class PEPUtil {
                 bl(identity: op.identity)
             }
         }
-        let queue = NSOperationQueue.init()
         queue.addOperation(op)
     }
 

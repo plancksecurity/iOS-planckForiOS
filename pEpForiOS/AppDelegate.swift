@@ -20,6 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /** Keep open at all times */
     var firstSession: PEPSession?
 
+    let backgroundQueue = NSOperationQueue.init()
+
     /**
      Use for development. Remove all mails so they are fetched again.
      */
@@ -81,7 +83,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             for acc in accounts {
                 let email = acc.email
-                PEPUtil.myselfFromAccount(acc) { identity in
+                Log.infoComponent(comp, "Starting myself for \(email)")
+                PEPUtil.myselfFromAccount(acc, queue: backgroundQueue) { identity in
                     Log.infoComponent(self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
                     application.endBackgroundTask(bgId)
                 }
