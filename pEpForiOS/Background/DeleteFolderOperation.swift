@@ -17,12 +17,18 @@ public class DeleteFolderOperation: ConcurrentBaseOperation {
     var folderName: String
     var imapSync: ImapSync!
 
-    public init(coreDataUtil: ICoreDataUtil, connectionManager: ConnectionManager,
-                accountEmail: String, folderName: String) {
+    public init(accountEmail: String, folderName: String,
+                coreDataUtil: ICoreDataUtil, connectionManager: ConnectionManager) {
         self.connectionManager = connectionManager
         self.accountEmail = accountEmail
         self.folderName = folderName
         super.init(coreDataUtil: coreDataUtil)
+    }
+
+    convenience public init(folder: IFolder, connectionManager: ConnectionManager,
+                            coreDataUtil: ICoreDataUtil) {
+        self.init(accountEmail: folder.account.email, folderName: folder.name,
+                  coreDataUtil: coreDataUtil, connectionManager: connectionManager)
     }
 
     public override func main() {

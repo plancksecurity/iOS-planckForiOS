@@ -730,10 +730,9 @@ class SimpleOperationsTest: XCTestCase {
 
         let expDeleted = expectationWithDescription("expDeleted")
         let opDelete = DeleteFolderOperation.init(
-            coreDataUtil: persistentSetup.coreDataUtil,
-            connectionManager: persistentSetup.connectionManager,
             accountEmail: persistentSetup.account.email,
-            folderName: folder.name)
+            folderName: folder.name, coreDataUtil: persistentSetup.coreDataUtil,
+            connectionManager: persistentSetup.connectionManager)
         opDelete.completionBlock = {
             expDeleted.fulfill()
         }
