@@ -30,6 +30,7 @@ public class SendMailOperation: ConcurrentBaseOperation {
 
     public init(encryptionData: EncryptionData) {
         self.encryptionData = encryptionData
+        super.init(coreDataUtil: encryptionData.coreDataUtil)
     }
 
     override public func main() {

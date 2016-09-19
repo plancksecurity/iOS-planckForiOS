@@ -25,9 +25,6 @@ public class FolderModelOperation: ConcurrentBaseOperation {
     /** The account email for which to load all the folders */
     var accountEmail: String
 
-    /** A core data util for getting a background managed object context */
-    var coreDataUtil: ICoreDataUtil
-
     /**
      The result of running the operation: A list of folders for the account,
      complete with indentation level.
@@ -38,7 +35,7 @@ public class FolderModelOperation: ConcurrentBaseOperation {
 
     public init(account: IAccount, coreDataUtil: ICoreDataUtil) {
         self.accountEmail = account.email
-        self.coreDataUtil = coreDataUtil
+        super.init(coreDataUtil: coreDataUtil)
     }
 
     override public func main() {

@@ -12,14 +12,9 @@ import CoreData
 public class DeleteMessageOperation: ConcurrentBaseOperation {
     let messageID: NSManagedObjectID
 
-    let coreDataUtil: ICoreDataUtil
-
-    lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
-    lazy var model: IModel = Model.init(context: self.privateMOC)
-
     public init(message: IMessage, coreDataUtil: ICoreDataUtil) {
         self.messageID = (message as! Message).objectID
-        self.coreDataUtil = coreDataUtil
+        super.init(coreDataUtil: coreDataUtil)
     }
 
     override public func main() {

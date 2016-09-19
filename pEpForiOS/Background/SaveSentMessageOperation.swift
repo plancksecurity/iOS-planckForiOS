@@ -17,10 +17,6 @@ public class SaveSentMessageOperation: ConcurrentBaseOperation {
      */
     let encryptionData: EncryptionData
 
-    lazy var privateMOC: NSManagedObjectContext =
-        self.encryptionData.coreDataUtil.privateContext()
-    lazy var model: IModel = Model.init(context: self.privateMOC)
-
     var imapSync: ImapSync!
 
     /**
@@ -35,6 +31,7 @@ public class SaveSentMessageOperation: ConcurrentBaseOperation {
 
     public init(encryptionData: EncryptionData) {
         self.encryptionData = encryptionData
+        super.init(coreDataUtil: encryptionData.coreDataUtil)
     }
 
     public override func main() {

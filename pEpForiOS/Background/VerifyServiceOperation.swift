@@ -25,7 +25,7 @@ public class VerifyServiceOperation: ConcurrentBaseOperation {
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
         self.connectionManager = grandOperator.connectionManager
-        super.init()
+        super.init(coreDataUtil: grandOperator.coreDataUtil)
     }
 
     func close(finish: Bool) {

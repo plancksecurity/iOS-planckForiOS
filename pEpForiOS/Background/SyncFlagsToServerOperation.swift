@@ -13,16 +13,12 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     let comp = "SyncFlagsToServerOperation"
 
     let connectionManager: ConnectionManager
-    let coreDataUtil: ICoreDataUtil
 
     var targetFolderName: String!
 
     let connectInfo: ConnectInfo
 
     var imapSync: ImapSync!
-
-    lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
-    lazy var model: IModel = Model.init(context: self.privateMOC)
 
     public var numberOfMessagesSynced = 0
 
@@ -31,7 +27,7 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         self.connectInfo = folder.account.connectInfo
         self.targetFolderName = folder.name
         self.connectionManager = connectionManager
-        self.coreDataUtil = coreDataUtil
+        super.init(coreDataUtil: coreDataUtil)
     }
 
     public override func main() {

@@ -22,10 +22,6 @@ public class AppendSingleMessageOperation: ConcurrentBaseOperation {
     let connectInfo: ConnectInfo
 
     let connectionManager: ConnectionManager
-    let coreDataUtil: ICoreDataUtil
-
-    lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
-    lazy var model: IModel = Model.init(context: self.privateMOC)
 
     var imapSync: ImapSync!
 
@@ -48,7 +44,8 @@ public class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
         self.connectInfo = account.connectInfo
         self.connectionManager = connectionManager
-        self.coreDataUtil = coreDataUtil
+
+        super.init(coreDataUtil: coreDataUtil)
     }
 
     convenience public init(message: IMessage, account: IAccount, targetFolder: IFolder,

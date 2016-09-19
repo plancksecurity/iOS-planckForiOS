@@ -417,13 +417,14 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(PEPUtil.colorRatingForContact(unknownContact), PEP_rating_undefined)
 
         // Create myself
+        let backgroundQueue = NSOperationQueue.init()
         let expMyselfFinished = expectationWithDescription("expMyselfFinished")
         let account = persistentSetup.model.accountByEmail(persistentSetup.accountEmail)
         var identityMyself: NSDictionary? = nil
-        PEPUtil.myselfFromAccount(account as! Account, block: { identity in
+        PEPUtil.myselfFromAccount(account as! Account, queue: backgroundQueue) { identity in
             expMyselfFinished.fulfill()
             identityMyself = identity
-        })
+        }
         waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNotNil(identityMyself)

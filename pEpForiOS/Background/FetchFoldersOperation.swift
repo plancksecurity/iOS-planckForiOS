@@ -43,9 +43,6 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
     let connectInfo: ConnectInfo
     let connectionManager: ConnectionManager
     var folderBuilder: ImapFolderBuilder!
-    let coreDataUtil: ICoreDataUtil
-    lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
-    lazy var model: IModel = Model.init(context: self.privateMOC)
 
     /**
      If this is true, the local folders will get checked, and only if important
@@ -57,10 +54,9 @@ public class FetchFoldersOperation: ConcurrentBaseOperation {
                 connectionManager: ConnectionManager, onlyUpdateIfNecessary: Bool) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.connectInfo = connectInfo
-        self.coreDataUtil = coreDataUtil
         self.connectionManager = connectionManager
 
-        super.init()
+        super.init(coreDataUtil: coreDataUtil)
 
         folderBuilder = ImapFolderBuilder.init(coreDataUtil: coreDataUtil,
                                                connectInfo: connectInfo,

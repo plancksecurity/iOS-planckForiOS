@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import CoreData
+
 /**
  This is the base for concurrent `NSOperation`s, that is operations
  that handle asynchronicity themselves, and are typically not finished when `main()` ends.
@@ -17,6 +19,11 @@ public class ConcurrentBaseOperation: BaseOperation {
      schedule them on this queue.
      */
     let backgroundQueue = NSOperationQueue.init()
+
+    let coreDataUtil: ICoreDataUtil
+
+    lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
+    lazy var model: IModel = Model.init(context: self.privateMOC)
 
     var myFinished: Bool = false
 
@@ -30,6 +37,10 @@ public class ConcurrentBaseOperation: BaseOperation {
 
     public override var finished: Bool {
         return myFinished && backgroundQueue.operationCount == 0
+    }
+
+    public init(coreDataUtil: ICoreDataUtil) {
+        self.coreDataUtil = coreDataUtil
     }
 
     /**

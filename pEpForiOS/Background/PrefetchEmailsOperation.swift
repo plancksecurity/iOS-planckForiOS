@@ -20,19 +20,17 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
     let connectInfo: ConnectInfo
     var sync: ImapSync!
     let folderToOpen: String
-    let coreDataUtil: ICoreDataUtil
     let connectionManager: ConnectionManager
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folder: String?) {
         self.connectInfo = connectInfo
-        self.coreDataUtil = grandOperator.coreDataUtil
         self.connectionManager = grandOperator.connectionManager
         if let folder = folder {
             folderToOpen = folder
         } else {
             folderToOpen = ImapSync.defaultImapInboxName
         }
-        super.init()
+        super.init(coreDataUtil: grandOperator.coreDataUtil)
     }
 
     override public func main() {

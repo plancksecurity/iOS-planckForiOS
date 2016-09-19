@@ -16,7 +16,6 @@ import CoreData
 public class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     let comp = "CheckAndCreateFolderOfTypeOperation"
     let folderType: FolderType
-    let coreDataUtil: ICoreDataUtil
     let accountEmail: String
     let connectInfo: ConnectInfo
     let connectionManager: ConnectionManager
@@ -31,9 +30,6 @@ public class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
 
     let folderSeparator: String?
 
-    lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
-    lazy var model: IModel = Model.init(context: self.privateMOC)
-
     public init(account: IAccount, folderType: FolderType,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.folderSeparator = account.folderSeparator
@@ -42,8 +38,7 @@ public class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
         self.folderType = folderType
         self.folderName = folderType.folderName()
         self.connectionManager = connectionManager
-        self.coreDataUtil = coreDataUtil
-        super.init()
+        super.init(coreDataUtil: coreDataUtil)
     }
 
     public override func main() {

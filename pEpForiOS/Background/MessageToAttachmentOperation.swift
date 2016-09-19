@@ -28,13 +28,11 @@ public class MessageToAttachmentOperation: ConcurrentBaseOperation {
     /** The core data objectID */
     let messageID: NSManagedObjectID
 
-    let coreDataUtil: ICoreDataUtil
-
     var attachment: SimpleAttachment?
 
     public init(message: IMessage, coreDataUtil: ICoreDataUtil) {
         self.messageID = (message as! Message).objectID
-        self.coreDataUtil = coreDataUtil
+        super.init(coreDataUtil: coreDataUtil)
     }
 
     public override func main() {

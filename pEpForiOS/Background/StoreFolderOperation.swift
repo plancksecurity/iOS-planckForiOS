@@ -16,15 +16,13 @@ struct FolderInfo {
 
 class StoreFolderOperation: ConcurrentBaseOperation {
     let comp = "StoreFolderOperation"
-    let coreDataUtil: ICoreDataUtil
     let folderInfo: FolderInfo
     let email: String
 
     init(coreDataUtil: ICoreDataUtil, folderInfo: FolderInfo, email: String) {
-        self.coreDataUtil = coreDataUtil
         self.folderInfo = folderInfo
         self.email = email
-        super.init()
+        super.init(coreDataUtil: coreDataUtil)
     }
 
     override func main() {
