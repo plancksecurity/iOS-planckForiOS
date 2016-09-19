@@ -585,15 +585,6 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
             }
         attachedAlertView.addAction(videosAction)
 
-        let documentAction = UIAlertAction(
-            title: NSLocalizedString(
-                "Documents",
-                comment: "Title for document action in attached files alert view"),
-            style: UIAlertActionStyle.Default) {
-            UIAlertAction in
-        }
-        attachedAlertView.addAction(documentAction)
-
         let photosAction = UIAlertAction(title: NSLocalizedString(
             "Photo",
             comment: "Title for photos action in attached files alert view"),
@@ -615,6 +606,16 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
             }
         attachedAlertView.addAction(photosAction)
         presentViewController(attachedAlertView, animated: true, completion: nil)
+
+
+        let documentAction = UIAlertAction(
+            title: NSLocalizedString(
+                "Cancel",
+                comment: "Title for cancel action in attached files alert view"),
+            style: UIAlertActionStyle.Default) {
+                UIAlertAction in
+        }
+        attachedAlertView.addAction(documentAction)
     }
 
     // MARK: -- UITableViewDelegate
