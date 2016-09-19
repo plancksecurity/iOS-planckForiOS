@@ -151,6 +151,7 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
                 self.addError(Constants.errorFolderCreateFailed(self.comp,
                     name: self.folderName))
             }
+            self.model.save()
             self.markAsFinished()
         }
     }
