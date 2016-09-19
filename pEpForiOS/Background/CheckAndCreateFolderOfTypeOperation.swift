@@ -28,11 +28,10 @@ public class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
      */
     var numberOfFailures = 0
 
-    let folderSeparator: String?
+    var folderSeparator: String?
 
     public init(account: IAccount, folderType: FolderType,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
-        self.folderSeparator = account.folderSeparator
         self.accountEmail = account.email
         self.connectInfo = account.connectInfo
         self.folderType = folderType
@@ -45,6 +44,13 @@ public class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
         privateMOC.performBlock() {
             let folder = self.model.folderByType(self.folderType, email: self.accountEmail)
             if folder == nil {
+                guard let account = self.model.accountByEmail(self.accountEmail) else {
+                    self.addError(Constants.errorCannotFindAccountForEmail(
+                        self.comp, email: self.accountEmail))
+                    self.markAsFinished()
+                    return
+                }
+                self.folderSeparator = account.folderSeparator
                 self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
                 self.imapSync.delegate = self
                 self.imapSync.start()
