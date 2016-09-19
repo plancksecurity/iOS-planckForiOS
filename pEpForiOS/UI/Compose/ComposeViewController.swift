@@ -664,6 +664,11 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
             if let cell = model.recipientCell {
                 cell.recipientTextView.becomeFirstResponder()
             }
+            if indexPath.row == bodyTextRowNumber {
+                cell.separatorInset = UIEdgeInsets.init(top: 0,left: cell.bounds.size.width/2,
+                                                        bottom: 0,right: cell.bounds.size.width/2)
+
+            }
         }
     }
 
