@@ -32,6 +32,8 @@ public protocol ImapSyncDelegate: class {
     func messageStoreFailed(sync: ImapSync, notification: NSNotification?)
     func folderCreateCompleted(sync: ImapSync, notification: NSNotification?)
     func folderCreateFailed(sync: ImapSync, notification: NSNotification?)
+    func folderDeleteCompleted(sync: ImapSync, notification: NSNotification?)
+    func folderDeleteFailed(sync: ImapSync, notification: NSNotification?)
 
     /** General error indicator */
     func actionFailed(sync: ImapSync, error: NSError)
@@ -62,6 +64,8 @@ public class DefaultImapSyncDelegate: ImapSyncDelegate {
     public func messageStoreFailed(sync: ImapSync, notification: NSNotification?) {}
     public func folderCreateCompleted(sync: ImapSync, notification: NSNotification?) {}
     public func folderCreateFailed(sync: ImapSync, notification: NSNotification?) {}
+    public func folderDeleteCompleted(sync: ImapSync, notification: NSNotification?) {}
+    public func folderDeleteFailed(sync: ImapSync, notification: NSNotification?) {}
 
     public func actionFailed(sync: ImapSync, error: NSError) {}
 }
@@ -114,6 +118,11 @@ public protocol IImapSync {
      Creates a new folder on the server.
      */
     func createFolderWithName(folderName: String)
+
+    /**
+     Deletes the folder with the given name from the server.
+     */
+    func deleteFolderWithName(folderName: String)
 
     /**
      Close the connection.
@@ -192,6 +201,10 @@ public class ImapSync: Service, IImapSync {
         // ignored by pantomime.
         imapStore.createFolderWithName(folderName, type: PantomimeFormatFolder,
                                        contents: nil)
+    }
+
+    public func deleteFolderWithName(folderName: String) {
+        imapStore.deleteFolderWithName(folderName)
     }
 }
 
@@ -325,6 +338,16 @@ extension ImapSync: CWServiceClient {
     @objc public func folderCreateFailed(notification: NSNotification?) {
         dumpMethodName("folderCreateFailed", notification: notification)
         delegate?.folderCreateFailed(self, notification: notification)
+    }
+
+    @objc public func folderDeleteCompleted(notification: NSNotification?) {
+        dumpMethodName("folderDeleteCompleted", notification: notification)
+        delegate?.folderDeleteCompleted(self, notification: notification)
+    }
+
+    @objc public func folderDeleteFailed(notification: NSNotification?) {
+        dumpMethodName("folderDeleteFailed", notification: notification)
+        delegate?.folderDeleteFailed(self, notification: notification)
     }
 }
 

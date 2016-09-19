@@ -98,6 +98,7 @@ public class Constants {
         case BadResponseError
         case MessageStoreFailed
         case FolderCreateFailed
+        case FolderDeleteFailed
     }
 
     static func errorNotImplemented(component: String) -> NSError {
@@ -302,6 +303,16 @@ public class Constants {
                 String.init(format: NSLocalizedString(
                     "IMAP: Could not create folder '%@'",
                     comment: "IMAP error when folder could not be created"), name)])
+        return error
+    }
+
+    static func errorFolderDeleteFailed(component: String, name: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: ImapErrorCode.FolderDeleteFailed.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                String.init(format: NSLocalizedString(
+                    "IMAP: Could not delete folder '%@'",
+                    comment: "IMAP error when remote folder could not be deleted"), name)])
         return error
     }
 }

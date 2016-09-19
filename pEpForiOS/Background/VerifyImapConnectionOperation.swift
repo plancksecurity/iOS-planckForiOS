@@ -138,6 +138,16 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderDeleteCompleted(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(errorDomain, stateName: "folderDeleteCompleted"))
+        markAsFinished()
+    }
+
+    public func folderDeleteFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(errorDomain, stateName: "folderDeleteFailed"))
+        markAsFinished()
+    }
+
     public func actionFailed(sync: ImapSync, error: NSError) {
         if !isFinishing {
             errors.append(error)

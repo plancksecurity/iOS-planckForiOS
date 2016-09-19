@@ -1,70 +1,60 @@
 //
-//  CheckAndCreateFolderOfTypeOperation.swift
+//  DeleteFolderOperation.swift
 //  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 15/09/16.
+//  Created by Dirk Zimmermann on 19/09/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-/**
- Can be run before operations that operate on folders, like "save draft"
- (with a dependency), to make sure that folder does exist.
- */
-public class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
-    let comp = "CheckAndCreateFolderOfTypeOperation"
-    let folderType: FolderType
+public class DeleteFolderOperation: ConcurrentBaseOperation {
+    let comp = "DeleteFolderOperation"
+
     let accountEmail: String
-    let connectInfo: ConnectInfo
     let connectionManager: ConnectionManager
     var folderName: String
     var imapSync: ImapSync!
 
-    /**
-     Used to keep track of attempts. First try to create top-level,
-     after that try to create under "INBOX", then give up.
-     */
-    var numberOfFailures = 0
-
-    var folderSeparator: String?
-
-    public init(account: IAccount, folderType: FolderType,
-                connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
-        self.accountEmail = account.email
-        self.connectInfo = account.connectInfo
-        self.folderType = folderType
-        self.folderName = folderType.folderName()
+    public init(coreDataUtil: ICoreDataUtil, connectionManager: ConnectionManager,
+                accountEmail: String, folderName: String) {
         self.connectionManager = connectionManager
+        self.accountEmail = accountEmail
+        self.folderName = folderName
         super.init(coreDataUtil: coreDataUtil)
     }
 
     public override func main() {
         privateMOC.performBlock() {
-            let folder = self.model.folderByType(self.folderType, email: self.accountEmail)
-            if folder == nil {
-                guard let account = self.model.accountByEmail(self.accountEmail) else {
-                    self.addError(Constants.errorCannotFindAccountForEmail(
-                        self.comp, email: self.accountEmail))
-                    self.markAsFinished()
-                    return
-                }
-                self.folderSeparator = account.folderSeparator
-                self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
-                self.imapSync.delegate = self
-                self.imapSync.start()
-            } else {
-                self.markAsFinished()
+            guard let account = self.model.accountByEmail(self.accountEmail) else {
+                self.addError(Constants.errorCannotFindAccountForEmail(
+                    self.comp, email: self.accountEmail))
+                return
             }
+
+            self.imapSync = self.connectionManager.emailSyncConnection(account.connectInfo)
+            self.imapSync.delegate = self
+            self.imapSync.start()
+        }
+    }
+
+    func deleteLocalFolderAndFinish() {
+        privateMOC.performBlock() {
+            if let folder = self.model.folderByName(
+                self.folderName, email: self.accountEmail) {
+                self.privateMOC.deleteObject(folder as! NSManagedObject)
+                self.model.save()
+            }
+            self.markAsFinished()
         }
     }
 }
 
-extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
+extension DeleteFolderOperation: ImapSyncDelegate {
     public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
         if !self.cancelled {
-            sync.createFolderWithName(folderName)
+            imapSync.deleteFolderWithName(folderName)
         }
     }
 
@@ -144,40 +134,21 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
     }
 
     public func folderCreateCompleted(sync: ImapSync, notification: NSNotification?) {
-        privateMOC.performBlock() {
-            if self.model.insertOrUpdateFolderName(
-                self.folderName, folderSeparator: self.folderSeparator,
-                accountEmail: self.accountEmail) == nil {
-                self.addError(Constants.errorFolderCreateFailed(self.comp,
-                    name: self.folderName))
-            }
-            self.model.save()
-            self.markAsFinished()
-        }
+        addError(Constants.errorIllegalState(comp, stateName: "folderCreateCompleted"))
+        markAsFinished()
     }
 
     public func folderCreateFailed(sync: ImapSync, notification: NSNotification?) {
-        if !self.cancelled {
-            if numberOfFailures == 0 {
-                if let fs = folderSeparator {
-                    self.folderName = "INBOX\(fs)\(folderName)"
-                    sync.createFolderWithName(folderName)
-                    numberOfFailures += 1
-                    return
-                }
-            }
-        }
-        addError(Constants.errorFolderCreateFailed(comp, name: folderName))
+        addError(Constants.errorIllegalState(comp, stateName: "folderCreateFailed"))
         markAsFinished()
     }
 
     public func folderDeleteCompleted(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteCompleted"))
-        markAsFinished()
+        deleteLocalFolderAndFinish()
     }
 
     public func folderDeleteFailed(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
+        addError(Constants.errorFolderDeleteFailed(comp, name: folderName))
         markAsFinished()
     }
 

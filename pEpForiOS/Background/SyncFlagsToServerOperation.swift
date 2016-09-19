@@ -205,6 +205,16 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderDeleteCompleted(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteCompleted"))
+        markAsFinished()
+    }
+
+    public func folderDeleteFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
+        markAsFinished()
+    }
+
     public func actionFailed(sync: ImapSync, error: NSError) {
         addError(error)
         markAsFinished()
