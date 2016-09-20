@@ -227,6 +227,18 @@ class EmailListViewController: UITableViewController {
         performSegueWithIdentifier(segueShowEmail, sender: cell)
     }
 
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath
+        indexPath: NSIndexPath)-> [UITableViewRowAction]? {
+
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! EmailListViewCell
+        let email = fetchController?.objectAtIndexPath(indexPath) as! Message
+
+        let isFlagAction = createIsFlagAction(email, cell: cell)
+        let deleteAction = createDeleteAction(cell)
+        let isReadAction = createIsReadAction(email, cell: cell)
+        return [deleteAction,isFlagAction,isReadAction]
+    }
+
     // MARK: - Misc
 
     func configureCell(cell: EmailListViewCell, indexPath: NSIndexPath) {
@@ -309,6 +321,100 @@ class EmailListViewController: UITableViewController {
             vc.message = email
         }
     }
+
+    func syncFlagsToServer(message: IMessage) {
+        self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
+            message.folder,
+            completionBlock: { error in
+                UIHelper.displayError(error, controller: self)
+        })
+    }
+
+    func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+
+        // preparing the title action to show when user swipe
+        var localizedIsFlagTitle = " "
+        if (isImportantMessage(message)) {
+            localizedIsFlagTitle = NSLocalizedString("Unflag",
+                                                     comment: "Unflag button title in swipe action on EmailListViewController")
+        } else {
+            localizedIsFlagTitle = NSLocalizedString("Flag",
+                                                     comment: "Flag button title in swipe action on EmailListViewController")
+        }
+
+        // preparing action to trigger when user swipe
+        let isFlagCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+            { (action, indexPath) in
+                if (self.isImportantMessage(message)) {
+                    message.flagFlagged = false
+
+                } else {
+                    message.flagFlagged = true
+                }
+                message.updateFlags()
+                self.syncFlagsToServer(message)
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+        }
+        // creating the action
+        let isFlagAction = UITableViewRowAction(style: .Default, title: localizedIsFlagTitle,
+                                                handler: isFlagCompletionHandler)
+        // changing default action color
+        isFlagAction.backgroundColor = UIColor.orangeColor()
+
+        return isFlagAction
+    }
+
+    func createDeleteAction (cell: EmailListViewCell) -> UITableViewRowAction {
+
+        // preparing the title action to show when user swipe
+        let localizedDeleteTitle = NSLocalizedString("Erase",
+                                                     comment: "Erase button title in swipe action on EmailListViewController")
+
+        let deleteCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+            { (action, indexPath) in
+                let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? IMessage
+                managedObject?.flagDeleted = true
+                managedObject?.updateFlags()
+                self.syncFlagsToServer(managedObject!)
+        }
+
+        // creating the action
+        let deleteAction = UITableViewRowAction(style: .Default, title: localizedDeleteTitle,
+                                                handler: deleteCompletionHandler)
+        return deleteAction
+    }
+
+    func createIsReadAction (message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+
+        // preparing the title action to show when user swipe
+        var localizedisReadTitle = " "
+        if (isReadedMessage(message)) {
+            localizedisReadTitle = NSLocalizedString("Unread",
+                                                     comment: "Unread button title in swipe action on EmailListViewController")
+        } else {
+            localizedisReadTitle = NSLocalizedString("Read",
+                                                     comment: "Read button title in swipe action on EmailListViewController")
+        }
+
+        // creating the action
+        let isReadCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+            { (action, indexPath) in
+                if (self.isReadedMessage(message)) {
+                    message.flagSeen = false
+                    message.updateFlags()
+                } else {
+                    message.flagSeen = true
+                    message.updateFlags()
+                }
+                self.syncFlagsToServer(message)
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+        }
+        let isReadAction = UITableViewRowAction(style: .Default, title: localizedisReadTitle,
+                                                handler: isReadCompletionHandler)
+        isReadAction.backgroundColor = UIColor.blueColor()
+
+        return isReadAction
+    }
 }
 
 extension EmailListViewController: NSFetchedResultsControllerDelegate {
@@ -357,111 +463,5 @@ extension EmailListViewController: NSFetchedResultsControllerDelegate {
 
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
-    }
-
-    func syncFlagsToServer(message: IMessage) {
-        self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
-            message.folder,
-            completionBlock: { error in
-                UIHelper.displayError(error, controller: self)
-        })
-    }
-
-    func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-
-        // preparing the title action to show when user swipe
-        var localizedIsFlagTitle = " "
-        if (isImportantMessage(message)) {
-            localizedIsFlagTitle = NSLocalizedString("Unflag",
-            comment: "Unflag button title in swipe action on EmailListViewController")
-        } else {
-            localizedIsFlagTitle = NSLocalizedString("Flag",
-            comment: "Flag button title in swipe action on EmailListViewController")
-        }
-
-        // preparing action to trigger when user swipe
-        let isFlagCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
-            { (action, indexPath) in
-                if (self.isImportantMessage(message)) {
-                    message.flagFlagged = false
-
-                } else {
-                    message.flagFlagged = true
-                }
-                message.updateFlags()
-                self.syncFlagsToServer(message)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-            }
-        // creating the action
-        let isFlagAction = UITableViewRowAction(style: .Default, title: localizedIsFlagTitle,
-                                                handler: isFlagCompletionHandler)
-        // changing default action color
-        isFlagAction.backgroundColor = UIColor.orangeColor()
-
-        return isFlagAction
-    }
-
-    func createDeleteAction (cell: EmailListViewCell) -> UITableViewRowAction {
-
-        // preparing the title action to show when user swipe
-        let localizedDeleteTitle = NSLocalizedString("Erase",
-        comment: "Erase button title in swipe action on EmailListViewController")
-
-        let deleteCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
-            { (action, indexPath) in
-                let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? IMessage
-                managedObject?.flagDeleted = true
-                managedObject?.updateFlags()
-                self.syncFlagsToServer(managedObject!)
-            }
-
-        // creating the action
-        let deleteAction = UITableViewRowAction(style: .Default, title: localizedDeleteTitle,
-                                                handler: deleteCompletionHandler)
-        return deleteAction
-    }
-
-    func createIsReadAction (message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-
-        // preparing the title action to show when user swipe
-        var localizedisReadTitle = " "
-        if (isReadedMessage(message)) {
-            localizedisReadTitle = NSLocalizedString("Unread",
-            comment: "Unread button title in swipe action on EmailListViewController")
-        } else {
-            localizedisReadTitle = NSLocalizedString("Read",
-            comment: "Read button title in swipe action on EmailListViewController")
-        }
-
-        // creating the action
-        let isReadCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
-            { (action, indexPath) in
-                if (self.isReadedMessage(message)) {
-                    message.flagSeen = false
-                    message.updateFlags()
-                } else {
-                    message.flagSeen = true
-                    message.updateFlags()
-                }
-                self.syncFlagsToServer(message)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-            }
-        let isReadAction = UITableViewRowAction(style: .Default, title: localizedisReadTitle,
-                                                handler: isReadCompletionHandler)
-        isReadAction.backgroundColor = UIColor.blueColor()
-
-        return isReadAction
-    }
-
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath
-                  indexPath: NSIndexPath)-> [UITableViewRowAction]? {
-
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! EmailListViewCell
-        let email = fetchController?.objectAtIndexPath(indexPath) as! Message
-
-        let isFlagAction = createIsFlagAction(email, cell: cell)
-        let deleteAction = createDeleteAction(cell)
-        let isReadAction = createIsReadAction(email, cell: cell)
-        return [deleteAction,isFlagAction,isReadAction]
     }
 }
