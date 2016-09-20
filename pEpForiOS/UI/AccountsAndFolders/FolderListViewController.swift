@@ -111,6 +111,26 @@ class FolderListViewController: UITableViewController {
         return cell
     }
 
+    override func tableView(tableView: UITableView,
+                            canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let fi = folderItems[indexPath.row]
+        switch fi.type {
+            case .LocalOutbox, .Inbox: return false
+            default: return true
+        }
+    }
+
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        let fi = folderItems[indexPath.row]
+        let folder = config.appConfig.coreDataUtil.managedObjectContext.objectWithID(
+            fi.objectID)
+        config.appConfig.grandOperator.deleteFolder(folder as! IFolder) { error in
+            UIHelper.displayError(error, controller: self)
+        }
+        folderItems.removeAtIndex(indexPath.row)
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+    }
+
     // MARK: - Table view delegate
 
     override func tableView(
