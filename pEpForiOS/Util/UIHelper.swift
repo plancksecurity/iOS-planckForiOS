@@ -134,7 +134,13 @@ class UIHelper {
                              title: String? = nil) {
         if let err = error {
             let message = err.localizedDescription
-            displayErrorMessage(message, controller: controller, title: title)
+            if NSThread.currentThread().isMainThread {
+                displayErrorMessage(message, controller: controller, title: title)
+            } else {
+                GCD.onMain() {
+                    displayErrorMessage(message, controller: controller, title: title)
+                }
+            }
         }
     }
 
