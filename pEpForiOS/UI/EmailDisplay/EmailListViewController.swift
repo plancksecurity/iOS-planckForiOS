@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class EmailListViewController: UITableViewController {
+class EmailListViewController: FetchTableViewController {
     struct EmailListConfig {
         let appConfig: AppConfig
 
@@ -34,8 +34,6 @@ class EmailListViewController: UITableViewController {
         var isSynching: Bool = false
     }
     
-    let comp = "EmailListViewController"
-
     let segueShowEmail = "segueShowEmail"
     let segueCompose = "segueCompose"
     let segueUserSettings = "segueUserSettings"
@@ -69,6 +67,11 @@ class EmailListViewController: UITableViewController {
      and should be given to the compose view.
      */
     var draftMessageToCompose: IMessage?
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.comp = "EmailListViewController"
+    }
 
     func isReadedMessage(message: IMessage)-> Bool {
         return message.flagSeen.boolValue
@@ -241,7 +244,10 @@ class EmailListViewController: UITableViewController {
 
     // MARK: - Misc
 
-    func configureCell(cell: EmailListViewCell, indexPath: NSIndexPath) {
+    override func configureCell(theCell: UITableViewCell, indexPath: NSIndexPath) {
+        guard let cell = theCell as? EmailListViewCell else {
+            return
+        }
         if let email = fetchController?.objectAtIndexPath(indexPath) as? Message {
             if let colorRating = PEPUtil.colorRatingFromInt(email.pepColorRating?.integerValue) {
                 let privacyColor = PEPUtil.colorFromPepRating(colorRating)
@@ -414,54 +420,5 @@ class EmailListViewController: UITableViewController {
         isReadAction.backgroundColor = UIColor.blueColor()
 
         return isReadAction
-    }
-}
-
-extension EmailListViewController: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        tableView.beginUpdates()
-    }
-
-    func controller(controller: NSFetchedResultsController,
-                    didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-                                     atIndex sectionIndex: Int,
-                                             forChangeType type: NSFetchedResultsChangeType) {
-        switch (type) {
-        case .Insert:
-            tableView.insertSections(NSIndexSet.init(index: sectionIndex),
-                                     withRowAnimation: .Fade)
-        case .Delete:
-            tableView.deleteSections(NSIndexSet.init(index: sectionIndex),
-                                     withRowAnimation: .Fade)
-        default:
-            Log.infoComponent(comp, "unhandled changeSectionType: \(type)")
-        }
-    }
-
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject,
-                    atIndexPath indexPath: NSIndexPath?,
-                                forChangeType type: NSFetchedResultsChangeType,
-                                              newIndexPath: NSIndexPath?) {
-        switch type {
-        case .Insert:
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-        case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-        case .Update:
-            if let cell = tableView.cellForRowAtIndexPath(indexPath!) {
-                self.configureCell(cell as! EmailListViewCell, indexPath: indexPath!)
-            } else {
-                Log.warnComponent(comp, "Could not find cell for changed indexPath: \(indexPath!)")
-            }
-        case .Move:
-            if newIndexPath != indexPath {
-                tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-                tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-            }
-        }
-    }
-
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        tableView.endUpdates()
     }
 }

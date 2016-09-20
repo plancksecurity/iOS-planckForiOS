@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43001F791D91860A00306BF0 /* FetchTableViewController.swift */; };
 		430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */; };
 		4303DAE71CE62D2600D9C0AB /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAE51CE62D2600D9C0AB /* Attachment.swift */; };
 		4303DAED1CE62D3700D9C0AB /* _Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAEB1CE62D3700D9C0AB /* _Attachment.swift */; };
@@ -209,6 +210,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
 		430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveSentMessageOperation.swift; path = ../SaveSentMessageOperation.swift; sourceTree = "<group>"; };
 		4303DAE51CE62D2600D9C0AB /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		4303DAEB1CE62D3700D9C0AB /* _Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Attachment.swift; sourceTree = "<group>"; };
@@ -401,6 +403,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		43001F761D9185E600306BF0 /* TableViews */ = {
+			isa = PBXGroup;
+			children = (
+				43001F791D91860A00306BF0 /* FetchTableViewController.swift */,
+			);
+			path = TableViews;
+			sourceTree = "<group>";
+		};
 		431144A61CC0CB0A0007639D /* Background */ = {
 			isa = PBXGroup;
 			children = (
@@ -722,6 +732,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				43001F761D9185E600306BF0 /* TableViews */,
 				431B0B961D6734BF0082D0DB /* AccountsAndFolders */,
 				4327221F1D33F2CB009EC395 /* Trustwords */,
 				431AE5D11D2EC0A700F609D3 /* Compose */,
@@ -1036,6 +1047,7 @@
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				43ED53731CC77F95006AB156 /* MailCell.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
+				43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */,
 				43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */,
 				4346D33C1D86E2E50017E24E /* ComposeViewHelper.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
