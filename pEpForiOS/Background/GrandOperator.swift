@@ -89,6 +89,18 @@ public protocol IGrandOperator: class {
      */
     func syncFlagsToServerForFolder(folder: IFolder,
                                     completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
+     Creates a folder with the given properties if it doesn't exist,
+     both locally and on the server.
+     */
+    func createFolderOfType(account: IAccount, folderType: FolderType,
+                            completionBlock: GrandOperatorCompletionBlock?)
+
+    /**
+     Deletes the given folder, both locally and remotely.
+     */
+    func deleteFolder(folder: IFolder, completionBlock: GrandOperatorCompletionBlock?)
 }
 
 public class GrandOperator: IGrandOperator {
@@ -357,5 +369,29 @@ public class GrandOperator: IGrandOperator {
         if let op = operation {
             backgroundQueue.addOperation(op)
         }
+    }
+
+    public func createFolderOfType(account: IAccount, folderType: FolderType,
+                                   completionBlock: GrandOperatorCompletionBlock?) {
+        let op = CheckAndCreateFolderOfTypeOperation.init(
+            account: account, folderType: folderType,
+            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
+        op.completionBlock = {
+            let error = op.errors.first
+            completionBlock?(error: error)
+        }
+        backgroundQueue.addOperation(op)
+    }
+
+    public func deleteFolder(folder: IFolder,
+                             completionBlock: GrandOperatorCompletionBlock?) {
+        let op = DeleteFolderOperation.init(
+            folder: folder, connectionManager: connectionManager,
+            coreDataUtil: coreDataUtil)
+        op.completionBlock = {
+            let error = op.errors.first
+            completionBlock?(error: error)
+        }
+        backgroundQueue.addOperation(op)
     }
 }

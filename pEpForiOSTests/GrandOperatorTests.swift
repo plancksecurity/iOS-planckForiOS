@@ -279,4 +279,44 @@ class GrandOperatorTests: XCTestCase {
             XCTAssertNil(error)
         })
     }
+
+    func testDeleteFolder() {
+        let expFoldersFetched = expectationWithDescription("expFoldersFetched")
+        persistentSetup.grandOperator.fetchFolders(
+        persistentSetup.account.connectInfo) { error in
+            XCTAssertNil(error)
+            expFoldersFetched.fulfill()
+        }
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        let expFolderCreated = expectationWithDescription("expFolderCreated")
+        persistentSetup.grandOperator.createFolderOfType(
+        persistentSetup.account, folderType: .Drafts) { error in
+            XCTAssertNil(error)
+            expFolderCreated.fulfill()
+        }
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        guard let draftsFolder = persistentSetup.model.folderByType(
+            .Drafts, email: persistentSetup.accountEmail) else {
+                XCTAssertTrue(false)
+                return
+        }
+
+        let expFolderDeleted = expectationWithDescription("expFolderDeleted")
+        persistentSetup.grandOperator.deleteFolder( draftsFolder) { error in
+            XCTAssertNil(error)
+            expFolderDeleted.fulfill()
+        }
+        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        XCTAssertNil(persistentSetup.model.folderByType(.Drafts,
+            email: persistentSetup.accountEmail))
+    }
 }
