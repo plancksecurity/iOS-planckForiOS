@@ -126,6 +126,8 @@ class FolderListViewController: UITableViewController {
             fi.objectID)
         config.appConfig.grandOperator.deleteFolder(folder as! IFolder) { error in
             UIHelper.displayError(error, controller: self)
+            self.state.isUpdating = false
+            self.updateUI()
         }
         folderItems.removeAtIndex(indexPath.row)
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
