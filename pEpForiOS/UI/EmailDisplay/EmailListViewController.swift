@@ -40,7 +40,6 @@ class EmailListViewController: FetchTableViewController {
 
     var config: EmailListConfig!
 
-    var fetchController: NSFetchedResultsController?
     var state = UIState()
     let dateFormatter = UIHelper.dateFormatterEmailList()
 

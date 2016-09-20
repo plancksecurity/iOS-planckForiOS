@@ -13,10 +13,32 @@ import CoreData
  You can use this as the base for table view controllers based on NSFetchedResultsController.
  */
 public class FetchTableViewController: UITableViewController {
+    /** Override this in your class */
     var comp: String = "FetchTableViewController"
+    var fetchController: NSFetchedResultsController?
 
     func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         fatalError("implement configureCell(cell:indexPath:)")
+    }
+
+    // MARK: - UITableViewDataSource
+
+    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if let count = fetchController?.sections?.count {
+            return count
+        } else {
+            return 0
+        }
+    }
+
+    override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if fetchController?.sections?.count > 0 {
+            if let sections = fetchController?.sections {
+                let sectionInfo = sections[section]
+                return sectionInfo.numberOfObjects
+            }
+        }
+        return 0
     }
 }
 

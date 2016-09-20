@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreData
 
-class FolderListViewController: UITableViewController {
+class FolderListViewController: FetchTableViewController {
     struct FolderListConfig {
         let account: IAccount
         let appConfig: AppConfig
@@ -23,8 +24,6 @@ class FolderListViewController: UITableViewController {
     let segueShowEmails = "segueShowEmails"
 
     var config: FolderListConfig!
-
-    var folderItems: [FolderModelOperation.FolderItem] = []
 
     struct UIState {
         var isUpdating = false
@@ -45,7 +44,7 @@ class FolderListViewController: UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updateModelFromDataBase()
+        prepareFetchRequest()
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,16 +52,26 @@ class FolderListViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func updateModelFromDataBase() {
-        let op = FolderModelOperation.init(
-            account: config.account, coreDataUtil: config.appConfig.coreDataUtil)
-        op.completionBlock = {
-            GCD.onMain() {
-                self.folderItems = op.folderItems
-                self.tableView.reloadData()
-            }
+    func prepareFetchRequest() {
+        let fetchRequest = NSFetchRequest.init(entityName: Folder.entityName())
+
+        let predicateAccount = NSPredicate.init(
+            format: "account.email = %@", config.account.email)
+        let predicate = NSCompoundPredicate.init(
+            andPredicateWithSubpredicates: [predicateAccount])
+
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "name", ascending: true)]
+        fetchController = NSFetchedResultsController.init(
+            fetchRequest: fetchRequest,
+            managedObjectContext: config.appConfig.coreDataUtil.managedObjectContext,
+            sectionNameKeyPath: nil, cacheName: nil)
+        fetchController?.delegate = self
+        do {
+            try fetchController?.performFetch()
+        } catch let err as NSError {
+            Log.errorComponent(comp, error: err)
         }
-        op.start()
     }
 
     func refreshFoldersControl(refreshControl: UIRefreshControl? = nil) {
@@ -87,50 +96,42 @@ class FolderListViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(
-        tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return folderItems.count
-    }
-
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(
             standardCell, forIndexPath: indexPath)
-
-        let fi = folderItems[indexPath.row]
-        if fi.numberOfMessages > 0 {
-            cell.textLabel?.text = "\(fi.name) (\(fi.numberOfMessages))"
-        } else {
-            cell.textLabel?.text = fi.name
-        }
-        cell.accessoryType = .DisclosureIndicator
-
+        configureCell(cell, indexPath: indexPath)
         return cell
+    }
+
+    override func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
+        if let folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+            cell.textLabel?.text = "\(folder.name)"
+            cell.accessoryType = .DisclosureIndicator
+        }
     }
 
     override func tableView(tableView: UITableView,
                             canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let fi = folderItems[indexPath.row]
-        switch fi.type {
-            case .LocalOutbox, .Inbox: return false
+        if let folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+            switch folder.folderType.integerValue {
+            case FolderType.LocalOutbox.rawValue, FolderType.Inbox.rawValue: return false
             default: return true
+            }
         }
+        return false
     }
 
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        let fi = folderItems[indexPath.row]
-        let folder = config.appConfig.coreDataUtil.managedObjectContext.objectWithID(
-            fi.objectID)
-        config.appConfig.grandOperator.deleteFolder(folder as! IFolder) { error in
-            UIHelper.displayError(error, controller: self)
-            self.state.isUpdating = false
-            self.updateUI()
+    override func tableView(
+        tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle,
+        forRowAtIndexPath indexPath: NSIndexPath) {
+        if let folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+            config.appConfig.grandOperator.deleteFolder(folder as IFolder) { error in
+                UIHelper.displayError(error, controller: self)
+                self.state.isUpdating = false
+                self.updateUI()
+            }
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
-        folderItems.removeAtIndex(indexPath.row)
-        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
     }
 
     // MARK: - Table view delegate
@@ -138,39 +139,47 @@ class FolderListViewController: UITableViewController {
     override func tableView(
         tableView: UITableView,
         indentationLevelForRowAtIndexPath indexPath: NSIndexPath) -> Int {
-        let fi = folderItems[indexPath.row]
-        return fi.level
+        if var folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+            var count = 0
+            while folder.parent != nil {
+                count += 1
+                folder = folder.parent!
+            }
+            return count
+        }
+        return 0
     }
 
     override func tableView(tableView: UITableView,
                             didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let fi = folderItems[indexPath.row]
+        if let fi = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+            let predicateBasic = config.appConfig.model.basicMessagePredicate()
+            let predicateAccount = NSPredicate.init(
+                format: "folder.account.email = %@", config.account.email)
+            let predicateFolder = NSPredicate.init(
+                format: "folder.name = %@", fi.name)
 
-        let predicateBasic = config.appConfig.model.basicMessagePredicate()
-        let predicateAccount = NSPredicate.init(
-            format: "folder.account.email = %@", config.account.email)
-        let predicateFolder = NSPredicate.init(
-            format: "folder.name = %@", fi.name)
+            // If the folder is just local, then don't let the email list view sync.
+            var account: IAccount? = nil
+            if let ft = FolderType.fromInt(fi.folderType.integerValue) {
+                if ft.isRemote() {
+                    account = config.account
+                }
+                // Start syncing emails when it's not an inbox (which was just synced already)
+                let syncOnAppear = ft != .Inbox
 
-        // If the folder is just local, then don't let the email list view sync.
-        var account: IAccount? = nil
-        if fi.type.isRemote() {
-            account = config.account
+                emailListConfig = EmailListViewController.EmailListConfig.init(
+                    appConfig: config.appConfig,
+                    predicate: NSCompoundPredicate.init(
+                        andPredicateWithSubpredicates: [predicateBasic, predicateAccount,
+                            predicateFolder]),
+                    sortDescriptors: [NSSortDescriptor.init(
+                        key: "receivedDate", ascending: false)],
+                    account: account, folderName: fi.name, syncOnAppear: syncOnAppear)
+
+                performSegueWithIdentifier(segueShowEmails, sender: self)
+            }
         }
-
-        // Start syncing emails when it's not an inbox (which was just synced already)
-        let syncOnAppear = fi.type != .Inbox
-
-        emailListConfig = EmailListViewController.EmailListConfig.init(
-            appConfig: config.appConfig,
-            predicate: NSCompoundPredicate.init(
-                andPredicateWithSubpredicates: [predicateBasic, predicateAccount,
-                    predicateFolder]),
-            sortDescriptors: [NSSortDescriptor.init(
-                key: "receivedDate", ascending: false)],
-            account: account, folderName: fi.name, syncOnAppear: syncOnAppear)
-
-        performSegueWithIdentifier(segueShowEmails, sender: self)
     }
 
     // MARK: - Navigation
