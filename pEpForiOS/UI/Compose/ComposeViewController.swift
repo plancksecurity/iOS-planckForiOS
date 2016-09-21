@@ -577,17 +577,9 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
         attachedAlertView.message = NSLocalizedString("Choose one option",
         comment: "Message for attached alert view")
 
-        let videosAction = UIAlertAction(
-            title: NSLocalizedString("Videos",
-            comment: "Title for Video action in attached files alert view"),
-            style: UIAlertActionStyle.Default) {
-                UIAlertAction in
-            }
-        attachedAlertView.addAction(videosAction)
-
         let photosAction = UIAlertAction(title: NSLocalizedString(
-            "Photo",
-            comment: "Title for photos action in attached files alert view"),
+            "Photos / Videos",
+            comment: "Title for photos/videos action in attached files alert view"),
             style: UIAlertActionStyle.Default) {
             UIAlertAction in
                 let possibleAttachedImages = UIImagePickerController.init()
@@ -605,17 +597,24 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                 self.presentViewController(possibleAttachedImages, animated: true, completion: nil)
             }
         attachedAlertView.addAction(photosAction)
-        presentViewController(attachedAlertView, animated: true, completion: nil)
 
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel",
+                comment: "Cancel button text for email actions menu (reply, forward etc.)"),
+            style: .Cancel) { (action) in }
 
-        let documentAction = UIAlertAction(
+        attachedAlertView.addAction(cancelAction)
+
+        /*let documentAction = UIAlertAction(
             title: NSLocalizedString(
                 "Cancel",
                 comment: "Title for cancel action in attached files alert view"),
             style: UIAlertActionStyle.Default) {
                 UIAlertAction in
         }
-        attachedAlertView.addAction(documentAction)
+        attachedAlertView.addAction(documentAction)*/
+
+         presentViewController(attachedAlertView, animated: true, completion: nil)
     }
 
     // MARK: -- UITableViewDelegate
