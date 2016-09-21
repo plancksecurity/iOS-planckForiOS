@@ -89,15 +89,17 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     override func setUIDValidity(theUIDValidity: UInt) {
-        privateMOC.performBlock({
-            if self.folder.uidValidity != theUIDValidity {
-                Log.warnComponent(self.comp,
-                    "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
-                self.folder.messages = []
+        privateMOC.performBlock() {
+            if let uidV = self.folder.uidValidity {
+                if uidV != theUIDValidity {
+                    Log.warnComponent(self.comp,
+                        "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
+                    self.folder.messages = []
+                }
             }
             self.folder.uidValidity = theUIDValidity
             self.model.save()
-        })
+        }
     }
 
     override func UIDValidity() -> UInt {
