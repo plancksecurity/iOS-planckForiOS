@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MobileCoreServices
 //import NSEvent
 
 public class ComposeViewController: UITableViewController, UIImagePickerControllerDelegate,
@@ -603,6 +604,13 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                 possibleAttachedImages.delegate = self
                 possibleAttachedImages.allowsEditing = false
                 possibleAttachedImages.sourceType = .PhotoLibrary
+                if let mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(
+                    .PhotoLibrary) {
+                    possibleAttachedImages.mediaTypes = mediaTypes
+                } else {
+                    possibleAttachedImages.mediaTypes = [kUTTypeImage as String,
+                                                         kUTTypeMovie as String]
+                }
                 self.presentViewController(possibleAttachedImages, animated: true, completion: nil)
             }
         attachedAlertView.addAction(photosAction)
