@@ -152,13 +152,13 @@ public class GrandOperator: IGrandOperator {
         var errors: [NSError] = []
         if let lastOp = operations.last {
             lastOp.completionBlock = {
-                lastOp.completionBlock = nil
-                for op in operations {
-                    errors.appendContentsOf(op.errors)
-                }
-                // Only the first error will be reported
-                if let block = completionBlock {
-                    block(error: errors.first)
+                GCD.onMain() {
+                    lastOp.completionBlock = nil
+                    for op in operations {
+                        errors.appendContentsOf(op.errors)
+                    }
+                    // Only the first error will be reported
+                    completionBlock?(error: errors.first)
                 }
             }
         }
@@ -222,11 +222,9 @@ public class GrandOperator: IGrandOperator {
 
         chainOperations(
             operations, completionBlock: { error in
-                GCD.onMain({
-                    if let block = completionBlock {
-                        block(error: error)
-                    }
-                })
+                // This completion block should already have been scheduled on the main queue
+                // by chainOperations.
+                completionBlock?(error: error)
         })
     }
 
@@ -251,6 +249,8 @@ public class GrandOperator: IGrandOperator {
             if error == nil {
                 error = op2.errors.first
             }
+
+            // This is already scheduled on the main queue
             completionBlock?(error: error)
         }
     }
@@ -307,14 +307,16 @@ public class GrandOperator: IGrandOperator {
         opSend.addDependency(opEncrypt)
 
         opSaveSent.completionBlock = {
-            var firstError: NSError?
-            for op in [opEncrypt, opSend, opCreateSentFolder, opSaveSent] {
-                if let err = op.errors.first {
-                    firstError = err
-                    break
+            GCD.onMain() {
+                var firstError: NSError?
+                for op in [opEncrypt, opSend, opCreateSentFolder, opSaveSent] {
+                    if let err = op.errors.first {
+                        firstError = err
+                        break
+                    }
                 }
+                completionBlock?(error: firstError)
             }
-            completionBlock?(error: firstError)
         }
 
         backgroundQueue.addOperation(opEncrypt)
@@ -362,9 +364,11 @@ public class GrandOperator: IGrandOperator {
         }
 
         operation?.completionBlock = {
-            blockOrig?()
-            let firstError = operation?.errors.first
-            completionBlock?(error: firstError)
+            GCD.onMain() {
+                blockOrig?()
+                let firstError = operation?.errors.first
+                completionBlock?(error: firstError)
+            }
         }
         if let op = operation {
             backgroundQueue.addOperation(op)
@@ -377,8 +381,9 @@ public class GrandOperator: IGrandOperator {
             account: account, folderType: folderType,
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         op.completionBlock = {
-            let error = op.errors.first
-            completionBlock?(error: error)
+            GCD.onMain() {
+                completionBlock?(error: op.errors.first)
+            }
         }
         backgroundQueue.addOperation(op)
     }
@@ -389,8 +394,9 @@ public class GrandOperator: IGrandOperator {
             folder: folder, connectionManager: connectionManager,
             coreDataUtil: coreDataUtil)
         op.completionBlock = {
-            let error = op.errors.first
-            completionBlock?(error: error)
+            GCD.onMain() {
+                completionBlock?(error: op.errors.first)
+            }
         }
         backgroundQueue.addOperation(op)
     }
