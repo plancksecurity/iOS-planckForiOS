@@ -198,6 +198,11 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
         })
     }
 
+    public func folderAppendFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorAppendFailed(comp))
+        markAsFinished()
+    }
+
     public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageStoreCompleted"))
         markAsFinished()

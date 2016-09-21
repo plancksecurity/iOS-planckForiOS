@@ -133,6 +133,11 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderAppendFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderAppendFailed"))
+        markAsFinished()
+    }
+
     public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageStoreCompleted"))
         markAsFinished()

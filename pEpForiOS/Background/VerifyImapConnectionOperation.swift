@@ -69,8 +69,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     }
 
     public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(errorDomain,
-            stateName: "folderPrefetchCompleted"))
+        addError(Constants.errorIllegalState(errorDomain, stateName: "folderPrefetchCompleted"))
         markAsFinished()
     }
 
@@ -80,8 +79,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     }
 
     public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(errorDomain,
-            stateName: "messagePrefetchCompleted"))
+        addError(Constants.errorIllegalState(errorDomain, stateName: "messagePrefetchCompleted"))
         markAsFinished()
     }
 
@@ -96,8 +94,7 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     }
 
     public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(errorDomain,
-            stateName: "folderStatusCompleted"))
+        addError(Constants.errorIllegalState(errorDomain, stateName: "folderStatusCompleted"))
         markAsFinished()
     }
 
@@ -112,8 +109,12 @@ extension VerifyImapConnectionOperation: ImapSyncDelegate {
     }
 
     public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(errorDomain,
-            stateName: "folderAppendCompleted"))
+        addError(Constants.errorIllegalState(errorDomain, stateName: "folderAppendCompleted"))
+        markAsFinished()
+    }
+
+    public func folderAppendFailed(sync: ImapSync, notification: NSNotification?) {
+        addError(Constants.errorIllegalState(errorDomain, stateName: "folderAppendFailed"))
         markAsFinished()
     }
 
