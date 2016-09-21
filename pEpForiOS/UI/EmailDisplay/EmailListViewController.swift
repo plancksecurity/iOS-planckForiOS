@@ -168,10 +168,8 @@ class EmailListViewController: FetchTableViewController {
     // MARK: - UI State
 
     func updateUI() {
-        if state.isSynching {
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        } else {
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = state.isSynching
+        if !state.isSynching {
             self.refreshControl?.endRefreshing()
         }
     }

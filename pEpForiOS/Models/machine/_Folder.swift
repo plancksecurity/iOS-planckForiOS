@@ -9,6 +9,7 @@ public enum FolderAttributes: String {
     case folderType = "folderType"
     case name = "name"
     case nextUID = "nextUID"
+    case shouldDelete = "shouldDelete"
     case uidValidity = "uidValidity"
 }
 
@@ -30,6 +31,8 @@ public enum FolderRelationships: String {
     var name: String { get set }
 
     var nextUID: NSNumber { get set }
+
+    var shouldDelete: NSNumber { get set }
 
     var uidValidity: NSNumber? { get set }
 
@@ -81,6 +84,9 @@ public class _Folder: BaseManagedObject, _IFolder {
 
     @NSManaged public
     var nextUID: NSNumber
+
+    @NSManaged public
+    var shouldDelete: NSNumber
 
     @NSManaged public
     var uidValidity: NSNumber?

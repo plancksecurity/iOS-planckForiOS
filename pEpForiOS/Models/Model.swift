@@ -380,6 +380,9 @@ public class Model: IModel {
 
     func insertFolderName(name: String, account: IAccount) -> IFolder {
         if let folder = folderByName(name, email: account.email) {
+            // reactivate folder if previously deleted
+            folder.shouldDelete = false
+
             return folder
         }
 
@@ -388,6 +391,7 @@ public class Model: IModel {
 
         folder.name = name
         folder.account = account as! Account
+        folder.shouldDelete = false
 
         // Default value
         folder.folderType = NSNumber.init(integer: FolderType.Normal.rawValue)
@@ -417,6 +421,9 @@ public class Model: IModel {
     public func insertOrUpdateFolderName(folderName: String, folderSeparator: String?,
                                          accountEmail: String) -> IFolder? {
         if let folder = folderByName(folderName, email: accountEmail) {
+            // reactivate folder if previously deleted
+            folder.shouldDelete = false
+
             return folder
         }
 

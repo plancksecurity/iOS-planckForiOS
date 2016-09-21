@@ -57,8 +57,10 @@ class FolderListViewController: FetchTableViewController {
 
         let predicateAccount = NSPredicate.init(
             format: "account.email = %@", config.account.email)
+        let predicateNotDeleted = NSPredicate.init(
+            format: "shouldDelete = false")
         let predicate = NSCompoundPredicate.init(
-            andPredicateWithSubpredicates: [predicateAccount])
+            andPredicateWithSubpredicates: [predicateAccount, predicateNotDeleted])
 
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "name", ascending: true)]
@@ -86,12 +88,10 @@ class FolderListViewController: FetchTableViewController {
     }
 
     func updateUI() {
-        if state.isUpdating {
-            self.refreshControl?.beginRefreshing()
-        } else {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = state.isUpdating
+        if !state.isUpdating {
             self.refreshControl?.endRefreshing()
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = state.isUpdating
     }
 
     // MARK: - Table view data source
@@ -125,6 +125,8 @@ class FolderListViewController: FetchTableViewController {
         tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle,
         forRowAtIndexPath indexPath: NSIndexPath) {
         if let folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+            folder.shouldDelete = true
+            config.appConfig.model.save()
             state.isUpdating = true
             updateUI()
 

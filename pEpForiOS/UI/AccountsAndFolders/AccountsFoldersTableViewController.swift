@@ -140,11 +140,8 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func updateUI() {
-        if state.isSynching {
-            self.refreshControl?.beginRefreshing()
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        } else {
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = state.isSynching
+        if !state.isSynching {
             self.refreshControl?.endRefreshing()
         }
     }
