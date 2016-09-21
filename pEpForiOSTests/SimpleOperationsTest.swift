@@ -541,8 +541,11 @@ class SimpleOperationsTest: XCTestCase {
         message.addCcObject(c2 as! Contact)
 
         let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
-        let targetFolder = persistentSetup.model.folderByType(.Drafts, account: account)
-            as! Folder
+        guard let targetFolder = persistentSetup.model.folderByType(.Drafts, account: account)
+            as? Folder else {
+                XCTAssertFalse(true)
+                return
+        }
 
         let op = AppendSingleMessageOperation.init(
             message: message, account: persistentSetup.account,
