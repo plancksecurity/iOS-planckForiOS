@@ -125,12 +125,14 @@ class FolderListViewController: FetchTableViewController {
         tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle,
         forRowAtIndexPath indexPath: NSIndexPath) {
         if let folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+            state.isUpdating = true
+            updateUI()
+
             config.appConfig.grandOperator.deleteFolder(folder as IFolder) { error in
                 UIHelper.displayError(error, controller: self)
                 self.state.isUpdating = false
                 self.updateUI()
             }
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
     }
 
