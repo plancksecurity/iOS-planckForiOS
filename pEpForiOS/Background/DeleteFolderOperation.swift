@@ -47,7 +47,7 @@ public class DeleteFolderOperation: ConcurrentBaseOperation {
 
     func deleteLocalFolderAndFinish() {
         privateMOC.performBlock() {
-            if let folder = self.model.folderByName(
+            if let folder = self.model.anyFolderByName(
                 self.folderName, email: self.accountEmail) {
                 self.privateMOC.deleteObject(folder as! NSManagedObject)
                 self.model.save()

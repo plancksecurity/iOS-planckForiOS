@@ -42,8 +42,25 @@ public protocol IModel {
                             sortDescriptors: [NSSortDescriptor]?) -> [IFolder]?
     func folderByPredicate(predicate: NSPredicate?,
                            sortDescriptors: [NSSortDescriptor]?) -> IFolder?
+
+    /**
+     Fetch a folder by name and account email.
+     Will not return folders that are scheduled for deletion (where `shouldDelete` is true).
+     */
     func folderByName(name: String, email: String) -> IFolder?
+
+    /**
+     Fetch a folder by name and account email, and type.
+     Will not return folders that are scheduled for deletion (where `shouldDelete` is true).
+     */
     func folderByName(name: String, email: String, folderType: Account.AccountType) -> IFolder?
+
+    /**
+     Fetch a folder by name and account email, even those scheduled for deletion
+     (where `shouldDelete` is true).
+     */
+    func anyFolderByName(name: String, email: String) -> IFolder?
+
     func foldersForAccountEmail(accountEmail: String, predicate: NSPredicate?,
                                 sortDescriptors: [NSSortDescriptor]?) -> [IFolder]?
 
@@ -532,8 +549,14 @@ public class Model: IModel {
         name: String, email: String, folderType: Account.AccountType) -> IFolder? {
         let p1 = folderPredicateByName(name, email: email)
         let p2 = NSPredicate.init(format: "folderType = %d", folderType.rawValue)
-        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
+        let p3 = NSPredicate.init(format: "shouldDelete == false")
+        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2, p3])
         return folderByPredicate(p)
+    }
+
+    public func anyFolderByName(name: String, email: String) -> IFolder? {
+        let p1 = folderPredicateByName(name, email: email)
+        return folderByPredicate(p1)
     }
 
     public func foldersForAccountEmail(accountEmail: String, predicate: NSPredicate?,
@@ -556,7 +579,8 @@ public class Model: IModel {
     public func folderByType(type: FolderType, email: String) -> IFolder? {
         let p1 = NSPredicate.init(format: "account.email == %@", email)
         let p2 = NSPredicate.init(format: "folderType == %d", type.rawValue)
-        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
+        let p3 = NSPredicate.init(format: "shouldDelete == false")
+        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2, p3])
         return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
     }
 

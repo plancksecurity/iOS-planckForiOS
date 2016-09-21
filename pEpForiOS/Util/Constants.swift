@@ -317,13 +317,14 @@ public class Constants {
         return error
     }
 
-    static func errorAppendFailed(component: String) -> NSError {
+    static func errorAppendFailed(component: String, folderName: String) -> NSError {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.AppendFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
-                NSLocalizedString(
-                    "IMAP: Could not append mesage '%@'",
-                    comment: "IMAP error when remote folder could not be deleted")])
+                String.init(format: NSLocalizedString(
+                    "IMAP: Could not append message to folder '%@'",
+                    comment: "IMAP error when remote folder could not be deleted"),
+                    folderName)])
         return error
     }
 }

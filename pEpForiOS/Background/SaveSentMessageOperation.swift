@@ -156,7 +156,7 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
     }
 
     public func folderAppendFailed(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorAppendFailed(comp))
+        addError(Constants.errorAppendFailed(comp, folderName: targetFolderName))
         markAsFinished()
     }
 
