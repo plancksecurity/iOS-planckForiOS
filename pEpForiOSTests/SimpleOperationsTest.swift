@@ -54,6 +54,8 @@ class SimpleOperationsTest: XCTestCase {
         op.start()
         waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
+            print(op.errors)
         })
 
         XCTAssertGreaterThan(

@@ -110,8 +110,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
-        markAsFinished()
+        // do nothing
     }
 
     public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
