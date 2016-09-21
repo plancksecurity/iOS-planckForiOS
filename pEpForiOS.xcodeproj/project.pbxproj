@@ -142,6 +142,7 @@
 		A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */; };
 		A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */; };
 		A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */; };
+		A1950C6B1D928A9700A7C865 /* ChooseAttachmentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1950C6A1D928A9700A7C865 /* ChooseAttachmentTest.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
 		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
 		A1B50A8A1CD271EC00B1A997 /* GrandOperatorVerifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */; };
@@ -362,6 +363,7 @@
 		A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeLabelTableViewCell.swift; sourceTree = "<group>"; };
 		A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTexViewTableViewCell.swift; sourceTree = "<group>"; };
 		A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeViewController.swift; sourceTree = "<group>"; };
+		A1950C6A1D928A9700A7C865 /* ChooseAttachmentTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseAttachmentTest.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
 		A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrandOperatorVerifyTests.swift; sourceTree = "<group>"; };
@@ -587,6 +589,7 @@
 				43980E4B1CBD0BCA00A7FC3C /* Info.plist */,
 				43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */,
 				43DA52701CEF3B0E0023D540 /* UITestData.swift */,
+				A1950C6A1D928A9700A7C865 /* ChooseAttachmentTest.swift */,
 			);
 			path = pEpForiOSUITests;
 			sourceTree = "<group>";
@@ -1087,6 +1090,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */,
+				A1950C6B1D928A9700A7C865 /* ChooseAttachmentTest.swift in Sources */,
 				43DA52711CEF3B0E0023D540 /* UITestData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
