@@ -92,6 +92,10 @@ public class UserInfoTableView: UITableViewController, UITextFieldDelegate {
             if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
                 appConfig = appDelegate.appConfig
             }
+        } else {
+            if (appConfig!.model.numberOfAccounts() == nil) {
+                self.navigationItem.hidesBackButton = true
+            }
         }
 
         if model.email == nil {

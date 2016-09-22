@@ -168,6 +168,11 @@ public protocol IModel {
      - Returns: A predicate for all viewable emails.
      */
     func basicMessagePredicate() -> NSPredicate
+
+    /**
+     - Returns: The number of accounts per user
+     */
+    func numberOfAccounts() -> Int?
 }
 
 /**
@@ -364,6 +369,15 @@ public class Model: IModel {
             return setAccountAsLastUsed(account as! Account)
         } else {
             return nil
+        }
+    }
+
+    // TO-DO Change this function to allow have more than one account
+    public func numberOfAccounts() -> Int? {
+        if (fetchLastAccount() != nil) {
+            return 1
+        } else {
+            return 0
         }
     }
 
