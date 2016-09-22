@@ -170,9 +170,9 @@ public protocol IModel {
     func basicMessagePredicate() -> NSPredicate
 
     /**
-     - Returns: The number of accounts per user
+     - Returns: true if there are no accounts yet.
      */
-    func numberOfAccounts() -> Int?
+    func accountsIsEmpty() -> Bool
 }
 
 /**
@@ -372,13 +372,11 @@ public class Model: IModel {
         }
     }
 
-    // TO-DO Change this function to allow have more than one account
-    public func numberOfAccounts() -> Int? {
-        if (fetchLastAccount() != nil) {
-            return 1
-        } else {
-            return 0
+    public func accountsIsEmpty() -> Bool {
+        if let acc = accountsByPredicate(NSPredicate.init(value: true)) {
+            return acc.isEmpty
         }
+        return false
     }
 
     public func accountByEmail(email: String) -> IAccount? {
