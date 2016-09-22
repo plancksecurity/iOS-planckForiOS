@@ -55,6 +55,7 @@ public class ModelUserInfoTable {
 }
 
 public class UserInfoTableView: UITableViewController, UITextFieldDelegate {
+    let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!
     @IBOutlet weak var usernameValue: UITextField!
@@ -92,11 +93,15 @@ public class UserInfoTableView: UITableViewController, UITextFieldDelegate {
             if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
                 appConfig = appDelegate.appConfig
             }
-        } else {
-            if (appConfig!.model.numberOfAccounts() == nil) {
-                self.navigationItem.hidesBackButton = true
-            }
         }
+
+        guard let ac = appConfig else {
+            Log.errorComponent(comp, errorString: "Have no app config")
+            return
+        }
+
+        // TODO: This is not enough!
+        self.navigationItem.hidesBackButton = ac.model.accountsIsEmpty()
 
         if model.email == nil {
             nameOfTheUserValueTextField.becomeFirstResponder()
