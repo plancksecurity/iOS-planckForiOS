@@ -29,20 +29,14 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" ambiguous="YES" misplaced="YES" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-55-oem">
-                                            <rect key="frame" x="16" y="39" width="568" height="26"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BvI-Zi-zU6">
+                                            <rect key="frame" x="27" y="60" width="557" height="34"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BvI-Zi-zU6">
-                                            <rect key="frame" x="16" y="73" width="568" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wkg-wf-Dbd">
-                                            <rect key="frame" x="548" y="16" width="36" height="14"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wkg-wf-Dbd">
+                                            <rect key="frame" x="548" y="16" width="36" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -61,9 +55,31 @@
                                                 </mask>
                                             </variation>
                                         </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3BC-6k-zL0">
+                                            <rect key="frame" x="10" y="38" width="14" height="14"/>
+                                            <color key="backgroundColor" red="0.96896225209999998" green="0.22291463610000001" blue="0.052180059250000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="14" id="KZz-X8-CkS"/>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="21" id="Lbd-lR-W2i"/>
+                                                <constraint firstAttribute="width" constant="14" id="WCg-Un-t4H"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Lbd-lR-W2i"/>
+                                                </mask>
+                                            </variation>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-55-oem">
+                                            <rect key="frame" x="27" y="38" width="557" height="14"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="3BC-6k-zL0" firstAttribute="top" secondItem="BLq-0g-OgR" secondAttribute="bottom" constant="8" id="3Jw-ul-9ST"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="tWZ-jW-sUg" secondAttribute="trailing" constant="8" id="3ce-VI-ZAh"/>
+                                        <constraint firstItem="5Py-55-oem" firstAttribute="leading" secondItem="3BC-6k-zL0" secondAttribute="trailing" constant="3" id="7ai-D8-q7m"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Wkg-wf-Dbd" secondAttribute="trailing" constant="8" id="DrL-gh-6oY"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="baseline" secondItem="BLq-0g-OgR" secondAttribute="baseline" id="Hne-lV-RJU"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" constant="8" id="Hq3-CB-0Ff"/>
@@ -73,18 +89,24 @@
                                         <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="8" id="QvC-c0-8HZ"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="BvI-Zi-zU6" secondAttribute="bottom" constant="8" id="SD4-Ru-IBv"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="5Py-55-oem" secondAttribute="trailing" constant="8" id="WFn-4U-afx"/>
+                                        <constraint firstItem="tWZ-jW-sUg" firstAttribute="centerY" secondItem="BLq-0g-OgR" secondAttribute="centerY" id="Xx8-DV-dby"/>
                                         <constraint firstItem="Wkg-wf-Dbd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tWZ-jW-sUg" secondAttribute="trailing" constant="10" id="a7u-eG-i01"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="topMargin" constant="8" id="bac-hr-Az9"/>
                                         <constraint firstItem="BLq-0g-OgR" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="top" id="bhU-pu-QYF"/>
+                                        <constraint firstItem="5Py-55-oem" firstAttribute="centerY" secondItem="3BC-6k-zL0" secondAttribute="centerY" id="cZa-uN-RE1"/>
                                         <constraint firstItem="BLq-0g-OgR" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" constant="2" id="ffr-QM-wr6"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" constant="19" id="kWD-MK-Hq0"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="BvI-Zi-zU6" secondAttribute="trailing" constant="8" id="qBA-yw-XjK"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="top" secondItem="5Py-55-oem" secondAttribute="bottom" constant="8" id="qvz-vu-KvF"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="baseline" secondItem="Wkg-wf-Dbd" secondAttribute="baseline" id="sSv-qt-Si3"/>
+                                        <constraint firstItem="3BC-6k-zL0" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" constant="2" id="uUX-2g-w8X"/>
+                                        <constraint firstItem="BLq-0g-OgR" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="topMargin" constant="8" id="uhZ-KV-VT4"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="leading" secondItem="BLq-0g-OgR" secondAttribute="trailing" constant="3" id="xXP-YY-wuS"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
+                                            <exclude reference="JNB-OU-Sc8"/>
+                                            <exclude reference="bhU-pu-QYF"/>
                                             <exclude reference="3ce-VI-ZAh"/>
                                             <exclude reference="Hne-lV-RJU"/>
                                             <exclude reference="Hq3-CB-0Ff"/>
@@ -1239,6 +1261,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="65D-pi-pr8"/>
-        <segue reference="GPW-U8-tyH"/>
+        <segue reference="TnR-me-YgK"/>
     </inferredMetricsTieBreakers>
 </document>
