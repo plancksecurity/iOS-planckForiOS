@@ -158,7 +158,11 @@ class AccountsFoldersViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if accounts.isEmpty {
+            return 0
+        } else {
         return numberOfSections
+        }
     }
 
     override func tableView(
