@@ -11,8 +11,7 @@ import CoreData
 import MobileCoreServices
 //import NSEvent
 
-public class ComposeViewController: UITableViewController, UIImagePickerControllerDelegate,
-                                    UINavigationControllerDelegate {
+public class ComposeViewController: UITableViewController, UINavigationControllerDelegate {
     struct UIModel {
         enum Mode {
             case Normal
@@ -851,24 +850,6 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
                     cell.bodyTextView.becomeFirstResponder()
                 }
 
-                if !model.attachments.isEmpty {
-                    for attachment in model.attachments {
-                        guard let image = attachment.image else {
-                            continue
-                        }
-                        let textAttachment = NSTextAttachment()
-                        textAttachment.image = image
-                        let imageString = NSAttributedString(attachment:textAttachment)
-                        cell.bodyTextView.attributedText = imageString
-                        textAttachment.bounds = obtainContainerToMaintainRatio(
-                            cell.bodyTextView.bounds.width,
-                            rectangle: image.size)
-                        let range = cell.bodyTextView.selectedTextRange
-                        //let range = range?.end
-
-                        //print(range)
-                    }
-                }
                 return cell
             }
         } else {
@@ -949,21 +930,44 @@ public class ComposeViewController: UITableViewController, UIImagePickerControll
             updateContacts()
         }
     }
+}
 
+// MARK: -- UIImagePickerControllerDelegate
+
+extension ComposeViewController: UIImagePickerControllerDelegate {
     public func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo
-                            info: [String : AnyObject]) {
+        info: [String : AnyObject]) {
         guard let attachedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return
         }
-        let simpleAttachmentImage = SimpleAttachment.init(filename: nil,
-                                                          contentType: "image/JPEG",
-                                                          data: nil,
-                                                          image: attachedImage)
-        model.attachments.append(simpleAttachmentImage)
-        let indexPath = NSIndexPath(forRow: bodyTextRowNumber, inSection: 0)
-        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
+
+        let photoAttachment = SimpleAttachment.init(
+            filename: nil, contentType: "image/JPEG", data: nil, image: attachedImage)
+
+        model.attachments.append(photoAttachment)
+        insertPhotoAttachment(photoAttachment)
 
         dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func insertPhotoAttachment(attachment: SimpleAttachment) {
+        guard let image = attachment.image else {
+            return
+        }
+        guard let textView = longBodyMessageTextView else {
+            return
+        }
+
+        let textAttachment = NSTextAttachment()
+        textAttachment.image = image
+        let imageString = NSAttributedString(attachment:textAttachment)
+
+        textAttachment.bounds = obtainContainerToMaintainRatio(
+            textView.bounds.width, rectangle: image.size)
+        let selectedRange = textView.selectedRange
+        let attrText = NSMutableAttributedString.init(attributedString: textView.attributedText)
+        attrText.replaceCharactersInRange(selectedRange, withAttributedString: imageString)
+        textView.attributedText = attrText
     }
 }
 
@@ -1012,6 +1016,8 @@ extension ComposeViewController: UITextViewDelegate {
         return true
     }
 }
+
+// MARK: -- UITextFieldDelegate
 
 extension ComposeViewController: UITextFieldDelegate {
     public func textField(
