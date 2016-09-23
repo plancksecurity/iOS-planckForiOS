@@ -9,7 +9,6 @@
 import XCTest
 
 class LoadUITest: XCTestCase {
-        
     override func setUp() {
         super.setUp()
         // In UI tests it is usually best to stop immediately when a failure occurs.
@@ -18,11 +17,11 @@ class LoadUITest: XCTestCase {
         // Doing this in setup will make sure it happens for each test method.
         XCUIApplication().launch()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testCancelComposeSaveDraft() {
         let app = XCUIApplication()
         let tablesQuery = app.tables
