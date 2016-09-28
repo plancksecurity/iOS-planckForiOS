@@ -299,7 +299,8 @@ public class GrandOperator: IGrandOperator {
         let opEncrypt = EncryptMailOperation.init(encryptionData: encryptionData)
         let opSend = SendMailOperation.init(encryptionData: encryptionData)
         let opCreateSentFolder = CheckAndCreateFolderOfTypeOperation.init(
-            account: account, folderType: .Drafts, connectionManager: connectionManager, coreDataUtil: coreDataUtil)
+            account: account, folderType: .Sent, connectionManager: connectionManager,
+            coreDataUtil: coreDataUtil)
         let opSaveSent = SaveSentMessageOperation.init(encryptionData: encryptionData)
 
         opSaveSent.addDependency(opSend)
