@@ -486,21 +486,19 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
 
     /**
      Updates the given message with data from the forwarded message,
-     if it exists. That means mainly the references.
+     if it exists.
      - Note: The forwarded mail attachment was already added to the model,
      it will be handled by the general attachment handling in another function.
      */
     func populateMessageWithForwardedData(message: IMessage) {
-        guard let om = forwardedMessage() else {
+        guard let _ = forwardedMessage() else {
             return
         }
 
-        guard let model = appConfig?.model else {
+        guard let _ = appConfig?.model else {
             Log.warnComponent(comp, "Can't do anything without model")
             return
         }
-
-        // TODO: Message references needed?
     }
 
     func messageForSending() -> IMessage? {
@@ -569,7 +567,6 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
     }
 
     @IBAction func attachedField(sender: AnyObject) {
-
         let attachedAlertView = UIAlertController()
         attachedAlertView.title = NSLocalizedString("AttachedFiles",
                           comment: "Title for attached files alert view")
@@ -604,19 +601,11 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
 
         attachedAlertView.addAction(cancelAction)
 
-        /*let documentAction = UIAlertAction(
-            title: NSLocalizedString(
-                "Cancel",
-                comment: "Title for cancel action in attached files alert view"),
-            style: UIAlertActionStyle.Default) {
-                UIAlertAction in
-        }
-        attachedAlertView.addAction(documentAction)*/
-
          presentViewController(attachedAlertView, animated: true, completion: nil)
     }
 
     // MARK: -- UITableViewDelegate
+
     override public func tableView(tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
         if model.tableMode == UIModel.Mode.Search {
