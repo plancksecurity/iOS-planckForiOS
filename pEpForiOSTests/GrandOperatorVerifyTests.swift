@@ -113,7 +113,7 @@ class GrandOperatorVerifyTests: XCTestCase {
     }
 
     func testVerifyConnectionImapConnectionFailed() {
-        let exp = expectationWithDescription("verified")
+        let exp = expectationWithDescription("verifyIMAPFailed")
         var connectionInfo = correct
         connectionInfo.imapServerName = "noconnect"
         persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
@@ -126,7 +126,7 @@ class GrandOperatorVerifyTests: XCTestCase {
     }
 
     func testVerifyConnectionSmtpConnectionFailed() {
-        let exp = expectationWithDescription("verified")
+        let exp = expectationWithDescription("verifySMTPFailed")
         var connectionInfo = correct
         connectionInfo.smtpServerName = "noconnect"
         persistentSetup.grandOperator.verifyConnection(connectionInfo, completionBlock: { error in
@@ -139,7 +139,7 @@ class GrandOperatorVerifyTests: XCTestCase {
     }
 
     func testVerifyConnectionOk() {
-        let exp = expectationWithDescription("verified")
+        let exp = expectationWithDescription("verifyConnectionOK")
         persistentSetup.grandOperator.verifyConnection(correct, completionBlock: { error in
             XCTAssertNil(error)
             exp.fulfill()
