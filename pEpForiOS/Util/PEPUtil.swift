@@ -769,7 +769,7 @@ public class PEPUtil {
         let theSession = useOrCreateSession(session)
         let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)
-        theSession.keyCompromized(pepC)
+        theSession.keyMistrusted(pepC)
     }
 
     /**
