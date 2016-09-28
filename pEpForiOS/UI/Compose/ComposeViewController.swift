@@ -930,6 +930,20 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
             updateContacts()
         }
     }
+
+    // MARK: -- Util
+
+    /**
+     This has to be called whenever the body text changes, so the table view resizes that cell.
+     */
+    func resizeTableView() {
+        let currentOffset = tableView.contentOffset
+        UIView.setAnimationsEnabled(false)
+        tableView.beginUpdates()
+        tableView.endUpdates()
+        UIView.setAnimationsEnabled(true)
+        tableView.setContentOffset(currentOffset, animated: false)
+    }
 }
 
 // MARK: -- UIImagePickerControllerDelegate
@@ -964,10 +978,13 @@ extension ComposeViewController: UIImagePickerControllerDelegate {
 
         textAttachment.bounds = obtainContainerToMaintainRatio(
             textView.bounds.width, rectangle: image.size)
+
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString.init(attributedString: textView.attributedText)
         attrText.replaceCharactersInRange(selectedRange, withAttributedString: imageString)
         textView.attributedText = attrText
+
+        resizeTableView()
     }
 }
 
@@ -976,12 +993,7 @@ extension ComposeViewController: UIImagePickerControllerDelegate {
 extension ComposeViewController: UITextViewDelegate {
     public func textViewDidChange(textView: UITextView) {
         if textView == longBodyMessageTextView {
-            let currentOffset = tableView.contentOffset
-            UIView.setAnimationsEnabled(false)
-            tableView.beginUpdates()
-            tableView.endUpdates()
-            UIView.setAnimationsEnabled(true)
-            tableView.setContentOffset(currentOffset, animated: false)
+            resizeTableView()
         } else if let _ = recipientCellsByTextView[textView] {
             updateSearch(textView)
         }
