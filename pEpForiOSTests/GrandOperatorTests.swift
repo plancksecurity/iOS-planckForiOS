@@ -257,6 +257,8 @@ class GrandOperatorTests: XCTestCase {
                 return
         }
 
+        XCTAssertGreaterThan(inbox.messages.count, 0)
+
         var expectations = [XCTestExpectation]()
         var counter = 0
         for elm in inbox.messages {

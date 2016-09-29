@@ -447,13 +447,23 @@ public class Model: IModel {
         return folder
     }
 
+    func reactivateFolder(folder: IFolder) -> IFolder {
+        folder.shouldDelete = false
+        return folder
+    }
+
     public func insertOrUpdateFolderName(folderName: String, folderSeparator: String?,
                                          accountEmail: String) -> IFolder? {
+        // Treat Inbox specially, since its name is case insensitive.
+        // For all other folders, it's undefined if they have to be handled
+        // case insensitive or not, so no special handling for those.
+        if folderName.lowercaseString == ImapSync.defaultImapInboxName.lowercaseString {
+            if let folder = folderByType(.Inbox, email: accountEmail) {
+                return reactivateFolder(folder)
+            }
+        }
         if let folder = folderByName(folderName, email: accountEmail) {
-            // reactivate folder if previously deleted
-            folder.shouldDelete = false
-
-            return folder
+            return reactivateFolder(folder)
         }
 
         if let account = accountByEmail(accountEmail) {

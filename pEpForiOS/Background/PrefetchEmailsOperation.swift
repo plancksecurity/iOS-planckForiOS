@@ -19,7 +19,7 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
 
     let connectInfo: ConnectInfo
     var sync: ImapSync!
-    let folderToOpen: String
+    var folderToOpen: String
     let connectionManager: ConnectionManager
 
     public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folder: String?) {
@@ -38,21 +38,31 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
             return
         }
 
-        let folderBuilder = ImapFolderBuilder.init(coreDataUtil: coreDataUtil,
-                                                   connectInfo: connectInfo,
-                                                   backgroundQueue: backgroundQueue)
+        privateMOC.performBlock() {
+            let folderBuilder = ImapFolderBuilder.init(coreDataUtil: self.coreDataUtil,
+                connectInfo: self.connectInfo,
+                backgroundQueue: self.backgroundQueue)
 
-        sync = connectionManager.emailSyncConnection(connectInfo)
-        sync.delegate = self
-        sync.folderBuilder = folderBuilder
+            // Treat Inbox specially, as it is the only mailbox
+            // that is mandatorily case-insensitive.
+            if self.folderToOpen.lowercaseString == ImapSync.defaultImapInboxName.lowercaseString {
+                if let folder = self.model.folderByType(.Inbox, email: self.connectInfo.email) {
+                    self.folderToOpen = folder.name
+                }
+            }
 
-        if sync.imapState.authenticationCompleted == false {
-            sync.start()
-        } else {
-            if sync.imapState.currentFolder != nil {
-                syncMails(sync)
+            self.sync = self.connectionManager.emailSyncConnection(self.connectInfo)
+            self.sync.delegate = self
+            self.sync.folderBuilder = folderBuilder
+
+            if self.sync.imapState.authenticationCompleted == false {
+                self.sync.start()
             } else {
-                sync.openMailBox(folderToOpen)
+                if self.sync.imapState.currentFolder != nil {
+                    self.syncMails(self.sync)
+                } else {
+                    self.sync.openMailBox(self.folderToOpen)
+                }
             }
         }
     }
