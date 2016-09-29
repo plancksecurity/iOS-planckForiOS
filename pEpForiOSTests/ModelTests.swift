@@ -20,7 +20,6 @@ func ==<T1: Equatable, T2: Equatable, T3: Equatable>(
 
 class ModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
-    let accountEmail = "unittest.ios.4@peptest.ch"
 
     override func setUp() {
         super.setUp()
@@ -38,17 +37,19 @@ class ModelTests: XCTestCase {
 
         let connectInfo = ConnectInfo.init(
             nameOfTheUser: "The User",
-            email: accountEmail, imapServerName: "imapServer",
+            email: persistentSetup.accountEmail, imapServerName: "imapServer",
             smtpServerName: "smtpServer")
         XCTAssertNotNil(persistentSetup.model.insertAccountFromConnectInfo(connectInfo))
 
         // Some folders
-        XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-            "INBOX", folderSeparator: ".", accountEmail: accountEmail))
-        XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-            "INBOX.Drafts", folderSeparator: ".", accountEmail: accountEmail))
-        XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-            "INBOX.Sent Mails", folderSeparator: ".", accountEmail: accountEmail))
+        for name in [ImapSync.defaultImapInboxName, "\(ImapSync.defaultImapInboxName).Drafts",
+                     "\(ImapSync.defaultImapInboxName).Sent Mails"] {
+                        XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
+                            name, folderSeparator: ".", accountEmail: persistentSetup.accountEmail))
+                        XCTAssertNotNil(persistentSetup.model.folderByName(name,
+                            email: persistentSetup.accountEmail))
+                        print("Created \(name) (\(persistentSetup.accountEmail))")
+        }
     }
 
     func testSimpleContactSearch() {
@@ -61,11 +62,11 @@ class ModelTests: XCTestCase {
 
     func testFolderLookUp() {
         XCTAssertNotNil(persistentSetup.model.folderByType(
-            FolderType.Inbox, email: accountEmail))
+            FolderType.Inbox, email: persistentSetup.accountEmail))
         XCTAssertNotNil(persistentSetup.model.folderByType(
-            FolderType.Sent, email: accountEmail))
+            FolderType.Sent, email: persistentSetup.accountEmail))
         XCTAssertNotNil(persistentSetup.model.folderByType(
-            FolderType.Drafts, email: accountEmail))
+            FolderType.Drafts, email: persistentSetup.accountEmail))
     }
 
     func testSplitContactName() {
