@@ -42,9 +42,10 @@ class GrandOperatorTests: XCTestCase {
 
     func testFetchFolders() {
         let exp = expectationWithDescription("foldersFetched")
-        persistentSetup.grandOperator.fetchFolders(correct, completionBlock: { error in
-            XCTAssertNil(error)
-            exp.fulfill()
+        persistentSetup.grandOperator.fetchFolders(
+            persistentSetup.connectionInfo, completionBlock: { error in
+                XCTAssertNil(error)
+                exp.fulfill()
         })
 
         waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
@@ -55,8 +56,8 @@ class GrandOperatorTests: XCTestCase {
         let model = self.persistentSetup.model
         XCTAssertGreaterThan(
             model.folderCountByPredicate(p), 0)
-        XCTAssertEqual(model.folderByName(
-            ImapSync.defaultImapInboxName, email: self.correct.email)?.name.lowercaseString,
+        XCTAssertEqual(model.folderByType(
+            .Inbox, email: self.persistentSetup.accountEmail)?.name.lowercaseString,
                        ImapSync.defaultImapInboxName.lowercaseString)
     }
 
@@ -65,7 +66,7 @@ class GrandOperatorTests: XCTestCase {
         msg.subject = "Subject"
         msg.longMessage = "Message body"
         let from = persistentSetup.model.insertOrUpdateContactEmail(
-            "unittest.ios.4@peptest.ch", name: "UnitTestiOS 4") as! Contact
+            persistentSetup.accountEmail, name: persistentSetup.accountEmail) as! Contact
         msg.from = from
         let to = persistentSetup.model.insertOrUpdateContactEmail(
             "unittest.ios.3@peptest.ch", name: "UnitTestiOS 3") as! Contact
@@ -124,7 +125,7 @@ class GrandOperatorTests: XCTestCase {
         testFetchFolders()
 
         guard let account = persistentSetup.model.insertAccountFromConnectInfo(
-            TestData.connectInfo) as? Account else {
+            persistentSetup.connectionInfo) as? Account else {
                 XCTAssertTrue(false)
                 return
         }

@@ -85,9 +85,8 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertGreaterThanOrEqual(
             self.persistentSetup.model.folderCountByPredicate(
                 NSPredicate.init(value: true)), 1)
-        XCTAssertEqual(self.persistentSetup.model.folderByName(
-            ImapSync.defaultImapInboxName,
-            email: self.connectInfo.email)?.name.lowercaseString,
+        XCTAssertEqual(self.persistentSetup.model.folderByType(
+            .Inbox,email: self.connectInfo.email)?.name.lowercaseString,
                        ImapSync.defaultImapInboxName.lowercaseString)
         XCTAssertNotNil(persistentSetup.model.folderByType(
             .Sent, account: persistentSetup.account))

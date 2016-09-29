@@ -106,7 +106,7 @@ public enum FolderType: Int {
         case .Sent:
             return ["Sent"]
         case .Drafts:
-            return ["Drafts"]
+            return ["Drafts", "Draft"]
         case .Trash:
             return ["Trash"]
         case .Archive:
