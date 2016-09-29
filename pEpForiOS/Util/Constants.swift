@@ -282,7 +282,7 @@ public class Constants {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.BadResponseError.rawValue,
             userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
-                "Bad response from server: @%",
+                "Error response from server: %@",
                 comment: "Error message for a bad IMAP response."),
                 response)])
         return error
