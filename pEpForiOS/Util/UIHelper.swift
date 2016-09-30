@@ -120,11 +120,11 @@ class UIHelper {
                                size: CGSize.init(width: 1, height: 1))
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, rect)
+        CGContextSetFillColorWithColor(context!, color.CGColor)
+        CGContextFillRect(context!, rect)
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return img
+        return img!
     }
 
     /**

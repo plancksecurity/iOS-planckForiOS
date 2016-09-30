@@ -230,13 +230,13 @@ public class Model: IModel {
                               predicate: NSPredicate? = nil) -> Int {
         let fetch = NSFetchRequest.init(entityName: name)
         fetch.predicate = predicate
-        var error: NSError?
-        let number = context.countForFetchRequest(fetch, error: &error)
-        if let err = error {
-            Log.errorComponent(comp, error: err)
-        }
-        if number != NSNotFound {
-            return number
+        do {
+            let number = try context.countForFetchRequest(fetch)
+            if number != NSNotFound {
+                return number
+            }
+        } catch let error as NSError {
+            Log.errorComponent(comp, error: error)
         }
         return 0
     }

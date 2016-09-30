@@ -128,7 +128,7 @@ public class AddressBook {
     public func addContact(contact: IContact) -> Bool {
         if let ab = addressBook {
             let p = NSPredicate.init(block: { (record, bindings) -> Bool in
-                let contacts = self.addressBookContactToContacts(record)
+                let contacts = self.addressBookContactToContacts(record!)
                 for c in contacts {
                     if c.name == contact.name && c.email == contact.email {
                         return true
@@ -251,14 +251,16 @@ public class AddressBook {
      If there are several emails for a contact, several contacts are returned.
      */
     public func contactsBySnippet(snippet: String) -> [IContact] {
-        let p = NSPredicate.init(block: { (record: ABRecordRef, bindings) in
-            let contacts = self.addressBookContactToContacts(record)
-            for c in contacts {
-                if c.email.contains(snippet) {
-                    return true
-                }
-                if let name = c.name {
-                    return name.contains(snippet)
+        let p = NSPredicate.init(block: { (rec, bindings) in
+            if let record = rec {
+                let contacts = self.addressBookContactToContacts(record)
+                for c in contacts {
+                    if c.email.contains(snippet) {
+                        return true
+                    }
+                    if let name = c.name {
+                        return name.contains(snippet)
+                    }
                 }
             }
             return false

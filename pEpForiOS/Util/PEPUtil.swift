@@ -144,17 +144,17 @@ public class PEPUtil {
         homeUrl.URLByAppendingPathComponent(".pEp_management.db")
     private static let systemDbUrl = homeUrl.URLByAppendingPathComponent("system.db")
     private static let gnupgUrl = homeUrl.URLByAppendingPathComponent(".gnupg")
-    private static let gnupgSecringUrl = gnupgUrl.URLByAppendingPathComponent("secring.gpg")
-    private static let gnupgPubringUrl = gnupgUrl.URLByAppendingPathComponent("pubring.gpg")
+    private static let gnupgSecringUrl = gnupgUrl!.URLByAppendingPathComponent("secring.gpg")
+    private static let gnupgPubringUrl = gnupgUrl!.URLByAppendingPathComponent("pubring.gpg")
     
     // Provide filepath URLs as public dictionary.
     public static let pEpUrls: [String:NSURL] = [
         "home": homeUrl,
-        "pEpManagementDb": pEpManagementDbUrl,
-        "systemDb": systemDbUrl,
-        "gnupg": gnupgUrl,
-        "gnupgSecring": gnupgSecringUrl,
-        "gnupgPubring": gnupgPubringUrl]
+        "pEpManagementDb": pEpManagementDbUrl!,
+        "systemDb": systemDbUrl!,
+        "gnupg": gnupgUrl!,
+        "gnupgSecring": gnupgSecringUrl!,
+        "gnupgPubring": gnupgPubringUrl!]
     
     // Delete pEp working data.
     public static func pEpClean() -> Bool {

@@ -846,13 +846,16 @@
 					43980E221CBD0BC900A7FC3C = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = SBPJ2E4G5X;
+						LastSwiftMigration = 0800;
 					};
 					43980E391CBD0BCA00A7FC3C = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 43980E221CBD0BC900A7FC3C;
 					};
 					43980E441CBD0BCA00A7FC3C = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 43980E221CBD0BC900A7FC3C;
 					};
 				};
@@ -1255,6 +1258,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)//pEpForiOS/pEpForiOS-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -1272,6 +1276,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)//pEpForiOS/pEpForiOS-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -1286,6 +1291,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "pEpForiOSTests/pEpForiOSTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pEp.app/pEp";
 			};
 			name = Debug;
@@ -1300,6 +1306,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "pEpForiOSTests/pEpForiOSTests-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pEp.app/pEp";
 			};
 			name = Release;
@@ -1312,6 +1319,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = pEp;
 			};
 			name = Debug;
@@ -1324,6 +1332,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = pEp;
 			};
 			name = Release;

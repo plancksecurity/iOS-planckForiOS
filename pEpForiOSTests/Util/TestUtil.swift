@@ -167,7 +167,7 @@ class TestUtil {
             if v.isKindOfClass(NSDictionary) {
                 replacements.append((k as! NSCopying,
                     removeUnneededKeysForComparison(keys, fromMail: v as! NSDictionary)))
-            } else if v.isKindOfClass((NSArray)) {
+            } else if v.isKindOfClass(NSArray) {
                 let ar = v as! NSArray
                 let fn: AnyObject -> AnyObject = { element in
                     if element.isKindOfClass(NSDictionary) {
