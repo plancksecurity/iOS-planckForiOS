@@ -501,6 +501,21 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         }
     }
 
+    func populateMessage(message: IMessage, withAttachmentsFromTextView theTextView: UITextView?) {
+        guard let textView = theTextView else {
+            Log.warnComponent(comp, "Trying to get attachments, but no text view")
+            return
+        }
+        let text = textView.attributedText
+        text.enumerateAttribute(
+        NSAttachmentAttributeName, inRange: text.wholeRange(), options: []) {
+            value, range, stop in
+            guard let _ = value as? NSTextAttachment else {
+                return
+            }
+        }
+    }
+
     func messageForSending() -> IMessage? {
         guard let appC = appConfig else {
             Log.warnComponent(
@@ -525,6 +540,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         populateMessageWithViewData(msg, account: account, model: appC.model)
         populateMessageWithReplyData(msg)
         populateMessageWithForwardedData(msg)
+        populateMessage(msg, withAttachmentsFromTextView: longBodyMessageTextView)
 
         return msg
     }
