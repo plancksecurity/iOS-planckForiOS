@@ -37,6 +37,10 @@ The fingerprints should be:
   ```
   brew install mogenerator
   ```
+* python lxml
+  ```
+  brew install python
+  ```
 
 ### Other dependecies
 
