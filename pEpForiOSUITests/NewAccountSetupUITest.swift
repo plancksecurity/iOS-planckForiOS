@@ -57,7 +57,7 @@ class NewAccountSetupUITest: XCTestCase {
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
         tf = tablesQuery.textFields["imapServer"]
-        tf.typeText(account.imapServerName)
+        tf.typeText(account.imapServernameOfTheUser)
         tf = tablesQuery.textFields["imapPort"]
         tf.tap()
         clearTextField(tf)
@@ -71,7 +71,7 @@ class NewAccountSetupUITest: XCTestCase {
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
         tf = tablesQuery.textFields["smtpServer"]
-        tf.typeText(account.smtpServerName)
+        tf.typeText(account.smtpServernameOfTheUser)
         tf = tablesQuery.textFields["smtpPort"]
         tf.tap()
         clearTextField(tf)
