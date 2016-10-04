@@ -305,12 +305,12 @@ class SimpleOperationsTest: XCTestCase {
             var encounteredBCC = false
             var encounteredCC = false
             for msg in encryptionData.mailsToSend {
-                if (msg[kPepBCC] as AnyObject).count > 0 {
+                if let bccs = msg[kPepBCC] as? NSArray, bccs.count > 0 {
                     encounteredBCC = true
                     XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(msg))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepTo] as? NSArray))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepCC] as? NSArray))
-                } else if (msg[kPepCC] as AnyObject).count > 0 {
+                } else if let ccs = msg[kPepCC] as? NSArray, ccs.count > 0 {
                     encounteredCC = true
                     XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(msg))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepTo] as? NSArray))
