@@ -550,6 +550,23 @@ class SimpleOperationsTest: XCTestCase {
         // Fetch remote folders first
         testFetchFoldersOperation()
 
+        let expCreated = expectation(description: "expCreated")
+        let opCreate = CheckAndCreateFolderOfTypeOperation.init(
+            account: persistentSetup.account, folderType: .drafts,
+            connectionManager: persistentSetup.connectionManager,
+            coreDataUtil: persistentSetup.coreDataUtil)
+        opCreate.completionBlock = {
+            expCreated.fulfill()
+        }
+
+        let backgroundQueue = OperationQueue.init()
+        backgroundQueue.addOperation(opCreate)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(opCreate.hasErrors())
+        })
+
         let c1 = persistentSetup.model.insertOrUpdateContactEmail(
             "some@some.com", name: "Whatever")
         c1.addressBookID = 1
