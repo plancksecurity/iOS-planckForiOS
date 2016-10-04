@@ -89,8 +89,8 @@ public extension String {
         return self.replacingOccurrences(of: "@", with: "_")
     }
 
-    public func contains(_ substring: String, ignoreCase: Bool = true,
-                         ignoreDiacritic: Bool = true) -> Bool {
+    public func containsString(_ substring: String, ignoreCase: Bool = true,
+                               ignoreDiacritic: Bool = true) -> Bool {
 
         if substring == "" {
             return true

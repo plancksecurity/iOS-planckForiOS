@@ -247,11 +247,11 @@ open class AddressBook {
             if let record = rec {
                 let contacts = self.addressBookContactToContacts(record as ABRecord)
                 for c in contacts {
-                    if c.email.contains(snippet) {
+                    if c.email.containsString(snippet) {
                         return true
                     }
                     if let name = c.name {
-                        return name.contains(snippet)
+                        return name.containsString(snippet)
                     }
                 }
             }
