@@ -204,7 +204,7 @@ class PEPUtilTests: XCTestCase {
         // Create pEp mail dict
         let pepMailOrig = NSMutableDictionary()
         pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
-                                                            name: "Unit 4")
+                                                            name: "unit 4")
         pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail("unittest.ios.2@peptest.ch",
             name: "unit 2")]
         pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("unittest.ios.3@peptest.ch",
