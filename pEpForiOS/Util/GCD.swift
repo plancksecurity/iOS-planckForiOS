@@ -13,8 +13,8 @@ struct GCD {
     /**
      Since you will do this all the time in UI callbacks.
      */
-    static func onMain(block: () -> Void) {
-        dispatch_async(dispatch_get_main_queue(), {
+    static func onMain(_ block: @escaping () -> Void) {
+        DispatchQueue.main.async(execute: {
             block()
         })
     }

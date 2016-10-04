@@ -9,81 +9,81 @@ public enum FolderType: Int {
     /**
      Just some folder, nothing special.
      */
-    case Normal = 0
+    case normal = 0
 
     /**
      The incoming folder mirrored from server. E.g., INBOX.
      */
-    case Inbox
+    case inbox
 
     /**
      Contains emails that have not been sent, but should. User has tappend send button.
      */
-    case LocalOutbox
+    case localOutbox
 
     /**
      Remote sent folder
      */
-    case Sent
+    case sent
 
     /**
      Remote drafts folder
      */
-    case Drafts
+    case drafts
 
     /**
      Remote trash folder
      */
-    case Trash
+    case trash
 
     /**
      Remote Archive folder
      */
-    case Archive
+    case archive
 
     /**
      Remote Spam folder
      */
-    case Spam
+    case spam
 
     /**
      The list of folder kinds that have to be created locally
      */
-    public static let allValuesToCreate = [LocalOutbox]
+    public static let allValuesToCreate = [localOutbox]
 
     /**
      A list of types to check folders from remote server for categorization.
      Whenever a folder is created after having been parsed from the server,
      those types should be checked for matches.
      */
-    public static let allValuesToCheckFromServer = [Drafts, Sent, Trash]
+    public static let allValuesToCheckFromServer = [drafts, sent, trash]
 
-    public static func fromInt(folderTypeInt: Int) -> FolderType? {
+    public static func fromInt(_ folderTypeInt: Int) -> FolderType? {
         switch folderTypeInt {
-        case FolderType.Normal.rawValue:
-            return .Normal
-        case FolderType.Inbox.rawValue:
-            return .Inbox
-        case FolderType.LocalOutbox.rawValue:
-            return .LocalOutbox
-        case FolderType.Sent.rawValue:
-            return .Sent
-        case FolderType.Drafts.rawValue:
-            return .Sent
-        case FolderType.Trash.rawValue:
-            return .Trash
-        case FolderType.Archive.rawValue:
-            return .Archive
-        case FolderType.Spam.rawValue:
-            return .Spam
+        case FolderType.normal.rawValue:
+            return .normal
+        case FolderType.inbox.rawValue:
+            return .inbox
+        case FolderType.localOutbox.rawValue:
+            return .localOutbox
+        case FolderType.sent.rawValue:
+            return .sent
+        case FolderType.drafts.rawValue:
+            return .sent
+        case FolderType.trash.rawValue:
+            return .trash
+        case FolderType.archive.rawValue:
+            return .archive
+        case FolderType.spam.rawValue:
+            return .spam
         default:
             return nil
         }
     }
 
-    public static func fromNumber(num: NSNumber?) -> FolderType? {
+    public static func fromNumber(_ num: NSNumber?) -> FolderType? {
         if let n = num {
-            return fromInt(n.integerValue)
+            return fromInt(n.intValue)
         }
         return nil
     }
@@ -96,22 +96,22 @@ public enum FolderType: Int {
      */
     public func folderNames() -> [String] {
         switch self {
-        case .Normal:
+        case .normal:
             return ["Normal"]
-        case .Inbox:
+        case .inbox:
             // Don't actually use this for the INBOX, always use `ImapSync.defaultImapInboxName`!
             return ["Inbox"]
-        case .LocalOutbox:
+        case .localOutbox:
             return ["Outbox"]
-        case .Sent:
+        case .sent:
             return ["Sent"]
-        case .Drafts:
+        case .drafts:
             return ["Drafts", "Draft"]
-        case .Trash:
+        case .trash:
             return ["Trash"]
-        case .Archive:
+        case .archive:
             return ["Archive"]
-        case .Spam:
+        case .spam:
             return ["Spam", "Junk"]
         }
     }
@@ -130,9 +130,9 @@ public enum FolderType: Int {
      */
     public func isOutgoing() -> Bool {
         switch self {
-        case .Inbox, .Trash, .Normal, .Spam, .Archive:
+        case .inbox, .trash, .normal, .spam, .archive:
             return false
-        case .LocalOutbox, .Sent, .Drafts:
+        case .localOutbox, .sent, .drafts:
             return true
         }
     }
@@ -142,7 +142,7 @@ public enum FolderType: Int {
      */
     public func isRemote() -> Bool {
         switch self {
-        case .LocalOutbox:
+        case .localOutbox:
             return false
         default:
             return true
@@ -154,7 +154,7 @@ public protocol IFolder: _IFolder {
 }
 
 @objc(Folder)
-public class Folder: _Folder, IFolder {
+open class Folder: _Folder, IFolder {
 }
 
 public extension IFolder {
@@ -163,6 +163,6 @@ public extension IFolder {
      - Returns: A (hashable) String that is unique for each folder.
      */
     public func hashableID() -> String {
-        return "\(folderType.integerValue) \(name) \(account.email)"
+        return "\(folderType.intValue) \(name) \(account.email)"
     }
 }

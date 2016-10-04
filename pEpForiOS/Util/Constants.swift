@@ -8,103 +8,103 @@
 
 import Foundation
 
-public class Constants {
+open class Constants {
     /** MIME content type for plain text */
-    public static let contentTypeText = "text/plain"
+    open static let contentTypeText = "text/plain"
 
     /** MIME content type for HTML */
-    public static let contentTypeHtml = "text/html"
+    open static let contentTypeHtml = "text/html"
 
     /**
      Mime type for the "Version" attachment of PGP/MIME.
      */
-    public static let contentTypePGPEncrypted = "application/pgp-encrypted"
+    open static let contentTypePGPEncrypted = "application/pgp-encrypted"
 
     /**
      Content type for MIME multipart/mixed.
      */
-    public static let contentTypeMultipartMixed = "multipart/mixed"
+    open static let contentTypeMultipartMixed = "multipart/mixed"
 
     /**
      Content type for MIME multipart/encrypted.
      */
-    public static let contentTypeMultipartEncrypted = "multipart/encrypted"
+    open static let contentTypeMultipartEncrypted = "multipart/encrypted"
 
     /**
      Protocol for PGP/MIME application/pgp-encrypted.
      */
-    public static let protocolPGPEncrypted = "application/pgp-encrypted"
+    open static let protocolPGPEncrypted = "application/pgp-encrypted"
 
     /**
      Content type for MIME multipart/alternative.
      */
-    public static let contentTypeMultipartAlternative = "multipart/alternative"
+    open static let contentTypeMultipartAlternative = "multipart/alternative"
 
     public enum GeneralErrorCode: Int {
-        case NotImplemented = 1000
-        case IllegalState
-        case InvalidParameter
-        case OperationFailed
+        case notImplemented = 1000
+        case illegalState
+        case invalidParameter
+        case operationFailed
     }
 
     public enum NetworkError: Int {
-        case Timeout = 2000
-        case AuthenticationFailed
-        case ConnectionLost
-        case ConnectionTerminated
-        case ConnectionTimeout
+        case timeout = 2000
+        case authenticationFailed
+        case connectionLost
+        case connectionTerminated
+        case connectionTimeout
     }
 
     public enum CoreDataErrorCode: Int {
-        case CouldNotInsertOrUpdate = 3000
-        case FolderDoesNotExist
-        case CannotStoreMail
-        case CouldNotUpdateOrAddContact
-        case CouldNotStoreFolder
-        case CannotFindAccountForEmail
+        case couldNotInsertOrUpdate = 3000
+        case folderDoesNotExist
+        case cannotStoreMail
+        case couldNotUpdateOrAddContact
+        case couldNotStoreFolder
+        case cannotFindAccountForEmail
     }
 
     public enum SmtpErrorCode: Int {
-        case MessageNotSent = 4000
-        case TransactionInitiationFailed
-        case RecipientIdentificationFailed
-        case TransactionResetFailed
-        case AuthenticationFailed
-        case ConnectionLost
-        case ConnectionTerminated
-        case ConnectionTimedOut
-        case RequestCancelled
+        case messageNotSent = 4000
+        case transactionInitiationFailed
+        case recipientIdentificationFailed
+        case transactionResetFailed
+        case authenticationFailed
+        case connectionLost
+        case connectionTerminated
+        case connectionTimedOut
+        case requestCancelled
     }
 
     /**
      Some errors shown to the user which are actually internal.
      */
     public enum InternalErrorCode: Int {
-        case NoModel = 5000
+        case noModel = 5000
     }
 
     /**
      Errors dealing with the pEp engine.
      */
     public enum PepErrorCode: Int {
-        case EncryptionError = 6000
+        case encryptionError = 6000
     }
 
     /**
      Errors dealing with IMAP.
      */
     public enum ImapErrorCode: Int {
-        case UnknownError = 7000
-        case BadResponseError
-        case MessageStoreFailed
-        case FolderCreateFailed
-        case FolderDeleteFailed
-        case AppendFailed
+        case unknownError = 7000
+        case badResponseError
+        case messageStoreFailed
+        case folderCreateFailed
+        case folderDeleteFailed
+        case appendFailed
     }
 
-    static func errorNotImplemented(component: String) -> NSError {
+    static func errorNotImplemented(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
+            domain: component, code: GeneralErrorCode.notImplemented.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Not implemented",
                     comment: "General error description for operation that is not yet implemented"
@@ -112,9 +112,9 @@ public class Constants {
         return error
     }
 
-    static func errorIllegalState(component: String, stateName: String) -> NSError {
+    static func errorIllegalState(_ component: String, stateName: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
+            domain: component, code: GeneralErrorCode.notImplemented.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format: NSLocalizedString("Unexpected state: %@",
                     comment: "General error description for operation that encountered an unexpected state/callback, e.g. a 'message received' when waiting for a list of folders"),
@@ -122,30 +122,30 @@ public class Constants {
         return error
     }
 
-    static func errorIllegalState(component: String, errorMessage: String) -> NSError {
+    static func errorIllegalState(_ component: String, errorMessage: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: GeneralErrorCode.NotImplemented.rawValue,
+            domain: component, code: GeneralErrorCode.notImplemented.rawValue,
             userInfo: [NSLocalizedDescriptionKey: errorMessage])
         return error
     }
 
-    static func errorInvalidParameter(component: String, errorMessage: String) -> NSError {
+    static func errorInvalidParameter(_ component: String, errorMessage: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: GeneralErrorCode.InvalidParameter.rawValue,
+            domain: component, code: GeneralErrorCode.invalidParameter.rawValue,
             userInfo: [NSLocalizedDescriptionKey: errorMessage])
         return error
     }
 
-    static func errorOperationFailed(component: String, errorMessage: String) -> NSError {
+    static func errorOperationFailed(_ component: String, errorMessage: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: GeneralErrorCode.OperationFailed.rawValue,
+            domain: component, code: GeneralErrorCode.operationFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey: errorMessage])
         return error
     }
 
-    static func errorFolderNotOpen(component: String, folderName: String) -> NSError {
+    static func errorFolderNotOpen(_ component: String, folderName: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: GeneralErrorCode.IllegalState.rawValue,
+            domain: component, code: GeneralErrorCode.illegalState.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format: NSLocalizedString("Folder is not open: %@",
                     comment: "General error description for operation that needs an open folder, but there was none"),
@@ -153,10 +153,10 @@ public class Constants {
         return error
     }
 
-    static func errorFolderDoesNotExist(component: String,
+    static func errorFolderDoesNotExist(_ component: String,
                                                      folderName: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.FolderDoesNotExist.rawValue,
+            domain: component, code: CoreDataErrorCode.folderDoesNotExist.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format: NSLocalizedString("Cannot store mail for non-existent folder: %@",
                     comment: "Error description when mail for non-existent folder gets stored"),
@@ -164,18 +164,18 @@ public class Constants {
         return error
     }
 
-    static func errorCannotStoreMail(component: String) -> NSError {
+    static func errorCannotStoreMail(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.CannotStoreMail.rawValue,
+            domain: component, code: CoreDataErrorCode.cannotStoreMail.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Cannot store mail",
                     comment: "General error description for not being able to store a mail")])
         return error
     }
 
-    static func errorCouldNotUpdateOrAddContact(component: String, name: String) -> NSError {
+    static func errorCouldNotUpdateOrAddContact(_ component: String, name: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.CouldNotUpdateOrAddContact.rawValue,
+            domain: component, code: CoreDataErrorCode.couldNotUpdateOrAddContact.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format: NSLocalizedString("Cannot store contact: %@",
                     comment: "Error description when not being able to update or store a contact"),
@@ -183,9 +183,9 @@ public class Constants {
         return error
     }
 
-    static func errorCouldNotStoreFolder(component: String, name: String) -> NSError {
+    static func errorCouldNotStoreFolder(_ component: String, name: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.CouldNotStoreFolder.rawValue,
+            domain: component, code: CoreDataErrorCode.couldNotStoreFolder.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format: NSLocalizedString("Cannot store folder: %@",
                     comment: "Error description when not being able to store a folder"),
@@ -194,9 +194,9 @@ public class Constants {
     }
 
     static func errorCannotFindAccountForEmail(
-        component: String, email: String) -> NSError {
+        _ component: String, email: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.CannotFindAccountForEmail.rawValue,
+            domain: component, code: CoreDataErrorCode.cannotFindAccountForEmail.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format: NSLocalizedString(
                     "Cannot find account for email: %@", comment:
@@ -205,52 +205,52 @@ public class Constants {
         return error
     }
 
-    static func errorTimeout(component: String) -> NSError {
+    static func errorTimeout(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: NetworkError.Timeout.rawValue,
+            domain: component, code: NetworkError.timeout.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Timeout",
                     comment: "General error description for a timeout")])
         return error
     }
 
-    static func errorAuthenticationFailed(component: String) -> NSError {
+    static func errorAuthenticationFailed(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: NetworkError.AuthenticationFailed.rawValue,
+            domain: component, code: NetworkError.authenticationFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Authentication failed",
                     comment: "General error description for a failed authentication attempt")])
         return error
     }
 
-    static func errorConnectionLost(component: String) -> NSError {
+    static func errorConnectionLost(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: NetworkError.ConnectionLost.rawValue,
+            domain: component, code: NetworkError.connectionLost.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Connection lost",
                     comment: "General error description for a lost connection")])
         return error
     }
 
-    static func errorConnectionTerminated(component: String) -> NSError {
+    static func errorConnectionTerminated(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: NetworkError.ConnectionLost.rawValue,
+            domain: component, code: NetworkError.connectionLost.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Connection terminated",
                     comment: "General error description for a terminated connection")])
         return error
     }
 
-    static func errorConnectionTimeout(component: String) -> NSError {
+    static func errorConnectionTimeout(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: NetworkError.ConnectionTimeout.rawValue,
+            domain: component, code: NetworkError.connectionTimeout.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString("Connection timed out",
                     comment: "General error description for a timed out connection")])
         return error
     }
 
-    static func errorSmtp(component: String, code: SmtpErrorCode) -> NSError {
+    static func errorSmtp(_ component: String, code: SmtpErrorCode) -> NSError {
         let error = NSError.init(
             domain: component, code: code.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -260,9 +260,9 @@ public class Constants {
         return error
     }
 
-    static func errorEncryption(component: String, status: PEP_STATUS) -> NSError {
+    static func errorEncryption(_ component: String, status: PEP_STATUS) -> NSError {
         let error = NSError.init(
-            domain: component, code: PepErrorCode.EncryptionError.rawValue,
+            domain: component, code: PepErrorCode.encryptionError.rawValue,
             userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
                 "Could not encrypt message, pEp status: %d",
                 comment: "Error message when the engine failed to encrypt a message."),
@@ -270,17 +270,17 @@ public class Constants {
         return error
     }
 
-    static func errorImapUnknown(component: String) -> NSError {
+    static func errorImapUnknown(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: ImapErrorCode.UnknownError.rawValue,
+            domain: component, code: ImapErrorCode.unknownError.rawValue,
             userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
                 "Unknown IMAP error", comment: "Unknown IMAP error.")])
         return error
     }
 
-    static func errorImapBadResponse(component: String, response: String) -> NSError {
+    static func errorImapBadResponse(_ component: String, response: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: ImapErrorCode.BadResponseError.rawValue,
+            domain: component, code: ImapErrorCode.badResponseError.rawValue,
             userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
                 "Error response from server: %@",
                 comment: "Error message for a bad IMAP response."),
@@ -288,18 +288,18 @@ public class Constants {
         return error
     }
 
-    static func errorMessageStoreFailed(component: String) -> NSError {
+    static func errorMessageStoreFailed(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: ImapErrorCode.MessageStoreFailed.rawValue,
+            domain: component, code: ImapErrorCode.messageStoreFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
                 "IMAP: Could not update flags",
                 comment: "IMAP error when flags could not be stored")])
         return error
     }
 
-    static func errorFolderCreateFailed(component: String, name: String) -> NSError {
+    static func errorFolderCreateFailed(_ component: String, name: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: ImapErrorCode.FolderCreateFailed.rawValue,
+            domain: component, code: ImapErrorCode.folderCreateFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format: NSLocalizedString(
                     "IMAP: Could not create folder '%@'",
@@ -307,9 +307,9 @@ public class Constants {
         return error
     }
 
-    static func errorFolderDeleteFailed(component: String, name: String) -> NSError {
+    static func errorFolderDeleteFailed(_ component: String, name: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: ImapErrorCode.FolderDeleteFailed.rawValue,
+            domain: component, code: ImapErrorCode.folderDeleteFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format: NSLocalizedString(
                     "IMAP: Could not delete folder '%@'",
@@ -317,9 +317,9 @@ public class Constants {
         return error
     }
 
-    static func errorAppendFailed(component: String, folderName: String) -> NSError {
+    static func errorAppendFailed(_ component: String, folderName: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: ImapErrorCode.AppendFailed.rawValue,
+            domain: component, code: ImapErrorCode.appendFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 String.init(format: NSLocalizedString(
                     "IMAP: Could not append message to folder '%@'",

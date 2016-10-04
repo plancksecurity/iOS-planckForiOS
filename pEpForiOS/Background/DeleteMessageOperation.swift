@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-public class DeleteMessageOperation: ConcurrentBaseOperation {
+open class DeleteMessageOperation: ConcurrentBaseOperation {
     let messageID: NSManagedObjectID
 
     public init(message: IMessage, coreDataUtil: ICoreDataUtil) {
@@ -17,19 +17,19 @@ public class DeleteMessageOperation: ConcurrentBaseOperation {
         super.init(coreDataUtil: coreDataUtil)
     }
 
-    override public func main() {
-        privateMOC.performBlock({
-            guard let message = self.privateMOC.objectWithID(self.messageID) as?
+    override open func main() {
+        privateMOC.perform({
+            guard let message = self.privateMOC.object(with: self.messageID) as?
                 IMessage
                 else {
                     return
             }
 
             var targetFolder: IFolder?
-            targetFolder = self.model.folderByType(.Trash, account: message.folder.account)
+            targetFolder = self.model.folderByType(.trash, account: message.folder.account)
             if targetFolder == nil {
                 targetFolder = self.model.folderByType(
-                    .Archive, account: message.folder.account)
+                    .archive, account: message.folder.account)
             }
 
             guard let folder = targetFolder else {

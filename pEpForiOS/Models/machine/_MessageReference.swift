@@ -27,67 +27,67 @@ public enum MessageReferenceRelationships: String {
 
 }
 
-public class _MessageReference: BaseManagedObject, _IMessageReference {
+open class _MessageReference: BaseManagedObject, _IMessageReference {
 
     // MARK: - Class methods
 
-    public class func entityName () -> String {
+    open class func entityName () -> String {
         return "MessageReference"
     }
 
-    public class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
+    open class func entity(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+        return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
 
     // MARK: - Life cycle methods
 
-    public override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    public override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
         guard let entity = _MessageReference.entity(managedObjectContext) else { return nil }
-        self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
+        self.init(entity: entity, insertInto: managedObjectContext)
     }
 
     // MARK: - Properties
 
-    @NSManaged public
+    @NSManaged open
     var messageID: String
 
     // MARK: - Relationships
 
-    @NSManaged public
+    @NSManaged open
     var message: Message?
 
-    @NSManaged public
+    @NSManaged open
     var referencingMessages: NSSet
 
 }
 
 public extension _MessageReference {
 
-    func addReferencingMessages(objects: NSSet) {
+    func addReferencingMessages(_ objects: NSSet) {
         let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
-        mutable.unionSet(objects as Set<NSObject>)
+        mutable.union(objects as Set<NSObject>)
         self.referencingMessages = mutable.copy() as! NSSet
     }
 
-    func removeReferencingMessages(objects: NSSet) {
+    func removeReferencingMessages(_ objects: NSSet) {
         let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
-        mutable.minusSet(objects as Set<NSObject>)
+        mutable.minus(objects as Set<NSObject>)
         self.referencingMessages = mutable.copy() as! NSSet
     }
 
-    func addReferencingMessagesObject(value: Message) {
+    func addReferencingMessagesObject(_ value: Message) {
         let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
-        mutable.addObject(value)
+        mutable.add(value)
         self.referencingMessages = mutable.copy() as! NSSet
     }
 
-    func removeReferencingMessagesObject(value: Message) {
+    func removeReferencingMessagesObject(_ value: Message) {
         let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
-        mutable.removeObject(value)
+        mutable.remove(value)
         self.referencingMessages = mutable.copy() as! NSSet
     }
 

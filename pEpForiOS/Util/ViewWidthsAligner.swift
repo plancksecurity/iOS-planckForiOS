@@ -12,15 +12,15 @@ import UIKit
 /**
  Aligns a couple of given views by their width. Typically called from `viewDidAppear:`
  */
-public class ViewWidthsAligner {
+open class ViewWidthsAligner {
     var addedConstraints: [NSLayoutConstraint] = []
 
-    public func alignViews(viewsToAlign: [UIView], parentView: UIView) {
+    open func alignViews(_ viewsToAlign: [UIView], parentView: UIView) {
         var previousView: UIView? = nil
         for v in viewsToAlign {
             if let v1 = previousView {
-                let c = NSLayoutConstraint.init(item: v1, attribute: .Width, relatedBy: .Equal,
-                                                toItem: v, attribute: .Width, multiplier: 1.0,
+                let c = NSLayoutConstraint.init(item: v1, attribute: .width, relatedBy: .equal,
+                                                toItem: v, attribute: .width, multiplier: 1.0,
                                                 constant: 0.0)
                 addedConstraints.append(c)
                 parentView.addConstraint(c)

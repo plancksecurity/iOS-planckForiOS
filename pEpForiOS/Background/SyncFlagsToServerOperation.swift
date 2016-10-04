@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
+open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     let comp = "SyncFlagsToServerOperation"
 
     let connectionManager: ConnectionManager
@@ -20,7 +20,7 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 
     var imapSync: ImapSync!
 
-    public var numberOfMessagesSynced = 0
+    open var numberOfMessagesSynced = 0
 
     public init(folder: IFolder,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
@@ -30,8 +30,8 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         super.init(coreDataUtil: coreDataUtil)
     }
 
-    public override func main() {
-        privateMOC.performBlock() {
+    open override func main() {
+        privateMOC.perform() {
             // Immediately check for work. If there is none, bail out
             if let _ = self.nextMessageToBeSynced() {
                 self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
@@ -56,7 +56,7 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     }
 
     func syncNextMessage() {
-        privateMOC.performBlock() {
+        privateMOC.perform() {
             guard let m = self.nextMessageToBeSynced() else {
                 self.markAsFinished()
                 return
@@ -65,13 +65,13 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         }
     }
 
-    func updateFlagsForMessage(message: IMessage) {
+    func updateFlagsForMessage(_ message: IMessage) {
         let (cmd, dict) = message.storeCommandForUpdate()
-        imapSync.imapStore.sendCommand(
-            IMAP_UID_STORE, info: dict as [NSObject : AnyObject], string: cmd)
+        imapSync.imapStore.send(
+            IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)
     }
 
-    func errorOperation(localizedMessage: String, logMessage: String) {
+    func errorOperation(_ localizedMessage: String, logMessage: String) {
         markAsFinished()
         addError(Constants.errorOperationFailed(comp, errorMessage: localizedMessage))
         Log.errorComponent(comp, errorString: logMessage)
@@ -79,81 +79,81 @@ public class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 }
 
 extension SyncFlagsToServerOperation: ImapSyncDelegate {
-    public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
-        if !self.cancelled {
+    public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
+        if !self.isCancelled {
             sync.openMailBox(targetFolderName)
         }
     }
 
-    public func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
+    public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorAuthenticationFailed(comp))
         markAsFinished()
     }
 
-    public func connectionLost(sync: ImapSync, notification: NSNotification?) {
+    public func connectionLost(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorConnectionLost(comp))
         markAsFinished()
     }
 
-    public func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
+    public func connectionTerminated(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorConnectionTerminated(comp))
         markAsFinished()
     }
 
-    public func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
+    public func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorConnectionTimeout(comp))
         markAsFinished()
     }
 
-    public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderPrefetchCompleted"))
         markAsFinished()
     }
 
-    public func messageChanged(sync: ImapSync, notification: NSNotification?) {
+    public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
         markAsFinished()
     }
 
-    public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
     }
 
-    public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         syncNextMessage()
     }
 
-    public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
+    public func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderOpenFailed"))
         markAsFinished()
     }
 
-    public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderStatusCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderStatusCompleted"))
         markAsFinished()
     }
 
-    public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderListCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderListCompleted"))
         markAsFinished()
     }
 
-    public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {
+    public func folderNameParsed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderNameParsed"))
         markAsFinished()
     }
 
-    public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderAppendCompleted"))
         markAsFinished()
     }
 
-    public func folderAppendFailed(sync: ImapSync, notification: NSNotification?) {
+    public func folderAppendFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderAppendFailed"))
         markAsFinished()
     }
 
-    public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let n = notification else {
             errorOperation(NSLocalizedString(
                 "UID STORE: Response with missing notification object",
@@ -161,8 +161,8 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
                 "messageStoreCompleted with nil notification")
             return
         }
-        privateMOC.performBlock() {
-            guard let dict = n.userInfo else {
+        privateMOC.perform() {
+            guard let dict = (n as NSNotification).userInfo else {
                 self.errorOperation(NSLocalizedString(
                     "UID STORE: Response with missing user info",
                     comment: "Technical error"),
@@ -177,16 +177,16 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
                 return
             }
             for cw in cwMessages {
-                if let msg = self.model.messageByUID(Int(cw.UID()),
+                if let msg = self.model.messageByUID(Int(cw.uid()),
                     folderName: self.targetFolderName) {
                     let flags = cw.flags()
-                    msg.flags = NSNumber.init(short: flags.rawFlagsAsShort())
+                    msg.flags = NSNumber.init(value: flags.rawFlagsAsShort() as Int16)
                     msg.flagsFromServer = msg.flags
                 } else {
                     self.errorOperation(NSLocalizedString(
                         "UID STORE: Response for message that can't be found",
                         comment: "Technical error"), logMessage:
-                        "messageStoreCompleted message not found, UID: \(cw.UID())")
+                        "messageStoreCompleted message not found, UID: \(cw.uid())")
                 }
             }
             self.model.save()
@@ -195,32 +195,32 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
         syncNextMessage()
     }
 
-    public func messageStoreFailed(sync: ImapSync, notification: NSNotification?) {
+    public func messageStoreFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorMessageStoreFailed(comp))
         markAsFinished()
     }
 
-    public func folderCreateCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderCreateCompleted"))
         markAsFinished()
     }
 
-    public func folderCreateFailed(sync: ImapSync, notification: NSNotification?) {
+    public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderCreateFailed"))
         markAsFinished()
     }
 
-    public func folderDeleteCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderDeleteCompleted"))
         markAsFinished()
     }
 
-    public func folderDeleteFailed(sync: ImapSync, notification: NSNotification?) {
+    public func folderDeleteFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
         markAsFinished()
     }
 
-    public func actionFailed(sync: ImapSync, error: NSError) {
+    public func actionFailed(_ sync: ImapSync, error: NSError) {
         addError(error)
         markAsFinished()
     }

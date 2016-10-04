@@ -73,7 +73,7 @@ public enum MessageRelationships: String {
 
     var pepColorRating: NSNumber? { get set }
 
-    var receivedDate: NSDate? { get set }
+    var receivedDate: Date? { get set }
 
     var subject: String? { get set }
 
@@ -99,139 +99,139 @@ public enum MessageRelationships: String {
 
 }
 
-public class _Message: BaseManagedObject, _IMessage {
+open class _Message: BaseManagedObject, _IMessage {
 
     // MARK: - Class methods
 
-    public class func entityName () -> String {
+    open class func entityName () -> String {
         return "Message"
     }
 
-    public class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
+    open class func entity(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+        return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
 
     // MARK: - Life cycle methods
 
-    public override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    public override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
         guard let entity = _Message.entity(managedObjectContext) else { return nil }
-        self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
+        self.init(entity: entity, insertInto: managedObjectContext)
     }
 
     // MARK: - Properties
 
-    @NSManaged public
+    @NSManaged open
     var bodyFetched: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var boundary: String?
 
-    @NSManaged public
+    @NSManaged open
     var contentType: String?
 
-    @NSManaged public
+    @NSManaged open
     var flagAnswered: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var flagDeleted: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var flagDraft: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var flagFlagged: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var flagRecent: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var flagSeen: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var flags: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var flagsFromServer: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var longMessage: String?
 
-    @NSManaged public
+    @NSManaged open
     var longMessageFormatted: String?
 
-    @NSManaged public
+    @NSManaged open
     var messageID: String?
 
-    @NSManaged public
+    @NSManaged open
     var messageNumber: NSNumber?
 
-    @NSManaged public
+    @NSManaged open
     var pepColorRating: NSNumber?
 
-    @NSManaged public
-    var receivedDate: NSDate?
+    @NSManaged open
+    var receivedDate: Date?
 
-    @NSManaged public
+    @NSManaged open
     var subject: String?
 
-    @NSManaged public
+    @NSManaged open
     var uid: NSNumber
 
     // MARK: - Relationships
 
-    @NSManaged public
+    @NSManaged open
     var attachments: NSOrderedSet
 
-    @NSManaged public
+    @NSManaged open
     var bcc: NSOrderedSet
 
-    @NSManaged public
+    @NSManaged open
     var cc: NSOrderedSet
 
-    @NSManaged public
+    @NSManaged open
     var folder: Folder
 
-    @NSManaged public
+    @NSManaged open
     var from: Contact?
 
-    @NSManaged public
+    @NSManaged open
     var messageReference: MessageReference?
 
-    @NSManaged public
+    @NSManaged open
     var references: NSOrderedSet
 
-    @NSManaged public
+    @NSManaged open
     var to: NSOrderedSet
 
 }
 
 public extension _Message {
 
-    func addAttachments(objects: NSOrderedSet) {
+    func addAttachments(_ objects: NSOrderedSet) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
-        mutable.unionOrderedSet(objects)
+        mutable.union(objects)
         self.attachments = mutable.copy() as! NSOrderedSet
     }
 
-    func removeAttachments(objects: NSOrderedSet) {
+    func removeAttachments(_ objects: NSOrderedSet) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
-        mutable.minusOrderedSet(objects)
+        mutable.minus(objects)
         self.attachments = mutable.copy() as! NSOrderedSet
     }
 
-    func addAttachmentsObject(value: Attachment) {
+    func addAttachmentsObject(_ value: Attachment) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
-        mutable.addObject(value)
+        mutable.add(value)
         self.attachments = mutable.copy() as! NSOrderedSet
     }
 
-    func removeAttachmentsObject(value: Attachment) {
+    func removeAttachmentsObject(_ value: Attachment) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
-        mutable.removeObject(value)
+        mutable.remove(value)
         self.attachments = mutable.copy() as! NSOrderedSet
     }
 
@@ -239,27 +239,27 @@ public extension _Message {
 
 public extension _Message {
 
-    func addBcc(objects: NSOrderedSet) {
+    func addBcc(_ objects: NSOrderedSet) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
-        mutable.unionOrderedSet(objects)
+        mutable.union(objects)
         self.bcc = mutable.copy() as! NSOrderedSet
     }
 
-    func removeBcc(objects: NSOrderedSet) {
+    func removeBcc(_ objects: NSOrderedSet) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
-        mutable.minusOrderedSet(objects)
+        mutable.minus(objects)
         self.bcc = mutable.copy() as! NSOrderedSet
     }
 
-    func addBccObject(value: Contact) {
+    func addBccObject(_ value: Contact) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
-        mutable.addObject(value)
+        mutable.add(value)
         self.bcc = mutable.copy() as! NSOrderedSet
     }
 
-    func removeBccObject(value: Contact) {
+    func removeBccObject(_ value: Contact) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
-        mutable.removeObject(value)
+        mutable.remove(value)
         self.bcc = mutable.copy() as! NSOrderedSet
     }
 
@@ -267,27 +267,27 @@ public extension _Message {
 
 public extension _Message {
 
-    func addCc(objects: NSOrderedSet) {
+    func addCc(_ objects: NSOrderedSet) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
-        mutable.unionOrderedSet(objects)
+        mutable.union(objects)
         self.cc = mutable.copy() as! NSOrderedSet
     }
 
-    func removeCc(objects: NSOrderedSet) {
+    func removeCc(_ objects: NSOrderedSet) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
-        mutable.minusOrderedSet(objects)
+        mutable.minus(objects)
         self.cc = mutable.copy() as! NSOrderedSet
     }
 
-    func addCcObject(value: Contact) {
+    func addCcObject(_ value: Contact) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
-        mutable.addObject(value)
+        mutable.add(value)
         self.cc = mutable.copy() as! NSOrderedSet
     }
 
-    func removeCcObject(value: Contact) {
+    func removeCcObject(_ value: Contact) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
-        mutable.removeObject(value)
+        mutable.remove(value)
         self.cc = mutable.copy() as! NSOrderedSet
     }
 
@@ -295,27 +295,27 @@ public extension _Message {
 
 public extension _Message {
 
-    func addReferences(objects: NSOrderedSet) {
+    func addReferences(_ objects: NSOrderedSet) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
-        mutable.unionOrderedSet(objects)
+        mutable.union(objects)
         self.references = mutable.copy() as! NSOrderedSet
     }
 
-    func removeReferences(objects: NSOrderedSet) {
+    func removeReferences(_ objects: NSOrderedSet) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
-        mutable.minusOrderedSet(objects)
+        mutable.minus(objects)
         self.references = mutable.copy() as! NSOrderedSet
     }
 
-    func addReferencesObject(value: MessageReference) {
+    func addReferencesObject(_ value: MessageReference) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
-        mutable.addObject(value)
+        mutable.add(value)
         self.references = mutable.copy() as! NSOrderedSet
     }
 
-    func removeReferencesObject(value: MessageReference) {
+    func removeReferencesObject(_ value: MessageReference) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
-        mutable.removeObject(value)
+        mutable.remove(value)
         self.references = mutable.copy() as! NSOrderedSet
     }
 
@@ -323,27 +323,27 @@ public extension _Message {
 
 public extension _Message {
 
-    func addTo(objects: NSOrderedSet) {
+    func addTo(_ objects: NSOrderedSet) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
-        mutable.unionOrderedSet(objects)
+        mutable.union(objects)
         self.to = mutable.copy() as! NSOrderedSet
     }
 
-    func removeTo(objects: NSOrderedSet) {
+    func removeTo(_ objects: NSOrderedSet) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
-        mutable.minusOrderedSet(objects)
+        mutable.minus(objects)
         self.to = mutable.copy() as! NSOrderedSet
     }
 
-    func addToObject(value: Contact) {
+    func addToObject(_ value: Contact) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
-        mutable.addObject(value)
+        mutable.add(value)
         self.to = mutable.copy() as! NSOrderedSet
     }
 
-    func removeToObject(value: Contact) {
+    func removeToObject(_ value: Contact) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
-        mutable.removeObject(value)
+        mutable.remove(value)
         self.to = mutable.copy() as! NSOrderedSet
     }
 

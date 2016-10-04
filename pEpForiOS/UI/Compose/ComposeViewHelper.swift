@@ -8,20 +8,20 @@
 
 import UIKit
 
-public class ComposeViewHelper {
+open class ComposeViewHelper {
     /**
      Builds a pEp mail dictionary from all the related views. This is just a quick
      method for checking the pEp color rating, it's not exhaustive!
      */
-    public static func pepMailFromViewForCheckingRating(vc: ComposeViewController) -> PEPMail? {
+    open static func pepMailFromViewForCheckingRating(_ vc: ComposeViewController) -> PEPMail? {
             var message = PEPMail()
             for (_, cell) in vc.recipientCells {
                 let tf = cell.recipientTextView
-                if let text = tf.text {
+                if let text = tf?.text {
                     let mailStrings0 = text.removeLeadingPattern(vc.leadingPattern)
                     if !mailStrings0.isOnlyWhiteSpace() {
-                        let mailStrings1 = mailStrings0.componentsSeparatedByString(
-                            vc.recipientStringDelimiter).map() {
+                        let mailStrings1 = mailStrings0.components(
+                            separatedBy: vc.recipientStringDelimiter).map() {
                                 $0.trimmedWhiteSpace()
                         }
 
@@ -39,11 +39,11 @@ public class ComposeViewHelper {
                             if let rt = cell.recipientType {
                                 var pepKey: String? = nil
                                 switch rt {
-                                case .To:
+                                case .to:
                                     pepKey = kPepTo
-                                case .CC:
+                                case .cc:
                                     pepKey = kPepCC
-                                case .BCC:
+                                case .bcc:
                                     pepKey = kPepBCC
                                 }
                                 if let key = pepKey {
@@ -72,8 +72,8 @@ public class ComposeViewHelper {
             return message
     }
 
-    public static func currentRecipientRangeFromText(
-        text: NSString, aroundCaretPosition: Int) -> NSRange? {
+    open static func currentRecipientRangeFromText(
+        _ text: NSString, aroundCaretPosition: Int) -> NSRange? {
         let comma: UnicodeScalar = ","
         let colon: UnicodeScalar = ":"
         var start = -1
@@ -96,7 +96,7 @@ public class ComposeViewHelper {
         var index = location
 
         // Check if the user just entered a comma or colon. If yes, that's it.
-        let ch = text.characterAtIndex(index)
+        let ch = text.character(at: index)
         if UInt32(ch) == comma.value || UInt32(ch) == colon.value {
             return nil
         }
@@ -107,7 +107,7 @@ public class ComposeViewHelper {
                 start = 0
                 break
             }
-            let ch = text.characterAtIndex(index)
+            let ch = text.character(at: index)
             if UInt32(ch) == comma.value || UInt32(ch) == colon.value {
                 start = index + 1
                 break
@@ -122,7 +122,7 @@ public class ComposeViewHelper {
                 end = maxIndex + 1
                 break
             }
-            let ch = text.characterAtIndex(index)
+            let ch = text.character(at: index)
             if UInt32(ch) == comma.value {
                 end = index
                 break
@@ -144,11 +144,11 @@ public class ComposeViewHelper {
      Tries to determine the currently edited part in a recipient text, given the
      text and the last known caret position.
      */
-    public static func extractRecipientFromText(
-        text: NSString, aroundCaretPosition: Int) -> String? {
+    open static func extractRecipientFromText(
+        _ text: NSString, aroundCaretPosition: Int) -> String? {
         if let r = self.currentRecipientRangeFromText(
             text, aroundCaretPosition: aroundCaretPosition) {
-            return text.substringWithRange(r).trimmedWhiteSpace()
+            return text.substring(with: r).trimmedWhiteSpace()
         }
         return nil
     }
@@ -156,8 +156,8 @@ public class ComposeViewHelper {
     /**
      * Puts the emails from the contacts into a recipient text field.
      */
-    public static func transferContacts(
-        contacts: [IContact], toTextField textField: UITextView, titleText: String?) {
+    open static func transferContacts(
+        _ contacts: [IContact], toTextField textField: UITextView, titleText: String?) {
         textField.text = "\(String.orEmpty(titleText))"
         for c in contacts {
             textField.text = "\(textField.text)\(c.email), "
@@ -167,17 +167,17 @@ public class ComposeViewHelper {
     /**
      - Returns: The array of `IContact`s for a given recipient type and message.
      */
-    public static func contactsForRecipientType(
-        recipientType: RecipientType?, fromMessage message: IMessage) -> [IContact] {
+    open static func contactsForRecipientType(
+        _ recipientType: RecipientType?, fromMessage message: IMessage) -> [IContact] {
         guard let rt = recipientType else {
             return []
         }
         switch rt {
-        case .To:
+        case .to:
             return orderedSetToContacts(message.to)
-        case .CC:
+        case .cc:
             return orderedSetToContacts(message.cc)
-        case .BCC:
+        case .bcc:
             return orderedSetToContacts(message.bcc)
         }
     }
@@ -187,7 +187,7 @@ public class ComposeViewHelper {
      Putting this into a function prevents a compiler crash with Swift 2.2 that
      occurs when putting this inline.
      */
-    public static func orderedSetToContacts(theSet: NSOrderedSet) -> [IContact] {
+    open static func orderedSetToContacts(_ theSet: NSOrderedSet) -> [IContact] {
         return theSet.map({ $0 as! IContact })
     }
 }
@@ -197,7 +197,7 @@ public extension UIViewController {
      Return the correct container rectangle for a giving width to maintain the aspect ratio.
      - Returns: The new container rectangle.
      */
-    public func obtainContainerToMaintainRatio(fixedWidth: CGFloat, rectangle: CGSize) -> CGRect {
+    public func obtainContainerToMaintainRatio(_ fixedWidth: CGFloat, rectangle: CGSize) -> CGRect {
         let fixRatio = rectangle.width / rectangle.height
         let newHeight = fixedWidth / fixRatio
         return CGRect(x: 0, y: 0, width: fixedWidth, height: newHeight)

@@ -21,7 +21,7 @@ public enum AttachmentRelationships: String {
 
     var contentType: String? { get set }
 
-    var data: NSData? { get set }
+    var data: Data? { get set }
 
     var filename: String? { get set }
 
@@ -33,46 +33,46 @@ public enum AttachmentRelationships: String {
 
 }
 
-public class _Attachment: BaseManagedObject, _IAttachment {
+open class _Attachment: BaseManagedObject, _IAttachment {
 
     // MARK: - Class methods
 
-    public class func entityName () -> String {
+    open class func entityName () -> String {
         return "Attachment"
     }
 
-    public class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
+    open class func entity(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+        return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
 
     // MARK: - Life cycle methods
 
-    public override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    public override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
         guard let entity = _Attachment.entity(managedObjectContext) else { return nil }
-        self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
+        self.init(entity: entity, insertInto: managedObjectContext)
     }
 
     // MARK: - Properties
 
-    @NSManaged public
+    @NSManaged open
     var contentType: String?
 
-    @NSManaged public
-    var data: NSData?
+    @NSManaged open
+    var data: Data?
 
-    @NSManaged public
+    @NSManaged open
     var filename: String?
 
-    @NSManaged public
+    @NSManaged open
     var size: NSNumber
 
     // MARK: - Relationships
 
-    @NSManaged public
+    @NSManaged open
     var message: Message
 
 }

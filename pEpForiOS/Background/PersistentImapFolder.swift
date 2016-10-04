@@ -24,19 +24,19 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     /** The underlying core data object */
     var folder: IFolder!
 
-    let backgroundQueue: NSOperationQueue
+    let backgroundQueue: OperationQueue
 
     override var nextUID: UInt {
         get {
             var uid: UInt = 0
-            privateMOC.performBlockAndWait({
-                uid = UInt(self.folder.nextUID.integerValue)
+            privateMOC.performAndWait({
+                uid = UInt(self.folder.nextUID.intValue)
             })
             return uid
         }
         set {
-            privateMOC.performBlock({
-                self.folder.nextUID = newValue
+            privateMOC.perform({
+                self.folder.nextUID = NSNumber(newValue)
                 self.model.save()
             })
         }
@@ -45,21 +45,21 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
      override var existsCount: UInt {
         get {
             var count: UInt = 0
-            privateMOC.performBlockAndWait({
+            privateMOC.performAndWait({
                 count = UInt(self.folder.existsCount)
             })
             return count
         }
         set {
-            privateMOC.performBlock({
-                self.folder.existsCount = newValue
+            privateMOC.perform({
+                self.folder.existsCount = NSNumber(newValue)
                 self.model.save()
             })
         }
     }
 
     init(name: String, coreDataUtil: ICoreDataUtil, connectInfo: ConnectInfo,
-         backgroundQueue: NSOperationQueue) {
+         backgroundQueue: OperationQueue) {
         self.coreDataUtil = coreDataUtil
         self.connectInfo = connectInfo
         self.backgroundQueue = backgroundQueue
@@ -74,7 +74,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     func folderObject() -> IFolder {
         var folder: IFolder? = nil
-        privateMOC.performBlockAndWait({
+        privateMOC.performAndWait({
             if let fo = self.model.insertOrUpdateFolderName(
                 self.name(), folderSeparator: nil, accountEmail: self.connectInfo.email) {
                 self.model.save()
@@ -88,8 +88,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
-    override func setUIDValidity(theUIDValidity: UInt) {
-        privateMOC.performBlock() {
+    override func setUIDValidity(_ theUIDValidity: UInt) {
+        privateMOC.perform() {
             if let uidV = self.folder.uidValidity {
                 if uidV != theUIDValidity {
                     Log.warnComponent(self.comp,
@@ -97,16 +97,16 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                     self.folder.messages = []
                 }
             }
-            self.folder.uidValidity = theUIDValidity
+            self.folder.uidValidity = theUIDValidity as NSNumber?
             self.model.save()
         }
     }
 
-    override func UIDValidity() -> UInt {
+    override func uidValidity() -> UInt {
         var i: UInt = 0
-        privateMOC.performBlockAndWait({
+        privateMOC.performAndWait({
             if let uidVal = self.folder.uidValidity {
-                i = UInt(uidVal.integerValue)
+                i = UInt(uidVal.intValue)
             }
         })
         return i
@@ -121,7 +121,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     override func allMessages() -> [AnyObject] {
         var result: [AnyObject] = []
-        privateMOC.performBlockAndWait({
+        privateMOC.performAndWait({
             if let messages = self.model.messagesByPredicate(
                 self.predicateAllMessages(), sortDescriptors: nil) {
                 for m in messages {
@@ -136,12 +136,12 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
      This implementation assumes that the index is typically referred to by pantomime
      as the messageNumber.
      */
-    override func messageAtIndex(theIndex: UInt) -> CWMessage? {
+    override func message(at theIndex: UInt) -> CWMessage? {
         let p = NSPredicate.init(
             format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
             connectInfo.email, self.name(), theIndex)
         var msg: IMessage?
-        privateMOC.performBlockAndWait({
+        privateMOC.performAndWait({
             msg = self.model.messageByPredicate(p, sortDescriptors: nil)
         })
         return msg?.pantomimeMessageWithFolder(self)
@@ -149,7 +149,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     override func count() -> UInt {
         var count: Int = 0
-        privateMOC.performBlockAndWait({
+        privateMOC.performAndWait({
             count = self.model.messageCountByPredicate(self.predicateAllMessages())
         })
         return UInt(count)
@@ -157,7 +157,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     override func lastUID() -> UInt {
         var uid: UInt = 0
-        privateMOC.performBlockAndWait({
+        privateMOC.performAndWait({
             uid = self.model.lastUidInFolderNamed(self.name())
         })
         return uid
@@ -170,9 +170,9 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return true
     }
 
-    func messageWithUID(theUID: UInt) -> CWIMAPMessage? {
+    func message(withUID theUID: UInt) -> CWIMAPMessage? {
         var result: CWIMAPMessage?
-        privateMOC.performBlockAndWait({
+        privateMOC.performAndWait({
             let pUid = NSPredicate.init(format: "uid = %d", theUID)
             let pFolderName = NSPredicate.init(format: "folder.name = %@", self.folder.name)
             let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolderName])
@@ -189,10 +189,10 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     /**
      - TODO: This gets called for some weird reason, and it should not. Investigate.
      */
-    func removeMessageWithUID(theUID: UInt) {
+    func removeMessage(withUID theUID: UInt) {
     }
 
-    func writeRecord(theRecord: CWCacheRecord?, message: CWIMAPMessage) {
+    func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage) {
         Log.warnComponent(comp, "Writing message \(message)")
 
         // Quickly store the most important email proporties (synchronously)

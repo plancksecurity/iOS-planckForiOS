@@ -17,8 +17,8 @@ class SmtpTest: XCTestCase {
     func testSimpleAuth() {
         class MyDelegate: SmtpSendDefaultDelegate {
             var authenticatedExpectation: XCTestExpectation?
-            override func authenticationCompleted(smtp: SmtpSend,
-                                                  theNotification: NSNotification?) {
+            override func authenticationCompleted(_ smtp: SmtpSend,
+                                                  theNotification: Notification?) {
                 authenticatedExpectation?.fulfill()
             }
         }
@@ -26,10 +26,10 @@ class SmtpTest: XCTestCase {
         for _ in 1...1 {
             var smtp: SmtpSend! = SmtpSend.init(connectInfo: TestData.connectInfo)
             let del = MyDelegate.init()
-            del.authenticatedExpectation = expectationWithDescription("authenticatedExpectation")
+            del.authenticatedExpectation = expectation(description: "authenticatedExpectation")
             smtp.delegate = del
             smtp.start()
-            waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
                 // Adapt this for different servers
                 XCTAssertEqual(smtp.bestAuthMethod(), AuthMethod.Login)

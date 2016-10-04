@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class MailList {
+open class MailList {
 
     var listOfMails = [Mail]()
 

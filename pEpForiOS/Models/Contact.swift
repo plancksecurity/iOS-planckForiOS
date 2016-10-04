@@ -1,4 +1,24 @@
 import Foundation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 public protocol IContact: _IContact {
     /**
@@ -32,7 +52,7 @@ extension IContact {
      Updates that contact's name if the new value is non-nil and the existing
      value is nil. Otherwise, the original one is kept.
      */
-    public func updateName(name: String?) {
+    public func updateName(_ name: String?) {
         if let personal = name {
             if self.name == nil {
                 self.name = personal.unquote()
@@ -42,5 +62,5 @@ extension IContact {
 }
 
 @objc(Contact)
-public class Contact: _Contact, IContact {
+open class Contact: _Contact, IContact {
 }

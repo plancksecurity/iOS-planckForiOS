@@ -39,7 +39,7 @@ class AccountsFoldersViewController: UITableViewController {
     var folderListConfig: FolderListViewController.FolderListConfig?
 
     /** For starting mySelf() */
-    var backgroundQueue = NSOperationQueue.init()
+    var backgroundQueue = OperationQueue.init()
 
     struct UIState {
         var isSynching = false
@@ -52,17 +52,17 @@ class AccountsFoldersViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: standardCell)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: standardCell)
 
         let refreshController = UIRefreshControl.init()
         refreshController.addTarget(self, action: #selector(self.refreshMailsControl),
-                                    forControlEvents: UIControlEvents.ValueChanged)
+                                    for: UIControlEvents.valueChanged)
         self.refreshControl = refreshController
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if appConfig == nil {
-            guard let appDelegate = UIApplication.sharedApplication().delegate as?
+            guard let appDelegate = UIApplication.shared.delegate as?
                 AppDelegate else {
                     super.viewWillAppear(animated)
                     return
@@ -73,7 +73,7 @@ class AccountsFoldersViewController: UITableViewController {
         updateModel()
 
         if accounts.isEmpty {
-            self.performSegueWithIdentifier(segueSetupNewAccount, sender: self)
+            self.performSegue(withIdentifier: segueSetupNewAccount, sender: self)
         }
 
         if shouldRefreshMail {
@@ -114,7 +114,7 @@ class AccountsFoldersViewController: UITableViewController {
         }
     }
 
-    func refreshMailsControl(refreshControl: UIRefreshControl? = nil) {
+    func refreshMailsControl(_ refreshControl: UIRefreshControl? = nil) {
         guard let ac = appConfig else {
             return
         }
@@ -140,13 +140,13 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func updateUI() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = state.isSynching
+        UIApplication.shared.isNetworkActivityIndicatorVisible = state.isSynching
         if !state.isSynching {
             self.refreshControl?.endRefreshing()
         }
     }
 
-    @IBAction func newAccountCreatedSegue(segue: UIStoryboardSegue) {
+    @IBAction func newAccountCreatedSegue(_ segue: UIStoryboardSegue) {
         // load new account
         updateModel()
 
@@ -157,7 +157,7 @@ class AccountsFoldersViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         if accounts.isEmpty {
             return 0
         } else {
@@ -166,7 +166,7 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     override func tableView(
-        tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        _ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == folderSection {
             // Number of important folders to display, which at the moment
             // is equal to the number of inboxes)
@@ -177,7 +177,7 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     override func tableView(
-        tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == folderSection {
             return NSLocalizedString(
                 "Folders", comment: "Section title for important folder list")
@@ -188,25 +188,25 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     override func tableView(
-        tableView: UITableView,
-        cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == folderSection {
-            let cell = tableView.dequeueReusableCellWithIdentifier(
-                standardCell, forIndexPath: indexPath)
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath as NSIndexPath).section == folderSection {
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: standardCell, for: indexPath)
 
-            let email = accounts[indexPath.row].email
+            let email = accounts[(indexPath as NSIndexPath).row].email
             cell.textLabel?.text = String.init(
                 format: NSLocalizedString(
                     "Inbox (%@)", comment: "Table view label for an inbox for an account"), email)
-            cell.accessoryType = .DisclosureIndicator
+            cell.accessoryType = .disclosureIndicator
 
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier(
-                standardCell, forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: standardCell, for: indexPath)
 
-            cell.textLabel?.text = accounts[indexPath.row].email
-            cell.accessoryType = .DisclosureIndicator
+            cell.textLabel?.text = accounts[(indexPath as NSIndexPath).row].email
+            cell.accessoryType = .disclosureIndicator
 
             return cell
         }
@@ -220,20 +220,20 @@ class AccountsFoldersViewController: UITableViewController {
     func basicInboxPredicate() -> NSPredicate {
         let predicateBasic = appConfig.model.basicMessagePredicate()
         let predicateInbox = NSPredicate.init(
-            format: "folder.folderType = %d", FolderType.Inbox.rawValue)
+            format: "folder.folderType = %d", FolderType.inbox.rawValue)
         let predicates: [NSPredicate] = [predicateBasic, predicateInbox]
         let predicate = NSCompoundPredicate.init(
             andPredicateWithSubpredicates: predicates)
         return predicate
     }
 
-    override func tableView(tableView: UITableView,
-                            didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == folderSection {
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
+        if (indexPath as NSIndexPath).section == folderSection {
             guard let ac = appConfig else {
                 return
             }
-            let account = accounts[indexPath.row]
+            let account = accounts[(indexPath as NSIndexPath).row]
 
             let predicateInbox = basicInboxPredicate()
             let predicateAccount = NSPredicate.init(
@@ -250,25 +250,25 @@ class AccountsFoldersViewController: UITableViewController {
                 folderName: ImapSync.defaultImapInboxName,
                 syncOnAppear: false)
 
-            self.performSegueWithIdentifier(segueEmailList, sender: self)
+            self.performSegue(withIdentifier: segueEmailList, sender: self)
         } else {
             folderListConfig = FolderListViewController.FolderListConfig.init(
-                account: accounts[indexPath.row], appConfig: appConfig)
-            self.performSegueWithIdentifier(segueFolderList, sender: self)
+                account: accounts[(indexPath as NSIndexPath).row], appConfig: appConfig)
+            self.performSegue(withIdentifier: segueFolderList, sender: self)
         }
     }
 
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == segueEmailList {
-            guard let vc = segue.destinationViewController as?
+            guard let vc = segue.destination as?
                 EmailListViewController else {
                 return
             }
             vc.config = emailListConfig
         } else if segue.identifier == segueFolderList {
-            guard let vc = segue.destinationViewController as?
+            guard let vc = segue.destination as?
                 FolderListViewController else {
                     return
             }

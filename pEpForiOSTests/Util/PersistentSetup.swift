@@ -15,7 +15,7 @@ class PersistentSetup {
     let coreDataUtil: ICoreDataUtil
     let connectionInfo = TestData.connectInfo
     let connectionManager = ConnectionManager.init()
-    let backgroundQueue = NSOperationQueue.init()
+    let backgroundQueue = OperationQueue.init()
     let grandOperator: GrandOperator
     let folderBuilder: ImapFolderBuilder
     let model: IModel

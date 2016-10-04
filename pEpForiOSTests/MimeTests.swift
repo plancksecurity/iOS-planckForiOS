@@ -30,9 +30,9 @@ class MimeTests: XCTestCase {
             return
         }
         for i in 0..<multi.count() {
-            let part = multi.partAtIndex(i)
+            let part = multi.part(at: i)
             let content = part.content()
-            if let _ = content as? NSData {
+            if let _ = content as? Data {
                 // data
             } else if let _ = content as? NSString {
                 // string

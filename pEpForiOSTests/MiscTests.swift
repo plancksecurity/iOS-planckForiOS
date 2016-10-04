@@ -21,8 +21,8 @@ class MiscTests: XCTestCase {
         let u1: UInt32 = UInt32(bitPattern: s)
         XCTAssertEqual(u1, UInt32.max)
 
-        let n = NSNumber.init(int: s)
-        let u2: UInt32 = UInt32(bitPattern: n.intValue)
+        let n = NSNumber.init(value: s as Int32)
+        let u2: UInt32 = UInt32(bitPattern: n.int32Value)
         XCTAssertEqual(u2, UInt32.max)
     }
 

@@ -41,7 +41,7 @@ class EmailHeaderView: UIView {
     /**
      The size we need to layout all labels, dependent on the input width.
      */
-    var preferredSize: CGSize = CGSizeZero
+    var preferredSize: CGSize = CGSize.zero
 
     /**
      The last label we layed out on the left side.
@@ -58,12 +58,12 @@ class EmailHeaderView: UIView {
      - Parameter width: The maximum width the layout should use. Very important for
      determining line breaks.
      */
-    func update(width: CGFloat) {
+    func update(_ width: CGFloat) {
         while subviews.count > 0 {
             subviews.first?.removeFromSuperview()
         }
 
-        var pos = CGPointMake(insetsX, insetsY)
+        var pos = CGPoint(x: insetsX, y: insetsY)
         pos = addFromAtPosition(pos, width: width)
 
         if message.to.count > 0 {
@@ -87,7 +87,7 @@ class EmailHeaderView: UIView {
 
         if let date = message.receivedDate {
             pos = biggerNewline(pos)
-            let dateLabel = headerBaseLabelWithText(dateFormatter.stringFromDate(date),
+            let dateLabel = headerBaseLabelWithText(dateFormatter.string(from: date),
                                                     maxWidth: width)
             dateLabel.frame.origin = pos
             addSubview(dateLabel)
@@ -106,10 +106,10 @@ class EmailHeaderView: UIView {
             lastLeftLabel = subjectLabel
         }
 
-        preferredSize = CGSizeMake(width, pos.y)
+        preferredSize = CGSize(width: width, height: pos.y)
     }
 
-    func addRecipients(recipients: NSOrderedSet, title: String, position: CGPoint,
+    func addRecipients(_ recipients: NSOrderedSet, title: String, position: CGPoint,
                        width: CGFloat) -> CGPoint {
         var pos = newline(position)
 
@@ -137,7 +137,7 @@ class EmailHeaderView: UIView {
         return pos
     }
 
-    func addFromAtPosition(position: CGPoint, width: CGFloat) -> CGPoint {
+    func addFromAtPosition(_ position: CGPoint, width: CGFloat) -> CGPoint {
         var pos = position
         let fromTitleLabel = headerBaseLabelWithText(
             NSLocalizedString("From:",
@@ -161,12 +161,12 @@ class EmailHeaderView: UIView {
         return pos
     }
 
-    func putAdjacentLeftLabel(leftLabel: UILabel, rightLabel: UILabel,
+    func putAdjacentLeftLabel(_ leftLabel: UILabel, rightLabel: UILabel,
                               atLeftPos: CGPoint, width: CGFloat) -> CGPoint {
         var pos = atLeftPos
 
-        let leftSize = leftLabel.intrinsicContentSize()
-        let rightSize = rightLabel.intrinsicContentSize()
+        let leftSize = leftLabel.intrinsicContentSize
+        let rightSize = rightLabel.intrinsicContentSize
 
         if rightSize.width + leftLabel.frame.origin.x + leftSize.width + labelGapX
             + insetsX < width {
@@ -185,23 +185,23 @@ class EmailHeaderView: UIView {
         return pos
     }
 
-    func newline(pos: CGPoint) -> CGPoint {
+    func newline(_ pos: CGPoint) -> CGPoint {
         return newline(pos, gap: labelGapY)
     }
 
-    func biggerNewline(pos: CGPoint) -> CGPoint {
+    func biggerNewline(_ pos: CGPoint) -> CGPoint {
         return newline(pos, gap: biggerLabelGapY)
     }
 
-    func newline(pos: CGPoint, gap: CGFloat) -> CGPoint {
+    func newline(_ pos: CGPoint, gap: CGFloat) -> CGPoint {
         if let last = lastLeftLabel {
-            return CGPointMake(insetsX, last.frame.origin.y + last.frame.size.height + gap)
+            return CGPoint(x: insetsX, y: last.frame.origin.y + last.frame.size.height + gap)
         } else {
-            return CGPointMake(insetsX, pos.y + gap)
+            return CGPoint(x: insetsX, y: pos.y + gap)
         }
     }
 
-    func labelWithFont(font: UIFont, text: String?, maxWidth: CGFloat? = nil) -> UILabel {
+    func labelWithFont(_ font: UIFont, text: String?, maxWidth: CGFloat? = nil) -> UILabel {
         let label = UILabel.init()
         label.font = font
 
@@ -211,9 +211,9 @@ class EmailHeaderView: UIView {
 
         if let max = maxWidth {
             label.preferredMaxLayoutWidth = max
-            label.lineBreakMode = .ByWordWrapping
+            label.lineBreakMode = .byWordWrapping
             label.numberOfLines = 0
-            var size = label.sizeThatFits(CGSizeMake(max, 0))
+            var size = label.sizeThatFits(CGSize(width: max, height: 0))
             size.width = max
             label.frame.size = size
         } else {
@@ -223,13 +223,13 @@ class EmailHeaderView: UIView {
         return label
     }
 
-    func headerBaseLabelWithText(text: String?, maxWidth: CGFloat? = nil) -> UILabel {
-        return labelWithFont(UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline),
+    func headerBaseLabelWithText(_ text: String?, maxWidth: CGFloat? = nil) -> UILabel {
+        return labelWithFont(UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline),
                              text: text, maxWidth: maxWidth)
     }
 
-    func recipientBaseLabelWithText(text: String?, maxWidth: CGFloat? = nil) -> UILabel {
-        return labelWithFont(UIFont.preferredFontForTextStyle(UIFontTextStyleBody),
+    func recipientBaseLabelWithText(_ text: String?, maxWidth: CGFloat? = nil) -> UILabel {
+        return labelWithFont(UIFont.preferredFont(forTextStyle: UIFontTextStyle.body),
                              text: text, maxWidth: maxWidth)
     }
 }

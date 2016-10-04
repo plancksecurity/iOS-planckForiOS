@@ -29,8 +29,8 @@ class ChooseAttachmentTest: XCTestCase {
     }
 
     func testAttachImage() {
-        XCUIDevice.sharedDevice().orientation = .FaceUp
-        XCUIDevice.sharedDevice().orientation = .FaceUp
+        XCUIDevice.shared().orientation = .faceUp
+        XCUIDevice.shared().orientation = .faceUp
         
         let app = XCUIApplication()
         let tablesQuery = app.tables
@@ -40,7 +40,7 @@ class ChooseAttachmentTest: XCTestCase {
         app.sheets["AttachedFiles"].collectionViews.buttons["Photo"].tap()
         tablesQuery.buttons["Moments"].tap()
         app.collectionViews["PhotosGridView"].cells["Live Photo, Portrait, 17 de septiembre 13:10"].tap()
-        tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(4).childrenMatchingType(.TextView).element.tap()
+        tablesQuery.children(matching: .cell).element(boundBy: 4).children(matching: .textView).element.tap()
         
       
 

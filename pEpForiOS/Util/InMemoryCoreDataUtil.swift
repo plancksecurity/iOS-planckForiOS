@@ -9,13 +9,13 @@
 import Foundation
 import CoreData
 
-public class InMemoryCoreDataUtil: ICoreDataUtil {
+open class InMemoryCoreDataUtil: ICoreDataUtil {
     let coreDataMerger = CoreDataMerger()
 
     public init() {
     }
 
-    public lazy var managedObjectModel: NSManagedObjectModel = {
+    open lazy var managedObjectModel: NSManagedObjectModel = {
         // reuse the official one
         let model = CoreDataUtil.init().managedObjectModel
         return model
@@ -24,18 +24,18 @@ public class InMemoryCoreDataUtil: ICoreDataUtil {
     /**
      An in-memory store coordinator for unit tests.
      */
-    public lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+    open lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         let comp = "InMemoryCoreDataUtil"
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         do {
-            try coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil,
-                                                       URL: nil, options: nil)
+            try coordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil,
+                                                       at: nil, options: nil)
             return coordinator
         } catch let error as NSError {
             // Report any error we got.
             var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-            dict[NSLocalizedFailureReasonErrorKey] = "In memory store could not be created."
+            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as AnyObject?
+            dict[NSLocalizedFailureReasonErrorKey] = "In memory store could not be created." as AnyObject?
 
             dict[NSUnderlyingErrorKey] = error
             let wrappedError = NSError(domain: comp, code: 9999, userInfo: dict)
@@ -49,10 +49,10 @@ public class InMemoryCoreDataUtil: ICoreDataUtil {
     /**
      An in-memory managed object context.
      */
-    public lazy var managedObjectContext: NSManagedObjectContext = {
+    open lazy var managedObjectContext: NSManagedObjectContext = {
         let coordinator = self.persistentStoreCoordinator
         var managedObjectContext = NSManagedObjectContext(
-            concurrencyType: .MainQueueConcurrencyType)
+            concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
 
         // Watch for merges
@@ -64,16 +64,16 @@ public class InMemoryCoreDataUtil: ICoreDataUtil {
     /**
      An in-memory object context for background operations in unit test.
      */
-    public func confinedManagedObjectContext() -> NSManagedObjectContext {
-        let context = NSManagedObjectContext.init(concurrencyType: .ConfinementConcurrencyType)
+    open func confinedManagedObjectContext() -> NSManagedObjectContext {
+        let context = NSManagedObjectContext.init(concurrencyType: .confinementConcurrencyType)
         context.persistentStoreCoordinator = self.persistentStoreCoordinator
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
     }
 
-    public func privateContext() -> NSManagedObjectContext {
-        let privateMOC = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        privateMOC.parentContext = managedObjectContext
+    open func privateContext() -> NSManagedObjectContext {
+        let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        privateMOC.parent = managedObjectContext
         return privateMOC
     }
 }

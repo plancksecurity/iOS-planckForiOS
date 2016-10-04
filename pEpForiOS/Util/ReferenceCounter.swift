@@ -11,8 +11,8 @@ import Foundation
 /**
  Primitive class to verify memory leaks.
  */
-public class ReferenceCounter {
-    public private(set) var refCount: Int = 0
+open class ReferenceCounter {
+    open fileprivate(set) var refCount: Int = 0
 
     public init() {}
 
@@ -20,11 +20,11 @@ public class ReferenceCounter {
         self.refCount = refCount
     }
 
-    public func inc() {
+    open func inc() {
         refCount = refCount + 1
     }
 
-    public func dec() {
+    open func dec() {
         refCount = refCount - 1
     }
 }

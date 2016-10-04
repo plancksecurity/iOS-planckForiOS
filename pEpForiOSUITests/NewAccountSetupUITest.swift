@@ -7,6 +7,26 @@
 //
 
 import XCTest
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class NewAccountSetupUITest: XCTestCase {
     override func setUp() {
@@ -24,14 +44,14 @@ class NewAccountSetupUITest: XCTestCase {
      Use if you want to wait forever. May be useful for debugging.
      */
     func waitForever() {
-        expectationWithDescription("Never happens")
-        waitForExpectationsWithTimeout(3000, handler: nil)
+        expectation(description: "Never happens")
+        waitForExpectations(timeout: 3000, handler: nil)
     }
 
     /**
      Clears the given text element.
      */
-    func clearTextField(textField: XCUIElement) {
+    func clearTextField(_ textField: XCUIElement) {
         let string = textField.value as? String
         XCTAssertNotNil(string)
 
@@ -40,7 +60,7 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
-    func newAccountSetup(account: Account) {
+    func newAccountSetup(_ account: Account) {
         let tablesQuery = XCUIApplication().tables
 
         var tf = tablesQuery.cells.textFields["nameOfTheUser"]

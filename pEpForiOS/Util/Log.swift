@@ -9,43 +9,43 @@
 import Foundation
 
 /** Very primitive Logging class. */
-@objc public class Log: NSObject, CWLogging {
+@objc open class Log: NSObject, CWLogging {
 
-    private static let disallow: Set<String> = []
+    fileprivate static let disallow: Set<String> = []
 
     /** Somewhat verbose */
-    static public func infoComponent(component: String, _ content: String) {
+    static open func infoComponent(_ component: String, _ content: String) {
         if !disallow.contains(component) {
             print("\(component): \(content)")
         }
     }
 
     /** More important */
-    static public func warnComponent(component: String, _ content: String) {
+    static open func warnComponent(_ component: String, _ content: String) {
         if !disallow.contains(component) {
             print("\(component): \(content)")
         }
     }
 
-    static public func errorComponent(component: String, error: NSError?) {
+    static open func errorComponent(_ component: String, error: NSError?) {
         if let err = error {
             print("\(component): Error: \(err)")
         }
     }
 
-    static public func errorComponent(component: String, errorString: String, error: NSError) {
+    static open func errorComponent(_ component: String, errorString: String, error: NSError) {
         print("\(component): \(errorString): \(error)")
     }
 
-    static public func errorComponent(component: String, errorString: String) {
+    static open func errorComponent(_ component: String, errorString: String) {
         print("\(component): \(errorString)")
     }
 
-    @objc public func infoComponent(component: String!, message: String!) {
+    @objc open func infoComponent(_ component: String!, message: String!) {
         Log.infoComponent(component, message)
     }
 
-    @objc public func warnComponent(component: String!, message: String!) {
+    @objc open func warnComponent(_ component: String!, message: String!) {
         Log.warnComponent(component, message)
     }
 }

@@ -107,7 +107,7 @@ class StringExtensionsTest: XCTestCase {
 
     func testComponentsSeparatedBy() {
         // This behavior is somewhat odd. Want to make sure it's documented.
-        XCTAssertEqual("".componentsSeparatedByString(","), [""])
+        XCTAssertEqual("".components(separatedBy: ","), [""])
     }
 
     func testRemoveAngleBrackets() {

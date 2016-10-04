@@ -130,43 +130,43 @@ let pepPricacyStatusTranslations: [PEP_rating: (String, String, String)] =
                 NSLocalizedString("Please add the necessary information.",
                     comment: "Privacy status suggestion"))]
 
-public class PEPUtil {
+open class PEPUtil {
     static let comp = "PEPUtil"
 
     /**
      Content type for MIME multipart/alternative.
      */
-    public static let kMimeTypeMultipartAlternative = "multipart/alternative"
+    open static let kMimeTypeMultipartAlternative = "multipart/alternative"
 
-    private static let homeUrl = NSURL(fileURLWithPath:
-        NSProcessInfo.processInfo().environment["HOME"]!)
-    private static let pEpManagementDbUrl =
-        homeUrl.URLByAppendingPathComponent(".pEp_management.db")
-    private static let systemDbUrl = homeUrl.URLByAppendingPathComponent("system.db")
-    private static let gnupgUrl = homeUrl.URLByAppendingPathComponent(".gnupg")
-    private static let gnupgSecringUrl = gnupgUrl!.URLByAppendingPathComponent("secring.gpg")
-    private static let gnupgPubringUrl = gnupgUrl!.URLByAppendingPathComponent("pubring.gpg")
+    fileprivate static let homeUrl = URL(fileURLWithPath:
+        ProcessInfo.processInfo.environment["HOME"]!)
+    fileprivate static let pEpManagementDbUrl =
+        homeUrl.appendingPathComponent(".pEp_management.db")
+    fileprivate static let systemDbUrl = homeUrl.appendingPathComponent("system.db")
+    fileprivate static let gnupgUrl = homeUrl.appendingPathComponent(".gnupg")
+    fileprivate static let gnupgSecringUrl = gnupgUrl.appendingPathComponent("secring.gpg")
+    fileprivate static let gnupgPubringUrl = gnupgUrl.appendingPathComponent("pubring.gpg")
     
     // Provide filepath URLs as public dictionary.
-    public static let pEpUrls: [String:NSURL] = [
+    open static let pEpUrls: [String:URL] = [
         "home": homeUrl,
-        "pEpManagementDb": pEpManagementDbUrl!,
-        "systemDb": systemDbUrl!,
-        "gnupg": gnupgUrl!,
-        "gnupgSecring": gnupgSecringUrl!,
-        "gnupgPubring": gnupgPubringUrl!]
+        "pEpManagementDb": pEpManagementDbUrl,
+        "systemDb": systemDbUrl,
+        "gnupg": gnupgUrl,
+        "gnupgSecring": gnupgSecringUrl,
+        "gnupgPubring": gnupgPubringUrl]
     
     // Delete pEp working data.
-    public static func pEpClean() -> Bool {
+    open static func pEpClean() -> Bool {
         let pEpItemsToDelete: [String] = ["pEpManagementDb", "gnupg", "systemDb"]
         var error: NSError?
         
         for key in pEpItemsToDelete {
-            let fileManager: NSFileManager = NSFileManager.defaultManager()
-            let itemToDelete: NSURL = pEpUrls[key]!
-            if itemToDelete.checkResourceIsReachableAndReturnError(&error) {
+            let fileManager: FileManager = FileManager.default
+            let itemToDelete: URL = pEpUrls[key]!
+            if (itemToDelete as NSURL).checkResourceIsReachableAndReturnError(&error) {
                 do {
-                    try fileManager.removeItemAtURL(itemToDelete)
+                    try fileManager.removeItem(at: itemToDelete)
                 }
                 catch {
                     return false
@@ -176,7 +176,7 @@ public class PEPUtil {
         return true
     }
 
-    public static func identityFromAccount(account: IAccount,
+    open static func identityFromAccount(_ account: IAccount,
                                            isMyself: Bool = true) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
         dict[kPepUsername] = account.nameOfTheUser
@@ -188,8 +188,8 @@ public class PEPUtil {
     /**
      Kicks off myself in the background, optionally notifies via block of termination/success.
      */
-    public static func myselfFromAccount(account: IAccount, queue: NSOperationQueue,
-                                         block: ((identity: NSDictionary) -> Void)? = nil) {
+    open static func myselfFromAccount(_ account: IAccount, queue: OperationQueue,
+                                         block: ((_ identity: NSDictionary) -> Void)? = nil) {
         let op = PEPMyselfOperation.init(account: account)
         op.completionBlock = {
             if let bl = block {
@@ -203,7 +203,7 @@ public class PEPUtil {
      Calls `mutablePepContact` and converts result.
      - Returns: The result from calling `mutablePepContact` converted to a `PEPContact`
      */
-    public static func pepContact(contact: IContact) -> PEPContact {
+    open static func pepContact(_ contact: IContact) -> PEPContact {
         return mutablePepContact(contact) as PEPContact
     }
 
@@ -212,7 +212,7 @@ public class PEPUtil {
      - Parameter contact: The core data contact object.
      - Returns: An `NSMutableDictionary` contact for pEp.
      */
-    public static func mutablePepContact(contact: IContact) -> NSMutableDictionary {
+    open static func mutablePepContact(_ contact: IContact) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
         if let name = contact.name {
             dict[kPepUsername] = name
@@ -229,7 +229,7 @@ public class PEPUtil {
         } else {
             // Only use an address book ID if this contact has no pEp ID
             if let addressBookID = contact.addressBookID {
-                dict[kPepUserID] = String(addressBookID)
+                dict[kPepUserID] = String(describing: addressBookID)
             }
         }
         return dict
@@ -239,7 +239,7 @@ public class PEPUtil {
      Creates pEp contact from name and address. Useful for tests where you don't want
      more data filled in.
      */
-    public static func pepContactFromEmail(email: String, name: String) -> PEPContact {
+    open static func pepContactFromEmail(_ email: String, name: String) -> PEPContact {
         let contact = NSMutableDictionary()
         contact[kPepAddress] = email
         contact[kPepUsername] = name
@@ -251,7 +251,7 @@ public class PEPUtil {
      - Parameter contact: The core data attachment object.
      - Returns: An `NSMutableDictionary` attachment for pEp.
      */
-    public static func pepAttachment(attachment: IAttachment) -> NSMutableDictionary {
+    open static func pepAttachment(_ attachment: IAttachment) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
 
         if let filename = attachment.filename {
@@ -270,7 +270,7 @@ public class PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
-    public static func pepMail(message: IMessage, outgoing: Bool = true) -> PEPMail {
+    open static func pepMail(_ message: IMessage, outgoing: Bool = true) -> PEPMail {
         let dict: NSMutableDictionary = [:]
 
         if let subject = message.subject {
@@ -299,7 +299,7 @@ public class PEPUtil {
 
         var refs = [String]()
         for ref in message.references {
-            refs.append(ref.messageID)
+            refs.append((ref as AnyObject).messageID)
         }
         if refs.count > 0 {
             dict[kPepReferences] = refs
@@ -308,7 +308,7 @@ public class PEPUtil {
         return dict as PEPMail
     }
 
-    public static func insertPepContact(pepContact: PEPContact, intoModel: IModel) -> IContact {
+    open static func insertPepContact(_ pepContact: PEPContact, intoModel: IModel) -> IContact {
         let contact = intoModel.insertOrUpdateContactEmail(
             pepContact[kPepAddress] as! String,
             name: pepContact[kPepUsername] as? String)
@@ -323,7 +323,7 @@ public class PEPUtil {
         }
         // If there is no pEp ID yet, try to use an addressbook ID
         if contact.pepUserID == nil {
-            if let abID = contact.addressBookID?.intValue {
+            if let abID = contact.addressBookID?.int32Value {
                 contact.pepUserID = String(abID)
             }
         }
@@ -333,7 +333,7 @@ public class PEPUtil {
     /**
      For a PEPMail, checks whether it is PGP/MIME encrypted.
      */
-    public static func isProbablyPGPMimePepMail(message: PEPMail) -> Bool {
+    open static func isProbablyPGPMimePepMail(_ message: PEPMail) -> Bool {
         guard let attachments = message[kPepAttachments] as? NSArray else {
             return false
         }
@@ -341,7 +341,7 @@ public class PEPUtil {
         var foundAttachmentPGPEncrypted = false
         for atch in attachments {
             if let filename = atch[kPepMimeType] as? String {
-                if filename.lowercaseString == Constants.contentTypePGPEncrypted {
+                if filename.lowercased() == Constants.contentTypePGPEncrypted {
                     foundAttachmentPGPEncrypted = true
                     break
                 }
@@ -353,7 +353,7 @@ public class PEPUtil {
     /**
      Converts a pEp contact dict to a pantomime address.
      */
-    public static func pantomimeContactFromPepContact(contact: PEPContact) -> CWInternetAddress {
+    open static func pantomimeContactFromPepContact(_ contact: PEPContact) -> CWInternetAddress {
         let address = CWInternetAddress.init()
         if let email = contact[kPepAddress] as? String {
             address.setAddress(email)
@@ -367,7 +367,7 @@ public class PEPUtil {
     /**
      Converts a list of pEp contacts of a given receiver type to a list of pantomime recipients.
      */
-    public static func makePantomimeRecipientsFromPepContacts(pepContacts: [PEPContact],
+    open static func makePantomimeRecipientsFromPepContacts(_ pepContacts: [PEPContact],
                                       recipientType: PantomimeRecipientType)
         -> [CWInternetAddress] {
             var addresses: [CWInternetAddress] = []
@@ -379,7 +379,7 @@ public class PEPUtil {
             return addresses
     }
 
-    public static func addPepContacts(recipients: [PEPContact], toPantomimeMessage: CWIMAPMessage,
+    open static func addPepContacts(_ recipients: [PEPContact], toPantomimeMessage: CWIMAPMessage,
                                       recipientType: PantomimeRecipientType) {
         let addresses = makePantomimeRecipientsFromPepContacts(
             recipients, recipientType: recipientType)
@@ -391,7 +391,7 @@ public class PEPUtil {
     /**
      Converts a given `IMessage` into the equivalent `CWIMAPMessage`.
      */
-    public static func pantomimeMailFromMessage(message: IMessage) -> CWIMAPMessage {
+    open static func pantomimeMailFromMessage(_ message: IMessage) -> CWIMAPMessage {
         return pantomimeMailFromPep(pepMail(message))
     }
 
@@ -399,8 +399,8 @@ public class PEPUtil {
      Converts a given `PEPMail` into the equivalent `CWIMAPMessage`.
      See https://tools.ietf.org/html/rfc2822 for a better understanding of some fields.
      */
-    public static func pantomimeMailFromPep(pepMail: PEPMail) -> CWIMAPMessage {
-        if let rawMessageData = pepMail[kPepRawMessage] as? NSData {
+    open static func pantomimeMailFromPep(_ pepMail: PEPMail) -> CWIMAPMessage {
+        if let rawMessageData = pepMail[kPepRawMessage] as? Data {
             let message = CWIMAPMessage.init(data: rawMessageData)
             return message
         }
@@ -414,15 +414,15 @@ public class PEPUtil {
 
         if let recipients = pepMail[kPepTo] as? NSArray {
             addPepContacts(recipients as! [PEPContact], toPantomimeMessage: message,
-                          recipientType: .ToRecipient)
+                          recipientType: .toRecipient)
         }
         if let recipients = pepMail[kPepCC] as? NSArray {
             addPepContacts(recipients as! [PEPContact], toPantomimeMessage: message,
-                          recipientType: .CcRecipient)
+                          recipientType: .ccRecipient)
         }
         if let recipients = pepMail[kPepBCC] as? NSArray {
             addPepContacts(recipients as! [PEPContact], toPantomimeMessage: message,
-                          recipientType: .BccRecipient)
+                          recipientType: .bccRecipient)
         }
         if let messageID = pepMail[kPepID] as? String {
             message.setMessageID(messageID)
@@ -437,12 +437,12 @@ public class PEPUtil {
         let allRefsAdded = NSMutableOrderedSet()
         if let refs = pepMail[kPepReferences] as? [AnyObject] {
             for ref in refs {
-                allRefsAdded.addObject(ref)
+                allRefsAdded.add(ref)
             }
         }
         if let inReplyTos = pepMail[kPepInReplyTo] as? [AnyObject] {
             for inReplyTo in inReplyTos {
-                allRefsAdded.addObject(inReplyTo)
+                allRefsAdded.add(inReplyTo)
             }
         }
         message.setReferences(allRefsAdded.array)
@@ -465,16 +465,16 @@ public class PEPUtil {
 
             if !encrypted {
                 let bodyPart = bodyPartFromPepMail(pepMail)
-                multiPart.addPart(bodyPart)
+                multiPart.add(bodyPart)
             }
 
             if let attachmentDicts = attachmentDictsOpt {
                 for attachmentDict in attachmentDicts {
                     let part = CWPart.init()
                     part.setContentType(attachmentDict[kPepMimeType] as? String)
-                    part.setContent(attachmentDict[kPepMimeData] as? NSData)
+                    part.setContent(attachmentDict[kPepMimeData] as? Data)
                     part.setFilename(attachmentDict[kPepMimeFilename] as? String)
-                    multiPart.addPart(part)
+                    multiPart.add(part)
                 }
             }
         } else {
@@ -494,7 +494,7 @@ public class PEPUtil {
      or a "multipart/alternative" if there is both text and HTML,
      or nil.
      */
-    static func bodyPartFromPepMail(pepMail: PEPMail) -> CWPart? {
+    static func bodyPartFromPepMail(_ pepMail: PEPMail) -> CWPart? {
         let bodyParts = bodyPartsFromPepMail(pepMail)
         if bodyParts.count == 1 {
             return bodyParts[0]
@@ -503,7 +503,7 @@ public class PEPUtil {
             partAlt.setContentType(Constants.contentTypeMultipartAlternative)
             let partMulti = CWMIMEMultipart.init()
             for part in bodyParts {
-                partMulti.addPart(part)
+                partMulti.add(part)
             }
             partAlt.setContent(partMulti)
             return partAlt
@@ -516,11 +516,11 @@ public class PEPUtil {
      with the given content type.
      Useful for creating text/HTML parts.
      */
-    static func makePartFromText(text: String?, contentType: String) -> CWPart? {
+    static func makePartFromText(_ text: String?, contentType: String) -> CWPart? {
         if let t = text {
             let part = CWPart.init()
             part.setContentType(contentType)
-            part.setContent(t.dataUsingEncoding(NSUTF8StringEncoding))
+            part.setContent(t.data(using: String.Encoding.utf8) as NSObject?)
             part.setCharset("UTF-8")
             return part
         }
@@ -531,7 +531,7 @@ public class PEPUtil {
      Extracts text content from a pEp mail as a list of pantomime part object.
      - Returns: A list of pantomime parts. This list can have 0, 1 or 2 elements.
      */
-    static func bodyPartsFromPepMail(pepMail: PEPMail) -> [CWPart] {
+    static func bodyPartsFromPepMail(_ pepMail: PEPMail) -> [CWPart] {
         var parts: [CWPart] = []
 
         if let part = makePartFromText(pepMail[kPepLongMessage] as? String,
@@ -546,27 +546,27 @@ public class PEPUtil {
         return parts
     }
 
-    public static func colorRatingForContact(contact: IContact,
+    open static func colorRatingForContact(_ contact: IContact,
                                              session: PEPSession? = nil) -> PEP_rating {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
-        let color = theSession.identityColor(pepC as [NSObject : AnyObject])
+        let color = theSession.identityColor(pepC as [AnyHashable: Any])
         return color
     }
 
-    public static func privacyColorForContact(contact: IContact,
+    open static func privacyColorForContact(_ contact: IContact,
                                               session: PEPSession? = nil) -> PEP_color {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
-        let color = theSession.identityColor(pepC as [NSObject : AnyObject])
+        let color = theSession.identityColor(pepC as [AnyHashable: Any])
         return colorFromPepRating(color)
     }
 
-    public static func colorFromPepRating(pepColorRating: PEP_rating) -> PEP_color {
+    open static func colorFromPepRating(_ pepColorRating: PEP_rating) -> PEP_color {
         return color_from_rating(pepColorRating)
     }
 
-    public static func colorRatingFromInt(i: Int?) -> PEP_rating? {
+    open static func colorRatingFromInt(_ i: Int?) -> PEP_rating? {
         guard let theInt = i else {
             return nil
         }
@@ -574,7 +574,7 @@ public class PEPUtil {
         return pepColorDictionary[int32]
     }
 
-    public static func pepTitleFromColor(pepColorRating: PEP_rating) -> String? {
+    open static func pepTitleFromColor(_ pepColorRating: PEP_rating) -> String? {
         if let (title, _, _) = pepPricacyStatusTranslations[pepColorRating] {
             return title
         }
@@ -582,7 +582,7 @@ public class PEPUtil {
         return nil
     }
 
-    public static func pepExplanationFromColor(pepColorRating: PEP_rating) -> String? {
+    open static func pepExplanationFromColor(_ pepColorRating: PEP_rating) -> String? {
         if let (_, explanation, _) = pepPricacyStatusTranslations[pepColorRating] {
             return explanation
         }
@@ -590,7 +590,7 @@ public class PEPUtil {
         return nil
     }
 
-    public static func pepSuggestionFromColor(pepColorRating: PEP_rating) -> String? {
+    open static func pepSuggestionFromColor(_ pepColorRating: PEP_rating) -> String? {
         if let (_, _, suggestion) = pepPricacyStatusTranslations[pepColorRating] {
             return suggestion
         }
@@ -598,7 +598,7 @@ public class PEPUtil {
         return nil
     }
 
-    public static func sessionOrReuse(session: PEPSession?) -> PEPSession {
+    open static func sessionOrReuse(_ session: PEPSession?) -> PEPSession {
         if session == nil {
             return PEPSession.init()
         }
@@ -608,14 +608,14 @@ public class PEPUtil {
     /**
      - Returns: The short trustwords for a fingerprint as one single String.
      */
-    public static func shortTrustwordsForFpr(fpr: String, language: String,
+    open static func shortTrustwordsForFpr(_ fpr: String, language: String,
                                              session: PEPSession?) -> String {
         let words = sessionOrReuse(session).trustwords(
             fpr, forLanguage: language, shortened: true) as! [String]
-        return words.joinWithSeparator(" ")
+        return words.joined(separator: " ")
     }
 
-    public static func trustwordsForIdentity1(identity1: PEPContact,
+    open static func trustwordsForIdentity1(_ identity1: PEPContact,
                                               identity2: PEPContact,
                                               language: String,
                                               session: PEPSession?) -> String? {
@@ -637,7 +637,7 @@ public class PEPUtil {
 
         let comp = fpr1.compare(fpr2)
         switch comp {
-        case .OrderedAscending, .OrderedSame:
+        case .orderedAscending, .orderedSame:
             return "\(trustwords1) \(trustwords2)"
         default:
             return "\(trustwords2) \(trustwords1)"
@@ -653,10 +653,10 @@ public class PEPUtil {
      Optional fields (`kPepOptFields`) might have to be taken care of later.
      Caller is responsible for saving the model!
      */
-    public static func updateDecryptedMessage(message: IMessage, fromPepMail: PEPMail,
+    open static func updateDecryptedMessage(_ message: IMessage, fromPepMail: PEPMail,
                                               pepColorRating: PEP_rating?, model: IModel) {
         if let color = pepColorRating {
-            message.pepColorRating = NSNumber.init(int: color.rawValue)
+            message.pepColorRating = NSNumber.init(value: color.rawValue as Int32)
         } else {
             message.pepColorRating = nil
         }
@@ -670,7 +670,7 @@ public class PEPUtil {
         var attachments = [AnyObject]()
         if let attachmentDicts = fromPepMail[kPepAttachments] as? NSArray {
             for atDict in attachmentDicts {
-                if let data = atDict[kPepMimeData] as? NSData {
+                if let data = atDict[kPepMimeData] as? Data {
                     let attach = model.insertAttachmentWithContentType(
                         atDict[kPepMimeType] as? String,
                         filename: atDict[kPepMimeFilename] as? String,
@@ -686,8 +686,8 @@ public class PEPUtil {
      - Returns: An NSOrderedSet that contains all elements of `array`. If `array` is nil,
      the ordered set is empty.
      */
-    public static func orderedContactSetFromPepContactArray(
-        array: NSArray?, model: IModel) -> NSOrderedSet {
+    open static func orderedContactSetFromPepContactArray(
+        _ array: NSArray?, model: IModel) -> NSOrderedSet {
         if let ar = array {
             let contacts: [AnyObject] = ar.map() {
                 let contact = insertPepContact($0 as! PEPContact, intoModel: model)
@@ -702,7 +702,7 @@ public class PEPUtil {
      Completely updates a freshly inserted message from a pEp mail dictionary. Useful for tests.
      Caller is responsible for saving the model!
      */
-    public static func updateWholeMessage(message: IMessage, fromPepMail: PEPMail, model: IModel) {
+    open static func updateWholeMessage(_ message: IMessage, fromPepMail: PEPMail, model: IModel) {
         updateDecryptedMessage(message, fromPepMail: fromPepMail, pepColorRating: nil,
                       model: model)
         message.to = orderedContactSetFromPepContactArray(
@@ -723,7 +723,7 @@ public class PEPUtil {
      - Returns: A non-optional session from an optional one. If the input session is nil,
      one is created on the spot.
      */
-    public static func useOrCreateSession(session: PEPSession?) -> PEPSession {
+    open static func useOrCreateSession(_ session: PEPSession?) -> PEPSession {
         if let s = session {
             return s
         }
@@ -733,8 +733,8 @@ public class PEPUtil {
     /**
      - Returns: The fingerprint for a contact.
      */
-    public static func fingprprintForContact(
-        contact: IContact, session: PEPSession? = nil) -> String? {
+    open static func fingprprintForContact(
+        _ contact: IContact, session: PEPSession? = nil) -> String? {
         let pepC = pepContact(contact)
         return fingprprintForPepContact(pepC)
     }
@@ -742,8 +742,8 @@ public class PEPUtil {
     /**
      - Returns: The fingerprint for a pEp contact.
      */
-    public static func fingprprintForPepContact(
-        contact: PEPContact, session: PEPSession? = nil) -> String? {
+    open static func fingprprintForPepContact(
+        _ contact: PEPContact, session: PEPSession? = nil) -> String? {
         let pepDict = NSMutableDictionary.init(dictionary: contact)
 
         let theSession = useOrCreateSession(session)
@@ -755,7 +755,7 @@ public class PEPUtil {
     /**
      Trust that contact (yellow to green).
      */
-    public static func trustContact(contact: IContact, session: PEPSession? = nil) {
+    open static func trustContact(_ contact: IContact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)
@@ -765,7 +765,7 @@ public class PEPUtil {
     /**
      Mistrust the identity (yellow to red)
      */
-    public static func mistrustContact(contact: IContact, session: PEPSession? = nil) {
+    open static func mistrustContact(_ contact: IContact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)
@@ -776,7 +776,7 @@ public class PEPUtil {
      Resets the trust for the given contact. Use both for trusting again after
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
-    public static func resetTrustForContact(contact: IContact, session: PEPSession? = nil) {
+    open static func resetTrustForContact(_ contact: IContact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)
@@ -788,7 +788,7 @@ public class PEPUtil {
      logs them.
      - Returns: A tuple of the encrypted mail and an error. Both can be nil.
      */
-    static func checkPepStatus( comp: String, status: PEP_STATUS,
+    static func checkPepStatus( _ comp: String, status: PEP_STATUS,
                                 encryptedMail: NSDictionary?) -> (NSDictionary?, NSError?) {
         if encryptedMail != nil && status == PEP_UNENCRYPTED {
             // Don't interpret that as an error

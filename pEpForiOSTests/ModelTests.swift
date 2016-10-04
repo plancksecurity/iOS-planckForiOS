@@ -62,11 +62,11 @@ class ModelTests: XCTestCase {
 
     func testFolderLookUp() {
         XCTAssertNotNil(persistentSetup.model.folderByType(
-            FolderType.Inbox, email: persistentSetup.accountEmail))
+            FolderType.inbox, email: persistentSetup.accountEmail))
         XCTAssertNotNil(persistentSetup.model.folderByType(
-            FolderType.Sent, email: persistentSetup.accountEmail))
+            FolderType.sent, email: persistentSetup.accountEmail))
         XCTAssertNotNil(persistentSetup.model.folderByType(
-            FolderType.Drafts, email: persistentSetup.accountEmail))
+            FolderType.drafts, email: persistentSetup.accountEmail))
     }
 
     func testSplitContactName() {
@@ -114,8 +114,8 @@ class ModelTests: XCTestCase {
         let ab = AddressBook()
 
         let testBlock = {
-            let expAddressBookTransfered = self.expectationWithDescription(
-                "expAddressBookTransfered")
+            let expAddressBookTransfered = self.expectation(
+                description: "expAddressBookTransfered")
             let persistentSetup = PersistentSetup.init()
             let context = persistentSetup.coreDataUtil.privateContext()
             var contactsCount = 0
@@ -124,7 +124,7 @@ class ModelTests: XCTestCase {
                 contactsCount = contacts.count
                 expAddressBookTransfered.fulfill()
             })
-            self.waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            self.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
             })
             let model = persistentSetup.model
@@ -160,75 +160,75 @@ class ModelTests: XCTestCase {
         m.flagFlagged = true
         m.updateFlags()
 
-        for f: PantomimeFlag in [.Answered, .Deleted, .Draft, .Recent, .Seen] {
+        for f: PantomimeFlag in [.answered, .deleted, .draft, .recent, .seen] {
             XCTAssertFalse(m.pantomimeFlags().contain(f))
         }
-        XCTAssertTrue(m.pantomimeFlags().contain(.Flagged))
+        XCTAssertTrue(m.pantomimeFlags().contain(.flagged))
 
         m.flagAnswered = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.Answered))
+        XCTAssertFalse(m.pantomimeFlags().contain(.answered))
         m.updateFlags()
-        XCTAssertTrue(m.pantomimeFlags().contain(.Answered))
+        XCTAssertTrue(m.pantomimeFlags().contain(.answered))
 
         m.flagDeleted = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.Deleted))
+        XCTAssertFalse(m.pantomimeFlags().contain(.deleted))
         m.updateFlags()
-        XCTAssertTrue(m.pantomimeFlags().contain(.Deleted))
+        XCTAssertTrue(m.pantomimeFlags().contain(.deleted))
 
         m.flagRecent = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.Recent))
+        XCTAssertFalse(m.pantomimeFlags().contain(.recent))
         m.updateFlags()
-        XCTAssertTrue(m.pantomimeFlags().contain(.Recent))
+        XCTAssertTrue(m.pantomimeFlags().contain(.recent))
 
         m.flagDraft = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.Draft))
+        XCTAssertFalse(m.pantomimeFlags().contain(.draft))
         m.updateFlags()
-        XCTAssertTrue(m.pantomimeFlags().contain(.Draft))
+        XCTAssertTrue(m.pantomimeFlags().contain(.draft))
 
         m.flagSeen = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.Seen))
+        XCTAssertFalse(m.pantomimeFlags().contain(.seen))
         m.updateFlags()
-        XCTAssertTrue(m.pantomimeFlags().contain(.Seen))
+        XCTAssertTrue(m.pantomimeFlags().contain(.seen))
     }
 
     func testCWFlagsAsShort() {
         let fl = CWFlags.init()
-        fl.add(.Recent)
+        fl.add(.recent)
         XCTAssertEqual(fl.rawFlagsAsShort(), 8)
 
-        fl.add(.Answered)
+        fl.add(.answered)
         XCTAssertEqual(fl.rawFlagsAsShort(), 9)
 
-        fl.add(.Deleted)
+        fl.add(.deleted)
         XCTAssertEqual(fl.rawFlagsAsShort(), 41)
 
-        fl.add(.Seen)
+        fl.add(.seen)
         XCTAssertEqual(fl.rawFlagsAsShort(), 57)
     }
 
     func testUpdateFlags() {
         let m = persistentSetup.model.insertNewMessage()
-        XCTAssertEqual(m.flags.shortValue, 0)
+        XCTAssertEqual(m.flags.int16Value, 0)
 
         var valuesSoFar: Int16 = 0
-        for fl in [PantomimeFlag.Answered, .Draft, .Flagged, .Recent, .Seen, .Deleted] {
+        for fl in [PantomimeFlag.answered, .draft, .flagged, .recent, .seen, .deleted] {
             switch fl {
-            case .Answered:
+            case .answered:
                 m.flagAnswered = true
-            case .Draft:
+            case .draft:
                 m.flagDraft = true
-            case .Flagged:
+            case .flagged:
                 m.flagFlagged = true
-            case .Recent:
+            case .recent:
                 m.flagRecent = true
-            case .Seen:
+            case .seen:
                 m.flagSeen = true
-            case .Deleted:
+            case .deleted:
                 m.flagDeleted = true
             }
             valuesSoFar += Int(fl.rawValue)
             m.updateFlags()
-            XCTAssertEqual(m.flags.shortValue, valuesSoFar)
+            XCTAssertEqual(m.flags.int16Value, valuesSoFar)
         }
     }
 
@@ -242,8 +242,8 @@ class ModelTests: XCTestCase {
                        "UID STORE 1024 FLAGS.SILENT (\\Deleted)")
 
         // Check if 'difference' is taken into account
-        m.flagsFromServer = NSNumber.init(short: CWFlags.init(
-            flags: PantomimeFlag.Deleted).rawFlagsAsShort())
+        m.flagsFromServer = NSNumber.init(value: CWFlags.init(
+            flags: PantomimeFlag.deleted).rawFlagsAsShort() as Int16)
         m.updateFlags()
         XCTAssertEqual(m.storeCommandForUpdate().0,
                        "UID STORE 1024 FLAGS.SILENT (\\Deleted)")

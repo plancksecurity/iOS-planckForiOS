@@ -8,12 +8,12 @@
 
 import UIKit
 
-public class ViewStatus {
+open class ViewStatus {
 
-    public var activityIndicatorViewEnable = false
+    open var activityIndicatorViewEnable = false
 }
 
-public class SMTPSettingsTableView: UITableViewController {
+open class SMTPSettingsTableView: UITableViewController {
 
     let comp = "SMTPSettingsTableView"
     let unwindToEmailListSegue = "unwindToEmailListSegue"
@@ -32,84 +32,84 @@ public class SMTPSettingsTableView: UITableViewController {
     let viewWidthAligner = ViewWidthsAligner()
     let status = ViewStatus()
 
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44
     }
 
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if model.serverSMTP == nil {
             serverValue.becomeFirstResponder()
         }
-        portValue.keyboardType = UIKeyboardType.NumberPad
+        portValue.keyboardType = UIKeyboardType.numberPad
         updateView()
     }
 
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewWidthAligner.alignViews([serverValueTextField,
             portValueTextField], parentView: self.view)
     }
 
-    public override func didReceiveMemoryWarning() {
+    open override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
     func updateView() {
         serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
-        transportSecurity.setTitle(model.transportSMTP.localizedString(), forState: .Normal)
+        transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControlState())
         if status.activityIndicatorViewEnable {
             activityIndicatorView.startAnimating()
         } else {
             activityIndicatorView.stopAnimating()
         }
-        self.navigationItem.rightBarButtonItem?.enabled = !(status.activityIndicatorViewEnable)
+        self.navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
     }
 
-    func showErrorMessage (message: String) {
+    func showErrorMessage (_ message: String) {
         let alertView = UIAlertController(
             title: NSLocalizedString("Error",
                 comment: "the text in the title for the error message AlerView in account settings"),
-            message:message, preferredStyle: .Alert)
+            message:message, preferredStyle: .alert)
 
         alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok",
             comment: "confirmation button text for error message AlertView in account settings"),
-            style: .Default, handler: nil))
-        presentViewController(alertView, animated: true, completion: nil)
+            style: .default, handler: nil))
+        present(alertView, animated: true, completion: nil)
     }
 
-    @IBAction func alertWithSecurityValues(sender: AnyObject) {
+    @IBAction func alertWithSecurityValues(_ sender: AnyObject) {
         let alertController = UIAlertController(
             title: NSLocalizedString("Transport protocol",
                 comment: "UI alert title for transport protocol"),
             message: NSLocalizedString("Choose a Security protocol for your accont",
                 comment: "UI alert message for transport protocol"),
-            preferredStyle: .ActionSheet)
+            preferredStyle: .actionSheet)
 
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportSMTP = transport
             self.updateView()
         }
 
-        alertController.setupActionFromConnectionTransport(.Plain, block: block)
+        alertController.setupActionFromConnectionTransport(.plain, block: block)
         alertController.setupActionFromConnectionTransport(.TLS, block: block)
-        alertController.setupActionFromConnectionTransport(.StartTLS, block: block)
+        alertController.setupActionFromConnectionTransport(.startTLS, block: block)
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
-            style: .Cancel) { (action) in}
+            style: .cancel) { (action) in}
         alertController.addAction(cancelAction)
-        self.presentViewController(alertController, animated: true) {}
+        self.present(alertController, animated: true) {}
     }
 
-    @IBAction func changeServer(sender: UITextField) {
+    @IBAction func changeServer(_ sender: UITextField) {
         model.serverSMTP = sender.text
     }
 
-    @IBAction func changePort(sender: UITextField) {
+    @IBAction func changePort(_ sender: UITextField) {
         if let text = portValue.text {
             if let port = UInt16(text) {
                 model.portSMTP = port
@@ -117,7 +117,7 @@ public class SMTPSettingsTableView: UITableViewController {
         }
     }
 
-    @IBAction func nextButtonTapped(sender: UIBarButtonItem) {
+    @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
         let connect = ConnectInfo.init(
             nameOfTheUser: model.name!,
             email: model.email!, imapUsername: model.email!,
@@ -141,7 +141,7 @@ public class SMTPSettingsTableView: UITableViewController {
                             String(format:
                                 NSLocalizedString("Internal Error: %d",
                                     comment: "Internal error display, with error number"),
-                                Constants.InternalErrorCode.NoModel.rawValue))
+                                Constants.InternalErrorCode.noModel.rawValue))
                         Log.warnComponent(self.comp, "Could not access model")
                         return
                     }
@@ -156,7 +156,7 @@ public class SMTPSettingsTableView: UITableViewController {
                     model.save()
 
                     // unwind back to INBOX on success
-                    self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: sender)
+                    self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: sender)
                 }
                 return
             }

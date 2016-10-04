@@ -14,7 +14,7 @@ import CoreData
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-public class PrefetchEmailsOperation: ConcurrentBaseOperation {
+open class PrefetchEmailsOperation: ConcurrentBaseOperation {
     let comp = "PrefetchEmailsOperation"
 
     let connectInfo: ConnectInfo
@@ -33,20 +33,20 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
         super.init(coreDataUtil: grandOperator.coreDataUtil)
     }
 
-    override public func main() {
-        if self.cancelled {
+    override open func main() {
+        if self.isCancelled {
             return
         }
 
-        privateMOC.performBlock() {
+        privateMOC.perform() {
             let folderBuilder = ImapFolderBuilder.init(coreDataUtil: self.coreDataUtil,
                 connectInfo: self.connectInfo,
                 backgroundQueue: self.backgroundQueue)
 
             // Treat Inbox specially, as it is the only mailbox
             // that is mandatorily case-insensitive.
-            if self.folderToOpen.lowercaseString == ImapSync.defaultImapInboxName.lowercaseString {
-                if let folder = self.model.folderByType(.Inbox, email: self.connectInfo.email) {
+            if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
+                if let folder = self.model.folderByType(.inbox, email: self.connectInfo.email) {
                     self.folderToOpen = folder.name
                 }
             }
@@ -67,7 +67,7 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
         }
     }
 
-    func syncMails(sync: ImapSync) {
+    func syncMails(_ sync: ImapSync) {
         do {
             try sync.syncMails()
         } catch let err as NSError {
@@ -79,115 +79,115 @@ public class PrefetchEmailsOperation: ConcurrentBaseOperation {
 
 extension PrefetchEmailsOperation: ImapSyncDelegate {
 
-    public func authenticationCompleted(sync: ImapSync, notification: NSNotification?) {
-        if !self.cancelled {
+    public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
+        if !self.isCancelled {
             sync.openMailBox(folderToOpen)
         }
     }
 
-    public func receivedFolderNames(sync: ImapSync, folderNames: [String]?) {
+    public func receivedFolderNames(_ sync: ImapSync, folderNames: [String]?) {
         addError(Constants.errorIllegalState(comp, stateName: "receivedFolderNames"))
         markAsFinished()
     }
 
-    public func authenticationFailed(sync: ImapSync, notification: NSNotification?) {
+    public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorAuthenticationFailed(comp))
         markAsFinished()
     }
 
-    public func connectionLost(sync: ImapSync, notification: NSNotification?) {
+    public func connectionLost(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorConnectionLost(comp))
         markAsFinished()
     }
 
-    public func connectionTerminated(sync: ImapSync, notification: NSNotification?) {
+    public func connectionTerminated(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorConnectionTerminated(comp))
         markAsFinished()
     }
 
-    public func connectionTimedOut(sync: ImapSync, notification: NSNotification?) {
+    public func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorTimeout(comp))
         markAsFinished()
     }
 
-    public func folderPrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
         waitForFinished()
     }
 
-    public func messageChanged(sync: ImapSync, notification: NSNotification?) {
+    public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
         markAsFinished()
     }
 
-    public func messagePrefetchCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
         // do nothing
     }
 
-    public func folderOpenCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         syncMails(sync)
     }
 
-    public func folderOpenFailed(sync: ImapSync, notification: NSNotification?) {
+    public func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderOpenFailed"))
         markAsFinished()
     }
 
-    public func folderStatusCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderStatusCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderStatusCompleted"))
         markAsFinished()
     }
 
-    public func folderListCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderListCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderListCompleted"))
         markAsFinished()
     }
 
-    public func folderNameParsed(sync: ImapSync, notification: NSNotification?) {
+    public func folderNameParsed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderNameParsed"))
         markAsFinished()
     }
 
-    public func folderAppendCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderAppendCompleted"))
         markAsFinished()
     }
 
-    public func folderAppendFailed(sync: ImapSync, notification: NSNotification?) {
+    public func folderAppendFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderAppendFailed"))
         markAsFinished()
     }
 
-    public func messageStoreCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageStoreCompleted"))
         markAsFinished()
     }
 
-    public func messageStoreFailed(sync: ImapSync, notification: NSNotification?) {
+    public func messageStoreFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageStoreFailed"))
         markAsFinished()
     }
 
-    public func folderCreateCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderCreateCompleted"))
         markAsFinished()
     }
 
-    public func folderCreateFailed(sync: ImapSync, notification: NSNotification?) {
+    public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderCreateFailed"))
         markAsFinished()
     }
 
-    public func folderDeleteCompleted(sync: ImapSync, notification: NSNotification?) {
+    public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderDeleteCompleted"))
         markAsFinished()
     }
 
-    public func folderDeleteFailed(sync: ImapSync, notification: NSNotification?) {
+    public func folderDeleteFailed(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
         markAsFinished()
     }
 
-    public func actionFailed(sync: ImapSync, error: NSError) {
+    public func actionFailed(_ sync: ImapSync, error: NSError) {
         addError(error)
         markAsFinished()
     }

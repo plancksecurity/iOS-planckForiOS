@@ -13,7 +13,7 @@ import CoreData
  Loads all folders for a given account and stores it in an array
  easily usable by table views.
  */
-public class FolderModelOperation: ConcurrentBaseOperation {
+open class FolderModelOperation: ConcurrentBaseOperation {
     public struct FolderItem {
         public let objectID: NSManagedObjectID
         public let name: String
@@ -31,16 +31,16 @@ public class FolderModelOperation: ConcurrentBaseOperation {
      - Note: Traversal must be depth-first, so after each folder all children
      are listed.
      */
-    public var folderItems = [FolderItem]()
+    open var folderItems = [FolderItem]()
 
     public init(account: IAccount, coreDataUtil: ICoreDataUtil) {
         self.accountEmail = account.email
         super.init(coreDataUtil: coreDataUtil)
     }
 
-    override public func main() {
+    override open func main() {
         let ctx = coreDataUtil.privateContext()
-        ctx.performBlock({
+        ctx.perform({
             let model = Model.init(context: ctx)
 
             let predicateParent = NSPredicate.init(format: "parent == nil")
@@ -60,7 +60,7 @@ public class FolderModelOperation: ConcurrentBaseOperation {
         })
     }
 
-    func processFolder(folder: IFolder, level: Int) {
+    func processFolder(_ folder: IFolder, level: Int) {
         // TODO: numberOfMessages really should be the number of unread messages
         let item = FolderItem.init(
             objectID: (folder as! Folder).objectID, name: folder.name,

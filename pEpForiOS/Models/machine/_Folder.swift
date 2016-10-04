@@ -48,88 +48,88 @@ public enum FolderRelationships: String {
 
 }
 
-public class _Folder: BaseManagedObject, _IFolder {
+open class _Folder: BaseManagedObject, _IFolder {
 
     // MARK: - Class methods
 
-    public class func entityName () -> String {
+    open class func entityName () -> String {
         return "Folder"
     }
 
-    public class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: managedObjectContext)
+    open class func entity(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+        return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
 
     // MARK: - Life cycle methods
 
-    public override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    public override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
         guard let entity = _Folder.entity(managedObjectContext) else { return nil }
-        self.init(entity: entity, insertIntoManagedObjectContext: managedObjectContext)
+        self.init(entity: entity, insertInto: managedObjectContext)
     }
 
     // MARK: - Properties
 
-    @NSManaged public
+    @NSManaged open
     var existsCount: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var folderType: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var name: String
 
-    @NSManaged public
+    @NSManaged open
     var nextUID: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var shouldDelete: NSNumber
 
-    @NSManaged public
+    @NSManaged open
     var uidValidity: NSNumber?
 
     // MARK: - Relationships
 
-    @NSManaged public
+    @NSManaged open
     var account: Account
 
-    @NSManaged public
+    @NSManaged open
     var children: NSOrderedSet
 
-    @NSManaged public
+    @NSManaged open
     var messages: NSSet
 
-    @NSManaged public
+    @NSManaged open
     var parent: Folder?
 
 }
 
 public extension _Folder {
 
-    func addChildren(objects: NSOrderedSet) {
+    func addChildren(_ objects: NSOrderedSet) {
         let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
-        mutable.unionOrderedSet(objects)
+        mutable.union(objects)
         self.children = mutable.copy() as! NSOrderedSet
     }
 
-    func removeChildren(objects: NSOrderedSet) {
+    func removeChildren(_ objects: NSOrderedSet) {
         let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
-        mutable.minusOrderedSet(objects)
+        mutable.minus(objects)
         self.children = mutable.copy() as! NSOrderedSet
     }
 
-    func addChildrenObject(value: Folder) {
+    func addChildrenObject(_ value: Folder) {
         let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
-        mutable.addObject(value)
+        mutable.add(value)
         self.children = mutable.copy() as! NSOrderedSet
     }
 
-    func removeChildrenObject(value: Folder) {
+    func removeChildrenObject(_ value: Folder) {
         let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
-        mutable.removeObject(value)
+        mutable.remove(value)
         self.children = mutable.copy() as! NSOrderedSet
     }
 
@@ -137,27 +137,27 @@ public extension _Folder {
 
 public extension _Folder {
 
-    func addMessages(objects: NSSet) {
+    func addMessages(_ objects: NSSet) {
         let mutable = self.messages.mutableCopy() as! NSMutableSet
-        mutable.unionSet(objects as Set<NSObject>)
+        mutable.union(objects as Set<NSObject>)
         self.messages = mutable.copy() as! NSSet
     }
 
-    func removeMessages(objects: NSSet) {
+    func removeMessages(_ objects: NSSet) {
         let mutable = self.messages.mutableCopy() as! NSMutableSet
-        mutable.minusSet(objects as Set<NSObject>)
+        mutable.minus(objects as Set<NSObject>)
         self.messages = mutable.copy() as! NSSet
     }
 
-    func addMessagesObject(value: Message) {
+    func addMessagesObject(_ value: Message) {
         let mutable = self.messages.mutableCopy() as! NSMutableSet
-        mutable.addObject(value)
+        mutable.add(value)
         self.messages = mutable.copy() as! NSSet
     }
 
-    func removeMessagesObject(value: Message) {
+    func removeMessagesObject(_ value: Message) {
         let mutable = self.messages.mutableCopy() as! NSMutableSet
-        mutable.removeObject(value)
+        mutable.remove(value)
         self.messages = mutable.copy() as! NSSet
     }
 

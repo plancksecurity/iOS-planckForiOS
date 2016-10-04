@@ -29,14 +29,14 @@ public protocol ICoreDataUtil {
     func privateContext() -> NSManagedObjectContext
 }
 
-public class CoreDataMerger {
+open class CoreDataMerger {
     var saveObserver: NSObjectProtocol!
     var managedObjectContext: NSManagedObjectContext?
 
     public init() {
-        saveObserver = NSNotificationCenter.defaultCenter().addObserverForName(
-        NSManagedObjectContextDidSaveNotification, object: nil,
-        queue: NSOperationQueue.mainQueue()) {
+        saveObserver = NotificationCenter.default.addObserver(
+        forName: NSNotification.Name.NSManagedObjectContextDidSave, object: nil,
+        queue: OperationQueue.main) {
             [unowned self] notification in
             if let context = self.managedObjectContext {
                 self.mergeContexts(notification, context: context)
@@ -45,51 +45,51 @@ public class CoreDataMerger {
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(saveObserver)
+        NotificationCenter.default.removeObserver(saveObserver)
     }
 
-    public func mergeContexts(notification: NSNotification, context: NSManagedObjectContext) {
-        context.mergeChangesFromContextDidSaveNotification(notification)
+    open func mergeContexts(_ notification: Notification, context: NSManagedObjectContext) {
+        context.mergeChanges(fromContextDidSave: notification)
     }
 }
 
-public class CoreDataUtil: ICoreDataUtil {
+open class CoreDataUtil: ICoreDataUtil {
     static let comp = "CoreDataUtil"
 
     let coreDataMerger = CoreDataMerger()
 
     // MARK: - Core Data stack
 
-    public lazy var applicationDocumentsDirectory: NSURL = {
+    open lazy var applicationDocumentsDirectory: URL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "net.pep-security.apps.pEpForiOS" in the application's documents Application Support directory.
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory,
-                                                                   inDomains: .UserDomainMask)
+        let urls = FileManager.default.urls(for: .documentDirectory,
+                                                                   in: .userDomainMask)
         return urls[urls.count-1]
     }()
 
-    public lazy var managedObjectModel: NSManagedObjectModel = {
+    open lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource("pEpForiOS", withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
+        let modelURL = Bundle.main.url(forResource: "pEpForiOS", withExtension: "momd")!
+        return NSManagedObjectModel(contentsOf: modelURL)!
     }()
 
-    public lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+    open lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         return self.createPersistentStoreCoordinator()
     }()
 
     func createPersistentStoreCoordinator() -> NSPersistentStoreCoordinator {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent(
+        let url = self.applicationDocumentsDirectory.appendingPathComponent(
             "SingleViewCoreData.sqlite")
         let failureReason = "There was an error creating or loading the application's saved data."
         do {
-            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil,
-                                                       URL: url, options: nil)
+            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil,
+                                                       at: url, options: nil)
         } catch let error as NSError {
             // Report any error we got.
             var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-            dict[NSLocalizedFailureReasonErrorKey] = failureReason
+            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as AnyObject?
+            dict[NSLocalizedFailureReasonErrorKey] = failureReason as AnyObject?
 
             dict[NSUnderlyingErrorKey] = error
             let wrappedError = NSError(domain: CoreDataUtil.comp, code: 9999, userInfo: dict)
@@ -102,11 +102,11 @@ public class CoreDataUtil: ICoreDataUtil {
         return coordinator
     }
 
-    public lazy var managedObjectContext: NSManagedObjectContext = {
+    open lazy var managedObjectContext: NSManagedObjectContext = {
         // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
         let coordinator = self.persistentStoreCoordinator
         var managedObjectContext = NSManagedObjectContext(
-            concurrencyType: .MainQueueConcurrencyType)
+            concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
 
         // Watch for merges
@@ -117,13 +117,13 @@ public class CoreDataUtil: ICoreDataUtil {
 
     // MARK: - Core Data Saving support
 
-    public func saveContext () {
+    open func saveContext () {
         CoreDataUtil.saveContext(managedObjectContext)
     }
 
     // MARK: - Extensions
 
-    public static func saveContext(managedObjectContext: NSManagedObjectContext) {
+    open static func saveContext(_ managedObjectContext: NSManagedObjectContext) {
         if managedObjectContext.hasChanges {
             do {
                 try managedObjectContext.save()
@@ -137,16 +137,16 @@ public class CoreDataUtil: ICoreDataUtil {
         }
     }
 
-    public func confinedManagedObjectContext() -> NSManagedObjectContext {
-        let context = NSManagedObjectContext.init(concurrencyType: .ConfinementConcurrencyType)
+    open func confinedManagedObjectContext() -> NSManagedObjectContext {
+        let context = NSManagedObjectContext.init(concurrencyType: .confinementConcurrencyType)
         context.persistentStoreCoordinator = self.persistentStoreCoordinator
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
     }
 
-    public func privateContext() -> NSManagedObjectContext {
-        let privateMOC = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        privateMOC.parentContext = managedObjectContext
+    open func privateContext() -> NSManagedObjectContext {
+        let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        privateMOC.parent = managedObjectContext
         return privateMOC
     }
 }

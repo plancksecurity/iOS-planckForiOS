@@ -41,7 +41,7 @@ class EmailViewController: UIViewController {
         webView.scrollView.addSubview(headerView)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateContents()
     }
@@ -74,14 +74,14 @@ class EmailViewController: UIViewController {
     }
 
     func loadWebViewContent() {
-        let font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+        let font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
         let fontSize = font.pointSize
         let fontFamily = font.familyName
 
-        if let url = NSURL.init(string: "file:///") {
+        if let url = URL.init(string: "file:///") {
             if let s = message.longMessage {
-                let s2 = s.stringByReplacingOccurrencesOfString("\r\n", withString: "<br>")
-                let s3 = s2.stringByReplacingOccurrencesOfString("\n", withString: "<br>")
+                let s2 = s.replacingOccurrences(of: "\r\n", with: "<br>")
+                let s3 = s2.replacingOccurrences(of: "\n", with: "<br>")
                 let html: String = "<!DOCTYPE html>"
                     + "<html>"
                     + "<head>"
@@ -100,48 +100,48 @@ class EmailViewController: UIViewController {
         }
     }
 
-    @IBAction func pressReply(sender: UIBarButtonItem) {
+    @IBAction func pressReply(_ sender: UIBarButtonItem) {
         let alertViewWithoutTitle = UIAlertController()
 
         let alertActionReply = UIAlertAction (
             title: NSLocalizedString("Reply",
-                comment: "Reply email button"), style: .Default) { (action) in
-                    self.performSegueWithIdentifier(self.segueReplyFrom , sender: self)
+                comment: "Reply email button"), style: .default) { (action) in
+                    self.performSegue(withIdentifier: self.segueReplyFrom , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionReply)
 
         let alertActionForward = UIAlertAction (
             title: NSLocalizedString("Forward",
-                comment: "Forward email button"), style: .Default) { (action) in
-                    self.performSegueWithIdentifier(self.segueForward , sender: self)
+                comment: "Forward email button"), style: .default) { (action) in
+                    self.performSegue(withIdentifier: self.segueForward , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionForward)
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel",
                 comment: "Cancel button text for email actions menu (reply, forward etc.)"),
-            style: .Cancel) { (action) in }
+            style: .cancel) { (action) in }
 
         alertViewWithoutTitle.addAction(cancelAction)
 
-        presentViewController(alertViewWithoutTitle, animated: true, completion: nil)
+        present(alertViewWithoutTitle, animated: true, completion: nil)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == segueReplyFrom) {
-            let destination = segue.destinationViewController
+            let destination = segue.destination
                 as? ComposeViewController;
-            destination?.composeMode = .ReplyFrom
+            destination?.composeMode = .replyFrom
             destination?.appConfig = appConfig
             destination?.originalMessage = message
         } else if (segue.identifier == segueForward) {
-            let destination = segue.destinationViewController
+            let destination = segue.destination
                 as? ComposeViewController;
-            destination?.composeMode = .Forward
+            destination?.composeMode = .forward
             destination?.appConfig = appConfig
             destination?.originalMessage = message
         } else if (segue.identifier == segueTrustWordsContactList) {
-            let destination = segue.destinationViewController as? TrustWordsViewController
+            let destination = segue.destination as? TrustWordsViewController
             destination?.message = self.message
             destination?.appConfig = appConfig
         }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class DecryptMailOperation: BaseOperation {
+open class DecryptMailOperation: BaseOperation {
     let comp = "DecryptMailOperation"
     let coreDataUtil: ICoreDataUtil
 
@@ -16,9 +16,9 @@ public class DecryptMailOperation: BaseOperation {
         self.coreDataUtil = coreDataUtil
     }
 
-    public override func main() {
+    open override func main() {
         let context = coreDataUtil.privateContext()
-        context.performBlock() {
+        context.perform() {
             let model = Model.init(context: context)
             let session = PEPSession.init()
 
@@ -44,7 +44,7 @@ public class DecryptMailOperation: BaseOperation {
 
                 var outgoing = false
                 let folderTypeNum = mail.folder.folderType
-                let folderTypeInt = folderTypeNum.integerValue
+                let folderTypeInt = folderTypeNum.intValue
                 if let folderType = FolderType.fromInt(folderTypeInt) {
                     outgoing = folderType.isOutgoing()
                 } else {
@@ -69,7 +69,7 @@ public class DecryptMailOperation: BaseOperation {
                 case PEP_rating_unencrypted,
                 PEP_rating_unencrypted_for_some:
                     // Set the color, nothing else to update
-                    mail.pepColorRating = NSNumber.init(int: color.rawValue)
+                    mail.pepColorRating = NSNumber.init(value: color.rawValue as Int32)
                     modelChanged = true
                     break
                 case PEP_rating_unreliable,

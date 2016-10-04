@@ -15,14 +15,14 @@ import CoreData
 public struct SimpleAttachment {
     let filename: String?
     let contentType: String?
-    let data: NSData?
+    let data: Data?
     let image: UIImage?
 }
 
 /**
  Converts a given IMessage to a (non-core-data) attachment object.
  */
-public class MessageToAttachmentOperation: ConcurrentBaseOperation {
+open class MessageToAttachmentOperation: ConcurrentBaseOperation {
     let comp = "MessageToAttachmentOperation"
 
     /** The core data objectID */
@@ -35,16 +35,16 @@ public class MessageToAttachmentOperation: ConcurrentBaseOperation {
         super.init(coreDataUtil: coreDataUtil)
     }
 
-    public override func main() {
+    open override func main() {
         let privateMOC = coreDataUtil.privateContext()
-        privateMOC.performBlock() {
+        privateMOC.perform() {
             self.doWork(privateMOC)
             self.markAsFinished()
         }
     }
 
-    func doWork(privateMOC: NSManagedObjectContext) {
-        guard let message = privateMOC.objectWithID(self.messageID) as? IMessage else {
+    func doWork(_ privateMOC: NSManagedObjectContext) {
+        guard let message = privateMOC.object(with: self.messageID) as? IMessage else {
             errorMessage(NSLocalizedString(
                 "Could not find message by objectID", comment: "Internal error"),
                          logMessage: "Could not find message by objectID")
@@ -61,7 +61,7 @@ public class MessageToAttachmentOperation: ConcurrentBaseOperation {
             filename: "mail.eml", contentType: "message/rfc822", data: data , image: nil)
     }
 
-    func errorMessage(localizedMessage: String, logMessage: String) {
+    func errorMessage(_ localizedMessage: String, logMessage: String) {
         addError(Constants.errorOperationFailed(comp, errorMessage: localizedMessage))
         Log.errorComponent(comp, errorString: logMessage)
     }

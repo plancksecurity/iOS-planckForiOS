@@ -34,15 +34,15 @@ class FolderListViewController: FetchTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: standardCell)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: standardCell)
 
         let refreshController = UIRefreshControl.init()
         refreshController.addTarget(self, action: #selector(self.refreshFoldersControl),
-                                    forControlEvents: UIControlEvents.ValueChanged)
+                                    for: UIControlEvents.valueChanged)
         self.refreshControl = refreshController
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         prepareFetchRequest()
     }
@@ -76,7 +76,7 @@ class FolderListViewController: FetchTableViewController {
         }
     }
 
-    func refreshFoldersControl(refreshControl: UIRefreshControl? = nil) {
+    func refreshFoldersControl(_ refreshControl: UIRefreshControl? = nil) {
         state.isUpdating = true
         updateUI()
         config.appConfig.grandOperator.fetchFolders(
@@ -88,7 +88,7 @@ class FolderListViewController: FetchTableViewController {
     }
 
     func updateUI() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = state.isUpdating
+        UIApplication.shared.isNetworkActivityIndicatorVisible = state.isUpdating
         if !state.isUpdating {
             self.refreshControl?.endRefreshing()
         }
@@ -96,25 +96,25 @@ class FolderListViewController: FetchTableViewController {
 
     // MARK: - Table view data source
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(
-            standardCell, forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: standardCell, for: indexPath)
         configureCell(cell, indexPath: indexPath)
         return cell
     }
 
-    override func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        if let folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+    override func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
+        if let folder = fetchController?.object(at: indexPath) as? Folder {
             cell.textLabel?.text = "\(folder.name)"
-            cell.accessoryType = .DisclosureIndicator
+            cell.accessoryType = .disclosureIndicator
         }
     }
 
-    override func tableView(tableView: UITableView,
-                            canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if let folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
-            switch folder.folderType.integerValue {
-            case FolderType.LocalOutbox.rawValue, FolderType.Inbox.rawValue: return false
+    override func tableView(_ tableView: UITableView,
+                            canEditRowAt indexPath: IndexPath) -> Bool {
+        if let folder = fetchController?.object(at: indexPath) as? Folder {
+            switch folder.folderType.intValue {
+            case FolderType.localOutbox.rawValue, FolderType.inbox.rawValue: return false
             default: return true
             }
         }
@@ -122,9 +122,9 @@ class FolderListViewController: FetchTableViewController {
     }
 
     override func tableView(
-        tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle,
-        forRowAtIndexPath indexPath: NSIndexPath) {
-        if let folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+        _ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,
+        forRowAt indexPath: IndexPath) {
+        if let folder = fetchController?.object(at: indexPath) as? Folder {
             folder.shouldDelete = true
             config.appConfig.model.save()
             state.isUpdating = true
@@ -141,9 +141,9 @@ class FolderListViewController: FetchTableViewController {
     // MARK: - Table view delegate
 
     override func tableView(
-        tableView: UITableView,
-        indentationLevelForRowAtIndexPath indexPath: NSIndexPath) -> Int {
-        if var folder = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+        _ tableView: UITableView,
+        indentationLevelForRowAt indexPath: IndexPath) -> Int {
+        if var folder = fetchController?.object(at: indexPath) as? Folder {
             var count = 0
             while folder.parent != nil {
                 count += 1
@@ -154,9 +154,9 @@ class FolderListViewController: FetchTableViewController {
         return 0
     }
 
-    override func tableView(tableView: UITableView,
-                            didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let fi = fetchController?.objectAtIndexPath(indexPath) as? Folder {
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
+        if let fi = fetchController?.object(at: indexPath) as? Folder {
             let predicateBasic = config.appConfig.model.basicMessagePredicate()
             let predicateAccount = NSPredicate.init(
                 format: "folder.account.email = %@", config.account.email)
@@ -165,12 +165,12 @@ class FolderListViewController: FetchTableViewController {
 
             // If the folder is just local, then don't let the email list view sync.
             var account: IAccount? = nil
-            if let ft = FolderType.fromInt(fi.folderType.integerValue) {
+            if let ft = FolderType.fromInt(fi.folderType.intValue) {
                 if ft.isRemote() {
                     account = config.account
                 }
                 // Start syncing emails when it's not an inbox (which was just synced already)
-                let syncOnAppear = ft != .Inbox
+                let syncOnAppear = ft != .inbox
 
                 emailListConfig = EmailListViewController.EmailListConfig.init(
                     appConfig: config.appConfig,
@@ -181,16 +181,16 @@ class FolderListViewController: FetchTableViewController {
                         key: "receivedDate", ascending: false)],
                     account: account, folderName: fi.name, syncOnAppear: syncOnAppear)
 
-                performSegueWithIdentifier(segueShowEmails, sender: self)
+                performSegue(withIdentifier: segueShowEmails, sender: self)
             }
         }
     }
 
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == segueShowEmails {
-            guard let vc = segue.destinationViewController as?
+            guard let vc = segue.destination as?
                 EmailListViewController else {
                 return
             }

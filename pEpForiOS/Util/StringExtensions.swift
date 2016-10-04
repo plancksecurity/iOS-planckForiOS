@@ -21,11 +21,11 @@ public extension String {
         do {
             let regex = try NSRegularExpression.init(
                 pattern: "^\"(.*)\"$", options: [])
-            if let match = regex.firstMatchInString(
-                self, options: [],
+            if let match = regex.firstMatch(
+                in: self, options: [],
                 range: wholeRange()) {
-                let r1 = match.rangeAtIndex(1)
-                let name = (self as NSString).substringWithRange(r1)
+                let r1 = match.rangeAt(1)
+                let name = (self as NSString).substring(with: r1)
                 return name
             }
         } catch let err as NSError {
@@ -41,8 +41,8 @@ public extension String {
     public func isProbablyValidEmail() -> Bool {
         do {
             let internalExpression = try NSRegularExpression.init(
-                pattern: "^[^@,]+@[^@,]+$", options: .CaseInsensitive)
-            let matches = internalExpression.matchesInString(self, options: [], range: wholeRange())
+                pattern: "^[^@,]+@[^@,]+$", options: .caseInsensitive)
+            let matches = internalExpression.matches(in: self, options: [], range: wholeRange())
             return matches.count == 1
         } catch let err as NSError {
             Log.errorComponent("String", error: err)
@@ -55,8 +55,8 @@ public extension String {
      - Parameter delimiter: The delimiter that separates the emails.
      - Returns: True if all email parts yield true with `isProbablyValidEmail`.
      */
-    public func isProbablyValidEmailListSeparatedBy(delimiter: String = ",") -> Bool {
-        let emails = self.componentsSeparatedByString(delimiter).map({
+    public func isProbablyValidEmailListSeparatedBy(_ delimiter: String = ",") -> Bool {
+        let emails = self.components(separatedBy: delimiter).map({
             $0.trimmedWhiteSpace()
         })
         for e in emails {
@@ -73,44 +73,44 @@ public extension String {
     public func namePartOfEmail() -> String {
         do {
             let regex = try NSRegularExpression.init(pattern: "^([^@]+)@", options: [])
-            let matches = regex.matchesInString(self, options: [], range: wholeRange())
+            let matches = regex.matches(in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
-                let r = m.rangeAtIndex(1)
+                let r = m.rangeAt(1)
                 if r.location != NSNotFound {
                     let s = self as NSString
-                    let result = s.substringWithRange(r)
+                    let result = s.substring(with: r)
                     return result
                 }
             }
         } catch let err as NSError {
             Log.errorComponent(String.comp, error: err)
         }
-        return self.stringByReplacingOccurrencesOfString("@", withString: "_")
+        return self.replacingOccurrences(of: "@", with: "_")
     }
 
-    public func contains(substring: String, ignoreCase: Bool = true,
+    public func contains(_ substring: String, ignoreCase: Bool = true,
                          ignoreDiacritic: Bool = true) -> Bool {
 
         if substring == "" {
             return true
         }
 
-        var options = NSStringCompareOptions()
+        var options = NSString.CompareOptions()
 
-        if ignoreCase { options.unionInPlace(.CaseInsensitiveSearch) }
-        if ignoreDiacritic { options.unionInPlace(.DiacriticInsensitiveSearch) }
+        if ignoreCase { options.formUnion(.caseInsensitive) }
+        if ignoreDiacritic { options.formUnion(.diacriticInsensitive) }
 
-        return self.rangeOfString(substring, options: options) != nil
+        return self.range(of: substring, options: options) != nil
     }
 
     /**
      Mimicks the `NSString` version.
      */
-    public func stringByReplacingCharactersInRange(range: NSRange,
+    public func stringByReplacingCharactersInRange(_ range: NSRange,
                                                    withString replacement: String) -> String {
         let s = self as NSString
-        return s.stringByReplacingCharactersInRange(range, withString: replacement)
+        return s.replacingCharacters(in: range, with: replacement)
     }
 
     /**
@@ -120,7 +120,7 @@ public extension String {
      - Returns: The last part of a contact list that can still be edited.
      */
     public func unfinishedRecipientPart() -> String {
-        let comps = self.componentsSeparatedByString(String.internalRecipientDelimiter)
+        let comps = self.components(separatedBy: String.internalRecipientDelimiter)
         if comps.count == 0 {
             return self
         } else {
@@ -132,12 +132,12 @@ public extension String {
      - Returns: The part of a recipient list that connot be edited anymore.
      */
     public func finishedRecipientPart() -> String {
-        let comps = self.componentsSeparatedByString(String.internalRecipientDelimiter)
+        let comps = self.components(separatedBy: String.internalRecipientDelimiter)
         if comps.count == 1 {
             return ""
         } else {
             let ar = comps[0..<comps.count-1].map({$0.trimmedWhiteSpace()})
-            return ar.joinWithSeparator(String.externalRecipientDelimiter)
+            return ar.joined(separator: String.externalRecipientDelimiter)
         }
     }
 
@@ -146,20 +146,20 @@ public extension String {
      */
     public func trimmedWhiteSpace() -> String {
         enum ScanState {
-            case Start
-            case Middle
-            case End
+            case start
+            case middle
+            case end
         }
 
-        var state = ScanState.Start
+        var state = ScanState.start
         var result = ""
 
         // With a regex there are problems with "\r\n" at the beginning of the String,
         // so solve that part manually.
         for ch in characters {
-            if state == .Start {
+            if state == .start {
                 if !ch.isWhitespace() {
-                    state = .Middle
+                    state = .middle
                     result.append(ch)
                 }
             } else {
@@ -170,13 +170,13 @@ public extension String {
         do {
             let regex = try NSRegularExpression.init(pattern: "^(.*?)\\s*$",
                                                      options: [])
-            let matches = regex.matchesInString(result, options: [], range: result.wholeRange())
+            let matches = regex.matches(in: result, options: [], range: result.wholeRange())
             if matches.count > 0 {
                 let m = matches[0]
-                let r = m.rangeAtIndex(1)
+                let r = m.rangeAt(1)
                 if r.location != NSNotFound {
                     let s = result as NSString
-                    let result = s.substringWithRange(r)
+                    let result = s.substring(with: r)
                     return result
                 }
             }
@@ -191,7 +191,7 @@ public extension String {
      Does this String match the given regex pattern? Without any options.
      - Parameter pattern: The pattern to match.
      */
-    public func matchesPattern(pattern: String) -> Bool {
+    public func matchesPattern(_ pattern: String) -> Bool {
         return matchesPattern(pattern, reOptions: [])
     }
 
@@ -201,10 +201,10 @@ public extension String {
      - Parameter reOptions: Options given to the regular expression init.
      */
     public func matchesPattern(
-        pattern: String, reOptions: NSRegularExpressionOptions) -> Bool {
+        _ pattern: String, reOptions: NSRegularExpression.Options) -> Bool {
         do {
             let regex = try NSRegularExpression.init(pattern: pattern, options: reOptions)
-            let matches = regex.matchesInString(self, options: [], range: wholeRange())
+            let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
         } catch let err as NSError {
             Log.errorComponent(String.comp, error: err)
@@ -224,16 +224,16 @@ public extension String {
      Removes a matching pattern from the end of the String. Note that the '$' will be added
      by this method.
      */
-    public func removeTrailingPattern(pattern: String) -> String {
+    public func removeTrailingPattern(_ pattern: String) -> String {
         do {
             let regex = try NSRegularExpression.init(pattern: "(.*?)\(pattern)$", options: [])
-            let matches = regex.matchesInString(self, options: [], range: wholeRange())
+            let matches = regex.matches(in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
-                let r = m.rangeAtIndex(1)
+                let r = m.rangeAt(1)
                 if r.location != NSNotFound {
                     let s = self as NSString
-                    let result = s.substringWithRange(r)
+                    let result = s.substring(with: r)
                     return result
                 }
             }
@@ -247,16 +247,16 @@ public extension String {
      Removes a matching pattern from the beginning of the String. Note that the '^' will be added
      by this method.
      */
-    public func removeLeadingPattern(pattern: String) -> String {
+    public func removeLeadingPattern(_ pattern: String) -> String {
         do {
             let regex = try NSRegularExpression.init(pattern: "^\(pattern)(.*?)$", options: [])
-            let matches = regex.matchesInString(self, options: [], range: wholeRange())
+            let matches = regex.matches(in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
-                let r = m.rangeAtIndex(1)
+                let r = m.rangeAt(1)
                 if r.location != NSNotFound {
                     let s = self as NSString
-                    let result = s.substringWithRange(r)
+                    let result = s.substring(with: r)
                     return result
                 }
             }
@@ -269,7 +269,7 @@ public extension String {
     /**
     - Returns: The given string or "" (the empty `String`) if that `String` is nil.
      */
-    public static func orEmpty(string: String?) -> String {
+    public static func orEmpty(_ string: String?) -> String {
         if let s = string {
             return s
         }
@@ -279,7 +279,7 @@ public extension String {
     /**
      - Returns: True if the given string starts with the given prefix.
      */
-    public func startsWith(prefix: String) -> Bool {
+    public func startsWith(_ prefix: String) -> Bool {
         return matchesPattern("^\(prefix)")
     }
 
@@ -291,11 +291,11 @@ public extension String {
         do {
             let regex = try NSRegularExpression.init(
                 pattern: "^\\s*<(.*)>\\s*$", options: [])
-            if let match = regex.firstMatchInString(
-                self, options: [],
+            if let match = regex.firstMatch(
+                in: self, options: [],
                 range: wholeRange()) {
-                let r1 = match.rangeAtIndex(1)
-                let name = (self as NSString).substringWithRange(r1)
+                let r1 = match.rangeAt(1)
+                let name = (self as NSString).substring(with: r1)
                 return name
             }
         } catch let err as NSError {
@@ -308,33 +308,33 @@ public extension String {
      Text from HTML, useful for creating snippets of a mail.
      */
     public func extractTextFromHTML() -> String {
-        let htmlData = dataUsingEncoding(NSUTF8StringEncoding)
+        let htmlData = data(using: String.Encoding.utf8)
         let doc = TFHpple.init(data: htmlData, encoding: "UTF-8", isXML: false)
-        let elms = doc.searchWithXPathQuery("//body//text()[normalize-space()]")
+        let elms = doc?.search(withXPathQuery: "//body//text()[normalize-space()]")
 
         var result = ""
-        for tmp in elms {
+        for tmp in elms! {
             if let e = tmp as? TFHppleElement {
                 let s = e.content.trimmedWhiteSpace()
                 if !s.isEmpty {
                     if result.characters.count > 0 {
                         result.append(" " as Character)
                     }
-                    result.appendContentsOf(s)
+                    result.append(s)
                 }
             }
         }
         return result
     }
 
-    public func replaceNewLinesWith(delimiter: String) -> String {
+    public func replaceNewLinesWith(_ delimiter: String) -> String {
         var result = ""
 
         for ch in characters {
             if !ch.isNewline() {
                 result.append(ch)
             } else {
-                result.appendContentsOf(delimiter)
+                result.append(delimiter)
             }
         }
         return result
@@ -372,7 +372,7 @@ class Regex {
     let internalExpression: NSRegularExpression
     let pattern: String
 
-    init?(pattern: String, options: NSRegularExpressionOptions) {
+    init?(pattern: String, options: NSRegularExpression.Options) {
         self.pattern = pattern
         do {
             try internalExpression = NSRegularExpression.init(
@@ -387,9 +387,9 @@ class Regex {
         self.init(pattern: pattern, options: [])
     }
 
-    func test(input: String) -> Bool {
-        let matches = self.internalExpression.matchesInString(
-            input, options: .ReportProgress,
+    func test(_ input: String) -> Bool {
+        let matches = self.internalExpression.matches(
+            in: input, options: .reportProgress,
             range:input.wholeRange())
         return matches.count > 0
     }

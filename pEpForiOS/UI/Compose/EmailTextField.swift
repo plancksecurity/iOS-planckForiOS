@@ -9,7 +9,7 @@
 import UIKit
 
 class EmailTextField: UITextField {
-    override func caretRectForPosition(position: UITextPosition) -> CGRect {
-        return super.caretRectForPosition(self.endOfDocument)
+    override func caretRect(for position: UITextPosition) -> CGRect {
+        return super.caretRect(for: self.endOfDocument)
     }
 }

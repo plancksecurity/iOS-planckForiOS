@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PEPMyselfOperation: NSOperation {
+class PEPMyselfOperation: Operation {
     /**
      When the operation has run, this will be updated and contain the fingerprint
      (`kPepFingerprint`).

@@ -73,7 +73,7 @@ class PepAdapterTests: XCTestCase {
         }
         // Test if paths exist.
         for key in PEPUtil.pEpUrls.keys {
-            XCTAssertTrue(PEPUtil.pEpUrls[key]!.checkResourceIsReachableAndReturnError(&error))
+            XCTAssertTrue((PEPUtil.pEpUrls[key]! as NSURL).checkResourceIsReachableAndReturnError(&error))
         }
     }
     

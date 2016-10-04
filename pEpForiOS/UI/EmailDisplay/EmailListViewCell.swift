@@ -19,13 +19,13 @@ class EmailListViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = UITableViewCellSelectionStyle.None
+        self.selectionStyle = UITableViewCellSelectionStyle.none
 
         // generated an circle image
         isImportantImage.layer.cornerRadius = isImportantImage.frame.size.width / 2
         isImportantImage.clipsToBounds = true
 
-        isImportantImage.hidden = false
-        isImportantImage.backgroundColor = UIColor.blueColor()
+        isImportantImage.isHidden = false
+        isImportantImage.backgroundColor = UIColor.blue
     }
 }

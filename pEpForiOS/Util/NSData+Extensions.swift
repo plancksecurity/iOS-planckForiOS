@@ -8,18 +8,18 @@
 
 import Foundation
 
-extension NSData {
-    public func stringEncodingFromIANACharset(charset: String) -> NSStringEncoding {
-        let enc = CFStringConvertIANACharSetNameToEncoding(charset)
-        return CFStringConvertEncodingToNSStringEncoding(enc)
+extension Data {
+    public func stringEncodingFromIANACharset(_ charset: String) -> String.Encoding {
+        let enc = CFStringConvertIANACharSetNameToEncoding(charset as CFString!)
+        return String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(enc))
     }
 
-    public func toStringWithIANACharset(charset: String?) -> String? {
+    public func toStringWithIANACharset(_ charset: String?) -> String? {
         if let cs = charset {
             let enc = stringEncodingFromIANACharset(cs)
             return String.init(data: self, encoding: enc)
         } else {
-            return String.init(data: self, encoding: NSUTF8StringEncoding)
+            return String.init(data: self, encoding: String.Encoding.utf8)
         }
     }
 

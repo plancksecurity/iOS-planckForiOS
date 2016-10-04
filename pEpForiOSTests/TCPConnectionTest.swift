@@ -29,19 +29,19 @@ class TCPConnectionTest: XCTestCase {
                 self.refCount.inc()
             }
 
-            @objc private func connectionEstablished() {
+            @objc fileprivate func connectionEstablished() {
                 expConnected?.fulfill()
             }
 
-            @objc private func receivedEvent(
-                theData: UnsafeMutablePointer<Void>, type theType: RunLoopEventType,
-                extra theExtra: UnsafeMutablePointer<Void>, forMode theMode: String?) {
+            @objc fileprivate func receivedEvent(
+                _ theData: UnsafeMutableRawPointer, type theType: RunLoopEventType,
+                extra theExtra: UnsafeMutableRawPointer, forMode theMode: String?) {
                 switch theType {
                 case .ET_RDESC:
                     let length = 1024
-                    var buffer = [UInt8](count: length, repeatedValue: 0)
+                    var buffer = [UInt8](repeating: 0, count: length)
                     let count = connection?.read(&buffer, length: length)
-                    let s = NSString(bytes: buffer, length: count!, encoding: NSUTF8StringEncoding)
+                    let s = NSString(bytes: buffer, length: count!, encoding: String.Encoding.utf8)
                     print("read \(s)")
                     expReceivedEventRead?.fulfill()
                 case .ET_WDESC:
@@ -63,12 +63,12 @@ class TCPConnectionTest: XCTestCase {
                 name: connectInfo.imapServerName, port: UInt32(connectInfo.imapServerPort),
                 transport: connectInfo.imapTransport, background: true)
             let delegate = ConnectionDelegate.init(connection: connection!, refCount: refCount)
-            delegate.expConnected = expectationWithDescription("connected")
-            delegate.expReceivedEventRead = expectationWithDescription("read")
-            delegate.expReceivedEventWrite = expectationWithDescription("write")
+            delegate.expConnected = expectation(withDescription: "connected")
+            delegate.expReceivedEventRead = expectation(withDescription: "read")
+            delegate.expReceivedEventWrite = expectation(withDescription: "write")
             connection?.delegate = delegate
             connection?.connect()
-            waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
                 connection = nil
             })

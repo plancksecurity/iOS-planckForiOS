@@ -9,43 +9,43 @@
 import Foundation
 
 public protocol SmtpSendDelegate: class {
-    func messageSent(smtp: SmtpSend, theNotification: NSNotification?)
-    func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?)
-    func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?)
-    func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification?)
-    func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification?)
-    func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification?)
-    func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification?)
-    func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?)
-    func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?)
-    func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?)
-    func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?)
-    func connectionLost(smtp: SmtpSend, theNotification: NSNotification?)
-    func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?)
-    func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?)
-    func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?)
-    func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?)
-    func serviceReconnected(smtp: SmtpSend, theNotification: NSNotification?)
+    func messageSent(_ smtp: SmtpSend, theNotification: Notification?)
+    func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?)
+    func transactionInitiationCompleted(_ smtp: SmtpSend, theNotification: Notification?)
+    func transactionInitiationFailed(_ smtp: SmtpSend, theNotification: Notification?)
+    func recipientIdentificationCompleted(_ smtp: SmtpSend, theNotification: Notification?)
+    func recipientIdentificationFailed(_ smtp: SmtpSend, theNotification: Notification?)
+    func transactionResetCompleted(_ smtp: SmtpSend, theNotification: Notification?)
+    func transactionResetFailed(_ smtp: SmtpSend, theNotification: Notification?)
+    func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?)
+    func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?)
+    func connectionEstablished(_ smtp: SmtpSend, theNotification: Notification?)
+    func connectionLost(_ smtp: SmtpSend, theNotification: Notification?)
+    func connectionTerminated(_ smtp: SmtpSend, theNotification: Notification?)
+    func connectionTimedOut(_ smtp: SmtpSend, theNotification: Notification?)
+    func requestCancelled(_ smtp: SmtpSend, theNotification: Notification?)
+    func serviceInitialized(_ smtp: SmtpSend, theNotification: Notification?)
+    func serviceReconnected(_ smtp: SmtpSend, theNotification: Notification?)
 }
 
-public class SmtpSendDefaultDelegate: SmtpSendDelegate {
-    public func messageSent(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func connectionLost(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?) {}
-    public func serviceReconnected(smtp: SmtpSend, theNotification: NSNotification?) {}
+open class SmtpSendDefaultDelegate: SmtpSendDelegate {
+    open func messageSent(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func transactionInitiationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func transactionInitiationFailed(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func recipientIdentificationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func recipientIdentificationFailed(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func transactionResetCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func transactionResetFailed(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func connectionEstablished(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func connectionLost(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func connectionTerminated(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func connectionTimedOut(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func requestCancelled(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func serviceInitialized(_ smtp: SmtpSend, theNotification: Notification?) {}
+    open func serviceReconnected(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     public init() {}
 }
@@ -54,11 +54,11 @@ struct SmtpStatus {
     var haveStartedTLS = false
 }
 
-public class SmtpSend: Service {
-    public override var comp: String { get { return "SmtpSend" } }
+open class SmtpSend: Service {
+    open override var comp: String { get { return "SmtpSend" } }
 
-    private var smtpStatus: SmtpStatus = SmtpStatus.init()
-    weak public var delegate: SmtpSendDelegate?
+    fileprivate var smtpStatus: SmtpStatus = SmtpStatus.init()
+    weak open var delegate: SmtpSendDelegate?
 
     var smtp: CWSMTP {
         get {
@@ -66,30 +66,30 @@ public class SmtpSend: Service {
         }
     }
 
-    public override func createService() -> CWService {
+    open override func createService() -> CWService {
         return CWSMTP.init(name: connectInfo.smtpServerName,
                            port: UInt32(connectInfo.smtpServerPort),
                            transport: connectInfo.smtpTransport)
     }
 
-    private func createMessage() -> CWMessage {
+    fileprivate func createMessage() -> CWMessage {
         let msg = CWMessage.init()
         msg.setSubject("Subject Message")
         msg.setFrom(CWInternetAddress.init(personal: "Unit 004",
             address: "unittest.ios.4@peptest.ch"))
 
         let to = CWInternetAddress.init(personal: "Unit 001", address: "unittest.ios.1@peptest.ch")
-        to.setType(.ToRecipient)
-        msg.addRecipient(to)
+        to?.setType(.toRecipient)
+        msg.addRecipient(to!)
 
         msg.setContentType(Constants.contentTypeText)
         msg.setContentTransferEncoding(PantomimeEncodingNone)
         msg.setCharset("utf-8")
-        msg.setContent("This was sent by pantomime".dataUsingEncoding(NSUTF8StringEncoding))
+        msg.setContent("This was sent by pantomime".data(using: String.Encoding.utf8) as NSObject?)
         return msg
     }
 
-    private func sendMessage() {
+    fileprivate func sendMessage() {
         smtp.setRecipients(nil)
         smtp.setMessageData(nil)
         smtp.setMessage(createMessage())
@@ -99,96 +99,96 @@ public class SmtpSend: Service {
     /**
      Resets the connection. Do this for each mail.
      */
-    public func reset() {
+    open func reset() {
         smtp.reset()
     }
 }
 
 extension SmtpSend: TransportClient {
 
-    @objc public func messageSent(theNotification: NSNotification?) {
+    @objc public func messageSent(_ theNotification: Notification?) {
         dumpMethodName("messageSent", notification: theNotification)
         delegate?.messageSent(self, theNotification: theNotification)
     }
 
-    @objc public func messageNotSent(theNotification: NSNotification?) {
+    @objc public func messageNotSent(_ theNotification: Notification?) {
         dumpMethodName("messageNotSent", notification: theNotification)
         delegate?.messageNotSent(self, theNotification: theNotification)
     }
 }
 
 extension SmtpSend: SMTPClient {
-    @objc public func transactionInitiationCompleted(theNotification: NSNotification?) {
+    @objc public func transactionInitiationCompleted(_ theNotification: Notification?) {
         dumpMethodName("transactionInitiationCompleted", notification: theNotification)
         delegate?.transactionInitiationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func transactionInitiationFailed(theNotification: NSNotification?) {
+    @objc public func transactionInitiationFailed(_ theNotification: Notification?) {
         dumpMethodName("transactionInitiationFailed", notification: theNotification)
         delegate?.transactionInitiationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func recipientIdentificationCompleted(theNotification: NSNotification?) {
+    @objc public func recipientIdentificationCompleted(_ theNotification: Notification?) {
         dumpMethodName("recipientIdentificationCompleted", notification: theNotification)
         delegate?.recipientIdentificationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func recipientIdentificationFailed(theNotification: NSNotification?) {
+    @objc public func recipientIdentificationFailed(_ theNotification: Notification?) {
         dumpMethodName("recipientIdentificationFailed", notification: theNotification)
         delegate?.recipientIdentificationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func transactionResetCompleted(theNotification: NSNotification?) {
+    @objc public func transactionResetCompleted(_ theNotification: Notification?) {
         dumpMethodName("transactionResetCompleted", notification: theNotification)
         delegate?.transactionResetCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func transactionResetFailed(theNotification: NSNotification?) {
+    @objc public func transactionResetFailed(_ theNotification: Notification?) {
         dumpMethodName("transactionResetFailed", notification: theNotification)
         delegate?.transactionResetFailed(self, theNotification: theNotification)
     }
 }
 
 extension SmtpSend: CWServiceClient {
-    @objc public func authenticationCompleted(theNotification: NSNotification?) {
+    @objc public func authenticationCompleted(_ theNotification: Notification?) {
         dumpMethodName("authenticationCompleted", notification: theNotification)
         delegate?.authenticationCompleted(self, theNotification: theNotification)
     }
 
-    @objc public func authenticationFailed(theNotification: NSNotification?) {
+    @objc public func authenticationFailed(_ theNotification: Notification?) {
         dumpMethodName("authenticationFailed", notification: theNotification)
         delegate?.authenticationFailed(self, theNotification: theNotification)
     }
 
-    @objc public func connectionEstablished(theNotification: NSNotification?) {
+    @objc public func connectionEstablished(_ theNotification: Notification?) {
         dumpMethodName("connectionEstablished", notification: theNotification)
         delegate?.connectionEstablished(self, theNotification: theNotification)
     }
 
-    @objc public func connectionLost(theNotification: NSNotification?) {
+    @objc public func connectionLost(_ theNotification: Notification?) {
         dumpMethodName("connectionLost", notification: theNotification)
         delegate?.connectionLost(self, theNotification: theNotification)
     }
 
-    @objc public func connectionTerminated(theNotification: NSNotification?) {
+    @objc public func connectionTerminated(_ theNotification: Notification?) {
         dumpMethodName("connectionTerminated", notification: theNotification)
         delegate?.connectionTerminated(self, theNotification: theNotification)
     }
 
-    @objc public func connectionTimedOut(theNotification: NSNotification?) {
+    @objc public func connectionTimedOut(_ theNotification: Notification?) {
         dumpMethodName("connectionTimedOut", notification: theNotification)
         delegate?.connectionTimedOut(self, theNotification: theNotification)
     }
 
-    @objc public func requestCancelled(theNotification: NSNotification?) {
+    @objc public func requestCancelled(_ theNotification: Notification?) {
         dumpMethodName("requestCancelled", notification: theNotification)
         delegate?.requestCancelled(self, theNotification: theNotification)
     }
 
-    @objc public func serviceInitialized(theNotification: NSNotification?) {
+    @objc public func serviceInitialized(_ theNotification: Notification?) {
         dumpMethodName("serviceInitialized", notification: theNotification)
         delegate?.serviceInitialized(self, theNotification: theNotification)
-        if self.connectInfo.smtpTransport == ConnectionTransport.StartTLS &&
+        if self.connectInfo.smtpTransport == ConnectionTransport.startTLS &&
             !self.smtpStatus.haveStartedTLS {
             self.smtpStatus.haveStartedTLS = true
             self.smtp.startTLS()
@@ -198,7 +198,7 @@ extension SmtpSend: CWServiceClient {
                 password = pass
             } else {
                 password = KeyChain.getPassword(self.connectInfo.email,
-                                                serverType: Account.AccountType.SMTP.asString())
+                                                serverType: Account.AccountType.smtp.asString())
             }
             self.smtp.authenticate(self.connectInfo.getSmtpUsername(),
                                    password: password,
@@ -206,7 +206,7 @@ extension SmtpSend: CWServiceClient {
         }
     }
 
-    @objc public func serviceReconnected(theNotification: NSNotification?) {
+    @objc public func serviceReconnected(_ theNotification: Notification?) {
         dumpMethodName("serviceReconnected", notification: theNotification)
         delegate?.serviceReconnected(self, theNotification: theNotification)
    }

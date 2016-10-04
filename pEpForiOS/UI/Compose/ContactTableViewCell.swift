@@ -13,8 +13,8 @@ class ContactTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = UITableViewCellSelectionStyle.None
-        labelContactDisplayName.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+        self.selectionStyle = UITableViewCellSelectionStyle.none
+        labelContactDisplayName.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
     }
 
     var contact: IContact? = nil {

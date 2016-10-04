@@ -8,7 +8,7 @@
 
 import CoreData
 
-class OutgoingMessageColorOperation: NSOperation {
+class OutgoingMessageColorOperation: Operation {
     /**
      Input: The pEp mail dictionary to check.
      */

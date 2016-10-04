@@ -8,43 +8,43 @@ public protocol IAccount: _IAccount {
 }
 
 @objc(Account)
-public class Account: _Account, IAccount {
+open class Account: _Account, IAccount {
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
 
     public enum AccountType: Int {
-        case IMAP = 0
-        case SMTP = 1
+        case imap = 0
+        case smtp = 1
 
         public func asString() -> String {
             switch self {
-            case .IMAP:
+            case .imap:
                 return "IMAP"
-            case .SMTP:
+            case .smtp:
                 return "SMTP"
             }
         }
     }
 
-    public var connectInfo: ConnectInfo {
-        let passImap = KeyChain.getPassword(self.email, serverType: AccountType.IMAP.asString())
-        let passSmtp = KeyChain.getPassword(self.email, serverType: AccountType.SMTP.asString())
+    open var connectInfo: ConnectInfo {
+        let passImap = KeyChain.getPassword(self.email, serverType: AccountType.imap.asString())
+        let passSmtp = KeyChain.getPassword(self.email, serverType: AccountType.smtp.asString())
         return ConnectInfo.init(
             nameOfTheUser: nameOfTheUser,
             email: email, imapUsername: imapUsername, smtpUsername: smtpUsername,
             imapPassword: passImap, smtpPassword: passSmtp,
             imapServerName: self.imapServerName,
-            imapServerPort: UInt16(self.imapServerPort.integerValue),
+            imapServerPort: UInt16(self.imapServerPort.intValue),
             imapTransport: self.rawImapTransport,
             smtpServerName: self.smtpServerName,
-            smtpServerPort: UInt16(self.smtpServerPort.integerValue),
+            smtpServerPort: UInt16(self.smtpServerPort.intValue),
             smtpTransport: self.rawSmtpTransport)
     }
 
-    public var rawImapTransport: ConnectionTransport {
-        return ConnectionTransport(rawValue: self.imapTransport.integerValue)!
+    open var rawImapTransport: ConnectionTransport {
+        return ConnectionTransport(rawValue: self.imapTransport.intValue)!
     }
 
-    public var rawSmtpTransport: ConnectionTransport {
-        return ConnectionTransport(rawValue: self.smtpTransport.integerValue)!
+    open var rawSmtpTransport: ConnectionTransport {
+        return ConnectionTransport(rawValue: self.smtpTransport.intValue)!
     }
 }

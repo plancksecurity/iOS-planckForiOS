@@ -15,7 +15,7 @@ import CoreData
  one for encrypting, one for sending the mails,
  and one for persisting the result on the IMAP server.
  */
-public class EncryptionData {
+open class EncryptionData {
     /**
      Needed for accessing core data.
      */
@@ -49,18 +49,18 @@ public class EncryptionData {
      Those mails can then be sent with `SendMailOperation`.
      When `SendMailOperation` executes, mails will move from `mailsToSend` to `mailsSent`.
      */
-    public var mailsToSend: [PEPMail] = []
+    open var mailsToSend: [PEPMail] = []
 
     /**
      After encryption, the original mail will be stored here, in encrypted form.
      This is the message that should be stored then in the sent folder.
      */
-    public var mailEncryptedForSelf: PEPMail?
+    open var mailEncryptedForSelf: PEPMail?
 
     /**
      After the `SendMailOperation` has done its job, all sent mails should be noted here.
      */
-    public var mailsSent: [PEPMail] = []
+    open var mailsSent: [PEPMail] = []
 
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil,
                 coreDataMessageID: NSManagedObjectID, accountEmail: String,

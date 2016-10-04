@@ -14,7 +14,7 @@ import CoreData
  on `EncryptionData`. Will encrypt the message also for oneself, for storing in the
  sent folder.
  */
-public class EncryptMailOperation: ConcurrentBaseOperation {
+open class EncryptMailOperation: ConcurrentBaseOperation {
     let comp = "EncryptMailOperation"
 
     /**
@@ -27,16 +27,16 @@ public class EncryptMailOperation: ConcurrentBaseOperation {
         super.init(coreDataUtil: encryptionData.coreDataUtil)
     }
 
-    override public func main() {
-        privateMOC.performBlock({
+    override open func main() {
+        privateMOC.perform({
             guard let account = self.model.accountByEmail(
                 self.encryptionData.accountEmail) else {
                     self.addError(Constants.errorCannotFindAccountForEmail(
                         self.comp, email: self.encryptionData.accountEmail))
                     return
             }
-            guard let message = self.privateMOC.objectWithID(
-                self.encryptionData.coreDataMessageID) as? Message else {
+            guard let message = self.privateMOC.object(
+                with: self.encryptionData.coreDataMessageID) as? Message else {
                     let error = Constants.errorInvalidParameter(
                         self.comp,
                         errorMessage:
@@ -56,12 +56,12 @@ public class EncryptMailOperation: ConcurrentBaseOperation {
             // They should all get the pEp treatment, even though they don't all get
             // encrypted. E.g., for receiving the public key as attachment.
             var allMails = mailsToEncrypt
-            allMails.appendContentsOf(mailsUnencrypted)
+            allMails.append(contentsOf: mailsUnencrypted)
 
             for origMail in allMails {
                 var encryptedMail: NSDictionary? = nil
                 let pepStatus = session.encryptMessageDict(
-                    origMail as [NSObject : AnyObject], extra: nil,
+                    origMail as [AnyHashable: Any], extra: nil,
                     dest: &encryptedMail)
                 let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: pepStatus,
                     encryptedMail: encryptedMail)
@@ -73,7 +73,7 @@ public class EncryptMailOperation: ConcurrentBaseOperation {
 
             // Encrypt mail to yourself
             let ident = PEPUtil.identityFromAccount(account, isMyself: true)
-                as [NSObject : AnyObject]
+                as [AnyHashable: Any]
             var encryptedMail: NSDictionary? = nil
             let status = session.encryptMessageDict(
                 pepMailOrig, identity: ident, dest: &encryptedMail)

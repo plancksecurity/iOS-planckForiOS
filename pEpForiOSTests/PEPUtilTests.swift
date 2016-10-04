@@ -53,7 +53,7 @@ class PEPUtilTests: XCTestCase {
 }
 
     func testPepAttachment() {
-        let data = "Just some plaintext".dataUsingEncoding(NSUTF8StringEncoding)!
+        let data = "Just some plaintext".data(using: String.Encoding.utf8)!
         let a1 = persistentSetup.model.insertAttachmentWithContentType(
             "text/plain", filename: "excel.txt",
             data: data)
@@ -62,7 +62,7 @@ class PEPUtilTests: XCTestCase {
 
         XCTAssertEqual(pepA1[kPepMimeFilename] as? String, a1.filename)
         XCTAssertEqual(pepA1[kPepMimeType] as? String, a1.contentType)
-        XCTAssertEqual(pepA1[kPepMimeData] as? NSData, a1.data)
+        XCTAssertEqual(pepA1[kPepMimeData] as? Data, a1.data)
     }
 
     func testPepMail() {
@@ -74,12 +74,12 @@ class PEPUtilTests: XCTestCase {
             "some@some2.com", name: "Whatever2")
         c2.addressBookID = 2
 
-        let data1 = "Just some plaintext".dataUsingEncoding(NSUTF8StringEncoding)!
+        let data1 = "Just some plaintext".data(using: String.Encoding.utf8)!
         let a1 = persistentSetup.model.insertAttachmentWithContentType(
             "text/plain", filename: "excel.txt",
             data: data1)
 
-        let data2 = "Just some plaintext2".dataUsingEncoding(NSUTF8StringEncoding)!
+        let data2 = "Just some plaintext2".data(using: String.Encoding.utf8)!
         let a2 = persistentSetup.model.insertAttachmentWithContentType(
             "text/plain", filename: "excel2.txt",
             data: data2)
@@ -164,18 +164,18 @@ class PEPUtilTests: XCTestCase {
         XCTAssertNotNil(content)
         XCTAssertEqual(content?.count(), 2)
 
-        let partText = content?.partAtIndex(0)
+        let partText = content?.part(at: 0)
         XCTAssertNotNil(partText)
-        let contentTextData = partText?.content() as? NSData
+        let contentTextData = partText?.content() as? Data
         XCTAssertNotNil(contentTextData)
-        let contentText = String.init(data: contentTextData!, encoding: NSUTF8StringEncoding)
+        let contentText = String.init(data: contentTextData!, encoding: String.Encoding.utf8)
         XCTAssertEqual(contentText, pepMailOrig[kPepLongMessage] as? String)
 
-        let partHtml = content?.partAtIndex(1)
+        let partHtml = content?.part(at: 1)
         XCTAssertNotNil(partHtml)
-        let contentHtmlData = partHtml?.content() as? NSData
+        let contentHtmlData = partHtml?.content() as? Data
         XCTAssertNotNil(contentHtmlData)
-        let contentHtml = String.init(data: contentHtmlData!, encoding: NSUTF8StringEncoding)
+        let contentHtml = String.init(data: contentHtmlData!, encoding: String.Encoding.utf8)
         XCTAssertEqual(contentHtml, pepMailOrig[kPepLongMessageFormatted] as? String)
     }
 
@@ -318,14 +318,14 @@ class PEPUtilTests: XCTestCase {
         attachment1[kPepMimeFilename] = attachmentFilename1
         attachment1[kPepMimeType] = Constants.contentTypeHtml
         attachment1[kPepMimeData] = (pepMailOrig[kPepLongMessageFormatted] as! String)
-            .dataUsingEncoding(NSUTF8StringEncoding)
+            .data(using: String.Encoding.utf8)
         attachments.append(attachment1)
 
         let attachmentFilename2 = "some2.html"
         let attachment2 = NSMutableDictionary()
         attachment2[kPepMimeFilename] = attachmentFilename2
         attachment2[kPepMimeType] = Constants.contentTypeHtml
-        attachment2[kPepMimeData] = "<h1>Title only!</h1>".dataUsingEncoding(NSUTF8StringEncoding)
+        attachment2[kPepMimeData] = "<h1>Title only!</h1>".data(using: String.Encoding.utf8)
         attachments.append(attachment2)
 
         pepMailOrig[kPepAttachments] = attachments
@@ -343,15 +343,15 @@ class PEPUtilTests: XCTestCase {
         XCTAssertNotNil(partMain)
         XCTAssertEqual(partMain?.count(), 3)
 
-        let partAlt = partMain?.partAtIndex(0)
+        let partAlt = partMain?.part(at: 0)
         XCTAssertEqual(partAlt?.contentType(), Constants.contentTypeMultipartAlternative)
 
-        let partAttachment1 = partMain?.partAtIndex(1)
+        let partAttachment1 = partMain?.part(at: 1)
         XCTAssertEqual(partAttachment1?.contentType(), Constants.contentTypeHtml)
         XCTAssertEqual(partAttachment1?.filename(), attachmentFilename1)
         XCTAssertNotNil(partAttachment1?.content())
 
-        let partAttachment2 = partMain?.partAtIndex(2)
+        let partAttachment2 = partMain?.part(at: 2)
         XCTAssertEqual(partAttachment2?.contentType(), Constants.contentTypeHtml)
         XCTAssertEqual(partAttachment2?.filename(), attachmentFilename2)
         XCTAssertNotNil(partAttachment2?.content())
@@ -384,12 +384,12 @@ class PEPUtilTests: XCTestCase {
 
         XCTAssertEqual(message?.attachments.count, 2)
 
-        let modelAttachment1 = message?.attachments.objectAtIndex(0)
+        let modelAttachment1 = message?.attachments.object(at: 0)
         XCTAssertNotNil(modelAttachment1)
         XCTAssertEqual(modelAttachment1?.filename, attachmentFilename1)
         XCTAssertEqual(modelAttachment1?.contentType, Constants.contentTypeHtml)
 
-        let modelAttachment2 = message?.attachments.objectAtIndex(1)
+        let modelAttachment2 = message?.attachments.object(at: 1)
         XCTAssertNotNil(modelAttachment2)
         XCTAssertEqual(modelAttachment2?.filename, attachmentFilename2)
         XCTAssertEqual(modelAttachment2?.contentType, Constants.contentTypeHtml)
@@ -417,15 +417,15 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(PEPUtil.colorRatingForContact(unknownContact), PEP_rating_undefined)
 
         // Create myself
-        let backgroundQueue = NSOperationQueue.init()
-        let expMyselfFinished = expectationWithDescription("expMyselfFinished")
+        let backgroundQueue = OperationQueue.init()
+        let expMyselfFinished = expectation(description: "expMyselfFinished")
         let account = persistentSetup.model.accountByEmail(persistentSetup.accountEmail)
         var identityMyself: NSDictionary? = nil
         PEPUtil.myselfFromAccount(account as! Account, queue: backgroundQueue) { identity in
             expMyselfFinished.fulfill()
             identityMyself = identity
         }
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNotNil(identityMyself)
             XCTAssertNotNil(identityMyself?[kPepFingerprint])
@@ -439,8 +439,8 @@ class PEPUtilTests: XCTestCase {
     }
 
     func testTrustwords() {
-        XCTAssertEqual("0".compare("000"), NSComparisonResult.OrderedAscending)
-        XCTAssertEqual("111".compare("000"), NSComparisonResult.OrderedDescending)
+        XCTAssertEqual("0".compare("000"), ComparisonResult.orderedAscending)
+        XCTAssertEqual("111".compare("000"), ComparisonResult.orderedDescending)
 
         let fpr1 = "DB4713183660A12ABAFA7714EBE90D44146F62F4"
         let fpr2 = "4ABE3AAF59AC32CFE4F86500A9411D176FF00E97"
@@ -453,7 +453,7 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(
             PEPUtil.shortTrustwordsForFpr(fpr2, language: "en", session: session),
             "FROZE EDGEWISE HOTHEADED DERREK BRITNI")
-        XCTAssertEqual(fpr1.compare(fpr2), NSComparisonResult.OrderedDescending)
+        XCTAssertEqual(fpr1.compare(fpr2), ComparisonResult.orderedDescending)
 
         let dict1 = [kPepFingerprint: fpr1, kPepUserID: "1", kPepAddress: "email1",
                      kPepUsername: "1"]
@@ -502,15 +502,15 @@ class PEPUtilTests: XCTestCase {
                 addressBookContact = first
             }
 
-            let expAddressBookTransfered = self.expectationWithDescription(
-                "expAddressBookTransfered")
+            let expAddressBookTransfered = self.expectation(
+                description: "expAddressBookTransfered")
 
             MiscUtil.transferAddressBook(context, blockFinished: { contacts in
                 XCTAssertGreaterThan(contacts.count, 0)
                 expAddressBookTransfered.fulfill()
             })
 
-            self.waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            self.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
             })
         }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public typealias GrandOperatorCompletionBlock = (error: NSError?) -> Void
+public typealias GrandOperatorCompletionBlock = (_ error: NSError?) -> Void
 
 public protocol IGrandOperator: class {
     var coreDataUtil: ICoreDataUtil { get }
@@ -31,7 +31,7 @@ public protocol IGrandOperator: class {
      - parameter completionBlock: The block to call when all ops have finished, together with
      any error that ocurred.
      */
-    func chainOperations(operations: [BaseOperation],
+    func chainOperations(_ operations: [BaseOperation],
                          completionBlock: GrandOperatorCompletionBlock?)
 
     /**
@@ -41,7 +41,7 @@ public protocol IGrandOperator: class {
      - parameter completionBlock: Will be called on completion of the operation, with
      a non-nil error object if there was an error during execution.
      */
-    func fetchFolders(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
+    func fetchFolders(_ connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Asychronously fetches mails for the given `ConnectInfo`s
@@ -53,7 +53,7 @@ public protocol IGrandOperator: class {
      a non-nil error object if there was an error during execution.
      */
     func fetchEmailsAndDecryptConnectInfos(
-        connectInfos: [ConnectInfo], folderName: String?,
+        _ connectInfos: [ConnectInfo], folderName: String?,
         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
@@ -63,47 +63,47 @@ public protocol IGrandOperator: class {
      - parameter completionBlock: Will be called on completion of the operation, with
      a non-nil error object if there was an error during execution.
      */
-    func createSpecialLocalFolders(accountEmail: String,
+    func createSpecialLocalFolders(_ accountEmail: String,
                                    completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Asynchronously verifies the given connection. Tests for IMAP and SMTP. The test is considered
      a success when authentication was successful.
      */
-    func verifyConnection(connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
+    func verifyConnection(_ connectInfo: ConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Sends the given mail via SMTP. Also saves it into the drafts folder. You
      might have to trigger a fetch for that mail to appear in your drafts folder.
      */
-    func sendMail(email: IMessage, account: Account, completionBlock: GrandOperatorCompletionBlock?)
+    func sendMail(_ email: IMessage, account: Account, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Saves the given email as a draft, both on the server and locally.
      */
-    func saveDraftMail(message: IMessage, account: IAccount,
+    func saveDraftMail(_ message: IMessage, account: IAccount,
                        completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Syncs all mails' flags in the given folder that are out of date to the server.
      */
-    func syncFlagsToServerForFolder(folder: IFolder,
+    func syncFlagsToServerForFolder(_ folder: IFolder,
                                     completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Creates a folder with the given properties if it doesn't exist,
      both locally and on the server.
      */
-    func createFolderOfType(account: IAccount, folderType: FolderType,
+    func createFolderOfType(_ account: IAccount, folderType: FolderType,
                             completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Deletes the given folder, both locally and remotely.
      */
-    func deleteFolder(folder: IFolder, completionBlock: GrandOperatorCompletionBlock?)
+    func deleteFolder(_ folder: IFolder, completionBlock: GrandOperatorCompletionBlock?)
 }
 
-public class GrandOperator: IGrandOperator {
+open class GrandOperator: IGrandOperator {
     /**
      Key for accessing the model in thread-local storage.
      */
@@ -111,23 +111,23 @@ public class GrandOperator: IGrandOperator {
 
     let comp = "GrandOperator"
 
-    public let connectionManager: ConnectionManager
-    public let coreDataUtil: ICoreDataUtil
+    open let connectionManager: ConnectionManager
+    open let coreDataUtil: ICoreDataUtil
 
-    private let verifyConnectionQueue = NSOperationQueue.init()
-    private let backgroundQueue = NSOperationQueue.init()
+    fileprivate let verifyConnectionQueue = OperationQueue.init()
+    fileprivate let backgroundQueue = OperationQueue.init()
 
     /**
      The main model (for use on the main thread)
      */
-    private lazy var model: IModel = {
+    fileprivate lazy var model: IModel = {
         return Model.init(context: self.coreDataUtil.managedObjectContext)
     }()
 
     /**
      Used for storing running flag sync operations to avoid duplicate work.
      */
-    private var flagSyncOperations = [String: BaseOperation]()
+    fileprivate var flagSyncOperations = [String: BaseOperation]()
 
     public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectionManager = connectionManager
@@ -135,10 +135,10 @@ public class GrandOperator: IGrandOperator {
         self.connectionManager.grandOperator = self
     }
 
-    public func chainOperations(operations: [BaseOperation],
+    open func chainOperations(_ operations: [BaseOperation],
                                 completionBlock: GrandOperatorCompletionBlock?) {
         // Add dependencies
-        var lastOp: NSOperation? = nil
+        var lastOp: Operation? = nil
         for op in operations {
             if let op1 = lastOp {
                 op.addDependency(op1)
@@ -155,7 +155,7 @@ public class GrandOperator: IGrandOperator {
                 GCD.onMain() {
                     lastOp.completionBlock = nil
                     for op in operations {
-                        errors.appendContentsOf(op.errors)
+                        errors.append(contentsOf: op.errors)
                     }
                     // Only the first error will be reported
                     completionBlock?(error: errors.first)
@@ -164,7 +164,7 @@ public class GrandOperator: IGrandOperator {
         }
     }
 
-    public func shutdown() {
+    open func shutdown() {
         verifyConnectionQueue.cancelAllOperations()
         connectionManager.shutdown()
     }
@@ -184,7 +184,7 @@ public class GrandOperator: IGrandOperator {
         op.start()
     }
 
-    public func fetchFolders(connectInfo: ConnectInfo,
+    open func fetchFolders(_ connectInfo: ConnectInfo,
                              completionBlock: GrandOperatorCompletionBlock?) {
         let op = FetchFoldersOperation.init(
             connectInfo: connectInfo, coreDataUtil: coreDataUtil,
@@ -192,8 +192,8 @@ public class GrandOperator: IGrandOperator {
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
-    public func fetchEmailsAndDecryptConnectInfos(
-        connectInfos: [ConnectInfo], folderName: String?,
+    open func fetchEmailsAndDecryptConnectInfos(
+        _ connectInfos: [ConnectInfo], folderName: String?,
         completionBlock: GrandOperatorCompletionBlock?) {
         var operations = [BaseOperation]()
         var fetchOperations = [BaseOperation]()
@@ -224,18 +224,18 @@ public class GrandOperator: IGrandOperator {
             operations, completionBlock: { error in
                 // This completion block should already have been scheduled on the main queue
                 // by chainOperations.
-                completionBlock?(error: error)
+                completionBlock?(error)
         })
     }
 
-    public func createSpecialLocalFolders(accountEmail: String,
+    open func createSpecialLocalFolders(_ accountEmail: String,
                                           completionBlock: GrandOperatorCompletionBlock?) {
         let op = CreateLocalSpecialFoldersOperation.init(coreDataUtil: coreDataUtil,
                                                          accountEmail: accountEmail)
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
-    func handleVerificationCompletionFinished1(finished1: Bool, finished2: Bool,
+    func handleVerificationCompletionFinished1(_ finished1: Bool, finished2: Bool,
                                       op1: BaseOperation, op2: BaseOperation,
                                       completionBlock: GrandOperatorCompletionBlock?) {
         if finished1 && finished2 {
@@ -251,11 +251,11 @@ public class GrandOperator: IGrandOperator {
             }
 
             // This is already scheduled on the main queue
-            completionBlock?(error: error)
+            completionBlock?(error)
         }
     }
 
-    public func verifyConnection(connectInfo: ConnectInfo,
+    open func verifyConnection(_ connectInfo: ConnectInfo,
                                  completionBlock: GrandOperatorCompletionBlock?) {
         let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
         let op2 = VerifySmtpConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
@@ -290,7 +290,7 @@ public class GrandOperator: IGrandOperator {
         verifyConnectionQueue.addOperation(op2)
     }
 
-    public func sendMail(message: IMessage, account: Account,
+    open func sendMail(_ message: IMessage, account: Account,
                          completionBlock: GrandOperatorCompletionBlock?) {
         let encryptionData = EncryptionData.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil,
@@ -299,7 +299,7 @@ public class GrandOperator: IGrandOperator {
         let opEncrypt = EncryptMailOperation.init(encryptionData: encryptionData)
         let opSend = SendMailOperation.init(encryptionData: encryptionData)
         let opCreateSentFolder = CheckAndCreateFolderOfTypeOperation.init(
-            account: account, folderType: .Sent, connectionManager: connectionManager,
+            account: account, folderType: .sent, connectionManager: connectionManager,
             coreDataUtil: coreDataUtil)
         let opSaveSent = SaveSentMessageOperation.init(encryptionData: encryptionData)
 
@@ -326,13 +326,13 @@ public class GrandOperator: IGrandOperator {
         backgroundQueue.addOperation(opSaveSent)
     }
 
-    public func saveDraftMail(message: IMessage, account: IAccount,
+    open func saveDraftMail(_ message: IMessage, account: IAccount,
                               completionBlock: GrandOperatorCompletionBlock?) {
         let opCreateDraftFolder = CheckAndCreateFolderOfTypeOperation.init(
-            account: account, folderType: .Drafts, connectionManager: connectionManager, coreDataUtil: coreDataUtil)
+            account: account, folderType: .drafts, connectionManager: connectionManager, coreDataUtil: coreDataUtil)
 
         let opStore = AppendSingleMessageOperation.init(
-            message: message, account: account, folderType: .Drafts,
+            message: message, account: account, folderType: .drafts,
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         opStore.completionBlock = {
             GCD.onMain() {
@@ -352,7 +352,7 @@ public class GrandOperator: IGrandOperator {
         backgroundQueue.addOperation(opStore)
     }
 
-    public func syncFlagsToServerForFolder(folder: IFolder,
+    open func syncFlagsToServerForFolder(_ folder: IFolder,
                                            completionBlock: GrandOperatorCompletionBlock?) {
         let hashable = folder.hashableID()
         var operation: BaseOperation? = flagSyncOperations[hashable]
@@ -376,7 +376,7 @@ public class GrandOperator: IGrandOperator {
         }
     }
 
-    public func createFolderOfType(account: IAccount, folderType: FolderType,
+    open func createFolderOfType(_ account: IAccount, folderType: FolderType,
                                    completionBlock: GrandOperatorCompletionBlock?) {
         let op = CheckAndCreateFolderOfTypeOperation.init(
             account: account, folderType: folderType,
@@ -389,7 +389,7 @@ public class GrandOperator: IGrandOperator {
         backgroundQueue.addOperation(op)
     }
 
-    public func deleteFolder(folder: IFolder,
+    open func deleteFolder(_ folder: IFolder,
                              completionBlock: GrandOperatorCompletionBlock?) {
         let op = DeleteFolderOperation.init(
             folder: folder, connectionManager: connectionManager,

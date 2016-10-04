@@ -4,22 +4,22 @@ public protocol IAttachment: _IAttachment, CustomStringConvertible, CustomDebugS
 }
 
 @objc(Attachment)
-public class Attachment: _Attachment, IAttachment {
+open class Attachment: _Attachment, IAttachment {
 	// Custom logic goes here.
 
-    override public var description: String {
+    override open var description: String {
         let s = NSMutableString()
-        s.appendString("Part \(size) bytes")
+        s.append("Part \(size) bytes")
         if let fn = filename {
-            s.appendString(", \(fn)")
+            s.append(", \(fn)")
         }
         if let ct = contentType {
-            s.appendString(", \(ct)")
+            s.append(", \(ct)")
         }
         return String(s)
     }
 
-    override public var debugDescription: String {
+    override open var debugDescription: String {
         return description
     }
 }

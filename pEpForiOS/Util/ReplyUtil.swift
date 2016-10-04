@@ -12,35 +12,35 @@ public struct ReplyUtil {
     static let nameSeparator = ", "
     static let newline = "\n"
 
-    public static func replyNameFromContact(contact: IContact) -> String {
+    public static func replyNameFromContact(_ contact: IContact) -> String {
         if let name = contact.name {
             return name
         }
         return contact.email
     }
 
-    public static func quoteText(text: String) -> String {
-        let newLineCS = NSCharacterSet.init(charactersInString: newline)
-        let lines = text.componentsSeparatedByCharactersInSet(newLineCS)
+    public static func quoteText(_ text: String) -> String {
+        let newLineCS = CharacterSet.init(charactersIn: newline)
+        let lines = text.components(separatedBy: newLineCS)
         let quoted = lines.map() {
             return "> \($0)"
         }
-        let quotedText = quoted.joinWithSeparator(newline)
+        let quotedText = quoted.joined(separator: newline)
         return quotedText
     }
 
-    public static func citationHeaderForMessage(message: IMessage, replyAll: Bool) -> String {
-        let dateFormatter = NSDateFormatter.init()
-        dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.LongStyle
+    public static func citationHeaderForMessage(_ message: IMessage, replyAll: Bool) -> String {
+        let dateFormatter = DateFormatter.init()
+        dateFormatter.dateStyle = DateFormatter.Style.long
+        dateFormatter.timeStyle = DateFormatter.Style.long
 
         let theDate = message.receivedDate
 
         var theNames = [String]()
         if replyAll {
             let contacts = message.allRecipienst().array
-            theNames.appendContentsOf(
-                contacts.map() { return replyNameFromContact($0 as! IContact) })
+            theNames.append(
+                contentsOf: contacts.map() { return replyNameFromContact($0 as! IContact) })
         } else {
             if let from = message.from {
                 theNames.append(replyNameFromContact(from))
@@ -50,7 +50,7 @@ public struct ReplyUtil {
         if theNames.count == 0 {
             if let rd = theDate {
                 return String.init(format: NSLocalizedString("Someone wrote on %@:", comment: "Reply to unknown sender with date"),
-                                   dateFormatter.stringFromDate(rd))
+                                   dateFormatter.string(from: rd as Date))
             } else {
                 return NSLocalizedString("Someone wrote:",
                                          comment: "Reply to unknown sender without date")
@@ -60,7 +60,7 @@ public struct ReplyUtil {
                 return String.init(
                     format: NSLocalizedString(
                         "%@ wrote on %@:", comment: "Reply to single contact, with date"),
-                    theNames[0], dateFormatter.stringFromDate(rd))
+                    theNames[0], dateFormatter.string(from: rd as Date))
             } else {
                 return String.init(
                     format: NSLocalizedString(
@@ -68,13 +68,13 @@ public struct ReplyUtil {
                     theNames[0])
             }
         } else {
-            let allNames = theNames.joinWithSeparator(nameSeparator)
+            let allNames = theNames.joined(separator: nameSeparator)
             if let rd = theDate {
                 return String.init(
                     format: NSLocalizedString(
                         "%@ wrote on %@:",
                         comment: "Reply to multiple contacts, with date"),
-                    allNames, dateFormatter.stringFromDate(rd))
+                    allNames, dateFormatter.string(from: rd as Date))
             } else {
                 return String.init(
                     format: NSLocalizedString(
@@ -89,7 +89,7 @@ public struct ReplyUtil {
                                  comment: "Mail footer/default text")
     }
 
-    public static func quotedMailTextForMail(mail: IMessage, replyAll: Bool) -> String {
+    public static func quotedMailTextForMail(_ mail: IMessage, replyAll: Bool) -> String {
         if let text = mail.longMessage {
             let quotedText = quoteText(text)
             let citation: String? = citationHeaderForMessage(mail, replyAll: replyAll)
@@ -100,7 +100,7 @@ public struct ReplyUtil {
         return footer()
     }
 
-    public static func replySubjectForMail(mail: IMessage) -> String {
+    public static func replySubjectForMail(_ mail: IMessage) -> String {
         if let subject = mail.subject {
             let re = NSLocalizedString(
                 "Re: ", comment: "The 'Re:' that gets appended to the subject line")

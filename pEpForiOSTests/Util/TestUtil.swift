@@ -15,9 +15,9 @@ class TestUtil {
     /**
      The maximum time most tests are allowed to run.
      */
-    static let waitTime: NSTimeInterval = 50
+    static let waitTime: TimeInterval = 50
 
-    static let connectonShutDownWaitTime: NSTimeInterval = 1
+    static let connectonShutDownWaitTime: TimeInterval = 1
     static let numberOfTriesConnectonShutDown = 5
 
     static var initialNumberOfRunningConnections = 0
@@ -40,7 +40,7 @@ class TestUtil {
             if CWTCPConnection.numberOfRunningConnections() == initialNumberOfRunningConnections {
                 break
             }
-            NSThread.sleepForTimeInterval(connectonShutDownWaitTime)
+            Thread.sleep(forTimeInterval: connectonShutDownWaitTime)
         }
         // This only works if there are no accounts configured in the app.
         XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(),
@@ -55,7 +55,7 @@ class TestUtil {
             if Service.refCounter.refCount == initialNumberOfServices {
                 break
             }
-            NSThread.sleepForTimeInterval(connectonShutDownWaitTime)
+            Thread.sleep(forTimeInterval: connectonShutDownWaitTime)
         }
         // This only works if there are no accounts configured in the app.
         XCTAssertEqual(Service.refCounter.refCount, initialNumberOfServices)
@@ -73,18 +73,18 @@ class TestUtil {
      Some code for accessing `NSBundle`s from Swift.
      */
     static func showBundles() {
-        for bundle in NSBundle.allBundles() {
+        for bundle in Bundle.allBundles {
             dumpBundle(bundle)
         }
 
-        let testBundle = NSBundle.init(forClass: PEPSessionTest.self)
+        let testBundle = Bundle.init(for: PEPSessionTest.self)
         dumpBundle(testBundle)
     }
 
     /**
      Print some essential properties of a bundle to the console.
      */
-    static func dumpBundle(bundle: NSBundle) {
+    static func dumpBundle(_ bundle: Bundle) {
         print("bundle \(bundle.bundleIdentifier) \(bundle.bundlePath)")
     }
 
@@ -93,38 +93,38 @@ class TestUtil {
      - Parameter session: The pEp session to import the key into.
      - Parameter fileName: The file name of the key (complete with extension)
      */
-    static func importKeyByFileName(session: PEPSession, fileName: String) {
-        let testBundle = NSBundle.init(forClass: PEPSessionTest.self)
-        guard let keyPath = testBundle.pathForResource(fileName, ofType: nil) else {
+    static func importKeyByFileName(_ session: PEPSession, fileName: String) {
+        let testBundle = Bundle.init(for: PEPSessionTest.self)
+        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
             XCTAssertTrue(false, "Could not find key with file name \(fileName)")
             return
         }
-        guard let data = NSData.init(contentsOfFile: keyPath) else {
+        guard let data = try? Data.init(contentsOf: URL(fileURLWithPath: keyPath)) else {
             XCTAssertTrue(false, "Could not load key with file name \(fileName)")
             return
         }
-        guard let content = NSString.init(data: data, encoding: NSASCIIStringEncoding) else {
+        guard let content = NSString.init(data: data, encoding: String.Encoding.ascii.rawValue) else {
             XCTAssertTrue(false, "Could not convert key with file name \(fileName) into data")
             return
         }
         session.importKey(content as String)
     }
 
-    static func loadDataWithFileName(fileName: String) -> NSData? {
-        let testBundle = NSBundle.init(forClass: PEPSessionTest.self)
+    static func loadDataWithFileName(_ fileName: String) -> Data? {
+        let testBundle = Bundle.init(for: PEPSessionTest.self)
 
-        guard let keyPath = testBundle.pathForResource(fileName, ofType: nil) else {
+        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
             XCTAssertTrue(false, "Could not find file named \(fileName)")
             return nil
         }
-        guard let data = NSData.init(contentsOfFile: keyPath) else {
+        guard let data = try? Data.init(contentsOf: URL(fileURLWithPath: keyPath)) else {
             XCTAssertTrue(false, "Could not load file named \(fileName)")
             return nil
         }
         return data
     }
 
-    static func setupSomeIdentities(session: PEPSession)
+    static func setupSomeIdentities(_ session: PEPSession)
         -> (identity: NSMutableDictionary, receiver1: PEPContact,
         receiver2: PEPContact, receiver3: PEPContact,
         receiver4: PEPContact) {
@@ -157,27 +157,27 @@ class TestUtil {
      so they don't interfere with `isEqual`.
      */
     static func removeUnneededKeysForComparison(
-        keys: [String], fromMail: NSDictionary) -> NSDictionary {
+        _ keys: [String], fromMail: NSDictionary) -> NSDictionary {
         let m = fromMail.mutableCopy() as! NSMutableDictionary
         for k in keys {
-            m.removeObjectForKey(k)
+            m.removeObject(forKey: k)
         }
         var replacements: [(NSCopying, NSCopying)] = []
         for (k, v) in m {
-            if v.isKindOfClass(NSDictionary) {
+            if (v as AnyObject).isKind(of: NSDictionary) {
                 replacements.append((k as! NSCopying,
                     removeUnneededKeysForComparison(keys, fromMail: v as! NSDictionary)))
-            } else if v.isKindOfClass(NSArray) {
+            } else if (v as AnyObject).isKind(of: NSArray) {
                 let ar = v as! NSArray
-                let fn: AnyObject -> AnyObject = { element in
-                    if element.isKindOfClass(NSDictionary) {
+                let fn: (AnyObject) -> AnyObject = { element in
+                    if element.isKind(of: NSDictionary) {
                         return self.removeUnneededKeysForComparison(
                             keys, fromMail: element as! NSDictionary)
                     } else {
                         return element
                     }
                 }
-                let newArray = ar.map(fn)
+                let newArray = ar.map(fn as! (NSFastEnumerationIterator.Element) -> _)
                 replacements.append((k as! NSCopying, newArray))
             }
         }
@@ -190,10 +190,10 @@ class TestUtil {
     /**
      Dumps some diff between two NSDirectories to the console.
      */
-    static func diffDictionaries(dict1: NSDictionary, dict2: NSDictionary) {
+    static func diffDictionaries(_ dict1: NSDictionary, dict2: NSDictionary) {
         for (k,v1) in dict1 {
             if let v2 = dict2[k as! NSCopying] {
-                if !v1.isEqual(v2) {
+                if !(v1 as AnyObject).isEqual(v2) {
                     print("Difference in '\(k)': '\(v2)' <-> '\(v1)'")
                 }
             } else {
@@ -207,20 +207,20 @@ class TestUtil {
         }
     }
 
-    static func runAddressBookTest(testBlock: () -> (), addressBook: AddressBook,
-                                   testCase: XCTestCase, waitTime: NSTimeInterval) {
+    static func runAddressBookTest(_ testBlock: () -> (), addressBook: AddressBook,
+                                   testCase: XCTestCase, waitTime: TimeInterval) {
         // We need authorization for this test to work
-        if addressBook.authorizationStatus == .NotDetermined {
-            let exp = testCase.expectationWithDescription("granted")
+        if addressBook.authorizationStatus == .notDetermined {
+            let exp = testCase.expectation(description: "granted")
             addressBook.authorize({ ab in
                 exp.fulfill()
             })
-            testCase.waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+            testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
-                XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
+                XCTAssertTrue(addressBook.authorizationStatus == .authorized)
             })
         } else {
-            XCTAssertTrue(addressBook.authorizationStatus == .Authorized)
+            XCTAssertTrue(addressBook.authorizationStatus == .authorized)
         }
         testBlock()
     }

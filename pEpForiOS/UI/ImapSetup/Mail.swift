@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class Mail {
+open class Mail {
 
     var senderName:String
     var subject:String

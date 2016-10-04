@@ -31,9 +31,9 @@ class GrandOperatorTests: XCTestCase {
      Proof of concept for using managed object context in unit tests.
      */
     func testNewMessage() {
-        let message = NSEntityDescription.insertNewObjectForEntityForName(
-            Message.entityName(),
-            inManagedObjectContext:
+        let message = NSEntityDescription.insertNewObject(
+            forEntityName: Message.entityName(),
+            into:
             persistentSetup.grandOperator.coreDataUtil.managedObjectContext) as? Message
         XCTAssertNotNil(message)
         message!.subject = "Subject"
@@ -41,14 +41,14 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testFetchFolders() {
-        let exp = expectationWithDescription("foldersFetched")
+        let exp = expectation(description: "foldersFetched")
         persistentSetup.grandOperator.fetchFolders(
             persistentSetup.connectionInfo, completionBlock: { error in
                 XCTAssertNil(error)
                 exp.fulfill()
         })
 
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
@@ -57,8 +57,8 @@ class GrandOperatorTests: XCTestCase {
         XCTAssertGreaterThan(
             model.folderCountByPredicate(p), 0)
         XCTAssertEqual(model.folderByType(
-            .Inbox, email: self.persistentSetup.accountEmail)?.name.lowercaseString,
-                       ImapSync.defaultImapInboxName.lowercaseString)
+            .Inbox, email: self.persistentSetup.accountEmail)?.name.lowercased(),
+                       ImapSync.defaultImapInboxName.lowercased())
     }
 
     func createMail() -> Message {
@@ -85,7 +85,7 @@ class GrandOperatorTests: XCTestCase {
             connectInfo: persistentSetup.connectionInfo,
             coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
             connectionManager: persistentSetup.grandOperator.connectionManager)
-        let expFoldersFetched = expectationWithDescription("expFoldersFetched")
+        let expFoldersFetched = expectation(description: "expFoldersFetched")
         persistentSetup.grandOperator.chainOperations(
             [op1, op2],
             completionBlock: { error in
@@ -94,7 +94,7 @@ class GrandOperatorTests: XCTestCase {
                 callbackNumber += 1
                 expFoldersFetched.fulfill()
         })
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             if let folders = self.persistentSetup.model.foldersByPredicate(
                 NSPredicate.init(value: true), sortDescriptors: nil) {
@@ -103,20 +103,20 @@ class GrandOperatorTests: XCTestCase {
                 XCTAssertTrue(false, "Expected folders created")
             }
             let folder = self.persistentSetup.model.folderByType(
-                FolderType.Inbox, email: self.persistentSetup.connectionInfo.email)
+                FolderType.inbox, email: self.persistentSetup.connectionInfo.email)
             XCTAssertNotNil(folder)
         })
     }
 
-    func createSpecialFolders(account: IAccount) {
-        let expSpecialFoldersCreated = expectationWithDescription("expSpecialFoldersCreated")
+    func createSpecialFolders(_ account: IAccount) {
+        let expSpecialFoldersCreated = expectation(description: "expSpecialFoldersCreated")
         persistentSetup.grandOperator.createSpecialLocalFolders(
             account.email, completionBlock: { error in
                 XCTAssertNil(error)
                 expSpecialFoldersCreated.fulfill()
         })
 
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -133,19 +133,19 @@ class GrandOperatorTests: XCTestCase {
         createSpecialFolders(account)
 
         guard let outFolder = persistentSetup.model.folderByType(
-            .LocalOutbox, email:account.email) else {
+            .localOutbox, email:account.email) else {
                 XCTAssertTrue(false)
                 return
         }
         XCTAssertEqual(outFolder.messages.count, 0)
 
         let msg = createMail()
-        let exp = expectationWithDescription("mailSent")
+        let exp = expectation(description: "mailSent")
         persistentSetup.grandOperator.sendMail(msg, account: account, completionBlock: { error in
             XCTAssertNil(error)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
         XCTAssertEqual(outFolder.messages.count, 0)
@@ -163,19 +163,19 @@ class GrandOperatorTests: XCTestCase {
         createSpecialFolders(account)
 
         guard let outFolder = persistentSetup.model.folderByType(
-            .LocalOutbox, email:account.email) else {
+            .localOutbox, email:account.email) else {
                 XCTAssertTrue(false)
                 return
         }
         XCTAssertEqual(outFolder.messages.count, 0)
 
         let msg = createMail()
-        let exp = expectationWithDescription("mailSent")
+        let exp = expectation(description: "mailSent")
         persistentSetup.grandOperator.sendMail(msg, account: account, completionBlock: { error in
             XCTAssertNotNil(error)
             exp.fulfill()
         })
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
@@ -189,51 +189,51 @@ class GrandOperatorTests: XCTestCase {
                 return
         }
 
-        let expFoldersFetched = expectationWithDescription("foldersFetched")
+        let expFoldersFetched = expectation(description: "foldersFetched")
         persistentSetup.grandOperator.fetchFolders(correct, completionBlock: { error in
             XCTAssertNil(error)
             expFoldersFetched.fulfill()
         })
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
         guard let draftsFolder = persistentSetup.model.folderByType(
-            .Drafts, email: account.email) else {
+            .drafts, email: account.email) else {
                 XCTAssertTrue(false)
                 return
         }
 
-        let expDraftsFetched = expectationWithDescription("expDraftsFetched")
+        let expDraftsFetched = expectation(description: "expDraftsFetched")
         persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(
             [account.connectInfo], folderName: draftsFolder.name, completionBlock: { error in
                 XCTAssertNil(error)
                 expDraftsFetched.fulfill()
         })
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
         let numDrafts = draftsFolder.messages.count
 
         let msg = createMail()
-        let expDraftSaved = expectationWithDescription("expDraftSaved")
+        let expDraftSaved = expectation(description: "expDraftSaved")
         persistentSetup.grandOperator.saveDraftMail(
             msg, account: account, completionBlock: { error in
                 XCTAssertNil(error)
                 expDraftSaved.fulfill()
         })
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
-        let expDraftsFetched2 = expectationWithDescription("expDraftsFetched2")
+        let expDraftsFetched2 = expectation(description: "expDraftsFetched2")
         persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(
             [account.connectInfo], folderName: draftsFolder.name, completionBlock: { error in
                 XCTAssertNil(error)
                 expDraftsFetched2.fulfill()
         })
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
@@ -241,18 +241,18 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testSyncFlags() {
-        let emailsFetched = expectationWithDescription("emailsFetched")
+        let emailsFetched = expectation(description: "emailsFetched")
         persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(
             [persistentSetup.connectionInfo], folderName: nil, completionBlock: { error in
                 XCTAssertNil(error)
                 emailsFetched.fulfill()
         })
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
         guard let inbox = persistentSetup.model.folderByType(
-            .Inbox, email: persistentSetup.accountEmail) else {
+            .inbox, email: persistentSetup.accountEmail) else {
                 XCTAssertTrue(false)
                 return
         }
@@ -266,10 +266,10 @@ class GrandOperatorTests: XCTestCase {
                 XCTAssertTrue(false)
                 break
             }
-            m.flagFlagged = NSNumber.init(bool: !m.flagFlagged.boolValue)
+            m.flagFlagged = NSNumber.init(value: !m.flagFlagged.boolValue as Bool)
             m.updateFlags()
 
-            let exp = expectationWithDescription("flagsSynced\(counter)")
+            let exp = expectation(withDescription: "flagsSynced\(counter)")
             expectations.append(exp)
             counter += 1
             persistentSetup.grandOperator.syncFlagsToServerForFolder(
@@ -278,7 +278,7 @@ class GrandOperatorTests: XCTestCase {
                     exp.fulfill()
             })
         }
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
     }
@@ -286,37 +286,37 @@ class GrandOperatorTests: XCTestCase {
     func testDeleteFolder() {
         testFetchFolders()
 
-        let expFolderCreated = expectationWithDescription("expFolderCreated")
+        let expFolderCreated = expectation(description: "expFolderCreated")
         persistentSetup.grandOperator.createFolderOfType(
-        persistentSetup.account, folderType: .Drafts) { error in
+        persistentSetup.account, folderType: .drafts) { error in
             XCTAssertNil(error)
             expFolderCreated.fulfill()
         }
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
         guard let draftsFolder = persistentSetup.model.folderByType(
-            .Drafts, email: persistentSetup.accountEmail) else {
+            .drafts, email: persistentSetup.accountEmail) else {
                 XCTAssertTrue(false)
                 return
         }
 
-        let expFolderDeleted = expectationWithDescription("expFolderDeleted")
+        let expFolderDeleted = expectation(description: "expFolderDeleted")
         persistentSetup.grandOperator.deleteFolder( draftsFolder) { error in
             XCTAssertNil(error)
             expFolderDeleted.fulfill()
         }
-        waitForExpectationsWithTimeout(TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
-        XCTAssertNil(persistentSetup.model.folderByType(.Drafts,
+        XCTAssertNil(persistentSetup.model.folderByType(.drafts,
             email: persistentSetup.accountEmail))
 
         testFetchFolders()
 
-        XCTAssertNil(persistentSetup.model.folderByType(.Drafts,
+        XCTAssertNil(persistentSetup.model.folderByType(.drafts,
             email: persistentSetup.accountEmail))
     }
 }

@@ -9,10 +9,10 @@
 import UIKit
 
 extension UIAlertController {
-    func setupActionFromConnectionTransport(transport: ConnectionTransport,
-                                            block: (ConnectionTransport) -> ()) {
+    func setupActionFromConnectionTransport(_ transport: ConnectionTransport,
+                                            block: @escaping (ConnectionTransport) -> ()) {
         let action = UIAlertAction(title: transport.localizedString(),
-                                   style: .Default, handler: { action in
+                                   style: .default, handler: { action in
                                     block(transport)
         })
         self.addAction(action)
@@ -39,19 +39,19 @@ class IMAPSettingsTableView: UITableViewController  {
         self.tableView.estimatedRowHeight = 44
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewWidthAligner.alignViews([serverValueTextField,
             portValueTextField], parentView: self.view)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         if model.serverIMAP == nil {
             serverValue.becomeFirstResponder()
         }
-        portValue.keyboardType = UIKeyboardType.NumberPad
+        portValue.keyboardType = UIKeyboardType.numberPad
         updateView()
     }
 
@@ -63,34 +63,34 @@ class IMAPSettingsTableView: UITableViewController  {
         serverValue.text = model.serverIMAP
         portValue.text = String(model.portIMAP)
 
-        transportSecurity.setTitle(model.transportIMAP.localizedString(), forState: .Normal)
+        transportSecurity.setTitle(model.transportIMAP.localizedString(), for: UIControlState())
     }
 
-    @IBAction func alertWithSecurityValues(sender: AnyObject) {
+    @IBAction func alertWithSecurityValues(_ sender: AnyObject) {
         let alertController = UIAlertController(
             title: NSLocalizedString("Transport protocol",
                 comment: "UI alert title for transport protocol"),
             message: NSLocalizedString("Choose a Security protocol for your accont",
                 comment: "UI alert message for transport protocol"),
-            preferredStyle: .ActionSheet)
+            preferredStyle: .actionSheet)
 
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportIMAP = transport
             self.updateView()
         }
 
-        alertController.setupActionFromConnectionTransport(.Plain, block: block)
+        alertController.setupActionFromConnectionTransport(.plain, block: block)
         alertController.setupActionFromConnectionTransport(.TLS, block: block)
-        alertController.setupActionFromConnectionTransport(.StartTLS, block: block)
+        alertController.setupActionFromConnectionTransport(.startTLS, block: block)
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
-            style: .Cancel) { (action) in}
+            style: .cancel) { (action) in}
         alertController.addAction(cancelAction)
-        self.presentViewController(alertController, animated: true) {}
+        self.present(alertController, animated: true) {}
     }
 
-    @IBAction func changePort(sender: UITextField) {
+    @IBAction func changePort(_ sender: UITextField) {
         if let text = portValue.text {
             if let port = UInt16(text) {
                 model.portIMAP = port
@@ -98,13 +98,13 @@ class IMAPSettingsTableView: UITableViewController  {
         }
     }
 
-    @IBAction func changeServer(sender: UITextField) {
+    @IBAction func changeServer(_ sender: UITextField) {
         model.serverIMAP = serverValue.text!
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SMTPSettings" {
-            if let destination = segue.destinationViewController as? SMTPSettingsTableView {
+            if let destination = segue.destination as? SMTPSettingsTableView {
                 destination.appConfig = self.appConfig
                 destination.model = self.model
             }

@@ -9,16 +9,27 @@
 import UIKit
 import CoreData
 import MobileCoreServices
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 //import NSEvent
 
-public class ComposeViewController: UITableViewController, UINavigationControllerDelegate {
+open class ComposeViewController: UITableViewController, UINavigationControllerDelegate {
     struct UIModel {
         enum Mode {
-            case Normal
-            case Search
+            case normal
+            case search
         }
 
-        var tableMode: Mode = .Normal
+        var tableMode: Mode = .normal
 
         var searchSnippet: String? = nil
 
@@ -79,7 +90,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
      */
     let delimiterWithSpace: String
 
-    let delimiterChars: NSCharacterSet = NSCharacterSet.init(charactersInString: ":,")
+    let delimiterChars: CharacterSet = CharacterSet.init(charactersIn: ":,")
 
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var attachedButton: UIButton!
@@ -129,7 +140,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
     /**
      For showing sending mail activity.
      */
-    lazy var activityIndicator = UIActivityIndicatorView.init(activityIndicatorStyle: .Gray)
+    lazy var activityIndicator = UIActivityIndicatorView.init(activityIndicatorStyle: .gray)
 
     /**
      This originally contains the send button. We need that when exchanging the send
@@ -140,7 +151,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
     /**
      Queue for background operations, like checking outgoing message color.
      */
-    let operationQueue = NSOperationQueue()
+    let operationQueue = OperationQueue()
 
     /** Pattern for removing any trailing "," and whitespace from recipients */
     let trailingPattern: String
@@ -150,25 +161,25 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
 
     enum ComposeMode {
         /** Plain old compose */
-        case Normal
+        case normal
 
         /** Reply to from */
-        case ReplyFrom
+        case replyFrom
 
         /** Reply to all */
-        case ReplyAll
+        case replyAll
 
         /** Forward */
-        case Forward
+        case forward
 
         /** Composing a previously drafted email */
-        case ComposeDraft
+        case composeDraft
     }
 
     /**
      Choose whether this should be a simple compose, or reply, forward etc.
      */
-    var composeMode: ComposeMode = .Normal
+    var composeMode: ComposeMode = .normal
 
     /**
      For certain values of `composeMode`, there will be an email to act on
@@ -187,16 +198,16 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         super.init(coder: aDecoder)
     }
 
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(tableView)
     }
 
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    override public func viewWillAppear(animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let forwardedMessage = forwardedMessage() {
             // If we forward a message, add its contents as data
@@ -219,9 +230,9 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         updateViewFromRecipients()
     }
 
-    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == unwindToEmailListSaveDraftSegue {
-            guard let vc = segue.destinationViewController as? EmailListViewController else {
+            guard let vc = segue.destination as? EmailListViewController else {
                 return
             }
             vc.draftMessageToStore = messageForSending()
@@ -232,20 +243,20 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
     func overrideBackButton() {
         let barButton = UIBarButtonItem.init(
             title: NSLocalizedString("Cancel", comment: "Abort the message composition"),
-            style: .Plain, target: self, action: #selector(handleSaveDraftQuery))
+            style: .plain, target: self, action: #selector(handleSaveDraftQuery))
         navigationItem.leftBarButtonItem = barButton
     }
 
     func handleSaveDraftQuery() {
         if model.isDirty {
             let alert = UIAlertController.init(
-                title: nil, message: nil, preferredStyle: .ActionSheet)
+                title: nil, message: nil, preferredStyle: .actionSheet)
 
             let actionDelete = UIAlertAction.init(
                 title: NSLocalizedString(
                     "Delete Draft", comment: "Cancel message composition without save"),
-                style: .Destructive, handler: { alert in
-                    self.performSegueWithIdentifier(self.unwindToEmailListSegue,
+                style: .destructive, handler: { alert in
+                    self.performSegue(withIdentifier: self.unwindToEmailListSegue,
                         sender: nil)
             })
             alert.addAction(actionDelete)
@@ -253,8 +264,8 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
             let actionSave = UIAlertAction.init(
                 title: NSLocalizedString(
                     "Save Draft", comment: "Save draft message"),
-                style: .Default, handler: { alert in
-                    self.performSegueWithIdentifier(self.unwindToEmailListSaveDraftSegue,
+                style: .default, handler: { alert in
+                    self.performSegue(withIdentifier: self.unwindToEmailListSaveDraftSegue,
                         sender: nil)
             })
             alert.addAction(actionSave)
@@ -262,26 +273,26 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
             let actionCancel = UIAlertAction.init(
                 title: NSLocalizedString(
                     "Cancel", comment: "Abort the abort of message composition :)"),
-                style: .Cancel, handler: nil)
+                style: .cancel, handler: nil)
             alert.addAction(actionCancel)
 
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         } else {
-            self.performSegueWithIdentifier(self.unwindToEmailListSegue, sender: nil)
+            self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: nil)
         }
     }
 
     func updateContacts() {
         if let snippet = model.searchSnippet {
             if let privateMOC = appConfig?.coreDataUtil.privateContext() {
-                privateMOC.performBlock() {
+                privateMOC.perform() {
                     let modelBackground = Model.init(context: privateMOC)
                     let contacts = modelBackground.contactsBySnippet(snippet).map() {
                         AddressbookContact.init(contact: $0) as IContact
                     }
                     GCD.onMain() {
                         self.model.contacts.removeAll()
-                        self.model.contacts.appendContentsOf(contacts)
+                        self.model.contacts.append(contentsOf: contacts)
                         self.tableView.reloadData()
                     }
                 }
@@ -291,7 +302,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
 
     func resetTableViewToNormal() {
         model.searchSnippet = ""
-        model.tableMode = .Normal
+        model.tableMode = .normal
         model.contacts = []
         tableView.reloadData()
     }
@@ -305,7 +316,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         var allCorrect = true
         for (_, cell) in recipientCells {
             let tf = cell.recipientTextView
-            if let text = tf.text {
+            if let text = tf?.text {
                 let trailingRemoved = text.removeTrailingPattern(trailingPattern)
                 let leadingRemoved = trailingRemoved.removeLeadingPattern(leadingPattern)
                 if !leadingRemoved.isOnlyWhiteSpace() {
@@ -317,20 +328,20 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
                 }
             }
         }
-        sendButton.enabled = !allEmpty && allCorrect
-        if !sendButton.enabled {
+        sendButton.isEnabled = !allEmpty && allCorrect
+        if !sendButton.isEnabled {
             setPrivacyColor(PEP_color_no_color, toSendButton: sendButton)
         }
-        return sendButton.enabled
+        return sendButton.isEnabled
     }
 
-    func setPrivacyColor(color: PEP_color, toSendButton: UIBarButtonItem) {
+    func setPrivacyColor(_ color: PEP_color, toSendButton: UIBarButtonItem) {
         var image: UIImage?
         if let uiColor = UIHelper.sendButtonBackgroundColorFromPepColor(color) {
             image = UIHelper.imageFromColor(uiColor)
         }
-        toSendButton.setBackgroundImage(image, forState: .Normal,
-                                        barMetrics: UIBarMetrics.Default)
+        toSendButton.setBackgroundImage(image, for: UIControlState(),
+                                        barMetrics: UIBarMetrics.default)
     }
 
     /**
@@ -350,7 +361,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
             let op = OutgoingMessageColorOperation()
             op.pepMail = ComposeViewHelper.pepMailFromViewForCheckingRating(self)
             op.completionBlock = {
-                if !op.cancelled {
+                if !op.isCancelled {
                     if let pepColor = op.pepColorRating {
                         let color = PEPUtil.colorFromPepRating(pepColor)
                         GCD.onMain() {
@@ -370,7 +381,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
      */
     func updateNetworkActivity() {
         if model.networkActivity {
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             if originalRightBarButtonItem == nil {
                 // save the origignal
                 originalRightBarButtonItem = navigationItem.rightBarButtonItem
@@ -379,7 +390,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
             let barButtonWithActivity = UIBarButtonItem.init(customView: activityIndicator)
             navigationItem.rightBarButtonItem = barButtonWithActivity
         } else {
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             // restore the original
             navigationItem.rightBarButtonItem = originalRightBarButtonItem
             activityIndicator.stopAnimating()
@@ -389,7 +400,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
     /**
      Updates the given message with data from the view.
      */
-    func populateMessageWithViewData(message: IMessage, account: IAccount,
+    func populateMessageWithViewData(_ message: IMessage, account: IAccount,
                                      model: IModel) {
         // reset
         message.to = []
@@ -409,10 +420,10 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         // recipients
         for (_, cell) in recipientCells {
             let tf = cell.recipientTextView
-            if var text = tf.text {
+            if var text = tf?.text {
                 text = text.removeLeadingPattern(leadingPattern)
                 if !text.isOnlyWhiteSpace() {
-                    let mailStrings1 = text.componentsSeparatedByString(recipientStringDelimiter).map() {
+                    let mailStrings1 = text.components(separatedBy: recipientStringDelimiter).map() {
                         $0.trimmedWhiteSpace()
                     }
                     let mailStrings2 = mailStrings1.filter() {
@@ -426,11 +437,11 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
                         if let rt = cell.recipientType {
                             let set = NSOrderedSet.init(array: contacts.map() {$0 as AnyObject})
                             switch rt {
-                            case .To:
+                            case .to:
                                 message.to = set
-                            case .CC:
+                            case .cc:
                                 message.cc = set
-                            case .BCC:
+                            case .bcc:
                                 message.bcc = set
                             }
                         }
@@ -452,7 +463,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
      Updates the given message with data from the original message,
      if it exists (e.g., reply)
      */
-    func populateMessageWithReplyData(message: IMessage) {
+    func populateMessageWithReplyData(_ message: IMessage) {
         guard let om = replyFromMessage() else {
             return
         }
@@ -470,7 +481,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
      and a child message (i.e., the message containing the reply).
      See https://cr.yp.to/immhf/thread.html for general strategy.
      */
-    func setupMessageReferences(parent: IMessage, message: IMessage, model: IModel) {
+    func setupMessageReferences(_ parent: IMessage, message: IMessage, model: IModel) {
         // Inherit all references from the parent
         message.references = parent.references
 
@@ -478,7 +489,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         if let references = message.references.mutableCopy() as? NSMutableOrderedSet {
             if let omid = parent.messageID {
                 let ref = model.insertOrUpdateMessageReference(omid)
-                references.addObject(ref)
+                references.add(ref)
                 message.references = references
             }
         }
@@ -490,7 +501,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
      - Note: The forwarded mail attachment was already added to the model,
      it will be handled by the general attachment handling in another function.
      */
-    func populateMessageWithForwardedData(message: IMessage) {
+    func populateMessageWithForwardedData(_ message: IMessage) {
         guard let _ = forwardedMessage() else {
             return
         }
@@ -501,14 +512,14 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         }
     }
 
-    func populateMessage(message: IMessage, withAttachmentsFromTextView theTextView: UITextView?) {
+    func populateMessage(_ message: IMessage, withAttachmentsFromTextView theTextView: UITextView?) {
         guard let textView = theTextView else {
             Log.warnComponent(comp, "Trying to get attachments, but no text view")
             return
         }
         let text = textView.attributedText
-        text.enumerateAttribute(
-        NSAttachmentAttributeName, inRange: text.wholeRange(), options: []) {
+        text?.enumerateAttribute(
+        NSAttachmentAttributeName, in: (text?.wholeRange())!, options: []) {
             value, range, stop in
             guard let _ = value as? NSTextAttachment else {
                 return
@@ -547,7 +558,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
 
     // MARK: -- Actions
 
-    @IBAction func sendButtonTapped(sender: UIBarButtonItem) {
+    @IBAction func sendButtonTapped(_ sender: UIBarButtonItem) {
         model.networkActivity = true
         updateNetworkActivity()
 
@@ -575,14 +586,14 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
                         title: NSLocalizedString("Error sending message",
                             comment: "Title for the 'Error sending mail' dialog"))
                     if error == nil {
-                        self.performSegueWithIdentifier(self.unwindToEmailListMailSentSegue,
+                        self.performSegue(withIdentifier: self.unwindToEmailListMailSentSegue,
                             sender: sender)
                     }
                 }
         })
     }
 
-    @IBAction func attachedField(sender: AnyObject) {
+    @IBAction func attachedField(_ sender: AnyObject) {
         let attachedAlertView = UIAlertController()
         attachedAlertView.title = NSLocalizedString("AttachedFiles",
                           comment: "Title for attached files alert view")
@@ -592,39 +603,39 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         let photosAction = UIAlertAction(title: NSLocalizedString(
             "Photos / Videos",
             comment: "Title for photos/videos action in attached files alert view"),
-            style: UIAlertActionStyle.Default) {
+            style: UIAlertActionStyle.default) {
             UIAlertAction in
                 let possibleAttachedImages = UIImagePickerController.init()
-                possibleAttachedImages.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
+                possibleAttachedImages.modalPresentationStyle = UIModalPresentationStyle.currentContext
                 possibleAttachedImages.delegate = self
                 possibleAttachedImages.allowsEditing = false
-                possibleAttachedImages.sourceType = .PhotoLibrary
-                if let mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(
-                    .PhotoLibrary) {
+                possibleAttachedImages.sourceType = .photoLibrary
+                if let mediaTypes = UIImagePickerController.availableMediaTypes(
+                    for: .photoLibrary) {
                     possibleAttachedImages.mediaTypes = mediaTypes
                 } else {
                     possibleAttachedImages.mediaTypes = [kUTTypeImage as String,
                                                          kUTTypeMovie as String]
                 }
-                self.presentViewController(possibleAttachedImages, animated: true, completion: nil)
+                self.present(possibleAttachedImages, animated: true, completion: nil)
             }
         attachedAlertView.addAction(photosAction)
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel",
                 comment: "Cancel button text for email actions menu (reply, forward etc.)"),
-            style: .Cancel) { (action) in }
+            style: .cancel) { (action) in }
 
         attachedAlertView.addAction(cancelAction)
 
-         presentViewController(attachedAlertView, animated: true, completion: nil)
+         present(attachedAlertView, animated: true, completion: nil)
     }
 
     // MARK: -- UITableViewDelegate
 
-    override public func tableView(tableView: UITableView,
+    override open func tableView(_ tableView: UITableView,
                             heightForHeaderInSection section: Int) -> CGFloat {
-        if model.tableMode == UIModel.Mode.Search {
+        if model.tableMode == UIModel.Mode.search {
             if let cell = model.recipientCell {
                 return cell.bounds.height
             }
@@ -632,9 +643,9 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         return 0
     }
 
-    override public func tableView(tableView: UITableView,
+    override open func tableView(_ tableView: UITableView,
                             viewForHeaderInSection section: Int) -> UIView? {
-        if model.tableMode == UIModel.Mode.Search && section == 0 {
+        if model.tableMode == UIModel.Mode.search && section == 0 {
             // We are reusing an ordinary cell as a header, this might lead to:
             // "no index path for table cell being reused".
             // Can probably ignored.
@@ -643,18 +654,18 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         return nil
     }
 
-    override public func tableView(tableView: UITableView, willDisplayHeaderView view: UIView,
+    override open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView,
                    forSection section: Int) {
-        if model.tableMode == UIModel.Mode.Search && section == 0 {
+        if model.tableMode == UIModel.Mode.search && section == 0 {
             model.recipientCell?.recipientTextView.becomeFirstResponder()
         }
     }
 
-    override public func tableView(tableView: UITableView,
-                            didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if model.tableMode == UIModel.Mode.Search {
+    override open func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
+        if model.tableMode == UIModel.Mode.search {
             if let cell = model.recipientCell {
-                let c = model.contacts[indexPath.row]
+                let c = model.contacts[(indexPath as NSIndexPath).row]
                 if let r = ComposeViewHelper.currentRecipientRangeFromText(
                     cell.recipientTextView.text,
                     aroundCaretPosition: cell.recipientTextView.selectedRange.location) {
@@ -670,13 +681,13 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         }
     }
 
-    override public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell,
-                            forRowAtIndexPath indexPath: NSIndexPath) {
-        if model.tableMode == UIModel.Mode.Normal {
+    override open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
+                            forRowAt indexPath: IndexPath) {
+        if model.tableMode == UIModel.Mode.normal {
             if let cell = model.recipientCell {
                 cell.recipientTextView.becomeFirstResponder()
             }
-            if indexPath.row == bodyTextRowNumber {
+            if (indexPath as NSIndexPath).row == bodyTextRowNumber {
                 cell.separatorInset = UIEdgeInsets.init(top: 0,left: cell.bounds.size.width/2,
                                                         bottom: 0,right: cell.bounds.size.width/2)
 
@@ -686,13 +697,13 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
 
     // MARK: -- UITableViewDataSource
 
-    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override open func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override public func tableView(tableView: UITableView,
+    override open func tableView(_ tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
-        if model.tableMode == UIModel.Mode.Normal {
+        if model.tableMode == UIModel.Mode.normal {
             return bodyTextRowNumber + 1
         } else {
             return model.contacts.count
@@ -703,7 +714,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
      - Returns: The original message to be replied on, if it's a reply.
      */
     func replyFromMessage() -> IMessage? {
-        if composeMode == .ReplyFrom {
+        if composeMode == .replyFrom {
             if let om = originalMessage {
                 return om
             }
@@ -715,7 +726,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
      - Returns: The message that has to be forwarded.
      */
     func forwardedMessage() -> IMessage? {
-        if composeMode == .Forward {
+        if composeMode == .forward {
             if let om = originalMessage {
                 return om
             }
@@ -727,7 +738,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
      - Returns: The draft message that should be used as a base for the compose.
      */
     func composeFromDraftMessage() -> IMessage? {
-        if composeMode == .ComposeDraft {
+        if composeMode == .composeDraft {
             if let om = originalMessage {
                 return om
             }
@@ -735,30 +746,30 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         return nil
     }
 
-    override public func tableView(tableView: UITableView,
-                            cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let recipientCellID = "RecipientCell"
         let subjectTableViewCellID = "SubjectTableViewCell"
         let messageBodyCellID = "MessageBodyCell"
         let contactTableViewCellID = "ContactTableViewCell"
 
-        if model.tableMode == UIModel.Mode.Normal {
+        if model.tableMode == UIModel.Mode.normal {
             // Normal mode
-            if indexPath.row < subjectRowNumber {
+            if (indexPath as NSIndexPath).row < subjectRowNumber {
                 // Recipient cell
-                let cell = tableView.dequeueReusableCellWithIdentifier(
-                    recipientCellID, forIndexPath: indexPath) as! RecipientCell
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: recipientCellID, for: indexPath) as! RecipientCell
 
                 if cell.recipientType == nil {
-                    cell.recipientType = RecipientType.fromRawValue(indexPath.row + 1)
+                    cell.recipientType = RecipientType.fromRawValue((indexPath as NSIndexPath).row + 1)
                     cell.recipientTextView.delegate = self
 
                     // Cache the cell for later use
                     recipientCellsByTextView[cell.recipientTextView] = cell
-                    recipientCells[indexPath.row] = cell
+                    recipientCells[(indexPath as NSIndexPath).row] = cell
 
-                    cell.recipientTextView.font = UIFont.preferredFontForTextStyle(
-                        UIFontTextStyleBody)
+                    cell.recipientTextView.font = UIFont.preferredFont(
+                        forTextStyle: UIFontTextStyle.body)
 
                     var changedRecipients = false
 
@@ -775,7 +786,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
                     }
 
                     // Handle reply to for .To
-                    if cell.recipientType == .To {
+                    if cell.recipientType == .to {
                         if let om = replyFromMessage() {
                             if let from = om.from {
                                 ComposeViewHelper.transferContacts(
@@ -792,9 +803,9 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
                     if recipientTextAttributes == nil {
                         var attributeRange: NSRange = NSMakeRange(0, 1)
                         recipientTextAttributes =
-                            cell.recipientTextView.attributedText.attributesAtIndex(
-                                0, longestEffectiveRange: &attributeRange,
-                                inRange: NSRange.init(location: 0, length: 1))
+                            cell.recipientTextView.attributedText.attributes(
+                                at: 0, longestEffectiveRange: &attributeRange,
+                                in: NSRange.init(location: 0, length: 1)) as [String : AnyObject]?
                     }
 
                     if changedRecipients {
@@ -804,14 +815,14 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
                 }
 
                 return cell
-            } else if indexPath.row == subjectRowNumber {
+            } else if (indexPath as NSIndexPath).row == subjectRowNumber {
                 // subject cell
-                let cell = tableView.dequeueReusableCellWithIdentifier(
-                    subjectTableViewCellID, forIndexPath: indexPath) as! SubjectTableViewCell
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: subjectTableViewCellID, for: indexPath) as! SubjectTableViewCell
                 // Store for later access
                 subjectTextField = cell.subjectTextField
 
-                cell.subjectTextField.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+                cell.subjectTextField.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
 
                 cell.subjectTextField.delegate = self
 
@@ -826,16 +837,16 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
                 return cell
             } else { // if indexPath.row == bodyTextRowNumber
                 // Body message cell
-                let cell = tableView.dequeueReusableCellWithIdentifier(
-                    messageBodyCellID, forIndexPath: indexPath) as! MessageBodyCell
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: messageBodyCellID, for: indexPath) as! MessageBodyCell
                 cell.bodyTextView.delegate = self
 
                 // Store the body text field for later access
                 longBodyMessageTextView = cell.bodyTextView
 
-                cell.bodyTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+                cell.bodyTextView.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
 
-                let replyAll = composeMode == .ReplyAll
+                let replyAll = composeMode == .replyAll
                 if let om = replyFromMessage() {
                     let text = ReplyUtil.quotedMailTextForMail(om, replyAll: replyAll)
                     cell.bodyTextView.text = text
@@ -851,7 +862,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
 
                 // Give it the focus, if it's not a reply. For non-replies, the to text
                 // field will get the focus.
-                if composeMode == .ReplyFrom || composeMode == .ReplyAll {
+                if composeMode == .replyFrom || composeMode == .replyAll {
                     cell.bodyTextView.becomeFirstResponder()
                 }
 
@@ -859,10 +870,10 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
             }
         } else {
             // Search mode
-            let contactIndex = indexPath.row
+            let contactIndex = (indexPath as NSIndexPath).row
             let contact = model.contacts[contactIndex]
-            let cell = tableView.dequeueReusableCellWithIdentifier(
-                contactTableViewCellID, forIndexPath: indexPath) as! ContactTableViewCell
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: contactTableViewCellID, for: indexPath) as! ContactTableViewCell
             cell.contact = contact
             return cell
         }
@@ -873,8 +884,8 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
     /**
      Gives contacts in the given text view the pEp color rating.
      */
-    func colorRecipients(textView: UITextView) {
-        let parts = textView.text.componentsSeparatedByCharactersInSet(delimiterChars)
+    func colorRecipients(_ textView: UITextView) {
+        let parts = textView.text.components(separatedBy: delimiterChars)
         if parts.count == 0 {
             return
         }
@@ -887,7 +898,7 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
 
         let model = Model.init(context: ap.coreDataUtil.privateContext())
 
-        model.context.performBlock() {
+        model.context.perform() {
             let recipientText = NSMutableAttributedString.init()
             let session = PEPSession.init()
             var firstPart = true
@@ -901,8 +912,8 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
                     firstPart = false
                     let attributed = NSAttributedString.init(string: thePart,
                         attributes: origAttributes)
-                    recipientText.appendAttributedString(attributed)
-                    recipientText.appendAttributedString(NSAttributedString.init(string: ": ",
+                    recipientText.append(attributed)
+                    recipientText.append(NSAttributedString.init(string: ": ",
                         attributes: origAttributes))
                 } else {
                     var attributes = origAttributes
@@ -914,8 +925,8 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
                     }
                     let attributed = NSAttributedString.init(string: thePart,
                         attributes: attributes)
-                    recipientText.appendAttributedString(attributed)
-                    recipientText.appendAttributedString(NSAttributedString.init(
+                    recipientText.append(attributed)
+                    recipientText.append(NSAttributedString.init(
                         string: self.delimiterWithSpace,
                         attributes: origAttributes))
                 }
@@ -926,11 +937,11 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
         }
     }
 
-    func updateSearch(textView: UITextView) {
+    func updateSearch(_ textView: UITextView) {
         if let searchSnippet = ComposeViewHelper.extractRecipientFromText(
             textView.text, aroundCaretPosition: textView.selectedRange.location) {
             model.searchSnippet = searchSnippet
-            model.tableMode  = .Search
+            model.tableMode  = .search
             model.recipientCell = recipientCellsByTextView[textView]
             updateContacts()
         }
@@ -954,8 +965,8 @@ public class ComposeViewController: UITableViewController, UINavigationControlle
 // MARK: -- UIImagePickerControllerDelegate
 
 extension ComposeViewController: UIImagePickerControllerDelegate {
-    public func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo
-        info: [String : AnyObject]) {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo
+        info: [String : Any]) {
         guard let attachedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return
         }
@@ -966,10 +977,10 @@ extension ComposeViewController: UIImagePickerControllerDelegate {
         model.attachments.append(photoAttachment)
         insertPhotoAttachment(photoAttachment)
 
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
-    func insertPhotoAttachment(attachment: SimpleAttachment) {
+    func insertPhotoAttachment(_ attachment: SimpleAttachment) {
         guard let image = attachment.image else {
             return
         }
@@ -986,7 +997,7 @@ extension ComposeViewController: UIImagePickerControllerDelegate {
 
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString.init(attributedString: textView.attributedText)
-        attrText.replaceCharactersInRange(selectedRange, withAttributedString: imageString)
+        attrText.replaceCharacters(in: selectedRange, with: imageString)
         textView.attributedText = attrText
 
         resizeTableView()
@@ -996,7 +1007,7 @@ extension ComposeViewController: UIImagePickerControllerDelegate {
 // MARK: -- UITextViewDelegate
 
 extension ComposeViewController: UITextViewDelegate {
-    public func textViewDidChange(textView: UITextView) {
+    public func textViewDidChange(_ textView: UITextView) {
         if textView == longBodyMessageTextView {
             resizeTableView()
         } else if let _ = recipientCellsByTextView[textView] {
@@ -1005,7 +1016,7 @@ extension ComposeViewController: UITextViewDelegate {
         model.isDirty = true
     }
 
-    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange,
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
         if let recipientCell = recipientCellsByTextView[textView] {
             // Disallow if check is infringing on the "readonly" part, like "To: "
@@ -1038,7 +1049,7 @@ extension ComposeViewController: UITextViewDelegate {
 
 extension ComposeViewController: UITextFieldDelegate {
     public func textField(
-        textField: UITextField, shouldChangeCharactersInRange range: NSRange,
+        _ textField: UITextField, shouldChangeCharactersIn range: NSRange,
         replacementString string: String) -> Bool {
         model.isDirty = true
         return true

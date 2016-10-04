@@ -35,39 +35,39 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
         super.didReceiveMemoryWarning()
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 7
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //let cell = UITableViewCell();
-        if (indexPath.row == myselfLabel) {
-            let cell = tableView.dequeueReusableCellWithIdentifier("contactCell", forIndexPath: indexPath) as! HandshakeLabelTableViewCell
+        if ((indexPath as NSIndexPath).row == myselfLabel) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! HandshakeLabelTableViewCell
             cell.handshakeLabel.text = NSLocalizedString("Myself:", comment: "Myself label, handshake")
             return cell
-        } else if (indexPath.row == myselfContact) {
-            let cell = tableView.dequeueReusableCellWithIdentifier("contactCell", forIndexPath: indexPath) as! HandshakeLabelTableViewCell
+        } else if ((indexPath as NSIndexPath).row == myselfContact) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! HandshakeLabelTableViewCell
             let myselfEmail = appConfig.currentAccount!.email
             cell.handshakeLabel.text = myselfEmail
             return cell
-        } else if (indexPath.row == partnerLabel) {
-            let cell = tableView.dequeueReusableCellWithIdentifier("contactCell", forIndexPath: indexPath) as! HandshakeLabelTableViewCell
+        } else if ((indexPath as NSIndexPath).row == partnerLabel) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! HandshakeLabelTableViewCell
             cell.handshakeLabel.text = NSLocalizedString("Partner:", comment: "Partner label, handshake")
             return cell
-        } else if (indexPath.row == partnerContact) {
-            let cell = tableView.dequeueReusableCellWithIdentifier("contactCell", forIndexPath: indexPath) as! HandshakeLabelTableViewCell
+        } else if ((indexPath as NSIndexPath).row == partnerContact) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! HandshakeLabelTableViewCell
             cell.handshakeLabel.text = partner!.displayString()
             return cell
-        } else if (indexPath.row == explanationTrustwords) {
-            let cell = tableView.dequeueReusableCellWithIdentifier("trustwordCell", forIndexPath: indexPath) as! HandshakeTexViewTableViewCell
+        } else if ((indexPath as NSIndexPath).row == explanationTrustwords) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
             cell.handshakeTextView.text = NSLocalizedString("Ask your partner: What are your trustword? then compare to the correct answer shown below.", comment: "Handshake explanation")
             return cell
-        } else if (indexPath.row == trustwords) {
+        } else if ((indexPath as NSIndexPath).row == trustwords) {
 
-            let cell = tableView.dequeueReusableCellWithIdentifier("trustwordCell", forIndexPath: indexPath) as! HandshakeTexViewTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
             if let p = partner {
                 let partnerPepContact = PEPUtil.pepContact(p)
                 let myselfEmail = appConfig.currentAccount!.email
@@ -87,24 +87,24 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                         let partnerFingerprints = PEPUtil.fingprprintForContact(partner!)
                         let bothFingerprints = "\(fingerprintFormat(partnerFingerprints!))\n\n\(fingerprintFormat(myselfFingerprints!))"
                         cell.handshakeTextView.text = bothFingerprints
-                        cell.handshakeTextView.font = UIFont(name: "Menlo", size: UIFont.systemFontSize())
+                        cell.handshakeTextView.font = UIFont(name: "Menlo", size: UIFont.systemFontSize)
                     }
                 }
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("handshakeButton", forIndexPath: indexPath) as! HandshakeButtonTableViewCell
-            cell.confirmUIButton.setTitle(NSLocalizedString("Confirm trustwords", comment: "confirm button, handshake"), forState: UIControlState.Normal)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "handshakeButton", for: indexPath) as! HandshakeButtonTableViewCell
+            cell.confirmUIButton.setTitle(NSLocalizedString("Confirm trustwords", comment: "confirm button, handshake"), for: UIControlState())
             cell.confirmUIButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
             cell.confirmUIButton.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0)
-            cell.deniedUIButton.setTitle(NSLocalizedString("Wrong trustwords", comment: "wrong trustwords button, handshake"), forState: UIControlState.Normal)
+            cell.deniedUIButton.setTitle(NSLocalizedString("Wrong trustwords", comment: "wrong trustwords button, handshake"), for: UIControlState())
             cell.deniedUIButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
             cell.deniedUIButton.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0)
             return cell
         }
     }
 
-    func fingerprintFormat(fingerprint: String) -> String {
+    func fingerprintFormat(_ fingerprint: String) -> String {
         let medio = fingerprint.characters.count/2
         var result = String()
         var cont = 0
@@ -122,21 +122,21 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
         return result
     }
 
-    @IBAction func confirmTrustwords(sender: AnyObject) {
+    @IBAction func confirmTrustwords(_ sender: AnyObject) {
         if let p = partner {
             PEPUtil.trustContact(p)
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewController(animated: true)
         }
     }
 
-    @IBAction func wrongTrustwords(sender: AnyObject) {
+    @IBAction func wrongTrustwords(_ sender: AnyObject) {
         if let p = partner {
             PEPUtil.mistrustContact(p)
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewController(animated: true)
         }
     }
 
-    @IBAction func handleTap(sender: UITapGestureRecognizer) {
+    @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         hexamode = !hexamode
         self.tableView.reloadData()
     }

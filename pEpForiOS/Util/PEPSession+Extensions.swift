@@ -14,36 +14,36 @@ import Foundation
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
-public typealias PEPMail = [NSObject : AnyObject]
+public typealias PEPMail = [AnyHashable: Any]
 
 /**
  Similar to `PEPMail`
  */
-public typealias PEPContact = [NSObject : AnyObject]
+public typealias PEPContact = [AnyHashable: Any]
 
 /**
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
 public enum RecipientType: Int, Hashable {
-    case To = 1
-    case CC
-    case BCC
+    case to = 1
+    case cc
+    case bcc
 
     public var hashValue: Int {
         return rawValue
     }
 
-    public static func fromRawValue(value: Int) -> RecipientType {
+    public static func fromRawValue(_ value: Int) -> RecipientType {
         switch value {
         case 1:
-            return .To
+            return .to
         case 2:
-            return .CC
+            return .cc
         case 3:
-            return .BCC
+            return .bcc
         default:
-            return .To
+            return .to
         }
     }
 }
@@ -53,11 +53,11 @@ public enum RecipientType: Int, Hashable {
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
-public class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
-    public let recipient: PEPContact
-    public let recipientType: RecipientType
+open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
+    open let recipient: PEPContact
+    open let recipientType: RecipientType
 
-    public var description: String {
+    open var description: String {
         return "\(recipient[kPepAddress]) (\(recipientType))"
     }
 
@@ -66,7 +66,7 @@ public class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
         self.recipientType = recipientType
     }
 
-    public var hashValue: Int {
+    open var hashValue: Int {
         return 31 &* (recipient as NSDictionary).hashValue &+ recipientType.hashValue
     }
 }
@@ -80,22 +80,22 @@ public extension PEPSession {
      PEP predicate to run on a contact, given a session. Used for determining if a PEP contact
      matches some criteria.
      */
-    public typealias RecipientSortPredicate = (contact: PEPContact,
-        session: PEPSession) -> Bool
+    public typealias RecipientSortPredicate = (_ contact: PEPContact,
+        _ session: PEPSession) -> Bool
 
     /**
      - Returns: True if a mail from `from` to `contact` would be encrypted.
      */
-    public func isEncryptedPEPContact(contact: PEPContact,
+    public func isEncryptedPEPContact(_ contact: PEPContact,
                                       from: PEPContact) -> Bool {
-        let color = outgoingColorFrom(from, to: contact)
+        let color = outgoingColor(from: from, to: contact)
         return color.rawValue >= PEP_rating_reliable.rawValue
     }
 
     /**
      - Returns: False if a mail from `from` to `contact` would be encrypted.
      */
-    public func isUnencryptedPEPContact(contact: PEPContact,
+    public func isUnencryptedPEPContact(_ contact: PEPContact,
                                         from: PEPContact) -> Bool {
         return !isEncryptedPEPContact(contact, from: from)
     }
@@ -113,7 +113,7 @@ public extension PEPSession {
      Both elements are of type `NSOrderedSet` of `PEPRecipient`
      */
     func filterOutUnencryptedReceivers(
-        recipients: NSArray, recipientType: RecipientType, session: PEPSession,
+        _ recipients: NSArray, recipientType: RecipientType, session: PEPSession,
         sortOutPredicate: RecipientSortPredicate)
         -> (unencryptedReceivers: [PEPRecipient], encryptedReceivers: [PEPRecipient]) {
             let unencryptedReceivers = NSMutableOrderedSet()
@@ -122,10 +122,10 @@ public extension PEPSession {
             for contact in recipients {
                 if let c = contact as? PEPContact {
                     let receiver = PEPRecipient.init(recipient: c, recipientType: recipientType)
-                    if sortOutPredicate(contact: c, session: session) {
-                        unencryptedReceivers.addObject(receiver)
+                    if sortOutPredicate(c, session) {
+                        unencryptedReceivers.add(receiver)
                     } else {
-                        encryptedReceivers.addObject(receiver)
+                        encryptedReceivers.add(receiver)
                     }
                 }
             }
@@ -141,7 +141,7 @@ public extension PEPSession {
      and an encryptable PEP mail without all the "unencrypted receivers" and the encrypted BCCs.
      */
     public func filterOutSpecialReceiversForPEPMail(
-        pepMail: PEPMail) -> (unencryptedReceivers: [PEPRecipient],
+        _ pepMail: PEPMail) -> (unencryptedReceivers: [PEPRecipient],
         encryptedBCC: [PEPRecipient], pepMailEncryptable: PEPMail) {
             let pepMailPurged = NSMutableDictionary.init(dictionary: pepMail)
 
@@ -156,28 +156,28 @@ public extension PEPSession {
 
             if let tos = pepMail[kPepTo] as? NSArray {
                 let (unencryptedTo, encryptedTo) = filterOutUnencryptedReceivers(
-                    tos, recipientType: RecipientType.To, session: session,
+                    tos, recipientType: RecipientType.to, session: session,
                     sortOutPredicate: unencryptedPredicate)
                 pepMailPurged[kPepTo] = encryptedTo.map({$0.recipient}) as NSArray
-                unencrypted.appendContentsOf(unencryptedTo)
+                unencrypted.append(contentsOf: unencryptedTo)
             }
 
             if let ccs = pepMail[kPepCC] as? NSArray {
                 let (unencryptedCC, encryptedCC) = filterOutUnencryptedReceivers(
-                    ccs, recipientType: RecipientType.CC, session: session,
+                    ccs, recipientType: RecipientType.cc, session: session,
                     sortOutPredicate: unencryptedPredicate)
                 pepMailPurged[kPepCC] = encryptedCC.map({$0.recipient}) as NSArray
-                unencrypted.appendContentsOf(unencryptedCC)
+                unencrypted.append(contentsOf: unencryptedCC)
             }
 
             var resultEncryptedBCC: [PEPRecipient] = []
             if let bccs = pepMail[kPepBCC] as? NSArray {
                 let (unencryptedBCC, encryptedBCC) = filterOutUnencryptedReceivers(
-                    bccs, recipientType: RecipientType.BCC, session: session,
+                    bccs, recipientType: RecipientType.bcc, session: session,
                     sortOutPredicate: unencryptedPredicate)
                 pepMailPurged[kPepBCC] = []
-                unencrypted.appendContentsOf(unencryptedBCC)
-                resultEncryptedBCC.appendContentsOf(encryptedBCC)
+                unencrypted.append(contentsOf: unencryptedBCC)
+                resultEncryptedBCC.append(contentsOf: encryptedBCC)
             }
 
             return (unencrypted, resultEncryptedBCC, pepMailPurged as PEPMail)
@@ -188,7 +188,7 @@ public extension PEPSession {
      - Parameter pepMail: The PEP mail to check for recipients.
      - Returns: true if the mail has any recipients, false otherwise.
      */
-    func pepMailHasRecipients(pepMail: PEPMail) -> Bool {
+    func pepMailHasRecipients(_ pepMail: PEPMail) -> Bool {
         let tos = pepMail[kPepTo] as? NSArray
         let ccs = pepMail[kPepCC] as? NSArray
         let bccs = pepMail[kPepBCC] as? NSArray
@@ -205,7 +205,7 @@ public extension PEPSession {
      - Returns: A tuple (encrypted, unencrypted) with the two buckets of mails.
      */
     public func bucketsForPEPMail(
-        pepMail: PEPMail) -> (mailsToEncrypt: [PEPMail], mailsNotToEncrypt: [PEPMail]) {
+        _ pepMail: PEPMail) -> (mailsToEncrypt: [PEPMail], mailsNotToEncrypt: [PEPMail]) {
         let (unencryptedReceivers, encryptedBCC, pepMailPurged) =
             filterOutSpecialReceiversForPEPMail(pepMail)
 
@@ -223,12 +223,12 @@ public extension PEPSession {
             var bccs: [PEPContact] = []
             for r in unencryptedReceivers {
                 switch r.recipientType {
-                case .To:
+                case .to:
                     tos.append(r.recipient)
-                case .CC:
+                case .cc:
                     ccs.append(r.recipient)
                     print("ccs: \(ccs)")
-                case .BCC:
+                case .bcc:
                     bccs.append(r.recipient)
                 }
             }
@@ -255,5 +255,5 @@ public extension PEPSession {
  */
 public func ==(lhs: PEPRecipient, rhs: PEPRecipient) -> Bool {
     return lhs.recipientType == rhs.recipientType &&
-        (lhs.recipient as NSDictionary).isEqualToDictionary(rhs.recipient as [NSObject : AnyObject])
+        (lhs.recipient as NSDictionary).isEqual(to: rhs.recipient as [AnyHashable: Any])
 }

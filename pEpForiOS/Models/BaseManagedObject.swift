@@ -9,5 +9,5 @@
 import Foundation
 import CoreData
 
-public class BaseManagedObject: NSManagedObject {
+open class BaseManagedObject: NSManagedObject {
 }

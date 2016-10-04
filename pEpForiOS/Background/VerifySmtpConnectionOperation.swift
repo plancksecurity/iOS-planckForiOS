@@ -12,7 +12,7 @@ class VerifySmtpConnectionOperation: VerifyServiceOperation {
     let errorDomain = "VerifySmtpConnectionOperation"
 
     override func main() {
-        if self.cancelled {
+        if self.isCancelled {
             return
         }
         service = connectionManager.smtpConnection(connectInfo)
@@ -22,30 +22,30 @@ class VerifySmtpConnectionOperation: VerifyServiceOperation {
 }
 
 extension VerifySmtpConnectionOperation: SmtpSendDelegate {
-    func messageSent(smtp: SmtpSend, theNotification: NSNotification?) {}
-    func messageNotSent(smtp: SmtpSend, theNotification: NSNotification?) {}
-    func transactionInitiationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
-    func transactionInitiationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
-    func recipientIdentificationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
-    func recipientIdentificationFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
-    func transactionResetCompleted(smtp: SmtpSend, theNotification: NSNotification?) {}
-    func transactionResetFailed(smtp: SmtpSend, theNotification: NSNotification?) {}
+    func messageSent(_ smtp: SmtpSend, theNotification: Notification?) {}
+    func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?) {}
+    func transactionInitiationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
+    func transactionInitiationFailed(_ smtp: SmtpSend, theNotification: Notification?) {}
+    func recipientIdentificationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
+    func recipientIdentificationFailed(_ smtp: SmtpSend, theNotification: Notification?) {}
+    func transactionResetCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
+    func transactionResetFailed(_ smtp: SmtpSend, theNotification: Notification?) {}
 
-    func authenticationCompleted(smtp: SmtpSend, theNotification: NSNotification?) {
+    func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
         self.isFinishing = true
         close(true)
     }
 
-    func authenticationFailed(smtp: SmtpSend, theNotification: NSNotification?) {
+    func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
         if !isFinishing {
             errors.append(Constants.errorAuthenticationFailed(errorDomain))
             close(true)
         }
     }
 
-    func connectionEstablished(smtp: SmtpSend, theNotification: NSNotification?) {}
+    func connectionEstablished(_ smtp: SmtpSend, theNotification: Notification?) {}
 
-    func connectionLost(smtp: SmtpSend, theNotification: NSNotification?) {
+    func connectionLost(_ smtp: SmtpSend, theNotification: Notification?) {
         if !isFinishing {
             errors.append(Constants.errorConnectionLost(errorDomain))
             isFinishing = true
@@ -53,7 +53,7 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
         }
     }
 
-    func connectionTerminated(smtp: SmtpSend, theNotification: NSNotification?) {
+    func connectionTerminated(_ smtp: SmtpSend, theNotification: Notification?) {
         if !isFinishing {
             errors.append(Constants.errorConnectionTerminated(errorDomain))
             isFinishing = true
@@ -61,7 +61,7 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
         }
     }
 
-    func connectionTimedOut(smtp: SmtpSend, theNotification: NSNotification?) {
+    func connectionTimedOut(_ smtp: SmtpSend, theNotification: Notification?) {
         if !isFinishing {
             errors.append(Constants.errorTimeout(errorDomain))
             isFinishing = true
@@ -69,7 +69,7 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
         }
     }
 
-    func requestCancelled(smtp: SmtpSend, theNotification: NSNotification?) {}
-    func serviceInitialized(smtp: SmtpSend, theNotification: NSNotification?) {}
-    func serviceReconnected(smtp: SmtpSend, theNotification: NSNotification?) {}
+    func requestCancelled(_ smtp: SmtpSend, theNotification: Notification?) {}
+    func serviceInitialized(_ smtp: SmtpSend, theNotification: Notification?) {}
+    func serviceReconnected(_ smtp: SmtpSend, theNotification: Notification?) {}
 }

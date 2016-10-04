@@ -11,7 +11,7 @@ import UIKit
 /**
  Finds email that only contain html and creates a text version of it.
  */
-public class HTMLConvertOperation: BaseOperation {
+open class HTMLConvertOperation: BaseOperation {
     let comp = "HTMLConvertOperation"
     let coreDataUtil: ICoreDataUtil
 
@@ -22,7 +22,7 @@ public class HTMLConvertOperation: BaseOperation {
     /**
      Debugging only, removes longMessage from all mails that also have longMessageFormatted.
      */
-    func removeTextFromMails(model: Model) {
+    func removeTextFromMails(_ model: Model) {
         let predicateHasHTML = NSPredicate.init(
             format: "longMessageFormatted != nil and longMessageFormatted != %@", "")
         let predicateHasLongMessage = NSPredicate.init(
@@ -56,9 +56,9 @@ public class HTMLConvertOperation: BaseOperation {
         }
     }
 
-    public override func main() {
+    open override func main() {
         let context = coreDataUtil.privateContext()
-        context.performBlock() {
+        context.perform() {
             let model = Model.init(context: context)
 
             let pBasic = model.basicMessagePredicate()

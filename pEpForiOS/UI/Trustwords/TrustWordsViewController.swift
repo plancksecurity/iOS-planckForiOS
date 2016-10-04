@@ -26,7 +26,7 @@ class TrustWordsViewController: UITableViewController {
     let handshakeSegue = "handshakeSegue"
     let numberOfStaticCells = 2
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tableView.reloadData()
 
@@ -39,14 +39,14 @@ class TrustWordsViewController: UITableViewController {
             allRecipients = m.allRecipienst().mutableCopy() as? NSMutableOrderedSet
             if let ar = allRecipients {
                 if let f = m.from {
-                    ar.addObject(f)
+                    ar.add(f)
                 }
                 for contact in ar {
                     if let c = contact as? IContact {
                         if c.isMySelf.boolValue {
                             if appConfig.currentAccount?.email != c.email {
                                 allRecipientsFiltered.append(c)
-                                otherMyselfAccount.addObject(c)
+                                otherMyselfAccount.add(c)
                             }
                         } else {
                             allRecipientsFiltered.append(c)
@@ -61,18 +61,18 @@ class TrustWordsViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let lenght = allRecipientsFiltered.count + numberOfStaticCells
         return lenght
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if (indexPath.row == 0) {
-            let cell = tableView.dequeueReusableCellWithIdentifier("mailSecurityLabelCell", forIndexPath: indexPath) as!
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if ((indexPath as NSIndexPath).row == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "mailSecurityLabelCell", for: indexPath) as!
             LabelMailSecurityTableViewCell
 
             // Store the background color if this is the first cell
@@ -83,7 +83,7 @@ class TrustWordsViewController: UITableViewController {
 
             if let m = message {
                 cell.backgroundColor = defaultBackground
-                if let mailPepColor = m.pepColorRating?.integerValue {
+                if let mailPepColor = m.pepColorRating?.intValue {
                     if let pc = PEPUtil.colorRatingFromInt(mailPepColor) {
                         let privateColor = PEPUtil.colorFromPepRating(pc)
                         if let uiColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
@@ -99,14 +99,14 @@ class TrustWordsViewController: UITableViewController {
                 }
             }
             return cell
-        } else if (indexPath.row == 1) {
-            let cell = tableView.dequeueReusableCellWithIdentifier(
-                "mailSecurityExplanationLabelCell", forIndexPath: indexPath) as!
+        } else if ((indexPath as NSIndexPath).row == 1) {
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: "mailSecurityExplanationLabelCell", for: indexPath) as!
             LabelMailExplantionSecurityTableViewCell
 
             cell.mailExplanationSecurityUILabel.text = ""
             if let m = message {
-                if let mailPepColor = m.pepColorRating?.integerValue {
+                if let mailPepColor = m.pepColorRating?.intValue {
                     if let pepColor = PEPUtil.colorRatingFromInt(mailPepColor) {
                         cell.mailExplanationSecurityUILabel.text =
                             PEPUtil.pepExplanationFromColor(pepColor)
@@ -115,9 +115,9 @@ class TrustWordsViewController: UITableViewController {
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("trustwordsCell",
-                                                           forIndexPath: indexPath) as! TrustWordsViewCell
-            let contactIndex = indexPath.row-numberOfStaticCells
+            let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordsCell",
+                                                           for: indexPath) as! TrustWordsViewCell
+            let contactIndex = (indexPath as NSIndexPath).row-numberOfStaticCells
             let contact: Contact  = allRecipientsFiltered[contactIndex] as! Contact
 
             cell.handshakeContactUILabel.text = contact.displayString()
@@ -126,35 +126,35 @@ class TrustWordsViewController: UITableViewController {
             cell.backgroundColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
                 privacyColor)
 
-            cell.handshakeUIButton.enabled = !otherMyselfAccount.containsObject(contact)
+            cell.handshakeUIButton.isEnabled = !otherMyselfAccount.contains(contact)
 
             switch privacyColor {
             case PEP_color_red:
                 cell.handshakeUIButton.setTitle(
-                    NSLocalizedString("Trust Again", comment: "handshake red"), forState: .Normal)
+                    NSLocalizedString("Trust Again", comment: "handshake red"), for: UIControlState())
             case PEP_color_green:
                 cell.handshakeUIButton.setTitle(
-                    NSLocalizedString("Reset trust", comment: "handshake green"), forState: .Normal)
+                    NSLocalizedString("Reset trust", comment: "handshake green"), for: UIControlState())
             case PEP_color_yellow:
                 cell.handshakeUIButton.setTitle(
-                    NSLocalizedString("Handshake", comment: "handshake yellow"), forState: .Normal)
+                    NSLocalizedString("Handshake", comment: "handshake yellow"), for: UIControlState())
             default:
-                cell.handshakeUIButton.enabled = false
+                cell.handshakeUIButton.isEnabled = false
             }
             return cell
         }
     }
 
-    func showSuggestionMessage (message: String) {
+    func showSuggestionMessage (_ message: String) {
         // Abuse error display
         UIHelper.displayErrorMessage(
             message, controller: self,
             title: NSLocalizedString("pEp",comment: "Suggestion tittle"))
     }
 
-    @IBAction func showMoreInfo(sender: AnyObject) {
+    @IBAction func showMoreInfo(_ sender: AnyObject) {
         if let m = message {
-            if let mailPepColor = m.pepColorRating?.integerValue {
+            if let mailPepColor = m.pepColorRating?.intValue {
                 if let pepColor = PEPUtil.colorRatingFromInt(mailPepColor) {
                     if let suggestion = PEPUtil.pepSuggestionFromColor(pepColor) {
                         self.showSuggestionMessage(suggestion)
@@ -164,23 +164,23 @@ class TrustWordsViewController: UITableViewController {
         }
     }
 
-    @IBAction func goToHandshakeScreen(sender: AnyObject) {
+    @IBAction func goToHandshakeScreen(_ sender: AnyObject) {
         let contactIndex = sender.tag
-        let contact = allRecipientsFiltered[contactIndex]
+        let contact = allRecipientsFiltered[contactIndex!]
         let pepColor = PEPUtil.privacyColorForContact(contact)
         if pepColor == PEP_color_red || pepColor == PEP_color_green {
             PEPUtil.resetTrustForContact(contact)
             self.tableView.reloadData()
         } else {
-            performSegueWithIdentifier(handshakeSegue, sender: sender)
+            performSegue(withIdentifier: handshakeSegue, sender: sender)
         }
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         if (segue.identifier == handshakeSegue) {
-            let contactIndex = sender.tag
-            let contact = allRecipientsFiltered[contactIndex] as! Contact
-            if let destination = segue.destinationViewController as? HandshakeViewController {
+            let contactIndex = (sender as AnyObject).tag
+            let contact = allRecipientsFiltered[contactIndex!] as! Contact
+            if let destination = segue.destination as? HandshakeViewController {
                 destination.partner = contact
                 destination.appConfig = appConfig
                 destination.message = message

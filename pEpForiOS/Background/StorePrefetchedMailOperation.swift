@@ -12,7 +12,7 @@ import CoreData
 /**
  This can be used in a queue, or directly called with ```start()```.
  */
-public class StorePrefetchedMailOperation: BaseOperation {
+open class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
     let coreDataUtil: ICoreDataUtil
     let message: CWIMAPMessage
@@ -32,9 +32,9 @@ public class StorePrefetchedMailOperation: BaseOperation {
         super.init()
     }
 
-    override public func main() {
+    override open func main() {
         let privateMOC = coreDataUtil.privateContext()
-        privateMOC.performBlockAndWait({
+        privateMOC.performAndWait({
             let model = Model.init(context: privateMOC)
             var result: IMessage? = nil
             if self.quick {

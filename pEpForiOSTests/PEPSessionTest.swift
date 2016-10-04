@@ -37,11 +37,11 @@ class PEPSessionTest: XCTestCase {
         let (unencryptedReceivers, encryptedBCC, pepMailPurged)
             = session.filterOutSpecialReceiversForPEPMail(pepMail as PEPMail)
         XCTAssertEqual(unencryptedReceivers,
-                       [PEPRecipient.init(recipient: receiver1, recipientType: .To),
-                        PEPRecipient.init(recipient: receiver2, recipientType: .CC),
-                        PEPRecipient.init(recipient: receiver3, recipientType: .BCC)])
+                       [PEPRecipient.init(recipient: receiver1, recipientType: .to),
+                        PEPRecipient.init(recipient: receiver2, recipientType: .cc),
+                        PEPRecipient.init(recipient: receiver3, recipientType: .bcc)])
         XCTAssertEqual(encryptedBCC,
-                       [PEPRecipient.init(recipient: identity as PEPContact, recipientType: .BCC)])
+                       [PEPRecipient.init(recipient: identity as PEPContact, recipientType: .bcc)])
         XCTAssertEqual(pepMailPurged[kPepTo]
             as? NSArray, NSArray.init(array: [identity]))
         XCTAssertEqual(pepMailPurged[kPepCC] as? NSArray, NSArray.init(array: [identity]))

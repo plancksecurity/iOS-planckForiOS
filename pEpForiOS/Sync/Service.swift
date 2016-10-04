@@ -15,11 +15,11 @@ protocol IService {
 /**
  Base class for IMAP and SMTP implementations.
  */
-public class Service: IService {
-    public var comp: String { get { return "Service" } }
+open class Service: IService {
+    open var comp: String { get { return "Service" } }
 
-    public let ErrorAuthenticationFailed = 10
-    public let ErrorConnectionTimedOut = 1001
+    open let ErrorAuthenticationFailed = 10
+    open let ErrorConnectionTimedOut = 1001
 
     let connectInfo: ConnectInfo
 
@@ -28,12 +28,12 @@ public class Service: IService {
     /**
      For proving memory leaks.
      */
-    static public var refCounter = ReferenceCounter.init()
+    static open var refCounter = ReferenceCounter.init()
 
     /**
      Unnecessary data to trigger memory leak indicators.
      */
-    var memoryLeakData: NSData?
+    var memoryLeakData: Data?
 
     public init(connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo
@@ -54,14 +54,14 @@ public class Service: IService {
         abort()
     }
 
-    public func start() {
+    open func start() {
         self.service.connectInBackgroundAndNotify()
     }
 
-    public func bestAuthMethodFromList(mechanisms: [String])  -> AuthMethod {
+    open func bestAuthMethodFromList(_ mechanisms: [String])  -> AuthMethod {
         if mechanisms.count > 0 {
             let mechanismsLC = mechanisms.map() { mech in
-                return mech.lowercaseString
+                return mech.lowercased()
             }
             let s = Set.init(mechanismsLC)
             if s.contains("cram-md5") {
@@ -73,16 +73,16 @@ public class Service: IService {
         }
     }
 
-    public func bestAuthMethod()  -> AuthMethod {
+    open func bestAuthMethod()  -> AuthMethod {
         return bestAuthMethodFromList(service.supportedMechanisms() as! [String])
     }
 
-    public func close() {
+    open func close() {
         service.close()
         service.setDelegate(nil)
     }
 
-    public func dumpMethodName(methodName: String, notification: NSNotification?) {
+    open func dumpMethodName(_ methodName: String, notification: Notification?) {
         Log.infoComponent(comp, "\(methodName): \(notification)")
     }
 }

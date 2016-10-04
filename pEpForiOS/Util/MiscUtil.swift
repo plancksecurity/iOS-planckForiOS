@@ -8,8 +8,8 @@
 
 import CoreData
 
-public class MiscUtil {
-    public static func optionalHashValue<T: Hashable>(someVar: T?) -> Int {
+open class MiscUtil {
+    open static func optionalHashValue<T: Hashable>(_ someVar: T?) -> Int {
         if let theVar = someVar {
             return theVar.hashValue
         } else {
@@ -17,11 +17,11 @@ public class MiscUtil {
         }
     }
 
-    public static func isNilOrEmptyNSArray(array: NSArray?) -> Bool {
+    open static func isNilOrEmptyNSArray(_ array: NSArray?) -> Bool {
         return array == nil || array?.count == 0
     }
 
-    public static func isEmptyString(s: String?) -> Bool {
+    open static func isEmptyString(_ s: String?) -> Bool {
         if s == nil {
             return true
         }
@@ -36,10 +36,10 @@ public class MiscUtil {
      - Parameter privateContext: A private managed object context for processing in the background
      - Parameter blockFinished: An optional callback, which gets the inserted contacts as parameter.
      */
-    public static func transferAddressBook(
-        privateContext: NSManagedObjectContext,
+    open static func transferAddressBook(
+        _ privateContext: NSManagedObjectContext,
         blockFinished: (([IContact]) -> ())? = nil) {
-        privateContext.performBlock() {
+        privateContext.perform() {
             var insertedContacts = [IContact]()
             let model = Model.init(context: privateContext)
             let ab = AddressBook()

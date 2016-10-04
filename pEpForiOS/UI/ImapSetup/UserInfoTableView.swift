@@ -7,54 +7,74 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-public class ModelUserInfoTable {
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
 
-    public var email: String?
+
+open class ModelUserInfoTable {
+
+    open var email: String?
 
     /**
      The actual name of the user, or nick name.
      */
-    public var name: String?
+    open var name: String?
 
     /**
      An optional name for the servers, if needed.
      */
-    public var username: String?
-    public var password: String?
-    public var serverIMAP: String?
-    public var portIMAP: UInt16 = 993
-    public var transportIMAP = ConnectionTransport.TLS
-    public var serverSMTP: String?
-    public var portSMTP: UInt16 = 587
-    public var transportSMTP = ConnectionTransport.StartTLS
+    open var username: String?
+    open var password: String?
+    open var serverIMAP: String?
+    open var portIMAP: UInt16 = 993
+    open var transportIMAP = ConnectionTransport.TLS
+    open var serverSMTP: String?
+    open var portSMTP: UInt16 = 587
+    open var transportSMTP = ConnectionTransport.startTLS
 
-    public var isValidEmail: Bool {
+    open var isValidEmail: Bool {
         return email != nil && email!.isProbablyValidEmail()
     }
 
-    public var isValidPassword: Bool {
+    open var isValidPassword: Bool {
         return password != nil && password!.characters.count > 0
     }
 
-    public var isValidName: Bool {
+    open var isValidName: Bool {
         return name?.characters.count >= 3
     }
 
-    public var isValidUser: Bool {
+    open var isValidUser: Bool {
         return isValidName && isValidEmail && isValidPassword
     }
 
-    public var isValidImap: Bool {
+    open var isValidImap: Bool {
         return false
     }
 
-    public var isValidSmtp: Bool {
+    open var isValidSmtp: Bool {
         return false
     }
 }
 
-public class UserInfoTableView: UITableViewController, UITextFieldDelegate {
+open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
     let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!
@@ -70,27 +90,27 @@ public class UserInfoTableView: UITableViewController, UITextFieldDelegate {
     var appConfig: AppConfig?
     var IMAPSettings = "IMAPSettings"
 
-    public var model = ModelUserInfoTable()
+    open var model = ModelUserInfoTable()
 
     let viewWidthAligner = ViewWidthsAligner()
 
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         passwordValue.delegate = self
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewWidthAligner.alignViews([emailTitleTextField,
             usernameTitleTextField, passwordTitleTextField, nameOfTheUserTitleTextField], parentView: self.view)
     }
 
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         if appConfig == nil {
-            if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 appConfig = appDelegate.appConfig
             }
         }
@@ -111,7 +131,7 @@ public class UserInfoTableView: UITableViewController, UITextFieldDelegate {
     }
 
     func updateView() {
-        self.navigationItem.rightBarButtonItem?.enabled = model.isValidUser
+        self.navigationItem.rightBarButtonItem?.isEnabled = model.isValidUser
         // TODO: update the complete view (email etc.)
     }
 
@@ -120,41 +140,41 @@ public class UserInfoTableView: UITableViewController, UITextFieldDelegate {
      */
     func updateModel() {}
 
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override open func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "IMAPSettings" {
-            let destination = segue.destinationViewController as! IMAPSettingsTableView
+            let destination = segue.destination as! IMAPSettingsTableView
             destination.appConfig = appConfig
             destination.model = model
         }
     }
 
-    public func textFieldShouldReturn(passwordValue: UITextField) -> Bool {
+    open func textFieldShouldReturn(_ passwordValue: UITextField) -> Bool {
         if (model.isValidUser) {
-            self.performSegueWithIdentifier(self.IMAPSettings, sender: passwordValue)
+            self.performSegue(withIdentifier: self.IMAPSettings, sender: passwordValue)
         }
         return true;
     }
 
-    @IBAction func changeEmail(sender: UITextField) {
+    @IBAction func changeEmail(_ sender: UITextField) {
         model.email = sender.text
         updateView()
     }
 
-    @IBAction func changeUsername(sender: UITextField) {
+    @IBAction func changeUsername(_ sender: UITextField) {
         model.username = sender.text
         updateView()
     }
 
-    @IBAction func changePassword(sender: UITextField) {
+    @IBAction func changePassword(_ sender: UITextField) {
         model.password = sender.text
         updateView()
     }
 
-    @IBAction func changedName(sender: UITextField) {
+    @IBAction func changedName(_ sender: UITextField) {
         model.name = sender.text
         updateView()
     }

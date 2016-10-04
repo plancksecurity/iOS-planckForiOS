@@ -8,65 +8,85 @@
 
 import Foundation
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class UIHelper {
-    static func variableCellHeightsTableView(tableView: UITableView) {
+    static func variableCellHeightsTableView(_ tableView: UITableView) {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44
     }
 
-    static func labelFromContact(contact: Contact) -> UILabel {
+    static func labelFromContact(_ contact: Contact) -> UILabel {
         let l = UILabel.init()
         l.text = contact.displayString()
         return l
     }
 
-    static func dateFormatterEmailList() -> NSDateFormatter {
-        let formatter = NSDateFormatter.init()
-        formatter.dateStyle = .ShortStyle
-        formatter.timeStyle = .ShortStyle
+    static func dateFormatterEmailList() -> DateFormatter {
+        let formatter = DateFormatter.init()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
         return formatter
     }
 
-    static func dateFormatterEmailDetails() -> NSDateFormatter {
+    static func dateFormatterEmailDetails() -> DateFormatter {
         return dateFormatterEmailList()
     }
 
     /**
      Put a String into a label. If the String is empty, hide the label.
      */
-    static func putString(string: String?, toLabel: UILabel?) {
+    static func putString(_ string: String?, toLabel: UILabel?) {
         guard let label = toLabel else {
             return
         }
         if string?.characters.count > 0 {
-            label.hidden = false
+            label.isHidden = false
             label.text = string!
         } else {
-            label.hidden = true
+            label.isHidden = true
         }
     }
 
     /**
      Makes label bold, using the system font.
      */
-    static func boldifyLabel(label: UILabel) {
+    static func boldifyLabel(_ label: UILabel) {
         let size = label.font.pointSize
-        let font = UIFont.boldSystemFontOfSize(size)
+        let font = UIFont.boldSystemFont(ofSize: size)
         label.font = font
     }
 
     /**
      Get the UIColor for the background image of a send button for an (abstract) pEp color.
      */
-    static func sendButtonBackgroundColorFromPepColor(pepColor: PEP_color) -> UIColor? {
+    static func sendButtonBackgroundColorFromPepColor(_ pepColor: PEP_color) -> UIColor? {
         switch pepColor {
         case PEP_color_green:
-            return UIColor.greenColor()
+            return UIColor.green
         case PEP_color_yellow:
-            return UIColor.yellowColor()
+            return UIColor.yellow
         case PEP_color_red:
-            return UIColor.redColor()
+            return UIColor.red
         default:
             return nil
         }
@@ -75,7 +95,7 @@ class UIHelper {
     /**
      Cell background color in trustwords cell for indicating the rating of a contact.
      */
-    static func trustWordsCellBackgroundColorFromPepColor(pepColor: PEP_color) -> UIColor? {
+    static func trustWordsCellBackgroundColorFromPepColor(_ pepColor: PEP_color) -> UIColor? {
         return sendButtonBackgroundColorFromPepColor(pepColor)
     }
 
@@ -84,14 +104,14 @@ class UIHelper {
      This might, or might not, be the same,
      as `sendButtonBackgroundColorFromPepColor:PrivacyColor`.
      */
-    static func textBackgroundUIColorFromPrivacyColor(pepColor: PEP_color) -> UIColor? {
+    static func textBackgroundUIColorFromPrivacyColor(_ pepColor: PEP_color) -> UIColor? {
         switch pepColor {
         case PEP_color_green:
-            return UIColor.greenColor()
+            return UIColor.green
         case PEP_color_yellow:
-            return UIColor.yellowColor()
+            return UIColor.yellow
         case PEP_color_red:
-            return UIColor.redColor()
+            return UIColor.red
         default:
             return nil
         }
@@ -102,7 +122,7 @@ class UIHelper {
      If the privacy color is `PrivacyColor.NoColor` the default color is used.
      */
     static func setBackgroundColor(
-        privacyColor: PEP_color, forLabel label: UILabel, defaultColor: UIColor?) {
+        _ privacyColor: PEP_color, forLabel label: UILabel, defaultColor: UIColor?) {
         if privacyColor != PEP_color_no_color {
             let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor)
             label.backgroundColor = uiColor
@@ -115,13 +135,13 @@ class UIHelper {
      Creates a 1x1 point size image filled with the given color. Useful for giving buttons
      a background color.
      */
-    static func imageFromColor(color: UIColor) -> UIImage {
+    static func imageFromColor(_ color: UIColor) -> UIImage {
         let rect = CGRect.init(origin: CGPoint.init(x: 0, y: 0),
                                size: CGSize.init(width: 1, height: 1))
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context!, color.CGColor)
-        CGContextFillRect(context!, rect)
+        context!.setFillColor(color.cgColor)
+        context!.fill(rect)
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return img!
@@ -130,11 +150,11 @@ class UIHelper {
     /**
      Displays an alert showing an error, with just on ok button and no other interaction.
      */
-    static func displayError(error: NSError?, controller: UIViewController,
+    static func displayError(_ error: NSError?, controller: UIViewController,
                              title: String? = nil) {
         if let err = error {
             let message = err.localizedDescription
-            if NSThread.currentThread().isMainThread {
+            if Thread.current.isMainThread {
                 displayErrorMessage(message, controller: controller, title: title)
             } else {
                 GCD.onMain() {
@@ -147,7 +167,7 @@ class UIHelper {
     /**
      Displays an alert showing a message, with just on ok button and no other interaction.
      */
-    static func displayErrorMessage(errorMessage: String, controller: UIViewController,
+    static func displayErrorMessage(_ errorMessage: String, controller: UIViewController,
                              title: String? = nil) {
         var theTitle: String! = title
         if theTitle == nil {
@@ -155,12 +175,12 @@ class UIHelper {
                 "Error", comment: "General error alert title")
         }
         let alert = UIAlertController.init(
-            title: theTitle, message: errorMessage, preferredStyle: .Alert)
+            title: theTitle, message: errorMessage, preferredStyle: .alert)
         let okTitle = NSLocalizedString(
             "Ok", comment: "OK for error alert (no other interaction possible)")
         let action = UIAlertAction.init(
-            title: okTitle, style: .Default, handler: nil)
+            title: okTitle, style: .default, handler: nil)
         alert.addAction(action)
-        controller.presentViewController(alert, animated: true, completion: nil)
+        controller.present(alert, animated: true, completion: nil)
     }
 }

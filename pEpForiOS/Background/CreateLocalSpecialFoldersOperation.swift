@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class CreateLocalSpecialFoldersOperation: BaseOperation {
+open class CreateLocalSpecialFoldersOperation: BaseOperation {
     let comp = "CreateLocalSpecialFoldersOperation"
     let coreDataUtil: ICoreDataUtil
     let accountEmail: String
@@ -19,9 +19,9 @@ public class CreateLocalSpecialFoldersOperation: BaseOperation {
         super.init()
     }
 
-    public override func main() {
+    open override func main() {
         let privateMOC = coreDataUtil.privateContext()
-        privateMOC.performBlockAndWait({
+        privateMOC.performAndWait({
             let model = Model.init(context: privateMOC)
             for kind in FolderType.allValuesToCreate {
                 let folderName = kind.folderName()

@@ -12,14 +12,14 @@ import CoreData
 /**
  Basic NSOperation that can gather errors.
  */
-public class BaseOperation: NSOperation {
-    public var errors: [NSError] = []
+open class BaseOperation: Operation {
+    open var errors: [NSError] = []
 
-    public func addError(error: NSError) {
+    open func addError(_ error: NSError) {
         errors.append(error)
     }
 
-    public func hasErrors() -> Bool {
+    open func hasErrors() -> Bool {
         return !errors.isEmpty
     }
 }

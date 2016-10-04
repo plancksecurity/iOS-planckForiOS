@@ -9,12 +9,12 @@
 import Foundation
 
 public extension ConnectionTransport {
-    static public func fromInteger(i: Int) -> ConnectionTransport {
+    static public func fromInteger(_ i: Int) -> ConnectionTransport {
         switch i {
-        case ConnectionTransport.Plain.rawValue:
-            return ConnectionTransport.Plain
-        case ConnectionTransport.StartTLS.rawValue:
-            return ConnectionTransport.StartTLS
+        case ConnectionTransport.plain.rawValue:
+            return ConnectionTransport.plain
+        case ConnectionTransport.startTLS.rawValue:
+            return ConnectionTransport.startTLS
         case ConnectionTransport.TLS.rawValue:
             return ConnectionTransport.TLS
         default:
@@ -24,11 +24,11 @@ public extension ConnectionTransport {
 
     public func localizedString() -> String {
         switch self {
-        case .Plain:
+        case .plain:
             return NSLocalizedString("None", comment: "Transport security (ConnectionTransport)")
         case .TLS:
             return NSLocalizedString("TLS", comment: "Transport security (ConnectionTransport)")
-        case .StartTLS:
+        case .startTLS:
             return NSLocalizedString("StartTLS",
                                      comment: "Transport security (ConnectionTransport)")
         }
@@ -41,14 +41,14 @@ public enum AuthMethod: String {
     case CramMD5 = "CRAM-MD5"
 
     init(string: String) {
-        if string.isEqual(Plain.rawValue) {
-            self = Plain
-        } else if string.isEqual(Login.rawValue) {
-            self = Login
-        } else if string.isEqual(CramMD5.rawValue) {
-            self = CramMD5
+        if string.isEqual(AuthMethod.Plain.rawValue) {
+            self = .Plain
+        } else if string.isEqual(AuthMethod.Login.rawValue) {
+            self = .Login
+        } else if string.isEqual(AuthMethod.CramMD5.rawValue) {
+            self = .CramMD5
         } else {
-            self = Plain
+            self = .Plain
             assert(false, "")
         }
     }
@@ -92,7 +92,7 @@ public struct ConnectInfo: IConnectInfo {
     public var imapTransport: ConnectionTransport = .TLS
     public var smtpServerName: String
     public var smtpServerPort: UInt16 = 587
-    public var smtpTransport: ConnectionTransport = .StartTLS
+    public var smtpTransport: ConnectionTransport = .startTLS
 
     public var accountName: String {
         return email
@@ -125,7 +125,7 @@ public extension ConnectInfo {
                 imapServerName: String, imapServerPort: UInt16 = 993,
                 imapTransport: ConnectionTransport = .TLS,
                 smtpServerName: String, smtpServerPort: UInt16 = 587,
-                smtpTransport: ConnectionTransport = .StartTLS)
+                smtpTransport: ConnectionTransport = .startTLS)
     {
         self.init(nameOfTheUser: nameOfTheUser, email: email, imapUsername: nil, smtpUsername: nil,
                   imapPassword: imapPassword, smtpPassword: nil,

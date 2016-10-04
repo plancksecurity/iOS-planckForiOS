@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class VerifyServiceOperation: ConcurrentBaseOperation {
+open class VerifyServiceOperation: ConcurrentBaseOperation {
     var service: Service!
     let connectInfo: ConnectInfo
     let connectionManager: ConnectionManager
@@ -28,7 +28,7 @@ public class VerifyServiceOperation: ConcurrentBaseOperation {
         super.init(coreDataUtil: grandOperator.coreDataUtil)
     }
 
-    func close(finish: Bool) {
+    func close(_ finish: Bool) {
         service.close()
         if finish {
             markAsFinished()

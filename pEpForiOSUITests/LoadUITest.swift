@@ -25,7 +25,7 @@ class LoadUITest: XCTestCase {
     func testCancelComposeSaveDraft() {
         let app = XCUIApplication()
         let tablesQuery = app.tables
-        tablesQuery.childrenMatchingType(.Cell).elementBoundByIndex(0).tap()
+        tablesQuery.children(matching: .cell).element(boundBy: 0).tap()
 
         while true {
             let composeButton = app.toolbars.buttons["Compose"]

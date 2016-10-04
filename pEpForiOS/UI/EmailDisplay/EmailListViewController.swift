@@ -9,6 +9,26 @@
 import Foundation
 import UIKit
 import CoreData
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class EmailListViewController: FetchTableViewController {
     struct EmailListConfig {
@@ -72,22 +92,22 @@ class EmailListViewController: FetchTableViewController {
         self.comp = "EmailListViewController"
     }
 
-    func isReadedMessage(message: IMessage)-> Bool {
+    func isReadedMessage(_ message: IMessage)-> Bool {
         return message.flagSeen.boolValue
     }
 
-    func isImportantMessage(message: IMessage)-> Bool {
+    func isImportantMessage(_ message: IMessage)-> Bool {
         return message.flagFlagged.boolValue
     }
 
     override func viewDidLoad() {
         refreshController = UIRefreshControl.init()
         refreshController.addTarget(self, action: #selector(self.fetchMailsRefreshControl(_:)),
-                                    forControlEvents: UIControlEvents.ValueChanged)
+                                    for: UIControlEvents.valueChanged)
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         // Disable fetching if there is no account
         if config.account != nil {
             self.refreshControl = refreshController
@@ -102,7 +122,7 @@ class EmailListViewController: FetchTableViewController {
         super.viewWillAppear(animated)
     }
 
-    func fetchMailsRefreshControl(refreshControl: UIRefreshControl? = nil) {
+    func fetchMailsRefreshControl(_ refreshControl: UIRefreshControl? = nil) {
         if let account = config.account {
             let connectInfo = account.connectInfo
 
@@ -125,13 +145,13 @@ class EmailListViewController: FetchTableViewController {
         }
     }
 
-    @IBAction func mailSentSegue(segue: UIStoryboardSegue) {
+    @IBAction func mailSentSegue(_ segue: UIStoryboardSegue) {
     }
 
-    @IBAction func backFromComposeWithoutSavingDraftSegue(segue: UIStoryboardSegue) {
+    @IBAction func backFromComposeWithoutSavingDraftSegue(_ segue: UIStoryboardSegue) {
     }
 
-    @IBAction func backFromComposeSaveDraftSegue(segue: UIStoryboardSegue) {
+    @IBAction func backFromComposeSaveDraftSegue(_ segue: UIStoryboardSegue) {
         guard let msg = draftMessageToStore else {
             return
         }
@@ -168,7 +188,7 @@ class EmailListViewController: FetchTableViewController {
     // MARK: - UI State
 
     func updateUI() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = state.isSynching
+        UIApplication.shared.isNetworkActivityIndicatorVisible = state.isSynching
         if !state.isSynching {
             self.refreshControl?.endRefreshing()
         }
@@ -176,7 +196,7 @@ class EmailListViewController: FetchTableViewController {
 
     // MARK: - UITableViewDataSource
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         if let count = fetchController?.sections?.count {
             return count
         } else {
@@ -184,7 +204,7 @@ class EmailListViewController: FetchTableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if fetchController?.sections?.count > 0 {
             if let sections = fetchController?.sections {
                 let sectionInfo = sections[section]
@@ -194,10 +214,10 @@ class EmailListViewController: FetchTableViewController {
         return 0
     }
 
-    override func tableView(tableView: UITableView,
-                            cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(
-            "EmailListViewCell", forIndexPath: indexPath) as! EmailListViewCell
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
         if !determinedCellBackgroundColor {
             defaultCellBackgroundColor = cell.backgroundColor
             determinedCellBackgroundColor = true
@@ -208,30 +228,30 @@ class EmailListViewController: FetchTableViewController {
 
     // MARK: - UITableViewDelegate
 
-    override func tableView(tableView: UITableView,
-                            didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
         draftMessageToCompose = nil
 
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        let cell = tableView.cellForRow(at: indexPath)
 
         if let fn = config.folderName, let ac = config.account,
             let folder = config.appConfig.model.folderByName(fn, email: ac.email) {
-            if folder.folderType.integerValue == FolderType.Drafts.rawValue {
-                draftMessageToCompose = fetchController?.objectAtIndexPath(indexPath)
+            if folder.folderType.intValue == FolderType.drafts.rawValue {
+                draftMessageToCompose = fetchController?.object(at: indexPath)
                     as? IMessage
-                performSegueWithIdentifier(segueCompose, sender: cell)
+                performSegue(withIdentifier: segueCompose, sender: cell)
                 return
             }
         }
 
-        performSegueWithIdentifier(segueShowEmail, sender: cell)
+        performSegue(withIdentifier: segueShowEmail, sender: cell)
     }
 
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath
-        indexPath: NSIndexPath)-> [UITableViewRowAction]? {
+    override func tableView(_ tableView: UITableView, editActionsForRowAt
+        indexPath: IndexPath)-> [UITableViewRowAction]? {
 
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! EmailListViewCell
-        let email = fetchController?.objectAtIndexPath(indexPath) as! Message
+        let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
+        let email = fetchController?.object(at: indexPath) as! Message
 
         let isFlagAction = createIsFlagAction(email, cell: cell)
         let deleteAction = createDeleteAction(cell)
@@ -241,12 +261,12 @@ class EmailListViewController: FetchTableViewController {
 
     // MARK: - Misc
 
-    override func configureCell(theCell: UITableViewCell, indexPath: NSIndexPath) {
+    override func configureCell(_ theCell: UITableViewCell, indexPath: IndexPath) {
         guard let cell = theCell as? EmailListViewCell else {
             return
         }
-        if let email = fetchController?.objectAtIndexPath(indexPath) as? Message {
-            if let colorRating = PEPUtil.colorRatingFromInt(email.pepColorRating?.integerValue) {
+        if let email = fetchController?.object(at: indexPath) as? Message {
+            if let colorRating = PEPUtil.colorRatingFromInt(email.pepColorRating?.intValue) {
                 let privacyColor = PEPUtil.colorFromPepRating(colorRating)
                 if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor) {
                     cell.backgroundColor = uiColor
@@ -272,36 +292,36 @@ class EmailListViewController: FetchTableViewController {
             }
 
             if let receivedDate = email.receivedDate {
-                UIHelper.putString(dateFormatter.stringFromDate(receivedDate),
+                UIHelper.putString(dateFormatter.string(from: receivedDate),
                                    toLabel: cell.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: cell.dateLabel)
             }
 
             if (isImportantMessage(email) && isReadedMessage(email)) {
-                cell.isImportantImage.hidden = false
-                cell.isImportantImage.backgroundColor = UIColor.orangeColor()
+                cell.isImportantImage.isHidden = false
+                cell.isImportantImage.backgroundColor = UIColor.orange
             }
             else if (isImportantMessage(email) && !isReadedMessage(email)) {
-                cell.isImportantImage.hidden = false
-                cell.isImportantImage.backgroundColor = UIColor.blueColor()
+                cell.isImportantImage.isHidden = false
+                cell.isImportantImage.backgroundColor = UIColor.blue
                 cell.isImportantImage.layer.borderWidth = 2
-                cell.isImportantImage.layer.borderColor = UIColor.orangeColor().CGColor
+                cell.isImportantImage.layer.borderColor = UIColor.orange.cgColor
             } else if (!isImportantMessage(email) && isReadedMessage(email)) {
-                    cell.isImportantImage.hidden = true
+                    cell.isImportantImage.isHidden = true
             } else if (!isImportantMessage(email) && !isReadedMessage(email)) {
-                cell.isImportantImage.hidden = false
-                cell.isImportantImage.backgroundColor = UIColor.blueColor()
+                cell.isImportantImage.isHidden = false
+                cell.isImportantImage.backgroundColor = UIColor.blue
             }
         }
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Make sure the current account is set, if defined
         config.appConfig.currentAccount = config.account
 
         if segue.identifier == segueCompose {
-            let destination = segue.destinationViewController
+            let destination = segue.destination
                 as! ComposeViewController
             destination.appConfig = config.appConfig
             if let draft = draftMessageToCompose {
@@ -310,14 +330,14 @@ class EmailListViewController: FetchTableViewController {
                 config.appConfig.model.save()
 
                 destination.originalMessage = draft
-                destination.composeMode = .ComposeDraft
+                destination.composeMode = .composeDraft
             }
         } else if segue.identifier == segueShowEmail {
             guard
-                let vc = segue.destinationViewController as? EmailViewController,
+                let vc = segue.destination as? EmailViewController,
                 let cell = sender as? UITableViewCell,
-                let indexPath = self.tableView.indexPathForCell(cell),
-                let email = fetchController?.objectAtIndexPath(indexPath) as? Message else {
+                let indexPath = self.tableView.indexPath(for: cell),
+                let email = fetchController?.object(at: indexPath) as? Message else {
                     return
             }
             vc.appConfig = config.appConfig
@@ -325,7 +345,7 @@ class EmailListViewController: FetchTableViewController {
         }
     }
 
-    func syncFlagsToServer(message: IMessage) {
+    func syncFlagsToServer(_ message: IMessage) {
         self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
             message.folder,
             completionBlock: { error in
@@ -333,7 +353,7 @@ class EmailListViewController: FetchTableViewController {
         })
     }
 
-    func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+    func createIsFlagAction(_ message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
         var localizedIsFlagTitle = " "
@@ -346,7 +366,7 @@ class EmailListViewController: FetchTableViewController {
         }
 
         // preparing action to trigger when user swipe
-        let isFlagCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+        let isFlagCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
                 if (self.isImportantMessage(message)) {
                     message.flagFlagged = false
@@ -356,38 +376,38 @@ class EmailListViewController: FetchTableViewController {
                 }
                 message.updateFlags()
                 self.syncFlagsToServer(message)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+                self.tableView.reloadRows(at: [indexPath], with: .none)
         }
         // creating the action
-        let isFlagAction = UITableViewRowAction(style: .Default, title: localizedIsFlagTitle,
+        let isFlagAction = UITableViewRowAction(style: .default, title: localizedIsFlagTitle,
                                                 handler: isFlagCompletionHandler)
         // changing default action color
-        isFlagAction.backgroundColor = UIColor.orangeColor()
+        isFlagAction.backgroundColor = UIColor.orange
 
         return isFlagAction
     }
 
-    func createDeleteAction (cell: EmailListViewCell) -> UITableViewRowAction {
+    func createDeleteAction (_ cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
         let localizedDeleteTitle = NSLocalizedString("Erase",
                                                      comment: "Erase button title in swipe action on EmailListViewController")
 
-        let deleteCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+        let deleteCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
-                let managedObject = self.fetchController?.objectAtIndexPath(indexPath) as? IMessage
+                let managedObject = self.fetchController?.object(at: indexPath) as? IMessage
                 managedObject?.flagDeleted = true
                 managedObject?.updateFlags()
                 self.syncFlagsToServer(managedObject!)
         }
 
         // creating the action
-        let deleteAction = UITableViewRowAction(style: .Default, title: localizedDeleteTitle,
+        let deleteAction = UITableViewRowAction(style: .default, title: localizedDeleteTitle,
                                                 handler: deleteCompletionHandler)
         return deleteAction
     }
 
-    func createIsReadAction (message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+    func createIsReadAction (_ message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
         var localizedisReadTitle = " "
@@ -400,7 +420,7 @@ class EmailListViewController: FetchTableViewController {
         }
 
         // creating the action
-        let isReadCompletionHandler: (UITableViewRowAction, NSIndexPath) -> Void =
+        let isReadCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
                 if (self.isReadedMessage(message)) {
                     message.flagSeen = false
@@ -410,11 +430,11 @@ class EmailListViewController: FetchTableViewController {
                     message.updateFlags()
                 }
                 self.syncFlagsToServer(message)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+                self.tableView.reloadRows(at: [indexPath], with: .none)
         }
-        let isReadAction = UITableViewRowAction(style: .Default, title: localizedisReadTitle,
+        let isReadAction = UITableViewRowAction(style: .default, title: localizedisReadTitle,
                                                 handler: isReadCompletionHandler)
-        isReadAction.backgroundColor = UIColor.blueColor()
+        isReadAction.backgroundColor = UIColor.blue
 
         return isReadAction
     }

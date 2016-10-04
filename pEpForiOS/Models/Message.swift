@@ -5,24 +5,24 @@ public protocol IMessage: _IMessage {
 }
 
 @objc(Message)
-public class Message: _Message, IMessage {
+open class Message: _Message, IMessage {
     /**
      - Returns: A `CWFlags object` for the given `NSNumber`
      */
-    static public func pantomimeFlagsFromNumber(flags: NSNumber) -> CWFlags {
-        if let fl = PantomimeFlag.init(rawValue: UInt(flags.integerValue)) {
+    static open func pantomimeFlagsFromNumber(_ flags: NSNumber) -> CWFlags {
+        if let fl = PantomimeFlag.init(rawValue: UInt(flags.intValue)) {
             return CWFlags.init(flags: fl)
         }
         Log.errorComponent(
             "Message", errorString:
-            "Could not convert \(flags.integerValue) to PantomimeFlag")
+            "Could not convert \(flags.intValue) to PantomimeFlag")
         return CWFlags.init()
     }
 
     /**
      - Returns: The current flags as String, like "\Deleted \Answered"
      */
-    static func flagsStringFromNumber(flags: NSNumber) -> String {
+    static func flagsStringFromNumber(_ flags: NSNumber) -> String {
         return pantomimeFlagsFromNumber(flags).asString()
     }
 }
@@ -30,20 +30,20 @@ public class Message: _Message, IMessage {
 public extension IMessage {
     func allRecipienst() -> NSOrderedSet {
         let recipients: NSMutableOrderedSet = []
-        recipients.addObjectsFromArray(to.array)
-        recipients.addObjectsFromArray(cc.array)
-        recipients.addObjectsFromArray(bcc.array)
+        recipients.addObjects(from: to.array)
+        recipients.addObjects(from: cc.array)
+        recipients.addObjects(from: bcc.array)
         return recipients
     }
 
-    func internetAddressFromContact(contact: IContact) -> CWInternetAddress {
+    func internetAddressFromContact(_ contact: IContact) -> CWInternetAddress {
         return CWInternetAddress.init(personal: contact.name, address: contact.email)
 
     }
 
-    func collectContacts(contacts: NSOrderedSet,
+    func collectContacts(_ contacts: NSOrderedSet,
                          asPantomimeReceiverType receiverType: PantomimeRecipientType,
-                                                 inout intoTargetArray target: [CWInternetAddress]) {
+                                                 intoTargetArray target: inout [CWInternetAddress]) {
         for obj in contacts {
             if let theContact = obj as? IContact {
                 let addr = internetAddressFromContact(theContact)
@@ -58,11 +58,11 @@ public extension IMessage {
      - Note: This does not handle attachments and many other fields.
      *It's just for quickly interfacing with Pantomime.*
      */
-    func pantomimeMessageWithFolder(folder: CWIMAPFolder) -> CWIMAPMessage {
+    func pantomimeMessageWithFolder(_ folder: CWIMAPFolder) -> CWIMAPMessage {
         let msg = CWIMAPMessage.init()
 
         if let date = receivedDate {
-            msg.setReceivedDate(date)
+            msg.setReceivedDate(date as Date)
         }
 
         if let sub = subject {
@@ -75,12 +75,12 @@ public extension IMessage {
 
         msg.setUID(UInt(uid))
 
-        if let msn = messageNumber?.integerValue {
+        if let msn = messageNumber?.intValue {
             msg.setMessageNumber(UInt(msn))
         }
 
         if let boundary = boundary {
-            msg.setBoundary(boundary.dataUsingEncoding(NSASCIIStringEncoding))
+            msg.setBoundary(boundary.data(using: String.Encoding.ascii))
         }
 
         if let contact = from {
@@ -88,11 +88,11 @@ public extension IMessage {
         }
 
         var recipients: [CWInternetAddress] = []
-        collectContacts(cc, asPantomimeReceiverType: .CcRecipient,
+        collectContacts(cc, asPantomimeReceiverType: .ccRecipient,
                         intoTargetArray: &recipients)
-        collectContacts(bcc, asPantomimeReceiverType: .BccRecipient,
+        collectContacts(bcc, asPantomimeReceiverType: .bccRecipient,
                         intoTargetArray: &recipients)
-        collectContacts(to, asPantomimeReceiverType: .ToRecipient,
+        collectContacts(to, asPantomimeReceiverType: .toRecipient,
                         intoTargetArray: &recipients)
         msg.setRecipients(recipients)
 
@@ -108,7 +108,7 @@ public extension IMessage {
         msg.setFolder(folder)
 
         // Avoid roundtrips to the server, just set the flags directly.
-        msg.flags().replaceWithFlags(CWFlags.init(number: flags))
+        msg.flags().replace(with: CWFlags.init(number: flags))
 
         return msg
     }
@@ -121,21 +121,21 @@ public extension IMessage {
 
         let append = {
             if string.length > 1 {
-                string.appendString(", ")
+                string.append(", ")
             }
         }
 
-        string.appendString("(")
+        string.append("(")
         if let msgID = messageID {
             append()
-            string.appendString("messageID: \(msgID)")
+            string.append("messageID: \(msgID)")
         }
-        string.appendString("\(uid.integerValue)")
+        string.append("\(uid.intValue)")
         if let oDate = receivedDate {
             append()
-            string.appendString("date: \(oDate)")
+            string.append("date: \(oDate)")
         }
-        string.appendString(")")
+        string.append(")")
         return string as String
     }
 
@@ -146,18 +146,18 @@ public extension IMessage {
     public func updateFlags() {
         let cwFlags = CWFlags.init()
         let allFlags: [(Bool, PantomimeFlag)] = [
-            (flagSeen.boolValue, PantomimeFlag.Seen),
-            (flagDraft.boolValue, PantomimeFlag.Draft),
-            (flagRecent.boolValue, PantomimeFlag.Recent),
-            (flagDeleted.boolValue, PantomimeFlag.Deleted),
-            (flagAnswered.boolValue, PantomimeFlag.Answered),
-            (flagFlagged.boolValue, PantomimeFlag.Flagged)]
+            (flagSeen.boolValue, PantomimeFlag.seen),
+            (flagDraft.boolValue, PantomimeFlag.draft),
+            (flagRecent.boolValue, PantomimeFlag.recent),
+            (flagDeleted.boolValue, PantomimeFlag.deleted),
+            (flagAnswered.boolValue, PantomimeFlag.answered),
+            (flagFlagged.boolValue, PantomimeFlag.flagged)]
         for (p, f) in allFlags {
             if p {
                 cwFlags.add(f)
             }
         }
-        flags = NSNumber.init(short: cwFlags.rawFlagsAsShort())
+        flags = NSNumber.init(value: cwFlags.rawFlagsAsShort() as Int16)
     }
 
     /**
@@ -181,12 +181,12 @@ public extension IMessage {
      - Note: The generated command will always simply overwrite the flags version
      on the server with the local one.
      */
-    public func storeCommandForUpdate() -> (String, [NSObject : AnyObject]) {
+    public func storeCommandForUpdate() -> (String, [AnyHashable: Any]) {
         // Construct a very minimal pantomime dummy for the info dictionary
         let pantomimeMail = CWIMAPMessage.init()
-        pantomimeMail.setUID(UInt(uid.integerValue))
+        pantomimeMail.setUID(UInt(uid.intValue))
 
-        var dict: [NSObject : AnyObject] = [PantomimeMessagesKey:
+        var dict: [AnyHashable: Any] = [PantomimeMessagesKey:
             NSArray.init(object: pantomimeMail)]
 
         var result = "UID STORE \(uid) "
