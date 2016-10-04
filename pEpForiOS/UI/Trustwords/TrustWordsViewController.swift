@@ -118,7 +118,7 @@ class TrustWordsViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordsCell",
                                                            for: indexPath) as! TrustWordsViewCell
             let contactIndex = (indexPath as NSIndexPath).row-numberOfStaticCells
-            let contact: Contact  = allRecipientsFiltered[contactIndex] as! Contact
+            let contact: Contact  = allRecipientsFiltered[contactIndex]
 
             cell.handshakeContactUILabel.text = contact.displayString()
             cell.handshakeUIButton.tag = contactIndex
@@ -179,7 +179,7 @@ class TrustWordsViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         if (segue.identifier == handshakeSegue) {
             let contactIndex = (sender as AnyObject).tag
-            let contact = allRecipientsFiltered[contactIndex!] as! Contact
+            let contact = allRecipientsFiltered[contactIndex!]
             if let destination = segue.destination as? HandshakeViewController {
                 destination.partner = contact
                 destination.appConfig = appConfig

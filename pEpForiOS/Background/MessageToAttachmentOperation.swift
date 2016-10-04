@@ -31,7 +31,7 @@ open class MessageToAttachmentOperation: ConcurrentBaseOperation {
     var attachment: SimpleAttachment?
 
     public init(message: Message, coreDataUtil: ICoreDataUtil) {
-        self.messageID = (message as! Message).objectID
+        self.messageID = message.objectID
         super.init(coreDataUtil: coreDataUtil)
     }
 

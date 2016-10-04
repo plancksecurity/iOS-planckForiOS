@@ -464,8 +464,9 @@ open class PEPUtil {
             message.setContent(multiPart)
 
             if !encrypted {
-                let bodyPart = bodyPartFromPepMail(pepMail)
-                multiPart.add(bodyPart)
+                if let bodyPart = bodyPartFromPepMail(pepMail) {
+                    multiPart.add(bodyPart)
+                }
             }
 
             if let attachmentDicts = attachmentDictsOpt {

@@ -125,14 +125,14 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
     @IBAction func confirmTrustwords(_ sender: AnyObject) {
         if let p = partner {
             PEPUtil.trustContact(p)
-            navigationController?.popViewController(animated: true)
+            let _ = navigationController?.popViewController(animated: true)
         }
     }
 
     @IBAction func wrongTrustwords(_ sender: AnyObject) {
         if let p = partner {
             PEPUtil.mistrustContact(p)
-            navigationController?.popViewController(animated: true)
+            let _ = navigationController?.popViewController(animated: true)
         }
     }
 

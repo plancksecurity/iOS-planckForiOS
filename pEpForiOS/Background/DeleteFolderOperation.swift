@@ -49,7 +49,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
         privateMOC.perform() {
             if let folder = self.model.anyFolderByName(
                 self.folderName, email: self.accountEmail) {
-                self.privateMOC.delete(folder as! NSManagedObject)
+                self.privateMOC.delete(folder)
                 self.model.save()
             }
             self.markAsFinished()

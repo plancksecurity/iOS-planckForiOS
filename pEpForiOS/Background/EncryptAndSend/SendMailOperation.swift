@@ -70,7 +70,7 @@ open class SendMailOperation: ConcurrentBaseOperation {
                     return
             }
 
-            message.folder = outFolder as! Folder
+            message.folder = outFolder
             CoreDataUtil.saveContext(privateMOC)
 
             if let ci = connectInfo {
