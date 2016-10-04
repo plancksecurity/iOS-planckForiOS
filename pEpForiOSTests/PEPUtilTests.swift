@@ -387,12 +387,12 @@ class PEPUtilTests: XCTestCase {
 
         XCTAssertEqual(message?.attachments.count, 2)
 
-        let modelAttachment1 = message?.attachments.object(at: 0) as? Attachment
+        let modelAttachment1 = message?.attachments.object(at: 0) as? CdAttachment
         XCTAssertNotNil(modelAttachment1)
         XCTAssertEqual(modelAttachment1?.filename, attachmentFilename1)
         XCTAssertEqual(modelAttachment1?.contentType, Constants.contentTypeHtml)
 
-        let modelAttachment2 = message?.attachments.object(at: 1) as? Attachment
+        let modelAttachment2 = message?.attachments.object(at: 1) as? CdAttachment
         XCTAssertNotNil(modelAttachment2)
         XCTAssertEqual(modelAttachment2?.filename, attachmentFilename2)
         XCTAssertEqual(modelAttachment2?.contentType, Constants.contentTypeHtml)
