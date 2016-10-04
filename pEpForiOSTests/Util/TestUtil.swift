@@ -177,7 +177,7 @@ class TestUtil {
                         return element
                     }
                 }
-                let newArray = ar.map(fn as! (NSFastEnumerationIterator.Element) -> _)
+                let newArray = ar.map(fn)
                 replacements.append((k as! NSCopying, newArray))
             }
         }

@@ -52,7 +52,7 @@ open class DecryptMailOperation: BaseOperation {
                 }
 
                 let pepMail = PEPUtil.pepMail(mail, outgoing: outgoing)
-                var pepDecryptedMail: NSDictionary?
+                var pepDecryptedMail: NSDictionary? = nil
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
                     pepMail, dest: &pepDecryptedMail, keys: &keys)

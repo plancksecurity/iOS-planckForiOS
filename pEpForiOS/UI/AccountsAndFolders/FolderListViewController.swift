@@ -53,7 +53,7 @@ class FolderListViewController: FetchTableViewController {
     }
 
     func prepareFetchRequest() {
-        let fetchRequest = NSFetchRequest.init(entityName: Folder.entityName())
+        let fetchRequest = NSFetchRequest<NSManagedObject>.init(entityName: Folder.entityName())
 
         let predicateAccount = NSPredicate.init(
             format: "account.email = %@", config.account.email)

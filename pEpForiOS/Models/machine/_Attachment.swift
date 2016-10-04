@@ -15,25 +15,7 @@ public enum AttachmentRelationships: String {
     case message = "message"
 }
 
-@objc public protocol _IAttachment {
-
-    // MARK: - Properties
-
-    var contentType: String? { get set }
-
-    var data: Data? { get set }
-
-    var filename: String? { get set }
-
-    var size: NSNumber { get set }
-
-    // MARK: - Relationships
-
-    var message: Message { get set }
-
-}
-
-open class _Attachment: BaseManagedObject, _IAttachment {
+open class _Attachment: BaseManagedObject {
 
     // MARK: - Class methods
 
@@ -41,7 +23,7 @@ open class _Attachment: BaseManagedObject, _IAttachment {
         return "Attachment"
     }
 
-    open class func entity(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+    open class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
         return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
 
@@ -52,7 +34,7 @@ open class _Attachment: BaseManagedObject, _IAttachment {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _Attachment.entity(managedObjectContext) else { return nil }
+        guard let entity = _Attachment.entity(managedObjectContext: managedObjectContext) else { return nil }
         self.init(entity: entity, insertInto: managedObjectContext)
     }
 
@@ -62,13 +44,13 @@ open class _Attachment: BaseManagedObject, _IAttachment {
     var contentType: String?
 
     @NSManaged open
-    var data: Data?
+    var data: NSData?
 
     @NSManaged open
     var filename: String?
 
     @NSManaged open
-    var size: NSNumber
+    var size: NSNumber?
 
     // MARK: - Relationships
 

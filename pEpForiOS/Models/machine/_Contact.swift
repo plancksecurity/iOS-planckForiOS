@@ -19,33 +19,7 @@ public enum ContactRelationships: String {
     case toMessages = "toMessages"
 }
 
-@objc public protocol _IContact {
-
-    // MARK: - Properties
-
-    var addressBookID: NSNumber? { get set }
-
-    var email: String { get set }
-
-    var isMySelf: NSNumber { get set }
-
-    var name: String? { get set }
-
-    var pepUserID: String? { get set }
-
-    // MARK: - Relationships
-
-    var bccMessages: NSSet { get set }
-
-    var ccMessages: NSSet { get set }
-
-    var fromMessages: NSSet { get set }
-
-    var toMessages: NSSet { get set }
-
-}
-
-open class _Contact: BaseManagedObject, _IContact {
+open class _Contact: BaseManagedObject {
 
     // MARK: - Class methods
 
@@ -53,7 +27,7 @@ open class _Contact: BaseManagedObject, _IContact {
         return "Contact"
     }
 
-    open class func entity(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+    open class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
         return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
 
@@ -64,7 +38,7 @@ open class _Contact: BaseManagedObject, _IContact {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _Contact.entity(managedObjectContext) else { return nil }
+        guard let entity = _Contact.entity(managedObjectContext: managedObjectContext) else { return nil }
         self.init(entity: entity, insertInto: managedObjectContext)
     }
 
@@ -77,7 +51,7 @@ open class _Contact: BaseManagedObject, _IContact {
     var email: String
 
     @NSManaged open
-    var isMySelf: NSNumber
+    var isMySelf: NSNumber?
 
     @NSManaged open
     var name: String?
@@ -90,38 +64,54 @@ open class _Contact: BaseManagedObject, _IContact {
     @NSManaged open
     var bccMessages: NSSet
 
+    open func bccMessagesSet() -> NSMutableSet {
+        return self.bccMessages.mutableCopy() as! NSMutableSet
+    }
+
     @NSManaged open
     var ccMessages: NSSet
+
+    open func ccMessagesSet() -> NSMutableSet {
+        return self.ccMessages.mutableCopy() as! NSMutableSet
+    }
 
     @NSManaged open
     var fromMessages: NSSet
 
+    open func fromMessagesSet() -> NSMutableSet {
+        return self.fromMessages.mutableCopy() as! NSMutableSet
+    }
+
     @NSManaged open
     var toMessages: NSSet
 
+    open func toMessagesSet() -> NSMutableSet {
+        return self.toMessages.mutableCopy() as! NSMutableSet
+    }
+
 }
 
-public extension _Contact {
+extension _Contact {
 
-    func addBccMessages(_ objects: NSSet) {
+    open func addBccMessages(objects: NSSet) {
         let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
         mutable.union(objects as Set<NSObject>)
         self.bccMessages = mutable.copy() as! NSSet
     }
 
-    func removeBccMessages(_ objects: NSSet) {
+    open func removeBccMessages(objects: NSSet) {
         let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
         mutable.minus(objects as Set<NSObject>)
         self.bccMessages = mutable.copy() as! NSSet
     }
 
-    func addBccMessagesObject(_ value: Message) {
+    open func addBccMessagesObject(value: Message) {
         let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.bccMessages = mutable.copy() as! NSSet
     }
 
-    func removeBccMessagesObject(_ value: Message) {
+    open func removeBccMessagesObject(value: Message) {
         let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.bccMessages = mutable.copy() as! NSSet
@@ -129,27 +119,27 @@ public extension _Contact {
 
 }
 
-public extension _Contact {
+extension _Contact {
 
-    func addCcMessages(_ objects: NSSet) {
+    open func addCcMessages(objects: NSSet) {
         let mutable = self.ccMessages.mutableCopy() as! NSMutableSet
         mutable.union(objects as Set<NSObject>)
         self.ccMessages = mutable.copy() as! NSSet
     }
 
-    func removeCcMessages(_ objects: NSSet) {
+    open func removeCcMessages(objects: NSSet) {
         let mutable = self.ccMessages.mutableCopy() as! NSMutableSet
         mutable.minus(objects as Set<NSObject>)
         self.ccMessages = mutable.copy() as! NSSet
     }
 
-    func addCcMessagesObject(_ value: Message) {
+    open func addCcMessagesObject(value: Message) {
         let mutable = self.ccMessages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.ccMessages = mutable.copy() as! NSSet
     }
 
-    func removeCcMessagesObject(_ value: Message) {
+    open func removeCcMessagesObject(value: Message) {
         let mutable = self.ccMessages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.ccMessages = mutable.copy() as! NSSet
@@ -157,27 +147,27 @@ public extension _Contact {
 
 }
 
-public extension _Contact {
+extension _Contact {
 
-    func addFromMessages(_ objects: NSSet) {
+    open func addFromMessages(objects: NSSet) {
         let mutable = self.fromMessages.mutableCopy() as! NSMutableSet
         mutable.union(objects as Set<NSObject>)
         self.fromMessages = mutable.copy() as! NSSet
     }
 
-    func removeFromMessages(_ objects: NSSet) {
+    open func removeFromMessages(objects: NSSet) {
         let mutable = self.fromMessages.mutableCopy() as! NSMutableSet
         mutable.minus(objects as Set<NSObject>)
         self.fromMessages = mutable.copy() as! NSSet
     }
 
-    func addFromMessagesObject(_ value: Message) {
+    open func addFromMessagesObject(value: Message) {
         let mutable = self.fromMessages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.fromMessages = mutable.copy() as! NSSet
     }
 
-    func removeFromMessagesObject(_ value: Message) {
+    open func removeFromMessagesObject(value: Message) {
         let mutable = self.fromMessages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.fromMessages = mutable.copy() as! NSSet
@@ -185,27 +175,27 @@ public extension _Contact {
 
 }
 
-public extension _Contact {
+extension _Contact {
 
-    func addToMessages(_ objects: NSSet) {
+    open func addToMessages(objects: NSSet) {
         let mutable = self.toMessages.mutableCopy() as! NSMutableSet
         mutable.union(objects as Set<NSObject>)
         self.toMessages = mutable.copy() as! NSSet
     }
 
-    func removeToMessages(_ objects: NSSet) {
+    open func removeToMessages(objects: NSSet) {
         let mutable = self.toMessages.mutableCopy() as! NSMutableSet
         mutable.minus(objects as Set<NSObject>)
         self.toMessages = mutable.copy() as! NSSet
     }
 
-    func addToMessagesObject(_ value: Message) {
+    open func addToMessagesObject(value: Message) {
         let mutable = self.toMessages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.toMessages = mutable.copy() as! NSSet
     }
 
-    func removeToMessagesObject(_ value: Message) {
+    open func removeToMessagesObject(value: Message) {
         let mutable = self.toMessages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.toMessages = mutable.copy() as! NSSet

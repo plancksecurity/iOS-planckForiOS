@@ -74,10 +74,7 @@ open class AddressBook {
     open func splitContactName(_ name: String) -> [String] {
         let matches = splitRegex.matches(in: name, options: [], range: name.wholeRange())
         let strings = matches.map { (result: NSTextCheckingResult) -> String in
-            let start = name.characters.index(name.startIndex, offsetBy: result.range.location)
-            let end = <#T##String.CharacterView corresponding to `start`##String.CharacterView#>.index(start, offsetBy: result.range.length)
-            let rng = start..<end
-            return name.substring(with: rng)
+            return (name as NSString).substring(with: result.range)
         }
         return strings
     }
@@ -286,7 +283,7 @@ open class AddressBook {
     open func authorize(_ block: ((AddressBook) -> ())? = nil) -> AddressBookStatus {
         switch authorizationStatus {
         case .notDetermined:
-            ABAddressBookRequestAccessWithCompletion(nil) { (granted: Bool, err: CFError!) in
+            ABAddressBookRequestAccessWithCompletion(nil) { granted, err in
                 if granted {
                     self.authorizationStatus = .authorized
                     self.createAddressBook()

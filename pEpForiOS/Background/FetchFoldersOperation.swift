@@ -169,7 +169,7 @@ extension FetchFoldersOperation: ImapSyncDelegate {
         guard let userInfo = (notification as NSNotification?)?.userInfo else {
             return
         }
-        guard let folderInfoDict = userInfo[PantomimeFolderInfo] else {
+        guard let folderInfoDict = userInfo[PantomimeFolderInfo] as? NSDictionary else {
             return
         }
         guard let folderName = folderInfoDict[PantomimeFolderNameKey] as? String else {

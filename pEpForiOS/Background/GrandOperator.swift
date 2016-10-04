@@ -158,7 +158,7 @@ open class GrandOperator: IGrandOperator {
                         errors.append(contentsOf: op.errors)
                     }
                     // Only the first error will be reported
-                    completionBlock?(error: errors.first)
+                    completionBlock?(errors.first)
                 }
             }
         }
@@ -178,7 +178,7 @@ open class GrandOperator: IGrandOperator {
             // Even for operations running on the main thread with main loop,
             // that block will be called on some background queue.
             GCD.onMain() {
-                completionBlock?(error: op.errors.first)
+                completionBlock?(op.errors.first)
             }
         }
         op.start()
@@ -316,7 +316,7 @@ open class GrandOperator: IGrandOperator {
                         break
                     }
                 }
-                completionBlock?(error: firstError)
+                completionBlock?(firstError)
             }
         }
 
@@ -343,7 +343,7 @@ open class GrandOperator: IGrandOperator {
                         break
                     }
                 }
-                completionBlock?(error: firstError)
+                completionBlock?(firstError)
             }
         }
         opStore.addDependency(opCreateDraftFolder)
@@ -368,7 +368,7 @@ open class GrandOperator: IGrandOperator {
             GCD.onMain() {
                 blockOrig?()
                 let firstError = operation?.errors.first
-                completionBlock?(error: firstError)
+                completionBlock?(firstError)
             }
         }
         if let op = operation {
@@ -383,7 +383,7 @@ open class GrandOperator: IGrandOperator {
             connectionManager: connectionManager, coreDataUtil: coreDataUtil)
         op.completionBlock = {
             GCD.onMain() {
-                completionBlock?(error: op.errors.first)
+                completionBlock?(op.errors.first)
             }
         }
         backgroundQueue.addOperation(op)
@@ -396,7 +396,7 @@ open class GrandOperator: IGrandOperator {
             coreDataUtil: coreDataUtil)
         op.completionBlock = {
             GCD.onMain() {
-                completionBlock?(error: op.errors.first)
+                completionBlock?(op.errors.first)
             }
         }
         backgroundQueue.addOperation(op)

@@ -13,21 +13,7 @@ public enum MessageReferenceRelationships: String {
     case referencingMessages = "referencingMessages"
 }
 
-@objc public protocol _IMessageReference {
-
-    // MARK: - Properties
-
-    var messageID: String { get set }
-
-    // MARK: - Relationships
-
-    var message: Message? { get set }
-
-    var referencingMessages: NSSet { get set }
-
-}
-
-open class _MessageReference: BaseManagedObject, _IMessageReference {
+open class _MessageReference: BaseManagedObject {
 
     // MARK: - Class methods
 
@@ -35,7 +21,7 @@ open class _MessageReference: BaseManagedObject, _IMessageReference {
         return "MessageReference"
     }
 
-    open class func entity(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+    open class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
         return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
 
@@ -46,7 +32,7 @@ open class _MessageReference: BaseManagedObject, _IMessageReference {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _MessageReference.entity(managedObjectContext) else { return nil }
+        guard let entity = _MessageReference.entity(managedObjectContext: managedObjectContext) else { return nil }
         self.init(entity: entity, insertInto: managedObjectContext)
     }
 
@@ -63,29 +49,33 @@ open class _MessageReference: BaseManagedObject, _IMessageReference {
     @NSManaged open
     var referencingMessages: NSSet
 
+    open func referencingMessagesSet() -> NSMutableSet {
+        return self.referencingMessages.mutableCopy() as! NSMutableSet
+    }
+
 }
 
-public extension _MessageReference {
+extension _MessageReference {
 
-    func addReferencingMessages(_ objects: NSSet) {
+    open func addReferencingMessages(objects: NSSet) {
         let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
         mutable.union(objects as Set<NSObject>)
         self.referencingMessages = mutable.copy() as! NSSet
     }
 
-    func removeReferencingMessages(_ objects: NSSet) {
+    open func removeReferencingMessages(objects: NSSet) {
         let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
         mutable.minus(objects as Set<NSObject>)
         self.referencingMessages = mutable.copy() as! NSSet
     }
 
-    func addReferencingMessagesObject(_ value: Message) {
+    open func addReferencingMessagesObject(value: Message) {
         let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.referencingMessages = mutable.copy() as! NSSet
     }
 
-    func removeReferencingMessagesObject(_ value: Message) {
+    open func removeReferencingMessagesObject(value: Message) {
         let mutable = self.referencingMessages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.referencingMessages = mutable.copy() as! NSSet

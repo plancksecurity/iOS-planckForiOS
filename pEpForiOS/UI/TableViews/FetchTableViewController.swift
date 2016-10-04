@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -35,7 +36,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 open class FetchTableViewController: UITableViewController {
     /** Override this in your class */
     var comp: String = "FetchTableViewController"
-    var fetchController: NSFetchedResultsController<AnyObject>?
+    var fetchController: NSFetchedResultsController<NSManagedObject>?
 
     func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
         fatalError("implement configureCell(cell:indexPath:)")

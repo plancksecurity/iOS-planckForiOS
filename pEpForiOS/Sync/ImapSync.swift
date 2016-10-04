@@ -246,7 +246,8 @@ extension ImapSync: CWServiceClient {
 
     @objc public func folderPrefetchCompleted(_ notification: Notification?) {
         dumpMethodName("folderPrefetchCompleted", notification: notification)
-        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"] as! CWFolder) {
+        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
+            as? CWFolder) {
             Log.infoComponent(comp, "prefetched folder: \(folder.name())")
         } else {
             Log.infoComponent(comp, "folderPrefetchCompleted: \(notification)")
@@ -309,7 +310,7 @@ extension ImapSync: CWServiceClient {
             delegate?.actionFailed(self, error: unknownError)
             return
         }
-        guard let errorInfoDict = userInfo[PantomimeErrorInfo] else {
+        guard let errorInfoDict = userInfo[PantomimeErrorInfo] as? NSDictionary else {
             delegate?.actionFailed(self, error: unknownError)
             return
         }
@@ -355,7 +356,8 @@ extension ImapSync: CWServiceClient {
 
 extension ImapSync: PantomimeFolderDelegate {
     @objc public func folderOpenCompleted(_ notification: Notification?) {
-        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"] as! CWFolder) {
+        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
+            as? CWFolder) {
             Log.infoComponent(comp, "folderOpenCompleted: \(folder.name())")
             imapState.currentFolder = folder.name()
         } else {
@@ -366,7 +368,8 @@ extension ImapSync: PantomimeFolderDelegate {
     }
 
     @objc public func folderOpenFailed(_ notification: Notification?) {
-        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"] as! CWFolder) {
+        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
+            as? CWFolder) {
             Log.infoComponent(comp, "folderOpenFailed: \(folder.name())")
         } else {
             Log.infoComponent(comp, "folderOpenFailed: \(notification)")

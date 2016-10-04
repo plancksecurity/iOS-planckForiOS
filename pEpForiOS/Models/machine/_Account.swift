@@ -23,41 +23,7 @@ public enum AccountRelationships: String {
     case folders = "folders"
 }
 
-@objc public protocol _IAccount {
-
-    // MARK: - Properties
-
-    var accountType: NSNumber { get set }
-
-    var email: String { get set }
-
-    var folderSeparator: String? { get set }
-
-    var imapServerName: String { get set }
-
-    var imapServerPort: NSNumber { get set }
-
-    var imapTransport: NSNumber { get set }
-
-    var imapUsername: String? { get set }
-
-    var nameOfTheUser: String { get set }
-
-    var smtpServerName: String { get set }
-
-    var smtpServerPort: NSNumber { get set }
-
-    var smtpTransport: NSNumber { get set }
-
-    var smtpUsername: String? { get set }
-
-    // MARK: - Relationships
-
-    var folders: NSSet { get set }
-
-}
-
-open class _Account: BaseManagedObject, _IAccount {
+open class _Account: BaseManagedObject {
 
     // MARK: - Class methods
 
@@ -65,7 +31,7 @@ open class _Account: BaseManagedObject, _IAccount {
         return "Account"
     }
 
-    open class func entity(_ managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
+    open class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
         return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
     }
 
@@ -76,14 +42,14 @@ open class _Account: BaseManagedObject, _IAccount {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _Account.entity(managedObjectContext) else { return nil }
+        guard let entity = _Account.entity(managedObjectContext: managedObjectContext) else { return nil }
         self.init(entity: entity, insertInto: managedObjectContext)
     }
 
     // MARK: - Properties
 
     @NSManaged open
-    var accountType: NSNumber
+    var accountType: NSNumber?
 
     @NSManaged open
     var email: String
@@ -95,10 +61,10 @@ open class _Account: BaseManagedObject, _IAccount {
     var imapServerName: String
 
     @NSManaged open
-    var imapServerPort: NSNumber
+    var imapServerPort: NSNumber?
 
     @NSManaged open
-    var imapTransport: NSNumber
+    var imapTransport: NSNumber?
 
     @NSManaged open
     var imapUsername: String?
@@ -110,10 +76,10 @@ open class _Account: BaseManagedObject, _IAccount {
     var smtpServerName: String
 
     @NSManaged open
-    var smtpServerPort: NSNumber
+    var smtpServerPort: NSNumber?
 
     @NSManaged open
-    var smtpTransport: NSNumber
+    var smtpTransport: NSNumber?
 
     @NSManaged open
     var smtpUsername: String?
@@ -123,29 +89,33 @@ open class _Account: BaseManagedObject, _IAccount {
     @NSManaged open
     var folders: NSSet
 
+    open func foldersSet() -> NSMutableSet {
+        return self.folders.mutableCopy() as! NSMutableSet
+    }
+
 }
 
-public extension _Account {
+extension _Account {
 
-    func addFolders(_ objects: NSSet) {
+    open func addFolders(objects: NSSet) {
         let mutable = self.folders.mutableCopy() as! NSMutableSet
         mutable.union(objects as Set<NSObject>)
         self.folders = mutable.copy() as! NSSet
     }
 
-    func removeFolders(_ objects: NSSet) {
+    open func removeFolders(objects: NSSet) {
         let mutable = self.folders.mutableCopy() as! NSMutableSet
         mutable.minus(objects as Set<NSObject>)
         self.folders = mutable.copy() as! NSSet
     }
 
-    func addFoldersObject(_ value: Folder) {
+    open func addFoldersObject(value: Folder) {
         let mutable = self.folders.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.folders = mutable.copy() as! NSSet
     }
 
-    func removeFoldersObject(_ value: Folder) {
+    open func removeFoldersObject(value: Folder) {
         let mutable = self.folders.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.folders = mutable.copy() as! NSSet
