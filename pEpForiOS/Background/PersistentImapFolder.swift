@@ -19,7 +19,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     let coreDataUtil: ICoreDataUtil
     lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
-    lazy var model: IModel = Model.init(context: self.privateMOC)
+    lazy var model: ICdModel = CdModel.init(context: self.privateMOC)
 
     /** The underlying core data object */
     var folder: Folder!

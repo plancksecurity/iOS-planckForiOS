@@ -41,7 +41,7 @@ open class FolderModelOperation: ConcurrentBaseOperation {
     override open func main() {
         let ctx = coreDataUtil.privateContext()
         ctx.perform({
-            let model = Model.init(context: ctx)
+            let model = CdModel.init(context: ctx)
 
             let predicateParent = NSPredicate.init(format: "parent == nil")
             let predicateAccount = NSPredicate.init(

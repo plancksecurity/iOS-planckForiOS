@@ -22,7 +22,7 @@ open class CreateLocalSpecialFoldersOperation: BaseOperation {
     open override func main() {
         let privateMOC = coreDataUtil.privateContext()
         privateMOC.performAndWait({
-            let model = Model.init(context: privateMOC)
+            let model = CdModel.init(context: privateMOC)
             for kind in FolderType.allValuesToCreate {
                 let folderName = kind.folderName()
                 if let folder = model.insertOrUpdateFolderName(

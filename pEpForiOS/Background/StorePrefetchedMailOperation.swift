@@ -35,7 +35,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
     override open func main() {
         let privateMOC = coreDataUtil.privateContext()
         privateMOC.performAndWait({
-            let model = Model.init(context: privateMOC)
+            let model = CdModel.init(context: privateMOC)
             var result: Message? = nil
             if self.quick {
                 (result, _) = model.quickInsertOrUpdatePantomimeMail(

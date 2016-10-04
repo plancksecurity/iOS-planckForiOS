@@ -19,7 +19,7 @@ open class DecryptMailOperation: BaseOperation {
     open override func main() {
         let context = coreDataUtil.privateContext()
         context.perform() {
-            let model = Model.init(context: context)
+            let model = CdModel.init(context: context)
             let session = PEPSession.init()
 
             let predicateColor = NSPredicate.init(format: "pepColorRating == nil")

@@ -18,7 +18,7 @@ class PersistentSetup {
     let backgroundQueue = OperationQueue.init()
     let grandOperator: GrandOperator
     let folderBuilder: ImapFolderBuilder
-    let model: IModel
+    let model: ICdModel
     var accountEmail: String {
         return connectionInfo.email
     }
@@ -35,7 +35,7 @@ class PersistentSetup {
                                                connectInfo: connectionInfo,
                                                backgroundQueue: backgroundQueue)
 
-        model = Model.init(context: coreDataUtil.managedObjectContext)
+        model = CdModel.init(context: coreDataUtil.managedObjectContext)
         account = model.insertAccountFromConnectInfo(connectionInfo)
     }
 

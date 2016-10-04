@@ -22,7 +22,7 @@ open class HTMLConvertOperation: BaseOperation {
     /**
      Debugging only, removes longMessage from all mails that also have longMessageFormatted.
      */
-    func removeTextFromMails(_ model: Model) {
+    func removeTextFromMails(_ model: CdModel) {
         let predicateHasHTML = NSPredicate.init(
             format: "longMessageFormatted != nil and longMessageFormatted != %@", "")
         let predicateHasLongMessage = NSPredicate.init(
@@ -59,7 +59,7 @@ open class HTMLConvertOperation: BaseOperation {
     open override func main() {
         let context = coreDataUtil.privateContext()
         context.perform() {
-            let model = Model.init(context: context)
+            let model = CdModel.init(context: context)
 
             let pBasic = model.basicMessagePredicate()
             let predicateHasHTML = NSPredicate.init(

@@ -286,7 +286,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         if let snippet = model.searchSnippet {
             if let privateMOC = appConfig?.coreDataUtil.privateContext() {
                 privateMOC.perform() {
-                    let modelBackground = Model.init(context: privateMOC)
+                    let modelBackground = CdModel.init(context: privateMOC)
                     let contacts = modelBackground.contactsBySnippet(snippet).map() {
                         AddressbookContact.init(contact: $0)
                     }
@@ -406,7 +406,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      Updates the given message with data from the view.
      */
     func populateMessageWithViewData(_ message: Message, account: Account,
-                                     model: IModel) {
+                                     model: ICdModel) {
         // reset
         message.to = []
         message.cc = []
@@ -485,7 +485,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      and a child message (i.e., the message containing the reply).
      See https://cr.yp.to/immhf/thread.html for general strategy.
      */
-    func setupMessageReferences(_ parent: Message, message: Message, model: IModel) {
+    func setupMessageReferences(_ parent: Message, message: Message, model: ICdModel) {
         // Inherit all references from the parent
         message.references = parent.references
 
@@ -900,7 +900,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             return
         }
 
-        let model = Model.init(context: ap.coreDataUtil.privateContext())
+        let model = CdModel.init(context: ap.coreDataUtil.privateContext())
 
         model.context.perform() {
             let recipientText = NSMutableAttributedString.init()

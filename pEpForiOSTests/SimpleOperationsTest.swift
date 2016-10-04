@@ -214,7 +214,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func createBasicMail() -> (
-        OperationQueue, Account, IModel, Message,
+        OperationQueue, Account, ICdModel, Message,
         (identity: NSMutableDictionary, receiver1: PEPContact,
         receiver2: PEPContact, receiver3: PEPContact,
         receiver4: PEPContact))? {

@@ -37,7 +37,7 @@ open class SendMailOperation: ConcurrentBaseOperation {
         let privateMOC = encryptionData.coreDataUtil.privateContext()
         var connectInfo: ConnectInfo? = nil
         privateMOC.perform() {
-            let model = Model.init(context: privateMOC)
+            let model = CdModel.init(context: privateMOC)
             guard let account = model.accountByEmail(self.encryptionData.accountEmail) else {
                 self.handleEntryError(Constants.errorInvalidParameter(
                     self.comp,

@@ -120,8 +120,8 @@ open class GrandOperator: IGrandOperator {
     /**
      The main model (for use on the main thread)
      */
-    fileprivate lazy var model: IModel = {
-        return Model.init(context: self.coreDataUtil.managedObjectContext)
+    fileprivate lazy var model: ICdModel = {
+        return CdModel.init(context: self.coreDataUtil.managedObjectContext)
     }()
 
     /**

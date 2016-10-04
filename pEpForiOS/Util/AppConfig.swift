@@ -21,7 +21,7 @@ class AppConfig: NSObject {
      The model gives access to the complete application model. It has access
      to the main thread's `NSManagedObjectContext`.
      */
-    let model: IModel
+    let model: ICdModel
 
     /**
      As soon as the UI has at least one account that is in use, this is set here.
@@ -30,7 +30,7 @@ class AppConfig: NSObject {
 
     override init() {
         connectionManager = ConnectionManager()
-        model = Model.init(context: coreDataUtil.managedObjectContext)
+        model = CdModel.init(context: coreDataUtil.managedObjectContext)
         grandOperator = GrandOperator.init(connectionManager: connectionManager,
                                            coreDataUtil: coreDataUtil)
     }

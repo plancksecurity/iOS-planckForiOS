@@ -304,7 +304,7 @@ open class PEPUtil {
         return dict as PEPMail
     }
 
-    open static func insertPepContact(_ pepContact: PEPContact, intoModel: IModel) -> Contact {
+    open static func insertPepContact(_ pepContact: PEPContact, intoModel: ICdModel) -> Contact {
         let contact = intoModel.insertOrUpdateContactEmail(
             pepContact[kPepAddress] as! String,
             name: pepContact[kPepUsername] as? String)
@@ -657,7 +657,7 @@ open class PEPUtil {
      Caller is responsible for saving the model!
      */
     open static func updateDecryptedMessage(_ message: Message, fromPepMail: PEPMail,
-                                              pepColorRating: PEP_rating?, model: IModel) {
+                                              pepColorRating: PEP_rating?, model: ICdModel) {
         if let color = pepColorRating {
             message.pepColorRating = NSNumber.init(value: color.rawValue as Int32)
         } else {
@@ -694,7 +694,7 @@ open class PEPUtil {
      the ordered set is empty.
      */
     open static func orderedContactSetFromPepContactArray(
-        _ array: NSArray?, model: IModel) -> NSOrderedSet {
+        _ array: NSArray?, model: ICdModel) -> NSOrderedSet {
         if let ar = array {
             let contacts: [AnyObject] = ar.map() {
                 let contact = insertPepContact($0 as! PEPContact, intoModel: model)
@@ -709,7 +709,7 @@ open class PEPUtil {
      Completely updates a freshly inserted message from a pEp mail dictionary. Useful for tests.
      Caller is responsible for saving the model!
      */
-    open static func updateWholeMessage(_ message: Message, fromPepMail: PEPMail, model: IModel) {
+    open static func updateWholeMessage(_ message: Message, fromPepMail: PEPMail, model: ICdModel) {
         updateDecryptedMessage(message, fromPepMail: fromPepMail, pepColorRating: nil,
                       model: model)
         message.to = orderedContactSetFromPepContactArray(

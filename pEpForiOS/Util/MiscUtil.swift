@@ -41,7 +41,7 @@ open class MiscUtil {
         blockFinished: (([Contact]) -> ())? = nil) {
         privateContext.perform() {
             var insertedContacts = [Contact]()
-            let model = Model.init(context: privateContext)
+            let model = CdModel.init(context: privateContext)
             let ab = AddressBook()
             let contacts = ab.allContacts()
             for c in contacts {

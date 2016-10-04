@@ -28,7 +28,7 @@ class StoreFolderOperation: ConcurrentBaseOperation {
     override func main() {
         let privateMOC = coreDataUtil.privateContext()
         privateMOC.perform({
-            let model = Model.init(context: privateMOC)
+            let model = CdModel.init(context: privateMOC)
             let folder = model.insertOrUpdateFolderName(
                 self.folderInfo.name, folderSeparator: self.folderInfo.separator,
                 accountEmail: self.email)

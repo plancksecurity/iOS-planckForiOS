@@ -1,5 +1,5 @@
 //
-//  Model.swift
+//  CdModel.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 02/05/16.
@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -29,7 +30,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-public protocol IModel {
+public protocol ICdModel {
     var context: NSManagedObjectContext { get }
 
     /**
@@ -195,9 +196,9 @@ public protocol IModel {
 }
 
 /**
- Core data implementation
+ Core data model implementation
  */
-open class Model: IModel {
+open class CdModel: ICdModel {
     let comp = "Model"
 
     open static let CouldNotCreateFolder = 1000
