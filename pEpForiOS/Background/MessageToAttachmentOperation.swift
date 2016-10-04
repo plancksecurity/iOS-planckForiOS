@@ -30,7 +30,7 @@ open class MessageToAttachmentOperation: ConcurrentBaseOperation {
 
     var attachment: SimpleAttachment?
 
-    public init(message: Message, coreDataUtil: ICoreDataUtil) {
+    public init(message: CdMessage, coreDataUtil: ICoreDataUtil) {
         self.messageID = message.objectID
         super.init(coreDataUtil: coreDataUtil)
     }
@@ -44,7 +44,7 @@ open class MessageToAttachmentOperation: ConcurrentBaseOperation {
     }
 
     func doWork(_ privateMOC: NSManagedObjectContext) {
-        guard let message = privateMOC.object(with: self.messageID) as? Message else {
+        guard let message = privateMOC.object(with: self.messageID) as? CdMessage else {
             errorMessage(NSLocalizedString(
                 "Could not find message by objectID", comment: "Internal error"),
                          logMessage: "Could not find message by objectID")

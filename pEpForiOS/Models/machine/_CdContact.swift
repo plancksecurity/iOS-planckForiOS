@@ -1,10 +1,10 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to Contact.swift instead.
+// Make changes to CdContact.swift instead.
 
 import Foundation
 import CoreData
 
-public enum ContactAttributes: String {
+public enum CdContactAttributes: String {
     case addressBookID = "addressBookID"
     case email = "email"
     case isMySelf = "isMySelf"
@@ -12,14 +12,14 @@ public enum ContactAttributes: String {
     case pepUserID = "pepUserID"
 }
 
-public enum ContactRelationships: String {
+public enum CdContactRelationships: String {
     case bccMessages = "bccMessages"
     case ccMessages = "ccMessages"
     case fromMessages = "fromMessages"
     case toMessages = "toMessages"
 }
 
-open class _Contact: BaseManagedObject {
+open class _CdContact: BaseManagedObject {
 
     // MARK: - Class methods
 
@@ -38,7 +38,7 @@ open class _Contact: BaseManagedObject {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _Contact.entity(managedObjectContext: managedObjectContext) else { return nil }
+        guard let entity = _CdContact.entity(managedObjectContext: managedObjectContext) else { return nil }
         self.init(entity: entity, insertInto: managedObjectContext)
     }
 
@@ -91,7 +91,7 @@ open class _Contact: BaseManagedObject {
 
 }
 
-extension _Contact {
+extension _CdContact {
 
     open func addBccMessages(objects: NSSet) {
         let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
@@ -105,13 +105,13 @@ extension _Contact {
         self.bccMessages = mutable.copy() as! NSSet
     }
 
-    open func addBccMessagesObject(value: Message) {
+    open func addBccMessagesObject(value: CdMessage) {
         let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.bccMessages = mutable.copy() as! NSSet
     }
 
-    open func removeBccMessagesObject(value: Message) {
+    open func removeBccMessagesObject(value: CdMessage) {
         let mutable = self.bccMessages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.bccMessages = mutable.copy() as! NSSet
@@ -119,7 +119,7 @@ extension _Contact {
 
 }
 
-extension _Contact {
+extension _CdContact {
 
     open func addCcMessages(objects: NSSet) {
         let mutable = self.ccMessages.mutableCopy() as! NSMutableSet
@@ -133,13 +133,13 @@ extension _Contact {
         self.ccMessages = mutable.copy() as! NSSet
     }
 
-    open func addCcMessagesObject(value: Message) {
+    open func addCcMessagesObject(value: CdMessage) {
         let mutable = self.ccMessages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.ccMessages = mutable.copy() as! NSSet
     }
 
-    open func removeCcMessagesObject(value: Message) {
+    open func removeCcMessagesObject(value: CdMessage) {
         let mutable = self.ccMessages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.ccMessages = mutable.copy() as! NSSet
@@ -147,7 +147,7 @@ extension _Contact {
 
 }
 
-extension _Contact {
+extension _CdContact {
 
     open func addFromMessages(objects: NSSet) {
         let mutable = self.fromMessages.mutableCopy() as! NSMutableSet
@@ -161,13 +161,13 @@ extension _Contact {
         self.fromMessages = mutable.copy() as! NSSet
     }
 
-    open func addFromMessagesObject(value: Message) {
+    open func addFromMessagesObject(value: CdMessage) {
         let mutable = self.fromMessages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.fromMessages = mutable.copy() as! NSSet
     }
 
-    open func removeFromMessagesObject(value: Message) {
+    open func removeFromMessagesObject(value: CdMessage) {
         let mutable = self.fromMessages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.fromMessages = mutable.copy() as! NSSet
@@ -175,7 +175,7 @@ extension _Contact {
 
 }
 
-extension _Contact {
+extension _CdContact {
 
     open func addToMessages(objects: NSSet) {
         let mutable = self.toMessages.mutableCopy() as! NSMutableSet
@@ -189,13 +189,13 @@ extension _Contact {
         self.toMessages = mutable.copy() as! NSSet
     }
 
-    open func addToMessagesObject(value: Message) {
+    open func addToMessagesObject(value: CdMessage) {
         let mutable = self.toMessages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.toMessages = mutable.copy() as! NSSet
     }
 
-    open func removeToMessagesObject(value: Message) {
+    open func removeToMessagesObject(value: CdMessage) {
         let mutable = self.toMessages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.toMessages = mutable.copy() as! NSSet

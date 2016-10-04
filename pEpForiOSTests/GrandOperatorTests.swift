@@ -32,9 +32,9 @@ class GrandOperatorTests: XCTestCase {
      */
     func testNewMessage() {
         let message = NSEntityDescription.insertNewObject(
-            forEntityName: Message.entityName(),
+            forEntityName: CdMessage.entityName(),
             into:
-            persistentSetup.grandOperator.coreDataUtil.managedObjectContext) as? Message
+            persistentSetup.grandOperator.coreDataUtil.managedObjectContext) as? CdMessage
         XCTAssertNotNil(message)
         message!.subject = "Subject"
         XCTAssertNotNil(message?.subject)
@@ -61,7 +61,7 @@ class GrandOperatorTests: XCTestCase {
                        ImapSync.defaultImapInboxName.lowercased())
     }
 
-    func createMail() -> Message {
+    func createMail() -> CdMessage {
         let msg = persistentSetup.model.insertNewMessage()
         msg.subject = "Subject"
         msg.longMessage = "Message body"
@@ -108,7 +108,7 @@ class GrandOperatorTests: XCTestCase {
         })
     }
 
-    func createSpecialFolders(_ account: Account) {
+    func createSpecialFolders(_ account: CdAccount) {
         let expSpecialFoldersCreated = expectation(description: "expSpecialFoldersCreated")
         persistentSetup.grandOperator.createSpecialLocalFolders(
             account.email, completionBlock: { error in
@@ -255,7 +255,7 @@ class GrandOperatorTests: XCTestCase {
             guard counter > 0 else {
                 break
             }
-            guard let m = elm as? Message else {
+            guard let m = elm as? CdMessage else {
                 XCTAssertTrue(false)
                 break
             }

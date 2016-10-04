@@ -13,7 +13,7 @@ open class RecipientCell: UITableViewCell {
 
     var minimumCaretLocation: Int?
     var titleText: String?
-    var message: Message!
+    var message: CdMessage!
 
     override open func awakeFromNib() {
         super.awakeFromNib()

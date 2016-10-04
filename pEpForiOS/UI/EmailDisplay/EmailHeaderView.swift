@@ -48,7 +48,7 @@ class EmailHeaderView: UIView {
      */
     var lastLeftLabel: UILabel? = nil
 
-    var message: Message!
+    var message: CdMessage!
 
     let dateFormatter = UIHelper.dateFormatterEmailDetails()
 
@@ -122,7 +122,7 @@ class EmailHeaderView: UIView {
 
         let session = PEPSession.init()
         for rec in recipients {
-            if let contact = rec as? Contact {
+            if let contact = rec as? CdContact {
                 let recLabel = recipientBaseLabelWithText(contact.displayString())
                 let privacyColor = PEPUtil.privacyColorForContact(contact, session: session)
                 UIHelper.setBackgroundColor(

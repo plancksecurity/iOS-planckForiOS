@@ -1,22 +1,28 @@
 import Foundation
+
+@objc(CdContact)
+open class CdContact: _CdContact, IContact {
+	// Custom logic goes here.
+}
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 public protocol IContact {
@@ -56,11 +62,7 @@ extension IContact {
     }
 }
 
-@objc(Contact)
-open class Contact: _Contact, IContact {
-}
-
-extension Contact {
+extension CdContact {
     /**
      Updates that contact's name if the new value is non-nil and the existing
      value is nil. Otherwise, the original one is kept.

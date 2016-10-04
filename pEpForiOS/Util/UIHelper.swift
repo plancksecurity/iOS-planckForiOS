@@ -35,7 +35,7 @@ class UIHelper {
         tableView.estimatedRowHeight = 44
     }
 
-    static func labelFromContact(_ contact: Contact) -> UILabel {
+    static func labelFromContact(_ contact: CdContact) -> UILabel {
         let l = UILabel.init()
         l.text = contact.displayString()
         return l

@@ -35,7 +35,7 @@ open class AddressbookContact: NSObject, IContact {
         }
     }
 
-    convenience public init(contact: Contact) {
+    convenience public init(contact: CdContact) {
         self.init(email: contact.email, name: contact.name,
                   addressBookID: contact.addressBookID?.int32Value)
     }

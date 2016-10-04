@@ -38,9 +38,9 @@ open class MiscUtil {
      */
     open static func transferAddressBook(
         _ privateContext: NSManagedObjectContext,
-        blockFinished: (([Contact]) -> ())? = nil) {
+        blockFinished: (([CdContact]) -> ())? = nil) {
         privateContext.perform() {
-            var insertedContacts = [Contact]()
+            var insertedContacts = [CdContact]()
             let model = CdModel.init(context: privateContext)
             let ab = AddressBook()
             let contacts = ab.allContacts()

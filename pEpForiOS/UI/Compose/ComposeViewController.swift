@@ -130,7 +130,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      The message we're constructing
      */
-    var messageToSend: Message?
+    var messageToSend: CdMessage?
 
     /**
      For determining if we give the focus to the to text field.
@@ -185,7 +185,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      For certain values of `composeMode`, there will be an email to act on
      (like reply, forward, compose draft). This is it.
      */
-    var originalMessage: Message?
+    var originalMessage: CdMessage?
 
     /**
      The original text attributes from a recipient cell text.
@@ -405,7 +405,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      Updates the given message with data from the view.
      */
-    func populateMessageWithViewData(_ message: Message, account: Account,
+    func populateMessageWithViewData(_ message: CdMessage, account: CdAccount,
                                      model: ICdModel) {
         // reset
         message.to = []
@@ -433,7 +433,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                     let mailStrings2 = mailStrings1.filter() {
                         !$0.isOnlyWhiteSpace()
                     }
-                    let contacts: [Contact] = mailStrings2.map() {
+                    let contacts: [CdContact] = mailStrings2.map() {
                         let c = model.insertOrUpdateContactEmail($0, name: nil)
                         return c
                     }
@@ -467,7 +467,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      Updates the given message with data from the original message,
      if it exists (e.g., reply)
      */
-    func populateMessageWithReplyData(_ message: Message) {
+    func populateMessageWithReplyData(_ message: CdMessage) {
         guard let om = replyFromMessage() else {
             return
         }
@@ -485,7 +485,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      and a child message (i.e., the message containing the reply).
      See https://cr.yp.to/immhf/thread.html for general strategy.
      */
-    func setupMessageReferences(_ parent: Message, message: Message, model: ICdModel) {
+    func setupMessageReferences(_ parent: CdMessage, message: CdMessage, model: ICdModel) {
         // Inherit all references from the parent
         message.references = parent.references
 
@@ -505,7 +505,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      - Note: The forwarded mail attachment was already added to the model,
      it will be handled by the general attachment handling in another function.
      */
-    func populateMessageWithForwardedData(_ message: Message) {
+    func populateMessageWithForwardedData(_ message: CdMessage) {
         guard let _ = forwardedMessage() else {
             return
         }
@@ -516,7 +516,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         }
     }
 
-    func populateMessage(_ message: Message, withAttachmentsFromTextView theTextView: UITextView?) {
+    func populateMessage(_ message: CdMessage, withAttachmentsFromTextView theTextView: UITextView?) {
         guard let textView = theTextView else {
             Log.warnComponent(comp, "Trying to get attachments, but no text view")
             return
@@ -531,7 +531,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         }
     }
 
-    func messageForSending() -> Message? {
+    func messageForSending() -> CdMessage? {
         guard let appC = appConfig else {
             Log.warnComponent(
                 comp, "Really need a non-nil appConfig for creating send message")
@@ -717,7 +717,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      - Returns: The original message to be replied on, if it's a reply.
      */
-    func replyFromMessage() -> Message? {
+    func replyFromMessage() -> CdMessage? {
         if composeMode == .replyFrom {
             if let om = originalMessage {
                 return om
@@ -729,7 +729,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      - Returns: The message that has to be forwarded.
      */
-    func forwardedMessage() -> Message? {
+    func forwardedMessage() -> CdMessage? {
         if composeMode == .forward {
             if let om = originalMessage {
                 return om
@@ -741,7 +741,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      - Returns: The draft message that should be used as a base for the compose.
      */
-    func composeFromDraftMessage() -> Message? {
+    func composeFromDraftMessage() -> CdMessage? {
         if composeMode == .composeDraft {
             if let om = originalMessage {
                 return om

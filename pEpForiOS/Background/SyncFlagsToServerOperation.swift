@@ -22,7 +22,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 
     open var numberOfMessagesSynced = 0
 
-    public init(folder: Folder,
+    public init(folder: CdFolder,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.connectInfo = folder.account.connectInfo
         self.targetFolderName = folder.name
@@ -43,7 +43,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         }
     }
 
-    func nextMessageToBeSynced() -> Message? {
+    func nextMessageToBeSynced() -> CdMessage? {
         let pFlagsChanged = NSPredicate.init(format: "flags != flagsFromServer")
         let pFolder = NSPredicate.init(format: "folder.name = %@",
                                        self.targetFolderName)
@@ -65,7 +65,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         }
     }
 
-    func updateFlagsForMessage(_ message: Message) {
+    func updateFlagsForMessage(_ message: CdMessage) {
         let (cmd, dict) = message.storeCommandForUpdate()
         imapSync.imapStore.send(
             IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)

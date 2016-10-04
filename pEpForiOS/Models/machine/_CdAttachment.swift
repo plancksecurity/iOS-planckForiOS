@@ -55,7 +55,7 @@ open class _CdAttachment: BaseManagedObject {
     // MARK: - Relationships
 
     @NSManaged open
-    var message: Message
+    var message: CdMessage
 
 }
 

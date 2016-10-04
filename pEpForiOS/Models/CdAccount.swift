@@ -1,8 +1,8 @@
 import Foundation
-import CoreData
 
-@objc(Account)
-open class Account: _Account {
+@objc(CdAccount)
+open class CdAccount: _CdAccount {
+	// Custom logic goes here.
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
 
     public enum AccountType: Int {

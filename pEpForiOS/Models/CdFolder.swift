@@ -1,5 +1,4 @@
 import Foundation
-import CoreData
 
 /**
  Folder types.
@@ -150,11 +149,12 @@ public enum FolderType: Int {
     }
 }
 
-@objc(Folder)
-open class Folder: _Folder {
+@objc(CdFolder)
+open class CdFolder: _CdFolder {
+	// Custom logic goes here.
 }
 
-public extension Folder {
+public extension CdFolder {
     /**
      Extracts a unique String ID that you can use as a key in dictionaries.
      - Returns: A (hashable) String that is unique for each folder.

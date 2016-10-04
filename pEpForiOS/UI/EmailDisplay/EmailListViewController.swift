@@ -41,7 +41,7 @@ class EmailListViewController: FetchTableViewController {
         let sortDescriptors: [NSSortDescriptor]?
 
         /** If applicable, the account to refresh from */
-        let account: Account?
+        let account: CdAccount?
 
         /** If applicable, the folder name to sync */
         let folderName: String?
@@ -79,24 +79,24 @@ class EmailListViewController: FetchTableViewController {
     /**
      The message that should be saved as a draft when compose gets aborted.
      */
-    var draftMessageToStore: Message?
+    var draftMessageToStore: CdMessage?
 
     /**
      When the user taps on a draft email, this is the message that was selected
      and should be given to the compose view.
      */
-    var draftMessageToCompose: Message?
+    var draftMessageToCompose: CdMessage?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.comp = "EmailListViewController"
     }
 
-    func isReadedMessage(_ message: Message)-> Bool {
+    func isReadedMessage(_ message: CdMessage)-> Bool {
         return message.flagSeen.boolValue
     }
 
-    func isImportantMessage(_ message: Message)-> Bool {
+    func isImportantMessage(_ message: CdMessage)-> Bool {
         return message.flagFlagged.boolValue
     }
 
@@ -170,7 +170,7 @@ class EmailListViewController: FetchTableViewController {
     }
 
     func prepareFetchRequest() {
-        let fetchRequest = NSFetchRequest<NSManagedObject>.init(entityName: Message.entityName())
+        let fetchRequest = NSFetchRequest<NSManagedObject>.init(entityName: CdMessage.entityName())
         fetchRequest.predicate = config.predicate
         fetchRequest.sortDescriptors = config.sortDescriptors
         fetchController = NSFetchedResultsController.init(
@@ -238,7 +238,7 @@ class EmailListViewController: FetchTableViewController {
             let folder = config.appConfig.model.folderByName(fn, email: ac.email) {
             if folder.folderType.intValue == FolderType.drafts.rawValue {
                 draftMessageToCompose = fetchController?.object(at: indexPath)
-                    as? Message
+                    as? CdMessage
                 performSegue(withIdentifier: segueCompose, sender: cell)
                 return
             }
@@ -251,7 +251,7 @@ class EmailListViewController: FetchTableViewController {
         indexPath: IndexPath)-> [UITableViewRowAction]? {
 
         let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
-        let email = fetchController?.object(at: indexPath) as! Message
+        let email = fetchController?.object(at: indexPath) as! CdMessage
 
         let isFlagAction = createIsFlagAction(email, cell: cell)
         let deleteAction = createDeleteAction(cell)
@@ -265,7 +265,7 @@ class EmailListViewController: FetchTableViewController {
         guard let cell = theCell as? EmailListViewCell else {
             return
         }
-        if let email = fetchController?.object(at: indexPath) as? Message {
+        if let email = fetchController?.object(at: indexPath) as? CdMessage {
             if let colorRating = PEPUtil.colorRatingFromInt(email.pepColorRating?.intValue) {
                 let privacyColor = PEPUtil.colorFromPepRating(colorRating)
                 if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor) {
@@ -337,7 +337,7 @@ class EmailListViewController: FetchTableViewController {
                 let vc = segue.destination as? EmailViewController,
                 let cell = sender as? UITableViewCell,
                 let indexPath = self.tableView.indexPath(for: cell),
-                let email = fetchController?.object(at: indexPath) as? Message else {
+                let email = fetchController?.object(at: indexPath) as? CdMessage else {
                     return
             }
             vc.appConfig = config.appConfig
@@ -345,7 +345,7 @@ class EmailListViewController: FetchTableViewController {
         }
     }
 
-    func syncFlagsToServer(_ message: Message) {
+    func syncFlagsToServer(_ message: CdMessage) {
         self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
             message.folder,
             completionBlock: { error in
@@ -353,7 +353,7 @@ class EmailListViewController: FetchTableViewController {
         })
     }
 
-    func createIsFlagAction(_ message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+    func createIsFlagAction(_ message: CdMessage, cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
         var localizedIsFlagTitle = " "
@@ -395,7 +395,7 @@ class EmailListViewController: FetchTableViewController {
 
         let deleteCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
-                let managedObject = self.fetchController?.object(at: indexPath) as? Message
+                let managedObject = self.fetchController?.object(at: indexPath) as? CdMessage
                 managedObject?.flagDeleted = true
                 managedObject?.updateFlags()
                 self.syncFlagsToServer(managedObject!)
@@ -407,7 +407,7 @@ class EmailListViewController: FetchTableViewController {
         return deleteAction
     }
 
-    func createIsReadAction (_ message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+    func createIsReadAction (_ message: CdMessage, cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
         var localizedisReadTitle = " "

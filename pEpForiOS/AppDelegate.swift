@@ -115,7 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func setupDefaultSettings() {
-        let settings: [String:AnyObject] = [Account.kSettingLastAccountEmail:"" as AnyObject]
+        let settings: [String:AnyObject] = [CdAccount.kSettingLastAccountEmail:"" as AnyObject]
         UserDefaults.standard.register(defaults: settings)
     }
 }

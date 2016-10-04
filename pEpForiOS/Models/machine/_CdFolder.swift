@@ -1,10 +1,10 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to Folder.swift instead.
+// Make changes to CdFolder.swift instead.
 
 import Foundation
 import CoreData
 
-public enum FolderAttributes: String {
+public enum CdFolderAttributes: String {
     case existsCount = "existsCount"
     case folderType = "folderType"
     case name = "name"
@@ -13,14 +13,14 @@ public enum FolderAttributes: String {
     case uidValidity = "uidValidity"
 }
 
-public enum FolderRelationships: String {
+public enum CdFolderRelationships: String {
     case account = "account"
     case children = "children"
     case messages = "messages"
     case parent = "parent"
 }
 
-open class _Folder: BaseManagedObject {
+open class _CdFolder: BaseManagedObject {
 
     // MARK: - Class methods
 
@@ -39,7 +39,7 @@ open class _Folder: BaseManagedObject {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _Folder.entity(managedObjectContext: managedObjectContext) else { return nil }
+        guard let entity = _CdFolder.entity(managedObjectContext: managedObjectContext) else { return nil }
         self.init(entity: entity, insertInto: managedObjectContext)
     }
 
@@ -66,7 +66,7 @@ open class _Folder: BaseManagedObject {
     // MARK: - Relationships
 
     @NSManaged open
-    var account: Account
+    var account: CdAccount
 
     @NSManaged open
     var children: NSOrderedSet
@@ -83,11 +83,11 @@ open class _Folder: BaseManagedObject {
     }
 
     @NSManaged open
-    var parent: Folder?
+    var parent: CdFolder?
 
 }
 
-extension _Folder {
+extension _CdFolder {
 
     open func addChildren(objects: NSOrderedSet) {
         let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
@@ -101,13 +101,13 @@ extension _Folder {
         self.children = mutable.copy() as! NSOrderedSet
     }
 
-    open func addChildrenObject(value: Folder) {
+    open func addChildrenObject(value: CdFolder) {
         let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
         mutable.add(value)
         self.children = mutable.copy() as! NSOrderedSet
     }
 
-    open func removeChildrenObject(value: Folder) {
+    open func removeChildrenObject(value: CdFolder) {
         let mutable = self.children.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.children = mutable.copy() as! NSOrderedSet
@@ -115,7 +115,7 @@ extension _Folder {
 
 }
 
-extension _Folder {
+extension _CdFolder {
 
     open func addMessages(objects: NSSet) {
         let mutable = self.messages.mutableCopy() as! NSMutableSet
@@ -129,13 +129,13 @@ extension _Folder {
         self.messages = mutable.copy() as! NSSet
     }
 
-    open func addMessagesObject(value: Message) {
+    open func addMessagesObject(value: CdMessage) {
         let mutable = self.messages.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.messages = mutable.copy() as! NSSet
     }
 
-    open func removeMessagesObject(value: Message) {
+    open func removeMessagesObject(value: CdMessage) {
         let mutable = self.messages.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.messages = mutable.copy() as! NSSet

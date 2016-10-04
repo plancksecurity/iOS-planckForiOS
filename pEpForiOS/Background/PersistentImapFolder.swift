@@ -22,7 +22,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     lazy var model: ICdModel = CdModel.init(context: self.privateMOC)
 
     /** The underlying core data object */
-    var folder: Folder!
+    var folder: CdFolder!
 
     let backgroundQueue: OperationQueue
 
@@ -72,8 +72,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         print("PersistentImapFolder")
     }
 
-    func folderObject() -> Folder {
-        var folder: Folder? = nil
+    func folderObject() -> CdFolder {
+        var folder: CdFolder? = nil
         privateMOC.performAndWait({
             if let fo = self.model.insertOrUpdateFolderName(
                 self.name(), folderSeparator: nil, accountEmail: self.connectInfo.email) {
@@ -140,7 +140,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         let p = NSPredicate.init(
             format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
             connectInfo.email, self.name(), theIndex)
-        var msg: Message?
+        var msg: CdMessage?
         privateMOC.performAndWait({
             msg = self.model.messageByPredicate(p, sortDescriptors: nil)
         })

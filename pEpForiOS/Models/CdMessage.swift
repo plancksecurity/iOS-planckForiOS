@@ -1,8 +1,12 @@
 import Foundation
-import CoreData
 
-@objc(Message)
-open class Message: _Message {
+@objc(CdMessage)
+open class CdMessage: _CdMessage {
+	// Custom logic goes here.
+}
+
+
+extension CdMessage {
     /**
      - Returns: A `CWFlags object` for the given `NSNumber`
      */
@@ -22,9 +26,7 @@ open class Message: _Message {
     static func flagsStringFromNumber(_ flags: NSNumber) -> String {
         return pantomimeFlagsFromNumber(flags).asString()
     }
-}
 
-public extension Message {
     func allRecipienst() -> NSOrderedSet {
         let recipients: NSMutableOrderedSet = []
         recipients.addObjects(from: to.array)
@@ -33,16 +35,16 @@ public extension Message {
         return recipients
     }
 
-    func internetAddressFromContact(_ contact: Contact) -> CWInternetAddress {
+    func internetAddressFromContact(_ contact: CdContact) -> CWInternetAddress {
         return CWInternetAddress.init(personal: contact.name, address: contact.email)
 
     }
 
     func collectContacts(_ contacts: NSOrderedSet,
                          asPantomimeReceiverType receiverType: PantomimeRecipientType,
-                                                 intoTargetArray target: inout [CWInternetAddress]) {
+                         intoTargetArray target: inout [CWInternetAddress]) {
         for obj in contacts {
-            if let theContact = obj as? Contact {
+            if let theContact = obj as? CdContact {
                 let addr = internetAddressFromContact(theContact)
                 addr.setType(receiverType)
                 target.append(addr)
@@ -95,7 +97,7 @@ public extension Message {
 
         var refs: [String] = []
         for ref in references {
-            let refString: String = (ref as! MessageReference).messageID
+            let refString: String = (ref as! CdMessageReference).messageID
             refs.append(refString)
         }
         msg.setReferences(refs)
@@ -161,14 +163,14 @@ public extension Message {
      - Returns: `flags` as `CWFlags`
      */
     public func pantomimeFlags() -> CWFlags {
-        return Message.pantomimeFlagsFromNumber(flags)
+        return CdMessage.pantomimeFlagsFromNumber(flags)
     }
 
     /**
      - Returns: `flagsFromServer` as `CWFlags`
      */
     public func pantomimeFlagsFromServer() -> CWFlags {
-        return Message.pantomimeFlagsFromNumber(flagsFromServer)
+        return CdMessage.pantomimeFlagsFromNumber(flagsFromServer)
     }
 
     /**
@@ -187,10 +189,10 @@ public extension Message {
             NSArray.init(object: pantomimeMail)]
 
         var result = "UID STORE \(uid) "
-        let flagsString = Message.flagsStringFromNumber(flags)
+        let flagsString = CdMessage.flagsStringFromNumber(flags)
         result += "FLAGS.SILENT (\(flagsString))"
-
-        dict[PantomimeFlagsKey] = Message.pantomimeFlagsFromNumber(flags)
+        
+        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlagsFromNumber(flags)
         return (command: result, dictionary: dict)
     }
 }

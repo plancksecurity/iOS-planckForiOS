@@ -242,7 +242,7 @@ class PEPUtilTests: XCTestCase {
         if let m = message {
             var counter = 0
             for theRef in m.references {
-                guard let ref = theRef as? MessageReference else {
+                guard let ref = theRef as? CdMessageReference else {
                     XCTAssertTrue(false)
                     continue
                 }

@@ -254,7 +254,7 @@ class ImapSyncTest: XCTestCase {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
             XCTAssertLessThanOrEqual(folder.messages.count, Int(sync.maxPrefetchCount))
             for msg in folder.messages {
-                if let m = msg as? Message {
+                if let m = msg as? CdMessage {
                     XCTAssertNotNil(m.subject)
                     XCTAssertNotNil(m.uid)
                 } else {

@@ -76,31 +76,31 @@ public protocol IGrandOperator: class {
      Sends the given mail via SMTP. Also saves it into the drafts folder. You
      might have to trigger a fetch for that mail to appear in your drafts folder.
      */
-    func sendMail(_ email: Message, account: Account, completionBlock: GrandOperatorCompletionBlock?)
+    func sendMail(_ email: CdMessage, account: CdAccount, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Saves the given email as a draft, both on the server and locally.
      */
-    func saveDraftMail(_ message: Message, account: Account,
+    func saveDraftMail(_ message: CdMessage, account: CdAccount,
                        completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Syncs all mails' flags in the given folder that are out of date to the server.
      */
-    func syncFlagsToServerForFolder(_ folder: Folder,
+    func syncFlagsToServerForFolder(_ folder: CdFolder,
                                     completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Creates a folder with the given properties if it doesn't exist,
      both locally and on the server.
      */
-    func createFolderOfType(_ account: Account, folderType: FolderType,
+    func createFolderOfType(_ account: CdAccount, folderType: FolderType,
                             completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Deletes the given folder, both locally and remotely.
      */
-    func deleteFolder(_ folder: Folder, completionBlock: GrandOperatorCompletionBlock?)
+    func deleteFolder(_ folder: CdFolder, completionBlock: GrandOperatorCompletionBlock?)
 }
 
 open class GrandOperator: IGrandOperator {
@@ -290,7 +290,7 @@ open class GrandOperator: IGrandOperator {
         verifyConnectionQueue.addOperation(op2)
     }
 
-    open func sendMail(_ message: Message, account: Account,
+    open func sendMail(_ message: CdMessage, account: CdAccount,
                          completionBlock: GrandOperatorCompletionBlock?) {
         let encryptionData = EncryptionData.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil,
@@ -326,7 +326,7 @@ open class GrandOperator: IGrandOperator {
         backgroundQueue.addOperation(opSaveSent)
     }
 
-    open func saveDraftMail(_ message: Message, account: Account,
+    open func saveDraftMail(_ message: CdMessage, account: CdAccount,
                               completionBlock: GrandOperatorCompletionBlock?) {
         let opCreateDraftFolder = CheckAndCreateFolderOfTypeOperation.init(
             account: account, folderType: .drafts, connectionManager: connectionManager, coreDataUtil: coreDataUtil)
@@ -352,7 +352,7 @@ open class GrandOperator: IGrandOperator {
         backgroundQueue.addOperation(opStore)
     }
 
-    open func syncFlagsToServerForFolder(_ folder: Folder,
+    open func syncFlagsToServerForFolder(_ folder: CdFolder,
                                            completionBlock: GrandOperatorCompletionBlock?) {
         let hashable = folder.hashableID()
         var operation: BaseOperation? = flagSyncOperations[hashable]
@@ -376,7 +376,7 @@ open class GrandOperator: IGrandOperator {
         }
     }
 
-    open func createFolderOfType(_ account: Account, folderType: FolderType,
+    open func createFolderOfType(_ account: CdAccount, folderType: FolderType,
                                    completionBlock: GrandOperatorCompletionBlock?) {
         let op = CheckAndCreateFolderOfTypeOperation.init(
             account: account, folderType: folderType,
@@ -389,7 +389,7 @@ open class GrandOperator: IGrandOperator {
         backgroundQueue.addOperation(op)
     }
 
-    open func deleteFolder(_ folder: Folder,
+    open func deleteFolder(_ folder: CdFolder,
                              completionBlock: GrandOperatorCompletionBlock?) {
         let op = DeleteFolderOperation.init(
             folder: folder, connectionManager: connectionManager,

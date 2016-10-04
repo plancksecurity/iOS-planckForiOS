@@ -25,7 +25,7 @@ class MailTableView: UITableViewController {
                     appConfig = appDelegate.appConfig
                 }
             }
-            let account:Account? = appConfig!.model.fetchLastAccount()
+            let account: CdAccount? = appConfig!.model.fetchLastAccount()
             if (account == nil)  {
                 self.performSegue(withIdentifier: "userSettings", sender: self)
             }

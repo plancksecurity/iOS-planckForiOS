@@ -31,7 +31,7 @@ class EmailViewController: UIViewController {
     let headerView = EmailHeaderView.init()
     var webView: WKWebView!
 
-    var message: Message!
+    var message: CdMessage!
 
     override func viewDidLoad() {
         super.viewDidLoad()

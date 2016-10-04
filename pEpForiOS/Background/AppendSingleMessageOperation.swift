@@ -28,7 +28,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     var cwMessageToAppend: CWIMAPMessage!
     var targetFolderName: String!
 
-    public init(message: Message, account: Account, targetFolder: Folder?,
+    public init(message: CdMessage, account: CdAccount, targetFolder: CdFolder?,
                 folderType: FolderType?,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.messageID = message.objectID
@@ -48,7 +48,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
         super.init(coreDataUtil: coreDataUtil)
     }
 
-    convenience public init(message: Message, account: Account, targetFolder: Folder,
+    convenience public init(message: CdMessage, account: CdAccount, targetFolder: CdFolder,
                             connectionManager: ConnectionManager,
                             coreDataUtil: ICoreDataUtil) {
         self.init(message: message, account: account, targetFolder: targetFolder,
@@ -56,7 +56,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
                   coreDataUtil: coreDataUtil)
     }
 
-    convenience public init(message: Message, account: Account, folderType: FolderType,
+    convenience public init(message: CdMessage, account: CdAccount, folderType: FolderType,
                             connectionManager: ConnectionManager,
                             coreDataUtil: ICoreDataUtil) {
         self.init(message: message, account: account, targetFolder: nil,
@@ -67,18 +67,18 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     override open func main() {
         privateMOC.perform({
             guard let message = self.privateMOC.object(with: self.messageID) as?
-                Message else {
+                CdMessage else {
                     return
             }
             guard let account = self.privateMOC.object(with: self.accountID) as?
-                Account else {
+                CdAccount else {
                     return
             }
-            var tf: Folder?
+            var tf: CdFolder?
             if let ft = self.folderType {
                 tf = self.model.folderByType(ft, email: account.email)
             } else if let folderID = self.targetFolderID {
-                tf = self.privateMOC.object(with: folderID) as? Folder
+                tf = self.privateMOC.object(with: folderID) as? CdFolder
             }
 
             guard let targetFolder = tf else {

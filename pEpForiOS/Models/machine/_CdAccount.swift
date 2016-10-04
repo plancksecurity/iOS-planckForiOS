@@ -1,10 +1,10 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to Account.swift instead.
+// Make changes to CdAccount.swift instead.
 
 import Foundation
 import CoreData
 
-public enum AccountAttributes: String {
+public enum CdAccountAttributes: String {
     case accountType = "accountType"
     case email = "email"
     case folderSeparator = "folderSeparator"
@@ -19,11 +19,11 @@ public enum AccountAttributes: String {
     case smtpUsername = "smtpUsername"
 }
 
-public enum AccountRelationships: String {
+public enum CdAccountRelationships: String {
     case folders = "folders"
 }
 
-open class _Account: BaseManagedObject {
+open class _CdAccount: BaseManagedObject {
 
     // MARK: - Class methods
 
@@ -42,7 +42,7 @@ open class _Account: BaseManagedObject {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _Account.entity(managedObjectContext: managedObjectContext) else { return nil }
+        guard let entity = _CdAccount.entity(managedObjectContext: managedObjectContext) else { return nil }
         self.init(entity: entity, insertInto: managedObjectContext)
     }
 
@@ -95,7 +95,7 @@ open class _Account: BaseManagedObject {
 
 }
 
-extension _Account {
+extension _CdAccount {
 
     open func addFolders(objects: NSSet) {
         let mutable = self.folders.mutableCopy() as! NSMutableSet
@@ -109,13 +109,13 @@ extension _Account {
         self.folders = mutable.copy() as! NSSet
     }
 
-    open func addFoldersObject(value: Folder) {
+    open func addFoldersObject(value: CdFolder) {
         let mutable = self.folders.mutableCopy() as! NSMutableSet
         mutable.add(value)
         self.folders = mutable.copy() as! NSSet
     }
 
-    open func removeFoldersObject(value: Folder) {
+    open func removeFoldersObject(value: CdFolder) {
         let mutable = self.folders.mutableCopy() as! NSMutableSet
         mutable.remove(value)
         self.folders = mutable.copy() as! NSSet

@@ -26,7 +26,7 @@ class AppConfig: NSObject {
     /**
      As soon as the UI has at least one account that is in use, this is set here.
      */
-    var currentAccount: Account? = nil
+    var currentAccount: CdAccount? = nil
 
     override init() {
         connectionManager = ConnectionManager()

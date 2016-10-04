@@ -10,10 +10,10 @@ import UIKit
 
 class TrustWordsViewController: UITableViewController {
     var appConfig: AppConfig!
-    var message: Message?
+    var message: CdMessage?
 
     /** All recipients to be able to do a handshake */
-    var allRecipientsFiltered = [Contact]()
+    var allRecipientsFiltered = [CdContact]()
 
     /** A set of accounts from the same user on the device with another email */
     var otherMyselfAccount = NSMutableSet()
@@ -42,7 +42,7 @@ class TrustWordsViewController: UITableViewController {
                     ar.add(f)
                 }
                 for contact in ar {
-                    if let c = contact as? Contact {
+                    if let c = contact as? CdContact {
                         if c.isMySelf.boolValue {
                             if appConfig.currentAccount?.email != c.email {
                                 allRecipientsFiltered.append(c)
@@ -118,7 +118,7 @@ class TrustWordsViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordsCell",
                                                            for: indexPath) as! TrustWordsViewCell
             let contactIndex = (indexPath as NSIndexPath).row-numberOfStaticCells
-            let contact: Contact  = allRecipientsFiltered[contactIndex]
+            let contact: CdContact  = allRecipientsFiltered[contactIndex]
 
             cell.handshakeContactUILabel.text = contact.displayString()
             cell.handshakeUIButton.tag = contactIndex

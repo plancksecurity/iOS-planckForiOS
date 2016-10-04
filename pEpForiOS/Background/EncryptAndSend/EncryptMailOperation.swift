@@ -36,7 +36,7 @@ open class EncryptMailOperation: ConcurrentBaseOperation {
                     return
             }
             guard let message = self.privateMOC.object(
-                with: self.encryptionData.coreDataMessageID) as? Message else {
+                with: self.encryptionData.coreDataMessageID) as? CdMessage else {
                     let error = Constants.errorInvalidParameter(
                         self.comp,
                         errorMessage:

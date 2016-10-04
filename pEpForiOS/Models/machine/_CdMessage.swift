@@ -1,10 +1,10 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to Message.swift instead.
+// Make changes to CdMessage.swift instead.
 
 import Foundation
 import CoreData
 
-public enum MessageAttributes: String {
+public enum CdMessageAttributes: String {
     case bodyFetched = "bodyFetched"
     case boundary = "boundary"
     case contentType = "contentType"
@@ -26,7 +26,7 @@ public enum MessageAttributes: String {
     case uid = "uid"
 }
 
-public enum MessageRelationships: String {
+public enum CdMessageRelationships: String {
     case attachments = "attachments"
     case bcc = "bcc"
     case cc = "cc"
@@ -37,7 +37,7 @@ public enum MessageRelationships: String {
     case to = "to"
 }
 
-open class _Message: BaseManagedObject {
+open class _CdMessage: BaseManagedObject {
 
     // MARK: - Class methods
 
@@ -56,7 +56,7 @@ open class _Message: BaseManagedObject {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _Message.entity(managedObjectContext: managedObjectContext) else { return nil }
+        guard let entity = _CdMessage.entity(managedObjectContext: managedObjectContext) else { return nil }
         self.init(entity: entity, insertInto: managedObjectContext)
     }
 
@@ -143,13 +143,13 @@ open class _Message: BaseManagedObject {
     }
 
     @NSManaged open
-    var folder: Folder
+    var folder: CdFolder
 
     @NSManaged open
-    var from: Contact?
+    var from: CdContact?
 
     @NSManaged open
-    var messageReference: MessageReference?
+    var messageReference: CdMessageReference?
 
     @NSManaged open
     var references: NSOrderedSet
@@ -167,7 +167,7 @@ open class _Message: BaseManagedObject {
 
 }
 
-extension _Message {
+extension _CdMessage {
 
     open func addAttachments(objects: NSOrderedSet) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
@@ -195,7 +195,7 @@ extension _Message {
 
 }
 
-extension _Message {
+extension _CdMessage {
 
     open func addBcc(objects: NSOrderedSet) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
@@ -209,13 +209,13 @@ extension _Message {
         self.bcc = mutable.copy() as! NSOrderedSet
     }
 
-    open func addBccObject(value: Contact) {
+    open func addBccObject(value: CdContact) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
         mutable.add(value)
         self.bcc = mutable.copy() as! NSOrderedSet
     }
 
-    open func removeBccObject(value: Contact) {
+    open func removeBccObject(value: CdContact) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.bcc = mutable.copy() as! NSOrderedSet
@@ -223,7 +223,7 @@ extension _Message {
 
 }
 
-extension _Message {
+extension _CdMessage {
 
     open func addCc(objects: NSOrderedSet) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
@@ -237,13 +237,13 @@ extension _Message {
         self.cc = mutable.copy() as! NSOrderedSet
     }
 
-    open func addCcObject(value: Contact) {
+    open func addCcObject(value: CdContact) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
         mutable.add(value)
         self.cc = mutable.copy() as! NSOrderedSet
     }
 
-    open func removeCcObject(value: Contact) {
+    open func removeCcObject(value: CdContact) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.cc = mutable.copy() as! NSOrderedSet
@@ -251,7 +251,7 @@ extension _Message {
 
 }
 
-extension _Message {
+extension _CdMessage {
 
     open func addReferences(objects: NSOrderedSet) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
@@ -265,13 +265,13 @@ extension _Message {
         self.references = mutable.copy() as! NSOrderedSet
     }
 
-    open func addReferencesObject(value: MessageReference) {
+    open func addReferencesObject(value: CdMessageReference) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
         mutable.add(value)
         self.references = mutable.copy() as! NSOrderedSet
     }
 
-    open func removeReferencesObject(value: MessageReference) {
+    open func removeReferencesObject(value: CdMessageReference) {
         let mutable = self.references.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.references = mutable.copy() as! NSOrderedSet
@@ -279,7 +279,7 @@ extension _Message {
 
 }
 
-extension _Message {
+extension _CdMessage {
 
     open func addTo(objects: NSOrderedSet) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
@@ -293,13 +293,13 @@ extension _Message {
         self.to = mutable.copy() as! NSOrderedSet
     }
 
-    open func addToObject(value: Contact) {
+    open func addToObject(value: CdContact) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
         mutable.add(value)
         self.to = mutable.copy() as! NSOrderedSet
     }
 
-    open func removeToObject(value: Contact) {
+    open func removeToObject(value: CdContact) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.to = mutable.copy() as! NSOrderedSet

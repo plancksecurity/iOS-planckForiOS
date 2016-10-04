@@ -11,7 +11,7 @@ import CoreData
 
 class FolderListViewController: FetchTableViewController {
     struct FolderListConfig {
-        let account: Account
+        let account: CdAccount
         let appConfig: AppConfig
     }
 
@@ -53,7 +53,7 @@ class FolderListViewController: FetchTableViewController {
     }
 
     func prepareFetchRequest() {
-        let fetchRequest = NSFetchRequest<NSManagedObject>.init(entityName: Folder.entityName())
+        let fetchRequest = NSFetchRequest<NSManagedObject>.init(entityName: CdFolder.entityName())
 
         let predicateAccount = NSPredicate.init(
             format: "account.email = %@", config.account.email)
@@ -104,7 +104,7 @@ class FolderListViewController: FetchTableViewController {
     }
 
     override func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
-        if let folder = fetchController?.object(at: indexPath) as? Folder {
+        if let folder = fetchController?.object(at: indexPath) as? CdFolder {
             cell.textLabel?.text = "\(folder.name)"
             cell.accessoryType = .disclosureIndicator
         }
@@ -112,7 +112,7 @@ class FolderListViewController: FetchTableViewController {
 
     override func tableView(_ tableView: UITableView,
                             canEditRowAt indexPath: IndexPath) -> Bool {
-        if let folder = fetchController?.object(at: indexPath) as? Folder {
+        if let folder = fetchController?.object(at: indexPath) as? CdFolder {
             switch folder.folderType.intValue {
             case FolderType.localOutbox.rawValue, FolderType.inbox.rawValue: return false
             default: return true
@@ -124,13 +124,13 @@ class FolderListViewController: FetchTableViewController {
     override func tableView(
         _ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,
         forRowAt indexPath: IndexPath) {
-        if let folder = fetchController?.object(at: indexPath) as? Folder {
+        if let folder = fetchController?.object(at: indexPath) as? CdFolder {
             folder.shouldDelete = true
             config.appConfig.model.save()
             state.isUpdating = true
             updateUI()
 
-            config.appConfig.grandOperator.deleteFolder(folder as Folder) { error in
+            config.appConfig.grandOperator.deleteFolder(folder as CdFolder) { error in
                 UIHelper.displayError(error, controller: self)
                 self.state.isUpdating = false
                 self.updateUI()
@@ -143,7 +143,7 @@ class FolderListViewController: FetchTableViewController {
     override func tableView(
         _ tableView: UITableView,
         indentationLevelForRowAt indexPath: IndexPath) -> Int {
-        if var folder = fetchController?.object(at: indexPath) as? Folder {
+        if var folder = fetchController?.object(at: indexPath) as? CdFolder {
             var count = 0
             while folder.parent != nil {
                 count += 1
@@ -156,7 +156,7 @@ class FolderListViewController: FetchTableViewController {
 
     override func tableView(_ tableView: UITableView,
                             didSelectRowAt indexPath: IndexPath) {
-        if let fi = fetchController?.object(at: indexPath) as? Folder {
+        if let fi = fetchController?.object(at: indexPath) as? CdFolder {
             let predicateBasic = config.appConfig.model.basicMessagePredicate()
             let predicateAccount = NSPredicate.init(
                 format: "folder.account.email = %@", config.account.email)
@@ -164,7 +164,7 @@ class FolderListViewController: FetchTableViewController {
                 format: "folder.name = %@", fi.name)
 
             // If the folder is just local, then don't let the email list view sync.
-            var account: Account? = nil
+            var account: CdAccount? = nil
             if let ft = FolderType.fromInt(fi.folderType.intValue) {
                 if ft.isRemote() {
                     account = config.account
