@@ -840,7 +840,7 @@ open class Model: IModel {
         if let multiPart = content as? CWMIMEMultipart {
             for i in 0..<multiPart.count() {
                 let subPart = multiPart.part(at: UInt(i))
-                addAttachmentsFromPantomimePart(subPart!, targetMail: targetMail, level: level + 1)
+                addAttachmentsFromPantomimePart(subPart, targetMail: targetMail, level: level + 1)
             }
         }
     }

@@ -31,7 +31,7 @@ class PepAdapterTests: XCTestCase {
     func testMyself() {
         // This includes that a new key is generated.
         pEpSession.mySelf(identity_me)
-        NSLog("PGP fingerprint (me): " + String(identity_me[kPepFingerprint]!))
+        NSLog("PGP fingerprint (me): " + String(describing: identity_me[kPepFingerprint]!))
         XCTAssertNotNil(identity_me[kPepUserID])
     }
     
@@ -61,11 +61,11 @@ class PepAdapterTests: XCTestCase {
     func testPepPaths() {
         var error: NSError?
         
-        NSLog("Home folder: " + String(PEPUtil.pEpUrls["home"]))
-        NSLog("pEp management DB file: " + String(PEPUtil.pEpUrls["pEpManagementDb"]))
-        NSLog("GnuPG folder: " + String(PEPUtil.pEpUrls["gnupg"]))
-        NSLog("Secring file: " + String(PEPUtil.pEpUrls["gnupgSecring"]))
-        NSLog("Pubring file: " + String(PEPUtil.pEpUrls["gnupgPubring"]))
+        NSLog("Home folder: " + String(describing: PEPUtil.pEpUrls["home"]))
+        NSLog("pEp management DB file: " + String(describing: PEPUtil.pEpUrls["pEpManagementDb"]))
+        NSLog("GnuPG folder: " + String(describing: PEPUtil.pEpUrls["gnupg"]))
+        NSLog("Secring file: " + String(describing: PEPUtil.pEpUrls["gnupgSecring"]))
+        NSLog("Pubring file: " + String(describing: PEPUtil.pEpUrls["gnupgPubring"]))
         
         // Test if paths are not nil.
         for key in PEPUtil.pEpUrls.keys {

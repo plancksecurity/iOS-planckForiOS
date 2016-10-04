@@ -34,14 +34,15 @@ class TCPConnectionTest: XCTestCase {
             }
 
             @objc fileprivate func receivedEvent(
-                _ theData: UnsafeMutableRawPointer, type theType: RunLoopEventType,
-                extra theExtra: UnsafeMutableRawPointer, forMode theMode: String?) {
+                _ theData: UnsafeMutableRawPointer?, type theType: RunLoopEventType,
+                extra theExtra: UnsafeMutableRawPointer?, forMode theMode: String?) {
                 switch theType {
                 case .ET_RDESC:
                     let length = 1024
                     var buffer = [UInt8](repeating: 0, count: length)
                     let count = connection?.read(&buffer, length: length)
-                    let s = NSString(bytes: buffer, length: count!, encoding: String.Encoding.utf8)
+                    let s = NSString(bytes: buffer, length: count!,
+                                     encoding: String.Encoding.utf8.rawValue)
                     print("read \(s)")
                     expReceivedEventRead?.fulfill()
                 case .ET_WDESC:
@@ -63,9 +64,9 @@ class TCPConnectionTest: XCTestCase {
                 name: connectInfo.imapServerName, port: UInt32(connectInfo.imapServerPort),
                 transport: connectInfo.imapTransport, background: true)
             let delegate = ConnectionDelegate.init(connection: connection!, refCount: refCount)
-            delegate.expConnected = expectation(withDescription: "connected")
-            delegate.expReceivedEventRead = expectation(withDescription: "read")
-            delegate.expReceivedEventWrite = expectation(withDescription: "write")
+            delegate.expConnected = expectation(description: "connected")
+            delegate.expReceivedEventRead = expectation(description: "read")
+            delegate.expReceivedEventWrite = expectation(description: "write")
             connection?.delegate = delegate
             connection?.connect()
             waitForExpectations(timeout: TestUtil.waitTime, handler: { error in

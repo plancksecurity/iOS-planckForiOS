@@ -19,9 +19,12 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-protocol IContactDisplay {
+public protocol IContact {
     var email: String { get }
     var name: String? { get }
+    var isMySelf: NSNumber { get }
+    var pepUserID: String? { get }
+    var addressBookID: NSNumber? { get }
 
     /**
      Short display string, only the user's name if possible.
@@ -34,7 +37,7 @@ protocol IContactDisplay {
     func completeDisplayString() -> String
 }
 
-extension IContactDisplay {
+extension IContact {
     public func displayString() -> String {
         guard let n = name else {
             return email
@@ -54,7 +57,7 @@ extension IContactDisplay {
 }
 
 @objc(Contact)
-open class Contact: _Contact, IContactDisplay {
+open class Contact: _Contact, IContact {
 }
 
 extension Contact {

@@ -106,14 +106,14 @@ class SimpleOperationsTest: XCTestCase {
             self.persistentSetup.model.folderCountByPredicate(
                 NSPredicate.init(value: true)), 1)
         XCTAssertEqual(self.persistentSetup.model.folderByType(
-            .Inbox,email: self.connectInfo.email)?.name.lowercased(),
+            .inbox,email: self.connectInfo.email)?.name.lowercased(),
                        ImapSync.defaultImapInboxName.lowercased())
         XCTAssertNotNil(persistentSetup.model.folderByType(
             .sent, account: persistentSetup.account))
     }
 
     func testStorePrefetchedMailOperation() {
-        persistentSetup.model.insertOrUpdateFolderName(
+        let _ = persistentSetup.model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderSeparator: nil,
             accountEmail: connectInfo.email)
         persistentSetup.model.save()
@@ -144,7 +144,7 @@ class SimpleOperationsTest: XCTestCase {
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
         let numMails = 10
 
-        persistentSetup.model.insertOrUpdateFolderName(
+        let _ = persistentSetup.model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderSeparator: nil,
             accountEmail: connectInfo.email)
         persistentSetup.model.save()
@@ -257,7 +257,7 @@ class SimpleOperationsTest: XCTestCase {
             TestUtil.importKeyByFileName(
                 session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
 
-            message.folder = outboxFolder as! Folder
+            message.folder = outboxFolder
 
             return (queue, persistentSetup.account, model, message,
                     (identity, receiver1, receiver2, receiver3, receiver4))
@@ -274,13 +274,14 @@ class SimpleOperationsTest: XCTestCase {
         // So we should receive 3 mails:
         // One encrypted to identity (CC), one encrypted to receiver4 (BCC),
         // and one unencrypted to receiver1 (TO).
-        let mail = message as! Message
+        let mail = message
         mail.addToObject(
-            PEPUtil.insertPepContact(receiver1, intoModel: model) as! Contact)
+            value: PEPUtil.insertPepContact(receiver1, intoModel: model))
         mail.addCcObject(
-            PEPUtil.insertPepContact(identity as PEPContact, intoModel: model) as! Contact)
+            value: PEPUtil.insertPepContact(identity as NSDictionary as! PEPContact,
+                                            intoModel: model))
         mail.addBccObject(
-            PEPUtil.insertPepContact(receiver4, intoModel: model) as! Contact)
+            value: PEPUtil.insertPepContact(receiver4, intoModel: model))
         mail.subject = "Subject"
         mail.longMessage = "Long Message"
         mail.longMessageFormatted = "<b>HTML message</b>"
@@ -304,12 +305,12 @@ class SimpleOperationsTest: XCTestCase {
             var encounteredBCC = false
             var encounteredCC = false
             for msg in encryptionData.mailsToSend {
-                if msg[kPepBCC]?.count > 0 {
+                if (msg[kPepBCC] as AnyObject).count > 0 {
                     encounteredBCC = true
                     XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(msg))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepTo] as? NSArray))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepCC] as? NSArray))
-                } else if msg[kPepCC]?.count > 0 {
+                } else if (msg[kPepCC] as AnyObject).count > 0 {
                     encounteredCC = true
                     XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(msg))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepTo] as? NSArray))
@@ -335,9 +336,10 @@ class SimpleOperationsTest: XCTestCase {
         let longMessage = "Long Message"
         let longMessageFormatted = "<b>HTML message</b>"
 
-        let mail = message as! Message
+        let mail = message
         mail.addToObject(
-            PEPUtil.insertPepContact(identity as PEPContact, intoModel: model) as! Contact)
+            value: PEPUtil.insertPepContact(identity as NSDictionary as! PEPContact,
+                                            intoModel: model))
         mail.subject = subject
         mail.longMessage = longMessage
         mail.longMessageFormatted = longMessageFormatted
@@ -360,15 +362,18 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         XCTAssertEqual(encryptionData.mailsToSend.count, 1)
-        PEPUtil.isProbablyPGPMimePepMail(encryptionData.mailsToSend[0])
+        XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(encryptionData.mailsToSend[0]))
 
         persistentSetup.model.deleteMail(mail)
-        let inboxFolder = model.insertOrUpdateFolderName(
+        guard let inboxFolder = model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderSeparator: nil,
-            accountEmail: account.email)
+            accountEmail: account.email) else {
+                XCTAssertTrue(false)
+                return
+        }
 
         let newMail = model.insertNewMessage()
-        newMail.folder = inboxFolder as! Folder
+        newMail.folder = inboxFolder
         PEPUtil.updateWholeMessage(newMail,
                                    fromPepMail: encryptionData.mailsToSend[0], model: model)
 
@@ -400,7 +405,7 @@ class SimpleOperationsTest: XCTestCase {
         let encryptionData = EncryptionData.init(
             connectionManager: persistentSetup.connectionManager,
             coreDataUtil: persistentSetup.coreDataUtil,
-            coreDataMessageID: (message as! Message).objectID,
+            coreDataMessageID: message.objectID,
             accountEmail: persistentSetup.account.email, outgoing: true)
 
         let from = PEPUtil.identityFromAccount(persistentSetup.account, isMyself: true)
@@ -417,7 +422,7 @@ class SimpleOperationsTest: XCTestCase {
             fakeMail[kPepTo] = [contact]
             fakeMail[kPepShortMessage] = "Subject \(i)"
             fakeMail[kPepLongMessage]  = "Body \(i)"
-            encryptionData.mailsToSend.append(fakeMail as PEPMail)
+            encryptionData.mailsToSend.append(fakeMail as NSDictionary as! PEPMail)
         }
 
         let expMailsSent = expectation(description: "expMailsSent")
@@ -453,8 +458,8 @@ class SimpleOperationsTest: XCTestCase {
         session.mySelf(myself)
         XCTAssertNotNil(myself[kPepFingerprint])
 
-        let color2 = session.outgoingColor(from: myself as PEPContact,
-                                               to: myself as PEPContact)
+        let color2 = session.outgoingColor(from: myself as NSDictionary as! PEPContact,
+                                               to: myself as NSDictionary as! PEPContact)
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
     }
 
@@ -500,7 +505,7 @@ class SimpleOperationsTest: XCTestCase {
             if  let subFolder = persistentSetup.model.insertOrUpdateFolderName(
                 name, folderSeparator: separator,
                 accountEmail: persistentSetup.account.email) {
-                subFolder.parent = parentFolder as? Folder
+                subFolder.parent = parentFolder
                 children.add(subFolder)
             } else {
                 XCTAssertTrue(false)
@@ -553,17 +558,17 @@ class SimpleOperationsTest: XCTestCase {
             "some@some2.com", name: "Whatever2")
         c2.addressBookID = 2
 
-        let message = persistentSetup.model.insertNewMessage() as! Message
+        let message = persistentSetup.model.insertNewMessage()
         message.subject = "Some subject"
         message.longMessage = "Long message"
         message.longMessageFormatted = "<h1>Long HTML</h1>"
 
-        message.addToObject(c1 as! Contact)
-        message.addCcObject(c2 as! Contact)
+        message.addToObject(value: c1)
+        message.addCcObject(value: c2)
 
         let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
-        guard let targetFolder = persistentSetup.model.folderByType(.drafts, account: account)
-            as? Folder else {
+        guard let targetFolder = persistentSetup.model.folderByType(
+            .drafts, account: account) else {
                 XCTAssertFalse(true)
                 return
         }

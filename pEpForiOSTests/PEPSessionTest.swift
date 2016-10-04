@@ -26,13 +26,13 @@ class PEPSessionTest: XCTestCase {
         session.mySelf(identity)
         XCTAssertNotNil(identity[kPepFingerprint])
 
-        let pepMail: NSMutableDictionary = [:]
+        var pepMail = PEPMail()
         pepMail[kPepFrom] = identity
-        pepMail[kPepTo] = [identity, receiver1]
-        pepMail[kPepCC] = [identity, receiver2]
-        pepMail[kPepBCC] = [identity, receiver3]
-        pepMail[kPepShortMessage] = "Subject"
-        pepMail[kPepLongMessage] = "Some body text"
+        pepMail[kPepTo] = NSArray.init(array: [identity, receiver1])
+        pepMail[kPepCC] = NSArray.init(array: [identity, receiver2])
+        pepMail[kPepBCC] = NSArray.init(array: [identity, receiver3])
+        pepMail[kPepShortMessage] = "Subject" as AnyObject
+        pepMail[kPepLongMessage] = "Some body text" as AnyObject
 
         let (unencryptedReceivers, encryptedBCC, pepMailPurged)
             = session.filterOutSpecialReceiversForPEPMail(pepMail as PEPMail)
@@ -41,7 +41,8 @@ class PEPSessionTest: XCTestCase {
                         PEPRecipient.init(recipient: receiver2, recipientType: .cc),
                         PEPRecipient.init(recipient: receiver3, recipientType: .bcc)])
         XCTAssertEqual(encryptedBCC,
-                       [PEPRecipient.init(recipient: identity as PEPContact, recipientType: .bcc)])
+                       [PEPRecipient.init(recipient: identity as NSDictionary as! PEPContact,
+                                          recipientType: .bcc)])
         XCTAssertEqual(pepMailPurged[kPepTo]
             as? NSArray, NSArray.init(array: [identity]))
         XCTAssertEqual(pepMailPurged[kPepCC] as? NSArray, NSArray.init(array: [identity]))
@@ -54,13 +55,13 @@ class PEPSessionTest: XCTestCase {
         session.mySelf(identity)
         XCTAssertNotNil(identity[kPepFingerprint])
 
-        let pepMail: NSMutableDictionary = [:]
+        var pepMail = PEPMail()
         pepMail[kPepFrom] = identity
-        pepMail[kPepTo] = [identity, receiver1]
-        pepMail[kPepCC] = [identity, receiver2]
-        pepMail[kPepBCC] = [identity, receiver3]
-        pepMail[kPepShortMessage] = "Subject"
-        pepMail[kPepLongMessage] = "Some body text"
+        pepMail[kPepTo] = NSArray.init(array: [identity, receiver1])
+        pepMail[kPepCC] = NSArray.init(array: [identity, receiver2])
+        pepMail[kPepBCC] = NSArray.init(array: [identity, receiver3])
+        pepMail[kPepShortMessage] = "Subject" as AnyObject
+        pepMail[kPepLongMessage] = "Some body text" as AnyObject
 
         let (encrypted, unencrypted) = session.bucketsForPEPMail(pepMail as PEPMail)
         XCTAssertEqual(encrypted.count, 2)
@@ -91,7 +92,8 @@ class PEPSessionTest: XCTestCase {
         pepMail[kPepShortMessage] = "Subject"
         pepMail[kPepLongMessage] = "Some body text"
 
-        let (encrypted, unencrypted) = session.bucketsForPEPMail(pepMail as PEPMail)
+        let (encrypted, unencrypted) = session.bucketsForPEPMail(
+            pepMail as NSDictionary as! PEPMail)
         XCTAssertEqual(encrypted.count, 1)
         XCTAssertEqual(unencrypted.count, 0)
 
@@ -120,7 +122,8 @@ class PEPSessionTest: XCTestCase {
         pepMail[kPepShortMessage] = "Subject"
         pepMail[kPepLongMessage] = "Some body text"
 
-        let (encrypted, unencrypted) = session.bucketsForPEPMail(pepMail as PEPMail)
+        let (encrypted, unencrypted) = session.bucketsForPEPMail(
+            pepMail as NSDictionary as! PEPMail)
         XCTAssertEqual(encrypted.count, 3)
         XCTAssertEqual(unencrypted.count, 1)
 

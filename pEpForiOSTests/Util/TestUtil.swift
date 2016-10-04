@@ -148,8 +148,10 @@ class TestUtil {
             receiver4[kPepUsername] = "receiver4"
             receiver4[kPepAddress] = "receiver4@shopsmart.com"
 
-            return (identity, receiver1 as PEPContact, receiver2 as PEPContact,
-                    receiver3 as PEPContact, receiver4 as PEPContact)
+            return (identity, receiver1 as NSDictionary as! PEPContact,
+                    receiver2 as NSDictionary as! PEPContact,
+                    receiver3 as NSDictionary as! PEPContact,
+                    receiver4 as NSDictionary as! PEPContact)
     }
 
     /**
@@ -157,34 +159,19 @@ class TestUtil {
      so they don't interfere with `isEqual`.
      */
     static func removeUnneededKeysForComparison(
-        _ keys: [String], fromMail: NSDictionary) -> NSDictionary {
-        let m = fromMail.mutableCopy() as! NSMutableDictionary
+        _ keys: [String], fromMail: PEPMail) -> PEPMail {
+        var m: [String: AnyObject] = fromMail
         for k in keys {
-            m.removeObject(forKey: k)
+            m.removeValue(forKey: k)
         }
-        var replacements: [(NSCopying, NSCopying)] = []
-        for (k, v) in m {
-            if (v as AnyObject).isKind(of: NSDictionary) {
-                replacements.append((k as! NSCopying,
-                    removeUnneededKeysForComparison(keys, fromMail: v as! NSDictionary)))
-            } else if (v as AnyObject).isKind(of: NSArray) {
-                let ar = v as! NSArray
-                let fn: (AnyObject) -> AnyObject = { element in
-                    if element.isKind(of: NSDictionary) {
-                        return self.removeUnneededKeysForComparison(
-                            keys, fromMail: element as! NSDictionary)
-                    } else {
-                        return element
-                    }
-                }
-                let newArray = ar.map(fn)
-                replacements.append((k as! NSCopying, newArray))
+        let keysToCheckRecursively = m.keys
+        for k in keysToCheckRecursively {
+            let value = m[k]
+            if let dict = value as? PEPMail {
+                m[k] = removeUnneededKeysForComparison(keys, fromMail: dict) as AnyObject?
             }
         }
-        for (k, v) in replacements {
-            m[k] = v
-        }
-        return m as NSDictionary
+        return m
     }
 
     /**

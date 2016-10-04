@@ -101,14 +101,14 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             let pepMailOrig = PEPUtil.pepMail(message)
             var encryptedMail: NSDictionary? = nil
             let status = session.encryptMessageDict(
-                pepMailOrig as! [AnyHashable : Any],
+                pepMailOrig,
                 identity: NSDictionary.init(dictionary: ident) as! [AnyHashable : Any],
                 dest: &encryptedMail)
             let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
                 encryptedMail: encryptedMail)
             if let m = mail {
                 // Append the email
-                self.cwMessageToAppend = PEPUtil.pantomimeMailFromPep(m as PEPMail)
+                self.cwMessageToAppend = PEPUtil.pantomimeMailFromPep(m as! PEPMail)
                 self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
                 self.imapSync.delegate = self
                 self.imapSync.start()

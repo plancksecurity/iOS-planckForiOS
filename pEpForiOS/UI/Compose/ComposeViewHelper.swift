@@ -14,7 +14,7 @@ open class ComposeViewHelper {
      method for checking the pEp color rating, it's not exhaustive!
      */
     open static func pepMailFromViewForCheckingRating(_ vc: ComposeViewController) -> PEPMail? {
-            let message = NSMutableDictionary()
+            var message = PEPMail()
             for (_, cell) in vc.recipientCells {
                 let tf = cell.recipientTextView
                 if let text = tf?.text {
@@ -47,7 +47,7 @@ open class ComposeViewHelper {
                                     pepKey = kPepBCC
                                 }
                                 if let key = pepKey {
-                                    message[key] = contacts
+                                    message[key] = NSArray.init(array: contacts)
                                 }
                             }
                         }
@@ -60,15 +60,15 @@ open class ComposeViewHelper {
                 return nil
             }
             message[kPepFrom] = PEPUtil.pepContactFromEmail(
-                account.email, name: account.nameOfTheUser)
+                account.email, name: account.nameOfTheUser) as AnyObject?
 
             if let subjectText = vc.subjectTextField?.text {
-                message[kPepShortMessage] = subjectText
+                message[kPepShortMessage] = subjectText as AnyObject?
             }
             if let bodyText = vc.longBodyMessageTextView?.text {
-                message[kPepLongMessage] = bodyText
+                message[kPepLongMessage] = bodyText as AnyObject?
             }
-            message[kPepOutgoing] = true
+            message[kPepOutgoing] = NSNumber.init(booleanLiteral: true)
             return message
     }
 

@@ -250,8 +250,7 @@ class ImapSyncTest: XCTestCase {
         })
 
         if let folder = setup.model.folderByPredicate(
-            setup.inboxFolderPredicate(), sortDescriptors: nil)
-            as? Folder {
+            setup.inboxFolderPredicate(), sortDescriptors: nil) {
             XCTAssertTrue(folder.messages.count > 0, "Expected messages in folder")
             XCTAssertLessThanOrEqual(folder.messages.count, Int(sync.maxPrefetchCount))
             for msg in folder.messages {
@@ -270,7 +269,7 @@ class ImapSyncTest: XCTestCase {
 
     func testPrefetchWithPersistence() {
         let setup = PersistentSetup.init()
-        prefetchMails(setup)
+        let _ = prefetchMails(setup)
         // Closing of connections should be automatic here, since the ImapSync created
         // in prefetchmails() went out of scope.
     }
@@ -302,7 +301,6 @@ class ImapSyncTest: XCTestCase {
 
         let folder = setup.model.folderByPredicate(
             setup.inboxFolderPredicate(), sortDescriptors: nil)
-            as? Folder
         XCTAssertNotNil(folder, "Accessed folders should be created automatically")
         sync.close()
     }

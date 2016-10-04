@@ -55,7 +55,7 @@ open class DecryptMailOperation: BaseOperation {
                 var pepDecryptedMail: NSDictionary? = nil
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
-                    pepMail as! [AnyHashable : Any], dest: &pepDecryptedMail, keys: &keys)
+                    pepMail, dest: &pepDecryptedMail, keys: &keys)
                 Log.warnComponent(self.comp,
                     "Decrypted mail \(mail.logString()) with color \(color)")
 
@@ -82,7 +82,7 @@ open class DecryptMailOperation: BaseOperation {
                 PEP_rating_trusted_and_anonymized,
                 PEP_rating_fully_anonymous:
                     if let decrypted = pepDecryptedMail {
-                        PEPUtil.updateDecryptedMessage(mail, fromPepMail: decrypted,
+                        PEPUtil.updateDecryptedMessage(mail, fromPepMail: decrypted as! PEPMail,
                                                        pepColorRating: color, model: model)
                         modelChanged = true
                     }

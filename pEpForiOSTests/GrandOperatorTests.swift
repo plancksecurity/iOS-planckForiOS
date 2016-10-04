@@ -57,20 +57,20 @@ class GrandOperatorTests: XCTestCase {
         XCTAssertGreaterThan(
             model.folderCountByPredicate(p), 0)
         XCTAssertEqual(model.folderByType(
-            .Inbox, email: self.persistentSetup.accountEmail)?.name.lowercased(),
+            .inbox, email: self.persistentSetup.accountEmail)?.name.lowercased(),
                        ImapSync.defaultImapInboxName.lowercased())
     }
 
     func createMail() -> Message {
-        let msg = persistentSetup.model.insertNewMessage() as! Message
+        let msg = persistentSetup.model.insertNewMessage()
         msg.subject = "Subject"
         msg.longMessage = "Message body"
         let from = persistentSetup.model.insertOrUpdateContactEmail(
-            persistentSetup.accountEmail, name: persistentSetup.accountEmail) as! Contact
+            persistentSetup.accountEmail, name: persistentSetup.accountEmail)
         msg.from = from
         let to = persistentSetup.model.insertOrUpdateContactEmail(
-            "unittest.ios.3@peptest.ch", name: "UnitTestiOS 3") as! Contact
-        msg.addToObject(to)
+            "unittest.ios.3@peptest.ch", name: "UnitTestiOS 3")
+        msg.addToObject(value: to)
         return msg
     }
 
@@ -123,12 +123,8 @@ class GrandOperatorTests: XCTestCase {
 
     func testSendMail() {
         testFetchFolders()
-
-        guard let account = persistentSetup.model.insertAccountFromConnectInfo(
-            persistentSetup.connectionInfo) as? Account else {
-                XCTAssertTrue(false)
-                return
-        }
+        let account = persistentSetup.model.insertAccountFromConnectInfo(
+            persistentSetup.connectionInfo)
 
         createSpecialFolders(account)
 
@@ -154,11 +150,8 @@ class GrandOperatorTests: XCTestCase {
     func testSendMailFail() {
         testFetchFolders()
 
-        guard let account = persistentSetup.model.insertAccountFromConnectInfo(
-            TestData.connectInfoWrongPassword) as? Account else {
-                XCTAssertTrue(false)
-                return
-        }
+        let account = persistentSetup.model.insertAccountFromConnectInfo(
+            TestData.connectInfoWrongPassword)
 
         createSpecialFolders(account)
 
@@ -183,11 +176,8 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testSaveDraft() {
-        guard let account = persistentSetup.model.insertAccountFromConnectInfo(
-            TestData.connectInfo) as? Account else {
-                XCTAssertTrue(false)
-                return
-        }
+        let account = persistentSetup.model.insertAccountFromConnectInfo(
+            TestData.connectInfo)
 
         let expFoldersFetched = expectation(description: "foldersFetched")
         persistentSetup.grandOperator.fetchFolders(correct, completionBlock: { error in
@@ -269,7 +259,7 @@ class GrandOperatorTests: XCTestCase {
             m.flagFlagged = NSNumber.init(value: !m.flagFlagged.boolValue as Bool)
             m.updateFlags()
 
-            let exp = expectation(withDescription: "flagsSynced\(counter)")
+            let exp = expectation(description: "flagsSynced\(counter)")
             expectations.append(exp)
             counter += 1
             persistentSetup.grandOperator.syncFlagsToServerForFolder(

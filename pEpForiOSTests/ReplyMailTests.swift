@@ -29,8 +29,8 @@ class ReplyMailTests: XCTestCase {
         let to = persistentSetup.model.insertOrUpdateContactEmail("a@b", name: "Abe")
         let cc = persistentSetup.model.insertOrUpdateContactEmail("b@a", name: "Beata")
         let message = persistentSetup.model.insertNewMessage()
-        message.receivedDate = Date.init()
-        message.from = from as? Contact
+        message.receivedDate = Date.init() as NSDate?
+        message.from = from
 
         message.to = NSOrderedSet.init(object: to)
         message.cc = NSOrderedSet.init(object: cc)

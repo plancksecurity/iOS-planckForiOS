@@ -37,7 +37,7 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(pepC1[kPepAddress] as? String, c1.email)
         XCTAssertEqual(pepC1[kPepUsername] as? String, c1.name)
         XCTAssertNotNil(pepC1[kPepUserID])
-        XCTAssertEqual(pepC1[kPepUserID] as? String, String(c1.addressBookID!))
+        XCTAssertEqual(pepC1[kPepUserID] as? String, String(describing: c1.addressBookID!))
 
         let c2 = AddressbookContact.init(email: "some@email.com")
         let pepC2 = PEPUtil.pepContact(c2)
@@ -62,7 +62,7 @@ class PEPUtilTests: XCTestCase {
 
         XCTAssertEqual(pepA1[kPepMimeFilename] as? String, a1.filename)
         XCTAssertEqual(pepA1[kPepMimeType] as? String, a1.contentType)
-        XCTAssertEqual(pepA1[kPepMimeData] as? Data, a1.data)
+        XCTAssertEqual(pepA1[kPepMimeData] as? NSData, a1.data)
     }
 
     func testPepMail() {
@@ -84,24 +84,24 @@ class PEPUtilTests: XCTestCase {
             "text/plain", filename: "excel2.txt",
             data: data2)
 
-        let message = persistentSetup.model.insertNewMessage() as! Message
+        let message = persistentSetup.model.insertNewMessage()
         message.subject = "Some subject"
         message.longMessage = "Long message"
         message.longMessageFormatted = "Long HTML"
 
-        message.addToObject(c1 as! Contact)
-        message.addCcObject(c2 as! Contact)
+        message.addToObject(value: c1)
+        message.addCcObject(value: c2)
 
-        message.addAttachmentsObject(a1 as! Attachment)
-        message.addAttachmentsObject(a2 as! Attachment)
+        message.addAttachmentsObject(value: a1)
+        message.addAttachmentsObject(value: a2)
 
         let pepMail = PEPUtil.pepMail(message, outgoing: true)
         XCTAssertEqual(pepMail[kPepOutgoing] as? Bool, true)
 
         XCTAssertEqual(pepMail[kPepTo]?[0] as? NSDictionary,
-                       PEPUtil.pepContact(c1))
+                       PEPUtil.pepContact(c1) as NSDictionary)
         XCTAssertEqual(pepMail[kPepCC]?[0] as? NSDictionary,
-                       PEPUtil.pepContact(c2))
+                       PEPUtil.pepContact(c2) as NSDictionary)
 
         XCTAssertEqual(pepMail[kPepAttachments]?[0] as? NSDictionary,
                        PEPUtil.pepAttachment(a1))
@@ -122,18 +122,18 @@ class PEPUtilTests: XCTestCase {
         pepMailOrig[kPepFrom] = PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
                                                             name: "Unit 004")
         pepMailOrig[kPepTo] = [PEPUtil.pepContactFromEmail(receiverToEmail,
-            name: "receiverTo")] as [AnyObject]
+            name: "receiverTo")]
         pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail(receiverCCEmail,
-                               name: "receiverCC")] as [AnyObject]
+                               name: "receiverCC")]
         pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail(receiverBCCEmail,
-                                name: "receiverBCC")] as [AnyObject]
+                                name: "receiverBCC")]
         pepMailOrig[kPepShortMessage] = "Subject"
         pepMailOrig[kPepLongMessage] = "Some Text"
         pepMailOrig[kPepLongMessageFormatted] = "<b>Some HTML</b>"
         pepMailOrig[kPepID] = "<message001@peptest.ch>"
         pepMailOrig[kPepOutgoing] = true
 
-        let pantMail = PEPUtil.pantomimeMailFromPep(pepMailOrig as PEPMail)
+        let pantMail = PEPUtil.pantomimeMailFromPep(pepMailOrig as NSDictionary as! PEPMail)
 
         XCTAssertEqual(pepMailOrig[kPepID] as? String, pantMail.messageID())
         XCTAssertEqual((pepMailOrig[kPepTo] as! [PEPContact])[0][kPepAddress] as? String,
@@ -155,7 +155,8 @@ class PEPUtilTests: XCTestCase {
 
         let from = pantMail.from()
         XCTAssertNotNil(from)
-        XCTAssertEqual(from!.address(), pepMailOrig[kPepFrom]![kPepAddress])
+        XCTAssertEqual(from!.address(), (pepMailOrig[kPepFrom] as! NSDictionary)[kPepAddress]
+            as? String)
 
         XCTAssertEqual(pantMail.subject(), pepMailOrig[kPepShortMessage] as? String)
 
@@ -188,12 +189,15 @@ class PEPUtilTests: XCTestCase {
         var referenced = messageIDs
         referenced.append(inReplyTo)
 
-        let folder = persistentSetup.model.insertOrUpdateFolderName(
+        guard let folder = persistentSetup.model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderSeparator: nil,
-            accountEmail: persistentSetup.accountEmail)
+            accountEmail: persistentSetup.accountEmail) else {
+                XCTAssertTrue(false)
+                return
+        }
 
         let msg = persistentSetup.model.insertNewMessage()
-        msg.folder = folder as! Folder
+        msg.folder = folder
         msg.messageID = messageID2
         msg.subject = message2Subject
 
@@ -205,10 +209,8 @@ class PEPUtilTests: XCTestCase {
             name: "unit 2")]
         pepMailOrig[kPepCC] = [PEPUtil.pepContactFromEmail("unittest.ios.3@peptest.ch",
             name: "unit 3")]
-            as [AnyObject]
         pepMailOrig[kPepBCC] = [PEPUtil.pepContactFromEmail("unittest.ios.4@peptest.ch",
             name: "unit 4")]
-            as [AnyObject]
         pepMailOrig[kPepShortMessage] = "Subject"
         pepMailOrig[kPepLongMessage] = "Some Text"
         pepMailOrig[kPepLongMessageFormatted] = "<b>Some HTML</b>"
@@ -218,7 +220,7 @@ class PEPUtilTests: XCTestCase {
         pepMailOrig[kPepReferences] = messageIDs
 
         // Convert to pantomime
-        let pantMail = PEPUtil.pantomimeMailFromPep(pepMailOrig as PEPMail)
+        let pantMail = PEPUtil.pantomimeMailFromPep(pepMailOrig as NSDictionary as! PEPMail)
         pantMail.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
 
         XCTAssertNotNil(pantMail.from())
@@ -239,13 +241,14 @@ class PEPUtilTests: XCTestCase {
         XCTAssertEqual(message?.references.count, referenced.count)
         if let m = message {
             var counter = 0
-            for ref in m.references {
+            for theRef in m.references {
+                guard let ref = theRef as? MessageReference else {
+                    XCTAssertTrue(false)
+                    continue
+                }
                 XCTAssertEqual(ref.messageID, referenced[counter])
                 if counter == 1 {
-                    XCTAssertNotNil(ref as? MessageReference)
-                    if let r = ref as? MessageReference {
-                        XCTAssertNotNil(r.message)
-                    }
+                    XCTAssertNotNil(ref.message)
                 }
                 counter = counter + 1
             }
@@ -274,9 +277,9 @@ class PEPUtilTests: XCTestCase {
             let pepMail2 = TestUtil.removeUnneededKeysForComparison(
                 keysNotToCompare, fromMail: pepMail)
             let pepMailOrig2 = TestUtil.removeUnneededKeysForComparison(
-                keysNotToCompare, fromMail: pepMailOrig)
-            TestUtil.diffDictionaries(pepMail2, dict2: pepMailOrig2)
-            XCTAssertEqual(pepMail2, pepMailOrig2)
+                keysNotToCompare, fromMail: pepMailOrig as NSDictionary as! PEPMail)
+            TestUtil.diffDictionaries(pepMail2 as NSDictionary, dict2: pepMailOrig2 as NSDictionary)
+            XCTAssertEqual(pepMail2 as NSDictionary, pepMailOrig2 as NSDictionary)
         }
     }
 
@@ -284,7 +287,7 @@ class PEPUtilTests: XCTestCase {
      Same code as `testPepToPantomimeToPepWithoutAttachments`, but with some attachments.
      */
     func testPepToPantomimeToPepWithAttachments() {
-        persistentSetup.model.insertOrUpdateFolderName(
+        let _ = persistentSetup.model.insertOrUpdateFolderName(
             ImapSync.defaultImapInboxName, folderSeparator: nil,
             accountEmail: persistentSetup.accountEmail)
 
@@ -331,7 +334,7 @@ class PEPUtilTests: XCTestCase {
         pepMailOrig[kPepAttachments] = attachments
 
         // Convert to pantomime
-        let pantMail = PEPUtil.pantomimeMailFromPep(pepMailOrig as PEPMail)
+        let pantMail = PEPUtil.pantomimeMailFromPep(pepMailOrig as NSDictionary as! PEPMail)
         pantMail.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
 
         // Check pantomime
@@ -384,12 +387,12 @@ class PEPUtilTests: XCTestCase {
 
         XCTAssertEqual(message?.attachments.count, 2)
 
-        let modelAttachment1 = message?.attachments.object(at: 0)
+        let modelAttachment1 = message?.attachments.object(at: 0) as? Attachment
         XCTAssertNotNil(modelAttachment1)
         XCTAssertEqual(modelAttachment1?.filename, attachmentFilename1)
         XCTAssertEqual(modelAttachment1?.contentType, Constants.contentTypeHtml)
 
-        let modelAttachment2 = message?.attachments.object(at: 1)
+        let modelAttachment2 = message?.attachments.object(at: 1) as? Attachment
         XCTAssertNotNil(modelAttachment2)
         XCTAssertEqual(modelAttachment2?.filename, attachmentFilename2)
         XCTAssertEqual(modelAttachment2?.contentType, Constants.contentTypeHtml)
@@ -405,10 +408,10 @@ class PEPUtilTests: XCTestCase {
             let attachments = pepMail[kPepAttachments] as? NSArray
             XCTAssertEqual(attachments?.count, 2)
             let pepMail2 = TestUtil.removeUnneededKeysForComparison(
-                keysNotToCompare, fromMail: pepMail)
+                keysNotToCompare, fromMail: pepMail as NSDictionary as! PEPMail)
             let pepMailOrig2 = TestUtil.removeUnneededKeysForComparison(
-                keysNotToCompare, fromMail: pepMailOrig)
-            XCTAssertEqual(pepMail2, pepMailOrig2)
+                keysNotToCompare, fromMail: pepMailOrig as NSDictionary as! PEPMail)
+            XCTAssertEqual(pepMail2 as NSDictionary, pepMailOrig2 as NSDictionary)
         }
     }
 
@@ -419,9 +422,13 @@ class PEPUtilTests: XCTestCase {
         // Create myself
         let backgroundQueue = OperationQueue.init()
         let expMyselfFinished = expectation(description: "expMyselfFinished")
-        let account = persistentSetup.model.accountByEmail(persistentSetup.accountEmail)
+        guard let account = persistentSetup.model.accountByEmail(
+            persistentSetup.accountEmail) else {
+                XCTAssertTrue(false)
+                return
+        }
         var identityMyself: NSDictionary? = nil
-        PEPUtil.myselfFromAccount(account as! Account, queue: backgroundQueue) { identity in
+        PEPUtil.myselfFromAccount(account, queue: backgroundQueue) { identity in
             expMyselfFinished.fulfill()
             identityMyself = identity
         }
@@ -455,10 +462,10 @@ class PEPUtilTests: XCTestCase {
             "FROZE EDGEWISE HOTHEADED DERREK BRITNI")
         XCTAssertEqual(fpr1.compare(fpr2), ComparisonResult.orderedDescending)
 
-        let dict1 = [kPepFingerprint: fpr1, kPepUserID: "1", kPepAddress: "email1",
-                     kPepUsername: "1"]
-        let dict2 = [kPepFingerprint: fpr2, kPepUserID: "2", kPepAddress: "email2",
-                     kPepUsername: "2"]
+        let dict1: PEPMail = [kPepFingerprint: fpr1 as AnyObject, kPepUserID: "1" as AnyObject,
+                              kPepAddress: "email1" as AnyObject, kPepUsername: "1" as AnyObject]
+        let dict2: PEPMail = [kPepFingerprint: fpr2 as AnyObject, kPepUserID: "2" as AnyObject,
+                              kPepAddress: "email2" as AnyObject, kPepUsername: "2" as AnyObject]
         let words = PEPUtil.trustwordsForIdentity1(dict1, identity2: dict2,
                                                    language: "en", session: session)
         XCTAssertEqual(words,
@@ -481,17 +488,17 @@ class PEPUtilTests: XCTestCase {
         // This might fail the first time the test is run
         // (see ENGINE-41)
         XCTAssertTrue(session.isEncryptedPEPContact(
-            identity as PEPContact, from: identity as PEPContact))
+            identity as NSDictionary as! PEPContact, from: identity as NSDictionary as! PEPContact))
 
         XCTAssertTrue(session.isEncryptedPEPContact(
-            receiver4 as PEPContact, from: identity as PEPContact))
+            receiver4 as PEPContact, from: identity as NSDictionary as! PEPContact))
     }
 
     /**
      This needs access to the addressbook, otherwise it will just fail.
      */
     func testInsertPepContact() {
-        var addressBookContact: Contact?
+        var addressBookContact: IContact?
         let ab = AddressBook.init()
         let context = persistentSetup.coreDataUtil.privateContext()
 
@@ -522,13 +529,13 @@ class PEPUtilTests: XCTestCase {
         if let abContact = addressBookContact {
             let pepContact = NSMutableDictionary()
             pepContact[kPepAddress] = abContact.email
-            let contact = PEPUtil.insertPepContact(pepContact as PEPContact,
-                                                   intoModel: persistentSetup.model)
+            let contact = PEPUtil.insertPepContact(
+                pepContact as NSDictionary as! PEPContact, intoModel: persistentSetup.model)
             XCTAssertNotNil(contact.pepUserID)
             XCTAssertNotNil(contact.addressBookID)
 
             if let abID = contact.addressBookID {
-                XCTAssertEqual(contact.pepUserID, String(abID))
+                XCTAssertEqual(contact.pepUserID, String(describing: abID))
             }
         }
     }

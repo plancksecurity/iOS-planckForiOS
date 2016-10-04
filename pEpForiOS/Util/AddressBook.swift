@@ -19,11 +19,12 @@ public enum AddressBookStatus {
 /**
  With this we are compatible with our model layer, but don't have a dependency on Core Data.
  */
-open class AddressbookContact: NSObject, IContactDisplay {
+open class AddressbookContact: NSObject, IContact {
     open var email: String
     open var name: String?
     open var addressBookID: NSNumber?
     open var isMySelf: NSNumber
+    open var pepUserID: String?
 
     public init(email: String, name: String?, addressBookID: Int32? = nil) {
         self.email = email
@@ -117,7 +118,7 @@ open class AddressBook {
     /**
      For testing only.
      */
-    open func addContact(_ contact: Contact) -> Bool {
+    open func addContact(_ contact: AddressbookContact) -> Bool {
         if let ab = addressBook {
             let p = NSPredicate.init(block: { (record, bindings) -> Bool in
                 let contacts = self.addressBookContactToContacts(record! as ABRecord)

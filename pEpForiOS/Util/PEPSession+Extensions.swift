@@ -14,12 +14,18 @@ import Foundation
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
-public typealias PEPMail = NSDictionary
+public typealias PEPMail = [String: AnyObject]
 
 /**
  Similar to `PEPMail`
  */
-public typealias PEPContact = NSDictionary
+public typealias PEPContact = [String: AnyObject]
+
+public func ==(lhs: PEPContact, rhs: PEPContact) -> Bool {
+    let a = NSDictionary.init(dictionary: lhs)
+    let b = NSDictionary.init(dictionary: rhs)
+    return a == b
+}
 
 /**
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
@@ -88,8 +94,7 @@ public extension PEPSession {
      */
     public func isEncryptedPEPContact(_ contact: PEPContact,
                                       from: PEPContact) -> Bool {
-        let color = outgoingColor(from: from as! [AnyHashable : Any],
-                                  to: contact as! [AnyHashable : Any])
+        let color = outgoingColor(from: from, to: contact)
         return color.rawValue >= PEP_rating_reliable.rawValue
     }
 
@@ -144,7 +149,7 @@ public extension PEPSession {
     public func filterOutSpecialReceiversForPEPMail(
         _ pepMail: PEPMail) -> (unencryptedReceivers: [PEPRecipient],
         encryptedBCC: [PEPRecipient], pepMailEncryptable: PEPMail) {
-            let pepMailPurged = NSMutableDictionary.init(dictionary: pepMail)
+            var pepMailPurged = pepMail
 
             let session = PEPSession.init()
 
@@ -176,12 +181,12 @@ public extension PEPSession {
                 let (unencryptedBCC, encryptedBCC) = filterOutUnencryptedReceivers(
                     bccs, recipientType: RecipientType.bcc, session: session,
                     sortOutPredicate: unencryptedPredicate)
-                pepMailPurged[kPepBCC] = []
+                pepMailPurged[kPepBCC] = NSArray()
                 unencrypted.append(contentsOf: unencryptedBCC)
                 resultEncryptedBCC.append(contentsOf: encryptedBCC)
             }
 
-            return (unencrypted, resultEncryptedBCC, pepMailPurged as PEPMail)
+            return (unencrypted, resultEncryptedBCC, pepMailPurged)
     }
 
     /**
@@ -218,7 +223,7 @@ public extension PEPSession {
         }
 
         if unencryptedReceivers.count > 0 {
-            let unencryptedMail = NSMutableDictionary.init(dictionary: pepMailPurged)
+            var unencryptedMail = pepMailPurged
             var tos: [PEPContact] = []
             var ccs: [PEPContact] = []
             var bccs: [PEPContact] = []
@@ -233,18 +238,18 @@ public extension PEPSession {
                     bccs.append(r.recipient)
                 }
             }
-            unencryptedMail[kPepTo] = tos
-            unencryptedMail[kPepCC] = ccs
-            unencryptedMail[kPepBCC] = bccs
-            unencryptedMails.append(unencryptedMail as PEPMail)
+            unencryptedMail[kPepTo] = NSArray.init(array: tos)
+            unencryptedMail[kPepCC] = NSArray.init(array: ccs)
+            unencryptedMail[kPepBCC] = NSArray.init(array: bccs)
+            unencryptedMails.append(unencryptedMail)
         }
 
         for bcc in encryptedBCC {
-            let mail = NSMutableDictionary.init(dictionary: pepMailPurged)
-            mail[kPepTo] = []
-            mail[kPepCC] = []
-            mail[kPepBCC] = [bcc.recipient]
-            encryptedMails.append(mail as PEPMail)
+            var mail = pepMailPurged
+            mail[kPepTo] = NSArray()
+            mail[kPepCC] = NSArray()
+            mail[kPepBCC] = NSArray.init(object: bcc.recipient)
+            encryptedMails.append(mail)
         }
 
         return (encryptedMails, unencryptedMails)
@@ -256,5 +261,5 @@ public extension PEPSession {
  */
 public func ==(lhs: PEPRecipient, rhs: PEPRecipient) -> Bool {
     return lhs.recipientType == rhs.recipientType &&
-        (lhs.recipient as NSDictionary).isEqual(to: rhs.recipient as! [AnyHashable: Any])
+        lhs.recipient == rhs.recipient
 }

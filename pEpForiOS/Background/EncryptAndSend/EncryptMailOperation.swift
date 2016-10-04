@@ -61,12 +61,12 @@ open class EncryptMailOperation: ConcurrentBaseOperation {
             for origMail in allMails {
                 var encryptedMail: NSDictionary? = nil
                 let pepStatus = session.encryptMessageDict(
-                    origMail as! [AnyHashable: Any], extra: nil,
+                    origMail, extra: nil,
                     dest: &encryptedMail)
                 let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: pepStatus,
                     encryptedMail: encryptedMail)
                 if let m = mail {
-                    mailsToSend.append(m as PEPMail)
+                    mailsToSend.append(m as! PEPMail)
                 }
             }
             self.encryptionData.mailsToSend = mailsToSend
@@ -75,12 +75,12 @@ open class EncryptMailOperation: ConcurrentBaseOperation {
             let ident = PEPUtil.identityFromAccount(account, isMyself: true)
             var encryptedMail: NSDictionary? = nil
             let status = session.encryptMessageDict(
-                pepMailOrig as! [AnyHashable : Any], identity: ident as! [AnyHashable : Any],
+                pepMailOrig, identity: ident as! [AnyHashable:Any],
                 dest: &encryptedMail)
             let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
                 encryptedMail: encryptedMail)
             if let m = mail {
-                self.encryptionData.mailEncryptedForSelf = m as PEPMail
+                self.encryptionData.mailEncryptedForSelf = m as! PEPMail
             }
 
             self.markAsFinished()
