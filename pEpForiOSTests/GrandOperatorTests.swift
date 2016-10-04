@@ -108,7 +108,7 @@ class GrandOperatorTests: XCTestCase {
         })
     }
 
-    func createSpecialFolders(_ account: IAccount) {
+    func createSpecialFolders(_ account: Account) {
         let expSpecialFoldersCreated = expectation(description: "expSpecialFoldersCreated")
         persistentSetup.grandOperator.createSpecialLocalFolders(
             account.email, completionBlock: { error in
@@ -262,7 +262,7 @@ class GrandOperatorTests: XCTestCase {
         var expectations = [XCTestExpectation]()
         var counter = 0
         for elm in inbox.messages {
-            guard let m = elm as? IMessage else {
+            guard let m = elm as? Message else {
                 XCTAssertTrue(false)
                 break
             }

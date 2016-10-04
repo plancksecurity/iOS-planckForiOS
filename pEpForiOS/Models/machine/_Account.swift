@@ -49,7 +49,7 @@ open class _Account: BaseManagedObject {
     // MARK: - Properties
 
     @NSManaged open
-    var accountType: NSNumber?
+    var accountType: NSNumber
 
     @NSManaged open
     var email: String
@@ -61,10 +61,10 @@ open class _Account: BaseManagedObject {
     var imapServerName: String
 
     @NSManaged open
-    var imapServerPort: NSNumber?
+    var imapServerPort: NSNumber
 
     @NSManaged open
-    var imapTransport: NSNumber?
+    var imapTransport: NSNumber
 
     @NSManaged open
     var imapUsername: String?
@@ -76,10 +76,10 @@ open class _Account: BaseManagedObject {
     var smtpServerName: String
 
     @NSManaged open
-    var smtpServerPort: NSNumber?
+    var smtpServerPort: NSNumber
 
     @NSManaged open
-    var smtpTransport: NSNumber?
+    var smtpTransport: NSNumber
 
     @NSManaged open
     var smtpUsername: String?

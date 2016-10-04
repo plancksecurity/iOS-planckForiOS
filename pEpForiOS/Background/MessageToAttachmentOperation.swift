@@ -20,7 +20,7 @@ public struct SimpleAttachment {
 }
 
 /**
- Converts a given IMessage to a (non-core-data) attachment object.
+ Converts a given Message to a (non-core-data) attachment object.
  */
 open class MessageToAttachmentOperation: ConcurrentBaseOperation {
     let comp = "MessageToAttachmentOperation"
@@ -30,7 +30,7 @@ open class MessageToAttachmentOperation: ConcurrentBaseOperation {
 
     var attachment: SimpleAttachment?
 
-    public init(message: IMessage, coreDataUtil: ICoreDataUtil) {
+    public init(message: Message, coreDataUtil: ICoreDataUtil) {
         self.messageID = (message as! Message).objectID
         super.init(coreDataUtil: coreDataUtil)
     }
@@ -44,7 +44,7 @@ open class MessageToAttachmentOperation: ConcurrentBaseOperation {
     }
 
     func doWork(_ privateMOC: NSManagedObjectContext) {
-        guard let message = privateMOC.object(with: self.messageID) as? IMessage else {
+        guard let message = privateMOC.object(with: self.messageID) as? Message else {
             errorMessage(NSLocalizedString(
                 "Could not find message by objectID", comment: "Internal error"),
                          logMessage: "Could not find message by objectID")

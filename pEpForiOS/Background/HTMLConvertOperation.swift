@@ -43,8 +43,8 @@ open class HTMLConvertOperation: BaseOperation {
         var modelChanged = false
 
         for m in mails {
-            guard let mail = m as? IMessage else {
-                Log.warnComponent(self.comp, "Could not cast mail to IMessage")
+            guard let mail = m as? Message else {
+                Log.warnComponent(self.comp, "Could not cast mail to Message")
                 continue
             }
             mail.longMessage = nil
@@ -79,8 +79,8 @@ open class HTMLConvertOperation: BaseOperation {
             var modelChanged = false
 
             for m in mails {
-                guard let mail = m as? IMessage else {
-                    Log.warnComponent(self.comp, "Could not cast mail to IMessage")
+                guard let mail = m as? Message else {
+                    Log.warnComponent(self.comp, "Could not cast mail to Message")
                     continue
                 }
                 if let htmlString = mail.longMessageFormatted {

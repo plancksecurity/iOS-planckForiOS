@@ -46,19 +46,19 @@ open class _Folder: BaseManagedObject {
     // MARK: - Properties
 
     @NSManaged open
-    var existsCount: NSNumber?
+    var existsCount: NSNumber
 
     @NSManaged open
-    var folderType: NSNumber?
+    var folderType: NSNumber
 
     @NSManaged open
     var name: String
 
     @NSManaged open
-    var nextUID: NSNumber?
+    var nextUID: NSNumber
 
     @NSManaged open
-    var shouldDelete: NSNumber?
+    var shouldDelete: NSNumber
 
     @NSManaged open
     var uidValidity: NSNumber?

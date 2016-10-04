@@ -30,7 +30,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
 
     var folderSeparator: String?
 
-    public init(account: IAccount, folderType: FolderType,
+    public init(account: Account, folderType: FolderType,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.accountEmail = account.email
         self.connectInfo = account.connectInfo

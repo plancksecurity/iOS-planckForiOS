@@ -20,7 +20,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-public protocol IContact: _IContact {
+public protocol IContact {
     /**
      Short display string, only the user's name if possible.
      */
@@ -32,7 +32,11 @@ public protocol IContact: _IContact {
     func completeDisplayString() -> String
 }
 
-extension IContact {
+@objc(Contact)
+open class Contact: _Contact {
+}
+
+extension Contact: IContact {
     public func displayString() -> String {
         if self.name?.characters.count > 0 {
             return name!
@@ -59,8 +63,4 @@ extension IContact {
             }
         }
     }
-}
-
-@objc(Contact)
-open class Contact: _Contact, IContact {
 }

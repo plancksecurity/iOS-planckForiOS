@@ -214,7 +214,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func createBasicMail() -> (
-        OperationQueue, IAccount, IModel, IMessage,
+        OperationQueue, Account, IModel, Message,
         (identity: NSMutableDictionary, receiver1: PEPContact,
         receiver2: PEPContact, receiver3: PEPContact,
         receiver4: PEPContact))? {
@@ -621,7 +621,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         for elm in inbox.messages {
-            guard let m = elm as? IMessage else {
+            guard let m = elm as? Message else {
                 XCTAssertTrue(false)
                 break
             }
@@ -663,7 +663,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         for elm in inbox.messages {
-            guard let m = elm as? IMessage else {
+            guard let m = elm as? Message else {
                 XCTAssertTrue(false)
                 break
             }

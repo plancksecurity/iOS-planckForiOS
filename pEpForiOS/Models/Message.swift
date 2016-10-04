@@ -1,11 +1,8 @@
 import Foundation
 import CoreData
 
-public protocol IMessage: _IMessage {
-}
-
 @objc(Message)
-open class Message: _Message, IMessage {
+open class Message: _Message {
     /**
      - Returns: A `CWFlags object` for the given `NSNumber`
      */
@@ -27,7 +24,7 @@ open class Message: _Message, IMessage {
     }
 }
 
-public extension IMessage {
+public extension Message {
     func allRecipienst() -> NSOrderedSet {
         let recipients: NSMutableOrderedSet = []
         recipients.addObjects(from: to.array)
@@ -36,7 +33,7 @@ public extension IMessage {
         return recipients
     }
 
-    func internetAddressFromContact(_ contact: IContact) -> CWInternetAddress {
+    func internetAddressFromContact(_ contact: Contact) -> CWInternetAddress {
         return CWInternetAddress.init(personal: contact.name, address: contact.email)
 
     }
@@ -45,7 +42,7 @@ public extension IMessage {
                          asPantomimeReceiverType receiverType: PantomimeRecipientType,
                                                  intoTargetArray target: inout [CWInternetAddress]) {
         for obj in contacts {
-            if let theContact = obj as? IContact {
+            if let theContact = obj as? Contact {
                 let addr = internetAddressFromContact(theContact)
                 addr.setType(receiverType)
                 target.append(addr)

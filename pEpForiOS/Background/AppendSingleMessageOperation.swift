@@ -28,7 +28,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     var cwMessageToAppend: CWIMAPMessage!
     var targetFolderName: String!
 
-    public init(message: IMessage, account: IAccount, targetFolder: IFolder?,
+    public init(message: Message, account: Account, targetFolder: Folder?,
                 folderType: FolderType?,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
         self.messageID = (message as! Message).objectID
@@ -48,7 +48,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
         super.init(coreDataUtil: coreDataUtil)
     }
 
-    convenience public init(message: IMessage, account: IAccount, targetFolder: IFolder,
+    convenience public init(message: Message, account: Account, targetFolder: Folder,
                             connectionManager: ConnectionManager,
                             coreDataUtil: ICoreDataUtil) {
         self.init(message: message, account: account, targetFolder: targetFolder,
@@ -56,7 +56,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
                   coreDataUtil: coreDataUtil)
     }
 
-    convenience public init(message: IMessage, account: IAccount, folderType: FolderType,
+    convenience public init(message: Message, account: Account, folderType: FolderType,
                             connectionManager: ConnectionManager,
                             coreDataUtil: ICoreDataUtil) {
         self.init(message: message, account: account, targetFolder: nil,
@@ -67,11 +67,11 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     override open func main() {
         privateMOC.perform({
             guard let message = self.privateMOC.object(with: self.messageID) as?
-                IMessage else {
+                Message else {
                     return
             }
             guard let account = self.privateMOC.object(with: self.accountID) as?
-                IAccount else {
+                Account else {
                     return
             }
             var tf: Folder?

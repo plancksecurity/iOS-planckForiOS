@@ -41,7 +41,7 @@ class EmailListViewController: FetchTableViewController {
         let sortDescriptors: [NSSortDescriptor]?
 
         /** If applicable, the account to refresh from */
-        let account: IAccount?
+        let account: Account?
 
         /** If applicable, the folder name to sync */
         let folderName: String?
@@ -79,24 +79,24 @@ class EmailListViewController: FetchTableViewController {
     /**
      The message that should be saved as a draft when compose gets aborted.
      */
-    var draftMessageToStore: IMessage?
+    var draftMessageToStore: Message?
 
     /**
      When the user taps on a draft email, this is the message that was selected
      and should be given to the compose view.
      */
-    var draftMessageToCompose: IMessage?
+    var draftMessageToCompose: Message?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.comp = "EmailListViewController"
     }
 
-    func isReadedMessage(_ message: IMessage)-> Bool {
+    func isReadedMessage(_ message: Message)-> Bool {
         return message.flagSeen.boolValue
     }
 
-    func isImportantMessage(_ message: IMessage)-> Bool {
+    func isImportantMessage(_ message: Message)-> Bool {
         return message.flagFlagged.boolValue
     }
 
@@ -238,7 +238,7 @@ class EmailListViewController: FetchTableViewController {
             let folder = config.appConfig.model.folderByName(fn, email: ac.email) {
             if folder.folderType.intValue == FolderType.drafts.rawValue {
                 draftMessageToCompose = fetchController?.object(at: indexPath)
-                    as? IMessage
+                    as? Message
                 performSegue(withIdentifier: segueCompose, sender: cell)
                 return
             }
@@ -345,7 +345,7 @@ class EmailListViewController: FetchTableViewController {
         }
     }
 
-    func syncFlagsToServer(_ message: IMessage) {
+    func syncFlagsToServer(_ message: Message) {
         self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
             message.folder,
             completionBlock: { error in
@@ -395,7 +395,7 @@ class EmailListViewController: FetchTableViewController {
 
         let deleteCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
-                let managedObject = self.fetchController?.object(at: indexPath) as? IMessage
+                let managedObject = self.fetchController?.object(at: indexPath) as? Message
                 managedObject?.flagDeleted = true
                 managedObject?.updateFlags()
                 self.syncFlagsToServer(managedObject!)

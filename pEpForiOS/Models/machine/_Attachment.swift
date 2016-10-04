@@ -50,7 +50,7 @@ open class _Attachment: BaseManagedObject {
     var filename: String?
 
     @NSManaged open
-    var size: NSNumber?
+    var size: NSNumber
 
     // MARK: - Relationships
 

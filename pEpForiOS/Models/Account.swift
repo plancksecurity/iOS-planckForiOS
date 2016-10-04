@@ -1,14 +1,8 @@
 import Foundation
 import CoreData
 
-public protocol IAccount: _IAccount {
-    var connectInfo: ConnectInfo { get }
-    var rawImapTransport: ConnectionTransport { get }
-    var rawSmtpTransport: ConnectionTransport { get }
-}
-
 @objc(Account)
-open class Account: _Account, IAccount {
+open class Account: _Account {
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
 
     public enum AccountType: Int {

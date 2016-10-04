@@ -157,7 +157,7 @@ open class ComposeViewHelper {
      * Puts the emails from the contacts into a recipient text field.
      */
     open static func transferContacts(
-        _ contacts: [IContact], toTextField textField: UITextView, titleText: String?) {
+        _ contacts: [Contact], toTextField textField: UITextView, titleText: String?) {
         textField.text = "\(String.orEmpty(titleText))"
         for c in contacts {
             textField.text = "\(textField.text)\(c.email), "
@@ -165,10 +165,10 @@ open class ComposeViewHelper {
     }
 
     /**
-     - Returns: The array of `IContact`s for a given recipient type and message.
+     - Returns: The array of `Contact`s for a given recipient type and message.
      */
     open static func contactsForRecipientType(
-        _ recipientType: RecipientType?, fromMessage message: IMessage) -> [IContact] {
+        _ recipientType: RecipientType?, fromMessage message: Message) -> [Contact] {
         guard let rt = recipientType else {
             return []
         }
@@ -183,12 +183,12 @@ open class ComposeViewHelper {
     }
 
     /**
-     Converts an `NSOrderedSet` into an array of `IContact`.
+     Converts an `NSOrderedSet` into an array of `Contact`.
      Putting this into a function prevents a compiler crash with Swift 2.2 that
      occurs when putting this inline.
      */
-    open static func orderedSetToContacts(_ theSet: NSOrderedSet) -> [IContact] {
-        return theSet.map({ $0 as! IContact })
+    open static func orderedSetToContacts(_ theSet: NSOrderedSet) -> [Contact] {
+        return theSet.map({ $0 as! Contact })
     }
 }
 

@@ -30,7 +30,7 @@ class AccountsFoldersViewController: UITableViewController {
     let folderSection = 0
 
     var appConfig: AppConfig!
-    var accounts = [IAccount]()
+    var accounts = [Account]()
 
     /** For email list configuration */
     var emailListConfig: EmailListViewController.EmailListConfig?

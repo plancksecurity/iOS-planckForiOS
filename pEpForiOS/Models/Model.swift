@@ -35,22 +35,22 @@ public protocol IModel {
     /**
      Retrieve a contact by email, without updating anything.
      */
-    func contactByEmail(_ email: String) -> IContact?
+    func contactByEmail(_ email: String) -> Contact?
 
     func contactsByPredicate(_ predicate: NSPredicate?,
-                             sortDescriptors: [NSSortDescriptor]?) -> [IContact]?
+                             sortDescriptors: [NSSortDescriptor]?) -> [Contact]?
 
-    func existingMessage(_ msg: CWIMAPMessage) -> IMessage?
+    func existingMessage(_ msg: CWIMAPMessage) -> Message?
     func messageByPredicate(_ predicate: NSPredicate?,
-                            sortDescriptors: [NSSortDescriptor]?) -> IMessage?
+                            sortDescriptors: [NSSortDescriptor]?) -> Message?
     func messagesByPredicate(_ predicate: NSPredicate?,
-                             sortDescriptors: [NSSortDescriptor]?) -> [IMessage]?
+                             sortDescriptors: [NSSortDescriptor]?) -> [Message]?
     func messageCountByPredicate(_ predicate: NSPredicate?) -> Int
 
     /**
      - Returns: A message with the given UID and folder name, if found.
      */
-    func messageByUID(_ uid: Int, folderName: String) -> IMessage?
+    func messageByUID(_ uid: Int, folderName: String) -> Message?
 
     /**
      - Returns: The highest UID of the messages in the given folder.
@@ -59,61 +59,61 @@ public protocol IModel {
 
     func folderCountByPredicate(_ predicate: NSPredicate?) -> Int
     func foldersByPredicate(_ predicate: NSPredicate?,
-                            sortDescriptors: [NSSortDescriptor]?) -> [IFolder]?
+                            sortDescriptors: [NSSortDescriptor]?) -> [Folder]?
     func folderByPredicate(_ predicate: NSPredicate?,
-                           sortDescriptors: [NSSortDescriptor]?) -> IFolder?
+                           sortDescriptors: [NSSortDescriptor]?) -> Folder?
 
     /**
      Fetch a folder by name and account email.
      Will not return folders that are scheduled for deletion (where `shouldDelete` is true).
      */
-    func folderByName(_ name: String, email: String) -> IFolder?
+    func folderByName(_ name: String, email: String) -> Folder?
 
     /**
      Fetch a folder by name and account email, and type.
      Will not return folders that are scheduled for deletion (where `shouldDelete` is true).
      */
-    func folderByName(_ name: String, email: String, folderType: Account.AccountType) -> IFolder?
+    func folderByName(_ name: String, email: String, folderType: Account.AccountType) -> Folder?
 
     /**
      Fetch a folder by name and account email, even those scheduled for deletion
      (where `shouldDelete` is true).
      */
-    func anyFolderByName(_ name: String, email: String) -> IFolder?
+    func anyFolderByName(_ name: String, email: String) -> Folder?
 
     func foldersForAccountEmail(_ accountEmail: String, predicate: NSPredicate?,
-                                sortDescriptors: [NSSortDescriptor]?) -> [IFolder]?
+                                sortDescriptors: [NSSortDescriptor]?) -> [Folder]?
 
     /**
      - Returns: The folder of the given type, if any.
      */
-    func folderByType(_ type: FolderType, email: String) -> IFolder?
+    func folderByType(_ type: FolderType, email: String) -> Folder?
 
     /**
      - Returns: The folder of the given type, if any.
      */
-    func folderByType(_ type: FolderType, account: IAccount) -> IFolder?
+    func folderByType(_ type: FolderType, account: Account) -> Folder?
 
-    func accountByEmail(_ email: String) -> IAccount?
+    func accountByEmail(_ email: String) -> Account?
     func accountsByPredicate(_ predicate: NSPredicate?,
-                             sortDescriptors: [NSSortDescriptor]?) -> [IAccount]?
-    func setAccountAsLastUsed(_ account: IAccount) -> IAccount
-    func fetchLastAccount() -> IAccount?
+                             sortDescriptors: [NSSortDescriptor]?) -> [Account]?
+    func setAccountAsLastUsed(_ account: Account) -> Account
+    func fetchLastAccount() -> Account?
 
-    func insertAccountFromConnectInfo(_ connectInfo: ConnectInfo) -> IAccount
-    func insertNewMessage() -> IMessage
+    func insertAccountFromConnectInfo(_ connectInfo: ConnectInfo) -> Account
+    func insertNewMessage() -> Message
 
     /**
      Creates new message for sending, with the correct from and folder setup.
      */
-    func insertNewMessageForSendingFromAccountEmail(_ email: String) -> IMessage?
+    func insertNewMessageForSendingFromAccountEmail(_ email: String) -> Message?
 
     func insertAttachmentWithContentType(
-        _ contentType: String?, filename: String?, data: Data) -> IAttachment
+        _ contentType: String?, filename: String?, data: Data) -> Attachment
 
-    func insertOrUpdateContactEmail(_ email: String, name: String?) -> IContact
-    func insertOrUpdateContactEmail(_ email: String) -> IContact
-    func insertOrUpdateContact(_ contact: IContact) -> IContact
+    func insertOrUpdateContactEmail(_ email: String, name: String?) -> Contact
+    func insertOrUpdateContactEmail(_ email: String) -> Contact
+    func insertOrUpdateContact(_ contact: Contact) -> Contact
 
     /**
      Inserts a folder of the given type, creating the whole hierarchy if necessary.
@@ -127,10 +127,10 @@ public protocol IModel {
      - Parameter accountEmail: The email of the account this folder belongs to.
      */
     func insertOrUpdateFolderName(_ folderName: String, folderSeparator: String?,
-                                  accountEmail: String) -> IFolder?
+                                  accountEmail: String) -> Folder?
 
-    func insertOrUpdateMessageReference(_ messageID: String) -> IMessageReference
-    func insertMessageReference(_ messageID: String) -> IMessageReference
+    func insertOrUpdateMessageReference(_ messageID: String) -> MessageReference
+    func insertMessageReference(_ messageID: String) -> MessageReference
 
     /**
      Quickly inserts essential parts of a pantomime into the store. Needed for networking,
@@ -141,10 +141,10 @@ public protocol IModel {
      freshly added).
      */
     func quickInsertOrUpdatePantomimeMail(_ message: CWIMAPMessage, accountEmail: String)
-        -> (IMessage?, Bool)
+        -> (Message?, Bool)
 
     /**
-     Converts a pantomime mail to an IMessage and stores it.
+     Converts a pantomime mail to an Message and stores it.
      Don't use this on the main thread as there is potentially a lot of processing involved
      (e.g., parsing of HTML and/or attachments).
      - Parameter message: The pantomime message to insert.
@@ -152,15 +152,15 @@ public protocol IModel {
      for.
      - Parameter forceParseAttachments: If true, this will parse the attachments even
      if the pantomime has not been initialized yet (useful for testing only).
-     - Returns: The newly created or updated IMessage
+     - Returns: The newly created or updated Message
      */
     func insertOrUpdatePantomimeMail(_ message: CWIMAPMessage, accountEmail: String,
-                                     forceParseAttachments: Bool) -> IMessage?
+                                     forceParseAttachments: Bool) -> Message?
 
     /**
      - Returns: List of contact that match the given snippet (either in the name, or email).
      */
-    func contactsBySnippet(_ snippet: String) -> [IContact]
+    func contactsBySnippet(_ snippet: String) -> [Contact]
 
     func save()
 
@@ -172,17 +172,17 @@ public protocol IModel {
     /**
      Deletes the given mail from the store.
      */
-    func deleteMail(_ message: IMessage)
+    func deleteMail(_ message: Message)
 
     /**
      Deletes the given attachment from the store.
      */
-    func deleteAttachment(_ attachment: IAttachment)
+    func deleteAttachment(_ attachment: Attachment)
 
     /**
      Deletes all attachments from the given mail.
      */
-    func deleteAttachmentsFromMessage(_ message: IMessage)
+    func deleteAttachmentsFromMessage(_ message: Message)
 
     /**
      - Returns: A predicate for all viewable emails.
@@ -261,7 +261,7 @@ open class Model: IModel {
         return 0
     }
 
-    open func contactByEmail(_ email: String) -> IContact? {
+    open func contactByEmail(_ email: String) -> Contact? {
         if let contacts = contactsByPredicate(NSPredicate.init(format: "email = %@", email), sortDescriptors: nil) {
             if contacts.count == 1 {
                 return contacts[0]
@@ -276,12 +276,12 @@ open class Model: IModel {
     }
 
     open func contactsByPredicate(_ predicate: NSPredicate?,
-                                    sortDescriptors: [NSSortDescriptor]?) -> [IContact]? {
+                                    sortDescriptors: [NSSortDescriptor]?) -> [Contact]? {
         return entitiesWithName(Contact.entityName(), predicate: predicate,
-            sortDescriptors: sortDescriptors)?.map() {$0 as! IContact}
+            sortDescriptors: sortDescriptors)?.map() {$0 as! Contact}
     }
 
-    open func existingMessage(_ msg: CWIMAPMessage) -> IMessage? {
+    open func existingMessage(_ msg: CWIMAPMessage) -> Message? {
         var predicates: [NSPredicate] = []
         if let msgId = msg.messageID() {
             predicates.append(NSPredicate.init(format: "messageID = %@", msgId))
@@ -304,7 +304,7 @@ open class Model: IModel {
         return nil
     }
 
-    func newAccountFromConnectInfo(_ connectInfo: ConnectInfo) -> IAccount {
+    func newAccountFromConnectInfo(_ connectInfo: ConnectInfo) -> Account {
         let account = NSEntityDescription.insertNewObject(
             forEntityName: Account.entityName(), into: context) as! Account
         account.nameOfTheUser = connectInfo.nameOfTheUser
@@ -321,7 +321,7 @@ open class Model: IModel {
         return account
     }
 
-    open func insertAccountFromConnectInfo(_ connectInfo: ConnectInfo) -> IAccount {
+    open func insertAccountFromConnectInfo(_ connectInfo: ConnectInfo) -> Account {
         if let ac = accountByEmail(connectInfo.email) {
             return ac
         }
@@ -335,13 +335,13 @@ open class Model: IModel {
         return account
     }
 
-    open func insertNewMessage() -> IMessage {
+    open func insertNewMessage() -> Message {
         let mail = NSEntityDescription.insertNewObject(
             forEntityName: Message.entityName(), into: context) as! Message
         return mail
     }
 
-    open func insertNewMessageForSendingFromAccountEmail(_ email: String) -> IMessage? {
+    open func insertNewMessageForSendingFromAccountEmail(_ email: String) -> Message? {
         guard let account = accountByEmail(email) else {
             Log.warnComponent(comp, "No account with email found: \(email)")
             return nil
@@ -358,7 +358,7 @@ open class Model: IModel {
     }
 
     open func insertAttachmentWithContentType(
-        _ contentType: String?, filename: String?, data: Data) -> IAttachment {
+        _ contentType: String?, filename: String?, data: Data) -> Attachment {
         let attachment = NSEntityDescription.insertNewObject(
             forEntityName: Attachment.entityName(), into: context) as! Attachment
         attachment.contentType = contentType
@@ -368,14 +368,14 @@ open class Model: IModel {
         return attachment
     }
 
-    open func setAccountAsLastUsed(_ account: IAccount) -> IAccount {
+    open func setAccountAsLastUsed(_ account: Account) -> Account {
         UserDefaults.standard.set(
             account.email, forKey: Account.kSettingLastAccountEmail)
         UserDefaults.standard.synchronize()
         return account
     }
 
-    open func fetchLastAccount() -> IAccount? {
+    open func fetchLastAccount() -> Account? {
         let lastEmail = UserDefaults.standard.string(
             forKey: Account.kSettingLastAccountEmail)
 
@@ -399,16 +399,16 @@ open class Model: IModel {
         return false
     }
 
-    open func accountByEmail(_ email: String) -> IAccount? {
+    open func accountByEmail(_ email: String) -> Account? {
         let predicate = NSPredicate.init(format: "email = %@", email)
         return singleEntityWithName(Account.entityName(), predicate: predicate)
             as? Account
     }
 
     open func accountsByPredicate(_ predicate: NSPredicate? = nil,
-                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [IAccount]? {
+                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [Account]? {
         return entitiesWithName(Account.entityName(), predicate: predicate,
-            sortDescriptors: sortDescriptors)?.map() {$0 as! IAccount}
+            sortDescriptors: sortDescriptors)?.map() {$0 as! Account}
     }
 
     open func save() {
@@ -427,7 +427,7 @@ open class Model: IModel {
         return NSPredicate.init(format: "account.email = %@ and name = %@", email, name)
     }
 
-    func insertFolderName(_ name: String, account: IAccount) -> IFolder {
+    func insertFolderName(_ name: String, account: Account) -> Folder {
         if let folder = folderByName(name, email: account.email) {
             // reactivate folder if previously deleted
             folder.shouldDelete = false
@@ -467,13 +467,13 @@ open class Model: IModel {
         return folder
     }
 
-    func reactivateFolder(_ folder: IFolder) -> IFolder {
+    func reactivateFolder(_ folder: Folder) -> Folder {
         folder.shouldDelete = false
         return folder
     }
 
     open func insertOrUpdateFolderName(_ folderName: String, folderSeparator: String?,
-                                         accountEmail: String) -> IFolder? {
+                                         accountEmail: String) -> Folder? {
         // Treat Inbox specially, since its name is case insensitive.
         // For all other folders, it's undefined if they have to be handled
         // case insensitive or not, so no special handling for those.
@@ -517,13 +517,13 @@ open class Model: IModel {
     }
 
     open func messageByPredicate(_ predicate: NSPredicate? = nil,
-                                   sortDescriptors: [NSSortDescriptor]? = nil) -> IMessage? {
+                                   sortDescriptors: [NSSortDescriptor]? = nil) -> Message? {
         return singleEntityWithName(Message.entityName(), predicate: predicate,
                                     sortDescriptors: sortDescriptors) as? Message
     }
 
     open func messagesByPredicate(_ predicate: NSPredicate? = nil,
-                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [IMessage]? {
+                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [Message]? {
         return entitiesWithName(Message.entityName(), predicate: predicate,
             sortDescriptors: sortDescriptors)?.map() {$0 as! Message}
     }
@@ -532,11 +532,11 @@ open class Model: IModel {
         return countWithName(Message.entityName(), predicate: predicate)
     }
 
-    open func messageByUID(_ uid: Int, folderName: String) -> IMessage? {
+    open func messageByUID(_ uid: Int, folderName: String) -> Message? {
         return messageByPredicate(NSPredicate.init(format: "uid = %d", uid))
     }
 
-    open func messageByMessageID(_ messageID: String) -> IMessage? {
+    open func messageByMessageID(_ messageID: String) -> Message? {
         let predicate = NSPredicate.init(format: "messageID = %@", messageID)
         return messageByPredicate(predicate, sortDescriptors: nil)
     }
@@ -572,23 +572,23 @@ open class Model: IModel {
     }
 
     open func foldersByPredicate(_ predicate: NSPredicate? = nil,
-                                   sortDescriptors: [NSSortDescriptor]? = nil) -> [IFolder]? {
+                                   sortDescriptors: [NSSortDescriptor]? = nil) -> [Folder]? {
         return entitiesWithName(Folder.entityName(), predicate: predicate,
             sortDescriptors: sortDescriptors)?.map() {$0 as! Folder}
     }
 
     open func folderByPredicate(_ predicate: NSPredicate? = nil,
-                                  sortDescriptors: [NSSortDescriptor]? = nil) -> IFolder? {
+                                  sortDescriptors: [NSSortDescriptor]? = nil) -> Folder? {
         return singleEntityWithName(Folder.entityName(), predicate: predicate,
                                     sortDescriptors: sortDescriptors) as? Folder
     }
 
-    open func folderByName(_ name: String, email: String) -> IFolder? {
+    open func folderByName(_ name: String, email: String) -> Folder? {
         return folderByPredicate(folderPredicateByName(name, email: email))
     }
 
     open func folderByName(
-        _ name: String, email: String, folderType: Account.AccountType) -> IFolder? {
+        _ name: String, email: String, folderType: Account.AccountType) -> Folder? {
         let p1 = folderPredicateByName(name, email: email)
         let p2 = NSPredicate.init(format: "folderType = %d", folderType.rawValue)
         let p3 = NSPredicate.init(format: "shouldDelete == false")
@@ -596,13 +596,13 @@ open class Model: IModel {
         return folderByPredicate(p)
     }
 
-    open func anyFolderByName(_ name: String, email: String) -> IFolder? {
+    open func anyFolderByName(_ name: String, email: String) -> Folder? {
         let p1 = folderPredicateByName(name, email: email)
         return folderByPredicate(p1)
     }
 
     open func foldersForAccountEmail(_ accountEmail: String, predicate: NSPredicate?,
-                                       sortDescriptors: [NSSortDescriptor]?) -> [IFolder]? {
+                                       sortDescriptors: [NSSortDescriptor]?) -> [Folder]? {
         var p1 = NSPredicate.init(format: "account.email = %@", accountEmail)
         if let p2 = predicate {
             p1 = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2])
@@ -618,19 +618,19 @@ open class Model: IModel {
         return p
     }
 
-    open func folderByType(_ type: FolderType, email: String) -> IFolder? {
+    open func folderByType(_ type: FolderType, email: String) -> Folder? {
         let p1 = NSPredicate.init(format: "account.email == %@", email)
         let p2 = NSPredicate.init(format: "folderType == %d", type.rawValue)
         let p3 = NSPredicate.init(format: "shouldDelete == false")
         let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2, p3])
-        return singleEntityWithName(Folder.entityName(), predicate: p) as? IFolder
+        return singleEntityWithName(Folder.entityName(), predicate: p) as? Folder
     }
 
-    open func folderByType(_ type: FolderType, account: IAccount) -> IFolder? {
+    open func folderByType(_ type: FolderType, account: Account) -> Folder? {
         return folderByType(type, email: account.email)
     }
 
-    open func insertOrUpdateContactEmail(_ email: String, name: String?) -> IContact {
+    open func insertOrUpdateContactEmail(_ email: String, name: String?) -> Contact {
         let fetch = NSFetchRequest.init(entityName:Contact.entityName())
         fetch.predicate = NSPredicate.init(format: "email == %@", email)
         do {
@@ -653,11 +653,11 @@ open class Model: IModel {
         return contact
     }
 
-    open func insertOrUpdateContactEmail(_ email: String) -> IContact {
+    open func insertOrUpdateContactEmail(_ email: String) -> Contact {
         return insertOrUpdateContactEmail(email, name: nil)
     }
 
-    open func insertOrUpdateContact(_ contact: IContact) -> IContact {
+    open func insertOrUpdateContact(_ contact: Contact) -> Contact {
         let c = self.insertOrUpdateContactEmail(
             contact.email, name: contact.name)
         if let abID = contact.addressBookID {
@@ -669,7 +669,7 @@ open class Model: IModel {
         return c
     }
 
-    open func insertOrUpdateMessageReference(_ messageID: String) -> IMessageReference {
+    open func insertOrUpdateMessageReference(_ messageID: String) -> MessageReference {
         let p = NSPredicate.init(format: "messageID = %@", messageID)
         if let ent = singleEntityWithName(MessageReference.entityName(), predicate: p) {
             return ent as! MessageReference
@@ -678,7 +678,7 @@ open class Model: IModel {
         }
     }
 
-    open func insertMessageReference(_ messageID: String) -> IMessageReference {
+    open func insertMessageReference(_ messageID: String) -> MessageReference {
         let ref = NSEntityDescription.insertNewObject(
             forEntityName: MessageReference.entityName(), into: context) as! MessageReference
         ref.messageID = messageID
@@ -688,8 +688,8 @@ open class Model: IModel {
         return ref
     }
 
-    open func addContacts(_ contacts: [CWInternetAddress]) -> [String: IContact] {
-        var added: [String: IContact] = [:]
+    open func addContacts(_ contacts: [CWInternetAddress]) -> [String: Contact] {
+        var added: [String: Contact] = [:]
         for address in contacts {
             let addr = insertOrUpdateContactEmail(address.address(),
                                                   name: address.personal())
@@ -706,7 +706,7 @@ open class Model: IModel {
      or an existing message was found (false).
      */
     open func quickInsertOrUpdatePantomimeMail(_ message: CWIMAPMessage,
-                                                 accountEmail: String) -> (IMessage?, Bool) {
+                                                 accountEmail: String) -> (Message?, Bool) {
         guard let folderName = message.folder()?.name() else {
             return (nil, false)
         }
@@ -714,7 +714,7 @@ open class Model: IModel {
             return (nil, false)
         }
 
-        var theMail: IMessage? = existingMessage(message)
+        var theMail: Message? = existingMessage(message)
         if theMail == nil {
             theMail = insertNewMessage()
         }
@@ -746,7 +746,7 @@ open class Model: IModel {
 
     open func insertOrUpdatePantomimeMail(
         _ message: CWIMAPMessage, accountEmail: String,
-        forceParseAttachments: Bool = false) -> IMessage? {
+        forceParseAttachments: Bool = false) -> Message? {
         let (quickMail, isFresh) = quickInsertOrUpdatePantomimeMail(message,
                                                                     accountEmail: accountEmail)
         guard let mail = quickMail else {
@@ -854,7 +854,7 @@ open class Model: IModel {
         }
     }
 
-    open func contactsBySnippet(_ snippet: String) -> [IContact] {
+    open func contactsBySnippet(_ snippet: String) -> [Contact] {
         let p = NSPredicate.init(format: "email != nil and email != \"\" and " +
             "(email contains[cd] %@ or name contains[cd] %@)",
                                  snippet, snippet)
@@ -884,19 +884,19 @@ open class Model: IModel {
         }
     }
 
-    open func deleteMail(_ message: IMessage) {
+    open func deleteMail(_ message: Message) {
         if let msg = message as? Message {
             context.delete(msg)
         }
     }
 
-    open func deleteAttachment(_ attachment: IAttachment) {
+    open func deleteAttachment(_ attachment: Attachment) {
         if let a = attachment as? Attachment {
             context.delete(a)
         }
     }
 
-    open func deleteAttachmentsFromMessage(_ message: IMessage) {
+    open func deleteAttachmentsFromMessage(_ message: Message) {
         if let msg = message as? Message {
             for a in msg.attachments {
                 context.delete(a as! Attachment)

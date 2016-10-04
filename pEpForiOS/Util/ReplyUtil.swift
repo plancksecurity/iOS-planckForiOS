@@ -12,7 +12,7 @@ public struct ReplyUtil {
     static let nameSeparator = ", "
     static let newline = "\n"
 
-    public static func replyNameFromContact(_ contact: IContact) -> String {
+    public static func replyNameFromContact(_ contact: Contact) -> String {
         if let name = contact.name {
             return name
         }
@@ -29,7 +29,7 @@ public struct ReplyUtil {
         return quotedText
     }
 
-    public static func citationHeaderForMessage(_ message: IMessage, replyAll: Bool) -> String {
+    public static func citationHeaderForMessage(_ message: Message, replyAll: Bool) -> String {
         let dateFormatter = DateFormatter.init()
         dateFormatter.dateStyle = DateFormatter.Style.long
         dateFormatter.timeStyle = DateFormatter.Style.long
@@ -40,7 +40,7 @@ public struct ReplyUtil {
         if replyAll {
             let contacts = message.allRecipienst().array
             theNames.append(
-                contentsOf: contacts.map() { return replyNameFromContact($0 as! IContact) })
+                contentsOf: contacts.map() { return replyNameFromContact($0 as! Contact) })
         } else {
             if let from = message.from {
                 theNames.append(replyNameFromContact(from))
@@ -89,7 +89,7 @@ public struct ReplyUtil {
                                  comment: "Mail footer/default text")
     }
 
-    public static func quotedMailTextForMail(_ mail: IMessage, replyAll: Bool) -> String {
+    public static func quotedMailTextForMail(_ mail: Message, replyAll: Bool) -> String {
         if let text = mail.longMessage {
             let quotedText = quoteText(text)
             let citation: String? = citationHeaderForMessage(mail, replyAll: replyAll)
@@ -100,7 +100,7 @@ public struct ReplyUtil {
         return footer()
     }
 
-    public static func replySubjectForMail(_ mail: IMessage) -> String {
+    public static func replySubjectForMail(_ mail: Message) -> String {
         if let subject = mail.subject {
             let re = NSLocalizedString(
                 "Re: ", comment: "The 'Re:' that gets appended to the subject line")

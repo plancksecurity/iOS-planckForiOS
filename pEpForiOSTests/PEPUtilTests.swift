@@ -491,7 +491,7 @@ class PEPUtilTests: XCTestCase {
      This needs access to the addressbook, otherwise it will just fail.
      */
     func testInsertPepContact() {
-        var addressBookContact: IContact?
+        var addressBookContact: Contact?
         let ab = AddressBook.init()
         let context = persistentSetup.coreDataUtil.privateContext()
 

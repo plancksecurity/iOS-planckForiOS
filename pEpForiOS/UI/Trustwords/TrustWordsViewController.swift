@@ -10,10 +10,10 @@ import UIKit
 
 class TrustWordsViewController: UITableViewController {
     var appConfig: AppConfig!
-    var message: IMessage?
+    var message: Message?
 
     /** All recipients to be able to do a handshake */
-    var allRecipientsFiltered = [IContact]()
+    var allRecipientsFiltered = [Contact]()
 
     /** A set of accounts from the same user on the device with another email */
     var otherMyselfAccount = NSMutableSet()
@@ -42,7 +42,7 @@ class TrustWordsViewController: UITableViewController {
                     ar.add(f)
                 }
                 for contact in ar {
-                    if let c = contact as? IContact {
+                    if let c = contact as? Contact {
                         if c.isMySelf.boolValue {
                             if appConfig.currentAccount?.email != c.email {
                                 allRecipientsFiltered.append(c)

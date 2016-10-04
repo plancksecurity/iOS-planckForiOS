@@ -11,7 +11,7 @@ import CoreData
 
 class FolderListViewController: FetchTableViewController {
     struct FolderListConfig {
-        let account: IAccount
+        let account: Account
         let appConfig: AppConfig
     }
 
@@ -130,7 +130,7 @@ class FolderListViewController: FetchTableViewController {
             state.isUpdating = true
             updateUI()
 
-            config.appConfig.grandOperator.deleteFolder(folder as IFolder) { error in
+            config.appConfig.grandOperator.deleteFolder(folder as Folder) { error in
                 UIHelper.displayError(error, controller: self)
                 self.state.isUpdating = false
                 self.updateUI()
@@ -164,7 +164,7 @@ class FolderListViewController: FetchTableViewController {
                 format: "folder.name = %@", fi.name)
 
             // If the folder is just local, then don't let the email list view sync.
-            var account: IAccount? = nil
+            var account: Account? = nil
             if let ft = FolderType.fromInt(fi.folderType.intValue) {
                 if ft.isRemote() {
                     account = config.account

@@ -12,7 +12,7 @@ import CoreData
 open class DeleteMessageOperation: ConcurrentBaseOperation {
     let messageID: NSManagedObjectID
 
-    public init(message: IMessage, coreDataUtil: ICoreDataUtil) {
+    public init(message: Message, coreDataUtil: ICoreDataUtil) {
         self.messageID = (message as! Message).objectID
         super.init(coreDataUtil: coreDataUtil)
     }
@@ -20,12 +20,12 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
     override open func main() {
         privateMOC.perform({
             guard let message = self.privateMOC.object(with: self.messageID) as?
-                IMessage
+                Message
                 else {
                     return
             }
 
-            var targetFolder: IFolder?
+            var targetFolder: Folder?
             targetFolder = self.model.folderByType(.trash, account: message.folder.account)
             if targetFolder == nil {
                 targetFolder = self.model.folderByType(

@@ -61,7 +61,7 @@ open class _<$sanitizedManagedObjectClassName$>: NSManagedObject {
 <$if Attribute.hasDefinedAttributeType$>
 <$if Attribute.hasScalarAttributeType$>
 <$if Attribute.isReadonly$>
-    open var <$Attribute.name$>: NSNumber?
+    open var <$Attribute.name$>: <$Attribute.objectAttributeType$><$if Attribute.isOptional$>?<$endif$>
     {
         self.willAccessValueForKey(<$sanitizedManagedObjectClassName$>Attributes.<$Attribute.name$>.rawValue)
         let <$Attribute.name$> = self.primitiveValueForKey(<$sanitizedManagedObjectClassName$>Attributes.<$Attribute.name$>.rawValue) as? NSNumber
@@ -70,7 +70,7 @@ open class _<$sanitizedManagedObjectClassName$>: NSManagedObject {
     }
 <$else$>
     @NSManaged open
-    var <$Attribute.name$>: NSNumber?
+    var <$Attribute.name$>: <$Attribute.objectAttributeType$><$if Attribute.isOptional$>?<$endif$>
 <$endif$>
 <$else$>
 <$if Attribute.isReadonly$>

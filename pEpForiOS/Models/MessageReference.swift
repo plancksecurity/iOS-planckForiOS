@@ -1,9 +1,6 @@
 import Foundation
 
-public protocol IMessageReference: _IMessageReference {
-}
-
 @objc(MessageReference)
-open class MessageReference: _MessageReference, IMessageReference {
+open class MessageReference: _MessageReference {
 	// Custom logic goes here.
 }

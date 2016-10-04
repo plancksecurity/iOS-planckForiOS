@@ -63,7 +63,7 @@ open class _Message: BaseManagedObject {
     // MARK: - Properties
 
     @NSManaged open
-    var bodyFetched: NSNumber?
+    var bodyFetched: NSNumber
 
     @NSManaged open
     var boundary: String?
@@ -72,28 +72,28 @@ open class _Message: BaseManagedObject {
     var contentType: String?
 
     @NSManaged open
-    var flagAnswered: NSNumber?
+    var flagAnswered: NSNumber
 
     @NSManaged open
-    var flagDeleted: NSNumber?
+    var flagDeleted: NSNumber
 
     @NSManaged open
-    var flagDraft: NSNumber?
+    var flagDraft: NSNumber
 
     @NSManaged open
-    var flagFlagged: NSNumber?
+    var flagFlagged: NSNumber
 
     @NSManaged open
-    var flagRecent: NSNumber?
+    var flagRecent: NSNumber
 
     @NSManaged open
-    var flagSeen: NSNumber?
+    var flagSeen: NSNumber
 
     @NSManaged open
-    var flags: NSNumber?
+    var flags: NSNumber
 
     @NSManaged open
-    var flagsFromServer: NSNumber?
+    var flagsFromServer: NSNumber
 
     @NSManaged open
     var longMessage: String?
@@ -117,7 +117,7 @@ open class _Message: BaseManagedObject {
     var subject: String?
 
     @NSManaged open
-    var uid: NSNumber?
+    var uid: NSNumber
 
     // MARK: - Relationships
 

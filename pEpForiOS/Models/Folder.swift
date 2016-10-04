@@ -150,14 +150,11 @@ public enum FolderType: Int {
     }
 }
 
-public protocol IFolder: _IFolder {
-}
-
 @objc(Folder)
-open class Folder: _Folder, IFolder {
+open class Folder: _Folder {
 }
 
-public extension IFolder {
+public extension Folder {
     /**
      Extracts a unique String ID that you can use as a key in dictionaries.
      - Returns: A (hashable) String that is unique for each folder.

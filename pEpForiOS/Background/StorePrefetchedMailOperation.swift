@@ -36,7 +36,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
         let privateMOC = coreDataUtil.privateContext()
         privateMOC.performAndWait({
             let model = Model.init(context: privateMOC)
-            var result: IMessage? = nil
+            var result: Message? = nil
             if self.quick {
                 (result, _) = model.quickInsertOrUpdatePantomimeMail(
                     self.message, accountEmail: self.accountEmail)

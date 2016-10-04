@@ -176,7 +176,7 @@ open class PEPUtil {
         return true
     }
 
-    open static func identityFromAccount(_ account: IAccount,
+    open static func identityFromAccount(_ account: Account,
                                            isMyself: Bool = true) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
         dict[kPepUsername] = account.nameOfTheUser
@@ -188,7 +188,7 @@ open class PEPUtil {
     /**
      Kicks off myself in the background, optionally notifies via block of termination/success.
      */
-    open static func myselfFromAccount(_ account: IAccount, queue: OperationQueue,
+    open static func myselfFromAccount(_ account: Account, queue: OperationQueue,
                                          block: ((_ identity: NSDictionary) -> Void)? = nil) {
         let op = PEPMyselfOperation.init(account: account)
         op.completionBlock = {
@@ -203,16 +203,16 @@ open class PEPUtil {
      Calls `mutablePepContact` and converts result.
      - Returns: The result from calling `mutablePepContact` converted to a `PEPContact`
      */
-    open static func pepContact(_ contact: IContact) -> PEPContact {
+    open static func pepContact(_ contact: Contact) -> PEPContact {
         return mutablePepContact(contact) as PEPContact
     }
 
     /**
-     Converts an IContact (possibly from core data) to a pEp contact (as `NSMutableDictionary`).
+     Converts an Contact (possibly from core data) to a pEp contact (as `NSMutableDictionary`).
      - Parameter contact: The core data contact object.
      - Returns: An `NSMutableDictionary` contact for pEp.
      */
-    open static func mutablePepContact(_ contact: IContact) -> NSMutableDictionary {
+    open static func mutablePepContact(_ contact: Contact) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
         if let name = contact.name {
             dict[kPepUsername] = name
@@ -251,7 +251,7 @@ open class PEPUtil {
      - Parameter contact: The core data attachment object.
      - Returns: An `NSMutableDictionary` attachment for pEp.
      */
-    open static func pepAttachment(_ attachment: IAttachment) -> NSMutableDictionary {
+    open static func pepAttachment(_ attachment: Attachment) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
 
         if let filename = attachment.filename {
@@ -270,7 +270,7 @@ open class PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
-    open static func pepMail(_ message: IMessage, outgoing: Bool = true) -> PEPMail {
+    open static func pepMail(_ message: Message, outgoing: Bool = true) -> PEPMail {
         let dict: NSMutableDictionary = [:]
 
         if let subject = message.subject {
@@ -295,7 +295,7 @@ open class PEPUtil {
         }
         dict[kPepOutgoing] = outgoing
 
-        dict[kPepAttachments] = message.attachments.map() { pepAttachment($0 as! IAttachment) }
+        dict[kPepAttachments] = message.attachments.map() { pepAttachment($0 as! Attachment) }
 
         var refs = [String]()
         for ref in message.references {
@@ -308,7 +308,7 @@ open class PEPUtil {
         return dict as PEPMail
     }
 
-    open static func insertPepContact(_ pepContact: PEPContact, intoModel: IModel) -> IContact {
+    open static func insertPepContact(_ pepContact: PEPContact, intoModel: IModel) -> Contact {
         let contact = intoModel.insertOrUpdateContactEmail(
             pepContact[kPepAddress] as! String,
             name: pepContact[kPepUsername] as? String)
@@ -389,9 +389,9 @@ open class PEPUtil {
     }
 
     /**
-     Converts a given `IMessage` into the equivalent `CWIMAPMessage`.
+     Converts a given `Message` into the equivalent `CWIMAPMessage`.
      */
-    open static func pantomimeMailFromMessage(_ message: IMessage) -> CWIMAPMessage {
+    open static func pantomimeMailFromMessage(_ message: Message) -> CWIMAPMessage {
         return pantomimeMailFromPep(pepMail(message))
     }
 
@@ -546,7 +546,7 @@ open class PEPUtil {
         return parts
     }
 
-    open static func colorRatingForContact(_ contact: IContact,
+    open static func colorRatingForContact(_ contact: Contact,
                                              session: PEPSession? = nil) -> PEP_rating {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
@@ -554,7 +554,7 @@ open class PEPUtil {
         return color
     }
 
-    open static func privacyColorForContact(_ contact: IContact,
+    open static func privacyColorForContact(_ contact: Contact,
                                               session: PEPSession? = nil) -> PEP_color {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
@@ -653,7 +653,7 @@ open class PEPUtil {
      Optional fields (`kPepOptFields`) might have to be taken care of later.
      Caller is responsible for saving the model!
      */
-    open static func updateDecryptedMessage(_ message: IMessage, fromPepMail: PEPMail,
+    open static func updateDecryptedMessage(_ message: Message, fromPepMail: PEPMail,
                                               pepColorRating: PEP_rating?, model: IModel) {
         if let color = pepColorRating {
             message.pepColorRating = NSNumber.init(value: color.rawValue as Int32)
@@ -702,7 +702,7 @@ open class PEPUtil {
      Completely updates a freshly inserted message from a pEp mail dictionary. Useful for tests.
      Caller is responsible for saving the model!
      */
-    open static func updateWholeMessage(_ message: IMessage, fromPepMail: PEPMail, model: IModel) {
+    open static func updateWholeMessage(_ message: Message, fromPepMail: PEPMail, model: IModel) {
         updateDecryptedMessage(message, fromPepMail: fromPepMail, pepColorRating: nil,
                       model: model)
         message.to = orderedContactSetFromPepContactArray(
@@ -734,7 +734,7 @@ open class PEPUtil {
      - Returns: The fingerprint for a contact.
      */
     open static func fingprprintForContact(
-        _ contact: IContact, session: PEPSession? = nil) -> String? {
+        _ contact: Contact, session: PEPSession? = nil) -> String? {
         let pepC = pepContact(contact)
         return fingprprintForPepContact(pepC)
     }
@@ -755,7 +755,7 @@ open class PEPUtil {
     /**
      Trust that contact (yellow to green).
      */
-    open static func trustContact(_ contact: IContact, session: PEPSession? = nil) {
+    open static func trustContact(_ contact: Contact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)
@@ -765,7 +765,7 @@ open class PEPUtil {
     /**
      Mistrust the identity (yellow to red)
      */
-    open static func mistrustContact(_ contact: IContact, session: PEPSession? = nil) {
+    open static func mistrustContact(_ contact: Contact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)
@@ -776,7 +776,7 @@ open class PEPUtil {
      Resets the trust for the given contact. Use both for trusting again after
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
-    open static func resetTrustForContact(_ contact: IContact, session: PEPSession? = nil) {
+    open static func resetTrustForContact(_ contact: Contact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = mutablePepContact(contact)
         theSession.updateIdentity(pepC)

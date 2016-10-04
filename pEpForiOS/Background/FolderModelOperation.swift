@@ -33,7 +33,7 @@ open class FolderModelOperation: ConcurrentBaseOperation {
      */
     open var folderItems = [FolderItem]()
 
-    public init(account: IAccount, coreDataUtil: ICoreDataUtil) {
+    public init(account: Account, coreDataUtil: ICoreDataUtil) {
         self.accountEmail = account.email
         super.init(coreDataUtil: coreDataUtil)
     }
@@ -60,7 +60,7 @@ open class FolderModelOperation: ConcurrentBaseOperation {
         })
     }
 
-    func processFolder(_ folder: IFolder, level: Int) {
+    func processFolder(_ folder: Folder, level: Int) {
         // TODO: numberOfMessages really should be the number of unread messages
         let item = FolderItem.init(
             objectID: (folder as! Folder).objectID, name: folder.name,
@@ -69,7 +69,7 @@ open class FolderModelOperation: ConcurrentBaseOperation {
         folderItems.append(item)
 
         for fol in folder.children {
-            if let f = fol as? IFolder {
+            if let f = fol as? Folder {
                 processFolder(f, level: level + 1)
             }
         }

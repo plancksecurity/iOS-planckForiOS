@@ -51,7 +51,7 @@ open class _Contact: BaseManagedObject {
     var email: String
 
     @NSManaged open
-    var isMySelf: NSNumber?
+    var isMySelf: NSNumber
 
     @NSManaged open
     var name: String?

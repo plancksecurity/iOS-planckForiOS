@@ -25,7 +25,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
         super.init(coreDataUtil: coreDataUtil)
     }
 
-    convenience public init(folder: IFolder, connectionManager: ConnectionManager,
+    convenience public init(folder: Folder, connectionManager: ConnectionManager,
                             coreDataUtil: ICoreDataUtil) {
         self.init(accountEmail: folder.account.email, folderName: folder.name,
                   coreDataUtil: coreDataUtil, connectionManager: connectionManager)

@@ -1,10 +1,7 @@
 import Foundation
 
-public protocol IAttachment: _IAttachment, CustomStringConvertible, CustomDebugStringConvertible {
-}
-
 @objc(Attachment)
-open class Attachment: _Attachment, IAttachment {
+open class Attachment: _Attachment {
 	// Custom logic goes here.
 
     override open var description: String {

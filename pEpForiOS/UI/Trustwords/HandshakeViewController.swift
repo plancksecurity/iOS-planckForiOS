@@ -12,7 +12,7 @@ import UIKit
 
 class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegate {
 
-    var message: IMessage?
+    var message: Message?
     var partner: Contact?
     var appConfig: AppConfig!
     var hexamode: Bool = false

@@ -22,7 +22,7 @@ class PersistentSetup {
     var accountEmail: String {
         return connectionInfo.email
     }
-    let account: IAccount
+    let account: Account
 
     /**
      Sets up persistence with an in-memory core data backend.
