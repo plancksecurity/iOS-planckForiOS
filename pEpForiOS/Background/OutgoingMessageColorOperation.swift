@@ -23,7 +23,7 @@ class OutgoingMessageColorOperation: Operation {
         if let mail = pepMail {
             pepColorRating = nil
             let session = PEPSession.init()
-            pepColorRating = session.outgoingMessageColor(mail)
+            pepColorRating = session.outgoingMessageColor(mail as! [AnyHashable : Any])
         }
     }
 }

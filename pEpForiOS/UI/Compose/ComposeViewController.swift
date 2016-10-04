@@ -36,7 +36,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         /**
          The search table model.
          */
-        var contacts: [Contact] = []
+        var contacts: [IContact] = []
 
         /**
          The recipient cell that is currently used for contact completion.
@@ -288,11 +288,16 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 privateMOC.perform() {
                     let modelBackground = Model.init(context: privateMOC)
                     let contacts = modelBackground.contactsBySnippet(snippet).map() {
-                        AddressbookContact.init(contact: $0) as Contact
+                        AddressbookContact.init(contact: $0)
                     }
                     GCD.onMain() {
                         self.model.contacts.removeAll()
-                        self.model.contacts.append(contentsOf: contacts)
+
+                        // At the moment, append(contentsOf:) does not work
+                        for c in contacts {
+                            self.model.contacts.append(c)
+                        }
+
                         self.tableView.reloadData()
                     }
                 }
@@ -415,7 +420,6 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
 
         // from
         message.from = model.insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
-            as? Contact
 
         // recipients
         for (_, cell) in recipientCells {
@@ -575,7 +579,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         }
 
         appC.grandOperator.sendMail(
-            msg, account: account as! Account, completionBlock: { error in
+            msg, account: account, completionBlock: { error in
                 Log.errorComponent(self.comp, error: error)
                 GCD.onMain() {
                     self.model.networkActivity = false
@@ -667,7 +671,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             if let cell = model.recipientCell {
                 let c = model.contacts[(indexPath as NSIndexPath).row]
                 if let r = ComposeViewHelper.currentRecipientRangeFromText(
-                    cell.recipientTextView.text,
+                    cell.recipientTextView.text as NSString,
                     aroundCaretPosition: cell.recipientTextView.selectedRange.location) {
                     let newString = cell.recipientTextView.text.stringByReplacingCharactersInRange(
                         r, withString: " \(c.email)")
@@ -939,7 +943,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
 
     func updateSearch(_ textView: UITextView) {
         if let searchSnippet = ComposeViewHelper.extractRecipientFromText(
-            textView.text, aroundCaretPosition: textView.selectedRange.location) {
+            textView.text as NSString, aroundCaretPosition: textView.selectedRange.location) {
             model.searchSnippet = searchSnippet
             model.tableMode  = .search
             model.recipientCell = recipientCellsByTextView[textView]

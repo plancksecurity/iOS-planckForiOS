@@ -31,16 +31,16 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     public init(message: Message, account: Account, targetFolder: Folder?,
                 folderType: FolderType?,
                 connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
-        self.messageID = (message as! Message).objectID
+        self.messageID = message.objectID
 
         if let folder = targetFolder {
-            self.targetFolderID = (folder as! Folder).objectID
+            self.targetFolderID = folder.objectID
         } else {
             self.targetFolderID = nil
         }
         self.folderType = folderType
 
-        self.accountID = (account as! Account).objectID
+        self.accountID = account.objectID
 
         self.connectInfo = account.connectInfo
         self.connectionManager = connectionManager
@@ -76,7 +76,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             }
             var tf: Folder?
             if let ft = self.folderType {
-                tf = self.model.folderByType(ft, email: account.email) as? Folder
+                tf = self.model.folderByType(ft, email: account.email)
             } else if let folderID = self.targetFolderID {
                 tf = self.privateMOC.object(with: folderID) as? Folder
             }
@@ -98,11 +98,12 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             // Encrypt mail
             let session = PEPSession.init()
             let ident = PEPUtil.identityFromAccount(account, isMyself: true)
-                as [AnyHashable: Any]
             let pepMailOrig = PEPUtil.pepMail(message)
             var encryptedMail: NSDictionary? = nil
             let status = session.encryptMessageDict(
-                pepMailOrig, identity: ident, dest: &encryptedMail)
+                pepMailOrig as! [AnyHashable : Any],
+                identity: NSDictionary.init(dictionary: ident) as! [AnyHashable : Any],
+                dest: &encryptedMail)
             let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
                 encryptedMail: encryptedMail)
             if let m = mail {

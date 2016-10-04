@@ -193,7 +193,7 @@ open class PEPUtil {
         let op = PEPMyselfOperation.init(account: account)
         op.completionBlock = {
             if let bl = block {
-                bl(identity: op.identity)
+                bl(op.identity)
             }
         }
         queue.addOperation(op)
@@ -299,7 +299,7 @@ open class PEPUtil {
 
         var refs = [String]()
         for ref in message.references {
-            refs.append((ref as AnyObject).messageID)
+            refs.append((ref as! MessageReference).messageID)
         }
         if refs.count > 0 {
             dict[kPepReferences] = refs
@@ -313,7 +313,7 @@ open class PEPUtil {
             pepContact[kPepAddress] as! String,
             name: pepContact[kPepUsername] as? String)
         if let isMySelf = pepContact[kPepIsMe] as? Bool {
-            contact.isMySelf = isMySelf
+            contact.isMySelf = NSNumber(value: isMySelf)
         }
 
         // The only case where the kPepUserID is already set, should
@@ -340,11 +340,15 @@ open class PEPUtil {
 
         var foundAttachmentPGPEncrypted = false
         for atch in attachments {
-            if let filename = atch[kPepMimeType] as? String {
-                if filename.lowercased() == Constants.contentTypePGPEncrypted {
-                    foundAttachmentPGPEncrypted = true
-                    break
-                }
+            guard let at = atch as? NSDictionary else {
+                continue
+            }
+            guard let filename = at[kPepMimeType] as? String else {
+                continue
+            }
+            if filename.lowercased() == Constants.contentTypePGPEncrypted {
+                foundAttachmentPGPEncrypted = true
+                break
             }
         }
         return foundAttachmentPGPEncrypted
@@ -470,10 +474,13 @@ open class PEPUtil {
 
             if let attachmentDicts = attachmentDictsOpt {
                 for attachmentDict in attachmentDicts {
+                    guard let at = attachmentDict as? [String:NSObject]  else {
+                        continue
+                    }
                     let part = CWPart.init()
-                    part.setContentType(attachmentDict[kPepMimeType] as? String)
-                    part.setContent(attachmentDict[kPepMimeData] as? Data)
-                    part.setFilename(attachmentDict[kPepMimeFilename] as? String)
+                    part.setContentType(at[kPepMimeType] as? String)
+                    part.setContent(at[kPepMimeData])
+                    part.setFilename(at[kPepMimeFilename] as? String)
                     multiPart.add(part)
                 }
             }
@@ -550,7 +557,7 @@ open class PEPUtil {
                                              session: PEPSession? = nil) -> PEP_rating {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
-        let color = theSession.identityColor(pepC as [AnyHashable: Any])
+        let color = theSession.identityColor(pepC as! [AnyHashable: Any])
         return color
     }
 
@@ -558,7 +565,7 @@ open class PEPUtil {
                                               session: PEPSession? = nil) -> PEP_color {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
-        let color = theSession.identityColor(pepC as [AnyHashable: Any])
+        let color = theSession.identityColor(pepC as! [AnyHashable: Any])
         return colorFromPepRating(color)
     }
 
@@ -670,13 +677,17 @@ open class PEPUtil {
         var attachments = [AnyObject]()
         if let attachmentDicts = fromPepMail[kPepAttachments] as? NSArray {
             for atDict in attachmentDicts {
-                if let data = atDict[kPepMimeData] as? Data {
-                    let attach = model.insertAttachmentWithContentType(
-                        atDict[kPepMimeType] as? String,
-                        filename: atDict[kPepMimeFilename] as? String,
-                        data: data)
-                    attachments.append(attach)
+                guard let at = atDict as? NSDictionary else {
+                    continue
                 }
+                guard let data = at[kPepMimeData] as? Data else {
+                    continue
+                }
+                let attach = model.insertAttachmentWithContentType(
+                    at[kPepMimeType] as? String,
+                    filename: at[kPepMimeFilename] as? String,
+                    data: data)
+                attachments.append(attach)
             }
         }
         message.attachments = NSOrderedSet.init(array: attachments)

@@ -170,7 +170,7 @@ class EmailListViewController: FetchTableViewController {
     }
 
     func prepareFetchRequest() {
-        let fetchRequest = NSFetchRequest.init(entityName: Message.entityName())
+        let fetchRequest = NSFetchRequest<NSManagedObject>.init(entityName: Message.entityName())
         fetchRequest.predicate = config.predicate
         fetchRequest.sortDescriptors = config.sortDescriptors
         fetchController = NSFetchedResultsController.init(
@@ -292,7 +292,7 @@ class EmailListViewController: FetchTableViewController {
             }
 
             if let receivedDate = email.receivedDate {
-                UIHelper.putString(dateFormatter.string(from: receivedDate),
+                UIHelper.putString(dateFormatter.string(from: receivedDate as Date),
                                    toLabel: cell.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: cell.dateLabel)

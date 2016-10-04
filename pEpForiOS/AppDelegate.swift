@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let model = Model.init(context: appConfig.coreDataUtil.managedObjectContext)
         if let folders = model.foldersByPredicate(NSPredicate.init(value: true)) {
             for folder in folders {
-                model.context.delete(folder as! NSManagedObject)
+                model.context.delete(folder)
             }
             model.save()
         }
@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Do mySelf on all accounts
         if let accounts = appConfig.model.accountsByPredicate(nil, sortDescriptors: nil) {
-            let bgId = application.beginBackgroundTask() (expirationHandler: {
+            let bgId = application.beginBackgroundTask(expirationHandler: {
                 Log.infoComponent(self.comp, "Could not complete all myself in background")
                 self.appConfig.model.save()
 

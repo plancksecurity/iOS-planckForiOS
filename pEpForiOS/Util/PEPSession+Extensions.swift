@@ -14,12 +14,12 @@ import Foundation
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
-public typealias PEPMail = [AnyHashable: Any]
+public typealias PEPMail = NSDictionary
 
 /**
  Similar to `PEPMail`
  */
-public typealias PEPContact = [AnyHashable: Any]
+public typealias PEPContact = NSDictionary
 
 /**
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
@@ -88,7 +88,8 @@ public extension PEPSession {
      */
     public func isEncryptedPEPContact(_ contact: PEPContact,
                                       from: PEPContact) -> Bool {
-        let color = outgoingColor(from: from, to: contact)
+        let color = outgoingColor(from: from as! [AnyHashable : Any],
+                                  to: contact as! [AnyHashable : Any])
         return color.rawValue >= PEP_rating_reliable.rawValue
     }
 
@@ -255,5 +256,5 @@ public extension PEPSession {
  */
 public func ==(lhs: PEPRecipient, rhs: PEPRecipient) -> Bool {
     return lhs.recipientType == rhs.recipientType &&
-        (lhs.recipient as NSDictionary).isEqual(to: rhs.recipient as [AnyHashable: Any])
+        (lhs.recipient as NSDictionary).isEqual(to: rhs.recipient as! [AnyHashable: Any])
 }

@@ -55,7 +55,7 @@ open class DecryptMailOperation: BaseOperation {
                 var pepDecryptedMail: NSDictionary? = nil
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
-                    pepMail, dest: &pepDecryptedMail, keys: &keys)
+                    pepMail as! [AnyHashable : Any], dest: &pepDecryptedMail, keys: &keys)
                 Log.warnComponent(self.comp,
                     "Decrypted mail \(mail.logString()) with color \(color)")
 
@@ -81,9 +81,11 @@ open class DecryptMailOperation: BaseOperation {
                 PEP_rating_trusted,
                 PEP_rating_trusted_and_anonymized,
                 PEP_rating_fully_anonymous:
-                    PEPUtil.updateDecryptedMessage(mail, fromPepMail: pepDecryptedMail as! PEPMail,
-                        pepColorRating: color, model: model)
-                    modelChanged = true
+                    if let decrypted = pepDecryptedMail {
+                        PEPUtil.updateDecryptedMessage(mail, fromPepMail: decrypted,
+                                                       pepColorRating: color, model: model)
+                        modelChanged = true
+                    }
                     break
                 // TODO: Again, why is the default needed when all cases are there?
                 default:

@@ -113,7 +113,7 @@ public protocol IModel {
 
     func insertOrUpdateContactEmail(_ email: String, name: String?) -> Contact
     func insertOrUpdateContactEmail(_ email: String) -> Contact
-    func insertOrUpdateContact(_ contact: Contact) -> Contact
+    func insertOrUpdateContact(_ contact: IContact) -> Contact
 
     /**
      Inserts a folder of the given type, creating the whole hierarchy if necessary.
@@ -211,18 +211,18 @@ open class Model: IModel {
 
     func singleEntityWithName(_ name: String, predicate: NSPredicate? = nil,
                               sortDescriptors: [NSSortDescriptor]? = nil) -> NSManagedObject? {
-        let fetch = NSFetchRequest.init(entityName: name)
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: name)
         fetch.predicate = predicate
         fetch.sortDescriptors = sortDescriptors
         do {
             let objs = try context.fetch(fetch)
             if objs.count == 1 {
-                return objs[0] as? NSManagedObject
+                return objs[0]
             } else if objs.count == 0 {
                 return nil
             } else {
                 Log.warnComponent(comp, "Several objects (\(name)) found for predicate: \(predicate)")
-                return objs[0] as? NSManagedObject
+                return objs[0]
             }
         } catch let err as NSError {
             Log.errorComponent(comp, error: err)
@@ -234,12 +234,12 @@ open class Model: IModel {
         _ name: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil)
         -> [NSManagedObject]?
     {
-        let fetch = NSFetchRequest.init(entityName: name)
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: name)
         fetch.predicate = predicate
         fetch.sortDescriptors = sortDescriptors
         do {
             let objs = try context.fetch(fetch)
-            return objs as? [NSManagedObject]
+            return objs
         } catch let err as NSError {
             Log.errorComponent(comp, error: err)
         }
@@ -248,7 +248,7 @@ open class Model: IModel {
 
     open func countWithName(_ name: String,
                               predicate: NSPredicate? = nil) -> Int {
-        let fetch = NSFetchRequest.init(entityName: name)
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: name)
         fetch.predicate = predicate
         do {
             let number = try context.count(for: fetch)
@@ -315,8 +315,10 @@ open class Model: IModel {
         account.smtpServerName = connectInfo.smtpServerName
         account.imapServerPort = NSNumber.init(value: Int16(connectInfo.imapServerPort) as Int16)
         account.smtpServerPort = NSNumber.init(value: Int16(connectInfo.smtpServerPort) as Int16)
-        account.imapTransport = NSNumber.init(value: Int16(connectInfo.imapTransport.rawValue) as Int16)
-        account.smtpTransport = NSNumber.init(value: Int16(connectInfo.smtpTransport.rawValue) as Int16)
+        account.imapTransport = NSNumber.init(value: Int16(connectInfo.imapTransport.rawValue)
+            as Int16)
+        account.smtpTransport = NSNumber.init(value: Int16(connectInfo.smtpTransport.rawValue)
+            as Int16)
 
         return account
     }
@@ -328,10 +330,12 @@ open class Model: IModel {
 
         let account = newAccountFromConnectInfo(connectInfo)
         save()
-        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.imap.asString(),
-                          password: connectInfo.imapPassword)
-        KeyChain.addEmail(connectInfo.email, serverType: Account.AccountType.smtp.asString(),
-                          password: connectInfo.getSmtpPassword())
+        let _ = KeyChain.addEmail(connectInfo.email,
+                                  serverType: Account.AccountType.imap.asString(),
+                                  password: connectInfo.imapPassword)
+        let _ = KeyChain.addEmail(connectInfo.email,
+                                  serverType: Account.AccountType.smtp.asString(),
+                                  password: connectInfo.getSmtpPassword())
         return account
     }
 
@@ -348,12 +352,12 @@ open class Model: IModel {
         }
         let message = insertNewMessage()
         let contact = insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
-        message.from = contact as? Contact
+        message.from = contact
         guard let folder = folderByType(FolderType.localOutbox, email: account.email) else {
             Log.warnComponent(comp, "Expected outbox folder to exist")
             return nil
         }
-        message.folder = folder as! Folder
+        message.folder = folder
         return message
     }
 
@@ -363,8 +367,8 @@ open class Model: IModel {
             forEntityName: Attachment.entityName(), into: context) as! Attachment
         attachment.contentType = contentType
         attachment.filename = filename
-        attachment.size = NSNumber(data.count)
-        attachment.data = data
+        attachment.size = NSNumber(value: data.count)
+        attachment.data = data as NSData?
         return attachment
     }
 
@@ -439,7 +443,7 @@ open class Model: IModel {
             forEntityName: Folder.entityName(), into: context) as! Folder
 
         folder.name = name
-        folder.account = account as! Account
+        folder.account = account
         folder.shouldDelete = false
 
         // Default value
@@ -501,9 +505,9 @@ open class Model: IModel {
                     let folder = insertFolderName(pathName, account: account)
                     folder.parent = parentFolder
                     if let pf = parentFolder {
-                        pf.addChildrenObject(folder as! Folder)
+                        pf.addChildrenObject(value: folder)
                     }
-                    parentFolder = folder as? Folder
+                    parentFolder = folder
                 }
                 return parentFolder
             } else {
@@ -542,7 +546,7 @@ open class Model: IModel {
     }
 
     open func lastUidInFolderNamed(_ folderName: String) -> UInt {
-        let fetch = NSFetchRequest.init(entityName: Message.entityName())
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: Message.entityName())
         fetch.predicate = NSPredicate.init(format: "folder.name = %@", folderName)
         fetch.fetchLimit = 1
         fetch.sortDescriptors = [NSSortDescriptor.init(key: "uid", ascending: false)]
@@ -631,7 +635,7 @@ open class Model: IModel {
     }
 
     open func insertOrUpdateContactEmail(_ email: String, name: String?) -> Contact {
-        let fetch = NSFetchRequest.init(entityName:Contact.entityName())
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName:Contact.entityName())
         fetch.predicate = NSPredicate.init(format: "email == %@", email)
         do {
             var existing = try context.fetch(fetch) as! [Contact]
@@ -657,7 +661,7 @@ open class Model: IModel {
         return insertOrUpdateContactEmail(email, name: nil)
     }
 
-    open func insertOrUpdateContact(_ contact: Contact) -> Contact {
+    open func insertOrUpdateContact(_ contact: IContact) -> Contact {
         let c = self.insertOrUpdateContactEmail(
             contact.email, name: contact.name)
         if let abID = contact.addressBookID {
@@ -683,7 +687,7 @@ open class Model: IModel {
             forEntityName: MessageReference.entityName(), into: context) as! MessageReference
         ref.messageID = messageID
         if let msg = messageByMessageID(messageID) {
-            ref.message = msg as? Message
+            ref.message = msg
         }
         return ref
     }
@@ -721,12 +725,12 @@ open class Model: IModel {
 
         let mail = theMail!
 
-        mail.folder = folder as! Folder
+        mail.folder = folder
         mail.bodyFetched = message.isInitialized() as NSNumber
-        mail.receivedDate = message.receivedDate()
+        mail.receivedDate = message.receivedDate() as NSDate?
         mail.subject = message.subject()
         mail.messageID = message.messageID()
-        mail.uid = NSNumber(message.uid())
+        mail.uid = NSNumber(value: message.uid())
         mail.messageNumber = message.messageNumber() as NSNumber?
         mail.boundary = (message.boundary() as NSData?)?.asciiString()
 
@@ -757,7 +761,7 @@ open class Model: IModel {
             let contactsFrom = addContacts([from])
             let email = from.address()
             let c = contactsFrom[email!]
-            mail.from = c as? Contact
+            mail.from = c
         }
 
         mail.bodyFetched = message.isInitialized() as NSNumber
@@ -771,11 +775,11 @@ open class Model: IModel {
         for addr in addresses {
             switch addr.type() {
             case .toRecipient:
-                tos.add(contacts[addr.address()]! as! Contact)
+                tos.add(contacts[addr.address()]!)
             case .ccRecipient:
-                ccs.add(contacts[addr.address()]! as! Contact)
+                ccs.add(contacts[addr.address()]!)
             case .bccRecipient:
-                bccs.add(contacts[addr.address()]! as! Contact)
+                bccs.add(contacts[addr.address()]!)
             default:
                 Log.warnComponent(comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
@@ -803,7 +807,7 @@ open class Model: IModel {
 
         for refID in referenceStrings {
             let ref = insertOrUpdateMessageReference(refID as! String)
-            (mail as! Message).addReferencesObject(ref as! MessageReference)
+            mail.addReferencesObject(value: ref)
         }
 
         mail.contentType = message.contentType()
@@ -811,7 +815,7 @@ open class Model: IModel {
         if forceParseAttachments || mail.bodyFetched.intValue == 1 {
             // Parsing attachments only makes sense once pantomime has received the
             // mail body. Same goes for the snippet.
-            addAttachmentsFromPantomimePart(message, targetMail: mail as! Message, level: 0)
+            addAttachmentsFromPantomimePart(message, targetMail: mail, level: 0)
         }
 
         return mail
@@ -842,7 +846,7 @@ open class Model: IModel {
             } else {
                 let attachment = insertAttachmentWithContentType(
                     part.contentType(), filename: part.filename(), data: data)
-                targetMail.addAttachmentsObject(attachment as! Attachment)
+                targetMail.addAttachmentsObject(value: attachment)
             }
         }
 
@@ -885,26 +889,18 @@ open class Model: IModel {
     }
 
     open func deleteMail(_ message: Message) {
-        if let msg = message as? Message {
-            context.delete(msg)
-        }
+        context.delete(message)
     }
 
     open func deleteAttachment(_ attachment: Attachment) {
-        if let a = attachment as? Attachment {
-            context.delete(a)
-        }
+        context.delete(attachment)
     }
 
     open func deleteAttachmentsFromMessage(_ message: Message) {
-        if let msg = message as? Message {
-            for a in msg.attachments {
-                context.delete(a as! Attachment)
-            }
-            message.attachments = NSOrderedSet()
-        } else {
-            message.attachments = NSOrderedSet()
+        for a in message.attachments {
+            context.delete(a as! Attachment)
         }
+        message.attachments = NSOrderedSet()
     }
 
     open func basicMessagePredicate() -> NSPredicate {

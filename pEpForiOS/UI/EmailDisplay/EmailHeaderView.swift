@@ -87,7 +87,7 @@ class EmailHeaderView: UIView {
 
         if let date = message.receivedDate {
             pos = biggerNewline(pos)
-            let dateLabel = headerBaseLabelWithText(dateFormatter.string(from: date),
+            let dateLabel = headerBaseLabelWithText(dateFormatter.string(from: date as Date),
                                                     maxWidth: width)
             dateLabel.frame.origin = pos
             addSubview(dateLabel)
