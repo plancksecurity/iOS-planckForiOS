@@ -1,8 +1,12 @@
 import Foundation
 
-@objc(Attachment)
-open class Attachment: _Attachment {
+@objc(CdAttachment)
+open class CdAttachment: _Attachment {
 	// Custom logic goes here.
+
+    override open class func entityName () -> String {
+        return "Attachment"
+    }
 
     override open var description: String {
         let s = NSMutableString()

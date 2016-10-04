@@ -250,8 +250,11 @@ class GrandOperatorTests: XCTestCase {
         XCTAssertGreaterThan(inbox.messages.count, 0)
 
         var expectations = [XCTestExpectation]()
-        var counter = 0
+        var counter = 5
         for elm in inbox.messages {
+            guard counter > 0 else {
+                break
+            }
             guard let m = elm as? Message else {
                 XCTAssertTrue(false)
                 break
@@ -261,7 +264,7 @@ class GrandOperatorTests: XCTestCase {
 
             let exp = expectation(description: "flagsSynced\(counter)")
             expectations.append(exp)
-            counter += 1
+            counter -= 1
             persistentSetup.grandOperator.syncFlagsToServerForFolder(
                 m.folder, completionBlock: { error in
                     XCTAssertNil(error)

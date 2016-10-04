@@ -1,26 +1,26 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to Attachment.swift instead.
+// Make changes to CdAttachment.swift instead.
 
 import Foundation
 import CoreData
 
-public enum AttachmentAttributes: String {
+public enum CdAttachmentAttributes: String {
     case contentType = "contentType"
     case data = "data"
     case filename = "filename"
     case size = "size"
 }
 
-public enum AttachmentRelationships: String {
+public enum CdAttachmentRelationships: String {
     case message = "message"
 }
 
-open class _Attachment: BaseManagedObject {
+open class _CdAttachment: BaseManagedObject {
 
     // MARK: - Class methods
 
     open class func entityName () -> String {
-        return "CdAttachment"
+        return "Attachment"
     }
 
     open class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
@@ -34,7 +34,7 @@ open class _Attachment: BaseManagedObject {
     }
 
     public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _Attachment.entity(managedObjectContext: managedObjectContext) else { return nil }
+        guard let entity = _CdAttachment.entity(managedObjectContext: managedObjectContext) else { return nil }
         self.init(entity: entity, insertInto: managedObjectContext)
     }
 

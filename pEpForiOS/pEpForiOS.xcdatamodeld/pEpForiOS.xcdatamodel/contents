@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15G1004" minimumToolsVersion="Automatic">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="15G1004" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="Account" syncable="YES">
-        <attribute name="accountType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="accountType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="folderSeparator" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imapServerName" attributeType="String" syncable="YES"/>
-        <attribute name="imapServerPort" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="imapTransport" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="imapServerPort" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="imapTransport" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="imapUsername" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nameOfTheUser" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="smtpServerName" attributeType="String" syncable="YES"/>
-        <attribute name="smtpServerPort" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="smtpTransport" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="smtpServerPort" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="smtpTransport" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="smtpUsername" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="folders" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Folder" inverseName="account" inverseEntity="Folder" syncable="YES"/>
         <compoundIndexes>
@@ -21,17 +21,17 @@
             </compoundIndex>
         </compoundIndexes>
     </entity>
-    <entity name="Attachment" representedClassName="Attachment" syncable="YES">
+    <entity name="Attachment" representedClassName="CdAttachment" syncable="YES">
         <attribute name="contentType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="filename" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="size" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="attachments" inverseEntity="Message" syncable="YES"/>
     </entity>
     <entity name="Contact" representedClassName="Contact" syncable="YES">
-        <attribute name="addressBookID" optional="YES" attributeType="Integer 32" indexed="YES" syncable="YES"/>
+        <attribute name="addressBookID" optional="YES" attributeType="Integer 32" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="isMySelf" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isMySelf" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pepUserID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="bccMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="bcc" inverseEntity="Message" syncable="YES"/>
@@ -40,37 +40,37 @@
         <relationship name="toMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="to" inverseEntity="Message" syncable="YES"/>
     </entity>
     <entity name="Folder" representedClassName="Folder" syncable="YES">
-        <attribute name="existsCount" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="folderType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="existsCount" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="folderType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="nextUID" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="shouldDelete" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="uidValidity" optional="YES" attributeType="Integer 64" syncable="YES"/>
+        <attribute name="nextUID" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="shouldDelete" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="uidValidity" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="folders" inverseEntity="Account" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder" syncable="YES"/>
         <relationship name="messages" toMany="YES" deletionRule="Cascade" destinationEntity="Message" inverseName="folder" inverseEntity="Message" syncable="YES"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="children" inverseEntity="Folder" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="Message" syncable="YES">
-        <attribute name="bodyFetched" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="bodyFetched" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="boundary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="contentType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="flagAnswered" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="flagDeleted" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="flagDraft" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="flagFlagged" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="flagRecent" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="flags" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="flagSeen" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="flagsFromServer" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="flagAnswered" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagDeleted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagDraft" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagFlagged" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagRecent" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flags" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="flagSeen" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="flagsFromServer" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="longMessage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longMessageFormatted" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="messageNumber" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
-        <attribute name="pepColorRating" optional="YES" attributeType="Integer 16" syncable="YES"/>
-        <attribute name="receivedDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="messageNumber" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="pepColorRating" optional="YES" attributeType="Integer 16" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="receivedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uid" attributeType="Integer 32" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="uid" attributeType="Integer 32" minValueString="0" defaultValueString="0" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <relationship name="attachments" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES"/>
         <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="bccMessages" inverseEntity="Contact" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Contact" inverseName="ccMessages" inverseEntity="Contact" syncable="YES"/>

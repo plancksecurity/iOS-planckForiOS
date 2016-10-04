@@ -110,7 +110,7 @@ public protocol ICdModel {
     func insertNewMessageForSendingFromAccountEmail(_ email: String) -> Message?
 
     func insertAttachmentWithContentType(
-        _ contentType: String?, filename: String?, data: Data) -> Attachment
+        _ contentType: String?, filename: String?, data: Data) -> CdAttachment
 
     func insertOrUpdateContactEmail(_ email: String, name: String?) -> Contact
     func insertOrUpdateContactEmail(_ email: String) -> Contact
@@ -177,7 +177,7 @@ public protocol ICdModel {
     /**
      Deletes the given attachment from the store.
      */
-    func deleteAttachment(_ attachment: Attachment)
+    func deleteAttachment(_ attachment: CdAttachment)
 
     /**
      Deletes all attachments from the given mail.
@@ -362,9 +362,9 @@ open class CdModel: ICdModel {
     }
 
     open func insertAttachmentWithContentType(
-        _ contentType: String?, filename: String?, data: Data) -> Attachment {
+        _ contentType: String?, filename: String?, data: Data) -> CdAttachment {
         let attachment = NSEntityDescription.insertNewObject(
-            forEntityName: Attachment.entityName(), into: context) as! Attachment
+            forEntityName: CdAttachment.entityName(), into: context) as! CdAttachment
         attachment.contentType = contentType
         attachment.filename = filename
         attachment.size = NSNumber(value: data.count)
@@ -880,13 +880,13 @@ open class CdModel: ICdModel {
         context.delete(message)
     }
 
-    open func deleteAttachment(_ attachment: Attachment) {
+    open func deleteAttachment(_ attachment: CdAttachment) {
         context.delete(attachment)
     }
 
     open func deleteAttachmentsFromMessage(_ message: Message) {
         for a in message.attachments {
-            context.delete(a as! Attachment)
+            context.delete(a as! CdAttachment)
         }
         message.attachments = NSOrderedSet()
     }

@@ -181,13 +181,13 @@ extension _Message {
         self.attachments = mutable.copy() as! NSOrderedSet
     }
 
-    open func addAttachmentsObject(value: Attachment) {
+    open func addAttachmentsObject(value: CdAttachment) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
         mutable.add(value)
         self.attachments = mutable.copy() as! NSOrderedSet
     }
 
-    open func removeAttachmentsObject(value: Attachment) {
+    open func removeAttachmentsObject(value: CdAttachment) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.attachments = mutable.copy() as! NSOrderedSet

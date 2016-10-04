@@ -243,7 +243,7 @@ open class PEPUtil {
      - Parameter contact: The core data attachment object.
      - Returns: An `NSMutableDictionary` attachment for pEp.
      */
-    open static func pepAttachment(_ attachment: Attachment) -> NSMutableDictionary {
+    open static func pepAttachment(_ attachment: CdAttachment) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
 
         if let filename = attachment.filename {
@@ -290,7 +290,7 @@ open class PEPUtil {
         dict[kPepOutgoing] = NSNumber.init(booleanLiteral: outgoing)
 
         dict[kPepAttachments] = NSArray.init(array: message.attachments.map() {
-            return pepAttachment($0 as! Attachment)
+            return pepAttachment($0 as! CdAttachment)
         })
 
         var refs = [String]()
