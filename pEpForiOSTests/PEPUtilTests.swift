@@ -98,14 +98,14 @@ class PEPUtilTests: XCTestCase {
         let pepMail = PEPUtil.pepMail(message, outgoing: true)
         XCTAssertEqual(pepMail[kPepOutgoing] as? Bool, true)
 
-        XCTAssertEqual(pepMail[kPepTo]?[0] as? NSDictionary,
+        XCTAssertEqual(pepMail[kPepTo]?.objectAt(0) as? NSDictionary,
                        PEPUtil.pepContact(c1) as NSDictionary)
-        XCTAssertEqual(pepMail[kPepCC]?[0] as? NSDictionary,
+        XCTAssertEqual(pepMail[kPepCC]?.objectAt(0) as? NSDictionary,
                        PEPUtil.pepContact(c2) as NSDictionary)
 
-        XCTAssertEqual(pepMail[kPepAttachments]?[0] as? NSDictionary,
+        XCTAssertEqual(pepMail[kPepAttachments]?.objectAt(0) as? NSDictionary,
                        PEPUtil.pepAttachment(a1))
-        XCTAssertEqual(pepMail[kPepAttachments]?[1] as? NSDictionary,
+        XCTAssertEqual(pepMail[kPepAttachments]?.objectAt(1) as? NSDictionary,
                        PEPUtil.pepAttachment(a2))
 
         XCTAssertEqual(pepMail[kPepShortMessage] as? String, message.subject)
