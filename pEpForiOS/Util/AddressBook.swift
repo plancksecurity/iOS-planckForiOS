@@ -19,16 +19,11 @@ public enum AddressBookStatus {
 /**
  With this we are compatible with our model layer, but don't have a dependency on Core Data.
  */
-open class AddressbookContact: NSObject, IContact {
+open class AddressbookContact: NSObject, IContactDisplay {
     open var email: String
     open var name: String?
     open var addressBookID: NSNumber?
-    open var pepUserID: String?
     open var isMySelf: NSNumber
-    open var bccMessages: NSSet = []
-    open var ccMessages: NSSet = []
-    open var toMessages: NSSet = []
-    open var fromMessages: NSSet = []
 
     public init(email: String, name: String?, addressBookID: Int32? = nil) {
         self.email = email
@@ -186,8 +181,8 @@ open class AddressBook {
     /**
      - Returns: An `Contact` for each email address of a given address book contact.
      */
-    func addressBookContactToContacts(_ contact: ABRecord) -> [IContact] {
-        var result: [IContact] = []
+    func addressBookContactToContacts(_ contact: ABRecord) -> [AddressbookContact] {
+        var result: [AddressbookContact] = []
         let identifier = ABRecordGetRecordID(contact)
         var contactName: String? = nil
         if let contactNameRef = ABRecordCopyCompositeName(contact) {
@@ -212,8 +207,8 @@ open class AddressBook {
      - Returns: All contacts with an email address found in the address book as `Contact`.
      If there are several emails for a contact, several contacts are returned.
      */
-    func contactsByPredicate(_ predicate: NSPredicate) -> [IContact] {
-        var result: [IContact] = []
+    func contactsByPredicate(_ predicate: NSPredicate) -> [AddressbookContact] {
+        var result: [AddressbookContact] = []
 
         if authorizationStatus == .denied {
             return result
@@ -238,7 +233,7 @@ open class AddressBook {
      - Returns: All contacts found in the address book with an email address.
      If there are several emails for a contact, several contacts are returned.
      */
-    open func allContacts() -> [IContact] {
+    open func allContacts() -> [AddressbookContact] {
         return contactsByPredicate(NSPredicate.init(value: true))
     }
 
@@ -246,7 +241,7 @@ open class AddressBook {
      - Returns: All contacts with an email that match the given snippet in either email or name.
      If there are several emails for a contact, several contacts are returned.
      */
-    open func contactsBySnippet(_ snippet: String) -> [IContact] {
+    open func contactsBySnippet(_ snippet: String) -> [AddressbookContact] {
         let p = NSPredicate.init(block: { (rec, bindings) in
             if let record = rec {
                 let contacts = self.addressBookContactToContacts(record as ABRecord)

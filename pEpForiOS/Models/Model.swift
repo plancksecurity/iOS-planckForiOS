@@ -113,7 +113,6 @@ public protocol IModel {
 
     func insertOrUpdateContactEmail(_ email: String, name: String?) -> Contact
     func insertOrUpdateContactEmail(_ email: String) -> Contact
-    func insertOrUpdateContact(_ contact: IContact) -> Contact
 
     /**
      Inserts a folder of the given type, creating the whole hierarchy if necessary.
@@ -659,18 +658,6 @@ open class Model: IModel {
 
     open func insertOrUpdateContactEmail(_ email: String) -> Contact {
         return insertOrUpdateContactEmail(email, name: nil)
-    }
-
-    open func insertOrUpdateContact(_ contact: IContact) -> Contact {
-        let c = self.insertOrUpdateContactEmail(
-            contact.email, name: contact.name)
-        if let abID = contact.addressBookID {
-            c.addressBookID = abID
-        }
-        if let pepUserID = contact.pepUserID {
-            c.pepUserID = pepUserID
-        }
-        return c
     }
 
     open func insertOrUpdateMessageReference(_ messageID: String) -> MessageReference {

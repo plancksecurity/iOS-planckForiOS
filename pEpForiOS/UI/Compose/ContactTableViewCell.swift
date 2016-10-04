@@ -17,7 +17,7 @@ class ContactTableViewCell: UITableViewCell {
         labelContactDisplayName.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
     }
 
-    var contact: IContact? = nil {
+    var contact: AddressbookContact? = nil {
         didSet {
             if let c = contact {
                 labelContactDisplayName.text = c.completeDisplayString()

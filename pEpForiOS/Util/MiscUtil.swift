@@ -38,14 +38,16 @@ open class MiscUtil {
      */
     open static func transferAddressBook(
         _ privateContext: NSManagedObjectContext,
-        blockFinished: (([IContact]) -> ())? = nil) {
+        blockFinished: (([Contact]) -> ())? = nil) {
         privateContext.perform() {
-            var insertedContacts = [IContact]()
+            var insertedContacts = [Contact]()
             let model = Model.init(context: privateContext)
             let ab = AddressBook()
             let contacts = ab.allContacts()
             for c in contacts {
-                insertedContacts.append(model.insertOrUpdateContact(c))
+                let newCon = model.insertOrUpdateContactEmail(c.email, name: c.name)
+                newCon.addressBookID = c.addressBookID
+                insertedContacts.append(newCon)
             }
             model.save()
             if let block = blockFinished {

@@ -36,7 +36,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         /**
          The search table model.
          */
-        var contacts: [IContact] = []
+        var contacts: [AddressbookContact] = []
 
         /**
          The recipient cell that is currently used for contact completion.

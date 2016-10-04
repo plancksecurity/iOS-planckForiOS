@@ -19,17 +19,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
-public protocol IContact {
-    var email: String { get set }
-    var name: String? { get set }
-    var addressBookID: NSNumber? { get set }
-    var pepUserID: String? { get set }
-    var isMySelf: NSNumber { get set }
-    var bccMessages: NSSet { get set }
-    var ccMessages: NSSet { get set }
-    var toMessages: NSSet { get set }
-    var fromMessages: NSSet { get set }
+protocol IContactDisplay {
+    var email: String { get }
+    var name: String? { get }
 
     /**
      Short display string, only the user's name if possible.
@@ -42,17 +34,15 @@ public protocol IContact {
     func completeDisplayString() -> String
 }
 
-@objc(Contact)
-open class Contact: _Contact, IContact {
-}
-
-extension IContact {
+extension IContactDisplay {
     public func displayString() -> String {
-        if self.name?.characters.count > 0 {
-            return name!
-        } else {
+        guard let n = name else {
             return email
         }
+        if n.isEmpty {
+            return email
+        }
+        return n
     }
 
     public func completeDisplayString() -> String {
@@ -61,6 +51,10 @@ extension IContact {
         }
         return email
     }
+}
+
+@objc(Contact)
+open class Contact: _Contact, IContactDisplay {
 }
 
 extension Contact {
