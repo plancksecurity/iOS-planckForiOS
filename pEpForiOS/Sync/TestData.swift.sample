@@ -21,7 +21,7 @@ public class TestData {
                          imapServerName: "host.com", imapServerPort: 993,
                          imapTransport: .TLS,
                          smtpServerName: "host.com", smtpServerPort: 587,
-                         smtpTransport: .StartTLS)
+                         smtpTransport: .startTLS)
 
     public static var connectInfoWrongPassword: ConnectInfo =
         ConnectInfo.init(nameOfTheUser: "Some Name",
@@ -30,5 +30,5 @@ public class TestData {
                          imapServerName: "host.com", imapServerPort: 993,
                          imapTransport: .TLS,
                          smtpServerName: "host.com", smtpServerPort: 587,
-                         smtpTransport: .StartTLS)
+                         smtpTransport: .startTLS)
 }

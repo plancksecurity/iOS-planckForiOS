@@ -138,6 +138,8 @@
 		43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
+		5D181C5D1DABE20900379D99 /* NetworkBackgroundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D181C5C1DABE20900379D99 /* NetworkBackgroundService.swift */; };
+		5D181C611DABE22C00379D99 /* NetworkBackgroundServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D181C601DABE22C00379D99 /* NetworkBackgroundServiceTests.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A13D9F611D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */; };
 		A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */; };
@@ -362,6 +364,8 @@
 		43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMailOperation.swift; sourceTree = "<group>"; };
+		5D181C5C1DABE20900379D99 /* NetworkBackgroundService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkBackgroundService.swift; sourceTree = "<group>"; };
+		5D181C601DABE22C00379D99 /* NetworkBackgroundServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkBackgroundServiceTests.swift; sourceTree = "<group>"; };
 		A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeButtonTableViewCell.swift; sourceTree = "<group>"; };
 		A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeLabelTableViewCell.swift; sourceTree = "<group>"; };
 		A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTexViewTableViewCell.swift; sourceTree = "<group>"; };
@@ -567,6 +571,7 @@
 			children = (
 				43B2C3151D2280ED00A08557 /* Resources */,
 				437432061CFC49A4000F8D35 /* Util */,
+				5D181C601DABE22C00379D99 /* NetworkBackgroundServiceTests.swift */,
 				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
 				43DBE8D61CF6F66F00306AAE /* GrandOperatorTests.swift */,
 				A1B50A871CD271EC00B1A997 /* GrandOperatorVerifyTests.swift */,
@@ -641,6 +646,7 @@
 		43980EE11CBD24B800A7FC3C /* Sync */ = {
 			isa = PBXGroup;
 			children = (
+				5D181C5C1DABE20900379D99 /* NetworkBackgroundService.swift */,
 				43980EE21CBD24B800A7FC3C /* ConnectInfo.swift */,
 				43980EE31CBD24B800A7FC3C /* ImapSync.swift */,
 				43980EE41CBD24B800A7FC3C /* SmtpSend.swift */,
@@ -1063,6 +1069,7 @@
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				43ED53731CC77F95006AB156 /* MailCell.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
+				5D181C5D1DABE20900379D99 /* NetworkBackgroundService.swift in Sources */,
 				43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */,
 				43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */,
 				4346D33C1D86E2E50017E24E /* ComposeViewHelper.swift in Sources */,
@@ -1095,6 +1102,7 @@
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				A1B50A8B1CD271EC00B1A997 /* ImapSyncTest.swift in Sources */,
 				43C046B61CF42DCF00BD0D9D /* ModelTests.swift in Sources */,
+				5D181C611DABE22C00379D99 /* NetworkBackgroundServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
