@@ -199,7 +199,7 @@ public protocol ICdModel {
  Core data model implementation
  */
 open class CdModel: ICdModel {
-    let comp = "Model"
+    let comp = "CdModel"
 
     open static let CouldNotCreateFolder = 1000
 

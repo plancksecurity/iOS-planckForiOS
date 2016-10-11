@@ -8,11 +8,17 @@
 
 import Foundation
 
+protocol INetworkBackgroundService {
+    func start()
+}
+
 /**
  * A class which provides an OO layer and doing syncing between CoreData and Pantomime
  * and any other (later) libraries providing in- and outbond transports of messages.
  */
-public class NetworkBackgroundService {
+public class NetworkBackgroundService: INetworkBackgroundService {
+
+
     let comp = "NetworkBackgroundService"
     let backgroundQueue: DispatchQueue!
     
@@ -21,6 +27,9 @@ public class NetworkBackgroundService {
         backgroundQueue = DispatchQueue(label: "com.app.queue",
                                       qos: .background,
                                       target: nil)
+    }
+    
+    public func start() {
     }
     
     // Method to query if background queue actually exists.

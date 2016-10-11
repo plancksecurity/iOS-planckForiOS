@@ -34,6 +34,23 @@ class NetworkBackgroundServiceTests: XCTestCase {
         // Test GCD queue existence.
         XCTAssertTrue(networkBackgroundService.isBackgroundQueueExistent())
     }
+    
+    // XXX: Test reception of a crafted message through the CoreData layer.
+    func testCoreDataMessageReception() {
+        XCTAssertTrue(false)
+    }
+    
+    // XXX: Test sending out a plain text message in CoreData format.
+    func testSendCoreDataMessageUnencrypted() {
+        XCTAssertTrue(false)
+    }
+    
+    // XXX: Test sending
+    func testSendCoreDataMessageEncrypted() {
+        XCTAssertTrue(false)
+    }
+    
+    
 
     /*
      * Not used currently.

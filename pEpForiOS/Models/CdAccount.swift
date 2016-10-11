@@ -2,7 +2,8 @@ import Foundation
 
 @objc(CdAccount)
 open class CdAccount: _CdAccount {
-	// Custom logic goes here.
+    let comp = "CdAccount"
+    
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
 
     public enum AccountType: Int {
