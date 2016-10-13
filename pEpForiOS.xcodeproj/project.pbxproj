@@ -585,9 +585,9 @@
 				4380F7CA1D1BD8FE00326F62 /* PEPUtilTests.swift */,
 				432F7D601D2102F10094F097 /* PEPSessionTest.swift */,
 				436F8E131D36706A007E9829 /* StringExtensionsTest.swift */,
-				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				433BCD961D5388DF00DD98EF /* ReplyMailTests.swift */,
+				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";

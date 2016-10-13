@@ -17,8 +17,6 @@ protocol INetworkBackgroundService {
  * and any other (later) libraries providing in- and outbond transports of messages.
  */
 public class NetworkBackgroundService: INetworkBackgroundService {
-
-
     let comp = "NetworkBackgroundService"
     let backgroundQueue: DispatchQueue!
     
@@ -32,13 +30,27 @@ public class NetworkBackgroundService: INetworkBackgroundService {
     public func start() {
     }
     
-    // Method to query if background queue actually exists.
     public func isBackgroundQueueExistent() -> Bool {
         if backgroundQueue != nil {
             return true
         }
         // default
         return false
+    }
+    
+    /*!
+     * @brief Accepts and executes code to the background.
+     * @param workItem An object with code to be executed.
+     * @param sync Optional argument to be set only to true if the code is to be
+     * executed in synchronous way. Otherwise asynchronous execution occurs.
+     */
+    public func doWork(workItem: DispatchWorkItem, sync: Bool? = false) {
+        if (sync == false) {
+            backgroundQueue.async(execute: workItem)
+        }
+        else {
+            backgroundQueue.sync(execute: workItem)
+        }
     }
     
 }

@@ -25,14 +25,26 @@ class NetworkBackgroundServiceTests: XCTestCase {
         super.tearDown()
     }
 
+    // Test service existence.
     func testExistenceNetworkBackgroundService() {
-        // Test service existence.
         XCTAssertNotNil(networkBackgroundService)
     }
-    
+   
+    // Test GCD queue existence.
     func testExistenceBackgroundQueue() {
-        // Test GCD queue existence.
         XCTAssertTrue(networkBackgroundService.isBackgroundQueueExistent())
+    }
+    
+    // Test basic ImapSync in background on start & cancel.
+    func testImapConnection() {
+        let connectInfo = TestData.connectInfo
+        let imapBlock = DispatchWorkItem {
+            let _ = ImapSync(connectInfo: connectInfo)
+        }
+        networkBackgroundService.doWork(workItem: imapBlock)
+        XCTAssertFalse(imapBlock.isCancelled)
+        imapBlock.cancel()
+        XCTAssertTrue(imapBlock.isCancelled)
     }
     
     // XXX: Test reception of a crafted message through the CoreData layer.
