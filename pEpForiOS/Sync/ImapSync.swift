@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 public struct ImapState {
     var authenticationCompleted = false
     var currentFolder: String?
@@ -273,7 +275,7 @@ extension ImapSync: CWServiceClient {
             password = pass
         } else {
             password = KeyChain.getPassword(connectInfo.email,
-                                            serverType: CdAccount.AccountType.imap.asString())
+                                            serverType: Server.ServerType.imap.asString())
         }
 
         imapStore.authenticate(connectInfo.getImapUsername(),

@@ -76,7 +76,7 @@ public protocol ICdModel {
      Fetch a folder by name and account email, and type.
      Will not return folders that are scheduled for deletion (where `shouldDelete` is true).
      */
-    func folderByName(_ name: String, email: String, folderType: CdAccount.AccountType) -> CdFolder?
+    func folderByName(_ name: String, email: String, folderType: Server.ServerType) -> CdFolder?
 
     /**
      Fetch a folder by name and account email, even those scheduled for deletion
@@ -333,10 +333,10 @@ open class CdModel: ICdModel {
         let account = newAccountFromConnectInfo(connectInfo)
         save()
         let _ = KeyChain.addEmail(connectInfo.email,
-                                  serverType: CdAccount.AccountType.imap.asString(),
+                                  serverType: Server.ServerType.imap.asString(),
                                   password: connectInfo.imapPassword)
         let _ = KeyChain.addEmail(connectInfo.email,
-                                  serverType: CdAccount.AccountType.smtp.asString(),
+                                  serverType: Server.ServerType.smtp.asString(),
                                   password: connectInfo.getSmtpPassword())
         return account
     }
@@ -376,14 +376,14 @@ open class CdModel: ICdModel {
 
     open func setAccountAsLastUsed(_ account: CdAccount) -> CdAccount {
         UserDefaults.standard.set(
-            account.email, forKey: CdAccount.kSettingLastAccountEmail)
+            account.email, forKey: Constants.kSettingLastAccountEmail)
         UserDefaults.standard.synchronize()
         return account
     }
 
     open func fetchLastAccount() -> CdAccount? {
         let lastEmail = UserDefaults.standard.string(
-            forKey: CdAccount.kSettingLastAccountEmail)
+            forKey: Constants.kSettingLastAccountEmail)
 
         var predicate = NSPredicate.init(value: true)
 
@@ -594,7 +594,7 @@ open class CdModel: ICdModel {
     }
 
     open func folderByName(
-        _ name: String, email: String, folderType: CdAccount.AccountType) -> CdFolder? {
+        _ name: String, email: String, folderType: Server.ServerType) -> CdFolder? {
         let p1 = folderPredicateByName(name, email: email)
         let p2 = NSPredicate.init(format: "folderType = %d", folderType.rawValue)
         let p3 = NSPredicate.init(format: "shouldDelete == false")

@@ -108,6 +108,7 @@
 		43B3E4721D3CCF79007CA3C9 /* OutgoingMessageColorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B3E4711D3CCF79007CA3C9 /* OutgoingMessageColorOperation.swift */; };
 		43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */; };
 		43BB86831DB4C3CE00980267 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43BB867E1DB4C3BC00980267 /* MessageModel.framework */; };
+		43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */; };
 		43C046B61CF42DCF00BD0D9D /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C046B51CF42DCF00BD0D9D /* ModelTests.swift */; };
 		43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C046BC1CF48D6300BD0D9D /* AddressBook.swift */; };
 		43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C046BE1CF48EA500BD0D9D /* AddressBook.framework */; };
@@ -349,6 +350,7 @@
 		43B3E4711D3CCF79007CA3C9 /* OutgoingMessageColorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingMessageColorOperation.swift; sourceTree = "<group>"; };
 		43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewWidthsAligner.swift; sourceTree = "<group>"; };
 		43BB86781DB4C3BC00980267 /* MessageModel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MessageModel.xcodeproj; path = ../MailModel/MessageModel/MessageModel.xcodeproj; sourceTree = "<group>"; };
+		43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+Extension.swift"; sourceTree = "<group>"; };
 		43C046B51CF42DCF00BD0D9D /* ModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		43C046BC1CF48D6300BD0D9D /* AddressBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBook.swift; sourceTree = "<group>"; };
 		43C046BE1CF48EA500BD0D9D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -735,8 +737,9 @@
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				43E58EC51CBF8365008AA7A7 /* BaseManagedObject.swift */,
 				4367E26E1CD7360000B05F83 /* CdModel.swift */,
+				43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */,
+				43E58EC51CBF8365008AA7A7 /* BaseManagedObject.swift */,
 				4305AC731DA3F7C300273D16 /* CdAccount.swift */,
 				4305AC871DA40A5E00273D16 /* CdFolder.swift */,
 				4305AC7D1DA4036D00273D16 /* CdMessage.swift */,
@@ -1065,6 +1068,7 @@
 				4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */,
 				43B3E46E1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift in Sources */,
 				43980EE61CBD24B800A7FC3C /* ConnectInfo.swift in Sources */,
+				43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */,
 				435B42411D211E5900119048 /* MiscUtil.swift in Sources */,
 				43ED53751CC77F95006AB156 /* MailSettingParameters.swift in Sources */,
 				43B2660D1D252C93009D57E8 /* ConcurrentBaseOperation.swift in Sources */,

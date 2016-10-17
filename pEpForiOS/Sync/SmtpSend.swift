@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 public protocol SmtpSendDelegate: class {
     func messageSent(_ smtp: SmtpSend, theNotification: Notification?)
     func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?)
@@ -198,7 +200,7 @@ extension SmtpSend: CWServiceClient {
                 password = pass
             } else {
                 password = KeyChain.getPassword(self.connectInfo.email,
-                                                serverType: CdAccount.AccountType.smtp.asString())
+                                                serverType: Server.ServerType.smtp.asString())
             }
             self.smtp.authenticate(self.connectInfo.getSmtpUsername(),
                                    password: password,

@@ -9,6 +9,9 @@
 import Foundation
 
 open class Constants {
+    /** Settings key for storing the email of the last used account */
+    static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
+
     /** MIME content type for plain text */
     open static let contentTypeText = "text/plain"
 
