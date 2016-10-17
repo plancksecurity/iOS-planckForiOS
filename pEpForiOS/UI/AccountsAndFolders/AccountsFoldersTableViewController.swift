@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 class AccountsFoldersViewController: UITableViewController {
     let comp = "AccountsFoldersViewController"
 

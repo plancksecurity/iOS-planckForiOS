@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 class FolderListViewController: FetchTableViewController {
     struct FolderListConfig {
         let account: CdAccount
