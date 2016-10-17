@@ -8,14 +8,16 @@
 
 import UIKit
 
+import MessageModel
+
 /**
  Finds email that only contain html and creates a text version of it.
  */
 open class HTMLConvertOperation: BaseOperation {
     let comp = "HTMLConvertOperation"
-    let coreDataUtil: ICoreDataUtil
+    let coreDataUtil: CoreDataUtil
 
-    public init(coreDataUtil: ICoreDataUtil) {
+    public init(coreDataUtil: CoreDataUtil) {
         self.coreDataUtil = coreDataUtil
     }
 

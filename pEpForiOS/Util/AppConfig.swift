@@ -8,12 +8,14 @@
 
 import Foundation
 
+import MessageModel
+
 /**
  Some cross cutting concerns, like core data access, networking, etc.
  */
 class AppConfig: NSObject {
 
-    let coreDataUtil: ICoreDataUtil = CoreDataUtil()
+    let coreDataUtil: CoreDataUtil = CoreDataUtil()
     let connectionManager: ConnectionManager
     let grandOperator: IGrandOperator
 

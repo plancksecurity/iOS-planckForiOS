@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -421,7 +423,7 @@ open class CdModel: ICdModel {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                Log.errorComponent(CoreDataUtil.comp, error: nserror)
+                Log.errorComponent(comp, error: nserror)
                 abort()
             }
         }

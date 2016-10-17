@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 /**
  A `CWFolder`/`CWIMAPFolder` that is backed by core data. Use on the main thread.
  */
@@ -17,7 +19,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     let connectInfo: ConnectInfo
 
-    let coreDataUtil: ICoreDataUtil
+    let coreDataUtil: CoreDataUtil
     lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
     lazy var model: ICdModel = CdModel.init(context: self.privateMOC)
 
@@ -58,7 +60,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
-    init(name: String, coreDataUtil: ICoreDataUtil, connectInfo: ConnectInfo,
+    init(name: String, coreDataUtil: CoreDataUtil, connectInfo: ConnectInfo,
          backgroundQueue: OperationQueue) {
         self.coreDataUtil = coreDataUtil
         self.connectInfo = connectInfo

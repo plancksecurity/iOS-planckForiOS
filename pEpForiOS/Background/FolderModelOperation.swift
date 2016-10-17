@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 /**
  Loads all folders for a given account and stores it in an array
  easily usable by table views.
@@ -33,7 +35,7 @@ open class FolderModelOperation: ConcurrentBaseOperation {
      */
     open var folderItems = [FolderItem]()
 
-    public init(account: CdAccount, coreDataUtil: ICoreDataUtil) {
+    public init(account: CdAccount, coreDataUtil: CoreDataUtil) {
         self.accountEmail = account.email
         super.init(coreDataUtil: coreDataUtil)
     }

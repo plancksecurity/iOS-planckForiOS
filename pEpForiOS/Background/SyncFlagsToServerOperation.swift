@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     let comp = "SyncFlagsToServerOperation"
 
@@ -23,7 +25,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     open var numberOfMessagesSynced = 0
 
     public init(folder: CdFolder,
-                connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
+                connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
         self.connectInfo = folder.account.connectInfo
         self.targetFolderName = folder.name
         self.connectionManager = connectionManager

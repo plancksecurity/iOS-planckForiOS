@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 /**
  Simple pojo for attachments.
  */
@@ -30,7 +32,7 @@ open class MessageToAttachmentOperation: ConcurrentBaseOperation {
 
     var attachment: SimpleAttachment?
 
-    public init(message: CdMessage, coreDataUtil: ICoreDataUtil) {
+    public init(message: CdMessage, coreDataUtil: CoreDataUtil) {
         self.messageID = message.objectID
         super.init(coreDataUtil: coreDataUtil)
     }

@@ -9,12 +9,14 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 /**
  This can be used in a queue, or directly called with ```start()```.
  */
 open class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
-    let coreDataUtil: ICoreDataUtil
+    let coreDataUtil: CoreDataUtil
     let message: CWIMAPMessage
     let accountEmail: String
     let quick: Bool
@@ -23,7 +25,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
      - parameter quick: Store only the most important properties (for true), or do it completely,
      including attachments?
      */
-    public init(coreDataUtil: ICoreDataUtil, accountEmail: String, message: CWIMAPMessage,
+    public init(coreDataUtil: CoreDataUtil, accountEmail: String, message: CWIMAPMessage,
                 quick: Bool = true) {
         self.coreDataUtil = coreDataUtil
         self.accountEmail = accountEmail

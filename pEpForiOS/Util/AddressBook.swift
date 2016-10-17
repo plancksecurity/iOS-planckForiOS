@@ -9,6 +9,8 @@
 import Foundation
 import AddressBook
 
+import MessageModel
+
 public enum AddressBookStatus {
     case authorized
     case notDetermined
@@ -291,7 +293,7 @@ open class AddressBook {
         }
     }
 
-    static func transferAddressBook(_ addressBook: AddressBook, coreDataUtil: ICoreDataUtil) {
+    static func transferAddressBook(_ addressBook: AddressBook, coreDataUtil: CoreDataUtil) {
         if addressBook.authorizationStatus == .authorized {
             MiscUtil.transferAddressBook(coreDataUtil.privateContext(),
                                          blockFinished: nil)
@@ -302,7 +304,7 @@ open class AddressBook {
      Asks for addressbook acces and tries to transfer all contacts from there.
      Note: Call this from the main thread!
      */
-    open static func checkAndTransfer(_ coreDataUtil: ICoreDataUtil) {
+    open static func checkAndTransfer(_ coreDataUtil: CoreDataUtil) {
         let addressBook = AddressBook.init()
         let status = addressBook.authorizationStatus
         if status == .notDetermined {

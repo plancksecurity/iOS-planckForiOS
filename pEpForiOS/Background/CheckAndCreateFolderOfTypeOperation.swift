@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 /**
  Can be run before operations that operate on folders, like "save draft"
  (with a dependency), to make sure that folder does exist.
@@ -31,7 +33,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     var folderSeparator: String?
 
     public init(account: CdAccount, folderType: FolderType,
-                connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
+                connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
         self.accountEmail = account.email
         self.connectInfo = account.connectInfo
         self.folderType = folderType

@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 open class SaveSentMessageOperation: ConcurrentBaseOperation {
     let comp = "SaveSentMessageOperation"
 

@@ -8,10 +8,12 @@
 
 import Foundation
 
+import MessageModel
+
 public typealias GrandOperatorCompletionBlock = (_ error: NSError?) -> Void
 
 public protocol IGrandOperator: class {
-    var coreDataUtil: ICoreDataUtil { get }
+    var coreDataUtil: CoreDataUtil { get }
 
     var connectionManager: ConnectionManager { get }
 
@@ -112,7 +114,7 @@ open class GrandOperator: IGrandOperator {
     let comp = "GrandOperator"
 
     open let connectionManager: ConnectionManager
-    open let coreDataUtil: ICoreDataUtil
+    open let coreDataUtil: CoreDataUtil
 
     fileprivate let verifyConnectionQueue = OperationQueue.init()
     fileprivate let backgroundQueue = OperationQueue.init()
@@ -129,7 +131,7 @@ open class GrandOperator: IGrandOperator {
      */
     fileprivate var flagSyncOperations = [String: BaseOperation]()
 
-    public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
+    public init(connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
         self.connectionManager = connectionManager
         self.coreDataUtil = coreDataUtil
         self.connectionManager.grandOperator = self

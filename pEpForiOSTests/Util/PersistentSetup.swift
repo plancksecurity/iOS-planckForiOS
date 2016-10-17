@@ -9,10 +9,11 @@
 import UIKit
 import XCTest
 
+import MessageModel
 import pEpForiOS
 
 class PersistentSetup {
-    let coreDataUtil: ICoreDataUtil
+    let coreDataUtil: CoreDataUtil
     let connectionInfo = TestData.connectInfo
     let connectionManager = ConnectionManager.init()
     let backgroundQueue = OperationQueue.init()

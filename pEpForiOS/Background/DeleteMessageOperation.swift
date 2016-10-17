@@ -9,10 +9,12 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 open class DeleteMessageOperation: ConcurrentBaseOperation {
     let messageID: NSManagedObjectID
 
-    public init(message: CdMessage, coreDataUtil: ICoreDataUtil) {
+    public init(message: CdMessage, coreDataUtil: CoreDataUtil) {
         self.messageID = message.objectID
         super.init(coreDataUtil: coreDataUtil)
     }

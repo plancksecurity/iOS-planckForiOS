@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import MobileCoreServices
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):

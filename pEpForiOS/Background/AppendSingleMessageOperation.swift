@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     let comp = "AppendSingleMessageOperation"
 
@@ -30,7 +32,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
     public init(message: CdMessage, account: CdAccount, targetFolder: CdFolder?,
                 folderType: FolderType?,
-                connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
+                connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
         self.messageID = message.objectID
 
         if let folder = targetFolder {
@@ -50,7 +52,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
     convenience public init(message: CdMessage, account: CdAccount, targetFolder: CdFolder,
                             connectionManager: ConnectionManager,
-                            coreDataUtil: ICoreDataUtil) {
+                            coreDataUtil: CoreDataUtil) {
         self.init(message: message, account: account, targetFolder: targetFolder,
                   folderType: nil, connectionManager: connectionManager,
                   coreDataUtil: coreDataUtil)
@@ -58,7 +60,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
     convenience public init(message: CdMessage, account: CdAccount, folderType: FolderType,
                             connectionManager: ConnectionManager,
-                            coreDataUtil: ICoreDataUtil) {
+                            coreDataUtil: CoreDataUtil) {
         self.init(message: message, account: account, targetFolder: nil,
                   folderType: folderType, connectionManager: connectionManager,
                   coreDataUtil: coreDataUtil)
