@@ -86,7 +86,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         tablesQuery.buttons["imapTransportSecurity"].tap()
         let sheet = XCUIApplication().sheets["Transport protocol"]
-        sheet.collectionViews.buttons[account.imapTransportSecurityString].tap()
+        sheet.buttons[account.imapTransportSecurityString].tap()
 
         // TODO: Support alert for choosing transport
         XCUIApplication().navigationBars.buttons["Next"].tap()
@@ -99,7 +99,7 @@ class NewAccountSetupUITest: XCTestCase {
         tf.typeText(String(account.smtpPort))
 
         tablesQuery.buttons["smtpTransportSecurity"].tap()
-        sheet.collectionViews.buttons[account.smtpTransportSecurityString].tap()
+        sheet.buttons[account.smtpTransportSecurityString].tap()
 
         let nextButton = XCUIApplication().navigationBars.buttons["Next"]
         nextButton.tap()
