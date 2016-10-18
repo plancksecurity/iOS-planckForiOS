@@ -126,11 +126,6 @@
 		43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53631CC77F95006AB156 /* EmailListViewCell.swift */; };
 		43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53641CC77F95006AB156 /* EmailListViewController.swift */; };
 		43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53661CC77F95006AB156 /* IMAPSettingsTableView.swift */; };
-		43ED53721CC77F95006AB156 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53671CC77F95006AB156 /* Mail.swift */; };
-		43ED53731CC77F95006AB156 /* MailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53681CC77F95006AB156 /* MailCell.swift */; };
-		43ED53741CC77F95006AB156 /* MailList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53691CC77F95006AB156 /* MailList.swift */; };
-		43ED53751CC77F95006AB156 /* MailSettingParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536A1CC77F95006AB156 /* MailSettingParameters.swift */; };
-		43ED53761CC77F95006AB156 /* MailTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536B1CC77F95006AB156 /* MailTableView.swift */; };
 		43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */; };
 		43ED53781CC77F95006AB156 /* SMTPSettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */; };
 		43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */; };
@@ -352,11 +347,6 @@
 		43ED53631CC77F95006AB156 /* EmailListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewCell.swift; sourceTree = "<group>"; };
 		43ED53641CC77F95006AB156 /* EmailListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewController.swift; sourceTree = "<group>"; };
 		43ED53661CC77F95006AB156 /* IMAPSettingsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAPSettingsTableView.swift; sourceTree = "<group>"; };
-		43ED53671CC77F95006AB156 /* Mail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
-		43ED53681CC77F95006AB156 /* MailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailCell.swift; sourceTree = "<group>"; };
-		43ED53691CC77F95006AB156 /* MailList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailList.swift; sourceTree = "<group>"; };
-		43ED536A1CC77F95006AB156 /* MailSettingParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailSettingParameters.swift; sourceTree = "<group>"; };
-		43ED536B1CC77F95006AB156 /* MailTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailTableView.swift; sourceTree = "<group>"; };
 		43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneValueSettingCell.swift; sourceTree = "<group>"; };
 		43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsTableView.swift; sourceTree = "<group>"; };
 		43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoTableView.swift; sourceTree = "<group>"; };
@@ -773,11 +763,6 @@
 				43ED536E1CC77F95006AB156 /* UserInfoTableView.swift */,
 				43ED53661CC77F95006AB156 /* IMAPSettingsTableView.swift */,
 				43ED536D1CC77F95006AB156 /* SMTPSettingsTableView.swift */,
-				43ED53671CC77F95006AB156 /* Mail.swift */,
-				43ED53681CC77F95006AB156 /* MailCell.swift */,
-				43ED53691CC77F95006AB156 /* MailList.swift */,
-				43ED536A1CC77F95006AB156 /* MailSettingParameters.swift */,
-				43ED536B1CC77F95006AB156 /* MailTableView.swift */,
 				43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */,
 			);
 			path = ImapSetup;
@@ -976,7 +961,6 @@
 				43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */,
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
 				43D8C5B81D6C611F005DC51F /* FolderModelOperation.swift in Sources */,
-				43ED53741CC77F95006AB156 /* MailList.swift in Sources */,
 				43E58EC61CBF8365008AA7A7 /* BaseManagedObject.swift in Sources */,
 				5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */,
 				431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */,
@@ -1021,7 +1005,6 @@
 				43B3E46E1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift in Sources */,
 				43980EE61CBD24B800A7FC3C /* ConnectInfo.swift in Sources */,
 				435B42411D211E5900119048 /* MiscUtil.swift in Sources */,
-				43ED53751CC77F95006AB156 /* MailSettingParameters.swift in Sources */,
 				43B2660D1D252C93009D57E8 /* ConcurrentBaseOperation.swift in Sources */,
 				4380F7EF1D1C1C7300326F62 /* PEPSession+Extensions.swift in Sources */,
 				A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */,
@@ -1046,7 +1029,6 @@
 				430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */,
 				436F8E1B1D369B3F007E9829 /* EmailTextField.swift in Sources */,
 				43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */,
-				43ED53721CC77F95006AB156 /* Mail.swift in Sources */,
 				4367E26F1CD7360000B05F83 /* CdModel.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				439C4D411CD27B0E0099A27F /* VerifyImapConnectionOperation.swift in Sources */,
@@ -1058,7 +1040,6 @@
 				A13D9F611D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift in Sources */,
 				431B0B9A1D6734DF0082D0DB /* AccountsFoldersTableViewController.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
-				43ED53761CC77F95006AB156 /* MailTableView.swift in Sources */,
 				4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */,
 				4305AC7A1DA3FE8C00273D16 /* _CdContact.swift in Sources */,
 				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
@@ -1067,7 +1048,6 @@
 				43463AAE1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift in Sources */,
 				4340F5F91D363BE6006A5C82 /* ContactTableViewCell.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
-				43ED53731CC77F95006AB156 /* MailCell.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				5D181C5D1DABE20900379D99 /* NetworkBackgroundService.swift in Sources */,
 				43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */,
