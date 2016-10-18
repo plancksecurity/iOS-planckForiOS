@@ -2,6 +2,15 @@
 
 ## Prerequisites
 
+### Package managers
+
+Except for lxml, everything can be installed via [brew](http://brew.sh/)
+
+For the lxml, you need MacPorts:
+
+Install [MacPorts](https://www.macports.org/) for your
+[version of OS X/macOS](https://www.macports.org/install.php).
+
 ### Install Revision Control Systems used
 
 Choose homebrew or macports for installing.
@@ -37,9 +46,10 @@ The fingerprints should be:
   ```
   brew install mogenerator
   ```
-* python lxml
+* python lxml (Alternatively, install it with pip)
   ```
   brew install python
+  sudo port install py27-lxml
   ```
 
 ### Other dependecies
