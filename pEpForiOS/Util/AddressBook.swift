@@ -293,26 +293,33 @@ open class AddressBook {
         }
     }
 
-    static func transferAddressBook(_ addressBook: AddressBook, coreDataUtil: CoreDataUtil) {
+    static func transferAddressBook(_ addressBook: AddressBook) {
         if addressBook.authorizationStatus == .authorized {
-            MiscUtil.transferAddressBook(coreDataUtil.privateContext(),
-                                         blockFinished: nil)
+            var insertedContacts = [Identity]()
+            let ab = AddressBook()
+            let contacts = ab.allContacts()
+            for c in contacts {
+                let id = Identity.create(address: c.email, userName: c.name, userID: nil)
+                if let addId = c.addressBookID, id.userID == nil {
+                    id.userID = String(describing: addId)
+                }
+                insertedContacts.append(id)
+            }
         }
     }
 
     /**
      Asks for addressbook acces and tries to transfer all contacts from there.
-     Note: Call this from the main thread!
      */
-    open static func checkAndTransfer(_ coreDataUtil: CoreDataUtil) {
+    open static func checkAndTransfer() {
         let addressBook = AddressBook.init()
         let status = addressBook.authorizationStatus
         if status == .notDetermined {
             let _ = addressBook.authorize() { ab in
-                transferAddressBook(ab, coreDataUtil: coreDataUtil)
+                transferAddressBook(ab)
             }
         } else {
-            transferAddressBook(addressBook, coreDataUtil: coreDataUtil)
+            transferAddressBook(addressBook)
         }
     }
 }

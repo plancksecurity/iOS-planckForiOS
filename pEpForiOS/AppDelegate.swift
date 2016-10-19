@@ -58,8 +58,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Log.warnComponent(comp, "Library url: \(applicationDirectory())")
 
-        AddressBook.checkAndTransfer(appConfig.coreDataUtil)
+        DispatchQueue.global(qos: .userInitiated).async {
+            AddressBook.checkAndTransfer()
+        }
+
         setupDefaultSettings()
+
         return true
     }
 
@@ -100,7 +104,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession.init()
 
-        AddressBook.checkAndTransfer(appConfig.coreDataUtil)
+        DispatchQueue.global(qos: .userInitiated).async {
+            AddressBook.checkAndTransfer()
+        }
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
