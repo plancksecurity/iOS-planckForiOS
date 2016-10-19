@@ -44,7 +44,7 @@ class EmailListViewController: FetchTableViewController {
         let sortDescriptors: [NSSortDescriptor]?
 
         /** If applicable, the account to refresh from */
-        let account: CdAccount?
+        let account: Account?
 
         /** If applicable, the folder name to sync */
         let folderName: String?
@@ -126,13 +126,11 @@ class EmailListViewController: FetchTableViewController {
     }
 
     func fetchMailsRefreshControl(_ refreshControl: UIRefreshControl? = nil) {
-        if let account = config.account {
-            let connectInfo = account.connectInfo
-
+        if let account = config.account, let connectInfo = account.connectInfo {
             state.isSynching = true
             updateUI()
 
-            config.appConfig.grandOperator.fetchEmailsAndDecryptConnectInfos(
+            config.appConfig.grandOperator.fetchEmailsAndDecryptImapSmtp(connectInfos: 
                 [connectInfo], folderName: config.folderName,
                 completionBlock: { error in
                     Log.infoComponent(self.comp, "Sync completed, error: \(error)")
@@ -238,7 +236,7 @@ class EmailListViewController: FetchTableViewController {
         let cell = tableView.cellForRow(at: indexPath)
 
         if let fn = config.folderName, let ac = config.account,
-            let folder = config.appConfig.model.folderByName(fn, email: ac.email) {
+            let folder = config.appConfig.model.folderByName(fn, email: ac.user.address) {
             if folder.folderType.intValue == FolderType.drafts.rawValue {
                 draftMessageToCompose = fetchController?.object(at: indexPath)
                     as? CdMessage

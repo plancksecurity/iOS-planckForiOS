@@ -118,7 +118,7 @@ open class SMTPSettingsTableView: UITableViewController {
     }
 
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
-        let connect = ConnectInfo.init(
+        let connect = ImapSmtpConnectInfo.init(
             nameOfTheUser: model.name!,
             email: model.email!, imapUsername: model.email!,
             smtpUsername: model.email!, imapPassword: model.password!,
@@ -146,7 +146,7 @@ open class SMTPSettingsTableView: UITableViewController {
                         return
                     }
 
-                    let account = model.insertAccountFromConnectInfo(connect)
+                    let account = model.insertAccountFromImapSmtpConnectInfo(connect)
                     let contact = model.insertOrUpdateContactEmail(account.email,
                         name: account.nameOfTheUser)
 

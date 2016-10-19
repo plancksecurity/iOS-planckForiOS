@@ -17,12 +17,12 @@ import CoreData
 open class PrefetchEmailsOperation: ConcurrentBaseOperation {
     let comp = "PrefetchEmailsOperation"
 
-    let connectInfo: ConnectInfo
+    let connectInfo: ImapSmtpConnectInfo
     var sync: ImapSync!
     var folderToOpen: String
     let connectionManager: ConnectionManager
 
-    public init(grandOperator: IGrandOperator, connectInfo: ConnectInfo, folder: String?) {
+    public init(grandOperator: IGrandOperator, connectInfo: ImapSmtpConnectInfo, folder: String?) {
         self.connectInfo = connectInfo
         self.connectionManager = grandOperator.connectionManager
         if let folder = folder {

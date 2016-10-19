@@ -17,7 +17,7 @@ import MessageModel
 class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     let comp = "PersistentImapFolder"
 
-    let connectInfo: ConnectInfo
+    let connectInfo: ImapSmtpConnectInfo
 
     let coreDataUtil: CoreDataUtil
     lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
@@ -60,7 +60,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
-    init(name: String, coreDataUtil: CoreDataUtil, connectInfo: ConnectInfo,
+    init(name: String, coreDataUtil: CoreDataUtil, connectInfo: ImapSmtpConnectInfo,
          backgroundQueue: OperationQueue) {
         self.coreDataUtil = coreDataUtil
         self.connectInfo = connectInfo

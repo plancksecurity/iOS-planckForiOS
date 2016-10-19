@@ -34,7 +34,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class SimpleOperationsTest: XCTestCase {
     var persistentSetup: PersistentSetup!
-    var connectInfo: ConnectInfo!
+    var connectInfo: ImapSmtpConnectInfo!
 
     override func setUp() {
         super.setUp()
@@ -584,7 +584,7 @@ class SimpleOperationsTest: XCTestCase {
         message.addToObject(value: c1)
         message.addCcObject(value: c2)
 
-        let account = persistentSetup.model.insertAccountFromConnectInfo(connectInfo)
+        let account = persistentSetup.model.insertAccountFromImapSmtpConnectInfo(connectInfo)
         guard let targetFolder = persistentSetup.model.folderByType(
             .drafts, account: account) else {
                 XCTAssertFalse(true)

@@ -11,12 +11,12 @@ import UIKit
 import MessageModel
 
 extension CdAccount {
-    open var connectInfo: ConnectInfo {
+    open var connectInfo: ImapSmtpConnectInfo {
         let passImap = KeyChain.getPassword(self.email,
                                             serverType: Server.ServerType.imap.asString())
         let passSmtp = KeyChain.getPassword(self.email,
                                             serverType: Server.ServerType.smtp.asString())
-        return ConnectInfo.init(
+        return ImapSmtpConnectInfo.init(
             nameOfTheUser: nameOfTheUser,
             email: email, imapUsername: imapUsername, smtpUsername: smtpUsername,
             imapPassword: passImap, smtpPassword: passSmtp,

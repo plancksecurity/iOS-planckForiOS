@@ -37,7 +37,7 @@ class PersistentSetup {
                                                backgroundQueue: backgroundQueue)
 
         model = CdModel.init(context: coreDataUtil.managedObjectContext)
-        account = model.insertAccountFromConnectInfo(connectionInfo)
+        account = model.insertAccountFromImapSmtpConnectInfo(connectionInfo)
     }
 
     deinit {

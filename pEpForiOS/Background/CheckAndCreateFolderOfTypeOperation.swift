@@ -19,7 +19,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     let comp = "CheckAndCreateFolderOfTypeOperation"
     let folderType: FolderType
     let accountEmail: String
-    let connectInfo: ConnectInfo
+    let connectInfo: ImapSmtpConnectInfo
     let connectionManager: ConnectionManager
     var folderName: String
     var imapSync: ImapSync!
