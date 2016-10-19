@@ -110,7 +110,8 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func refreshMailsControl(_ refreshControl: UIRefreshControl? = nil) {
-        guard let ac = appConfig else {
+        // TODO: IOS 222: Somehow trigger a refetch of emails
+        guard let _ = appConfig else {
             return
         }
 
@@ -127,16 +128,6 @@ class AccountsFoldersViewController: UITableViewController {
 
         state.isSynching = true
         updateUI()
-
-        ac.grandOperator.fetchEmailsAndDecryptImapSmtp(connectInfos:
-            connectInfos, folderName: nil,
-            completionBlock: { error in
-                Log.infoComponent(self.comp, "Sync completed, error: \(error)")
-                UIHelper.displayError(error, controller: self)
-                ac.model.save()
-                self.state.isSynching = false
-                self.updateUI()
-        })
     }
 
     func updateUI() {
