@@ -165,6 +165,9 @@ open class SMTPSettingsTableView: UITableViewController {
     }
 
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
+        self.status.activityIndicatorViewEnable =  true
+        updateView()
+
         let user = Identity.create(address: model.email!, userName: model.name!, userID: nil)
         user.isMySelf = true
         let userName = (model.username ?? model.email)!
@@ -175,6 +178,23 @@ open class SMTPSettingsTableView: UITableViewController {
                                        address: model.serverSMTP!, userName: userName,
                                        transport: model.transportSMTP.toServerTransport())
         let account = Account.create(user: user, servers: [imapServer, smtpServer])
+        account.needsVerification = true
         account.save()
+    }
+}
+
+extension SMTPSettingsTableView: AccountDelegate {
+    public func didVerifyAccount(_ account: Account, error: NSError?) {
+        self.status.activityIndicatorViewEnable = false
+        self.updateView()
+
+        if let err = error {
+            self.showErrorMessage(err.localizedDescription)
+        } else {
+            GCD.onMain() {
+                // unwind back to INBOX on success
+                self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: nil)
+            }
+        }
     }
 }
