@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 public extension ConnectionTransport {
     static public func fromInteger(_ i: Int) -> ConnectionTransport {
         switch i {
@@ -31,6 +33,14 @@ public extension ConnectionTransport {
         case .startTLS:
             return NSLocalizedString("StartTLS",
                                      comment: "Transport security (ConnectionTransport)")
+        }
+    }
+
+    public func toServerTransport() -> Server.Transport {
+        switch self {
+        case .plain: return Server.Transport.plain
+        case .TLS: return Server.Transport.tls
+        case .startTLS: return Server.Transport.startTls
         }
     }
 }

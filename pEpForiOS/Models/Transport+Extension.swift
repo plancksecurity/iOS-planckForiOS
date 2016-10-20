@@ -11,6 +11,14 @@ import UIKit
 import MessageModel
 
 extension Server.Transport {
+    public static func from(connectionTransport: ConnectionTransport) -> Server.Transport {
+        switch connectionTransport {
+        case .plain: return Server.Transport.plain
+        case .TLS: return Server.Transport.tls
+        case .startTLS: return Server.Transport.startTls
+        }
+    }
+
     public var connectionTransport: ConnectionTransport {
         switch self {
         case .plain: return ConnectionTransport.plain

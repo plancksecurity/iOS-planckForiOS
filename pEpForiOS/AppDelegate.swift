@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let comp = "AppDelegate"
