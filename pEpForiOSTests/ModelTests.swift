@@ -35,11 +35,11 @@ class ModelTests: XCTestCase {
             "wha@wawa.com", name: "Another")
         XCTAssertNotNil(contact)
 
-        let connectInfo = ConnectInfo.init(
+        let connectInfo = ImapSmtpConnectInfo.init(
             nameOfTheUser: "The User",
             email: persistentSetup.accountEmail, imapServerName: "imapServer",
             smtpServerName: "smtpServer")
-        XCTAssertNotNil(persistentSetup.model.insertAccountFromConnectInfo(connectInfo))
+        XCTAssertNotNil(persistentSetup.model.insertAccountFromImapSmtpConnectInfo(connectInfo))
 
         // Some folders
         for name in [ImapSync.defaultImapInboxName, "\(ImapSync.defaultImapInboxName).Drafts",

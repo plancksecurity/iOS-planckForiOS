@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /**
  Simple `Hashable` implementation so PEP_rating can be put into dictionaries.
  */
@@ -235,6 +237,13 @@ open class PEPUtil {
         var contact = PEPContact()
         contact[kPepAddress] = email as AnyObject
         contact[kPepUsername] = name as AnyObject
+        return contact
+    }
+
+    open static func pepContact(identity: Identity) -> PEPContact {
+        var contact = PEPContact()
+        contact[kPepAddress] = identity.address as AnyObject
+        contact[kPepUsername] = identity.userName as AnyObject
         return contact
     }
 

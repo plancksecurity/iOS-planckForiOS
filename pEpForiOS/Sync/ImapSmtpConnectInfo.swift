@@ -1,5 +1,5 @@
 //
-//  ConnectInfo
+//  ImapSmtpConnectInfo
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 08/04/16.
@@ -7,6 +7,8 @@
 //
 
 import Foundation
+
+import MessageModel
 
 public extension ConnectionTransport {
     static public func fromInteger(_ i: Int) -> ConnectionTransport {
@@ -33,6 +35,14 @@ public extension ConnectionTransport {
                                      comment: "Transport security (ConnectionTransport)")
         }
     }
+
+    public func toServerTransport() -> Server.Transport {
+        switch self {
+        case .plain: return Server.Transport.plain
+        case .TLS: return Server.Transport.tls
+        case .startTLS: return Server.Transport.startTls
+        }
+    }
 }
 
 public enum AuthMethod: String {
@@ -57,7 +67,7 @@ public enum AuthMethod: String {
 /**
  Holds connection info (like server, port etc.) for IMAP and SMTP.
  */
-public protocol IConnectInfo: Hashable {
+public protocol IImapSmtpImapSmtpConnectInfo: Hashable {
     var email: String { get }
     var imapUsername: String? { get }
     var smtpUsername: String? { get }
@@ -80,7 +90,7 @@ public protocol IConnectInfo: Hashable {
     func getSmtpPassword() -> String?
 }
 
-public struct ConnectInfo: IConnectInfo {
+public struct ImapSmtpConnectInfo: IImapSmtpImapSmtpConnectInfo {
     public var nameOfTheUser: String
     public var email: String
     public var imapUsername: String?
@@ -120,7 +130,7 @@ public struct ConnectInfo: IConnectInfo {
     }
 }
 
-public extension ConnectInfo {
+public extension ImapSmtpConnectInfo {
     public init(nameOfTheUser: String, email: String, imapPassword: String? = nil,
                 imapServerName: String, imapServerPort: UInt16 = 993,
                 imapTransport: ConnectionTransport = .TLS,
@@ -135,7 +145,7 @@ public extension ConnectInfo {
     }
 }
 
-extension ConnectInfo: Hashable {
+extension ImapSmtpConnectInfo: Hashable {
     public var hashValue: Int {
         return 31 &* email.hashValue &+
             MiscUtil.optionalHashValue(imapUsername) &+
@@ -149,9 +159,9 @@ extension ConnectInfo: Hashable {
     }
 }
 
-extension ConnectInfo: Equatable {}
+extension ImapSmtpConnectInfo: Equatable {}
 
-public func ==(l: ConnectInfo, r: ConnectInfo) -> Bool {
+public func ==(l: ImapSmtpConnectInfo, r: ImapSmtpConnectInfo) -> Bool {
     return l.nameOfTheUser == r.nameOfTheUser && l.email == r.email &&
         l.imapUsername == r.imapUsername &&
         l.imapTransport == r.imapTransport &&

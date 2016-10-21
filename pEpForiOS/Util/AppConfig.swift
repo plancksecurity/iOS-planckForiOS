@@ -8,12 +8,14 @@
 
 import Foundation
 
+import MessageModel
+
 /**
  Some cross cutting concerns, like core data access, networking, etc.
  */
 class AppConfig: NSObject {
 
-    let coreDataUtil: ICoreDataUtil = CoreDataUtil()
+    let coreDataUtil: CoreDataUtil = CoreDataUtil()
     let connectionManager: ConnectionManager
     let grandOperator: IGrandOperator
 
@@ -26,7 +28,7 @@ class AppConfig: NSObject {
     /**
      As soon as the UI has at least one account that is in use, this is set here.
      */
-    var currentAccount: CdAccount? = nil
+    var currentAccount: Account? = nil
 
     override init() {
         connectionManager = ConnectionManager()

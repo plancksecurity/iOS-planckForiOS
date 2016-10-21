@@ -10,6 +10,8 @@ import UIKit
 import CoreData
 import MobileCoreServices
 
+import MessageModel
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -406,8 +408,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      Updates the given message with data from the view.
      */
-    func populateMessageWithViewData(_ message: CdMessage, account: CdAccount,
-                                     model: ICdModel) {
+    func populateMessage(message: CdMessage, account: Account,
+                         model: ICdModel) {
         // reset
         message.to = []
         message.cc = []
@@ -420,7 +422,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         message.references = []
 
         // from
-        message.from = model.insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
+        message.from = model.insertOrUpdateContactEmail(account.user.address,
+                                                        name: account.user.userName)
 
         // recipients
         for (_, cell) in recipientCells {
@@ -545,7 +548,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
 
         if messageToSend == nil {
             messageToSend = appC.model.insertNewMessageForSendingFromAccountEmail(
-                account.email)
+                account.user.address)
         }
 
         guard let msg = messageToSend else {
@@ -553,7 +556,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             return nil
         }
 
-        populateMessageWithViewData(msg, account: account, model: appC.model)
+        populateMessage(message: msg, account: account, model: appC.model)
         populateMessageWithReplyData(msg)
         populateMessageWithForwardedData(msg)
         populateMessage(msg, withAttachmentsFromTextView: longBodyMessageTextView)
@@ -571,31 +574,15 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             Log.warnComponent(comp, "Really need a non-nil appConfig for sending mail")
             return
         }
-        guard let account = appC.currentAccount else {
+        guard let _ = appC.currentAccount else {
             Log.warnComponent(comp, "Really need a non-nil currentAccount for sending mail")
             return
         }
-        guard let msg = messageForSending() else {
+        guard let _ = messageForSending() else {
             return
         }
 
-        appC.grandOperator.sendMail(
-            msg, account: account, completionBlock: { error in
-                Log.errorComponent(self.comp, error: error)
-                GCD.onMain() {
-                    self.model.networkActivity = false
-                    self.updateNetworkActivity()
-
-                    UIHelper.displayError(
-                        error, controller: self,
-                        title: NSLocalizedString("Error sending message",
-                            comment: "Title for the 'Error sending mail' dialog"))
-                    if error == nil {
-                        self.performSegue(withIdentifier: self.unwindToEmailListMailSentSegue,
-                            sender: sender)
-                    }
-                }
-        })
+        // TODO: IOS 222: Store message so that it will be sent
     }
 
     @IBAction func attachedField(_ sender: AnyObject) {

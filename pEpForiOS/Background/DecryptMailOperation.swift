@@ -8,11 +8,13 @@
 
 import Foundation
 
+import MessageModel
+
 open class DecryptMailOperation: BaseOperation {
     let comp = "DecryptMailOperation"
-    let coreDataUtil: ICoreDataUtil
+    let coreDataUtil: CoreDataUtil
 
-    public init(coreDataUtil: ICoreDataUtil) {
+    public init(coreDataUtil: CoreDataUtil) {
         self.coreDataUtil = coreDataUtil
     }
 

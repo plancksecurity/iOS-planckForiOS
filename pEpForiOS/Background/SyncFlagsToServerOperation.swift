@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     let comp = "SyncFlagsToServerOperation"
 
@@ -16,14 +18,14 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 
     var targetFolderName: String!
 
-    let connectInfo: ConnectInfo
+    let connectInfo: ImapSmtpConnectInfo
 
     var imapSync: ImapSync!
 
     open var numberOfMessagesSynced = 0
 
     public init(folder: CdFolder,
-                connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil) {
+                connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
         self.connectInfo = folder.account.connectInfo
         self.targetFolderName = folder.name
         self.connectionManager = connectionManager

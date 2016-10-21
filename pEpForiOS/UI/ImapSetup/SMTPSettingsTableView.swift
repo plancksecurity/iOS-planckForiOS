@@ -8,13 +8,13 @@
 
 import UIKit
 
-open class ViewStatus {
+import MessageModel
 
+open class ViewStatus {
     open var activityIndicatorViewEnable = false
 }
 
 open class SMTPSettingsTableView: UITableViewController {
-
     let comp = "SMTPSettingsTableView"
     let unwindToEmailListSegue = "unwindToEmailListSegue"
 
@@ -117,8 +117,8 @@ open class SMTPSettingsTableView: UITableViewController {
         }
     }
 
-    @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
-        let connect = ConnectInfo.init(
+    func verifyAccountOldStyle(_ sender: UIBarButtonItem) {
+        let connect = ImapSmtpConnectInfo.init(
             nameOfTheUser: model.name!,
             email: model.email!, imapUsername: model.email!,
             smtpUsername: model.email!, imapPassword: model.password!,
@@ -140,15 +140,15 @@ open class SMTPSettingsTableView: UITableViewController {
                         self.showErrorMessage(
                             String(format:
                                 NSLocalizedString("Internal Error: %d",
-                                    comment: "Internal error display, with error number"),
-                                Constants.InternalErrorCode.noModel.rawValue))
+                                                  comment: "Internal error display, with error number"),
+                                   Constants.InternalErrorCode.noModel.rawValue))
                         Log.warnComponent(self.comp, "Could not access model")
                         return
                     }
 
-                    let account = model.insertAccountFromConnectInfo(connect)
+                    let account = model.insertAccountFromImapSmtpConnectInfo(connect)
                     let contact = model.insertOrUpdateContactEmail(account.email,
-                        name: account.nameOfTheUser)
+                                                                   name: account.nameOfTheUser)
 
                     // Mark that contact as mySelf
                     contact.isMySelf = NSNumber.init(booleanLiteral: true)
@@ -162,5 +162,39 @@ open class SMTPSettingsTableView: UITableViewController {
             }
             self.showErrorMessage(err.localizedDescription)
         })
+    }
+
+    @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
+        self.status.activityIndicatorViewEnable =  true
+        updateView()
+
+        let user = Identity.create(address: model.email!, userName: model.name!, userID: nil)
+        user.isMySelf = true
+        let userName = (model.username ?? model.email)!
+        let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
+                                       address: model.serverIMAP!, userName: userName,
+                                       transport: model.transportIMAP.toServerTransport())
+        let smtpServer = Server.create(serverType: .smtp, port: model.portSMTP,
+                                       address: model.serverSMTP!, userName: userName,
+                                       transport: model.transportSMTP.toServerTransport())
+        let account = Account.create(user: user, servers: [imapServer, smtpServer])
+        account.needsVerification = true
+        account.save()
+    }
+}
+
+extension SMTPSettingsTableView: AccountDelegate {
+    public func didVerifyAccount(_ account: Account, error: NSError?) {
+        self.status.activityIndicatorViewEnable = false
+        self.updateView()
+
+        if let err = error {
+            self.showErrorMessage(err.localizedDescription)
+        } else {
+            GCD.onMain() {
+                // unwind back to INBOX on success
+                self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: nil)
+            }
+        }
     }
 }

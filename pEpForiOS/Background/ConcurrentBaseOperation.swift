@@ -8,6 +8,8 @@
 
 import CoreData
 
+import MessageModel
+
 /**
  This is the base for concurrent `NSOperation`s, that is operations
  that handle asynchronicity themselves, and are typically not finished when `main()` ends.
@@ -20,7 +22,7 @@ open class ConcurrentBaseOperation: BaseOperation {
      */
     let backgroundQueue = OperationQueue.init()
 
-    let coreDataUtil: ICoreDataUtil
+    let coreDataUtil: CoreDataUtil
 
     lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
     lazy var model: ICdModel = CdModel.init(context: self.privateMOC)
@@ -39,7 +41,7 @@ open class ConcurrentBaseOperation: BaseOperation {
         return myFinished && backgroundQueue.operationCount == 0
     }
 
-    public init(coreDataUtil: ICoreDataUtil) {
+    public init(coreDataUtil: CoreDataUtil) {
         self.coreDataUtil = coreDataUtil
     }
 

@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let comp = "AppDelegate"
@@ -58,8 +60,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Log.warnComponent(comp, "Library url: \(applicationDirectory())")
 
-        AddressBook.checkAndTransfer(appConfig.coreDataUtil)
+        DispatchQueue.global(qos: .userInitiated).async {
+            AddressBook.checkAndTransfer()
+        }
+
         setupDefaultSettings()
+
         return true
     }
 
@@ -100,7 +106,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession.init()
 
-        AddressBook.checkAndTransfer(appConfig.coreDataUtil)
+        DispatchQueue.global(qos: .userInitiated).async {
+            AddressBook.checkAndTransfer()
+        }
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
@@ -115,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func setupDefaultSettings() {
-        let settings: [String:AnyObject] = [CdAccount.kSettingLastAccountEmail:"" as AnyObject]
+        let settings: [String:AnyObject] = [Constants.kSettingLastAccountEmail:"" as AnyObject]
         UserDefaults.standard.register(defaults: settings)
     }
 }

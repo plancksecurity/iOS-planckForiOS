@@ -172,7 +172,7 @@ class ImapSyncTest: XCTestCase {
      */
     func testConnectionFailFast() {
         let del = TestImapSyncDelegate.init()
-        let conInfo = ConnectInfo.init(
+        let conInfo = ImapSmtpConnectInfo.init(
             nameOfTheUser: "The User",
             email: "", imapPassword: "", imapServerName: "doesnot.work",
             imapServerPort: 5000,

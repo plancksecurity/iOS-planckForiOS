@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 open class DeleteFolderOperation: ConcurrentBaseOperation {
     let comp = "DeleteFolderOperation"
 
@@ -18,7 +20,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
     var imapSync: ImapSync!
 
     public init(accountEmail: String, folderName: String,
-                coreDataUtil: ICoreDataUtil, connectionManager: ConnectionManager) {
+                coreDataUtil: CoreDataUtil, connectionManager: ConnectionManager) {
         self.connectionManager = connectionManager
         self.accountEmail = accountEmail
         self.folderName = folderName
@@ -26,7 +28,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
     }
 
     convenience public init(folder: CdFolder, connectionManager: ConnectionManager,
-                            coreDataUtil: ICoreDataUtil) {
+                            coreDataUtil: CoreDataUtil) {
         self.init(accountEmail: folder.account.email, folderName: folder.name,
                   coreDataUtil: coreDataUtil, connectionManager: connectionManager)
     }

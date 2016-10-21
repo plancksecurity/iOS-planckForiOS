@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 struct FolderInfo {
     let name: String
     let separator: String
@@ -19,7 +21,7 @@ class StoreFolderOperation: ConcurrentBaseOperation {
     let folderInfo: FolderInfo
     let email: String
 
-    init(coreDataUtil: ICoreDataUtil, folderInfo: FolderInfo, email: String) {
+    init(coreDataUtil: CoreDataUtil, folderInfo: FolderInfo, email: String) {
         self.folderInfo = folderInfo
         self.email = email
         super.init(coreDataUtil: coreDataUtil)

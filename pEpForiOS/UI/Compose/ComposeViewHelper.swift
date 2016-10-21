@@ -59,8 +59,7 @@ open class ComposeViewHelper {
                 Log.warnComponent(vc.comp, "Need valid account for determining pEp rating")
                 return nil
             }
-            message[kPepFrom] = PEPUtil.pepContactFromEmail(
-                account.email, name: account.nameOfTheUser) as AnyObject?
+            message[kPepFrom] = PEPUtil.pepContact(identity: account.user) as AnyObject?
 
             if let subjectText = vc.subjectTextField?.text {
                 message[kPepShortMessage] = subjectText as AnyObject?

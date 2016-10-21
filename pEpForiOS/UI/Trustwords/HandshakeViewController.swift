@@ -47,7 +47,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             return cell
         } else if ((indexPath as NSIndexPath).row == myselfContact) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! HandshakeLabelTableViewCell
-            let myselfEmail = appConfig.currentAccount!.email
+            let myselfEmail = appConfig.currentAccount?.user.address ?? ""
             cell.handshakeLabel.text = myselfEmail
             return cell
         } else if ((indexPath as NSIndexPath).row == partnerLabel) {
@@ -65,27 +65,24 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
         } else if ((indexPath as NSIndexPath).row == trustwords) {
 
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
-            if let p = partner {
+            if let p = partner, let myselfEmail = appConfig.currentAccount?.user.address,
+                let myselfContact = appConfig.model.contactByEmail(myselfEmail) {
                 let partnerPepContact = PEPUtil.pepContact(p)
-                let myselfEmail = appConfig.currentAccount!.email
-                let myselfContact = appConfig.model.contactByEmail(myselfEmail)
-                if let m = myselfContact {
-                    let myselfContactPepContact = PEPUtil.pepContact(m)
-                    let recognizer = UITapGestureRecognizer(target: self, action:#selector(HandshakeViewController.handleTap(_:)))
-                    recognizer.delegate = self
-                    cell.handshakeTextView.addGestureRecognizer(recognizer)
-                    if !hexamode {
-                        cell.handshakeTextView.text = PEPUtil.trustwordsForIdentity1(
+                let myselfContactPepContact = PEPUtil.pepContact(myselfContact)
+                let recognizer = UITapGestureRecognizer(target: self, action:#selector(HandshakeViewController.handleTap(_:)))
+                recognizer.delegate = self
+                cell.handshakeTextView.addGestureRecognizer(recognizer)
+                if !hexamode {
+                    cell.handshakeTextView.text = PEPUtil.trustwordsForIdentity1(
                         myselfContactPepContact, identity2: partnerPepContact,
                         language: "en", session: nil)
-                    } else {
-                        let myselfFingerprints = PEPUtil.fingprprintForContact(myselfContact!)
+                } else {
+                    let myselfFingerprints = PEPUtil.fingprprintForContact(myselfContact)
 
-                        let partnerFingerprints = PEPUtil.fingprprintForContact(partner!)
-                        let bothFingerprints = "\(fingerprintFormat(partnerFingerprints!))\n\n\(fingerprintFormat(myselfFingerprints!))"
-                        cell.handshakeTextView.text = bothFingerprints
-                        cell.handshakeTextView.font = UIFont(name: "Menlo", size: UIFont.systemFontSize)
-                    }
+                    let partnerFingerprints = PEPUtil.fingprprintForContact(partner!)
+                    let bothFingerprints = "\(fingerprintFormat(partnerFingerprints!))\n\n\(fingerprintFormat(myselfFingerprints!))"
+                    cell.handshakeTextView.text = bothFingerprints
+                    cell.handshakeTextView.font = UIFont(name: "Menlo", size: UIFont.systemFontSize)
                 }
             }
             return cell

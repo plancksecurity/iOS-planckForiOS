@@ -75,7 +75,7 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testChainFolderFetching() {
-        let account = persistentSetup.model.insertAccountFromConnectInfo(
+        let account = persistentSetup.model.insertAccountFromImapSmtpConnectInfo(
             persistentSetup.connectionInfo)
         var callbackNumber = 0
         let op1 = CreateLocalSpecialFoldersOperation.init(
@@ -123,7 +123,7 @@ class GrandOperatorTests: XCTestCase {
 
     func testSendMail() {
         testFetchFolders()
-        let account = persistentSetup.model.insertAccountFromConnectInfo(
+        let account = persistentSetup.model.insertAccountFromImapSmtpConnectInfo(
             persistentSetup.connectionInfo)
 
         createSpecialFolders(account)
@@ -150,7 +150,7 @@ class GrandOperatorTests: XCTestCase {
     func testSendMailFail() {
         testFetchFolders()
 
-        let account = persistentSetup.model.insertAccountFromConnectInfo(
+        let account = persistentSetup.model.insertAccountFromImapSmtpConnectInfo(
             TestData.connectInfoWrongPassword)
 
         createSpecialFolders(account)
@@ -176,7 +176,7 @@ class GrandOperatorTests: XCTestCase {
     }
 
     func testSaveDraft() {
-        let account = persistentSetup.model.insertAccountFromConnectInfo(
+        let account = persistentSetup.model.insertAccountFromImapSmtpConnectInfo(
             TestData.connectInfo)
 
         let expFoldersFetched = expectation(description: "foldersFetched")
@@ -195,7 +195,7 @@ class GrandOperatorTests: XCTestCase {
         }
 
         let expDraftsFetched = expectation(description: "expDraftsFetched")
-        persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(
+        persistentSetup.grandOperator.fetchEmailsAndDecryptImapSmtp(connectInfos: 
             [account.connectInfo], folderName: draftsFolder.name, completionBlock: { error in
                 XCTAssertNil(error)
                 expDraftsFetched.fulfill()
@@ -218,7 +218,7 @@ class GrandOperatorTests: XCTestCase {
         })
 
         let expDraftsFetched2 = expectation(description: "expDraftsFetched2")
-        persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(
+        persistentSetup.grandOperator.fetchEmailsAndDecryptImapSmtp(connectInfos: 
             [account.connectInfo], folderName: draftsFolder.name, completionBlock: { error in
                 XCTAssertNil(error)
                 expDraftsFetched2.fulfill()
@@ -232,7 +232,7 @@ class GrandOperatorTests: XCTestCase {
 
     func testSyncFlags() {
         let emailsFetched = expectation(description: "emailsFetched")
-        persistentSetup.grandOperator.fetchEmailsAndDecryptConnectInfos(
+        persistentSetup.grandOperator.fetchEmailsAndDecryptImapSmtp(connectInfos: 
             [persistentSetup.connectionInfo], folderName: nil, completionBlock: { error in
                 XCTAssertNil(error)
                 emailsFetched.fulfill()

@@ -9,9 +9,11 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 class FolderListViewController: FetchTableViewController {
     struct FolderListConfig {
-        let account: CdAccount
+        let account: Account
         let appConfig: AppConfig
     }
 
@@ -56,7 +58,7 @@ class FolderListViewController: FetchTableViewController {
         let fetchRequest = NSFetchRequest<NSManagedObject>.init(entityName: CdFolder.entityName())
 
         let predicateAccount = NSPredicate.init(
-            format: "account.email = %@", config.account.email)
+            format: "account.email = %@", config.account.user.address)
         let predicateNotDeleted = NSPredicate.init(
             format: "shouldDelete = false")
         let predicate = NSCompoundPredicate.init(
@@ -79,12 +81,17 @@ class FolderListViewController: FetchTableViewController {
     func refreshFoldersControl(_ refreshControl: UIRefreshControl? = nil) {
         state.isUpdating = true
         updateUI()
-        config.appConfig.grandOperator.fetchFolders(
-            config.account.connectInfo, completionBlock: { error in
-                self.state.isUpdating = false
-                self.updateUI()
-                self.tableView.reloadData()
-        })
+        if let connectInfo = config.account.connectInfo {
+            config.appConfig.grandOperator.fetchFolders(
+                connectInfo, completionBlock: { error in
+                    self.state.isUpdating = false
+                    self.updateUI()
+                    self.tableView.reloadData()
+            })
+        } else {
+            Log.errorComponent(comp,
+                               errorString: "No connectInfo for account \(config.account.user.address)")
+        }
     }
 
     func updateUI() {
@@ -159,12 +166,12 @@ class FolderListViewController: FetchTableViewController {
         if let fi = fetchController?.object(at: indexPath) as? CdFolder {
             let predicateBasic = config.appConfig.model.basicMessagePredicate()
             let predicateAccount = NSPredicate.init(
-                format: "folder.account.email = %@", config.account.email)
+                format: "folder.account.email = %@", config.account.user.address)
             let predicateFolder = NSPredicate.init(
                 format: "folder.name = %@", fi.name)
 
             // If the folder is just local, then don't let the email list view sync.
-            var account: CdAccount? = nil
+            var account: Account? = nil
             if let ft = FolderType.fromInt(fi.folderType.intValue) {
                 if ft.isRemote() {
                     account = config.account

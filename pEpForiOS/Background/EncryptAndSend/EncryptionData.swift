@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import MessageModel
+
 /**
  Contains all data that is needed for encrypting and sending emails.
  By sourcing out all needed data, it becomes possible to chain operations, like
@@ -19,7 +21,7 @@ open class EncryptionData {
     /**
      Needed for accessing core data.
      */
-    let coreDataUtil: ICoreDataUtil
+    let coreDataUtil: CoreDataUtil
 
     /**
      For getting a SMTP connection.
@@ -62,7 +64,7 @@ open class EncryptionData {
      */
     open var mailsSent: [PEPMail] = []
 
-    public init(connectionManager: ConnectionManager, coreDataUtil: ICoreDataUtil,
+    public init(connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil,
                 coreDataMessageID: NSManagedObjectID, accountEmail: String,
                 outgoing: Bool = true) {
         self.connectionManager = connectionManager
