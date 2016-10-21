@@ -240,11 +240,18 @@ open class PEPUtil {
         return contact
     }
 
-    open static func pepContact(identity: Identity) -> PEPContact {
+    open static func pEp(identity: Identity) -> PEPContact {
         var contact = PEPContact()
         contact[kPepAddress] = identity.address as AnyObject
         contact[kPepUsername] = identity.userName as AnyObject
         return contact
+    }
+
+    open static func pEpOptional(identity: Identity?) -> PEPContact? {
+        guard let id = identity else {
+            return nil
+        }
+        return pEp(identity: id)
     }
 
     /**
@@ -262,6 +269,38 @@ open class PEPUtil {
             dict[kPepMimeType] = contentType
         }
         dict[kPepMimeData] = attachment.data
+
+        return dict
+    }
+
+    open static func pEp(attachment: Attachment) -> [String: AnyObject] {
+        var dict = [String: AnyObject]()
+
+        dict[kPepMimeFilename] = attachment.fileName as AnyObject
+        dict[kPepMimeType] = attachment.mimeType as AnyObject
+        dict[kPepMimeData] = attachment.data
+
+        return dict
+    }
+
+    open static func pEp(message: Message, outgoing: Bool = true) -> PEPMail {
+        var dict = PEPMail()
+
+        dict[kPepShortMessage] = message.shortMessage as AnyObject
+
+        dict[kPepTo] = NSArray.init(array: message.to.map() { return pEp(identity: $0) })
+        dict[kPepCC] = NSArray.init(array: message.cc.map() { return pEp(identity: $0) })
+        dict[kPepBCC] = NSArray.init(array: message.bcc.map() { return pEp(identity: $0) })
+
+        dict[kPepFrom]  = pEpOptional(identity: message.from) as AnyObject
+        dict[kPepID] = message.messageID as AnyObject
+        dict[kPepOutgoing] = outgoing as AnyObject?
+
+        dict[kPepAttachments] = NSArray.init(array: message.attachments.map() {
+            return pEp(attachment: $0)
+        })
+
+        dict[kPepReferences] = message.references as AnyObject
 
         return dict
     }
