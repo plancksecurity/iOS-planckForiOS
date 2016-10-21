@@ -39,7 +39,7 @@ class NetworkBackgroundServiceTests: XCTestCase {
     func testImapConnection() {
         let connectInfo = TestData.connectInfo
         let imapBlock = DispatchWorkItem {
-            let _ = ImapSync(connectInfo: connectInfo)
+            _ = ImapSync(connectInfo: connectInfo)
         }
         networkBackgroundService.doWork(workItem: imapBlock)
         XCTAssertFalse(imapBlock.isCancelled)

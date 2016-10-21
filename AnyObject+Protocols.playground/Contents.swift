@@ -1,6 +1,7 @@
 //: Playground - noun: a place where people can play
 
 import UIKit
+import Pantomime
 
 protocol IName {
     var name: String? {get set}
@@ -19,3 +20,8 @@ let names: [AName] = [AName.init(name: "One"), AName.init(name: "Two"), AName.in
 let woraroundNames = names.map() {$0 as AnyObject}
 
 let anyNames = names as [AnyObject]
+
+func toDebugString<T>(x: T) -> String {
+    return "overload"
+}
+
