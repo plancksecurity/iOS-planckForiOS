@@ -19,3 +19,8 @@ let names: [AName] = [AName.init(name: "One"), AName.init(name: "Two"), AName.in
 let woraroundNames = names.map() {$0 as AnyObject}
 
 let anyNames = names as [AnyObject]
+
+var dict = [String: AnyObject]()
+let key = "bool"
+dict[key] = true as AnyObject?
+dict[key]
