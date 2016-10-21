@@ -9,6 +9,9 @@
 import Foundation
 
 open class Constants {
+    /** Settings key for storing the email of the last used account */
+    static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
+
     /** MIME content type for plain text */
     open static let contentTypeText = "text/plain"
 
@@ -62,6 +65,7 @@ open class Constants {
         case couldNotUpdateOrAddContact
         case couldNotStoreFolder
         case cannotFindAccountForEmail
+        case cannotFindServerForAccount
     }
 
     public enum SmtpErrorCode: Int {
@@ -202,6 +206,18 @@ open class Constants {
                     "Cannot find account for email: %@", comment:
                     "Error description when not being able to fetch account by email"),
                     email)])
+        return error
+    }
+
+    static func errorCannotFindServer(
+        component: String, accountEmail: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.cannotFindServerForAccount.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                String.init(format: NSLocalizedString(
+                    "Cannot find server for account with email: %@", comment:
+                    "Error description when not being able to fetch an account's server"),
+                            accountEmail)])
         return error
     }
 

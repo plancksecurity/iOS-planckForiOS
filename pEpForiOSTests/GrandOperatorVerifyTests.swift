@@ -65,7 +65,7 @@ class GrandOperatorVerifyTests: XCTestCase {
 
     func testVerifyConnectionAllFailed() {
         let exp = expectation(description: "verified")
-        let connectionInfo = ConnectInfo.init(
+        let connectionInfo = ImapSmtpConnectInfo.init(
             nameOfTheUser: "The User",
             email: "none", imapPassword: "none",
             imapServerName: "cant.connect", imapServerPort: 993, imapTransport: .plain,
@@ -82,7 +82,7 @@ class GrandOperatorVerifyTests: XCTestCase {
 
     func testVerifyConnectionImapAuthenticationFailed() {
         let exp = expectation(description: "verified")
-        let connectionInfo = ConnectInfo.init(
+        let connectionInfo = ImapSmtpConnectInfo.init(
             nameOfTheUser: "The User",
             email: correct.email, imapPassword: "notwork",
             imapServerName: correct.imapServerName, imapServerPort: correct.imapServerPort,

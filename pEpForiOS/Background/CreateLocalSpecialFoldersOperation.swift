@@ -8,12 +8,14 @@
 
 import UIKit
 
+import MessageModel
+
 open class CreateLocalSpecialFoldersOperation: BaseOperation {
     let comp = "CreateLocalSpecialFoldersOperation"
-    let coreDataUtil: ICoreDataUtil
+    let coreDataUtil: CoreDataUtil
     let accountEmail: String
 
-    public init(coreDataUtil: ICoreDataUtil, accountEmail: String) {
+    public init(coreDataUtil: CoreDataUtil, accountEmail: String) {
         self.coreDataUtil = coreDataUtil
         self.accountEmail = accountEmail
         super.init()

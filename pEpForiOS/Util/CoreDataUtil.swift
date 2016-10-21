@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-public protocol ICoreDataUtil {
+public protocol ICoreDataUtilOld {
     /**
      - returns: The one and only main context, confined to the main thread/queue.
      */
@@ -53,7 +53,7 @@ open class CoreDataMerger {
     }
 }
 
-open class CoreDataUtil: ICoreDataUtil {
+open class CoreDataUtilOld: ICoreDataUtilOld {
     static let comp = "CoreDataUtil"
 
     let coreDataMerger = CoreDataMerger()
@@ -92,10 +92,10 @@ open class CoreDataUtil: ICoreDataUtil {
             dict[NSLocalizedFailureReasonErrorKey] = failureReason as AnyObject?
 
             dict[NSUnderlyingErrorKey] = error
-            let wrappedError = NSError(domain: CoreDataUtil.comp, code: 9999, userInfo: dict)
+            let wrappedError = NSError(domain: CoreDataUtilOld.comp, code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            Log.errorComponent(CoreDataUtil.comp, error: wrappedError)
+            Log.errorComponent(CoreDataUtilOld.comp, error: wrappedError)
             abort()
         }
 
@@ -118,7 +118,7 @@ open class CoreDataUtil: ICoreDataUtil {
     // MARK: - Core Data Saving support
 
     open func saveContext () {
-        CoreDataUtil.saveContext(managedObjectContext)
+        CoreDataUtilOld.saveContext(managedObjectContext)
     }
 
     // MARK: - Extensions
@@ -131,7 +131,7 @@ open class CoreDataUtil: ICoreDataUtil {
                 // Replace this implementation with code to handle the error appropriately.
                 // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
-                Log.errorComponent(CoreDataUtil.comp, error: nserror)
+                Log.errorComponent(CoreDataUtilOld.comp, error: nserror)
                 abort()
             }
         }

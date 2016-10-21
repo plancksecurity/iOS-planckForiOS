@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 class AccountsFoldersViewController: UITableViewController {
     let comp = "AccountsFoldersViewController"
 
@@ -30,7 +32,7 @@ class AccountsFoldersViewController: UITableViewController {
     let folderSection = 0
 
     var appConfig: AppConfig!
-    var accounts = [CdAccount]()
+    var accounts = [Account]()
 
     /** For email list configuration */
     var emailListConfig: EmailListViewController.EmailListConfig?
@@ -90,14 +92,7 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func updateModel() {
-        guard let model = appConfig?.model else {
-            return
-        }
-        if let allAccounts = model.accountsByPredicate(
-            NSPredicate.init(value: true),
-            sortDescriptors: [NSSortDescriptor.init(key: "email", ascending: true)]) {
-            accounts = allAccounts
-        }
+        accounts = Account.all
         tableView.reloadData()
     }
 
@@ -115,7 +110,8 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func refreshMailsControl(_ refreshControl: UIRefreshControl? = nil) {
-        guard let ac = appConfig else {
+        // TODO: IOS 222: Somehow trigger a refetch of emails
+        guard let _ = appConfig else {
             return
         }
 
@@ -123,20 +119,15 @@ class AccountsFoldersViewController: UITableViewController {
             return
         }
 
-        let connectInfos = accounts.map({return $0.connectInfo})
+        var connectInfos = [ImapSmtpConnectInfo]()
+        for ac in accounts {
+            if let ci = ac.connectInfo {
+                connectInfos.append(ci)
+            }
+        }
 
         state.isSynching = true
         updateUI()
-
-        ac.grandOperator.fetchEmailsAndDecryptConnectInfos(
-            connectInfos, folderName: nil,
-            completionBlock: { error in
-                Log.infoComponent(self.comp, "Sync completed, error: \(error)")
-                UIHelper.displayError(error, controller: self)
-                ac.model.save()
-                self.state.isSynching = false
-                self.updateUI()
-        })
     }
 
     func updateUI() {
@@ -161,7 +152,7 @@ class AccountsFoldersViewController: UITableViewController {
         if accounts.isEmpty {
             return 0
         } else {
-        return numberOfSections
+            return numberOfSections
         }
     }
 
@@ -194,7 +185,7 @@ class AccountsFoldersViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: standardCell, for: indexPath)
 
-            let email = accounts[(indexPath as NSIndexPath).row].email
+            let email = accounts[(indexPath as NSIndexPath).row].user.address
             cell.textLabel?.text = String.init(
                 format: NSLocalizedString(
                     "Inbox (%@)", comment: "Table view label for an inbox for an account"), email)
@@ -205,7 +196,7 @@ class AccountsFoldersViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: standardCell, for: indexPath)
 
-            cell.textLabel?.text = accounts[(indexPath as NSIndexPath).row].email
+            cell.textLabel?.text = accounts[(indexPath as NSIndexPath).row].user.address
             cell.accessoryType = .disclosureIndicator
 
             return cell
@@ -237,7 +228,7 @@ class AccountsFoldersViewController: UITableViewController {
 
             let predicateInbox = basicInboxPredicate()
             let predicateAccount = NSPredicate.init(
-                format: "folder.account.email = %@", account.email)
+                format: "folder.account.email = %@", account.user.address)
             let predicates: [NSPredicate] = [predicateInbox, predicateAccount]
             let predicate = NSCompoundPredicate.init(
                 andPredicateWithSubpredicates: predicates)

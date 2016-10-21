@@ -44,7 +44,7 @@ class TrustWordsViewController: UITableViewController {
                 for contact in ar {
                     if let c = contact as? CdContact {
                         if c.isMySelf.boolValue {
-                            if appConfig.currentAccount?.email != c.email {
+                            if appConfig.currentAccount?.user.address != c.email {
                                 allRecipientsFiltered.append(c)
                                 otherMyselfAccount.add(c)
                             }

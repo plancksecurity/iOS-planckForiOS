@@ -28,7 +28,6 @@ fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
 open class ModelUserInfoTable {
 
     open var email: String?

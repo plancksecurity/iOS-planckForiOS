@@ -9,12 +9,14 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {
-    let connectInfo: ConnectInfo
-    let coreDataUtil: ICoreDataUtil
+    let connectInfo: ImapSmtpConnectInfo
+    let coreDataUtil: CoreDataUtil
     open let backgroundQueue: OperationQueue?
 
-    public init(coreDataUtil: ICoreDataUtil, connectInfo: ConnectInfo,
+    public init(coreDataUtil: CoreDataUtil, connectInfo: ImapSmtpConnectInfo,
                 backgroundQueue: OperationQueue) {
         self.connectInfo = connectInfo
         self.coreDataUtil = coreDataUtil
@@ -40,7 +42,7 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
 open class FetchFoldersOperation: ConcurrentBaseOperation {
     let comp = "FetchFoldersOperation"
     var imapSync: ImapSync!
-    let connectInfo: ConnectInfo
+    let connectInfo: ImapSmtpConnectInfo
     let connectionManager: ConnectionManager
     var folderBuilder: ImapFolderBuilder!
 
@@ -50,7 +52,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(connectInfo: ConnectInfo, coreDataUtil: ICoreDataUtil,
+    public init(connectInfo: ImapSmtpConnectInfo, coreDataUtil: CoreDataUtil,
                 connectionManager: ConnectionManager, onlyUpdateIfNecessary: Bool) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.connectInfo = connectInfo
@@ -63,7 +65,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
                                                backgroundQueue: backgroundQueue)
     }
 
-    convenience public init(connectInfo: ConnectInfo, coreDataUtil: ICoreDataUtil,
+    convenience public init(connectInfo: ImapSmtpConnectInfo, coreDataUtil: CoreDataUtil,
                             connectionManager: ConnectionManager) {
         self.init(connectInfo: connectInfo, coreDataUtil: coreDataUtil,
                   connectionManager: connectionManager, onlyUpdateIfNecessary: false)

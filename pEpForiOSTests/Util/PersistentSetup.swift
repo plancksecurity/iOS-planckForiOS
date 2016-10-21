@@ -9,10 +9,11 @@
 import UIKit
 import XCTest
 
+import MessageModel
 import pEpForiOS
 
 class PersistentSetup {
-    let coreDataUtil: ICoreDataUtil
+    let coreDataUtil: CoreDataUtil
     let connectionInfo = TestData.connectInfo
     let connectionManager = ConnectionManager.init()
     let backgroundQueue = OperationQueue.init()
@@ -36,7 +37,7 @@ class PersistentSetup {
                                                backgroundQueue: backgroundQueue)
 
         model = CdModel.init(context: coreDataUtil.managedObjectContext)
-        account = model.insertAccountFromConnectInfo(connectionInfo)
+        account = model.insertAccountFromImapSmtpConnectInfo(connectionInfo)
     }
 
     deinit {

@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -74,7 +76,7 @@ public protocol ICdModel {
      Fetch a folder by name and account email, and type.
      Will not return folders that are scheduled for deletion (where `shouldDelete` is true).
      */
-    func folderByName(_ name: String, email: String, folderType: CdAccount.AccountType) -> CdFolder?
+    func folderByName(_ name: String, email: String, folderType: Server.ServerType) -> CdFolder?
 
     /**
      Fetch a folder by name and account email, even those scheduled for deletion
@@ -101,7 +103,7 @@ public protocol ICdModel {
     func setAccountAsLastUsed(_ account: CdAccount) -> CdAccount
     func fetchLastAccount() -> CdAccount?
 
-    func insertAccountFromConnectInfo(_ connectInfo: ConnectInfo) -> CdAccount
+    func insertAccountFromImapSmtpConnectInfo(_ connectInfo: ImapSmtpConnectInfo) -> CdAccount
     func insertNewMessage() -> CdMessage
 
     /**
@@ -304,7 +306,7 @@ open class CdModel: ICdModel {
         return nil
     }
 
-    func newAccountFromConnectInfo(_ connectInfo: ConnectInfo) -> CdAccount {
+    func newAccountFromImapSmtpConnectInfo(_ connectInfo: ImapSmtpConnectInfo) -> CdAccount {
         let account = NSEntityDescription.insertNewObject(
             forEntityName: CdAccount.entityName(), into: context) as! CdAccount
         account.nameOfTheUser = connectInfo.nameOfTheUser
@@ -323,18 +325,18 @@ open class CdModel: ICdModel {
         return account
     }
 
-    open func insertAccountFromConnectInfo(_ connectInfo: ConnectInfo) -> CdAccount {
+    open func insertAccountFromImapSmtpConnectInfo(_ connectInfo: ImapSmtpConnectInfo) -> CdAccount {
         if let ac = accountByEmail(connectInfo.email) {
             return ac
         }
 
-        let account = newAccountFromConnectInfo(connectInfo)
+        let account = newAccountFromImapSmtpConnectInfo(connectInfo)
         save()
         let _ = KeyChain.addEmail(connectInfo.email,
-                                  serverType: CdAccount.AccountType.imap.asString(),
+                                  serverType: Server.ServerType.imap.asString(),
                                   password: connectInfo.imapPassword)
         let _ = KeyChain.addEmail(connectInfo.email,
-                                  serverType: CdAccount.AccountType.smtp.asString(),
+                                  serverType: Server.ServerType.smtp.asString(),
                                   password: connectInfo.getSmtpPassword())
         return account
     }
@@ -374,14 +376,14 @@ open class CdModel: ICdModel {
 
     open func setAccountAsLastUsed(_ account: CdAccount) -> CdAccount {
         UserDefaults.standard.set(
-            account.email, forKey: CdAccount.kSettingLastAccountEmail)
+            account.email, forKey: Constants.kSettingLastAccountEmail)
         UserDefaults.standard.synchronize()
         return account
     }
 
     open func fetchLastAccount() -> CdAccount? {
         let lastEmail = UserDefaults.standard.string(
-            forKey: CdAccount.kSettingLastAccountEmail)
+            forKey: Constants.kSettingLastAccountEmail)
 
         var predicate = NSPredicate.init(value: true)
 
@@ -421,7 +423,7 @@ open class CdModel: ICdModel {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                Log.errorComponent(CoreDataUtil.comp, error: nserror)
+                Log.errorComponent(comp, error: nserror)
                 abort()
             }
         }
@@ -592,7 +594,7 @@ open class CdModel: ICdModel {
     }
 
     open func folderByName(
-        _ name: String, email: String, folderType: CdAccount.AccountType) -> CdFolder? {
+        _ name: String, email: String, folderType: Server.ServerType) -> CdFolder? {
         let p1 = folderPredicateByName(name, email: email)
         let p2 = NSPredicate.init(format: "folderType = %d", folderType.rawValue)
         let p3 = NSPredicate.init(format: "shouldDelete == false")

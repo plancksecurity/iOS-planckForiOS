@@ -21,7 +21,7 @@ open class Service: IService {
     open let ErrorAuthenticationFailed = 10
     open let ErrorConnectionTimedOut = 1001
 
-    let connectInfo: ConnectInfo
+    let connectInfo: ImapSmtpConnectInfo
 
     var service: CWService!
 
@@ -35,7 +35,7 @@ open class Service: IService {
      */
     var memoryLeakData: Data?
 
-    public init(connectInfo: ConnectInfo) {
+    public init(connectInfo: ImapSmtpConnectInfo) {
         self.connectInfo = connectInfo
 
         service = self.createService()

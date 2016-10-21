@@ -30,29 +30,4 @@ open class MiscUtil {
         }
         return false
     }
-
-    /**
-     Transfers all address book contacts with a valid email into the database.
-     - Parameter privateContext: A private managed object context for processing in the background
-     - Parameter blockFinished: An optional callback, which gets the inserted contacts as parameter.
-     */
-    open static func transferAddressBook(
-        _ privateContext: NSManagedObjectContext,
-        blockFinished: (([CdContact]) -> ())? = nil) {
-        privateContext.perform() {
-            var insertedContacts = [CdContact]()
-            let model = CdModel.init(context: privateContext)
-            let ab = AddressBook()
-            let contacts = ab.allContacts()
-            for c in contacts {
-                let newCon = model.insertOrUpdateContactEmail(c.email, name: c.name)
-                newCon.addressBookID = c.addressBookID
-                insertedContacts.append(newCon)
-            }
-            model.save()
-            if let block = blockFinished {
-                block(insertedContacts)
-            }
-        }
-    }
 }
