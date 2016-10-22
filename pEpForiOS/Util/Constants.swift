@@ -43,6 +43,11 @@ open class Constants {
      */
     open static let contentTypeMultipartAlternative = "multipart/alternative"
 
+    /**
+     The MIME type for attached emails (e.g., when forwarding).
+     */
+    open static let attachedEmailMimeType = "message/rfc822"
+
     public enum GeneralErrorCode: Int {
         case notImplemented = 1000
         case illegalState
