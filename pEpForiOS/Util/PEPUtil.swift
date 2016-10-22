@@ -244,6 +244,8 @@ open class PEPUtil {
         var contact = PEPContact()
         contact[kPepAddress] = identity.address as AnyObject
         contact[kPepUsername] = identity.userName as AnyObject
+        contact[kPepIsMe] = identity.isMySelf as AnyObject
+        contact[kPepUserID] = identity.userID as AnyObject
         return contact
     }
 
@@ -278,7 +280,7 @@ open class PEPUtil {
 
         dict[kPepMimeFilename] = attachment.fileName as AnyObject
         dict[kPepMimeType] = attachment.mimeType as AnyObject
-        dict[kPepMimeData] = attachment.data
+        dict[kPepMimeData] = attachment.data as AnyObject
 
         return dict
     }
@@ -441,6 +443,10 @@ open class PEPUtil {
      */
     open static func pantomimeMailFromMessage(_ message: CdMessage) -> CWIMAPMessage {
         return pantomimeMailFromPep(pepMail(message))
+    }
+
+    open static func pantomimeMail(message: Message) -> CWIMAPMessage {
+        return pantomimeMailFromPep(pEp(message: message))
     }
 
     /**
@@ -610,6 +616,14 @@ open class PEPUtil {
                                               session: PEPSession? = nil) -> PEP_color {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
+        let color = theSession.identityColor(pepC)
+        return colorFromPepRating(color)
+    }
+
+    open static func privacyColor(identity: Identity,
+                                  session: PEPSession? = nil) -> PEP_color {
+        let theSession = useOrCreateSession(session)
+        let pepC = pEp(identity: identity)
         let color = theSession.identityColor(pepC)
         return colorFromPepRating(color)
     }
