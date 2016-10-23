@@ -8,9 +8,11 @@
 
 import UIKit
 
+import MessageModel
+
 class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegate {
-    var message: CdMessage?
-    var partner: CdContact?
+    var message: Message?
+    var partner: Identity?
     var appConfig: AppConfig!
     var hexamode: Bool = false
 
@@ -56,7 +58,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             return cell
         } else if ((indexPath as NSIndexPath).row == partnerContact) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! HandshakeLabelTableViewCell
-            cell.handshakeLabel.text = partner!.displayString()
+            cell.handshakeLabel.text = partner?.displayString
             return cell
         } else if ((indexPath as NSIndexPath).row == explanationTrustwords) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
@@ -67,7 +69,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
             if let p = partner, let myselfEmail = appConfig.currentAccount?.user.address,
                 let myselfContact = appConfig.model.contactByEmail(myselfEmail) {
-                let partnerPepContact = PEPUtil.pepContact(p)
+                let partnerPepContact = PEPUtil.pEp(identity: p)
                 let myselfContactPepContact = PEPUtil.pepContact(myselfContact)
                 let recognizer = UITapGestureRecognizer(target: self, action:#selector(HandshakeViewController.handleTap(_:)))
                 recognizer.delegate = self

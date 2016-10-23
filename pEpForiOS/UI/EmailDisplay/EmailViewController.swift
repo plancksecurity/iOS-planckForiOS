@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import WebKit
 
+import MessageModel
+
 class EmailViewController: UIViewController {
     /** Segue name for replying to the sender (from) */
     let segueReplyFrom = "segueReplyFrom"
@@ -31,7 +33,7 @@ class EmailViewController: UIViewController {
     let headerView = EmailHeaderView.init()
     var webView: WKWebView!
 
-    var message: CdMessage!
+    var message: Message!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,8 +55,7 @@ class EmailViewController: UIViewController {
         headerView.update(view.bounds.size.width)
 
         // Mark as read. Duh!
-        message.flagSeen = true
-        message.updateFlags()
+        message.imapFlags.seen = true
         appConfig.model.save()
 
         if webView.scrollView.contentInset.top == 0 {

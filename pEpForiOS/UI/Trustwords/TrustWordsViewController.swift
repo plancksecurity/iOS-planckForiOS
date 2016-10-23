@@ -8,9 +8,11 @@
 
 import UIKit
 
+import MessageModel
+
 class TrustWordsViewController: UITableViewController {
     var appConfig: AppConfig!
-    var message: CdMessage?
+    var message: Message?
 
     /** All recipients to be able to do a handshake */
     var allRecipientsFiltered = [CdContact]()

@@ -23,7 +23,15 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-//import NSEvent
+class PhotoAttachment {
+    static let contentType = "image/JPEG"
+
+    let image: UIImage
+
+    init(image: UIImage) {
+        self.image = image
+    }
+}
 
 open class ComposeViewController: UITableViewController, UINavigationControllerDelegate {
     struct UIModel {
@@ -54,7 +62,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         /**
          If there are attachments, they should be stored here, and displayed in the view.
          */
-        var attachments = [SimpleAttachment]()
+        var attachments = [Attachment]()
 
         /**
          Set to `true` as soon as the user has changed the body text, or added a recipient.
@@ -133,7 +141,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      The message we're constructing
      */
-    var messageToSend: CdMessage?
+    var messageToSend: Message?
 
     /**
      For determining if we give the focus to the to text field.
@@ -188,7 +196,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      For certain values of `composeMode`, there will be an email to act on
      (like reply, forward, compose draft). This is it.
      */
-    var originalMessage: CdMessage?
+    var originalMessage: Message?
 
     /**
      The original text attributes from a recipient cell text.
@@ -214,19 +222,16 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         super.viewWillAppear(animated)
         if let forwardedMessage = forwardedMessage() {
             // If we forward a message, add its contents as data
-            if let ac = appConfig {
-                let op = MessageToAttachmentOperation.init(
-                    message: forwardedMessage, coreDataUtil: ac.coreDataUtil)
-                op.completionBlock = {
-                    GCD.onMain() {
-                        if let attch = op.attachment {
-                            self.model.attachments.append(attch)
-                            // TODO: Update attachment display!
-                        }
+            let op = MessageToAttachmentOperation.init(message: forwardedMessage)
+            op.completionBlock = {
+                GCD.onMain() {
+                    if let attch = op.attachment {
+                        self.model.attachments.append(attch)
+                        // TODO: Update attachment display!
                     }
                 }
-                operationQueue.addOperation(op)
             }
+            operationQueue.addOperation(op)
         }
 
         overrideBackButton()
@@ -408,22 +413,21 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      Updates the given message with data from the view.
      */
-    func populateMessage(message: CdMessage, account: Account,
-                         model: ICdModel) {
+    func populate(message: Message, account: Account,
+                  model: ICdModel) {
         // reset
         message.to = []
         message.cc = []
         message.bcc = []
 
-        message.subject = nil
+        message.shortMessage = nil
         message.longMessage = nil
         message.longMessageFormatted = nil
 
         message.references = []
 
         // from
-        message.from = model.insertOrUpdateContactEmail(account.user.address,
-                                                        name: account.user.userName)
+        message.from = account.user
 
         // recipients
         for (_, cell) in recipientCells {
@@ -437,9 +441,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                     let mailStrings2 = mailStrings1.filter() {
                         !$0.isOnlyWhiteSpace()
                     }
-                    let contacts: [CdContact] = mailStrings2.map() {
-                        let c = model.insertOrUpdateContactEmail($0, name: nil)
-                        return c
+                    let contacts: [Identity] = mailStrings2.map() {
+                        return Identity.create(address: $0)
                     }
                     if contacts.count > 0 {
                         if let rt = cell.recipientType {
@@ -471,7 +474,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      Updates the given message with data from the original message,
      if it exists (e.g., reply)
      */
-    func populateMessageWithReplyData(_ message: CdMessage) {
+    func populateWithReplyData(message: Message) {
         guard let om = replyFromMessage() else {
             return
         }
@@ -481,7 +484,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             return
         }
 
-        setupMessageReferences(om, message: message, model: model)
+        setupMessageReferences(parent: om, message: message, model: model)
     }
 
     /**
@@ -489,7 +492,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      and a child message (i.e., the message containing the reply).
      See https://cr.yp.to/immhf/thread.html for general strategy.
      */
-    func setupMessageReferences(_ parent: CdMessage, message: CdMessage, model: ICdModel) {
+    func setupMessageReferences(parent: Message, message: Message, model: ICdModel) {
         // Inherit all references from the parent
         message.references = parent.references
 
@@ -509,7 +512,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      - Note: The forwarded mail attachment was already added to the model,
      it will be handled by the general attachment handling in another function.
      */
-    func populateMessageWithForwardedData(_ message: CdMessage) {
+    func populateWithForwardedData(message: Message) {
         guard let _ = forwardedMessage() else {
             return
         }
@@ -520,7 +523,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         }
     }
 
-    func populateMessage(_ message: CdMessage, withAttachmentsFromTextView theTextView: UITextView?) {
+    func populate(message: Message, withAttachmentsFromTextView theTextView: UITextView?) {
         guard let textView = theTextView else {
             Log.warnComponent(comp, "Trying to get attachments, but no text view")
             return
@@ -535,7 +538,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         }
     }
 
-    func messageForSending() -> CdMessage? {
+    func messageForSending() -> Message? {
         guard let appC = appConfig else {
             Log.warnComponent(
                 comp, "Really need a non-nil appConfig for creating send message")
@@ -547,8 +550,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         }
 
         if messageToSend == nil {
-            messageToSend = appC.model.insertNewMessageForSendingFromAccountEmail(
-                account.user.address)
+            messageToSend = Message.create(uuid: "")
+            // TODO: IOS-222: Take account into consideration
         }
 
         guard let msg = messageToSend else {
@@ -556,10 +559,10 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             return nil
         }
 
-        populateMessage(message: msg, account: account, model: appC.model)
-        populateMessageWithReplyData(msg)
-        populateMessageWithForwardedData(msg)
-        populateMessage(msg, withAttachmentsFromTextView: longBodyMessageTextView)
+        populate(message: msg, account: account, model: appC.model)
+        populateWithReplyData(message: msg)
+        populateWithForwardedData(message: msg)
+        populate(message: msg, withAttachmentsFromTextView: longBodyMessageTextView)
 
         return msg
     }
@@ -705,7 +708,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      - Returns: The original message to be replied on, if it's a reply.
      */
-    func replyFromMessage() -> CdMessage? {
+    func replyFromMessage() -> Message? {
         if composeMode == .replyFrom {
             if let om = originalMessage {
                 return om
@@ -717,7 +720,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      - Returns: The message that has to be forwarded.
      */
-    func forwardedMessage() -> CdMessage? {
+    func forwardedMessage() -> Message? {
         if composeMode == .forward {
             if let om = originalMessage {
                 return om
@@ -729,7 +732,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      - Returns: The draft message that should be used as a base for the compose.
      */
-    func composeFromDraftMessage() -> CdMessage? {
+    func composeFromDraftMessage() -> Message? {
         if composeMode == .composeDraft {
             if let om = originalMessage {
                 return om
@@ -963,29 +966,25 @@ extension ComposeViewController: UIImagePickerControllerDelegate {
             return
         }
 
-        let photoAttachment = SimpleAttachment.init(
-            filename: nil, contentType: "image/JPEG", data: nil, image: attachedImage)
+        let photoAttachment = PhotoAttachment.init(image: attachedImage)
 
         model.attachments.append(photoAttachment)
-        insertPhotoAttachment(photoAttachment)
+        insert(imageAttachment: photoAttachment)
 
         dismiss(animated: true, completion: nil)
     }
 
-    func insertPhotoAttachment(_ attachment: SimpleAttachment) {
-        guard let image = attachment.image else {
-            return
-        }
+    func insert(imageAttachment: PhotoAttachment) {
         guard let textView = longBodyMessageTextView else {
             return
         }
 
         let textAttachment = NSTextAttachment()
-        textAttachment.image = image
+        textAttachment.image = imageAttachment.image
         let imageString = NSAttributedString(attachment:textAttachment)
 
         textAttachment.bounds = obtainContainerToMaintainRatio(
-            textView.bounds.width, rectangle: image.size)
+            textView.bounds.width, rectangle: imageAttachment.image.size)
 
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString.init(attributedString: textView.attributedText)

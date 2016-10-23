@@ -82,13 +82,13 @@ class EmailListViewController: FetchTableViewController {
     /**
      The message that should be saved as a draft when compose gets aborted.
      */
-    var draftMessageToStore: CdMessage?
+    var draftMessageToStore: Message?
 
     /**
      When the user taps on a draft email, this is the message that was selected
      and should be given to the compose view.
      */
-    var draftMessageToCompose: CdMessage?
+    var draftMessageToCompose: Message?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
