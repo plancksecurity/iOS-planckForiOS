@@ -33,25 +33,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class EmailListViewController: FetchTableViewController {
+class EmailListViewController: UITableViewController {
     struct EmailListConfig {
         let appConfig: AppConfig
 
-        /** Set to whatever criteria you want to have mails displayed */
-        let predicate: NSPredicate?
-
-        /** The sort descriptors to be used for displaying emails */
-        let sortDescriptors: [NSSortDescriptor]?
-
-        /** If applicable, the account to refresh from */
-        let account: Account?
-
-        /** If applicable, the folder name to sync */
-        let folderName: String?
-
-        /** Should there be a sync directly when the view appears? */
-        let syncOnAppear: Bool
+        /** The folder to display, if it exists */
+        let folder: Folder?
     }
+
+    var comp = "EmailListViewController"
 
     struct UIState {
         var isSynching: Bool = false
@@ -104,46 +94,12 @@ class EmailListViewController: FetchTableViewController {
     }
 
     override func viewDidLoad() {
-        refreshController = UIRefreshControl.init()
-        refreshController.addTarget(self, action: #selector(self.fetchMailsRefreshControl(_:)),
-                                    for: UIControlEvents.valueChanged)
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        // Disable fetching if there is no account
-        if config.account != nil {
-            self.refreshControl = refreshController
-        } else {
-            self.refreshControl = nil
-        }
-
-        prepareFetchRequest()
-        if config.syncOnAppear {
-            fetchMailsRefreshControl()
-        }
+        updateModel()
         super.viewWillAppear(animated)
-    }
-
-    func fetchMailsRefreshControl(_ refreshControl: UIRefreshControl? = nil) {
-        if let account = config.account, let connectInfo = account.connectInfo {
-            state.isSynching = true
-            updateUI()
-
-            config.appConfig.grandOperator.fetchEmailsAndDecryptImapSmtp(connectInfos: 
-                [connectInfo], folderName: config.folderName,
-                completionBlock: { error in
-                    Log.infoComponent(self.comp, "Sync completed, error: \(error)")
-                    UIHelper.displayError(error, controller: self)
-                    self.config.appConfig.model.save()
-                    self.state.isSynching = false
-                    refreshControl?.endRefreshing()
-                    self.updateUI()
-            })
-        } else {
-            state.isSynching = false
-            updateUI()
-        }
     }
 
     @IBAction func mailSentSegue(_ segue: UIStoryboardSegue) {
@@ -153,37 +109,17 @@ class EmailListViewController: FetchTableViewController {
     }
 
     @IBAction func backFromComposeSaveDraftSegue(_ segue: UIStoryboardSegue) {
-        guard let msg = draftMessageToStore else {
+        guard let _ = draftMessageToStore else {
             return
         }
 
         state.isSynching = true
         updateUI()
 
-        config.appConfig.grandOperator.saveDraftMail(
-            msg, account: msg.folder.account, completionBlock: { error in
-                GCD.onMain() {
-                    UIHelper.displayError(error, controller: self)
-                    self.state.isSynching = false
-                    self.updateUI()
-                }
-        })
+        // TODO: IOS 222: Save as draft
     }
 
-    func prepareFetchRequest() {
-        let fetchRequest = NSFetchRequest<NSManagedObject>.init(entityName: CdMessage.entityName())
-        fetchRequest.predicate = config.predicate
-        fetchRequest.sortDescriptors = config.sortDescriptors
-        fetchController = NSFetchedResultsController.init(
-            fetchRequest: fetchRequest,
-            managedObjectContext: config.appConfig.coreDataUtil.managedObjectContext,
-            sectionNameKeyPath: nil, cacheName: nil)
-        fetchController?.delegate = self
-        do {
-            try fetchController?.performFetch()
-        } catch let err as NSError {
-            Log.errorComponent(comp, error: err)
-        }
+    func updateModel() {
     }
 
     // MARK: - UI State
@@ -198,19 +134,15 @@ class EmailListViewController: FetchTableViewController {
     // MARK: - UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let count = fetchController?.sections?.count {
-            return count
-        } else {
-            return 0
+        if let _ = config.folder {
+            return 1
         }
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if fetchController?.sections?.count > 0 {
-            if let sections = fetchController?.sections {
-                let sectionInfo = sections[section]
-                return sectionInfo.numberOfObjects
-            }
+        if let fol = config.folder {
+            return fol.messageCount()
         }
         return 0
     }
@@ -235,8 +167,7 @@ class EmailListViewController: FetchTableViewController {
 
         let cell = tableView.cellForRow(at: indexPath)
 
-        if let fn = config.folderName, let ac = config.account,
-            let folder = config.appConfig.model.folderByName(fn, email: ac.user.address) {
+        if fol = config.folder) {
             if folder.folderType.intValue == FolderType.drafts.rawValue {
                 draftMessageToCompose = fetchController?.object(at: indexPath)
                     as? CdMessage
