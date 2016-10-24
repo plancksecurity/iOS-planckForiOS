@@ -14,61 +14,61 @@ open class ComposeViewHelper {
      method for checking the pEp color rating, it's not exhaustive!
      */
     open static func pepMailFromViewForCheckingRating(_ vc: ComposeViewController) -> PEPMail? {
-            var message = PEPMail()
-            for (_, cell) in vc.recipientCells {
-                let tf = cell.recipientTextView
-                if let text = tf?.text {
-                    let mailStrings0 = text.removeLeadingPattern(vc.leadingPattern)
-                    if !mailStrings0.isOnlyWhiteSpace() {
-                        let mailStrings1 = mailStrings0.components(
-                            separatedBy: vc.recipientStringDelimiter).map() {
-                                $0.trimmedWhiteSpace()
-                        }
+        var message = PEPMail()
+        for (_, cell) in vc.recipientCells {
+            let tf = cell.recipientTextView
+            if let text = tf?.text {
+                let mailStrings0 = text.removeLeadingPattern(vc.leadingPattern)
+                if !mailStrings0.isOnlyWhiteSpace() {
+                    let mailStrings1 = mailStrings0.components(
+                        separatedBy: vc.recipientStringDelimiter).map() {
+                            $0.trimmedWhiteSpace()
+                    }
 
-                        let mailStrings2 = mailStrings1.filter() {
-                            !$0.isOnlyWhiteSpace()
+                    let mailStrings2 = mailStrings1.filter() {
+                        !$0.isOnlyWhiteSpace()
+                    }
+                    let model = vc.appConfig?.model
+                    let contacts: [PEPContact] = mailStrings2.map() {
+                        if let c = model?.contactByEmail($0) {
+                            return PEPUtil.pepContact(c)
                         }
-                        let model = vc.appConfig?.model
-                        let contacts: [PEPContact] = mailStrings2.map() {
-                            if let c = model?.contactByEmail($0) {
-                                return PEPUtil.pepContact(c)
+                        return PEPUtil.pepContactFromEmail($0, name: $0.namePartOfEmail())
+                    }
+                    if contacts.count > 0 {
+                        if let rt = cell.recipientType {
+                            var pepKey: String? = nil
+                            switch rt {
+                            case .to:
+                                pepKey = kPepTo
+                            case .cc:
+                                pepKey = kPepCC
+                            case .bcc:
+                                pepKey = kPepBCC
                             }
-                            return PEPUtil.pepContactFromEmail($0, name: $0.namePartOfEmail())
-                        }
-                        if contacts.count > 0 {
-                            if let rt = cell.recipientType {
-                                var pepKey: String? = nil
-                                switch rt {
-                                case .to:
-                                    pepKey = kPepTo
-                                case .cc:
-                                    pepKey = kPepCC
-                                case .bcc:
-                                    pepKey = kPepBCC
-                                }
-                                if let key = pepKey {
-                                    message[key] = NSArray.init(array: contacts)
-                                }
+                            if let key = pepKey {
+                                message[key] = NSArray.init(array: contacts)
                             }
                         }
                     }
                 }
             }
+        }
 
-            guard let account = vc.appConfig?.currentAccount else {
-                Log.warnComponent(vc.comp, "Need valid account for determining pEp rating")
-                return nil
-            }
-            message[kPepFrom] = PEPUtil.pepContact(identity: account.user) as AnyObject?
+        guard let account = vc.appConfig?.currentAccount else {
+            Log.warnComponent(vc.comp, "Need valid account for determining pEp rating")
+            return nil
+        }
+        message[kPepFrom] = PEPUtil.pEp(identity: account.user) as AnyObject?
 
-            if let subjectText = vc.subjectTextField?.text {
-                message[kPepShortMessage] = subjectText as AnyObject?
-            }
-            if let bodyText = vc.longBodyMessageTextView?.text {
-                message[kPepLongMessage] = bodyText as AnyObject?
-            }
-            message[kPepOutgoing] = NSNumber.init(booleanLiteral: true)
-            return message
+        if let subjectText = vc.subjectTextField?.text {
+            message[kPepShortMessage] = subjectText as AnyObject?
+        }
+        if let bodyText = vc.longBodyMessageTextView?.text {
+            message[kPepLongMessage] = bodyText as AnyObject?
+        }
+        message[kPepOutgoing] = NSNumber.init(booleanLiteral: true)
+        return message
     }
 
     open static func currentRecipientRangeFromText(

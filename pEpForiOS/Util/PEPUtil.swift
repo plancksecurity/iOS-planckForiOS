@@ -240,11 +240,20 @@ open class PEPUtil {
         return contact
     }
 
-    open static func pepContact(identity: Identity) -> PEPContact {
+    open static func pEp(identity: Identity) -> PEPContact {
         var contact = PEPContact()
         contact[kPepAddress] = identity.address as AnyObject
         contact[kPepUsername] = identity.userName as AnyObject
+        contact[kPepIsMe] = identity.isMySelf as AnyObject
+        contact[kPepUserID] = identity.userID as AnyObject
         return contact
+    }
+
+    open static func pEpOptional(identity: Identity?) -> PEPContact? {
+        guard let id = identity else {
+            return nil
+        }
+        return pEp(identity: id)
     }
 
     /**
@@ -262,6 +271,38 @@ open class PEPUtil {
             dict[kPepMimeType] = contentType
         }
         dict[kPepMimeData] = attachment.data
+
+        return dict
+    }
+
+    open static func pEp(attachment: Attachment) -> [String: AnyObject] {
+        var dict = [String: AnyObject]()
+
+        dict[kPepMimeFilename] = attachment.fileName as AnyObject
+        dict[kPepMimeType] = attachment.mimeType as AnyObject
+        dict[kPepMimeData] = attachment.data as AnyObject
+
+        return dict
+    }
+
+    open static func pEp(message: Message, outgoing: Bool = true) -> PEPMail {
+        var dict = PEPMail()
+
+        dict[kPepShortMessage] = message.shortMessage as AnyObject
+
+        dict[kPepTo] = NSArray.init(array: message.to.map() { return pEp(identity: $0) })
+        dict[kPepCC] = NSArray.init(array: message.cc.map() { return pEp(identity: $0) })
+        dict[kPepBCC] = NSArray.init(array: message.bcc.map() { return pEp(identity: $0) })
+
+        dict[kPepFrom]  = pEpOptional(identity: message.from) as AnyObject
+        dict[kPepID] = message.messageID as AnyObject
+        dict[kPepOutgoing] = outgoing as AnyObject?
+
+        dict[kPepAttachments] = NSArray.init(array: message.attachments.map() {
+            return pEp(attachment: $0)
+        })
+
+        dict[kPepReferences] = message.references as AnyObject
 
         return dict
     }
@@ -402,6 +443,10 @@ open class PEPUtil {
      */
     open static func pantomimeMailFromMessage(_ message: CdMessage) -> CWIMAPMessage {
         return pantomimeMailFromPep(pepMail(message))
+    }
+
+    open static func pantomimeMail(message: Message) -> CWIMAPMessage {
+        return pantomimeMailFromPep(pEp(message: message))
     }
 
     /**
@@ -571,6 +616,14 @@ open class PEPUtil {
                                               session: PEPSession? = nil) -> PEP_color {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
+        let color = theSession.identityColor(pepC)
+        return colorFromPepRating(color)
+    }
+
+    open static func privacyColor(identity: Identity,
+                                  session: PEPSession? = nil) -> PEP_color {
+        let theSession = useOrCreateSession(session)
+        let pepC = pEp(identity: identity)
         let color = theSession.identityColor(pepC)
         return colorFromPepRating(color)
     }

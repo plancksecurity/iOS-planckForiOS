@@ -184,7 +184,7 @@ open class SMTPSettingsTableView: UITableViewController {
 }
 
 extension SMTPSettingsTableView: AccountDelegate {
-    public func didVerifyAccount(_ account: Account, error: NSError?) {
+    public func didVerify(account: Account, error: NSError?) {
         self.status.activityIndicatorViewEnable = false
         self.updateView()
 
