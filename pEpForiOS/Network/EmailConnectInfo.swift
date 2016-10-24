@@ -64,16 +64,14 @@ public enum EmailProtocol: String {
  Holds additional connection info (like server, port etc.) for IMAP and SMTP.
  */
 public protocol IEmailConnectInfo: IConnectInfo {
-    var emailProtocol: EmailProtocol { get }
-    
+    var emailProtocol: EmailProtocol? { get }
     var connectionTransport: ConnectionTransport? { get }
     var userPassword: String? { get }
     var authMethod: AuthMethod? { get }
 }
 
 public class EmailConnectInfo: ConnectInfo {
-    public var emailProtocol: EmailProtocol
-
+    public var emailProtocol: EmailProtocol?
     public var connectionTransport: ConnectionTransport?
     public var userPassword: String?
     public var authMethod: AuthMethod?

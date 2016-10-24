@@ -103,7 +103,7 @@ public protocol ICdModel {
     func setAccountAsLastUsed(_ account: CdAccount) -> CdAccount
     func fetchLastAccount() -> CdAccount?
 
-    func insertAccountFromImapSmtpConnectInfo(_ connectInfo: ImapSmtpConnectInfo) -> CdAccount
+    func insertAccountFromEmailConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount
     func insertNewMessage() -> CdMessage
 
     /**
@@ -201,6 +201,7 @@ public protocol ICdModel {
  Core data model implementation
  */
 open class CdModel: ICdModel {
+
     let comp = "CdModel"
 
     open static let CouldNotCreateFolder = 1000
@@ -309,35 +310,40 @@ open class CdModel: ICdModel {
     func newAccountFromImapSmtpConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
         let account = NSEntityDescription.insertNewObject(
             forEntityName: CdAccount.entityName(), into: context) as! CdAccount
-        account.nameOfTheUser = connectInfo.nameOfTheUser
-        account.email = connectInfo.email
-        account.imapUsername = connectInfo.imapUsername
-        account.smtpUsername = connectInfo.smtpUsername
-        account.imapServerName = connectInfo.imapServerName
-        account.smtpServerName = connectInfo.smtpServerName
-        account.imapServerPort = NSNumber.init(value: Int16(connectInfo.imapServerPort) as Int16)
-        account.smtpServerPort = NSNumber.init(value: Int16(connectInfo.smtpServerPort) as Int16)
-        account.imapTransport = NSNumber.init(value: Int16(connectInfo.imapTransport.rawValue)
+        account.nameOfTheUser = connectInfo.userName!
+        account.email = connectInfo.userId
+        
+        // IMAP
+        if (connectInfo.emailProtocol?.rawValue.isEqual(EmailProtocol.imap.rawValue))! {
+            account.imapUsername = connectInfo.userName
+            account.imapServerName = connectInfo.networkAddress
+            account.imapServerPort = NSNumber.init(value: Int16(connectInfo.networkPort) as Int16)
+            account.imapTransport = NSNumber.init(value: Int16((connectInfo.connectionTransport?.rawValue)!)
             as Int16)
-        account.smtpTransport = NSNumber.init(value: Int16(connectInfo.smtpTransport.rawValue)
+        }
+        // SMTP
+        else {
+            account.smtpUsername = connectInfo.userName
+            account.smtpServerName = connectInfo.networkAddress
+            account.smtpServerPort = NSNumber.init(value: Int16(connectInfo.networkPort) as Int16)
+            account.smtpTransport = NSNumber.init(value: Int16((connectInfo.connectionTransport?.rawValue)!)
             as Int16)
+        }
 
         return account
     }
 
-    open func insertAccountFromImapSmtpConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
-        if let ac = accountByEmail(connectInfo.email) {
+    open func insertAccountFromEmailConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
+        if let ac = accountByEmail(connectInfo.userId) {
             return ac
         }
 
         let account = newAccountFromImapSmtpConnectInfo(connectInfo)
         save()
+        // An SMTP and IMAP account are considered seperate.
         let _ = KeyChain.addEmail(connectInfo.userId,
-                                  serverType: Server.ServerType.imap.asString(),
-                                  password: connectInfo.imapPassword)
-        let _ = KeyChain.addEmail(connectInfo.userId,
-                                  serverType: Server.ServerType.smtp.asString(),
-                                  password: connectInfo.getSmtpPassword())
+                                  serverType: (connectInfo.emailProtocol?.rawValue)!,
+                                  password: connectInfo.userPassword)
         return account
     }
 

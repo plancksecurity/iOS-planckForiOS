@@ -21,7 +21,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
     let accountID: NSManagedObjectID
 
-    let connectInfo: ImapSmtpConnectInfo
+    let connectInfo: EmailConnectInfo
 
     let connectionManager: ConnectionManager
 

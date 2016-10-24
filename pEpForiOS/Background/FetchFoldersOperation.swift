@@ -12,11 +12,11 @@ import CoreData
 import MessageModel
 
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {
-    let connectInfo: ImapSmtpConnectInfo
+    let connectInfo: EmailConnectInfo
     let coreDataUtil: CoreDataUtil
     open let backgroundQueue: OperationQueue?
 
-    public init(coreDataUtil: CoreDataUtil, connectInfo: ImapSmtpConnectInfo,
+    public init(coreDataUtil: CoreDataUtil, connectInfo: EmailConnectInfo,
                 backgroundQueue: OperationQueue) {
         self.connectInfo = connectInfo
         self.coreDataUtil = coreDataUtil
@@ -42,7 +42,7 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
 open class FetchFoldersOperation: ConcurrentBaseOperation {
     let comp = "FetchFoldersOperation"
     var imapSync: ImapSync!
-    let connectInfo: ImapSmtpConnectInfo
+    let connectInfo: EmailConnectInfo
     let connectionManager: ConnectionManager
     var folderBuilder: ImapFolderBuilder!
 
@@ -52,7 +52,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(connectInfo: ImapSmtpConnectInfo, coreDataUtil: CoreDataUtil,
+    public init(connectInfo: EmailConnectInfo, coreDataUtil: CoreDataUtil,
                 connectionManager: ConnectionManager, onlyUpdateIfNecessary: Bool) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.connectInfo = connectInfo
@@ -65,7 +65,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
                                                backgroundQueue: backgroundQueue)
     }
 
-    convenience public init(connectInfo: ImapSmtpConnectInfo, coreDataUtil: CoreDataUtil,
+    convenience public init(connectInfo: EmailConnectInfo, coreDataUtil: CoreDataUtil,
                             connectionManager: ConnectionManager) {
         self.init(connectInfo: connectInfo, coreDataUtil: coreDataUtil,
                   connectionManager: connectionManager, onlyUpdateIfNecessary: false)
@@ -85,7 +85,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
                 var needSync = false
                 let requiredTypes: [FolderType] = [.inbox, .sent, .drafts, .trash]
                 for ty in requiredTypes {
-                    if self.model.folderByType(ty, email: self.connectInfo.email) == nil {
+                    if self.model.folderByType(ty, email: self.connectInfo.userId) == nil {
                         needSync = true
                         break
                     }
@@ -185,7 +185,7 @@ extension FetchFoldersOperation: ImapSyncDelegate {
         let folderInfo = FolderInfo.init(name: folderName, separator: folderSeparator)
         let op = StoreFolderOperation.init(
             coreDataUtil: coreDataUtil, folderInfo: folderInfo,
-            email: self.connectInfo.email)
+            email: self.connectInfo.userId)
         backgroundQueue.addOperation(op)
     }
 

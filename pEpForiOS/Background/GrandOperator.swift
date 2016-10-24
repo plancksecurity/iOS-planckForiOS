@@ -43,10 +43,10 @@ public protocol IGrandOperator: class {
      - parameter completionBlock: Will be called on completion of the operation, with
      a non-nil error object if there was an error during execution.
      */
-    func fetchFolders(_ connectInfo: ImapSmtpConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
+    func fetchFolders(_ connectInfo: EmailConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asychronously fetches mails for the given `ImapSmtpConnectInfo`s
+     Asychronously fetches mails for the given `EmailConnectInfo`s
      and the given folder name and stores them into the persistent store.
      Will also decrypt them, and fetch folders if necessary.
 
@@ -55,7 +55,7 @@ public protocol IGrandOperator: class {
      a non-nil error object if there was an error during execution.
      */
     func fetchEmailsAndDecryptImapSmtp(
-        connectInfos: [ImapSmtpConnectInfo], folderName: String?,
+        connectInfos: [EmailConnectInfo], folderName: String?,
         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
@@ -72,7 +72,7 @@ public protocol IGrandOperator: class {
      Asynchronously verifies the given connection. Tests for IMAP and SMTP. The test is considered
      a success when authentication was successful.
      */
-    func verifyConnection(_ connectInfo: ImapSmtpConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
+    func verifyConnection(_ connectInfo: EmailConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Sends the given mail via SMTP. Also saves it into the drafts folder. You
@@ -186,7 +186,7 @@ open class GrandOperator: IGrandOperator {
         op.start()
     }
 
-    open func fetchFolders(_ connectInfo: ImapSmtpConnectInfo,
+    open func fetchFolders(_ connectInfo: EmailConnectInfo,
                              completionBlock: GrandOperatorCompletionBlock?) {
         let op = FetchFoldersOperation.init(
             connectInfo: connectInfo, coreDataUtil: coreDataUtil,
@@ -195,7 +195,7 @@ open class GrandOperator: IGrandOperator {
     }
 
     open func fetchEmailsAndDecryptImapSmtp(
-        connectInfos: [ImapSmtpConnectInfo], folderName: String?,
+        connectInfos: [EmailConnectInfo], folderName: String?,
         completionBlock: GrandOperatorCompletionBlock?) {
         var operations = [BaseOperation]()
         var fetchOperations = [BaseOperation]()
@@ -203,7 +203,7 @@ open class GrandOperator: IGrandOperator {
         for connectInfo in connectInfos {
             operations.append(CreateLocalSpecialFoldersOperation.init(
                 coreDataUtil: coreDataUtil,
-                accountEmail: connectInfo.email))
+                accountEmail: connectInfo.userId))
             operations.append(FetchFoldersOperation.init(
                 connectInfo: connectInfo, coreDataUtil: coreDataUtil,
                 connectionManager: connectionManager, onlyUpdateIfNecessary: true))
@@ -257,7 +257,7 @@ open class GrandOperator: IGrandOperator {
         }
     }
 
-    open func verifyConnection(_ connectInfo: ImapSmtpConnectInfo,
+    open func verifyConnection(_ connectInfo: EmailConnectInfo,
                                  completionBlock: GrandOperatorCompletionBlock?) {
         let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
         let op2 = VerifySmtpConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
