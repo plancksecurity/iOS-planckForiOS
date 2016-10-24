@@ -161,6 +161,16 @@ class EmailListViewController: UITableViewController {
         return cell
     }
 
+    /**
+     The message at the given position.
+     */
+    func messageAt(indexPath: IndexPath) -> Message? {
+        if let fol = config.folder {
+            return fol.messageByIndex(indexPath.row)
+        }
+        return nil
+    }
+
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView,
@@ -193,16 +203,6 @@ class EmailListViewController: UITableViewController {
     }
 
     // MARK: - Misc
-
-    /**
-     The message at the given position.
-     */
-    func messageAt(indexPath: IndexPath) -> Message? {
-        if let fol = config.folder {
-            return fol.messageByIndex(indexPath.row)
-        }
-        return nil
-    }
 
     func configureCell(_ theCell: UITableViewCell, indexPath: IndexPath) {
         guard let cell = theCell as? EmailListViewCell else {
