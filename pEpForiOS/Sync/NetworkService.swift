@@ -1,5 +1,5 @@
 //
-//  NetworkBackgroundService.swift
+//  NetworkService.swift
 //  pEpForiOS
 //
 //  Created by hernani on 10/10/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol INetworkBackgroundService {
+protocol INetworkService {
     func start()
 }
 
@@ -16,13 +16,15 @@ protocol INetworkBackgroundService {
  * A class which provides an OO layer and doing syncing between CoreData and Pantomime
  * and any other (later) libraries providing in- and outbond transports of messages.
  */
-public class NetworkBackgroundService: INetworkBackgroundService {
+public class NetworkService: INetworkService {
     let comp = "NetworkBackgroundService"
     let backgroundQueue: DispatchQueue!
     
+    var connections: [Connection]?
+    
     public init() {
         // Swift 3 GCD way according to http://swiftable.io/2016/06/dispatch-queues-swift-3/
-        backgroundQueue = DispatchQueue(label: "com.app.queue",
+        backgroundQueue = DispatchQueue(label: "pep.app.network.service",
                                       qos: .background,
                                       target: nil)
     }
