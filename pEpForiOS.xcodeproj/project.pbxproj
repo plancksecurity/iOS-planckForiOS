@@ -85,7 +85,7 @@
 		43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43980E301CBD0BCA00A7FC3C /* Assets.xcassets */; };
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
-		43980EE61CBD24B800A7FC3C /* ImapSmtpConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE21CBD24B800A7FC3C /* ImapSmtpConnectInfo.swift */; };
+		43980EE61CBD24B800A7FC3C /* EMailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE21CBD24B800A7FC3C /* EMailConnectInfo.swift */; };
 		43980EE71CBD24B800A7FC3C /* ImapSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE31CBD24B800A7FC3C /* ImapSync.swift */; };
 		43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE41CBD24B800A7FC3C /* SmtpSend.swift */; };
 		43980EE91CBD24B800A7FC3C /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EE51CBD24B800A7FC3C /* TestData.swift */; };
@@ -141,8 +141,9 @@
 		43F84CD61CD89BAB0092FCAE /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
-		5D181C5D1DABE20900379D99 /* NetworkBackgroundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D181C5C1DABE20900379D99 /* NetworkBackgroundService.swift */; };
+		5D181C5D1DABE20900379D99 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D181C5C1DABE20900379D99 /* NetworkService.swift */; };
 		5D181C611DABE22C00379D99 /* NetworkBackgroundServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D181C601DABE22C00379D99 /* NetworkBackgroundServiceTests.swift */; };
+		5D4F18871DBDF95100F2C194 /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4F18861DBDF95100F2C194 /* ConnectInfo.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A13D9F611D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */; };
 		A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */; };
@@ -333,7 +334,7 @@
 		43980E4B1CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pantomime.xcodeproj; path = "../pantomime-iOS/Pantomime.xcodeproj"; sourceTree = "<group>"; };
 		43980EDF1CBD24B000A7FC3C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		43980EE21CBD24B800A7FC3C /* ImapSmtpConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSmtpConnectInfo.swift; sourceTree = "<group>"; };
+		43980EE21CBD24B800A7FC3C /* EMailConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EMailConnectInfo.swift; sourceTree = "<group>"; };
 		43980EE31CBD24B800A7FC3C /* ImapSync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSync.swift; sourceTree = "<group>"; };
 		43980EE41CBD24B800A7FC3C /* SmtpSend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSend.swift; sourceTree = "<group>"; };
 		43980EE51CBD24B800A7FC3C /* TestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -396,8 +397,9 @@
 		43F84CD51CD89BAB0092FCAE /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMailOperation.swift; sourceTree = "<group>"; };
-		5D181C5C1DABE20900379D99 /* NetworkBackgroundService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkBackgroundService.swift; sourceTree = "<group>"; };
+		5D181C5C1DABE20900379D99 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		5D181C601DABE22C00379D99 /* NetworkBackgroundServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkBackgroundServiceTests.swift; sourceTree = "<group>"; };
+		5D4F18861DBDF95100F2C194 /* ConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectInfo.swift; sourceTree = "<group>"; };
 		A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeButtonTableViewCell.swift; sourceTree = "<group>"; };
 		A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeLabelTableViewCell.swift; sourceTree = "<group>"; };
 		A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTexViewTableViewCell.swift; sourceTree = "<group>"; };
@@ -680,13 +682,14 @@
 		43980EE11CBD24B800A7FC3C /* Sync */ = {
 			isa = PBXGroup;
 			children = (
-				5D181C5C1DABE20900379D99 /* NetworkBackgroundService.swift */,
-				43980EE21CBD24B800A7FC3C /* ImapSmtpConnectInfo.swift */,
+				5D181C5C1DABE20900379D99 /* NetworkService.swift */,
+				43980EE21CBD24B800A7FC3C /* EMailConnectInfo.swift */,
 				43980EE31CBD24B800A7FC3C /* ImapSync.swift */,
 				43980EE41CBD24B800A7FC3C /* SmtpSend.swift */,
 				43980EE51CBD24B800A7FC3C /* TestData.swift */,
 				43980EF51CBD3EED00A7FC3C /* Mailbox.swift */,
 				43C6F3601CBE8153006A2A18 /* Service.swift */,
+				5D4F18861DBDF95100F2C194 /* ConnectInfo.swift */,
 			);
 			path = Sync;
 			sourceTree = "<group>";
@@ -1050,6 +1053,7 @@
 				5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */,
 				43980EE81CBD24B800A7FC3C /* SmtpSend.swift in Sources */,
 				437431F61CFC2F14000F8D35 /* VerifyServiceOperation.swift in Sources */,
+				5D4F18871DBDF95100F2C194 /* ConnectInfo.swift in Sources */,
 				43E9BC701DB51CEC00AD2352 /* CdMessage+Extension.swift in Sources */,
 				4380F7C71D1BBD5D00326F62 /* SendMailOperation.swift in Sources */,
 				4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */,
@@ -1084,7 +1088,7 @@
 				4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */,
 				43B3E46E1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift in Sources */,
 				434FF7191DB74781008F1724 /* Transport+Extension.swift in Sources */,
-				43980EE61CBD24B800A7FC3C /* ImapSmtpConnectInfo.swift in Sources */,
+				43980EE61CBD24B800A7FC3C /* EMailConnectInfo.swift in Sources */,
 				43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */,
 				435B42411D211E5900119048 /* MiscUtil.swift in Sources */,
 				43B2660D1D252C93009D57E8 /* ConcurrentBaseOperation.swift in Sources */,
@@ -1133,7 +1137,7 @@
 				4340F5F91D363BE6006A5C82 /* ContactTableViewCell.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
-				5D181C5D1DABE20900379D99 /* NetworkBackgroundService.swift in Sources */,
+				5D181C5D1DABE20900379D99 /* NetworkService.swift in Sources */,
 				43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */,
 				43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */,
 				4346D33C1D86E2E50017E24E /* ComposeViewHelper.swift in Sources */,
