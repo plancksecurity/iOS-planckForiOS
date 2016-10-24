@@ -15,10 +15,10 @@ class TrustWordsViewController: UITableViewController {
     var message: Message?
 
     /** All recipients to be able to do a handshake */
-    var allRecipientsFiltered = [CdContact]()
+    var allRecipientsFiltered = [Identity]()
 
     /** A set of accounts from the same user on the device with another email */
-    var otherMyselfAccount = NSMutableSet()
+    var otherMyselfAccount = Set<Identity>()
 
     var firstReload = true
 
@@ -30,30 +30,21 @@ class TrustWordsViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        UIHelper.variableCellHeightsTableView(self.tableView)
         self.tableView.reloadData()
 
-        let allRecipients: NSMutableOrderedSet?
-
-        otherMyselfAccount.removeAllObjects()
+        otherMyselfAccount.removeAll()
         allRecipientsFiltered.removeAll()
-        UIHelper.variableCellHeightsTableView(self.tableView)
         if let m = self.message {
-            allRecipients = m.allRecipienst().mutableCopy() as? NSMutableOrderedSet
-            if let ar = allRecipients {
-                if let f = m.from {
-                    ar.add(f)
-                }
-                for contact in ar {
-                    if let c = contact as? CdContact {
-                        if c.isMySelf.boolValue {
-                            if appConfig.currentAccount?.user.address != c.email {
-                                allRecipientsFiltered.append(c)
-                                otherMyselfAccount.add(c)
-                            }
-                        } else {
-                            allRecipientsFiltered.append(c)
-                        }
+            let allRecipients = m.allRecipients.sorted { $0.address < $1.address }
+            for c in allRecipients {
+                if c.isMySelf {
+                    if appConfig.currentAccount?.user.address != c.address {
+                        allRecipientsFiltered.append(c)
+                        otherMyselfAccount.insert(c)
                     }
+                } else {
+                    allRecipientsFiltered.append(c)
                 }
             }
         }
@@ -85,19 +76,17 @@ class TrustWordsViewController: UITableViewController {
 
             if let m = message {
                 cell.backgroundColor = defaultBackground
-                if let mailPepColor = m.pepColorRating?.intValue {
-                    if let pc = PEPUtil.colorRatingFromInt(mailPepColor) {
-                        let privateColor = PEPUtil.colorFromPepRating(pc)
-                        if let uiColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
-                            privateColor) {
-                            cell.backgroundColor = uiColor
-                        }
-                        let securityTitleText = PEPUtil.pepTitleFromColor(pc)
-                        let lenghtOfSecurityLabel = securityTitleText?.characters.count
-                        let attributedString = NSMutableAttributedString(string:securityTitleText!)
-                        attributedString.addAttribute(NSLinkAttributeName, value: "https://", range: NSRange(location: 0, length: lenghtOfSecurityLabel!))
-                        cell.mailSecurityUILabel.attributedText = attributedString
+                if let pEpRating = m.pEpRating {
+                    let privateColor = PEPUtil.colorFromPepRating(pEpRating)
+                    if let uiColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
+                        privateColor) {
+                        cell.backgroundColor = uiColor
                     }
+                    let securityTitleText = PEPUtil.pepTitleFromColor(pEpRating)
+                    let lenghtOfSecurityLabel = securityTitleText?.characters.count
+                    let attributedString = NSMutableAttributedString(string:securityTitleText!)
+                    attributedString.addAttribute(NSLinkAttributeName, value: "https://", range: NSRange(location: 0, length: lenghtOfSecurityLabel!))
+                    cell.mailSecurityUILabel.attributedText = attributedString
                 }
             }
             return cell
@@ -108,11 +97,9 @@ class TrustWordsViewController: UITableViewController {
 
             cell.mailExplanationSecurityUILabel.text = ""
             if let m = message {
-                if let mailPepColor = m.pepColorRating?.intValue {
-                    if let pepColor = PEPUtil.colorRatingFromInt(mailPepColor) {
-                        cell.mailExplanationSecurityUILabel.text =
-                            PEPUtil.pepExplanationFromColor(pepColor)
-                    }
+                if let pEpRating = m.pEpRating {
+                    cell.mailExplanationSecurityUILabel.text =
+                        PEPUtil.pepExplanationFromColor(pEpRating)
                 }
             }
             return cell
@@ -120,11 +107,11 @@ class TrustWordsViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordsCell",
                                                            for: indexPath) as! TrustWordsViewCell
             let contactIndex = (indexPath as NSIndexPath).row-numberOfStaticCells
-            let contact: CdContact  = allRecipientsFiltered[contactIndex]
+            let contact = allRecipientsFiltered[contactIndex]
 
-            cell.handshakeContactUILabel.text = contact.displayString()
+            cell.handshakeContactUILabel.text = contact.displayString
             cell.handshakeUIButton.tag = contactIndex
-            let privacyColor = PEPUtil.privacyColorForContact(contact)
+            let privacyColor = PEPUtil.privacyColor(identity: contact)
             cell.backgroundColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
                 privacyColor)
 
@@ -156,11 +143,9 @@ class TrustWordsViewController: UITableViewController {
 
     @IBAction func showMoreInfo(_ sender: AnyObject) {
         if let m = message {
-            if let mailPepColor = m.pepColorRating?.intValue {
-                if let pepColor = PEPUtil.colorRatingFromInt(mailPepColor) {
-                    if let suggestion = PEPUtil.pepSuggestionFromColor(pepColor) {
-                        self.showSuggestionMessage(suggestion)
-                    }
+            if let pEpRating = m.pEpRating {
+                if let suggestion = PEPUtil.pepSuggestionFromColor(pEpRating) {
+                    self.showSuggestionMessage(suggestion)
                 }
             }
         }
@@ -169,9 +154,9 @@ class TrustWordsViewController: UITableViewController {
     @IBAction func goToHandshakeScreen(_ sender: AnyObject) {
         let contactIndex = sender.tag
         let contact = allRecipientsFiltered[contactIndex!]
-        let pepColor = PEPUtil.privacyColorForContact(contact)
+        let pepColor = PEPUtil.privacyColor(identity: contact)
         if pepColor == PEP_color_red || pepColor == PEP_color_green {
-            PEPUtil.resetTrustForContact(contact)
+            PEPUtil.resetTrust(identity: contact)
             self.tableView.reloadData()
         } else {
             performSegue(withIdentifier: handshakeSegue, sender: sender)

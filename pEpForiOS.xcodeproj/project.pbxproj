@@ -56,6 +56,7 @@
 		434FF7191DB74781008F1724 /* Transport+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FF7181DB74781008F1724 /* Transport+Extension.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
 		4367E26F1CD7360000B05F83 /* CdModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367E26E1CD7360000B05F83 /* CdModel.swift */; };
+		436CB9711DBE178000682C85 /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436CB9701DBE178000682C85 /* Message+Extension.swift */; };
 		436F8E101D367039007E9829 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E0F1D367039007E9829 /* StringExtensions.swift */; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
 		436F8E1B1D369B3F007E9829 /* EmailTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E1A1D369B3F007E9829 /* EmailTextField.swift */; };
@@ -294,6 +295,7 @@
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
 		4367E26E1CD7360000B05F83 /* CdModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdModel.swift; sourceTree = "<group>"; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
+		436CB9701DBE178000682C85 /* Message+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+Extension.swift"; sourceTree = "<group>"; };
 		436F8E0F1D367039007E9829 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
 		436F8E1A1D369B3F007E9829 /* EmailTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailTextField.swift; sourceTree = "<group>"; };
@@ -751,6 +753,7 @@
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				436CB9701DBE178000682C85 /* Message+Extension.swift */,
 				434FF7181DB74781008F1724 /* Transport+Extension.swift */,
 				434FF7121DB73D73008F1724 /* Account+Extension.swift */,
 				4367E26E1CD7360000B05F83 /* CdModel.swift */,
@@ -1123,6 +1126,7 @@
 				431B0B9A1D6734DF0082D0DB /* AccountsFoldersTableViewController.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */,
+				436CB9711DBE178000682C85 /* Message+Extension.swift in Sources */,
 				4305AC7A1DA3FE8C00273D16 /* _CdContact.swift in Sources */,
 				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
 				43E9BC721DB51D6700AD2352 /* CdAttachment+Extension.swift in Sources */,
