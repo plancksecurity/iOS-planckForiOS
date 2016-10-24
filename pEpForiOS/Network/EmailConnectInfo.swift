@@ -1,5 +1,5 @@
 //
-//  EMailConnectInfo
+//  EmailConnectInfo
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 08/04/16.
