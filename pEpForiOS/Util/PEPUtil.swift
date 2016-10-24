@@ -19,121 +19,121 @@ extension PEP_rating: Hashable {
     }
 }
 
-/**
- For translating integer values into `PEP_rating`.
- */
-let pepColorDictionary: [Int32: PEP_rating] =
-    [PEP_rating_undefined.rawValue: PEP_rating_undefined,
-     PEP_rating_cannot_decrypt.rawValue: PEP_rating_cannot_decrypt,
-     PEP_rating_have_no_key.rawValue: PEP_rating_have_no_key,
-     PEP_rating_unencrypted.rawValue: PEP_rating_unencrypted,
-     PEP_rating_unencrypted_for_some.rawValue:  PEP_rating_unencrypted_for_some,
-     PEP_rating_unreliable.rawValue: PEP_rating_unreliable,
-     PEP_rating_reliable.rawValue: PEP_rating_reliable,
-     PEP_rating_trusted.rawValue: PEP_rating_trusted,
-     PEP_rating_trusted_and_anonymized.rawValue: PEP_rating_trusted_and_anonymized,
-     PEP_rating_fully_anonymous.rawValue: PEP_rating_fully_anonymous,
-     PEP_rating_mistrust.rawValue: PEP_rating_mistrust,
-     PEP_rating_b0rken.rawValue: PEP_rating_b0rken,
-     PEP_rating_under_attack.rawValue: PEP_rating_under_attack]
-
-/**
- All privacy status strings, i18n ready.
- */
-let pepPricacyStatusTranslations: [PEP_rating: (String, String, String)] =
-    [PEP_rating_under_attack:
-        (NSLocalizedString("Under Attack",
-            comment: "Privacy status title"),
-            NSLocalizedString("This message is not secure and has been tampered with.",
-                comment: "Privacy status explanation"),
-            NSLocalizedString("Separately verify the content of this message with your communication partner.",
-                comment: "Privacy status suggestion")),
-     PEP_rating_b0rken:
-        (NSLocalizedString("Ooops: Internal problem",
-            comment: "Privacy status title"),
-            NSLocalizedString("-",
-                comment: "Privacy status explanation"),
-            NSLocalizedString("-", comment: "")),
-     PEP_rating_mistrust:
-        (NSLocalizedString("Mistrusted",
-            comment: "Privacy status title"),
-            NSLocalizedString("This message has a communication partner that has previously been marked as mistrusted.",
-                comment: "Privacy status explanation"),
-            NSLocalizedString("Re-establish the connection with your communication partner and try to complete another handshake.",
-                comment: "Privacy status suggestion")),
-        PEP_rating_fully_anonymous:
-            (NSLocalizedString("Secure & Trusted",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message is secure and trusted.",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("No action needed!",
-                    comment: "Privacy status suggestion")),
-        PEP_rating_trusted_and_anonymized:
-            (NSLocalizedString("Secure & Trusted",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message is secure and trusted.",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("No action needed!",
-                    comment: "Privacy status suggestion")),
-        PEP_rating_trusted:
-            (NSLocalizedString("Secure & Trusted",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message is secure and trusted.",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("No action needed!",
-                    comment: "Privacy status suggestion")),
-        PEP_rating_reliable:
-            (NSLocalizedString("Secure",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message is secure but you still need to verify the identity of your communication partner.",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.",
-                    comment: "Privacy status suggestion")),
-        PEP_rating_unreliable:
-            (NSLocalizedString("Unreliable Security",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message has unreliable protection",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.",
-                    comment: "Privacy status suggestion")),
-        PEP_rating_unencrypted_for_some:
-            (NSLocalizedString("Unsecure for Some",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message is unsecure for some communication partners.",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("Make sure the privacy status for each communication partner listed is at least secure",
-                    comment: "Privacy status suggestion")),
-        PEP_rating_unencrypted:
-            (NSLocalizedString("Unsecure",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message is unsecure.",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("Please ask your communication partner to use an encryption solution or install p≡p.",
-                    comment: "Privacy status suggestion")),
-        PEP_rating_have_no_key:
-            (NSLocalizedString("Cannot Decrypt",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message cannot be decrypted because the key is not available.",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
-                    comment: "Privacy status suggestion")),
-        PEP_rating_cannot_decrypt:
-            (NSLocalizedString("Cannot Decrypt",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message cannot be decrypted.",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
-                    comment: "Privacy status suggestion")),
-        PEP_rating_undefined:
-            (NSLocalizedString("Unknown",
-                comment: "Privacy status title"),
-                NSLocalizedString("This message does not contain enough information to determine if it is secure.",
-                    comment: "Privacy status explanation"),
-                NSLocalizedString("Please add the necessary information.",
-                    comment: "Privacy status suggestion"))]
-
 open class PEPUtil {
     static let comp = "PEPUtil"
+
+    /**
+     For translating integer values into `PEP_rating`.
+     */
+    static let pEpRatingDictionary: [Int32: PEP_rating] =
+        [PEP_rating_undefined.rawValue: PEP_rating_undefined,
+         PEP_rating_cannot_decrypt.rawValue: PEP_rating_cannot_decrypt,
+         PEP_rating_have_no_key.rawValue: PEP_rating_have_no_key,
+         PEP_rating_unencrypted.rawValue: PEP_rating_unencrypted,
+         PEP_rating_unencrypted_for_some.rawValue:  PEP_rating_unencrypted_for_some,
+         PEP_rating_unreliable.rawValue: PEP_rating_unreliable,
+         PEP_rating_reliable.rawValue: PEP_rating_reliable,
+         PEP_rating_trusted.rawValue: PEP_rating_trusted,
+         PEP_rating_trusted_and_anonymized.rawValue: PEP_rating_trusted_and_anonymized,
+         PEP_rating_fully_anonymous.rawValue: PEP_rating_fully_anonymous,
+         PEP_rating_mistrust.rawValue: PEP_rating_mistrust,
+         PEP_rating_b0rken.rawValue: PEP_rating_b0rken,
+         PEP_rating_under_attack.rawValue: PEP_rating_under_attack]
+
+    /**
+     All privacy status strings, i18n ready.
+     */
+    static let pEpRatingTranslations: [PEP_rating: (String, String, String)] =
+        [PEP_rating_under_attack:
+            (NSLocalizedString("Under Attack",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message is not secure and has been tampered with.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("Separately verify the content of this message with your communication partner.",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_b0rken:
+            (NSLocalizedString("Ooops: Internal problem",
+                               comment: "Privacy status title"),
+             NSLocalizedString("-",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("-", comment: "")),
+         PEP_rating_mistrust:
+            (NSLocalizedString("Mistrusted",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message has a communication partner that has previously been marked as mistrusted.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("Re-establish the connection with your communication partner and try to complete another handshake.",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_fully_anonymous:
+            (NSLocalizedString("Secure & Trusted",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message is secure and trusted.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("No action needed!",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_trusted_and_anonymized:
+            (NSLocalizedString("Secure & Trusted",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message is secure and trusted.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("No action needed!",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_trusted:
+            (NSLocalizedString("Secure & Trusted",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message is secure and trusted.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("No action needed!",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_reliable:
+            (NSLocalizedString("Secure",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message is secure but you still need to verify the identity of your communication partner.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_unreliable:
+            (NSLocalizedString("Unreliable Security",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message has unreliable protection",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_unencrypted_for_some:
+            (NSLocalizedString("Unsecure for Some",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message is unsecure for some communication partners.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("Make sure the privacy status for each communication partner listed is at least secure",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_unencrypted:
+            (NSLocalizedString("Unsecure",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message is unsecure.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("Please ask your communication partner to use an encryption solution or install p≡p.",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_have_no_key:
+            (NSLocalizedString("Cannot Decrypt",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message cannot be decrypted because the key is not available.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_cannot_decrypt:
+            (NSLocalizedString("Cannot Decrypt",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message cannot be decrypted.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
+                               comment: "Privacy status suggestion")),
+         PEP_rating_undefined:
+            (NSLocalizedString("Unknown",
+                               comment: "Privacy status title"),
+             NSLocalizedString("This message does not contain enough information to determine if it is secure.",
+                               comment: "Privacy status explanation"),
+             NSLocalizedString("Please add the necessary information.",
+                               comment: "Privacy status suggestion"))]
 
     /**
      Content type for MIME multipart/alternative.
@@ -617,47 +617,47 @@ open class PEPUtil {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
         let color = theSession.identityColor(pepC)
-        return colorFromPepRating(color)
+        return pEpColorFromRating(color)
     }
 
-    open static func privacyColor(identity: Identity,
+    open static func pEpColor(identity: Identity,
                                   session: PEPSession? = nil) -> PEP_color {
         let theSession = useOrCreateSession(session)
         let pepC = pEp(identity: identity)
         let color = theSession.identityColor(pepC)
-        return colorFromPepRating(color)
+        return pEpColorFromRating(color)
     }
 
-    open static func colorFromPepRating(_ pepColorRating: PEP_rating) -> PEP_color {
+    open static func pEpColorFromRating(_ pepColorRating: PEP_rating) -> PEP_color {
         return color_from_rating(pepColorRating)
     }
 
-    open static func colorRatingFromInt(_ i: Int?) -> PEP_rating? {
+    open static func pEpRatingFromInt(_ i: Int?) -> PEP_rating? {
         guard let theInt = i else {
             return nil
         }
         let int32 = Int32(theInt)
-        return pepColorDictionary[int32]
+        return PEPUtil.pEpRatingDictionary[int32]
     }
 
-    open static func pepTitleFromColor(_ pepColorRating: PEP_rating) -> String? {
-        if let (title, _, _) = pepPricacyStatusTranslations[pepColorRating] {
+    open static func pEpTitleFromRating(_ pepColorRating: PEP_rating) -> String? {
+        if let (title, _, _) = PEPUtil.pEpRatingTranslations[pepColorRating] {
             return title
         }
         Log.warnComponent(comp, "No privacy title for color rating \(pepColorRating)")
         return nil
     }
 
-    open static func pepExplanationFromColor(_ pepColorRating: PEP_rating) -> String? {
-        if let (_, explanation, _) = pepPricacyStatusTranslations[pepColorRating] {
+    open static func pEpExplanationFromRating(_ pepColorRating: PEP_rating) -> String? {
+        if let (_, explanation, _) = PEPUtil.pEpRatingTranslations[pepColorRating] {
             return explanation
         }
         Log.warnComponent(comp, "No privacy explanation for color rating \(pepColorRating)")
         return nil
     }
 
-    open static func pepSuggestionFromColor(_ pepColorRating: PEP_rating) -> String? {
-        if let (_, _, suggestion) = pepPricacyStatusTranslations[pepColorRating] {
+    open static func pEpSuggestionFromRating(_ pepColorRating: PEP_rating) -> String? {
+        if let (_, _, suggestion) = pEpRatingTranslations[pepColorRating] {
             return suggestion
         }
         Log.warnComponent(comp, "No privacy suggestion for color rating \(pepColorRating)")

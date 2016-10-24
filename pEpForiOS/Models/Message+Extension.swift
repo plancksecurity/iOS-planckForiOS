@@ -13,7 +13,7 @@ import MessageModel
 extension Message {
     var pEpRating: PEP_rating? {
         get {
-            return PEPUtil.colorRatingFromInt(pEpRatingInt)
+            return PEPUtil.pEpRatingFromInt(pEpRatingInt)
         }
         set {
             if let nv = newValue {

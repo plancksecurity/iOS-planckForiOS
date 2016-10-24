@@ -376,7 +376,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             op.completionBlock = {
                 if !op.isCancelled {
                     if let pepColor = op.pepColorRating {
-                        let color = PEPUtil.colorFromPepRating(pepColor)
+                        let color = PEPUtil.pEpColorFromRating(pepColor)
                         GCD.onMain() {
                             self.setPrivacyColor(color, toSendButton: self.sendButton)
                         }

@@ -267,8 +267,8 @@ class EmailListViewController: FetchTableViewController {
             return
         }
         if let email = fetchController?.object(at: indexPath) as? CdMessage {
-            if let colorRating = PEPUtil.colorRatingFromInt(email.pepColorRating?.intValue) {
-                let privacyColor = PEPUtil.colorFromPepRating(colorRating)
+            if let colorRating = PEPUtil.pEpRatingFromInt(email.pepColorRating?.intValue) {
+                let privacyColor = PEPUtil.pEpColorFromRating(colorRating)
                 if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor) {
                     cell.backgroundColor = uiColor
                 } else {

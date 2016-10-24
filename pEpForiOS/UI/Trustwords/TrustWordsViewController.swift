@@ -77,12 +77,12 @@ class TrustWordsViewController: UITableViewController {
             if let m = message {
                 cell.backgroundColor = defaultBackground
                 if let pEpRating = m.pEpRating {
-                    let privateColor = PEPUtil.colorFromPepRating(pEpRating)
+                    let privateColor = PEPUtil.pEpColorFromRating(pEpRating)
                     if let uiColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
                         privateColor) {
                         cell.backgroundColor = uiColor
                     }
-                    let securityTitleText = PEPUtil.pepTitleFromColor(pEpRating)
+                    let securityTitleText = PEPUtil.pEpTitleFromRating(pEpRating)
                     let lenghtOfSecurityLabel = securityTitleText?.characters.count
                     let attributedString = NSMutableAttributedString(string:securityTitleText!)
                     attributedString.addAttribute(NSLinkAttributeName, value: "https://", range: NSRange(location: 0, length: lenghtOfSecurityLabel!))
@@ -99,7 +99,7 @@ class TrustWordsViewController: UITableViewController {
             if let m = message {
                 if let pEpRating = m.pEpRating {
                     cell.mailExplanationSecurityUILabel.text =
-                        PEPUtil.pepExplanationFromColor(pEpRating)
+                        PEPUtil.pEpExplanationFromRating(pEpRating)
                 }
             }
             return cell
@@ -111,7 +111,7 @@ class TrustWordsViewController: UITableViewController {
 
             cell.handshakeContactUILabel.text = contact.displayString
             cell.handshakeUIButton.tag = contactIndex
-            let privacyColor = PEPUtil.privacyColor(identity: contact)
+            let privacyColor = PEPUtil.pEpColor(identity: contact)
             cell.backgroundColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
                 privacyColor)
 
@@ -144,7 +144,7 @@ class TrustWordsViewController: UITableViewController {
     @IBAction func showMoreInfo(_ sender: AnyObject) {
         if let m = message {
             if let pEpRating = m.pEpRating {
-                if let suggestion = PEPUtil.pepSuggestionFromColor(pEpRating) {
+                if let suggestion = PEPUtil.pEpSuggestionFromRating(pEpRating) {
                     self.showSuggestionMessage(suggestion)
                 }
             }
@@ -154,7 +154,7 @@ class TrustWordsViewController: UITableViewController {
     @IBAction func goToHandshakeScreen(_ sender: AnyObject) {
         let contactIndex = sender.tag
         let contact = allRecipientsFiltered[contactIndex!]
-        let pepColor = PEPUtil.privacyColor(identity: contact)
+        let pepColor = PEPUtil.pEpColor(identity: contact)
         if pepColor == PEP_color_red || pepColor == PEP_color_green {
             PEPUtil.resetTrust(identity: contact)
             self.tableView.reloadData()
