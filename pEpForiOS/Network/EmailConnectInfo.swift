@@ -36,8 +36,26 @@ public enum AuthMethod: String {
         } else if string.isEqual(AuthMethod.CramMD5.rawValue) {
             self = .CramMD5
         } else {
+            // To fail
             self = .Plain
-            assert(false, "")
+            assert(false)
+        }
+    }
+}
+
+public enum EmailProtocol: String {
+    case smtp = "SMTP"
+    case imap = "IMAP"
+    
+    init(emailProtocol: String) {
+        if emailProtocol.isEqual(EmailProtocol.smtp.rawValue) {
+            self = .smtp
+        } else if emailProtocol.isEqual(EmailProtocol.imap.rawValue) {
+            self = .imap
+        } else {
+            // To fail
+            self = .smtp
+            assert(false)
         }
     }
 }
@@ -46,16 +64,36 @@ public enum AuthMethod: String {
  Holds additional connection info (like server, port etc.) for IMAP and SMTP.
  */
 public protocol IEmailConnectInfo: IConnectInfo {
+    var emailProtocol: EmailProtocol { get }
+    
+    var connectionTransport: ConnectionTransport? { get }
     var userPassword: String? { get }
-    var connectionTransport: ConnectionTransport { get }
+    var authMethod: AuthMethod? { get }
 }
 
 public class EmailConnectInfo: ConnectInfo {
-    public var userPassword: String?
+    public var emailProtocol: EmailProtocol
+
     public var connectionTransport: ConnectionTransport?
+    public var userPassword: String?
+    public var authMethod: AuthMethod?
     
-    public convenience init(userId: String, userPassword: String? = nil, userName: String? = nil, connectionPort: UInt16, connectionAddress: String, connectionTransport: ConnectionTransport?)
+    public convenience init(emailProtocol: EmailProtocol,
+                            userId: String,
+                            userPassword: String? = nil,
+                            userName: String? = nil,
+                            connectionPort: UInt16,
+                            connectionAddress: String,
+                            connectionTransport: ConnectionTransport? = nil,
+                            authMethod: AuthMethod? = nil)
     {
-        self.init(userId: userId, userPassword: nil, userName: nil, connectionPort: connectionPort, connectionAddress: connectionAddress, connectionTransport: nil)
+        self.init(emailProtocol: emailProtocol,
+                  userId: userId,
+                  userPassword: nil,
+                  userName: nil,
+                  connectionPort: connectionPort,
+                  connectionAddress: connectionAddress,
+                  connectionTransport: nil,
+                  authMethod: nil)
     }
 }
