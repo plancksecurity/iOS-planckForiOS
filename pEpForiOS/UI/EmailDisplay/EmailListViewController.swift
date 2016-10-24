@@ -37,6 +37,8 @@ class EmailListViewController: UITableViewController {
     struct EmailListConfig {
         let appConfig: AppConfig
 
+        let account: Account?
+
         /** The folder to display, if it exists */
         let folder: Folder?
     }
@@ -85,12 +87,12 @@ class EmailListViewController: UITableViewController {
         self.comp = "EmailListViewController"
     }
 
-    func isReadedMessage(_ message: CdMessage)-> Bool {
-        return message.flagSeen.boolValue
+    func isRead(message: Message)-> Bool {
+        return message.imapFlags.seen
     }
 
-    func isImportantMessage(_ message: CdMessage)-> Bool {
-        return message.flagFlagged.boolValue
+    func isImportant(message: Message)-> Bool {
+        return message.imapFlags.flagged
     }
 
     override func viewDidLoad() {
@@ -167,10 +169,9 @@ class EmailListViewController: UITableViewController {
 
         let cell = tableView.cellForRow(at: indexPath)
 
-        if fol = config.folder) {
-            if folder.folderType.intValue == FolderType.drafts.rawValue {
-                draftMessageToCompose = fetchController?.object(at: indexPath)
-                    as? CdMessage
+        if let fol = config.folder {
+            if fol.folderType == .drafts {
+                draftMessageToCompose = messageAt(indexPath: indexPath)
                 performSegue(withIdentifier: segueCompose, sender: cell)
                 return
             }
@@ -181,25 +182,35 @@ class EmailListViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt
         indexPath: IndexPath)-> [UITableViewRowAction]? {
-
         let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
-        let email = fetchController?.object(at: indexPath) as! CdMessage
-
-        let isFlagAction = createIsFlagAction(email, cell: cell)
-        let deleteAction = createDeleteAction(cell)
-        let isReadAction = createIsReadAction(email, cell: cell)
-        return [deleteAction,isFlagAction,isReadAction]
+        if let email = messageAt(indexPath: indexPath) {
+            let isFlagAction = createIsFlagAction(message: email, cell: cell)
+            let deleteAction = createDeleteAction(cell)
+            let isReadAction = createIsReadAction(message: email, cell: cell)
+            return [deleteAction,isFlagAction,isReadAction]
+        }
+        return nil
     }
 
     // MARK: - Misc
 
-    override func configureCell(_ theCell: UITableViewCell, indexPath: IndexPath) {
+    /**
+     The message at the given position.
+     */
+    func messageAt(indexPath: IndexPath) -> Message? {
+        if let fol = config.folder {
+            return fol.messageByIndex(indexPath.row)
+        }
+        return nil
+    }
+
+    func configureCell(_ theCell: UITableViewCell, indexPath: IndexPath) {
         guard let cell = theCell as? EmailListViewCell else {
             return
         }
-        if let email = fetchController?.object(at: indexPath) as? CdMessage {
-            if let colorRating = PEPUtil.pEpRatingFromInt(email.pepColorRating?.intValue) {
-                let privacyColor = PEPUtil.pEpColorFromRating(colorRating)
+        if let email = messageAt(indexPath: indexPath) {
+            if let pEpRating = email.pEpRating {
+                let privacyColor = PEPUtil.pEpColorFromRating(pEpRating)
                 if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor) {
                     cell.backgroundColor = uiColor
                 } else {
@@ -208,8 +219,8 @@ class EmailListViewController: UITableViewController {
                     }
                 }
             }
-            UIHelper.putString(email.from?.displayString(), toLabel: cell.senderLabel)
-            UIHelper.putString(email.subject, toLabel: cell.subjectLabel)
+            UIHelper.putString(email.from?.displayString, toLabel: cell.senderLabel)
+            UIHelper.putString(email.shortMessage, toLabel: cell.subjectLabel)
 
             // Snippet
             if let text = email.longMessage {
@@ -223,25 +234,25 @@ class EmailListViewController: UITableViewController {
                 UIHelper.putString(nil, toLabel: cell.summaryLabel)
             }
 
-            if let receivedDate = email.receivedDate {
+            if let receivedDate = email.received {
                 UIHelper.putString(dateFormatter.string(from: receivedDate as Date),
                                    toLabel: cell.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: cell.dateLabel)
             }
 
-            if (isImportantMessage(email) && isReadedMessage(email)) {
+            if (isImportant(message: email) && isRead(message: email)) {
                 cell.isImportantImage.isHidden = false
                 cell.isImportantImage.backgroundColor = UIColor.orange
             }
-            else if (isImportantMessage(email) && !isReadedMessage(email)) {
+            else if (isImportant(message: email) && !isRead(message: email)) {
                 cell.isImportantImage.isHidden = false
                 cell.isImportantImage.backgroundColor = UIColor.blue
                 cell.isImportantImage.layer.borderWidth = 2
                 cell.isImportantImage.layer.borderColor = UIColor.orange.cgColor
-            } else if (!isImportantMessage(email) && isReadedMessage(email)) {
+            } else if (!isImportant(message: email) && isRead(message: email)) {
                     cell.isImportantImage.isHidden = true
-            } else if (!isImportantMessage(email) && !isReadedMessage(email)) {
+            } else if (!isImportant(message: email) && !isRead(message: email)) {
                 cell.isImportantImage.isHidden = false
                 cell.isImportantImage.backgroundColor = UIColor.blue
             }
@@ -257,8 +268,7 @@ class EmailListViewController: UITableViewController {
                 as! ComposeViewController
             destination.appConfig = config.appConfig
             if let draft = draftMessageToCompose {
-                draft.flagSeen = true
-                draft.updateFlags()
+                draft.imapFlags.seen = true
                 config.appConfig.model.save()
 
                 destination.originalMessage = draft
@@ -269,7 +279,7 @@ class EmailListViewController: UITableViewController {
                 let vc = segue.destination as? EmailViewController,
                 let cell = sender as? UITableViewCell,
                 let indexPath = self.tableView.indexPath(for: cell),
-                let email = fetchController?.object(at: indexPath) as? CdMessage else {
+                let email = messageAt(indexPath: indexPath) else {
                     return
             }
             vc.appConfig = config.appConfig
@@ -277,37 +287,33 @@ class EmailListViewController: UITableViewController {
         }
     }
 
-    func syncFlagsToServer(_ message: CdMessage) {
-        self.config.appConfig.grandOperator.syncFlagsToServerForFolder(
-            message.folder,
-            completionBlock: { error in
-                UIHelper.displayError(error, controller: self)
-        })
+    func syncFlagsToServer(message: Message) {
+        // TODO: IOS 222: Sync flags back to server
     }
 
-    func createIsFlagAction(_ message: CdMessage, cell: EmailListViewCell) -> UITableViewRowAction {
-
+    func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
         // preparing the title action to show when user swipe
         var localizedIsFlagTitle = " "
-        if (isImportantMessage(message)) {
-            localizedIsFlagTitle = NSLocalizedString("Unflag",
-                                                     comment: "Unflag button title in swipe action on EmailListViewController")
+        if (isImportant(message: message)) {
+            localizedIsFlagTitle = NSLocalizedString(
+                "Unflag",
+                comment: "Unflag button title in swipe action on EmailListViewController")
         } else {
-            localizedIsFlagTitle = NSLocalizedString("Flag",
-                                                     comment: "Flag button title in swipe action on EmailListViewController")
+            localizedIsFlagTitle = NSLocalizedString(
+                "Flag",
+                comment: "Flag button title in swipe action on EmailListViewController")
         }
 
         // preparing action to trigger when user swipe
         let isFlagCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
-                if (self.isImportantMessage(message)) {
-                    message.flagFlagged = false
+                if (self.isImportant(message: message)) {
+                    message.imapFlags.flagged = false
 
                 } else {
-                    message.flagFlagged = true
+                    message.imapFlags.flagged = true
                 }
-                message.updateFlags()
-                self.syncFlagsToServer(message)
+                self.syncFlagsToServer(message: message)
                 self.tableView.reloadRows(at: [indexPath], with: .none)
         }
         // creating the action
@@ -322,15 +328,15 @@ class EmailListViewController: UITableViewController {
     func createDeleteAction (_ cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
-        let localizedDeleteTitle = NSLocalizedString("Erase",
-                                                     comment: "Erase button title in swipe action on EmailListViewController")
+        let localizedDeleteTitle = NSLocalizedString(
+            "Erase",
+            comment: "Erase button title in swipe action on EmailListViewController")
 
         let deleteCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
-                let managedObject = self.fetchController?.object(at: indexPath) as? CdMessage
-                managedObject?.flagDeleted = true
-                managedObject?.updateFlags()
-                self.syncFlagsToServer(managedObject!)
+                let message = self.messageAt(indexPath: indexPath)
+                message?.imapFlags.deleted = true
+                self.syncFlagsToServer(message: message!)
         }
 
         // creating the action
@@ -339,29 +345,28 @@ class EmailListViewController: UITableViewController {
         return deleteAction
     }
 
-    func createIsReadAction (_ message: CdMessage, cell: EmailListViewCell) -> UITableViewRowAction {
-
+    func createIsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
         // preparing the title action to show when user swipe
         var localizedisReadTitle = " "
-        if (isReadedMessage(message)) {
-            localizedisReadTitle = NSLocalizedString("Unread",
-                                                     comment: "Unread button title in swipe action on EmailListViewController")
+        if (isRead(message: message)) {
+            localizedisReadTitle = NSLocalizedString(
+                "Unread",
+                comment: "Unread button title in swipe action on EmailListViewController")
         } else {
-            localizedisReadTitle = NSLocalizedString("Read",
-                                                     comment: "Read button title in swipe action on EmailListViewController")
+            localizedisReadTitle = NSLocalizedString(
+                "Read",
+                comment: "Read button title in swipe action on EmailListViewController")
         }
 
         // creating the action
         let isReadCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
-                if (self.isReadedMessage(message)) {
-                    message.flagSeen = false
-                    message.updateFlags()
+                if (self.isRead(message: message)) {
+                    message.imapFlags.seen = false
                 } else {
-                    message.flagSeen = true
-                    message.updateFlags()
+                    message.imapFlags.seen = true
                 }
-                self.syncFlagsToServer(message)
+                self.syncFlagsToServer(message: message)
                 self.tableView.reloadRows(at: [indexPath], with: .none)
         }
         let isReadAction = UITableViewRowAction(style: .default, title: localizedisReadTitle,
