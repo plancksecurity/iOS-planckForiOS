@@ -18,7 +18,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 
     var targetFolderName: String!
 
-    let connectInfo: ImapSmtpConnectInfo
+    let connectInfo: EmailConnectInfo
 
     var imapSync: ImapSync!
 

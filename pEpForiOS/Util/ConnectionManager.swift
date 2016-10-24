@@ -12,7 +12,7 @@ open class ConnectionManager {
     fileprivate let comp = "ConnectionManager"
     open var cacheImapConnections: Bool = false
 
-    var imapConnections: [ImapSmtpConnectInfo: ImapSync] = [:]
+    var imapConnections: [EmailConnectInfo: ImapSync] = [:]
     weak var grandOperator: IGrandOperator!
 
     public init() {}
@@ -21,7 +21,7 @@ open class ConnectionManager {
         closeAll()
     }
 
-    open func emailSyncConnection(_ connectInfo: ImapSmtpConnectInfo) -> ImapSync {
+    open func emailSyncConnection(_ connectInfo: EmailConnectInfo) -> ImapSync {
         if cacheImapConnections {
             if let sync = imapConnections[connectInfo] {
                 return sync
@@ -41,11 +41,11 @@ open class ConnectionManager {
      - Returns: A one-way/throw-away IMAP sync connection, e.g., for testing/verifying
       a connection.
      */
-    open func emailSyncConnectionOneWay(_ connectInfo: ImapSmtpConnectInfo) -> ImapSync {
+    open func emailSyncConnectionOneWay(_ connectInfo: EmailConnectInfo) -> ImapSync {
         return ImapSync.init(connectInfo: connectInfo)
     }
 
-    open func smtpConnection(_ connectInfo: ImapSmtpConnectInfo) -> SmtpSend {
+    open func smtpConnection(_ connectInfo: EmailConnectInfo) -> SmtpSend {
         // Don't cache
         return SmtpSend.init(connectInfo: connectInfo)
     }

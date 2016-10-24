@@ -11,12 +11,13 @@ import UIKit
 import MessageModel
 
 extension CdAccount {
-    open var connectInfo: ImapSmtpConnectInfo {
+    open var connectInfo: EmailConnectInfo {
         let passImap = KeyChain.getPassword(self.email,
                                             serverType: Server.ServerType.imap.asString())
         let passSmtp = KeyChain.getPassword(self.email,
                                             serverType: Server.ServerType.smtp.asString())
-        return ImapSmtpConnectInfo.init(
+        /* DEPRECATED?
+        return EmailConnectInfo.init(
             nameOfTheUser: nameOfTheUser,
             email: email, imapUsername: imapUsername, smtpUsername: smtpUsername,
             imapPassword: passImap, smtpPassword: passSmtp,
@@ -26,6 +27,7 @@ extension CdAccount {
             smtpServerName: self.smtpServerName,
             smtpServerPort: UInt16(self.smtpServerPort.intValue),
             smtpTransport: self.rawSmtpTransport)
+        */
     }
 
     open var rawImapTransport: ConnectionTransport {

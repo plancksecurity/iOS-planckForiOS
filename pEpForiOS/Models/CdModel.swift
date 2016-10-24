@@ -306,7 +306,7 @@ open class CdModel: ICdModel {
         return nil
     }
 
-    func newAccountFromImapSmtpConnectInfo(_ connectInfo: ImapSmtpConnectInfo) -> CdAccount {
+    func newAccountFromImapSmtpConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
         let account = NSEntityDescription.insertNewObject(
             forEntityName: CdAccount.entityName(), into: context) as! CdAccount
         account.nameOfTheUser = connectInfo.nameOfTheUser
@@ -325,17 +325,17 @@ open class CdModel: ICdModel {
         return account
     }
 
-    open func insertAccountFromImapSmtpConnectInfo(_ connectInfo: ImapSmtpConnectInfo) -> CdAccount {
+    open func insertAccountFromImapSmtpConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
         if let ac = accountByEmail(connectInfo.email) {
             return ac
         }
 
         let account = newAccountFromImapSmtpConnectInfo(connectInfo)
         save()
-        let _ = KeyChain.addEmail(connectInfo.email,
+        let _ = KeyChain.addEmail(connectInfo.userId,
                                   serverType: Server.ServerType.imap.asString(),
                                   password: connectInfo.imapPassword)
-        let _ = KeyChain.addEmail(connectInfo.email,
+        let _ = KeyChain.addEmail(connectInfo.userId,
                                   serverType: Server.ServerType.smtp.asString(),
                                   password: connectInfo.getSmtpPassword())
         return account

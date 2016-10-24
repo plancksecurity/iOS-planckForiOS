@@ -10,7 +10,7 @@ import Foundation
 
 open class VerifyServiceOperation: ConcurrentBaseOperation {
     var service: Service!
-    let connectInfo: ImapSmtpConnectInfo
+    let connectInfo: EmailConnectInfo
     let connectionManager: ConnectionManager
 
     /**
@@ -22,7 +22,7 @@ open class VerifyServiceOperation: ConcurrentBaseOperation {
      */
     var isFinishing: Bool = false
 
-    public init(grandOperator: IGrandOperator, connectInfo: ImapSmtpConnectInfo) {
+    public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
         self.connectionManager = grandOperator.connectionManager
         super.init(coreDataUtil: grandOperator.coreDataUtil)
