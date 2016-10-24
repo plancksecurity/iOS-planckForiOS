@@ -444,17 +444,14 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                     let contacts: [Identity] = mailStrings2.map() {
                         return Identity.create(address: $0)
                     }
-                    if contacts.count > 0 {
-                        if let rt = cell.recipientType {
-                            let set = NSOrderedSet.init(array: contacts.map() {$0 as AnyObject})
-                            switch rt {
-                            case .to:
-                                message.to = set
-                            case .cc:
-                                message.cc = set
-                            case .bcc:
-                                message.bcc = set
-                            }
+                    if contacts.count > 0, let rt = cell.recipientType {
+                        switch rt {
+                        case .to:
+                            message.to = contacts
+                        case .cc:
+                            message.cc = contacts
+                        case .bcc:
+                            message.bcc = contacts
                         }
                     }
                 }
@@ -462,7 +459,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         }
 
         if let subjectText = subjectTextField?.text {
-            message.subject = subjectText
+            message.shortMessage = subjectText
         }
 
         if let bodyText = longBodyMessageTextView?.text {
@@ -478,13 +475,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         guard let om = replyFromMessage() else {
             return
         }
-
-        guard let model = appConfig?.model else {
-            Log.warnComponent(comp, "Can't do anything without model")
-            return
-        }
-
-        setupMessageReferences(parent: om, message: message, model: model)
+        setupMessageReferences(parent: om, message: message)
     }
 
     /**
@@ -492,18 +483,12 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      and a child message (i.e., the message containing the reply).
      See https://cr.yp.to/immhf/thread.html for general strategy.
      */
-    func setupMessageReferences(parent: Message, message: Message, model: ICdModel) {
+    func setupMessageReferences(parent: Message, message: Message) {
         // Inherit all references from the parent
         message.references = parent.references
 
         // Add the parent to the references
-        if let references = message.references.mutableCopy() as? NSMutableOrderedSet {
-            if let omid = parent.messageID {
-                let ref = model.insertOrUpdateMessageReference(omid)
-                references.add(ref)
-                message.references = references
-            }
-        }
+        message.references.append(parent.messageID)
     }
 
     /**
@@ -775,8 +760,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                         if contacts.count > 0 {
                             changedRecipients = true
                         }
-                        ComposeViewHelper.transferContacts(
-                            contacts, toTextField: cell.recipientTextView,
+                        ComposeViewHelper.transfer(
+                            identities: contacts, toTextField: cell.recipientTextView,
                             titleText: cell.titleText)
                     }
 
@@ -784,8 +769,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                     if cell.recipientType == .to {
                         if let om = replyFromMessage() {
                             if let from = om.from {
-                                ComposeViewHelper.transferContacts(
-                                    [from], toTextField: cell.recipientTextView,
+                                ComposeViewHelper.transfer(
+                                    identities: [from], toTextField: cell.recipientTextView,
                                     titleText: cell.titleText)
                                 changedRecipients = true
                             }
@@ -826,7 +811,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 }
 
                 if let m = composeFromDraftMessage() {
-                    subjectTextField?.text = m.subject
+                    subjectTextField?.text = m.shortMessage
                 }
 
                 return cell
@@ -968,7 +953,6 @@ extension ComposeViewController: UIImagePickerControllerDelegate {
 
         let photoAttachment = PhotoAttachment.init(image: attachedImage)
 
-        model.attachments.append(photoAttachment)
         insert(imageAttachment: photoAttachment)
 
         dismiss(animated: true, completion: nil)
