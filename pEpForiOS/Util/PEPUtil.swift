@@ -866,6 +866,17 @@ open class PEPUtil {
     }
 
     /**
+     Resets the trust for the given `Identity`. Use both for trusting again after
+     mistrusting a key, and for mistrusting a key after you have first trusted it.
+     */
+    open static func resetTrust(identity: Identity, session: PEPSession? = nil) {
+        let theSession = useOrCreateSession(session)
+        let pepC = NSMutableDictionary.init(dictionary: pEp(identity: identity))
+        theSession.updateIdentity(pepC)
+        theSession.keyResetTrust(pepC)
+    }
+
+    /**
      Checks the given pEp status and the given encrypted mail for errors and
      logs them.
      - Returns: A tuple of the encrypted mail and an error. Both can be nil.
