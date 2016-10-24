@@ -79,9 +79,9 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                         myselfContactPepContact, identity2: partnerPepContact,
                         language: "en", session: nil)
                 } else {
-                    let myselfFingerprints = PEPUtil.fingprprintForContact(myselfContact)
+                    let myselfFingerprints = PEPUtil.fingerPrintForContact(myselfContact)
 
-                    let partnerFingerprints = PEPUtil.fingprprintForContact(partner!)
+                    let partnerFingerprints = PEPUtil.fingerPrint(identity: partner!)
                     let bothFingerprints = "\(fingerprintFormat(partnerFingerprints!))\n\n\(fingerprintFormat(myselfFingerprints!))"
                     cell.handshakeTextView.text = bothFingerprints
                     cell.handshakeTextView.font = UIFont(name: "Menlo", size: UIFont.systemFontSize)
@@ -120,14 +120,14 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
 
     @IBAction func confirmTrustwords(_ sender: AnyObject) {
         if let p = partner {
-            PEPUtil.trustContact(p)
+            PEPUtil.trust(identity: p)
             let _ = navigationController?.popViewController(animated: true)
         }
     }
 
     @IBAction func wrongTrustwords(_ sender: AnyObject) {
         if let p = partner {
-            PEPUtil.mistrustContact(p)
+            PEPUtil.mistrust(identity: p)
             let _ = navigationController?.popViewController(animated: true)
         }
     }

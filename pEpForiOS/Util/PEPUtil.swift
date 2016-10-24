@@ -686,28 +686,8 @@ open class PEPUtil {
                                               language: String,
                                               session: PEPSession?) -> String? {
         let theSession = sessionOrReuse(session)
-        let dict1 = NSMutableDictionary.init(dictionary: identity1)
-        let dict2 = NSMutableDictionary.init(dictionary: identity2)
-        theSession.updateIdentity(dict1)
-        theSession.updateIdentity(dict2)
-
-        guard let fpr1 = dict1[kPepFingerprint] as? String else {
-            return nil
-        }
-        guard let fpr2 = dict2[kPepFingerprint] as? String else {
-            return nil
-        }
-
-        let trustwords1 = shortTrustwordsForFpr(fpr1, language: language, session: session)
-        let trustwords2 = shortTrustwordsForFpr(fpr2, language: language, session: session)
-
-        let comp = fpr1.compare(fpr2)
-        switch comp {
-        case .orderedAscending, .orderedSame:
-            return "\(trustwords1) \(trustwords2)"
-        default:
-            return "\(trustwords2) \(trustwords1)"
-        }
+        return theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
+                                                 language: language, full: true)
     }
 
     /**
@@ -803,16 +783,16 @@ open class PEPUtil {
     /**
      - Returns: The fingerprint for a contact.
      */
-    open static func fingprprintForContact(
+    open static func fingerPrintForContact(
         _ contact: CdContact, session: PEPSession? = nil) -> String? {
         let pepC = pepContact(contact)
-        return fingprprintForPepContact(pepC)
+        return fingerPrintForPepContact(pepC)
     }
 
     /**
      - Returns: The fingerprint for a pEp contact.
      */
-    open static func fingprprintForPepContact(
+    open static func fingerPrintForPepContact(
         _ contact: PEPContact, session: PEPSession? = nil) -> String? {
         let pepDict = NSMutableDictionary.init(dictionary: contact)
 
@@ -820,6 +800,18 @@ open class PEPUtil {
         theSession.updateIdentity(pepDict)
 
         return pepDict[kPepFingerprint] as? String
+    }
+
+    open static func fingerPrint(identity: Identity, session: PEPSession? = nil) -> String? {
+        if let fpr = identity.fingerPrint {
+            return fpr
+        }
+
+        let theSession = useOrCreateSession(session)
+        let pEpID = pEp(identity: identity)
+        let pEpDict = NSMutableDictionary.init(dictionary: pEpID)
+        theSession.updateIdentity(pEpDict)
+        return pEpDict[kPepFingerprint] as? String
     }
 
     /**
@@ -833,11 +825,31 @@ open class PEPUtil {
     }
 
     /**
+     Trust that contact (yellow to green).
+     */
+    open static func trust(identity: Identity, session: PEPSession? = nil) {
+        let theSession = useOrCreateSession(session)
+        let pepC = NSMutableDictionary.init(dictionary: pEp(identity: identity))
+        theSession.updateIdentity(pepC)
+        theSession.trustPersonalKey(pepC)
+    }
+
+    /**
      Mistrust the identity (yellow to red)
      */
     open static func mistrustContact(_ contact: CdContact, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = NSMutableDictionary.init(dictionary: pepContact(contact))
+        theSession.updateIdentity(pepC)
+        theSession.keyMistrusted(pepC)
+    }
+
+    /**
+     Mistrust the identity (yellow to red)
+     */
+    open static func mistrust(identity: Identity, session: PEPSession? = nil) {
+        let theSession = useOrCreateSession(session)
+        let pepC = NSMutableDictionary.init(dictionary: pEp(identity: identity))
         theSession.updateIdentity(pepC)
         theSession.keyMistrusted(pepC)
     }
