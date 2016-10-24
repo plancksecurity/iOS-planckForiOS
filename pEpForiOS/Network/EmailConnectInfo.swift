@@ -80,8 +80,8 @@ public class EmailConnectInfo: ConnectInfo {
                             userId: String,
                             userPassword: String? = nil,
                             userName: String? = nil,
-                            connectionPort: UInt16,
-                            connectionAddress: String,
+                            networkPort: UInt16,
+                            networkAddress: String,
                             connectionTransport: ConnectionTransport? = nil,
                             authMethod: AuthMethod? = nil)
     {
@@ -89,8 +89,8 @@ public class EmailConnectInfo: ConnectInfo {
                   userId: userId,
                   userPassword: nil,
                   userName: nil,
-                  connectionPort: connectionPort,
-                  connectionAddress: connectionAddress,
+                  networkPort: networkPort,
+                  networkAddress: networkAddress,
                   connectionTransport: nil,
                   authMethod: nil)
     }

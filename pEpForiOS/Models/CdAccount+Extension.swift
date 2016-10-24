@@ -12,22 +12,18 @@ import MessageModel
 
 extension CdAccount {
     open var connectInfo: EmailConnectInfo {
-        let passImap = KeyChain.getPassword(self.email,
-                                            serverType: Server.ServerType.imap.asString())
-        let passSmtp = KeyChain.getPassword(self.email,
-                                            serverType: Server.ServerType.smtp.asString())
-        /* DEPRECATED?
+        let password = KeyChain.getPassword(self.email, serverType: (self.connectInfo.emailProtocol?.rawValue)!)
+        
         return EmailConnectInfo.init(
-            nameOfTheUser: nameOfTheUser,
-            email: email, imapUsername: imapUsername, smtpUsername: smtpUsername,
-            imapPassword: passImap, smtpPassword: passSmtp,
-            imapServerName: self.imapServerName,
-            imapServerPort: UInt16(self.imapServerPort.intValue),
-            imapTransport: self.rawImapTransport,
-            smtpServerName: self.smtpServerName,
-            smtpServerPort: UInt16(self.smtpServerPort.intValue),
-            smtpTransport: self.rawSmtpTransport)
-        */
+            emailProtocol: self.connectInfo.emailProtocol!,
+            userId: self.connectInfo.userId,
+            userPassword: password,
+            userName: self.connectInfo.userName,
+            networkPort: self.connectInfo.networkPort,
+            networkAddress: self.connectInfo.networkAddress,
+            connectionTransport: self.connectInfo.connectionTransport,
+            authMethod: self.connectInfo.authMethod
+        )
     }
 
     open var rawImapTransport: ConnectionTransport {

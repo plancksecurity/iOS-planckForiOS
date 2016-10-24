@@ -17,7 +17,7 @@ import MessageModel
 class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     let comp = "PersistentImapFolder"
 
-    let connectInfo: ImapSmtpConnectInfo
+    let connectInfo: EmailConnectInfo
 
     let coreDataUtil: CoreDataUtil
     lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
@@ -60,7 +60,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
-    init(name: String, coreDataUtil: CoreDataUtil, connectInfo: ImapSmtpConnectInfo,
+    init(name: String, coreDataUtil: CoreDataUtil, connectInfo: EmailConnectInfo,
          backgroundQueue: OperationQueue) {
         self.coreDataUtil = coreDataUtil
         self.connectInfo = connectInfo
@@ -78,7 +78,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         var folder: CdFolder? = nil
         privateMOC.performAndWait({
             if let fo = self.model.insertOrUpdateFolderName(
-                self.name(), folderSeparator: nil, accountEmail: self.connectInfo.email) {
+                self.name(), folderSeparator: nil, accountEmail: self.connectInfo.userId) {
                 self.model.save()
                 folder = fo
             }
@@ -116,7 +116,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     func predicateAllMessages() -> NSPredicate {
         let p = NSPredicate.init(format: "folder.account.email = %@ and folder.name = %@",
-                                 connectInfo.email,
+                                 connectInfo.userId,
                                  self.name())
         return p
     }
@@ -141,7 +141,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     override func message(at theIndex: UInt) -> CWMessage? {
         let p = NSPredicate.init(
             format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
-            connectInfo.email, self.name(), theIndex)
+            connectInfo.userId, self.name(), theIndex)
         var msg: CdMessage?
         privateMOC.performAndWait({
             msg = self.model.messageByPredicate(p, sortDescriptors: nil)
@@ -199,13 +199,13 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
         // Quickly store the most important email proporties (synchronously)
         let opQuick = StorePrefetchedMailOperation.init(coreDataUtil: coreDataUtil,
-                                                        accountEmail: connectInfo.email,
+                                                        accountEmail: connectInfo.userId,
                                                         message: message, quick: true)
         opQuick.start()
 
         // Do all the time-consuming details in the background (asynchronously)
         let op = StorePrefetchedMailOperation.init(coreDataUtil: coreDataUtil,
-                                                   accountEmail: connectInfo.email,
+                                                   accountEmail: connectInfo.userId,
                                                    message: message, quick: false)
         backgroundQueue.addOperation(op)
     }

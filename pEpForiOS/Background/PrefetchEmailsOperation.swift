@@ -46,7 +46,7 @@ open class PrefetchEmailsOperation: ConcurrentBaseOperation {
             // Treat Inbox specially, as it is the only mailbox
             // that is mandatorily case-insensitive.
             if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
-                if let folder = self.model.folderByType(.inbox, email: self.connectInfo.email) {
+                if let folder = self.model.folderByType(.inbox, email: self.connectInfo.userId) {
                     self.folderToOpen = folder.name
                 }
             }
