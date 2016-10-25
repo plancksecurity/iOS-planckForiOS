@@ -21,6 +21,29 @@ public extension ConnectionTransport {
             abort()
         }
     }
+    
+    public func localizedString() -> String {
+        switch self {
+        case .plain:
+            return NSLocalizedString("None", comment: "Transport security (ConnectionTransport)")
+        case .TLS:
+            return NSLocalizedString("TLS", comment: "Transport security (ConnectionTransport)")
+        case .startTLS:
+            return NSLocalizedString("StartTLS",
+                                     comment: "Transport security (ConnectionTransport)")
+        }
+    }
+    
+    /* DEPRECATED?
+    public func toServerTransport() -> Server.Transport {
+        switch self {
+        case .plain: return Server.Transport.plain
+        case .TLS: return Server.Transport.tls
+        case .startTLS: return Server.Transport.startTls
+        }
+    }
+    */
+
 }
 
 public enum AuthMethod: String {
