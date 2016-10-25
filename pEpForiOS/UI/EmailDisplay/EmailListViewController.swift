@@ -131,6 +131,11 @@ class EmailListViewController: UITableViewController {
         guard let account = config.account else {
             return
         }
+        
+        if let folder = account.folder(ofType: FolderType.drafts) {
+            folder.save(message: message)
+            return
+        }
     }
 
     func updateModel() {
