@@ -20,7 +20,24 @@ class MockData {
         let smtpServer = Server.create(
             serverType: .imap, port: 587, address: "mail.yahoo.com", userName: "user1",
             transport: .startTls)
-        let _ = Account.create(user: ident, servers: [imapServer, smtpServer])
+        let account = Account.create(user: ident, servers: [imapServer, smtpServer])
+        insertRootFolders(account: account)
     }
 
+    static func insertRootFolders(account: Account) {
+        for (name, folderType) in
+            [("INBOX", FolderType.inbox), ("Drafts", FolderType.drafts),
+             ("Outbox", FolderType.localOutbox)] {
+                let folder = Folder.createRootFolder(
+                    name: name, uuid: UUID.generate(), account: account)
+                folder.folderType = folderType
+                insertMessages(folder: folder)
+        }
+    }
+
+    static func insertMessages(folder: Folder) {
+        for i in 1...10 {
+            
+        }
+    }
 }
