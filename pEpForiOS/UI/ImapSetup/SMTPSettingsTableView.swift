@@ -117,6 +117,7 @@ open class SMTPSettingsTableView: UITableViewController {
         }
     }
 
+    /* DEPRECATED: not used.
     func verifyAccountOldStyle(_ sender: UIBarButtonItem) {
         let connect = ImapSmtpConnectInfo.init(
             nameOfTheUser: model.name!,
@@ -163,6 +164,7 @@ open class SMTPSettingsTableView: UITableViewController {
             self.showErrorMessage(err.localizedDescription)
         })
     }
+    */
 
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
         self.status.activityIndicatorViewEnable =  true
