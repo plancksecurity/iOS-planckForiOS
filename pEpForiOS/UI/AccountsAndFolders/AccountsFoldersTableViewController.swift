@@ -49,17 +49,9 @@ class AccountsFoldersViewController: UITableViewController {
 
     var state = UIState.init()
 
-    var shouldRefreshMail = true
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: standardCell)
-
-        let refreshController = UIRefreshControl.init()
-        refreshController.addTarget(self, action: #selector(self.refreshMailsControl),
-                                    for: UIControlEvents.valueChanged)
-        self.refreshControl = refreshController
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -78,11 +70,6 @@ class AccountsFoldersViewController: UITableViewController {
             self.performSegue(withIdentifier: segueSetupNewAccount, sender: self)
         }
 
-        if shouldRefreshMail {
-            refreshMailsControl()
-            shouldRefreshMail = false
-        }
-
         super.viewWillAppear(animated)
     }
     
@@ -92,6 +79,7 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func updateModel() {
+        MockData.insertData()
         accounts = Account.all
         tableView.reloadData()
     }
@@ -109,32 +97,8 @@ class AccountsFoldersViewController: UITableViewController {
         }
     }
 
-    func refreshMailsControl(_ refreshControl: UIRefreshControl? = nil) {
-        // TODO: IOS 222: Somehow trigger a refetch of emails
-        guard let _ = appConfig else {
-            return
-        }
-
-        if state.isSynching {
-            return
-        }
-
-        var connectInfos = [EmailConnectInfo]()
-        for ac in accounts {
-            if let ci = ac.connectInfo {
-                connectInfos.append(ci)
-            }
-        }
-
-        state.isSynching = true
-        updateUI()
-    }
-
     func updateUI() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = state.isSynching
-        if !state.isSynching {
-            self.refreshControl?.endRefreshing()
-        }
     }
 
     @IBAction func newAccountCreatedSegue(_ segue: UIStoryboardSegue) {
@@ -142,8 +106,6 @@ class AccountsFoldersViewController: UITableViewController {
         updateModel()
 
         doMyself()
-
-        refreshMailsControl()
     }
 
     // MARK: - Table view data source
@@ -204,19 +166,6 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     // MARK: - Table view delegate
-
-    /**
-     Basic predicate for listing all emails from any INBOX.
-     */
-    func basicInboxPredicate() -> NSPredicate {
-        let predicateBasic = appConfig.model.basicMessagePredicate()
-        let predicateInbox = NSPredicate.init(
-            format: "folder.folderType = %d", FolderType.inbox.rawValue)
-        let predicates: [NSPredicate] = [predicateBasic, predicateInbox]
-        let predicate = NSCompoundPredicate.init(
-            andPredicateWithSubpredicates: predicates)
-        return predicate
-    }
 
     override func tableView(_ tableView: UITableView,
                             didSelectRowAt indexPath: IndexPath) {
