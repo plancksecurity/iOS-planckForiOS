@@ -371,10 +371,12 @@ open class CdModel: ICdModel {
 
     open func insertAttachmentWithContentType(
         _ contentType: String?, filename: String?, data: Data) -> CdAttachment {
+        
+        // XXX: CdAttachment needs an entity name (like before) as to avoid explicit strings.
         let attachment = NSEntityDescription.insertNewObject(
-            forEntityName: CdAttachment.entityName(), into: context) as! CdAttachment
-        attachment.contentType = contentType
-        attachment.filename = filename
+            forEntityName: "Attachment", into: context) as! CdAttachment
+        attachment.mimeType = contentType
+        attachment.fileName = filename
         attachment.size = NSNumber(value: data.count)
         attachment.data = data as NSData?
         return attachment

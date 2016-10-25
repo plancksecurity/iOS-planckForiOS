@@ -4,6 +4,8 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 public enum CdMessageAttributes: String {
     case bodyFetched = "bodyFetched"
     case boundary = "boundary"

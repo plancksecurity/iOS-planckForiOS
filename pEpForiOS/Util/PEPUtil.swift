@@ -264,10 +264,10 @@ open class PEPUtil {
     open static func pepAttachment(_ attachment: CdAttachment) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
 
-        if let filename = attachment.filename {
-            dict[kPepMimeFilename] = filename
+        if let fileName = attachment.fileName {
+            dict[kPepMimeFilename] = fileName
         }
-        if let contentType = attachment.contentType {
+        if let contentType = attachment.mimeType {
             dict[kPepMimeType] = contentType
         }
         dict[kPepMimeData] = attachment.data

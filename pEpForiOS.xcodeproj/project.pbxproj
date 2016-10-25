@@ -9,10 +9,8 @@
 /* Begin PBXBuildFile section */
 		43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43001F791D91860A00306BF0 /* FetchTableViewController.swift */; };
 		430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */; };
-		4303DAE71CE62D2600D9C0AB /* CdAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303DAE51CE62D2600D9C0AB /* CdAttachment.swift */; };
 		4305AC741DA3F7C300273D16 /* CdAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC731DA3F7C300273D16 /* CdAccount.swift */; };
 		4305AC761DA3F7EA00273D16 /* _CdAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC751DA3F7EA00273D16 /* _CdAccount.swift */; };
-		4305AC781DA3FD6900273D16 /* _CdAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC771DA3FD6900273D16 /* _CdAttachment.swift */; };
 		4305AC7A1DA3FE8C00273D16 /* _CdContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC791DA3FE8C00273D16 /* _CdContact.swift */; };
 		4305AC7C1DA3FE9A00273D16 /* CdContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC7B1DA3FE9A00273D16 /* CdContact.swift */; };
 		4305AC7E1DA4036D00273D16 /* CdMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC7D1DA4036D00273D16 /* CdMessage.swift */; };
@@ -126,7 +124,6 @@
 		43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58ED01CBFA943008AA7A7 /* KeyChain.swift */; };
 		43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */; };
 		43E9BC701DB51CEC00AD2352 /* CdMessage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC6F1DB51CEC00AD2352 /* CdMessage+Extension.swift */; };
-		43E9BC721DB51D6700AD2352 /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC711DB51D6700AD2352 /* CdAttachment+Extension.swift */; };
 		43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53631CC77F95006AB156 /* EmailListViewCell.swift */; };
 		43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53641CC77F95006AB156 /* EmailListViewController.swift */; };
 		43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53661CC77F95006AB156 /* IMAPSettingsTableView.swift */; };
@@ -248,10 +245,8 @@
 /* Begin PBXFileReference section */
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
 		430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveSentMessageOperation.swift; path = ../SaveSentMessageOperation.swift; sourceTree = "<group>"; };
-		4303DAE51CE62D2600D9C0AB /* CdAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdAttachment.swift; sourceTree = "<group>"; };
 		4305AC731DA3F7C300273D16 /* CdAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdAccount.swift; sourceTree = "<group>"; };
 		4305AC751DA3F7EA00273D16 /* _CdAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _CdAccount.swift; sourceTree = "<group>"; };
-		4305AC771DA3FD6900273D16 /* _CdAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _CdAttachment.swift; sourceTree = "<group>"; };
 		4305AC791DA3FE8C00273D16 /* _CdContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _CdContact.swift; sourceTree = "<group>"; };
 		4305AC7B1DA3FE9A00273D16 /* CdContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdContact.swift; sourceTree = "<group>"; };
 		4305AC7D1DA4036D00273D16 /* CdMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessage.swift; sourceTree = "<group>"; };
@@ -383,7 +378,6 @@
 		43E58ED01CBFA943008AA7A7 /* KeyChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Extension.swift"; sourceTree = "<group>"; };
 		43E9BC6F1DB51CEC00AD2352 /* CdMessage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+Extension.swift"; sourceTree = "<group>"; };
-		43E9BC711DB51D6700AD2352 /* CdAttachment+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Extension.swift"; sourceTree = "<group>"; };
 		43ED53631CC77F95006AB156 /* EmailListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewCell.swift; sourceTree = "<group>"; };
 		43ED53641CC77F95006AB156 /* EmailListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewController.swift; sourceTree = "<group>"; };
 		43ED53661CC77F95006AB156 /* IMAPSettingsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAPSettingsTableView.swift; sourceTree = "<group>"; };
@@ -763,13 +757,11 @@
 				43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */,
 				43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */,
 				43E9BC6F1DB51CEC00AD2352 /* CdMessage+Extension.swift */,
-				43E9BC711DB51D6700AD2352 /* CdAttachment+Extension.swift */,
 				43E58EC51CBF8365008AA7A7 /* BaseManagedObject.swift */,
 				4305AC731DA3F7C300273D16 /* CdAccount.swift */,
 				4305AC871DA40A5E00273D16 /* CdFolder.swift */,
 				4305AC7D1DA4036D00273D16 /* CdMessage.swift */,
 				4305AC831DA4087500273D16 /* CdMessageReference.swift */,
-				4303DAE51CE62D2600D9C0AB /* CdAttachment.swift */,
 				4305AC7B1DA3FE9A00273D16 /* CdContact.swift */,
 				43E58EB51CBF8301008AA7A7 /* machine */,
 			);
@@ -783,7 +775,6 @@
 				4305AC851DA40A3F00273D16 /* _CdFolder.swift */,
 				4305AC7F1DA4037500273D16 /* _CdMessage.swift */,
 				4305AC811DA4086900273D16 /* _CdMessageReference.swift */,
-				4305AC771DA3FD6900273D16 /* _CdAttachment.swift */,
 				4305AC791DA3FE8C00273D16 /* _CdContact.swift */,
 			);
 			path = machine;
@@ -1065,7 +1056,6 @@
 				431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */,
 				439864481D6C486200D0FDE1 /* FolderListViewController.swift in Sources */,
 				439D407A1CC79423009A4E7C /* GCD.swift in Sources */,
-				4303DAE71CE62D2600D9C0AB /* CdAttachment.swift in Sources */,
 				5DF0039C1DBE430E00F11C04 /* Mailbox.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
 				A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */,
@@ -1134,10 +1124,8 @@
 				436CB9711DBE178000682C85 /* Message+Extension.swift in Sources */,
 				4305AC7A1DA3FE8C00273D16 /* _CdContact.swift in Sources */,
 				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
-				43E9BC721DB51D6700AD2352 /* CdAttachment+Extension.swift in Sources */,
 				5DF0039E1DBE430E00F11C04 /* SmtpService.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
-				4305AC781DA3FD6900273D16 /* _CdAttachment.swift in Sources */,
 				43A0E73C1D16C99900159F41 /* ALView+PureLayout.m in Sources */,
 				43463AAE1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift in Sources */,
 				4340F5F91D363BE6006A5C82 /* ContactTableViewCell.swift in Sources */,
