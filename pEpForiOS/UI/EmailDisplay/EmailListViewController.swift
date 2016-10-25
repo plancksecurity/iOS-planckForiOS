@@ -111,14 +111,26 @@ class EmailListViewController: UITableViewController {
     }
 
     @IBAction func backFromComposeSaveDraftSegue(_ segue: UIStoryboardSegue) {
-        guard let _ = draftMessageToStore else {
+        guard let message = draftMessageToStore else {
             return
         }
 
         state.isSynching = true
         updateUI()
 
+        message.imapFlags.draft = true
+
         // TODO: IOS 222: Save as draft
+        if let folder = draftMessageToStore?.parent as? Folder {
+            if folder.folderType == .drafts {
+                message.save()
+                return
+            }
+        }
+
+        guard let account = config.account else {
+            return
+        }
     }
 
     func updateModel() {
