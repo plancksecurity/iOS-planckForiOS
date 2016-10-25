@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 public extension ConnectionTransport {
     static public func fromInteger(_ i: Int) -> ConnectionTransport {
         switch i {
@@ -34,7 +36,7 @@ public extension ConnectionTransport {
         }
     }
     
-    /* DEPRECATED?
+    // XXX: Here material from the Model area is used: to be avoided or code-shared.
     public func toServerTransport() -> Server.Transport {
         switch self {
         case .plain: return Server.Transport.plain
@@ -42,8 +44,14 @@ public extension ConnectionTransport {
         case .startTLS: return Server.Transport.startTls
         }
     }
-    */
 
+}
+
+// This enum also exists in the MessageModel: to be put to a third (shared code) place.
+public enum Transport: Int {
+    case plain
+    case tls
+    case startTls
 }
 
 public enum AuthMethod: String {
