@@ -119,7 +119,7 @@ class AccountsFoldersViewController: UITableViewController {
             return
         }
 
-        var connectInfos = [ImapSmtpConnectInfo]()
+        var connectInfos = [EmailConnectInfo]()
         for ac in accounts {
             if let ci = ac.connectInfo {
                 connectInfos.append(ci)

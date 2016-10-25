@@ -11,7 +11,7 @@ import UIKit
 import MessageModel
 
 extension Account {
-    open var connectInfo: ImapSmtpConnectInfo? {
+    open var connectInfo: EmailConnectInfo? {
         var potentialImapServer: Server?
         var potentialSmtpServer: Server?
         for server in servers {
@@ -37,7 +37,9 @@ extension Account {
         let passSmtp = KeyChain.getPassword(user.address,
                                             serverType: Server.ServerType.smtp.asString())
 
-        return ImapSmtpConnectInfo.init(
+        return EmailConnectInfo.init() // Caution: No specific values are initialized.
+        /* DEPRECATED
+        return EmailConnectInfo.init(
             nameOfTheUser: userName,
             email: user.address, imapUsername: imapServer.userName,
             smtpUsername: smtpServer.userName,
@@ -48,5 +50,6 @@ extension Account {
             smtpServerName: smtpServer.address,
             smtpServerPort: UInt16(smtpServer.port),
             smtpTransport: smtpServer.transport?.connectionTransport ?? .startTLS)
+         */
     }
 }

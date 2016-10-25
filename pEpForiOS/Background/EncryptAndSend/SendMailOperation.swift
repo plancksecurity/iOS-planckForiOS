@@ -37,7 +37,7 @@ open class SendMailOperation: ConcurrentBaseOperation {
 
     override open func main() {
         let privateMOC = encryptionData.coreDataUtil.privateContext()
-        var connectInfo: ImapSmtpConnectInfo? = nil
+        var connectInfo: EmailConnectInfo? = nil
         privateMOC.perform() {
             let model = CdModel.init(context: privateMOC)
             guard let account = model.accountByEmail(self.encryptionData.accountEmail) else {
