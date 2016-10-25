@@ -8,9 +8,11 @@
 
 import UIKit
 
+import MessageModel
+
 class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegate {
-    var message: CdMessage?
-    var partner: CdContact?
+    var message: Message?
+    var partner: Identity?
     var appConfig: AppConfig!
     var hexamode: Bool = false
 
@@ -56,7 +58,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             return cell
         } else if ((indexPath as NSIndexPath).row == partnerContact) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! HandshakeLabelTableViewCell
-            cell.handshakeLabel.text = partner!.displayString()
+            cell.handshakeLabel.text = partner?.displayString
             return cell
         } else if ((indexPath as NSIndexPath).row == explanationTrustwords) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
@@ -67,7 +69,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
             if let p = partner, let myselfEmail = appConfig.currentAccount?.user.address,
                 let myselfContact = appConfig.model.contactByEmail(myselfEmail) {
-                let partnerPepContact = PEPUtil.pepContact(p)
+                let partnerPepContact = PEPUtil.pEp(identity: p)
                 let myselfContactPepContact = PEPUtil.pepContact(myselfContact)
                 let recognizer = UITapGestureRecognizer(target: self, action:#selector(HandshakeViewController.handleTap(_:)))
                 recognizer.delegate = self
@@ -77,9 +79,9 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                         myselfContactPepContact, identity2: partnerPepContact,
                         language: "en", session: nil)
                 } else {
-                    let myselfFingerprints = PEPUtil.fingprprintForContact(myselfContact)
+                    let myselfFingerprints = PEPUtil.fingerPrintForContact(myselfContact)
 
-                    let partnerFingerprints = PEPUtil.fingprprintForContact(partner!)
+                    let partnerFingerprints = PEPUtil.fingerPrint(identity: partner!)
                     let bothFingerprints = "\(fingerprintFormat(partnerFingerprints!))\n\n\(fingerprintFormat(myselfFingerprints!))"
                     cell.handshakeTextView.text = bothFingerprints
                     cell.handshakeTextView.font = UIFont(name: "Menlo", size: UIFont.systemFontSize)
@@ -118,14 +120,14 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
 
     @IBAction func confirmTrustwords(_ sender: AnyObject) {
         if let p = partner {
-            PEPUtil.trustContact(p)
+            PEPUtil.trust(identity: p)
             let _ = navigationController?.popViewController(animated: true)
         }
     }
 
     @IBAction func wrongTrustwords(_ sender: AnyObject) {
         if let p = partner {
-            PEPUtil.mistrustContact(p)
+            PEPUtil.mistrust(identity: p)
             let _ = navigationController?.popViewController(animated: true)
         }
     }

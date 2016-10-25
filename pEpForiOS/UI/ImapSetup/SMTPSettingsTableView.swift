@@ -40,6 +40,9 @@ open class SMTPSettingsTableView: UITableViewController {
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        Account.delegate = self
+
         if model.serverSMTP == nil {
             serverValue.becomeFirstResponder()
         }
@@ -51,6 +54,11 @@ open class SMTPSettingsTableView: UITableViewController {
         super.viewWillAppear(animated)
         viewWidthAligner.alignViews([serverValueTextField,
             portValueTextField], parentView: self.view)
+    }
+
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        Account.delegate = nil
     }
 
     open override func didReceiveMemoryWarning() {

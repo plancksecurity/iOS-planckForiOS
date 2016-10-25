@@ -8,15 +8,17 @@
 
 import UIKit
 
+import MessageModel
+
 public struct ReplyUtil {
     static let nameSeparator = ", "
     static let newline = "\n"
 
-    public static func replyNameFromContact(_ contact: CdContact) -> String {
-        if let name = contact.name {
+    public static func replyNameFromIdentity(_ identity: Identity) -> String {
+        if let name = identity.userName {
             return name
         }
-        return contact.email
+        return identity.address
     }
 
     public static func quoteText(_ text: String) -> String {
@@ -29,28 +31,30 @@ public struct ReplyUtil {
         return quotedText
     }
 
-    public static func citationHeaderForMessage(_ message: CdMessage, replyAll: Bool) -> String {
+    public static func citationHeaderForMessage(_ message: Message, replyAll: Bool) -> String {
         let dateFormatter = DateFormatter.init()
         dateFormatter.dateStyle = DateFormatter.Style.long
         dateFormatter.timeStyle = DateFormatter.Style.long
 
-        let theDate = message.receivedDate
+        let theDate = message.received
 
         var theNames = [String]()
         if replyAll {
-            let contacts = message.allRecipienst().array
+            let contacts = message.allRecipients
             theNames.append(
-                contentsOf: contacts.map() { return replyNameFromContact($0 as! CdContact) })
+                contentsOf: contacts.map() { return replyNameFromIdentity($0) })
         } else {
             if let from = message.from {
-                theNames.append(replyNameFromContact(from))
+                theNames.append(replyNameFromIdentity(from))
             }
         }
 
         if theNames.count == 0 {
             if let rd = theDate {
-                return String.init(format: NSLocalizedString("Someone wrote on %@:", comment: "Reply to unknown sender with date"),
-                                   dateFormatter.string(from: rd as Date))
+                return String.init(
+                    format: NSLocalizedString("Someone wrote on %@:",
+                                              comment: "Reply to unknown sender with date"),
+                    dateFormatter.string(from: rd as Date))
             } else {
                 return NSLocalizedString("Someone wrote:",
                                          comment: "Reply to unknown sender without date")
@@ -89,7 +93,7 @@ public struct ReplyUtil {
                                  comment: "Mail footer/default text")
     }
 
-    public static func quotedMailTextForMail(_ mail: CdMessage, replyAll: Bool) -> String {
+    public static func quotedMailTextForMail(_ mail: Message, replyAll: Bool) -> String {
         if let text = mail.longMessage {
             let quotedText = quoteText(text)
             let citation: String? = citationHeaderForMessage(mail, replyAll: replyAll)
@@ -100,8 +104,8 @@ public struct ReplyUtil {
         return footer()
     }
 
-    public static func replySubjectForMail(_ mail: CdMessage) -> String {
-        if let subject = mail.subject {
+    public static func replySubjectForMail(_ mail: Message) -> String {
+        if let subject = mail.shortMessage {
             let re = NSLocalizedString(
                 "Re: ", comment: "The 'Re:' that gets appended to the subject line")
             return "\(re) \(subject)"

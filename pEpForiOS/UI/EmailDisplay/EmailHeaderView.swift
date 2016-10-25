@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 class EmailHeaderView: UIView {
     /**
      Where to start laying out labels from the left.
@@ -48,7 +50,7 @@ class EmailHeaderView: UIView {
      */
     var lastLeftLabel: UILabel? = nil
 
-    var message: CdMessage!
+    var message: Message!
 
     let dateFormatter = UIHelper.dateFormatterEmailDetails()
 
@@ -85,7 +87,7 @@ class EmailHeaderView: UIView {
                                 position: pos, width: width)
         }
 
-        if let date = message.receivedDate {
+        if let date = message.received {
             pos = biggerNewline(pos)
             let dateLabel = headerBaseLabelWithText(dateFormatter.string(from: date as Date),
                                                     maxWidth: width)
@@ -96,7 +98,7 @@ class EmailHeaderView: UIView {
             lastLeftLabel = dateLabel
         }
 
-        if let subject = message.subject {
+        if let subject = message.shortMessage {
             pos = biggerNewline(pos)
             let subjectLabel = headerBaseLabelWithText(subject, maxWidth: width)
             subjectLabel.frame.origin = pos
@@ -109,7 +111,7 @@ class EmailHeaderView: UIView {
         preferredSize = CGSize(width: width, height: pos.y)
     }
 
-    func addRecipients(_ recipients: NSOrderedSet, title: String, position: CGPoint,
+    func addRecipients(_ recipients: [Identity], title: String, position: CGPoint,
                        width: CGFloat) -> CGPoint {
         var pos = newline(position)
 
@@ -122,16 +124,14 @@ class EmailHeaderView: UIView {
 
         let session = PEPSession.init()
         for rec in recipients {
-            if let contact = rec as? CdContact {
-                let recLabel = recipientBaseLabelWithText(contact.displayString())
-                let privacyColor = PEPUtil.privacyColorForContact(contact, session: session)
-                UIHelper.setBackgroundColor(
-                    privacyColor, forLabel: recLabel, defaultColor: recLabel.backgroundColor)
-                pos = putAdjacentLeftLabel(lastUsedLabel, rightLabel: recLabel, atLeftPos: pos,
-                                           width: width)
-                lastUsedLabel = recLabel
-                addSubview(recLabel)
-            }
+            let recLabel = recipientBaseLabelWithText(rec.displayString)
+            let privacyColor = PEPUtil.pEpColor(identity: rec, session: session)
+            UIHelper.setBackgroundColor(
+                privacyColor, forLabel: recLabel, defaultColor: recLabel.backgroundColor)
+            pos = putAdjacentLeftLabel(lastUsedLabel, rightLabel: recLabel, atLeftPos: pos,
+                                       width: width)
+            lastUsedLabel = recLabel
+            addSubview(recLabel)
         }
 
         return pos
@@ -146,8 +146,8 @@ class EmailHeaderView: UIView {
         lastLeftLabel = fromTitleLabel
 
         if let fromContact = message.from {
-            let fromLabel = recipientBaseLabelWithText(fromContact.displayString())
-            let privacyColor = PEPUtil.privacyColorForContact(fromContact)
+            let fromLabel = recipientBaseLabelWithText(fromContact.displayString)
+            let privacyColor = PEPUtil.pEpColor(identity: fromContact)
             UIHelper.setBackgroundColor(
                 privacyColor, forLabel: fromLabel, defaultColor: fromLabel.backgroundColor)
 

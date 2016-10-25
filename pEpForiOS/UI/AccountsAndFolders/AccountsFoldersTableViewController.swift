@@ -225,21 +225,10 @@ class AccountsFoldersViewController: UITableViewController {
                 return
             }
             let account = accounts[(indexPath as NSIndexPath).row]
-
-            let predicateInbox = basicInboxPredicate()
-            let predicateAccount = NSPredicate.init(
-                format: "folder.account.email = %@", account.user.address)
-            let predicates: [NSPredicate] = [predicateInbox, predicateAccount]
-            let predicate = NSCompoundPredicate.init(
-                andPredicateWithSubpredicates: predicates)
-            let sortDescriptors = [NSSortDescriptor.init(key: "receivedDate",
-                ascending: false)]
+            let inbox = account.inbox()
 
             emailListConfig = EmailListViewController.EmailListConfig.init(
-                appConfig: ac, predicate: predicate,
-                sortDescriptors: sortDescriptors, account: account,
-                folderName: ImapSync.defaultImapInboxName,
-                syncOnAppear: false)
+                appConfig: ac, account: account, folder: inbox)
 
             self.performSegue(withIdentifier: segueEmailList, sender: self)
         } else {

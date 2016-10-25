@@ -12,55 +12,29 @@ import CoreData
 import MessageModel
 
 /**
- Simple pojo for attachments.
- */
-public struct SimpleAttachment {
-    let filename: String?
-    let contentType: String?
-    let data: Data?
-    let image: UIImage?
-}
-
-/**
  Converts a given Message to a (non-core-data) attachment object.
  */
-open class MessageToAttachmentOperation: ConcurrentBaseOperation {
+open class MessageToAttachmentOperation: BaseOperation {
     let comp = "MessageToAttachmentOperation"
 
-    /** The core data objectID */
-    let messageID: NSManagedObjectID
+    let message: Message
 
-    var attachment: SimpleAttachment?
+    var attachment: Attachment?
 
-    public init(message: CdMessage, coreDataUtil: CoreDataUtil) {
-        self.messageID = message.objectID
-        super.init(coreDataUtil: coreDataUtil)
+    public init(message: Message) {
+        self.message = message
     }
 
     open override func main() {
-        let privateMOC = coreDataUtil.privateContext()
-        privateMOC.perform() {
-            self.doWork(privateMOC)
-            self.markAsFinished()
-        }
-    }
-
-    func doWork(_ privateMOC: NSManagedObjectContext) {
-        guard let message = privateMOC.object(with: self.messageID) as? CdMessage else {
-            errorMessage(NSLocalizedString(
-                "Could not find message by objectID", comment: "Internal error"),
-                         logMessage: "Could not find message by objectID")
-            return
-        }
-        let pantMail = PEPUtil.pantomimeMailFromMessage(message)
+        let pantMail = PEPUtil.pantomimeMail(message: message)
         guard let data = pantMail.dataValue() else {
             errorMessage(NSLocalizedString(
                 "Could not get data from forwarded message", comment: "Internal error"),
                          logMessage: "Could not get data from forwarded message")
             return
         }
-        attachment = SimpleAttachment.init(
-            filename: "mail.eml", contentType: "message/rfc822", data: data , image: nil)
+        attachment = Attachment.create(data: data, mimeType: Constants.attachedEmailMimeType,
+                                       fileName: "mail.eml")
     }
 
     func errorMessage(_ localizedMessage: String, logMessage: String) {

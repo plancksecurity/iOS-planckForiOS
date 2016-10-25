@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 open class ComposeViewHelper {
     /**
      Builds a pEp mail dictionary from all the related views. This is just a quick
@@ -155,11 +157,11 @@ open class ComposeViewHelper {
     /**
      * Puts the emails from the contacts into a recipient text field.
      */
-    open static func transferContacts(
-        _ contacts: [CdContact], toTextField textField: UITextView, titleText: String?) {
+    open static func transfer(
+        identities: [Identity], toTextField textField: UITextView, titleText: String?) {
         textField.text = "\(String.orEmpty(titleText))"
-        for c in contacts {
-            textField.text = "\(textField.text)\(c.email), "
+        for c in identities {
+            textField.text = "\(textField.text)\(c.address), "
         }
     }
 
@@ -167,17 +169,17 @@ open class ComposeViewHelper {
      - Returns: The array of `Contact`s for a given recipient type and message.
      */
     open static func contactsForRecipientType(
-        _ recipientType: RecipientType?, fromMessage message: CdMessage) -> [CdContact] {
+        _ recipientType: RecipientType?, fromMessage message: Message) -> [Identity] {
         guard let rt = recipientType else {
             return []
         }
         switch rt {
         case .to:
-            return orderedSetToContacts(message.to)
+            return message.to
         case .cc:
-            return orderedSetToContacts(message.cc)
+            return message.cc
         case .bcc:
-            return orderedSetToContacts(message.bcc)
+            return message.bcc
         }
     }
 
