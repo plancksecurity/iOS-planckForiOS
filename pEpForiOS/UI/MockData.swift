@@ -20,7 +20,9 @@ class MockData {
         let smtpServer = Server.create(
             serverType: .imap, port: 587, address: "mail.yahoo.com", userName: "user1",
             transport: .startTls)
-        let account = Account.create(user: ident, servers: [imapServer, smtpServer])
+        let credentials = ServerCredentials.create(userName: "username", key: "yahoo server 1")
+        let account = Account.create(user: ident, credentials: credentials,
+                                     servers: [imapServer, smtpServer])
         insertRootFolders(account: account)
     }
 
