@@ -272,8 +272,8 @@ extension ImapSync: CWServiceClient {
         if let pass = connectInfo.userPassword {
             password = pass
         } else {
-            password = KeyChain.getPassword(connectInfo.userId,
-                                            serverType: connectInfo.networkAddress)
+            password = KeyChain.password(key: connectInfo.userId,
+                                         serverType: connectInfo.networkAddress)
         }
 
         imapStore.authenticate(connectInfo.userId,

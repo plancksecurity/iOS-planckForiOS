@@ -12,8 +12,8 @@ import MessageModel
 
 extension Account {
     func serverTuple(credentials: ServerCredentials, server: Server) -> (Server, String?)? {
-        return (server, KeyChain.getPassword(
-            credentials.key, serverType: server.serverType.asString()))
+        return (server, KeyChain.password(
+            key: credentials.key, serverType: server.serverType.asString()))
     }
 
     open var connectInfo: EmailConnectInfo? {

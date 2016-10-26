@@ -197,8 +197,8 @@ extension SmtpSend: CWServiceClient {
             if let pass = self.connectInfo.userPassword {
                 password = pass
             } else {
-                password = KeyChain.getPassword(self.connectInfo.userId,
-                                                serverType: connectInfo.networkAddress)
+                password = KeyChain.password(key: self.connectInfo.userId,
+                                             serverType: connectInfo.networkAddress)
             }
             self.smtp.authenticate(self.connectInfo.userId,
                                    password: password,

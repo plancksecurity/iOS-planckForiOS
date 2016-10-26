@@ -12,7 +12,8 @@ import MessageModel
 
 extension CdAccount {
     open var connectInfo: EmailConnectInfo {
-        let password = KeyChain.getPassword(self.email, serverType: (self.connectInfo.emailProtocol?.rawValue)!)
+        let password = KeyChain.password(key: self.email,
+                                         serverType: (self.connectInfo.emailProtocol?.rawValue)!)
         
         return EmailConnectInfo.init(
             emailProtocol: self.connectInfo.emailProtocol!,
