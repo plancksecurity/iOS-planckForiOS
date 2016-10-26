@@ -310,7 +310,7 @@ open class CdModel: ICdModel {
 
     func newAccountFromImapSmtpConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
         let account = NSEntityDescription.insertNewObject(
-            forEntityName: CdAccount.entityName(), into: context) as! CdAccount
+            forEntityName: CdAccount.entityName, into: context) as! CdAccount
         account.nameOfTheUser = connectInfo.userName!
         account.email = connectInfo.userId
         

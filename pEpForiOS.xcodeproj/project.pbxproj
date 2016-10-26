@@ -49,7 +49,6 @@
 		4346D33C1D86E2E50017E24E /* ComposeViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4346D33B1D86E2E50017E24E /* ComposeViewHelper.swift */; };
 		434F84451CEB018A0055B7A9 /* NSData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */; };
 		434FF7131DB73D73008F1724 /* Account+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FF7121DB73D73008F1724 /* Account+Extension.swift */; };
-		434FF7191DB74781008F1724 /* Transport+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434FF7181DB74781008F1724 /* Transport+Extension.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
 		4367E26F1CD7360000B05F83 /* CdModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367E26E1CD7360000B05F83 /* CdModel.swift */; };
 		436CB9711DBE178000682C85 /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436CB9701DBE178000682C85 /* Message+Extension.swift */; };
@@ -283,7 +282,6 @@
 		4346D33B1D86E2E50017E24E /* ComposeViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewHelper.swift; sourceTree = "<group>"; };
 		434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+Extensions.swift"; sourceTree = "<group>"; };
 		434FF7121DB73D73008F1724 /* Account+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Account+Extension.swift"; sourceTree = "<group>"; };
-		434FF7181DB74781008F1724 /* Transport+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Transport+Extension.swift"; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
 		4367E26E1CD7360000B05F83 /* CdModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdModel.swift; sourceTree = "<group>"; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
@@ -747,7 +745,6 @@
 			isa = PBXGroup;
 			children = (
 				436CB9701DBE178000682C85 /* Message+Extension.swift */,
-				434FF7181DB74781008F1724 /* Transport+Extension.swift */,
 				434FF7121DB73D73008F1724 /* Account+Extension.swift */,
 				4367E26E1CD7360000B05F83 /* CdModel.swift */,
 				43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */,
@@ -1075,7 +1072,6 @@
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
 				4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */,
 				43B3E46E1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift in Sources */,
-				434FF7191DB74781008F1724 /* Transport+Extension.swift in Sources */,
 				43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */,
 				435B42411D211E5900119048 /* MiscUtil.swift in Sources */,
 				43B2660D1D252C93009D57E8 /* ConcurrentBaseOperation.swift in Sources */,
