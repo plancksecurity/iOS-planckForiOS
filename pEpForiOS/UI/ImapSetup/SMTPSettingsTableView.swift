@@ -189,7 +189,7 @@ open class SMTPSettingsTableView: UITableViewController {
                                        transport: model.transportSMTP.toServerTransport())
         let credentials = ServerCredentials.create(userName: userName,
                                                    key: "\(userName):\(imapServer.address)")
-        let account = Account.create(user: user, credentials: credentials,
+        let account = Account.create(user: user, credentials: [credentials],
                                      servers: [imapServer, smtpServer])
         account.needsVerification = true
         account.save()

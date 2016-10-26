@@ -21,7 +21,7 @@ class MockData {
             serverType: .imap, port: 587, address: "mail.yahoo.com", userName: "user1",
             transport: .startTls)
         let credentials = ServerCredentials.create(userName: "username", key: "yahoo server 1")
-        let account = Account.create(user: ident, credentials: credentials,
+        let account = Account.create(user: ident, credentials: [credentials],
                                      servers: [imapServer, smtpServer])
         insertRootFolders(account: account)
     }
@@ -38,7 +38,7 @@ class MockData {
     }
 
     static func insertMessages(folder: Folder) {
-        for i in 1...10 {
+        for _ in 1...10 {
             
         }
     }
