@@ -38,10 +38,10 @@ public protocol ICdModel {
     /**
      Retrieve a contact by email, without updating anything.
      */
-    func contactByEmail(_ email: String) -> CdContact?
+    func contactByEmail(_ email: String) -> CdIdentity?
 
     func contactsByPredicate(_ predicate: NSPredicate?,
-                             sortDescriptors: [NSSortDescriptor]?) -> [CdContact]?
+                             sortDescriptors: [NSSortDescriptor]?) -> [CdIdentity]?
 
     func existingMessage(_ msg: CWIMAPMessage) -> CdMessage?
     func messageByPredicate(_ predicate: NSPredicate?,
@@ -114,8 +114,8 @@ public protocol ICdModel {
     func insertAttachmentWithContentType(
         _ contentType: String?, filename: String?, data: Data) -> CdAttachment
 
-    func insertOrUpdateContactEmail(_ email: String, name: String?) -> CdContact
-    func insertOrUpdateContactEmail(_ email: String) -> CdContact
+    func insertOrUpdateContactEmail(_ email: String, name: String?) -> CdIdentity
+    func insertOrUpdateContactEmail(_ email: String) -> CdIdentity
 
     /**
      Inserts a folder of the given type, creating the whole hierarchy if necessary.
@@ -162,7 +162,7 @@ public protocol ICdModel {
     /**
      - Returns: List of contact that match the given snippet (either in the name, or email).
      */
-    func contactsBySnippet(_ snippet: String) -> [CdContact]
+    func contactsBySnippet(_ snippet: String) -> [CdIdentity]
 
     func save()
 
@@ -264,7 +264,7 @@ open class CdModel: ICdModel {
         return 0
     }
 
-    open func contactByEmail(_ email: String) -> CdContact? {
+    open func contactByEmail(_ email: String) -> CdIdentity? {
         if let contacts = contactsByPredicate(NSPredicate.init(format: "email = %@", email), sortDescriptors: nil) {
             if contacts.count == 1 {
                 return contacts[0]
@@ -279,9 +279,10 @@ open class CdModel: ICdModel {
     }
 
     open func contactsByPredicate(_ predicate: NSPredicate?,
-                                    sortDescriptors: [NSSortDescriptor]?) -> [CdContact]? {
-        return entitiesWithName(CdContact.entityName(), predicate: predicate,
-            sortDescriptors: sortDescriptors)?.map() {$0 as! CdContact}
+                                    sortDescriptors: [NSSortDescriptor]?) -> [CdIdentity]? {
+        // XXX: Instead of just "CdIdentity" a method on the contact would be required.
+        return entitiesWithName("CdIdentity", predicate: predicate,
+            sortDescriptors: sortDescriptors)?.map() {$0 as! CdIdentity}
     }
 
     open func existingMessage(_ msg: CWIMAPMessage) -> CdMessage? {
@@ -644,30 +645,32 @@ open class CdModel: ICdModel {
         return folderByType(type, email: account.email)
     }
 
-    open func insertOrUpdateContactEmail(_ email: String, name: String?) -> CdContact {
-        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: CdContact.entityName())
+    open func insertOrUpdateContactEmail(_ email: String, name: String?) -> CdIdentity {
+        // XXX: entityName should be gotten by method.
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: "CdIdentity")
         fetch.predicate = NSPredicate.init(format: "email == %@", email)
         do {
-            var existing = try context.fetch(fetch) as! [CdContact]
+            var existing = try context.fetch(fetch) as! [CdIdentity]
             if existing.count > 1 {
                 Log.warnComponent(comp, "Duplicate contacts with address \(email)")
-                existing[0].updateName(name)
+                existing[0].userName = name
                 return existing[0]
             } else if existing.count == 1 {
-                existing[0].updateName(name)
+                existing[0].userName = name
                 return existing[0]
             }
         } catch let err as NSError {
             Log.errorComponent(comp, error: err)
         }
         let contact = NSEntityDescription.insertNewObject(
-            forEntityName: CdContact.entityName(), into: context) as! CdContact
-        contact.email = email
-        contact.name = name
+            // XXX: entityName should be gotten by method.
+            forEntityName: "CdIdentity", into: context) as! CdIdentity
+        contact.address = email
+        contact.userName = name
         return contact
     }
 
-    open func insertOrUpdateContactEmail(_ email: String) -> CdContact {
+    open func insertOrUpdateContactEmail(_ email: String) -> CdIdentity {
         return insertOrUpdateContactEmail(email, name: nil)
     }
 
@@ -690,12 +693,12 @@ open class CdModel: ICdModel {
         return ref
     }
 
-    open func addContacts(_ contacts: [CWInternetAddress]) -> [String: CdContact] {
-        var added: [String: CdContact] = [:]
+    open func addContacts(_ contacts: [CWInternetAddress]) -> [String: CdIdentity] {
+        var added: [String: CdIdentity] = [:]
         for address in contacts {
             let addr = insertOrUpdateContactEmail(address.address(),
                                                   name: address.personal())
-            added[addr.email] = addr
+            added[address.address()] = addr
         }
         return added
     }
@@ -856,7 +859,7 @@ open class CdModel: ICdModel {
         }
     }
 
-    open func contactsBySnippet(_ snippet: String) -> [CdContact] {
+    open func contactsBySnippet(_ snippet: String) -> [CdIdentity] {
         let p = NSPredicate.init(format: "email != nil and email != \"\" and " +
             "(email contains[cd] %@ or name contains[cd] %@)",
                                  snippet, snippet)

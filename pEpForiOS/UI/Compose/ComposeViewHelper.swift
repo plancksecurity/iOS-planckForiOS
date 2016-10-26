@@ -188,8 +188,8 @@ open class ComposeViewHelper {
      Putting this into a function prevents a compiler crash with Swift 2.2 that
      occurs when putting this inline.
      */
-    open static func orderedSetToContacts(_ theSet: NSOrderedSet) -> [CdContact] {
-        return theSet.map({ $0 as! CdContact })
+    open static func orderedSetToContacts(_ theSet: NSOrderedSet) -> [CdIdentity] {
+        return theSet.map({ $0 as! CdIdentity })
     }
 }
 

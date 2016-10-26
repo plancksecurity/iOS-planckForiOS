@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+import MessageModel
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -36,9 +38,11 @@ class UIHelper {
         tableView.estimatedRowHeight = 44
     }
 
-    static func labelFromContact(_ contact: CdContact) -> UILabel {
+    static func labelFromContact(_ contact: CdIdentity) -> UILabel {
         let l = UILabel.init()
-        l.text = contact.displayString()
+        // l.text = contact.displayString()
+        // XXX: Refactoring occured here.
+        l.text = "No text for now."
         return l
     }
 

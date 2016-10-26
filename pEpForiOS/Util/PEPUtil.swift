@@ -206,23 +206,24 @@ open class PEPUtil {
      - Parameter contact: The core data contact object.
      - Returns: An `PEPContact` contact for pEp.
      */
-    open static func pepContact(_ contact: IContact) -> PEPContact {
+    open static func pepContact(_ contact: CdIdentity) -> PEPContact {
         var dict = PEPContact()
-        if let name = contact.name {
+        if let name = contact.userName{
             dict[kPepUsername] = name as NSObject
         } else {
-            dict[kPepUsername] = contact.email.namePartOfEmail() as NSObject
+            dict[kPepUsername] = contact.address as AnyObject
         }
-        dict[kPepAddress] = contact.email as NSObject
-        if contact.isMySelf.boolValue {
+        dict[kPepAddress] = contact.address as AnyObject
+        if (contact.isMySelf?.boolValue)! {
             dict[kPepIsMe] = contact.isMySelf
         }
 
-        if let pepUserID = contact.pepUserID {
+        if let pepUserID = contact.userID {
             dict[kPepUserID] = pepUserID as NSObject
         } else {
             // Only use an address book ID if this contact has no pEp ID
-            if let addressBookID = contact.addressBookID {
+            // XXX: contact.userID might not be what we want to set here (from refactoring).
+            if let addressBookID = contact.userID {
                 dict[kPepUserID] = String(describing: addressBookID) as NSObject
             }
         }
@@ -319,10 +320,10 @@ open class PEPUtil {
             dict[kPepShortMessage] = subject as AnyObject
         }
 
-        dict[kPepTo] = NSArray.init(array: message.to.map() { return pepContact($0 as! IContact) })
-        dict[kPepCC] = NSArray.init(array: message.cc.map() { return pepContact($0 as! IContact) })
+        dict[kPepTo] = NSArray.init(array: message.to.map() { return pepContact($0 as! CdIdentity) })
+        dict[kPepCC] = NSArray.init(array: message.cc.map() { return pepContact($0 as! CdIdentity) })
         dict[kPepBCC] = NSArray.init(array: message.bcc.map() {
-            return pepContact($0 as! IContact)
+            return pepContact($0 as! CdIdentity)
         })
 
         if let longMessage = message.longMessage {
@@ -354,7 +355,7 @@ open class PEPUtil {
         return dict as PEPMail
     }
 
-    open static func insertPepContact(_ pepContact: PEPContact, intoModel: ICdModel) -> CdContact {
+    open static func insertPepContact(_ pepContact: PEPContact, intoModel: ICdModel) -> CdIdentity {
         let contact = intoModel.insertOrUpdateContactEmail(
             pepContact[kPepAddress] as! String,
             name: pepContact[kPepUsername] as? String)
@@ -365,14 +366,16 @@ open class PEPUtil {
         // The only case where the kPepUserID is already set, should
         // be as a result of mySelf().
         if let pepUserID = pepContact[kPepUserID] as? String {
-            contact.pepUserID = pepUserID
+            contact.userID = pepUserID
         }
         // If there is no pEp ID yet, try to use an addressbook ID
+        /* XXX: Refactored out as no addressBookID is in use now.
         if contact.pepUserID == nil {
             if let abID = contact.addressBookID?.int32Value {
                 contact.pepUserID = String(abID)
             }
         }
+        */
         return contact
     }
 
@@ -604,7 +607,7 @@ open class PEPUtil {
         return parts
     }
 
-    open static func colorRatingForContact(_ contact: IContact,
+    open static func colorRatingForContact(_ contact: CdIdentity,
                                              session: PEPSession? = nil) -> PEP_rating {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
@@ -612,7 +615,7 @@ open class PEPUtil {
         return color
     }
 
-    open static func privacyColorForContact(_ contact: CdContact,
+    open static func privacyColorForContact(_ contact: CdIdentity,
                                               session: PEPSession? = nil) -> PEP_color {
         let theSession = useOrCreateSession(session)
         let pepC = pepContact(contact)
@@ -784,7 +787,7 @@ open class PEPUtil {
      - Returns: The fingerprint for a contact.
      */
     open static func fingerPrintForContact(
-        _ contact: CdContact, session: PEPSession? = nil) -> String? {
+        _ contact: CdIdentity, session: PEPSession? = nil) -> String? {
         let pepC = pepContact(contact)
         return fingerPrintForPepContact(pepC)
     }
@@ -817,7 +820,7 @@ open class PEPUtil {
     /**
      Trust that contact (yellow to green).
      */
-    open static func trustContact(_ contact: CdContact, session: PEPSession? = nil) {
+    open static func trustContact(_ contact: CdIdentity, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = NSMutableDictionary.init(dictionary: pepContact(contact))
         theSession.updateIdentity(pepC)
@@ -837,7 +840,7 @@ open class PEPUtil {
     /**
      Mistrust the identity (yellow to red)
      */
-    open static func mistrustContact(_ contact: CdContact, session: PEPSession? = nil) {
+    open static func mistrustContact(_ contact: CdIdentity, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = NSMutableDictionary.init(dictionary: pepContact(contact))
         theSession.updateIdentity(pepC)
@@ -858,7 +861,7 @@ open class PEPUtil {
      Resets the trust for the given contact. Use both for trusting again after
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
-    open static func resetTrustForContact(_ contact: CdContact, session: PEPSession? = nil) {
+    open static func resetTrustForContact(_ contact: CdIdentity, session: PEPSession? = nil) {
         let theSession = useOrCreateSession(session)
         let pepC = NSMutableDictionary.init(dictionary: pepContact(contact))
         theSession.updateIdentity(pepC)

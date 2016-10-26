@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 extension CdMessage {
     /**
      - Returns: A `CWFlags object` for the given `NSNumber`
@@ -37,8 +39,8 @@ extension CdMessage {
         return recipients
     }
 
-    func internetAddressFromContact(_ contact: CdContact) -> CWInternetAddress {
-        return CWInternetAddress.init(personal: contact.name, address: contact.email)
+    func internetAddressFromContact(_ contact: CdIdentity) -> CWInternetAddress {
+        return CWInternetAddress.init(personal: contact.userName, address: contact.address)
 
     }
 
@@ -46,7 +48,7 @@ extension CdMessage {
                          asPantomimeReceiverType receiverType: PantomimeRecipientType,
                          intoTargetArray target: inout [CWInternetAddress]) {
         for obj in contacts {
-            if let theContact = obj as? CdContact {
+            if let theContact = obj as? CdIdentity {
                 let addr = internetAddressFromContact(theContact)
                 addr.setType(receiverType)
                 target.append(addr)

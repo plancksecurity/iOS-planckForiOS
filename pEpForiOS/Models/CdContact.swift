@@ -1,5 +1,7 @@
 import Foundation
 
+/*
+
 @objc(CdContact)
 open class CdContact: _CdContact, IContact {
 	// Custom logic goes here.
@@ -75,3 +77,5 @@ extension CdContact {
         }
     }
 }
+
+*/

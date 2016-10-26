@@ -11,8 +11,6 @@
 		430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */; };
 		4305AC741DA3F7C300273D16 /* CdAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC731DA3F7C300273D16 /* CdAccount.swift */; };
 		4305AC761DA3F7EA00273D16 /* _CdAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC751DA3F7EA00273D16 /* _CdAccount.swift */; };
-		4305AC7A1DA3FE8C00273D16 /* _CdContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC791DA3FE8C00273D16 /* _CdContact.swift */; };
-		4305AC7C1DA3FE9A00273D16 /* CdContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC7B1DA3FE9A00273D16 /* CdContact.swift */; };
 		4305AC7E1DA4036D00273D16 /* CdMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC7D1DA4036D00273D16 /* CdMessage.swift */; };
 		4305AC801DA4037500273D16 /* _CdMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC7F1DA4037500273D16 /* _CdMessage.swift */; };
 		4305AC821DA4086900273D16 /* _CdMessageReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC811DA4086900273D16 /* _CdMessageReference.swift */; };
@@ -247,8 +245,6 @@
 		430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveSentMessageOperation.swift; path = ../SaveSentMessageOperation.swift; sourceTree = "<group>"; };
 		4305AC731DA3F7C300273D16 /* CdAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdAccount.swift; sourceTree = "<group>"; };
 		4305AC751DA3F7EA00273D16 /* _CdAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _CdAccount.swift; sourceTree = "<group>"; };
-		4305AC791DA3FE8C00273D16 /* _CdContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _CdContact.swift; sourceTree = "<group>"; };
-		4305AC7B1DA3FE9A00273D16 /* CdContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdContact.swift; sourceTree = "<group>"; };
 		4305AC7D1DA4036D00273D16 /* CdMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessage.swift; sourceTree = "<group>"; };
 		4305AC7F1DA4037500273D16 /* _CdMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _CdMessage.swift; sourceTree = "<group>"; };
 		4305AC811DA4086900273D16 /* _CdMessageReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _CdMessageReference.swift; sourceTree = "<group>"; };
@@ -762,7 +758,6 @@
 				4305AC871DA40A5E00273D16 /* CdFolder.swift */,
 				4305AC7D1DA4036D00273D16 /* CdMessage.swift */,
 				4305AC831DA4087500273D16 /* CdMessageReference.swift */,
-				4305AC7B1DA3FE9A00273D16 /* CdContact.swift */,
 				43E58EB51CBF8301008AA7A7 /* machine */,
 			);
 			path = Models;
@@ -775,7 +770,6 @@
 				4305AC851DA40A3F00273D16 /* _CdFolder.swift */,
 				4305AC7F1DA4037500273D16 /* _CdMessage.swift */,
 				4305AC811DA4086900273D16 /* _CdMessageReference.swift */,
-				4305AC791DA3FE8C00273D16 /* _CdContact.swift */,
 			);
 			path = machine;
 			sourceTree = "<group>";
@@ -1101,7 +1095,6 @@
 				431144AC1CC0CCE30007639D /* GrandOperator.swift in Sources */,
 				434F84451CEB018A0055B7A9 /* NSData+Extensions.swift in Sources */,
 				43980EF81CBD402400A7FC3C /* CoreDataUtil.swift in Sources */,
-				4305AC7C1DA3FE9A00273D16 /* CdContact.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */,
 				431AE5D51D2EC0C000F609D3 /* ComposeViewController.swift in Sources */,
@@ -1122,7 +1115,6 @@
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */,
 				436CB9711DBE178000682C85 /* Message+Extension.swift in Sources */,
-				4305AC7A1DA3FE8C00273D16 /* _CdContact.swift in Sources */,
 				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
 				5DF0039E1DBE430E00F11C04 /* SmtpService.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,

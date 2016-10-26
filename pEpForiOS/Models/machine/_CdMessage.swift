@@ -148,7 +148,7 @@ open class _CdMessage: BaseManagedObject {
     var folder: CdFolder
 
     @NSManaged open
-    var from: CdContact?
+    var from: CdIdentity?
 
     @NSManaged open
     var messageReference: CdMessageReference?
@@ -211,13 +211,13 @@ extension _CdMessage {
         self.bcc = mutable.copy() as! NSOrderedSet
     }
 
-    open func addBccObject(value: CdContact) {
+    open func addBccObject(value: CdIdentity) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
         mutable.add(value)
         self.bcc = mutable.copy() as! NSOrderedSet
     }
 
-    open func removeBccObject(value: CdContact) {
+    open func removeBccObject(value: CdIdentity) {
         let mutable = self.bcc.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.bcc = mutable.copy() as! NSOrderedSet
@@ -239,13 +239,13 @@ extension _CdMessage {
         self.cc = mutable.copy() as! NSOrderedSet
     }
 
-    open func addCcObject(value: CdContact) {
+    open func addCcObject(value: CdIdentity) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
         mutable.add(value)
         self.cc = mutable.copy() as! NSOrderedSet
     }
 
-    open func removeCcObject(value: CdContact) {
+    open func removeCcObject(value: CdIdentity) {
         let mutable = self.cc.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.cc = mutable.copy() as! NSOrderedSet
@@ -295,13 +295,13 @@ extension _CdMessage {
         self.to = mutable.copy() as! NSOrderedSet
     }
 
-    open func addToObject(value: CdContact) {
+    open func addToObject(value: CdIdentity) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
         mutable.add(value)
         self.to = mutable.copy() as! NSOrderedSet
     }
 
-    open func removeToObject(value: CdContact) {
+    open func removeToObject(value: CdIdentity) {
         let mutable = self.to.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.to = mutable.copy() as! NSOrderedSet

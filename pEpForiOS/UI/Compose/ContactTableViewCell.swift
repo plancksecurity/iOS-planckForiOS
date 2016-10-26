@@ -20,7 +20,9 @@ class ContactTableViewCell: UITableViewCell {
     var contact: AddressbookContact? = nil {
         didSet {
             if let c = contact {
-                labelContactDisplayName.text = c.completeDisplayString()
+                // labelContactDisplayName.text = c.completeDisplayString()
+                // XXX: Refactoring occured here.
+                labelContactDisplayName.text = "No string now."
             } else {
                 labelContactDisplayName.text = "Null Contact"
             }
