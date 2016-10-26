@@ -11,31 +11,37 @@ import UIKit
 import MessageModel
 
 extension Account {
+    func serverTuple(credentials: ServerCredentials, server: Server) -> (Server, String?)? {
+        return (server, KeyChain.getPassword(
+            credentials.key, serverType: server.serverType.asString()))
+    }
+
     open var connectInfo: EmailConnectInfo? {
-        var potentialImapServer: Server?
-        var potentialSmtpServer: Server?
-        for server in servers {
-            if server.serverType == .imap {
-                potentialImapServer = server
-            } else if server.serverType == .smtp {
-                potentialSmtpServer = server
+        var potentialImapServer: (Server, String?)?
+        var potentialSmtpServer: (Server, String?)?
+
+        outer: for cred in serverCredentials {
+            for server in cred.servers {
+                if server.serverType == .imap {
+                    potentialImapServer = serverTuple(credentials: cred, server: server)
+                } else if server.serverType == .smtp {
+                    potentialSmtpServer = serverTuple(credentials: cred, server: server)
+                }
+                if potentialSmtpServer != nil && potentialImapServer != nil {
+                    break outer
+                }
             }
         }
 
-        guard let imapServer = potentialImapServer else {
+        guard let (imapServer, passImap) = potentialImapServer else {
             return nil
         }
-        guard let smtpServer = potentialSmtpServer else {
+        guard let (smtpServer, passSmtp) = potentialSmtpServer else {
             return nil
         }
         guard let userName = user.userName else {
             return nil
         }
-
-        let passImap = KeyChain.getPassword(user.address,
-                                            serverType: Server.ServerType.imap.asString())
-        let passSmtp = KeyChain.getPassword(user.address,
-                                            serverType: Server.ServerType.smtp.asString())
 
         return EmailConnectInfo.init() // Caution: No specific values are initialized.
         /* DEPRECATED
