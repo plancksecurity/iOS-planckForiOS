@@ -41,7 +41,7 @@ open class SMTPSettingsTableView: UITableViewController {
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        Account.delegate = self
+        MessageModelConfig.accountDelegate = self
 
         if model.serverSMTP == nil {
             serverValue.becomeFirstResponder()
