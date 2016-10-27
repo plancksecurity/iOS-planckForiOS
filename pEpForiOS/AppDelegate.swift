@@ -52,8 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions
-        launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession.init()
@@ -65,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         setupDefaultSettings()
-
+        loadCoreDataStack()
         return true
     }
 
@@ -125,5 +124,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setupDefaultSettings() {
         let settings: [String:AnyObject] = [Constants.kSettingLastAccountEmail:"" as AnyObject]
         UserDefaults.standard.register(defaults: settings)
+    }
+    
+    func loadCoreDataStack() {
+        do {
+            try Record.loadCoreDataStack()
+        } catch {
+            print("Error While Loading DataStack")
+        }
     }
 }

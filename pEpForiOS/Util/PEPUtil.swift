@@ -689,8 +689,8 @@ open class PEPUtil {
                                               language: String,
                                               session: PEPSession?) -> String? {
         let theSession = sessionOrReuse(session)
-        return theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
-                                                 language: language, full: true)
+        return nil//theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
+                                               //  language: language, full: true)
     }
 
     /**
