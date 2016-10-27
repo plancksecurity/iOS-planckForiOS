@@ -686,12 +686,14 @@ open class CdModel: ICdModel {
 
     open func insertMessageReference(_ messageID: String) -> CdMessageReference {
         let ref = NSEntityDescription.insertNewObject(
-            // XXX: Explicit string used
+            // XXX: Explicit string used for now (refactoring).
             forEntityName: "CdMessageReference", into: context) as! CdMessageReference
         ref.reference = messageID
+        /* XXX: Don't save message into CdMessageReference type for now, as this breaks.
         if let msg = messageByMessageID(messageID) {
             ref.message = msg
         }
+         */
         return ref
     }
 
