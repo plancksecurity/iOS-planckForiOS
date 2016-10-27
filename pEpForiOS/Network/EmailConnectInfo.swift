@@ -11,6 +11,22 @@ import Foundation
 import MessageModel
 
 public extension ConnectionTransport {
+    init?(fromInt: Int?) {
+        guard let i = fromInt else {
+            return nil
+        }
+        switch i {
+        case ConnectionTransport.plain.rawValue:
+            self = ConnectionTransport.plain
+        case ConnectionTransport.startTLS.rawValue:
+            self = ConnectionTransport.startTLS
+        case ConnectionTransport.TLS.rawValue:
+            self = ConnectionTransport.TLS
+        default:
+            return nil
+        }
+    }
+
     static public func fromInteger(_ i: Int) -> ConnectionTransport {
         switch i {
         case ConnectionTransport.plain.rawValue:
@@ -59,17 +75,18 @@ public enum AuthMethod: String {
     case Login = "LOGIN"
     case CramMD5 = "CRAM-MD5"
 
-    init(string: String) {
-        if string.isEqual(AuthMethod.Plain.rawValue) {
+    init?(string: String?) {
+        guard let s = string else {
+            return nil
+        }
+        if s.isEqual(AuthMethod.Plain.rawValue) {
             self = .Plain
-        } else if string.isEqual(AuthMethod.Login.rawValue) {
+        } else if s.isEqual(AuthMethod.Login.rawValue) {
             self = .Login
-        } else if string.isEqual(AuthMethod.CramMD5.rawValue) {
+        } else if s.isEqual(AuthMethod.CramMD5.rawValue) {
             self = .CramMD5
         } else {
-            // To fail
-            self = .Plain
-            assert(false)
+            return nil
         }
     }
 }
@@ -78,15 +95,25 @@ public enum EmailProtocol: String {
     case smtp = "SMTP"
     case imap = "IMAP"
     
-    init(emailProtocol: String) {
+    init?(emailProtocol: String) {
         if emailProtocol.isEqual(EmailProtocol.smtp.rawValue) {
             self = .smtp
         } else if emailProtocol.isEqual(EmailProtocol.imap.rawValue) {
             self = .imap
         } else {
-            // To fail
+            return nil
+        }
+    }
+
+    init?(serverType: Server.ServerType?) {
+        guard let st = serverType else {
+            return nil
+        }
+        switch st {
+        case .imap:
+            self = .imap
+        case .smtp:
             self = .smtp
-            assert(false)
         }
     }
 }
