@@ -145,11 +145,11 @@ public class EmailConnectInfo: ConnectInfo {
     {
         self.init(emailProtocol: emailProtocol,
                   userId: userId,
-                  userPassword: nil,
-                  userName: nil,
+                  userPassword: userPassword,
+                  userName: userName,
                   networkPort: networkPort,
                   networkAddress: networkAddress,
-                  connectionTransport: nil,
-                  authMethod: nil)
+                  connectionTransport: connectionTransport,
+                  authMethod: authMethod)
     }
 }
