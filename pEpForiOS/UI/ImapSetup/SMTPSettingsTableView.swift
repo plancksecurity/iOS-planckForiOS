@@ -58,7 +58,6 @@ open class SMTPSettingsTableView: UITableViewController {
 
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Account.delegate = nil
     }
 
     open override func didReceiveMemoryWarning() {
