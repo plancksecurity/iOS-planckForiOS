@@ -72,7 +72,8 @@ public protocol IGrandOperator: class {
      Asynchronously verifies the given connection. Tests for IMAP and SMTP. The test is considered
      a success when authentication was successful.
      */
-    func verifyConnection(_ connectInfo: EmailConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
+    func verifyConnection(imapConnectInfo: EmailConnectInfo, smtpConnectInfo: EmailConnectInfo,
+                          completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Sends the given mail via SMTP. Also saves it into the drafts folder. You
@@ -257,10 +258,12 @@ open class GrandOperator: IGrandOperator {
         }
     }
 
-    open func verifyConnection(_ connectInfo: EmailConnectInfo,
-                                 completionBlock: GrandOperatorCompletionBlock?) {
-        let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
-        let op2 = VerifySmtpConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
+    open func verifyConnection(imapConnectInfo: EmailConnectInfo, smtpConnectInfo: EmailConnectInfo,
+                               completionBlock: GrandOperatorCompletionBlock?) {
+        let op1 = VerifyImapConnectionOperation.init(grandOperator: self,
+                                                     connectInfo: imapConnectInfo)
+        let op2 = VerifySmtpConnectionOperation.init(grandOperator: self,
+                                                     connectInfo: smtpConnectInfo)
 
         var finished1 = false
         var finished2 = false
