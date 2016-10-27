@@ -346,7 +346,7 @@ open class PEPUtil {
 
         var refs = [String]()
         for ref in message.references {
-            refs.append((ref as! CdMessageReference).messageID)
+            refs.append((ref as! CdMessageReference).reference!)
         }
         if refs.count > 0 {
             dict[kPepReferences] = refs as AnyObject

@@ -676,7 +676,8 @@ open class CdModel: ICdModel {
 
     open func insertOrUpdateMessageReference(_ messageID: String) -> CdMessageReference {
         let p = NSPredicate.init(format: "messageID = %@", messageID)
-        if let ent = singleEntityWithName(CdMessageReference.entityName(), predicate: p) {
+        // XXX: Explicit string used for now (refactoring).
+        if let ent = singleEntityWithName("CdMessageReference", predicate: p) {
             return ent as! CdMessageReference
         } else {
             return insertMessageReference(messageID)
@@ -685,8 +686,9 @@ open class CdModel: ICdModel {
 
     open func insertMessageReference(_ messageID: String) -> CdMessageReference {
         let ref = NSEntityDescription.insertNewObject(
-            forEntityName: CdMessageReference.entityName(), into: context) as! CdMessageReference
-        ref.messageID = messageID
+            // XXX: Explicit string used
+            forEntityName: "CdMessageReference", into: context) as! CdMessageReference
+        ref.reference = messageID
         if let msg = messageByMessageID(messageID) {
             ref.message = msg
         }
