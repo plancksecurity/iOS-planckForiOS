@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 import MobileCoreServices
-
+import Photos
 import MessageModel
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -585,30 +585,56 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             comment: "Title for photos/videos action in attached files alert view"),
             style: UIAlertActionStyle.default) {
             UIAlertAction in
-                let possibleAttachedImages = UIImagePickerController.init()
-                possibleAttachedImages.modalPresentationStyle = UIModalPresentationStyle.currentContext
-                possibleAttachedImages.delegate = self
-                possibleAttachedImages.allowsEditing = false
-                possibleAttachedImages.sourceType = .photoLibrary
-                if let mediaTypes = UIImagePickerController.availableMediaTypes(
-                    for: .photoLibrary) {
-                    possibleAttachedImages.mediaTypes = mediaTypes
-                } else {
-                    possibleAttachedImages.mediaTypes = [kUTTypeImage as String,
-                                                         kUTTypeMovie as String]
+                
+                let status = PHPhotoLibrary.authorizationStatus()
+                switch status {
+                case .authorized:
+                    self.presentImagePicker()
+                case .denied, .restricted :
+                    self.presentImagePicker()
+                case .notDetermined:
+                    self.requestAuth()
                 }
-                self.present(possibleAttachedImages, animated: true, completion: nil)
-            }
+        }
         attachedAlertView.addAction(photosAction)
-
         let cancelAction = UIAlertAction(
             title: NSLocalizedString("Cancel",
                 comment: "Cancel button text for email actions menu (reply, forward etc.)"),
             style: .cancel) { (action) in }
 
         attachedAlertView.addAction(cancelAction)
-
-         present(attachedAlertView, animated: true, completion: nil)
+        present(attachedAlertView, animated: true, completion: nil)
+    }
+    
+    func presentImagePicker() {
+        let possibleAttachedImages = UIImagePickerController.init()
+        possibleAttachedImages.modalPresentationStyle = UIModalPresentationStyle.currentContext
+        possibleAttachedImages.delegate = self
+        possibleAttachedImages.allowsEditing = false
+        possibleAttachedImages.sourceType = .photoLibrary
+        if let mediaTypes = UIImagePickerController.availableMediaTypes(
+            for: .photoLibrary) {
+            possibleAttachedImages.mediaTypes = mediaTypes
+        } else {
+            possibleAttachedImages.mediaTypes = [kUTTypeImage as String,
+                                                 kUTTypeMovie as String]
+        }
+        OperationQueue.main.addOperation {
+        self.present(possibleAttachedImages, animated: true, completion: nil)
+        }
+    }
+    
+    func requestAuth() {
+        PHPhotoLibrary.requestAuthorization() { status in
+            switch status {
+            case .authorized:
+                self.presentImagePicker()
+            case .denied, .restricted:
+                self.dismiss(animated: true, completion: nil)
+            case .notDetermined: break
+                // won't happen but still
+            }
+        }
     }
 
     // MARK: -- UITableViewDelegate
