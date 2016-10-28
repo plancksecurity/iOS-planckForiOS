@@ -593,7 +593,6 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 case .denied, .restricted :
                     self.presentImagePicker()
                 case .notDetermined:
-                    // ask for permissions
                     self.requestAuth()
                 }
         }
