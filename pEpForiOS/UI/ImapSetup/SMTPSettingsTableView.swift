@@ -181,13 +181,14 @@ open class SMTPSettingsTableView: UITableViewController {
         user.isMySelf = true
         let userName = (model.username ?? model.email)!
         let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
-                                       address: model.serverIMAP!, userName: userName,
+                                       address: model.serverIMAP!,
                                        transport: model.transportIMAP.toServerTransport())
         let smtpServer = Server.create(serverType: .smtp, port: model.portSMTP,
-                                       address: model.serverSMTP!, userName: userName,
+                                       address: model.serverSMTP!,
                                        transport: model.transportSMTP.toServerTransport())
         let credentials = ServerCredentials.create(userName: userName,
-                                                   servers: [smtpServer])
+                                                   servers: [imapServer, smtpServer])
+        credentials.needsVerification = true
         let account = Account.create(user: user, credentials: [credentials])
         account.needsVerification = true
         account.save()

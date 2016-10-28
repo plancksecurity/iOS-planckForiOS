@@ -15,12 +15,13 @@ class MockData {
         let ident = Identity.create(address: "this_is_me@blah.org", userName: "User 1",
                                     userID: nil)
         let imapServer = Server.create(
-            serverType: .imap, port: 918, address: "mail.yahoo.com", userName: "user1",
+            serverType: .imap, port: 918, address: "mail.yahoo.com",
             transport: .tls)
         let smtpServer = Server.create(
-            serverType: .imap, port: 587, address: "mail.yahoo.com", userName: "user1",
+            serverType: .imap, port: 587, address: "mail.yahoo.com",
             transport: .startTls)
-        let credentials = ServerCredentials.create(userName: "username", servers: [imapServer, smtpServer])
+        let credentials = ServerCredentials.create(userName: "username",
+                                                   servers: [imapServer, smtpServer])
         let account = Account.create(user: ident, credentials: [credentials])
         insertRootFolders(account: account)
     }
