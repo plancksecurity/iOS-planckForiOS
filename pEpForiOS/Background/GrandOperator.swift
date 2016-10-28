@@ -106,6 +106,8 @@ public protocol IGrandOperator: class {
 }
 
 open class GrandOperator: IGrandOperator {
+    public var sendLayerDelegate: SendLayerDelegate? = nil
+
     /**
      Key for accessing the model in thread-local storage.
      */
