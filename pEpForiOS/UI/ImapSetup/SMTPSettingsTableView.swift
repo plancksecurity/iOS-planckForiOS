@@ -124,68 +124,23 @@ open class SMTPSettingsTableView: UITableViewController {
         }
     }
 
-    /* DEPRECATED: not used.
-    func verifyAccountOldStyle(_ sender: UIBarButtonItem) {
-        let connect = ImapSmtpConnectInfo.init(
-            nameOfTheUser: model.name!,
-            email: model.email!, imapUsername: model.email!,
-            smtpUsername: model.email!, imapPassword: model.password!,
-            smtpPassword: model.password!, imapServerName: model.serverIMAP!,
-            imapServerPort: model.portIMAP, imapTransport: model.transportIMAP,
-            smtpServerName: model.serverSMTP!, smtpServerPort: model.portSMTP,
-            smtpTransport: model.transportSMTP)
-
-        self.status.activityIndicatorViewEnable =  true
-        updateView()
-        appConfig?.grandOperator.verifyConnection(connect, completionBlock: { error in
-            self.status.activityIndicatorViewEnable = false
-            self.updateView()
-
-            guard let err = error else {
-                GCD.onMain() {
-                    // save account, check for error
-                    guard let model = self.appConfig?.model else {
-                        self.showErrorMessage(
-                            String(format:
-                                NSLocalizedString("Internal Error: %d",
-                                                  comment: "Internal error display, with error number"),
-                                   Constants.InternalErrorCode.noModel.rawValue))
-                        Log.warnComponent(self.comp, "Could not access model")
-                        return
-                    }
-
-                    let account = model.insertAccountFromImapSmtpConnectInfo(connect)
-                    let contact = model.insertOrUpdateContactEmail(account.email,
-                                                                   name: account.nameOfTheUser)
-
-                    // Mark that contact as mySelf
-                    contact.isMySelf = NSNumber.init(booleanLiteral: true)
-
-                    model.save()
-
-                    // unwind back to INBOX on success
-                    self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: sender)
-                }
-                return
-            }
-            self.showErrorMessage(err.localizedDescription)
-        })
-    }
-    */
-
-    @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
+    func verifyAccount() {
         self.status.activityIndicatorViewEnable =  true
         updateView()
 
         let user = Identity.create(address: model.email!, userName: model.name!, userID: nil)
         user.isMySelf = true
         let userName = (model.username ?? model.email)!
+
         let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
                                        address: model.serverIMAP!,
                                        transport: model.transportIMAP.toServerTransport())
+        imapServer.needsVerification = true
+
         let smtpServer = Server.create(serverType: .smtp, port: model.portSMTP,
                                        address: model.serverSMTP!,
                                        transport: model.transportSMTP.toServerTransport())
+        smtpServer.needsVerification = true
         let credentials = ServerCredentials.create(userName: userName,
                                                    servers: [imapServer, smtpServer])
         credentials.needsVerification = true
@@ -193,10 +148,14 @@ open class SMTPSettingsTableView: UITableViewController {
         account.needsVerification = true
         account.save()
     }
+
+    @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
+        verifyAccount()
+    }
 }
 
 extension SMTPSettingsTableView: AccountDelegate {
-    public func didVerify(account: Account, error: NSError?) {
+    public func didVerify(account: Account, error: MessageModelError?) {
         self.status.activityIndicatorViewEnable = false
         self.updateView()
 
