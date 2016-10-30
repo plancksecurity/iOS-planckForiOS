@@ -71,12 +71,13 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                 let myselfContact = appConfig.model.contactByEmail(myselfEmail) {
                 let partnerPepContact = PEPUtil.pEp(identity: p)
                 let myselfContactPepContact = PEPUtil.pepContact(myselfContact)
-                let recognizer = UITapGestureRecognizer(target: self, action:#selector(HandshakeViewController.handleTap(_:)))
+                let recognizer = UITapGestureRecognizer(
+                    target: self, action:#selector(HandshakeViewController.handleTap(_:)))
                 recognizer.delegate = self
                 cell.handshakeTextView.addGestureRecognizer(recognizer)
                 if !hexamode {
-                    cell.handshakeTextView.text = PEPUtil.trustwordsForIdentity1(
-                        myselfContactPepContact, identity2: partnerPepContact,
+                    cell.handshakeTextView.text = PEPUtil.trustwords(
+                        identity1: myselfContactPepContact, identity2: partnerPepContact,
                         language: "en", session: nil)
                 } else {
                     let myselfFingerprints = PEPUtil.fingerPrintForContact(myselfContact)

@@ -214,9 +214,7 @@ open class PEPUtil {
             dict[kPepUsername] = contact.address as AnyObject
         }
         dict[kPepAddress] = contact.address as AnyObject
-        if (contact.isMySelf?.boolValue)! {
-            dict[kPepIsMe] = contact.isMySelf
-        }
+        dict[kPepIsMe] = contact.isMySelf
 
         if let pepUserID = contact.userID {
             dict[kPepUserID] = pepUserID as NSObject
@@ -265,12 +263,8 @@ open class PEPUtil {
     open static func pepAttachment(_ attachment: CdAttachment) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
 
-        if let fileName = attachment.fileName {
-            dict[kPepMimeFilename] = fileName
-        }
-        if let contentType = attachment.mimeType {
-            dict[kPepMimeType] = contentType
-        }
+        dict[kPepMimeFilename] = attachment.fileName
+        dict[kPepMimeType] = attachment.mimeType
         dict[kPepMimeData] = attachment.data
 
         return dict
@@ -684,13 +678,11 @@ open class PEPUtil {
         return words.joined(separator: " ")
     }
 
-    open static func trustwordsForIdentity1(_ identity1: PEPContact,
-                                              identity2: PEPContact,
-                                              language: String,
-                                              session: PEPSession?) -> String? {
+    open static func trustwords(identity1: PEPContact, identity2: PEPContact,
+                                language: String, session: PEPSession?) -> String? {
         let theSession = sessionOrReuse(session)
-        return nil//theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
-                                               //  language: language, full: true)
+        return theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
+                                                 language: language, full: true)
     }
 
     /**
