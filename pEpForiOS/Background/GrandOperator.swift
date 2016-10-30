@@ -409,3 +409,40 @@ open class GrandOperator: IGrandOperator {
         backgroundQueue.addOperation(op)
     }
 }
+
+// MARK: - SendLayerProtocol
+
+extension GrandOperator: SendLayerProtocol {
+    public func verify(account: MessageModel.CdAccount,
+                       completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
+    }
+
+    public func send(message: MessageModel.CdMessage, completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
+    }
+
+    public func saveDraft(message: MessageModel.CdMessage,
+                          completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
+    }
+
+    public func syncFlagsToServer(folder: MessageModel.CdFolder,
+                                  completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
+    }
+
+    public func create(folderType: FolderType, account: MessageModel.CdAccount,
+                       completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
+    }
+
+    public func delete(folder: MessageModel.CdFolder, completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
+    }
+
+    public func delete(message: MessageModel.CdMessage,
+                       completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
+    }
+}
