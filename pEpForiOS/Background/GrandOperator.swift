@@ -361,6 +361,7 @@ open class GrandOperator: IGrandOperator {
 
     open func syncFlagsToServerForFolder(_ folder: CdFolder,
                                            completionBlock: GrandOperatorCompletionBlock?) {
+        
         let hashable = folder.hashableID()
         var operation: BaseOperation? = flagSyncOperations[hashable]
         let blockOrig = operation?.completionBlock

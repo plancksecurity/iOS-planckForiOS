@@ -29,7 +29,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
 
     convenience public init(folder: CdFolder, connectionManager: ConnectionManager,
                             coreDataUtil: CoreDataUtil) {
-        self.init(accountEmail: folder.account.email, folderName: folder.name,
+        self.init(accountEmail: (folder.account?.user?.address!)!, folderName: folder.name!,
                   coreDataUtil: coreDataUtil, connectionManager: connectionManager)
     }
 

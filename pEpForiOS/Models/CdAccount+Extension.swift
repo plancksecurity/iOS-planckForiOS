@@ -95,12 +95,13 @@ extension MessageModel.CdAccount {
             let serverTypeInt = server.serverType?.intValue,
             let serverType = Server.ServerType.init(rawValue: serverTypeInt),
             let emailProtocol = EmailProtocol.init(serverType: serverType),
-            let userID = self.identity?.userID {
+            let userID = self.entity.userInfo {
             return EmailConnectInfo.init(
                 emailProtocol: emailProtocol,
-                userId: userID,
+                userId: credentials.userName!,
                 userPassword: password,
-                userName: credentials.userName ?? self.identity?.userName,
+                // The userName parameter is just for display purposes, not for login.
+                userName: credentials.userName,
                 networkPort: UInt16(port),
                 networkAddress: address,
                 connectionTransport: connectionTransport,

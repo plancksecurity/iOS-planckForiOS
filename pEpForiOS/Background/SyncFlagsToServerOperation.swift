@@ -26,7 +26,11 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 
     public init(folder: CdFolder,
                 connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
+        
+        /* XXX: To be refactored."
         self.connectInfo = folder.account.connectInfo
+        */
+        self.connectInfo = EmailConnectInfo()
         self.targetFolderName = folder.name
         self.connectionManager = connectionManager
         super.init(coreDataUtil: coreDataUtil)

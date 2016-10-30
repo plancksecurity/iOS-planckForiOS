@@ -32,13 +32,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         get {
             var uid: UInt = 0
             privateMOC.performAndWait({
-                uid = UInt(self.folder.nextUID.intValue)
+                //uid = UInt(self.folder.nextUID.intValue)
+                uid = UInt(self.folder.uidNext)
             })
             return uid
         }
         set {
             privateMOC.perform({
-                self.folder.nextUID = NSNumber(value: newValue)
+                self.folder.uidNext = NSNumber(value: newValue).int64Value
                 self.model.save()
             })
         }
@@ -48,13 +49,13 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         get {
             var count: UInt = 0
             privateMOC.performAndWait({
-                count = UInt(self.folder.existsCount)
+                count = UInt(self.folder.exists)
             })
             return count
         }
         set {
             privateMOC.perform({
-                self.folder.existsCount = NSNumber(value: newValue)
+                self.folder.exists = NSNumber(value: newValue).int64Value
                 self.model.save()
             })
         }
@@ -92,26 +93,25 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
         privateMOC.perform() {
-            if let uidV = self.folder.uidValidity {
-                if uidV.uintValue != theUIDValidity {
-                    Log.warn(component: self.comp,
-                        "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
+            if let uidV: Int32 = self.folder.uidValidity {
+                if uidV != Int32(theUIDValidity) {
+                    Log.warn(component: self.comp, "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
                     self.folder.messages = []
                 }
             }
-            self.folder.uidValidity = theUIDValidity as NSNumber?
+            self.folder.uidValidity = Int32(theUIDValidity)
             self.model.save()
         }
     }
 
     override func uidValidity() -> UInt {
-        var i: UInt = 0
+        var i: Int32 = 0
         privateMOC.performAndWait({
-            if let uidVal = self.folder.uidValidity {
-                i = UInt(uidVal.intValue)
+            if let uidVal: Int32 = self.folder.uidValidity {
+                i = uidVal
             }
         })
-        return i
+        return UInt(i)
     }
 
     func predicateAllMessages() -> NSPredicate {
@@ -176,7 +176,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         var result: CWIMAPMessage?
         privateMOC.performAndWait({
             let pUid = NSPredicate.init(format: "uid = %d", theUID)
-            let pFolderName = NSPredicate.init(format: "folder.name = %@", self.folder.name)
+            let pFolderName = NSPredicate.init(format: "folder.name = %@", self.folder.name!)
             let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolderName])
 
             if let msg = self.model.messageByPredicate(p, sortDescriptors: nil) {

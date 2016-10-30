@@ -451,24 +451,27 @@ open class CdModel: ICdModel {
         }
 
         let folder = NSEntityDescription.insertNewObject(
-            forEntityName: CdFolder.entityName(), into: context) as! CdFolder
+            forEntityName: CdFolder.entityName, into: context) as! CdFolder
 
         folder.name = name
+        /* folder.account is optional
         folder.account = account
+        */
         folder.shouldDelete = false
 
         // Default value
-        folder.folderType = NSNumber.init(value: FolderType.normal.rawValue as Int)
+        folder.folderType = NSNumber.init(value: FolderType.normal.rawValue as Int16).int16Value
+        
 
         if name.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
-            folder.folderType = NSNumber.init(value: FolderType.inbox.rawValue as Int)
+            folder.folderType = NSNumber.init(value: FolderType.inbox.rawValue as Int16).int16Value
         } else {
             for ty in FolderType.allValuesToCheckFromServer {
                 var foundMatch = false
                 for theName in ty.folderNames() {
                     if name.matchesPattern("\(theName)",
                                            reOptions: [.caseInsensitive]) {
-                        folder.folderType = NSNumber.init(value: ty.rawValue as Int)
+                        folder.folderType = NSNumber.init(value: ty.rawValue as Int16).int16Value
                         foundMatch = true
                         break
                     }
@@ -516,7 +519,7 @@ open class CdModel: ICdModel {
                     let folder = insertFolderName(pathName, account: account)
                     folder.parent = parentFolder
                     if let pf = parentFolder {
-                        pf.addChildrenObject(value: folder)
+                        pf.addToSubFolders(folder)
                     }
                     parentFolder = folder
                 }
@@ -583,18 +586,18 @@ open class CdModel: ICdModel {
     }
 
     open func folderCountByPredicate(_ predicate: NSPredicate? = nil) -> Int {
-        return countWithName(CdFolder.entityName(), predicate: predicate)
+        return countWithName(CdFolder.entityName, predicate: predicate)
     }
 
     open func foldersByPredicate(_ predicate: NSPredicate? = nil,
                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [CdFolder]? {
-        return entitiesWithName(CdFolder.entityName(), predicate: predicate,
+        return entitiesWithName(CdFolder.entityName, predicate: predicate,
             sortDescriptors: sortDescriptors)?.map() {$0 as! CdFolder}
     }
 
     open func folderByPredicate(_ predicate: NSPredicate? = nil,
                                   sortDescriptors: [NSSortDescriptor]? = nil) -> CdFolder? {
-        return singleEntityWithName(CdFolder.entityName(), predicate: predicate,
+        return singleEntityWithName(CdFolder.entityName, predicate: predicate,
                                     sortDescriptors: sortDescriptors) as? CdFolder
     }
 
@@ -638,7 +641,7 @@ open class CdModel: ICdModel {
         let p2 = NSPredicate.init(format: "folderType == %d", type.rawValue)
         let p3 = NSPredicate.init(format: "shouldDelete == false")
         let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2, p3])
-        return singleEntityWithName(CdFolder.entityName(), predicate: p) as? CdFolder
+        return singleEntityWithName(CdFolder.entityName, predicate: p) as? CdFolder
     }
 
     open func folderByType(_ type: FolderType, account: CdAccount) -> CdFolder? {
@@ -880,7 +883,7 @@ open class CdModel: ICdModel {
             for folder in folders {
                 Log.info(component: 
                     comp,
-                    "Folder \(folder.name) \(folder.messages.count) messages accountType \(folder.account.accountType)")
+                    "Folder \(folder.name) \(folder.messages!.count) messages")
             }
         }
 
@@ -888,7 +891,7 @@ open class CdModel: ICdModel {
             for msg in messages {
                 Log.info(component: 
                     comp,
-                    "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages.count) accountType \(msg.folder.account.accountType)")
+                    "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages!.count)")
             }
         }
     }

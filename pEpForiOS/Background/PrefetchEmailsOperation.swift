@@ -47,7 +47,7 @@ open class PrefetchEmailsOperation: ConcurrentBaseOperation {
             // that is mandatorily case-insensitive.
             if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
                 if let folder = self.model.folderByType(.inbox, email: self.connectInfo.userId) {
-                    self.folderToOpen = folder.name
+                    self.folderToOpen = folder.name!
                 }
             }
 

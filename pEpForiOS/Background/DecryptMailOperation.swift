@@ -46,8 +46,7 @@ open class DecryptMailOperation: BaseOperation {
 
                 var outgoing = false
                 let folderTypeNum = mail.folder.folderType
-                let folderTypeInt = folderTypeNum.intValue
-                if let folderType = FolderType.fromInt(folderTypeInt) {
+                if let folderType = FolderType.fromInt(folderTypeNum) {
                     outgoing = folderType.isOutgoing()
                 } else {
                     outgoing = false

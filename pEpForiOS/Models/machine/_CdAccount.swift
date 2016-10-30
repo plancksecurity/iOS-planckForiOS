@@ -5,6 +5,8 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 public enum CdAccountAttributes: String {
     case accountType = "accountType"
     case email = "email"

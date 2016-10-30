@@ -8,12 +8,14 @@
 
 import UIKit
 
+import MessageModel
+
 public extension CdFolder {
     /**
      Extracts a unique String ID that you can use as a key in dictionaries.
      - Returns: A (hashable) String that is unique for each folder.
      */
     public func hashableID() -> String {
-        return "\(folderType.intValue) \(name) \(account.email)"
+        return "\(folderType) \(name) \(account!.user?.address)"
     }
 }
