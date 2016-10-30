@@ -101,8 +101,9 @@ extension CdMessage {
 
         var refs: [String] = []
         for ref in references {
-            let refString: String = (ref as! CdMessageReference).reference!
-            refs.append(refString)
+            if let refString: String = (ref as! CdMessageReference).reference {
+                refs.append(refString)
+            }
         }
         msg.setReferences(refs)
 

@@ -33,7 +33,7 @@ open class HTMLConvertOperation: BaseOperation {
         let predicateBodyFetched = NSPredicate.init(format: "bodyFetched == 1")
 
         guard let mails = model.entitiesWithName(
-            CdMessage.entityName(),
+            CdMessage.entityName,
             predicate: NSCompoundPredicate.init(
                 andPredicateWithSubpredicates: [predicateHasHTML, predicateHasLongMessage,
                     predicateColor, predicateBodyFetched]),
@@ -69,7 +69,7 @@ open class HTMLConvertOperation: BaseOperation {
             let predicateHasNoLongMessage = NSPredicate.init(
                 format: "longMessage == nil or longMessage == %@", "")
 
-            guard let mails = model.entitiesWithName(CdMessage.entityName(),
+            guard let mails = model.entitiesWithName(CdMessage.entityName,
                 predicate: NSCompoundPredicate.init(
                     andPredicateWithSubpredicates: [pBasic, predicateHasHTML,
                         predicateHasNoLongMessage]),

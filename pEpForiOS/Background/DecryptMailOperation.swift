@@ -28,7 +28,7 @@ open class DecryptMailOperation: BaseOperation {
             let predicateBodyFetched = NSPredicate.init(format: "bodyFetched = true")
             let predicateNotDeleted = NSPredicate.init(format: "flagDeleted = false")
 
-            guard let mails = model.entitiesWithName(CdMessage.entityName(),
+            guard let mails = model.entitiesWithName(CdMessage.entityName,
                 predicate: NSCompoundPredicate.init(
                     andPredicateWithSubpredicates: [predicateColor, predicateBodyFetched,
                         predicateNotDeleted]),

@@ -301,7 +301,7 @@ open class CdModel: ICdModel {
                 msg.subject()!, msg.receivedDate()! as CVarArg))
         }
         let pred = NSCompoundPredicate.init(andPredicateWithSubpredicates: predicates)
-        if let mail = singleEntityWithName(CdMessage.entityName(), predicate: pred) {
+        if let mail = singleEntityWithName(CdMessage.entityName, predicate: pred) {
             let result = mail as! CdMessage
             return result
         }
@@ -350,7 +350,7 @@ open class CdModel: ICdModel {
 
     open func insertNewMessage() -> CdMessage {
         let mail = NSEntityDescription.insertNewObject(
-            forEntityName: CdMessage.entityName(), into: context) as! CdMessage
+            forEntityName: CdMessage.entityName, into: context) as! CdMessage
         return mail
     }
 
@@ -400,7 +400,7 @@ open class CdModel: ICdModel {
             predicate = NSPredicate.init(format: "email == %@", lastEmail!)
         }
 
-        if let account = singleEntityWithName(CdAccount.entityName(), predicate: predicate) {
+        if let account = singleEntityWithName(CdAccount.entityName, predicate: predicate) {
             return setAccountAsLastUsed(account as! CdAccount)
         } else {
             return nil
@@ -416,13 +416,13 @@ open class CdModel: ICdModel {
 
     open func accountByEmail(_ email: String) -> CdAccount? {
         let predicate = NSPredicate.init(format: "email = %@", email)
-        return singleEntityWithName(CdAccount.entityName(), predicate: predicate)
+        return singleEntityWithName(CdAccount.entityName, predicate: predicate)
             as? CdAccount
     }
 
     open func accountsByPredicate(_ predicate: NSPredicate? = nil,
                                     sortDescriptors: [NSSortDescriptor]? = nil) -> [CdAccount]? {
-        return entitiesWithName(CdAccount.entityName(), predicate: predicate,
+        return entitiesWithName(CdAccount.entityName, predicate: predicate,
             sortDescriptors: sortDescriptors)?.map() {$0 as! CdAccount}
     }
 
@@ -533,18 +533,18 @@ open class CdModel: ICdModel {
 
     open func messageByPredicate(_ predicate: NSPredicate? = nil,
                                    sortDescriptors: [NSSortDescriptor]? = nil) -> CdMessage? {
-        return singleEntityWithName(CdMessage.entityName(), predicate: predicate,
+        return singleEntityWithName(CdMessage.entityName, predicate: predicate,
                                     sortDescriptors: sortDescriptors) as? CdMessage
     }
 
     open func messagesByPredicate(_ predicate: NSPredicate? = nil,
                                     sortDescriptors: [NSSortDescriptor]? = nil) -> [CdMessage]? {
-        return entitiesWithName(CdMessage.entityName(), predicate: predicate,
+        return entitiesWithName(CdMessage.entityName, predicate: predicate,
             sortDescriptors: sortDescriptors)?.map() {$0 as! CdMessage}
     }
 
     open func messageCountByPredicate(_ predicate: NSPredicate? = nil) -> Int {
-        return countWithName(CdMessage.entityName(), predicate: predicate)
+        return countWithName(CdMessage.entityName, predicate: predicate)
     }
 
     open func messageByUID(_ uid: Int, folderName: String) -> CdMessage? {
@@ -557,7 +557,7 @@ open class CdModel: ICdModel {
     }
 
     open func lastUidInFolderNamed(_ folderName: String) -> UInt {
-        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: CdMessage.entityName())
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: CdMessage.entityName)
         fetch.predicate = NSPredicate.init(format: "folder.name = %@", folderName)
         fetch.fetchLimit = 1
         fetch.sortDescriptors = [NSSortDescriptor.init(key: "uid", ascending: false)]
