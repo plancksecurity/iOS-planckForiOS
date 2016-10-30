@@ -128,8 +128,8 @@ open class SMTPSettingsTableView: UITableViewController {
         self.status.activityIndicatorViewEnable =  true
         updateView()
 
-        let user = Identity.create(address: model.email!, userName: model.name!, userID: nil)
-        user.isMySelf = true
+        let identity = Identity.create(address: model.email!, userName: model.name!, userID: nil)
+        identity.isMySelf = true
         let userName = (model.username ?? model.email)!
 
         let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
@@ -144,7 +144,7 @@ open class SMTPSettingsTableView: UITableViewController {
         let credentials = ServerCredentials.create(userName: userName,
                                                    servers: [imapServer, smtpServer])
         credentials.needsVerification = true
-        let account = Account.create(user: user, credentials: [credentials])
+        let account = Account.create(identity: identity, credentials: [credentials])
         account.needsVerification = true
         account.save()
     }

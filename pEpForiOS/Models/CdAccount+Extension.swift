@@ -39,9 +39,10 @@ extension CdAccount {
 extension MessageModel.CdAccount {
     func serverNTuple(credentials: CdServerCredentials,
                       server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
-        let serverType = Server.ServerType.init(fromInt: server.serverType?.intValue)?.asString()
-        if let st = serverType, let key = credentials.key {
-            return (server, credentials, KeyChain.password(key: key, serverType: st))
+        if let iServerType = server.serverType?.intValue,
+            let serverType = Server.ServerType.init(rawValue: iServerType)?.asString(),
+            let key = credentials.key {
+            return (server, credentials, KeyChain.password(key: key, serverType: serverType))
         }
         return nil
     }
@@ -91,14 +92,15 @@ extension MessageModel.CdAccount {
 
         if let port = server.port?.int16Value,
             let address = server.address,
-            let emailProtocol = EmailProtocol.init(
-                serverType: Server.ServerType.init(fromInt: server.serverType?.intValue)),
-            let userID = self.user?.userID {
+            let serverTypeInt = server.serverType?.intValue,
+            let serverType = Server.ServerType.init(rawValue: serverTypeInt),
+            let emailProtocol = EmailProtocol.init(serverType: serverType),
+            let userID = self.identity?.userID {
             return EmailConnectInfo.init(
                 emailProtocol: emailProtocol,
                 userId: userID,
                 userPassword: password,
-                userName: credentials.userName ?? self.user?.userName,
+                userName: credentials.userName ?? self.identity?.userName,
                 networkPort: UInt16(port),
                 networkAddress: address,
                 connectionTransport: connectionTransport,

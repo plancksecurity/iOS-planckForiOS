@@ -79,7 +79,6 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func updateModel() {
-        MockData.insertData()
         accounts = Account.all
         tableView.reloadData()
     }

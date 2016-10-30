@@ -22,7 +22,7 @@ class MockData {
             transport: .startTls)
         let credentials = ServerCredentials.create(userName: "username",
                                                    servers: [imapServer, smtpServer])
-        let account = Account.create(user: ident, credentials: [credentials])
+        let account = Account.create(identity: ident, credentials: [credentials])
         insertRootFolders(account: account)
     }
 
