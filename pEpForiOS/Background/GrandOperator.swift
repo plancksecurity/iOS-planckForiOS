@@ -415,21 +415,21 @@ open class GrandOperator: IGrandOperator {
 extension GrandOperator: SendLayerProtocol {
     public func verify(account: MessageModel.CdAccount,
                        completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("not implemented")
+        assertionFailure("GrandOperator.verify not implemented")
     }
 
     public func send(message: MessageModel.CdMessage, completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("not implemented")
+        assertionFailure("GrandOperator.send not implemented")
     }
 
     public func saveDraft(message: MessageModel.CdMessage,
                           completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("not implemented")
+        assertionFailure("GrandOperator.saveDraft not implemented")
     }
 
     public func syncFlagsToServer(folder: MessageModel.CdFolder,
                                   completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("not implemented")
+        assertionFailure("GrandOperator.syncFlagsToServer not implemented")
     }
 
     public func create(folderType: FolderType, account: MessageModel.CdAccount,
