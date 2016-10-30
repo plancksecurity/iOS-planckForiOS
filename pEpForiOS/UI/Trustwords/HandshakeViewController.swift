@@ -62,7 +62,9 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
             return cell
         } else if ((indexPath as NSIndexPath).row == explanationTrustwords) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
-            cell.handshakeTextView.text = NSLocalizedString("Ask your partner: What are your trustword? then compare to the correct answer shown below.", comment: "Handshake explanation")
+            cell.handshakeTextView.text = NSLocalizedString(
+                "Ask your partner: What are your trustword? Then compare to the correct answer shown below.",
+                comment: "Handshake explanation")
             return cell
         } else if ((indexPath as NSIndexPath).row == trustwords) {
 
