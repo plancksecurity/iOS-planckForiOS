@@ -76,7 +76,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     func errorOperation(_ localizedMessage: String, logMessage: String) {
         markAsFinished()
         addError(Constants.errorOperationFailed(comp, errorMessage: localizedMessage))
-        Log.errorComponent(comp, errorString: logMessage)
+        Log.error(component: comp, errorString: logMessage)
     }
 }
 

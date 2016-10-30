@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession.init()
 
-        Log.warnComponent(comp, "Library url: \(applicationDirectory())")
+        Log.warn(component: comp, "Library url: \(applicationDirectory())")
 
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
@@ -74,13 +74,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        Log.infoComponent(comp, "applicationDidEnterBackground")
+        Log.info(component: comp, "applicationDidEnterBackground")
         appConfig.model.save()
 
         // Do mySelf on all accounts
         if let accounts = appConfig.model.accountsByPredicate(nil, sortDescriptors: nil) {
             let bgId = application.beginBackgroundTask(expirationHandler: {
-                Log.infoComponent(self.comp, "Could not complete all myself in background")
+                Log.info(component: self.comp, "Could not complete all myself in background")
                 self.appConfig.model.save()
 
                 // Shutdown pEp engine
@@ -88,9 +88,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
             for acc in accounts {
                 let email = acc.email
-                Log.infoComponent(comp, "Starting myself for \(email)")
+                Log.info(component: comp, "Starting myself for \(email)")
                 PEPUtil.myselfFromAccount(acc, queue: backgroundQueue) { identity in
-                    Log.infoComponent(self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
+                    Log.info(component: self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
                     application.endBackgroundTask(bgId)
                 }
             }

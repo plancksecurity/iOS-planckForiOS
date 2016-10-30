@@ -224,11 +224,11 @@ open class CdModel: ICdModel {
             } else if objs.count == 0 {
                 return nil
             } else {
-                Log.warnComponent(comp, "Several objects (\(name)) found for predicate: \(predicate)")
+                Log.warn(component: comp, "Several objects (\(name)) found for predicate: \(predicate)")
                 return objs[0]
             }
         } catch let err as NSError {
-            Log.errorComponent(comp, error: err)
+            Log.error(component: comp, error: err)
         }
         return nil
     }
@@ -244,7 +244,7 @@ open class CdModel: ICdModel {
             let objs = try context.fetch(fetch)
             return objs
         } catch let err as NSError {
-            Log.errorComponent(comp, error: err)
+            Log.error(component: comp, error: err)
         }
         return nil
     }
@@ -259,7 +259,7 @@ open class CdModel: ICdModel {
                 return number
             }
         } catch let error as NSError {
-            Log.errorComponent(comp, error: error)
+            Log.error(component: comp, error: error)
         }
         return 0
     }
@@ -271,7 +271,7 @@ open class CdModel: ICdModel {
             } else if contacts.count == 0 {
                 return nil
             } else {
-                Log.warnComponent(comp, "Several contacts found for email: \(email)")
+                Log.warn(component: comp, "Several contacts found for email: \(email)")
                 return contacts[0]
             }
         }
@@ -356,14 +356,14 @@ open class CdModel: ICdModel {
 
     open func insertNewMessageForSendingFromAccountEmail(_ email: String) -> CdMessage? {
         guard let account = accountByEmail(email) else {
-            Log.warnComponent(comp, "No account with email found: \(email)")
+            Log.warn(component: comp, "No account with email found: \(email)")
             return nil
         }
         let message = insertNewMessage()
         let contact = insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
         message.from = contact
         guard let folder = folderByType(FolderType.localOutbox, email: account.email) else {
-            Log.warnComponent(comp, "Expected outbox folder to exist")
+            Log.warn(component: comp, "Expected outbox folder to exist")
             return nil
         }
         message.folder = folder
@@ -432,7 +432,7 @@ open class CdModel: ICdModel {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                Log.errorComponent(comp, error: nserror)
+                Log.error(component: comp, error: nserror)
                 abort()
             }
         }
@@ -565,20 +565,20 @@ open class CdModel: ICdModel {
             let elems = try context.fetch(fetch)
             if elems.count > 0 {
                 if elems.count > 1 {
-                    Log.warnComponent(comp, "lastUID has found more than one element")
+                    Log.warn(component: comp, "lastUID has found more than one element")
                 }
                 if let msg = elems[0] as? CdMessage {
                     return UInt(msg.uid.intValue)
                 } else {
-                    Log.warnComponent(comp, "Could not cast core data result to Message")
+                    Log.warn(component: comp, "Could not cast core data result to Message")
                 }
             } else if elems.count > 0 {
-                Log.warnComponent(comp, "lastUID has several objects with the same UID?")
+                Log.warn(component: comp, "lastUID has several objects with the same UID?")
             }
         } catch let error as NSError {
-            Log.errorComponent(comp, error: error)
+            Log.error(component: comp, error: error)
         }
-        Log.warnComponent(comp, "lastUID no object found, returning 0")
+        Log.warn(component: comp, "lastUID no object found, returning 0")
         return 0
     }
 
@@ -652,7 +652,7 @@ open class CdModel: ICdModel {
         do {
             var existing = try context.fetch(fetch) as! [CdIdentity]
             if existing.count > 1 {
-                Log.warnComponent(comp, "Duplicate contacts with address \(email)")
+                Log.warn(component: comp, "Duplicate contacts with address \(email)")
                 existing[0].userName = name
                 return existing[0]
             } else if existing.count == 1 {
@@ -660,7 +660,7 @@ open class CdModel: ICdModel {
                 return existing[0]
             }
         } catch let err as NSError {
-            Log.errorComponent(comp, error: err)
+            Log.error(component: comp, error: err)
         }
         let contact = NSEntityDescription.insertNewObject(
             // XXX: entityName should be gotten by method.
@@ -786,7 +786,7 @@ open class CdModel: ICdModel {
             case .bccRecipient:
                 bccs.add(contacts[addr.address()]!)
             default:
-                Log.warnComponent(comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
+                Log.warn(component: comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
         }
         if isFresh || mail.to != tos {
@@ -878,7 +878,7 @@ open class CdModel: ICdModel {
     open func dumpDB() {
         if let folders = foldersByPredicate(NSPredicate.init(value: true)) {
             for folder in folders {
-                Log.infoComponent(
+                Log.info(component: 
                     comp,
                     "Folder \(folder.name) \(folder.messages.count) messages accountType \(folder.account.accountType)")
             }
@@ -886,7 +886,7 @@ open class CdModel: ICdModel {
 
         if let messages = messagesByPredicate(NSPredicate.init(value: true)) {
             for msg in messages {
-                Log.infoComponent(
+                Log.info(component: 
                     comp,
                     "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages.count) accountType \(msg.folder.account.accountType)")
             }

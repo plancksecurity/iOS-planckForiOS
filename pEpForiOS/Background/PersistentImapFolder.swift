@@ -94,7 +94,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         privateMOC.perform() {
             if let uidV = self.folder.uidValidity {
                 if uidV.uintValue != theUIDValidity {
-                    Log.warnComponent(self.comp,
+                    Log.warn(component: self.comp,
                         "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
                     self.folder.messages = []
                 }
@@ -195,7 +195,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage) {
-        Log.warnComponent(comp, "Writing message \(message)")
+        Log.warn(component: comp, "Writing message \(message)")
 
         // Quickly store the most important email proporties (synchronously)
         let opQuick = StorePrefetchedMailOperation.init(coreDataUtil: coreDataUtil,

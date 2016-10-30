@@ -26,7 +26,7 @@ open class KeyChain {
 
             let status = SecItemAdd(query as CFDictionary, nil)
             if status != noErr {
-                Log.warnComponent(comp, "Could not save password for \(key)")
+                Log.warn(component: comp, "Could not save password for \(key)")
                 return false
             }
             return true
@@ -46,13 +46,13 @@ open class KeyChain {
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
         if status != noErr {
-            Log.warnComponent(comp, "Could not get password for \(key)")
+            Log.warn(component: comp, "Could not get password for \(key)")
         }
         if result != nil {
             let str = String.init(data: result as! Data, encoding: String.Encoding.utf8)
             return str
         } else {
-            Log.warnComponent(comp, "No password found for \(key)")
+            Log.warn(component: comp, "No password found for \(key)")
             return nil
         }
     }

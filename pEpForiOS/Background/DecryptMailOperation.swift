@@ -40,7 +40,7 @@ open class DecryptMailOperation: BaseOperation {
             var modelChanged = false
             for m in mails {
                 guard let mail = m as? CdMessage else {
-                    Log.warnComponent(self.comp, "Could not cast mail to Message")
+                    Log.warn(component: self.comp, "Could not cast mail to Message")
                     continue
                 }
 
@@ -58,7 +58,7 @@ open class DecryptMailOperation: BaseOperation {
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
                     pepMail, dest: &pepDecryptedMail, keys: &keys)
-                Log.warnComponent(self.comp,
+                Log.warn(component: self.comp,
                     "Decrypted mail \(mail.logString()) with color \(color)")
 
                 switch color {
@@ -91,7 +91,7 @@ open class DecryptMailOperation: BaseOperation {
                     break
                 // TODO: Again, why is the default needed when all cases are there?
                 default:
-                    Log.warnComponent(self.comp,
+                    Log.warn(component: self.comp,
                         "No default action for decrypted mail \(mail.logString())")
                 }
             }

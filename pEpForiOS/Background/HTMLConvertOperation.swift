@@ -46,7 +46,7 @@ open class HTMLConvertOperation: BaseOperation {
 
         for m in mails {
             guard let mail = m as? CdMessage else {
-                Log.warnComponent(self.comp, "Could not cast mail to Message")
+                Log.warn(component: self.comp, "Could not cast mail to Message")
                 continue
             }
             mail.longMessage = nil
@@ -82,7 +82,7 @@ open class HTMLConvertOperation: BaseOperation {
 
             for m in mails {
                 guard let mail = m as? CdMessage else {
-                    Log.warnComponent(self.comp, "Could not cast mail to Message")
+                    Log.warn(component: self.comp, "Could not cast mail to Message")
                     continue
                 }
                 if let htmlString = mail.longMessageFormatted {

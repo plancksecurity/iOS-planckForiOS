@@ -29,7 +29,7 @@ public extension String {
                 return name
             }
         } catch let err as NSError {
-            Log.errorComponent("unquote", error: err)
+            Log.error(component: "unquote", error: err)
         }
         return self
     }
@@ -45,7 +45,7 @@ public extension String {
             let matches = internalExpression.matches(in: self, options: [], range: wholeRange())
             return matches.count == 1
         } catch let err as NSError {
-            Log.errorComponent("String", error: err)
+            Log.error(component: "String", error: err)
             return false
         }
     }
@@ -84,7 +84,7 @@ public extension String {
                 }
             }
         } catch let err as NSError {
-            Log.errorComponent(String.comp, error: err)
+            Log.error(component: String.comp, error: err)
         }
         return self.replacingOccurrences(of: "@", with: "_")
     }
@@ -182,7 +182,7 @@ public extension String {
             }
         }
         catch let err as NSError {
-            Log.errorComponent(String.comp, error: err)
+            Log.error(component: String.comp, error: err)
         }
         return result
     }
@@ -207,7 +207,7 @@ public extension String {
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
         } catch let err as NSError {
-            Log.errorComponent(String.comp, error: err)
+            Log.error(component: String.comp, error: err)
         }
         return false
     }
@@ -238,7 +238,7 @@ public extension String {
                 }
             }
         } catch let err as NSError {
-            Log.errorComponent(String.comp, error: err)
+            Log.error(component: String.comp, error: err)
         }
         return self
     }
@@ -261,7 +261,7 @@ public extension String {
                 }
             }
         } catch let err as NSError {
-            Log.errorComponent(String.comp, error: err)
+            Log.error(component: String.comp, error: err)
         }
         return self
     }
@@ -299,7 +299,7 @@ public extension String {
                 return name
             }
         } catch let err as NSError {
-            Log.errorComponent("removeAngleBrackets", error: err)
+            Log.error(component: "removeAngleBrackets", error: err)
         }
         return self
     }
@@ -378,7 +378,7 @@ class Regex {
             try internalExpression = NSRegularExpression.init(
                 pattern: pattern, options: options)
         } catch let err as NSError {
-            Log.errorComponent(comp, error: err)
+            Log.error(component: comp, error: err)
             return nil
         }
     }

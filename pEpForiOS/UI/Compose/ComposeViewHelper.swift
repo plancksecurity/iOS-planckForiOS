@@ -58,7 +58,7 @@ open class ComposeViewHelper {
         }
 
         guard let account = vc.appConfig?.currentAccount else {
-            Log.warnComponent(vc.comp, "Need valid account for determining pEp rating")
+            Log.warn(component: vc.comp, "Need valid account for determining pEp rating")
             return nil
         }
         message[kPepFrom] = PEPUtil.pEp(identity: account.user) as AnyObject?

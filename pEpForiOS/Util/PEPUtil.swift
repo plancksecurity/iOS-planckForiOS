@@ -641,7 +641,7 @@ open class PEPUtil {
         if let (title, _, _) = PEPUtil.pEpRatingTranslations[pepColorRating] {
             return title
         }
-        Log.warnComponent(comp, "No privacy title for color rating \(pepColorRating)")
+        Log.warn(component: comp, "No privacy title for color rating \(pepColorRating)")
         return nil
     }
 
@@ -649,7 +649,7 @@ open class PEPUtil {
         if let (_, explanation, _) = PEPUtil.pEpRatingTranslations[pepColorRating] {
             return explanation
         }
-        Log.warnComponent(comp, "No privacy explanation for color rating \(pepColorRating)")
+        Log.warn(component: comp, "No privacy explanation for color rating \(pepColorRating)")
         return nil
     }
 
@@ -657,7 +657,7 @@ open class PEPUtil {
         if let (_, _, suggestion) = pEpRatingTranslations[pepColorRating] {
             return suggestion
         }
-        Log.warnComponent(comp, "No privacy suggestion for color rating \(pepColorRating)")
+        Log.warn(component: comp, "No privacy suggestion for color rating \(pepColorRating)")
         return nil
     }
 
@@ -884,7 +884,7 @@ open class PEPUtil {
         }
         if encryptedMail == nil || status != PEP_STATUS_OK {
             let error = Constants.errorEncryption(comp, status: status)
-            Log.errorComponent(comp, error: Constants.errorInvalidParameter(
+            Log.error(component: comp, error: Constants.errorInvalidParameter(
                 comp, errorMessage: "Could not encrypt message, pEp status \(status)"))
             return (encryptedMail, error)
         }

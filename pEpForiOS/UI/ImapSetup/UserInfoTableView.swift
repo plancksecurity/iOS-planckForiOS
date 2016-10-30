@@ -116,7 +116,7 @@ open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
         }
 
         guard let ac = appConfig else {
-            Log.errorComponent(comp, errorString: "Have no app config")
+            Log.error(component: comp, errorString: "Have no app config")
             return
         }
 

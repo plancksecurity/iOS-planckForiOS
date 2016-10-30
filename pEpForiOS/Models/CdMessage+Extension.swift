@@ -18,7 +18,7 @@ extension CdMessage {
         if let fl = PantomimeFlag.init(rawValue: UInt(flags.intValue)) {
             return CWFlags.init(flags: fl)
         }
-        Log.errorComponent(
+        Log.error(component: 
             "Message", errorString:
             "Could not convert \(flags.intValue) to PantomimeFlag")
         return CWFlags.init()

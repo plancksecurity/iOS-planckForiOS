@@ -368,7 +368,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             if operationQueue.operationCount > 0 {
                 // We have an existing ops, let's cancel them and don't do anything else
                 operationQueue.cancelAllOperations()
-                Log.warnComponent(comp, "Won't check outgoing color, already one in operation")
+                Log.warn(component: comp, "Won't check outgoing color, already one in operation")
                 return
             }
             let op = OutgoingMessageColorOperation()
@@ -381,7 +381,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                             self.setPrivacyColor(color, toSendButton: self.sendButton)
                         }
                     } else {
-                        Log.warnComponent(self.comp, "Could not get outgoing message color")
+                        Log.warn(component: self.comp, "Could not get outgoing message color")
                     }
                 }
             }
@@ -503,14 +503,14 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         }
 
         guard let _ = appConfig?.model else {
-            Log.warnComponent(comp, "Can't do anything without model")
+            Log.warn(component: comp, "Can't do anything without model")
             return
         }
     }
 
     func populate(message: Message, withAttachmentsFromTextView theTextView: UITextView?) {
         guard let textView = theTextView else {
-            Log.warnComponent(comp, "Trying to get attachments, but no text view")
+            Log.warn(component: comp, "Trying to get attachments, but no text view")
             return
         }
         let text = textView.attributedText
@@ -525,12 +525,12 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
 
     func messageForSending() -> Message? {
         guard let appC = appConfig else {
-            Log.warnComponent(
+            Log.warn(component: 
                 comp, "Really need a non-nil appConfig for creating send message")
             return nil
         }
         guard let account = appC.currentAccount else {
-            Log.warnComponent(comp, "Really need a non-nil currentAccount")
+            Log.warn(component: comp, "Really need a non-nil currentAccount")
             return nil
         }
 
@@ -540,7 +540,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         }
 
         guard let msg = messageToSend else {
-            Log.warnComponent(comp, "Really need a non-nil messageToSend")
+            Log.warn(component: comp, "Really need a non-nil messageToSend")
             return nil
         }
 
@@ -559,11 +559,11 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         updateNetworkActivity()
 
         guard let appC = appConfig else {
-            Log.warnComponent(comp, "Really need a non-nil appConfig for sending mail")
+            Log.warn(component: comp, "Really need a non-nil appConfig for sending mail")
             return
         }
         guard let _ = appC.currentAccount else {
-            Log.warnComponent(comp, "Really need a non-nil currentAccount for sending mail")
+            Log.warn(component: comp, "Really need a non-nil currentAccount for sending mail")
             return
         }
         guard let _ = messageForSending() else {

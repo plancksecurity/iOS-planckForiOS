@@ -39,6 +39,6 @@ open class MessageToAttachmentOperation: BaseOperation {
 
     func errorMessage(_ localizedMessage: String, logMessage: String) {
         addError(Constants.errorOperationFailed(comp, errorMessage: localizedMessage))
-        Log.errorComponent(comp, errorString: logMessage)
+        Log.error(component: comp, errorString: logMessage)
     }
 }

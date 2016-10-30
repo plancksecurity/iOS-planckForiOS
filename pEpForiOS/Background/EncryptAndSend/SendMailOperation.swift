@@ -116,7 +116,7 @@ open class SendMailOperation: ConcurrentBaseOperation {
 
     func handleError(_ error: NSError, message: String) {
         addError(error)
-        Log.errorComponent(comp, errorString: message, error: error)
+        Log.error(component: comp, errorString: message, error: error)
         markAsFinished()
     }
 }
