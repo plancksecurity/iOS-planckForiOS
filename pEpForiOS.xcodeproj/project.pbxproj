@@ -116,7 +116,6 @@
 		43E42FF71D7096E400164CB1 /* DeleteMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */; };
 		43E430191D70AC8900164CB1 /* AppendSingleMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */; };
 		43E58EC61CBF8365008AA7A7 /* BaseManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58EC51CBF8365008AA7A7 /* BaseManagedObject.swift */; };
-		43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E58ED01CBFA943008AA7A7 /* KeyChain.swift */; };
 		43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */; };
 		43E9BC701DB51CEC00AD2352 /* CdMessage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC6F1DB51CEC00AD2352 /* CdMessage+Extension.swift */; };
 		43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53631CC77F95006AB156 /* EmailListViewCell.swift */; };
@@ -358,7 +357,6 @@
 		43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteMessageOperation.swift; sourceTree = "<group>"; };
 		43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendSingleMessageOperation.swift; sourceTree = "<group>"; };
 		43E58EC51CBF8365008AA7A7 /* BaseManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseManagedObject.swift; sourceTree = "<group>"; };
-		43E58ED01CBFA943008AA7A7 /* KeyChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Extension.swift"; sourceTree = "<group>"; };
 		43E9BC6F1DB51CEC00AD2352 /* CdMessage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+Extension.swift"; sourceTree = "<group>"; };
 		43ED53631CC77F95006AB156 /* EmailListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewCell.swift; sourceTree = "<group>"; };
@@ -632,7 +630,6 @@
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
 				43980EF91CBD415700A7FC3C /* AppConfig.swift */,
 				43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */,
-				43E58ED01CBFA943008AA7A7 /* KeyChain.swift */,
 				439D40791CC79423009A4E7C /* GCD.swift */,
 				434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */,
 				43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */,
@@ -1095,7 +1092,6 @@
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */,
-				43E58ED11CBFA943008AA7A7 /* KeyChain.swift in Sources */,
 				4346D33C1D86E2E50017E24E /* ComposeViewHelper.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */,

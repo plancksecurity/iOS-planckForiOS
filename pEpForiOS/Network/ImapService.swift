@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 public struct ImapState {
     var authenticationCompleted = false
     var currentFolder: String?
