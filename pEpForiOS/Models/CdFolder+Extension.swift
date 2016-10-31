@@ -16,6 +16,6 @@ public extension CdFolder {
      - Returns: A (hashable) String that is unique for each folder.
      */
     public func hashableID() -> String {
-        return "\(folderType) \(name) \(account!.user?.address)"
+        return "\(folderType) \(name) \(account?.identity?.address)"
     }
 }
