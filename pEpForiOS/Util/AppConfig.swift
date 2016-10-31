@@ -32,7 +32,7 @@ class AppConfig: NSObject {
 
     override init() {
         connectionManager = ConnectionManager()
-        model = CdModel.init(context: coreDataUtil.managedObjectContext)
+        model = CdModel.init(context: coreDataUtil.defaultContext())
         grandOperator = GrandOperator.init(connectionManager: connectionManager,
                                            coreDataUtil: coreDataUtil)
     }

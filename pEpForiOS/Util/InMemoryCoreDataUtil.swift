@@ -12,10 +12,4 @@ import CoreData
 import MessageModel
 
 open class InMemoryCoreDataUtil: CoreDataUtil {
-    let coreDataMerger = CoreDataMerger()
-
-    override open func addPersistentStore(coordinator: NSPersistentStoreCoordinator) throws {
-        try coordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil,
-                                           at: nil, options: nil)
-    }
 }

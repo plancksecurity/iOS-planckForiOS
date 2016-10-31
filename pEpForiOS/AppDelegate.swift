@@ -17,25 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    let appConfig: AppConfig = AppConfig()
+    var appConfig: AppConfig?
 
     /** Keep open at all times */
     var firstSession: PEPSession?
 
     let backgroundQueue = OperationQueue.init()
-
-    /**
-     Use for development. Remove all mails so they are fetched again.
-     */
-    func removeAllMails() {
-        let model = CdModel.init(context: appConfig.coreDataUtil.managedObjectContext)
-        if let folders = model.foldersByPredicate(NSPredicate.init(value: true)) {
-            for folder in folders {
-                model.context.delete(folder)
-            }
-            model.save()
-        }
-    }
 
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
@@ -59,12 +46,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Log.warn(component: comp, "Library url: \(applicationDirectory())")
 
+        setupDefaultSettings()
+        loadCoreDataStack()
+
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
         }
 
-        setupDefaultSettings()
-        loadCoreDataStack()
         return true
     }
 
@@ -75,13 +63,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, "applicationDidEnterBackground")
-        appConfig.model.save()
+        appConfig?.model.save()
 
         // Do mySelf on all accounts
-        if let accounts = appConfig.model.accountsByPredicate(nil, sortDescriptors: nil) {
+        if let accounts = appConfig?.model.accountsByPredicate(nil, sortDescriptors: nil) {
             let bgId = application.beginBackgroundTask(expirationHandler: {
                 Log.info(component: self.comp, "Could not complete all myself in background")
-                self.appConfig.model.save()
+                self.appConfig?.model.save()
 
                 // Shutdown pEp engine
                 self.firstSession = nil
@@ -94,7 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     application.endBackgroundTask(bgId)
                 }
             }
-            self.appConfig.model.save()
+            self.appConfig?.model.save()
 
             // Shutdown pEp engine
             firstSession = nil
@@ -118,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        appConfig.model.save()
+        appConfig?.model.save()
     }
 
     func setupDefaultSettings() {
@@ -127,8 +115,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadCoreDataStack() {
+        let messageModelBundle = Bundle.init(identifier: "net.pep-security.apps.MessageModel")!
+        let modelURL = messageModelBundle.url(forResource: "MessageModel", withExtension: "momd")!
+        let objectModel = NSManagedObjectModel(contentsOf: modelURL)!
+
         do {
-            try Record.loadCoreDataStack()
+            try Record.loadCoreDataStack(
+                managedObjectModel: objectModel)
+            appConfig = AppConfig()
         } catch {
             print("Error While Loading DataStack")
         }

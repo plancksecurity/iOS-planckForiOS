@@ -78,7 +78,6 @@
 		43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43980E301CBD0BCA00A7FC3C /* Assets.xcassets */; };
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
-		43980EF81CBD402400A7FC3C /* CoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF71CBD402400A7FC3C /* CoreDataUtil.swift */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
 		439864481D6C486200D0FDE1 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439864471D6C486200D0FDE1 /* FolderListViewController.swift */; };
 		439C4D411CD27B0E0099A27F /* VerifyImapConnectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C4D401CD27B0E0099A27F /* VerifyImapConnectionOperation.swift */; };
@@ -320,7 +319,6 @@
 		43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pantomime.xcodeproj; path = "../pantomime-iOS/Pantomime.xcodeproj"; sourceTree = "<group>"; };
 		43980EDF1CBD24B000A7FC3C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOS-Bridging-Header.h"; sourceTree = "<group>"; };
-		43980EF71CBD402400A7FC3C /* CoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataUtil.swift; sourceTree = "<group>"; };
 		43980EF91CBD415700A7FC3C /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		439864471D6C486200D0FDE1 /* FolderListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListViewController.swift; sourceTree = "<group>"; };
 		439C4D401CD27B0E0099A27F /* VerifyImapConnectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyImapConnectionOperation.swift; sourceTree = "<group>"; };
@@ -646,7 +644,6 @@
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
 				A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */,
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
-				43980EF71CBD402400A7FC3C /* CoreDataUtil.swift */,
 				43980EF91CBD415700A7FC3C /* AppConfig.swift */,
 				43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */,
 				43E58ED01CBFA943008AA7A7 /* KeyChain.swift */,
@@ -1081,7 +1078,6 @@
 				43E42FF71D7096E400164CB1 /* DeleteMessageOperation.swift in Sources */,
 				431144AC1CC0CCE30007639D /* GrandOperator.swift in Sources */,
 				434F84451CEB018A0055B7A9 /* NSData+Extensions.swift in Sources */,
-				43980EF81CBD402400A7FC3C /* CoreDataUtil.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				431ACE671CD35356009EA48E /* VerifySmtpConnectionOperation.swift in Sources */,
 				43E23F2F1DC3BDDE0000FD93 /* MessageModelError+Extension.swift in Sources */,
