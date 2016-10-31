@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -443,7 +445,6 @@ open class CdModel: ICdModel {
     func insertFolderName(_ name: String, account: CdAccount) -> CdFolder {
         if let folder = folderByName(name, email: account.email) {
             // reactivate folder if previously deleted
-            folder.shouldDelete = false
 
             return folder
         }
@@ -455,21 +456,14 @@ open class CdModel: ICdModel {
         /* folder.account is optional
         folder.account = account
         */
-        folder.shouldDelete = false
-
-        // Default value
-        folder.folderType = NSNumber.init(value: FolderType.normal.rawValue as Int16).int16Value
-        
 
         if name.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
-            folder.folderType = NSNumber.init(value: FolderType.inbox.rawValue as Int16).int16Value
         } else {
             for ty in FolderType.allValuesToCheckFromServer {
                 var foundMatch = false
                 for theName in ty.folderNames() {
                     if name.matchesPattern("\(theName)",
                                            reOptions: [.caseInsensitive]) {
-                        folder.folderType = NSNumber.init(value: ty.rawValue as Int16).int16Value
                         foundMatch = true
                         break
                     }
@@ -484,7 +478,6 @@ open class CdModel: ICdModel {
     }
 
     func reactivateFolder(_ folder: CdFolder) -> CdFolder {
-        folder.shouldDelete = false
         return folder
     }
 
