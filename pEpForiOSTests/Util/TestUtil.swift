@@ -10,6 +10,7 @@ import Foundation
 import XCTest
 
 import pEpForiOS
+import MessageModel
 
 class TestUtil {
     /**
@@ -199,7 +200,7 @@ class TestUtil {
         // We need authorization for this test to work
         if addressBook.authorizationStatus == .notDetermined {
             let exp = testCase.expectation(description: "granted")
-            addressBook.authorize({ ab in
+            let _ = addressBook.authorize({ ab in
                 exp.fulfill()
             })
             testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
