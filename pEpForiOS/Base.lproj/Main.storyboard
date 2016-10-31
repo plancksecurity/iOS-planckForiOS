@@ -122,6 +122,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
+                        <barButtonItem title="Unread" id="VEt-1N-tdD"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="e6L-xz-NU2"/>
                         <barButtonItem systemItem="compose" id="u8o-KA-6lO">
                             <connections>

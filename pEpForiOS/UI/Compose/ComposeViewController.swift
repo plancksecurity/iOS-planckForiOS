@@ -12,7 +12,7 @@ import MobileCoreServices
 import Photos
 import MessageModel
 
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -71,7 +71,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         var isDirty = false
     }
 
-    var model: UIModel = UIModel.init()
+    var model: UIModel = UIModel()
 
     let comp = "ComposeViewController"
 
@@ -101,7 +101,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
      */
     let delimiterWithSpace: String
 
-    let delimiterChars: CharacterSet = CharacterSet.init(charactersIn: ":,")
+    let delimiterChars: CharacterSet = CharacterSet(charactersIn: ":,")
 
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var attachedButton: UIButton!
@@ -151,7 +151,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      For showing sending mail activity.
      */
-    lazy var activityIndicator = UIActivityIndicatorView.init(activityIndicatorStyle: .gray)
+    lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
     /**
      This originally contains the send button. We need that when exchanging the send
@@ -222,7 +222,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         super.viewWillAppear(animated)
         if let forwardedMessage = forwardedMessage() {
             // If we forward a message, add its contents as data
-            let op = MessageToAttachmentOperation.init(message: forwardedMessage)
+            let op = MessageToAttachmentOperation(message: forwardedMessage)
             op.completionBlock = {
                 GCD.onMain() {
                     if let attch = op.attachment {
@@ -249,7 +249,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     }
 
     func overrideBackButton() {
-        let barButton = UIBarButtonItem.init(
+        let barButton = UIBarButtonItem(
             title: NSLocalizedString("Cancel", comment: "Abort the message composition"),
             style: .plain, target: self, action: #selector(handleSaveDraftQuery))
         navigationItem.leftBarButtonItem = barButton
@@ -257,10 +257,10 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
 
     func handleSaveDraftQuery() {
         if model.isDirty {
-            let alert = UIAlertController.init(
+            let alert = UIAlertController(
                 title: nil, message: nil, preferredStyle: .actionSheet)
 
-            let actionDelete = UIAlertAction.init(
+            let actionDelete = UIAlertAction(
                 title: NSLocalizedString(
                     "Delete Draft", comment: "Cancel message composition without save"),
                 style: .destructive, handler: { alert in
@@ -269,7 +269,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             })
             alert.addAction(actionDelete)
 
-            let actionSave = UIAlertAction.init(
+            let actionSave = UIAlertAction(
                 title: NSLocalizedString(
                     "Save Draft", comment: "Save draft message"),
                 style: .default, handler: { alert in
@@ -278,7 +278,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             })
             alert.addAction(actionSave)
 
-            let actionCancel = UIAlertAction.init(
+            let actionCancel = UIAlertAction(
                 title: NSLocalizedString(
                     "Cancel", comment: "Abort the abort of message composition :)"),
                 style: .cancel, handler: nil)
@@ -294,9 +294,9 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         if let snippet = model.searchSnippet {
             if let privateMOC = appConfig?.coreDataUtil.privateContext() {
                 privateMOC.perform() {
-                    let modelBackground = CdModel.init(context: privateMOC)
+                    let modelBackground = CdModel(context: privateMOC)
                     let contacts = modelBackground.contactsBySnippet(snippet).map() {
-                        AddressbookContact.init(contact: $0)
+                        AddressbookContact(contact: $0)
                     }
                     GCD.onMain() {
                         self.model.contacts.removeAll()
@@ -400,7 +400,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 originalRightBarButtonItem = navigationItem.rightBarButtonItem
             }
             activityIndicator.startAnimating()
-            let barButtonWithActivity = UIBarButtonItem.init(customView: activityIndicator)
+            let barButtonWithActivity = UIBarButtonItem(customView: activityIndicator)
             navigationItem.rightBarButtonItem = barButtonWithActivity
         } else {
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -607,7 +607,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     }
     
     func presentImagePicker() {
-        let possibleAttachedImages = UIImagePickerController.init()
+        let possibleAttachedImages = UIImagePickerController()
         possibleAttachedImages.modalPresentationStyle = UIModalPresentationStyle.currentContext
         possibleAttachedImages.delegate = self
         possibleAttachedImages.allowsEditing = false
@@ -694,7 +694,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 cell.recipientTextView.becomeFirstResponder()
             }
             if (indexPath as NSIndexPath).row == bodyTextRowNumber {
-                cell.separatorInset = UIEdgeInsets.init(top: 0,left: cell.bounds.size.width/2,
+                cell.separatorInset = UIEdgeInsets(top: 0,left: cell.bounds.size.width/2,
                                                         bottom: 0,right: cell.bounds.size.width/2)
 
             }
@@ -811,7 +811,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                         recipientTextAttributes =
                             cell.recipientTextView.attributedText.attributes(
                                 at: 0, longestEffectiveRange: &attributeRange,
-                                in: NSRange.init(location: 0, length: 1)) as [String : AnyObject]?
+                                in: NSRange(location: 0, length: 1)) as [String : AnyObject]?
                     }
 
                     if changedRecipients {
@@ -856,10 +856,10 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 if let om = replyFromMessage() {
                     let text = ReplyUtil.quotedMailTextForMail(om, replyAll: replyAll)
                     cell.bodyTextView.text = text
-                    cell.bodyTextView.selectedRange = NSRange.init(location: 0, length: 0)
+                    cell.bodyTextView.selectedRange = NSRange(location: 0, length: 0)
                 } else {
                     cell.bodyTextView.text = "\n\n\(ReplyUtil.footer())"
-                    cell.bodyTextView.selectedRange = NSRange.init(location: 0, length: 0)
+                    cell.bodyTextView.selectedRange = NSRange(location: 0, length: 0)
                 }
 
                 if let om = composeFromDraftMessage() {
@@ -902,11 +902,11 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             return
         }
 
-        let model = CdModel.init(context: ap.coreDataUtil.privateContext())
+        let model = CdModel(context: ap.coreDataUtil.privateContext())
 
         model.context.perform() {
-            let recipientText = NSMutableAttributedString.init()
-            let session = PEPSession.init()
+            let recipientText = NSMutableAttributedString()
+            let session = PEPSession()
             var firstPart = true
             for p in parts {
                 let thePart = p.trimmedWhiteSpace()
@@ -916,10 +916,10 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 }
                 if firstPart {
                     firstPart = false
-                    let attributed = NSAttributedString.init(string: thePart,
+                    let attributed = NSAttributedString(string: thePart,
                         attributes: origAttributes)
                     recipientText.append(attributed)
-                    recipientText.append(NSAttributedString.init(string: ": ",
+                    recipientText.append(NSAttributedString(string: ": ",
                         attributes: origAttributes))
                 } else {
                     var attributes = origAttributes
@@ -929,10 +929,10 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                             attributes[NSBackgroundColorAttributeName] = uiColor
                         }
                     }
-                    let attributed = NSAttributedString.init(string: thePart,
+                    let attributed = NSAttributedString(string: thePart,
                         attributes: attributes)
                     recipientText.append(attributed)
-                    recipientText.append(NSAttributedString.init(
+                    recipientText.append(NSAttributedString(
                         string: self.delimiterWithSpace,
                         attributes: origAttributes))
                 }
@@ -977,7 +977,7 @@ extension ComposeViewController: UIImagePickerControllerDelegate {
             return
         }
 
-        let photoAttachment = PhotoAttachment.init(image: attachedImage)
+        let photoAttachment = PhotoAttachment(image: attachedImage)
 
         insert(imageAttachment: photoAttachment)
 
@@ -997,7 +997,7 @@ extension ComposeViewController: UIImagePickerControllerDelegate {
             textView.bounds.width, rectangle: imageAttachment.image.size)
 
         let selectedRange = textView.selectedRange
-        let attrText = NSMutableAttributedString.init(attributedString: textView.attributedText)
+        let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
         attrText.replaceCharacters(in: selectedRange, with: imageString)
         textView.attributedText = attrText
 

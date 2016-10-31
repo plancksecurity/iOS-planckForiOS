@@ -147,4 +147,13 @@ class EmailViewController: UIViewController {
             destination?.appConfig = appConfig
         }
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        print("Transition size: \(size)")
+        updateViews(with: size)
+    }
+    
+    func updateViews(with size: CGSize) {
+        webView.frame.size = size
+    }
 }

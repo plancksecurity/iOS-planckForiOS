@@ -681,8 +681,7 @@ open class PEPUtil {
     open static func trustwords(identity1: PEPContact, identity2: PEPContact,
                                 language: String, session: PEPSession?) -> String? {
         let theSession = sessionOrReuse(session)
-        return theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
-                                                 language: language, full: true)
+        return "" //theSession.getTrustwordsIdentity1(identity1, identity2: identity2, language: language, full: true)
     }
 
     /**
