@@ -113,12 +113,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let settings: [String:AnyObject] = [Constants.kSettingLastAccountEmail:"" as AnyObject]
         UserDefaults.standard.register(defaults: settings)
     }
-    
-    func loadCoreDataStack() {
-        let messageModelBundle = Bundle.init(identifier: "net.pep-security.apps.MessageModel")!
-        let modelURL = messageModelBundle.url(forResource: "MessageModel", withExtension: "momd")!
-        let objectModel = NSManagedObjectModel(contentsOf: modelURL)!
 
+    func loadCoreDataStack() {
+        let objectModel = AppDataModel.appModel()
         do {
             try Record.loadCoreDataStack(
                 managedObjectModel: objectModel)

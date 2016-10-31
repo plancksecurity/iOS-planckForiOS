@@ -8,45 +8,27 @@
 
 import UIKit
 import XCTest
+import CoreData
 
 import MessageModel
 import pEpForiOS
 
 class PersistentSetup {
-    let coreDataUtil: CoreDataUtil
-    let connectionInfo = TestData.connectInfo
-    let connectionManager = ConnectionManager.init()
-    let backgroundQueue = OperationQueue.init()
-    let grandOperator: GrandOperator
-    let folderBuilder: ImapFolderBuilder
-    let model: ICdModel
-    var accountEmail: String {
-        return connectionInfo.email
-    }
-    let account: CdAccount
-
     /**
      Sets up persistence with an in-memory core data backend.
      */
     init() {
-        coreDataUtil = InMemoryCoreDataUtil.init()
-        grandOperator = GrandOperator.init(
-            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
-        folderBuilder = ImapFolderBuilder.init(coreDataUtil: coreDataUtil,
-                                               connectInfo: connectionInfo,
-                                               backgroundQueue: backgroundQueue)
-
-        model = CdModel.init(context: coreDataUtil.managedObjectContext)
-        account = model.insertAccountFromImapSmtpConnectInfo(connectionInfo)
+        loadCoreDataStack()
     }
 
-    deinit {
-        grandOperator.shutdown()
-    }
+    func loadCoreDataStack() {
+        let objectModel = AppDataModel.appModel()
 
-    func inboxFolderPredicate() -> NSPredicate {
-        let p = NSPredicate.init(format: "account.email = %@ and name = %@",
-                                 connectionInfo.email, ImapSync.defaultImapInboxName)
-        return p
+        do {
+            try Record.loadCoreDataStack(
+                managedObjectModel: objectModel, storeType: NSInMemoryStoreType)
+        } catch {
+            print("Error While Loading DataStack")
+        }
     }
 }
