@@ -30,6 +30,10 @@ class SendLayerTests: XCTestCase {
         let _ = PersistentSetup()
     }
 
+    /**
+     For now, make sure you run the following on the command line:
+     `python3 -m smtpd -c DebuggingServer -n localhost:4096`
+     */
     func testVerifySMTP() {
         let callBack = TestAccountDelegate()
         callBack.expVerifyCalled = expectation(description: "expVerifyCalled")
