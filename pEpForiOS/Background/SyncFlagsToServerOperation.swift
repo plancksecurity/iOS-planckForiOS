@@ -30,7 +30,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         /* XXX: To be refactored."
         self.connectInfo = folder.account.connectInfo
         */
-        self.connectInfo = EmailConnectInfo(userId: "", networkAddress: "")
+        self.connectInfo = EmailConnectInfo(userId: "", networkAddress: "", networkPort: 007)
         self.targetFolderName = folder.name
         self.connectionManager = connectionManager
         super.init(coreDataUtil: coreDataUtil)

@@ -14,17 +14,14 @@ extension CdAccount {
     open var connectInfo: EmailConnectInfo {
         let password = KeyChain.password(key: self.email,
                                          serverType: (self.connectInfo.emailProtocol?.rawValue)!)
-        
-        return EmailConnectInfo.init(
-            emailProtocol: self.connectInfo.emailProtocol!,
-            userId: self.connectInfo.userId,
-            userPassword: password,
-            userName: self.connectInfo.userName,
-            networkPort: self.connectInfo.networkPort,
+        return EmailConnectInfo(
+            userId: self.connectInfo.userId, userName: self.connectInfo.userName,
             networkAddress: self.connectInfo.networkAddress,
+            networkPort: self.connectInfo.networkPort,
+            networkAddressType: nil,
+            networkTransportType: nil, emailProtocol: self.connectInfo.emailProtocol!,
             connectionTransport: self.connectInfo.connectionTransport,
-            authMethod: self.connectInfo.authMethod
-        )
+            userPassword: password, authMethod: self.connectInfo.authMethod)
     }
 
     open var rawImapTransport: ConnectionTransport {
@@ -82,15 +79,12 @@ extension MessageModel.CdAccount {
             let serverTypeInt = server.serverType?.intValue,
             let serverType = Server.ServerType.init(rawValue: serverTypeInt),
             let emailProtocol = EmailProtocol.init(serverType: serverType) {
-            return EmailConnectInfo.init(
-                emailProtocol: emailProtocol,
-                userId: credentials.userName!,
-                userPassword: password,
-                // The userName parameter is just for display purposes, not for login.
-                userName: credentials.userName,
-                networkPort: UInt16(port),
-                networkAddress: address,
-                connectionTransport: connectionTransport,
+            return EmailConnectInfo(
+                userId: credentials.userName!, userName: credentials.userName,
+                networkAddress: address, networkPort: UInt16(port),
+                networkAddressType: nil,
+                networkTransportType: nil, emailProtocol: emailProtocol,
+                connectionTransport: connectionTransport, userPassword: password,
                 authMethod: AuthMethod.init(string: server.authMethod))
         }
         return nil

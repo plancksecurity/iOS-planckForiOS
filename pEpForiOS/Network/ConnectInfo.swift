@@ -45,11 +45,12 @@ public class ConnectInfo: IConnectInfo {
     public var networkTransportType: NetworkTransportType?
 
     public init(userId: String, userName: String? = nil, networkAddress: String,
-                networkAddressType: NetworkAddressType? = nil,
+                networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil) {
         self.userId = userId
         self.userName = userName
         self.networkAddress = networkAddress
+        self.networkPort = networkPort
         self.networkAddressType = networkAddressType
         self.networkTransportType = networkTransportType
     }

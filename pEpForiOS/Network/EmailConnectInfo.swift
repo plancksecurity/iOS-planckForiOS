@@ -135,13 +135,13 @@ public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
     public var authMethod: AuthMethod?
 
     public init(userId: String, userName: String? = nil, networkAddress: String,
-                networkAddressType: NetworkAddressType? = nil,
+                networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil,
                 emailProtocol: EmailProtocol? = nil,
                 connectionTransport: ConnectionTransport? = nil, userPassword: String? = nil,
                 authMethod: AuthMethod? = nil) {
         super.init(userId: userId, userName: userName, networkAddress: networkAddress,
-                   networkAddressType: networkAddressType,
+                   networkPort: networkPort, networkAddressType: networkAddressType,
                    networkTransportType: networkTransportType)
         self.emailProtocol = emailProtocol
         self.connectionTransport = connectionTransport
