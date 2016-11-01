@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import MessageModel
 
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -20,7 +19,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func >= <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l >= r
@@ -75,22 +74,24 @@ open class ModelUserInfoTable {
     }
 }
 
-open class
-UserInfoTableView: UITableViewController, UITextFieldDelegate {
+open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
+    
     let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!
     @IBOutlet weak var usernameValue: UITextField!
     @IBOutlet weak var passwordValue: UITextField!
+    @IBOutlet weak var nameValue: UITextField!
 
-    @IBOutlet weak var emailTitleTextField: UILabel!
-    @IBOutlet weak var usernameTitleTextField: UILabel!
-    @IBOutlet weak var passwordTitleTextField: UILabel!
-    @IBOutlet weak var nameOfTheUserValueTextField: UITextField!
-    @IBOutlet weak var nameOfTheUserTitleTextField: UILabel!
+    @IBOutlet weak var emailTitle: UILabel!
+    @IBOutlet weak var usernameTitle: UILabel!
+    @IBOutlet weak var passwordTitle: UILabel!
+    @IBOutlet weak var nameTitle: UILabel!
 
     var appConfig: AppConfig?
     var IMAPSettings = "IMAPSettings"
+    var fields = [UITextField]()
+    var index = 0
 
     open var model = ModelUserInfoTable()
 
@@ -98,14 +99,21 @@ UserInfoTableView: UITableViewController, UITextFieldDelegate {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
+        
         passwordValue.delegate = self
-        UIHelper.variableCellHeightsTableView(self.tableView)
+        UIHelper.variableCellHeightsTableView(tableView)
+        fields = [nameValue, emailValue, usernameValue, passwordValue]
     }
 
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        viewWidthAligner.alignViews([emailTitleTextField,
-            usernameTitleTextField, passwordTitleTextField, nameOfTheUserTitleTextField], parentView: self.view)
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        viewWidthAligner.alignViews([
+            emailTitle,
+            usernameTitle,
+            passwordTitle,
+            nameTitle
+            ], parentView: view)
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -117,24 +125,26 @@ UserInfoTableView: UITableViewController, UITextFieldDelegate {
             }
         }
 
-        guard appConfig != nil else {
+        guard let ac = appConfig else {
             Log.error(component: comp, errorString: "Have no app config")
             return
         }
 
-        // TODO: This is not enough!
-        //self.navigationItem.hidesBackButton = Account.isEmpty()
-
-        if model.email == nil {
-            nameOfTheUserValueTextField.becomeFirstResponder()
-        }
-
+        navigationItem.hidesBackButton = ac.model.accountsIsEmpty()
         updateView()
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        fields[index].resignFirstResponder()
+        if !model.isValidName {
+            nameValue.becomeFirstResponder()
+        }
     }
 
     func updateView() {
-        self.navigationItem.rightBarButtonItem?.isEnabled = model.isValidUser
-        // TODO: update the complete view (email etc.)
+        navigationItem.rightBarButtonItem?.isEnabled = model.isValidUser
     }
 
     /**
@@ -154,11 +164,30 @@ UserInfoTableView: UITableViewController, UITextFieldDelegate {
         }
     }
 
-    open func textFieldShouldReturn(_ passwordValue: UITextField) -> Bool {
-        if (model.isValidUser) {
-            self.performSegue(withIdentifier: self.IMAPSettings, sender: passwordValue)
+    open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+        textfield.resignFirstResponder()
+        
+        index += 1
+        if index < fields.count && textfield == fields[index - 1] {
+            textfield.resignFirstResponder()
+            fields[index].becomeFirstResponder()
+        } else {
+            index = 0
+            fields[index].becomeFirstResponder()
         }
-        return true;
+        
+        if (model.isValidUser) {
+            performSegue(withIdentifier: IMAPSettings, sender: nil)
+        }
+        return true
+    }
+    
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        for (i, field) in fields.enumerated() {
+            if field == textField {
+                index = i
+            }
+        }
     }
 
     @IBAction func changeEmail(_ sender: UITextField) {
@@ -180,9 +209,4 @@ UserInfoTableView: UITableViewController, UITextFieldDelegate {
         model.name = sender.text
         updateView()
     }
-    
-    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: "unwindToAccountList", sender: self)
-    }
-    
 }
