@@ -24,8 +24,12 @@ public enum NetworkTransportType: String {
  Holds basic info to connect to peers (perhaps servers).
  */
 public protocol IConnectInfo: Hashable {
-    var userId: String { get } // identification (unique)
-    var userName: String? { get } // display (repeatable), optional
+    /** Identification (unique) */
+    var userId: String { get }
+
+    /** Display (repeatable) */
+    var userName: String? { get }
+
     var networkAddress: String { get }
     var networkPort: UInt16 { get }
     var networkAddressType: NetworkAddressType? {get}
@@ -33,21 +37,21 @@ public protocol IConnectInfo: Hashable {
 }
 
 public class ConnectInfo: IConnectInfo {
-    public var userId: String = ""
-    public var userName: String? // Optional
-    public var networkAddress: String = ""
-    public var networkPort: UInt16 = 0
-    public var networkAddressType: NetworkAddressType? // Optional
-    public var networkTransportType: NetworkTransportType? // Optional
-    
-    public convenience init(userId: String,
-                            userName: String? = nil,
-                            networkPort: UInt16,
-                            networkAddress: String,
-                            networkAddressType: NetworkAddressType? = NetworkAddressType.dns,
-                            networkTransportType: NetworkTransportType? = NetworkTransportType.tcp)
-    {
-        self.init(userId: userId, userName: nil, networkPort: networkPort, networkAddress: networkAddress)
+    public var userId: String
+    public var userName: String?
+    public var networkAddress: String
+    public var networkPort: UInt16
+    public var networkAddressType: NetworkAddressType?
+    public var networkTransportType: NetworkTransportType?
+
+    public init(userId: String, userName: String? = nil, networkAddress: String,
+                networkAddressType: NetworkAddressType? = nil,
+                networkTransportType: NetworkTransportType? = nil) {
+        self.userId = userId
+        self.userName = userName
+        self.networkAddress = networkAddress
+        self.networkAddressType = networkAddressType
+        self.networkTransportType = networkTransportType
     }
 }
 
