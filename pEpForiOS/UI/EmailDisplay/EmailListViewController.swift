@@ -40,7 +40,7 @@ class EmailListViewController: UITableViewController {
         let account: Account?
 
         /** The folder to display, if it exists */
-        let folder: Folder?
+        var folder: Folder?
     }
 
     var comp = "EmailListViewController"
@@ -96,6 +96,7 @@ class EmailListViewController: UITableViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
@@ -139,6 +140,7 @@ class EmailListViewController: UITableViewController {
     }
 
     func updateModel() {
+        config.folder = MockData.createFolder(config.account!)
     }
 
     // MARK: - UI State
@@ -242,7 +244,7 @@ class EmailListViewController: UITableViewController {
             // Snippet
             if let text = email.longMessage {
                 let theText = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
-                UIHelper.putString(theText, toLabel: cell.summaryLabel)
+                UIHelper.putString(UIHelper.cleanHtml(theText), toLabel: cell.summaryLabel)
             } else if let html = email.longMessageFormatted {
                 var text = html.extractTextFromHTML()
                 text = text.replaceNewLinesWith(" ").trimmedWhiteSpace()

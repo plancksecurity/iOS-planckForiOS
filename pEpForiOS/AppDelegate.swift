@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /** Keep open at all times */
     var firstSession: PEPSession?
 
-    let backgroundQueue = OperationQueue.init()
+    let backgroundQueue = OperationQueue()
 
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
@@ -90,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Open the first session from the main thread and keep it open
-        firstSession = PEPSession.init()
+        firstSession = PEPSession()
 
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func setupDefaultSettings() {
-        let settings: [String:AnyObject] = [Constants.kSettingLastAccountEmail:"" as AnyObject]
+        let settings: [String: AnyObject] = [Constants.kSettingLastAccountEmail: "" as AnyObject]
         UserDefaults.standard.register(defaults: settings)
     }
 

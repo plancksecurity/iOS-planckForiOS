@@ -7,10 +7,10 @@
 //
 
 import UIKit
-
 import MessageModel
 
-class MockData {
+open class MockData {
+    
     static func insertData() {
         let ident = Identity.create(address: "this_is_me@blah.org", userName: "User 1",
                                     userID: nil)
@@ -38,8 +38,19 @@ class MockData {
     }
 
     static func insertMessages(folder: Folder) {
-        for _ in 1...10 {
-            
+        for i in 1...10 {
+            let msg = Message.create(uuid: UUID.generate())
+            msg.shortMessage = "Test \(i)"
+            msg.longMessage = "<html><head></head><body>Test Message Nr: \(i) </body></html>"
+            msg.sent = Date() as NSDate?
+            folder.add(message: msg)
         }
+    }
+    
+    static func createFolder(_ account: Account) -> Folder {
+        let f = Folder.createRootFolder(name: "pEpSi", uuid: UUID.generate(), account: account)
+        f.folderType = .normal
+        MockData.insertMessages(folder: f)
+        return f
     }
 }
