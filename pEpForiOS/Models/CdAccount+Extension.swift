@@ -47,55 +47,41 @@ extension MessageModel.CdAccount {
         return nil
     }
 
-    open var emailConnectInfos: (imap: EmailConnectInfo?, smtp: EmailConnectInfo?) {
-        var potentialImapServer: (CdServer, CdServerCredentials, String?)?
-        var potentialSmtpServer: (CdServer, CdServerCredentials, String?)?
+    open var emailConnectInfos: [EmailConnectInfo] {
+        var result = [EmailConnectInfo]()
 
         guard let creds = credentials else {
-            return (imap: nil, smtp: nil)
+            return result
         }
-        outer: for cred in creds {
+        for cred in creds {
             if let theCred = cred as? CdServerCredentials,
                 let servers = theCred.servers {
                 for theServer in servers {
                     if let server = theServer as? CdServer {
-                        if server.serverType?.intValue == Server.ServerType.imap.rawValue {
-                            potentialImapServer = serverNTuple(credentials: theCred,
-                                                               server: server)
-                        } else if server.serverType?.intValue == Server.ServerType.smtp.rawValue {
-                            potentialSmtpServer = serverNTuple(credentials: theCred,
-                                                               server: server)
-                        }
-                        if potentialSmtpServer != nil && potentialImapServer != nil {
-                            break outer
+                        if server.serverType?.intValue == Server.ServerType.imap.rawValue ||
+                            server.serverType?.intValue == Server.ServerType.smtp.rawValue {
+                            let password = theCred.password
+                            if let emailConnectInfo = emailConnectInfo(
+                                server: server, credentials: theCred, password: password) {
+                                result.append(emailConnectInfo)
+                            }
                         }
                     }
                 }
             }
         }
-
-        if let (imapServer, imapCred, imapPassword) = potentialImapServer,
-            let (smtpServer, smtpCred, smtpPassword) = potentialSmtpServer {
-            return (imap: emailConnectInfo(
-                server: imapServer, credentials: imapCred, password: imapPassword),
-                    smtp: emailConnectInfo(
-                        server: smtpServer, credentials: smtpCred, password: smtpPassword))
-        }
-
-        return (imap: nil, smtp: nil)
+        return result
     }
 
     func emailConnectInfo(server: CdServer, credentials: CdServerCredentials,
         password: String?) -> EmailConnectInfo? {
-        let connectionTransport = ConnectionTransport.init(
-            fromInt: server.transport?.intValue)
+        let connectionTransport = ConnectionTransport.init(fromInt: server.transport?.intValue)
 
         if let port = server.port?.int16Value,
             let address = server.address,
             let serverTypeInt = server.serverType?.intValue,
             let serverType = Server.ServerType.init(rawValue: serverTypeInt),
-            let emailProtocol = EmailProtocol.init(serverType: serverType),
-            let userID = self.entity.userInfo {
+            let emailProtocol = EmailProtocol.init(serverType: serverType) {
             return EmailConnectInfo.init(
                 emailProtocol: emailProtocol,
                 userId: credentials.userName!,

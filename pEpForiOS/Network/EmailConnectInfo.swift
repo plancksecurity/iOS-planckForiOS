@@ -128,7 +128,7 @@ public protocol IEmailConnectInfo: IConnectInfo {
     var authMethod: AuthMethod? { get }
 }
 
-public class EmailConnectInfo: ConnectInfo {
+public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
     public var emailProtocol: EmailProtocol?
     public var connectionTransport: ConnectionTransport?
     public var userPassword: String?
