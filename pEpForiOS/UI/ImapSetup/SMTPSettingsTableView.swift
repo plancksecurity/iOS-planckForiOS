@@ -14,7 +14,7 @@ open class ViewStatus {
     open var activityIndicatorViewEnable = false
 }
 
-open class SMTPSettingsTableView: UITableViewController {
+open class SMTPSettingsTableView: UITableViewController, UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
     let unwindToEmailListSegue = "unwindToEmailListSegue"
 
@@ -23,41 +23,48 @@ open class SMTPSettingsTableView: UITableViewController {
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var transportSecurity: UIButton!
 
-    @IBOutlet weak var serverValueTextField: UILabel!
-    @IBOutlet weak var portValueTextField: UILabel!
+    @IBOutlet weak var serverTitle: UILabel!
+    @IBOutlet weak var portTitle: UILabel!
 
     var appConfig: AppConfig!
     var model: ModelUserInfoTable!
-
+    var fields = [UITextField]()
+    var index = 0
+    
     let viewWidthAligner = ViewWidthsAligner()
     let status = ViewStatus()
-
+    
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 44
+        
+        UIHelper.variableCellHeightsTableView(tableView)
+        fields = [serverValue, portValue]
     }
-
+    
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        viewWidthAligner.alignViews([
+            serverTitle,
+            portTitle
+        ], parentView: view)
+    }
+    
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         MessageModelConfig.accountDelegate = self
-
+        updateView()
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        fields[index].resignFirstResponder()
         if model.serverSMTP == nil {
             serverValue.becomeFirstResponder()
         }
-        portValue.keyboardType = UIKeyboardType.numberPad
-        updateView()
-    }
-
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewWidthAligner.alignViews([serverValueTextField,
-            portValueTextField], parentView: self.view)
-    }
-
-    open override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
     }
 
     open override func didReceiveMemoryWarning() {
@@ -68,12 +75,13 @@ open class SMTPSettingsTableView: UITableViewController {
         serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
         transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControlState())
+        
         if status.activityIndicatorViewEnable {
             activityIndicatorView.startAnimating()
         } else {
             activityIndicatorView.stopAnimating()
         }
-        self.navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
+        navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
     }
 
     func showErrorMessage (_ message: String) {
@@ -152,15 +160,39 @@ open class SMTPSettingsTableView: UITableViewController {
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
         verifyAccount()
     }
+    
+    open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+        textfield.resignFirstResponder()
+        
+        index += 1
+        if index < fields.count && textfield == fields[index - 1] {
+            textfield.resignFirstResponder()
+            fields[index].becomeFirstResponder()
+        } else {
+            index = 0
+            fields[index].becomeFirstResponder()
+        }
+        return true
+    }
+    
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        for (i, field) in fields.enumerated() {
+            if field == textField {
+                index = i
+            }
+        }
+    }
 }
 
+
 extension SMTPSettingsTableView: AccountDelegate {
+    
     public func didVerify(account: Account, error: MessageModelError?) {
-        self.status.activityIndicatorViewEnable = false
-        self.updateView()
+        status.activityIndicatorViewEnable = false
+        updateView()
 
         if let err = error {
-            self.showErrorMessage(err.localizedDescription)
+            showErrorMessage(err.localizedDescription)
         } else {
             GCD.onMain() {
                 // unwind back to INBOX on success

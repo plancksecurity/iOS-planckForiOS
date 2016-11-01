@@ -9,50 +9,57 @@
 import UIKit
 
 extension UIAlertController {
-    func setupActionFromConnectionTransport(_ transport: ConnectionTransport,
-                                            block: @escaping (ConnectionTransport) -> ()) {
-        let action = UIAlertAction(title: transport.localizedString(),
-                                   style: .default, handler: { action in
-                                    block(transport)
+    func setupActionFromConnectionTransport(_ transport: ConnectionTransport, block: @escaping (ConnectionTransport) -> ()) {
+        let action = UIAlertAction(title: transport.localizedString(), style: .default, handler: { action in
+            block(transport)
         })
-        self.addAction(action)
+        addAction(action)
     }
 }
 
-class IMAPSettingsTableView: UITableViewController  {
+class IMAPSettingsTableView: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
+    @IBOutlet weak var serverTitle: UILabel!
+    @IBOutlet weak var portTitle: UILabel!
     @IBOutlet weak var transportSecurity: UIButton!
-
-    @IBOutlet weak var serverValueTextField: UILabel!
-    @IBOutlet weak var portValueTextField: UILabel!
 
     let viewWidthAligner = ViewWidthsAligner()
 
     var appConfig: AppConfig!
     var model: ModelUserInfoTable!
-
-    override func viewDidLoad() {
+    var fields = [UITextField]()
+    var index = 0
+    
+    open override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 44
+        
+        UIHelper.variableCellHeightsTableView(tableView)
+        fields = [serverValue, portValue]
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewWidthAligner.alignViews([serverValueTextField,
-            portValueTextField], parentView: self.view)
+    
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        viewWidthAligner.alignViews([
+            serverTitle,
+            portTitle
+        ], parentView: view)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
+    
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        updateView()
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        fields[index].resignFirstResponder()
         if model.serverIMAP == nil {
             serverValue.becomeFirstResponder()
         }
-        portValue.keyboardType = UIKeyboardType.numberPad
-        updateView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -62,7 +69,6 @@ class IMAPSettingsTableView: UITableViewController  {
     func updateView() {
         serverValue.text = model.serverIMAP
         portValue.text = String(model.portIMAP)
-
         transportSecurity.setTitle(model.transportIMAP.localizedString(), for: UIControlState())
     }
 
@@ -87,7 +93,7 @@ class IMAPSettingsTableView: UITableViewController  {
             title: NSLocalizedString("Cancel", comment: "Cancel for an alert view"),
             style: .cancel) { (action) in}
         alertController.addAction(cancelAction)
-        self.present(alertController, animated: true) {}
+        present(alertController, animated: true) {}
     }
 
     @IBAction func changePort(_ sender: UITextField) {
@@ -107,6 +113,28 @@ class IMAPSettingsTableView: UITableViewController  {
             if let destination = segue.destination as? SMTPSettingsTableView {
                 destination.appConfig = self.appConfig
                 destination.model = self.model
+            }
+        }
+    }
+    
+    open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+        textfield.resignFirstResponder()
+        
+        index += 1
+        if index < fields.count && textfield == fields[index - 1] {
+            textfield.resignFirstResponder()
+            fields[index].becomeFirstResponder()
+        } else {
+            index = 0
+            fields[index].becomeFirstResponder()
+        }
+        return true
+    }
+    
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        for (i, field) in fields.enumerated() {
+            if field == textField {
+                index = i
             }
         }
     }
