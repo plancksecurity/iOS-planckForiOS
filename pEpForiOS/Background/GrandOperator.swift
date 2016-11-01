@@ -69,13 +69,6 @@ public protocol IGrandOperator: class {
                                    completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asynchronously verifies the given connection. Tests for IMAP and SMTP. The test is considered
-     a success when authentication was successful.
-     */
-    func verifyConnection(imapConnectInfo: EmailConnectInfo, smtpConnectInfo: EmailConnectInfo,
-                          completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
      Sends the given mail via SMTP. Also saves it into the drafts folder. You
      might have to trigger a fetch for that mail to appear in your drafts folder.
      */
@@ -119,8 +112,8 @@ open class GrandOperator: IGrandOperator {
     open let connectionManager: ConnectionManager
     open let coreDataUtil: CoreDataUtil
 
-    fileprivate let verifyConnectionQueue = OperationQueue.init()
-    fileprivate let backgroundQueue = OperationQueue.init()
+    fileprivate let verificationQueue = OperationQueue()
+    fileprivate let backgroundQueue = OperationQueue()
 
     /**
      The main model (for use on the main thread)
@@ -170,7 +163,6 @@ open class GrandOperator: IGrandOperator {
     }
 
     open func shutdown() {
-        verifyConnectionQueue.cancelAllOperations()
         connectionManager.shutdown()
     }
 
@@ -260,41 +252,33 @@ open class GrandOperator: IGrandOperator {
         }
     }
 
-    open func verifyConnection(imapConnectInfo: EmailConnectInfo, smtpConnectInfo: EmailConnectInfo,
+    /**
+     Asynchronously verifies the given `EmailConnectInfo`s.
+     */
+    open func verify(emailConnectInfos: [EmailConnectInfo],
                                completionBlock: GrandOperatorCompletionBlock?) {
-        let op1 = VerifyImapConnectionOperation.init(grandOperator: self,
-                                                     connectInfo: imapConnectInfo)
-        let op2 = VerifySmtpConnectionOperation.init(grandOperator: self,
-                                                     connectInfo: smtpConnectInfo)
-
-        var finished1 = false
-        var finished2 = false
-
-        // Since the completion blocks retain op1 and op2, respectively,
-        // a cyclic dependency is created that prevents the deallocation of both.
-        // This must be resolved when both have finished.
-        let completion1 = {
-            GCD.onMain({ // serialize
-                finished1 = true
-                self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                    op1: op1, op2: op2,
-                    completionBlock: completionBlock)
-            })
-        }
-        let completion2 = {
-            GCD.onMain({ // serialize
-                finished2 = true
-                self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                    op1: op1, op2: op2,
-                    completionBlock: completionBlock)
-            })
+        var ops = [VerifyServiceOperation]()
+        for ci in emailConnectInfos {
+            if let prot = ci.emailProtocol {
+                switch prot {
+                case .imap:
+                    ops.append(VerifyImapConnectionOperation(grandOperator: self, connectInfo: ci))
+                case .smtp:
+                    ops.append(VerifySmtpConnectionOperation(grandOperator: self, connectInfo: ci))
+                }
+            }
         }
 
-        op1.completionBlock = completion1
-        op2.completionBlock = completion2
-
-        verifyConnectionQueue.addOperation(op1)
-        verifyConnectionQueue.addOperation(op2)
+        verificationQueue.batch(operations: ops, completionBlock: {
+            var error: NSError?
+            for op in ops {
+                if op.hasErrors() {
+                    error = op.errors.last
+                    break
+                }
+            }
+            completionBlock?(error)
+        })
     }
 
     open func sendMail(_ message: CdMessage, account: CdAccount,
@@ -416,7 +400,10 @@ open class GrandOperator: IGrandOperator {
 extension GrandOperator: SendLayerProtocol {
     public func verify(account: MessageModel.CdAccount,
                        completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("GrandOperator.verify not implemented")
+        let cis = account.emailConnectInfos
+        verify(emailConnectInfos: cis, completionBlock: { error in
+            completionBlock?(.ConnectionProblem)
+        })
     }
 
     public func send(message: MessageModel.CdMessage, completionBlock: SendLayerCompletionBlock?) {
