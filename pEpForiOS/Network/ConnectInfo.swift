@@ -40,7 +40,7 @@ public class ConnectInfo: IConnectInfo {
     public var userId: String
     public var userName: String?
     public var networkAddress: String
-    public var networkPort: UInt16
+    public var networkPort: UInt16 = 0
     public var networkAddressType: NetworkAddressType?
     public var networkTransportType: NetworkTransportType?
 

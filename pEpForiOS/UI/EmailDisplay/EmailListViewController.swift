@@ -139,6 +139,11 @@ class EmailListViewController: UITableViewController {
         }
     }
 
+    
+    @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {
+        
+    }
+    
     func updateModel() {
         config.folder = MockData.createFolder(config.account!)
     }

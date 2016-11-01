@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageModel
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
@@ -74,7 +75,8 @@ open class ModelUserInfoTable {
     }
 }
 
-open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
+open class
+UserInfoTableView: UITableViewController, UITextFieldDelegate {
     let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!
@@ -115,13 +117,13 @@ open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
             }
         }
 
-        guard let ac = appConfig else {
+        guard appConfig != nil else {
             Log.error(component: comp, errorString: "Have no app config")
             return
         }
 
         // TODO: This is not enough!
-        self.navigationItem.hidesBackButton = ac.model.accountsIsEmpty()
+        //self.navigationItem.hidesBackButton = Account.isEmpty()
 
         if model.email == nil {
             nameOfTheUserValueTextField.becomeFirstResponder()
@@ -178,4 +180,9 @@ open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
         model.name = sender.text
         updateView()
     }
+    
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: "unwindToAccountList", sender: self)
+    }
+    
 }

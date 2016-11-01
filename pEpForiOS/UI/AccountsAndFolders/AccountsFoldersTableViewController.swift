@@ -203,4 +203,14 @@ class AccountsFoldersViewController: UITableViewController {
             vc.config = folderListConfig
         }
     }
+    
+    // MARK: - Actions
+    
+    @IBAction func addAccountButtonTapped(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: segueSetupNewAccount, sender: self)
+    }
+    
+    @IBAction func unwindToAccounts(for unwindSegue: UIStoryboardSegue) {
+        
+    }
 }
