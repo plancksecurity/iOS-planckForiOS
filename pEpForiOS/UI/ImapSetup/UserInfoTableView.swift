@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -125,12 +127,7 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
             }
         }
 
-        guard let ac = appConfig else {
-            Log.error(component: comp, errorString: "Have no app config")
-            return
-        }
-
-        navigationItem.hidesBackButton = ac.model.accountsIsEmpty()
+        navigationItem.hidesBackButton = Account.all.isEmpty
         updateView()
     }
     
