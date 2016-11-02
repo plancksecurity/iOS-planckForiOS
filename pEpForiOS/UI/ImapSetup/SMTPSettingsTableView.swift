@@ -146,7 +146,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
                                        address: model.serverSMTP!,
                                        transport: model.transportSMTP.toServerTransport())
         smtpServer.needsVerification = true
-        let credentials = ServerCredentials.create(userName: userName,
+        let credentials = ServerCredentials.create(userName: userName, password: model.password,
                                                    servers: [imapServer, smtpServer])
         credentials.needsVerification = true
         let account = Account.create(identity: identity, credentials: [credentials])
@@ -168,16 +168,15 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
     }
 }
 
-
 extension SMTPSettingsTableView: AccountDelegate {
     public func didVerify(account: Account, error: NSError?) {
-        status.activityIndicatorViewEnable = false
-        updateView()
+        GCD.onMain() {
+            self.status.activityIndicatorViewEnable = false
+            self.updateView()
 
-        if let err = error {
-            showErrorMessage(err.localizedDescription)
-        } else {
-            GCD.onMain() {
+            if let err = error {
+                self.showErrorMessage(err.localizedDescription)
+            } else {
                 // unwind back to INBOX on success
                 self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: nil)
             }
