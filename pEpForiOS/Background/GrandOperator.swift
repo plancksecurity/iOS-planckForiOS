@@ -402,7 +402,7 @@ extension GrandOperator: SendLayerProtocol {
                        completionBlock: SendLayerCompletionBlock?) {
         let cis = account.emailConnectInfos
         verify(emailConnectInfos: cis, completionBlock: { error in
-            completionBlock?(Constants.errorNotImplemented("SendLayerProtocol"))
+            completionBlock?(error)
         })
     }
 
