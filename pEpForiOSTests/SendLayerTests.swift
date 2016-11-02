@@ -20,11 +20,7 @@ class SendLayerTests: XCTestCase {
         let _ = PersistentSetup()
     }
 
-    /**
-     For now, make sure you run the following on the command line:
-     `python3 -m smtpd -c DebuggingServer -n localhost:4096`
-     */
-    func testVerifySMTP() {
+    func testVerifyNotWorking() {
         let accountDelegate = TestUtil.TestAccountDelegate()
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
@@ -32,7 +28,24 @@ class SendLayerTests: XCTestCase {
         let grandOp = GrandOperator(connectionManager: connectionManager,
                                     coreDataUtil: coreDataUtil)
         CdAccount.sendLayer = grandOp
-        let account = TestData.createAccount()
+        let account = TestData().createDisfunctionalAccount()
+        account.save()
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(accountDelegate.error)
+        })
+    }
+
+    func testVerify() {
+        let accountDelegate = TestUtil.TestAccountDelegate()
+        accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
+        MessageModelConfig.accountDelegate = accountDelegate
+
+        let grandOp = GrandOperator(connectionManager: connectionManager,
+                                    coreDataUtil: coreDataUtil)
+        CdAccount.sendLayer = grandOp
+        let account = TestData().createWorkingAccount()
         account.save()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in

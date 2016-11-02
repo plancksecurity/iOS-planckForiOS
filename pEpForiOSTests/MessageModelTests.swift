@@ -24,7 +24,7 @@ class MessageModelTests: XCTestCase {
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
 
-        let account = TestData.createAccount()
+        let account = TestData().createWorkingAccount()
         account.save()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
