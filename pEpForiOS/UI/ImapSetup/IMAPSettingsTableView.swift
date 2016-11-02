@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIAlertController {
+    
     func setupActionFromConnectionTransport(_ transport: ConnectionTransport, block: @escaping (ConnectionTransport) -> ()) {
         let action = UIAlertAction(title: transport.localizedString(), style: .default, handler: { action in
             block(transport)
@@ -17,7 +18,7 @@ extension UIAlertController {
     }
 }
 
-class IMAPSettingsTableView: UITableViewController, UITextFieldDelegate {
+class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
 
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
@@ -30,7 +31,7 @@ class IMAPSettingsTableView: UITableViewController, UITextFieldDelegate {
     var appConfig: AppConfig!
     var model: ModelUserInfoTable!
     var fields = [UITextField]()
-    var index = 0
+    var responder = 0
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,10 +57,7 @@ class IMAPSettingsTableView: UITableViewController, UITextFieldDelegate {
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        fields[index].resignFirstResponder()
-        if model.serverIMAP == nil {
-            serverValue.becomeFirstResponder()
-        }
+       firstResponder(model.serverIMAP == nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -118,24 +116,11 @@ class IMAPSettingsTableView: UITableViewController, UITextFieldDelegate {
     }
     
     open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
-        textfield.resignFirstResponder()
-        
-        index += 1
-        if index < fields.count && textfield == fields[index - 1] {
-            textfield.resignFirstResponder()
-            fields[index].becomeFirstResponder()
-        } else {
-            index = 0
-            fields[index].becomeFirstResponder()
-        }
+        nextResponder(textfield)
         return true
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        for (i, field) in fields.enumerated() {
-            if field == textField {
-                index = i
-            }
-        }
+        changedResponder(textField)
     }
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
+		228038691DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
+		2280386A1DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		22DA56D91DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		22DA56DA1DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
@@ -232,6 +235,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
 		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
 		430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveSentMessageOperation.swift; path = ../SaveSentMessageOperation.swift; sourceTree = "<group>"; };
@@ -640,6 +644,7 @@
 				435B42401D211E5900119048 /* MiscUtil.swift */,
 				436F8E0F1D367039007E9829 /* StringExtensions.swift */,
 				43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */,
+				228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1090,6 +1095,7 @@
 				43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */,
 				4346D33C1D86E2E50017E24E /* ComposeViewHelper.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
+				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
 				A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */,
 				4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
@@ -1110,6 +1116,7 @@
 				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
+				228038691DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
@@ -1125,6 +1132,7 @@
 				43701BF51D92B6B4007D63B2 /* LoadUITest.swift in Sources */,
 				A1950C6B1D928A9700A7C865 /* ChooseAttachmentTest.swift in Sources */,
 				43DA52711CEF3B0E0023D540 /* UITestData.swift in Sources */,
+				2280386A1DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

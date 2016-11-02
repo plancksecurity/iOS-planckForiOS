@@ -74,7 +74,7 @@ open class ModelUserInfoTable {
     }
 }
 
-open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
+open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     
     let comp = "UserInfoTableView"
 
@@ -91,7 +91,7 @@ open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
     var appConfig: AppConfig?
     var IMAPSettings = "IMAPSettings"
     var fields = [UITextField]()
-    var index = 0
+    var responder = 0
 
     open var model = ModelUserInfoTable()
 
@@ -137,10 +137,7 @@ open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        fields[index].resignFirstResponder()
-        if !model.isValidName {
-            nameValue.becomeFirstResponder()
-        }
+        firstResponder(!model.isValidName)
     }
 
     func updateView() {
@@ -165,29 +162,16 @@ open class UserInfoTableView: UITableViewController, UITextFieldDelegate {
     }
 
     open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
-        textfield.resignFirstResponder()
+        nextResponder(textfield)
         
-        index += 1
-        if index < fields.count && textfield == fields[index - 1] {
-            textfield.resignFirstResponder()
-            fields[index].becomeFirstResponder()
-        } else {
-            index = 0
-            fields[index].becomeFirstResponder()
-        }
-        
-        if (model.isValidUser) {
+        if model.isValidUser {
             performSegue(withIdentifier: IMAPSettings, sender: nil)
         }
         return true
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        for (i, field) in fields.enumerated() {
-            if field == textField {
-                index = i
-            }
-        }
+        changedResponder(textField)
     }
 
     @IBAction func changeEmail(_ sender: UITextField) {

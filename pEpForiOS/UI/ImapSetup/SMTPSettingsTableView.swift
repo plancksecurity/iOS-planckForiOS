@@ -14,7 +14,7 @@ open class ViewStatus {
     open var activityIndicatorViewEnable = false
 }
 
-open class SMTPSettingsTableView: UITableViewController, UITextFieldDelegate {
+open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
     let unwindToEmailListSegue = "unwindToEmailListSegue"
 
@@ -29,7 +29,7 @@ open class SMTPSettingsTableView: UITableViewController, UITextFieldDelegate {
     var appConfig: AppConfig!
     var model: ModelUserInfoTable!
     var fields = [UITextField]()
-    var index = 0
+    var responder = 0
     
     let viewWidthAligner = ViewWidthsAligner()
     let status = ViewStatus()
@@ -61,10 +61,7 @@ open class SMTPSettingsTableView: UITableViewController, UITextFieldDelegate {
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        fields[index].resignFirstResponder()
-        if model.serverSMTP == nil {
-            serverValue.becomeFirstResponder()
-        }
+        firstResponder(model.serverSMTP == nil)
     }
 
     open override func didReceiveMemoryWarning() {
@@ -162,25 +159,12 @@ open class SMTPSettingsTableView: UITableViewController, UITextFieldDelegate {
     }
     
     open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
-        textfield.resignFirstResponder()
-        
-        index += 1
-        if index < fields.count && textfield == fields[index - 1] {
-            textfield.resignFirstResponder()
-            fields[index].becomeFirstResponder()
-        } else {
-            index = 0
-            fields[index].becomeFirstResponder()
-        }
+        nextResponder(textfield)
         return true
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        for (i, field) in fields.enumerated() {
-            if field == textField {
-                index = i
-            }
-        }
+        changedResponder(textField)
     }
 }
 
