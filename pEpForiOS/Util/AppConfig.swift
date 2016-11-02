@@ -33,8 +33,11 @@ class AppConfig: NSObject {
     override init() {
         connectionManager = ConnectionManager()
         model = CdModel.init(context: coreDataUtil.defaultContext())
-        grandOperator = GrandOperator.init(connectionManager: connectionManager,
-                                           coreDataUtil: coreDataUtil)
+        let gOp = GrandOperator.init(connectionManager: connectionManager,
+                                     coreDataUtil: coreDataUtil)
+        grandOperator = gOp
+        MessageModel.CdAccount.sendLayer = gOp
+
     }
 
 }
