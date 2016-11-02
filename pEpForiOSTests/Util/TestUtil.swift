@@ -212,4 +212,17 @@ class TestUtil {
         }
         testBlock()
     }
+
+    /**
+     Reusable implementation of `AccountDelegate` that just signals expectations.
+     */
+    class TestAccountDelegate: AccountDelegate {
+        var expVerifyCalled: XCTestExpectation?
+        var error: NSError?
+
+        func didVerify(account: Account, error: NSError?) {
+            self.error = error
+            expVerifyCalled?.fulfill()
+        }
+    }
 }

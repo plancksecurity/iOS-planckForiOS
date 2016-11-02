@@ -11,16 +11,6 @@ import XCTest
 import MessageModel
 
 class MessageModelTests: XCTestCase {
-    class TestAccountDelegate: AccountDelegate {
-        var expVerifyCalled: XCTestExpectation?
-        var error: MessageModelError?
-
-        func didVerify(account: Account, error: MessageModelError?) {
-            self.error = error
-            expVerifyCalled?.fulfill()
-        }
-    }
-
     override func setUp() {
         super.setUp()
         let _ = PersistentSetup()
@@ -30,16 +20,16 @@ class MessageModelTests: XCTestCase {
         CdAccount.sendLayer = DefaultSendLayer()
 
         // setup AccountDelegate
-        let callBack = TestAccountDelegate()
-        callBack.expVerifyCalled = expectation(description: "expVerifyCalled")
-        MessageModelConfig.accountDelegate = callBack
+        let accountDelegate = TestUtil.TestAccountDelegate()
+        accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
+        MessageModelConfig.accountDelegate = accountDelegate
 
         let account = TestData.createAccount()
         account.save()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertNil(callBack.error)
+            XCTAssertNil(accountDelegate.error)
         })
     }
 }

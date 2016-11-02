@@ -15,16 +15,6 @@ class SendLayerTests: XCTestCase {
     let coreDataUtil = CoreDataUtil()
     let connectionManager = ConnectionManager()
 
-    class TestAccountDelegate: AccountDelegate {
-        var expVerifyCalled: XCTestExpectation?
-        var error: MessageModelError?
-
-        func didVerify(account: Account, error: MessageModelError?) {
-            self.error = error
-            expVerifyCalled?.fulfill()
-        }
-    }
-
     override func setUp() {
         super.setUp()
         let _ = PersistentSetup()
@@ -35,9 +25,9 @@ class SendLayerTests: XCTestCase {
      `python3 -m smtpd -c DebuggingServer -n localhost:4096`
      */
     func testVerifySMTP() {
-        let callBack = TestAccountDelegate()
-        callBack.expVerifyCalled = expectation(description: "expVerifyCalled")
-        MessageModelConfig.accountDelegate = callBack
+        let accountDelegate = TestUtil.TestAccountDelegate()
+        accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
+        MessageModelConfig.accountDelegate = accountDelegate
 
         let grandOp = GrandOperator(connectionManager: connectionManager,
                                     coreDataUtil: coreDataUtil)
@@ -47,7 +37,7 @@ class SendLayerTests: XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertNil(callBack.error)
+            XCTAssertNil(accountDelegate.error)
         })
     }
 }
