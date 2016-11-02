@@ -87,12 +87,10 @@ class AccountsFoldersViewController: UITableViewController {
         guard let model = appConfig?.model else {
             return
         }
-        if let accounts = model.accountsByPredicate(NSPredicate.init(
-            value: true), sortDescriptors: nil) {
-            for acc in accounts {
-                let op = PEPMyselfOperation.init(account: acc)
-                backgroundQueue.addOperation(op)
-            }
+        let accounts = Account.all
+        for acc in accounts {
+            let op = PEPMyselfOperation(account: acc)
+            backgroundQueue.addOperation(op)
         }
     }
 

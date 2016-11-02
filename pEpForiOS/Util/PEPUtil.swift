@@ -190,13 +190,11 @@ open class PEPUtil {
     /**
      Kicks off myself in the background, optionally notifies via block of termination/success.
      */
-    open static func myselfFromAccount(_ account: CdAccount, queue: OperationQueue,
+    open static func myselfFromAccount(_ account: Account, queue: OperationQueue,
                                          block: ((_ identity: NSDictionary) -> Void)? = nil) {
-        let op = PEPMyselfOperation.init(account: account)
+        let op = PEPMyselfOperation(account: account)
         op.completionBlock = {
-            if let bl = block {
-                bl(op.identity)
-            }
+            block?(op.identity)
         }
         queue.addOperation(op)
     }

@@ -65,27 +65,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appConfig?.model.save()
 
         // Do mySelf on all accounts
-        if let accounts = appConfig?.model.accountsByPredicate(nil, sortDescriptors: nil) {
-            let bgId = application.beginBackgroundTask(expirationHandler: {
-                Log.info(component: self.comp, "Could not complete all myself in background")
-                self.appConfig?.model.save()
-
-                // Shutdown pEp engine
-                self.firstSession = nil
-            })
-            for acc in accounts {
-                let email = acc.email
-                Log.info(component: comp, "Starting myself for \(email)")
-                PEPUtil.myselfFromAccount(acc, queue: backgroundQueue) { identity in
-                    Log.info(component: self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
-                    application.endBackgroundTask(bgId)
-                }
-            }
+        let accounts = Account.all
+        let bgId = application.beginBackgroundTask(expirationHandler: {
+            Log.info(component: self.comp, "Could not complete all myself in background")
             self.appConfig?.model.save()
 
             // Shutdown pEp engine
-            firstSession = nil
+            self.firstSession = nil
+        })
+        for acc in accounts {
+            let email = acc.user.address
+            Log.info(component: comp, "Starting myself for \(email)")
+            PEPUtil.myselfFromAccount(acc, queue: backgroundQueue) { identity in
+                Log.info(component: self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
+                application.endBackgroundTask(bgId)
+            }
         }
+        self.appConfig?.model.save()
+
+        // Shutdown pEp engine
+        firstSession = nil
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
