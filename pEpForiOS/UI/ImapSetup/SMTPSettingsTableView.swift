@@ -186,8 +186,7 @@ open class SMTPSettingsTableView: UITableViewController, UITextFieldDelegate {
 
 
 extension SMTPSettingsTableView: AccountDelegate {
-    
-    public func didVerify(account: Account, error: MessageModelError?) {
+    public func didVerify(account: Account, error: NSError?) {
         status.activityIndicatorViewEnable = false
         updateView()
 
