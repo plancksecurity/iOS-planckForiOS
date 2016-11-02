@@ -44,8 +44,8 @@ extension MessageModel.CdAccount {
         return nil
     }
 
-    open var emailConnectInfos: [EmailConnectInfo] {
-        var result = [EmailConnectInfo]()
+    open var emailConnectInfos: [EmailConnectInfo: CdServerCredentials] {
+        var result = [EmailConnectInfo: CdServerCredentials]()
 
         guard let creds = credentials else {
             return result
@@ -60,7 +60,7 @@ extension MessageModel.CdAccount {
                             let password = theCred.password
                             if let emailConnectInfo = emailConnectInfo(
                                 server: server, credentials: theCred, password: password) {
-                                result.append(emailConnectInfo)
+                                result[emailConnectInfo] = theCred
                             }
                         }
                     }

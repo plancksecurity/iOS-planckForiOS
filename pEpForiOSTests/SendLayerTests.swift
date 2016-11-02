@@ -20,7 +20,7 @@ class SendLayerTests: XCTestCase {
         let _ = PersistentSetup()
     }
 
-    func testVerifyNotWorking() {
+    func testVerifyBad() {
         let accountDelegate = TestUtil.TestAccountDelegate()
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
@@ -34,10 +34,11 @@ class SendLayerTests: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNotNil(accountDelegate.error)
+            XCTAssertTrue(Account.all.isEmpty)
         })
     }
 
-    func testVerify() {
+    func testVerifyOk() {
         let accountDelegate = TestUtil.TestAccountDelegate()
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
@@ -51,6 +52,7 @@ class SendLayerTests: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNil(accountDelegate.error)
+            XCTAssertEqual(Account.all.count, 1)
         })
     }
 }

@@ -255,16 +255,51 @@ open class GrandOperator: IGrandOperator {
     /**
      Asynchronously verifies the given `EmailConnectInfo`s.
      */
-    open func verify(emailConnectInfos: [EmailConnectInfo],
-                               completionBlock: GrandOperatorCompletionBlock?) {
+    open func verify(
+        account: MessageModel.CdAccount, emailConnectInfos: [EmailConnectInfo: CdServerCredentials],
+        completionBlock: GrandOperatorCompletionBlock?) {
+
+        // The operations tha will be run
         var ops = [VerifyServiceOperation]()
-        for ci in emailConnectInfos {
+
+        /// Creates a completion block for a verification operation.
+        /// Has to find out if the verification was successful, and if it was, will set
+        /// `needsVerification` to `false`.
+        func mkCompletionBlock(op: VerifyServiceOperation,
+                               credential: CdServerCredentials) -> (() -> Void)? {
+            let ctx = credential.managedObjectContext!
+            return {
+                if !op.hasErrors() {
+                    ctx.performAndWait {
+                        credential.needsVerification = false
+                    }
+                }
+            }
+        }
+
+        /// Add a `VerifyServiceOperation` to the operations to run, and give it a completion
+        /// block created with `mkCompletionBlock`.
+        func add(operation: VerifyServiceOperation, credentials: CdServerCredentials?) {
+            guard let cred = credentials else {
+                Log.error(component: comp,
+                          errorString: "Cannot add VerifyServiceOperation without credentials")
+                return
+            }
+            operation.completionBlock = mkCompletionBlock(op: operation, credential: cred)
+            ops.append(operation)
+        }
+
+        for ci in emailConnectInfos.keys {
             if let prot = ci.emailProtocol {
                 switch prot {
                 case .imap:
-                    ops.append(VerifyImapConnectionOperation(grandOperator: self, connectInfo: ci))
+                    add(operation: VerifyImapConnectionOperation(
+                        grandOperator: self, connectInfo: ci),
+                        credentials:  emailConnectInfos[ci]!)
                 case .smtp:
-                    ops.append(VerifySmtpConnectionOperation(grandOperator: self, connectInfo: ci))
+                    add(operation: VerifySmtpConnectionOperation(
+                        grandOperator: self, connectInfo: ci),
+                        credentials:  emailConnectInfos[ci]!)
                 }
             }
         }
@@ -275,6 +310,13 @@ open class GrandOperator: IGrandOperator {
                 if op.hasErrors() {
                     error = op.errors.last
                     break
+                }
+            }
+            if error == nil {
+                let ctx = account.managedObjectContext!
+                ctx.performAndWait {
+                    account.needsVerification = false
+                    Record.save(context: ctx)
                 }
             }
             completionBlock?(error)
@@ -401,7 +443,7 @@ extension GrandOperator: SendLayerProtocol {
     public func verify(account: MessageModel.CdAccount,
                        completionBlock: SendLayerCompletionBlock?) {
         let cis = account.emailConnectInfos
-        verify(emailConnectInfos: cis, completionBlock: { error in
+        verify(account: account, emailConnectInfos: cis, completionBlock: { error in
             completionBlock?(error)
         })
     }
