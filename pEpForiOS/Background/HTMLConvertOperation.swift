@@ -61,7 +61,6 @@ open class HTMLConvertOperation: BaseOperation {
     open override func main() {
         let context = coreDataUtil.privateContext()
         context.perform() {
-            
             let predicateHasHTML = NSPredicate.init(
                 format: "longMessageFormatted != nil or longMessageFormatted != %@", "")
             let predicateHasNoLongMessage = NSPredicate.init(
