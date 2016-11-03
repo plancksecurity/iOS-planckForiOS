@@ -187,11 +187,6 @@ public protocol ICdModel {
     func deleteAttachmentsFromMessage(_ message: CdMessage)
 
     /**
-     - Returns: A predicate for all viewable emails.
-     */
-    func basicMessagePredicate() -> NSPredicate
-
-    /**
      - Returns: true if there are no accounts yet.
      */
     func accountsIsEmpty() -> Bool
@@ -311,7 +306,7 @@ open class CdModel: ICdModel {
     func newAccountFromImapSmtpConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
         let account = NSEntityDescription.insertNewObject(
             forEntityName: CdAccount.entityName, into: context) as! CdAccount
-        account.nameOfTheUser = connectInfo.userName!
+        account.nameOfTheUser = connectInfo.userName
         account.email = connectInfo.userId
         
         // IMAP
@@ -900,16 +895,5 @@ open class CdModel: ICdModel {
             context.delete(a as! CdAttachment)
         }
         message.attachments = NSOrderedSet()
-    }
-
-    open func basicMessagePredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
-        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
-        let predicateNotDeleted = NSPredicate.init(format: "flagDeleted = false")
-        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted,
-                                         predicateNotDeleted]
-        let predicate = NSCompoundPredicate.init(
-            andPredicateWithSubpredicates: predicates)
-        return predicate
     }
 }

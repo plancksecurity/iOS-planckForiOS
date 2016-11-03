@@ -24,9 +24,8 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
     }
 
     open func folder(withName name: String) -> CWFolder {
-        return PersistentImapFolder(name: name, coreDataUtil: coreDataUtil,
-                                    connectInfo: connectInfo, backgroundQueue: backgroundQueue!)
-            as CWFolder
+        return PersistentImapFolder(name: name, connectInfo: connectInfo,
+                                    backgroundQueue: backgroundQueue!) as CWFolder
     }
 
     deinit {

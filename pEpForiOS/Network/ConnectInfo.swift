@@ -8,6 +8,8 @@
 
 import Foundation
 
+import CoreData
+
 public enum NetworkAddressType: String {
     case ipv4 = "IPv4"
     case ipv6 = "IPv6"
@@ -24,11 +26,10 @@ public enum NetworkTransportType: String {
  Holds basic info to connect to peers (perhaps servers).
  */
 public protocol IConnectInfo: Hashable {
-    /** Identification (unique) */
-    var userId: String { get }
+    /** The URI of the corresponding account object, for quick and unique access. */
+    var accountObjectID: NSManagedObjectID { get }
 
-    /** Display (repeatable) */
-    var userName: String? { get }
+    var userName: String { get }
 
     var networkAddress: String { get }
     var networkPort: UInt16 { get }
@@ -37,18 +38,25 @@ public protocol IConnectInfo: Hashable {
 }
 
 public class ConnectInfo: IConnectInfo {
-    public var userId: String
-    public var userName: String?
+    // TODO: This has to be removed, and all the depending code to be changed
+    public var userId = ""
+
+    public var accountObjectID: NSManagedObjectID
+    public var userName: String
+    public var userPassword: String?
     public var networkAddress: String
     public var networkPort: UInt16 = 0
     public var networkAddressType: NetworkAddressType?
     public var networkTransportType: NetworkTransportType?
 
-    public init(userId: String, userName: String? = nil, networkAddress: String,
-                networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
+    public init(accountObjectID: NSManagedObjectID, userName: String,
+                userPassword: String? = nil,
+                networkAddress: String, networkPort: UInt16,
+                networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil) {
-        self.userId = userId
+        self.accountObjectID = accountObjectID
         self.userName = userName
+        self.userPassword = userPassword
         self.networkAddress = networkAddress
         self.networkPort = networkPort
         self.networkAddressType = networkAddressType
@@ -58,7 +66,7 @@ public class ConnectInfo: IConnectInfo {
 
 extension ConnectInfo: Hashable {
     public var hashValue: Int {
-        return 31 &* userId.hashValue &+
+        return 31 &* accountObjectID.hashValue &+
             MiscUtil.optionalHashValue(userName) &+
             MiscUtil.optionalHashValue(networkPort) &+
             MiscUtil.optionalHashValue(networkAddress) &+
@@ -70,7 +78,7 @@ extension ConnectInfo: Hashable {
 extension ConnectInfo: Equatable {}
 
 public func ==(l: ConnectInfo, r: ConnectInfo) -> Bool {
-    return l.userId == r.userId
+    return l.accountObjectID == r.accountObjectID
         && l.userName == r.userName
         && l.networkPort == r.networkPort
         && l.networkAddress == r.networkAddress

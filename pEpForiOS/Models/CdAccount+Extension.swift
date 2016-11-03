@@ -15,13 +15,14 @@ extension CdAccount {
         let password = KeyChain.password(key: self.email,
                                          serverType: (self.connectInfo.emailProtocol?.rawValue)!)
         return EmailConnectInfo(
-            userId: self.connectInfo.userId, userName: self.connectInfo.userName,
+            accountObjectID: objectID, userName: self.connectInfo.userName,
+            userPassword: password,
             networkAddress: self.connectInfo.networkAddress,
             networkPort: self.connectInfo.networkPort,
             networkAddressType: nil,
             networkTransportType: nil, emailProtocol: self.connectInfo.emailProtocol!,
             connectionTransport: self.connectInfo.connectionTransport,
-            userPassword: password, authMethod: self.connectInfo.authMethod)
+            authMethod: self.connectInfo.authMethod)
     }
 
     open var rawImapTransport: ConnectionTransport {
@@ -59,7 +60,8 @@ extension MessageModel.CdAccount {
                             server.serverType?.intValue == Server.ServerType.smtp.rawValue {
                             let password = theCred.password
                             if let emailConnectInfo = emailConnectInfo(
-                                server: server, credentials: theCred, password: password) {
+                                account: self, server: server, credentials: theCred,
+                                password: password) {
                                 result[emailConnectInfo] = theCred
                             }
                         }
@@ -70,8 +72,9 @@ extension MessageModel.CdAccount {
         return result
     }
 
-    func emailConnectInfo(server: CdServer, credentials: CdServerCredentials,
-        password: String?) -> EmailConnectInfo? {
+    func emailConnectInfo(account: MessageModel.CdAccount, server: CdServer,
+                          credentials: CdServerCredentials,
+                          password: String?) -> EmailConnectInfo? {
         let connectionTransport = ConnectionTransport.init(fromInt: server.transport?.intValue)
 
         if let port = server.port?.int16Value,
@@ -80,11 +83,12 @@ extension MessageModel.CdAccount {
             let serverType = Server.ServerType.init(rawValue: serverTypeInt),
             let emailProtocol = EmailProtocol.init(serverType: serverType) {
             return EmailConnectInfo(
-                userId: credentials.userName!, userName: credentials.userName,
+                accountObjectID: account.objectID, userName: credentials.userName!,
+                userPassword: password,
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,
                 networkTransportType: nil, emailProtocol: emailProtocol,
-                connectionTransport: connectionTransport, userPassword: password,
+                connectionTransport: connectionTransport,
                 authMethod: AuthMethod.init(string: server.authMethod))
         }
         return nil
