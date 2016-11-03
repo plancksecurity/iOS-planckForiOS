@@ -126,8 +126,9 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
                 appConfig = appDelegate.appConfig
             }
         }
-
-        navigationItem.hidesBackButton = Account.all.isEmpty
+        if Account.all.isEmpty {
+             navigationItem.leftBarButtonItem = nil
+        }
         updateView()
     }
     
@@ -189,5 +190,9 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
     @IBAction func changedName(_ sender: UITextField) {
         model.name = sender.text
         updateView()
+    }
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: "unwindToAccountList", sender: self)
+
     }
 }

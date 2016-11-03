@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 import MessageModel
 
 class AccountsFoldersViewController: UITableViewController {
@@ -63,7 +62,7 @@ class AccountsFoldersViewController: UITableViewController {
             }
             appConfig = appDelegate.appConfig
         }
-
+        MockData.insertData()
         updateModel()
 
         if accounts.isEmpty {
