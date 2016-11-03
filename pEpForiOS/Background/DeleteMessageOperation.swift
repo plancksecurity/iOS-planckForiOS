@@ -12,14 +12,10 @@ import CoreData
 import MessageModel
 
 open class DeleteMessageOperation: ConcurrentBaseOperation {
+    let comp = "DeleteMessageOperation"
     let messageID: NSManagedObjectID
 
-    //public init(message: MessageModelConfig.)
-    
-    
-    
     public init(message: CdMessage, coreDataUtil: CoreDataUtil) {
-        
         self.messageID = message.objectID
         super.init(coreDataUtil: coreDataUtil)
     }
@@ -27,28 +23,23 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
     override open func main() {
         let bg = Record.Context.background
         bg.perform {
-            guard let message = bg.object(with: self.messageID) as? CdMessage
-                else {
-                    return
-            }
-            
-            
-            var targetFolder: CdFolder?
-            // XXX: To refactor properly.
-            targetFolder = self.model.folderByType(.trash, account: self.model.accountByEmail("")!)
-            if targetFolder == nil {
-                // XXX: To refactor properly.
-                targetFolder = self.model.folderByType(.archive, account: self.model.accountByEmail("")!)
-            }
-            
-            guard let folder = targetFolder else {
-                // TODO: Just delete the mail
-                self.markAsFinished()
+            guard let message = bg.object(with: self.messageID) as? CdMessage else {
                 return
             }
-            
+
+            let pred = NSPredicate(format: "folderType = %d or folderType = %d",
+                                   FolderType.trash.rawValue, FolderType.archive.rawValue)
+            guard let targetFolder = CdFolder.first(with: pred) else {
+                Log.error(component: self.comp, errorString: "No trash folder defined")
+                return
+            }
+            message.folder = targetFolder
+
+            // Mark the message, so it can be retried?
+            message.uid = 0
+
             let cwMail = PEPUtil.pantomimeMailFromMessage(message)
-            let cwFolder = CWIMAPFolder.init(name: folder.name!)
+            let cwFolder = CWIMAPFolder.init(name: targetFolder.name!)
             cwFolder.copyMessages([cwMail], toFolder: cwFolder.name())
         }
         
