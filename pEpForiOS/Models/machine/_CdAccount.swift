@@ -1,8 +1,11 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to CdAccount.swift instead.
 
+
 import Foundation
 import CoreData
+
+import MessageModel
 
 public enum CdAccountAttributes: String {
     case accountType = "accountType"
@@ -27,12 +30,8 @@ open class _CdAccount: BaseManagedObject {
 
     // MARK: - Class methods
 
-    open class func entityName () -> String {
-        return "Account"
-    }
-
     open class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entity(forEntityName: self.entityName(), in: managedObjectContext)
+        return NSEntityDescription.entity(forEntityName: self.entityName, in: managedObjectContext)
     }
 
     // MARK: - Life cycle methods

@@ -80,7 +80,7 @@ extension FetchTableViewController: NSFetchedResultsControllerDelegate {
             tableView.deleteSections(IndexSet.init(integer: sectionIndex),
                                      with: .fade)
         default:
-            Log.infoComponent(comp, "unhandled changeSectionType: \(type)")
+            Log.info(component: comp, "unhandled changeSectionType: \(type)")
         }
     }
 
@@ -99,7 +99,7 @@ extension FetchTableViewController: NSFetchedResultsControllerDelegate {
             if let cell = tableView.cellForRow(at: indexPath!) {
                 self.configureCell(cell, indexPath: indexPath!)
             } else {
-                Log.warnComponent(comp, "Could not find cell for changed indexPath: \(indexPath!)")
+                Log.warn(component: comp, "Could not find cell for changed indexPath: \(indexPath!)")
             }
         case .move:
             if newIndexPath != indexPath {

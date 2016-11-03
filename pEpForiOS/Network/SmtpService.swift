@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 public protocol SmtpSendDelegate: class {
     func messageSent(_ smtp: SmtpSend, theNotification: Notification?)
     func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?)

@@ -19,7 +19,7 @@ open class ViewWidthsAligner {
         var previousView: UIView? = nil
         for v in viewsToAlign {
             if let v1 = previousView {
-                let c = NSLayoutConstraint.init(item: v1, attribute: .width, relatedBy: .equal,
+                let c = NSLayoutConstraint(item: v1, attribute: .width, relatedBy: .equal,
                                                 toItem: v, attribute: .width, multiplier: 1.0,
                                                 constant: 0.0)
                 addedConstraints.append(c)

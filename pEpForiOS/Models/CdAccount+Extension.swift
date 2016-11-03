@@ -14,17 +14,14 @@ extension CdAccount {
     open var connectInfo: EmailConnectInfo {
         let password = KeyChain.password(key: self.email,
                                          serverType: (self.connectInfo.emailProtocol?.rawValue)!)
-        
-        return EmailConnectInfo.init(
-            emailProtocol: self.connectInfo.emailProtocol!,
-            userId: self.connectInfo.userId,
-            userPassword: password,
-            userName: self.connectInfo.userName,
-            networkPort: self.connectInfo.networkPort,
+        return EmailConnectInfo(
+            userId: self.connectInfo.userId, userName: self.connectInfo.userName,
             networkAddress: self.connectInfo.networkAddress,
+            networkPort: self.connectInfo.networkPort,
+            networkAddressType: nil,
+            networkTransportType: nil, emailProtocol: self.connectInfo.emailProtocol!,
             connectionTransport: self.connectInfo.connectionTransport,
-            authMethod: self.connectInfo.authMethod
-        )
+            userPassword: password, authMethod: self.connectInfo.authMethod)
     }
 
     open var rawImapTransport: ConnectionTransport {
@@ -39,69 +36,55 @@ extension CdAccount {
 extension MessageModel.CdAccount {
     func serverNTuple(credentials: CdServerCredentials,
                       server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
-        let serverType = Server.ServerType.init(fromInt: server.serverType?.intValue)?.asString()
-        if let st = serverType, let key = credentials.key {
-            return (server, credentials, KeyChain.password(key: key, serverType: st))
+        if let iServerType = server.serverType?.intValue,
+            let serverType = Server.ServerType.init(rawValue: iServerType)?.asString(),
+            let key = credentials.key {
+            return (server, credentials, KeyChain.password(key: key, serverType: serverType))
         }
         return nil
     }
 
-    open var emailConnectInfos: (imap: EmailConnectInfo?, smtp: EmailConnectInfo?) {
-        var potentialImapServer: (CdServer, CdServerCredentials, String?)?
-        var potentialSmtpServer: (CdServer, CdServerCredentials, String?)?
+    open var emailConnectInfos: [EmailConnectInfo: CdServerCredentials] {
+        var result = [EmailConnectInfo: CdServerCredentials]()
 
         guard let creds = credentials else {
-            return (imap: nil, smtp: nil)
+            return result
         }
-        outer: for cred in creds {
+        for cred in creds {
             if let theCred = cred as? CdServerCredentials,
                 let servers = theCred.servers {
                 for theServer in servers {
                     if let server = theServer as? CdServer {
-                        if server.serverType?.intValue == Server.ServerType.imap.rawValue {
-                            potentialImapServer = serverNTuple(credentials: theCred,
-                                                               server: server)
-                        } else if server.serverType?.intValue == Server.ServerType.smtp.rawValue {
-                            potentialSmtpServer = serverNTuple(credentials: theCred,
-                                                               server: server)
-                        }
-                        if potentialSmtpServer != nil && potentialImapServer != nil {
-                            break outer
+                        if server.serverType?.intValue == Server.ServerType.imap.rawValue ||
+                            server.serverType?.intValue == Server.ServerType.smtp.rawValue {
+                            let password = theCred.password
+                            if let emailConnectInfo = emailConnectInfo(
+                                server: server, credentials: theCred, password: password) {
+                                result[emailConnectInfo] = theCred
+                            }
                         }
                     }
                 }
             }
         }
-
-        if let (imapServer, imapCred, imapPassword) = potentialImapServer,
-            let (smtpServer, smtpCred, smtpPassword) = potentialSmtpServer {
-            return (imap: emailConnectInfo(
-                server: imapServer, credentials: imapCred, password: imapPassword),
-                    smtp: emailConnectInfo(
-                        server: smtpServer, credentials: smtpCred, password: smtpPassword))
-        }
-
-        return (imap: nil, smtp: nil)
+        return result
     }
 
     func emailConnectInfo(server: CdServer, credentials: CdServerCredentials,
         password: String?) -> EmailConnectInfo? {
-        let connectionTransport = ConnectionTransport.init(
-            fromInt: server.transport?.intValue)
+        let connectionTransport = ConnectionTransport.init(fromInt: server.transport?.intValue)
 
         if let port = server.port?.int16Value,
             let address = server.address,
-            let emailProtocol = EmailProtocol.init(
-                serverType: Server.ServerType.init(fromInt: server.serverType?.intValue)),
-            let userID = self.user?.userID {
-            return EmailConnectInfo.init(
-                emailProtocol: emailProtocol,
-                userId: userID,
-                userPassword: password,
-                userName: credentials.userName ?? self.user?.userName,
-                networkPort: UInt16(port),
-                networkAddress: address,
-                connectionTransport: connectionTransport,
+            let serverTypeInt = server.serverType?.intValue,
+            let serverType = Server.ServerType.init(rawValue: serverTypeInt),
+            let emailProtocol = EmailProtocol.init(serverType: serverType) {
+            return EmailConnectInfo(
+                userId: credentials.userName!, userName: credentials.userName,
+                networkAddress: address, networkPort: UInt16(port),
+                networkAddressType: nil,
+                networkTransportType: nil, emailProtocol: emailProtocol,
+                connectionTransport: connectionTransport, userPassword: password,
                 authMethod: AuthMethod.init(string: server.authMethod))
         }
         return nil

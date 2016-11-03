@@ -28,7 +28,7 @@ open class DecryptMailOperation: BaseOperation {
             let predicateBodyFetched = NSPredicate.init(format: "bodyFetched = true")
             let predicateNotDeleted = NSPredicate.init(format: "flagDeleted = false")
 
-            guard let mails = model.entitiesWithName(CdMessage.entityName(),
+            guard let mails = model.entitiesWithName(CdMessage.entityName,
                 predicate: NSCompoundPredicate.init(
                     andPredicateWithSubpredicates: [predicateColor, predicateBodyFetched,
                         predicateNotDeleted]),
@@ -40,14 +40,13 @@ open class DecryptMailOperation: BaseOperation {
             var modelChanged = false
             for m in mails {
                 guard let mail = m as? CdMessage else {
-                    Log.warnComponent(self.comp, "Could not cast mail to Message")
+                    Log.warn(component: self.comp, "Could not cast mail to Message")
                     continue
                 }
 
                 var outgoing = false
                 let folderTypeNum = mail.folder.folderType
-                let folderTypeInt = folderTypeNum.intValue
-                if let folderType = FolderType.fromInt(folderTypeInt) {
+                if let folderType = FolderType.fromInt(folderTypeNum) {
                     outgoing = folderType.isOutgoing()
                 } else {
                     outgoing = false
@@ -58,7 +57,7 @@ open class DecryptMailOperation: BaseOperation {
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
                     pepMail, dest: &pepDecryptedMail, keys: &keys)
-                Log.warnComponent(self.comp,
+                Log.warn(component: self.comp,
                     "Decrypted mail \(mail.logString()) with color \(color)")
 
                 switch color {
@@ -91,7 +90,7 @@ open class DecryptMailOperation: BaseOperation {
                     break
                 // TODO: Again, why is the default needed when all cases are there?
                 default:
-                    Log.warnComponent(self.comp,
+                    Log.warn(component: self.comp,
                         "No default action for decrypted mail \(mail.logString())")
                 }
             }

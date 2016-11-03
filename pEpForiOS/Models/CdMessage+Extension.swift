@@ -18,7 +18,7 @@ extension CdMessage {
         if let fl = PantomimeFlag.init(rawValue: UInt(flags.intValue)) {
             return CWFlags.init(flags: fl)
         }
-        Log.errorComponent(
+        Log.error(component: 
             "Message", errorString:
             "Could not convert \(flags.intValue) to PantomimeFlag")
         return CWFlags.init()
@@ -101,8 +101,9 @@ extension CdMessage {
 
         var refs: [String] = []
         for ref in references {
-            let refString: String = (ref as! CdMessageReference).messageID
-            refs.append(refString)
+            if let refString: String = (ref as! CdMessageReference).reference {
+                refs.append(refString)
+            }
         }
         msg.setReferences(refs)
 

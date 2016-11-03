@@ -14,38 +14,38 @@ import Foundation
     fileprivate static let disallow: Set<String> = []
 
     /** Somewhat verbose */
-    static open func infoComponent(_ component: String, _ content: String) {
+    static open func info(component: String, _ content: String) {
         if !disallow.contains(component) {
             print("\(component): \(content)")
         }
     }
 
     /** More important */
-    static open func warnComponent(_ component: String, _ content: String) {
+    static open func warn(component: String, _ content: String) {
         if !disallow.contains(component) {
             print("\(component): \(content)")
         }
     }
 
-    static open func errorComponent(_ component: String, error: NSError?) {
+    static open func error(component: String, error: NSError?) {
         if let err = error {
             print("\(component): Error: \(err)")
         }
     }
 
-    static open func errorComponent(_ component: String, errorString: String, error: NSError) {
+    static open func error(component: String, errorString: String, error: NSError) {
         print("\(component): \(errorString): \(error)")
     }
 
-    static open func errorComponent(_ component: String, errorString: String) {
+    static open func error(component: String, errorString: String) {
         print("\(component): \(errorString)")
     }
 
     @objc open func infoComponent(_ component: String!, message: String!) {
-        Log.infoComponent(component, message)
+        Log.info(component: component, message)
     }
 
     @objc open func warnComponent(_ component: String!, message: String!) {
-        Log.warnComponent(component, message)
+        Log.warn(component: component, message)
     }
 }

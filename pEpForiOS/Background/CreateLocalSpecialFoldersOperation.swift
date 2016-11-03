@@ -29,7 +29,7 @@ open class CreateLocalSpecialFoldersOperation: BaseOperation {
                 let folderName = kind.folderName()
                 if let folder = model.insertOrUpdateFolderName(
                     folderName, folderSeparator: nil, accountEmail: self.accountEmail) {
-                    folder.folderType = NSNumber(value: kind.rawValue)
+                    folder.folderType = Int16(kind.rawValue)
                 } else  {
                     self.addError(Constants.errorCouldNotStoreFolder(self.comp,
                         name: folderName))

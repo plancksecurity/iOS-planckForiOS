@@ -69,12 +69,6 @@ public protocol IGrandOperator: class {
                                    completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asynchronously verifies the given connection. Tests for IMAP and SMTP. The test is considered
-     a success when authentication was successful.
-     */
-    func verifyConnection(_ connectInfo: EmailConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
      Sends the given mail via SMTP. Also saves it into the drafts folder. You
      might have to trigger a fetch for that mail to appear in your drafts folder.
      */
@@ -106,6 +100,8 @@ public protocol IGrandOperator: class {
 }
 
 open class GrandOperator: IGrandOperator {
+    public var sendLayerDelegate: SendLayerDelegate? = nil
+
     /**
      Key for accessing the model in thread-local storage.
      */
@@ -116,14 +112,14 @@ open class GrandOperator: IGrandOperator {
     open let connectionManager: ConnectionManager
     open let coreDataUtil: CoreDataUtil
 
-    fileprivate let verifyConnectionQueue = OperationQueue.init()
-    fileprivate let backgroundQueue = OperationQueue.init()
+    fileprivate let verificationQueue = OperationQueue()
+    fileprivate let backgroundQueue = OperationQueue()
 
     /**
      The main model (for use on the main thread)
      */
     fileprivate lazy var model: ICdModel = {
-        return CdModel.init(context: self.coreDataUtil.managedObjectContext)
+        return CdModel.init(context: self.coreDataUtil.defaultContext())
     }()
 
     /**
@@ -167,7 +163,6 @@ open class GrandOperator: IGrandOperator {
     }
 
     open func shutdown() {
-        verifyConnectionQueue.cancelAllOperations()
         connectionManager.shutdown()
     }
 
@@ -257,39 +252,75 @@ open class GrandOperator: IGrandOperator {
         }
     }
 
-    open func verifyConnection(_ connectInfo: EmailConnectInfo,
-                                 completionBlock: GrandOperatorCompletionBlock?) {
-        let op1 = VerifyImapConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
-        let op2 = VerifySmtpConnectionOperation.init(grandOperator: self, connectInfo: connectInfo)
+    /**
+     Asynchronously verifies the given `EmailConnectInfo`s.
+     */
+    open func verify(
+        account: MessageModel.CdAccount, emailConnectInfos: [EmailConnectInfo: CdServerCredentials],
+        completionBlock: GrandOperatorCompletionBlock?) {
 
-        var finished1 = false
-        var finished2 = false
+        // The operations tha will be run
+        var ops = [VerifyServiceOperation]()
 
-        // Since the completion blocks retain op1 and op2, respectively,
-        // a cyclic dependency is created that prevents the deallocation of both.
-        // This must be resolved when both have finished.
-        let completion1 = {
-            GCD.onMain({ // serialize
-                finished1 = true
-                self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                    op1: op1, op2: op2,
-                    completionBlock: completionBlock)
-            })
-        }
-        let completion2 = {
-            GCD.onMain({ // serialize
-                finished2 = true
-                self.handleVerificationCompletionFinished1(finished1, finished2: finished2,
-                    op1: op1, op2: op2,
-                    completionBlock: completionBlock)
-            })
+        /// Creates a completion block for a verification operation.
+        /// Has to find out if the verification was successful, and if it was, will set
+        /// `needsVerification` to `false`.
+        func mkCompletionBlock(op: VerifyServiceOperation,
+                               credential: CdServerCredentials) -> (() -> Void)? {
+            let ctx = credential.managedObjectContext!
+            return {
+                if !op.hasErrors() {
+                    ctx.performAndWait {
+                        credential.needsVerification = false
+                    }
+                }
+            }
         }
 
-        op1.completionBlock = completion1
-        op2.completionBlock = completion2
+        /// Add a `VerifyServiceOperation` to the operations to run, and give it a completion
+        /// block created with `mkCompletionBlock`.
+        func add(operation: VerifyServiceOperation, credentials: CdServerCredentials?) {
+            guard let cred = credentials else {
+                Log.error(component: comp,
+                          errorString: "Cannot add VerifyServiceOperation without credentials")
+                return
+            }
+            operation.completionBlock = mkCompletionBlock(op: operation, credential: cred)
+            ops.append(operation)
+        }
 
-        verifyConnectionQueue.addOperation(op1)
-        verifyConnectionQueue.addOperation(op2)
+        for ci in emailConnectInfos.keys {
+            if let prot = ci.emailProtocol {
+                switch prot {
+                case .imap:
+                    add(operation: VerifyImapConnectionOperation(
+                        grandOperator: self, connectInfo: ci),
+                        credentials:  emailConnectInfos[ci]!)
+                case .smtp:
+                    add(operation: VerifySmtpConnectionOperation(
+                        grandOperator: self, connectInfo: ci),
+                        credentials:  emailConnectInfos[ci]!)
+                }
+            }
+        }
+
+        verificationQueue.batch(operations: ops, completionBlock: {
+            var error: NSError?
+            for op in ops {
+                if op.hasErrors() {
+                    error = op.errors.last
+                    break
+                }
+            }
+            if error == nil {
+                let ctx = account.managedObjectContext!
+                ctx.performAndWait {
+                    account.needsVerification = false
+                    Record.save(context: ctx)
+                }
+            }
+            completionBlock?(error)
+        })
     }
 
     open func sendMail(_ message: CdMessage, account: CdAccount,
@@ -356,6 +387,7 @@ open class GrandOperator: IGrandOperator {
 
     open func syncFlagsToServerForFolder(_ folder: CdFolder,
                                            completionBlock: GrandOperatorCompletionBlock?) {
+        
         let hashable = folder.hashableID()
         var operation: BaseOperation? = flagSyncOperations[hashable]
         let blockOrig = operation?.completionBlock
@@ -402,5 +434,45 @@ open class GrandOperator: IGrandOperator {
             }
         }
         backgroundQueue.addOperation(op)
+    }
+}
+
+// MARK: - SendLayerProtocol
+
+extension GrandOperator: SendLayerProtocol {
+    public func verify(account: MessageModel.CdAccount,
+                       completionBlock: SendLayerCompletionBlock?) {
+        let cis = account.emailConnectInfos
+        verify(account: account, emailConnectInfos: cis, completionBlock: { error in
+            completionBlock?(error)
+        })
+    }
+
+    public func send(message: MessageModel.CdMessage, completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("GrandOperator.send not implemented")
+    }
+
+    public func saveDraft(message: MessageModel.CdMessage,
+                          completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("GrandOperator.saveDraft not implemented")
+    }
+
+    public func syncFlagsToServer(folder: MessageModel.CdFolder,
+                                  completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("GrandOperator.syncFlagsToServer not implemented")
+    }
+
+    public func create(folderType: FolderType, account: MessageModel.CdAccount,
+                       completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
+    }
+
+    public func delete(folder: MessageModel.CdFolder, completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
+    }
+
+    public func delete(message: MessageModel.CdMessage,
+                       completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("not implemented")
     }
 }

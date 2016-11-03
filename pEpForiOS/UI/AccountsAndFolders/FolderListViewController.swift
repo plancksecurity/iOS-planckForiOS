@@ -167,6 +167,7 @@ class FolderListViewController: UITableViewController {
 // MARK: - MessageFolderDelegate
 
 extension FolderListViewController: MessageFolderDelegate {
+    
     func didChange(messageFolder: MessageFolder) {
         guard let folder = messageFolder as? Folder else {
             return

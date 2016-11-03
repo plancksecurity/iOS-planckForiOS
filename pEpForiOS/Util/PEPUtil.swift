@@ -190,13 +190,11 @@ open class PEPUtil {
     /**
      Kicks off myself in the background, optionally notifies via block of termination/success.
      */
-    open static func myselfFromAccount(_ account: CdAccount, queue: OperationQueue,
+    open static func myselfFromAccount(_ account: Account, queue: OperationQueue,
                                          block: ((_ identity: NSDictionary) -> Void)? = nil) {
-        let op = PEPMyselfOperation.init(account: account)
+        let op = PEPMyselfOperation(account: account)
         op.completionBlock = {
-            if let bl = block {
-                bl(op.identity)
-            }
+            block?(op.identity)
         }
         queue.addOperation(op)
     }
@@ -214,9 +212,7 @@ open class PEPUtil {
             dict[kPepUsername] = contact.address as AnyObject
         }
         dict[kPepAddress] = contact.address as AnyObject
-        if (contact.isMySelf?.boolValue)! {
-            dict[kPepIsMe] = contact.isMySelf
-        }
+        dict[kPepIsMe] = contact.isMySelf
 
         if let pepUserID = contact.userID {
             dict[kPepUserID] = pepUserID as NSObject
@@ -265,12 +261,8 @@ open class PEPUtil {
     open static func pepAttachment(_ attachment: CdAttachment) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
 
-        if let fileName = attachment.fileName {
-            dict[kPepMimeFilename] = fileName
-        }
-        if let contentType = attachment.mimeType {
-            dict[kPepMimeType] = contentType
-        }
+        dict[kPepMimeFilename] = attachment.fileName
+        dict[kPepMimeType] = attachment.mimeType
         dict[kPepMimeData] = attachment.data
 
         return dict
@@ -346,7 +338,7 @@ open class PEPUtil {
 
         var refs = [String]()
         for ref in message.references {
-            refs.append((ref as! CdMessageReference).messageID)
+            refs.append((ref as! CdMessageReference).reference!)
         }
         if refs.count > 0 {
             dict[kPepReferences] = refs as AnyObject
@@ -647,7 +639,7 @@ open class PEPUtil {
         if let (title, _, _) = PEPUtil.pEpRatingTranslations[pepColorRating] {
             return title
         }
-        Log.warnComponent(comp, "No privacy title for color rating \(pepColorRating)")
+        Log.warn(component: comp, "No privacy title for color rating \(pepColorRating)")
         return nil
     }
 
@@ -655,7 +647,7 @@ open class PEPUtil {
         if let (_, explanation, _) = PEPUtil.pEpRatingTranslations[pepColorRating] {
             return explanation
         }
-        Log.warnComponent(comp, "No privacy explanation for color rating \(pepColorRating)")
+        Log.warn(component: comp, "No privacy explanation for color rating \(pepColorRating)")
         return nil
     }
 
@@ -663,7 +655,7 @@ open class PEPUtil {
         if let (_, _, suggestion) = pEpRatingTranslations[pepColorRating] {
             return suggestion
         }
-        Log.warnComponent(comp, "No privacy suggestion for color rating \(pepColorRating)")
+        Log.warn(component: comp, "No privacy suggestion for color rating \(pepColorRating)")
         return nil
     }
 
@@ -684,10 +676,8 @@ open class PEPUtil {
         return words.joined(separator: " ")
     }
 
-    open static func trustwordsForIdentity1(_ identity1: PEPContact,
-                                              identity2: PEPContact,
-                                              language: String,
-                                              session: PEPSession?) -> String? {
+    open static func trustwords(identity1: PEPContact, identity2: PEPContact,
+                                language: String, session: PEPSession?) -> String? {
         let theSession = sessionOrReuse(session)
         return theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
                                                  language: language, full: true)
@@ -892,7 +882,7 @@ open class PEPUtil {
         }
         if encryptedMail == nil || status != PEP_STATUS_OK {
             let error = Constants.errorEncryption(comp, status: status)
-            Log.errorComponent(comp, error: Constants.errorInvalidParameter(
+            Log.error(component: comp, error: Constants.errorInvalidParameter(
                 comp, errorMessage: "Could not encrypt message, pEp status \(status)"))
             return (encryptedMail, error)
         }

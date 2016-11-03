@@ -14,7 +14,7 @@ open class ViewStatus {
     open var activityIndicatorViewEnable = false
 }
 
-open class SMTPSettingsTableView: UITableViewController {
+open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
     let unwindToEmailListSegue = "unwindToEmailListSegue"
 
@@ -23,41 +23,45 @@ open class SMTPSettingsTableView: UITableViewController {
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var transportSecurity: UIButton!
 
-    @IBOutlet weak var serverValueTextField: UILabel!
-    @IBOutlet weak var portValueTextField: UILabel!
+    @IBOutlet weak var serverTitle: UILabel!
+    @IBOutlet weak var portTitle: UILabel!
 
     var appConfig: AppConfig!
     var model: ModelUserInfoTable!
-
+    var fields = [UITextField]()
+    var responder = 0
+    
     let viewWidthAligner = ViewWidthsAligner()
     let status = ViewStatus()
-
+    
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 44
+        
+        UIHelper.variableCellHeightsTableView(tableView)
+        fields = [serverValue, portValue]
     }
-
+    
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        viewWidthAligner.alignViews([
+            serverTitle,
+            portTitle
+        ], parentView: view)
+    }
+    
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         MessageModelConfig.accountDelegate = self
-
-        if model.serverSMTP == nil {
-            serverValue.becomeFirstResponder()
-        }
-        portValue.keyboardType = UIKeyboardType.numberPad
         updateView()
     }
-
+    
     open override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewWidthAligner.alignViews([serverValueTextField,
-            portValueTextField], parentView: self.view)
-    }
-
-    open override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        super.viewDidAppear(animated)
+        
+        firstResponder(model.serverSMTP == nil)
     }
 
     open override func didReceiveMemoryWarning() {
@@ -68,12 +72,13 @@ open class SMTPSettingsTableView: UITableViewController {
         serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
         transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControlState())
+        
         if status.activityIndicatorViewEnable {
             activityIndicatorView.startAnimating()
         } else {
             activityIndicatorView.stopAnimating()
         }
-        self.navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
+        navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
     }
 
     func showErrorMessage (_ message: String) {
@@ -124,85 +129,54 @@ open class SMTPSettingsTableView: UITableViewController {
         }
     }
 
-    /* DEPRECATED: not used.
-    func verifyAccountOldStyle(_ sender: UIBarButtonItem) {
-        let connect = ImapSmtpConnectInfo.init(
-            nameOfTheUser: model.name!,
-            email: model.email!, imapUsername: model.email!,
-            smtpUsername: model.email!, imapPassword: model.password!,
-            smtpPassword: model.password!, imapServerName: model.serverIMAP!,
-            imapServerPort: model.portIMAP, imapTransport: model.transportIMAP,
-            smtpServerName: model.serverSMTP!, smtpServerPort: model.portSMTP,
-            smtpTransport: model.transportSMTP)
-
-        self.status.activityIndicatorViewEnable =  true
-        updateView()
-        appConfig?.grandOperator.verifyConnection(connect, completionBlock: { error in
-            self.status.activityIndicatorViewEnable = false
-            self.updateView()
-
-            guard let err = error else {
-                GCD.onMain() {
-                    // save account, check for error
-                    guard let model = self.appConfig?.model else {
-                        self.showErrorMessage(
-                            String(format:
-                                NSLocalizedString("Internal Error: %d",
-                                                  comment: "Internal error display, with error number"),
-                                   Constants.InternalErrorCode.noModel.rawValue))
-                        Log.warnComponent(self.comp, "Could not access model")
-                        return
-                    }
-
-                    let account = model.insertAccountFromImapSmtpConnectInfo(connect)
-                    let contact = model.insertOrUpdateContactEmail(account.email,
-                                                                   name: account.nameOfTheUser)
-
-                    // Mark that contact as mySelf
-                    contact.isMySelf = NSNumber.init(booleanLiteral: true)
-
-                    model.save()
-
-                    // unwind back to INBOX on success
-                    self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: sender)
-                }
-                return
-            }
-            self.showErrorMessage(err.localizedDescription)
-        })
-    }
-    */
-
-    @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
+    func verifyAccount() {
         self.status.activityIndicatorViewEnable =  true
         updateView()
 
-        let user = Identity.create(address: model.email!, userName: model.name!, userID: nil)
-        user.isMySelf = true
+        let identity = Identity.create(address: model.email!, userName: model.name!, userID: nil)
+        identity.isMySelf = true
         let userName = (model.username ?? model.email)!
+
         let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
-                                       address: model.serverIMAP!, userName: userName,
+                                       address: model.serverIMAP!,
                                        transport: model.transportIMAP.toServerTransport())
+        imapServer.needsVerification = true
+
         let smtpServer = Server.create(serverType: .smtp, port: model.portSMTP,
-                                       address: model.serverSMTP!, userName: userName,
+                                       address: model.serverSMTP!,
                                        transport: model.transportSMTP.toServerTransport())
-        let credentials = ServerCredentials.create(userName: userName,
-                                                   servers: [smtpServer])
-        let account = Account.create(user: user, credentials: [credentials])
+        smtpServer.needsVerification = true
+        let credentials = ServerCredentials.create(userName: userName, password: model.password,
+                                                   servers: [imapServer, smtpServer])
+        credentials.needsVerification = true
+        let account = Account.create(identity: identity, credentials: [credentials])
         account.needsVerification = true
         account.save()
+    }
+
+    @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
+        verifyAccount()
+    }
+    
+    open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+        nextResponder(textfield)
+        return true
+    }
+    
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        changedResponder(textField)
     }
 }
 
 extension SMTPSettingsTableView: AccountDelegate {
     public func didVerify(account: Account, error: NSError?) {
-        self.status.activityIndicatorViewEnable = false
-        self.updateView()
+        GCD.onMain() {
+            self.status.activityIndicatorViewEnable = false
+            self.updateView()
 
-        if let err = error {
-            self.showErrorMessage(err.localizedDescription)
-        } else {
-            GCD.onMain() {
+            if let err = error {
+                self.showErrorMessage(err.localizedDescription)
+            } else {
                 // unwind back to INBOX on success
                 self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: nil)
             }

@@ -43,7 +43,7 @@ open class EncryptMailOperation: ConcurrentBaseOperation {
                         NSLocalizedString("Email for encryption could not be accessed",
                             comment: "Error message when message to encrypt could not be found."))
                     self.addError(error)
-                    Log.errorComponent(self.comp, error: Constants.errorInvalidParameter(
+                    Log.error(component: self.comp, error: Constants.errorInvalidParameter(
                         self.comp,
                         errorMessage:"Email for encryption could not be accessed"))
                     return

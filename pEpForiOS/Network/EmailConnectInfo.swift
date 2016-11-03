@@ -128,28 +128,24 @@ public protocol IEmailConnectInfo: IConnectInfo {
     var authMethod: AuthMethod? { get }
 }
 
-public class EmailConnectInfo: ConnectInfo {
+public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
     public var emailProtocol: EmailProtocol?
     public var connectionTransport: ConnectionTransport?
     public var userPassword: String?
     public var authMethod: AuthMethod?
-    
-    public convenience init(emailProtocol: EmailProtocol,
-                            userId: String,
-                            userPassword: String? = nil,
-                            userName: String? = nil,
-                            networkPort: UInt16,
-                            networkAddress: String,
-                            connectionTransport: ConnectionTransport? = nil,
-                            authMethod: AuthMethod? = nil)
-    {
-        self.init(emailProtocol: emailProtocol,
-                  userId: userId,
-                  userPassword: userPassword,
-                  userName: userName,
-                  networkPort: networkPort,
-                  networkAddress: networkAddress,
-                  connectionTransport: connectionTransport,
-                  authMethod: authMethod)
+
+    public init(userId: String, userName: String? = nil, networkAddress: String,
+                networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
+                networkTransportType: NetworkTransportType? = nil,
+                emailProtocol: EmailProtocol? = nil,
+                connectionTransport: ConnectionTransport? = nil, userPassword: String? = nil,
+                authMethod: AuthMethod? = nil) {
+        super.init(userId: userId, userName: userName, networkAddress: networkAddress,
+                   networkPort: networkPort, networkAddressType: networkAddressType,
+                   networkTransportType: networkTransportType)
+        self.emailProtocol = emailProtocol
+        self.connectionTransport = connectionTransport
+        self.userPassword = userPassword
+        self.authMethod = authMethod
     }
 }

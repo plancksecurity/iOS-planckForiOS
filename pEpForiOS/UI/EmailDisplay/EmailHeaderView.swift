@@ -68,47 +68,47 @@ class EmailHeaderView: UIView {
         var pos = CGPoint(x: insetsX, y: insetsY)
         pos = addFromAtPosition(pos, width: width)
 
-        if message.to.count > 0 {
-            pos = addRecipients(message.to,
-                                title: NSLocalizedString("To",
-                                    comment: "Header label for email display"),
-                                position: pos, width: width)
-        }
-        if message.cc.count > 0 {
-            pos = addRecipients(message.cc,
-                                title: NSLocalizedString("Cc",
-                                    comment: "Header label for email display"),
-                                position: pos, width: width)
-        }
-        if message.bcc.count > 0 {
-            pos = addRecipients(message.bcc,
-                                title: NSLocalizedString("Bcc",
-                                    comment: "Header label for email display"),
-                                position: pos, width: width)
-        }
-
-        if let date = message.received {
-            pos = biggerNewline(pos)
-            let dateLabel = headerBaseLabelWithText(dateFormatter.string(from: date as Date),
-                                                    maxWidth: width)
-            dateLabel.frame.origin = pos
-            addSubview(dateLabel)
-            pos.x = labelGapX
-            pos.y += dateLabel.bounds.height
-            lastLeftLabel = dateLabel
-        }
-
-        if let subject = message.shortMessage {
-            pos = biggerNewline(pos)
-            let subjectLabel = headerBaseLabelWithText(subject, maxWidth: width)
-            subjectLabel.frame.origin = pos
-            addSubview(subjectLabel)
-            pos.x = labelGapX
-            pos.y += subjectLabel.bounds.height
-            lastLeftLabel = subjectLabel
-        }
-
-        preferredSize = CGSize(width: width, height: pos.y)
+//        if message.to.count > 0 {
+//            pos = addRecipients(message.to,
+//                                title: NSLocalizedString("To",
+//                                    comment: "Header label for email display"),
+//                                position: pos, width: width)
+//        }
+//        if message.cc.count > 0 {
+//            pos = addRecipients(message.cc,
+//                                title: NSLocalizedString("Cc",
+//                                    comment: "Header label for email display"),
+//                                position: pos, width: width)
+//        }
+//        if message.bcc.count > 0 {
+//            pos = addRecipients(message.bcc,
+//                                title: NSLocalizedString("Bcc",
+//                                    comment: "Header label for email display"),
+//                                position: pos, width: width)
+//        }
+//
+//        if let date = message.received {
+//            pos = biggerNewline(pos)
+//            let dateLabel = headerBaseLabelWithText(dateFormatter.string(from: date as Date),
+//                                                    maxWidth: width)
+//            dateLabel.frame.origin = pos
+//            addSubview(dateLabel)
+//            pos.x = labelGapX
+//            pos.y += dateLabel.bounds.height
+//            lastLeftLabel = dateLabel
+//        }
+//
+//        if let subject = message.shortMessage {
+//            pos = biggerNewline(pos)
+//            let subjectLabel = headerBaseLabelWithText(subject, maxWidth: width)
+//            subjectLabel.frame.origin = pos
+//            addSubview(subjectLabel)
+//            pos.x = labelGapX
+//            pos.y += subjectLabel.bounds.height
+//            lastLeftLabel = subjectLabel
+//        }
+//
+//        preferredSize = CGSize(width: width, height: pos.y)
     }
 
     func addRecipients(_ recipients: [Identity], title: String, position: CGPoint,
@@ -145,18 +145,18 @@ class EmailHeaderView: UIView {
         fromTitleLabel.frame.origin = pos
         lastLeftLabel = fromTitleLabel
 
-        if let fromContact = message.from {
-            let fromLabel = recipientBaseLabelWithText(fromContact.displayString)
-            let privacyColor = PEPUtil.pEpColor(identity: fromContact)
-            UIHelper.setBackgroundColor(
-                privacyColor, forLabel: fromLabel, defaultColor: fromLabel.backgroundColor)
-
-            pos = putAdjacentLeftLabel(fromTitleLabel, rightLabel: fromLabel, atLeftPos: pos,
-            width: width)
-
-            addSubview(fromTitleLabel)
-            addSubview(fromLabel)
-        }
+//        if let fromContact = message.from {
+//            let fromLabel = recipientBaseLabelWithText(fromContact.displayString)
+//            let privacyColor = PEPUtil.pEpColor(identity: fromContact)
+//            UIHelper.setBackgroundColor(
+//                privacyColor, forLabel: fromLabel, defaultColor: fromLabel.backgroundColor)
+//
+//            pos = putAdjacentLeftLabel(fromTitleLabel, rightLabel: fromLabel, atLeftPos: pos,
+//            width: width)
+//
+//            addSubview(fromTitleLabel)
+//            addSubview(fromLabel)
+//        }
 
         return pos
     }

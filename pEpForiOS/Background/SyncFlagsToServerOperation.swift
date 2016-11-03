@@ -26,7 +26,11 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 
     public init(folder: CdFolder,
                 connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
+        
+        /* XXX: To be refactored."
         self.connectInfo = folder.account.connectInfo
+        */
+        self.connectInfo = EmailConnectInfo(userId: "", networkAddress: "", networkPort: 007)
         self.targetFolderName = folder.name
         self.connectionManager = connectionManager
         super.init(coreDataUtil: coreDataUtil)
@@ -76,7 +80,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     func errorOperation(_ localizedMessage: String, logMessage: String) {
         markAsFinished()
         addError(Constants.errorOperationFailed(comp, errorMessage: localizedMessage))
-        Log.errorComponent(comp, errorString: logMessage)
+        Log.error(component: comp, errorString: logMessage)
     }
 }
 

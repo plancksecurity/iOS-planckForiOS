@@ -80,9 +80,6 @@ hg clone https://cacert.pep.foundation/dev/repos/MailModel/
 
 hg clone https://cacert.pep-security.ch/dev/repos/pEp_for_iOS/
 
-# Set up working account for unit tests. After copying, fill in working account:
-cp ./pEpForiOS/Sync/TestData.swift.sample ./pEpForiOS/Sync/TestData.swift
-
 # Set up working account for UI tests. After copying, fill in working account:
 cp ./pEpForiOSUITests/UITestData.swift.sample ./pEpForiOSUITests/UITestData.swift
 ```
@@ -90,15 +87,19 @@ cp ./pEpForiOSUITests/UITestData.swift.sample ./pEpForiOSUITests/UITestData.swif
 Note that netpgp includes a static openssl, and pEpEngine a static libcurl. For
 rebuilding see the respective scripts. But you should not have to do that for iOS.
 
-## Auto-generating model files
+### Unit Tests
 
-The core data model files are generated with mogenerator, using modified templates
-(for generating protocol definitions as well).
-
-You only need to regenerate them when there were changes in the model.
+Create pEpForiOSTests/Util/TestData.swift, derive from TestDataSample like this:
 
 ```
-cd pEp_for_iOS
+import UIKit
 
-mogenerator --model pEpForiOS/pEpForiOS.xcdatamodeld/pEpForiOS.xcdatamodel --machine-dir pEpForiOS/Models/machine/ --human-dir pEpForiOS/Models/ --swift --base-class BaseManagedObject --template-path ../mogenerator.templates/
+import MessageModel
+
+class TestData: TestDataSample {
+    override func createWorkingAccount() -> Account {
+      // return working account, similar to TestDataSample
+    }
+}
+
 ```

@@ -50,7 +50,7 @@ open class SaveSentMessageOperation: ConcurrentBaseOperation {
                     "No sent folder available", comment:
                     "Error message when no sent folder exists")
                 self.addError(Constants.errorInvalidParameter(self.comp, errorMessage: msg))
-                Log.errorComponent(self.comp,
+                Log.error(component: self.comp,
                     errorString: "No sent folder available")
                 self.markAsFinished()
                 return
@@ -61,7 +61,7 @@ open class SaveSentMessageOperation: ConcurrentBaseOperation {
                     "Could not save sent mail: Not encrypted", comment:
                     "Error message when no encrypted mail was given for saving as sent")
                 self.addError(Constants.errorOperationFailed(self.comp, errorMessage: msg))
-                Log.errorComponent(self.comp,
+                Log.error(component: self.comp,
                     errorString: "Could not save sent mail: Not encrypted")
                 self.markAsFinished()
                 return

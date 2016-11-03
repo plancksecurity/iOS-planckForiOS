@@ -11,8 +11,8 @@ import Foundation
 struct Account {
     var nameOfTheUser: String
     var email: String
-    var imapServernameOfTheUser: String
-    var smtpServernameOfTheUser: String
+    var imapServerName: String
+    var smtpServerName: String
     var password: String
     var imapPort: Int
     var smtpPort: Int
@@ -30,16 +30,16 @@ struct Account {
 
 struct UITestData {
     static let workingAccount = Account.init(
-        nameOfTheUser: "name",
-        email: "email",
-        imapServernameOfTheUser: "server", smtpServernameOfTheUser: "server",
-        password: "password", imapPort: 993, smtpPort: 587,
+        nameOfTheUser: "Name",
+        email: "email@example.com",
+        imapServerName: "localhost", smtpServerName: "localhost",
+        password: "secret", imapPort: 993, smtpPort: 587,
         imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
 
     static let workingYahooAccount = Account.init(
-        nameOfTheUser: "name",
-        email: "email",
-        imapServernameOfTheUser: "server", smtpServernameOfTheUser: "server",
-        password: "password", imapPort: 993, smtpPort: 587,
-        imapTransportSecurityString: "TLS", smtpTransportSecurityString: "TLS")
+        nameOfTheUser: "WhatEverYouWant",
+        email: "this_is_me@yahoo.com",
+        imapServerName: "imap.mail.yahoo.com", smtpServerName: "smtp.mail.yahoo.com",
+        password: "cannotRevealThis", imapPort: 993, smtpPort: 587,
+        imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
 }

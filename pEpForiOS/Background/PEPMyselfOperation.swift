@@ -8,21 +8,25 @@
 
 import UIKit
 
+import MessageModel
+
 class PEPMyselfOperation: Operation {
     /**
      When the operation has run, this will be updated and contain the fingerprint
      (`kPepFingerprint`).
      */
-    let identity: NSMutableDictionary
+    var identity = NSMutableDictionary()
 
-    init(account: CdAccount) {
-        // It's important that we do this on the caller's thread,
-        // b/c we access core data.
-        identity = PEPUtil.identityFromAccount(account, isMyself: true)
+    let account: Account
+
+    init(account: Account) {
+        self.account = account
     }
 
     override func main() {
-        let session = PEPSession.init()
+        let session = PEPSession()
+        let pEpId = PEPUtil.pEp(identity: account.user)
+        identity = NSMutableDictionary(dictionary: pEpId)
         session.mySelf(identity)
     }
 }

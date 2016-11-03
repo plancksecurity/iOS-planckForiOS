@@ -224,11 +224,11 @@ open class CdModel: ICdModel {
             } else if objs.count == 0 {
                 return nil
             } else {
-                Log.warnComponent(comp, "Several objects (\(name)) found for predicate: \(predicate)")
+                Log.warn(component: comp, "Several objects (\(name)) found for predicate: \(predicate)")
                 return objs[0]
             }
         } catch let err as NSError {
-            Log.errorComponent(comp, error: err)
+            Log.error(component: comp, error: err)
         }
         return nil
     }
@@ -244,7 +244,7 @@ open class CdModel: ICdModel {
             let objs = try context.fetch(fetch)
             return objs
         } catch let err as NSError {
-            Log.errorComponent(comp, error: err)
+            Log.error(component: comp, error: err)
         }
         return nil
     }
@@ -259,7 +259,7 @@ open class CdModel: ICdModel {
                 return number
             }
         } catch let error as NSError {
-            Log.errorComponent(comp, error: error)
+            Log.error(component: comp, error: error)
         }
         return 0
     }
@@ -271,7 +271,7 @@ open class CdModel: ICdModel {
             } else if contacts.count == 0 {
                 return nil
             } else {
-                Log.warnComponent(comp, "Several contacts found for email: \(email)")
+                Log.warn(component: comp, "Several contacts found for email: \(email)")
                 return contacts[0]
             }
         }
@@ -301,7 +301,7 @@ open class CdModel: ICdModel {
                 msg.subject()!, msg.receivedDate()! as CVarArg))
         }
         let pred = NSCompoundPredicate.init(andPredicateWithSubpredicates: predicates)
-        if let mail = singleEntityWithName(CdMessage.entityName(), predicate: pred) {
+        if let mail = singleEntityWithName(CdMessage.entityName, predicate: pred) {
             let result = mail as! CdMessage
             return result
         }
@@ -350,20 +350,20 @@ open class CdModel: ICdModel {
 
     open func insertNewMessage() -> CdMessage {
         let mail = NSEntityDescription.insertNewObject(
-            forEntityName: CdMessage.entityName(), into: context) as! CdMessage
+            forEntityName: CdMessage.entityName, into: context) as! CdMessage
         return mail
     }
 
     open func insertNewMessageForSendingFromAccountEmail(_ email: String) -> CdMessage? {
         guard let account = accountByEmail(email) else {
-            Log.warnComponent(comp, "No account with email found: \(email)")
+            Log.warn(component: comp, "No account with email found: \(email)")
             return nil
         }
         let message = insertNewMessage()
         let contact = insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
         message.from = contact
         guard let folder = folderByType(FolderType.localOutbox, email: account.email) else {
-            Log.warnComponent(comp, "Expected outbox folder to exist")
+            Log.warn(component: comp, "Expected outbox folder to exist")
             return nil
         }
         message.folder = folder
@@ -400,7 +400,7 @@ open class CdModel: ICdModel {
             predicate = NSPredicate.init(format: "email == %@", lastEmail!)
         }
 
-        if let account = singleEntityWithName(CdAccount.entityName(), predicate: predicate) {
+        if let account = singleEntityWithName(CdAccount.entityName, predicate: predicate) {
             return setAccountAsLastUsed(account as! CdAccount)
         } else {
             return nil
@@ -416,13 +416,13 @@ open class CdModel: ICdModel {
 
     open func accountByEmail(_ email: String) -> CdAccount? {
         let predicate = NSPredicate.init(format: "email = %@", email)
-        return singleEntityWithName(CdAccount.entityName(), predicate: predicate)
+        return singleEntityWithName(CdAccount.entityName, predicate: predicate)
             as? CdAccount
     }
 
     open func accountsByPredicate(_ predicate: NSPredicate? = nil,
                                     sortDescriptors: [NSSortDescriptor]? = nil) -> [CdAccount]? {
-        return entitiesWithName(CdAccount.entityName(), predicate: predicate,
+        return entitiesWithName(CdAccount.entityName, predicate: predicate,
             sortDescriptors: sortDescriptors)?.map() {$0 as! CdAccount}
     }
 
@@ -432,7 +432,7 @@ open class CdModel: ICdModel {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                Log.errorComponent(comp, error: nserror)
+                Log.error(component: comp, error: nserror)
                 abort()
             }
         }
@@ -445,30 +445,25 @@ open class CdModel: ICdModel {
     func insertFolderName(_ name: String, account: CdAccount) -> CdFolder {
         if let folder = folderByName(name, email: account.email) {
             // reactivate folder if previously deleted
-            folder.shouldDelete = false
 
             return folder
         }
 
         let folder = NSEntityDescription.insertNewObject(
-            forEntityName: CdFolder.entityName(), into: context) as! CdFolder
+            forEntityName: CdFolder.entityName, into: context) as! CdFolder
 
         folder.name = name
+        /* folder.account is optional
         folder.account = account
-        folder.shouldDelete = false
-
-        // Default value
-        folder.folderType = NSNumber.init(value: FolderType.normal.rawValue as Int)
+        */
 
         if name.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
-            folder.folderType = NSNumber.init(value: FolderType.inbox.rawValue as Int)
         } else {
             for ty in FolderType.allValuesToCheckFromServer {
                 var foundMatch = false
                 for theName in ty.folderNames() {
                     if name.matchesPattern("\(theName)",
                                            reOptions: [.caseInsensitive]) {
-                        folder.folderType = NSNumber.init(value: ty.rawValue as Int)
                         foundMatch = true
                         break
                     }
@@ -483,7 +478,6 @@ open class CdModel: ICdModel {
     }
 
     func reactivateFolder(_ folder: CdFolder) -> CdFolder {
-        folder.shouldDelete = false
         return folder
     }
 
@@ -516,7 +510,7 @@ open class CdModel: ICdModel {
                     let folder = insertFolderName(pathName, account: account)
                     folder.parent = parentFolder
                     if let pf = parentFolder {
-                        pf.addChildrenObject(value: folder)
+                        pf.addToSubFolders(folder)
                     }
                     parentFolder = folder
                 }
@@ -533,18 +527,18 @@ open class CdModel: ICdModel {
 
     open func messageByPredicate(_ predicate: NSPredicate? = nil,
                                    sortDescriptors: [NSSortDescriptor]? = nil) -> CdMessage? {
-        return singleEntityWithName(CdMessage.entityName(), predicate: predicate,
+        return singleEntityWithName(CdMessage.entityName, predicate: predicate,
                                     sortDescriptors: sortDescriptors) as? CdMessage
     }
 
     open func messagesByPredicate(_ predicate: NSPredicate? = nil,
                                     sortDescriptors: [NSSortDescriptor]? = nil) -> [CdMessage]? {
-        return entitiesWithName(CdMessage.entityName(), predicate: predicate,
+        return entitiesWithName(CdMessage.entityName, predicate: predicate,
             sortDescriptors: sortDescriptors)?.map() {$0 as! CdMessage}
     }
 
     open func messageCountByPredicate(_ predicate: NSPredicate? = nil) -> Int {
-        return countWithName(CdMessage.entityName(), predicate: predicate)
+        return countWithName(CdMessage.entityName, predicate: predicate)
     }
 
     open func messageByUID(_ uid: Int, folderName: String) -> CdMessage? {
@@ -557,7 +551,7 @@ open class CdModel: ICdModel {
     }
 
     open func lastUidInFolderNamed(_ folderName: String) -> UInt {
-        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: CdMessage.entityName())
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: CdMessage.entityName)
         fetch.predicate = NSPredicate.init(format: "folder.name = %@", folderName)
         fetch.fetchLimit = 1
         fetch.sortDescriptors = [NSSortDescriptor.init(key: "uid", ascending: false)]
@@ -565,36 +559,36 @@ open class CdModel: ICdModel {
             let elems = try context.fetch(fetch)
             if elems.count > 0 {
                 if elems.count > 1 {
-                    Log.warnComponent(comp, "lastUID has found more than one element")
+                    Log.warn(component: comp, "lastUID has found more than one element")
                 }
                 if let msg = elems[0] as? CdMessage {
                     return UInt(msg.uid.intValue)
                 } else {
-                    Log.warnComponent(comp, "Could not cast core data result to Message")
+                    Log.warn(component: comp, "Could not cast core data result to Message")
                 }
             } else if elems.count > 0 {
-                Log.warnComponent(comp, "lastUID has several objects with the same UID?")
+                Log.warn(component: comp, "lastUID has several objects with the same UID?")
             }
         } catch let error as NSError {
-            Log.errorComponent(comp, error: error)
+            Log.error(component: comp, error: error)
         }
-        Log.warnComponent(comp, "lastUID no object found, returning 0")
+        Log.warn(component: comp, "lastUID no object found, returning 0")
         return 0
     }
 
     open func folderCountByPredicate(_ predicate: NSPredicate? = nil) -> Int {
-        return countWithName(CdFolder.entityName(), predicate: predicate)
+        return countWithName(CdFolder.entityName, predicate: predicate)
     }
 
     open func foldersByPredicate(_ predicate: NSPredicate? = nil,
                                    sortDescriptors: [NSSortDescriptor]? = nil) -> [CdFolder]? {
-        return entitiesWithName(CdFolder.entityName(), predicate: predicate,
+        return entitiesWithName(CdFolder.entityName, predicate: predicate,
             sortDescriptors: sortDescriptors)?.map() {$0 as! CdFolder}
     }
 
     open func folderByPredicate(_ predicate: NSPredicate? = nil,
                                   sortDescriptors: [NSSortDescriptor]? = nil) -> CdFolder? {
-        return singleEntityWithName(CdFolder.entityName(), predicate: predicate,
+        return singleEntityWithName(CdFolder.entityName, predicate: predicate,
                                     sortDescriptors: sortDescriptors) as? CdFolder
     }
 
@@ -638,7 +632,7 @@ open class CdModel: ICdModel {
         let p2 = NSPredicate.init(format: "folderType == %d", type.rawValue)
         let p3 = NSPredicate.init(format: "shouldDelete == false")
         let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [p1, p2, p3])
-        return singleEntityWithName(CdFolder.entityName(), predicate: p) as? CdFolder
+        return singleEntityWithName(CdFolder.entityName, predicate: p) as? CdFolder
     }
 
     open func folderByType(_ type: FolderType, account: CdAccount) -> CdFolder? {
@@ -652,7 +646,7 @@ open class CdModel: ICdModel {
         do {
             var existing = try context.fetch(fetch) as! [CdIdentity]
             if existing.count > 1 {
-                Log.warnComponent(comp, "Duplicate contacts with address \(email)")
+                Log.warn(component: comp, "Duplicate contacts with address \(email)")
                 existing[0].userName = name
                 return existing[0]
             } else if existing.count == 1 {
@@ -660,7 +654,7 @@ open class CdModel: ICdModel {
                 return existing[0]
             }
         } catch let err as NSError {
-            Log.errorComponent(comp, error: err)
+            Log.error(component: comp, error: err)
         }
         let contact = NSEntityDescription.insertNewObject(
             // XXX: entityName should be gotten by method.
@@ -676,7 +670,8 @@ open class CdModel: ICdModel {
 
     open func insertOrUpdateMessageReference(_ messageID: String) -> CdMessageReference {
         let p = NSPredicate.init(format: "messageID = %@", messageID)
-        if let ent = singleEntityWithName(CdMessageReference.entityName(), predicate: p) {
+        // XXX: Explicit string used for now (refactoring).
+        if let ent = singleEntityWithName("CdMessageReference", predicate: p) {
             return ent as! CdMessageReference
         } else {
             return insertMessageReference(messageID)
@@ -685,11 +680,14 @@ open class CdModel: ICdModel {
 
     open func insertMessageReference(_ messageID: String) -> CdMessageReference {
         let ref = NSEntityDescription.insertNewObject(
-            forEntityName: CdMessageReference.entityName(), into: context) as! CdMessageReference
-        ref.messageID = messageID
+            // XXX: Explicit string used for now (refactoring).
+            forEntityName: "CdMessageReference", into: context) as! CdMessageReference
+        ref.reference = messageID
+        /* XXX: Don't save message into CdMessageReference type for now, as this breaks.
         if let msg = messageByMessageID(messageID) {
             ref.message = msg
         }
+         */
         return ref
     }
 
@@ -782,7 +780,7 @@ open class CdModel: ICdModel {
             case .bccRecipient:
                 bccs.add(contacts[addr.address()]!)
             default:
-                Log.warnComponent(comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
+                Log.warn(component: comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
         }
         if isFresh || mail.to != tos {
@@ -874,17 +872,17 @@ open class CdModel: ICdModel {
     open func dumpDB() {
         if let folders = foldersByPredicate(NSPredicate.init(value: true)) {
             for folder in folders {
-                Log.infoComponent(
+                Log.info(component: 
                     comp,
-                    "Folder \(folder.name) \(folder.messages.count) messages accountType \(folder.account.accountType)")
+                    "Folder \(folder.name) \(folder.messages!.count) messages")
             }
         }
 
         if let messages = messagesByPredicate(NSPredicate.init(value: true)) {
             for msg in messages {
-                Log.infoComponent(
+                Log.info(component: 
                     comp,
-                    "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages.count) accountType \(msg.folder.account.accountType)")
+                    "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages!.count)")
             }
         }
     }

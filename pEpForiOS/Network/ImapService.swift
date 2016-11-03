@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 public struct ImapState {
     var authenticationCompleted = false
     var currentFolder: String?
@@ -181,7 +183,7 @@ open class ImapSync: Service, IImapSync {
         // all messages will be prefetched by default,
         // independent of the prefetch parameter.
         if let folder = imapStore.folder(forName: name, mode: PantomimeReadWriteMode) {
-            Log.infoComponent(comp, "openMailBox \(folder.name())")
+            Log.info(component: comp, "openMailBox \(folder.name())")
         }
     }
 
@@ -248,9 +250,9 @@ extension ImapSync: CWServiceClient {
         dumpMethodName("folderPrefetchCompleted", notification: notification)
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
-            Log.infoComponent(comp, "prefetched folder: \(folder.name())")
+            Log.info(component: comp, "prefetched folder: \(folder.name())")
         } else {
-            Log.infoComponent(comp, "folderPrefetchCompleted: \(notification)")
+            Log.info(component: comp, "folderPrefetchCompleted: \(notification)")
         }
         if let bq = folderBuilder?.backgroundQueue {
             // Wait until all newly synced mails are stored
@@ -267,17 +269,8 @@ extension ImapSync: CWServiceClient {
     @objc public func serviceInitialized(_ notification: Notification?) {
         dumpMethodName("serviceInitialized", notification: notification)
 
-        // The password from connectInfo has precedence over the keychain, for unit test
-        var password: String?
-        if let pass = connectInfo.userPassword {
-            password = pass
-        } else {
-            password = KeyChain.password(key: connectInfo.userId,
-                                         serverType: connectInfo.networkAddress)
-        }
-
         imapStore.authenticate(connectInfo.userId,
-                               password: password!,
+                               password: connectInfo.userPassword,
                                mechanism: bestAuthMethod().rawValue)
     }
 
@@ -358,10 +351,10 @@ extension ImapSync: PantomimeFolderDelegate {
     @objc public func folderOpenCompleted(_ notification: Notification?) {
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
-            Log.infoComponent(comp, "folderOpenCompleted: \(folder.name())")
+            Log.info(component: comp, "folderOpenCompleted: \(folder.name())")
             imapState.currentFolder = folder.name()
         } else {
-            Log.infoComponent(comp, "folderOpenCompleted: \(notification)")
+            Log.info(component: comp, "folderOpenCompleted: \(notification)")
             imapState.currentFolder = nil
         }
         delegate?.folderOpenCompleted(self, notification: notification)
@@ -370,9 +363,9 @@ extension ImapSync: PantomimeFolderDelegate {
     @objc public func folderOpenFailed(_ notification: Notification?) {
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
-            Log.infoComponent(comp, "folderOpenFailed: \(folder.name())")
+            Log.info(component: comp, "folderOpenFailed: \(folder.name())")
         } else {
-            Log.infoComponent(comp, "folderOpenFailed: \(notification)")
+            Log.info(component: comp, "folderOpenFailed: \(notification)")
         }
         delegate?.folderOpenFailed(self, notification: notification)
     }

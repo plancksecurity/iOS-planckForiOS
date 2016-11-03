@@ -33,7 +33,7 @@ open class HTMLConvertOperation: BaseOperation {
         let predicateBodyFetched = NSPredicate.init(format: "bodyFetched == 1")
 
         guard let mails = model.entitiesWithName(
-            CdMessage.entityName(),
+            CdMessage.entityName,
             predicate: NSCompoundPredicate.init(
                 andPredicateWithSubpredicates: [predicateHasHTML, predicateHasLongMessage,
                     predicateColor, predicateBodyFetched]),
@@ -46,7 +46,7 @@ open class HTMLConvertOperation: BaseOperation {
 
         for m in mails {
             guard let mail = m as? CdMessage else {
-                Log.warnComponent(self.comp, "Could not cast mail to Message")
+                Log.warn(component: self.comp, "Could not cast mail to Message")
                 continue
             }
             mail.longMessage = nil
@@ -69,7 +69,7 @@ open class HTMLConvertOperation: BaseOperation {
             let predicateHasNoLongMessage = NSPredicate.init(
                 format: "longMessage == nil or longMessage == %@", "")
 
-            guard let mails = model.entitiesWithName(CdMessage.entityName(),
+            guard let mails = model.entitiesWithName(CdMessage.entityName,
                 predicate: NSCompoundPredicate.init(
                     andPredicateWithSubpredicates: [pBasic, predicateHasHTML,
                         predicateHasNoLongMessage]),
@@ -82,7 +82,7 @@ open class HTMLConvertOperation: BaseOperation {
 
             for m in mails {
                 guard let mail = m as? CdMessage else {
-                    Log.warnComponent(self.comp, "Could not cast mail to Message")
+                    Log.warn(component: self.comp, "Could not cast mail to Message")
                     continue
                 }
                 if let htmlString = mail.longMessageFormatted {

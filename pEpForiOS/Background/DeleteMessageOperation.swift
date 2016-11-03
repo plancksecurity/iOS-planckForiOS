@@ -34,10 +34,11 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
             
             
             var targetFolder: CdFolder?
-            targetFolder = self.model.folderByType(.trash, account: message.folder.account)
+            // XXX: To refactor properly.
+            targetFolder = self.model.folderByType(.trash, account: self.model.accountByEmail("")!)
             if targetFolder == nil {
-                targetFolder = self.model.folderByType(
-                    .archive, account: message.folder.account)
+                // XXX: To refactor properly.
+                targetFolder = self.model.folderByType(.archive, account: self.model.accountByEmail("")!)
             }
             
             guard let folder = targetFolder else {
@@ -47,7 +48,7 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
             }
             
             let cwMail = PEPUtil.pantomimeMailFromMessage(message)
-            let cwFolder = CWIMAPFolder.init(name: folder.name)
+            let cwFolder = CWIMAPFolder.init(name: folder.name!)
             cwFolder.copyMessages([cwMail], toFolder: cwFolder.name())
         }
         

@@ -71,6 +71,11 @@ class UIHelper {
             label.isHidden = true
         }
     }
+    
+    static func cleanHtml(_ string: String?) -> String? {
+        guard let str = string else { return string }
+        return str.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+    }
 
     /**
      Makes label bold, using the system font.

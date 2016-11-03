@@ -79,7 +79,6 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func updateModel() {
-        MockData.insertData()
         accounts = Account.all
         tableView.reloadData()
     }
@@ -88,12 +87,10 @@ class AccountsFoldersViewController: UITableViewController {
         guard let model = appConfig?.model else {
             return
         }
-        if let accounts = model.accountsByPredicate(NSPredicate.init(
-            value: true), sortDescriptors: nil) {
-            for acc in accounts {
-                let op = PEPMyselfOperation.init(account: acc)
-                backgroundQueue.addOperation(op)
-            }
+        let accounts = Account.all
+        for acc in accounts {
+            let op = PEPMyselfOperation(account: acc)
+            backgroundQueue.addOperation(op)
         }
     }
 
@@ -203,5 +200,15 @@ class AccountsFoldersViewController: UITableViewController {
             }
             vc.config = folderListConfig
         }
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction func addAccountButtonTapped(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: segueSetupNewAccount, sender: self)
+    }
+    
+    @IBAction func unwindToAccounts(for unwindSegue: UIStoryboardSegue) {
+        
     }
 }
