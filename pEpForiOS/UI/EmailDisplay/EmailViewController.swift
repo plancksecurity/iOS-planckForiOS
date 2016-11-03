@@ -55,7 +55,7 @@ class EmailViewController: UIViewController {
         headerView.update(view.bounds.size.width)
 
         // Mark as read. Duh!
-        message.imapFlags.seen = true
+        message.imapFlags?.seen = true
         appConfig.model.save()
 
         if webView.scrollView.contentInset.top == 0 {
