@@ -107,7 +107,6 @@ open class SmtpSend: Service {
 }
 
 extension SmtpSend: TransportClient {
-
     @objc public func messageSent(_ theNotification: Notification?) {
         dumpMethodName("messageSent", notification: theNotification)
         delegate?.messageSent(self, theNotification: theNotification)
@@ -195,15 +194,8 @@ extension SmtpSend: CWServiceClient {
             self.smtpStatus.haveStartedTLS = true
             self.smtp.startTLS()
         } else {
-            var password: String!
-            if let pass = self.connectInfo.userPassword {
-                password = pass
-            } else {
-                password = KeyChain.password(key: self.connectInfo.userId,
-                                             serverType: connectInfo.networkAddress)
-            }
-            self.smtp.authenticate(self.connectInfo.userId,
-                                   password: password,
+            self.smtp.authenticate(self.connectInfo.userName,
+                                   password: self.connectInfo.userPassword,
                                    mechanism: self.bestAuthMethod().rawValue)
         }
     }
