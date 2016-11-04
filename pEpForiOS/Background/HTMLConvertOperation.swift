@@ -66,7 +66,7 @@ open class HTMLConvertOperation: BaseOperation {
             let predicateHasNoLongMessage = NSPredicate.init(
                 format: "longMessage == nil or longMessage == %@", "")
 
-            guard let mails = MessageModel.CdMessage.all(with: NSCompoundPredicate.init(andPredicateWithSubpredicates: [MessageModel.CdMessage.basicMessagePredicate(), predicateHasHTML, predicateHasNoLongMessage])) else {
+            guard let mails = MessageModel.CdMessage.all(with: NSCompoundPredicate(andPredicateWithSubpredicates: [MessageModel.CdMessage.basicMessagePredicate(), predicateHasHTML, predicateHasNoLongMessage])) else {
                 return
             }
 
