@@ -21,44 +21,38 @@ open class DecryptMailOperation: BaseOperation {
     open override func main() {
         let context = coreDataUtil.privateContext()
         context.perform() {
-            let model = CdModel.init(context: context)
             let session = PEPSession.init()
 
-            let predicateColor = NSPredicate.init(format: "pepColorRating == nil")
-            let predicateBodyFetched = NSPredicate.init(format: "bodyFetched = true")
-            let predicateNotDeleted = NSPredicate.init(format: "flagDeleted = false")
-
-            guard let mails = model.entitiesWithName(CdMessage.entityName,
-                predicate: NSCompoundPredicate.init(
-                    andPredicateWithSubpredicates: [predicateColor, predicateBodyFetched,
-                        predicateNotDeleted]),
-                sortDescriptors: [NSSortDescriptor.init(key: "receivedDate", ascending: true)])
-                else {
-                    return
+            guard let mails = MessageModel.CdMessage.all(with:
+                NSCompoundPredicate(andPredicateWithSubpredicates:
+                    [MessageModel.CdMessage.basicMessagePredicate()]),orderedBy:
+                [NSSortDescriptor.init(key: "receivedDate", ascending: true)]) else {
+                return
             }
 
             var modelChanged = false
             for m in mails {
-                guard let mail = m as? CdMessage else {
+                guard let mail = m as? MessageModel.CdMessage else {
                     Log.warn(component: self.comp, "Could not cast mail to Message")
                     continue
                 }
 
                 var outgoing = false
-                let folderTypeNum = mail.folder.folderType
-                if let folderType = FolderType.fromInt(folderTypeNum) {
+                let folderTypeNum = mail.parent?.folderType
+                if let folderType = FolderType.fromInt(folderTypeNum!) {
                     outgoing = folderType.isOutgoing()
                 } else {
                     outgoing = false
                 }
 
-                let pepMail = PEPUtil.pepMail(mail, outgoing: outgoing)
+                let pepMail = PEPUtil.pEp(mail: mail, outgoing: outgoing)
                 var pepDecryptedMail: NSDictionary? = nil
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
                     pepMail, dest: &pepDecryptedMail, keys: &keys)
-                Log.warn(component: self.comp,
-                    "Decrypted mail \(mail.logString()) with color \(color)")
+                //TODO: new method to get de logstring?
+                /*Log.warn(component: self.comp,
+                    "Decrypted mail \(mail.logString()) with color \(color)")*/
 
                 switch color {
                 case PEP_rating_undefined,
@@ -70,7 +64,7 @@ open class DecryptMailOperation: BaseOperation {
                 case PEP_rating_unencrypted,
                 PEP_rating_unencrypted_for_some:
                     // Set the color, nothing else to update
-                    mail.pepColorRating = NSNumber.init(value: color.rawValue as Int32)
+                    mail.pEpRating = Int16(color.rawValue)
                     modelChanged = true
                     break
                 case PEP_rating_unreliable,
@@ -83,19 +77,22 @@ open class DecryptMailOperation: BaseOperation {
                 PEP_rating_trusted_and_anonymized,
                 PEP_rating_fully_anonymous:
                     if let decrypted = pepDecryptedMail {
-                        PEPUtil.updateDecryptedMessage(mail, fromPepMail: decrypted as! PEPMail,
-                                                       pepColorRating: color, model: model)
+                        PEPUtil.update(decryptedMessage: mail,
+                                       fromPepMail: decrypted as! PEPMail,
+                                       pepColorRating: color)
                         modelChanged = true
                     }
                     break
                 // TODO: Again, why is the default needed when all cases are there?
                 default:
-                    Log.warn(component: self.comp,
-                        "No default action for decrypted mail \(mail.logString())")
+                    break
+                    //TODO: new method to get de logstring?
+                    /*Log.warn(component: self.comp,
+                        "No default action for decrypted mail \(mail.logString())")*/
                 }
             }
             if modelChanged {
-                model.save()
+                Record.save()
             }
         }
     }
