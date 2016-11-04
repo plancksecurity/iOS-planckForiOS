@@ -204,7 +204,7 @@ extension CdMessage {
 
 extension MessageModel.CdMessage {
     public static func basicMessagePredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pCpRating != nil")
+        let predicateDecrypted = NSPredicate.init(format: "pEpRating != nil")
         let predicateBody = NSPredicate.init(format: "bodyFetched = true")
         let predicateNotDeleted = NSPredicate.init(format: "imapFlags.flagDeleted = false")
         let predicates: [NSPredicate] = [predicateBody, predicateDecrypted,
