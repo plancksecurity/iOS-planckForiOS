@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 import MessageModel
 
@@ -131,17 +132,17 @@ public protocol IEmailConnectInfo: IConnectInfo {
 public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
     public var emailProtocol: EmailProtocol?
     public var connectionTransport: ConnectionTransport?
-    public var userPassword: String?
     public var authMethod: AuthMethod?
 
-    public init(userId: String, userName: String? = nil, networkAddress: String,
+    public init(accountObjectID: NSManagedObjectID, userName: String, userPassword: String? = nil,
+                networkAddress: String,
                 networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil,
                 emailProtocol: EmailProtocol? = nil,
-                connectionTransport: ConnectionTransport? = nil, userPassword: String? = nil,
-                authMethod: AuthMethod? = nil) {
-        super.init(userId: userId, userName: userName, networkAddress: networkAddress,
-                   networkPort: networkPort, networkAddressType: networkAddressType,
+                connectionTransport: ConnectionTransport? = nil, authMethod: AuthMethod? = nil) {
+        super.init(accountObjectID: accountObjectID, userName: userName, userPassword: userPassword,
+                   networkAddress: networkAddress, networkPort: networkPort,
+                   networkAddressType: networkAddressType,
                    networkTransportType: networkTransportType)
         self.emailProtocol = emailProtocol
         self.connectionTransport = connectionTransport

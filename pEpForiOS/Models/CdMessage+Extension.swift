@@ -201,3 +201,16 @@ extension CdMessage {
         return (command: result, dictionary: dict)
     }
 }
+
+extension MessageModel.CdMessage {
+    public static func basicMessagePredicate() -> NSPredicate {
+        let predicateDecrypted = NSPredicate.init(format: "pEpRating != nil")
+        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
+        let predicateNotDeleted = NSPredicate.init(format: "imapFlags.flagDeleted = false")
+        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted,
+                                         predicateNotDeleted]
+        let predicate = NSCompoundPredicate.init(
+            andPredicateWithSubpredicates: predicates)
+        return predicate
+    }
+}

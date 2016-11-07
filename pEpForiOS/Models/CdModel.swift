@@ -187,11 +187,6 @@ public protocol ICdModel {
     func deleteAttachmentsFromMessage(_ message: CdMessage)
 
     /**
-     - Returns: A predicate for all viewable emails.
-     */
-    func basicMessagePredicate() -> NSPredicate
-
-    /**
      - Returns: true if there are no accounts yet.
      */
     func accountsIsEmpty() -> Bool
@@ -237,7 +232,16 @@ open class CdModel: ICdModel {
         _ name: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil)
         -> [NSManagedObject]?
     {
-        return CdIdentity.all(with: predicate!, orderedBy: sortDescriptors)
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: name)
+        fetch.predicate = predicate
+        fetch.sortDescriptors = sortDescriptors
+        do {
+            let objs = try context.fetch(fetch)
+            return objs
+        } catch let err as NSError {
+            Log.error(component: comp, error: err)
+        }
+        return nil
     }
 
     open func countWithName(_ name: String,
@@ -256,7 +260,7 @@ open class CdModel: ICdModel {
     }
 
     open func contactByEmail(_ email: String) -> CdIdentity? {
-        if let contacts = contactsByPredicate(NSPredicate.init(format: "address = %@", email), sortDescriptors: nil) {
+        if let contacts = contactsByPredicate(NSPredicate.init(format: "email = %@", email), sortDescriptors: nil) {
             if contacts.count == 1 {
                 return contacts[0]
             } else if contacts.count == 0 {
@@ -302,7 +306,7 @@ open class CdModel: ICdModel {
     func newAccountFromImapSmtpConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
         let account = NSEntityDescription.insertNewObject(
             forEntityName: CdAccount.entityName, into: context) as! CdAccount
-        account.nameOfTheUser = connectInfo.userName!
+        account.nameOfTheUser = connectInfo.userName
         account.email = connectInfo.userId
         
         // IMAP
@@ -633,7 +637,7 @@ open class CdModel: ICdModel {
     open func insertOrUpdateContactEmail(_ email: String, name: String?) -> CdIdentity {
         // XXX: entityName should be gotten by method.
         let fetch = NSFetchRequest<NSManagedObject>.init(entityName: "CdIdentity")
-        fetch.predicate = NSPredicate.init(format: "address == %@", email)
+        fetch.predicate = NSPredicate.init(format: "email == %@", email)
         do {
             var existing = try context.fetch(fetch) as! [CdIdentity]
             if existing.count > 1 {
@@ -849,12 +853,12 @@ open class CdModel: ICdModel {
     }
 
     open func contactsBySnippet(_ snippet: String) -> [CdIdentity] {
-        let p = NSPredicate.init(format: "address != nil and address != \"\" and " +
-            "(address contains[cd] %@ or userName contains[cd] %@)",
+        let p = NSPredicate.init(format: "email != nil and email != \"\" and " +
+            "(email contains[cd] %@ or name contains[cd] %@)",
                                  snippet, snippet)
         if let contacts = contactsByPredicate(
-            p, sortDescriptors: [NSSortDescriptor.init(key: "userName", ascending: true),
-                NSSortDescriptor.init(key: "address", ascending: true)]) {
+            p, sortDescriptors: [NSSortDescriptor.init(key: "name", ascending: true),
+                NSSortDescriptor.init(key: "email", ascending: true)]) {
             return contacts
         }
         return []
@@ -891,16 +895,5 @@ open class CdModel: ICdModel {
             context.delete(a as! CdAttachment)
         }
         message.attachments = NSOrderedSet()
-    }
-
-    open func basicMessagePredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
-        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
-        let predicateNotDeleted = NSPredicate.init(format: "flagDeleted = false")
-        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted,
-                                         predicateNotDeleted]
-        let predicate = NSCompoundPredicate.init(
-            andPredicateWithSubpredicates: predicates)
-        return predicate
     }
 }

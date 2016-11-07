@@ -347,6 +347,47 @@ open class PEPUtil {
         return dict as PEPMail
     }
 
+    open static func pEp(mail: MessageModel.CdMessage, outgoing: Bool = true) -> PEPMail {
+        var dict = PEPMail()
+
+        if let subject = mail.shortMessage {
+            dict[kPepShortMessage] = subject as AnyObject
+        }
+
+        dict[kPepTo] = NSArray(array: mail.to!.map() { return pepContact($0 as! CdIdentity) })
+        dict[kPepCC] = NSArray(array: mail.cc!.map() { return pepContact($0 as! CdIdentity) })
+        dict[kPepBCC] = NSArray(array: mail.bcc!.map() { return pepContact($0 as! CdIdentity)
+        })
+
+        if let longMessage = mail.longMessage {
+            dict[kPepLongMessage] = longMessage as AnyObject
+        }
+        if let longMessageFormatted = mail.longMessageFormatted {
+            dict[kPepLongMessageFormatted] = longMessageFormatted as AnyObject
+        }
+        if let from = mail.from {
+            dict[kPepFrom]  = self.pepContact(from) as AnyObject
+        }
+        if let messageID = mail.uuid {
+            dict[kPepID] = messageID as AnyObject
+        }
+        dict[kPepOutgoing] = NSNumber(booleanLiteral: outgoing)
+
+        dict[kPepAttachments] = NSArray(array: mail.attachments!.map() {
+            return pepAttachment($0 as! CdAttachment)
+        })
+
+        var refs = [String]()
+        for ref in mail.references! {
+            refs.append((ref as! CdMessageReference).reference!)
+        }
+        if refs.count > 0 {
+            dict[kPepReferences] = refs as AnyObject
+        }
+        
+        return dict as PEPMail
+    }
+
     open static func insertPepContact(_ pepContact: PEPContact, intoModel: ICdModel) -> CdIdentity {
         let contact = intoModel.insertOrUpdateContactEmail(
             pepContact[kPepAddress] as! String,
@@ -693,7 +734,7 @@ open class PEPUtil {
      Caller is responsible for saving the model!
      */
     open static func updateDecryptedMessage(_ message: CdMessage, fromPepMail: PEPMail,
-                                              pepColorRating: PEP_rating?, model: ICdModel) {
+                                            pepColorRating: PEP_rating?, model: ICdModel) {
         if let color = pepColorRating {
             message.pepColorRating = NSNumber.init(value: color.rawValue as Int32)
         } else {
@@ -724,6 +765,40 @@ open class PEPUtil {
         }
         message.attachments = NSOrderedSet.init(array: attachments)
     }
+
+    open static func update(decryptedMessage: MessageModel.CdMessage, fromPepMail: PEPMail,
+                            pepColorRating: PEP_rating?) {
+        if let color = pepColorRating {
+            decryptedMessage.pEpRating = Int16(color.rawValue)
+        } else {
+            decryptedMessage.pEpRating = Int16(PEP_rating_undefined.rawValue)
+        }
+        decryptedMessage.shortMessage = fromPepMail[kPepShortMessage] as? String
+        decryptedMessage.longMessage = fromPepMail[kPepLongMessage] as? String
+        decryptedMessage.longMessageFormatted = fromPepMail[kPepLongMessageFormatted] as? String
+
+        // Remove existing attachments, this doesn't happen automatically with core data
+        decryptedMessage.attachments = nil
+
+        var attachments = [AnyObject]()
+        if let attachmentDicts = fromPepMail[kPepAttachments] as? NSArray {
+            for atDict in attachmentDicts {
+                guard let at = atDict as? NSDictionary else {
+                    continue
+                }
+                guard let data = at[kPepMimeData] as? Data else {
+                    continue
+                }
+                let attach = Attachment(data: data,
+                                        mimeType: (at[kPepMimeType] as? String)!,
+                                        fileName: (at[kPepMimeFilename] as? String)!)
+
+                attachments.append(attach)
+            }
+        }
+        decryptedMessage.addToAttachments(NSOrderedSet(array: attachments))
+    }
+
 
     /**
      - Returns: An NSOrderedSet that contains all elements of `array`. If `array` is nil,

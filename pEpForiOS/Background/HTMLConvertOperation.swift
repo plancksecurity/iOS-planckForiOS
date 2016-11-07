@@ -61,27 +61,19 @@ open class HTMLConvertOperation: BaseOperation {
     open override func main() {
         let context = coreDataUtil.privateContext()
         context.perform() {
-            let model = CdModel.init(context: context)
-
-            let pBasic = model.basicMessagePredicate()
             let predicateHasHTML = NSPredicate.init(
                 format: "longMessageFormatted != nil or longMessageFormatted != %@", "")
             let predicateHasNoLongMessage = NSPredicate.init(
                 format: "longMessage == nil or longMessage == %@", "")
 
-            guard let mails = model.entitiesWithName(CdMessage.entityName,
-                predicate: NSCompoundPredicate.init(
-                    andPredicateWithSubpredicates: [pBasic, predicateHasHTML,
-                        predicateHasNoLongMessage]),
-                sortDescriptors: [NSSortDescriptor.init(key: "receivedDate", ascending: true)])
-                else {
-                    return
+            guard let mails = MessageModel.CdMessage.all(with: NSCompoundPredicate(andPredicateWithSubpredicates: [MessageModel.CdMessage.basicMessagePredicate(), predicateHasHTML, predicateHasNoLongMessage])) else {
+                return
             }
 
             var modelChanged = false
 
             for m in mails {
-                guard let mail = m as? CdMessage else {
+                guard let mail = m as? MessageModel.CdMessage else {
                     Log.warn(component: self.comp, "Could not cast mail to Message")
                     continue
                 }
@@ -92,7 +84,7 @@ open class HTMLConvertOperation: BaseOperation {
             }
 
             if modelChanged {
-                model.save()
+                Record.save()
             }
         }
     }

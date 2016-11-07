@@ -88,11 +88,11 @@ class EmailListViewController: UITableViewController {
     }
 
     func isRead(message: Message)-> Bool {
-        return message.imapFlags.seen
+        return message.imapFlags?.seen ?? false
     }
 
     func isImportant(message: Message)-> Bool {
-        return message.imapFlags.flagged
+        return message.imapFlags?.flagged ?? false
     }
 
     override func viewDidLoad() {
@@ -119,7 +119,7 @@ class EmailListViewController: UITableViewController {
         state.isSynching = true
         updateUI()
 
-        message.imapFlags.draft = true
+        message.imapFlags?.draft = true
 
         // TODO: IOS 222: Save as draft
         if let folder = draftMessageToStore?.parent as? Folder {
@@ -292,7 +292,7 @@ class EmailListViewController: UITableViewController {
                 as! ComposeViewController
             destination.appConfig = config.appConfig
             if let draft = draftMessageToCompose {
-                draft.imapFlags.seen = true
+                draft.imapFlags?.seen = true
                 config.appConfig.model.save()
 
                 destination.originalMessage = draft
@@ -332,10 +332,10 @@ class EmailListViewController: UITableViewController {
         let isFlagCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
                 if (self.isImportant(message: message)) {
-                    message.imapFlags.flagged = false
+                    message.imapFlags?.flagged = false
 
                 } else {
-                    message.imapFlags.flagged = true
+                    message.imapFlags?.flagged = true
                 }
                 self.syncFlagsToServer(message: message)
                 self.tableView.reloadRows(at: [indexPath], with: .none)
@@ -359,7 +359,7 @@ class EmailListViewController: UITableViewController {
         let deleteCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
                 let message = self.messageAt(indexPath: indexPath)
-                message?.imapFlags.deleted = true
+                message?.imapFlags?.deleted = true
                 self.syncFlagsToServer(message: message!)
         }
 
@@ -386,9 +386,9 @@ class EmailListViewController: UITableViewController {
         let isReadCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
                 if (self.isRead(message: message)) {
-                    message.imapFlags.seen = false
+                    message.imapFlags?.seen = false
                 } else {
-                    message.imapFlags.seen = true
+                    message.imapFlags?.seen = true
                 }
                 self.syncFlagsToServer(message: message)
                 self.tableView.reloadRows(at: [indexPath], with: .none)
