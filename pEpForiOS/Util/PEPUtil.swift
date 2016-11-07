@@ -23,24 +23,6 @@ open class PEPUtil {
     static let comp = "PEPUtil"
 
     /**
-     For translating integer values into `PEP_rating`.
-     */
-    static let pEpRatingDictionary: [Int32: PEP_rating] =
-        [PEP_rating_undefined.rawValue: PEP_rating_undefined,
-         PEP_rating_cannot_decrypt.rawValue: PEP_rating_cannot_decrypt,
-         PEP_rating_have_no_key.rawValue: PEP_rating_have_no_key,
-         PEP_rating_unencrypted.rawValue: PEP_rating_unencrypted,
-         PEP_rating_unencrypted_for_some.rawValue:  PEP_rating_unencrypted_for_some,
-         PEP_rating_unreliable.rawValue: PEP_rating_unreliable,
-         PEP_rating_reliable.rawValue: PEP_rating_reliable,
-         PEP_rating_trusted.rawValue: PEP_rating_trusted,
-         PEP_rating_trusted_and_anonymized.rawValue: PEP_rating_trusted_and_anonymized,
-         PEP_rating_fully_anonymous.rawValue: PEP_rating_fully_anonymous,
-         PEP_rating_mistrust.rawValue: PEP_rating_mistrust,
-         PEP_rating_b0rken.rawValue: PEP_rating_b0rken,
-         PEP_rating_under_attack.rawValue: PEP_rating_under_attack]
-
-    /**
      All privacy status strings, i18n ready.
      */
     static let pEpRatingTranslations: [PEP_rating: (String, String, String)] =
@@ -672,8 +654,7 @@ open class PEPUtil {
         guard let theInt = i else {
             return nil
         }
-        let int32 = Int32(theInt)
-        return PEPUtil.pEpRatingDictionary[int32]
+        return PEP_rating.init(Int32(theInt))
     }
 
     open static func pEpTitleFromRating(_ pepColorRating: PEP_rating) -> String? {
