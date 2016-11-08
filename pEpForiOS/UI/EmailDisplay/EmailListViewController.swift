@@ -233,7 +233,7 @@ class EmailListViewController: UITableViewController {
             return
         }
         if let email = messageAt(indexPath: indexPath) {
-            if let pEpRating = email.pEpRating {
+            if let pEpRating = PEPUtil.pEpRatingFromInt(email.pEpRatingInt) {
                 let privacyColor = PEPUtil.pEpColorFromRating(pEpRating)
                 if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor) {
                     cell.backgroundColor = uiColor

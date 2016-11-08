@@ -76,7 +76,7 @@ class TrustWordsViewController: UITableViewController {
 
             if let m = message {
                 cell.backgroundColor = defaultBackground
-                if let pEpRating = m.pEpRating {
+                if let pEpRating = PEPUtil.pEpRatingFromInt(m.pEpRatingInt) {
                     let privateColor = PEPUtil.pEpColorFromRating(pEpRating)
                     if let uiColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
                         privateColor) {
@@ -97,7 +97,7 @@ class TrustWordsViewController: UITableViewController {
 
             cell.mailExplanationSecurityUILabel.text = ""
             if let m = message {
-                if let pEpRating = m.pEpRating {
+                if let pEpRating = PEPUtil.pEpRatingFromInt(m.pEpRatingInt) {
                     cell.mailExplanationSecurityUILabel.text =
                         PEPUtil.pEpExplanationFromRating(pEpRating)
                 }
@@ -143,7 +143,7 @@ class TrustWordsViewController: UITableViewController {
 
     @IBAction func showMoreInfo(_ sender: AnyObject) {
         if let m = message {
-            if let pEpRating = m.pEpRating {
+            if let pEpRating = PEPUtil.pEpRatingFromInt(m.pEpRatingInt) {
                 if let suggestion = PEPUtil.pEpSuggestionFromRating(pEpRating) {
                     self.showSuggestionMessage(suggestion)
                 }
