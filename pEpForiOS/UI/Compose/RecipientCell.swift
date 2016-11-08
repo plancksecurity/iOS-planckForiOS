@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 open class RecipientCell: UITableViewCell {
     @IBOutlet weak var recipientTextView: UITextView!
 
