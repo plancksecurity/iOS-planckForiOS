@@ -179,22 +179,20 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     /**
      - TODO: This gets called for some weird reason, and it should not. Investigate.
      */
-    func removeMessage(withUID theUID: UInt) {
+    func removeMessage(withUID: UInt) {
     }
 
     func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage) {
         Log.warn(component: comp, "Writing message \(message)")
 
         // Quickly store the most important email proporties (synchronously)
-        let opQuick = StorePrefetchedMailOperation.init(coreDataUtil: CoreDataUtil(),
-                                                        accountEmail: connectInfo.userId,
-                                                        message: message, quick: true)
+        let opQuick = StorePrefetchedMailOperation(
+            connectInfo: connectInfo, message: message, quick: true)
         opQuick.start()
 
         // Do all the time-consuming details in the background (asynchronously)
-        let op = StorePrefetchedMailOperation.init(coreDataUtil: CoreDataUtil(),
-                                                   accountEmail: connectInfo.userId,
-                                                   message: message, quick: false)
+        let op = StorePrefetchedMailOperation(
+            connectInfo: connectInfo, message: message, quick: false)
         backgroundQueue.addOperation(op)
     }
 }

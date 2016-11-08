@@ -93,4 +93,11 @@ extension MessageModel.CdAccount {
         }
         return nil
     }
+
+    /**
+     - Returns: A folder under this account with the given name.
+     */
+    func folder(byName: String) -> CdFolder? {
+        return nil
+    }
 }

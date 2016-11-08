@@ -16,41 +16,52 @@ import MessageModel
  */
 open class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
-    let coreDataUtil: CoreDataUtil
     let message: CWIMAPMessage
-    let accountEmail: String
+    let connectInfo: EmailConnectInfo
     let quick: Bool
 
     /**
      - parameter quick: Store only the most important properties (for true), or do it completely,
      including attachments?
      */
-    public init(coreDataUtil: CoreDataUtil, accountEmail: String, message: CWIMAPMessage,
+    public init(connectInfo: EmailConnectInfo, message: CWIMAPMessage,
                 quick: Bool = true) {
-        self.coreDataUtil = coreDataUtil
-        self.accountEmail = accountEmail
+        self.connectInfo = connectInfo
         self.message = message
         self.quick = quick
         super.init()
     }
 
     override open func main() {
-        let privateMOC = coreDataUtil.privateContext()
+        let privateMOC = Record.Context.default
         privateMOC.performAndWait({
-            let model = CdModel.init(context: privateMOC)
-            var result: CdMessage? = nil
-            if self.quick {
-                (result, _) = model.quickInsertOrUpdatePantomimeMail(
-                    self.message, accountEmail: self.accountEmail)
-            } else {
-                result = model.insertOrUpdatePantomimeMail(
-                    self.message, accountEmail: self.accountEmail)
-            }
-            if result != nil {
-                model.save()
-            } else {
-                self.errors.append(Constants.errorCannotStoreMail(self.comp))
-            }
+            self.storeMessage(context: privateMOC)
         })
+    }
+
+    func storeMessage(context: NSManagedObjectContext) {
+        guard let account = context.object(with: connectInfo.accountObjectID)
+            as? MessageModel.CdAccount else {
+                Log.error(component: comp, errorString: "Cannot access account by object ID")
+                return
+        }
+        let result = insert(pantomimeMessage: message, account: account, quick: quick)
+        if result != nil {
+            Record.save()
+        } else {
+            self.errors.append(Constants.errorCannotStoreMail(self.comp))
+        }
+    }
+
+    func insert(pantomimeMessage: CWIMAPMessage, account: MessageModel.CdAccount,
+                quick: Bool = true) -> MessageModel.CdMessage? {
+        if quick {
+            let (result, _) = CdMessage.quickInsertOrUpdatePantomimeMessage(
+                self.message, account: account)
+            return result
+        } else {
+            return CdMessage.insertOrUpdatePantomimeMessage(
+                self.message, account: account)
+        }
     }
 }

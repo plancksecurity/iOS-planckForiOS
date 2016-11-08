@@ -135,31 +135,6 @@ public protocol ICdModel {
     func insertMessageReference(_ messageID: String) -> CdMessageReference
 
     /**
-     Quickly inserts essential parts of a pantomime into the store. Needed for networking,
-     where inserts should be quick and the persistent store should be up-to-date
-     nevertheless (especially in terms of UIDs, messageNumbers etc.)
-     - Returns: A tuple of the optional message just created or updated, and a Bool
-     for whether the mail already existed or has been freshly added (true for having been
-     freshly added).
-     */
-    func quickInsertOrUpdatePantomimeMail(_ message: CWIMAPMessage, accountEmail: String)
-        -> (CdMessage?, Bool)
-
-    /**
-     Converts a pantomime mail to an Message and stores it.
-     Don't use this on the main thread as there is potentially a lot of processing involved
-     (e.g., parsing of HTML and/or attachments).
-     - Parameter message: The pantomime message to insert.
-     - Parameter accountEmail: The email for the account this email is supposed to be stored
-     for.
-     - Parameter forceParseAttachments: If true, this will parse the attachments even
-     if the pantomime has not been initialized yet (useful for testing only).
-     - Returns: The newly created or updated Message
-     */
-    func insertOrUpdatePantomimeMail(_ message: CWIMAPMessage, accountEmail: String,
-                                     forceParseAttachments: Bool) -> CdMessage?
-
-    /**
      - Returns: List of contact that match the given snippet (either in the name, or email).
      */
     func contactsBySnippet(_ snippet: String) -> [CdIdentity]
@@ -373,7 +348,7 @@ open class CdModel: ICdModel {
             forEntityName: "Attachment", into: context) as! CdAttachment
         attachment.mimeType = contentType
         attachment.fileName = filename
-        attachment.size = NSNumber(value: data.count)
+        attachment.size = Int64(data.count)
         attachment.data = data as NSData?
         return attachment
     }
@@ -703,118 +678,6 @@ open class CdModel: ICdModel {
      whether this message was just inserted (true)
      or an existing message was found (false).
      */
-    open func quickInsertOrUpdatePantomimeMail(_ message: CWIMAPMessage,
-                                                 accountEmail: String) -> (CdMessage?, Bool) {
-        guard let folderName = message.folder()?.name() else {
-            return (nil, false)
-        }
-        guard let folder = folderByName(folderName, email: accountEmail) else {
-            return (nil, false)
-        }
-
-        var theMail: CdMessage? = existingMessage(message)
-        if theMail == nil {
-            theMail = insertNewMessage()
-        }
-
-        let mail = theMail!
-
-        mail.folder = folder
-        mail.bodyFetched = message.isInitialized() as NSNumber
-        mail.receivedDate = message.receivedDate() as NSDate?
-        mail.subject = message.subject()
-        mail.messageID = message.messageID()
-        mail.uid = NSNumber(value: message.uid())
-        mail.messageNumber = message.messageNumber() as NSNumber?
-        mail.boundary = (message.boundary() as NSData?)?.asciiString()
-
-        // sync flags
-        let flags = message.flags()
-        mail.flagsFromServer = NSNumber.init(value: flags.rawFlagsAsShort() as Int16)
-        mail.flags = mail.flagsFromServer
-        mail.flagSeen = flags.contain(.seen) as NSNumber
-        mail.flagAnswered = flags.contain(.answered) as NSNumber
-        mail.flagFlagged = flags.contain(.flagged) as NSNumber
-        mail.flagDeleted = flags.contain(.deleted) as NSNumber
-        mail.flagDraft = flags.contain(.draft) as NSNumber
-        mail.flagRecent = flags.contain(.recent) as NSNumber
-
-        return (mail, false)
-    }
-
-    open func insertOrUpdatePantomimeMail(
-        _ message: CWIMAPMessage, accountEmail: String,
-        forceParseAttachments: Bool = false) -> CdMessage? {
-        let (quickMail, isFresh) = quickInsertOrUpdatePantomimeMail(message,
-                                                                    accountEmail: accountEmail)
-        guard let mail = quickMail else {
-            return nil
-        }
-
-        if let from = message.from() {
-            let contactsFrom = addContacts([from])
-            let email = from.address()
-            let c = contactsFrom[email!]
-            mail.from = c
-        }
-
-        mail.bodyFetched = message.isInitialized() as NSNumber
-
-        let addresses = message.recipients() as! [CWInternetAddress]
-        let contacts = addContacts(addresses)
-
-        let tos: NSMutableOrderedSet = []
-        let ccs: NSMutableOrderedSet = []
-        let bccs: NSMutableOrderedSet = []
-        for addr in addresses {
-            switch addr.type() {
-            case .toRecipient:
-                tos.add(contacts[addr.address()]!)
-            case .ccRecipient:
-                ccs.add(contacts[addr.address()]!)
-            case .bccRecipient:
-                bccs.add(contacts[addr.address()]!)
-            default:
-                Log.warn(component: comp, "Unsupported recipient type \(addr.type()) for \(addr.address())")
-            }
-        }
-        if isFresh || mail.to != tos {
-            mail.to = tos
-        }
-        if isFresh || mail.cc != ccs {
-            mail.cc = ccs
-        }
-        if isFresh || mail.bcc != bccs {
-            mail.bcc = bccs
-        }
-
-        let referenceStrings = NSMutableOrderedSet()
-        if let pantomimeRefs = message.allReferences() {
-            for ref in pantomimeRefs {
-                referenceStrings.add(ref)
-            }
-        }
-        // Append inReplyTo to references (https://cr.yp.to/immhf/thread.html)
-        if let inReplyTo = message.inReplyTo() {
-            referenceStrings.add(inReplyTo)
-        }
-
-        for refID in referenceStrings {
-            let ref = insertOrUpdateMessageReference(refID as! String)
-            mail.addReferencesObject(value: ref)
-        }
-
-        mail.contentType = message.contentType()
-
-        if forceParseAttachments || mail.bodyFetched.intValue == 1 {
-            // Parsing attachments only makes sense once pantomime has received the
-            // mail body. Same goes for the snippet.
-            addAttachmentsFromPantomimePart(message, targetMail: mail, level: 0)
-        }
-
-        return mail
-    }
-
     func addAttachmentsFromPantomimePart(_ part: CWPart, targetMail: CdMessage, level: Int) {
         guard let content = part.content() else {
             return
