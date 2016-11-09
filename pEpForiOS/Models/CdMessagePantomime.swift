@@ -1,5 +1,5 @@
 //
-//  CdMessage+Pantomime.swift
+//  CdMessagePantomime.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 08/11/16.
@@ -11,10 +11,12 @@ import UIKit
 import MessageModel
 
 /**
- Extension for dealing with Pantomime (IMAP library).
+ CdMessage "extension" for dealing with Pantomime (IMAP library).
+ - Note: Making this into an actual CdMessage extension was not possible since the unit tests
+ were unable to find those static members at the time of writing. This might have changed by now.
  */
-extension CdMessage {
-    static let comp = "CdMessage+Pantomime"
+open class CdMessagePantomime {
+    static let comp = "CdMessagePantomime"
 
     /**
      Quickly inserts essential parts of a pantomime into the store. Needed for networking,
@@ -24,8 +26,8 @@ extension CdMessage {
      for whether the mail already existed or has been freshly added (true for having been
      freshly added).
      */
-    open static func quickInsertOrUpdatePantomimeMessage(
-        _ message: CWIMAPMessage,
+    public static func quickInsertOrUpdate(
+        pantomimeMessage message: CWIMAPMessage,
         account: MessageModel.CdAccount) -> (MessageModel.CdMessage?, Bool) {
         guard let folderName = message.folder()?.name() else {
             return (nil, false)
@@ -74,10 +76,10 @@ extension CdMessage {
      if the pantomime has not been initialized yet (useful for testing only).
      - Returns: The newly created or updated Message
      */
-    open static func insertOrUpdatePantomimeMessage(
-        _ message: CWIMAPMessage, account: MessageModel.CdAccount,
+    public static func insertOrUpdate(
+        pantomimeMessage message: CWIMAPMessage, account: MessageModel.CdAccount,
         forceParseAttachments: Bool = false) -> MessageModel.CdMessage? {
-        let (quickMail, isFresh) = quickInsertOrUpdatePantomimeMessage(message, account: account)
+        let (quickMail, isFresh) = quickInsertOrUpdate(pantomimeMessage: message, account: account)
         guard let mail = quickMail else {
             return nil
         }
@@ -106,7 +108,7 @@ extension CdMessage {
             case .bccRecipient:
                 bccs.add(contacts[addr.address()]!)
             default:
-                Log.warn(component: CdMessage.comp,
+                Log.warn(component: comp,
                          "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
         }

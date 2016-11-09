@@ -8,6 +8,7 @@
 
 import XCTest
 
+import pEpForiOS
 import MessageModel
 
 class CdMessagePantomimeTests: XCTestCase {
@@ -21,7 +22,7 @@ class CdMessagePantomimeTests: XCTestCase {
         let account = TestData().createWorkingAccount()
         account.save()
 
-        guard let cdAccount = CdAccount.first(
+        guard let cdAccount: MessageModel.CdAccount = CdAccount.first(
             with: "identity.address", value: "unittest.ios.4@peptest.ch") else {
                 XCTAssertTrue(false)
                 return
@@ -33,8 +34,8 @@ class CdMessagePantomimeTests: XCTestCase {
         }
         let message = CWIMAPMessage.init(data: data)
         message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
-        let msg = MessageModel.CdMessage.insertOrUpdatePantomimeMessage(
-            message, account: cdAccount, forceParseAttachments: true)
+        let msg = CdMessagePantomime.insertOrUpdate(
+            pantomimeMessage: message, account: cdAccount, forceParseAttachments: true)
         XCTAssertNotNil(msg)
         if let m = msg {
             XCTAssertNotNil(m.longMessage)
