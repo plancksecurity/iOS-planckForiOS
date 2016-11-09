@@ -22,7 +22,7 @@ class TestData {
           - serverType: .smtp (only)
           - port: 465 (Int example: usual for secured connections)
           - address: "mail.example.com" (String example)
-          - transport: .plain, .tls or .startTls (usual is: .startTls)
+          - transport: .plain, .tls or .startTls (prefer .tls, if supported)
         */
         let smtp = Server.create(serverType: .smtp, port: 4096, address: "localhost",
                                  transport: .plain)
@@ -31,7 +31,7 @@ class TestData {
           - serverType: .imap (only)
           - port: 993 (Int example: usual for secured connections)
           - address: "mail.example.com" (String example)
-          - transport: .plain, .tls or .startTls (usual is: .tls)
+          - transport: .plain, .tls or .startTls (prefer .tls, if supported)
         */
         let imap = Server.create(serverType: .imap, port: 4097, address: "localhost",
                                  transport: .plain)
