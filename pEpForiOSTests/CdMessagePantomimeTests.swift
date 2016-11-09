@@ -28,6 +28,10 @@ class CdMessagePantomimeTests: XCTestCase {
                 return
         }
 
+        let folder = CdFolder.create()
+        folder.account = cdAccount
+        folder.name = ImapSync.defaultImapInboxName
+
         guard let data = TestUtil.loadDataWithFileName("UnencryptedHTMLMail.txt") else {
             XCTAssertTrue(false)
             return

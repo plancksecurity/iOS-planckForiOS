@@ -97,7 +97,7 @@ extension MessageModel.CdAccount {
     /**
      - Returns: A folder under this account with the given name.
      */
-    open func folder(byName: String) -> CdFolder? {
-        return nil
+    open func folder(byName name: String) -> CdFolder? {
+        return CdFolder.first(with: ["account": self, "name": name])
     }
 }
