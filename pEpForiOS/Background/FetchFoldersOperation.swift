@@ -13,13 +13,10 @@ import MessageModel
 
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let connectInfo: EmailConnectInfo
-    let coreDataUtil: CoreDataUtil
     open let backgroundQueue: OperationQueue?
 
-    public init(coreDataUtil: CoreDataUtil, connectInfo: EmailConnectInfo,
-                backgroundQueue: OperationQueue) {
+    public init(connectInfo: EmailConnectInfo, backgroundQueue: OperationQueue) {
         self.connectInfo = connectInfo
-        self.coreDataUtil = coreDataUtil
         self.backgroundQueue = backgroundQueue
     }
 
@@ -59,8 +56,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
 
         super.init(coreDataUtil: coreDataUtil)
 
-        folderBuilder = ImapFolderBuilder.init(coreDataUtil: coreDataUtil,
-                                               connectInfo: connectInfo,
+        folderBuilder = ImapFolderBuilder.init(connectInfo: connectInfo,
                                                backgroundQueue: backgroundQueue)
     }
 

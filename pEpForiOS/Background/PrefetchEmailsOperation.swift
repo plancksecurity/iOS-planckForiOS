@@ -39,9 +39,8 @@ open class PrefetchEmailsOperation: ConcurrentBaseOperation {
         }
 
         privateMOC.perform() {
-            let folderBuilder = ImapFolderBuilder.init(coreDataUtil: self.coreDataUtil,
-                connectInfo: self.connectInfo,
-                backgroundQueue: self.backgroundQueue)
+            let folderBuilder = ImapFolderBuilder.init(connectInfo: self.connectInfo,
+                                                       backgroundQueue: self.backgroundQueue)
 
             // Treat Inbox specially, as it is the only mailbox
             // that is mandatorily case-insensitive.
