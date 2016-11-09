@@ -66,7 +66,7 @@ open class CdMessagePantomime {
     }
 
     /**
-     Converts a pantomime mail to an Message and stores it.
+     Converts a pantomime mail to a Message and stores it.
      Don't use this on the main thread as there is potentially a lot of processing involved
      (e.g., parsing of HTML and/or attachments).
      - Parameter message: The pantomime message to insert.
