@@ -89,17 +89,11 @@ rebuilding see the respective scripts. But you should not have to do that for iO
 
 ### Unit Tests
 
-Create pEpForiOSTests/Util/TestData.swift, derive from TestDataSample like this:
+You need to create a copy of TestData.swift.sample as TestData.swift
+and populate it with corresponding (valid) settings to run successful tests.
+
+The tests will not compile without a syntactically correct TestData.swift.
 
 ```
-import UIKit
-
-import MessageModel
-
-class TestData: TestDataSample {
-    override func createWorkingAccount() -> Account {
-      // return working account, similar to TestDataSample
-    }
-}
-
+cp pEpForiOSTests/Util/TestData.swift.sample pEpForiOSTests/Util/TestData.swift
 ```
