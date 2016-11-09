@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+import MessageModel
+
 /**
  This operation is not intended to be put in a queue (though this should work too).
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
@@ -38,30 +40,42 @@ open class PrefetchEmailsOperation: ConcurrentBaseOperation {
             return
         }
 
-        privateMOC.perform() {
-            let folderBuilder = ImapFolderBuilder.init(connectInfo: self.connectInfo,
-                                                       backgroundQueue: self.backgroundQueue)
+        let context = Record.Context.default
+        context.perform() {
+            self.process(context: context)
+        }
+    }
 
-            // Treat Inbox specially, as it is the only mailbox
-            // that is mandatorily case-insensitive.
-            if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
-                if let folder = self.model.folderByType(.inbox, email: self.connectInfo.userId) {
-                    self.folderToOpen = folder.name!
-                }
+    func process(context: NSManagedObjectContext) {
+        let folderBuilder = ImapFolderBuilder.init(connectInfo: self.connectInfo,
+                                                   backgroundQueue: self.backgroundQueue)
+
+        guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
+            as? CdAccount else {
+                Log.error(component: comp, errorString: "Could not load account")
+                return
+        }
+
+        // Treat Inbox specially, as it is the only mailbox
+        // that is mandatorily case-insensitive.
+        if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
+            if let folder = CdFolder.first(with: ["folderType": FolderType.inbox.rawValue,
+                                          "account": account]) {
+                self.folderToOpen = folder.name!
             }
+        }
 
-            self.sync = self.connectionManager.emailSyncConnection(self.connectInfo)
-            self.sync.delegate = self
-            self.sync.folderBuilder = folderBuilder
+        self.sync = self.connectionManager.emailSyncConnection(self.connectInfo)
+        self.sync.delegate = self
+        self.sync.folderBuilder = folderBuilder
 
-            if self.sync.imapState.authenticationCompleted == false {
-                self.sync.start()
+        if self.sync.imapState.authenticationCompleted == false {
+            self.sync.start()
+        } else {
+            if self.sync.imapState.currentFolder != nil {
+                self.syncMails(self.sync)
             } else {
-                if self.sync.imapState.currentFolder != nil {
-                    self.syncMails(self.sync)
-                } else {
-                    self.sync.openMailBox(self.folderToOpen)
-                }
+                self.sync.openMailBox(self.folderToOpen)
             }
         }
     }
