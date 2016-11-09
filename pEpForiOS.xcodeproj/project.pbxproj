@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
-		228038691DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		2280386A1DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		22DA56D91DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
@@ -41,11 +40,12 @@
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
 		433622921DC7678C00133B3D /* PersistentSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433622911DC7678C00133B3D /* PersistentSetup.swift */; };
 		433622981DC768F600133B3D /* AppDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433622971DC768F600133B3D /* AppDataModel.swift */; };
-		433622991DC768F600133B3D /* AppDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433622971DC768F600133B3D /* AppDataModel.swift */; };
 		4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4336229D1DC76B8100133B3D /* MessageModelTests.swift */; };
 		4339477B1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4339477A1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift */; };
 		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
 		43404B481D17D36D00D8B6FF /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43404B471D17D36D00D8B6FF /* EmailHeaderView.swift */; };
+		43409CE01DD30102008F8F49 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BA8821DC9E3B000D0683E /* TestData.swift */; };
+		43409CE11DD3015D008F8F49 /* AppDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433622971DC768F600133B3D /* AppDataModel.swift */; };
 		4340F5F91D363BE6006A5C82 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4340F5F81D363BE6006A5C82 /* ContactTableViewCell.swift */; };
 		43463AAE1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43463AAD1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift */; };
 		434662CC1CBF80850053FC48 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43E6A2831CBF802C00787A56 /* libPantomimeStatic.a */; };
@@ -84,7 +84,6 @@
 		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
 		439864481D6C486200D0FDE1 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439864471D6C486200D0FDE1 /* FolderListViewController.swift */; };
-		439BA8831DC9E3B000D0683E /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BA8821DC9E3B000D0683E /* TestData.swift */; };
 		439C4D411CD27B0E0099A27F /* VerifyImapConnectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C4D401CD27B0E0099A27F /* VerifyImapConnectionOperation.swift */; };
 		439D406B1CC78862009A4E7C /* libpEpiOSAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40661CC78825009A4E7C /* libpEpiOSAdapter.a */; };
 		439D40701CC78930009A4E7C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
@@ -1109,14 +1108,13 @@
 			files = (
 				433622921DC7678C00133B3D /* PersistentSetup.swift in Sources */,
 				4352FA1F1DC79E9B0081161A /* DefaultSendLayer.swift in Sources */,
+				43409CE11DD3015D008F8F49 /* AppDataModel.swift in Sources */,
 				4352FA1D1DC79B0B0081161A /* TestDataSample.swift in Sources */,
-				433622991DC768F600133B3D /* AppDataModel.swift in Sources */,
+				43409CE01DD30102008F8F49 /* TestData.swift in Sources */,
 				438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */,
 				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
-				439BA8831DC9E3B000D0683E /* TestData.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
-				228038691DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
