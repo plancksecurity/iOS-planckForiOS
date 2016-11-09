@@ -10,7 +10,7 @@ import UIKit
 
 import MessageModel
 
-class TestDataSample {
+class TestData {
     /**
      An account that should not be able to be verified.
      */

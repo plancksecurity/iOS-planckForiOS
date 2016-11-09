@@ -1,0 +1,3 @@
+Create a copy of TestData.swift.sample as TestData.swift
+to omit Xcode errors when building and populate it with 
+corresponding (valid) settings to run successful tests.
