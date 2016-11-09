@@ -17,10 +17,29 @@ class TestData {
     func createDisfunctionalAccount() -> Account {
         let id = Identity.create(address: "user1@example.com", userName: "User 1",
                                  userID: "user1")
+
+       /* An SMTP server usually has following valid arguments:
+          - serverType: .smtp (only)
+          - port: 465 (Int example: usual for secured connections)
+          - address: "mail.example.com" (String example)
+          - transport: .plain, .tls or .startTls (usual is: .startTls)
+        */
         let smtp = Server.create(serverType: .smtp, port: 4096, address: "localhost",
                                  transport: .plain)
+
+	/* An IMAP server usually has following valid arguments:
+          - serverType: .imap (only)
+          - port: 993 (Int example: usual for secured connections)
+          - address: "mail.example.com" (String example)
+          - transport: .plain, .tls or .startTls (usual is: .tls)
+        */
         let imap = Server.create(serverType: .imap, port: 4097, address: "localhost",
                                  transport: .plain)
+
+        /* If credential data differs between the SMTP and IMAP connections, two seperate
+           identities need to be created, with then different userName (String) and password
+           (String) arguments in place.
+         */
         let cred = ServerCredentials.create(userName: id.address, password: "password",
                                             servers: [smtp, imap])
         let acc = Account.create(identity: id, credentials: [cred])
