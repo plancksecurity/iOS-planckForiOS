@@ -220,8 +220,9 @@ class EmailListViewController: UITableViewController {
         if let email = messageAt(indexPath: indexPath) {
             let isFlagAction = createIsFlagAction(message: email, cell: cell)
             let deleteAction = createDeleteAction(cell)
-            let isReadAction = createIsReadAction(message: email, cell: cell)
-            return [deleteAction,isFlagAction,isReadAction]
+            //let isReadAction = createIsReadAction(message: email, cell: cell)
+            let moreAction = createMoreAction(message: email, cell: cell)
+            return [deleteAction,isFlagAction,moreAction]
         }
         return nil
     }
@@ -317,16 +318,16 @@ class EmailListViewController: UITableViewController {
 
     func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
         // preparing the title action to show when user swipe
-        var localizedIsFlagTitle = " "
-        if (isImportant(message: message)) {
-            localizedIsFlagTitle = NSLocalizedString(
-                "Unflag",
-                comment: "Unflag button title in swipe action on EmailListViewController")
-        } else {
-            localizedIsFlagTitle = NSLocalizedString(
-                "Flag",
-                comment: "Flag button title in swipe action on EmailListViewController")
-        }
+//        var localizedIsFlagTitle = " "
+//        if (isImportant(message: message)) {
+//            localizedIsFlagTitle = NSLocalizedString(
+//                "Unflag",
+//                comment: "Unflag button title in swipe action on EmailListViewController")
+//        } else {
+//            localizedIsFlagTitle = NSLocalizedString(
+//                "Flag",
+//                comment: "Flag button title in swipe action on EmailListViewController")
+//        }
 
         // preparing action to trigger when user swipe
         let isFlagCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
@@ -341,10 +342,12 @@ class EmailListViewController: UITableViewController {
                 self.tableView.reloadRows(at: [indexPath], with: .none)
         }
         // creating the action
-        let isFlagAction = UITableViewRowAction(style: .default, title: localizedIsFlagTitle,
+        let isFlagAction = UITableViewRowAction(style: .normal, title: "          ",
                                                 handler: isFlagCompletionHandler)
         // changing default action color
-        isFlagAction.backgroundColor = UIColor.orange
+        let swipeFlagImage = UIImage(named: "swipe-flag")
+        let flagIconColor = UIColor(patternImage: swipeFlagImage!)
+        isFlagAction.backgroundColor = flagIconColor
 
         return isFlagAction
     }
@@ -352,9 +355,6 @@ class EmailListViewController: UITableViewController {
     func createDeleteAction (_ cell: EmailListViewCell) -> UITableViewRowAction {
 
         // preparing the title action to show when user swipe
-        let localizedDeleteTitle = NSLocalizedString(
-            "Erase",
-            comment: "Erase button title in swipe action on EmailListViewController")
 
         let deleteCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
@@ -364,8 +364,11 @@ class EmailListViewController: UITableViewController {
         }
 
         // creating the action
-        let deleteAction = UITableViewRowAction(style: .default, title: localizedDeleteTitle,
+        let deleteAction = UITableViewRowAction(style: .normal, title: "          ",
                                                 handler: deleteCompletionHandler)
+        let swipeTrashImage = UIImage(named: "swipe-trash")
+        let trashIconColor = UIColor(patternImage: swipeTrashImage!)
+        deleteAction.backgroundColor = trashIconColor
         return deleteAction
     }
 
@@ -398,5 +401,54 @@ class EmailListViewController: UITableViewController {
         isReadAction.backgroundColor = UIColor.blue
 
         return isReadAction
+    }
+    
+    func createMoreAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+        let moreCompletitionHandler :(UITableViewRowAction, IndexPath) -> Void = {(action, indexPath) in
+            self.showMoreActionSheet(cell: cell)
+        }
+        let moreAction = UITableViewRowAction(style: .normal, title: "          ", handler: moreCompletitionHandler)
+        let swipeMoreImage = UIImage(named: "swipe-more")
+        let moreIconColor = UIColor(patternImage: swipeMoreImage!)
+        moreAction.backgroundColor = moreIconColor
+        return moreAction
+    }
+    
+    // MARK: - Action Sheet
+    
+    func showMoreActionSheet(cell: EmailListViewCell) {
+        let alertControler = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let cancelAction = createCancelAction()
+        let replyAction = createReplyAction(cell: cell)
+        let forwardAction = createForwardAction(cell: cell)
+        let markAction = createMarkAction()
+        alertControler.addAction(cancelAction)
+        alertControler.addAction(replyAction)
+        alertControler.addAction(forwardAction)
+        alertControler.addAction(markAction)
+        present(alertControler, animated: true, completion: nil)
+    }
+    
+    // MARK: - Action Sheet Actions
+
+    func createCancelAction() -> UIAlertAction {
+      return  UIAlertAction(title: "Cancel", style: .cancel) { (action) in}
+    }
+    
+    func createReplyAction(cell: EmailListViewCell) ->  UIAlertAction {
+        return UIAlertAction(title: "Reply", style: .default) { (action) in
+            self.performSegue(withIdentifier: self.segueCompose, sender: cell)
+        }
+    }
+    
+    func createForwardAction(cell: EmailListViewCell) -> UIAlertAction {
+        return UIAlertAction(title: "Forward", style: .default) { (action) in
+            self.performSegue(withIdentifier: self.segueCompose, sender: cell)
+        }
+    }
+    
+    func createMarkAction() -> UIAlertAction {
+        return UIAlertAction(title: "Mark", style: .default) { (action) in
+        }
     }
 }
