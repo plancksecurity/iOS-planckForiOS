@@ -48,22 +48,16 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(connectInfo: EmailConnectInfo, coreDataUtil: CoreDataUtil,
-                connectionManager: ConnectionManager, onlyUpdateIfNecessary: Bool) {
+    public init(connectInfo: EmailConnectInfo, connectionManager: ConnectionManager,
+                onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.connectInfo = connectInfo
         self.connectionManager = connectionManager
 
         super.init()
 
-        folderBuilder = ImapFolderBuilder.init(connectInfo: connectInfo,
-                                               backgroundQueue: backgroundQueue)
-    }
-
-    convenience public init(connectInfo: EmailConnectInfo, coreDataUtil: CoreDataUtil,
-                            connectionManager: ConnectionManager) {
-        self.init(connectInfo: connectInfo, coreDataUtil: coreDataUtil,
-                  connectionManager: connectionManager, onlyUpdateIfNecessary: false)
+        folderBuilder = ImapFolderBuilder(connectInfo: connectInfo,
+                                          backgroundQueue: backgroundQueue)
     }
 
     open override func main() {
@@ -178,9 +172,7 @@ extension FetchFoldersOperation: ImapSyncDelegate {
         }
 
         let folderInfo = FolderInfo.init(name: folderName, separator: folderSeparator)
-        let op = StoreFolderOperation.init(
-            coreDataUtil: coreDataUtil, folderInfo: folderInfo,
-            email: self.connectInfo.userId)
+        let op = StoreFolderOperation.init(connectInfo: self.connectInfo, folderInfo: folderInfo)
         backgroundQueue.addOperation(op)
     }
 
