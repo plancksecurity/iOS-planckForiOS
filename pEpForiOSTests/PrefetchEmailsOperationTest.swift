@@ -19,16 +19,12 @@ class PrefetchEmailsOperationTest: XCTestCase {
         let _ = PersistentSetup()
     }
     
-    func testSimple() {
+    func testFetchMails() {
         let account = TestData().createWorkingAccount()
-        account.save()
+        let cdAccount = CdAccount.create(with: account)
         TestUtil.skipValidation()
 
-        guard let acc = MessageModel.CdAccount.first() else {
-            XCTAssertTrue(false)
-            return
-        }
-        guard let connectInfo = (acc.emailConnectInfos.filter {
+        guard let connectInfo = (cdAccount.emailConnectInfos.filter {
             $0.key.emailProtocol == .imap }.first?.key) else {
                 XCTAssertTrue(false)
                 return
@@ -37,8 +33,8 @@ class PrefetchEmailsOperationTest: XCTestCase {
         XCTAssertNil(CdMessage.all())
 
         let exp = expectation(description: "emailFetched")
-        let op = PrefetchEmailsOperation.init(grandOperator: grandOp, connectInfo: connectInfo,
-                                              folder: ImapSync.defaultImapInboxName)
+        let op = PrefetchEmailsOperation(grandOperator: grandOp, connectInfo: connectInfo,
+                                         folder: ImapSync.defaultImapInboxName)
         op.completionBlock = {
             exp.fulfill()
         }
@@ -49,5 +45,10 @@ class PrefetchEmailsOperationTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
         })
+
+        XCTAssertNotNil(CdMessage.all())
+        if let msgs = CdMessage.all() {
+            XCTAssertGreaterThan(msgs.count, 0)
+        }
     }
 }

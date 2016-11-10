@@ -44,6 +44,7 @@ open class CdMessagePantomime {
         mail.received = message.receivedDate() as NSDate?
         mail.shortMessage = message.subject()
         mail.messageID = message.messageID()
+        mail.uuid = mail.messageID
         mail.uid = Int32(message.uid())
 
         let imap = mail.imap ?? CdImapFields.create()
@@ -212,7 +213,7 @@ open class CdMessagePantomime {
             } else {
                 let attachment = insertAttachment(
                     contentType: part.contentType(), filename: part.filename(), data: data)
-                targetMail.addToAttachments(attachment)
+                targetMail.addAttachment(attachment)
             }
         }
 

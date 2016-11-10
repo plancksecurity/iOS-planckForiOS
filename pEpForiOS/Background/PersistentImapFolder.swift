@@ -76,7 +76,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         var folder: CdFolder? = nil
         privateMOC.performAndWait({
             guard let account = self.privateMOC.object(with: self.connectInfo.accountObjectID)
-                as? CdAccount else {
+                as? MessageModel.CdAccount else {
                     Log.error(component: self.comp,
                               errorString: "Given objectID is not an account")
                     return
@@ -162,9 +162,12 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     func message(withUID theUID: UInt) -> CWIMAPMessage? {
         var result: CWIMAPMessage?
+        guard let folderName = folder.name else {
+            return nil
+        }
         privateMOC.performAndWait({
             let pUid = NSPredicate.init(format: "uid = %d", theUID)
-            let pFolderName = NSPredicate.init(format: "folder.name = %@", self.folder.name!)
+            let pFolderName = NSPredicate.init(format: "parent.name = %@", folderName)
             let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolderName])
 
             if let msg = CdMessage.first(with: p) {

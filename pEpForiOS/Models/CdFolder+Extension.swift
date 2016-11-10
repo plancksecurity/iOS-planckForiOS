@@ -19,16 +19,16 @@ public extension CdFolder {
         return folder
     }
 
-    public static func by(folderType: FolderType, account: CdAccount) -> CdFolder? {
+    public static func by(folderType: FolderType, account: MessageModel.CdAccount) -> CdFolder? {
         return CdFolder.first(with: ["folderType": folderType.rawValue, "account": account])
     }
 
-    public static func by(name: String, account: CdAccount) -> CdFolder? {
+    public static func by(name: String, account: MessageModel.CdAccount) -> CdFolder? {
         return CdFolder.first(with: ["name": name, "account": account])
     }
 
     public static func insertOrUpdate(folderName: String, folderSeparator: String?,
-                                      account: CdAccount) -> CdFolder? {
+                                      account: MessageModel.CdAccount) -> CdFolder? {
         // Treat Inbox specially, since its name is case insensitive.
         // For all other folders, it's undefined if they have to be handled
         // case insensitive or not, so no special handling for those.
@@ -42,8 +42,6 @@ public extension CdFolder {
         }
 
         if let separator = folderSeparator {
-            account.folderSeparator = folderSeparator
-
             // Create folder hierarchy if necessary
             var pathsSoFar = [String]()
             var parentFolder: CdFolder? = nil
@@ -52,7 +50,8 @@ public extension CdFolder {
                 pathsSoFar.append(p)
                 let pathName = (pathsSoFar as NSArray).componentsJoined(
                     by: separator)
-                let folder = CdFolder.create(with: ["name": pathName, "account": account])
+                let folder = CdFolder.create(with: ["name": pathName, "account": account,
+                                                    "uuid": UUID.generate()])
                 folder.parent = parentFolder
                 if let pf = parentFolder {
                     pf.addToSubFolders(folder)
@@ -62,7 +61,8 @@ public extension CdFolder {
             return parentFolder
         } else {
             // Just create the folder as-is, can't check for hierarchy
-            let folder = CdFolder.create(with: ["name": folderName, "account": account])
+            let folder = CdFolder.create(with: ["name": folderName, "account": account,
+                                                "uuid": UUID.generate()])
             return folder
         }
     }
@@ -80,7 +80,7 @@ public extension CdFolder {
      messages contained in that folder.
      */
     public func allMessagesPredicate() -> NSPredicate {
-        return NSPredicate(format: "folder = %@, imapFlags.flagDeleted = false", self)
+        return NSPredicate(format: "parent = %@ and imap.flagDeleted = false", self)
     }
 
     /**
