@@ -42,7 +42,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
     func storeMessage(context: NSManagedObjectContext) {
         guard let account = context.object(with: connectInfo.accountObjectID)
             as? MessageModel.CdAccount else {
-                Log.error(component: comp, errorString: "Cannot access account by object ID")
+                errors.append(Constants.errorCannotFindAccount(component: comp))
                 return
         }
         let result = insert(pantomimeMessage: message, account: account, quick: quick)

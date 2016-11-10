@@ -70,6 +70,7 @@ open class Constants {
         case couldNotUpdateOrAddContact
         case couldNotStoreFolder
         case cannotFindAccountForEmail
+        case cannotFindAccount
         case cannotFindServerForAccount
     }
 
@@ -214,6 +215,16 @@ open class Constants {
         return error
     }
 
+    static func errorCannotFindAccount(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.cannotFindAccount.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find account from object ID", comment:
+                    "Technical error description when not being able to fetch account by email")])
+        return error
+    }
+    
     static func errorCannotFindServer(
         component: String, accountEmail: String) -> NSError {
         let error = NSError.init(

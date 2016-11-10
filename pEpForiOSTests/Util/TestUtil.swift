@@ -225,4 +225,35 @@ class TestUtil {
             expVerifyCalled?.fulfill()
         }
     }
+
+    /**
+     Validates all servers and their credentials without actually validating them.
+     */
+    static func skipValidation() {
+        guard let accs = CdAccount.all() as? [MessageModel.CdAccount] else {
+            XCTAssertTrue(false)
+            return
+        }
+        for acc in accs {
+            acc.needsVerification = false
+        }
+
+        guard let servers = CdServer.all() as? [CdServer] else {
+            XCTAssertTrue(false)
+            return
+        }
+        for server in servers {
+            guard let creds = server.credentials else {
+                XCTAssertTrue(false)
+                return
+            }
+            for c in creds {
+                guard let cred = c as? CdServerCredentials else {
+                    XCTAssertTrue(false)
+                    return
+                }
+                cred.needsVerification = false
+            }
+        }
+    }
 }
