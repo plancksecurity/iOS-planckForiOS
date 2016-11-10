@@ -16,7 +16,7 @@ import MessageModel
 class AppConfig: NSObject {
 
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
-    let connectionManager: ConnectionManager
+    let connectionManager = ConnectionManager()
     let grandOperator: IGrandOperator
 
     /**
@@ -31,10 +31,8 @@ class AppConfig: NSObject {
     var currentAccount: Account? = nil
 
     override init() {
-        connectionManager = ConnectionManager()
         model = CdModel.init(context: coreDataUtil.defaultContext())
-        let gOp = GrandOperator.init(connectionManager: connectionManager,
-                                     coreDataUtil: coreDataUtil)
+        let gOp = GrandOperator.init(connectionManager: connectionManager)
         grandOperator = gOp
         MessageModel.CdAccount.sendLayer = gOp
 

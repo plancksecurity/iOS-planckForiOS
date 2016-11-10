@@ -14,6 +14,7 @@ import pEpForiOS
 class SendLayerTests: XCTestCase {
     let coreDataUtil = CoreDataUtil()
     let connectionManager = ConnectionManager()
+    let grandOp = GrandOperator()
 
     override func setUp() {
         super.setUp()
@@ -25,8 +26,6 @@ class SendLayerTests: XCTestCase {
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
 
-        let grandOp = GrandOperator(connectionManager: connectionManager,
-                                    coreDataUtil: coreDataUtil)
         CdAccount.sendLayer = grandOp
         let account = TestData().createDisfunctionalAccount()
         account.save()
@@ -43,8 +42,6 @@ class SendLayerTests: XCTestCase {
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
 
-        let grandOp = GrandOperator(connectionManager: connectionManager,
-                                    coreDataUtil: coreDataUtil)
         CdAccount.sendLayer = grandOp
         let account = TestData().createWorkingAccount()
         account.save()

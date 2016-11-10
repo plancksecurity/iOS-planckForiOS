@@ -110,7 +110,7 @@ open class GrandOperator: IGrandOperator {
     let comp = "GrandOperator"
 
     open let connectionManager: ConnectionManager
-    open let coreDataUtil: CoreDataUtil
+    open let coreDataUtil = CoreDataUtil()
 
     fileprivate let verificationQueue = OperationQueue()
     fileprivate let backgroundQueue = OperationQueue()
@@ -127,10 +127,13 @@ open class GrandOperator: IGrandOperator {
      */
     fileprivate var flagSyncOperations = [String: BaseOperation]()
 
-    public init(connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
+    public init(connectionManager: ConnectionManager) {
         self.connectionManager = connectionManager
-        self.coreDataUtil = coreDataUtil
         self.connectionManager.grandOperator = self
+    }
+
+    public convenience init() {
+        self.init(connectionManager: ConnectionManager())
     }
 
     open func chainOperations(_ operations: [BaseOperation],
