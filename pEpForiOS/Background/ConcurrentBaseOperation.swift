@@ -22,7 +22,7 @@ open class ConcurrentBaseOperation: BaseOperation {
      */
     let backgroundQueue = OperationQueue.init()
 
-    let coreDataUtil: CoreDataUtil
+    let coreDataUtil = CoreDataUtil()
 
     lazy var privateMOC: NSManagedObjectContext = self.coreDataUtil.privateContext()
     lazy var model: ICdModel = CdModel.init(context: self.privateMOC)
@@ -39,10 +39,6 @@ open class ConcurrentBaseOperation: BaseOperation {
 
     open override var isFinished: Bool {
         return myFinished && backgroundQueue.operationCount == 0
-    }
-
-    public init(coreDataUtil: CoreDataUtil) {
-        self.coreDataUtil = coreDataUtil
     }
 
     /**

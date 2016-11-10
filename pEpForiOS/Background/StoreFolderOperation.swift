@@ -24,7 +24,6 @@ class StoreFolderOperation: ConcurrentBaseOperation {
     init(coreDataUtil: CoreDataUtil, folderInfo: FolderInfo, email: String) {
         self.folderInfo = folderInfo
         self.email = email
-        super.init(coreDataUtil: coreDataUtil)
     }
 
     override func main() {

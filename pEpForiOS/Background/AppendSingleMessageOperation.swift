@@ -46,8 +46,6 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
         self.connectInfo = account.connectInfo
         self.connectionManager = connectionManager
-
-        super.init(coreDataUtil: coreDataUtil)
     }
 
     convenience public init(message: CdMessage, account: CdAccount, targetFolder: CdFolder,

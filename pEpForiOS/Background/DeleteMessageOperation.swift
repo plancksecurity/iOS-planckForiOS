@@ -17,7 +17,6 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
 
     public init(message: CdMessage, coreDataUtil: CoreDataUtil) {
         self.messageID = message.objectID
-        super.init(coreDataUtil: coreDataUtil)
     }
 
     override open func main() {

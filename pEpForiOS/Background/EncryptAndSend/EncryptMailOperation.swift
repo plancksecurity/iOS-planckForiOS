@@ -24,7 +24,6 @@ open class EncryptMailOperation: ConcurrentBaseOperation {
 
     public init(encryptionData: EncryptionData) {
         self.encryptionData = encryptionData
-        super.init(coreDataUtil: encryptionData.coreDataUtil)
     }
 
     override open func main() {

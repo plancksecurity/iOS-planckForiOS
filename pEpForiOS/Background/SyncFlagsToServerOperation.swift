@@ -35,7 +35,6 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
                                             networkAddress: "", networkPort: 007)
         self.targetFolderName = folder.name
         self.connectionManager = connectionManager
-        super.init(coreDataUtil: coreDataUtil)
     }
 
     open override func main() {

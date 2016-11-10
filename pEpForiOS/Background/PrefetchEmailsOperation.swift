@@ -32,7 +32,6 @@ open class PrefetchEmailsOperation: ConcurrentBaseOperation {
         } else {
             folderToOpen = ImapSync.defaultImapInboxName
         }
-        super.init(coreDataUtil: grandOperator.coreDataUtil)
     }
 
     override open func main() {

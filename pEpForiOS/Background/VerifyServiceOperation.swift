@@ -25,7 +25,6 @@ open class VerifyServiceOperation: ConcurrentBaseOperation {
     public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
         self.connectionManager = grandOperator.connectionManager
-        super.init(coreDataUtil: grandOperator.coreDataUtil)
     }
 
     func close(_ finish: Bool) {

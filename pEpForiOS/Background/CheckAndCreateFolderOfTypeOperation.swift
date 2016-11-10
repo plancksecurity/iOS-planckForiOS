@@ -39,7 +39,6 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
         self.folderType = folderType
         self.folderName = folderType.folderName()
         self.connectionManager = connectionManager
-        super.init(coreDataUtil: coreDataUtil)
     }
 
     open override func main() {

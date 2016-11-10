@@ -54,7 +54,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
         self.connectInfo = connectInfo
         self.connectionManager = connectionManager
 
-        super.init(coreDataUtil: coreDataUtil)
+        super.init()
 
         folderBuilder = ImapFolderBuilder.init(connectInfo: connectInfo,
                                                backgroundQueue: backgroundQueue)

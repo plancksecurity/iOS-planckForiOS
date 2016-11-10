@@ -33,7 +33,6 @@ open class SaveSentMessageOperation: ConcurrentBaseOperation {
 
     public init(encryptionData: EncryptionData) {
         self.encryptionData = encryptionData
-        super.init(coreDataUtil: encryptionData.coreDataUtil)
     }
 
     open override func main() {
