@@ -23,7 +23,7 @@ class CdMessagePantomimeTests: XCTestCase {
         account.save()
 
         guard let cdAccount: MessageModel.CdAccount = CdAccount.first(
-            with: "identity.address", value: "unittest.ios.4@peptest.ch") else {
+            with: "identity.address", value: account.user.address) else {
                 XCTAssertTrue(false)
                 return
         }
