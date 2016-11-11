@@ -59,16 +59,6 @@ public protocol IGrandOperator: class {
         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asynchronously create local special folders, like Outbox, Sent etc.
-
-     - parameter accountEmail: The email of the account those folders belong to.
-     - parameter completionBlock: Will be called on completion of the operation, with
-     a non-nil error object if there was an error during execution.
-     */
-    func createSpecialLocalFolders(_ accountEmail: String,
-                                   completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
      Sends the given mail via SMTP. Also saves it into the drafts folder. You
      might have to trigger a fetch for that mail to appear in your drafts folder.
      */
@@ -199,9 +189,12 @@ open class GrandOperator: IGrandOperator {
         var fetchOperations = [BaseOperation]()
 
         for connectInfo in connectInfos {
-            operations.append(CreateLocalSpecialFoldersOperation.init(
-                coreDataUtil: coreDataUtil,
-                accountEmail: connectInfo.userId))
+            guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
+                as? MessageModel.CdAccount else {
+                    completionBlock?(Constants.errorCannotFindAccount(component: comp))
+                    return
+            }
+            operations.append(CreateLocalSpecialFoldersOperation(account: account))
             operations.append(FetchFoldersOperation.init(
                 connectInfo: connectInfo, connectionManager: connectionManager,
                 onlyUpdateIfNecessary: true))
@@ -226,13 +219,6 @@ open class GrandOperator: IGrandOperator {
                 // by chainOperations.
                 completionBlock?(error)
         })
-    }
-
-    open func createSpecialLocalFolders(_ accountEmail: String,
-                                          completionBlock: GrandOperatorCompletionBlock?) {
-        let op = CreateLocalSpecialFoldersOperation.init(coreDataUtil: coreDataUtil,
-                                                         accountEmail: accountEmail)
-        kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
     func handleVerificationCompletionFinished1(_ finished1: Bool, finished2: Bool,
