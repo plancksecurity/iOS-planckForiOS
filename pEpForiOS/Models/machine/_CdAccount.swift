@@ -1,26 +1,9 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to CdAccount.swift instead.
 
-
-import Foundation
 import CoreData
 
 import MessageModel
-
-public enum CdAccountAttributes: String {
-    case accountType = "accountType"
-    case email = "email"
-    case folderSeparator = "folderSeparator"
-    case imapServerName = "imapServerName"
-    case imapServerPort = "imapServerPort"
-    case imapTransport = "imapTransport"
-    case imapUsername = "imapUsername"
-    case nameOfTheUser = "nameOfTheUser"
-    case smtpServerName = "smtpServerName"
-    case smtpServerPort = "smtpServerPort"
-    case smtpTransport = "smtpTransport"
-    case smtpUsername = "smtpUsername"
-}
 
 open class _CdAccount: BaseManagedObject {
 
@@ -42,9 +25,6 @@ open class _CdAccount: BaseManagedObject {
     }
 
     // MARK: - Properties
-
-    @NSManaged open
-    var accountType: NSNumber
 
     @NSManaged open
     var email: String
