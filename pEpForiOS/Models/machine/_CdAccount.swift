@@ -22,10 +22,6 @@ public enum CdAccountAttributes: String {
     case smtpUsername = "smtpUsername"
 }
 
-public enum CdAccountRelationships: String {
-    case folders = "folders"
-}
-
 open class _CdAccount: BaseManagedObject {
 
     // MARK: - Class methods
@@ -82,43 +78,6 @@ open class _CdAccount: BaseManagedObject {
 
     @NSManaged open
     var smtpUsername: String?
-
-    // MARK: - Relationships
-
-    @NSManaged open
-    var folders: NSSet
-
-    open func foldersSet() -> NSMutableSet {
-        return self.folders.mutableCopy() as! NSMutableSet
-    }
-
-}
-
-extension _CdAccount {
-
-    open func addFolders(objects: NSSet) {
-        let mutable = self.folders.mutableCopy() as! NSMutableSet
-        mutable.union(objects as Set<NSObject>)
-        self.folders = mutable.copy() as! NSSet
-    }
-
-    open func removeFolders(objects: NSSet) {
-        let mutable = self.folders.mutableCopy() as! NSMutableSet
-        mutable.minus(objects as Set<NSObject>)
-        self.folders = mutable.copy() as! NSSet
-    }
-
-    open func addFoldersObject(value: CdFolder) {
-        let mutable = self.folders.mutableCopy() as! NSMutableSet
-        mutable.add(value)
-        self.folders = mutable.copy() as! NSSet
-    }
-
-    open func removeFoldersObject(value: CdFolder) {
-        let mutable = self.folders.mutableCopy() as! NSMutableSet
-        mutable.remove(value)
-        self.folders = mutable.copy() as! NSSet
-    }
 
 }
 
