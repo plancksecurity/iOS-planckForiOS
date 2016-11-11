@@ -10,47 +10,36 @@ import XCTest
 import CoreData
 
 import pEpForiOS
-
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
+import MessageModel
 
 class SimpleOperationsTest: XCTestCase {
-    var persistentSetup: PersistentSetup!
-    var connectInfo: ImapSmtpConnectInfo!
+    var connectInfo: EmailConnectInfo!
+    let grandOperator = GrandOperator()
+    var account: MessageModel.CdAccount!
 
     override func setUp() {
         super.setUp()
-        persistentSetup = PersistentSetup.init()
-        connectInfo = TestData.connectInfo
+        let account = TestData().createWorkingAccount()
+        let cdAccount = CdAccount.create(with: account)
+        self.account = cdAccount
+        TestUtil.skipValidation()
+
+        guard let theConnectInfo = (cdAccount.emailConnectInfos.filter {
+            $0.key.emailProtocol == .imap }.first?.key) else {
+                XCTAssertTrue(false)
+                return
+        }
+        connectInfo = theConnectInfo
     }
 
     override func tearDown() {
-        persistentSetup = nil
         super.tearDown()
     }
 
     func testVerifyConnection() {
         let expCompleted = expectation(description: "expCompleted")
-        let op = VerifyImapConnectionOperation.init(grandOperator: persistentSetup.grandOperator,
-                                                    connectInfo: persistentSetup.connectionInfo)
+        let op = VerifyImapConnectionOperation(grandOperator: grandOperator,
+                                               connectInfo: connectInfo)
         op.completionBlock = {
             expCompleted.fulfill()
         }
@@ -65,9 +54,9 @@ class SimpleOperationsTest: XCTestCase {
     func testPrefetchMailsOperation() {
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
-        let op = PrefetchEmailsOperation.init(grandOperator: persistentSetup.grandOperator,
-                                              connectInfo: connectInfo,
-                                              folder: ImapSync.defaultImapInboxName)
+        let op = PrefetchEmailsOperation(grandOperator: grandOperator,
+                                         connectInfo: connectInfo,
+                                         folder: ImapSync.defaultImapInboxName)
         op.completionBlock = {
             expMailsPrefetched.fulfill()
         }
@@ -80,11 +69,9 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         XCTAssertGreaterThan(
-            self.persistentSetup.model.folderCountByPredicate(
-                NSPredicate.init(value: true)), 0)
+            CdFolder.countBy(predicate: NSPredicate.init(value: true)), 0)
         XCTAssertGreaterThan(
-            self.persistentSetup.model.messageCountByPredicate(
-                NSPredicate.init(value: true)), 0)
+            CdMessageHelper.countBy(predicate: NSPredicate.init(value: true)), 0)
     }
 
     func testFetchFoldersOperation() {
@@ -92,8 +79,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let op = FetchFoldersOperation.init(
             connectInfo: connectInfo,
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
-            connectionManager: persistentSetup.grandOperator.connectionManager)
+            connectionManager: grandOperator.connectionManager)
         op.completionBlock = {
             expFoldersFetched.fulfill()
         }
@@ -104,20 +90,24 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         XCTAssertGreaterThanOrEqual(
-            self.persistentSetup.model.folderCountByPredicate(
-                NSPredicate.init(value: true)), 1)
-        XCTAssertEqual(self.persistentSetup.model.folderByType(
-            .inbox,email: self.connectInfo.email)?.name.lowercased(),
+            CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
+
+        var options: [String: Any] = ["folderType": FolderType.inbox,
+                                      "account.objectID": connectInfo.accountObjectID]
+        let inboxFolder = CdFolder.first(with: options)
+        options["folderType"] = FolderType.sent
+        let sentFolder = CdFolder.first(with: options)
+
+        XCTAssertEqual(inboxFolder?.name?.lowercased(),
                        ImapSync.defaultImapInboxName.lowercased())
-        XCTAssertNotNil(persistentSetup.model.folderByType(
-            .sent, account: persistentSetup.account))
+        XCTAssertNotNil(sentFolder)
     }
 
     func testStorePrefetchedMailOperation() {
-        let _ = persistentSetup.model.insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, folderSeparator: nil,
-            accountEmail: connectInfo.email)
-        persistentSetup.model.save()
+        let _ = CdFolder.insertOrUpdate(
+            folderName: ImapSync.defaultImapInboxName, folderSeparator: nil,
+            account: account)
+        Record.save()
 
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
         let message = CWIMAPMessage.init()
@@ -125,9 +115,8 @@ class SimpleOperationsTest: XCTestCase {
         message.setFolder(folder)
 
         let expStored = expectation(description: "expStored")
-        let op = StorePrefetchedMailOperation.init(
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
-            accountEmail: connectInfo.email, message: message)
+        let op = StorePrefetchedMailOperation(
+            connectInfo: connectInfo, message: message)
         op.completionBlock = {
             expStored.fulfill()
         }
@@ -136,8 +125,8 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
-                self.persistentSetup.model.messageCountByPredicate(
-                    NSPredicate.init(value: true)), 1)
+                CdMessageHelper.countBy(
+                    predicate: NSPredicate.init(value: true)), 1)
         })
     }
 
@@ -145,10 +134,10 @@ class SimpleOperationsTest: XCTestCase {
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
         let numMails = 10
 
-        let _ = persistentSetup.model.insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, folderSeparator: nil,
-            accountEmail: connectInfo.email)
-        persistentSetup.model.save()
+        let _ = CdFolder.insertOrUpdate(
+            folderName: ImapSync.defaultImapInboxName, folderSeparator: nil,
+            account: account)
+        Record.save()
 
         let expMailsStored = expectation(description: "expMailsStored")
         var operations: Set<Operation> = []
@@ -163,9 +152,7 @@ class SimpleOperationsTest: XCTestCase {
                 address: "myaddress@test.com", type: .toRecipient)])
             message.setFolder(folder)
             message.setUID(UInt(i))
-            let op = StorePrefetchedMailOperation.init(
-                coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
-                accountEmail: connectInfo.email, message: message)
+            let op = StorePrefetchedMailOperation(connectInfo: connectInfo, message: message)
             operations.insert(op)
             op.completionBlock = {
                 operations.remove(op)
@@ -181,15 +168,14 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
-                self.persistentSetup.model.folderCountByPredicate(
-                    NSPredicate.init(value: true)), 1)
+                CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
             XCTAssertEqual(
-                self.persistentSetup.model.messageCountByPredicate(
-                    NSPredicate.init(value: true)),
+                CdMessageHelper.countBy(predicate: NSPredicate.init(value: true)),
                 numMails)
         })
     }
 
+    /*
     func testCreateLocalSpecialFoldersOperation() {
         let expFoldersStored = expectation(description: "expFoldersStored")
         let op = CreateLocalSpecialFoldersOperation.init(
@@ -215,11 +201,10 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func createBasicMail() -> (
-        OperationQueue, CdAccount, ICdModel, CdMessage,
+        OperationQueue, MessageModel.CdAccount, MessageModel.CdMessage,
         (identity: NSMutableDictionary, receiver1: PEPContact,
         receiver2: PEPContact, receiver3: PEPContact,
         receiver4: PEPContact))? {
-            let model = persistentSetup.model
             let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation.init(
                 coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
                 accountEmail: connectInfo.email)
@@ -478,8 +463,7 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
-                self.persistentSetup.model.folderCountByPredicate(
-                    NSPredicate.init(value: true)), 0)
+                CdFolder.countBy(predicate: NSPredicate.init(value: true)), 0)
             XCTAssertEqual(op.folderItems.count, 0)
         })
     }
@@ -526,8 +510,7 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(
-                self.persistentSetup.model.folderCountByPredicate(
-                    NSPredicate.init(value: true)), folderNames.count + 1)
+                CdFolder.countBy(predicate: NSPredicate.init(value: true)), folderNames.count + 1)
             XCTAssertEqual(op.folderItems.count, folderNames.count + 1)
 
             XCTAssertEqual(op.folderItems[0].name, ImapSync.defaultImapInboxName)
@@ -795,4 +778,5 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNil(persistentSetup.model.folderByType(
             .drafts, email: persistentSetup.account.email))
     }
+     */
 }

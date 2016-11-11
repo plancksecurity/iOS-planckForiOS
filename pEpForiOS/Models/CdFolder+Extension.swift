@@ -67,12 +67,17 @@ public extension CdFolder {
         }
     }
 
+    public static func countBy(predicate: NSPredicate) -> Int {
+        let objs = CdFolder.all(with: predicate)
+        return objs?.count ?? 0
+    }
+
     /**
      Extracts a unique String ID that you can use as a key in dictionaries.
      - Returns: A (hashable) String that is unique for each folder.
      */
     public func hashableID() -> String {
-        return "\(folderType) \(name) \(account?.identity?.address)"
+        return "\(uuid)"
     }
 
     /**
