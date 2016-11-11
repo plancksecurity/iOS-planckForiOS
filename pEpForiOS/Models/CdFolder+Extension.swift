@@ -69,14 +69,6 @@ public extension CdFolder {
     }
 
     /**
-     Extracts a unique String ID that you can use as a key in dictionaries.
-     - Returns: A (hashable) String that is unique for each folder.
-     */
-    public func hashableID() -> String {
-        return "\(uuid)"
-    }
-
-    /**
      - Returns: The predicate (for CdMessage) to get all (undeleted, valid)
      messages contained in that folder.
      */
