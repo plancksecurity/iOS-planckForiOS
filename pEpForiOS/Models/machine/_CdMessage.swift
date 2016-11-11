@@ -28,17 +28,6 @@ public enum CdMessageAttributes: String {
     case uid = "uid"
 }
 
-public enum CdMessageRelationships: String {
-    case attachments = "attachments"
-    case bcc = "bcc"
-    case cc = "cc"
-    case folder = "folder"
-    case from = "from"
-    case messageReference = "messageReference"
-    case references = "references"
-    case to = "to"
-}
-
 open class _CdMessage: BaseManagedObject {
 
     // MARK: - Class methods
