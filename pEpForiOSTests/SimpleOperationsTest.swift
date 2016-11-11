@@ -19,6 +19,8 @@ class SimpleOperationsTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        let _ = PersistentSetup()
+
         let account = TestData().createWorkingAccount()
         let cdAccount = CdAccount.create(with: account)
         self.account = cdAccount
@@ -175,31 +177,29 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
-    /*
     func testCreateLocalSpecialFoldersOperation() {
         let expFoldersStored = expectation(description: "expFoldersStored")
-        let op = CreateLocalSpecialFoldersOperation.init(
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
-            accountEmail: connectInfo.email)
-        let queue = OperationQueue.init()
+        let op = CreateLocalSpecialFoldersOperation(account: account)
+        let queue = OperationQueue()
         op.completionBlock = {
             expFoldersStored.fulfill()
         }
         queue.addOperation(op)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            guard let folders = self.persistentSetup.model.foldersByPredicate(
-                NSPredicate.init(value: true), sortDescriptors: nil) else {
+            guard let folders = CdFolder.all() as? [CdFolder] else {
                     XCTAssertTrue(false, "Expected folders created")
                     return
             }
             XCTAssertEqual(folders.count, FolderType.allValuesToCreate.count)
-            let outbox = self.persistentSetup.model.folderByType(
-                FolderType.localOutbox, email: self.connectInfo.email)
+            let p = NSPredicate(format: "folderType = %d and account = %@",
+                                FolderType.localOutbox.rawValue, self.account)
+            let outbox = CdFolder.first(with: p)
             XCTAssertNotNil(outbox, "Expected outbox to exist")
         })
     }
 
+    /*
     func createBasicMail() -> (
         OperationQueue, MessageModel.CdAccount, MessageModel.CdMessage,
         (identity: NSMutableDictionary, receiver1: PEPContact,
