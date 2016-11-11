@@ -14,6 +14,7 @@ public extension CdFolder {
     /**
      If the folder has been deleted, undelete it.
      */
+
     public static func reactivate(folder: CdFolder) -> CdFolder {
         folder.shouldDelete = false
         return folder
@@ -65,11 +66,6 @@ public extension CdFolder {
                                                 "uuid": UUID.generate()])
             return folder
         }
-    }
-
-    public static func countBy(predicate: NSPredicate) -> Int {
-        let objs = CdFolder.all(with: predicate)
-        return objs?.count ?? 0
     }
 
     /**

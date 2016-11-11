@@ -24,14 +24,6 @@ extension CdAccount {
             connectionTransport: self.connectInfo.connectionTransport,
             authMethod: self.connectInfo.authMethod)
     }
-
-    open var rawImapTransport: ConnectionTransport {
-        return ConnectionTransport(rawValue: self.imapTransport.intValue)!
-    }
-
-    open var rawSmtpTransport: ConnectionTransport {
-        return ConnectionTransport(rawValue: self.smtpTransport.intValue)!
-    }
 }
 
 extension MessageModel.CdAccount {
@@ -100,4 +92,5 @@ extension MessageModel.CdAccount {
     open func folder(byName name: String) -> CdFolder? {
         return CdFolder.first(with: ["account": self, "name": name])
     }
+
 }
