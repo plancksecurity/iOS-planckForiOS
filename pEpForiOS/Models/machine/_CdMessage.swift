@@ -79,25 +79,14 @@ open class _CdMessage: BaseManagedObject {
     @NSManaged open
     var bcc: NSOrderedSet
 
-    open func bccSet() -> NSMutableOrderedSet {
-        return self.bcc.mutableCopy() as! NSMutableOrderedSet
-    }
-
     @NSManaged open
     var cc: NSOrderedSet
-
-    open func ccSet() -> NSMutableOrderedSet {
-        return self.cc.mutableCopy() as! NSMutableOrderedSet
-    }
 
     @NSManaged open
     var folder: CdFolder
 
     @NSManaged open
     var from: CdIdentity?
-
-    @NSManaged open
-    var messageReference: CdMessageReference?
 
     @NSManaged open
     var references: NSOrderedSet
@@ -131,5 +120,4 @@ extension _CdMessage {
         mutable.remove(value)
         self.attachments = mutable.copy() as! NSOrderedSet
     }
-
 }
