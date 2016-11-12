@@ -41,7 +41,7 @@ open class _CdMessage: BaseManagedObject {
 
     @NSManaged open
     var flagDeleted: NSNumber
-
+ 
     @NSManaged open
     var flagDraft: NSNumber
 
@@ -119,17 +119,8 @@ open class _CdMessage: BaseManagedObject {
     @NSManaged open
     var references: NSOrderedSet
 
-    open func referencesSet() -> NSMutableOrderedSet {
-        return self.references.mutableCopy() as! NSMutableOrderedSet
-    }
-
     @NSManaged open
     var to: NSOrderedSet
-
-    open func toSet() -> NSMutableOrderedSet {
-        return self.to.mutableCopy() as! NSMutableOrderedSet
-    }
- 
 }
 
 extension _CdMessage {
