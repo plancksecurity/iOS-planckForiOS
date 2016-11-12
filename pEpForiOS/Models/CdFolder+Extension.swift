@@ -19,11 +19,6 @@ public extension CdFolder {
         return folder
     }
 
-    public static func countBy(predicate: NSPredicate) -> Int {
-        let objs = CdFolder.all(with: predicate)
-        return objs?.count ?? 0
-    }
-
     public static func by(folderType: FolderType, account: MessageModel.CdAccount) -> CdFolder? {
         return CdFolder.first(with: ["folderType": folderType.rawValue, "account": account])
     }
