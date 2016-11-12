@@ -8,12 +8,6 @@ import MessageModel
 
 open class _CdMessage: BaseManagedObject {
 
-    // MARK: - Class methods
-
-    open class func entity(managedObjectContext: NSManagedObjectContext) -> NSEntityDescription? {
-        return NSEntityDescription.entity(forEntityName: self.entityName, in: managedObjectContext)
-    }
-
     // MARK: - Properties
 
     @NSManaged open
