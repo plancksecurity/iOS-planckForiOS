@@ -14,10 +14,14 @@ public extension CdFolder {
     /**
      If the folder has been deleted, undelete it.
      */
-
     public static func reactivate(folder: CdFolder) -> CdFolder {
         folder.shouldDelete = false
         return folder
+    }
+
+    public static func countBy(predicate: NSPredicate) -> Int {
+        let objs = CdFolder.all(with: predicate)
+        return objs?.count ?? 0
     }
 
     public static func by(folderType: FolderType, account: MessageModel.CdAccount) -> CdFolder? {
@@ -38,6 +42,8 @@ public extension CdFolder {
                 return reactivate(folder: folder)
             }
         }
+
+        // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
             return reactivate(folder: folder)
         }
@@ -51,8 +57,7 @@ public extension CdFolder {
                 pathsSoFar.append(p)
                 let pathName = (pathsSoFar as NSArray).componentsJoined(
                     by: separator)
-                let folder = CdFolder.create(with: ["name": pathName, "account": account,
-                                                    "uuid": UUID.generate()])
+                let folder = insert(folderName: pathName, account: account)
                 folder.parent = parentFolder
                 if let pf = parentFolder {
                     pf.addToSubFolders(folder)
@@ -62,12 +67,45 @@ public extension CdFolder {
             return parentFolder
         } else {
             // Just create the folder as-is, can't check for hierarchy
-            let folder = CdFolder.create(with: ["name": folderName, "account": account,
-                                                "uuid": UUID.generate()])
+            let folder = insert(folderName: folderName, account: account)
             return folder
         }
     }
 
+    static func insert(folderName name: String, account: MessageModel.CdAccount) -> CdFolder {
+        // Reactivate if previously deleted
+        if let folder = by(name: name, account: account) {
+            return reactivate(folder: folder)
+        }
+
+        let folder = CdFolder.create(with: ["name": name, "account": account,
+                                            "uuid": UUID.generate()])
+
+        if name.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
+            folder.folderType = FolderType.inbox.rawValue
+        } else {
+            var foundMatch = false
+            for ty in FolderType.allValuesToCheckFromServer {
+                for theName in ty.folderNames() {
+                    if name.matchesPattern("\(theName)",
+                        reOptions: [.caseInsensitive]) {
+                        foundMatch = true
+                        folder.folderType = ty.rawValue
+                        break
+                    }
+                }
+                if foundMatch {
+                    break
+                }
+            }
+            if !foundMatch {
+                folder.folderType = FolderType.normal.rawValue
+            }
+        }
+
+        return folder
+    }
+    
     /**
      - Returns: The predicate (for CdMessage) to get all (undeleted, valid)
      messages contained in that folder.

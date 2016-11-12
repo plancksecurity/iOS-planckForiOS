@@ -47,7 +47,7 @@ class StoreFolderOperation: ConcurrentBaseOperation {
         if folder == nil {
             self.errors.append(Constants.errorCouldNotStoreFolder(comp, name: folderInfo.name))
         }
-        Record.save()
+        Record.saveAndWait()
         self.markAsFinished()
     }
 }

@@ -171,8 +171,8 @@ extension FetchFoldersOperation: ImapSyncDelegate {
             return
         }
 
-        let folderInfo = FolderInfo.init(name: folderName, separator: folderSeparator)
-        let op = StoreFolderOperation.init(connectInfo: self.connectInfo, folderInfo: folderInfo)
+        let folderInfo = FolderInfo(name: folderName, separator: folderSeparator)
+        let op = StoreFolderOperation(connectInfo: self.connectInfo, folderInfo: folderInfo)
         backgroundQueue.addOperation(op)
     }
 

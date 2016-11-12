@@ -94,14 +94,21 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertGreaterThanOrEqual(
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
 
-        var options: [String: Any] = ["folderType": FolderType.inbox,
-                                      "account.objectID": connectInfo.accountObjectID]
-        let inboxFolder = CdFolder.first(with: options)
-        options["folderType"] = FolderType.sent
-        let sentFolder = CdFolder.first(with: options)
+        if let folders = CdFolder.all() as? [CdFolder] {
+            for f in folders {
+                print("\(f.name) \(FolderType.init(rawValue: f.folderType))")
+            }
+        }
 
+        var options: [String: Any] = ["folderType": FolderType.inbox.rawValue,
+                                      "account": account]
+        let inboxFolder = CdFolder.first(with: options)
+        options["folderType"] = FolderType.sent.rawValue
+        XCTAssertNotNil(inboxFolder)
         XCTAssertEqual(inboxFolder?.name?.lowercased(),
                        ImapSync.defaultImapInboxName.lowercased())
+
+        let sentFolder = CdFolder.first(with: options)
         XCTAssertNotNil(sentFolder)
     }
 
