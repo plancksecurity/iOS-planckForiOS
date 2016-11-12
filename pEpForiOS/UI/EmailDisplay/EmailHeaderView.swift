@@ -138,7 +138,7 @@ class EmailHeaderView: UIView {
     }
 
     func addFromAtPosition(_ position: CGPoint, width: CGFloat) -> CGPoint {
-        var pos = position
+        let pos = position
         let fromTitleLabel = headerBaseLabelWithText(
             NSLocalizedString("From:",
                 comment: "Header label for email display"))

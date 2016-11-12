@@ -84,7 +84,7 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func doMyself() {
-        guard let model = appConfig?.model else {
+        guard (appConfig?.model) != nil else {
             return
         }
         let accounts = Account.all
