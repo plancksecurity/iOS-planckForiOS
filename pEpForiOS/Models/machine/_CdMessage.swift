@@ -14,17 +14,6 @@ open class _CdMessage: BaseManagedObject {
         return NSEntityDescription.entity(forEntityName: self.entityName, in: managedObjectContext)
     }
 
-    // MARK: - Life cycle methods
-
-    public override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertInto: context)
-    }
-
-    public convenience init?(managedObjectContext: NSManagedObjectContext) {
-        guard let entity = _CdMessage.entity(managedObjectContext: managedObjectContext) else { return nil }
-        self.init(entity: entity, insertInto: managedObjectContext)
-    }
-
     // MARK: - Properties
 
     @NSManaged open
