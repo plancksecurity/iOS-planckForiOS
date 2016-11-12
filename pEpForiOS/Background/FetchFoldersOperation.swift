@@ -74,7 +74,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
                 var needSync = false
                 let requiredTypes: [FolderType] = [.inbox, .sent, .drafts, .trash]
                 for ty in requiredTypes {
-                    if self.model.folderByType(ty, email: self.connectInfo.userId) == nil {
+                    if self.model.folderByType(ty, email: self.connectInfo.userName) == nil {
                         needSync = true
                         break
                     }

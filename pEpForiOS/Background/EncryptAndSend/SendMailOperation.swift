@@ -51,7 +51,7 @@ open class SendMailOperation: ConcurrentBaseOperation {
             }
             connectInfo = account.connectInfo
 
-            guard let outFolder = model.folderByType(.localOutbox, email: account.email) else {
+            guard let outFolder = model.folderByType(.localOutbox, email: account.connectInfo.userName) else {
                 let error = Constants.errorInvalidParameter(
                     self.comp, errorMessage: NSLocalizedString("Could not access outbox",
                         comment: "Internal error"))

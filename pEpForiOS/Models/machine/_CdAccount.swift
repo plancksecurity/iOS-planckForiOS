@@ -9,8 +9,10 @@ open class _CdAccount: BaseManagedObject {
 
     // MARK: - Properties
 
+    /*
     @NSManaged open
     var email: String
+    */
 
     @NSManaged open
     var folderSeparator: String?

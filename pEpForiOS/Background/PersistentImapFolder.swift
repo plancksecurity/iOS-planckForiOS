@@ -129,7 +129,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     override func message(at theIndex: UInt) -> CWMessage? {
         let p = NSPredicate.init(
             format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
-            connectInfo.userId, self.name(), theIndex)
+            connectInfo.userName, self.name(), theIndex)
         var msg: CdMessage?
         privateMOC.performAndWait({
             msg = CdMessage.first(with: p)

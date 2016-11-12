@@ -282,7 +282,7 @@ open class CdModel: ICdModel {
         let account = NSEntityDescription.insertNewObject(
             forEntityName: CdAccount.entityName, into: context) as! CdAccount
         account.nameOfTheUser = connectInfo.userName
-        account.email = connectInfo.userId
+        account.connectInfo.userName = connectInfo.userName
         
         // IMAP
         if (connectInfo.emailProtocol?.rawValue.isEqual(EmailProtocol.imap.rawValue))! {
@@ -305,14 +305,14 @@ open class CdModel: ICdModel {
     }
 
     open func insertAccountFromEmailConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
-        if let ac = accountByEmail(connectInfo.userId) {
+        if let ac = accountByEmail(connectInfo.userName) {
             return ac
         }
 
         let account = newAccountFromImapSmtpConnectInfo(connectInfo)
         save()
         // An SMTP and IMAP account are considered seperate.
-        let _ = KeyChain.add(key: connectInfo.userId,
+        let _ = KeyChain.add(key: connectInfo.userName,
                              serverType: (connectInfo.emailProtocol?.rawValue)!,
                              password: connectInfo.userPassword)
         return account
@@ -330,9 +330,9 @@ open class CdModel: ICdModel {
             return nil
         }
         let message = insertNewMessage()
-        let contact = insertOrUpdateContactEmail(account.email, name: account.nameOfTheUser)
+        let contact = insertOrUpdateContactEmail(account.connectInfo.userName, name: account.nameOfTheUser)
         message.from = contact
-        guard let folder = folderByType(FolderType.localOutbox, email: account.email) else {
+        guard let folder = folderByType(FolderType.localOutbox, email: account.connectInfo.userName) else {
             Log.warn(component: comp, "Expected outbox folder to exist")
             return nil
         }
@@ -355,7 +355,7 @@ open class CdModel: ICdModel {
 
     open func setAccountAsLastUsed(_ account: CdAccount) -> CdAccount {
         UserDefaults.standard.set(
-            account.email, forKey: Constants.kSettingLastAccountEmail)
+            account.connectInfo.userName, forKey: Constants.kSettingLastAccountEmail)
         UserDefaults.standard.synchronize()
         return account
     }
@@ -413,7 +413,7 @@ open class CdModel: ICdModel {
     }
 
     func insertFolderName(_ name: String, account: CdAccount) -> CdFolder {
-        if let folder = folderByName(name, email: account.email) {
+        if let folder = folderByName(name, email: account.connectInfo.userName) {
             // reactivate folder if previously deleted
 
             return folder
@@ -606,7 +606,7 @@ open class CdModel: ICdModel {
     }
 
     open func folderByType(_ type: FolderType, account: CdAccount) -> CdFolder? {
-        return folderByType(type, email: account.email)
+        return folderByType(type, email: account.connectInfo.userName)
     }
 
     open func insertOrUpdateContactEmail(_ email: String, name: String?) -> CdIdentity {

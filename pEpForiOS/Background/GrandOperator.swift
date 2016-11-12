@@ -316,7 +316,7 @@ open class GrandOperator: IGrandOperator {
                          completionBlock: GrandOperatorCompletionBlock?) {
         let encryptionData = EncryptionData.init(
             connectionManager: connectionManager, coreDataUtil: coreDataUtil,
-            coreDataMessageID: message.objectID, accountEmail: account.email)
+            coreDataMessageID: message.objectID, accountEmail: account.connectInfo.userName)
 
         let opEncrypt = EncryptMailOperation.init(encryptionData: encryptionData)
         let opSend = SendMailOperation.init(encryptionData: encryptionData)

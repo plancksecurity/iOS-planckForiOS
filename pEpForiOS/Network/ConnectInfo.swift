@@ -38,9 +38,6 @@ public protocol IConnectInfo: Hashable {
 }
 
 public class ConnectInfo: IConnectInfo {
-    // TODO: This has to be removed, and all the depending code to be changed
-    public var userId = ""
-
     public var accountObjectID: NSManagedObjectID
     public var userName: String
     public var userPassword: String?

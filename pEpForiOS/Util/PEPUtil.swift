@@ -164,7 +164,7 @@ open class PEPUtil {
                                            isMyself: Bool = true) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
         dict[kPepUsername] = account.nameOfTheUser
-        dict[kPepAddress] = account.email
+        dict[kPepAddress] = account.connectInfo.userName
         dict[kPepIsMe] = isMyself
         return dict
     }

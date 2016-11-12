@@ -34,7 +34,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
 
     public init(account: CdAccount, folderType: FolderType,
                 connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
-        self.accountEmail = account.email
+        self.accountEmail = account.connectInfo.userName
         self.connectInfo = account.connectInfo
         self.folderType = folderType
         self.folderName = folderType.folderName()

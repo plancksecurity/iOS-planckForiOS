@@ -29,7 +29,7 @@ class Mailbox: NSObject {
     }
 
     convenience init(connectInfo: EmailConnectInfo) {
-        self.init(emailAddress: connectInfo.userId)
+        self.init(emailAddress: connectInfo.userName)
     }
 
 }
