@@ -11,9 +11,6 @@ open class _CdAccount: NSManagedObject {
 
     @NSManaged open
     var folderSeparator: String?
- 
-    @NSManaged open
-    var nameOfTheUser: String
 
 }
 

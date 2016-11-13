@@ -163,7 +163,8 @@ open class PEPUtil {
     open static func identityFromAccount(_ account: CdAccount,
                                            isMyself: Bool = true) -> NSMutableDictionary {
         let dict: NSMutableDictionary = [:]
-        dict[kPepUsername] = account.nameOfTheUser
+        // XXX: User name and its address same for now.
+        dict[kPepUsername] = account.connectInfo.userName
         dict[kPepAddress] = account.connectInfo.userName
         dict[kPepIsMe] = isMyself
         return dict

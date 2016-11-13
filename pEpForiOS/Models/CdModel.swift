@@ -280,7 +280,6 @@ open class CdModel: ICdModel {
     func newAccountFromImapSmtpConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount {
         let account = NSEntityDescription.insertNewObject(
             forEntityName: CdAccount.entityName, into: context) as! CdAccount
-        account.nameOfTheUser = connectInfo.userName
         account.connectInfo.userName = connectInfo.userName
         
         // IMAP
@@ -327,7 +326,7 @@ open class CdModel: ICdModel {
             return nil
         }
         let message = insertNewMessage()
-        let contact = insertOrUpdateContactEmail(account.connectInfo.userName, name: account.nameOfTheUser)
+        let contact = insertOrUpdateContactEmail(account.connectInfo.userName)
         message.from = contact
         guard let folder = folderByType(FolderType.localOutbox, email: account.connectInfo.userName) else {
             Log.warn(component: comp, "Expected outbox folder to exist")
