@@ -1,9 +1,11 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to CdMessage.swift instead.
 
+import CoreData
+
 import MessageModel
 
-open class _CdMessage: BaseManagedObject {
+open class _CdMessage: NSManagedObject {
 
     // MARK: - Properties
 
