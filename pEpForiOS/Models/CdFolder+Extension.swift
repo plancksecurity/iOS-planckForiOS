@@ -53,7 +53,7 @@ public extension CdFolder {
                 let folder = insert(folderName: pathName, account: account)
                 folder.parent = parentFolder
                 if let pf = parentFolder {
-                    pf.addToSubFolders(folder)
+                    folder.parent = pf
                 }
                 parentFolder = folder
             }
