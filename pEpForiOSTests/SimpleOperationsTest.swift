@@ -13,9 +13,17 @@ import pEpForiOS
 import MessageModel
 
 class SimpleOperationsTest: XCTestCase {
-    var connectInfo: EmailConnectInfo!
     let grandOperator = GrandOperator()
     var account: MessageModel.CdAccount!
+
+    var connectInfo: EmailConnectInfo! {
+        guard let theConnectInfo = (account.emailConnectInfos.filter {
+            $0.key.emailProtocol == .imap }.first?.key) else {
+                XCTAssertTrue(false)
+                return nil
+        }
+        return theConnectInfo
+    }
 
     override func setUp() {
         super.setUp()
@@ -25,13 +33,6 @@ class SimpleOperationsTest: XCTestCase {
         let cdAccount = CdAccount.create(with: account)
         self.account = cdAccount
         TestUtil.skipValidation()
-
-        guard let theConnectInfo = (cdAccount.emailConnectInfos.filter {
-            $0.key.emailProtocol == .imap }.first?.key) else {
-                XCTAssertTrue(false)
-                return
-        }
-        connectInfo = theConnectInfo
     }
 
     override func tearDown() {
@@ -210,7 +211,7 @@ class SimpleOperationsTest: XCTestCase {
         let backgroundQueue = OperationQueue.init()
 
         // Fetch folders to get the folder separator
-        let opFetchFolders = FetchFoldersOperation.init(
+        let opFetchFolders = FetchFoldersOperation(
             connectInfo: connectInfo,
             connectionManager: grandOperator.connectionManager)
 

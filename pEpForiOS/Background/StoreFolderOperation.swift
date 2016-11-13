@@ -13,7 +13,7 @@ import MessageModel
 
 struct FolderInfo {
     let name: String
-    let separator: String
+    let separator: String?
 }
 
 class StoreFolderOperation: ConcurrentBaseOperation {
@@ -40,6 +40,10 @@ class StoreFolderOperation: ConcurrentBaseOperation {
                 return
         }
 
+        if let server = context.object(with: connectInfo.serverObjectID) as? CdServer {
+            server.imapFolderSeparator = folderInfo.separator
+        }
+
         let folder = CdFolder.insertOrUpdate(
             folderName: folderInfo.name, folderSeparator: folderInfo.separator,
             account: account)
@@ -47,6 +51,7 @@ class StoreFolderOperation: ConcurrentBaseOperation {
         if folder == nil {
             self.errors.append(Constants.errorCouldNotStoreFolder(comp, name: folderInfo.name))
         }
+
         Record.saveAndWait()
         self.markAsFinished()
     }

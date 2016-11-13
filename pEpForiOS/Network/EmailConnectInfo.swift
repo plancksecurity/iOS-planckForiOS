@@ -134,13 +134,15 @@ public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
     public var connectionTransport: ConnectionTransport?
     public var authMethod: AuthMethod?
 
-    public init(accountObjectID: NSManagedObjectID, userName: String, userPassword: String? = nil,
+    public init(accountObjectID: NSManagedObjectID, serverObjectID: NSManagedObjectID,
+                userName: String, userPassword: String? = nil,
                 networkAddress: String,
                 networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil,
                 emailProtocol: EmailProtocol? = nil,
                 connectionTransport: ConnectionTransport? = nil, authMethod: AuthMethod? = nil) {
-        super.init(accountObjectID: accountObjectID, userName: userName, userPassword: userPassword,
+        super.init(accountObjectID: accountObjectID, serverObjectID: serverObjectID,
+                   userName: userName, userPassword: userPassword,
                    networkAddress: networkAddress, networkPort: networkPort,
                    networkAddressType: networkAddressType,
                    networkTransportType: networkTransportType)

@@ -13,7 +13,9 @@ extension CdAccount {
         let password = KeyChain.password(key: self.connectInfo.userName,
                                          serverType: (self.connectInfo.emailProtocol?.rawValue)!)
         return EmailConnectInfo(
-            accountObjectID: objectID, userName: self.connectInfo.userName,
+            accountObjectID: objectID,
+            serverObjectID: objectID, // TODO: This is a blatant lie!
+            userName: self.connectInfo.userName,
             userPassword: password,
             networkAddress: self.connectInfo.networkAddress,
             networkPort: self.connectInfo.networkPort,
@@ -73,7 +75,8 @@ extension MessageModel.CdAccount {
             let serverType = Server.ServerType.init(rawValue: serverTypeInt),
             let emailProtocol = EmailProtocol.init(serverType: serverType) {
             return EmailConnectInfo(
-                accountObjectID: account.objectID, userName: credentials.userName!,
+                accountObjectID: account.objectID, serverObjectID: server.objectID,
+                userName: credentials.userName!,
                 userPassword: password,
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,

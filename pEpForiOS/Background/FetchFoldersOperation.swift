@@ -166,11 +166,8 @@ extension FetchFoldersOperation: ImapSyncDelegate {
         guard let folderName = folderInfoDict[PantomimeFolderNameKey] as? String else {
             return
         }
-        guard let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey]
-            as? String else {
-            return
-        }
 
+        let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey] as? String
         let folderInfo = FolderInfo(name: folderName, separator: folderSeparator)
         let op = StoreFolderOperation(connectInfo: self.connectInfo, folderInfo: folderInfo)
         backgroundQueue.addOperation(op)

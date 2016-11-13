@@ -31,6 +31,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         self.connectInfo = folder.account.connectInfo
         */
         self.connectInfo = EmailConnectInfo(accountObjectID: folder.objectID,
+                                            serverObjectID: folder.objectID, // TODO: This is a lie!
                                             userName: "",
                                             networkAddress: "", networkPort: 007)
         self.targetFolderName = folder.name

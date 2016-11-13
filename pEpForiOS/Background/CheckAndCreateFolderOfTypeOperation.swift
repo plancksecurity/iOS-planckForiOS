@@ -29,12 +29,6 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
      */
     var numberOfFailures = 0
 
-    /**
-     If there are IMAP servers with other folder separators, this has to retrieved from
-     the `connectInfo`.
-     */
-    var folderSeparator: String = "/"
-
     var account: MessageModel.CdAccount?
 
     public init(connectInfo: EmailConnectInfo, account: MessageModel.CdAccount,
@@ -58,6 +52,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
                 markAsFinished()
                 return
         }
+
         let folder = CdFolder.by(folderType: self.folderType, account: account)
         if folder == nil {
             self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
@@ -158,31 +153,42 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
 
     public func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
         privateMOC.perform() {
-            if let ac = self.account {
-                if CdFolder.insertOrUpdate(folderName: self.folderName,
-                                           folderSeparator: self.folderSeparator,
-                                           account: ac) == nil {
-                    self.addError(Constants.errorFolderCreateFailed(self.comp,
-                                                                    name: self.folderName))
-                } else {
-                    Record.saveAndWait(context: self.privateMOC)
-                }
-            }
-            self.markAsFinished()
+            self.completed(context: self.privateMOC)
         }
     }
 
+    func completed(context: NSManagedObjectContext) {
+        if let ac = account {
+            let server = context.object(with: connectInfo.serverObjectID) as? CdServer
+            if CdFolder.insertOrUpdate(folderName: folderName,
+                                       folderSeparator: server?.imapFolderSeparator,
+                                       account: ac) == nil {
+                self.addError(Constants.errorFolderCreateFailed(comp, name: folderName))
+            } else {
+                Record.saveAndWait(context: context)
+            }
+        }
+        markAsFinished()
+    }
+
     public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            if numberOfFailures == 0 {
-                folderName = "INBOX\(folderSeparator)\(folderName)"
+        privateMOC.perform() {
+            self.tryAgain(context: self.privateMOC, sync: sync)
+        }
+    }
+
+    func tryAgain(context: NSManagedObjectContext, sync: ImapSync) {
+        if !isCancelled {
+            let server = context.object(with: connectInfo.serverObjectID) as? CdServer
+            if numberOfFailures == 0, let fs = server?.imapFolderSeparator {
+                folderName = "INBOX\(fs)\(folderName)"
                 sync.createFolderWithName(folderName)
                 numberOfFailures += 1
                 return
             }
+            addError(Constants.errorFolderCreateFailed(comp, name: folderName))
+            markAsFinished()
         }
-        addError(Constants.errorFolderCreateFailed(comp, name: folderName))
-        markAsFinished()
     }
 
     public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {

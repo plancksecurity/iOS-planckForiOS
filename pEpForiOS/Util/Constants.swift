@@ -72,6 +72,7 @@ open class Constants {
         case cannotFindAccountForEmail
         case cannotFindAccount
         case cannotFindServerForAccount
+        case cannotFindServer
     }
 
     public enum SmtpErrorCode: Int {
@@ -221,7 +222,7 @@ open class Constants {
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString(
                     "Cannot find account from object ID", comment:
-                    "Technical error description when not being able to fetch account by email")])
+                    "Technical error description when not being able to fetch account by object ID")])
         return error
     }
     
@@ -234,6 +235,16 @@ open class Constants {
                     "Cannot find server for account with email: %@", comment:
                     "Error description when not being able to fetch an account's server"),
                             accountEmail)])
+        return error
+    }
+
+    static func errorCannotFindServer(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.cannotFindServer.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find server for objectID", comment:
+                    "Error description when not being able to fetch a server from its object ID")])
         return error
     }
 

@@ -39,6 +39,8 @@ public protocol IConnectInfo: Hashable {
 
 public class ConnectInfo: IConnectInfo {
     public var accountObjectID: NSManagedObjectID
+    public var serverObjectID: NSManagedObjectID
+
     public var userName: String
     public var userPassword: String?
     public var networkAddress: String
@@ -46,12 +48,13 @@ public class ConnectInfo: IConnectInfo {
     public var networkAddressType: NetworkAddressType?
     public var networkTransportType: NetworkTransportType?
 
-    public init(accountObjectID: NSManagedObjectID, userName: String,
-                userPassword: String? = nil,
+    public init(accountObjectID: NSManagedObjectID, serverObjectID: NSManagedObjectID,
+                userName: String, userPassword: String? = nil,
                 networkAddress: String, networkPort: UInt16,
                 networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil) {
         self.accountObjectID = accountObjectID
+        self.serverObjectID = serverObjectID
         self.userName = userName
         self.userPassword = userPassword
         self.networkAddress = networkAddress
@@ -63,7 +66,7 @@ public class ConnectInfo: IConnectInfo {
 
 extension ConnectInfo: Hashable {
     public var hashValue: Int {
-        return 31 &* accountObjectID.hashValue &+
+        return 31 &* accountObjectID.hashValue &+ serverObjectID.hashValue &+
             MiscUtil.optionalHashValue(userName) &+
             MiscUtil.optionalHashValue(networkPort) &+
             MiscUtil.optionalHashValue(networkAddress) &+
