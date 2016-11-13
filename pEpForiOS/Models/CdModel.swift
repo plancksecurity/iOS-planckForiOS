@@ -286,7 +286,7 @@ open class CdModel: ICdModel {
         // IMAP
         if (connectInfo.emailProtocol?.rawValue.isEqual(EmailProtocol.imap.rawValue))! {
             account.imapUsername = connectInfo.userName
-            account.imapServerName = connectInfo.networkAddress
+            account.connectInfo.networkAddress = connectInfo.networkAddress
             account.imapServerPort = NSNumber.init(value: Int16(connectInfo.networkPort) as Int16)
             account.imapTransport = NSNumber.init(value: Int16((connectInfo.connectionTransport?.rawValue)!)
             as Int16)
