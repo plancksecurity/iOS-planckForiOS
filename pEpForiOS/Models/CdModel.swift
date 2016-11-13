@@ -285,11 +285,10 @@ open class CdModel: ICdModel {
         
         // IMAP
         if (connectInfo.emailProtocol?.rawValue.isEqual(EmailProtocol.imap.rawValue))! {
-            account.imapUsername = connectInfo.userName
+            account.connectInfo.userName = connectInfo.userName
             account.connectInfo.networkAddress = connectInfo.networkAddress
-            account.imapServerPort = NSNumber.init(value: Int16(connectInfo.networkPort) as Int16)
-            account.imapTransport = NSNumber.init(value: Int16((connectInfo.connectionTransport?.rawValue)!)
-            as Int16)
+            account.connectInfo.networkPort = connectInfo.networkPort
+            account.connectInfo.networkTransportType = connectInfo.networkTransportType
         }
         // SMTP
         else {

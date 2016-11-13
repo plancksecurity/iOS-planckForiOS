@@ -13,15 +13,6 @@ open class _CdAccount: NSManagedObject {
     var folderSeparator: String?
 
     @NSManaged open
-    var imapServerPort: NSNumber
-
-    @NSManaged open
-    var imapTransport: NSNumber
-
-    @NSManaged open
-    var imapUsername: String?
-
-    @NSManaged open
     var nameOfTheUser: String
 
     @NSManaged open
