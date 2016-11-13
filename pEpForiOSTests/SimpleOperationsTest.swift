@@ -206,7 +206,98 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
+    func testCreateFolders() {
+        let backgroundQueue = OperationQueue.init()
+
+        // Fetch folders to get the folder separator
+        let opFetchFolders = FetchFoldersOperation.init(
+            connectInfo: connectInfo,
+            connectionManager: grandOperator.connectionManager)
+
+        let expCreated = expectation(description: "expCreated")
+        let opCreate = CheckAndCreateFolderOfTypeOperation(
+            connectInfo: connectInfo, account: account, folderType: .drafts,
+            connectionManager: grandOperator.connectionManager)
+        opCreate.addDependency(opFetchFolders)
+        opCreate.completionBlock = {
+            expCreated.fulfill()
+        }
+
+        backgroundQueue.addOperation(opFetchFolders)
+        backgroundQueue.addOperation(opCreate)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(opFetchFolders.hasErrors())
+            XCTAssertFalse(opCreate.hasErrors())
+        })
+
+        XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: account))
+    }
+
     /*
+    func testAppendMessageOperation() {
+        // Fetch remote folders first
+        testFetchFoldersOperation()
+
+        let expCreated = expectation(description: "expCreated")
+        let opCreate = CheckAndCreateFolderOfTypeOperation.init(
+            account: persistentSetup.account, folderType: .drafts,
+            connectionManager: persistentSetup.connectionManager,
+            coreDataUtil: persistentSetup.coreDataUtil)
+        opCreate.completionBlock = {
+            expCreated.fulfill()
+        }
+
+        let backgroundQueue = OperationQueue.init()
+        backgroundQueue.addOperation(opCreate)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(opCreate.hasErrors())
+        })
+
+        let c1 = persistentSetup.model.insertOrUpdateContactEmail(
+            "some@some.com", name: "Whatever")
+        c1.addressBookID = 1
+
+        let c2 = persistentSetup.model.insertOrUpdateContactEmail(
+            "some@some2.com", name: "Whatever2")
+        c2.addressBookID = 2
+
+        let message = persistentSetup.model.insertNewMessage()
+        message.subject = "Some subject"
+        message.longMessage = "Long message"
+        message.longMessageFormatted = "<h1>Long HTML</h1>"
+
+        message.addToObject(value: c1)
+        message.addCcObject(value: c2)
+
+        let account = persistentSetup.model.insertAccountFromImapSmtpConnectInfo(connectInfo)
+        guard let targetFolder = persistentSetup.model.folderByType(
+            .drafts, account: account) else {
+                XCTAssertFalse(true)
+                return
+        }
+
+        let op = AppendSingleMessageOperation.init(
+            message: message, account: persistentSetup.account,
+            targetFolder: targetFolder,
+            connectionManager: persistentSetup.connectionManager,
+            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
+
+        let expMessageAppended = expectation(description: "expMessageAppended")
+        op.completionBlock = {
+            expMessageAppended.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
+        })
+    }
+
     func createBasicMail() -> (
         OperationQueue, MessageModel.CdAccount, MessageModel.CdMessage,
         (identity: NSMutableDictionary, receiver1: PEPContact,
@@ -537,68 +628,6 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
-    func testAppendMessageOperation() {
-        // Fetch remote folders first
-        testFetchFoldersOperation()
-
-        let expCreated = expectation(description: "expCreated")
-        let opCreate = CheckAndCreateFolderOfTypeOperation.init(
-            account: persistentSetup.account, folderType: .drafts,
-            connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.coreDataUtil)
-        opCreate.completionBlock = {
-            expCreated.fulfill()
-        }
-
-        let backgroundQueue = OperationQueue.init()
-        backgroundQueue.addOperation(opCreate)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(opCreate.hasErrors())
-        })
-
-        let c1 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some.com", name: "Whatever")
-        c1.addressBookID = 1
-
-        let c2 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some2.com", name: "Whatever2")
-        c2.addressBookID = 2
-
-        let message = persistentSetup.model.insertNewMessage()
-        message.subject = "Some subject"
-        message.longMessage = "Long message"
-        message.longMessageFormatted = "<h1>Long HTML</h1>"
-
-        message.addToObject(value: c1)
-        message.addCcObject(value: c2)
-
-        let account = persistentSetup.model.insertAccountFromImapSmtpConnectInfo(connectInfo)
-        guard let targetFolder = persistentSetup.model.folderByType(
-            .drafts, account: account) else {
-                XCTAssertFalse(true)
-                return
-        }
-
-        let op = AppendSingleMessageOperation.init(
-            message: message, account: persistentSetup.account,
-            targetFolder: targetFolder,
-            connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
-
-        let expMessageAppended = expectation(description: "expMessageAppended")
-        op.completionBlock = {
-            expMessageAppended.fulfill()
-        }
-
-        op.start()
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
-        })
-    }
-
     func testSyncFlagsToServerOperationEmpty() {
         testPrefetchMailsOperation()
 
@@ -721,38 +750,6 @@ class SimpleOperationsTest: XCTestCase {
                 XCTAssertEqual(op.numberOfMessagesSynced, 0)
             }
         }
-    }
-
-    func testCreateFolders() {
-        let backgroundQueue = OperationQueue.init()
-
-        // Fetch folders to get the folder separator
-        let opFetchFolders = FetchFoldersOperation.init(
-            connectInfo: connectInfo,
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
-            connectionManager: persistentSetup.grandOperator.connectionManager)
-
-        let expCreated = expectation(description: "expCreated")
-        let opCreate = CheckAndCreateFolderOfTypeOperation.init(
-            account: persistentSetup.account, folderType: .drafts,
-            connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.coreDataUtil)
-        opCreate.addDependency(opFetchFolders)
-        opCreate.completionBlock = {
-            expCreated.fulfill()
-        }
-
-        backgroundQueue.addOperation(opFetchFolders)
-        backgroundQueue.addOperation(opCreate)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(opFetchFolders.hasErrors())
-            XCTAssertFalse(opCreate.hasErrors())
-        })
-
-        XCTAssertNotNil(persistentSetup.model.folderByType(
-            .drafts, email: persistentSetup.account.email))
     }
 
     func testDeleteFolderOperation() {
