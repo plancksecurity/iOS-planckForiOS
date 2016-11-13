@@ -59,29 +59,10 @@ public protocol IGrandOperator: class {
         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Sends the given mail via SMTP. Also saves it into the drafts folder. You
-     might have to trigger a fetch for that mail to appear in your drafts folder.
-     */
-    func sendMail(_ email: CdMessage, account: CdAccount, completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
-     Saves the given email as a draft, both on the server and locally.
-     */
-    func saveDraftMail(_ message: CdMessage, account: CdAccount,
-                       completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
      Syncs all mails' flags in the given folder that are out of date to the server.
      */
     func syncFlagsToServerForFolder(_ folder: CdFolder,
                                     completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
-     Creates a folder with the given properties if it doesn't exist,
-     both locally and on the server.
-     */
-    func createFolderOfType(_ account: CdAccount, folderType: FolderType,
-                            completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Deletes the given folder, both locally and remotely.
@@ -312,68 +293,6 @@ open class GrandOperator: IGrandOperator {
         })
     }
 
-    open func sendMail(_ message: CdMessage, account: CdAccount,
-                         completionBlock: GrandOperatorCompletionBlock?) {
-        let encryptionData = EncryptionData.init(
-            connectionManager: connectionManager, coreDataUtil: coreDataUtil,
-            coreDataMessageID: message.objectID, accountEmail: account.connectInfo.userName)
-
-        let opEncrypt = EncryptMailOperation.init(encryptionData: encryptionData)
-        let opSend = SendMailOperation.init(encryptionData: encryptionData)
-        let opCreateSentFolder = CheckAndCreateFolderOfTypeOperation.init(
-            account: account, folderType: .sent, connectionManager: connectionManager,
-            coreDataUtil: coreDataUtil)
-        let opSaveSent = SaveSentMessageOperation.init(encryptionData: encryptionData)
-
-        opSaveSent.addDependency(opSend)
-        opSaveSent.addDependency(opCreateSentFolder)
-        opSend.addDependency(opEncrypt)
-
-        opSaveSent.completionBlock = {
-            GCD.onMain() {
-                var firstError: NSError?
-                for op in [opEncrypt, opSend, opCreateSentFolder, opSaveSent] {
-                    if let err = op.errors.first {
-                        firstError = err
-                        break
-                    }
-                }
-                completionBlock?(firstError)
-            }
-        }
-
-        backgroundQueue.addOperation(opEncrypt)
-        backgroundQueue.addOperation(opSend)
-        backgroundQueue.addOperation(opCreateSentFolder)
-        backgroundQueue.addOperation(opSaveSent)
-    }
-
-    open func saveDraftMail(_ message: CdMessage, account: CdAccount,
-                              completionBlock: GrandOperatorCompletionBlock?) {
-        let opCreateDraftFolder = CheckAndCreateFolderOfTypeOperation.init(
-            account: account, folderType: .drafts, connectionManager: connectionManager, coreDataUtil: coreDataUtil)
-
-        let opStore = AppendSingleMessageOperation.init(
-            message: message, account: account, folderType: .drafts,
-            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
-        opStore.completionBlock = {
-            GCD.onMain() {
-                var firstError: NSError?
-                for op in [opCreateDraftFolder, opStore] {
-                    if let err = op.errors.first {
-                        firstError = err
-                        break
-                    }
-                }
-                completionBlock?(firstError)
-            }
-        }
-        opStore.addDependency(opCreateDraftFolder)
-
-        backgroundQueue.addOperation(opCreateDraftFolder)
-        backgroundQueue.addOperation(opStore)
-    }
-
     open func syncFlagsToServerForFolder(_ folder: CdFolder,
                                            completionBlock: GrandOperatorCompletionBlock?) {
         
@@ -397,19 +316,6 @@ open class GrandOperator: IGrandOperator {
         if let op = operation {
             backgroundQueue.addOperation(op)
         }
-    }
-
-    open func createFolderOfType(_ account: CdAccount, folderType: FolderType,
-                                   completionBlock: GrandOperatorCompletionBlock?) {
-        let op = CheckAndCreateFolderOfTypeOperation.init(
-            account: account, folderType: folderType,
-            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
-        op.completionBlock = {
-            GCD.onMain() {
-                completionBlock?(op.errors.first)
-            }
-        }
-        backgroundQueue.addOperation(op)
     }
 
     open func deleteFolder(_ folder: CdFolder,
