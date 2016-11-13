@@ -9,8 +9,10 @@ open class _CdAccount: NSManagedObject {
 
     // MARK: - Properties
 
+    /*
     @NSManaged open
     var folderSeparator: String?
+    */
 
 }
 

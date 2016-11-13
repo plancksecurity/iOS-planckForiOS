@@ -463,8 +463,6 @@ open class CdModel: ICdModel {
 
         if let account = accountByEmail(accountEmail) {
             if let separator = folderSeparator {
-                account.folderSeparator = folderSeparator
-
                 // Create folder hierarchy if necessary
                 var pathsSoFar = [String]()
                 var parentFolder: CdFolder? = nil

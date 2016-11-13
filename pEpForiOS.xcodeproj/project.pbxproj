@@ -14,8 +14,6 @@
 		22DA56DA1DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43001F791D91860A00306BF0 /* FetchTableViewController.swift */; };
 		430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */; };
-		4305AC741DA3F7C300273D16 /* CdAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC731DA3F7C300273D16 /* CdAccount.swift */; };
-		4305AC761DA3F7EA00273D16 /* _CdAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC751DA3F7EA00273D16 /* _CdAccount.swift */; };
 		4305AC7E1DA4036D00273D16 /* CdMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC7D1DA4036D00273D16 /* CdMessage.swift */; };
 		4305AC801DA4037500273D16 /* _CdMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4305AC7F1DA4037500273D16 /* _CdMessage.swift */; };
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
@@ -239,8 +237,6 @@
 		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
 		430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveSentMessageOperation.swift; path = ../SaveSentMessageOperation.swift; sourceTree = "<group>"; };
-		4305AC731DA3F7C300273D16 /* CdAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdAccount.swift; sourceTree = "<group>"; };
-		4305AC751DA3F7EA00273D16 /* _CdAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _CdAccount.swift; sourceTree = "<group>"; };
 		4305AC7D1DA4036D00273D16 /* CdMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessage.swift; sourceTree = "<group>"; };
 		4305AC7F1DA4037500273D16 /* _CdMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _CdMessage.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpTrustWords.bundle; sourceTree = "<group>"; };
@@ -732,7 +728,6 @@
 				43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */,
 				43E9BC6F1DB51CEC00AD2352 /* CdMessage+Extension.swift */,
 				43C5AAF31DD1DBD300349125 /* CdMessagePantomime.swift */,
-				4305AC731DA3F7C300273D16 /* CdAccount.swift */,
 				4305AC7D1DA4036D00273D16 /* CdMessage.swift */,
 				43E58EB51CBF8301008AA7A7 /* machine */,
 			);
@@ -742,7 +737,6 @@
 		43E58EB51CBF8301008AA7A7 /* machine */ = {
 			isa = PBXGroup;
 			children = (
-				4305AC751DA3F7EA00273D16 /* _CdAccount.swift */,
 				4305AC7F1DA4037500273D16 /* _CdMessage.swift */,
 			);
 			path = machine;
@@ -1037,13 +1031,11 @@
 				A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
 				4339477B1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift in Sources */,
-				4305AC741DA3F7C300273D16 /* CdAccount.swift in Sources */,
 				432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */,
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */,
 				431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */,
 				43800D931D112A0800821E34 /* TFHpple.m in Sources */,
 				43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */,
-				4305AC761DA3F7EA00273D16 /* _CdAccount.swift in Sources */,
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
 				4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */,
 				43B3E46E1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift in Sources */,
