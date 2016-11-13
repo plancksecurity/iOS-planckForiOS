@@ -292,11 +292,10 @@ open class CdModel: ICdModel {
         }
         // SMTP
         else {
-            account.smtpUsername = connectInfo.userName
-            account.smtpServerName = connectInfo.networkAddress
-            account.smtpServerPort = NSNumber.init(value: Int16(connectInfo.networkPort) as Int16)
-            account.smtpTransport = NSNumber.init(value: Int16((connectInfo.connectionTransport?.rawValue)!)
-            as Int16)
+            account.connectInfo.userName = connectInfo.userName
+            account.connectInfo.networkAddress = connectInfo.networkAddress
+            account.connectInfo.networkPort = connectInfo.networkPort
+            account.connectInfo.connectionTransport = connectInfo.connectionTransport
         }
 
         return account

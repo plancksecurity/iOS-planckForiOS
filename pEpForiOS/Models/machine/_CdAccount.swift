@@ -11,21 +11,9 @@ open class _CdAccount: NSManagedObject {
 
     @NSManaged open
     var folderSeparator: String?
-
+ 
     @NSManaged open
     var nameOfTheUser: String
-
-    @NSManaged open
-    var smtpServerName: String
-
-    @NSManaged open
-    var smtpServerPort: NSNumber
-
-    @NSManaged open
-    var smtpTransport: NSNumber
-
-    @NSManaged open
-    var smtpUsername: String?
 
 }
 
