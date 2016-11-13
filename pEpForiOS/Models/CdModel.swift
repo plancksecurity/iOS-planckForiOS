@@ -288,7 +288,7 @@ open class CdModel: ICdModel {
             account.connectInfo.userName = connectInfo.userName
             account.connectInfo.networkAddress = connectInfo.networkAddress
             account.connectInfo.networkPort = connectInfo.networkPort
-            account.connectInfo.networkTransportType = connectInfo.networkTransportType
+            account.connectInfo.connectionTransport = connectInfo.connectionTransport
         }
         // SMTP
         else {
