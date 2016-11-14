@@ -26,7 +26,7 @@ open class CdMessagePantomime {
      */
     public static func quickInsertOrUpdate(
         pantomimeMessage message: CWIMAPMessage,
-        account: MessageModel.CdAccount) -> MessageModel.CdMessage? {
+        account: CdAccount) -> MessageModel.CdMessage? {
         guard let folderName = message.folder()?.name() else {
             return nil
         }
@@ -76,7 +76,7 @@ open class CdMessagePantomime {
      - Returns: The newly created or updated Message
      */
     public static func insertOrUpdate(
-        pantomimeMessage message: CWIMAPMessage, account: MessageModel.CdAccount,
+        pantomimeMessage message: CWIMAPMessage, account: CdAccount,
         forceParseAttachments: Bool = false) -> MessageModel.CdMessage? {
         let quickMail = quickInsertOrUpdate(pantomimeMessage: message, account: account)
         guard let mail = quickMail else {

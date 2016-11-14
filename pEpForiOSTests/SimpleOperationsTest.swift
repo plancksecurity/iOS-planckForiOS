@@ -14,7 +14,7 @@ import MessageModel
 
 class SimpleOperationsTest: XCTestCase {
     let grandOperator = GrandOperator()
-    var account: MessageModel.CdAccount!
+    var account: CdAccount!
 
     var connectInfo: EmailConnectInfo! {
         guard let theConnectInfo = (account.emailConnectInfos.filter {
@@ -299,7 +299,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func createBasicMail() -> (
-        OperationQueue, MessageModel.CdAccount, MessageModel.CdMessage,
+        OperationQueue, CdAccount, MessageModel.CdMessage,
         (identity: NSMutableDictionary, receiver1: PEPContact,
         receiver2: PEPContact, receiver3: PEPContact,
         receiver4: PEPContact))? {

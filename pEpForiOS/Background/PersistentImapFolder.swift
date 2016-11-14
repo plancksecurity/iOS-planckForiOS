@@ -76,7 +76,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         var folder: CdFolder? = nil
         privateMOC.performAndWait({
             guard let account = self.privateMOC.object(with: self.connectInfo.accountObjectID)
-                as? MessageModel.CdAccount else {
+                as? CdAccount else {
                     Log.error(component: self.comp,
                               errorString: "Given objectID is not an account")
                     return

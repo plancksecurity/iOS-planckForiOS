@@ -26,7 +26,7 @@ extension CdAccount {
     }
 }
 
-extension MessageModel.CdAccount {
+extension CdAccount {
     func serverNTuple(credentials: CdServerCredentials,
                       server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
         if let iServerType = server.serverType?.intValue,
@@ -64,7 +64,7 @@ extension MessageModel.CdAccount {
         return result
     }
 
-    func emailConnectInfo(account: MessageModel.CdAccount, server: CdServer,
+    func emailConnectInfo(account: CdAccount, server: CdServer,
                           credentials: CdServerCredentials,
                           password: String?) -> EmailConnectInfo? {
         let connectionTransport = ConnectionTransport.init(fromInt: server.transport?.intValue)

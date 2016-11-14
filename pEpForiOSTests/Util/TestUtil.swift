@@ -230,7 +230,7 @@ class TestUtil {
      Validates all servers and their credentials without actually validating them.
      */
     static func skipValidation() {
-        guard let accs = CdAccount.all() as? [MessageModel.CdAccount] else {
+        guard let accs = CdAccount.all() as? [CdAccount] else {
             XCTAssertTrue(false)
             return
         }

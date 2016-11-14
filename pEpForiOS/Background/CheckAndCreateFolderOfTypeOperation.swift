@@ -29,9 +29,9 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
      */
     var numberOfFailures = 0
 
-    var account: MessageModel.CdAccount?
+    var account: CdAccount?
 
-    public init(connectInfo: EmailConnectInfo, account: MessageModel.CdAccount,
+    public init(connectInfo: EmailConnectInfo, account: CdAccount,
                 folderType: FolderType, connectionManager: ConnectionManager) {
         self.connectInfo = connectInfo
         self.folderType = folderType
@@ -47,7 +47,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
 
     func process(context privateMOC: NSManagedObjectContext) {
         guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
-            as? MessageModel.CdAccount else {
+            as? CdAccount else {
                 errors.append(Constants.errorCannotFindAccount(component: comp))
                 markAsFinished()
                 return

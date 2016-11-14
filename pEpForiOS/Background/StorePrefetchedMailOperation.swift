@@ -41,7 +41,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
 
     func storeMessage(context: NSManagedObjectContext) {
         guard let account = context.object(with: connectInfo.accountObjectID)
-            as? MessageModel.CdAccount else {
+            as? CdAccount else {
                 errors.append(Constants.errorCannotFindAccount(component: comp))
                 return
         }
@@ -53,7 +53,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
         }
     }
 
-    func insert(pantomimeMessage: CWIMAPMessage, account: MessageModel.CdAccount,
+    func insert(pantomimeMessage: CWIMAPMessage, account: CdAccount,
                 quick: Bool = true) -> MessageModel.CdMessage? {
         if quick {
             let result = CdMessagePantomime.quickInsertOrUpdate(

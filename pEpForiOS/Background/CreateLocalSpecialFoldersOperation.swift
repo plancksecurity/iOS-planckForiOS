@@ -15,7 +15,7 @@ open class CreateLocalSpecialFoldersOperation: BaseOperation {
     let comp = "CreateLocalSpecialFoldersOperation"
     let accountObjectID: NSManagedObjectID
 
-    public init(account: MessageModel.CdAccount) {
+    public init(account: CdAccount) {
         accountObjectID = account.objectID
         super.init()
     }
@@ -29,7 +29,7 @@ open class CreateLocalSpecialFoldersOperation: BaseOperation {
 
     func createFolders(context: NSManagedObjectContext) {
         guard let account = context.object(with: accountObjectID)
-            as? MessageModel.CdAccount else {
+            as? CdAccount else {
                 errors.append(Constants.errorCannotFindAccount(component: comp))
                 return
         }

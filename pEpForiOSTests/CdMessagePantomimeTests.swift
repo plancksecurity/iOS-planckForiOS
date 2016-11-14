@@ -22,7 +22,7 @@ class CdMessagePantomimeTests: XCTestCase {
         let account = TestData().createWorkingAccount()
         account.save()
 
-        guard let cdAccount: MessageModel.CdAccount = CdAccount.first(
+        guard let cdAccount: CdAccount = CdAccount.first(
             with: "identity.address", value: account.user.address) else {
                 XCTAssertTrue(false)
                 return

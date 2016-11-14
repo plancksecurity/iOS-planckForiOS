@@ -34,7 +34,7 @@ class AppConfig: NSObject {
         model = CdModel.init(context: coreDataUtil.defaultContext())
         let gOp = GrandOperator.init(connectionManager: connectionManager)
         grandOperator = gOp
-        MessageModel.CdAccount.sendLayer = gOp
+        CdAccount.sendLayer = gOp
 
     }
 

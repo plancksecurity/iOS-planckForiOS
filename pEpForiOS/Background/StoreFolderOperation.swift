@@ -35,7 +35,7 @@ class StoreFolderOperation: ConcurrentBaseOperation {
 
     func process(context: NSManagedObjectContext) {
         guard let account = context.object(with: connectInfo.accountObjectID)
-            as? MessageModel.CdAccount else {
+            as? CdAccount else {
                 errors.append(Constants.errorCannotFindAccount(component: comp))
                 return
         }

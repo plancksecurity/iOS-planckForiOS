@@ -50,7 +50,7 @@ open class PrefetchEmailsOperation: ConcurrentBaseOperation {
                                                    backgroundQueue: self.backgroundQueue)
 
         guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
-            as? MessageModel.CdAccount else {
+            as? CdAccount else {
                 errors.append(Constants.errorCannotFindAccount(component: comp))
                 markAsFinished()
                 return

@@ -171,7 +171,7 @@ open class GrandOperator: IGrandOperator {
 
         for connectInfo in connectInfos {
             guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
-                as? MessageModel.CdAccount else {
+                as? CdAccount else {
                     completionBlock?(Constants.errorCannotFindAccount(component: comp))
                     return
             }
@@ -226,7 +226,7 @@ open class GrandOperator: IGrandOperator {
      Asynchronously verifies the given `EmailConnectInfo`s.
      */
     open func verify(
-        account: MessageModel.CdAccount, emailConnectInfos: [EmailConnectInfo: CdServerCredentials],
+        account: CdAccount, emailConnectInfos: [EmailConnectInfo: CdServerCredentials],
         completionBlock: GrandOperatorCompletionBlock?) {
 
         // The operations tha will be run
@@ -335,7 +335,7 @@ open class GrandOperator: IGrandOperator {
 // MARK: - SendLayerProtocol
 
 extension GrandOperator: SendLayerProtocol {
-    public func verify(account: MessageModel.CdAccount,
+    public func verify(account: CdAccount,
                        completionBlock: SendLayerCompletionBlock?) {
         let cis = account.emailConnectInfos
         verify(account: account, emailConnectInfos: cis, completionBlock: { error in
@@ -352,17 +352,17 @@ extension GrandOperator: SendLayerProtocol {
         assertionFailure("GrandOperator.saveDraft not implemented")
     }
 
-    public func syncFlagsToServer(folder: MessageModel.CdFolder,
+    public func syncFlagsToServer(folder: CdFolder,
                                   completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("GrandOperator.syncFlagsToServer not implemented")
     }
 
-    public func create(folderType: FolderType, account: MessageModel.CdAccount,
+    public func create(folderType: FolderType, account: CdAccount,
                        completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("not implemented")
     }
 
-    public func delete(folder: MessageModel.CdFolder, completionBlock: SendLayerCompletionBlock?) {
+    public func delete(folder: CdFolder, completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("not implemented")
     }
 

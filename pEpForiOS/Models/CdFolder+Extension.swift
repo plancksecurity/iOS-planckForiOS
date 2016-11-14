@@ -17,16 +17,16 @@ public extension CdFolder {
         return folder
     }
 
-    public static func by(folderType: FolderType, account: MessageModel.CdAccount) -> CdFolder? {
+    public static func by(folderType: FolderType, account: CdAccount) -> CdFolder? {
         return CdFolder.first(with: ["folderType": folderType.rawValue, "account": account])
     }
 
-    public static func by(name: String, account: MessageModel.CdAccount) -> CdFolder? {
+    public static func by(name: String, account: CdAccount) -> CdFolder? {
         return CdFolder.first(with: ["name": name, "account": account])
     }
 
     public static func insertOrUpdate(folderName: String, folderSeparator: String?,
-                                      account: MessageModel.CdAccount) -> CdFolder? {
+                                      account: CdAccount) -> CdFolder? {
         // Treat Inbox specially, since its name is case insensitive.
         // For all other folders, it's undefined if they have to be handled
         // case insensitive or not, so no special handling for those.
@@ -65,7 +65,7 @@ public extension CdFolder {
         }
     }
 
-    static func insert(folderName name: String, account: MessageModel.CdAccount) -> CdFolder {
+    static func insert(folderName name: String, account: CdAccount) -> CdFolder {
         // Reactivate if previously deleted
         if let folder = by(name: name, account: account) {
             return reactivate(folder: folder)
