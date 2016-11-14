@@ -124,6 +124,7 @@ class SimpleOperationsTest: XCTestCase {
         let message = CWIMAPMessage.init()
         message.setFrom(CWInternetAddress.init(personal: "personal", address: "somemail@test.com"))
         message.setFolder(folder)
+        message.setMessageID("001@whatever.test")
 
         let expStored = expectation(description: "expStored")
         let op = StorePrefetchedMailOperation(
@@ -144,16 +145,15 @@ class SimpleOperationsTest: XCTestCase {
     func testStoreMultipleMails() {
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
         let numMails = 10
+        var numberOfCallbacksCalled = 0
 
         let _ = CdFolder.insertOrUpdate(
-            folderName: folder.name(), folderSeparator: nil,
-            account: account)
-        Record.save()
+            folderName: folder.name(), folderSeparator: nil, account: account)
+        Record.saveAndWait()
+        XCTAssertEqual(CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
 
         let expMailsStored = expectation(description: "expMailsStored")
-        var operations: Set<Operation> = []
         let backgroundQueue = OperationQueue.init()
-        var fulfilled = false
         for i in 1...numMails {
             let message = CWIMAPMessage.init()
             message.setFrom(CWInternetAddress.init(personal: "personal\(i)",
@@ -163,13 +163,13 @@ class SimpleOperationsTest: XCTestCase {
                 address: "myaddress@test.com", type: .toRecipient)])
             message.setFolder(folder)
             message.setUID(UInt(i))
-            let op = StorePrefetchedMailOperation(connectInfo: connectInfo, message: message)
-            operations.insert(op)
+            message.setMessageID("\(i)@whatever.test")
+            let op = StorePrefetchedMailOperation(connectInfo: connectInfo, message: message,
+                                                  quick: i % 2 == 0)
             op.completionBlock = {
-                operations.remove(op)
+                numberOfCallbacksCalled += 1
                 XCTAssertEqual(op.errors.count, 0)
-                if backgroundQueue.operationCount == 0 && !fulfilled {
-                    fulfilled = true
+                if numberOfCallbacksCalled == numMails {
                     expMailsStored.fulfill()
                 }
             }
@@ -178,12 +178,10 @@ class SimpleOperationsTest: XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(
-                CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
-            XCTAssertEqual(
-                MessageModel.CdMessage.all()?.count,
-                numMails)
+            XCTAssertEqual(numberOfCallbacksCalled, numMails)
         })
+
+        XCTAssertEqual(MessageModel.CdMessage.all()?.count, numMails)
     }
 
     func testCreateLocalSpecialFoldersOperation() {
