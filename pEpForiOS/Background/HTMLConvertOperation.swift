@@ -69,7 +69,7 @@ open class HTMLConvertOperation: BaseOperation {
             guard let mails = MessageModel.CdMessage.all(
                 with: NSCompoundPredicate(
                     andPredicateWithSubpredicates:
-                    [CdMessageHelper.basicMessagePredicate(),
+                    [MessageModel.CdMessage.basicMessagePredicate(),
                      predicateHasHTML, predicateHasNoLongMessage])) else {
                 return
             }

@@ -26,12 +26,12 @@ open class CdMessagePantomime {
      */
     public static func quickInsertOrUpdate(
         pantomimeMessage message: CWIMAPMessage,
-        account: MessageModel.CdAccount) -> (MessageModel.CdMessage?, Bool) {
+        account: MessageModel.CdAccount) -> MessageModel.CdMessage? {
         guard let folderName = message.folder()?.name() else {
-            return (nil, false)
+            return nil
         }
         guard let folder = account.folder(byName: folderName) else {
-            return (nil, false)
+            return nil
         }
 
         let mail = existing(pantomimeMessage: message) ??
@@ -61,7 +61,7 @@ open class CdMessagePantomime {
         imap.flagDraft = flags.contain(.draft)
         imap.flagRecent = flags.contain(.recent)
 
-        return (mail, false)
+        return mail
     }
 
     /**
@@ -78,7 +78,7 @@ open class CdMessagePantomime {
     public static func insertOrUpdate(
         pantomimeMessage message: CWIMAPMessage, account: MessageModel.CdAccount,
         forceParseAttachments: Bool = false) -> MessageModel.CdMessage? {
-        let (quickMail, isFresh) = quickInsertOrUpdate(pantomimeMessage: message, account: account)
+        let quickMail = quickInsertOrUpdate(pantomimeMessage: message, account: account)
         guard let mail = quickMail else {
             return nil
         }
@@ -111,15 +111,9 @@ open class CdMessagePantomime {
                          "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
         }
-        if isFresh || mail.to != tos {
-            mail.to = tos
-        }
-        if isFresh || mail.cc != ccs {
-            mail.cc = ccs
-        }
-        if isFresh || mail.bcc != bccs {
-            mail.bcc = bccs
-        }
+        mail.to = tos
+        mail.cc = ccs
+        mail.bcc = bccs
 
         let referenceStrings = NSMutableOrderedSet()
         if let pantomimeRefs = message.allReferences() {

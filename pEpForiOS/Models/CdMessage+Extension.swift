@@ -200,7 +200,7 @@ extension CdMessage {
     }
 }
 
-extension CdMessage {
+extension MessageModel.CdMessage {
     public static func basicMessagePredicate() -> NSPredicate {
         let predicateDecrypted = NSPredicate.init(format: "pEpRating != nil")
         let predicateBody = NSPredicate.init(format: "bodyFetched = true")
@@ -219,22 +219,5 @@ extension CdMessage {
 
     public static func by(uid: Int) -> MessageModel.CdMessage? {
         return MessageModel.CdMessage.first(with: "uid", value: uid)
-    }
-}
-
-/**
- The unit tests can't see static funcs in the extension, so move them here.
- */
-open class CdMessageHelper {
-    public static func basicMessagePredicate() -> NSPredicate {
-        return CdMessage.basicMessagePredicate()
-    }
-
-    public static func countBy(predicate: NSPredicate) -> Int {
-        return CdMessage.countBy(predicate: predicate)
-    }
-
-    public static func by(uid: Int) -> MessageModel.CdMessage? {
-        return CdMessage.by(uid: uid)
     }
 }

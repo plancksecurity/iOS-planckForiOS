@@ -31,6 +31,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let account = TestData().createWorkingAccount()
         let cdAccount = CdAccount.create(with: account)
+        Record.saveAndWait(context: Record.Context.default)
         self.account = cdAccount
         TestUtil.skipValidation()
     }
@@ -74,7 +75,7 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertGreaterThan(
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 0)
         XCTAssertGreaterThan(
-            CdMessageHelper.countBy(predicate: NSPredicate.init(value: true)), 0)
+            MessageModel.CdMessage.all()?.count ?? 0, 0)
     }
 
     func testFetchFoldersOperation() {
@@ -114,19 +115,19 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testStorePrefetchedMailOperation() {
-        let _ = CdFolder.insertOrUpdate(
-            folderName: ImapSync.defaultImapInboxName, folderSeparator: nil,
-            account: account)
-        Record.save()
-
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
+
+        let _ = CdFolder.insertOrUpdate(
+            folderName: folder.name(), folderSeparator: nil, account: account)
+        Record.saveAndWait()
+
         let message = CWIMAPMessage.init()
         message.setFrom(CWInternetAddress.init(personal: "personal", address: "somemail@test.com"))
         message.setFolder(folder)
 
         let expStored = expectation(description: "expStored")
         let op = StorePrefetchedMailOperation(
-            connectInfo: connectInfo, message: message)
+            connectInfo: connectInfo, message: message, quick: false)
         op.completionBlock = {
             expStored.fulfill()
         }
@@ -134,8 +135,10 @@ class SimpleOperationsTest: XCTestCase {
         backgroundQueue.addOperation(op)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(MessageModel.CdMessage.all()?.count, 1)
+            XCTAssertFalse(op.hasErrors())
         })
+
+        XCTAssertEqual(MessageModel.CdMessage.all()?.count, 1)
     }
 
     func testStoreMultipleMails() {
@@ -143,7 +146,7 @@ class SimpleOperationsTest: XCTestCase {
         let numMails = 10
 
         let _ = CdFolder.insertOrUpdate(
-            folderName: ImapSync.defaultImapInboxName, folderSeparator: nil,
+            folderName: folder.name(), folderSeparator: nil,
             account: account)
         Record.save()
 
@@ -178,7 +181,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertEqual(
                 CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
             XCTAssertEqual(
-                CdMessageHelper.countBy(predicate: NSPredicate.init(value: true)),
+                MessageModel.CdMessage.all()?.count,
                 numMails)
         })
     }

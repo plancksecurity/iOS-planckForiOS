@@ -25,7 +25,7 @@ open class DecryptMailOperation: BaseOperation {
 
             guard let mails = MessageModel.CdMessage.all(with:
                 NSCompoundPredicate(andPredicateWithSubpredicates:
-                    [CdMessageHelper.basicMessagePredicate()]),orderedBy:
+                    [MessageModel.CdMessage.basicMessagePredicate()]),orderedBy:
                 [NSSortDescriptor.init(key: "receivedDate", ascending: true)]) else {
                 return
             }

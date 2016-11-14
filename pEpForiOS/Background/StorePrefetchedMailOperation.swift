@@ -47,7 +47,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
         }
         let result = insert(pantomimeMessage: message, account: account, quick: quick)
         if result != nil {
-            Record.save()
+            Record.saveAndWait(context: context)
         } else {
             self.errors.append(Constants.errorCannotStoreMail(self.comp))
         }
@@ -56,7 +56,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
     func insert(pantomimeMessage: CWIMAPMessage, account: MessageModel.CdAccount,
                 quick: Bool = true) -> MessageModel.CdMessage? {
         if quick {
-            let (result, _) = CdMessagePantomime.quickInsertOrUpdate(
+            let result = CdMessagePantomime.quickInsertOrUpdate(
                 pantomimeMessage: self.message, account: account)
             return result
         } else {
