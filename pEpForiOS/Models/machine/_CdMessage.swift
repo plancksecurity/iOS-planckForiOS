@@ -10,9 +10,6 @@ open class _CdMessage: NSManagedObject {
     // MARK: - Properties
 
     @NSManaged open
-    var bodyFetched: NSNumber
-
-    @NSManaged open
     var boundary: String?
 
     @NSManaged open
@@ -71,9 +68,11 @@ open class _CdMessage: NSManagedObject {
     @NSManaged open
     var attachments: NSOrderedSet
 
+    /* XXX: If needed, to be transferred to new CdMessage.
     open func attachmentsSet() -> NSMutableOrderedSet {
         return self.attachments.mutableCopy() as! NSMutableOrderedSet
     }
+    */
 
     @NSManaged open
     var bcc: NSOrderedSet
@@ -96,6 +95,13 @@ open class _CdMessage: NSManagedObject {
 
 extension _CdMessage {
 
+    open func addAttachmentsObject(value: CdAttachment) {
+        let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
+        mutable.add(value)
+        self.attachments = mutable.copy() as! NSOrderedSet
+    }
+    
+    /* XXX: To be transferred to new CdMessage.
     open func addAttachments(objects: NSOrderedSet) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
         mutable.union(objects)
@@ -108,15 +114,10 @@ extension _CdMessage {
         self.attachments = mutable.copy() as! NSOrderedSet
     }
 
-    open func addAttachmentsObject(value: CdAttachment) {
-        let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
-        mutable.add(value)
-        self.attachments = mutable.copy() as! NSOrderedSet
-    }
-
     open func removeAttachmentsObject(value: CdAttachment) {
         let mutable = self.attachments.mutableCopy() as! NSMutableOrderedSet
         mutable.remove(value)
         self.attachments = mutable.copy() as! NSOrderedSet
     }
+    */
 }
