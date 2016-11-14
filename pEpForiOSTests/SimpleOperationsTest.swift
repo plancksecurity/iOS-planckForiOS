@@ -134,9 +134,7 @@ class SimpleOperationsTest: XCTestCase {
         backgroundQueue.addOperation(op)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(
-                CdMessageHelper.countBy(
-                    predicate: NSPredicate.init(value: true)), 1)
+            XCTAssertEqual(MessageModel.CdMessage.all()?.count, 1)
         })
     }
 
