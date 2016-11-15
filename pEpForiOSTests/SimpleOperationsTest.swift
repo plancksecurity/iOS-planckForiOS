@@ -256,11 +256,11 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         let from = CdIdentity.create(address: "MySelf@some.com", userName: "My Self",
-                                   userID: "1", isMySelf: true)
+                                     isMySelf: true)
         let c1 = CdIdentity.create(address: "some@some.com", userName: "Whatever",
-                                   userID: "2", isMySelf: false)
+                                   isMySelf: false)
         let c2 = CdIdentity.create(address: "some@some2.com", userName: "Whatever2",
-                                   userID: "3", isMySelf: false)
+                                   isMySelf: false)
 
         let message = MessageModel.CdMessage.create(messageID: "#1", uid: 1)
         message.shortMessage = "Some subject"

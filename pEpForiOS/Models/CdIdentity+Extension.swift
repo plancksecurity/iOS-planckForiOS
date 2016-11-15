@@ -12,17 +12,13 @@ import MessageModel
 
 extension CdIdentity {
     public static func create(
-        address: String, userName: String? = nil, userID: String?,
-        isMySelf: Bool = false) -> CdIdentity {
+        address: String, userName: String? = nil, isMySelf: Bool = false) -> CdIdentity {
         var dict: [String : Any] = ["address": address, "isMySelf": isMySelf]
         if let un = userName {
             dict["userName"] = un
         }
-        if let uid = userName {
-            dict["userID"] = uid
-        }
+        dict["userID"] = ""
         return CdIdentity.create(
             with: dict)
-
     }
 }
