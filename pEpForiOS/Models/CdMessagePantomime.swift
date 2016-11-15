@@ -151,7 +151,7 @@ open class CdMessagePantomime {
         guard let mid = pantomimeMessage.messageID() else {
             return nil
         }
-        return MessageModel.CdMessage.first(with: "messageID", value: mid)
+        return MessageModel.CdMessage.first(with: "uuid", value: mid)
     }
 
     static func add(contacts: [CWInternetAddress]) -> [String: CdIdentity] {
