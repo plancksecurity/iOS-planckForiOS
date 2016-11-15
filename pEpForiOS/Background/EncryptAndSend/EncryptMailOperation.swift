@@ -71,7 +71,7 @@ open class EncryptMailOperation: ConcurrentBaseOperation {
             self.encryptionData.mailsToSend = mailsToSend
 
             // Encrypt mail to yourself
-            let ident = PEPUtil.identityFromAccount(account, isMyself: true)
+            let ident = PEPUtil.identity(account: account)
             var encryptedMail: NSDictionary? = nil
             let status = session.encryptMessageDict(
                 pepMailOrig, identity: ident as NSDictionary as! [AnyHashable:Any],

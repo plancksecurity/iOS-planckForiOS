@@ -235,16 +235,14 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: account))
     }
 
-    /*
     func testAppendMessageOperation() {
         // Fetch remote folders first
         testFetchFoldersOperation()
 
         let expCreated = expectation(description: "expCreated")
-        let opCreate = CheckAndCreateFolderOfTypeOperation.init(
-            account: persistentSetup.account, folderType: .drafts,
-            connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.coreDataUtil)
+        let opCreate = CheckAndCreateFolderOfTypeOperation(
+            connectInfo: connectInfo, account: account, folderType: .drafts,
+            connectionManager: grandOperator.connectionManager)
         opCreate.completionBlock = {
             expCreated.fulfill()
         }
@@ -257,34 +255,32 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertFalse(opCreate.hasErrors())
         })
 
-        let c1 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some.com", name: "Whatever")
-        c1.addressBookID = 1
+        let from = CdIdentity.create(address: "MySelf@some.com", userName: "My Self",
+                                   userID: "1", isMySelf: true)
+        let c1 = CdIdentity.create(address: "some@some.com", userName: "Whatever",
+                                   userID: "2", isMySelf: false)
+        let c2 = CdIdentity.create(address: "some@some2.com", userName: "Whatever2",
+                                   userID: "3", isMySelf: false)
 
-        let c2 = persistentSetup.model.insertOrUpdateContactEmail(
-            "some@some2.com", name: "Whatever2")
-        c2.addressBookID = 2
-
-        let message = persistentSetup.model.insertNewMessage()
-        message.subject = "Some subject"
+        let message = MessageModel.CdMessage.create(messageID: "#1", uid: 1)
+        message.shortMessage = "Some subject"
         message.longMessage = "Long message"
         message.longMessageFormatted = "<h1>Long HTML</h1>"
+        message.uuid = message.messageID // this should soon be eliminated
+        message.from = from
 
-        message.addToObject(value: c1)
-        message.addCcObject(value: c2)
+        message.addTo(identity: c1)
+        message.addCc(identity: c2)
 
-        let account = persistentSetup.model.insertAccountFromImapSmtpConnectInfo(connectInfo)
-        guard let targetFolder = persistentSetup.model.folderByType(
-            .drafts, account: account) else {
-                XCTAssertFalse(true)
-                return
+        guard let targetFolder = CdFolder.by(folderType: .drafts, account: account) else {
+            XCTAssertFalse(true)
+            return
         }
 
-        let op = AppendSingleMessageOperation.init(
-            message: message, account: persistentSetup.account,
-            targetFolder: targetFolder,
-            connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
+        let op = AppendSingleMessageOperation(
+            connectInfo: connectInfo,
+            message: message, account: account, targetFolder: targetFolder,
+            connectionManager: grandOperator.connectionManager)
 
         let expMessageAppended = expectation(description: "expMessageAppended")
         op.completionBlock = {
@@ -298,6 +294,7 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
+    /*
     func createBasicMail() -> (
         OperationQueue, CdAccount, MessageModel.CdMessage,
         (identity: NSMutableDictionary, receiver1: PEPContact,

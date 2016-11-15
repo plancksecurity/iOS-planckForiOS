@@ -160,14 +160,12 @@ open class PEPUtil {
         return true
     }
 
-    open static func identityFromAccount(_ account: CdAccount,
-                                           isMyself: Bool = true) -> NSMutableDictionary {
-        let dict: NSMutableDictionary = [:]
-        // XXX: User name and its address same for now.
-        dict[kPepUsername] = account.connectInfo.userName
-        dict[kPepAddress] = account.connectInfo.userName
-        dict[kPepIsMe] = isMyself
-        return dict
+    open static func identity(account: CdAccount) -> NSMutableDictionary {
+        if let id = account.identity {
+            let c = pEp(identity: id)
+            return NSMutableDictionary(dictionary: c)
+        }
+        return NSMutableDictionary()
     }
 
     /**
@@ -221,6 +219,15 @@ open class PEPUtil {
     }
 
     open static func pEp(identity: Identity) -> PEPContact {
+        var contact = PEPContact()
+        contact[kPepAddress] = identity.address as AnyObject
+        contact[kPepUsername] = identity.userName as AnyObject
+        contact[kPepIsMe] = identity.isMySelf as AnyObject
+        contact[kPepUserID] = identity.userID as AnyObject
+        return contact
+    }
+
+    open static func pEp(identity: CdIdentity) -> PEPContact {
         var contact = PEPContact()
         contact[kPepAddress] = identity.address as AnyObject
         contact[kPepUsername] = identity.userName as AnyObject

@@ -30,48 +30,29 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     var cwMessageToAppend: CWIMAPMessage!
     var targetFolderName: String!
 
-    public init(message: CdMessage, account: CdAccount, targetFolder: CdFolder?,
-                folderType: FolderType?,
-                connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
+    public init(connectInfo: EmailConnectInfo, message: MessageModel.CdMessage, account: CdAccount,
+                targetFolder: CdFolder? = nil, folderType: FolderType? = nil,
+                connectionManager: ConnectionManager) {
+        self.connectInfo = connectInfo
         self.messageID = message.objectID
-
-        if let folder = targetFolder {
-            self.targetFolderID = folder.objectID
-        } else {
-            self.targetFolderID = nil
-        }
+        self.targetFolderID = targetFolder?.objectID
         self.folderType = folderType
-
         self.accountID = account.objectID
-
-        self.connectInfo = account.connectInfo
         self.connectionManager = connectionManager
-    }
-
-    convenience public init(message: CdMessage, account: CdAccount, targetFolder: CdFolder,
-                            connectionManager: ConnectionManager,
-                            coreDataUtil: CoreDataUtil) {
-        self.init(message: message, account: account, targetFolder: targetFolder,
-                  folderType: nil, connectionManager: connectionManager,
-                  coreDataUtil: coreDataUtil)
-    }
-
-    convenience public init(message: CdMessage, account: CdAccount, folderType: FolderType,
-                            connectionManager: ConnectionManager,
-                            coreDataUtil: CoreDataUtil) {
-        self.init(message: message, account: account, targetFolder: nil,
-                  folderType: folderType, connectionManager: connectionManager,
-                  coreDataUtil: coreDataUtil)
     }
 
     override open func main() {
         privateMOC.perform({
             guard let message = self.privateMOC.object(with: self.messageID) as?
-                CdMessage else {
+                MessageModel.CdMessage else {
+                    self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                    self.markAsFinished()
                     return
             }
             guard let account = self.privateMOC.object(with: self.accountID) as?
                 CdAccount else {
+                    self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                    self.markAsFinished()
                     return
             }
             var tf: CdFolder?
@@ -87,18 +68,18 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
                 return
             }
 
-            message.folder = targetFolder
+            message.parent = targetFolder
 
             // In case the append fails, the mail will be easy to find
             message.uid = 0
 
             self.targetFolderName = targetFolder.name
-            CoreDataUtil.saveContext(self.privateMOC)
+            Record.saveAndWait(context: self.privateMOC)
 
             // Encrypt mail
             let session = PEPSession.init()
-            let ident = PEPUtil.identityFromAccount(account, isMyself: true)
-            let pepMailOrig = PEPUtil.pepMail(message)
+            let ident = PEPUtil.identity(account: account)
+            let pepMailOrig = PEPUtil.pEp(mail: message)
             var encryptedMail: NSDictionary? = nil
             let status = session.encryptMessageDict(
                 pepMailOrig,
