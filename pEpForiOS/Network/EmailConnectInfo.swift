@@ -135,15 +135,20 @@ public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
     public var authMethod: AuthMethod?
 
     public init(accountObjectID: NSManagedObjectID, serverObjectID: NSManagedObjectID,
-                userName: String, userPassword: String? = nil,
+                userName: String,
+                loginName: String,
+                userPassword: String? = nil,
                 networkAddress: String,
                 networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil,
                 emailProtocol: EmailProtocol? = nil,
                 connectionTransport: ConnectionTransport? = nil, authMethod: AuthMethod? = nil) {
         super.init(accountObjectID: accountObjectID, serverObjectID: serverObjectID,
-                   userName: userName, userPassword: userPassword,
-                   networkAddress: networkAddress, networkPort: networkPort,
+                   userName: userName,
+                   loginName: loginName,
+                   userPassword: userPassword,
+                   networkAddress: networkAddress,
+                   networkPort: networkPort,
                    networkAddressType: networkAddressType,
                    networkTransportType: networkTransportType)
         self.emailProtocol = emailProtocol
