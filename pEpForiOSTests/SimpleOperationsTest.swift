@@ -31,7 +31,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let account = TestData().createWorkingAccount()
         let cdAccount = CdAccount.create(with: account)
-        Record.saveAndWait(context: Record.Context.default)
+        Record.saveAndWait()
         self.account = cdAccount
         TestUtil.skipValidation()
     }
