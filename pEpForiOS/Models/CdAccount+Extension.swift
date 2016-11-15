@@ -64,6 +64,16 @@ extension CdAccount {
         return result
     }
 
+    open var imapConnectInfo: EmailConnectInfo? {
+        let cis = emailConnectInfos
+        for k in cis.keys {
+            if k.emailProtocol == .imap {
+                return k
+            }
+        }
+        return nil
+    }
+
     func emailConnectInfo(account: CdAccount, server: CdServer,
                           credentials: CdServerCredentials,
                           password: String?) -> EmailConnectInfo? {

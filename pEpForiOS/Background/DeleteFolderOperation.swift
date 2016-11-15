@@ -14,33 +14,47 @@ import MessageModel
 open class DeleteFolderOperation: ConcurrentBaseOperation {
     let comp = "DeleteFolderOperation"
 
-    let accountEmail: String
+    let connectInfo: EmailConnectInfo
     let connectionManager: ConnectionManager
     var folderName: String
+    let accountID: NSManagedObjectID
+    var account: CdAccount!
     var imapSync: ImapSync!
 
-    public init(accountEmail: String, folderName: String,
-                coreDataUtil: CoreDataUtil, connectionManager: ConnectionManager) {
-        self.connectionManager = connectionManager
-        self.accountEmail = accountEmail
+    public init(connectInfo: EmailConnectInfo, account: CdAccount, folderName: String,
+                connectionManager: ConnectionManager) {
+        self.connectInfo = connectInfo
+        self.accountID = account.objectID
         self.folderName = folderName
+        self.connectionManager = connectionManager
     }
 
-    convenience public init(folder: CdFolder, connectionManager: ConnectionManager,
-                            coreDataUtil: CoreDataUtil) {
-        self.init(accountEmail: (folder.account?.identity?.address!)!, folderName: folder.name!,
-                  coreDataUtil: coreDataUtil, connectionManager: connectionManager)
+    convenience public init?(connectInfo: EmailConnectInfo, folder: CdFolder,
+                             connectionManager: ConnectionManager) {
+        guard let fn = folder.name else {
+            Log.error(component: "DeleteFolderOperation.init",
+                      errorString: "Cannot delete folder without name")
+            return nil
+        }
+        guard let account = folder.account else {
+            Log.error(component: "DeleteFolderOperation.init",
+                      errorString: "Cannot delete folder without account")
+            return nil
+        }
+        self.init(connectInfo: connectInfo, account: account, folderName: fn,
+                  connectionManager: connectionManager)
     }
 
     open override func main() {
         privateMOC.perform() {
-            guard let account = self.model.accountByEmail(self.accountEmail) else {
-                self.addError(Constants.errorCannotFindAccountForEmail(
-                    self.comp, email: self.accountEmail))
+            self.account = self.privateMOC.object(with: self.accountID) as? CdAccount
+            guard self.account != nil else {
+                self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                self.markAsFinished()
                 return
             }
 
-            self.imapSync = self.connectionManager.emailSyncConnection(account.connectInfo)
+            self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
             self.imapSync.delegate = self
             self.imapSync.start()
         }
@@ -48,8 +62,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
 
     func deleteLocalFolderAndFinish() {
         privateMOC.perform() {
-            if let folder = self.model.anyFolderByName(
-                self.folderName, email: self.accountEmail) {
+            if let folder = CdFolder.by(name: self.folderName, account: self.account) {
                 self.privateMOC.delete(folder)
                 self.model.save()
             }

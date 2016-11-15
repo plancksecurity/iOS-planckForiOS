@@ -320,9 +320,23 @@ open class GrandOperator: IGrandOperator {
 
     open func deleteFolder(_ folder: CdFolder,
                              completionBlock: GrandOperatorCompletionBlock?) {
-        let op = DeleteFolderOperation.init(
-            folder: folder, connectionManager: connectionManager,
-            coreDataUtil: coreDataUtil)
+        guard let account = folder.account else {
+            let error = Constants.errorCannotFindAccount(component: comp)
+            completionBlock?(error)
+            return
+        }
+        guard let connectInfo = account.imapConnectInfo else {
+            let error = Constants.errorNoImapConnectInfo(component: comp)
+            completionBlock?(error)
+            return
+        }
+        guard let op = DeleteFolderOperation(
+            connectInfo: connectInfo, folder: folder,
+            connectionManager: connectionManager) else {
+                let error = Constants.errorInvalidParameter(comp)
+                completionBlock?(error)
+                return
+        }
         op.completionBlock = {
             GCD.onMain() {
                 completionBlock?(op.errors.first)

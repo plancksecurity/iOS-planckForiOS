@@ -74,6 +74,7 @@ open class Constants {
         case cannotFindServerForAccount
         case cannotFindServer
         case cannotFindMessage
+        case noImapConnectInfo
     }
 
     public enum SmtpErrorCode: Int {
@@ -138,6 +139,12 @@ open class Constants {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.notImplemented.rawValue,
             userInfo: [NSLocalizedDescriptionKey: errorMessage])
+        return error
+    }
+
+    static func errorInvalidParameter(_ component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: GeneralErrorCode.invalidParameter.rawValue)
         return error
     }
 
@@ -256,6 +263,16 @@ open class Constants {
                 NSLocalizedString(
                     "Cannot find message from object ID", comment:
                     "Technical error description when not being able to fetch a message by object ID")])
+        return error
+    }
+
+    static func errorNoImapConnectInfo(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.noImapConnectInfo.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find IMAP connect info", comment:
+                    "Technical error description when not being able to determine the connect info")])
         return error
     }
 

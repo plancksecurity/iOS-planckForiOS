@@ -273,7 +273,7 @@ class SimpleOperationsTest: XCTestCase {
         Record.saveAndWait()
 
         guard let targetFolder = CdFolder.by(folderType: .drafts, account: account) else {
-            XCTAssertFalse(true)
+            XCTFail()
             return
         }
 
@@ -292,6 +292,41 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
         })
+    }
+
+    func testDeleteFolderOperation() {
+        testCreateFolders()
+
+        let backgroundQueue = OperationQueue.init()
+        guard let folder = CdFolder.by(folderType: .drafts, account: account) else {
+                XCTFail()
+                return
+        }
+
+        let expDeleted = expectation(description: "expDeleted")
+        guard let opDelete = DeleteFolderOperation(
+            connectInfo: connectInfo, folder: folder,
+            connectionManager: grandOperator.connectionManager) else {
+                XCTFail()
+                return
+        }
+        opDelete.completionBlock = {
+            expDeleted.fulfill()
+        }
+
+        backgroundQueue.addOperation(opDelete)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(opDelete.hasErrors())
+            print(opDelete.errors)
+        })
+
+        XCTAssertNil(CdFolder.by(folderType: .drafts, account: account))
+
+        // Recreate drafts folder
+        testCreateFolders()
+        XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: account))
     }
 
     /*
@@ -747,37 +782,6 @@ class SimpleOperationsTest: XCTestCase {
                 XCTAssertEqual(op.numberOfMessagesSynced, 0)
             }
         }
-    }
-
-    func testDeleteFolderOperation() {
-        testCreateFolders()
-
-        let backgroundQueue = OperationQueue.init()
-        guard let folder = persistentSetup.model.folderByType(
-            .drafts, email: persistentSetup.account.email) else {
-                XCTAssertTrue(false)
-                return
-        }
-
-        let expDeleted = expectation(description: "expDeleted")
-        let opDelete = DeleteFolderOperation.init(
-            accountEmail: persistentSetup.account.email,
-            folderName: folder.name, coreDataUtil: persistentSetup.coreDataUtil,
-            connectionManager: persistentSetup.connectionManager)
-        opDelete.completionBlock = {
-            expDeleted.fulfill()
-        }
-
-        backgroundQueue.addOperation(opDelete)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(opDelete.hasErrors())
-            print(opDelete.errors)
-        })
-
-        XCTAssertNil(persistentSetup.model.folderByType(
-            .drafts, email: persistentSetup.account.email))
     }
      */
 }
