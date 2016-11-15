@@ -53,6 +53,7 @@ open class CdMessagePantomime {
         // sync flags
         let flags = message.flags()
         imap.flagsFromServer = Int16(flags.rawFlagsAsShort())
+        imap.flagsCurrent = imap.flagsFromServer
         imap.flagSeen = flags.contain(.seen)
         imap.flagAnswered = flags.contain(.answered)
         imap.flagFlagged = flags.contain(.flagged)
