@@ -130,6 +130,8 @@ public protocol IEmailConnectInfo: IConnectInfo {
 }
 
 public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
+    public var userPassword: String?
+
     public var emailProtocol: EmailProtocol?
     public var connectionTransport: ConnectionTransport?
     public var authMethod: AuthMethod?
@@ -137,7 +139,7 @@ public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
     public init(accountObjectID: NSManagedObjectID, serverObjectID: NSManagedObjectID,
                 userName: String,
                 loginName: String,
-                userPassword: String? = nil,
+                loginPassword: String? = nil,
                 networkAddress: String,
                 networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil,
@@ -146,14 +148,14 @@ public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
         super.init(accountObjectID: accountObjectID, serverObjectID: serverObjectID,
                    userName: userName,
                    loginName: loginName,
-                   userPassword: userPassword,
+                   loginPassword: loginPassword,
                    networkAddress: networkAddress,
                    networkPort: networkPort,
                    networkAddressType: networkAddressType,
                    networkTransportType: networkTransportType)
         self.emailProtocol = emailProtocol
         self.connectionTransport = connectionTransport
-        self.userPassword = userPassword
+        self.userPassword = loginPassword
         self.authMethod = authMethod
     }
 }

@@ -270,7 +270,7 @@ extension ImapSync: CWServiceClient {
         dumpMethodName("serviceInitialized", notification: notification)
 
         imapStore.authenticate(connectInfo.userName,
-                               password: connectInfo.userPassword!,
+                               password: connectInfo.loginPassword!,
                                mechanism: bestAuthMethod().rawValue)
     }
 

@@ -29,7 +29,6 @@ public protocol IConnectInfo: Hashable {
     /** The URI of the corresponding account object, for quick and unique access. */
     var accountObjectID: NSManagedObjectID { get }
     var userName: String { get }
-    var loginName: String { get }
     var networkAddress: String { get }
     var networkPort: UInt16 { get }
     var networkAddressType: NetworkAddressType? {get}
@@ -41,15 +40,15 @@ public class ConnectInfo: IConnectInfo {
     public var serverObjectID: NSManagedObjectID
 
     public var userName: String
-    public var loginName: String
-    public var userPassword: String?
+    public var loginName: String?
+    public var loginPassword: String?
     public var networkAddress: String
     public var networkPort: UInt16 = 0
     public var networkAddressType: NetworkAddressType?
     public var networkTransportType: NetworkTransportType?
 
     public init(accountObjectID: NSManagedObjectID, serverObjectID: NSManagedObjectID,
-                userName: String, loginName: String, userPassword: String? = nil,
+                userName: String, loginName: String?, loginPassword: String? = nil,
                 networkAddress: String, networkPort: UInt16,
                 networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil) {
@@ -57,7 +56,7 @@ public class ConnectInfo: IConnectInfo {
         self.serverObjectID = serverObjectID
         self.userName = userName
         self.loginName = loginName
-        self.userPassword = userPassword
+        self.loginPassword = loginPassword
         self.networkAddress = networkAddress
         self.networkPort = networkPort
         self.networkAddressType = networkAddressType

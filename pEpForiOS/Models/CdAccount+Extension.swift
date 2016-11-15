@@ -16,7 +16,8 @@ extension CdAccount {
             accountObjectID: objectID,
             serverObjectID: objectID, // TODO: This is a blatant lie!
             userName: self.connectInfo.userName,
-            userPassword: password,
+            loginName: self.connectInfo.loginName!,
+            loginPassword: password,
             networkAddress: self.connectInfo.networkAddress,
             networkPort: self.connectInfo.networkPort,
             networkAddressType: nil,
@@ -86,8 +87,9 @@ extension CdAccount {
             let emailProtocol = EmailProtocol.init(serverType: serverType) {
             return EmailConnectInfo(
                 accountObjectID: account.objectID, serverObjectID: server.objectID,
-                userName: credentials.userName!,
-                userPassword: password,
+                userName: credentials.userName!, // XXX: Must not be name as loginName.
+                loginName: credentials.userName!,
+                loginPassword: password,
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,
                 networkTransportType: nil, emailProtocol: emailProtocol,

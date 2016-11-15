@@ -310,7 +310,7 @@ open class CdModel: ICdModel {
         // An SMTP and IMAP account are considered seperate.
         let _ = KeyChain.add(key: connectInfo.userName,
                              serverType: (connectInfo.emailProtocol?.rawValue)!,
-                             password: connectInfo.userPassword)
+                             password: connectInfo.loginPassword)
         return account
     }
 
