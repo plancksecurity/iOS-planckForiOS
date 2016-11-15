@@ -194,16 +194,6 @@ open class PEPUtil {
         }
         dict[kPepAddress] = contact.address as AnyObject
         dict[kPepIsMe] = contact.isMySelf
-
-        if let pepUserID = contact.userID {
-            dict[kPepUserID] = pepUserID as NSObject
-        } else {
-            // Only use an address book ID if this contact has no pEp ID
-            // XXX: contact.userID might not be what we want to set here (from refactoring).
-            if let addressBookID = contact.userID {
-                dict[kPepUserID] = String(describing: addressBookID) as NSObject
-            }
-        }
         return dict
     }
 
@@ -223,7 +213,6 @@ open class PEPUtil {
         contact[kPepAddress] = identity.address as AnyObject
         contact[kPepUsername] = identity.userName as AnyObject
         contact[kPepIsMe] = identity.isMySelf as AnyObject
-        contact[kPepUserID] = identity.userID as AnyObject
         return contact
     }
 
@@ -232,7 +221,6 @@ open class PEPUtil {
         contact[kPepAddress] = identity.address as AnyObject
         contact[kPepUsername] = identity.userName as AnyObject
         contact[kPepIsMe] = identity.isMySelf as AnyObject
-        contact[kPepUserID] = identity.userID as AnyObject
         return contact
     }
 
@@ -385,20 +373,6 @@ open class PEPUtil {
         if let isMySelf = pepContact[kPepIsMe] as? Bool {
             contact.isMySelf = NSNumber(value: isMySelf)
         }
-
-        // The only case where the kPepUserID is already set, should
-        // be as a result of mySelf().
-        if let pepUserID = pepContact[kPepUserID] as? String {
-            contact.userID = pepUserID
-        }
-        // If there is no pEp ID yet, try to use an addressbook ID
-        /* XXX: Refactored out as no addressBookID is in use now.
-        if contact.pepUserID == nil {
-            if let abID = contact.addressBookID?.int32Value {
-                contact.pepUserID = String(abID)
-            }
-        }
-        */
         return contact
     }
 

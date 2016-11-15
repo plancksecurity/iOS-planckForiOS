@@ -17,7 +17,6 @@ extension CdIdentity {
         if let un = userName {
             dict["userName"] = un
         }
-        dict["userID"] = ""
         return CdIdentity.create(
             with: dict)
     }

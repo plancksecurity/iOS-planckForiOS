@@ -300,10 +300,7 @@ open class AddressBook {
             let ab = AddressBook()
             let contacts = ab.allContacts()
             for c in contacts {
-                let id = Identity.create(address: c.email, userName: c.name, userID: nil)
-                if let addId = c.addressBookID, id.userID == nil {
-                    id.userID = String(describing: addId)
-                }
+                let id = Identity.create(address: c.email, userName: c.name)
                 insertedContacts.append(id)
             }
         }

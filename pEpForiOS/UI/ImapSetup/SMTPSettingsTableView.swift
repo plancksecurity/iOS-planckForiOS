@@ -133,7 +133,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         self.status.activityIndicatorViewEnable =  true
         updateView()
 
-        let identity = Identity.create(address: model.email!, userName: model.name!, userID: nil)
+        let identity = Identity.create(address: model.email!, userName: model.name!)
         identity.isMySelf = true
         let userName = (model.username ?? model.email)!
 

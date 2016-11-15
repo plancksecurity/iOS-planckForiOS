@@ -15,8 +15,7 @@ class TestData {
      An account that should not be able to be verified.
      */
     func createDisfunctionalAccount() -> Account {
-        let id = Identity.create(address: "user1@example.com", userName: "User 1",
-                                 userID: "user1")
+        let id = Identity.create(address: "user1@example.com", userName: "User 1")
 
        /* An SMTP server usually has following valid arguments:
           - serverType: .smtp (only)

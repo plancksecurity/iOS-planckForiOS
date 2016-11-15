@@ -12,8 +12,7 @@ import MessageModel
 open class MockData {
     
     static func insertData() {
-        let ident = Identity.create(address: "this_is_me@blah.org", userName: "User 1",
-                                    userID: nil)
+        let ident = Identity.create(address: "this_is_me@blah.org", userName: "User 1")
         let imapServer = Server.create(
             serverType: .imap, port: 918, address: "mail.yahoo.com",
             transport: .tls)
