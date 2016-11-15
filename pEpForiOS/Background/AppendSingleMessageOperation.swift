@@ -175,7 +175,7 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
         privateMOC.perform({
             let message = self.privateMOC.object(with: self.messageID)
             self.privateMOC.delete(message)
-            CoreDataUtil.saveContext(self.privateMOC)
+            Record.saveAndWait(context: self.privateMOC)
             self.markAsFinished()
         })
     }
