@@ -11,9 +11,15 @@ import XCTest
 import MessageModel
 
 class MessageModelTests: XCTestCase {
+    var persistentSetup: PersistentSetup!
+
     override func setUp() {
         super.setUp()
-        let _ = PersistentSetup()
+        persistentSetup = PersistentSetup()
+    }
+
+    override func tearDown() {
+        persistentSetup = nil
     }
     
     func testAccountSave() {

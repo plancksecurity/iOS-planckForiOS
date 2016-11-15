@@ -21,14 +21,25 @@ class PersistentSetup {
         loadCoreDataStack()
     }
 
+    deinit {
+        tearDownCoreDataStack()
+    }
+
     func loadCoreDataStack() {
         let objectModel = AppDataModel.appModel()
-
         do {
             try Record.loadCoreDataStack(
                 managedObjectModel: objectModel, storeType: NSInMemoryStoreType)
         } catch {
-            print("Error While Loading DataStack")
+            debugPrint(error)
+        }
+    }
+
+    func tearDownCoreDataStack() {
+        do {
+            try Record.destroyCoreDataStack()
+        } catch {
+            debugPrint(error)
         }
     }
 }

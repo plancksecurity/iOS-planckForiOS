@@ -12,11 +12,16 @@ import pEpForiOS
 import MessageModel
 
 class PrefetchEmailsOperationTest: XCTestCase {
+    var persistentSetup: PersistentSetup!
     let grandOp = GrandOperator()
     
     override func setUp() {
         super.setUp()
-        let _ = PersistentSetup()
+        persistentSetup = PersistentSetup()
+    }
+
+    override func tearDown() {
+        persistentSetup = nil
     }
     
     func testFetchMails() {

@@ -15,6 +15,7 @@ import MessageModel
 class SimpleOperationsTest: XCTestCase {
     let grandOperator = GrandOperator()
     var account: CdAccount!
+    var persistentSetup: PersistentSetup!
 
     var connectInfo: EmailConnectInfo! {
         guard let theConnectInfo = (account.emailConnectInfos.filter {
@@ -27,7 +28,7 @@ class SimpleOperationsTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let _ = PersistentSetup()
+        persistentSetup = PersistentSetup()
 
         let account = TestData().createWorkingAccount()
         let cdAccount = CdAccount.create(with: account)
@@ -38,6 +39,7 @@ class SimpleOperationsTest: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        persistentSetup = nil
     }
 
     func testVerifyConnection() {

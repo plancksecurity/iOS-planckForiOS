@@ -15,10 +15,15 @@ class SendLayerTests: XCTestCase {
     let coreDataUtil = CoreDataUtil()
     let connectionManager = ConnectionManager()
     let grandOp = GrandOperator()
+    var persistentSetup: PersistentSetup!
 
     override func setUp() {
         super.setUp()
-        let _ = PersistentSetup()
+        persistentSetup = PersistentSetup()
+    }
+
+    override func tearDown() {
+        persistentSetup = nil
     }
 
     func testVerifyBad() {
