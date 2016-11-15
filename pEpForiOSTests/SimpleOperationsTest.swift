@@ -255,8 +255,6 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertFalse(opCreate.hasErrors())
         })
 
-        let from = CdIdentity.create(address: "MySelf@some.com", userName: "My Self",
-                                     isMySelf: true)
         let c1 = CdIdentity.create(address: "some@some.com", userName: "Whatever",
                                    isMySelf: false)
         let c2 = CdIdentity.create(address: "some@some2.com", userName: "Whatever2",
@@ -266,10 +264,11 @@ class SimpleOperationsTest: XCTestCase {
         message.shortMessage = "Some subject"
         message.longMessage = "Long message"
         message.longMessageFormatted = "<h1>Long HTML</h1>"
-        message.from = from
 
         message.addTo(identity: c1)
         message.addCc(identity: c2)
+
+        Record.saveAndWait()
 
         guard let targetFolder = CdFolder.by(folderType: .drafts, account: account) else {
             XCTAssertFalse(true)
