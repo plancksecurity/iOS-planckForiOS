@@ -24,6 +24,7 @@ class SendLayerTests: XCTestCase {
 
     override func tearDown() {
         persistentSetup = nil
+        super.tearDown()
     }
 
     func testVerifyBad() {

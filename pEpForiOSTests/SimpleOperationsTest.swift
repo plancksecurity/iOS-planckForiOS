@@ -38,8 +38,8 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     override func tearDown() {
-        super.tearDown()
         persistentSetup = nil
+        super.tearDown()
     }
 
     func testVerifyConnection() {

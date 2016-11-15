@@ -22,6 +22,7 @@ class PrefetchEmailsOperationTest: XCTestCase {
 
     override func tearDown() {
         persistentSetup = nil
+        super.tearDown()
     }
     
     func testFetchMails() {
