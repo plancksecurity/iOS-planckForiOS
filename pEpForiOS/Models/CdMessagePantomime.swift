@@ -41,8 +41,7 @@ open class CdMessagePantomime {
         mail.bodyFetched = message.isInitialized()
         mail.received = message.receivedDate() as NSDate?
         mail.shortMessage = message.subject()
-        mail.messageID = message.messageID()
-        mail.uuid = mail.messageID
+        mail.uuid = message.messageID()
         mail.uid = Int32(message.uid())
 
         let imap = mail.imap ?? CdImapFields.create()

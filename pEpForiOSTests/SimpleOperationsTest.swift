@@ -266,7 +266,6 @@ class SimpleOperationsTest: XCTestCase {
         message.shortMessage = "Some subject"
         message.longMessage = "Long message"
         message.longMessageFormatted = "<h1>Long HTML</h1>"
-        message.uuid = message.messageID // this should soon be eliminated
         message.from = from
 
         message.addTo(identity: c1)

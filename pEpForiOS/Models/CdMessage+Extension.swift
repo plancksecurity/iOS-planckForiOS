@@ -202,7 +202,7 @@ extension CdMessage {
 
 extension MessageModel.CdMessage {
     public static func create(messageID: String, uid: Int) -> MessageModel.CdMessage {
-        return MessageModel.CdMessage.create(with: ["messageID": messageID, "uid": uid])
+        return MessageModel.CdMessage.create(with: ["uuid": messageID, "uid": uid])
     }
 
     public static func basicMessagePredicate() -> NSPredicate {
@@ -223,6 +223,10 @@ extension MessageModel.CdMessage {
 
     public static func by(uid: Int) -> MessageModel.CdMessage? {
         return MessageModel.CdMessage.first(with: "uid", value: uid)
+    }
+
+    var messageID: String? {
+        return uuid
     }
 
     /**
