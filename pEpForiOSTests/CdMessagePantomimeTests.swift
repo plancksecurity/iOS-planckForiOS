@@ -25,13 +25,7 @@ class CdMessagePantomimeTests: XCTestCase {
     }
     
     func testInsertOrUpdatePantomimeMessage() {
-        let account = TestData().createWorkingAccount()
-
-        guard let cdAccount: CdAccount = CdAccount.first(
-            with: "identity.address", value: account.user.address) else {
-                XCTAssertTrue(false)
-                return
-        }
+        let cdAccount = TestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
         folder.account = cdAccount

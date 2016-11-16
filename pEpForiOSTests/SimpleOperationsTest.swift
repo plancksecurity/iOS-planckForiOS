@@ -30,8 +30,7 @@ class SimpleOperationsTest: XCTestCase {
         super.setUp()
         persistentSetup = PersistentSetup()
 
-        let account = TestData().createWorkingAccount()
-        let cdAccount = CdAccount.create(with: account)
+        let cdAccount = TestData().createWorkingCdAccount()
         Record.saveAndWait()
         self.account = cdAccount
         TestUtil.skipValidation()

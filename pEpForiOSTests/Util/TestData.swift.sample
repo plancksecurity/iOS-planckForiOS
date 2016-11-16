@@ -14,44 +14,43 @@ class TestData {
     /**
      An account that should not be able to be verified.
      */
-    func createDisfunctionalAccount() -> Account {
-        let id = Identity.create(address: "user1@example.com", userName: "User 1")
-
-       /* An SMTP server usually has following valid arguments:
-          - serverType: .smtp (only)
-          - port: 465 (Int example: usual for secured connections)
-          - address: "mail.example.com" (String example)
-          - transport: .plain, .tls or .startTls (prefer .tls, if supported)
-        */
-        let smtp = Server.create(serverType: .smtp, port: 4096, address: "localhost",
-                                 transport: .plain)
-
-	/* An IMAP server usually has following valid arguments:
-          - serverType: .imap (only)
-          - port: 993 (Int example: usual for secured connections)
-          - address: "mail.example.com" (String example)
-          - transport: .plain, .tls or .startTls (prefer .tls, if supported)
-        */
-        let imap = Server.create(serverType: .imap, port: 4097, address: "localhost",
-                                 transport: .plain)
-
-        /* If credential data differs between the SMTP and IMAP connections, two seperate
-           identities need to be created, with then different userName (String) and password
-           (String) arguments in place.
-         */
-        let cred = ServerCredentials.create(userName: id.address, password: "password",
-                                            servers: [smtp, imap])
-        let acc = Account.create(identity: id, credentials: [cred])
-        return acc
+    func createDisfunctionalCdAccount() -> CdAccount {
+        let account = createWorkingCdAccount()
+        for creds in account.credentials!.array as! [CdServerCredentials] {
+            for server in creds.servers!.sortedArray(using: []) as! [CdServer] {
+                server.port = 4096
+            }
+        }
+        return account
     }
 
     /**
      Like `createDisfunctionalAccount`, but this account including credentials
      should be valid.
      */
+    func createWorkingCdAccount() -> CdAccount {
+        let id = CdIdentity.create(
+            with: ["address": "email@example.com", "userName": "User Name"])
+        let smtp = CdServer.create(
+            with: ["serverType": Server.ServerType.smtp.rawValue, "port": 587,
+                   "address": "server.address",
+                   "transport": Server.Transport.startTls.rawValue])
+        let imap = CdServer.create(
+            with: ["serverType": Server.ServerType.imap.rawValue, "port": 993,
+                   "address": "server.address", "transport": Server.Transport.tls.rawValue])
+
+        let key = UUID.generate()
+        CdServerCredentials.add(password: "somepassword", forKey: key)
+
+        let cred = CdServerCredentials.create(
+            with: ["userName": id.address!, "key": key,
+                   "servers": NSSet(array: [imap, smtp])])
+        let acc = CdAccount.create(with: ["identity": id, "credentials": NSOrderedSet(array: [cred])])
+        return acc
+    }
+
     func createWorkingAccount() -> Account {
-        let id = Identity.create(address: "user1@example.com", userName: "User 1",
-                                 userID: "user1")
+        let id = Identity.create(address: "user1@example.com", userName: "User 1")
         let smtp = Server.create(serverType: .smtp, port: 4096, address: "localhost",
                                  transport: .plain)
         let imap = Server.create(serverType: .imap, port: 4097, address: "localhost",
@@ -61,5 +60,14 @@ class TestData {
         let acc = Account.create(identity: id, credentials: [cred])
         return acc
     }
-}
 
+    func createDisfunctionalAccount() -> Account {
+        let acc = createWorkingAccount()
+        for sc in acc.serverCredentials {
+            for server in sc.servers {
+                server.port = 4096
+            }
+        }
+        return acc
+    }
+}

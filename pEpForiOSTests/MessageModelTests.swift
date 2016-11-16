@@ -31,8 +31,7 @@ class MessageModelTests: XCTestCase {
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
 
-        let account = TestData().createWorkingAccount()
-        account.save()
+        let _ = TestData().createWorkingAccount()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)

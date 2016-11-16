@@ -30,8 +30,7 @@ extension CdAccount {
 extension CdAccount {
     func serverNTuple(credentials: CdServerCredentials,
                       server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
-        if let iServerType = server.serverType?.intValue,
-            let serverType = Server.ServerType.init(rawValue: iServerType)?.asString(),
+        if let serverType = Server.ServerType.init(rawValue: Int(server.serverType))?.asString(),
             let key = credentials.key {
             return (server, credentials, KeyChain.password(key: key, serverType: serverType))
         }
@@ -49,8 +48,8 @@ extension CdAccount {
                 let servers = theCred.servers {
                 for theServer in servers {
                     if let server = theServer as? CdServer {
-                        if server.serverType?.intValue == Server.ServerType.imap.rawValue ||
-                            server.serverType?.intValue == Server.ServerType.smtp.rawValue {
+                        if Int(server.serverType) == Server.ServerType.imap.rawValue ||
+                            Int(server.serverType) == Server.ServerType.smtp.rawValue {
                             let password = theCred.password
                             if let emailConnectInfo = emailConnectInfo(
                                 account: self, server: server, credentials: theCred,
@@ -78,11 +77,11 @@ extension CdAccount {
     func emailConnectInfo(account: CdAccount, server: CdServer,
                           credentials: CdServerCredentials,
                           password: String?) -> EmailConnectInfo? {
-        let connectionTransport = ConnectionTransport.init(fromInt: server.transport?.intValue)
+        let connectionTransport = ConnectionTransport(fromInt: Int(server.transport))
 
+        let serverTypeInt = Int(server.serverType)
         if let port = server.port?.int16Value,
             let address = server.address,
-            let serverTypeInt = server.serverType?.intValue,
             let serverType = Server.ServerType.init(rawValue: serverTypeInt),
             let emailProtocol = EmailProtocol.init(serverType: serverType) {
             return EmailConnectInfo(

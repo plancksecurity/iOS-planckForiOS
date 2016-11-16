@@ -33,8 +33,7 @@ class SendLayerTests: XCTestCase {
         MessageModelConfig.accountDelegate = accountDelegate
 
         CdAccount.sendLayer = grandOp
-        let account = TestData().createDisfunctionalAccount()
-        account.save()
+        let _ = TestData().createDisfunctionalAccount()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
@@ -49,8 +48,7 @@ class SendLayerTests: XCTestCase {
         MessageModelConfig.accountDelegate = accountDelegate
 
         CdAccount.sendLayer = grandOp
-        let account = TestData().createWorkingAccount()
-        account.save()
+        let _ = TestData().createWorkingAccount()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
