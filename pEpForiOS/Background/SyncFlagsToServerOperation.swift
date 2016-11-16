@@ -38,13 +38,13 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 
     open override func main() {
         privateMOC.perform() {
-            self.startSync()
+            self.startSync(context: self.privateMOC)
         }
     }
 
-    func startSync() {
+    func startSync(context: NSManagedObjectContext) {
         // Immediately check for work. If there is none, bail out
-        if let _ = nextMessageToBeSynced() {
+        if let _ = nextMessageToBeSynced(context: context) {
             self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
             self.imapSync.delegate = self
             self.imapSync.start()
@@ -53,23 +53,29 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         }
     }
 
-    func nextMessageToBeSynced() -> MessageModel.CdMessage? {
-        guard let folder = Record.Context.default.object(with: folderID) as? CdFolder else {
+    public static func messagesToBeSynced(
+        folder: CdFolder, context: NSManagedObjectContext) -> [MessageModel.CdMessage]? {
+        let pFlagsChanged = MessageModel.CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
+        return MessageModel.CdMessage.all(
+            with: pFlagsChanged,
+            orderedBy: [NSSortDescriptor(key: "received", ascending: true)], in: context)
+            as? [MessageModel.CdMessage]
+    }
+
+    func nextMessageToBeSynced(context: NSManagedObjectContext) -> MessageModel.CdMessage? {
+        guard let folder = context.object(with: folderID) as? CdFolder else {
             addError(Constants.errorCannotFindFolder(component: comp))
             markAsFinished()
             return nil
         }
-        let pFlagsChanged = MessageModel.CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
-        let messages = MessageModel.CdMessage.all(
-            with: pFlagsChanged,
-            orderedBy: [NSSortDescriptor(key: "received", ascending: true)])
-            as? [MessageModel.CdMessage]
-        return messages?.first
+        return SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: folder, context: context)?.first
     }
 
     func syncNextMessage() {
-        privateMOC.perform() {
-            guard let m = self.nextMessageToBeSynced() else {
+        let context = Record.Context.default
+        context.perform() {
+            guard let m = self.nextMessageToBeSynced(context: context) else {
                 self.markAsFinished()
                 return
             }
@@ -83,6 +89,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
                 IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)
         } else {
             addError(Constants.errorNoFlags(component: comp))
+            markAsFinished()
         }
     }
 
@@ -176,14 +183,14 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
                 "messageStoreCompleted with nil notification")
             return
         }
-        privateMOC.perform() {
-            self.storeMessage(context: self.privateMOC, notification: n)
+        privateMOC.performAndWait() {
+            self.storeMessages(context: self.privateMOC, notification: n)
         }
 
         syncNextMessage()
     }
 
-    func storeMessage(context: NSManagedObjectContext, notification n: Notification) {
+    func storeMessages(context: NSManagedObjectContext, notification n: Notification) {
         guard let folder = context.object(with: folderID) as? CdFolder else {
             addError(Constants.errorCannotFindFolder(component: comp))
             markAsFinished()
@@ -205,6 +212,14 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
             return
         }
         for cw in cwMessages {
+            if let all = MessageModel.CdMessage.all(
+                with: ["uid": cw.uid(), "parent": folder], in: context)
+                as? [MessageModel.CdMessage] {
+                for m in all {
+                    print("\(m.uid) \(m.imap?.flagsCurrent) \(m.imap?.flagsFromServer) \(m.parent?.objectID)")
+                }
+            }
+
             if let msg = MessageModel.CdMessage.first(
                 with: ["uid": cw.uid(), "parent": folder], in: context) {
                 let flags = cw.flags()
