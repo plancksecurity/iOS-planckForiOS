@@ -314,4 +314,30 @@ extension MessageModel.CdMessage {
         dict[PantomimeFlagsKey] = MessageModel.CdMessage.pantomimeFlags(flagsInt16: flags)
         return (command: result, dictionary: dict)
     }
+
+    /**
+     Call this after any update to the flags. Should be automated with `didSet`.
+     */
+    public func updateFlags() {
+        if imap == nil {
+            imap = CdImapFields.create()
+        }
+        guard let theImap = imap else {
+            return
+        }
+        let cwFlags = CWFlags.init()
+        let allFlags: [(Bool, PantomimeFlag)] = [
+            (theImap.flagSeen, PantomimeFlag.seen),
+            (theImap.flagDraft, PantomimeFlag.draft),
+            (theImap.flagRecent, PantomimeFlag.recent),
+            (theImap.flagDeleted, PantomimeFlag.deleted),
+            (theImap.flagAnswered, PantomimeFlag.answered),
+            (theImap.flagFlagged, PantomimeFlag.flagged)]
+        for (p, f) in allFlags {
+            if p {
+                cwFlags.add(f)
+            }
+        }
+        theImap.flagsCurrent = cwFlags.rawFlagsAsShort()
+    }
 }

@@ -330,6 +330,153 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     /*
+    func testSyncFlagsToServerOperationEmpty() {
+        testPrefetchMailsOperation()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
+            XCTFail()
+            return
+        }
+        guard let op = SyncFlagsToServerOperation(
+            connectInfo: connectInfo, folder: inbox,
+            connectionManager: grandOperator.connectionManager) else {
+                XCTFail()
+                return
+        }
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
+        })
+
+        XCTAssertEqual(op.numberOfMessagesSynced, 0)
+    }
+
+    func testSyncFlagsToServerOperation() {
+        testPrefetchMailsOperation()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [MessageModel.CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        for m in messages {
+            XCTAssertNotNil(m.shortMessage)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            imap.flagFlagged = !imap.flagFlagged
+            m.updateFlags()
+        }
+
+        guard let op = SyncFlagsToServerOperation(
+            connectInfo: connectInfo, folder: inbox,
+            connectionManager: grandOperator.connectionManager) else {
+                XCTFail()
+                return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
+        })
+
+        XCTAssertEqual(op.numberOfMessagesSynced, inbox.messages?.count)
+    }
+
+    /**
+     Proves that in the case of several `SyncFlagsToServerOperation`s
+     scheduled very close to each other only the first will do the work,
+     while the others will cancel early and not do anything.
+     */
+    func testSyncFlagsToServerOperationMulti() {
+        testPrefetchMailsOperation()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [MessageModel.CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        for m in messages {
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            imap.flagSeen = !imap.flagSeen
+            m.updateFlags()
+        }
+
+        var ops = [SyncFlagsToServerOperation]()
+        for _ in 1...3 {
+            guard let op = SyncFlagsToServerOperation(
+                connectInfo: connectInfo, folder: inbox,
+                connectionManager: grandOperator.connectionManager) else {
+                    XCTFail()
+                    return
+            }
+            let expEmailsSynced = expectation(description: "expEmailsSynced")
+            op.completionBlock = {
+                expEmailsSynced.fulfill()
+            }
+            ops.append(op)
+        }
+
+        let backgroundQueue = OperationQueue.init()
+
+        // Serialize all ops
+        backgroundQueue.maxConcurrentOperationCount = 1
+
+        for op in ops {
+            backgroundQueue.addOperation(op)
+        }
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            for op in ops {
+                XCTAssertFalse(op.hasErrors())
+            }
+        })
+
+        var first = true
+        for op in ops {
+            if first {
+                XCTAssertEqual(op.numberOfMessagesSynced, inbox.messages?.count)
+                first = false
+            } else {
+                XCTAssertEqual(op.numberOfMessagesSynced, 0)
+            }
+        }
+    }
+     */
+
+    /*
     func createBasicMail() -> (
         OperationQueue, CdAccount, MessageModel.CdMessage,
         (identity: NSMutableDictionary, receiver1: PEPContact,
@@ -658,130 +805,6 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertEqual(op.folderItems[4].name, junkFolderName)
             XCTAssertEqual(op.folderItems[4].level, 1)
         })
-    }
-
-    func testSyncFlagsToServerOperationEmpty() {
-        testPrefetchMailsOperation()
-
-        guard let inbox = persistentSetup.model.folderByType(
-            .inbox, email: persistentSetup.accountEmail) else {
-                XCTAssertTrue(false)
-                return
-        }
-        let op = SyncFlagsToServerOperation.init(
-            folder: inbox, connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
-        let expEmailsSynced = expectation(description: "expEmailsSynced")
-        op.completionBlock = {
-            expEmailsSynced.fulfill()
-        }
-
-        op.start()
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
-        })
-
-        XCTAssertEqual(op.numberOfMessagesSynced, 0)
-    }
-
-    func testSyncFlagsToServerOperation() {
-        testPrefetchMailsOperation()
-
-        guard let inbox = persistentSetup.model.folderByType(
-            .inbox, email: persistentSetup.accountEmail) else {
-                XCTAssertTrue(false)
-                return
-        }
-
-        for elm in inbox.messages {
-            guard let m = elm as? CdMessage else {
-                XCTAssertTrue(false)
-                break
-            }
-            XCTAssertNotNil(m.subject)
-            XCTAssertGreaterThan(m.uid.intValue, 0)
-            m.flagFlagged = NSNumber.init(value: !m.flagFlagged.boolValue as Bool)
-            m.updateFlags()
-        }
-
-        let op = SyncFlagsToServerOperation.init(
-            folder: inbox, connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
-        let expEmailsSynced = expectation(description: "expEmailsSynced")
-        op.completionBlock = {
-            expEmailsSynced.fulfill()
-        }
-
-        op.start()
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
-        })
-
-        XCTAssertEqual(op.numberOfMessagesSynced, inbox.messages.count)
-    }
-
-    /**
-     Proves that in the case of several `SyncFlagsToServerOperation`s
-     scheduled very close to each other only the first will do the work,
-     while the others will cancel early and not do anything.
-     */
-    func testSyncFlagsToServerOperationMulti() {
-        testPrefetchMailsOperation()
-
-        guard let inbox = persistentSetup.model.folderByType(
-            .inbox, email: persistentSetup.accountEmail) else {
-                XCTAssertTrue(false)
-                return
-        }
-
-        for elm in inbox.messages {
-            guard let m = elm as? CdMessage else {
-                XCTAssertTrue(false)
-                break
-            }
-            m.flagSeen = NSNumber.init(value: !m.flagSeen.boolValue as Bool)
-            m.updateFlags()
-        }
-
-        var ops = [SyncFlagsToServerOperation]()
-        for _ in 1...3 {
-            let op = SyncFlagsToServerOperation.init(
-                folder: inbox, connectionManager: persistentSetup.connectionManager,
-                coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
-            let expEmailsSynced = expectation(description: "expEmailsSynced")
-            op.completionBlock = {
-                expEmailsSynced.fulfill()
-            }
-            ops.append(op)
-        }
-
-        let backgroundQueue = OperationQueue.init()
-
-        // Serialize all ops
-        backgroundQueue.maxConcurrentOperationCount = 1
-
-        for op in ops {
-            backgroundQueue.addOperation(op)
-        }
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            for op in ops {
-                XCTAssertFalse(op.hasErrors())
-            }
-        })
-
-        var first = true
-        for op in ops {
-            if first {
-                XCTAssertEqual(op.numberOfMessagesSynced, inbox.messages.count)
-                first = false
-            } else {
-                XCTAssertEqual(op.numberOfMessagesSynced, 0)
-            }
-        }
     }
      */
 }
