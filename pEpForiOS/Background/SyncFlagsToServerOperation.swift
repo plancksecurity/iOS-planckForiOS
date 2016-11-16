@@ -58,7 +58,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         let pFlagsChanged = MessageModel.CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
         let messages = MessageModel.CdMessage.all(
             with: pFlagsChanged,
-            orderedBy: [NSSortDescriptor(key: "receivedDate", ascending: true)])
+            orderedBy: [NSSortDescriptor(key: "received", ascending: true)])
             as? [MessageModel.CdMessage]
         return messages?.first
     }

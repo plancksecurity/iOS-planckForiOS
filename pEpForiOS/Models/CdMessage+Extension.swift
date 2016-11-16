@@ -219,7 +219,7 @@ extension MessageModel.CdMessage {
     public static func messagesWithChangedFlagsPredicate(folder: CdFolder? = nil) -> NSPredicate {
         var pFolder = NSPredicate(value: true)
         if let f = folder {
-            pFolder = NSPredicate(format: "folder = %@", f)
+            pFolder = NSPredicate(format: "parent = %@", f)
         }
         let pFlags = NSPredicate(format: "imap.flagsCurrent != imap.flagsFromServer")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [pFolder, pFlags])

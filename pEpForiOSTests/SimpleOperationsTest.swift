@@ -329,7 +329,6 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: account))
     }
 
-    /*
     func testSyncFlagsToServerOperationEmpty() {
         testPrefetchMailsOperation()
 
@@ -357,6 +356,7 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(op.numberOfMessagesSynced, 0)
     }
 
+    /*
     func testSyncFlagsToServerOperation() {
         testPrefetchMailsOperation()
 
