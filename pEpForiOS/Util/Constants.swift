@@ -75,6 +75,7 @@ open class Constants {
         case cannotFindServer
         case cannotFindMessage
         case noImapConnectInfo
+        case noFlags
     }
 
     public enum SmtpErrorCode: Int {
@@ -273,6 +274,16 @@ open class Constants {
                 NSLocalizedString(
                     "Cannot find IMAP connect info", comment:
                     "Technical error description when not being able to determine the connect info")])
+        return error
+    }
+
+    static func errorNoFlags(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.noFlags.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Message without flags", comment:
+                    "Technical error description when not being able to determine a message's flags")])
         return error
     }
 

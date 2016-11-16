@@ -296,14 +296,19 @@ open class GrandOperator: IGrandOperator {
     open func syncFlagsToServerForFolder(_ folder: CdFolder,
                                            completionBlock: GrandOperatorCompletionBlock?) {
         
+        guard let connectInfo = folder.account?.imapConnectInfo else {
+            let error = Constants.errorNoImapConnectInfo(component: comp)
+            completionBlock?(error)
+            return
+        }
+
         let uuid = folder.uuid!
         var operation: BaseOperation? = flagSyncOperations[uuid]
         let blockOrig = operation?.completionBlock
 
         if operation == nil {
-            operation = SyncFlagsToServerOperation.init(
-                folder: folder, connectionManager: connectionManager,
-                coreDataUtil: coreDataUtil)
+            operation = SyncFlagsToServerOperation(
+                connectInfo: connectInfo, folder: folder, connectionManager: connectionManager)
         }
 
         operation?.completionBlock = {

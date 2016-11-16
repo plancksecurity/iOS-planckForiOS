@@ -14,53 +14,52 @@ import MessageModel
 open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     let comp = "SyncFlagsToServerOperation"
 
+    let connectInfo: EmailConnectInfo
     let connectionManager: ConnectionManager
 
-    var targetFolderName: String!
-
-    let connectInfo: EmailConnectInfo
+    var folderID: NSManagedObjectID
+    let folderName: String
 
     var imapSync: ImapSync!
 
     open var numberOfMessagesSynced = 0
 
-    public init(folder: CdFolder,
-                connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
-        
-        /* XXX: To be refactored."
-        self.connectInfo = folder.account.connectInfo
-        */
-        self.connectInfo = EmailConnectInfo(accountObjectID: folder.objectID,
-                                            serverObjectID: folder.objectID, // TODO: This is a lie!
-                                            userName: "",
-                                            loginName: "",
-                                            networkAddress: "", networkPort: 007)
-        self.targetFolderName = folder.name
+    public init?(connectInfo: EmailConnectInfo, folder: CdFolder,
+                connectionManager: ConnectionManager) {
+        if let fn = folder.name {
+            folderName = fn
+        } else {
+            return nil
+        }
+        self.connectInfo = connectInfo
+        self.folderID = folder.objectID
         self.connectionManager = connectionManager
     }
 
     open override func main() {
         privateMOC.perform() {
-            // Immediately check for work. If there is none, bail out
-            if let _ = self.nextMessageToBeSynced() {
-                self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
-                self.imapSync.delegate = self
-                self.imapSync.start()
-            } else {
-                self.markAsFinished()
-            }
+            self.startSync()
         }
     }
 
-    func nextMessageToBeSynced() -> CdMessage? {
-        let pFlagsChanged = NSPredicate.init(format: "flags != flagsFromServer")
-        let pFolder = NSPredicate.init(format: "folder.name = %@",
-                                       self.targetFolderName)
-        let p = NSCompoundPredicate.init(
-            andPredicateWithSubpredicates: [pFlagsChanged, pFolder])
-        let messages = self.model.messagesByPredicate(
-            p, sortDescriptors: [NSSortDescriptor.init(
-                key: "receivedDate", ascending: true)])
+    func startSync() {
+        // Immediately check for work. If there is none, bail out
+        if let _ = nextMessageToBeSynced() {
+            self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+            self.imapSync.delegate = self
+            self.imapSync.start()
+        } else {
+            self.markAsFinished()
+        }
+    }
+
+    func nextMessageToBeSynced() -> MessageModel.CdMessage? {
+        let folder = Record.Context.default.object(with: folderID) as? CdFolder
+        let pFlagsChanged = MessageModel.CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
+        let messages = MessageModel.CdMessage.all(
+            with: pFlagsChanged,
+            orderedBy: [NSSortDescriptor(key: "receivedDate", ascending: true)])
+            as? [MessageModel.CdMessage]
         return messages?.first
     }
 
@@ -70,14 +69,17 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
                 self.markAsFinished()
                 return
             }
-            self.updateFlagsForMessage(m)
+            self.updateFlags(message: m)
         }
     }
 
-    func updateFlagsForMessage(_ message: CdMessage) {
-        let (cmd, dict) = message.storeCommandForUpdate()
-        imapSync.imapStore.send(
-            IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)
+    func updateFlags(message: MessageModel.CdMessage) {
+        if let (cmd, dict) = message.storeCommandForUpdate() {
+            imapSync.imapStore.send(
+                IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)
+        } else {
+            addError(Constants.errorNoFlags(component: comp))
+        }
     }
 
     func errorOperation(_ localizedMessage: String, logMessage: String) {
@@ -90,7 +92,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 extension SyncFlagsToServerOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
         if !self.isCancelled {
-            sync.openMailBox(targetFolderName)
+            sync.openMailBox(folderName)
         }
     }
 
@@ -187,7 +189,7 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
             }
             for cw in cwMessages {
                 if let msg = self.model.messageByUID(Int(cw.uid()),
-                    folderName: self.targetFolderName) {
+                    folderName: self.folderName) {
                     let flags = cw.flags()
                     msg.flags = NSNumber.init(value: flags.rawFlagsAsShort() as Int16)
                     msg.flagsFromServer = msg.flags

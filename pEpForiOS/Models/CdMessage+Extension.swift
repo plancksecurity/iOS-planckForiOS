@@ -216,6 +216,15 @@ extension MessageModel.CdMessage {
         return predicate
     }
 
+    public static func messagesWithChangedFlagsPredicate(folder: CdFolder? = nil) -> NSPredicate {
+        var pFolder = NSPredicate(value: true)
+        if let f = folder {
+            pFolder = NSPredicate(format: "folder = %@", f)
+        }
+        let pFlags = NSPredicate(format: "imap.flagsCurrent != imap.flagsFromServer")
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [pFolder, pFlags])
+    }
+
     public static func countBy(predicate: NSPredicate) -> Int {
         let objs = MessageModel.CdMessage.all(with: predicate)
         return objs?.count ?? 0
@@ -257,5 +266,52 @@ extension MessageModel.CdMessage {
         willChangeValue(forKey: key)
         bcc = NSOrderedSet.adding(elements: [identity], toSet: bcc)
         didChangeValue(forKey: key)
+    }
+
+    /**
+     - Returns: A `CWFlags object` for the given `Int16`
+     */
+    static open func pantomimeFlags(flagsInt16: Int16) -> CWFlags {
+        if let fl = PantomimeFlag(rawValue: UInt(flagsInt16)) {
+            return CWFlags.init(flags: fl)
+        }
+        Log.error(component:
+            "Message", errorString:
+            "Could not convert \(flagsInt16) to PantomimeFlag")
+        return CWFlags.init()
+    }
+
+    /**
+     - Returns: The current flags as String, like "\Deleted \Answered"
+     */
+    static func flagsString(flagsInt16: Int16) -> String {
+        return pantomimeFlags(flagsInt16: flagsInt16).asString()
+    }
+
+    /**
+     - Returns: A tuple consisting of an IMAP command string for updating
+     the flags for this message, and a dictionary suitable for using pantomime
+     for the actual execution.
+     - Note: The generated command will always simply overwrite the flags
+     on the server with the local one. It will not figure out individual flags.
+     */
+    public func storeCommandForUpdate() -> (String, [AnyHashable: Any])? {
+        guard let flags = imap?.flagsCurrent else {
+            return nil
+        }
+
+        // Construct a very minimal pantomime dummy for the info dictionary
+        let pantomimeMail = CWIMAPMessage.init()
+        pantomimeMail.setUID(UInt(uid))
+
+        var dict: [AnyHashable: Any] = [PantomimeMessagesKey:
+            NSArray.init(object: pantomimeMail)]
+
+        var result = "UID STORE \(uid) "
+        let flagsString = MessageModel.CdMessage.flagsString(flagsInt16: flags)
+        result += "FLAGS.SILENT (\(flagsString))"
+
+        dict[PantomimeFlagsKey] = MessageModel.CdMessage.pantomimeFlags(flagsInt16: flags)
+        return (command: result, dictionary: dict)
     }
 }
