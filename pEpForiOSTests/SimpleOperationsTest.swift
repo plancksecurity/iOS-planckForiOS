@@ -58,6 +58,8 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testPrefetchMailsOperation() {
+        XCTAssertNil(CdMessage.all())
+
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
         let op = PrefetchEmailsOperation(grandOperator: grandOperator,
@@ -71,13 +73,21 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
-            print(op.errors)
         })
 
         XCTAssertGreaterThan(
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 0)
         XCTAssertGreaterThan(
             MessageModel.CdMessage.all()?.count ?? 0, 0)
+
+        guard let allMessages = MessageModel.CdMessage.all() as? [MessageModel.CdMessage] else {
+            XCTFail()
+            return
+        }
+        for m in allMessages {
+            XCTAssertNotNil(m.uid)
+            XCTAssertGreaterThan(m.uid, 0)
+        }
     }
 
     func testFetchFoldersOperation() {
