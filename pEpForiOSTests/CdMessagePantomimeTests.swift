@@ -26,7 +26,6 @@ class CdMessagePantomimeTests: XCTestCase {
     
     func testInsertOrUpdatePantomimeMessage() {
         let account = TestData().createWorkingAccount()
-        account.save()
 
         guard let cdAccount: CdAccount = CdAccount.first(
             with: "identity.address", value: account.user.address) else {
