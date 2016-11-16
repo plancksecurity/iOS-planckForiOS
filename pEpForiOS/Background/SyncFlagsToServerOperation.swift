@@ -54,7 +54,11 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     }
 
     func nextMessageToBeSynced() -> MessageModel.CdMessage? {
-        let folder = Record.Context.default.object(with: folderID) as? CdFolder
+        guard let folder = Record.Context.default.object(with: folderID) as? CdFolder else {
+            addError(Constants.errorCannotFindFolder(component: comp))
+            markAsFinished()
+            return nil
+        }
         let pFlagsChanged = MessageModel.CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
         let messages = MessageModel.CdMessage.all(
             with: pFlagsChanged,
@@ -173,37 +177,50 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
             return
         }
         privateMOC.perform() {
-            guard let dict = (n as NSNotification).userInfo else {
-                self.errorOperation(NSLocalizedString(
-                    "UID STORE: Response with missing user info",
-                    comment: "Technical error"),
-                    logMessage: "messageStoreCompleted notification without user info")
-                return
-            }
-            guard let cwMessages = dict[PantomimeMessagesKey] as? [CWIMAPMessage] else {
-                self.errorOperation(NSLocalizedString(
-                    "UID STORE: Response without messages",
-                    comment: "Technical error"),
-                    logMessage: "messageStoreCompleted no messages")
-                return
-            }
-            for cw in cwMessages {
-                if let msg = self.model.messageByUID(Int(cw.uid()),
-                    folderName: self.folderName) {
-                    let flags = cw.flags()
-                    msg.flags = NSNumber.init(value: flags.rawFlagsAsShort() as Int16)
-                    msg.flagsFromServer = msg.flags
-                } else {
-                    self.errorOperation(NSLocalizedString(
-                        "UID STORE: Response for message that can't be found",
-                        comment: "Technical error"), logMessage:
-                        "messageStoreCompleted message not found, UID: \(cw.uid())")
-                }
-            }
-            self.model.save()
-            self.numberOfMessagesSynced += 1
+            self.storeMessage(context: self.privateMOC, notification: n)
         }
+
         syncNextMessage()
+    }
+
+    func storeMessage(context: NSManagedObjectContext, notification n: Notification) {
+        guard let folder = context.object(with: folderID) as? CdFolder else {
+            addError(Constants.errorCannotFindFolder(component: comp))
+            markAsFinished()
+            return
+        }
+
+        guard let dict = (n as NSNotification).userInfo else {
+            self.errorOperation(NSLocalizedString(
+                "UID STORE: Response with missing user info",
+                comment: "Technical error"),
+                                logMessage: "messageStoreCompleted notification without user info")
+            return
+        }
+        guard let cwMessages = dict[PantomimeMessagesKey] as? [CWIMAPMessage] else {
+            self.errorOperation(NSLocalizedString(
+                "UID STORE: Response without messages",
+                comment: "Technical error"),
+                                logMessage: "messageStoreCompleted no messages")
+            return
+        }
+        for cw in cwMessages {
+            if let msg = MessageModel.CdMessage.first(
+                with: ["uid": cw.uid(), "parent": folder], in: context) {
+                let flags = cw.flags()
+                let imap = msg.imap ?? CdImapFields.create(in: context)
+                msg.imap = imap
+                imap.flagsFromServer = flags.rawFlagsAsShort() as Int16
+                imap.flagsCurrent = imap.flagsFromServer
+            } else {
+                self.errorOperation(NSLocalizedString(
+                    "UID STORE: Response for message that can't be found",
+                    comment: "Technical error"), logMessage:
+                    "messageStoreCompleted message not found, UID: \(cw.uid())")
+            }
+        }
+        Record.saveAndWait(context: context)
+        self.numberOfMessagesSynced += 1
     }
 
     public func messageStoreFailed(_ sync: ImapSync, notification: Notification?) {

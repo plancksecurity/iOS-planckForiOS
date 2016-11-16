@@ -71,6 +71,7 @@ open class Constants {
         case couldNotStoreFolder
         case cannotFindAccountForEmail
         case cannotFindAccount
+        case cannotFindFolder
         case cannotFindServerForAccount
         case cannotFindServer
         case cannotFindMessage
@@ -235,6 +236,16 @@ open class Constants {
         return error
     }
     
+    static func errorCannotFindFolder(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.cannotFindFolder.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find folder from object ID", comment:
+                    "Technical error description when not being able to fetch a folder by object ID")])
+        return error
+    }
+
     static func errorCannotFindServer(
         component: String, accountEmail: String) -> NSError {
         let error = NSError.init(

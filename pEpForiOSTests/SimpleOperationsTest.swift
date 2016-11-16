@@ -356,7 +356,6 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(op.numberOfMessagesSynced, 0)
     }
 
-    /*
     func testSyncFlagsToServerOperation() {
         testPrefetchMailsOperation()
 
@@ -373,7 +372,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         for m in messages {
-            XCTAssertNotNil(m.shortMessage)
+            XCTAssertNotNil(m.messageID)
             XCTAssertGreaterThan(m.uid, 0)
             guard let imap = m.imap else {
                 XCTFail()
@@ -382,6 +381,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagFlagged = !imap.flagFlagged
             m.updateFlags()
         }
+
+        Record.saveAndWait()
 
         guard let op = SyncFlagsToServerOperation(
             connectInfo: connectInfo, folder: inbox,
@@ -404,6 +405,7 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(op.numberOfMessagesSynced, inbox.messages?.count)
     }
 
+    /*
     /**
      Proves that in the case of several `SyncFlagsToServerOperation`s
      scheduled very close to each other only the first will do the work,

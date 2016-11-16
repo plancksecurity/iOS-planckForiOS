@@ -319,12 +319,8 @@ extension MessageModel.CdMessage {
      Call this after any update to the flags. Should be automated with `didSet`.
      */
     public func updateFlags() {
-        if imap == nil {
-            imap = CdImapFields.create()
-        }
-        guard let theImap = imap else {
-            return
-        }
+        let theImap = imap ?? CdImapFields.create()
+        imap = theImap
         let cwFlags = CWFlags.init()
         let allFlags: [(Bool, PantomimeFlag)] = [
             (theImap.flagSeen, PantomimeFlag.seen),
