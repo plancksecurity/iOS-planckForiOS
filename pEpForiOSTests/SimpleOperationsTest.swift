@@ -84,9 +84,22 @@ class SimpleOperationsTest: XCTestCase {
             XCTFail()
             return
         }
+
+        // Check for duplicates
         for m in allMessages {
             XCTAssertNotNil(m.uid)
             XCTAssertGreaterThan(m.uid, 0)
+            guard let folder = m.parent else {
+                XCTFail()
+                break
+            }
+            XCTAssertEqual(folder.name?.lowercased(), ImapSync.defaultImapInboxName.lowercased())
+            guard let messages = MessageModel.CdMessage.all(
+                with: ["uid": m.uid, "parent": folder]) as? [MessageModel.CdMessage] else {
+                    XCTFail()
+                    break
+            }
+            XCTAssertEqual(messages.count, 1)
         }
     }
 
@@ -107,12 +120,6 @@ class SimpleOperationsTest: XCTestCase {
 
         XCTAssertGreaterThanOrEqual(
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
-
-        if let folders = CdFolder.all() as? [CdFolder] {
-            for f in folders {
-                print("\(f.name) \(FolderType.init(rawValue: f.folderType))")
-            }
-        }
 
         var options: [String: Any] = ["folderType": FolderType.inbox.rawValue,
                                       "account": account]
@@ -329,7 +336,6 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(opDelete.hasErrors())
-            print(opDelete.errors)
         })
 
         XCTAssertNil(CdFolder.by(folderType: .drafts, account: account))
