@@ -101,6 +101,8 @@ public protocol ICdModel {
                              sortDescriptors: [NSSortDescriptor]?) -> [CdAccount]?
     func setAccountAsLastUsed(_ account: CdAccount) -> CdAccount
     func fetchLastAccount() -> CdAccount?
+    
+    func insertAccountFromEmailConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount
     func insertNewMessage() -> CdMessage
 
     /**
