@@ -371,7 +371,6 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(op.numberOfMessagesSynced, 0)
     }
 
-    /*
     func testSyncFlagsToServerOperation() {
         testPrefetchMailsOperation()
 
@@ -425,7 +424,7 @@ class SimpleOperationsTest: XCTestCase {
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: Record.Context.default)
-        XCTAssertEqual(messagesToBeSynced?.count, 0)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
 
@@ -458,15 +457,21 @@ class SimpleOperationsTest: XCTestCase {
             m.updateFlags()
         }
 
+        Record.saveAndWait()
+
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)?.count ?? 0
+        XCTAssertEqual(messagesToBeSynced, messages.count)
+
         var ops = [SyncFlagsToServerOperation]()
-        for _ in 1...3 {
+        for i in 1...1 {
             guard let op = SyncFlagsToServerOperation(
                 connectInfo: connectInfo, folder: inbox,
                 connectionManager: grandOperator.connectionManager) else {
                     XCTFail()
                     return
             }
-            let expEmailsSynced = expectation(description: "expEmailsSynced")
+            let expEmailsSynced = expectation(description: "expEmailsSynced\(i)")
             op.completionBlock = {
                 expEmailsSynced.fulfill()
             }
@@ -489,6 +494,10 @@ class SimpleOperationsTest: XCTestCase {
             }
         })
 
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)?.count ?? 0
+        XCTAssertEqual(messagesToBeSynced, 0)
+
         var first = true
         for op in ops {
             if first {
@@ -499,7 +508,6 @@ class SimpleOperationsTest: XCTestCase {
             }
         }
     }
-     */
 
     /*
     func createBasicMail() -> (
