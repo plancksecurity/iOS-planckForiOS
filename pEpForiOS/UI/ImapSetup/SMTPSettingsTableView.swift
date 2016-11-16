@@ -151,7 +151,6 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         credentials.needsVerification = true
         let account = Account.create(identity: identity, credentials: [credentials])
         account.needsVerification = true
-        account.save()
     }
 
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {

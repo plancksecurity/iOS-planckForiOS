@@ -124,7 +124,6 @@ class EmailListViewController: UITableViewController {
         // TODO: IOS 222: Save as draft
         if let folder = draftMessageToStore?.parent as? Folder {
             if folder.folderType == .drafts {
-                message.save()
                 return
             }
         }
@@ -134,7 +133,6 @@ class EmailListViewController: UITableViewController {
         }
         
         if let folder = account.folder(ofType: FolderType.drafts) {
-            folder.save(message: message)
             return
         }
     }

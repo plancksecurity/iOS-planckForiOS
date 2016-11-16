@@ -25,6 +25,19 @@ class ObservableModelTest: XCTestCase {
     func testModelObserver() {
 
         class MockModel:ModelSaveProtocol {
+            public struct ImapFlags {
+                public var deleted = false
+                public var draft = false
+                public var flagged = false
+                public var recent = false
+                public var seen = false
+            }
+
+            open var imapFlags: ImapFlags? = ImapFlags() {
+                didSet{
+                    notifyObserver()
+                }
+            }
             var dirty: Bool = false
             var saveIsCalled: XCTestExpectation?
             var mockProperty = "" {
@@ -44,7 +57,8 @@ class ObservableModelTest: XCTestCase {
         let mm = MockModel();
         mm.saveIsCalled = expectation(description: "mm_dirty")
         XCTAssertFalse(mm.dirty)
-        mm.mockProperty = "new string"
+        //mm.mockProperty = "new string"
+        mm.imapFlags?.draft = true
         XCTAssertTrue(mm.dirty)
         
         waitForExpectations(timeout: TestUtil.waitTime, handler: { (error) in
