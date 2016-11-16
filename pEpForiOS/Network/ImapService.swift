@@ -269,7 +269,7 @@ extension ImapSync: CWServiceClient {
     @objc public func serviceInitialized(_ notification: Notification?) {
         dumpMethodName("serviceInitialized", notification: notification)
 
-        imapStore.authenticate(connectInfo.userName,
+        imapStore.authenticate(connectInfo.loginName!,
                                password: connectInfo.loginPassword!,
                                mechanism: bestAuthMethod().rawValue)
     }

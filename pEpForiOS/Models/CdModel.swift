@@ -101,8 +101,6 @@ public protocol ICdModel {
                              sortDescriptors: [NSSortDescriptor]?) -> [CdAccount]?
     func setAccountAsLastUsed(_ account: CdAccount) -> CdAccount
     func fetchLastAccount() -> CdAccount?
-
-    func insertAccountFromEmailConnectInfo(_ connectInfo: EmailConnectInfo) -> CdAccount
     func insertNewMessage() -> CdMessage
 
     /**
@@ -285,6 +283,8 @@ open class CdModel: ICdModel {
         // IMAP
         if (connectInfo.emailProtocol?.rawValue.isEqual(EmailProtocol.imap.rawValue))! {
             account.connectInfo.userName = connectInfo.userName
+            account.connectInfo.loginName = connectInfo.loginName
+            account.connectInfo.loginPassword = connectInfo.loginPassword
             account.connectInfo.networkAddress = connectInfo.networkAddress
             account.connectInfo.networkPort = connectInfo.networkPort
             account.connectInfo.connectionTransport = connectInfo.connectionTransport
@@ -292,6 +292,8 @@ open class CdModel: ICdModel {
         // SMTP
         else {
             account.connectInfo.userName = connectInfo.userName
+            account.connectInfo.loginName = connectInfo.loginName
+            account.connectInfo.loginPassword = connectInfo.loginPassword
             account.connectInfo.networkAddress = connectInfo.networkAddress
             account.connectInfo.networkPort = connectInfo.networkPort
             account.connectInfo.connectionTransport = connectInfo.connectionTransport

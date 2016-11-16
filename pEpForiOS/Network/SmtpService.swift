@@ -194,7 +194,7 @@ extension SmtpSend: CWServiceClient {
             self.smtpStatus.haveStartedTLS = true
             self.smtp.startTLS()
         } else {
-            self.smtp.authenticate(self.connectInfo.userName,
+            self.smtp.authenticate(self.connectInfo.loginName!,
                                    password: self.connectInfo.loginPassword!,
                                    mechanism: self.bestAuthMethod().rawValue)
         }
