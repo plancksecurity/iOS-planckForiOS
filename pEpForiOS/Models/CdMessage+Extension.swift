@@ -37,84 +37,6 @@ extension CdMessage {
         return recipients
     }
 
-    func internetAddressFromContact(_ contact: CdIdentity) -> CWInternetAddress {
-        return CWInternetAddress.init(personal: contact.userName, address: contact.address)
-
-    }
-
-    func collectContacts(_ contacts: NSOrderedSet,
-                         asPantomimeReceiverType receiverType: PantomimeRecipientType,
-                         intoTargetArray target: inout [CWInternetAddress]) {
-        for obj in contacts {
-            if let theContact = obj as? CdIdentity {
-                let addr = internetAddressFromContact(theContact)
-                addr.setType(receiverType)
-                target.append(addr)
-            }
-        }
-    }
-
-    /**
-     Convert the `Message` into an `CWIMAPMessage`, belonging to the given folder.
-     - Note: This does not handle attachments and many other fields.
-     *It's just for quickly interfacing with Pantomime.*
-     */
-    func pantomimeMessageWithFolder(_ folder: CWIMAPFolder) -> CWIMAPMessage {
-        let msg = CWIMAPMessage.init()
-
-        if let date = receivedDate {
-            msg.setReceivedDate(date as Date)
-        }
-
-        if let sub = subject {
-            msg.setSubject(sub)
-        }
-
-        if let str = messageID {
-            msg.setMessageID(str)
-        }
-
-        msg.setUID(UInt(uid))
-
-        if let msn = messageNumber?.intValue {
-            msg.setMessageNumber(UInt(msn))
-        }
-
-        if let boundary = boundary {
-            msg.setBoundary(boundary.data(using: String.Encoding.ascii))
-        }
-
-        if let contact = from {
-            msg.setFrom(internetAddressFromContact(contact))
-        }
-
-        var recipients: [CWInternetAddress] = []
-        collectContacts(cc, asPantomimeReceiverType: .ccRecipient,
-                        intoTargetArray: &recipients)
-        collectContacts(bcc, asPantomimeReceiverType: .bccRecipient,
-                        intoTargetArray: &recipients)
-        collectContacts(to, asPantomimeReceiverType: .toRecipient,
-                        intoTargetArray: &recipients)
-        msg.setRecipients(recipients)
-
-        var refs: [String] = []
-        for ref in references {
-            if let refString: String = (ref as! CdMessageReference).reference {
-                refs.append(refString)
-            }
-        }
-        msg.setReferences(refs)
-
-        msg.setContentType(contentType)
-
-        msg.setFolder(folder)
-
-        // Avoid roundtrips to the server, just set the flags directly.
-        msg.flags().replace(with: CWFlags.init(number: flags))
-
-        return msg
-    }
-
     /**
      - Returns: Some string that identifies a mail, useful for logging.
      */
@@ -335,5 +257,91 @@ extension MessageModel.CdMessage {
             }
         }
         theImap.flagsCurrent = cwFlags.rawFlagsAsShort()
+    }
+
+    /**
+     Convert the `Message` into an `CWIMAPMessage`, belonging to the given folder.
+     - Note: This does not handle attachments and many other fields.
+     *It's just for quickly interfacing with Pantomime.*
+     */
+    func pantomimeMessage(folder: CWIMAPFolder) -> CWIMAPMessage {
+        let msg = CWIMAPMessage.init()
+
+        if let date = received {
+            msg.setReceivedDate(date as Date)
+        }
+
+        if let sub = shortMessage {
+            msg.setSubject(sub)
+        }
+
+        if let str = messageID {
+            msg.setMessageID(str)
+        }
+
+        msg.setUID(UInt(uid))
+
+        if let msn = imap?.messageNumber {
+            msg.setMessageNumber(UInt(msn))
+        }
+
+        if let boundary = imap?.mimeBoundary {
+            msg.setBoundary(boundary.data(using: String.Encoding.ascii))
+        }
+
+        if let contact = from {
+            msg.setFrom(internetAddressFromContact(contact))
+        }
+
+        var recipients: [CWInternetAddress] = []
+        collectContacts(cc, asPantomimeReceiverType: .ccRecipient,
+                        intoTargetArray: &recipients)
+        collectContacts(bcc, asPantomimeReceiverType: .bccRecipient,
+                        intoTargetArray: &recipients)
+        collectContacts(to, asPantomimeReceiverType: .toRecipient,
+                        intoTargetArray: &recipients)
+        msg.setRecipients(recipients)
+
+        var refs: [String] = []
+        if let theRefs = references {
+            for ref in theRefs {
+                if let refString: String = (ref as! CdMessageReference).reference {
+                    refs.append(refString)
+                }
+            }
+        }
+        msg.setReferences(refs)
+
+        if let ct = imap?.contentType {
+            msg.setContentType(ct)
+        }
+
+        msg.setFolder(folder)
+
+        // Avoid roundtrips to the server, just set the flags directly.
+        if let flags = imap?.flagsCurrent {
+            msg.flags().replace(with: CWFlags.init(int: Int(flags)))
+        }
+
+        return msg
+    }
+
+    func internetAddressFromContact(_ contact: CdIdentity) -> CWInternetAddress {
+        return CWInternetAddress.init(personal: contact.userName, address: contact.address)
+    }
+
+    func collectContacts(_ contacts: NSOrderedSet?,
+                         asPantomimeReceiverType receiverType: PantomimeRecipientType,
+                         intoTargetArray target: inout [CWInternetAddress]) {
+        guard let cs = contacts else {
+            return
+        }
+        for obj in cs {
+            if let theContact = obj as? CdIdentity {
+                let addr = internetAddressFromContact(theContact)
+                addr.setType(receiverType)
+                target.append(addr)
+            }
+        }
     }
 }
