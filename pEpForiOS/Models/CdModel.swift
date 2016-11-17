@@ -158,7 +158,9 @@ public protocol ICdModel {
     /**
      Deletes all attachments from the given mail.
      */
+    /* XXX: Refactor:
     func deleteAttachmentsFromMessage(_ message: CdMessage)
+    */
 
     /**
      - Returns: true if there are no accounts yet.
@@ -336,7 +338,7 @@ open class CdModel: ICdModel {
             Log.warn(component: comp, "Expected outbox folder to exist")
             return nil
         }
-        message.folder = folder
+        message.parent = folder
         return message
     }
 
@@ -530,7 +532,7 @@ open class CdModel: ICdModel {
                     Log.warn(component: comp, "lastUID has found more than one element")
                 }
                 if let msg = elems[0] as? CdMessage {
-                    return UInt(msg.uid.intValue)
+                    return UInt(msg.uid)
                 } else {
                     Log.warn(component: comp, "Could not cast core data result to Message")
                 }
@@ -701,7 +703,7 @@ open class CdModel: ICdModel {
             } else {
                 let attachment = insertAttachmentWithContentType(
                     part.contentType(), filename: part.filename(), data: data)
-                targetMail.addAttachmentsObject(value: attachment)
+                targetMail.addAttachment(attachment)
             }
         }
 
@@ -738,7 +740,7 @@ open class CdModel: ICdModel {
             for msg in messages {
                 Log.info(component: 
                     comp,
-                    "Message \(msg.uid) folder \(msg.folder.name) folder.count \(msg.folder.messages!.count)")
+                    "Message \(msg.uid) folder \(msg.parent!.name) folder.count \(msg.parent!.messages!.count)")
             }
         }
     }
@@ -751,10 +753,13 @@ open class CdModel: ICdModel {
         context.delete(attachment)
     }
 
+    /* XXX: Refactor:
     open func deleteAttachmentsFromMessage(_ message: CdMessage) {
         for a in message.attachments {
             context.delete(a as! CdAttachment)
         }
         message.attachments = NSOrderedSet()
     }
+ 
+    */
 }

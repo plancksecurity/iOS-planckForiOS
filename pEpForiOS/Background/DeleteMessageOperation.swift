@@ -32,7 +32,7 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
                 Log.error(component: self.comp, errorString: "No trash folder defined")
                 return
             }
-            message.folder = targetFolder
+            message.parent = targetFolder
 
             // Mark the message, so it can be retried?
             message.uid = 0

@@ -31,9 +31,9 @@ extension CdMessage {
 
     func allRecipienst() -> NSOrderedSet {
         let recipients: NSMutableOrderedSet = []
-        recipients.addObjects(from: to.array)
-        recipients.addObjects(from: cc.array)
-        recipients.addObjects(from: bcc.array)
+        recipients.addObjects(from: (to?.array)!)
+        recipients.addObjects(from: (cc?.array)!)
+        recipients.addObjects(from: (bcc?.array)!)
         return recipients
     }
 
@@ -54,8 +54,8 @@ extension CdMessage {
             append()
             string.append("messageID: \(msgID)")
         }
-        string.append("\(uid.intValue)")
-        if let oDate = receivedDate {
+        string.append("\(uid)")
+        if let oDate = received {
             append()
             string.append("date: \(oDate)")
         }
@@ -67,6 +67,7 @@ extension CdMessage {
      Call this after any update to the flags. Cannot currently be automated
      with `didSet` etc. because of the use of protocols.
      */
+    /* XXX: Refactor to imap.*
     public func updateFlags() {
         let cwFlags = CWFlags.init()
         let allFlags: [(Bool, PantomimeFlag)] = [
@@ -83,20 +84,23 @@ extension CdMessage {
         }
         flags = NSNumber.init(value: cwFlags.rawFlagsAsShort() as Int16)
     }
+    */
 
     /**
      - Returns: `flags` as `CWFlags`
      */
     public func pantomimeFlags() -> CWFlags {
-        return CdMessage.pantomimeFlagsFromNumber(flags)
+        return CdMessage.pantomimeFlagsFromNumber(NSNumber.init(value: imap!.flagsCurrent))
     }
 
     /**
      - Returns: `flagsFromServer` as `CWFlags`
      */
+    /* XXX: Refactor to imap.*
     public func pantomimeFlagsFromServer() -> CWFlags {
         return CdMessage.pantomimeFlagsFromNumber(flagsFromServer)
     }
+    */
 
     /**
      - Returns: A tuple consisting of an IMAP command string for updating
@@ -108,16 +112,20 @@ extension CdMessage {
     public func storeCommandForUpdate() -> (String, [AnyHashable: Any]) {
         // Construct a very minimal pantomime dummy for the info dictionary
         let pantomimeMail = CWIMAPMessage.init()
-        pantomimeMail.setUID(UInt(uid.intValue))
+        pantomimeMail.setUID(UInt(uid))
 
+        // XXX: Ignore warnings, as refactoring is needed immediately below.
         var dict: [AnyHashable: Any] = [PantomimeMessagesKey:
             NSArray.init(object: pantomimeMail)]
-
+         
         var result = "UID STORE \(uid) "
+
+        /* XXX: Refactor:
         let flagsString = CdMessage.flagsStringFromNumber(flags)
         result += "FLAGS.SILENT (\(flagsString))"
         
         dict[PantomimeFlagsKey] = CdMessage.pantomimeFlagsFromNumber(flags)
+        */
         return (command: result, dictionary: dict)
     }
 }

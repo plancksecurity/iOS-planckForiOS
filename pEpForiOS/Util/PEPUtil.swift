@@ -286,15 +286,17 @@ open class PEPUtil {
     open static func pepMail(_ message: CdMessage, outgoing: Bool = true) -> PEPMail {
         var dict = PEPMail()
 
-        if let subject = message.subject {
+        if let subject = message.shortMessage {
             dict[kPepShortMessage] = subject as AnyObject
         }
 
+        /* XXX: Refactor:
         dict[kPepTo] = NSArray.init(array: message.to.map() { return pepContact($0 as! CdIdentity) })
         dict[kPepCC] = NSArray.init(array: message.cc.map() { return pepContact($0 as! CdIdentity) })
         dict[kPepBCC] = NSArray.init(array: message.bcc.map() {
             return pepContact($0 as! CdIdentity)
         })
+        */
 
         if let longMessage = message.longMessage {
             dict[kPepLongMessage] = longMessage as AnyObject
@@ -310,12 +312,14 @@ open class PEPUtil {
         }
         dict[kPepOutgoing] = NSNumber.init(booleanLiteral: outgoing)
 
-        dict[kPepAttachments] = NSArray.init(array: message.attachments.map() {
+        /* XXX: Refactor:
+        dict[kPepAttachments] = NSArray.init(array: message.attachments {
             return pepAttachment($0 as! CdAttachment)
         })
+        */
 
         var refs = [String]()
-        for ref in message.references {
+        for ref in message.references! {
             refs.append((ref as! CdMessageReference).reference!)
         }
         if refs.count > 0 {
@@ -699,18 +703,20 @@ open class PEPUtil {
     open static func updateDecryptedMessage(_ message: CdMessage, fromPepMail: PEPMail,
                                             pepColorRating: PEP_rating?, model: ICdModel) {
         if let color = pepColorRating {
-            message.pepColorRating = NSNumber.init(value: color.rawValue as Int32)
+            message.pEpRating = Int16(color.rawValue) // XXX: Could be unsafe.
         } else {
-            message.pepColorRating = nil
+            message.pEpRating = Int16(PEP_rating_undefined.rawValue)
         }
-        message.subject = fromPepMail[kPepShortMessage] as? String
+        message.shortMessage = fromPepMail[kPepShortMessage] as? String
         message.longMessage = fromPepMail[kPepLongMessage] as? String
         message.longMessageFormatted = fromPepMail[kPepLongMessageFormatted] as? String
 
         // Remove existing attachments, this doesn't happen automatically with core data
+        /* XXX: Refactor (to be readded):
         model.deleteAttachmentsFromMessage(message)
+        */
 
-        var attachments = [AnyObject]()
+        var attachments = [CdAttachment]()
         if let attachmentDicts = fromPepMail[kPepAttachments] as? NSArray {
             for atDict in attachmentDicts {
                 guard let at = atDict as? NSDictionary else {
@@ -726,7 +732,9 @@ open class PEPUtil {
                 attachments.append(attach)
             }
         }
+        /* XXX: Refactor:
         message.attachments = NSOrderedSet.init(array: attachments)
+        */
     }
 
     open static func update(decryptedMessage: MessageModel.CdMessage, fromPepMail: PEPMail,

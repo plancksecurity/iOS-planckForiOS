@@ -83,7 +83,8 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
         }
     }
 
-    func updateFlags(message: MessageModel.CdMessage) {
+    /* XXX: Refactor (function below just executes else part):
+    func updateFlags(message: CdMessage) {
         if let (cmd, dict) = message.storeCommandForUpdate() {
             imapSync.imapStore.send(
                 IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)
@@ -91,6 +92,11 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
             addError(Constants.errorNoFlags(component: comp))
             markAsFinished()
         }
+    }
+    */
+    func updateFlags(message: CdMessage) {
+        addError(Constants.errorNoFlags(component: comp))
+        markAsFinished()
     }
 
     func errorOperation(_ localizedMessage: String, logMessage: String) {

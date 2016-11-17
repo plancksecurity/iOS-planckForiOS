@@ -121,7 +121,7 @@ public extension CdFolder {
         if let msg = CdMessage.first(
             with: allMessagesPredicate(),
             orderedBy: [NSSortDescriptor(key: "uid", ascending: false)]) {
-            return msg.uid.uintValue
+            return UInt(msg.uid)
         }
         return 0
     }
