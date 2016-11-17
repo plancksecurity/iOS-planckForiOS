@@ -249,8 +249,7 @@ open class CdModel: ICdModel {
 
     open func contactsByPredicate(_ predicate: NSPredicate?,
                                     sortDescriptors: [NSSortDescriptor]?) -> [CdIdentity]? {
-        // XXX: Instead of just "CdIdentity" a method on the contact would be required.
-        return entitiesWithName("CdIdentity", predicate: predicate,
+        return entitiesWithName(CdIdentity.entityName, predicate: predicate,
             sortDescriptors: sortDescriptors)?.map() {$0 as! CdIdentity}
     }
 
@@ -340,16 +339,16 @@ open class CdModel: ICdModel {
         return message
     }
 
-    open func insertAttachmentWithContentType(
-        _ contentType: String?, filename: String?, data: Data) -> CdAttachment {
-        
-        // XXX: CdAttachment needs an entity name (like before) as to avoid explicit strings.
+    open func insertAttachmentWithContentType(_ contentType: String?,
+                                              filename: String?, data: Data) -> CdAttachment {
         let attachment = NSEntityDescription.insertNewObject(
-            forEntityName: "Attachment", into: context) as! CdAttachment
+            forEntityName: CdAttachment.entityName, into: context) as! CdAttachment
+        
         attachment.mimeType = contentType
         attachment.fileName = filename
         attachment.size = Int64(data.count)
         attachment.data = data as NSData?
+        
         return attachment
     }
 
@@ -608,8 +607,7 @@ open class CdModel: ICdModel {
     }
 
     open func insertOrUpdateContactEmail(_ email: String, name: String?) -> CdIdentity {
-        // XXX: entityName should be gotten by method.
-        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: "CdIdentity")
+        let fetch = NSFetchRequest<NSManagedObject>.init(entityName: CdIdentity.entityName)
         fetch.predicate = NSPredicate.init(format: "email == %@", email)
         do {
             var existing = try context.fetch(fetch) as! [CdIdentity]
@@ -625,8 +623,7 @@ open class CdModel: ICdModel {
             Log.error(component: comp, error: err)
         }
         let contact = NSEntityDescription.insertNewObject(
-            // XXX: entityName should be gotten by method.
-            forEntityName: "CdIdentity", into: context) as! CdIdentity
+            forEntityName: CdIdentity.entityName, into: context) as! CdIdentity
         contact.address = email
         contact.userName = name
         return contact
@@ -638,8 +635,7 @@ open class CdModel: ICdModel {
 
     open func insertOrUpdateMessageReference(_ messageID: String) -> CdMessageReference {
         let p = NSPredicate.init(format: "messageID = %@", messageID)
-        // XXX: Explicit string used for now (refactoring).
-        if let ent = singleEntityWithName("CdMessageReference", predicate: p) {
+        if let ent = singleEntityWithName(CdMessageReference.entityName, predicate: p) {
             return ent as! CdMessageReference
         } else {
             return insertMessageReference(messageID)
@@ -648,14 +644,12 @@ open class CdModel: ICdModel {
 
     open func insertMessageReference(_ messageID: String) -> CdMessageReference {
         let ref = NSEntityDescription.insertNewObject(
-            // XXX: Explicit string used for now (refactoring).
-            forEntityName: "CdMessageReference", into: context) as! CdMessageReference
+            forEntityName: CdMessageReference.entityName, into: context) as! CdMessageReference
         ref.reference = messageID
-        /* XXX: Don't save message into CdMessageReference type for now, as this breaks.
+        
         if let msg = messageByMessageID(messageID) {
             ref.message = msg
         }
-         */
         return ref
     }
 
