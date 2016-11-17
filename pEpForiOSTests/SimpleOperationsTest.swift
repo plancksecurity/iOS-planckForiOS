@@ -105,7 +105,7 @@ class SimpleOperationsTest: XCTestCase {
     func testFetchFoldersOperation() {
         let expFoldersFetched = expectation(description: "expFoldersFetched")
 
-        let op = FetchFoldersOperation.init(
+        let op = FetchFoldersOperation(
             connectInfo: connectInfo,
             connectionManager: grandOperator.connectionManager)
         op.completionBlock = {
