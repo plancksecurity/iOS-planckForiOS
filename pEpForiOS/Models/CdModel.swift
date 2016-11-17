@@ -738,7 +738,7 @@ open class CdModel: ICdModel {
 
         if let messages = messagesByPredicate(NSPredicate.init(value: true)) {
             for msg in messages {
-                Log.info(component: 
+                Log.info(component:
                     comp,
                     "Message \(msg.uid) folder \(msg.parent!.name) folder.count \(msg.parent!.messages!.count)")
             }
@@ -753,13 +753,10 @@ open class CdModel: ICdModel {
         context.delete(attachment)
     }
 
-    /* XXX: Refactor:
     open func deleteAttachmentsFromMessage(_ message: CdMessage) {
-        for a in message.attachments {
+        for a in message.attachments! {
             context.delete(a as! CdAttachment)
         }
         message.attachments = NSOrderedSet()
     }
- 
-    */
 }
