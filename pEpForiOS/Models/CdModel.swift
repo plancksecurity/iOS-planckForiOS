@@ -158,9 +158,7 @@ public protocol ICdModel {
     /**
      Deletes all attachments from the given mail.
      */
-    /* XXX: Refactor:
     func deleteAttachmentsFromMessage(_ message: CdMessage)
-    */
 
     /**
      - Returns: true if there are no accounts yet.
