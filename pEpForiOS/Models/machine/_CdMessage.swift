@@ -10,12 +10,6 @@ open class _CdMessage: NSManagedObject {
     // MARK: - Properties
 
     @NSManaged open
-    var boundary: String?
-
-    @NSManaged open
-    var contentType: String?
-
-    @NSManaged open
     var flagAnswered: NSNumber
 
     @NSManaged open
@@ -49,11 +43,8 @@ open class _CdMessage: NSManagedObject {
     var messageID: String?
 
     @NSManaged open
-    var messageNumber: NSNumber?
-
-    @NSManaged open
     var pepColorRating: NSNumber?
-
+ 
     @NSManaged open
     var receivedDate: NSDate?
 
