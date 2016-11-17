@@ -12,20 +12,20 @@ extension CdMessage {
     /**
      - Returns: A `CWFlags object` for the given `NSNumber`
      */
-    static open func pantomimeFlagsFromNumber(_ flags: NSNumber) -> CWFlags {
-        if let fl = PantomimeFlag.init(rawValue: UInt(flags.intValue)) {
+    static open func pantomimeFlagsFromNumber(_ flags: Int16) -> CWFlags {
+        if let fl = PantomimeFlag.init(rawValue: UInt(flags)) {
             return CWFlags.init(flags: fl)
         }
         Log.error(component: 
             "Message", errorString:
-            "Could not convert \(flags.intValue) to PantomimeFlag")
+            "Could not convert \(flags) to PantomimeFlag")
         return CWFlags.init()
     }
 
     /**
      - Returns: The current flags as String, like "\Deleted \Answered"
      */
-    static func flagsStringFromNumber(_ flags: NSNumber) -> String {
+    static func flagsStringFromNumber(_ flags: Int16) -> String {
         return pantomimeFlagsFromNumber(flags).asString()
     }
 
@@ -67,7 +67,7 @@ extension CdMessage {
      - Returns: `flags` as `CWFlags`
      */
     public func pantomimeFlags() -> CWFlags {
-        return CdMessage.pantomimeFlagsFromNumber(NSNumber.init(value: imap!.flagsCurrent))
+        return CdMessage.pantomimeFlagsFromNumber(imap!.flagsCurrent)
     }
 
     /**
@@ -91,18 +91,15 @@ extension CdMessage {
         let pantomimeMail = CWIMAPMessage.init()
         pantomimeMail.setUID(UInt(uid))
 
-        // XXX: Ignore warnings, as refactoring is needed immediately below.
         var dict: [AnyHashable: Any] = [PantomimeMessagesKey:
             NSArray.init(object: pantomimeMail)]
          
         var result = "UID STORE \(uid) "
 
-        /* XXX: Refactor:
-        let flagsString = CdMessage.flagsStringFromNumber(flags)
+        let flagsString = CdMessage.flagsStringFromNumber(imap!.flagsCurrent)
         result += "FLAGS.SILENT (\(flagsString))"
         
-        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlagsFromNumber(flags)
-        */
+        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlagsFromNumber(imap!.flagsCurrent)
         return (command: result, dictionary: dict)
     }
 }
