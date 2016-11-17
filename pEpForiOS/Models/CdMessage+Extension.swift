@@ -73,11 +73,9 @@ extension CdMessage {
     /**
      - Returns: `flagsFromServer` as `CWFlags`
      */
-    /* XXX: Refactor to imap.*
     public func pantomimeFlagsFromServer() -> CWFlags {
-        return CdMessage.pantomimeFlagsFromNumber(flagsFromServer)
+        return CdMessage.pantomimeFlagsFromNumber(imap!.flagsFromServer)
     }
-    */
 
     /**
      - Returns: A tuple consisting of an IMAP command string for updating
