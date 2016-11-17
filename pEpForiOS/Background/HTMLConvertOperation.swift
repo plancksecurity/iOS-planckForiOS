@@ -21,43 +21,6 @@ open class HTMLConvertOperation: BaseOperation {
         self.coreDataUtil = coreDataUtil
     }
 
-    /**
-     Debugging only, removes longMessage from all mails that also have longMessageFormatted.
-     */
-    func removeTextFromMails(_ model: CdModel) {
-        let predicateHasHTML = NSPredicate.init(
-            format: "longMessageFormatted != nil and longMessageFormatted != %@", "")
-        let predicateHasLongMessage = NSPredicate.init(
-            format: "longMessage != nil and longMessage != %@", "")
-        let predicateColor = NSPredicate.init(format: "pepColorRating != nil")
-        let predicateBodyFetched = NSPredicate.init(format: "bodyFetched == 1")
-
-        guard let mails = model.entitiesWithName(
-            CdMessage.entityName,
-            predicate: NSCompoundPredicate.init(
-                andPredicateWithSubpredicates: [predicateHasHTML, predicateHasLongMessage,
-                    predicateColor, predicateBodyFetched]),
-            sortDescriptors: [NSSortDescriptor.init(key: "receivedDate", ascending: true)])
-            else {
-                return
-        }
-
-        var modelChanged = false
-
-        for m in mails {
-            guard let mail = m as? CdMessage else {
-                Log.warn(component: self.comp, "Could not cast mail to Message")
-                continue
-            }
-            mail.longMessage = nil
-            modelChanged = true
-        }
-
-        if modelChanged {
-            model.save()
-        }
-    }
-
     open override func main() {
         let context = coreDataUtil.privateContext()
         context.perform() {

@@ -64,7 +64,6 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
         privateMOC.perform() {
             if let folder = CdFolder.by(name: self.folderName, account: self.account) {
                 self.privateMOC.delete(folder)
-                self.model.save()
             }
             self.markAsFinished()
         }

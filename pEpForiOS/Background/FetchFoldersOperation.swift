@@ -71,10 +71,17 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
         if onlyUpdateIfNecessary {
             // Check if the local folder list is fairly complete
             privateMOC.perform({
+                guard let account = self.privateMOC.object(with: self.connectInfo.accountObjectID)
+                    as? CdAccount else {
+                        self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                        self.markAsFinished()
+                        return
+                }
+
                 var needSync = false
                 let requiredTypes: [FolderType] = [.inbox, .sent, .drafts, .trash]
                 for ty in requiredTypes {
-                    if self.model.folderByType(ty, email: self.connectInfo.userName) == nil {
+                    if CdFolder.by(folderType: ty, account: account) == nil {
                         needSync = true
                         break
                     }

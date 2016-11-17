@@ -25,7 +25,6 @@ open class ConcurrentBaseOperation: BaseOperation {
     let coreDataUtil = CoreDataUtil()
 
     lazy var privateMOC: NSManagedObjectContext = Record.Context.background
-    lazy var model: ICdModel = CdModel.init(context: self.privateMOC)
 
     var myFinished: Bool = false
 

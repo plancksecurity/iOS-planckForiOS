@@ -57,7 +57,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             }
             var tf: CdFolder?
             if let ft = self.folderType {
-                tf = self.model.folderByType(ft, email: account.connectInfo.userName)
+                tf = CdFolder.by(folderType: ft, account: account)
             } else if let folderID = self.targetFolderID {
                 tf = self.privateMOC.object(with: folderID) as? CdFolder
             }

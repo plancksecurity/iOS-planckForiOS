@@ -39,7 +39,7 @@ open class SaveSentMessageOperation: EncryptBaseOperation {
                 return
             }
 
-            guard let sentFolder = self.model.folderByType(.sent, account: account) else {
+            guard let sentFolder = CdFolder.by(folderType: .sent, account: account) else {
                 let msg = NSLocalizedString(
                     "No sent folder available", comment:
                     "Error message when no sent folder exists")
