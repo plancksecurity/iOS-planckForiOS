@@ -11,14 +11,7 @@ import CoreData
 
 import MessageModel
 
-open class SaveSentMessageOperation: ConcurrentBaseOperation {
-    let comp = "SaveSentMessageOperation"
-
-    /**
-     All the parameters for the operation come from here.
-     */
-    let encryptionData: EncryptionData
-
+open class SaveSentMessageOperation: EncryptBaseOperation {
     var imapSync: ImapSync!
 
     /**
@@ -32,16 +25,18 @@ open class SaveSentMessageOperation: ConcurrentBaseOperation {
     var rawMessageData: Data!
 
     public init(encryptionData: EncryptionData) {
-        self.encryptionData = encryptionData
+        super.init(comp: "SaveSentMessageOperation", encryptionData: encryptionData)
     }
 
     open override func main() {
         privateMOC.perform({
-            guard let account = self.model.accountByEmail(
-                self.encryptionData.accountEmail) else {
-                    self.addError(Constants.errorCannotFindAccountForEmail(
-                        self.comp, email: self.encryptionData.accountEmail))
+            guard let message = self.fetchMessage(context: self.privateMOC) else {
                     return
+            }
+
+            guard let account = message.parent?.account else {
+                self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                return
             }
 
             guard let sentFolder = self.model.folderByType(.sent, account: account) else {
@@ -149,7 +144,18 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
 
     public func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
         privateMOC.perform() {
-            let message = self.privateMOC.object(with: self.encryptionData.coreDataMessageID)
+            guard let message = self.privateMOC.object(
+                with: self.encryptionData.messageID) as? MessageModel.CdMessage else {
+                    let error = Constants.errorInvalidParameter(
+                        self.comp,
+                        errorMessage:
+                        NSLocalizedString("Email for encryption could not be accessed",
+                                          comment: "Error message when message to encrypt could not be found."))
+                    self.handleEntryError(error,
+                                          message: "Email for encryption could not be accessed")
+                    return
+            }
+
             self.privateMOC.delete(message)
             CoreDataUtil.saveContext(self.privateMOC)
             self.markAsFinished()

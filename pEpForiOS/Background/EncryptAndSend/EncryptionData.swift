@@ -20,8 +20,9 @@ import MessageModel
 open class EncryptionData {
     /**
      Needed for accessing core data.
+     TODO: Should be removed as soon as all Ops dealing with it have been updated.
      */
-    let coreDataUtil: CoreDataUtil
+    let coreDataUtil: CoreDataUtil = CoreDataUtil()
 
     /**
      For getting a SMTP connection.
@@ -32,13 +33,7 @@ open class EncryptionData {
      The original unencrypted message ID. Needed as an object ID so it can be passed
      between operations.
      */
-    let coreDataMessageID: NSManagedObjectID
-
-    /**
-     The email of the account this message belongs to, in case the folder and account
-     are not yet setup.
-     */
-    let accountEmail: String
+    let messageID: NSManagedObjectID
 
     /**
      Message to encrypt is meant for sending?
@@ -64,13 +59,10 @@ open class EncryptionData {
      */
     open var mailsSent: [PEPMail] = []
 
-    public init(connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil,
-                coreDataMessageID: NSManagedObjectID, accountEmail: String,
+    public init(connectionManager: ConnectionManager, messageID: NSManagedObjectID,
                 outgoing: Bool = true) {
         self.connectionManager = connectionManager
-        self.coreDataUtil = coreDataUtil
-        self.coreDataMessageID = coreDataMessageID
-        self.accountEmail = accountEmail
+        self.messageID = messageID
         self.outgoing = outgoing
     }
 }
