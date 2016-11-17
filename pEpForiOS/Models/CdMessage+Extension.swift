@@ -64,29 +64,6 @@ extension CdMessage {
     }
 
     /**
-     Call this after any update to the flags. Cannot currently be automated
-     with `didSet` etc. because of the use of protocols.
-     */
-    /* XXX: Refactor to imap.*
-    public func updateFlags() {
-        let cwFlags = CWFlags.init()
-        let allFlags: [(Bool, PantomimeFlag)] = [
-            (flagSeen.boolValue, PantomimeFlag.seen),
-            (flagDraft.boolValue, PantomimeFlag.draft),
-            (flagRecent.boolValue, PantomimeFlag.recent),
-            (flagDeleted.boolValue, PantomimeFlag.deleted),
-            (flagAnswered.boolValue, PantomimeFlag.answered),
-            (flagFlagged.boolValue, PantomimeFlag.flagged)]
-        for (p, f) in allFlags {
-            if p {
-                cwFlags.add(f)
-            }
-        }
-        flags = NSNumber.init(value: cwFlags.rawFlagsAsShort() as Int16)
-    }
-    */
-
-    /**
      - Returns: `flags` as `CWFlags`
      */
     public func pantomimeFlags() -> CWFlags {
