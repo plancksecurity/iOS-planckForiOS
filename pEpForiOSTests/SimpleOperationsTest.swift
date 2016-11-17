@@ -509,15 +509,21 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
-    /*
+    func insertNewMessageForSending(account: CdAccount) -> MessageModel.CdMessage {
+        let msg = MessageModel.CdMessage.create(messageID: "1@1", uid: 1)
+        msg.from = account.identity
+        msg.parent = CdFolder.by(folderType: .localOutbox, account: account)
+        XCTAssertNotNil(msg.from)
+        XCTAssertNotNil(msg.parent)
+        return msg
+    }
+
     func createBasicMail() -> (
-        OperationQueue, CdAccount, MessageModel.CdMessage,
+        OperationQueue, MessageModel.CdMessage,
         (identity: NSMutableDictionary, receiver1: PEPContact,
         receiver2: PEPContact, receiver3: PEPContact,
-        receiver4: PEPContact))? {
-            let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation.init(
-                coreDataUtil: persistentSetup.grandOperator.coreDataUtil,
-                accountEmail: connectInfo.email)
+        receiver4: PEPContact)) {
+            let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation(account: account)
             let expFoldersStored = expectation(description: "expFoldersStored")
             opCreateSpecialFolders.completionBlock = {
                 expFoldersStored.fulfill()
@@ -529,18 +535,7 @@ class SimpleOperationsTest: XCTestCase {
                 XCTAssertNil(error)
             })
 
-            guard let outboxFolder = model.folderByType(
-                FolderType.localOutbox, email: connectInfo.email) else {
-                    XCTAssertTrue(false, "Expected outbox to exist")
-                    return nil
-            }
-            guard let message = model.insertNewMessageForSendingFromAccountEmail(
-                connectInfo.email) else {
-                    XCTAssertTrue(false, "Expected message to be created")
-                    return nil
-            }
-            XCTAssertNotNil(message.from)
-            XCTAssertNotNil(message.folder)
+            let message = insertNewMessageForSending(account: account)
 
             let session = PEPSession.init()
 
@@ -553,18 +548,13 @@ class SimpleOperationsTest: XCTestCase {
             TestUtil.importKeyByFileName(
                 session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
 
-            message.folder = outboxFolder
-
-            return (queue, persistentSetup.account, model, message,
-                    (identity, receiver1, receiver2, receiver3, receiver4))
+            return (queue, message, (identity, receiver1, receiver2, receiver3, receiver4))
     }
 
+    /*
     func testEncryptMailOperation() {
-        guard let (queue, account, model, message,
-                   (identity, receiver1, _, _, receiver4)) = createBasicMail() else {
-            XCTAssertTrue(false)
-            return
-        }
+        let (queue, message, ids) = createBasicMail()
+        let (identity, receiver1, _, _, receiver4) = ids
 
         // We can encrypt to identity (ourselves) and receiver4.
         // So we should receive 3 mails:
