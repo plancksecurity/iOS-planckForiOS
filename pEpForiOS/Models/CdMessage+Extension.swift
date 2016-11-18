@@ -77,29 +77,6 @@ extension CdMessage {
         return CdMessage.pantomimeFlagsFromNumber(imap!.flagsFromServer)
     }
 
-    /**
-     - Returns: A tuple consisting of an IMAP command string for updating
-     the flags for this message, and a dictionary suitable for using pantomime
-     for the actual execution.
-     - Note: The generated command will always simply overwrite the flags version
-     on the server with the local one.
-     */
-    public func storeCommandForUpdate() -> (String, [AnyHashable: Any]) {
-        // Construct a very minimal pantomime dummy for the info dictionary
-        let pantomimeMail = CWIMAPMessage.init()
-        pantomimeMail.setUID(UInt(uid))
-
-        var dict: [AnyHashable: Any] = [PantomimeMessagesKey:
-            NSArray.init(object: pantomimeMail)]
-         
-        var result = "UID STORE \(uid) "
-
-        let flagsString = CdMessage.flagsStringFromNumber(imap!.flagsCurrent)
-        result += "FLAGS.SILENT (\(flagsString))"
-        
-        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlagsFromNumber(imap!.flagsCurrent)
-        return (command: result, dictionary: dict)
-    }
 }
 
 extension MessageModel.CdMessage {
