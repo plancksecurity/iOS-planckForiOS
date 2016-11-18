@@ -614,26 +614,26 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				433622971DC768F600133B3D /* AppDataModel.swift */,
-				433BCD941D5388C100DD98EF /* ReplyUtil.swift */,
-				A1B50A811CD26FF100B1A997 /* Constants.swift */,
-				43980EDF1CBD24B000A7FC3C /* Log.swift */,
-				43980EF91CBD415700A7FC3C /* AppConfig.swift */,
-				43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */,
-				439D40791CC79423009A4E7C /* GCD.swift */,
-				434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */,
-				43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */,
 				43C046BC1CF48D6300BD0D9D /* AddressBook.swift */,
-				431798761CF87FE6007DD655 /* ReferenceCounter.swift */,
-				436C5A8D1CFEDF59006A195F /* UIHelper.swift */,
-				5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */,
+				43980EF91CBD415700A7FC3C /* AppConfig.swift */,
+				433622971DC768F600133B3D /* AppDataModel.swift */,
+				43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */,
+				A1B50A811CD26FF100B1A997 /* Constants.swift */,
+				439D40791CC79423009A4E7C /* GCD.swift */,
 				4380F7D91D1BFB3100326F62 /* KeyboardObserver.h */,
 				4380F7DA1D1BFB3100326F62 /* KeyboardObserver.m */,
-				4380F7EE1D1C1C7300326F62 /* PEPSession+Extensions.swift */,
+				43980EDF1CBD24B000A7FC3C /* Log.swift */,
 				435B42401D211E5900119048 /* MiscUtil.swift */,
-				436F8E0F1D367039007E9829 /* StringExtensions.swift */,
+				434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */,
 				43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */,
+				4380F7EE1D1C1C7300326F62 /* PEPSession+Extensions.swift */,
+				5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */,
+				431798761CF87FE6007DD655 /* ReferenceCounter.swift */,
+				433BCD941D5388C100DD98EF /* ReplyUtil.swift */,
+				436F8E0F1D367039007E9829 /* StringExtensions.swift */,
 				228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */,
+				436C5A8D1CFEDF59006A195F /* UIHelper.swift */,
+				43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -716,8 +716,8 @@
 				4367E26E1CD7360000B05F83 /* CdModel.swift */,
 				43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */,
 				43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */,
-				43E9BC6F1DB51CEC00AD2352 /* CdMessage+Extension.swift */,
 				430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */,
+				43E9BC6F1DB51CEC00AD2352 /* CdMessage+Extension.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
