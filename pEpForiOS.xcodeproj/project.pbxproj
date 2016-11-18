@@ -139,7 +139,6 @@
 		A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */; };
 		A1950C6B1D928A9700A7C865 /* ChooseAttachmentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1950C6A1D928A9700A7C865 /* ChooseAttachmentTest.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
-		A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */; };
 		A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */; };
 		A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */; };
 		B7D7DF881DD9C2E7006EF4C3 /* ObservableModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D7DF871DD9C2E7006EF4C3 /* ObservableModelTest.swift */; };
@@ -377,7 +376,6 @@
 		A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeViewController.swift; sourceTree = "<group>"; };
 		A1950C6A1D928A9700A7C865 /* ChooseAttachmentTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseAttachmentTest.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InMemoryCoreDataUtil.swift; sourceTree = "<group>"; };
 		A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailSecurityTableViewCell.swift; sourceTree = "<group>"; };
 		A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailExplantionSecurityTableViewCell.swift; sourceTree = "<group>"; };
 		B7D7DF871DD9C2E7006EF4C3 /* ObservableModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableModelTest.swift; sourceTree = "<group>"; };
@@ -625,7 +623,6 @@
 				433622971DC768F600133B3D /* AppDataModel.swift */,
 				433BCD941D5388C100DD98EF /* ReplyUtil.swift */,
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
-				A1B50A831CD26FF100B1A997 /* InMemoryCoreDataUtil.swift */,
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
 				43980EF91CBD415700A7FC3C /* AppConfig.swift */,
 				43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */,
@@ -1009,7 +1006,6 @@
 				439D407A1CC79423009A4E7C /* GCD.swift in Sources */,
 				5DF0039C1DBE430E00F11C04 /* Mailbox.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
-				A1B50A861CD26FF100B1A997 /* InMemoryCoreDataUtil.swift in Sources */,
 				43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */,
 				43C32E211DBF94A6007CFB1A /* MockData.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
