@@ -132,7 +132,7 @@ class EmailListViewController: UITableViewController {
             return
         }
         
-        if let folder = account.folder(ofType: FolderType.drafts) {
+        if account.folder(ofType: FolderType.drafts) != nil {
             return
         }
     }

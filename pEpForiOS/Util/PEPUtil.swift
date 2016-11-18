@@ -712,9 +712,7 @@ open class PEPUtil {
         message.longMessageFormatted = fromPepMail[kPepLongMessageFormatted] as? String
 
         // Remove existing attachments, this doesn't happen automatically with core data
-        /* XXX: Refactor (to be readded):
         model.deleteAttachmentsFromMessage(message)
-        */
 
         var attachments = [CdAttachment]()
         if let attachmentDicts = fromPepMail[kPepAttachments] as? NSArray {
@@ -732,9 +730,7 @@ open class PEPUtil {
                 attachments.append(attach)
             }
         }
-        /* XXX: Refactor:
         message.attachments = NSOrderedSet.init(array: attachments)
-        */
     }
 
     open static func update(decryptedMessage: MessageModel.CdMessage, fromPepMail: PEPMail,

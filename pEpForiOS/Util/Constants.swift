@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 open class Constants {
     /** Settings key for storing the email of the last used account */
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
