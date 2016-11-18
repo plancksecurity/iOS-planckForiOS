@@ -6,16 +6,18 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import XCTest
 
 import MessageModel
+
+import XCTest
+
 
 class MessageModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
 
     override func setUp() {
         super.setUp()
-        persistentSetup = PersistentSetup()
+        persistentSetup = MessageModel.PersistentSetup()
     }
 
     override func tearDown() {
