@@ -31,9 +31,9 @@ class SimpleOperationsTest: XCTestCase {
         persistentSetup = PersistentSetup()
 
         let cdAccount = TestData().createWorkingCdAccount()
+        TestUtil.skipValidation()
         Record.saveAndWait()
         self.account = cdAccount
-        TestUtil.skipValidation()
     }
 
     override func tearDown() {
@@ -551,33 +551,36 @@ class SimpleOperationsTest: XCTestCase {
             return (queue, message, (identity, receiver1, receiver2, receiver3, receiver4))
     }
 
-    /*
+    func dumpAllAccounts() {
+        let cdAccounts = CdAccount.all() as? [CdAccount]
+        if let accs = cdAccounts {
+            for acc in accs {
+                print("\(acc.identity?.address) \(acc.identity?.userName)")
+            }
+        }
+    }
+
     func testEncryptMailOperation() {
-        let (queue, message, ids) = createBasicMail()
+        let (queue, mail, ids) = createBasicMail()
         let (identity, receiver1, _, _, receiver4) = ids
 
         // We can encrypt to identity (ourselves) and receiver4.
         // So we should receive 3 mails:
         // One encrypted to identity (CC), one encrypted to receiver4 (BCC),
         // and one unencrypted to receiver1 (TO).
-        let mail = message
-        mail.addToObject(
-            value: PEPUtil.insertPepContact(receiver1, intoModel: model))
-        mail.addCcObject(
-            value: PEPUtil.insertPepContact(identity as NSDictionary as! PEPContact,
-                                            intoModel: model))
-        mail.addBccObject(
-            value: PEPUtil.insertPepContact(receiver4, intoModel: model))
-        mail.subject = "Subject"
+        mail.addTo(identity: CdIdentity.firstOrCreate(pEpContact: receiver1))
+        mail.addCc(identity: CdIdentity.firstOrCreate(dictionary: identity))
+        mail.addBcc(identity: CdIdentity.firstOrCreate(pEpContact: receiver4))
+        mail.shortMessage = "Subject"
         mail.longMessage = "Long Message"
         mail.longMessageFormatted = "<b>HTML message</b>"
 
-        model.save()
+        dumpAllAccounts()
+        Record.saveAndWait()
 
-        let encryptionData = EncryptionData.init(
-            connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.coreDataUtil, coreDataMessageID: mail.objectID,
-            accountEmail: account.email, outgoing: true)
+        let encryptionData = EncryptionData(
+            connectionManager: grandOperator.connectionManager, messageID: mail.objectID,
+            outgoing: true)
         let encOp = EncryptMailOperation.init(encryptionData: encryptionData)
 
         let expEncrypted = expectation(description: "expEncrypted")
@@ -611,6 +614,7 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
+    /*
     func testSimpleDecryptMailOperation() {
         guard let (queue, account, model, message,
                    (identity, _, _, _, _)) = createBasicMail() else {
