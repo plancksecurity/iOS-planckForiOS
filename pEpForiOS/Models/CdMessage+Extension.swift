@@ -77,9 +77,6 @@ extension CdMessage {
         return CdMessage.pantomimeFlagsFromNumber(imap!.flagsFromServer)
     }
 
-}
-
-extension MessageModel.CdMessage {
     public static func create(messageID: String, uid: Int) -> MessageModel.CdMessage {
         return MessageModel.CdMessage.create(with: ["uuid": messageID, "uid": uid])
     }
