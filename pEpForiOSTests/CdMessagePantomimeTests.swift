@@ -37,7 +37,7 @@ class CdMessagePantomimeTests: XCTestCase {
         }
         let message = CWIMAPMessage.init(data: data)
         message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
-        let msg = CdMessagePantomime.insertOrUpdate(
+        let msg = CdMessage.insertOrUpdate(
             pantomimeMessage: message, account: cdAccount, forceParseAttachments: true)
         XCTAssertNotNil(msg)
         if let m = msg {
