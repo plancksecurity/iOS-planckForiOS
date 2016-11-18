@@ -652,11 +652,13 @@ class SimpleOperationsTest: XCTestCase {
             with: ["folderType": FolderType.inbox.rawValue, "account": account, "uuid": "fake",
                    "name": ImapSync.defaultImapInboxName])
 
-        let newMail = MessageModel.CdMessage.create(messageID: "fake", uid: 0)
-        newMail.parent = inboxFolder
+        let newMail = MessageModel.CdMessage.create(messageID: "fake", uid: 0, parent: inboxFolder)
+        XCTAssertEqual(newMail.pEpRating, MessageModel.CdMessage.pEpRatingNone)
 
         newMail.update(pEpMail: encryptionData.mailsToSend[0])
+        XCTAssertTrue(newMail.bodyFetched)
 
+        XCTAssertEqual(newMail.pEpRating, MessageModel.CdMessage.pEpRatingNone)
         XCTAssertNotEqual(newMail.shortMessage, subject)
         XCTAssertNotEqual(newMail.longMessage, longMessage)
         XCTAssertNil(newMail.longMessageFormatted)
@@ -668,6 +670,8 @@ class SimpleOperationsTest: XCTestCase {
             XCTFail()
         }
 
+        Record.saveAndWait()
+
         let expDecrypted = expectation(description: "expDecrypted")
         let decrOp = DecryptMailOperation()
         decrOp.completionBlock = {
@@ -676,11 +680,13 @@ class SimpleOperationsTest: XCTestCase {
         queue.addOperation(decrOp)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(decrOp.numberOfMessagesDecrypted, 1)
-            XCTAssertEqual(newMail.shortMessage, subject)
-            XCTAssertEqual(newMail.longMessage, longMessage)
-            XCTAssertEqual(newMail.longMessageFormatted, longMessageFormatted)
         })
+
+        XCTAssertEqual(decrOp.numberOfMessagesDecrypted, 1)
+        newMail.managedObjectContext!.refresh(newMail, mergeChanges: true)
+        XCTAssertEqual(newMail.shortMessage, subject)
+        XCTAssertEqual(newMail.longMessage, longMessage)
+        XCTAssertEqual(newMail.longMessageFormatted, longMessageFormatted)
     }
 
     /*

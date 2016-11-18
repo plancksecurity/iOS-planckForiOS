@@ -8,6 +8,8 @@
 
 import MessageModel
 
+import CoreData
+
 extension CdMessage {
     
     /**
@@ -78,24 +80,45 @@ extension CdMessage {
         return CdMessage.pantomimeFlagsFromNumber(imap!.flagsFromServer)
     }
 
-    public static func create(messageID: String, uid: Int) -> MessageModel.CdMessage {
-        return MessageModel.CdMessage.create(with: ["uuid": messageID, "uid": uid])
+}
+
+extension MessageModel.CdMessage {
+    public static let pEpRatingNone = Int16.min
+
+    public static func create(messageID: String, uid: Int,
+                              parent: CdFolder? = nil) -> MessageModel.CdMessage {
+        var dict: [String: Any] = ["uuid": messageID, "uid": uid]
+        if let f = parent {
+            dict["parent"] = f
+        }
+        return MessageModel.CdMessage.create(with: dict)
+    }
+
+    public static func createWithDefaults(
+        messageID: String, uid: Int, parent: CdFolder? = nil,
+        in context: NSManagedObjectContext = Record.Context.default) -> MessageModel.CdMessage {
+        let imap = CdImapFields.createWithDefaults(in: context)
+        var dict: [String: Any] = ["uuid": messageID, "uid": uid, "imap": imap]
+        if let pf = parent {
+            dict["parent"] = pf
+        }
+        return MessageModel.CdMessage.create(with: dict)
     }
 
     static func existingMessagesPredicate() -> NSPredicate {
         let pBody = NSPredicate.init(format: "bodyFetched = true")
-        let pNotDeleted = NSPredicate.init(format: "imapFlags.flagDeleted = false")
+        let pNotDeleted = NSPredicate.init(format: "imap.flagDeleted = false")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [pBody, pNotDeleted])
     }
 
     public static func basicMessagePredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pEpRating != nil")
+        let predicateDecrypted = NSPredicate.init(format: "pEpRating != %d", pEpRatingNone)
         let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 
     public static func unencryptedMessagesPredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pEpRating == nil")
+        let predicateDecrypted = NSPredicate.init(format: "pEpRating == %d", pEpRatingNone)
         let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
@@ -318,9 +341,10 @@ extension CdMessage {
     public func update(pEpMail: PEPMail, pepColorRating: PEP_rating? = nil) {
         if let color = pepColorRating {
             pEpRating = Int16(color.rawValue)
-        } else {
-            pEpRating = Int16(PEP_rating_undefined.rawValue)
         }
+
+        bodyFetched = true
+
         shortMessage = pEpMail[kPepShortMessage] as? String
         longMessage = pEpMail[kPepLongMessage] as? String
         longMessageFormatted = pEpMail[kPepLongMessageFormatted] as? String

@@ -8,7 +8,7 @@
 
 import MessageModel
 
-open class DecryptMailOperation: BaseOperation {
+open class DecryptMailOperation: ConcurrentBaseOperation {
     let comp = "DecryptMailOperation"
     open var numberOfMessagesDecrypted = 0
 
@@ -19,18 +19,14 @@ open class DecryptMailOperation: BaseOperation {
 
             guard let mails = MessageModel.CdMessage.all(
                 with: MessageModel.CdMessage.unencryptedMessagesPredicate(),
-                orderedBy: [NSSortDescriptor(key: "receivedDate", ascending: true)],
-                in: context) else {
+                orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
+                in: context) as? [MessageModel.CdMessage] else {
+                    self.markAsFinished()
                     return
             }
 
             var modelChanged = false
-            for m in mails {
-                guard let mail = m as? MessageModel.CdMessage else {
-                    Log.warn(component: self.comp, "Could not cast mail to Message")
-                    continue
-                }
-
+            for mail in mails {
                 var outgoing = false
                 let folderTypeNum = mail.parent?.folderType
                 if let folderType = FolderType.fromInt(folderTypeNum!) {
@@ -88,6 +84,7 @@ open class DecryptMailOperation: BaseOperation {
             if modelChanged {
                 Record.save()
             }
+            self.markAsFinished()
         }
     }
 }
