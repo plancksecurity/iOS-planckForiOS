@@ -272,11 +272,11 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertFalse(opCreate.hasErrors())
         })
-
-        let c1 = CdIdentity.create(address: "some@some.com", userName: "Whatever",
-                                   isMySelf: false)
-        let c2 = CdIdentity.create(address: "some@some2.com", userName: "Whatever2",
-                                   isMySelf: false)
+        
+        let c1 = CdIdentity.create()
+        let c2 = CdIdentity.create()
+        c1.address = "user1@example.com"
+        c2.address = "user2@example.com"
 
         let message = MessageModel.CdMessage.create(messageID: "#1", uid: 1)
         message.shortMessage = "Some subject"

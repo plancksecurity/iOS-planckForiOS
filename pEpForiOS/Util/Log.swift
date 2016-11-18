@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 /** Very primitive Logging class. */
 @objc open class Log: NSObject, CWLogging {
 

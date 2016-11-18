@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import CoreData
-
 open class MiscUtil {
     open static func optionalHashValue<T: Hashable>(_ someVar: T?) -> Int {
         if let theVar = someVar {

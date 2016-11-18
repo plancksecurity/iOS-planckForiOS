@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 /**
  According to Swift, the parameters denoting a mail for encryption methods etc. are
  not just of the type `NSDictionary`, but this.
