@@ -731,40 +731,6 @@ open class PEPUtil {
         message.attachments = NSOrderedSet.init(array: attachments)
     }
 
-    open static func update(decryptedMessage: MessageModel.CdMessage, fromPepMail: PEPMail,
-                            pepColorRating: PEP_rating?) {
-        if let color = pepColorRating {
-            decryptedMessage.pEpRating = Int16(color.rawValue)
-        } else {
-            decryptedMessage.pEpRating = Int16(PEP_rating_undefined.rawValue)
-        }
-        decryptedMessage.shortMessage = fromPepMail[kPepShortMessage] as? String
-        decryptedMessage.longMessage = fromPepMail[kPepLongMessage] as? String
-        decryptedMessage.longMessageFormatted = fromPepMail[kPepLongMessageFormatted] as? String
-
-        // Remove existing attachments, this doesn't happen automatically with core data
-        decryptedMessage.attachments = nil
-
-        var attachments = [AnyObject]()
-        if let attachmentDicts = fromPepMail[kPepAttachments] as? NSArray {
-            for atDict in attachmentDicts {
-                guard let at = atDict as? NSDictionary else {
-                    continue
-                }
-                guard let data = at[kPepMimeData] as? Data else {
-                    continue
-                }
-                let attach = Attachment(data: data,
-                                        mimeType: (at[kPepMimeType] as? String)!,
-                                        fileName: (at[kPepMimeFilename] as? String)!)
-
-                attachments.append(attach)
-            }
-        }
-        decryptedMessage.addToAttachments(NSOrderedSet(array: attachments))
-    }
-
-
     /**
      - Returns: An NSOrderedSet that contains all elements of `array`. If `array` is nil,
      the ordered set is empty.

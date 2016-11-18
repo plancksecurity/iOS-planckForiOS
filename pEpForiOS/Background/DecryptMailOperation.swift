@@ -10,22 +10,18 @@ import MessageModel
 
 open class DecryptMailOperation: BaseOperation {
     let comp = "DecryptMailOperation"
-    let coreDataUtil: CoreDataUtil
-
-    public init(coreDataUtil: CoreDataUtil) {
-        self.coreDataUtil = coreDataUtil
-    }
+    open var numberOfMessagesDecrypted = 0
 
     open override func main() {
-        let context = coreDataUtil.privateContext()
+        let context = Record.Context.background
         context.perform() {
-            let session = PEPSession.init()
+            let session = PEPSession()
 
-            guard let mails = MessageModel.CdMessage.all(with:
-                NSCompoundPredicate(andPredicateWithSubpredicates:
-                    [MessageModel.CdMessage.basicMessagePredicate()]),orderedBy:
-                [NSSortDescriptor.init(key: "receivedDate", ascending: true)]) else {
-                return
+            guard let mails = MessageModel.CdMessage.all(
+                with: MessageModel.CdMessage.unencryptedMessagesPredicate(),
+                orderedBy: [NSSortDescriptor(key: "receivedDate", ascending: true)],
+                in: context) else {
+                    return
             }
 
             var modelChanged = false
@@ -52,6 +48,8 @@ open class DecryptMailOperation: BaseOperation {
                 /*Log.warn(component: self.comp,
                     "Decrypted mail \(mail.logString()) with color \(color)")*/
 
+                self.numberOfMessagesDecrypted += 1
+
                 switch color {
                 case PEP_rating_undefined,
                 PEP_rating_cannot_decrypt,
@@ -75,9 +73,7 @@ open class DecryptMailOperation: BaseOperation {
                 PEP_rating_trusted_and_anonymized,
                 PEP_rating_fully_anonymous:
                     if let decrypted = pepDecryptedMail {
-                        PEPUtil.update(decryptedMessage: mail,
-                                       fromPepMail: decrypted as! PEPMail,
-                                       pepColorRating: color)
+                        mail.update(pEpMail: decrypted as! PEPMail, pepColorRating: color)
                         modelChanged = true
                     }
                     break

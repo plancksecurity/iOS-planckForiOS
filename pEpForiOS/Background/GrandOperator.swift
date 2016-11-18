@@ -186,7 +186,7 @@ open class GrandOperator: IGrandOperator {
         }
 
         // Wait with the decryption until all mails have been downloaded.
-        let decryptOp = DecryptMailOperation.init(coreDataUtil: coreDataUtil)
+        let decryptOp = DecryptMailOperation()
         for fetchOp in fetchOperations {
             decryptOp.addDependency(fetchOp)
         }

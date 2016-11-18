@@ -84,15 +84,22 @@ extension MessageModel.CdMessage {
         return MessageModel.CdMessage.create(with: ["uuid": messageID, "uid": uid])
     }
 
+    static func existingMessagesPredicate() -> NSPredicate {
+        let pBody = NSPredicate.init(format: "bodyFetched = true")
+        let pNotDeleted = NSPredicate.init(format: "imapFlags.flagDeleted = false")
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [pBody, pNotDeleted])
+    }
+
     public static func basicMessagePredicate() -> NSPredicate {
         let predicateDecrypted = NSPredicate.init(format: "pEpRating != nil")
-        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
-        let predicateNotDeleted = NSPredicate.init(format: "imapFlags.flagDeleted = false")
-        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted,
-                                         predicateNotDeleted]
-        let predicate = NSCompoundPredicate.init(
-            andPredicateWithSubpredicates: predicates)
-        return predicate
+        let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+
+    public static func unencryptedMessagesPredicate() -> NSPredicate {
+        let predicateDecrypted = NSPredicate.init(format: "pEpRating == nil")
+        let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 
     public static func messagesWithChangedFlagsPredicate(folder: CdFolder? = nil) -> NSPredicate {
@@ -300,5 +307,49 @@ extension MessageModel.CdMessage {
                 target.append(addr)
             }
         }
+    }
+
+    /**
+     Updates all properties from the given `PEPMail`.
+     Used after a mail has been decrypted.
+     That means that for now, recipients are not overwritten, because they don't
+     change after decrypt (until the engine handles the communication layer too).
+     What can change is body text, subject, attachments.
+     TODO: Take care of optional fields (`kPepOptFields`)!
+     */
+    public func update(pEpMail: PEPMail, pepColorRating: PEP_rating? = nil) {
+        if let color = pepColorRating {
+            pEpRating = Int16(color.rawValue)
+        } else {
+            pEpRating = Int16(PEP_rating_undefined.rawValue)
+        }
+        shortMessage = pEpMail[kPepShortMessage] as? String
+        longMessage = pEpMail[kPepLongMessage] as? String
+        longMessageFormatted = pEpMail[kPepLongMessageFormatted] as? String
+
+        // Remove all existing attachments. These should cascade.
+
+        var attachments = [CdAttachment]()
+        if let attachmentDicts = pEpMail[kPepAttachments] as? NSArray {
+            for atDict in attachmentDicts {
+                guard let at = atDict as? NSDictionary else {
+                    continue
+                }
+                guard let data = at[kPepMimeData] as? Data else {
+                    continue
+                }
+                var attachData: [String: Any] = ["data": data, "size": data.count]
+                if let mt = at[kPepMimeType] {
+                    attachData["mimeType"] = mt
+                }
+                if let fn = at[kPepMimeFilename] {
+                    attachData["fileName"] = fn
+                }
+
+                let attach = CdAttachment.create(with: attachData)
+                attachments.append(attach)
+            }
+        }
+        self.attachments = NSOrderedSet(array: attachments)
     }
 }

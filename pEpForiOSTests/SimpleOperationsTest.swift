@@ -548,6 +548,7 @@ class SimpleOperationsTest: XCTestCase {
             TestUtil.importKeyByFileName(
                 session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
 
+            Record.saveAndWait()
             return (queue, message, (identity, receiver1, receiver2, receiver3, receiver4))
     }
 
@@ -581,7 +582,7 @@ class SimpleOperationsTest: XCTestCase {
         let encryptionData = EncryptionData(
             connectionManager: grandOperator.connectionManager, messageID: mail.objectID,
             outgoing: true)
-        let encOp = EncryptMailOperation.init(encryptionData: encryptionData)
+        let encOp = EncryptMailOperation(encryptionData: encryptionData)
 
         let expEncrypted = expectation(description: "expEncrypted")
         encOp.completionBlock = {
@@ -614,33 +615,25 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
-    /*
     func testSimpleDecryptMailOperation() {
-        guard let (queue, account, model, message,
-                   (identity, _, _, _, _)) = createBasicMail() else {
-                    XCTAssertTrue(false)
-                    return
-        }
+        let (queue, mail, ids) = createBasicMail()
+        let (identity, _, _, _, _) = ids
 
         let subject = "Subject"
         let longMessage = "Long Message"
         let longMessageFormatted = "<b>HTML message</b>"
 
-        let mail = message
-        mail.addToObject(
-            value: PEPUtil.insertPepContact(identity as NSDictionary as! PEPContact,
-                                            intoModel: model))
-        mail.subject = subject
+        mail.addTo(identity: CdIdentity.firstOrCreate(dictionary: identity))
+        mail.shortMessage = subject
         mail.longMessage = longMessage
         mail.longMessageFormatted = longMessageFormatted
 
-        model.save()
+        Record.saveAndWait()
 
-        let encryptionData = EncryptionData.init(
-            connectionManager: persistentSetup.connectionManager,
-            coreDataUtil: persistentSetup.coreDataUtil, coreDataMessageID: mail.objectID,
-            accountEmail: account.email, outgoing: true)
-        let encOp = EncryptMailOperation.init(encryptionData: encryptionData)
+        let encryptionData = EncryptionData(
+            connectionManager: grandOperator.connectionManager, messageID: mail.objectID,
+            outgoing: true)
+        let encOp = EncryptMailOperation(encryptionData: encryptionData)
 
         let expEncrypted = expectation(description: "expEncrypted")
         encOp.completionBlock = {
@@ -654,41 +647,43 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(encryptionData.mailsToSend.count, 1)
         XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(encryptionData.mailsToSend[0]))
 
-        persistentSetup.model.deleteMail(mail)
-        guard let inboxFolder = model.insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, folderSeparator: nil,
-            accountEmail: account.email) else {
-                XCTAssertTrue(false)
-                return
-        }
+        mail.delete()
+        let inboxFolder = CdFolder.firstOrCreate(
+            with: ["folderType": FolderType.inbox.rawValue, "account": account, "uuid": "fake",
+                   "name": ImapSync.defaultImapInboxName])
 
-        let newMail = model.insertNewMessage()
-        newMail.folder = inboxFolder
-        PEPUtil.updateWholeMessage(newMail,
-                                   fromPepMail: encryptionData.mailsToSend[0], model: model)
+        let newMail = MessageModel.CdMessage.create(messageID: "fake", uid: 0)
+        newMail.parent = inboxFolder
 
-        XCTAssertEqual(newMail.subject, "pEp")
+        newMail.update(pEpMail: encryptionData.mailsToSend[0])
+
+        XCTAssertNotEqual(newMail.shortMessage, subject)
+        XCTAssertNotEqual(newMail.longMessage, longMessage)
+        XCTAssertNil(newMail.longMessageFormatted)
+        XCTAssertEqual(newMail.shortMessage, "pEp")
         XCTAssertNotNil(newMail.longMessage)
         if let lm = newMail.longMessage {
             XCTAssertTrue(lm.contains("p≡p"))
+        } else {
+            XCTFail()
         }
-        XCTAssertNil(newMail.longMessageFormatted)
 
         let expDecrypted = expectation(description: "expDecrypted")
-        let decrOp = DecryptMailOperation.init(
-            coreDataUtil: persistentSetup.grandOperator.coreDataUtil)
+        let decrOp = DecryptMailOperation()
         decrOp.completionBlock = {
             expDecrypted.fulfill()
         }
         queue.addOperation(decrOp)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertNotEqual(newMail.subject, subject)
-            XCTAssertNotEqual(newMail.longMessage, longMessage)
-            XCTAssertNotEqual(newMail.longMessageFormatted, longMessageFormatted)
+            XCTAssertEqual(decrOp.numberOfMessagesDecrypted, 1)
+            XCTAssertEqual(newMail.shortMessage, subject)
+            XCTAssertEqual(newMail.longMessage, longMessage)
+            XCTAssertEqual(newMail.longMessageFormatted, longMessageFormatted)
         })
     }
 
+    /*
     func testSendMailOperation() {
         let message = persistentSetup.model.insertNewMessage()
 
