@@ -14,20 +14,19 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
     let comp = "DeleteMessageOperation"
     let messageID: NSManagedObjectID
 
-    public init(message: CdMessage, coreDataUtil: CoreDataUtil) {
+    public init(message: MessageModel.CdMessage, coreDataUtil: CoreDataUtil) {
         self.messageID = message.objectID
     }
 
     override open func main() {
-        let bg = Record.Context.background
-        bg.perform {
-            guard let message = bg.object(with: self.messageID) as? CdMessage else {
+        privateMOC.perform {
+            guard let message = self.privateMOC.object(with: self.messageID) as? MessageModel.CdMessage else {
                 return
             }
 
             let pred = NSPredicate(format: "folderType = %d or folderType = %d",
                                    FolderType.trash.rawValue, FolderType.archive.rawValue)
-            guard let targetFolder = CdFolder.first(with: pred) else {
+            guard let targetFolder = MessageModel.CdFolder.first(with: pred) else {
                 Log.error(component: self.comp, errorString: "No trash folder defined")
                 return
             }
