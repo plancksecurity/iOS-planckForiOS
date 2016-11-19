@@ -19,6 +19,9 @@ extension PEP_rating: Hashable {
 
 open class PEPUtil {
     static let comp = "PEPUtil"
+    
+    // Default pEpRating value when there's none.
+    public static let pEpRatingNone = Int16.min
 
     /**
      All privacy status strings, i18n ready.

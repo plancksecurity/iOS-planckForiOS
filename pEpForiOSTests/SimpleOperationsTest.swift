@@ -653,12 +653,12 @@ class SimpleOperationsTest: XCTestCase {
                    "name": ImapSync.defaultImapInboxName])
 
         let newMail = MessageModel.CdMessage.create(messageID: "fake", uid: 0, parent: inboxFolder)
-        XCTAssertEqual(newMail.pEpRating, MessageModel.CdMessage.pEpRatingNone)
+        XCTAssertEqual(newMail.pEpRating, PEPUtil.pEpRatingNone)
 
         newMail.update(pEpMail: encryptionData.mailsToSend[0])
         XCTAssertTrue(newMail.bodyFetched)
 
-        XCTAssertEqual(newMail.pEpRating, MessageModel.CdMessage.pEpRatingNone)
+        XCTAssertEqual(newMail.pEpRating, PEPUtil.pEpRatingNone)
         XCTAssertNotEqual(newMail.shortMessage, subject)
         XCTAssertNotEqual(newMail.longMessage, longMessage)
         XCTAssertNil(newMail.longMessageFormatted)

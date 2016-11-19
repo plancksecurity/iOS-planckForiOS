@@ -107,13 +107,13 @@ extension CdMessage {
     }
 
     public static func basicMessagePredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pEpRating != %d", Int16.min)
+        let predicateDecrypted = NSPredicate.init(format: "pEpRating != %d", PEPUtil.pEpRatingNone)
         let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 
     public static func unencryptedMessagesPredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pEpRating == %d", Int16.min)
+        let predicateDecrypted = NSPredicate.init(format: "pEpRating == %d", PEPUtil.pEpRatingNone)
         let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
