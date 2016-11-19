@@ -6,9 +6,9 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import MessageModel
-
 import CoreData
+
+import MessageModel
 
 extension CdMessage {
     
@@ -80,29 +80,24 @@ extension CdMessage {
         return CdMessage.pantomimeFlagsFromNumber(imap!.flagsFromServer)
     }
 
-}
-
-extension MessageModel.CdMessage {
-    public static let pEpRatingNone = Int16.min
-
     public static func create(messageID: String, uid: Int,
                               parent: CdFolder? = nil) -> MessageModel.CdMessage {
         var dict: [String: Any] = ["uuid": messageID, "uid": uid]
         if let f = parent {
             dict["parent"] = f
         }
-        return MessageModel.CdMessage.create(with: dict)
+        return CdMessage.create(with: dict)
     }
 
     public static func createWithDefaults(
         messageID: String, uid: Int, parent: CdFolder? = nil,
-        in context: NSManagedObjectContext = Record.Context.default) -> MessageModel.CdMessage {
+        in context: NSManagedObjectContext = Record.Context.default) -> CdMessage {
         let imap = CdImapFields.createWithDefaults(in: context)
         var dict: [String: Any] = ["uuid": messageID, "uid": uid, "imap": imap]
         if let pf = parent {
             dict["parent"] = pf
         }
-        return MessageModel.CdMessage.create(with: dict)
+        return CdMessage.create(with: dict)
     }
 
     static func existingMessagesPredicate() -> NSPredicate {
@@ -112,13 +107,13 @@ extension MessageModel.CdMessage {
     }
 
     public static func basicMessagePredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pEpRating != %d", pEpRatingNone)
+        let predicateDecrypted = NSPredicate.init(format: "pEpRating != %d", Int16.min)
         let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 
     public static func unencryptedMessagesPredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pEpRating == %d", pEpRatingNone)
+        let predicateDecrypted = NSPredicate.init(format: "pEpRating == %d", Int16.min)
         let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
@@ -133,16 +128,12 @@ extension MessageModel.CdMessage {
     }
 
     public static func countBy(predicate: NSPredicate) -> Int {
-        let objs = MessageModel.CdMessage.all(with: predicate)
+        let objs = CdMessage.all(with: predicate)
         return objs?.count ?? 0
     }
 
-    public static func by(uid: Int) -> MessageModel.CdMessage? {
-        return MessageModel.CdMessage.first(with: "uid", value: uid)
-    }
-
-    var messageID: String? {
-        return uuid
+    public static func by(uid: Int) -> CdMessage? {
+        return CdMessage.first(with: "uid", value: uid)
     }
 
     /**
@@ -215,10 +206,10 @@ extension MessageModel.CdMessage {
             NSArray.init(object: pantomimeMail)]
 
         var result = "UID STORE \(uid) "
-        let flagsString = MessageModel.CdMessage.flagsString(flagsInt16: flags)
+        let flagsString = CdMessage.flagsString(flagsInt16: flags)
         result += "FLAGS.SILENT (\(flagsString))"
 
-        dict[PantomimeFlagsKey] = MessageModel.CdMessage.pantomimeFlags(flagsInt16: flags)
+        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: flags)
         return (command: result, dictionary: dict)
     }
 
@@ -385,7 +376,7 @@ extension MessageModel.CdMessage {
      */
     public static func quickInsertOrUpdate(
         pantomimeMessage message: CWIMAPMessage,
-        account: CdAccount) -> MessageModel.CdMessage? {
+        account: CdAccount) -> CdMessage? {
         guard let folderName = message.folder()?.name() else {
             return nil
         }
@@ -436,7 +427,7 @@ extension MessageModel.CdMessage {
      */
     public static func insertOrUpdate(
         pantomimeMessage message: CWIMAPMessage, account: CdAccount,
-        forceParseAttachments: Bool = false) -> MessageModel.CdMessage? {
+        forceParseAttachments: Bool = false) -> CdMessage? {
         let quickMail = quickInsertOrUpdate(pantomimeMessage: message, account: account)
         guard let mail = quickMail else {
             return nil
@@ -507,11 +498,11 @@ extension MessageModel.CdMessage {
     /**
      - Returns: An existing message that matches the given pantomime one.
      */
-    static func existing(pantomimeMessage: CWIMAPMessage) -> MessageModel.CdMessage? {
+    static func existing(pantomimeMessage: CWIMAPMessage) -> CdMessage? {
         guard let mid = pantomimeMessage.messageID() else {
             return nil
         }
-        return MessageModel.CdMessage.first(with: "uuid", value: mid)
+        return CdMessage.first(with: "uuid", value: mid)
     }
     
     static func add(contacts: [CWInternetAddress]) -> [String: CdIdentity] {
@@ -527,7 +518,7 @@ extension MessageModel.CdMessage {
     
     static func insertOrUpdateMessageReference(_ messageID: String) -> CdMessageReference {
         let ref = CdMessageReference.firstOrCreate(with: "reference", value: messageID)
-        ref.message = MessageModel.CdMessage.first(with: "messageID", value: messageID)
+        ref.message = CdMessage.first(with: "messageID", value: messageID)
         return ref
     }
     
@@ -539,7 +530,7 @@ extension MessageModel.CdMessage {
      or an existing message was found (false).
      */
     static func addAttachmentsFromPantomimePart(
-        _ part: CWPart, targetMail: MessageModel.CdMessage, level: Int) {
+        _ part: CWPart, targetMail: CdMessage, level: Int) {
         guard let content = part.content() else {
             return
         }
