@@ -97,7 +97,7 @@ extension CdMessage {
         if let pf = parent {
             dict["parent"] = pf
         }
-        return CdMessage.create(with: dict)
+        return create(with: dict)
     }
 
     static func existingMessagesPredicate() -> NSPredicate {
@@ -112,7 +112,7 @@ extension CdMessage {
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
 	/* XXX: This code was in a file MessageModelCdMessage.swift with unpublic method of same name.
-         * This code is perhaps the one to be used instead.
+     * It is perhaps the one to be used instead of the code above.
 	let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
         let predicateBody = NSPredicate.init(format: "bodyFetched = true")
         let predicateNotDeleted = NSPredicate.init(format: "flagDeleted = false")
@@ -140,12 +140,12 @@ extension CdMessage {
     }
 
     public static func countBy(predicate: NSPredicate) -> Int {
-        let objs = CdMessage.all(with: predicate)
+        let objs = all(with: predicate)
         return objs?.count ?? 0
     }
 
     public static func by(uid: Int) -> CdMessage? {
-        return CdMessage.first(with: "uid", value: uid)
+        return first(with: "uid", value: uid)
     }
 
     /**

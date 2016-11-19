@@ -9,6 +9,7 @@
 /**
  Basic NSOperation that can gather errors.
  */
+
 open class BaseOperation: Operation {
     open var errors: [NSError] = []
 

@@ -40,9 +40,8 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
                     pepMail, dest: &pepDecryptedMail, keys: &keys)
-                //TODO: new method to get de logstring?
-                /*Log.warn(component: self.comp,
-                    "Decrypted mail \(mail.logString()) with color \(color)")*/
+                Log.info(component: self.comp,
+                    "Decrypted mail \(mail.logString()) with color \(color)")
 
                 self.numberOfMessagesDecrypted += 1
 
