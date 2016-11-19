@@ -15,7 +15,7 @@ import MessageModel
 class SimpleOperationsTest: XCTestCase {
     let grandOperator = GrandOperator()
     var account: CdAccount!
-    var persistentSetup: MessageModel.PersistentSetup!
+    var persistentSetup: PersistentSetup!
 
     var connectInfo: EmailConnectInfo! {
         guard let theConnectInfo = (account.emailConnectInfos.filter {
@@ -28,7 +28,7 @@ class SimpleOperationsTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        persistentSetup = MessageModel.PersistentSetup()
+        persistentSetup = PersistentSetup()
 
         let cdAccount = TestData().createWorkingCdAccount()
         TestUtil.skipValidation()

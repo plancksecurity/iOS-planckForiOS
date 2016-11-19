@@ -11,13 +11,12 @@ import MessageModel
 
 import XCTest
 
-
 class MessageModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
 
     override func setUp() {
         super.setUp()
-        persistentSetup = MessageModel.PersistentSetup()
+        persistentSetup = PersistentSetup()
     }
 
     override func tearDown() {
