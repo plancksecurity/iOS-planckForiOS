@@ -23,8 +23,8 @@ open class EncryptBaseOperation: ConcurrentBaseOperation {
         self.encryptionData = encryptionData
     }
 
-    func fetchMessage(context: NSManagedObjectContext) -> MessageModel.CdMessage? {
-        guard let message = context.object(with: encryptionData.messageID) as? MessageModel.CdMessage else {
+    func fetchMessage(context: NSManagedObjectContext) -> CdMessage? {
+        guard let message = context.object(with: encryptionData.messageID) as? CdMessage else {
             let error = Constants.errorInvalidParameter(
                 self.comp,
                 errorMessage:

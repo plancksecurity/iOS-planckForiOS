@@ -360,11 +360,11 @@ extension GrandOperator: SendLayerProtocol {
         })
     }
 
-    public func send(message: MessageModel.CdMessage, completionBlock: SendLayerCompletionBlock?) {
+    public func send(message: CdMessage, completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("GrandOperator.send not implemented")
     }
 
-    public func saveDraft(message: MessageModel.CdMessage,
+    public func saveDraft(message: CdMessage,
                           completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("GrandOperator.saveDraft not implemented")
     }
@@ -383,7 +383,7 @@ extension GrandOperator: SendLayerProtocol {
         assertionFailure("not implemented")
     }
 
-    public func delete(message: MessageModel.CdMessage,
+    public func delete(message: CdMessage,
                        completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("not implemented")
     }

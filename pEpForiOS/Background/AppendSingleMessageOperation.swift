@@ -29,7 +29,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     var cwMessageToAppend: CWIMAPMessage!
     var targetFolderName: String!
 
-    public init(connectInfo: EmailConnectInfo, message: MessageModel.CdMessage, account: CdAccount,
+    public init(connectInfo: EmailConnectInfo, message: CdMessage, account: CdAccount,
                 targetFolder: CdFolder? = nil, folderType: FolderType? = nil,
                 connectionManager: ConnectionManager) {
         self.connectInfo = connectInfo
@@ -43,7 +43,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     override open func main() {
         privateMOC.perform({
             guard let message = self.privateMOC.object(with: self.messageID) as?
-                MessageModel.CdMessage else {
+                CdMessage else {
                     self.addError(Constants.errorCannotFindAccount(component: self.comp))
                     self.markAsFinished()
                     return

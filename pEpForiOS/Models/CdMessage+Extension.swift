@@ -81,7 +81,7 @@ extension CdMessage {
     }
 
     public static func create(messageID: String, uid: Int,
-                              parent: CdFolder? = nil) -> MessageModel.CdMessage {
+                              parent: CdFolder? = nil) -> CdMessage {
         var dict: [String: Any] = ["uuid": messageID, "uid": uid]
         if let f = parent {
             dict["parent"] = f
@@ -110,6 +110,18 @@ extension CdMessage {
         let predicateDecrypted = NSPredicate.init(format: "pEpRating != %d", PEPUtil.pEpRatingNone)
         let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+
+	/* XXX: This code was in a file MessageModelCdMessage.swift with unpublic method of same name.
+         * This code is perhaps the one to be used instead.
+	let predicateDecrypted = NSPredicate.init(format: "pepColorRating != nil")
+        let predicateBody = NSPredicate.init(format: "bodyFetched = true")
+        let predicateNotDeleted = NSPredicate.init(format: "flagDeleted = false")
+        let predicates: [NSPredicate] = [predicateBody, predicateDecrypted,
+                                         predicateNotDeleted]
+        let predicate = NSCompoundPredicate.init(
+            andPredicateWithSubpredicates: predicates)
+        return predicate
+	*/
     }
 
     public static func unencryptedMessagesPredicate() -> NSPredicate {
@@ -385,7 +397,7 @@ extension CdMessage {
         }
         
         let mail = existing(pantomimeMessage: message) ??
-            MessageModel.CdMessage.create()
+            CdMessage.create()
         
         mail.parent = folder
         mail.bodyFetched = message.isInitialized()

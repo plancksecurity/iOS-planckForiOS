@@ -53,7 +53,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
     }
 
     func insert(pantomimeMessage: CWIMAPMessage, account: CdAccount,
-                quick: Bool = true) -> MessageModel.CdMessage? {
+                quick: Bool = true) -> CdMessage? {
         if quick {
             let result = CdMessage.quickInsertOrUpdate(
                 pantomimeMessage: self.message, account: account)

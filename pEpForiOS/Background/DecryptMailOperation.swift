@@ -17,10 +17,10 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
         context.perform() {
             let session = PEPSession()
 
-            guard let mails = MessageModel.CdMessage.all(
-                with: MessageModel.CdMessage.unencryptedMessagesPredicate(),
+            guard let mails = CdMessage.all(
+                with: CdMessage.unencryptedMessagesPredicate(),
                 orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
-                in: context) as? [MessageModel.CdMessage] else {
+                in: context) as? [CdMessage] else {
                     self.markAsFinished()
                     return
             }

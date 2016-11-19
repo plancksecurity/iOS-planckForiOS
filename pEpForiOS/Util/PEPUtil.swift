@@ -330,7 +330,7 @@ open class PEPUtil {
         return dict as PEPMail
     }
 
-    open static func pEp(mail: MessageModel.CdMessage, outgoing: Bool = true) -> PEPMail {
+    open static func pEp(mail: CdMessage, outgoing: Bool = true) -> PEPMail {
         var dict = PEPMail()
 
         if let subject = mail.shortMessage {

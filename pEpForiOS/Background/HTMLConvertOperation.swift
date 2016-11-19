@@ -27,10 +27,10 @@ open class HTMLConvertOperation: BaseOperation {
             let predicateHasNoLongMessage = NSPredicate.init(
                 format: "longMessage == nil or longMessage == %@", "")
 
-            guard let mails = MessageModel.CdMessage.all(
+            guard let mails = CdMessage.all(
                 with: NSCompoundPredicate(
                     andPredicateWithSubpredicates:
-                    [MessageModel.CdMessage.basicMessagePredicate(),
+                    [CdMessage.basicMessagePredicate(),
                      predicateHasHTML, predicateHasNoLongMessage])) else {
                 return
             }
@@ -38,7 +38,7 @@ open class HTMLConvertOperation: BaseOperation {
             var modelChanged = false
 
             for m in mails {
-                guard let mail = m as? MessageModel.CdMessage else {
+                guard let mail = m as? CdMessage else {
                     Log.warn(component: self.comp, "Could not cast mail to Message")
                     continue
                 }

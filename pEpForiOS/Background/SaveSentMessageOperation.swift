@@ -144,7 +144,7 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
     public func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
         privateMOC.perform() {
             guard let message = self.privateMOC.object(
-                with: self.encryptionData.messageID) as? MessageModel.CdMessage else {
+                with: self.encryptionData.messageID) as? CdMessage else {
                     let error = Constants.errorInvalidParameter(
                         self.comp,
                         errorMessage:

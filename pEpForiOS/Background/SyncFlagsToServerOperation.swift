@@ -53,15 +53,15 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     }
 
     public static func messagesToBeSynced(
-        folder: CdFolder, context: NSManagedObjectContext) -> [MessageModel.CdMessage]? {
-        let pFlagsChanged = MessageModel.CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
-        return MessageModel.CdMessage.all(
+        folder: CdFolder, context: NSManagedObjectContext) -> [CdMessage]? {
+        let pFlagsChanged = CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
+        return CdMessage.all(
             with: pFlagsChanged,
             orderedBy: [NSSortDescriptor(key: "received", ascending: true)], in: context)
-            as? [MessageModel.CdMessage]
+            as? [CdMessage]
     }
 
-    func nextMessageToBeSynced(context: NSManagedObjectContext) -> MessageModel.CdMessage? {
+    func nextMessageToBeSynced(context: NSManagedObjectContext) -> CdMessage? {
         guard let folder = context.object(with: folderID) as? CdFolder else {
             addError(Constants.errorCannotFindFolder(component: comp))
             markAsFinished()
@@ -212,15 +212,15 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
             return
         }
         for cw in cwMessages {
-            if let all = MessageModel.CdMessage.all(
+            if let all = CdMessage.all(
                 with: ["uid": cw.uid(), "parent": folder], in: context)
-                as? [MessageModel.CdMessage] {
+                as? [CdMessage] {
                 for m in all {
                     print("\(m.uid) \(m.imap?.flagsCurrent) \(m.imap?.flagsFromServer) \(m.parent?.objectID)")
                 }
             }
 
-            if let msg = MessageModel.CdMessage.first(
+            if let msg = CdMessage.first(
                 with: ["uid": cw.uid(), "parent": folder], in: context) {
                 let flags = cw.flags()
                 let imap = msg.imap ?? CdImapFields.createWithDefaults(in: context)

@@ -77,9 +77,9 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertGreaterThan(
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 0)
         XCTAssertGreaterThan(
-            MessageModel.CdMessage.all()?.count ?? 0, 0)
+            CdMessage.all()?.count ?? 0, 0)
 
-        guard let allMessages = MessageModel.CdMessage.all() as? [MessageModel.CdMessage] else {
+        guard let allMessages = CdMessage.all() as? [CdMessage] else {
             XCTFail()
             return
         }
@@ -93,8 +93,8 @@ class SimpleOperationsTest: XCTestCase {
                 break
             }
             XCTAssertEqual(folder.name?.lowercased(), ImapSync.defaultImapInboxName.lowercased())
-            guard let messages = MessageModel.CdMessage.all(
-                with: ["uid": m.uid, "parent": folder]) as? [MessageModel.CdMessage] else {
+            guard let messages = CdMessage.all(
+                with: ["uid": m.uid, "parent": folder]) as? [CdMessage] else {
                     XCTFail()
                     break
             }
@@ -157,7 +157,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertFalse(op.hasErrors())
         })
 
-        XCTAssertEqual(MessageModel.CdMessage.all()?.count, 1)
+        XCTAssertEqual(CdMessage.all()?.count, 1)
     }
 
     func testStoreMultipleMails() {
@@ -199,7 +199,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertEqual(numberOfCallbacksCalled, numMails)
         })
 
-        XCTAssertEqual(MessageModel.CdMessage.all()?.count, numMails)
+        XCTAssertEqual(CdMessage.all()?.count, numMails)
     }
 
     func testCreateLocalSpecialFoldersOperation() {
@@ -278,7 +278,7 @@ class SimpleOperationsTest: XCTestCase {
         c1.address = "user1@example.com"
         c2.address = "user2@example.com"
 
-        let message = MessageModel.CdMessage.create(messageID: "#1", uid: 1)
+        let message = CdMessage.create(messageID: "#1", uid: 1)
         message.shortMessage = "Some subject"
         message.longMessage = "Long message"
         message.longMessageFormatted = "<h1>Long HTML</h1>"
@@ -381,7 +381,7 @@ class SimpleOperationsTest: XCTestCase {
 
         guard let messages = inbox.messages?.sortedArray(
             using: [NSSortDescriptor(key: "sent", ascending: true)])
-            as? [MessageModel.CdMessage] else {
+            as? [CdMessage] else {
                 XCTFail()
                 return
         }
@@ -443,7 +443,7 @@ class SimpleOperationsTest: XCTestCase {
 
         guard let messages = inbox.messages?.sortedArray(
             using: [NSSortDescriptor(key: "sent", ascending: true)])
-            as? [MessageModel.CdMessage] else {
+            as? [CdMessage] else {
                 XCTFail()
                 return
         }
@@ -509,8 +509,8 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
-    func insertNewMessageForSending(account: CdAccount) -> MessageModel.CdMessage {
-        let msg = MessageModel.CdMessage.create(messageID: "1@1", uid: 1)
+    func insertNewMessageForSending(account: CdAccount) -> CdMessage {
+        let msg = CdMessage.create(messageID: "1@1", uid: 1)
         msg.from = account.identity
         msg.parent = CdFolder.by(folderType: .localOutbox, account: account)
         XCTAssertNotNil(msg.from)
@@ -519,7 +519,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func createBasicMail() -> (
-        OperationQueue, MessageModel.CdMessage,
+        OperationQueue, CdMessage,
         (identity: NSMutableDictionary, receiver1: PEPContact,
         receiver2: PEPContact, receiver3: PEPContact,
         receiver4: PEPContact)) {
@@ -652,7 +652,7 @@ class SimpleOperationsTest: XCTestCase {
             with: ["folderType": FolderType.inbox.rawValue, "account": account, "uuid": "fake",
                    "name": ImapSync.defaultImapInboxName])
 
-        let newMail = MessageModel.CdMessage.create(messageID: "fake", uid: 0, parent: inboxFolder)
+        let newMail = CdMessage.create(messageID: "fake", uid: 0, parent: inboxFolder)
         XCTAssertEqual(newMail.pEpRating, PEPUtil.pEpRatingNone)
 
         newMail.update(pEpMail: encryptionData.mailsToSend[0])

@@ -14,13 +14,13 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
     let comp = "DeleteMessageOperation"
     let messageID: NSManagedObjectID
 
-    public init(message: MessageModel.CdMessage, coreDataUtil: CoreDataUtil) {
+    public init(message: CdMessage, coreDataUtil: CoreDataUtil) {
         self.messageID = message.objectID
     }
 
     override open func main() {
         privateMOC.perform {
-            guard let message = self.privateMOC.object(with: self.messageID) as? MessageModel.CdMessage else {
+            guard let message = self.privateMOC.object(with: self.messageID) as? CdMessage else {
                 return
             }
 
