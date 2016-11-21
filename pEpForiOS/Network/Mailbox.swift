@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 /**
  A mailbox uniquely identifies an IMAP folder on a server.
  The server is identified by the emailAddress, the folder by its name.

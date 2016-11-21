@@ -6,10 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
-import MessageModel
-
 public protocol SmtpSendDelegate: class {
     func messageSent(_ smtp: SmtpSend, theNotification: Notification?)
     func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?)

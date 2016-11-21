@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
-
 /**
  Aligns a couple of given views by their width. Typically called from `viewDidAppear:`
  */
