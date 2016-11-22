@@ -41,14 +41,14 @@ public extension ConnectionTransport {
     }
     
     public func localizedString() -> String {
+        let transport_security_text = "Transport security (ConnectionTransport)"
         switch self {
         case .plain:
-            return NSLocalizedString("None", comment: "Transport security (ConnectionTransport)")
+            return NSLocalizedString("None", comment: transport_security_text)
         case .TLS:
-            return NSLocalizedString("TLS", comment: "Transport security (ConnectionTransport)")
+            return NSLocalizedString("TLS", comment: transport_security_text)
         case .startTLS:
-            return NSLocalizedString("StartTLS",
-                                     comment: "Transport security (ConnectionTransport)")
+            return NSLocalizedString("StartTLS", comment: transport_security_text)
         }
     }
     
