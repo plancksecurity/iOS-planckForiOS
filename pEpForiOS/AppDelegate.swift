@@ -116,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func loadCoreDataStack() {
-        let objectModel = MessageModelData.MessageModelData()//AppDataModel.appModel()
+        let objectModel = MessageModelData.MessageModelData()
         do {
             try Record.loadCoreDataStack(
                 managedObjectModel: objectModel)
