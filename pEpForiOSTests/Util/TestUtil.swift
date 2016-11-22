@@ -16,7 +16,7 @@ class TestUtil {
     /**
      The maximum time most tests are allowed to run.
      */
-    static let waitTime: TimeInterval = 50
+    static let waitTime: TimeInterval = 20
 
     static let connectonShutDownWaitTime: TimeInterval = 1
     static let numberOfTriesConnectonShutDown = 5
