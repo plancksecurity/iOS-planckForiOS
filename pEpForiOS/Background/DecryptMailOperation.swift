@@ -54,10 +54,10 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
                             break
                     case PEP_rating_unencrypted,
                          PEP_rating_unencrypted_for_some:
-                        // Set the color, nothing else to update
-                        mail.pEpRating = Int16(color.rawValue)
-                        modelChanged = true
-                        break
+                            // Set the color, nothing else to update
+                            mail.pEpRating = Int16(color.rawValue)
+                            modelChanged = true
+                            break
                     case PEP_rating_unreliable,
                          PEP_rating_mistrust,
                          PEP_rating_under_attack,
