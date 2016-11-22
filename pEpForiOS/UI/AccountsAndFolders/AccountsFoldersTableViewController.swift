@@ -53,6 +53,11 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            super.viewWillAppear(animated)
+            return
+        }
+
         if appConfig == nil {
             guard let appDelegate = UIApplication.shared.delegate as?
                 AppDelegate else {

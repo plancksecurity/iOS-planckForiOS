@@ -44,13 +44,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.warn(component: comp, "Library url: \(applicationDirectory())")
 
         setupDefaultSettings()
+
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            return false
+        }
+
         loadCoreDataStack()
 
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
         }
 
-        return true
+        return false
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
