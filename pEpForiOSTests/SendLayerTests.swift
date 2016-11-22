@@ -32,17 +32,14 @@ class SendLayerTests: XCTestCase {
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
 
+        let accounts = Account.all
+        XCTAssertTrue(accounts.isEmpty)
+
+        let accs = CdAccount.all() ?? []
+        XCTAssertTrue(accs.isEmpty)
+
         CdAccount.sendLayer = grandOp
-        let account = TestData().createDisfunctionalAccount()
-        for cd in account.serverCredentials {
-            for s in cd.servers {
-                XCTAssertGreaterThan(s.port, 1000)
-            }
-        }
-        XCTAssertNil(CdAccount.all())
-        if let accs = CdAccount.all() {
-            XCTAssertTrue(accs.isEmpty)
-        }
+        let _ = TestData().createDisfunctionalAccount()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
