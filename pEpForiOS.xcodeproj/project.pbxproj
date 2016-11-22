@@ -111,6 +111,7 @@
 		43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */; };
 		43E42FF71D7096E400164CB1 /* DeleteMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */; };
 		43E430191D70AC8900164CB1 /* AppendSingleMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */; };
+		43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */; };
 		43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */; };
 		43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53631CC77F95006AB156 /* EmailListViewCell.swift */; };
 		43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53641CC77F95006AB156 /* EmailListViewController.swift */; };
@@ -346,6 +347,7 @@
 		43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPMyselfOperation.swift; sourceTree = "<group>"; };
 		43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteMessageOperation.swift; sourceTree = "<group>"; };
 		43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendSingleMessageOperation.swift; sourceTree = "<group>"; };
+		43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+pEp.swift"; sourceTree = "<group>"; };
 		43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Extension.swift"; sourceTree = "<group>"; };
 		43ED53631CC77F95006AB156 /* EmailListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewCell.swift; sourceTree = "<group>"; };
 		43ED53641CC77F95006AB156 /* EmailListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewController.swift; sourceTree = "<group>"; };
@@ -714,6 +716,7 @@
 				43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */,
 				43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */,
 				430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */,
+				43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1011,6 +1014,7 @@
 				43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */,
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
 				4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */,
+				43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */,
 				43B3E46E1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift in Sources */,
 				43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */,
 				435B42411D211E5900119048 /* MiscUtil.swift in Sources */,

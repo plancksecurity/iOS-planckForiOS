@@ -82,11 +82,12 @@ extension CdMessage {
 
     public static func create(messageID: String, uid: Int,
                               parent: CdFolder? = nil) -> CdMessage {
-        var dict: [String: Any] = ["uuid": messageID, "uid": uid]
-        if let f = parent {
-            dict["parent"] = f
-        }
-        return CdMessage.create(with: dict)
+        let msg = CdMessage.create()
+        msg.uuid = messageID
+        msg.uid = Int32(uid)
+        msg.parent = parent
+        msg.imap = CdImapFields.createWithDefaults()
+        return msg
     }
 
     public static func createWithDefaults(
@@ -336,9 +337,6 @@ extension CdMessage {
     /**
      Updates all properties from the given `PEPMail`.
      Used after a mail has been decrypted.
-     That means that for now, recipients are not overwritten, because they don't
-     change after decrypt (until the engine handles the communication layer too).
-     What can change is body text, subject, attachments.
      TODO: Take care of optional fields (`kPepOptFields`)!
      */
     public func update(pEpMail: PEPMail, pepColorRating: PEP_rating? = nil) {
@@ -347,7 +345,6 @@ extension CdMessage {
         }
 
         bodyFetched = true
-        imap = CdImapFields.createWithDefaults()
 
         shortMessage = pEpMail[kPepShortMessage] as? String
         longMessage = pEpMail[kPepLongMessage] as? String
@@ -377,8 +374,14 @@ extension CdMessage {
             }
         }
         self.attachments = NSOrderedSet(array: attachments)
+
+        if let tos = pEpMail[kPepTo] as? [PEPContact] {
+            for t in tos {
+                print("\(t)")
+            }
+        }
     }
-    
+
     /**
      Quickly inserts essential parts of a pantomime into the store. Needed for networking,
      where inserts should be quick and the persistent store should be up-to-date

@@ -512,8 +512,9 @@ class SimpleOperationsTest: XCTestCase {
     func insertNewMessageForSending(account: CdAccount) -> CdMessage {
         let msg = CdMessage.create(messageID: "1@1", uid: 1)
         msg.from = account.identity
+        msg.longMessage = "Inserted by insertNewMessageForSending()"
+        msg.bodyFetched = true
         msg.parent = CdFolder.by(folderType: .localOutbox, account: account)
-        msg.imap = CdImapFields.createWithDefaults()
         XCTAssertNotNil(msg.from)
         XCTAssertNotNil(msg.parent)
         return msg
@@ -628,7 +629,6 @@ class SimpleOperationsTest: XCTestCase {
         mail.shortMessage = subject
         mail.longMessage = longMessage
         mail.longMessageFormatted = longMessageFormatted
-        mail.bodyFetched = true
 
         Record.saveAndWait()
 
@@ -637,7 +637,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let encryptionData = EncryptionData(
             connectionManager: grandOperator.connectionManager, messageID: mail.objectID,
-            outgoing: true)
+            outgoing: false)
         let encOp = EncryptMailOperation(encryptionData: encryptionData)
 
         let expEncrypted = expectation(description: "expEncrypted")
@@ -653,11 +653,11 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(encryptionData.mailsToSend[0]))
 
         mail.delete()
-        let inboxFolder = CdFolder.firstOrCreate(
-            with: ["folderType": FolderType.inbox.rawValue, "account": account, "uuid": "fake",
-                   "name": ImapSync.defaultImapInboxName])
+        let folder = CdFolder.firstOrCreate(
+            with: ["folderType": FolderType.drafts.rawValue, "account": account, "uuid": "fake",
+                   "name": "Drafts"])
 
-        let newMail = CdMessage.create(messageID: "fake", uid: 0, parent: inboxFolder)
+        let newMail = CdMessage.create(messageID: "fake", uid: 0, parent: folder)
         XCTAssertEqual(newMail.pEpRating, PEPUtil.pEpRatingNone)
 
         newMail.update(pEpMail: encryptionData.mailsToSend[0])

@@ -81,7 +81,7 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
                 }
             }
             if modelChanged {
-                Record.save()
+                Record.saveAndWait()
             }
             self.markAsFinished()
         }
