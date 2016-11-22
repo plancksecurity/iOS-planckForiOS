@@ -513,6 +513,7 @@ class SimpleOperationsTest: XCTestCase {
         let msg = CdMessage.create(messageID: "1@1", uid: 1)
         msg.from = account.identity
         msg.parent = CdFolder.by(folderType: .localOutbox, account: account)
+        msg.imap = CdImapFields.createWithDefaults()
         XCTAssertNotNil(msg.from)
         XCTAssertNotNil(msg.parent)
         return msg
@@ -627,8 +628,12 @@ class SimpleOperationsTest: XCTestCase {
         mail.shortMessage = subject
         mail.longMessage = longMessage
         mail.longMessageFormatted = longMessageFormatted
+        mail.bodyFetched = true
 
         Record.saveAndWait()
+
+        XCTAssertFalse((CdMessage.all(
+            with: CdMessage.unencryptedMessagesPredicate()) ?? []).isEmpty)
 
         let encryptionData = EncryptionData(
             connectionManager: grandOperator.connectionManager, messageID: mail.objectID,
@@ -671,6 +676,9 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         Record.saveAndWait()
+
+        XCTAssertFalse((CdMessage.all(
+            with: CdMessage.unencryptedMessagesPredicate()) ?? []).isEmpty)
 
         let expDecrypted = expectation(description: "expDecrypted")
         let decrOp = DecryptMailOperation()

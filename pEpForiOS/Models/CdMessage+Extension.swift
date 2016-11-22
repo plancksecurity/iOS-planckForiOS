@@ -347,6 +347,7 @@ extension CdMessage {
         }
 
         bodyFetched = true
+        imap = CdImapFields.createWithDefaults()
 
         shortMessage = pEpMail[kPepShortMessage] as? String
         longMessage = pEpMail[kPepLongMessage] as? String
