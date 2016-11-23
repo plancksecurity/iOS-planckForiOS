@@ -10,14 +10,23 @@ protocol INetworkService {
 }
 
 /**
- * A RunLoop class which provides an OO layer and doing syncing between CoreData and Pantomime
- * and any other (later) libraries providing in- and outbond transports of messages.
+ * A thread class which provides an OO layer and doing syncing between CoreData and Pantomime
+ * and any other (later) libraries providing in- and outbond transports of messages by managing
+ * different background tasks and run loops (to be implemented).
  */
-public class NetworkService: RunLoop, INetworkService {
+public class NetworkService: Thread, INetworkService {
     let comp = "NetworkService"
     let backgroundQueue = DispatchQueue(label: "pep.app.network.service", qos: .background,
                                                                          target: nil)
     var connectInfos = [ConnectInfo]()
+    
+    /*!
+     * @brief Initilization without any connection info to be used (for testing).
+     */
+    public override init()
+    {
+        // noop
+    }
     
     /*!
      * @brief Initialization of the Network Service for one connection.
@@ -51,4 +60,3 @@ public class NetworkService: RunLoop, INetworkService {
     }
     
 }
-    

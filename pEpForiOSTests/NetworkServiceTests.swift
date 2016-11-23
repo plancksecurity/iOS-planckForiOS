@@ -8,11 +8,15 @@
 
 import XCTest
 
+import pEpForiOS
+
 class NetworkServiceTests: XCTestCase {
+    
+    let networkService: NetworkService = NetworkService()
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        networkService.start()
     }
     
     override func tearDown() {
@@ -20,9 +24,9 @@ class NetworkServiceTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testNetworkServiceExistence() {
+        XCTAssertFalse(networkService.isMainThread)
+        XCTAssertFalse(networkService.isFinished)
     }
     
     func testPerformanceExample() {
