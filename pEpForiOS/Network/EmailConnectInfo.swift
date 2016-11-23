@@ -121,14 +121,7 @@ public enum EmailProtocol: String {
 /**
  Holds additional connection info (like server, port etc.) for IMAP and SMTP.
  */
-public protocol IEmailConnectInfo: IConnectInfo {
-    var emailProtocol: EmailProtocol? { get }
-    var connectionTransport: ConnectionTransport? { get }
-    var userPassword: String? { get }
-    var authMethod: AuthMethod? { get }
-}
-
-public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
+public class EmailConnectInfo: ConnectInfo {
     public var userPassword: String?
 
     public var emailProtocol: EmailProtocol?
@@ -136,8 +129,7 @@ public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
     public var authMethod: AuthMethod?
 
     public init(accountObjectID: NSManagedObjectID, serverObjectID: NSManagedObjectID,
-                userName: String,
-                loginName: String,
+                loginName: String? = nil,
                 loginPassword: String? = nil,
                 networkAddress: String,
                 networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
@@ -145,7 +137,6 @@ public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
                 emailProtocol: EmailProtocol? = nil,
                 connectionTransport: ConnectionTransport? = nil, authMethod: AuthMethod? = nil) {
         super.init(accountObjectID: accountObjectID, serverObjectID: serverObjectID,
-                   userName: userName,
                    loginName: loginName,
                    loginPassword: loginPassword,
                    networkAddress: networkAddress,

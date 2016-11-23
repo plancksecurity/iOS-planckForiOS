@@ -124,13 +124,13 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     /**
      This implementation assumes that the index is typically referred to by pantomime
      as the messageNumber.
+     Relying on that is dangerous and should be avoided.
      */
     override func message(at theIndex: UInt) -> CWMessage? {
-        let p = NSPredicate.init(
-            format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
-            connectInfo.userName, self.name(), theIndex)
         var msg: CdMessage?
         privateMOC.performAndWait({
+            let p = NSPredicate(
+                format: "folder = %@ messageNumber = %d", self.folder, theIndex)
             msg = CdMessage.first(with: p)
         })
         return msg?.pantomimeMessage(folder: self)

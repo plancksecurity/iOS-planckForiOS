@@ -9,13 +9,15 @@
 import MessageModel
 
 extension CdAccount {
+    /**
+     This is a blatant lie, and must be removed!
+     */
     open var connectInfo: EmailConnectInfo {
-        let password = KeyChain.password(key: self.connectInfo.userName,
+        let password = KeyChain.password(key: "key",
                                          serverType: (self.connectInfo.emailProtocol?.rawValue)!)
         return EmailConnectInfo(
             accountObjectID: objectID,
-            serverObjectID: objectID, // TODO: This is a blatant lie!
-            userName: self.connectInfo.userName,
+            serverObjectID: objectID,
             loginName: self.connectInfo.loginName!,
             loginPassword: password,
             networkAddress: self.connectInfo.networkAddress,
@@ -25,9 +27,7 @@ extension CdAccount {
             connectionTransport: self.connectInfo.connectionTransport,
             authMethod: self.connectInfo.authMethod)
     }
-}
 
-extension CdAccount {
     func serverNTuple(credentials: CdServerCredentials,
                       server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
         if let serverType = Server.ServerType.init(rawValue: Int(server.serverType))?.asString(),
@@ -86,8 +86,7 @@ extension CdAccount {
             let emailProtocol = EmailProtocol.init(serverType: serverType) {
             return EmailConnectInfo(
                 accountObjectID: account.objectID, serverObjectID: server.objectID,
-                userName: credentials.userName!, // XXX: Must not be name as loginName.
-                loginName: credentials.userName!,
+                loginName: credentials.userName,
                 loginPassword: password,
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,

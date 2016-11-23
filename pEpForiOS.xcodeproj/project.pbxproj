@@ -131,7 +131,6 @@
 		5DF003991DBE430E00F11C04 /* EmailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003921DBE430E00F11C04 /* EmailConnectInfo.swift */; };
 		5DF0039A1DBE430E00F11C04 /* EmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003931DBE430E00F11C04 /* EmailService.swift */; };
 		5DF0039B1DBE430E00F11C04 /* ImapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003941DBE430E00F11C04 /* ImapService.swift */; };
-		5DF0039C1DBE430E00F11C04 /* Mailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003951DBE430E00F11C04 /* Mailbox.swift */; };
 		5DF0039D1DBE430E00F11C04 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003961DBE430E00F11C04 /* NetworkService.swift */; };
 		5DF0039E1DBE430E00F11C04 /* SmtpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003971DBE430E00F11C04 /* SmtpService.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
@@ -371,7 +370,6 @@
 		5DF003921DBE430E00F11C04 /* EmailConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailConnectInfo.swift; path = pEpForiOS/Network/EmailConnectInfo.swift; sourceTree = SOURCE_ROOT; };
 		5DF003931DBE430E00F11C04 /* EmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailService.swift; path = pEpForiOS/Network/EmailService.swift; sourceTree = SOURCE_ROOT; };
 		5DF003941DBE430E00F11C04 /* ImapService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImapService.swift; path = pEpForiOS/Network/ImapService.swift; sourceTree = SOURCE_ROOT; };
-		5DF003951DBE430E00F11C04 /* Mailbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mailbox.swift; path = pEpForiOS/Network/Mailbox.swift; sourceTree = SOURCE_ROOT; };
 		5DF003961DBE430E00F11C04 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkService.swift; path = pEpForiOS/Network/NetworkService.swift; sourceTree = SOURCE_ROOT; };
 		5DF003971DBE430E00F11C04 /* SmtpService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SmtpService.swift; path = pEpForiOS/Network/SmtpService.swift; sourceTree = SOURCE_ROOT; };
 		A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeButtonTableViewCell.swift; sourceTree = "<group>"; };
@@ -653,7 +651,6 @@
 				5DF003921DBE430E00F11C04 /* EmailConnectInfo.swift */,
 				5DF003931DBE430E00F11C04 /* EmailService.swift */,
 				5DF003941DBE430E00F11C04 /* ImapService.swift */,
-				5DF003951DBE430E00F11C04 /* Mailbox.swift */,
 				5DF003961DBE430E00F11C04 /* NetworkService.swift */,
 				5DF003971DBE430E00F11C04 /* SmtpService.swift */,
 			);
@@ -1008,7 +1005,6 @@
 				431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */,
 				439864481D6C486200D0FDE1 /* FolderListViewController.swift in Sources */,
 				439D407A1CC79423009A4E7C /* GCD.swift in Sources */,
-				5DF0039C1DBE430E00F11C04 /* Mailbox.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
 				43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */,
 				43C32E211DBF94A6007CFB1A /* MockData.swift in Sources */,
