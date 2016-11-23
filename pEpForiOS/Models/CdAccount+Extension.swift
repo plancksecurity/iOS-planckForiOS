@@ -9,25 +9,6 @@
 import MessageModel
 
 extension CdAccount {
-    /**
-     This is a blatant lie, and must be removed!
-     */
-    open var connectInfo: EmailConnectInfo {
-        let password = KeyChain.password(key: "key",
-                                         serverType: (self.connectInfo.emailProtocol?.rawValue)!)
-        return EmailConnectInfo(
-            accountObjectID: objectID,
-            serverObjectID: objectID,
-            loginName: self.connectInfo.loginName!,
-            loginPassword: password,
-            networkAddress: self.connectInfo.networkAddress,
-            networkPort: self.connectInfo.networkPort,
-            networkAddressType: nil,
-            networkTransportType: nil, emailProtocol: self.connectInfo.emailProtocol!,
-            connectionTransport: self.connectInfo.connectionTransport,
-            authMethod: self.connectInfo.authMethod)
-    }
-
     func serverNTuple(credentials: CdServerCredentials,
                       server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
         if let serverType = Server.ServerType.init(rawValue: Int(server.serverType))?.asString(),

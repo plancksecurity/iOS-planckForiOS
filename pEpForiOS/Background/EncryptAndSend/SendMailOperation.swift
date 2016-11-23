@@ -24,7 +24,8 @@ open class SendMailOperation: EncryptBaseOperation {
     }
 
     override open func main() {
-        smtpSend = encryptionData.connectionManager.smtpConnection(encryptionData.connectionInfo)
+        smtpSend = encryptionData.connectionManager.smtpConnection(
+            encryptionData.smtpConnectInfo)
         smtpSend.delegate = self
         smtpSend.start()
     }

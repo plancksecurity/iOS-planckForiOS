@@ -591,7 +591,8 @@ class SimpleOperationsTest: XCTestCase {
         Record.saveAndWait()
 
         let encryptionData = EncryptionData(
-            connectionInfo: imapConnectInfo, connectionManager: grandOperator.connectionManager,
+            imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo,
+            connectionManager: grandOperator.connectionManager,
             messageID: mail.objectID, outgoing: true)
         let encOp = EncryptMailOperation(encryptionData: encryptionData)
 
@@ -648,7 +649,8 @@ class SimpleOperationsTest: XCTestCase {
             with: CdMessage.unencryptedMessagesPredicate()) ?? []).isEmpty)
 
         let encryptionData = EncryptionData(
-            connectionInfo: imapConnectInfo, connectionManager: grandOperator.connectionManager,
+            imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo,
+            connectionManager: grandOperator.connectionManager,
             messageID: mail.objectID, outgoing: true)
         let encOp = EncryptMailOperation(encryptionData: encryptionData)
 
@@ -717,7 +719,8 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(smtpConnectInfo)
 
         let encryptionData = EncryptionData(
-            connectionInfo: smtpConnectInfo, connectionManager: grandOperator.connectionManager,
+            imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo,
+            connectionManager: grandOperator.connectionManager,
             messageID: message.objectID, outgoing: true)
 
         let contact = NSMutableDictionary()

@@ -63,7 +63,7 @@ open class SaveSentMessageOperation: EncryptBaseOperation {
             self.rawMessageData = cwMessage.dataValue()
 
             self.imapSync = self.encryptionData.connectionManager.emailSyncConnection(
-                account.connectInfo)
+                self.encryptionData.imapConnectInfo)
             self.imapSync.delegate = self
             self.imapSync.start()
         })
