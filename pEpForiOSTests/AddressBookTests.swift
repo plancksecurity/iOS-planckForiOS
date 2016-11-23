@@ -19,18 +19,31 @@ func ==<T1: Equatable, T2: Equatable, T3: Equatable>(
     return lhs.0 == rhs.0 && lhs.1 == rhs.1 && lhs.2 == rhs.2
 }
 
+class ObserverDelegate: ModelObserverDelegate {
+    let expSaved: XCTestExpectation?
+
+    init(expSaved: XCTestExpectation?) {
+        self.expSaved = expSaved
+    }
+
+    func didSaveAll() {
+        expSaved?.fulfill()
+    }
+}
+
 class AddressBookTests: XCTestCase {
     var persistentSetup: PersistentSetup!
-    
+    let waitTime: TimeInterval = 6
+
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup()
     }
-    
+
     override func tearDown() {
         persistentSetup = nil
     }
-    
+
     func testSimpleContactSearch() {
         // Some contacts
         for i in 1...5 {
@@ -39,6 +52,15 @@ class AddressBookTests: XCTestCase {
         }
         let _ = Identity.create(
             address: "wha@wawa.com", userName: "Another")
+
+        MessageModelConfig.observer.delegate = ObserverDelegate(
+            expSaved: expectation(description: "saved"))
+
+        waitForExpectations(timeout: waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        XCTAssertGreaterThan(Identity.all().count, 0)
 
         XCTAssertEqual(Identity.by(snippet: "xtes").count, 5)
         XCTAssertEqual(Identity.by(snippet: "XtEs").count, 5)
@@ -57,7 +79,7 @@ class AddressBookTests: XCTestCase {
         XCTAssertTrue(ab.splitContactNameInTuple("uiae") == ("uiae", nil, nil))
         XCTAssertTrue(ab.splitContactNameInTuple("uiae   xvlc") == ("uiae", nil, "xvlc"))
     }
-    
+
     func testAddressbook() {
         let _ = Identity.create(address: "none@test.com", userName: "Noone Particular")
         let _ = Identity.create(address: "hahaha1@test.com", userName: "Hahaha1")

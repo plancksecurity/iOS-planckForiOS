@@ -49,7 +49,7 @@ class SimpleOperationsTest: XCTestCase {
             expCompleted.fulfill()
         }
 
-        OperationQueue.init().addOperation(op)
+        OperationQueue().addOperation(op)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
