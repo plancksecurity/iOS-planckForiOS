@@ -18,18 +18,11 @@ class AppConfig: NSObject {
     let grandOperator: IGrandOperator
 
     /**
-     The model gives access to the complete application model. It has access
-     to the main thread's `NSManagedObjectContext`.
-     */
-    let model: ICdModel
-
-    /**
      As soon as the UI has at least one account that is in use, this is set here.
      */
     var currentAccount: Account? = nil
 
     override init() {
-        model = CdModel()
         let gOp = GrandOperator(connectionManager: connectionManager)
         grandOperator = gOp
         CdAccount.sendLayer = gOp

@@ -484,11 +484,6 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         guard let _ = forwardedMessage() else {
             return
         }
-
-        guard let _ = appConfig?.model else {
-            Log.warn(component: comp, "Can't do anything without model")
-            return
-        }
     }
 
     func populate(message: Message, withAttachmentsFromTextView theTextView: UITextView?) {

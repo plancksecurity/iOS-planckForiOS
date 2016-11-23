@@ -55,7 +55,6 @@
 		4352FA171DC79A3D0081161A /* SendLayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA161DC79A3D0081161A /* SendLayerTests.swift */; };
 		4352FA1F1DC79E9B0081161A /* DefaultSendLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA1E1DC79E9B0081161A /* DefaultSendLayer.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
-		4367E26F1CD7360000B05F83 /* CdModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367E26E1CD7360000B05F83 /* CdModel.swift */; };
 		436F8E101D367039007E9829 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E0F1D367039007E9829 /* StringExtensions.swift */; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
 		436F8E1B1D369B3F007E9829 /* EmailTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E1A1D369B3F007E9829 /* EmailTextField.swift */; };
@@ -277,7 +276,6 @@
 		4352FA161DC79A3D0081161A /* SendLayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendLayerTests.swift; sourceTree = "<group>"; };
 		4352FA1E1DC79E9B0081161A /* DefaultSendLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultSendLayer.swift; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
-		4367E26E1CD7360000B05F83 /* CdModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdModel.swift; sourceTree = "<group>"; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		436F8E0F1D367039007E9829 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
@@ -723,7 +721,6 @@
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				4367E26E1CD7360000B05F83 /* CdModel.swift */,
 				434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */,
 				431B04791DE5772000E40CD3 /* CdMessage+pEp.swift */,
 				431B047F1DE5774800E40CD3 /* CdMessage+Pantomime.swift */,
@@ -1053,7 +1050,6 @@
 				430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */,
 				436F8E1B1D369B3F007E9829 /* EmailTextField.swift in Sources */,
 				43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */,
-				4367E26F1CD7360000B05F83 /* CdModel.swift in Sources */,
 				431B04801DE5774800E40CD3 /* CdMessage+Pantomime.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				439C4D411CD27B0E0099A27F /* VerifyImapConnectionOperation.swift in Sources */,
