@@ -9,6 +9,7 @@
 import XCTest
 
 import pEpForiOS
+import MessageModel
 
 /**
  Equality (==) for 3-tuples of optional Strings.
@@ -23,118 +24,33 @@ class ModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        persistentSetup = PersistentSetup.init()
+        persistentSetup = PersistentSetup()
 
         // Some contacts
         for i in 1...5 {
-            let contact = persistentSetup.model.insertOrUpdateContactEmail(
-                "email\(i)@xtest.de", name: "name\(i)")
+            let contact = Identity.create(
+                address: "email\(i)@xtest.de", userName: "name\(i)")
             XCTAssertNotNil(contact)
         }
-        let contact = persistentSetup.model.insertOrUpdateContactEmail(
-            "wha@wawa.com", name: "Another")
+        let contact = Identity.create(
+            address: "wha@wawa.com", userName: "Another")
         XCTAssertNotNil(contact)
-
-        let connectInfo = ImapSmtpConnectInfo.init(
-            nameOfTheUser: "The User",
-            email: persistentSetup.accountEmail, imapServerName: "imapServer",
-            smtpServerName: "smtpServer")
-        XCTAssertNotNil(persistentSetup.model.insertAccountFromImapSmtpConnectInfo(connectInfo))
 
         // Some folders
         for name in [ImapSync.defaultImapInboxName, "\(ImapSync.defaultImapInboxName).Drafts",
                      "\(ImapSync.defaultImapInboxName).Sent Mails"] {
-                        XCTAssertNotNil(persistentSetup.model.insertOrUpdateFolderName(
-                            name, folderSeparator: ".", accountEmail: persistentSetup.accountEmail))
-                        XCTAssertNotNil(persistentSetup.model.folderByName(name,
-                            email: persistentSetup.accountEmail))
-                        print("Created \(name) (\(persistentSetup.accountEmail))")
+                        let _ = Folder.create(name: name)
         }
     }
 
-    func testSimpleContactSearch() {
-        XCTAssertEqual(persistentSetup.model.contactsBySnippet("xtes").count, 5)
-        XCTAssertEqual(persistentSetup.model.contactsBySnippet("XtEs").count, 5)
-        XCTAssertEqual(persistentSetup.model.contactsBySnippet("wha").count, 1)
-        XCTAssertEqual(persistentSetup.model.contactsBySnippet("Ano").count, 1)
-        XCTAssertEqual(persistentSetup.model.contactsBySnippet("ANO").count, 1)
+    override func tearDown() {
+        persistentSetup = nil
     }
 
     func testFolderLookUp() {
-        XCTAssertNotNil(persistentSetup.model.folderByType(
-            FolderType.inbox, email: persistentSetup.accountEmail))
-        XCTAssertNotNil(persistentSetup.model.folderByType(
-            FolderType.sent, email: persistentSetup.accountEmail))
-        XCTAssertNotNil(persistentSetup.model.folderByType(
-            FolderType.drafts, email: persistentSetup.accountEmail))
-    }
-
-    func testSplitContactName() {
-        let ab = AddressBook()
-        XCTAssertTrue(ab.splitContactNameInTuple("uiae dtrn qfgh") == ("uiae", "dtrn", "qfgh"))
-        XCTAssertTrue(ab.splitContactNameInTuple("uiae   dtrn    qfgh") == ("uiae", "dtrn", "qfgh"))
-        XCTAssertTrue(ab.splitContactNameInTuple("uiae   dtrn   123  qfgh") == ("uiae", "dtrn 123",
-            "qfgh"))
-        XCTAssertTrue(ab.splitContactNameInTuple("") == (nil, nil, nil))
-        XCTAssertTrue(ab.splitContactNameInTuple("uiae") == ("uiae", nil, nil))
-        XCTAssertTrue(ab.splitContactNameInTuple("uiae   xvlc") == ("uiae", nil, "xvlc"))
-    }
-
-    func testAddressbook() {
-        let ab = AddressBook()
-
-        let insertTestContacts = {
-            XCTAssertTrue(ab.addContact(
-                AddressbookContact.init(email: "none@test.com", name: "Noone Particular")))
-            XCTAssertTrue(ab.addContact(
-                AddressbookContact.init(email: "hahaha1@test.com", name: "Hahaha1")))
-            XCTAssertTrue(ab.addContact(
-                AddressbookContact.init(email: "hahaha2@test.com", name: "Hahaha2")))
-            XCTAssertTrue(ab.addContact(
-                AddressbookContact.init(email: "uhum3@test.com", name: "This Is Not")))
-            XCTAssertTrue(ab.save())
-        }
-
-        let testBlock = {
-            insertTestContacts()
-            XCTAssertEqual(ab.contactsBySnippet("NONEAtyvAll").count, 0)
-            XCTAssertEqual(ab.contactsBySnippet("NONE").count, 1)
-            XCTAssertEqual(ab.contactsBySnippet("none").count, 1)
-            XCTAssertEqual(ab.contactsBySnippet("hah").count, 2)
-            XCTAssertEqual(ab.contactsBySnippet("hAHa2").count, 1)
-            XCTAssertEqual(ab.contactsBySnippet("This is").count, 1)
-            XCTAssertEqual(ab.contactsBySnippet("This").count, 1)
-            XCTAssertEqual(ab.contactsBySnippet("test").count, 4)
-        }
-        TestUtil.runAddressBookTest(testBlock, addressBook: ab, testCase: self,
-                                    waitTime: TestUtil.waitTime)
-    }
-
-    func testAddressBookTransfer() {
-        let ab = AddressBook()
-
-        let testBlock = {
-            let expAddressBookTransfered = self.expectation(
-                description: "expAddressBookTransfered")
-            let persistentSetup = PersistentSetup.init()
-            let context = persistentSetup.coreDataUtil.privateContext()
-            var contactsCount = 0
-            MiscUtil.transferAddressBook(context, blockFinished: { contacts in
-                XCTAssertGreaterThan(contacts.count, 0)
-                contactsCount = contacts.count
-                expAddressBookTransfered.fulfill()
-            })
-            self.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-                XCTAssertNil(error)
-            })
-            let model = persistentSetup.model
-            let contacts = model.contactsByPredicate(NSPredicate.init(value: true),
-                                                     sortDescriptors: [])
-            XCTAssertEqual(contacts?.count, contactsCount)
-        }
-
-        TestUtil.runAddressBookTest(testBlock, addressBook: ab, testCase: self,
-                                    waitTime: TestUtil.waitTime)
+        XCTAssertFalse(Folder.by(folderType: FolderType.inbox).isEmpty)
+        XCTAssertFalse(Folder.by(folderType: FolderType.sent).isEmpty)
+        XCTAssertFalse(Folder.by(folderType: FolderType.drafts).isEmpty)
     }
 
     func testInsertOrUpdatePantomimeMail() {
