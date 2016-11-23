@@ -746,7 +746,6 @@ class SimpleOperationsTest: XCTestCase {
        })
     }
 
-    /*
     /**
      It's important to always provide the correct kPepUserID for a local account ID.
      */
@@ -761,86 +760,4 @@ class SimpleOperationsTest: XCTestCase {
                                                to: myself as NSDictionary as! PEPContact)
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
     }
-
-    func testFolderModelOperationEmpty() {
-        let expFoldersLoaded = expectation(description: "expFoldersLoaded")
-        let op = FolderModelOperation.init(
-            account: persistentSetup.account, coreDataUtil: persistentSetup.coreDataUtil)
-        op.completionBlock = {
-            expFoldersLoaded.fulfill()
-        }
-
-        let backgroundQueue = OperationQueue.init()
-        backgroundQueue.addOperation(op)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertEqual(
-                CdFolder.countBy(predicate: NSPredicate.init(value: true)), 0)
-            XCTAssertEqual(op.folderItems.count, 0)
-        })
-    }
-
-    func testFolderModelOperation() {
-        let separator = "."
-        let children = NSMutableOrderedSet()
-        guard let parentFolder = persistentSetup.model.insertOrUpdateFolderName(
-            ImapSync.defaultImapInboxName, folderSeparator: separator,
-            accountEmail: persistentSetup.account.email) else {
-                XCTAssertTrue(false)
-                return
-        }
-        XCTAssertEqual(parentFolder.name, ImapSync.defaultImapInboxName)
-
-        let sentFolderName = "Sent"
-        let archiveFolderName = "Archive"
-        let draftsFolderName = "Drafts"
-        let junkFolderName = "Junk"
-
-        let folderNames = [sentFolderName, archiveFolderName,
-                           draftsFolderName, junkFolderName]
-        for name in folderNames {
-            if  let subFolder = persistentSetup.model.insertOrUpdateFolderName(
-                name, folderSeparator: separator,
-                accountEmail: persistentSetup.account.email) {
-                subFolder.parent = parentFolder
-                children.add(subFolder)
-            } else {
-                XCTAssertTrue(false)
-            }
-        }
-        parentFolder.children = children
-        let expFoldersLoaded = expectation(description: "expFoldersLoaded")
-        let op = FolderModelOperation.init(
-            account: persistentSetup.account, coreDataUtil: persistentSetup.coreDataUtil)
-        op.completionBlock = {
-            expFoldersLoaded.fulfill()
-        }
-
-        let backgroundQueue = OperationQueue.init()
-        backgroundQueue.addOperation(op)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertEqual(
-                CdFolder.countBy(predicate: NSPredicate.init(value: true)), folderNames.count + 1)
-            XCTAssertEqual(op.folderItems.count, folderNames.count + 1)
-
-            XCTAssertEqual(op.folderItems[0].name, ImapSync.defaultImapInboxName)
-            XCTAssertEqual(op.folderItems[0].level, 0)
-
-            XCTAssertEqual(op.folderItems[1].name, sentFolderName)
-            XCTAssertEqual(op.folderItems[1].level, 1)
-
-            XCTAssertEqual(op.folderItems[2].name, archiveFolderName)
-            XCTAssertEqual(op.folderItems[2].level, 1)
-
-            XCTAssertEqual(op.folderItems[3].name, draftsFolderName)
-            XCTAssertEqual(op.folderItems[3].level, 1)
-
-            XCTAssertEqual(op.folderItems[4].name, junkFolderName)
-            XCTAssertEqual(op.folderItems[4].level, 1)
-        })
-    }
-     */
 }
