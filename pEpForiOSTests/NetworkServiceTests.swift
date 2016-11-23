@@ -21,19 +21,20 @@ class NetworkServiceTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        networkService.cancel()
+        // Nothing yet.
     }
     
-    func testNetworkServiceExistence() {
+    func testNetworkServiceExistenceAfterStart() {
         XCTAssertFalse(networkService.isMainThread)
         XCTAssertFalse(networkService.isFinished)
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testNetworkServiceExistenceAfterCancel() {
+        XCTAssertFalse(networkService.isCancelled)
+        networkService.cancel()
+        XCTAssertTrue(networkService.isCancelled)
+        // XXX: networkSerivce.isFinished can evaluate both, True and False. It usually takes some
+        // seconds to happen. There's no more exit() method anymore.
     }
     
 }
