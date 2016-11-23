@@ -29,12 +29,16 @@ extension CdIdentity {
         return ident
     }
 
-    public static func from(pEpContacts: [PEPContact]) -> [CdIdentity] {
-        for p in pEpContacts {
-            if let _ = from(pEpContact: p) {
-
+    public static func from(pEpContacts: [PEPContact]?) -> [CdIdentity] {
+        guard let theContacts = pEpContacts else {
+            return []
+        }
+        var contacts = [CdIdentity]()
+        for p in theContacts {
+            if let c = from(pEpContact: p) {
+                contacts.append(c)
             }
         }
-        return []
+        return contacts
     }
 }

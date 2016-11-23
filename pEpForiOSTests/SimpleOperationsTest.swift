@@ -625,7 +625,10 @@ class SimpleOperationsTest: XCTestCase {
         let longMessage = "Long Message"
         let longMessageFormatted = "<b>HTML message</b>"
 
-        mail.addTo(identity: CdIdentity.firstOrCreate(dictionary: identity))
+        let myself = CdIdentity.firstOrCreate(dictionary: identity)
+
+        mail.from = myself
+        mail.addTo(identity: myself)
         mail.shortMessage = subject
         mail.longMessage = longMessage
         mail.longMessageFormatted = longMessageFormatted
@@ -637,7 +640,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let encryptionData = EncryptionData(
             connectionManager: grandOperator.connectionManager, messageID: mail.objectID,
-            outgoing: false)
+            outgoing: true)
         let encOp = EncryptMailOperation(encryptionData: encryptionData)
 
         let expEncrypted = expectation(description: "expEncrypted")
@@ -647,6 +650,7 @@ class SimpleOperationsTest: XCTestCase {
         queue.addOperation(encOp)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
+            XCTAssertFalse(encOp.hasErrors())
         })
 
         XCTAssertEqual(encryptionData.mailsToSend.count, 1)
