@@ -582,8 +582,8 @@ class SimpleOperationsTest: XCTestCase {
         Record.saveAndWait()
 
         let encryptionData = EncryptionData(
-            connectionManager: grandOperator.connectionManager, messageID: mail.objectID,
-            outgoing: true)
+            connectionInfo: connectInfo, connectionManager: grandOperator.connectionManager,
+            messageID: mail.objectID, outgoing: true)
         let encOp = EncryptMailOperation(encryptionData: encryptionData)
 
         let expEncrypted = expectation(description: "expEncrypted")
@@ -639,8 +639,8 @@ class SimpleOperationsTest: XCTestCase {
             with: CdMessage.unencryptedMessagesPredicate()) ?? []).isEmpty)
 
         let encryptionData = EncryptionData(
-            connectionManager: grandOperator.connectionManager, messageID: mail.objectID,
-            outgoing: true)
+            connectionInfo: connectInfo, connectionManager: grandOperator.connectionManager,
+            messageID: mail.objectID, outgoing: true)
         let encOp = EncryptMailOperation(encryptionData: encryptionData)
 
         let expEncrypted = expectation(description: "expEncrypted")

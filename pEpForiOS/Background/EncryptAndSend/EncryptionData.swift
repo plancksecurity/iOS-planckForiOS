@@ -24,6 +24,11 @@ open class EncryptionData {
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
 
     /**
+     For the final send message operation.
+     */
+    let connectionInfo: EmailConnectInfo
+
+    /**
      For getting a SMTP connection.
      */
     let connectionManager: ConnectionManager
@@ -58,9 +63,10 @@ open class EncryptionData {
      */
     open var mailsSent: [PEPMail] = []
 
-    public init(connectionManager: ConnectionManager, messageID: NSManagedObjectID,
-                outgoing: Bool = true) {
+    public init(connectionInfo: EmailConnectInfo, connectionManager: ConnectionManager,
+                messageID: NSManagedObjectID, outgoing: Bool = true) {
         self.connectionManager = connectionManager
+        self.connectionInfo = connectionInfo
         self.messageID = messageID
         self.outgoing = outgoing
     }

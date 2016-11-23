@@ -24,29 +24,9 @@ open class SendMailOperation: EncryptBaseOperation {
     }
 
     override open func main() {
-        let privateMOC = encryptionData.coreDataUtil.privateContext()
-        var connectInfo: EmailConnectInfo? = nil
-        privateMOC.perform() {
-            guard let message = self.fetchMessage(context: privateMOC) else {
-                return
-            }
-
-            guard let account = message.parent?.account else {
-                self.addError(Constants.errorCannotFindAccount(component: self.comp))
-                return
-            }
-            connectInfo = account.connectInfo
-
-            Record.saveAndWait(context: privateMOC)
-
-            if let ci = connectInfo {
-                self.smtpSend = self.encryptionData.connectionManager.smtpConnection(ci)
-                self.smtpSend.delegate = self
-                self.smtpSend.start()
-            } else {
-                self.markAsFinished()
-            }
-        }
+        smtpSend = encryptionData.connectionManager.smtpConnection(encryptionData.connectionInfo)
+        smtpSend.delegate = self
+        smtpSend.start()
     }
 
     func sendNextMailOrMarkAsFinished() {
