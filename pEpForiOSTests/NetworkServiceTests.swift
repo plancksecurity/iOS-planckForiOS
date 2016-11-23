@@ -34,7 +34,7 @@ class NetworkServiceTests: XCTestCase {
         networkService.cancel()
         XCTAssertTrue(networkService.isCancelled)
         // XXX: networkSerivce.isFinished can evaluate both, True and False. It usually takes some
-        // seconds to happen. There's no more exit() method anymore.
+        // seconds to happen. There's no exit() method anymore (neither using Thread nor NSThread).
     }
     
 }
