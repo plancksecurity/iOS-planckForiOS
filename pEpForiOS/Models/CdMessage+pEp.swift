@@ -28,8 +28,6 @@ extension CdMessage {
         longMessage = pEpMail[kPepLongMessage] as? String
         longMessageFormatted = pEpMail[kPepLongMessageFormatted] as? String
 
-        // Remove all existing attachments. These should cascade.
-
         var attachments = [CdAttachment]()
         if let attachmentDicts = pEpMail[kPepAttachments] as? NSArray {
             for atDict in attachmentDicts {
@@ -48,12 +46,14 @@ extension CdMessage {
                 if let fn = at[kPepMimeFilename] as? String {
                     attach.fileName = fn
                 }
-
                 attachments.append(attach)
             }
         }
-        self.attachments = NSOrderedSet(array: attachments)
 
+        self.attachments = NSOrderedSet(array: attachments)
+        CdAttachment.deleteOrphans()
+
+        from = CdIdentity.from(pEpContact: pEpMail[kPepFrom] as? PEPContact)
         to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepTo] as? [PEPContact]))
         cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepCC] as? [PEPContact]))
         bcc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepBCC] as? [PEPContact]))

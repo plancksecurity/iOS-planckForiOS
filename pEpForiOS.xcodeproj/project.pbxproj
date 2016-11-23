@@ -31,6 +31,7 @@
 		431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */; };
 		431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B04791DE5772000E40CD3 /* CdMessage+pEp.swift */; };
 		431B04801DE5774800E40CD3 /* CdMessage+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B047F1DE5774800E40CD3 /* CdMessage+Pantomime.swift */; };
+		431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */; };
 		431B0B9A1D6734DF0082D0DB /* AccountsFoldersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B0B991D6734DF0082D0DB /* AccountsFoldersTableViewController.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
 		43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */; };
@@ -251,6 +252,7 @@
 		431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyCell.swift; sourceTree = "<group>"; };
 		431B04791DE5772000E40CD3 /* CdMessage+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+pEp.swift"; sourceTree = "<group>"; };
 		431B047F1DE5774800E40CD3 /* CdMessage+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+Pantomime.swift"; sourceTree = "<group>"; };
+		431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Extension.swift"; sourceTree = "<group>"; };
 		431B0B991D6734DF0082D0DB /* AccountsFoldersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsFoldersTableViewController.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperation.swift; sourceTree = "<group>"; };
@@ -723,6 +725,7 @@
 				43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */,
 				430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */,
 				43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */,
+				431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1065,6 +1068,7 @@
 				43A0E73C1D16C99900159F41 /* ALView+PureLayout.m in Sources */,
 				43463AAE1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift in Sources */,
 				430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */,
+				431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */,
 				4340F5F91D363BE6006A5C82 /* ContactTableViewCell.swift in Sources */,
 				43F7BEB01DC8DFC5009048D6 /* OperationQueue+Extension.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,

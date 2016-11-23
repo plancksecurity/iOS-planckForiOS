@@ -12,20 +12,23 @@ import MessageModel
  pEp extension for CdIdentity
  */
 extension CdIdentity {
-    public static func from(pEpContact: PEPContact) -> CdIdentity? {
-        guard let addr = pEpContact[kPepAddress] as? String else {
+    public static func from(pEpContact: PEPContact?) -> CdIdentity? {
+        guard let pEpC = pEpContact else {
+            return nil
+        }
+        guard let addr = pEpC[kPepAddress] as? String else {
             return nil
         }
         let ident = CdIdentity.create()
         ident.address = addr
-        ident.userName = pEpContact[kPepUsername] as? String
-        if let mySelfNum = pEpContact[kPepIsMe] as? NSNumber {
+        ident.userName = pEpC[kPepUsername] as? String
+        if let mySelfNum = pEpC[kPepIsMe] as? NSNumber {
             ident.isMySelf = mySelfNum
         }
-        if let ctNum = pEpContact[kPepCommType] as? NSNumber {
+        if let ctNum = pEpC[kPepCommType] as? NSNumber {
             ident.commType = ctNum
         }
-        ident.userID = pEpContact[kPepUserID] as? String
+        ident.userID = pEpC[kPepUserID] as? String
         return ident
     }
 
