@@ -87,9 +87,6 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func doMyself() {
-        guard (appConfig?.model) != nil else {
-            return
-        }
         let accounts = Account.all
         for acc in accounts {
             let op = PEPMyselfOperation(account: acc)

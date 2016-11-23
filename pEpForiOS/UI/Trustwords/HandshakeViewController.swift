@@ -70,9 +70,9 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
 
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
             if let p = partner, let myselfEmail = appConfig.currentAccount?.user.address,
-                let myselfContact = appConfig.model.contactByEmail(myselfEmail) {
+                let myselfContact = Identity.byAddress(myselfEmail) {
                 let partnerPepContact = PEPUtil.pEp(identity: p)
-                let myselfContactPepContact = PEPUtil.pepContact(myselfContact)
+                let myselfContactPepContact = PEPUtil.pEp(identity: myselfContact)
                 let recognizer = UITapGestureRecognizer(
                     target: self, action:#selector(HandshakeViewController.handleTap(_:)))
                 recognizer.delegate = self
@@ -82,7 +82,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                         identity1: myselfContactPepContact, identity2: partnerPepContact,
                         language: "en", session: nil)
                 } else {
-                    let myselfFingerprints = PEPUtil.fingerPrintForContact(myselfContact)
+                    let myselfFingerprints = PEPUtil.fingerPrint(identity: myselfContact)
 
                     let partnerFingerprints = PEPUtil.fingerPrint(identity: partner!)
                     let bothFingerprints = "\(fingerprintFormat(partnerFingerprints!))\n\n\(fingerprintFormat(myselfFingerprints!))"

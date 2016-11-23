@@ -85,13 +85,6 @@ open class GrandOperator: IGrandOperator {
     fileprivate let backgroundQueue = OperationQueue()
 
     /**
-     The main model (for use on the main thread)
-     */
-    fileprivate lazy var model: ICdModel = {
-        return CdModel.init(context: self.coreDataUtil.defaultContext())
-    }()
-
-    /**
      Used for storing running flag sync operations to avoid duplicate work.
      */
     fileprivate var flagSyncOperations = [String: BaseOperation]()

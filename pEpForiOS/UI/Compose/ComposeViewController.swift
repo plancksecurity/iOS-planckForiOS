@@ -413,8 +413,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      Updates the given message with data from the view.
      */
-    func populate(message: Message, account: Account,
-                  model: ICdModel) {
+    func populate(message: Message, account: Account) {
         // reset
         message.to = []
         message.cc = []
@@ -544,7 +543,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             return nil
         }
 
-        populate(message: msg, account: account, model: appC.model)
+        populate(message: msg, account: account)
         populateWithReplyData(message: msg)
         populateWithForwardedData(message: msg)
         populate(message: msg, withAttachmentsFromTextView: longBodyMessageTextView)
