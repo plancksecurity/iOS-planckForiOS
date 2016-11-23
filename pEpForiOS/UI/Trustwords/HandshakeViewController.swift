@@ -70,7 +70,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
 
             let cell = tableView.dequeueReusableCell(withIdentifier: "trustwordCell", for: indexPath) as! HandshakeTexViewTableViewCell
             if let p = partner, let myselfEmail = appConfig.currentAccount?.user.address,
-                let myselfContact = Identity.byAddress(myselfEmail) {
+                let myselfContact = Identity.by(address: myselfEmail) {
                 let partnerPepContact = PEPUtil.pEp(identity: p)
                 let myselfContactPepContact = PEPUtil.pEp(identity: myselfContact)
                 let recognizer = UITapGestureRecognizer(

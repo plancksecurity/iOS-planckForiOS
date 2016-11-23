@@ -47,7 +47,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         /**
          The search table model.
          */
-        var contacts: [AddressbookContact] = []
+        var contacts: [Identity] = []
 
         /**
          The recipient cell that is currently used for contact completion.
@@ -292,24 +292,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
 
     func updateContacts() {
         if let snippet = model.searchSnippet {
-            if let privateMOC = appConfig?.coreDataUtil.privateContext() {
-                privateMOC.perform() {
-                    let modelBackground = CdModel(context: privateMOC)
-                    let contacts = modelBackground.contactsBySnippet(snippet).map() {
-                        AddressbookContact(contact: $0)
-                    }
-                    GCD.onMain() {
-                        self.model.contacts.removeAll()
-
-                        // At the moment, append(contentsOf:) does not work
-                        for c in contacts {
-                            self.model.contacts.append(c)
-                        }
-
-                        self.tableView.reloadData()
-                    }
-                }
-            }
+            model.contacts = Identity.by(snippet: snippet)
+            self.tableView.reloadData()
         }
     }
 
@@ -675,7 +659,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                     cell.recipientTextView.text as NSString,
                     aroundCaretPosition: cell.recipientTextView.selectedRange.location) {
                     let newString = cell.recipientTextView.text.stringByReplacingCharactersInRange(
-                        r, withString: " \(c.email)")
+                        r, withString: " \(c.address)")
                     let replacement = "\(newString)\(delimiterWithSpace)"
                     cell.recipientTextView.text = replacement
                     colorRecipients(cell.recipientTextView)

@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 class ContactTableViewCell: UITableViewCell {
     @IBOutlet weak var labelContactDisplayName: UILabel!
 
@@ -17,15 +19,9 @@ class ContactTableViewCell: UITableViewCell {
         labelContactDisplayName.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
     }
 
-    var contact: AddressbookContact? = nil {
+    var contact: Identity? {
         didSet {
-            if contact != nil {
-                // labelContactDisplayName.text = c.completeDisplayString()
-                // XXX: Refactoring occured here.
-                labelContactDisplayName.text = "No string now."
-            } else {
-                labelContactDisplayName.text = "Null Contact"
-            }
+            labelContactDisplayName.text = contact?.displayString ?? ""
         }
     }
 }
