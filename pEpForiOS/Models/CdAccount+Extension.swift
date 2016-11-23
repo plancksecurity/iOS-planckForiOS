@@ -45,10 +45,26 @@ extension CdAccount {
         return result
     }
 
+    /**
+     - Returns: The first found IMAP connect info. Used by some tests.
+     */
     open var imapConnectInfo: EmailConnectInfo? {
         let cis = emailConnectInfos
         for k in cis.keys {
             if k.emailProtocol == .imap {
+                return k
+            }
+        }
+        return nil
+    }
+
+    /**
+     - Returns: The first found SMTP connect info. Used by some tests.
+     */
+    open var smtpConnectInfo: EmailConnectInfo? {
+        let cis = emailConnectInfos
+        for k in cis.keys {
+            if k.emailProtocol == .smtp {
                 return k
             }
         }

@@ -17,23 +17,8 @@ class SimpleOperationsTest: XCTestCase {
     var account: CdAccount!
     var persistentSetup: PersistentSetup!
 
-    var imapConnectInfo: EmailConnectInfo! {
-        guard let theConnectInfo = (account.emailConnectInfos.filter {
-            $0.key.emailProtocol == .imap }.first?.key) else {
-                XCTAssertTrue(false)
-                return nil
-        }
-        return theConnectInfo
-    }
-
-    var smtpConnectInfo: EmailConnectInfo! {
-        guard let theConnectInfo = (account.emailConnectInfos.filter {
-            $0.key.emailProtocol == .smtp }.first?.key) else {
-                XCTAssertTrue(false)
-                return nil
-        }
-        return theConnectInfo
-    }
+    var imapConnectInfo: EmailConnectInfo!
+    var smtpConnectInfo: EmailConnectInfo!
 
     override func setUp() {
         super.setUp()
@@ -43,6 +28,12 @@ class SimpleOperationsTest: XCTestCase {
         TestUtil.skipValidation()
         Record.saveAndWait()
         self.account = cdAccount
+
+        imapConnectInfo = account.imapConnectInfo
+        smtpConnectInfo = account.smtpConnectInfo
+
+        XCTAssertNotNil(imapConnectInfo)
+        XCTAssertNotNil(smtpConnectInfo)
     }
 
     override func tearDown() {
