@@ -126,6 +126,7 @@
 		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
+		5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */; };
 		5DF003981DBE430E00F11C04 /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003911DBE430E00F11C04 /* ConnectInfo.swift */; };
 		5DF003991DBE430E00F11C04 /* EmailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003921DBE430E00F11C04 /* EmailConnectInfo.swift */; };
 		5DF0039A1DBE430E00F11C04 /* EmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003931DBE430E00F11C04 /* EmailService.swift */; };
@@ -365,6 +366,7 @@
 		43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersOperation.swift; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMailOperation.swift; sourceTree = "<group>"; };
+		5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
 		5DF003911DBE430E00F11C04 /* ConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConnectInfo.swift; path = pEpForiOS/Network/ConnectInfo.swift; sourceTree = SOURCE_ROOT; };
 		5DF003921DBE430E00F11C04 /* EmailConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailConnectInfo.swift; path = pEpForiOS/Network/EmailConnectInfo.swift; sourceTree = SOURCE_ROOT; };
 		5DF003931DBE430E00F11C04 /* EmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailService.swift; path = pEpForiOS/Network/EmailService.swift; sourceTree = SOURCE_ROOT; };
@@ -495,9 +497,9 @@
 		437432061CFC49A4000F8D35 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				4374320A1CFC49B1000F8D35 /* TestUtil.swift */,
 				4352FA1E1DC79E9B0081161A /* DefaultSendLayer.swift */,
 				439BA8821DC9E3B000D0683E /* TestData.swift */,
+				4374320A1CFC49B1000F8D35 /* TestUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -574,19 +576,20 @@
 		43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				43B2C3151D2280ED00A08557 /* Resources */,
 				437432061CFC49A4000F8D35 /* Util */,
+				43B2C3151D2280ED00A08557 /* Resources */,
 				43409CE21DD301CD008F8F49 /* CdMessagePantomimeTests.swift */,
-				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
+				43980E401CBD0BCA00A7FC3C /* Info.plist */,
+				4336229D1DC76B8100133B3D /* MessageModelTests.swift */,
+				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
+				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
 				431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */,
 				432F7D601D2102F10094F097 /* PEPSessionTest.swift */,
-				436F8E131D36706A007E9829 /* StringExtensionsTest.swift */,
-				43980E401CBD0BCA00A7FC3C /* Info.plist */,
-				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
-				4336229D1DC76B8100133B3D /* MessageModelTests.swift */,
 				4352FA161DC79A3D0081161A /* SendLayerTests.swift */,
 				43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */,
+				436F8E131D36706A007E9829 /* StringExtensionsTest.swift */,
+				5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -1100,6 +1103,7 @@
 				43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				4352FA171DC79A3D0081161A /* SendLayerTests.swift in Sources */,
+				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
 				43409CE31DD301CD008F8F49 /* CdMessagePantomimeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
