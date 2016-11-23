@@ -67,13 +67,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.info(component: comp, "applicationDidEnterBackground")
 
         // Do mySelf on all accounts
-        let accounts = Account.all
         let bgId = application.beginBackgroundTask(expirationHandler: {
             Log.info(component: self.comp, "Could not complete all myself in background")
 
             // Shutdown pEp engine
             self.firstSession = nil
         })
+        let accounts = Account.all()
         for acc in accounts {
             let email = acc.user.address
             Log.info(component: comp, "Starting myself for \(email)")

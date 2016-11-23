@@ -82,12 +82,12 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func updateModel() {
-        accounts = Account.all
+        accounts = Account.all()
         tableView.reloadData()
     }
 
     func doMyself() {
-        let accounts = Account.all
+        let accounts = Account.all()
         for acc in accounts {
             let op = PEPMyselfOperation(account: acc)
             backgroundQueue.addOperation(op)

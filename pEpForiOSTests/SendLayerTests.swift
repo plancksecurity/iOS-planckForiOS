@@ -33,7 +33,7 @@ class SendLayerTests: XCTestCase {
         MessageModelConfig.accountDelegate = accountDelegate
 
         let accounts = Account.all
-        XCTAssertTrue(accounts.isEmpty)
+        XCTAssertTrue(accounts().isEmpty)
 
         let accs = CdAccount.all() ?? []
         XCTAssertTrue(accs.isEmpty)
@@ -44,7 +44,7 @@ class SendLayerTests: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNotNil(accountDelegate.error)
-            XCTAssertTrue(Account.all.isEmpty)
+            XCTAssertTrue(Account.all().isEmpty)
         })
     }
 
@@ -59,7 +59,7 @@ class SendLayerTests: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNil(accountDelegate.error)
-            XCTAssertEqual(Account.all.count, 1)
+            XCTAssertEqual(Account.all().count, 1)
         })
     }
 }
