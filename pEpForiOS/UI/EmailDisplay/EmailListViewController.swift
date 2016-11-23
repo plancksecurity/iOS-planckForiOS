@@ -291,7 +291,6 @@ class EmailListViewController: UITableViewController {
             destination.appConfig = config.appConfig
             if let draft = draftMessageToCompose {
                 draft.imapFlags?.seen = true
-                config.appConfig.model.save()
 
                 destination.originalMessage = draft
                 destination.composeMode = .composeDraft

@@ -32,6 +32,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 public protocol ICdModel {
+    /*
     var context: NSManagedObjectContext { get }
 
     /**
@@ -164,12 +165,14 @@ public protocol ICdModel {
      - Returns: true if there are no accounts yet.
      */
     func accountsIsEmpty() -> Bool
+     */
 }
 
 /**
  Core data model implementation
  */
 open class CdModel: ICdModel {
+    /*
 
     let comp = "CdModel"
 
@@ -751,4 +754,5 @@ open class CdModel: ICdModel {
         }
         message.attachments = NSOrderedSet()
     }
+ */
 }

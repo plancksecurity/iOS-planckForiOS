@@ -65,13 +65,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, "applicationDidEnterBackground")
-        appConfig?.model.save()
 
         // Do mySelf on all accounts
         let accounts = Account.all
         let bgId = application.beginBackgroundTask(expirationHandler: {
             Log.info(component: self.comp, "Could not complete all myself in background")
-            self.appConfig?.model.save()
 
             // Shutdown pEp engine
             self.firstSession = nil
@@ -84,7 +82,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 application.endBackgroundTask(bgId)
             }
         }
-        self.appConfig?.model.save()
 
         // Shutdown pEp engine
         firstSession = nil
@@ -107,7 +104,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        appConfig?.model.save()
     }
 
     func setupDefaultSettings() {

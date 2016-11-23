@@ -878,16 +878,12 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         if parts.count == 0 {
             return
         }
-        guard let ap = appConfig else {
-            return
-        }
+
         guard let origAttributes = recipientTextAttributes else {
             return
         }
 
-        let model = CdModel(context: ap.coreDataUtil.privateContext())
-
-        model.context.perform() {
+        Record.Context.background.perform() {
             let recipientText = NSMutableAttributedString()
             let session = PEPSession()
             var firstPart = true
@@ -906,8 +902,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                         attributes: origAttributes))
                 } else {
                     var attributes = origAttributes
-                    if let c = model.contactByEmail(thePart) {
-                        let color = PEPUtil.privacyColorForContact(c, session: session)
+                    if let c = Identity.by(address: thePart) {
+                        let color = PEPUtil.pEpColor(identity: c, session: session)
                         if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(color) {
                             attributes[NSBackgroundColorAttributeName] = uiColor
                         }

@@ -29,8 +29,8 @@ class AppConfig: NSObject {
     var currentAccount: Account? = nil
 
     override init() {
-        model = CdModel.init(context: coreDataUtil.defaultContext())
-        let gOp = GrandOperator.init(connectionManager: connectionManager)
+        model = CdModel()
+        let gOp = GrandOperator(connectionManager: connectionManager)
         grandOperator = gOp
         CdAccount.sendLayer = gOp
 
