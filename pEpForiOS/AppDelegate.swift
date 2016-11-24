@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         for acc in accounts {
             let email = acc.user.address
             Log.info(component: comp, "Starting myself for \(email)")
-            PEPUtil.myselfFromAccount(acc, queue: backgroundQueue) { identity in
+            PEPUtil.myself(account: acc, queue: backgroundQueue) { identity in
                 Log.info(component: self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
                 application.endBackgroundTask(bgId)
             }
