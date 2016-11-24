@@ -52,4 +52,23 @@ class MessageModelTests: XCTestCase {
             XCTAssertNil(accountDelegate.error)
         })
     }
+
+    func testExistingUserID() {
+        MessageModelConfig.observer.delegate = ObserverDelegate(
+            expSaved: expectation(description: "saved"))
+
+        let cdIdent = CdIdentity.create()
+        cdIdent.address = "whatever@example.com"
+        cdIdent.userID = "userID1"
+
+        let ident = Identity.create(address: cdIdent.address!)
+        ident.userID = "userID2"
+
+        waitForExpectations(timeout: waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        let idIdent2 = CdIdentity.first(with: "address", value: cdIdent.address!)
+        XCTAssertEqual(idIdent2?.userID, cdIdent.userID)
+    }
 }
