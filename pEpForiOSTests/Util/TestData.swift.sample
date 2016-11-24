@@ -11,6 +11,17 @@ import UIKit
 import MessageModel
 
 class TestData {
+    var idAddress = "email@example.com"
+    var idUserName = "User Name"
+    var smtpServerAddress = "mail.example.com"
+    var smtpServerType = Server.ServerType.smtp.rawValue
+    var smtpServerTransport = Server.Transport.startTls.rawValue
+    var smtpServerPort = 587
+    var imapServerAddress = "mail.example.com"
+    var imapServerType = Server.ServerType.imap.rawValue
+    var imapServerTransport = Server.Transport.tls.rawValue
+    var imapServerPort = 993
+    
     /**
      An account that should not be able to be verified.
      */
@@ -30,22 +41,31 @@ class TestData {
      */
     func createWorkingCdAccount() -> CdAccount {
         let id = CdIdentity.create(
-            with: ["address": "email@example.com", "userName": "User Name"])
+            with: ["address": idAddress, "userName": idUserName])
+        
         let smtp = CdServer.create(
-            with: ["serverType": Server.ServerType.smtp.rawValue, "port": 587,
-                   "address": "server.address",
-                   "transport": Server.Transport.startTls.rawValue])
+            with: ["serverType": smtpServerType,
+                   "port": smtpServerPort,
+                   "address": smtpServerAddress,
+                   "transport": smtpServerTransport])
+        
         let imap = CdServer.create(
-            with: ["serverType": Server.ServerType.imap.rawValue, "port": 993,
-                   "address": "server.address", "transport": Server.Transport.tls.rawValue])
+            with: ["serverType": imapServerType,
+                   "port": imapServerPort,
+                   "address": "server.address",
+                   "transport": Server.Transport.tls.rawValue])
 
         let key = UUID.generate()
         CdServerCredentials.add(password: "somepassword", forKey: key)
 
         let cred = CdServerCredentials.create(
-            with: ["userName": id.address!, "key": key,
+            with: ["userName": id.address!,
+                   "key": key,
                    "servers": NSSet(array: [imap, smtp])])
-        let acc = CdAccount.create(with: ["identity": id, "credentials": NSOrderedSet(array: [cred])])
+        
+        let acc = CdAccount.create(with: ["identity": id,
+                                          "credentials": NSOrderedSet(array: [cred])])
+        
         return acc
     }
 
