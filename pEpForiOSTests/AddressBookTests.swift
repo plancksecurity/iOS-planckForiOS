@@ -11,14 +11,6 @@ import XCTest
 import pEpForiOS
 import MessageModel
 
-/**
- Equality (==) for 3-tuples of optional Strings.
- */
-func ==<T1: Equatable, T2: Equatable, T3: Equatable>(
-    lhs: (T1?, T2?, T3?), rhs: (T1?, T2?, T3?)) -> Bool {
-    return lhs.0 == rhs.0 && lhs.1 == rhs.1 && lhs.2 == rhs.2
-}
-
 class ObserverDelegate: ModelObserverDelegate {
     let expSaved: XCTestExpectation?
 

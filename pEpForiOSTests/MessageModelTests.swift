@@ -12,6 +12,7 @@ import MessageModel
 import XCTest
 
 class MessageModelTests: XCTestCase {
+    let waitTime: TimeInterval = 6
     var persistentSetup: PersistentSetup!
 
     override func setUp() {
@@ -24,6 +25,23 @@ class MessageModelTests: XCTestCase {
         super.tearDown()
     }
     
+    func testFolderLookUp() {
+        MessageModelConfig.observer.delegate = ObserverDelegate(
+            expSaved: expectation(description: "saved"))
+
+        Folder.create(name: "inbox").folderType = .inbox
+        Folder.create(name: "sent").folderType = .sent
+        Folder.create(name: "drafts").folderType = .drafts
+
+        waitForExpectations(timeout: waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        XCTAssertFalse(Folder.by(folderType: FolderType.inbox).isEmpty)
+        XCTAssertFalse(Folder.by(folderType: FolderType.sent).isEmpty)
+        XCTAssertFalse(Folder.by(folderType: FolderType.drafts).isEmpty)
+    }
+
     func testAccountSave() {
         CdAccount.sendLayer = DefaultSendLayer()
 

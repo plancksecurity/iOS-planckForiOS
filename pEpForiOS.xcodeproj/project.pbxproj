@@ -39,6 +39,7 @@
 		432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */; };
 		432722251D33F2FD009EC395 /* TrustWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722231D33F2FD009EC395 /* TrustWordsViewController.swift */; };
 		43299A7B1DDDE7E300EBF506 /* EncryptBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43299A7A1DDDE7E300EBF506 /* EncryptBaseOperation.swift */; };
+		432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */; };
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
 		4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4336229D1DC76B8100133B3D /* MessageModelTests.swift */; };
 		4339477B1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4339477A1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift */; };
@@ -260,6 +261,7 @@
 		432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewCell.swift; sourceTree = "<group>"; };
 		432722231D33F2FD009EC395 /* TrustWordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewController.swift; sourceTree = "<group>"; };
 		43299A7A1DDDE7E300EBF506 /* EncryptBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptBaseOperation.swift; sourceTree = "<group>"; };
+		432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePantomimeTests.swift; sourceTree = "<group>"; };
 		432F7D601D2102F10094F097 /* PEPSessionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionTest.swift; sourceTree = "<group>"; };
 		4336229D1DC76B8100133B3D /* MessageModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModelTests.swift; sourceTree = "<group>"; };
 		433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pEp.entitlements; sourceTree = "<group>"; };
@@ -589,6 +591,7 @@
 				436F8E131D36706A007E9829 /* StringExtensionsTest.swift */,
 				5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */,
 				431B049F1DE5AC5E00E40CD3 /* AddressBookTests.swift */,
+				432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -1090,6 +1093,7 @@
 				4352FA1F1DC79E9B0081161A /* DefaultSendLayer.swift in Sources */,
 				43409CE01DD30102008F8F49 /* TestData.swift in Sources */,
 				438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */,
+				432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */,
 				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
 				431B04A01DE5AC5E00E40CD3 /* AddressBookTests.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,

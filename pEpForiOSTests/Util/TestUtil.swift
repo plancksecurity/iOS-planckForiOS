@@ -12,6 +12,14 @@ import XCTest
 import pEpForiOS
 import MessageModel
 
+/**
+ Equality (==) for 3-tuples of optional Strings.
+ */
+func ==<T1: Equatable, T2: Equatable, T3: Equatable>(
+    lhs: (T1?, T2?, T3?), rhs: (T1?, T2?, T3?)) -> Bool {
+    return lhs.0 == rhs.0 && lhs.1 == rhs.1 && lhs.2 == rhs.2
+}
+
 class TestUtil {
     /**
      The maximum time most tests are allowed to run.
@@ -130,7 +138,7 @@ class TestUtil {
         receiver2: PEPContact, receiver3: PEPContact,
         receiver4: PEPContact) {
             let identity = NSMutableDictionary()
-            identity[kPepUsername] = "iOS Unit Test Sender"
+            identity[kPepUsername] = "Unit Test"
             identity[kPepAddress] = "somewhere@overtherainbow.com"
 
             let receiver1 = NSMutableDictionary()
