@@ -79,8 +79,8 @@ extension CdAccount {
         let serverTypeInt = Int(server.serverType)
         if let port = server.port?.int16Value,
             let address = server.address,
-            let serverType = Server.ServerType.init(rawValue: serverTypeInt),
-            let emailProtocol = EmailProtocol.init(serverType: serverType) {
+            let serverType = Server.ServerType(rawValue: serverTypeInt),
+            let emailProtocol = EmailProtocol(serverType: serverType) {
             return EmailConnectInfo(
                 accountObjectID: account.objectID, serverObjectID: server.objectID,
                 loginName: credentials.userName,
@@ -89,7 +89,8 @@ extension CdAccount {
                 networkAddressType: nil,
                 networkTransportType: nil, emailProtocol: emailProtocol,
                 connectionTransport: connectionTransport,
-                authMethod: AuthMethod.init(string: server.authMethod))
+                authMethod: AuthMethod(string: server.authMethod),
+                trusted: server.trusted)
         }
         return nil
     }

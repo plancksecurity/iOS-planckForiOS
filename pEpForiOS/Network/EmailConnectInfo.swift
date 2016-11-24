@@ -127,6 +127,7 @@ public class EmailConnectInfo: ConnectInfo {
     public var emailProtocol: EmailProtocol?
     public var connectionTransport: ConnectionTransport?
     public var authMethod: AuthMethod?
+    public var trusted: Bool
 
     public init(accountObjectID: NSManagedObjectID, serverObjectID: NSManagedObjectID,
                 loginName: String? = nil,
@@ -135,7 +136,9 @@ public class EmailConnectInfo: ConnectInfo {
                 networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil,
                 emailProtocol: EmailProtocol? = nil,
-                connectionTransport: ConnectionTransport? = nil, authMethod: AuthMethod? = nil) {
+                connectionTransport: ConnectionTransport? = nil, authMethod: AuthMethod? = nil,
+                trusted: Bool = false) {
+        self.trusted = trusted
         super.init(accountObjectID: accountObjectID, serverObjectID: serverObjectID,
                    loginName: loginName,
                    loginPassword: loginPassword,
