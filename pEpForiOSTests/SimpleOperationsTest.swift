@@ -36,11 +36,6 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(smtpConnectInfo)
     }
 
-    override func tearDown() {
-        persistentSetup = nil
-        super.tearDown()
-    }
-
     func testVerifyConnection() {
         let expCompleted = expectation(description: "expCompleted")
         let op = VerifyImapConnectionOperation(grandOperator: grandOperator,

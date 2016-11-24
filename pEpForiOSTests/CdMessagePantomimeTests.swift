@@ -19,11 +19,6 @@ class CdMessagePantomimeTests: XCTestCase {
         persistentSetup = PersistentSetup()
     }
 
-    override func tearDown() {
-        persistentSetup = nil
-        super.tearDown()
-    }
-    
     func testInsertOrUpdatePantomimeMessage() {
         let cdAccount = TestData().createWorkingCdAccount()
 

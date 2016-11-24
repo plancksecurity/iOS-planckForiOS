@@ -20,11 +20,6 @@ class MessageModelTests: XCTestCase {
         persistentSetup = PersistentSetup()
     }
 
-    override func tearDown() {
-        persistentSetup = nil
-        super.tearDown()
-    }
-    
     func testFolderLookUp() {
         MessageModelConfig.observer.delegate = ObserverDelegate(
             expSaved: expectation(description: "saved"))

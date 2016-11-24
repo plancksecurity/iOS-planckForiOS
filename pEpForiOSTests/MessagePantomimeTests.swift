@@ -19,10 +19,6 @@ class MessagePantomimeTests: XCTestCase {
         persistentSetup = PersistentSetup()
     }
 
-    override func tearDown() {
-        persistentSetup = nil
-    }
-
     func testPantomimeFlagsFromMessage() {
         let m = CdMessage.create()
         m.imap = CdImapFields.createWithDefaults()
