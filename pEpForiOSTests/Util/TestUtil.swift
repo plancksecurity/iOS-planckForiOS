@@ -130,7 +130,7 @@ class TestUtil {
         receiver2: PEPContact, receiver3: PEPContact,
         receiver4: PEPContact) {
             let identity = NSMutableDictionary()
-            identity[kPepUsername] = "myself"
+            identity[kPepUsername] = "iOS Unit Test Sender"
             identity[kPepAddress] = "somewhere@overtherainbow.com"
 
             let receiver1 = NSMutableDictionary()
