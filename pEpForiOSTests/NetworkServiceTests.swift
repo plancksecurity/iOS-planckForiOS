@@ -8,6 +8,7 @@
 
 import XCTest
 
+import MessageModel
 import pEpForiOS
 
 class NetworkServiceTests: XCTestCase {
@@ -17,10 +18,12 @@ class NetworkServiceTests: XCTestCase {
     var networkServiceMultipleConnections: NetworkService!
     
     // For a first example of an inbond / outbond connection pair.
+    var cdAccount1: CdAccount!
     var imapConnectInfo1: EmailConnectInfo!
     var smtpConnectInfo1: EmailConnectInfo!
     
     // For a second example of an inbond / outbond connection pair.
+    var CdAccount2: CdAccount!
     var imapConnectInfo2: EmailConnectInfo!
     var smtpConnectInfo2: EmailConnectInfo!
     
@@ -36,7 +39,7 @@ class NetworkServiceTests: XCTestCase {
     
     func testNetworkServiceExistenceAfterStart() {
         XCTAssertFalse(networkServiceBasic.isMainThread)
-        XCTAssertFalse(networkServiceBasic.isFinished)
+        XCTAssertTrue(networkServiceBasic.isExecuting)
     }
     
     func testNetworkServiceExistenceAfterCancel() {
