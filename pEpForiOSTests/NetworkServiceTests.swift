@@ -12,11 +12,21 @@ import pEpForiOS
 
 class NetworkServiceTests: XCTestCase {
     
-    let networkService: NetworkService = NetworkService()
+    let networkServiceBasic: NetworkService = NetworkService()
+    var networkServiceSingleConnection: NetworkService!
+    var networkServiceMultipleConnections: NetworkService!
+    
+    // For a first example of an inbond / outbond connection pair.
+    var imapConnectInfo1: EmailConnectInfo!
+    var smtpConnectInfo1: EmailConnectInfo!
+    
+    // For a second example of an inbond / outbond connection pair.
+    var imapConnectInfo2: EmailConnectInfo!
+    var smtpConnectInfo2: EmailConnectInfo!
     
     override func setUp() {
         super.setUp()
-        networkService.start()
+        networkServiceBasic.start()
     }
     
     override func tearDown() {
@@ -25,16 +35,31 @@ class NetworkServiceTests: XCTestCase {
     }
     
     func testNetworkServiceExistenceAfterStart() {
-        XCTAssertFalse(networkService.isMainThread)
-        XCTAssertFalse(networkService.isFinished)
+        XCTAssertFalse(networkServiceBasic.isMainThread)
+        XCTAssertFalse(networkServiceBasic.isFinished)
     }
     
     func testNetworkServiceExistenceAfterCancel() {
-        XCTAssertFalse(networkService.isCancelled)
-        networkService.cancel()
-        XCTAssertTrue(networkService.isCancelled)
+        XCTAssertFalse(networkServiceBasic.isCancelled)
+        networkServiceBasic.cancel()
+        XCTAssertTrue(networkServiceBasic.isCancelled)
         // XXX: networkSerivce.isFinished can evaluate both, True and False. It usually takes some
-        // seconds to happen. There's no exit() method anymore (neither using Thread nor NSThread).
+        // seconds to happen. There's no exit() method anymore (neither using Thread nor NSThread)  .
+    }
+    
+    // stub
+    func testNetworkServiceWithSingleConnection() {
+        networkServiceSingleConnection = NetworkService(connectInfo: imapConnectInfo1)
+        networkServiceSingleConnection.start()
+        XCTAssertFalse(networkServiceSingleConnection.isFinished)
+    }
+    
+    // stub
+    func testNetworkServiceWithMultipleConnections() {
+        networkServiceMultipleConnections = NetworkService(connectInfos:
+                                                          [imapConnectInfo1, imapConnectInfo2])
+        networkServiceMultipleConnections.start()
+        XCTAssertFalse(networkServiceMultipleConnections.isFinished)
     }
     
 }
