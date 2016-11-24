@@ -20,7 +20,9 @@ extension PEP_rating: Hashable {
 open class PEPUtil {
     static let comp = "PEPUtil"
     
-    // Default pEpRating value when there's none.
+    /**
+     Default pEpRating value when there's none.
+     */
     public static let pEpRatingNone = Int16.min
 
     /**
@@ -131,8 +133,10 @@ open class PEPUtil {
     fileprivate static let gnupgUrl = homeUrl.appendingPathComponent(".gnupg")
     fileprivate static let gnupgSecringUrl = gnupgUrl.appendingPathComponent("secring.gpg")
     fileprivate static let gnupgPubringUrl = gnupgUrl.appendingPathComponent("pubring.gpg")
-    
-    // Provide filepath URLs as public dictionary.
+
+    /**
+     Provide filepath URLs as public dictionary.
+     */
     open static let pEpUrls: [String:URL] = [
         "home": homeUrl,
         "pEpManagementDb": pEpManagementDbUrl,
@@ -141,7 +145,7 @@ open class PEPUtil {
         "gnupgSecring": gnupgSecringUrl,
         "gnupgPubring": gnupgPubringUrl]
     
-    // Delete pEp working data.
+    /** Delete pEp working data. */
     open static func pEpClean() -> Bool {
         let pEpItemsToDelete: [String] = ["pEpManagementDb", "gnupg", "systemDb"]
         var error: NSError?
@@ -172,8 +176,8 @@ open class PEPUtil {
     /**
      Kicks off myself in the background, optionally notifies via block of termination/success.
      */
-    open static func myselfFromAccount(_ account: Account, queue: OperationQueue,
-                                         block: ((_ identity: NSDictionary) -> Void)? = nil) {
+    open static func myself(account: Account, queue: OperationQueue,
+                            block: ((_ identity: NSDictionary) -> Void)? = nil) {
         let op = PEPMyselfOperation(account: account)
         op.completionBlock = {
             block?(op.identity)

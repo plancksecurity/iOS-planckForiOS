@@ -4,19 +4,10 @@
 
 ### Package managers
 
-Except for lxml, everything can be installed via [brew](http://brew.sh/)
-
-For the lxml, you need MacPorts:
+MacPorts for installing all dependencies:
 
 Install [MacPorts](https://www.macports.org/) for your
 [version of OS X/macOS](https://www.macports.org/install.php).
-
-### Install Revision Control Systems used
-
-Choose homebrew or macports for installing.
-
-* git
-* Mercurial
 
 ### Install CAcert root certificates
 
@@ -38,19 +29,15 @@ The fingerprints should be:
 
 ### Dependencies of prerequisites
 
-* pEpEngine: asn1c
-  ```
-  brew install asn1c
-  ```
-* mogenerator
-  ```
-  brew install mogenerator
-  ```
-* python lxml (Alternatively, install it with pip)
-  ```
-  brew install python
-  sudo port install py27-lxml
-  ```
+For building the engine, you need a working python2 environment
+and all dependencies:
+
+```
+sudo port install asn1c
+sudo port install py27-lxml
+
+sudo port install python_select
+```
 
 ### Other dependecies
 
@@ -79,13 +66,18 @@ hg clone https://cacert.pep.foundation/dev/repos/pEpiOSAdapter
 hg clone https://cacert.pep.foundation/dev/repos/MailModel/
 
 hg clone https://cacert.pep-security.ch/dev/repos/pEp_for_iOS/
-
-# Set up working account for UI tests. After copying, fill in working account:
-cp ./pEpForiOSUITests/UITestData.swift.sample ./pEpForiOSUITests/UITestData.swift
 ```
 
 Note that netpgp includes a static openssl, and pEpEngine a static libcurl. For
 rebuilding see the respective scripts. But you should not have to do that for iOS.
+
+### UI Tests
+
+Set up working account for UI tests. After copying, fill in working account:
+
+```
+cp ./pEpForiOSUITests/UITestData.swift.sample ./pEpForiOSUITests/UITestData.swift
+```
 
 ### Unit Tests
 
