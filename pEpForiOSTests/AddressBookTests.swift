@@ -45,6 +45,9 @@ class AddressBookTests: XCTestCase {
     }
 
     func testSimpleContactSearch() {
+        MessageModelConfig.observer.delegate = ObserverDelegate(
+            expSaved: expectation(description: "saved"))
+
         // Some contacts
         for i in 1...5 {
             let _ = Identity.create(
@@ -52,9 +55,6 @@ class AddressBookTests: XCTestCase {
         }
         let _ = Identity.create(
             address: "wha@wawa.com", userName: "Another")
-
-        MessageModelConfig.observer.delegate = ObserverDelegate(
-            expSaved: expectation(description: "saved"))
 
         waitForExpectations(timeout: waitTime, handler: { error in
             XCTAssertNil(error)
@@ -81,11 +81,19 @@ class AddressBookTests: XCTestCase {
     }
 
     func testAddressbook() {
+        MessageModelConfig.observer.delegate = ObserverDelegate(
+            expSaved: expectation(description: "saved"))
+
         let _ = Identity.create(address: "none@test.com", userName: "Noone Particular")
         let _ = Identity.create(address: "hahaha1@test.com", userName: "Hahaha1")
         let _ = Identity.create(address: "hahaha2@test.com", userName: "Hahaha2")
         let _ = Identity.create(address: "uhum3@test.com", userName: "This Is Not")
 
+        waitForExpectations(timeout: waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        XCTAssertGreaterThan(Identity.all().count, 0)
         XCTAssertEqual(Identity.by(snippet: "NONEAtyvAll").count, 0)
         XCTAssertEqual(Identity.by(snippet: "NONE").count, 1)
         XCTAssertEqual(Identity.by(snippet: "none").count, 1)
@@ -97,7 +105,15 @@ class AddressBookTests: XCTestCase {
     }
 
     func testAddressBookTransfer() {
+        MessageModelConfig.observer.delegate = ObserverDelegate(
+            expSaved: expectation(description: "saved"))
+
         AddressBook.checkAndTransfer()
+
+        waitForExpectations(timeout: waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
         XCTAssertGreaterThan((CdIdentity.all() ?? []).count, 0)
     }
 }
