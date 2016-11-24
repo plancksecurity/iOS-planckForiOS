@@ -48,14 +48,14 @@ class NetworkServiceTests: XCTestCase {
     }
     
     // stub
-    func testNetworkServiceWithSingleConnection() {
+    func notestNetworkServiceWithSingleConnection() {
         networkServiceSingleConnection = NetworkService(connectInfo: imapConnectInfo1)
         networkServiceSingleConnection.start()
         XCTAssertFalse(networkServiceSingleConnection.isFinished)
     }
     
     // stub
-    func testNetworkServiceWithMultipleConnections() {
+    func notestNetworkServiceWithMultipleConnections() {
         networkServiceMultipleConnections = NetworkService(connectInfos:
                                                           [imapConnectInfo1, imapConnectInfo2])
         networkServiceMultipleConnections.start()
