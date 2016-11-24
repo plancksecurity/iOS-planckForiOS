@@ -16,6 +16,7 @@ class NetworkServiceTests: XCTestCase {
     let networkServiceBasic: NetworkService = NetworkService()
     var networkServiceSingleConnection: NetworkService!
     var networkServiceMultipleConnections: NetworkService!
+    var persistenceSetup: PersistentSetup!
     
     // For a first example of an inbond / outbond connection pair.
     var cdAccount1: CdAccount!
@@ -23,13 +24,19 @@ class NetworkServiceTests: XCTestCase {
     var smtpConnectInfo1: EmailConnectInfo!
     
     // For a second example of an inbond / outbond connection pair.
-    var CdAccount2: CdAccount!
+    var cdAccount2: CdAccount!
     var imapConnectInfo2: EmailConnectInfo!
     var smtpConnectInfo2: EmailConnectInfo!
     
     override func setUp() {
         super.setUp()
+        persistenceSetup = PersistentSetup()
         networkServiceBasic.start()
+        cdAccount1 = TestData().createWorkingCdAccount()
+        Record.saveAndWait()
+        
+        imapConnectInfo1 = cdAccount1.imapConnectInfo
+        smtpConnectInfo1 = cdAccount1.smtpConnectInfo
     }
     
     override func tearDown() {
@@ -51,7 +58,7 @@ class NetworkServiceTests: XCTestCase {
     }
     
     // stub
-    func notestNetworkServiceWithSingleConnection() {
+    func testNetworkServiceWithSingleConnection() {
         networkServiceSingleConnection = NetworkService(connectInfo: imapConnectInfo1)
         networkServiceSingleConnection.start()
         XCTAssertFalse(networkServiceSingleConnection.isFinished)
