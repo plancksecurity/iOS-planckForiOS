@@ -25,7 +25,7 @@ class ObserverDelegate: ModelObserverDelegate {
 
 class AddressBookTests: XCTestCase {
     var persistentSetup: PersistentSetup!
-    let waitTime: TimeInterval = 6
+    let waitTime = TestUtil.modelSaveWaitTime
 
     override func setUp() {
         super.setUp()

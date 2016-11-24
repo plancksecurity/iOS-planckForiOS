@@ -12,7 +12,7 @@ import MessageModel
 import XCTest
 
 class MessageModelTests: XCTestCase {
-    let waitTime: TimeInterval = 6
+    let waitTime = TestUtil.modelSaveWaitTime
     var persistentSetup: PersistentSetup!
 
     override func setUp() {
