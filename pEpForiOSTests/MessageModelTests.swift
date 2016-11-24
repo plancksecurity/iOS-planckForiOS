@@ -89,4 +89,29 @@ class MessageModelTests: XCTestCase {
         }
         XCTAssertTrue(cdServer.trusted)
     }
+
+    func testSaveTrustedConnectInfo() {
+        MessageModelConfig.observer.delegate = ObserverDelegate(
+            expSaved: expectation(description: "saved"))
+
+        let ident = Identity.create(address: "address")
+        let server = Server.create(serverType: .imap, port: 4096, address: "what",
+                                   transport: .tls, trusted: true)
+        let cred = ServerCredentials.create(userName: "what", servers: [server])
+        let _ = Account.create(identity: ident, credentials: [cred])
+
+        waitForExpectations(timeout: waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        guard let cdAccount = CdAccount.first() else {
+            XCTFail()
+            return
+        }
+        guard let ci = cdAccount.imapConnectInfo else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(ci.trusted)
+    }
 }
