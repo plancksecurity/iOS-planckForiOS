@@ -77,14 +77,14 @@ class TestData {
                                             idAddress: "email2@example.com",
                                             idUserName: "User Name 2",
                                             smtpServerAddress: "mail.example.com",
-                                            smtpServerType: Server.ServerType.smtp.rawValue,
-                                            smtpServerTransport: Server.Transport.startTls.rawValue,
+                                            smtpServerType: Server.ServerType.smtp,
+                                            smtpServerTransport: Server.Transport.tls,
                                             smtpServerPort: 587,
                                             imapServerAddress: "mail.example.com",
-                                            imapServerType: Server.ServerType.imap.rawValue,
-                                            imapServerTransport: Server.Transport.tls.rawValue,
+                                            imapServerType: Server.ServerType.imap,
+                                            imapServerTransport: Server.Transport.tls,
                                             imapServerPort: 993,
-                                            password = "someFurtherPassword"))
+                                            password: "someFurtherPassword"))
         
         // A third account, just with other account name, but with default data.
         testAccounts.append(AccountSettings(accountName: "A third account"))
