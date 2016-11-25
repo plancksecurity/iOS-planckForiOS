@@ -10,7 +10,7 @@ import UIKit
 
 import MessageModel
 
-struct AccountSettings {
+fileprivate struct AccountSettings {
     var accountName = "default"
     var idAddress = "email@example.com" // XXX: Used as login name for both, SMTP and IMAP.
     var idUserName = "User Name"
@@ -30,19 +30,61 @@ struct AccountSettings {
     {
         self.accountName = accountName
     }
+    
+    init(accountName: String,
+         idAddress: String,
+         idUserName: String,
+         smtpServerAddress: String,
+         smtpServerType: Server.ServerType,
+         smtpServerTransport: Server.Transport,
+         smtpServerPort: UInt16,
+         imapServerAddress: String,
+         imapServerType: Server.ServerType,
+         imapServerTransport: Server.Transport,
+         imapServerPort: UInt16,
+         password: String)
+    {
+        self.accountName = accountName
+        self.idAddress = idAddress
+        self.idUserName = idUserName
+        self.smtpServerAddress = smtpServerAddress
+        self.smtpServerType = smtpServerType.rawValue
+        self.smtpServerTransport = smtpServerTransport.rawValue
+        self.smtpServerPort = smtpServerPort
+        self.imapServerAddress = imapServerAddress
+        self.imapServerType = imapServerType.rawValue
+        self.imapServerTransport = imapServerTransport.rawValue
+        self.imapServerPort = imapServerPort
+        self.password = password
+    }
+    
 }
 
 class TestData {
     
-    var testAccounts = [AccountSettings]()
+    fileprivate var testAccounts = [AccountSettings]()
     
     /**
-     Add default account to collection.
+     Add more test data (besides the default account) here.
      */
-    func _populateDefaultAccount()
+    func populateAccounts()
     {
-        let testAccount = AccountSettings()
-        testAccounts.append(testAccount)
+        testAccounts.append(AccountSettings()) // default account
+        // A second account as example:
+        testAccounts.append(AccountSettings(accountName: "A second account",
+                                            idAddress: "email2@example.com",
+                                            idUserName: "User Name 2",
+                                            smtpServerAddress: "mail.example.com",
+                                            smtpServerType: Server.ServerType.smtp.rawValue,
+                                            smtpServerTransport: Server.Transport.startTls.rawValue,
+                                            smtpServerPort: 587,
+                                            imapServerAddress: "mail.example.com",
+                                            imapServerType: Server.ServerType.imap.rawValue,
+                                            imapServerTransport: Server.Transport.tls.rawValue,
+                                            imapServerPort: 993,
+                                            password = "someFurtherPassword"))
+        // A third account, just with other account name, but with default data.
+        testAccounts.append(AccountSettings(accountName: "A third account"))
     }
     
     /**
@@ -62,26 +104,26 @@ class TestData {
      Like `createDisfunctionalAccount`, but this account including credentials
      should be valid.
      */
-    func createWorkingCdAccount() -> CdAccount {
-        _populateDefaultAccount()
+    func createWorkingCdAccount(number: Int? = 0) -> CdAccount {
+        populateAccounts()
         
         let id = CdIdentity.create(
-            with: ["address": testAccounts[0].idAddress, "userName": testAccounts[0].idUserName])
+            with: ["address": testAccounts[number!].idAddress, "userName": testAccounts[number!].idUserName])
         
         let smtp = CdServer.create(
-            with: ["serverType": testAccounts[0].smtpServerType,
-                   "port": testAccounts[0].smtpServerPort,
-                   "address": testAccounts[0].smtpServerAddress,
-                   "transport": testAccounts[0].smtpServerTransport])
+            with: ["serverType": testAccounts[number!].smtpServerType,
+                   "port": testAccounts[number!].smtpServerPort,
+                   "address": testAccounts[number!].smtpServerAddress,
+                   "transport": testAccounts[number!].smtpServerTransport])
         
         let imap = CdServer.create(
-            with: ["serverType": testAccounts[0].imapServerType,
-                   "port": testAccounts[0].imapServerPort,
-                   "address": testAccounts[0].imapServerType,
-                   "transport": testAccounts[0].imapServerTransport])
+            with: ["serverType": testAccounts[number!].imapServerType,
+                   "port": testAccounts[number!].imapServerPort,
+                   "address": testAccounts[number!].imapServerType,
+                   "transport": testAccounts[number!].imapServerTransport])
 
         let key = UUID.generate()
-        CdServerCredentials.add(password: testAccounts[0].password, forKey: key)
+        CdServerCredentials.add(password: testAccounts[number!].password, forKey: key)
 
         let cred = CdServerCredentials.create(
             with: ["userName": id.address!,
@@ -94,26 +136,26 @@ class TestData {
         return acc
     }
 
-    func createWorkingAccount() -> Account {
-        _populateDefaultAccount()
+    func createWorkingAccount(number: Int? = 0) -> Account {
+        populateAccounts()
         
-        let id = Identity.create(address: testAccounts[0].idAddress,
-                                 userName: testAccounts[0].idUserName)
+        let id = Identity.create(address: testAccounts[number!].idAddress,
+                                 userName: testAccounts[number!].idUserName)
         
         let smtp = Server.create(serverType: .smtp,
-                                 port: testAccounts[0].smtpServerPort,
-                                 address: testAccounts[0].smtpServerAddress,
-                                 transport: Server.Transport(rawValue: testAccounts[0].smtpServerTransport))
+                                 port: testAccounts[number!].smtpServerPort,
+                                 address: testAccounts[number!].smtpServerAddress,
+                                 transport: Server.Transport(rawValue: testAccounts[number!].smtpServerTransport))
         
         
         let imap = Server.create(serverType: .imap,
-                                 port: testAccounts[0].imapServerPort,
-                                 address: testAccounts[0].imapServerAddress,
-                                 transport: Server.Transport(rawValue: testAccounts[0].imapServerTransport))
+                                 port: testAccounts[number!].imapServerPort,
+                                 address: testAccounts[number!].imapServerAddress,
+                                 transport: Server.Transport(rawValue: testAccounts[number!].imapServerTransport))
         
         // Assumes
         let cred = ServerCredentials.create(userName: id.address,
-                                            password: testAccounts[0].password,
+                                            password: testAccounts[number!].password,
                                             servers: [smtp, imap])
         
         let acc = Account.create(identity: id, credentials: [cred])
