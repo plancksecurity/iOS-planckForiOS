@@ -13,30 +13,28 @@ import pEpForiOS
 
 class NetworkServiceTests: XCTestCase {
     
+    var persistenceSetup: PersistentSetup!
+    
     let networkServiceBasic: NetworkService = NetworkService()
     var networkServiceSingleConnection: NetworkService!
     var networkServiceMultipleConnections: NetworkService!
-    var persistenceSetup: PersistentSetup!
-    
-    // For a first example of an inbond / outbond connection pair.
+
+    // For two examples of an inbond / outbond connection pair.
+    var connectInfo1: (smtp: EmailConnectInfo?, imap: EmailConnectInfo?)
+    var connectInfo2: (smtp: EmailConnectInfo?, imap: EmailConnectInfo?)
     var cdAccount1: CdAccount!
-    var imapConnectInfo1: EmailConnectInfo!
-    var smtpConnectInfo1: EmailConnectInfo!
-    
-    // For a second example of an inbond / outbond connection pair.
     var cdAccount2: CdAccount!
-    var imapConnectInfo2: EmailConnectInfo!
-    var smtpConnectInfo2: EmailConnectInfo!
     
     override func setUp() {
         super.setUp()
         persistenceSetup = PersistentSetup()
+        
         cdAccount1 = TestData().createWorkingCdAccount()
         cdAccount2 = TestData().createWorkingCdAccount(number: 2)
         Record.saveAndWait()
         
-        imapConnectInfo1 = cdAccount1.imapConnectInfo
-        imapConnectInfo2 = cdAccount2.imapConnectInfo
+        connectInfo1 = (cdAccount1.smtpConnectInfo, cdAccount1.imapConnectInfo)
+        connectInfo2 = (cdAccount2.smtpConnectInfo, cdAccount2.imapConnectInfo)
         
         networkServiceBasic.start()
     }
@@ -61,7 +59,7 @@ class NetworkServiceTests: XCTestCase {
     
     // stub
     func testNetworkServiceWithSingleConnection() {
-        networkServiceSingleConnection = NetworkService(connectInfo: imapConnectInfo1)
+        networkServiceSingleConnection = NetworkService(connectInfo: connectInfo1.imap!)
         networkServiceSingleConnection.start()
         XCTAssertFalse(networkServiceSingleConnection.isFinished)
     }
@@ -69,7 +67,7 @@ class NetworkServiceTests: XCTestCase {
     // stub
     func testNetworkServiceWithMultipleConnections() {
         networkServiceMultipleConnections = NetworkService(connectInfos:
-                                                          [imapConnectInfo1, imapConnectInfo2])
+                                                          [connectInfo1.imap!, connectInfo2.imap!])
         networkServiceMultipleConnections.start()
         XCTAssertFalse(networkServiceMultipleConnections.isFinished)
     }
