@@ -23,13 +23,13 @@ fileprivate struct AccountSettings {
     var imapServerTransport = Server.Transport.tls.rawValue
     var imapServerPort: UInt16 = 993
     var password = "somepassword" // XXX: Same used for both, SMTP and IMAP.
-    
+
     init() {}
-    
+
     init(accountName: String) {
         self.accountName = accountName
     }
-    
+
     init(accountName: String,
          idAddress: String,
          idUserName: String,
@@ -114,14 +114,14 @@ fileprivate struct AccountSettings {
 
 class TestData {
     fileprivate var testAccounts = [AccountSettings]()
-    
+
     /**
      Add more test data (besides the default account) here.
      */
     func populateAccounts() {
         // Default account
         testAccounts.append(AccountSettings())
-        
+
         // A second account as example.
         testAccounts.append(AccountSettings(
             accountName: "A second account",
@@ -136,11 +136,11 @@ class TestData {
             imapServerTransport: Server.Transport.tls,
             imapServerPort: 993,
             password: "someFurtherPassword"))
-        
+
         // A third account, just with other account name, but with default data.
         testAccounts.append(AccountSettings(accountName: "A third account"))
     }
-    
+
     /**
      - Returns: A valid `CdAccount`.
      */
