@@ -595,16 +595,16 @@ class SimpleOperationsTest: XCTestCase {
             for msg in encryptionData.mailsToSend {
                 if let bccs = msg[kPepBCC] as? NSArray, bccs.count > 0 {
                     encounteredBCC = true
-                    XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(msg))
+                    XCTAssertTrue(PEPUtil.isProbablyPGPMime(pEpMessage: msg))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepTo] as? NSArray))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepCC] as? NSArray))
                 } else if let ccs = msg[kPepCC] as? NSArray, ccs.count > 0 {
                     encounteredCC = true
-                    XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(msg))
+                    XCTAssertTrue(PEPUtil.isProbablyPGPMime(pEpMessage: msg))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepTo] as? NSArray))
                     XCTAssertTrue(MiscUtil.isNilOrEmptyNSArray(msg[kPepBCC] as? NSArray))
                 } else {
-                    XCTAssertFalse(PEPUtil.isProbablyPGPMimePepMail(msg))
+                    XCTAssertFalse(PEPUtil.isProbablyPGPMime(pEpMessage: msg))
                 }
             }
             XCTAssertTrue(encounteredBCC)
@@ -651,7 +651,7 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         XCTAssertEqual(encryptionData.mailsToSend.count, 1)
-        XCTAssertTrue(PEPUtil.isProbablyPGPMimePepMail(encryptionData.mailsToSend[0]))
+        XCTAssertTrue(PEPUtil.isProbablyPGPMime(pEpMessage: encryptionData.mailsToSend[0]))
 
         mail.delete()
         let folder = CdFolder.firstOrCreate(
