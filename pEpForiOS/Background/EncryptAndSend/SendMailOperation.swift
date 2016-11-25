@@ -33,7 +33,7 @@ open class SendMailOperation: EncryptBaseOperation {
     func sendNextMailOrMarkAsFinished() {
         if encryptionData.mailsToSend.count > 0 {
             currentPepMailToSend = encryptionData.mailsToSend.removeLast()
-            let pantMail = PEPUtil.pantomimeMailFromPep(currentPepMailToSend!)
+            let pantMail = PEPUtil.pantomime(pEpMessage: currentPepMailToSend!)
             smtpSend.smtp.setRecipients(nil)
             smtpSend.smtp.setMessageData(nil)
             smtpSend.smtp.setMessage(pantMail)

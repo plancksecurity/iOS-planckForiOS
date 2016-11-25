@@ -49,7 +49,7 @@ open class EncryptMailOperation: EncryptBaseOperation {
             let pepStatus = session.encryptMessageDict(
                 origMail, extra: nil,
                 dest: &encryptedMail)
-            let (mail, error) = PEPUtil.checkPepStatus(self.comp, status: pepStatus,
+            let (mail, error) = PEPUtil.check(comp: self.comp, status: pepStatus,
                                                        encryptedMail: encryptedMail)
             if let er = error {
                 addError(er)
@@ -68,7 +68,7 @@ open class EncryptMailOperation: EncryptBaseOperation {
         let status = session.encryptMessageDict(
             pepMailOrig, identity: ident,
             dest: &encryptedMail)
-        let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
+        let (mail, _) = PEPUtil.check(comp: self.comp, status: status,
                                                encryptedMail: encryptedMail)
         if let m = mail {
             self.encryptionData.mailEncryptedForSelf = m as? PEPMessage

@@ -59,7 +59,7 @@ open class SaveSentMessageOperation: EncryptBaseOperation {
             }
 
             self.targetFolderName = sentFolder.name
-            let cwMessage = PEPUtil.pantomimeMailFromPep(msg)
+            let cwMessage = PEPUtil.pantomime(pEpMessage: msg)
             self.rawMessageData = cwMessage.dataValue()
 
             self.imapSync = self.encryptionData.connectionManager.emailSyncConnection(

@@ -35,7 +35,7 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
             // Mark the message, so it can be retried?
             message.uid = 0
 
-            let cwMail = PEPUtil.pantomimeMail(cdMessage: message)
+            let cwMail = PEPUtil.pantomime(cdMessage: message)
             let cwFolder = CWIMAPFolder.init(name: targetFolder.name!)
             cwFolder.copyMessages([cwMail], toFolder: cwFolder.name())
         }

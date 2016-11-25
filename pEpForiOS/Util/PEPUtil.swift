@@ -346,38 +346,37 @@ open class PEPUtil {
     }
 
     /**
-     Converts a pEp contact dict to a pantomime address.
+     Converts a pEp identity dict to a pantomime address.
      */
-    open static func pantomimeContactFromPepContact(_ contact: PEPIdentity) -> CWInternetAddress {
+    open static func pantomime(pEpIdentity: PEPIdentity) -> CWInternetAddress {
         let address = CWInternetAddress.init()
-        if let email = contact[kPepAddress] as? String {
+        if let email = pEpIdentity[kPepAddress] as? String {
             address.setAddress(email)
         }
-        if let name = contact[kPepUsername] as? String {
+        if let name = pEpIdentity[kPepUsername] as? String {
             address.setPersonal(name)
         }
         return address
     }
 
     /**
-     Converts a list of pEp contacts of a given receiver type to a list of pantomime recipients.
+     Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
      */
-    open static func makePantomimeRecipientsFromPepContacts(_ pepContacts: [PEPIdentity],
-                                      recipientType: PantomimeRecipientType)
+    open static func pantomime(pEpIdentities: [PEPIdentity], recipientType: PantomimeRecipientType)
         -> [CWInternetAddress] {
             var addresses: [CWInternetAddress] = []
-            for c in pepContacts {
-                let address = pantomimeContactFromPepContact(c)
+            for c in pEpIdentities {
+                let address = pantomime(pEpIdentity: c)
                 address.setType(recipientType)
                 addresses.append(address)
             }
             return addresses
     }
 
-    open static func addPepContacts(_ recipients: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
-                                      recipientType: PantomimeRecipientType) {
-        let addresses = makePantomimeRecipientsFromPepContacts(
-            recipients, recipientType: recipientType)
+    open static func add(pEpIdentities: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
+                         recipientType: PantomimeRecipientType) {
+        let addresses = pantomime(
+            pEpIdentities: pEpIdentities, recipientType: recipientType)
         for a in addresses {
             toPantomimeMessage.addRecipient(a)
         }
@@ -386,50 +385,50 @@ open class PEPUtil {
     /**
      Converts a given `CdMessage` into the equivalent `CWIMAPMessage`.
      */
-    open static func pantomimeMail(cdMessage: CdMessage) -> CWIMAPMessage {
-        return pantomimeMailFromPep(pEp(cdMessage: cdMessage))
+    open static func pantomime(cdMessage: CdMessage) -> CWIMAPMessage {
+        return pantomime(pEpMessage: pEp(cdMessage: cdMessage))
     }
 
     /**
      Converts a given `Message` into the equivalent `CWIMAPMessage`.
      */
-    open static func pantomimeMail(message: Message) -> CWIMAPMessage {
-        return pantomimeMailFromPep(pEp(message: message))
+    open static func pantomime(message: Message) -> CWIMAPMessage {
+        return pantomime(pEpMessage: pEp(message: message))
     }
 
     /**
      Converts a given `PEPMessage` into the equivalent `CWIMAPMessage`.
      See https://tools.ietf.org/html/rfc2822 for a better understanding of some fields.
      */
-    open static func pantomimeMailFromPep(_ pepMail: PEPMessage) -> CWIMAPMessage {
-        if let rawMessageData = pepMail[kPepRawMessage] as? Data {
+    open static func pantomime(pEpMessage: PEPMessage) -> CWIMAPMessage {
+        if let rawMessageData = pEpMessage[kPepRawMessage] as? Data {
             let message = CWIMAPMessage.init(data: rawMessageData)
             return message
         }
 
         let message = CWIMAPMessage.init()
 
-        if let from = pepMail[kPepFrom] as? PEPIdentity {
-            let address = pantomimeContactFromPepContact(from)
+        if let from = pEpMessage[kPepFrom] as? PEPIdentity {
+            let address = pantomime(pEpIdentity: from)
             message.setFrom(address)
         }
 
-        if let recipients = pepMail[kPepTo] as? NSArray {
-            addPepContacts(recipients as! [PEPIdentity], toPantomimeMessage: message,
-                          recipientType: .toRecipient)
+        if let recipients = pEpMessage[kPepTo] as? NSArray {
+            add(pEpIdentities: recipients as! [PEPIdentity], toPantomimeMessage: message,
+                recipientType: .toRecipient)
         }
-        if let recipients = pepMail[kPepCC] as? NSArray {
-            addPepContacts(recipients as! [PEPIdentity], toPantomimeMessage: message,
-                          recipientType: .ccRecipient)
+        if let recipients = pEpMessage[kPepCC] as? NSArray {
+            add(pEpIdentities: recipients as! [PEPIdentity], toPantomimeMessage: message,
+                recipientType: .ccRecipient)
         }
-        if let recipients = pepMail[kPepBCC] as? NSArray {
-            addPepContacts(recipients as! [PEPIdentity], toPantomimeMessage: message,
-                          recipientType: .bccRecipient)
+        if let recipients = pEpMessage[kPepBCC] as? NSArray {
+            add(pEpIdentities: recipients as! [PEPIdentity], toPantomimeMessage: message,
+                recipientType: .bccRecipient)
         }
-        if let messageID = pepMail[kPepID] as? String {
+        if let messageID = pEpMessage[kPepID] as? String {
             message.setMessageID(messageID)
         }
-        if let shortMsg = pepMail[kPepShortMessage] as? String {
+        if let shortMsg = pEpMessage[kPepShortMessage] as? String {
             message.setSubject(shortMsg)
         }
 
@@ -437,12 +436,12 @@ open class PEPUtil {
         // as references, with the inReplyTo last
         // (https://cr.yp.to/immhf/thread.html)
         let allRefsAdded = NSMutableOrderedSet()
-        if let refs = pepMail[kPepReferences] as? [AnyObject] {
+        if let refs = pEpMessage[kPepReferences] as? [AnyObject] {
             for ref in refs {
                 allRefsAdded.add(ref)
             }
         }
-        if let inReplyTos = pepMail[kPepInReplyTo] as? [AnyObject] {
+        if let inReplyTos = pEpMessage[kPepInReplyTo] as? [AnyObject] {
             for inReplyTo in inReplyTos {
                 allRefsAdded.add(inReplyTo)
             }
@@ -451,9 +450,9 @@ open class PEPUtil {
 
         // deal with MIME type
 
-        let attachmentDictsOpt = pepMail[kPepAttachments] as? NSArray
+        let attachmentDictsOpt = pEpMessage[kPepAttachments] as? NSArray
         if !MiscUtil.isNilOrEmptyNSArray(attachmentDictsOpt) {
-            let encrypted = isProbablyPGPMime(pEpMessage: pepMail)
+            let encrypted = isProbablyPGPMime(pEpMessage: pEpMessage)
 
             // Create multipart mail
             let multiPart = CWMIMEMultipart.init()
@@ -466,7 +465,7 @@ open class PEPUtil {
             message.setContent(multiPart)
 
             if !encrypted {
-                if let bodyPart = bodyPartFromPepMail(pepMail) {
+                if let bodyPart = bodyPart(pEpMessage: pEpMessage) {
                     multiPart.add(bodyPart)
                 }
             }
@@ -484,7 +483,7 @@ open class PEPUtil {
                 }
             }
         } else {
-            if let body = bodyPartFromPepMail(pepMail) {
+            if let body = bodyPart(pEpMessage: pEpMessage) {
                 message.setContent(body.content())
                 message.setContentType(body.contentType())
             }
@@ -500,15 +499,15 @@ open class PEPUtil {
      or a "multipart/alternative" if there is both text and HTML,
      or nil.
      */
-    static func bodyPartFromPepMail(_ pepMail: PEPMessage) -> CWPart? {
-        let bodyParts = bodyPartsFromPepMail(pepMail)
-        if bodyParts.count == 1 {
-            return bodyParts[0]
-        } else if bodyParts.count > 1 {
+    static func bodyPart(pEpMessage: PEPMessage) -> CWPart? {
+        let theBodyParts = bodyParts(pEpMessage: pEpMessage)
+        if theBodyParts.count == 1 {
+            return theBodyParts[0]
+        } else if theBodyParts.count > 1 {
             let partAlt = CWPart.init()
             partAlt.setContentType(Constants.contentTypeMultipartAlternative)
             let partMulti = CWMIMEMultipart.init()
-            for part in bodyParts {
+            for part in theBodyParts {
                 partMulti.add(part)
             }
             partAlt.setContent(partMulti)
@@ -522,7 +521,7 @@ open class PEPUtil {
      with the given content type.
      Useful for creating text/HTML parts.
      */
-    static func makePartFromText(_ text: String?, contentType: String) -> CWPart? {
+    static func makePart(text: String?, contentType: String) -> CWPart? {
         if let t = text {
             let part = CWPart.init()
             part.setContentType(contentType)
@@ -537,47 +536,47 @@ open class PEPUtil {
      Extracts text content from a pEp mail as a list of pantomime part object.
      - Returns: A list of pantomime parts. This list can have 0, 1 or 2 elements.
      */
-    static func bodyPartsFromPepMail(_ pepMail: PEPMessage) -> [CWPart] {
+    static func bodyParts(pEpMessage: PEPMessage) -> [CWPart] {
         var parts: [CWPart] = []
 
-        if let part = makePartFromText(pepMail[kPepLongMessage] as? String,
-                                       contentType: Constants.contentTypeText) {
+        if let part = makePart(text: pEpMessage[kPepLongMessage] as? String,
+                               contentType: Constants.contentTypeText) {
             parts.append(part)
         }
-        if let part = makePartFromText(pepMail[kPepLongMessageFormatted] as? String,
-                                       contentType: Constants.contentTypeHtml) {
+        if let part = makePart(text: pEpMessage[kPepLongMessageFormatted] as? String,
+                               contentType: Constants.contentTypeHtml) {
             parts.append(part)
         }
 
         return parts
     }
 
-    open static func colorRatingForContact(_ contact: CdIdentity,
-                                             session: PEPSession? = nil) -> PEP_rating {
-        let theSession = useOrCreateSession(session)
-        let pepC = pEp(cdIdentity: contact)
+    open static func pEpRating(pEpIdentity: CdIdentity,
+                               session: PEPSession? = nil) -> PEP_rating {
+        let theSession = reuse(session: session)
+        let pepC = pEp(cdIdentity: pEpIdentity)
         let color = theSession.identityColor(pepC)
         return color
     }
 
-    open static func privacyColorForContact(_ contact: CdIdentity,
-                                              session: PEPSession? = nil) -> PEP_color {
-        let theSession = useOrCreateSession(session)
-        let pepC = pEp(cdIdentity: contact)
+    open static func pEpColor(pEpIdentity: CdIdentity,
+                              session: PEPSession? = nil) -> PEP_color {
+        let theSession = reuse(session: session)
+        let pepC = pEp(cdIdentity: pEpIdentity)
         let color = theSession.identityColor(pepC)
-        return pEpColorFromRating(color)
+        return pEpColor(pEpRating: color)
     }
 
     open static func pEpColor(identity: Identity,
-                                  session: PEPSession? = nil) -> PEP_color {
-        let theSession = useOrCreateSession(session)
+                              session: PEPSession? = nil) -> PEP_color {
+        let theSession = reuse(session: session)
         let pepC = pEp(identity: identity)
         let color = theSession.identityColor(pepC)
-        return pEpColorFromRating(color)
+        return pEpColor(pEpRating: color)
     }
 
-    open static func pEpColorFromRating(_ pepColorRating: PEP_rating) -> PEP_color {
-        return color_from_rating(pepColorRating)
+    open static func pEpColor(pEpRating: PEP_rating) -> PEP_color {
+        return color_from_rating(pEpRating)
     }
 
     open static func pEpRatingFromInt(_ i: Int?) -> PEP_rating? {
@@ -587,50 +586,33 @@ open class PEPUtil {
         return PEP_rating.init(Int32(theInt))
     }
 
-    open static func pEpTitleFromRating(_ pepColorRating: PEP_rating) -> String? {
-        if let (title, _, _) = PEPUtil.pEpRatingTranslations[pepColorRating] {
+    open static func pEpTitle(pEpRating: PEP_rating) -> String? {
+        if let (title, _, _) = PEPUtil.pEpRatingTranslations[pEpRating] {
             return title
         }
-        Log.warn(component: comp, "No privacy title for color rating \(pepColorRating)")
+        Log.warn(component: comp, "No privacy title for color rating \(pEpRating)")
         return nil
     }
 
-    open static func pEpExplanationFromRating(_ pepColorRating: PEP_rating) -> String? {
-        if let (_, explanation, _) = PEPUtil.pEpRatingTranslations[pepColorRating] {
+    open static func pEpExplanation(pEpRating: PEP_rating) -> String? {
+        if let (_, explanation, _) = PEPUtil.pEpRatingTranslations[pEpRating] {
             return explanation
         }
-        Log.warn(component: comp, "No privacy explanation for color rating \(pepColorRating)")
+        Log.warn(component: comp, "No privacy explanation for color rating \(pEpRating)")
         return nil
     }
 
-    open static func pEpSuggestionFromRating(_ pepColorRating: PEP_rating) -> String? {
-        if let (_, _, suggestion) = pEpRatingTranslations[pepColorRating] {
+    open static func pEpSuggestion(pEpRating: PEP_rating) -> String? {
+        if let (_, _, suggestion) = pEpRatingTranslations[pEpRating] {
             return suggestion
         }
-        Log.warn(component: comp, "No privacy suggestion for color rating \(pepColorRating)")
+        Log.warn(component: comp, "No privacy suggestion for color rating \(pEpRating)")
         return nil
-    }
-
-    open static func sessionOrReuse(_ session: PEPSession?) -> PEPSession {
-        if session == nil {
-            return PEPSession.init()
-        }
-        return session!
-    }
-
-    /**
-     - Returns: The short trustwords for a fingerprint as one single String.
-     */
-    open static func shortTrustwordsForFpr(_ fpr: String, language: String,
-                                             session: PEPSession?) -> String {
-        let words = sessionOrReuse(session).trustwords(
-            fpr, forLanguage: language, shortened: true) as! [String]
-        return words.joined(separator: " ")
     }
 
     open static func trustwords(identity1: PEPIdentity, identity2: PEPIdentity,
                                 language: String, session: PEPSession?) -> String? {
-        let theSession = sessionOrReuse(session)
+        let theSession = reuse(session: session)
         return theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
                                                  language: language, full: true)
     }
@@ -639,33 +621,11 @@ open class PEPUtil {
      - Returns: A non-optional session from an optional one. If the input session is nil,
      one is created on the spot.
      */
-    open static func useOrCreateSession(_ session: PEPSession?) -> PEPSession {
+    open static func reuse(session: PEPSession?) -> PEPSession {
         if let s = session {
             return s
         }
         return PEPSession.init()
-    }
-
-    /**
-     - Returns: The fingerprint for a contact.
-     */
-    open static func fingerPrintForContact(
-        _ contact: CdIdentity, session: PEPSession? = nil) -> String? {
-        let pepC = pEp(cdIdentity: contact)
-        return fingerPrintForPepContact(pepC)
-    }
-
-    /**
-     - Returns: The fingerprint for a pEp contact.
-     */
-    open static func fingerPrintForPepContact(
-        _ contact: PEPIdentity, session: PEPSession? = nil) -> String? {
-        let pepDict = NSMutableDictionary.init(dictionary: contact)
-
-        let theSession = useOrCreateSession(session)
-        theSession.updateIdentity(pepDict)
-
-        return pepDict[kPepFingerprint] as? String
     }
 
     open static func fingerPrint(identity: Identity, session: PEPSession? = nil) -> String? {
@@ -673,7 +633,7 @@ open class PEPUtil {
             return fpr
         }
 
-        let theSession = useOrCreateSession(session)
+        let theSession = reuse(session: session)
         let pEpID = pEp(identity: identity)
         let pEpDict = NSMutableDictionary.init(dictionary: pEpID)
         theSession.updateIdentity(pEpDict)
@@ -683,52 +643,21 @@ open class PEPUtil {
     /**
      Trust that contact (yellow to green).
      */
-    open static func trustContact(_ contact: CdIdentity, session: PEPSession? = nil) {
-        let theSession = useOrCreateSession(session)
-        let pepC = NSMutableDictionary.init(dictionary: pEp(cdIdentity: contact))
-        theSession.updateIdentity(pepC)
-        theSession.trustPersonalKey(pepC)
-    }
-
-    /**
-     Trust that contact (yellow to green).
-     */
     open static func trust(identity: Identity, session: PEPSession? = nil) {
-        let theSession = useOrCreateSession(session)
+        let theSession = reuse(session: session)
         let pepC = NSMutableDictionary.init(dictionary: pEp(identity: identity))
         theSession.updateIdentity(pepC)
         theSession.trustPersonalKey(pepC)
-    }
-
-    /**
-     Mistrust the identity (yellow to red)
-     */
-    open static func mistrustContact(_ contact: CdIdentity, session: PEPSession? = nil) {
-        let theSession = useOrCreateSession(session)
-        let pepC = NSMutableDictionary.init(dictionary: pEp(cdIdentity: contact))
-        theSession.updateIdentity(pepC)
-        theSession.keyMistrusted(pepC)
     }
 
     /**
      Mistrust the identity (yellow to red)
      */
     open static func mistrust(identity: Identity, session: PEPSession? = nil) {
-        let theSession = useOrCreateSession(session)
+        let theSession = reuse(session: session)
         let pepC = NSMutableDictionary.init(dictionary: pEp(identity: identity))
         theSession.updateIdentity(pepC)
         theSession.keyMistrusted(pepC)
-    }
-
-    /**
-     Resets the trust for the given contact. Use both for trusting again after
-     mistrusting a key, and for mistrusting a key after you have first trusted it.
-     */
-    open static func resetTrustForContact(_ contact: CdIdentity, session: PEPSession? = nil) {
-        let theSession = useOrCreateSession(session)
-        let pepC = NSMutableDictionary.init(dictionary: pEp(cdIdentity: contact))
-        theSession.updateIdentity(pepC)
-        theSession.keyResetTrust(pepC)
     }
 
     /**
@@ -736,7 +665,7 @@ open class PEPUtil {
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
     open static func resetTrust(identity: Identity, session: PEPSession? = nil) {
-        let theSession = useOrCreateSession(session)
+        let theSession = reuse(session: session)
         let pepC = NSMutableDictionary.init(dictionary: pEp(identity: identity))
         theSession.updateIdentity(pepC)
         theSession.keyResetTrust(pepC)
@@ -747,8 +676,8 @@ open class PEPUtil {
      logs them.
      - Returns: A tuple of the encrypted mail and an error. Both can be nil.
      */
-    static func checkPepStatus( _ comp: String, status: PEP_STATUS,
-                                encryptedMail: NSDictionary?) -> (NSDictionary?, NSError?) {
+    static func check(comp: String, status: PEP_STATUS,
+                      encryptedMail: NSDictionary?) -> (NSDictionary?, NSError?) {
         if encryptedMail != nil && status == PEP_UNENCRYPTED {
             // Don't interpret that as an error
             return (encryptedMail, nil)
