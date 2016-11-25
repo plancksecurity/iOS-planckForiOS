@@ -10,7 +10,8 @@ import UIKit
 
 import MessageModel
 
-class TestData {
+struct AccountSettings {
+    var accountName = "default"
     var idAddress = "email@example.com"
     var idUserName = "User Name"
     var smtpServerAddress = "mail.example.com"
@@ -21,6 +22,30 @@ class TestData {
     var imapServerType = Server.ServerType.imap.rawValue
     var imapServerTransport = Server.Transport.tls.rawValue
     var imapServerPort = 993
+    
+    init() {}
+    
+    init(accountName: String)
+    {
+        self.accountName = accountName
+    }
+}
+
+class TestData {
+    
+    var testAccounts = [AccountSettings]()
+    
+
+    let testAccount = AccountSettings()
+    
+    /**
+     Add default account to collection.
+     */
+    func _populateDefaultAccount()
+    {
+        let testAccount = AccountSettings()
+        testAccounts.append(testAccount)
+    }
     
     /**
      An account that should not be able to be verified.
@@ -40,20 +65,22 @@ class TestData {
      should be valid.
      */
     func createWorkingCdAccount() -> CdAccount {
+            _populateDefaultAccount()
+        
         let id = CdIdentity.create(
-            with: ["address": idAddress, "userName": idUserName])
+            with: ["address": testAccounts[0].idAddress, "userName": testAccounts[0].idUserName])
         
         let smtp = CdServer.create(
-            with: ["serverType": smtpServerType,
-                   "port": smtpServerPort,
-                   "address": smtpServerAddress,
-                   "transport": smtpServerTransport])
+            with: ["serverType": testAccounts[0].smtpServerType,
+                   "port": testAccounts[0].smtpServerPort,
+                   "address": testAccounts[0].smtpServerAddress,
+                   "transport": testAccounts[0].smtpServerTransport])
         
         let imap = CdServer.create(
-            with: ["serverType": imapServerType,
-                   "port": imapServerPort,
-                   "address": "server.address",
-                   "transport": Server.Transport.tls.rawValue])
+            with: ["serverType": testAccounts[0].imapServerType,
+                   "port": testAccounts[0].imapServerPort,
+                   "address": testAccounts[0].imapServerType,
+                   "transport": testAccounts[0].imapServerTransport])
 
         let key = UUID.generate()
         CdServerCredentials.add(password: "somepassword", forKey: key)
