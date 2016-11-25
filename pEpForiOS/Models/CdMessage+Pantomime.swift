@@ -119,7 +119,7 @@ extension CdMessage {
      - Note: This does not handle attachments and many other fields.
      *It's just for quickly interfacing with Pantomime.*
      */
-    func pantomimeMessage(folder: CWIMAPFolder) -> CWIMAPMessage {
+    func pantomime(folder: CWIMAPFolder) -> CWIMAPMessage {
         let msg = CWIMAPMessage.init()
 
         if let date = received {
@@ -179,6 +179,10 @@ extension CdMessage {
         }
 
         return msg
+    }
+
+    public func pantomime() -> CWIMAPMessage {
+        return PEPUtil.pantomime(cdMessage: self)
     }
 
     func internetAddressFromContact(_ contact: CdIdentity) -> CWInternetAddress {

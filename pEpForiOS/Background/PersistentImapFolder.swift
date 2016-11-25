@@ -133,7 +133,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                 format: "folder = %@ messageNumber = %d", self.folder, theIndex)
             msg = CdMessage.first(with: p)
         })
-        return msg?.pantomimeMessage(folder: self)
+        return msg?.pantomime(folder: self)
     }
 
     override func count() -> UInt {
@@ -167,7 +167,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolder])
 
             if let msg = CdMessage.first(with: p) {
-                result = msg.pantomimeMessage(folder: self)
+                result = msg.pantomime(folder: self)
             } else {
                 result = nil
             }

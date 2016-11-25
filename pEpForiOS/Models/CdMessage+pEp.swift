@@ -58,4 +58,8 @@ extension CdMessage {
         cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepCC] as? [PEPIdentity]))
         bcc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepBCC] as? [PEPIdentity]))
     }
+
+    public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
+        return PEPUtil.pEp(cdMessage: self, outgoing: outgoing)
+    }
 }

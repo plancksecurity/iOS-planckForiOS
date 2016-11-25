@@ -18,4 +18,8 @@ extension Identity {
     public func pEpColor(session: PEPSession? = nil) -> PEP_color {
         return PEPUtil.pEpColor(identity: self, session: session)
     }
+
+    public func pEpIdentity() -> PEPIdentity {
+        return PEPUtil.pEp(identity: self)
+    }
 }
