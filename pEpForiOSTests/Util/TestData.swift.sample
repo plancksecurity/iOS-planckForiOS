@@ -69,8 +69,10 @@ class TestData {
      */
     func populateAccounts()
     {
-        testAccounts.append(AccountSettings()) // default account
-        // A second account as example:
+        // Default account
+        testAccounts.append(AccountSettings())
+        
+        // A second account as example.
         testAccounts.append(AccountSettings(accountName: "A second account",
                                             idAddress: "email2@example.com",
                                             idUserName: "User Name 2",
@@ -83,6 +85,7 @@ class TestData {
                                             imapServerTransport: Server.Transport.tls.rawValue,
                                             imapServerPort: 993,
                                             password = "someFurtherPassword"))
+        
         // A third account, just with other account name, but with default data.
         testAccounts.append(AccountSettings(accountName: "A third account"))
     }
