@@ -165,12 +165,19 @@ open class PEPUtil {
         return true
     }
 
-    open static func identity(account: CdAccount) -> NSMutableDictionary {
+    open static func identityDic(account: CdAccount) -> NSMutableDictionary {
         if let id = account.identity {
             let c = pEp(identity: id)
             return NSMutableDictionary(dictionary: c)
         }
         return NSMutableDictionary()
+    }
+
+    open static func identity(account: CdAccount) -> PEPContact {
+        if let id = account.identity {
+            return pEp(identity: id)
+        }
+        return [:]
     }
 
     /**

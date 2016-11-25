@@ -82,7 +82,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             var encryptedMail: NSDictionary? = nil
             let status = session.encryptMessageDict(
                 pepMailOrig,
-                identity: NSDictionary.init(dictionary: ident) as! [AnyHashable : Any],
+                identity: ident,
                 dest: &encryptedMail)
             let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
                 encryptedMail: encryptedMail)

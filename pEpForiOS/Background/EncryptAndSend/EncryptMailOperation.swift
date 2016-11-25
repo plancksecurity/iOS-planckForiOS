@@ -66,7 +66,7 @@ open class EncryptMailOperation: EncryptBaseOperation {
         let ident = PEPUtil.identity(account: account)
         var encryptedMail: NSDictionary? = nil
         let status = session.encryptMessageDict(
-            pepMailOrig, identity: ident as NSDictionary as! [AnyHashable:Any],
+            pepMailOrig, identity: ident,
             dest: &encryptedMail)
         let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
                                                encryptedMail: encryptedMail)
