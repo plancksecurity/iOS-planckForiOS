@@ -11,18 +11,6 @@ import XCTest
 import pEpForiOS
 import MessageModel
 
-class ObserverDelegate: ModelObserverDelegate {
-    let expSaved: XCTestExpectation?
-
-    init(expSaved: XCTestExpectation?) {
-        self.expSaved = expSaved
-    }
-
-    func didSaveAll() {
-        expSaved?.fulfill()
-    }
-}
-
 class AddressBookTests: XCTestCase {
     var persistentSetup: PersistentSetup!
     let waitTime = TestUtil.modelSaveWaitTime
