@@ -551,28 +551,30 @@ open class PEPUtil {
         return parts
     }
 
-    open static func pEpRating(pEpIdentity: CdIdentity,
+    open static func pEpRating(cdIdentity: CdIdentity,
                                session: PEPSession? = nil) -> PEP_rating {
         let theSession = reuse(session: session)
-        let pepC = pEp(cdIdentity: pEpIdentity)
-        let color = theSession.identityColor(pepC)
-        return color
+        let pepC = pEp(cdIdentity: cdIdentity)
+        let rating = theSession.identityRating(pepC)
+        return rating
     }
 
-    open static func pEpColor(pEpIdentity: CdIdentity,
+    open static func pEpColor(cdIdentity: CdIdentity,
                               session: PEPSession? = nil) -> PEP_color {
+        return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity))
+    }
+
+    open static func pEpRating(identity: Identity,
+                               session: PEPSession? = nil) -> PEP_rating {
         let theSession = reuse(session: session)
-        let pepC = pEp(cdIdentity: pEpIdentity)
-        let color = theSession.identityColor(pepC)
-        return pEpColor(pEpRating: color)
+        let pepC = pEp(identity: identity)
+        let rating = theSession.identityRating(pepC)
+        return rating
     }
 
     open static func pEpColor(identity: Identity,
                               session: PEPSession? = nil) -> PEP_color {
-        let theSession = reuse(session: session)
-        let pepC = pEp(identity: identity)
-        let color = theSession.identityColor(pepC)
-        return pEpColor(pEpRating: color)
+        return pEpColor(pEpRating: pEpRating(identity: identity))
     }
 
     open static func pEpColor(pEpRating: PEP_rating) -> PEP_color {

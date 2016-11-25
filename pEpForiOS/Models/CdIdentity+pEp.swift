@@ -75,4 +75,12 @@ extension CdIdentity {
         let dict = recordDictionary(pEpDictionary: dictionary)
         return CdIdentity.firstOrCreate(with: dict)
     }
+
+    public func pEpRating(session: PEPSession? = nil) -> PEP_rating {
+        return PEPUtil.pEpRating(cdIdentity: self, session: session)
+    }
+
+    public func pEpColor(session: PEPSession? = nil) -> PEP_color {
+        return PEPUtil.pEpColor(cdIdentity: self, session: session)
+    }
 }

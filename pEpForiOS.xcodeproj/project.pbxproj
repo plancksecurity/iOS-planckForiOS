@@ -109,6 +109,7 @@
 		43C32E211DBF94A6007CFB1A /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C32E201DBF94A6007CFB1A /* MockData.swift */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
+		43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DA52711CEF3B0E0023D540 /* UITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52701CEF3B0E0023D540 /* UITestData.swift */; };
@@ -350,6 +351,7 @@
 		43C32E201DBF94A6007CFB1A /* MockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
+		43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DA52701CEF3B0E0023D540 /* UITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestData.swift; sourceTree = "<group>"; };
@@ -732,6 +734,7 @@
 				430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */,
 				43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */,
 				431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */,
+				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1016,6 +1019,7 @@
 				43C32E211DBF94A6007CFB1A /* MockData.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				43404B481D17D36D00D8B6FF /* EmailHeaderView.swift in Sources */,
+				43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */,
 				436F8E101D367039007E9829 /* StringExtensions.swift in Sources */,
 				5DF0039D1DBE430E00F11C04 /* NetworkService.swift in Sources */,
 				A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */,
