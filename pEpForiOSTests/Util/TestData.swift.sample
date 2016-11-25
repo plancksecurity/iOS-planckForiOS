@@ -115,14 +115,14 @@ class TestData {
         
         let smtp = CdServer.create(
             with: ["serverType": testAccounts[number!].smtpServerType,
-                   "port": testAccounts[number!].smtpServerPort,
+                   "port": NSNumber(value: testAccounts[number!].smtpServerPort),
                    "address": testAccounts[number!].smtpServerAddress,
                    "transport": testAccounts[number!].smtpServerTransport])
         
         let imap = CdServer.create(
             with: ["serverType": testAccounts[number!].imapServerType,
-                   "port": testAccounts[number!].imapServerPort,
-                   "address": testAccounts[number!].imapServerType,
+                   "port": NSNumber(value: testAccounts[number!].imapServerPort),
+                   "address": testAccounts[number!].imapServerAddress,
                    "transport": testAccounts[number!].imapServerTransport])
 
         let key = UUID.generate()

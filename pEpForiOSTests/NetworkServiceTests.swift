@@ -31,13 +31,14 @@ class NetworkServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
         persistenceSetup = PersistentSetup()
-        networkServiceBasic.start()
         cdAccount1 = TestData().createWorkingCdAccount()
         cdAccount2 = TestData().createWorkingCdAccount(number: 2)
         Record.saveAndWait()
         
         imapConnectInfo1 = cdAccount1.imapConnectInfo
         imapConnectInfo2 = cdAccount2.imapConnectInfo
+        
+        networkServiceBasic.start()
     }
     
     override func tearDown() {
@@ -47,7 +48,7 @@ class NetworkServiceTests: XCTestCase {
     
     func testNetworkServiceExistenceAfterStart() {
         XCTAssertFalse(networkServiceBasic.isMainThread)
-        XCTAssertTrue(networkServiceBasic.isExecuting)
+        XCTAssertFalse(networkServiceBasic.isFinished)
     }
     
     func testNetworkServiceExistenceAfterCancel() {
@@ -62,7 +63,7 @@ class NetworkServiceTests: XCTestCase {
     func testNetworkServiceWithSingleConnection() {
         networkServiceSingleConnection = NetworkService(connectInfo: imapConnectInfo1)
         networkServiceSingleConnection.start()
-        XCTAssertTrue(networkServiceSingleConnection.isExecuting)
+        XCTAssertFalse(networkServiceSingleConnection.isFinished)
     }
     
     // stub
@@ -70,7 +71,7 @@ class NetworkServiceTests: XCTestCase {
         networkServiceMultipleConnections = NetworkService(connectInfos:
                                                           [imapConnectInfo1, imapConnectInfo2])
         networkServiceMultipleConnections.start()
-        XCTAssertTrue(networkServiceMultipleConnections.isExecuting)
+        XCTAssertFalse(networkServiceMultipleConnections.isFinished)
     }
     
 }
