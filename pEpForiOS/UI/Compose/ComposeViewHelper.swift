@@ -30,7 +30,7 @@ open class ComposeViewHelper {
                     let mailStrings2 = mailStrings1.filter() {
                         !$0.isOnlyWhiteSpace()
                     }
-                    let contacts: [PEPContact] = mailStrings2.map() {
+                    let contacts: [PEPIdentity] = mailStrings2.map() {
                         if let c = Identity.by(address: $0) {
                             return PEPUtil.pEp(identity: c)
                         }

@@ -7,8 +7,6 @@
 //
 
 /**
- According to Swift, the parameters denoting a mail for encryption methods etc. are
- not just of the type `NSDictionary`, but this.
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
@@ -17,9 +15,9 @@ public typealias PEPMail = [String: AnyObject]
 /**
  Similar to `PEPMail`
  */
-public typealias PEPContact = [String: AnyObject]
+public typealias PEPIdentity = [String: AnyObject]
 
-public func ==(lhs: PEPContact, rhs: PEPContact) -> Bool {
+public func ==(lhs: PEPIdentity, rhs: PEPIdentity) -> Bool {
     let a = NSDictionary.init(dictionary: lhs)
     let b = NSDictionary.init(dictionary: rhs)
     return a == b
@@ -58,14 +56,14 @@ public enum RecipientType: Int, Hashable {
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
 open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
-    open let recipient: PEPContact
+    open let recipient: PEPIdentity
     open let recipientType: RecipientType
 
     open var description: String {
         return "\(recipient[kPepAddress]) (\(recipientType))"
     }
 
-    public init(recipient: PEPContact, recipientType: RecipientType) {
+    public init(recipient: PEPIdentity, recipientType: RecipientType) {
         self.recipient = recipient
         self.recipientType = recipientType
     }
@@ -84,14 +82,14 @@ public extension PEPSession {
      PEP predicate to run on a contact, given a session. Used for determining if a PEP contact
      matches some criteria.
      */
-    public typealias RecipientSortPredicate = (_ contact: PEPContact,
+    public typealias RecipientSortPredicate = (_ contact: PEPIdentity,
         _ session: PEPSession) -> Bool
 
     /**
      - Returns: True if a mail from `from` to `contact` would be encrypted.
      */
-    public func isEncryptedPEPContact(_ contact: PEPContact,
-                                      from: PEPContact) -> Bool {
+    public func isEncryptedPEPIdentity(_ contact: PEPIdentity,
+                                      from: PEPIdentity) -> Bool {
         let color = outgoingColor(from: from, to: contact)
         return color.rawValue >= PEP_rating_reliable.rawValue
     }
@@ -99,9 +97,9 @@ public extension PEPSession {
     /**
      - Returns: False if a mail from `from` to `contact` would be encrypted.
      */
-    public func isUnencryptedPEPContact(_ contact: PEPContact,
-                                        from: PEPContact) -> Bool {
-        return !isEncryptedPEPContact(contact, from: from)
+    public func isUnencryptedPEPIdentity(_ contact: PEPIdentity,
+                                        from: PEPIdentity) -> Bool {
+        return !isEncryptedPEPIdentity(contact, from: from)
     }
 
     /**
@@ -124,7 +122,7 @@ public extension PEPSession {
             let encryptedReceivers = NSMutableOrderedSet()
 
             for contact in recipients {
-                if let c = contact as? PEPContact {
+                if let c = contact as? PEPIdentity {
                     let receiver = PEPRecipient.init(recipient: c, recipientType: recipientType)
                     if sortOutPredicate(c, session) {
                         unencryptedReceivers.add(receiver)
@@ -152,8 +150,8 @@ public extension PEPSession {
             let session = PEPSession.init()
 
             let unencryptedPredicate: RecipientSortPredicate = { contact, session in
-                return self.isUnencryptedPEPContact(
-                    contact, from: pepMail[kPepFrom] as! PEPContact)
+                return self.isUnencryptedPEPIdentity(
+                    contact, from: pepMail[kPepFrom] as! PEPIdentity)
             }
 
             var unencrypted: [PEPRecipient] = []
@@ -222,9 +220,9 @@ public extension PEPSession {
 
         if unencryptedReceivers.count > 0 {
             var unencryptedMail = pepMailPurged
-            var tos: [PEPContact] = []
-            var ccs: [PEPContact] = []
-            var bccs: [PEPContact] = []
+            var tos: [PEPIdentity] = []
+            var ccs: [PEPIdentity] = []
+            var bccs: [PEPIdentity] = []
             for r in unencryptedReceivers {
                 switch r.recipientType {
                 case .to:

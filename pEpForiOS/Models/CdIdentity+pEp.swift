@@ -12,7 +12,7 @@ import MessageModel
  pEp extension for CdIdentity
  */
 extension CdIdentity {
-    public static func from(pEpContact: PEPContact?) -> CdIdentity? {
+    public static func from(pEpContact: PEPIdentity?) -> CdIdentity? {
         guard let pEpC = pEpContact else {
             return nil
         }
@@ -32,7 +32,7 @@ extension CdIdentity {
         return ident
     }
 
-    public static func from(pEpContacts: [PEPContact]?) -> [CdIdentity] {
+    public static func from(pEpContacts: [PEPIdentity]?) -> [CdIdentity] {
         guard let theContacts = pEpContacts else {
             return []
         }
@@ -46,9 +46,9 @@ extension CdIdentity {
     }
 
     /**
-     Converts a `PEPContact` to a dictionary suitable for `Record`'s creation methods.
+     Converts a `PEPIdentity` to a dictionary suitable for `Record`'s creation methods.
      */
-    public static func recordDictionary(pEpContact: PEPContact) -> [String: Any] {
+    public static func recordDictionary(pEpContact: PEPIdentity) -> [String: Any] {
         return [
             "address": pEpContact[kPepAddress] as Any,
             "userName": pEpContact[kPepUsername] as Any,
@@ -56,7 +56,7 @@ extension CdIdentity {
     }
 
     /**
-     Converts a `PEPContact`-like dictionary to a dictionary suitable
+     Converts a `PEPIdentity`-like dictionary to a dictionary suitable
      for `Record`'s creation methods.
      */
     public static func recordDictionary(pEpDictionary: NSDictionary) -> [String: Any] {
@@ -66,7 +66,7 @@ extension CdIdentity {
             "isMySelf": pEpDictionary[kPepIsMe] as? Bool ?? false]
     }
 
-    public static func firstOrCreate(pEpContact: PEPContact) -> CdIdentity {
+    public static func firstOrCreate(pEpContact: PEPIdentity) -> CdIdentity {
         let dict = recordDictionary(pEpContact: pEpContact)
         return CdIdentity.firstOrCreate(with: dict)
     }

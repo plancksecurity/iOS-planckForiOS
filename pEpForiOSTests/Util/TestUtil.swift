@@ -139,9 +139,9 @@ class TestUtil {
     }
 
     static func setupSomeIdentities(_ session: PEPSession)
-        -> (identity: NSMutableDictionary, receiver1: PEPContact,
-        receiver2: PEPContact, receiver3: PEPContact,
-        receiver4: PEPContact) {
+        -> (identity: NSMutableDictionary, receiver1: PEPIdentity,
+        receiver2: PEPIdentity, receiver3: PEPIdentity,
+        receiver4: PEPIdentity) {
             let identity = NSMutableDictionary()
             identity[kPepUsername] = "Unit Test"
             identity[kPepAddress] = "somewhere@overtherainbow.com"
@@ -162,10 +162,10 @@ class TestUtil {
             receiver4[kPepUsername] = "receiver4"
             receiver4[kPepAddress] = "receiver4@shopsmart.com"
 
-            return (identity, receiver1 as NSDictionary as! PEPContact,
-                    receiver2 as NSDictionary as! PEPContact,
-                    receiver3 as NSDictionary as! PEPContact,
-                    receiver4 as NSDictionary as! PEPContact)
+            return (identity, receiver1 as NSDictionary as! PEPIdentity,
+                    receiver2 as NSDictionary as! PEPIdentity,
+                    receiver3 as NSDictionary as! PEPIdentity,
+                    receiver4 as NSDictionary as! PEPIdentity)
     }
 
     /**

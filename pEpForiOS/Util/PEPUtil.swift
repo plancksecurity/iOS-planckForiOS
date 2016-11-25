@@ -165,15 +165,7 @@ open class PEPUtil {
         return true
     }
 
-    open static func identityDic(account: CdAccount) -> NSMutableDictionary {
-        if let id = account.identity {
-            let c = pEp(identity: id)
-            return NSMutableDictionary(dictionary: c)
-        }
-        return NSMutableDictionary()
-    }
-
-    open static func identity(account: CdAccount) -> PEPContact {
+    open static func identity(account: CdAccount) -> PEPIdentity {
         if let id = account.identity {
             return pEp(identity: id)
         }
@@ -195,10 +187,10 @@ open class PEPUtil {
     /**
      Converts an Contact (possibly from core data) to a pEp contact.
      - Parameter contact: The core data contact object.
-     - Returns: An `PEPContact` contact for pEp.
+     - Returns: An `PEPIdentity` contact for pEp.
      */
-    open static func pepContact(_ contact: CdIdentity) -> PEPContact {
-        var dict = PEPContact()
+    open static func pepContact(_ contact: CdIdentity) -> PEPIdentity {
+        var dict = PEPIdentity()
         if let name = contact.userName{
             dict[kPepUsername] = name as NSObject
         } else {
@@ -213,30 +205,30 @@ open class PEPUtil {
      Creates pEp contact from name and address. Useful for tests where you don't want
      more data filled in.
      */
-    open static func pepContactFromEmail(_ email: String, name: String) -> PEPContact {
-        var contact = PEPContact()
+    open static func pepContactFromEmail(_ email: String, name: String) -> PEPIdentity {
+        var contact = PEPIdentity()
         contact[kPepAddress] = email as AnyObject
         contact[kPepUsername] = name as AnyObject
         return contact
     }
 
-    open static func pEp(identity: Identity) -> PEPContact {
-        var contact = PEPContact()
+    open static func pEp(identity: Identity) -> PEPIdentity {
+        var contact = PEPIdentity()
         contact[kPepAddress] = identity.address as AnyObject
         contact[kPepUsername] = identity.userName as AnyObject
         contact[kPepIsMe] = identity.isMySelf as AnyObject
         return contact
     }
 
-    open static func pEp(identity: CdIdentity) -> PEPContact {
-        var contact = PEPContact()
+    open static func pEp(identity: CdIdentity) -> PEPIdentity {
+        var contact = PEPIdentity()
         contact[kPepAddress] = identity.address as AnyObject
         contact[kPepUsername] = identity.userName as AnyObject
         contact[kPepIsMe] = identity.isMySelf as AnyObject
         return contact
     }
 
-    open static func pEpOptional(identity: Identity?) -> PEPContact? {
+    open static func pEpOptional(identity: Identity?) -> PEPIdentity? {
         guard let id = identity else {
             return nil
         }
@@ -409,7 +401,7 @@ open class PEPUtil {
     /**
      Converts a pEp contact dict to a pantomime address.
      */
-    open static func pantomimeContactFromPepContact(_ contact: PEPContact) -> CWInternetAddress {
+    open static func pantomimeContactFromPepContact(_ contact: PEPIdentity) -> CWInternetAddress {
         let address = CWInternetAddress.init()
         if let email = contact[kPepAddress] as? String {
             address.setAddress(email)
@@ -423,7 +415,7 @@ open class PEPUtil {
     /**
      Converts a list of pEp contacts of a given receiver type to a list of pantomime recipients.
      */
-    open static func makePantomimeRecipientsFromPepContacts(_ pepContacts: [PEPContact],
+    open static func makePantomimeRecipientsFromPepContacts(_ pepContacts: [PEPIdentity],
                                       recipientType: PantomimeRecipientType)
         -> [CWInternetAddress] {
             var addresses: [CWInternetAddress] = []
@@ -435,7 +427,7 @@ open class PEPUtil {
             return addresses
     }
 
-    open static func addPepContacts(_ recipients: [PEPContact], toPantomimeMessage: CWIMAPMessage,
+    open static func addPepContacts(_ recipients: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
                                       recipientType: PantomimeRecipientType) {
         let addresses = makePantomimeRecipientsFromPepContacts(
             recipients, recipientType: recipientType)
@@ -467,21 +459,21 @@ open class PEPUtil {
 
         let message = CWIMAPMessage.init()
 
-        if let from = pepMail[kPepFrom] as? PEPContact {
+        if let from = pepMail[kPepFrom] as? PEPIdentity {
             let address = pantomimeContactFromPepContact(from)
             message.setFrom(address)
         }
 
         if let recipients = pepMail[kPepTo] as? NSArray {
-            addPepContacts(recipients as! [PEPContact], toPantomimeMessage: message,
+            addPepContacts(recipients as! [PEPIdentity], toPantomimeMessage: message,
                           recipientType: .toRecipient)
         }
         if let recipients = pepMail[kPepCC] as? NSArray {
-            addPepContacts(recipients as! [PEPContact], toPantomimeMessage: message,
+            addPepContacts(recipients as! [PEPIdentity], toPantomimeMessage: message,
                           recipientType: .ccRecipient)
         }
         if let recipients = pepMail[kPepBCC] as? NSArray {
-            addPepContacts(recipients as! [PEPContact], toPantomimeMessage: message,
+            addPepContacts(recipients as! [PEPIdentity], toPantomimeMessage: message,
                           recipientType: .bccRecipient)
         }
         if let messageID = pepMail[kPepID] as? String {
@@ -686,7 +678,7 @@ open class PEPUtil {
         return words.joined(separator: " ")
     }
 
-    open static func trustwords(identity1: PEPContact, identity2: PEPContact,
+    open static func trustwords(identity1: PEPIdentity, identity2: PEPIdentity,
                                 language: String, session: PEPSession?) -> String? {
         let theSession = sessionOrReuse(session)
         return theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
@@ -717,7 +709,7 @@ open class PEPUtil {
      - Returns: The fingerprint for a pEp contact.
      */
     open static func fingerPrintForPepContact(
-        _ contact: PEPContact, session: PEPSession? = nil) -> String? {
+        _ contact: PEPIdentity, session: PEPSession? = nil) -> String? {
         let pepDict = NSMutableDictionary.init(dictionary: contact)
 
         let theSession = useOrCreateSession(session)

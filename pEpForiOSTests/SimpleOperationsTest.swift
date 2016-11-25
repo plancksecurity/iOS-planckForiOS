@@ -517,9 +517,9 @@ class SimpleOperationsTest: XCTestCase {
 
     func createBasicMail() -> (
         OperationQueue, CdMessage,
-        (identity: NSMutableDictionary, receiver1: PEPContact,
-        receiver2: PEPContact, receiver3: PEPContact,
-        receiver4: PEPContact)) {
+        (identity: NSMutableDictionary, receiver1: PEPIdentity,
+        receiver2: PEPIdentity, receiver3: PEPIdentity,
+        receiver4: PEPIdentity)) {
             let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation(account: account)
             let expFoldersStored = expectation(description: "expFoldersStored")
             opCreateSpecialFolders.completionBlock = {
@@ -751,8 +751,8 @@ class SimpleOperationsTest: XCTestCase {
         session.mySelf(myself)
         XCTAssertNotNil(myself[kPepFingerprint])
 
-        let color2 = session.outgoingColor(from: myself as NSDictionary as! PEPContact,
-                                               to: myself as NSDictionary as! PEPContact)
+        let color2 = session.outgoingColor(from: myself as NSDictionary as! PEPIdentity,
+                                               to: myself as NSDictionary as! PEPIdentity)
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
     }
 }

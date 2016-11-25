@@ -53,9 +53,9 @@ extension CdMessage {
         self.attachments = NSOrderedSet(array: attachments)
         CdAttachment.deleteOrphans()
 
-        from = CdIdentity.from(pEpContact: pEpMail[kPepFrom] as? PEPContact)
-        to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepTo] as? [PEPContact]))
-        cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepCC] as? [PEPContact]))
-        bcc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepBCC] as? [PEPContact]))
+        from = CdIdentity.from(pEpContact: pEpMail[kPepFrom] as? PEPIdentity)
+        to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepTo] as? [PEPIdentity]))
+        cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepCC] as? [PEPIdentity]))
+        bcc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMail[kPepBCC] as? [PEPIdentity]))
     }
 }
