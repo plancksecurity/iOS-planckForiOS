@@ -78,7 +78,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             // Encrypt mail
             let session = PEPSession.init()
             let ident = PEPUtil.identity(account: account)
-            let pepMailOrig = PEPUtil.pEp(mail: message)
+            let pepMailOrig = PEPUtil.pEp(cdMessage: message)
             var encryptedMail: NSDictionary? = nil
             let status = session.encryptMessageDict(
                 pepMailOrig,

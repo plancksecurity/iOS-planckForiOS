@@ -280,84 +280,38 @@ open class PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
-    open static func pepMail(_ message: CdMessage, outgoing: Bool = true) -> PEPMessage {
+    open static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessage {
         var dict = PEPMessage()
 
-        if let subject = message.shortMessage {
+        if let subject = cdMessage.shortMessage {
             dict[kPepShortMessage] = subject as AnyObject
         }
 
-        /* XXX: Refactor:
-        dict[kPepTo] = NSArray.init(array: message.to.map() { return pEp(identity: $0 as! CdIdentity) })
-        dict[kPepCC] = NSArray.init(array: message.cc.map() { return pEp(identity: $0 as! CdIdentity) })
-        dict[kPepBCC] = NSArray.init(array: message.bcc.map() {
-            return pEp(identity: $0 as! CdIdentity)
+        dict[kPepTo] = NSArray(array: cdMessage.to!.map() { return pEp(cdIdentity: $0 as! CdIdentity) })
+        dict[kPepCC] = NSArray(array: cdMessage.cc!.map() { return pEp(cdIdentity: $0 as! CdIdentity) })
+        dict[kPepBCC] = NSArray(array: cdMessage.bcc!.map() { return pEp(cdIdentity: $0 as! CdIdentity)
         })
-        */
 
-        if let longMessage = message.longMessage {
+        if let longMessage = cdMessage.longMessage {
             dict[kPepLongMessage] = longMessage as AnyObject
         }
-        if let longMessageFormatted = message.longMessageFormatted {
+        if let longMessageFormatted = cdMessage.longMessageFormatted {
             dict[kPepLongMessageFormatted] = longMessageFormatted as AnyObject
         }
-        if let from = message.from {
+        if let from = cdMessage.from {
             dict[kPepFrom]  = self.pEp(cdIdentity: from) as AnyObject
         }
-        if let messageID = message.messageID {
-            dict[kPepID] = messageID as AnyObject
-        }
-        dict[kPepOutgoing] = NSNumber.init(booleanLiteral: outgoing)
-
-        /* XXX: Refactor:
-        dict[kPepAttachments] = NSArray.init(array: message.attachments {
-            return pepAttachment($0 as! CdAttachment)
-        })
-        */
-
-        var refs = [String]()
-        for ref in message.references! {
-            refs.append((ref as! CdMessageReference).reference!)
-        }
-        if refs.count > 0 {
-            dict[kPepReferences] = refs as AnyObject
-        }
-
-        return dict as PEPMessage
-    }
-
-    open static func pEp(mail: CdMessage, outgoing: Bool = true) -> PEPMessage {
-        var dict = PEPMessage()
-
-        if let subject = mail.shortMessage {
-            dict[kPepShortMessage] = subject as AnyObject
-        }
-
-        dict[kPepTo] = NSArray(array: mail.to!.map() { return pEp(cdIdentity: $0 as! CdIdentity) })
-        dict[kPepCC] = NSArray(array: mail.cc!.map() { return pEp(cdIdentity: $0 as! CdIdentity) })
-        dict[kPepBCC] = NSArray(array: mail.bcc!.map() { return pEp(cdIdentity: $0 as! CdIdentity)
-        })
-
-        if let longMessage = mail.longMessage {
-            dict[kPepLongMessage] = longMessage as AnyObject
-        }
-        if let longMessageFormatted = mail.longMessageFormatted {
-            dict[kPepLongMessageFormatted] = longMessageFormatted as AnyObject
-        }
-        if let from = mail.from {
-            dict[kPepFrom]  = self.pEp(cdIdentity: from) as AnyObject
-        }
-        if let messageID = mail.uuid {
+        if let messageID = cdMessage.uuid {
             dict[kPepID] = messageID as AnyObject
         }
         dict[kPepOutgoing] = NSNumber(booleanLiteral: outgoing)
 
-        dict[kPepAttachments] = NSArray(array: mail.attachments!.map() {
+        dict[kPepAttachments] = NSArray(array: cdMessage.attachments!.map() {
             return pEp(cdAttachment: $0 as! CdAttachment)
         })
 
         var refs = [String]()
-        for ref in mail.references! {
+        for ref in cdMessage.references! {
             refs.append((ref as! CdMessageReference).reference!)
         }
         if refs.count > 0 {
@@ -430,12 +384,15 @@ open class PEPUtil {
     }
 
     /**
-     Converts a given `Message` into the equivalent `CWIMAPMessage`.
+     Converts a given `CdMessage` into the equivalent `CWIMAPMessage`.
      */
-    open static func pantomimeMailFromMessage(_ message: CdMessage) -> CWIMAPMessage {
-        return pantomimeMailFromPep(pepMail(message))
+    open static func pantomimeMail(cdMessage: CdMessage) -> CWIMAPMessage {
+        return pantomimeMailFromPep(pEp(cdMessage: cdMessage))
     }
 
+    /**
+     Converts a given `Message` into the equivalent `CWIMAPMessage`.
+     */
     open static func pantomimeMail(message: Message) -> CWIMAPMessage {
         return pantomimeMailFromPep(pEp(message: message))
     }

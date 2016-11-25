@@ -34,7 +34,7 @@ open class EncryptMailOperation: EncryptBaseOperation {
                 self.addError(Constants.errorCannotFindAccount(component: comp))
                 return
         }
-        let pepMailOrig = PEPUtil.pEp(mail: message, outgoing: encryptionData.outgoing)
+        let pepMailOrig = PEPUtil.pEp(cdMessage: message, outgoing: encryptionData.outgoing)
         let session = PEPSession.init()
         var mailsToSend: [PEPMessage] = []
         let (mailsToEncrypt, mailsUnencrypted) = session.bucketsForPEPMessage(pepMailOrig)

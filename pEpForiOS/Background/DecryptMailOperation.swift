@@ -35,7 +35,7 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
                     outgoing = false
                 }
 
-                let pepMail = PEPUtil.pEp(mail: mail, outgoing: outgoing)
+                let pepMail = PEPUtil.pEp(cdMessage: mail, outgoing: outgoing)
                 var pepDecryptedMail: NSDictionary? = nil
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
