@@ -12,7 +12,7 @@ import MessageModel
 
 struct AccountSettings {
     var accountName = "default"
-    var idAddress = "email@example.com"
+    var idAddress = "email@example.com" // XXX: Used as login name for both, SMTP and IMAP.
     var idUserName = "User Name"
     var smtpServerAddress = "mail.example.com"
     var smtpServerType = Server.ServerType.smtp.rawValue
@@ -22,6 +22,7 @@ struct AccountSettings {
     var imapServerType = Server.ServerType.imap.rawValue
     var imapServerTransport = Server.Transport.tls.rawValue
     var imapServerPort: UInt16 = 993
+    var password = "somepassword" // XXX: Same used for both, SMTP and IMAP.
     
     init() {}
     
@@ -80,7 +81,7 @@ class TestData {
                    "transport": testAccounts[0].imapServerTransport])
 
         let key = UUID.generate()
-        CdServerCredentials.add(password: "somepassword", forKey: key)
+        CdServerCredentials.add(password: testAccounts[0].password, forKey: key)
 
         let cred = CdServerCredentials.create(
             with: ["userName": id.address!,
@@ -110,7 +111,9 @@ class TestData {
                                  address: testAccounts[0].imapServerAddress,
                                  transport: Server.Transport(rawValue: testAccounts[0].imapServerTransport))
         
-        let cred = ServerCredentials.create(userName: id.address, password: "password",
+        // Assumes
+        let cred = ServerCredentials.create(userName: id.address,
+                                            password: testAccounts[0].password,
                                             servers: [smtp, imap])
         
         let acc = Account.create(identity: id, credentials: [cred])
