@@ -17,11 +17,11 @@ struct AccountSettings {
     var smtpServerAddress = "mail.example.com"
     var smtpServerType = Server.ServerType.smtp.rawValue
     var smtpServerTransport = Server.Transport.startTls.rawValue
-    var smtpServerPort = 587
+    var smtpServerPort: UInt16 = 587
     var imapServerAddress = "mail.example.com"
     var imapServerType = Server.ServerType.imap.rawValue
     var imapServerTransport = Server.Transport.tls.rawValue
-    var imapServerPort = 993
+    var imapServerPort: UInt16 = 993
     
     init() {}
     
@@ -34,9 +34,6 @@ struct AccountSettings {
 class TestData {
     
     var testAccounts = [AccountSettings]()
-    
-
-    let testAccount = AccountSettings()
     
     /**
      Add default account to collection.
@@ -65,7 +62,7 @@ class TestData {
      should be valid.
      */
     func createWorkingCdAccount() -> CdAccount {
-            _populateDefaultAccount()
+        _populateDefaultAccount()
         
         let id = CdIdentity.create(
             with: ["address": testAccounts[0].idAddress, "userName": testAccounts[0].idUserName])
@@ -97,14 +94,27 @@ class TestData {
     }
 
     func createWorkingAccount() -> Account {
-        let id = Identity.create(address: "user1@example.com", userName: "User 1")
-        let smtp = Server.create(serverType: .smtp, port: 4096, address: "localhost",
-                                 transport: .plain)
-        let imap = Server.create(serverType: .imap, port: 4097, address: "localhost",
-                                 transport: .plain)
+        _populateDefaultAccount()
+        
+        let id = Identity.create(address: testAccounts[0].idAddress,
+                                 userName: testAccounts[0].idUserName)
+        
+        let smtp = Server.create(serverType: .smtp,
+                                 port: testAccounts[0].smtpServerPort,
+                                 address: testAccounts[0].smtpServerAddress,
+                                 transport: Server.Transport(rawValue: testAccounts[0].smtpServerTransport))
+        
+        
+        let imap = Server.create(serverType: .imap,
+                                 port: testAccounts[0].imapServerPort,
+                                 address: testAccounts[0].imapServerAddress,
+                                 transport: Server.Transport(rawValue: testAccounts[0].imapServerTransport))
+        
         let cred = ServerCredentials.create(userName: id.address, password: "password",
                                             servers: [smtp, imap])
+        
         let acc = Account.create(identity: id, credentials: [cred])
+        
         return acc
     }
 
