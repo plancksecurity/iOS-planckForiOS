@@ -34,7 +34,7 @@ open class ComposeViewHelper {
                         if let c = Identity.by(address: $0) {
                             return PEPUtil.pEp(identity: c)
                         }
-                        return PEPUtil.pepContactFromEmail($0, name: $0.namePartOfEmail())
+                        return PEPUtil.pEpIdentity(email: $0, name: $0.namePartOfEmail())
                     }
                     if contacts.count > 0 {
                         if let rt = cell.recipientType {

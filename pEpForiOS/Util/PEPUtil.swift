@@ -210,14 +210,14 @@ open class PEPUtil {
     }
 
     /**
-     Creates pEp contact from name and address. Useful for tests where you don't want
-     more data filled in.
+     Creates pEp contact just from name and address.
      */
-    open static func pepContactFromEmail(_ email: String, name: String) -> PEPIdentity {
-        var contact = PEPIdentity()
-        contact[kPepAddress] = email as AnyObject
-        contact[kPepUsername] = name as AnyObject
-        return contact
+    open static func pEpIdentity(email: String, name: String) -> PEPIdentity {
+        var identity = PEPIdentity()
+        identity[kPepAddress] = email as AnyObject
+        identity[kPepUsername] = name as AnyObject
+        identity[kPepIsMe] = NSNumber(booleanLiteral: false)
+        return identity
     }
 
     open static func pEpOptional(identity: Identity?) -> PEPIdentity? {
