@@ -34,9 +34,12 @@ public class ConnectInfo {
     public var networkAddressType: NetworkAddressType?
     public var networkTransportType: NetworkTransportType?
 
-    public init(accountObjectID: NSManagedObjectID, serverObjectID: NSManagedObjectID,
-                loginName: String? = nil, loginPassword: String? = nil,
-                networkAddress: String, networkPort: UInt16,
+    public init(accountObjectID: NSManagedObjectID,
+                serverObjectID: NSManagedObjectID,
+                loginName: String? = nil,
+                loginPassword: String? = nil,
+                networkAddress: String,
+                networkPort: UInt16,
                 networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil) {
         self.accountObjectID = accountObjectID

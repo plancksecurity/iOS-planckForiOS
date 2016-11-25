@@ -27,8 +27,9 @@ class NetworkServiceTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        persistenceSetup = PersistentSetup()
         
+        // Initialize Core Data layer.
+        persistenceSetup = PersistentSetup()
         cdAccount1 = TestData().createWorkingCdAccount()
         cdAccount2 = TestData().createWorkingCdAccount(number: 2)
         Record.saveAndWait()
@@ -54,7 +55,8 @@ class NetworkServiceTests: XCTestCase {
         networkServiceBasic.cancel()
         XCTAssertTrue(networkServiceBasic.isCancelled)
         // XXX: networkSerivce.isFinished can evaluate both, True and False. It usually takes some
-        // seconds to happen. There's no exit() method anymore (neither using Thread nor NSThread)  .
+        // seconds to happen. There's no exit() method anymore
+        // (neither using Thread nor NSThread)  .
     }
     
     // stub

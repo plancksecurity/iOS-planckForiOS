@@ -129,26 +129,29 @@ public class EmailConnectInfo: ConnectInfo {
     public var authMethod: AuthMethod?
     public var trusted: Bool
 
-    public init(accountObjectID: NSManagedObjectID, serverObjectID: NSManagedObjectID,
+    public init(accountObjectID: NSManagedObjectID,
+                serverObjectID: NSManagedObjectID,
                 loginName: String? = nil,
                 loginPassword: String? = nil,
                 networkAddress: String,
-                networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
+                networkPort: UInt16,
+                networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil,
                 emailProtocol: EmailProtocol? = nil,
-                connectionTransport: ConnectionTransport? = nil, authMethod: AuthMethod? = nil,
+                connectionTransport: ConnectionTransport? = nil,
+                authMethod: AuthMethod? = nil,
                 trusted: Bool = false) {
+        self.emailProtocol = emailProtocol
+        self.connectionTransport = connectionTransport
+        self.authMethod = authMethod
         self.trusted = trusted
-        super.init(accountObjectID: accountObjectID, serverObjectID: serverObjectID,
+        super.init(accountObjectID: accountObjectID,
+                   serverObjectID: serverObjectID,
                    loginName: loginName,
                    loginPassword: loginPassword,
                    networkAddress: networkAddress,
                    networkPort: networkPort,
                    networkAddressType: networkAddressType,
                    networkTransportType: networkTransportType)
-        self.emailProtocol = emailProtocol
-        self.connectionTransport = connectionTransport
-        self.userPassword = loginPassword
-        self.authMethod = authMethod
     }
 }
