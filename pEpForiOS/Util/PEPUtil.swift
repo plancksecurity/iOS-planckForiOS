@@ -228,20 +228,21 @@ open class PEPUtil {
     }
 
     /**
-     Converts a core data attachment to a pEp attachment.
-     - Parameter contact: The core data attachment object.
-     - Returns: An `NSMutableDictionary` attachment for pEp.
+     Converts a `CdAttachment` into a pEp attachment.
      */
-    open static func pepAttachment(_ attachment: CdAttachment) -> NSMutableDictionary {
-        let dict: NSMutableDictionary = [:]
+    open static func pEp(cdAttachment: CdAttachment) -> [String: AnyObject] {
+        var dict: [String: AnyObject] = [:]
 
-        dict[kPepMimeFilename] = attachment.fileName
-        dict[kPepMimeType] = attachment.mimeType
-        dict[kPepMimeData] = attachment.data
+        dict[kPepMimeFilename] = cdAttachment.fileName as NSString?
+        dict[kPepMimeType] = cdAttachment.mimeType as NSString?
+        dict[kPepMimeData] = cdAttachment.data
 
         return dict
     }
 
+    /**
+     Converts an `Attachment` into a pEp attachment.
+     */
     open static func pEp(attachment: Attachment) -> [String: AnyObject] {
         var dict = [String: AnyObject]()
 
@@ -352,7 +353,7 @@ open class PEPUtil {
         dict[kPepOutgoing] = NSNumber(booleanLiteral: outgoing)
 
         dict[kPepAttachments] = NSArray(array: mail.attachments!.map() {
-            return pepAttachment($0 as! CdAttachment)
+            return pEp(cdAttachment: $0 as! CdAttachment)
         })
 
         var refs = [String]()
