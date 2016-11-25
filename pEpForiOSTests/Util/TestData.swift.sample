@@ -55,10 +55,64 @@ fileprivate struct AccountSettings {
         self.imapServerPort = imapServerPort
         self.password = password
     }
+
+    func cdAccount() -> CdAccount {
+        let id = CdIdentity.create(
+            with: ["address": idAddress, "userName": idUserName])
+
+        let smtp = CdServer.create(
+            with: ["serverType": smtpServerType,
+                   "port": NSNumber(value: smtpServerPort),
+                   "address": smtpServerAddress,
+                   "transport": smtpServerTransport])
+
+        let imap = CdServer.create(
+            with: ["serverType": imapServerType,
+                   "port": NSNumber(value: imapServerPort),
+                   "address": imapServerAddress,
+                   "transport": imapServerTransport])
+
+        let key = UUID.generate()
+        CdServerCredentials.add(password: password, forKey: key)
+
+        let cred = CdServerCredentials.create(
+            with: ["userName": id.address!,
+                   "key": key,
+                   "servers": NSSet(array: [imap, smtp])])
+
+        let acc = CdAccount.create(with: ["identity": id,
+                                          "credentials": NSOrderedSet(array: [cred])])
+
+        return acc
+    }
+
+    func account() -> Account {
+        let id = Identity.create(address: idAddress,
+                                 userName: idUserName)
+
+        let smtp = Server.create(serverType: .smtp,
+                                 port: smtpServerPort,
+                                 address: smtpServerAddress,
+                                 transport: Server.Transport(rawValue: smtpServerTransport))
+
+
+        let imap = Server.create(serverType: .imap,
+                                 port: imapServerPort,
+                                 address: imapServerAddress,
+                                 transport: Server.Transport(rawValue: imapServerTransport))
+
+        // Assumes
+        let cred = ServerCredentials.create(userName: id.address,
+                                            password: password,
+                                            servers: [smtp, imap])
+
+        let acc = Account.create(identity: id, credentials: [cred])
+
+        return acc
+    }
 }
 
 class TestData {
-    
     fileprivate var testAccounts = [AccountSettings]()
     
     /**
@@ -88,88 +142,40 @@ class TestData {
     }
     
     /**
-     An account that should not be able to be verified.
+     - Returns: A valid `CdAccount`.
      */
-    func createDisfunctionalCdAccount() -> CdAccount {
-        let account = createWorkingCdAccount()
-        for creds in account.credentials!.array as! [CdServerCredentials] {
-            for server in creds.servers!.sortedArray(using: []) as! [CdServer] {
-                server.port = 4096
-            }
-        }
-        return account
+    func createWorkingCdAccount(number: Int = 0) -> CdAccount {
+        populateAccounts()
+        return testAccounts[number].cdAccount()
     }
 
     /**
-     Like `createDisfunctionalAccount`, but this account including credentials
-     should be valid.
+     - Returns: A `CdAccount` that should not be able to be verified.
      */
-    func createWorkingCdAccount(number: Int? = 0) -> CdAccount {
+    func createDisfunctionalCdAccount() -> CdAccount {
         populateAccounts()
-        
-        let id = CdIdentity.create(
-            with: ["address": testAccounts[number!].idAddress, "userName": testAccounts[number!].idUserName])
-        
-        let smtp = CdServer.create(
-            with: ["serverType": testAccounts[number!].smtpServerType,
-                   "port": NSNumber(value: testAccounts[number!].smtpServerPort),
-                   "address": testAccounts[number!].smtpServerAddress,
-                   "transport": testAccounts[number!].smtpServerTransport])
-        
-        let imap = CdServer.create(
-            with: ["serverType": testAccounts[number!].imapServerType,
-                   "port": NSNumber(value: testAccounts[number!].imapServerPort),
-                   "address": testAccounts[number!].imapServerAddress,
-                   "transport": testAccounts[number!].imapServerTransport])
-
-        let key = UUID.generate()
-        CdServerCredentials.add(password: testAccounts[number!].password, forKey: key)
-
-        let cred = CdServerCredentials.create(
-            with: ["userName": id.address!,
-                   "key": key,
-                   "servers": NSSet(array: [imap, smtp])])
-        
-        let acc = CdAccount.create(with: ["identity": id,
-                                          "credentials": NSOrderedSet(array: [cred])])
-        
-        return acc
+        var account = testAccounts[0]
+        account.smtpServerPort = 2323
+        account.imapServerPort = 2323
+        return account.cdAccount()
     }
 
+    /**
+     - Returns: A valid `Account`.
+     */
     func createWorkingAccount(number: Int = 0) -> Account {
         populateAccounts()
-        
-        let id = Identity.create(address: testAccounts[number].idAddress,
-                                 userName: testAccounts[number].idUserName)
-        
-        let smtp = Server.create(serverType: .smtp,
-                                 port: testAccounts[number].smtpServerPort,
-                                 address: testAccounts[number].smtpServerAddress,
-                                 transport: Server.Transport(rawValue: testAccounts[number].smtpServerTransport))
-        
-        
-        let imap = Server.create(serverType: .imap,
-                                 port: testAccounts[number].imapServerPort,
-                                 address: testAccounts[number].imapServerAddress,
-                                 transport: Server.Transport(rawValue: testAccounts[number].imapServerTransport))
-        
-        // Assumes
-        let cred = ServerCredentials.create(userName: id.address,
-                                            password: testAccounts[number].password,
-                                            servers: [smtp, imap])
-        
-        let acc = Account.create(identity: id, credentials: [cred])
-        
-        return acc
+        return testAccounts[number].account()
     }
 
+    /**
+     - Returns: A `Account` that should not be able to be verified.
+     */
     func createDisfunctionalAccount() -> Account {
-        let acc = createWorkingAccount()
-        for sc in acc.serverCredentials {
-            for server in sc.servers {
-                server.port = 4096
-            }
-        }
-        return acc
+        populateAccounts()
+        var account = testAccounts[0]
+        account.smtpServerPort = 2323
+        account.imapServerPort = 2323
+        return account.account()
     }
 }
