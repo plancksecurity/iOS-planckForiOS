@@ -173,7 +173,7 @@ class TestUtil {
      so they don't interfere with `isEqual`.
      */
     static func removeUnneededKeysForComparison(
-        _ keys: [String], fromMail: PEPMail) -> PEPMail {
+        _ keys: [String], fromMail: PEPMessage) -> PEPMessage {
         var m: [String: AnyObject] = fromMail
         for k in keys {
             m.removeValue(forKey: k)
@@ -181,7 +181,7 @@ class TestUtil {
         let keysToCheckRecursively = m.keys
         for k in keysToCheckRecursively {
             let value = m[k]
-            if let dict = value as? PEPMail {
+            if let dict = value as? PEPMessage {
                 m[k] = removeUnneededKeysForComparison(keys, fromMail: dict) as AnyObject?
             }
         }

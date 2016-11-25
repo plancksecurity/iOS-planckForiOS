@@ -88,7 +88,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
                 encryptedMail: encryptedMail)
             if let m = mail {
                 // Append the email
-                self.cwMessageToAppend = PEPUtil.pantomimeMailFromPep(m as! PEPMail)
+                self.cwMessageToAppend = PEPUtil.pantomimeMailFromPep(m as! PEPMessage)
                 self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
                 self.imapSync.delegate = self
                 self.imapSync.start()

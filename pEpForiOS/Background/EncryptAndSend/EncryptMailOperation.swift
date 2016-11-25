@@ -36,8 +36,8 @@ open class EncryptMailOperation: EncryptBaseOperation {
         }
         let pepMailOrig = PEPUtil.pEp(mail: message, outgoing: encryptionData.outgoing)
         let session = PEPSession.init()
-        var mailsToSend: [PEPMail] = []
-        let (mailsToEncrypt, mailsUnencrypted) = session.bucketsForPEPMail(pepMailOrig)
+        var mailsToSend: [PEPMessage] = []
+        let (mailsToEncrypt, mailsUnencrypted) = session.bucketsForPEPMessage(pepMailOrig)
 
         // They should all get the pEp treatment, even though they don't all get
         // encrypted. E.g., for receiving the public key as attachment.
@@ -57,7 +57,7 @@ open class EncryptMailOperation: EncryptBaseOperation {
                 return
             }
             if let m = mail {
-                mailsToSend.append(m as! PEPMail)
+                mailsToSend.append(m as! PEPMessage)
             }
         }
         self.encryptionData.mailsToSend = mailsToSend
@@ -71,7 +71,7 @@ open class EncryptMailOperation: EncryptBaseOperation {
         let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
                                                encryptedMail: encryptedMail)
         if let m = mail {
-            self.encryptionData.mailEncryptedForSelf = m as? PEPMail
+            self.encryptionData.mailEncryptedForSelf = m as? PEPMessage
         }
 
         self.markAsFinished()

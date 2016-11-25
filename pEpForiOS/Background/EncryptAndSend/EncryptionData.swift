@@ -55,18 +55,18 @@ open class EncryptionData {
      Those mails can then be sent with `SendMailOperation`.
      When `SendMailOperation` executes, mails will move from `mailsToSend` to `mailsSent`.
      */
-    open var mailsToSend: [PEPMail] = []
+    open var mailsToSend: [PEPMessage] = []
 
     /**
      After encryption, the original mail will be stored here, in encrypted form.
      This is the message that should be stored then in the sent folder.
      */
-    open var mailEncryptedForSelf: PEPMail?
+    open var mailEncryptedForSelf: PEPMessage?
 
     /**
      After the `SendMailOperation` has done its job, all sent mails should be noted here.
      */
-    open var mailsSent: [PEPMail] = []
+    open var mailsSent: [PEPMessage] = []
 
     public init(imapConnectInfo: EmailConnectInfo, smtpConnectInfo: EmailConnectInfo,
                 connectionManager: ConnectionManager, messageID: NSManagedObjectID,

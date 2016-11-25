@@ -722,7 +722,7 @@ class SimpleOperationsTest: XCTestCase {
             fakeMail[kPepTo] = [contact]
             fakeMail[kPepShortMessage] = "Subject \(i)"
             fakeMail[kPepLongMessage]  = "Body \(i)"
-            encryptionData.mailsToSend.append(fakeMail as NSDictionary as! PEPMail)
+            encryptionData.mailsToSend.append(fakeMail as NSDictionary as! PEPMessage)
         }
 
         let expMailsSent = expectation(description: "expMailsSent")

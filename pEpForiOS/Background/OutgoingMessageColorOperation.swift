@@ -10,7 +10,7 @@ class OutgoingMessageColorOperation: Operation {
     /**
      Input: The pEp mail dictionary to check.
      */
-    var pepMail: PEPMail?
+    var pepMail: PEPMessage?
 
     /**
      Output: The pEp color rating for the mail.

@@ -10,10 +10,10 @@
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
-public typealias PEPMail = [String: AnyObject]
+public typealias PEPMessage = [String: AnyObject]
 
 /**
- Similar to `PEPMail`
+ Similar to `PEPMessage`
  */
 public typealias PEPIdentity = [String: AnyObject]
 
@@ -142,9 +142,9 @@ public extension PEPSession {
      - Returns: A 3-tuple consisting of all unencrypted receivers, all encrypted BCCs,
      and an encryptable PEP mail without all the "unencrypted receivers" and the encrypted BCCs.
      */
-    public func filterOutSpecialReceiversForPEPMail(
-        _ pepMail: PEPMail) -> (unencryptedReceivers: [PEPRecipient],
-        encryptedBCC: [PEPRecipient], pepMailEncryptable: PEPMail) {
+    public func filterOutSpecialReceiversForPEPMessage(
+        _ pepMail: PEPMessage) -> (unencryptedReceivers: [PEPRecipient],
+        encryptedBCC: [PEPRecipient], pepMailEncryptable: PEPMessage) {
             var pepMailPurged = pepMail
 
             let session = PEPSession.init()
@@ -190,7 +190,7 @@ public extension PEPSession {
      - Parameter pepMail: The PEP mail to check for recipients.
      - Returns: true if the mail has any recipients, false otherwise.
      */
-    func pepMailHasRecipients(_ pepMail: PEPMail) -> Bool {
+    func pepMailHasRecipients(_ pepMail: PEPMessage) -> Bool {
         let tos = pepMail[kPepTo] as? NSArray
         let ccs = pepMail[kPepCC] as? NSArray
         let bccs = pepMail[kPepBCC] as? NSArray
@@ -206,13 +206,13 @@ public extension PEPSession {
      - Parameter pepMail: The PEP mail to put into encryption/non-encryption buckets
      - Returns: A tuple (encrypted, unencrypted) with the two buckets of mails.
      */
-    public func bucketsForPEPMail(
-        _ pepMail: PEPMail) -> (mailsToEncrypt: [PEPMail], mailsNotToEncrypt: [PEPMail]) {
+    public func bucketsForPEPMessage(
+        _ pepMail: PEPMessage) -> (mailsToEncrypt: [PEPMessage], mailsNotToEncrypt: [PEPMessage]) {
         let (unencryptedReceivers, encryptedBCC, pepMailPurged) =
-            filterOutSpecialReceiversForPEPMail(pepMail)
+            filterOutSpecialReceiversForPEPMessage(pepMail)
 
-        var encryptedMails: [PEPMail] = []
-        var unencryptedMails: [PEPMail] = []
+        var encryptedMails: [PEPMessage] = []
+        var unencryptedMails: [PEPMessage] = []
 
         if pepMailHasRecipients(pepMailPurged) {
             encryptedMails.append(pepMailPurged)

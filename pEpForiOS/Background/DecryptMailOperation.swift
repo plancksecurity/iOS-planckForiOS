@@ -68,7 +68,7 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
                          PEP_rating_trusted_and_anonymized,
                          PEP_rating_fully_anonymous:
                             if let decrypted = pepDecryptedMail {
-                                mail.update(pEpMail: decrypted as! PEPMail, pepColorRating: color)
+                                mail.update(pEpMail: decrypted as! PEPMessage, pepColorRating: color)
                                 modelChanged = true
                             }
                             break

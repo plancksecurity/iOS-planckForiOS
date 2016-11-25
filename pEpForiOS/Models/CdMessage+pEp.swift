@@ -13,11 +13,11 @@ import MessageModel
 
 extension CdMessage {
     /**
-     Updates all properties from the given `PEPMail`.
+     Updates all properties from the given `PEPMessage`.
      Used after a mail has been decrypted.
      TODO: Take care of optional fields (`kPepOptFields`)!
      */
-    public func update(pEpMail: PEPMail, pepColorRating: PEP_rating? = nil) {
+    public func update(pEpMail: PEPMessage, pepColorRating: PEP_rating? = nil) {
         if let color = pepColorRating {
             pEpRating = Int16(color.rawValue)
         }

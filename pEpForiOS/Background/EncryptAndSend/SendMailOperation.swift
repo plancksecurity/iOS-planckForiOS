@@ -17,7 +17,7 @@ open class SendMailOperation: EncryptBaseOperation {
     /**
      The mail currently under processing (send).
      */
-    var currentPepMailToSend: PEPMail? = nil
+    var currentPepMailToSend: PEPMessage? = nil
 
     public init(encryptionData: EncryptionData) {
         super.init(comp: "SendMailOperation", encryptionData: encryptionData)
