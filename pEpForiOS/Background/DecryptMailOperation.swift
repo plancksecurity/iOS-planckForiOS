@@ -1,5 +1,5 @@
 //
-//  DecryptMailOperation.swift
+//  DecryptMessageOperation.swift
 //  pEpForiOS
 //
 //  Created by hernani on 13/06/16.
@@ -8,8 +8,8 @@
 
 import MessageModel
 
-open class DecryptMailOperation: ConcurrentBaseOperation {
-    let comp = "DecryptMailOperation"
+open class DecryptMessageOperation: ConcurrentBaseOperation {
+    let comp = "DecryptMessageOperation"
     open var numberOfMessagesDecrypted = 0
 
     open override func main() {
@@ -17,7 +17,7 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
         context.perform() {
             let session = PEPSession()
 
-            guard let mails = CdMessage.all(
+            guard let messages = CdMessage.all(
                 with: CdMessage.unencryptedMessagesPredicate(),
                 orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
                 in: context) as? [CdMessage] else {
@@ -26,22 +26,22 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
             }
 
             var modelChanged = false
-            for mail in mails {
+            for message in messages {
                 var outgoing = false
-                let folderTypeNum = mail.parent?.folderType
+                let folderTypeNum = message.parent?.folderType
                 if let folderType = FolderType.fromInt(folderTypeNum!) {
                     outgoing = folderType.isOutgoing()
                 } else {
                     outgoing = false
                 }
 
-                let pepMail = PEPUtil.pEp(cdMessage: mail, outgoing: outgoing)
-                var pepDecryptedMail: NSDictionary? = nil
+                let pepMessage = PEPUtil.pEp(cdMessage: message, outgoing: outgoing)
+                var pepDecryptedMessage: NSDictionary? = nil
                 var keys: NSArray?
                 let color = session.decryptMessageDict(
-                    pepMail, dest: &pepDecryptedMail, keys: &keys)
+                    pepMessage, dest: &pepDecryptedMessage, keys: &keys)
                 Log.info(component: self.comp,
-                    "Decrypted mail \(mail.logString()) with color \(color)")
+                    "Decrypted mail \(message.logString()) with color \(color)")
 
                 self.numberOfMessagesDecrypted += 1
 
@@ -55,7 +55,7 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
                     case PEP_rating_unencrypted,
                          PEP_rating_unencrypted_for_some:
                             // Set the color, nothing else to update
-                            mail.pEpRating = Int16(color.rawValue)
+                            message.pEpRating = Int16(color.rawValue)
                             modelChanged = true
                             break
                     case PEP_rating_unreliable,
@@ -67,8 +67,8 @@ open class DecryptMailOperation: ConcurrentBaseOperation {
                          PEP_rating_trusted,
                          PEP_rating_trusted_and_anonymized,
                          PEP_rating_fully_anonymous:
-                            if let decrypted = pepDecryptedMail {
-                                mail.update(pEpMail: decrypted as! PEPMessage, pepColorRating: color)
+                            if let decrypted = pepDecryptedMessage {
+                                message.update(pEpMail: decrypted as! PEPMessage, pepColorRating: color)
                                 modelChanged = true
                             }
                             break

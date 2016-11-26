@@ -682,7 +682,7 @@ class SimpleOperationsTest: XCTestCase {
             with: CdMessage.unencryptedMessagesPredicate()) ?? []).isEmpty)
 
         let expDecrypted = expectation(description: "expDecrypted")
-        let decrOp = DecryptMailOperation()
+        let decrOp = DecryptMessageOperation()
         decrOp.completionBlock = {
             expDecrypted.fulfill()
         }
