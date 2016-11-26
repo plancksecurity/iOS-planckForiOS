@@ -8,19 +8,19 @@
 
 import MessageModel
 
-open class SendMailOperation: EncryptBaseOperation {
+open class SendMessageOperation: EncryptBaseOperation {
     /**
      Store the SMTP object so that it does not get collected away.
      */
     var smtpSend: SmtpSend!
 
     /**
-     The mail currently under processing (send).
+     The message currently under processing (send).
      */
-    var currentPepMailToSend: PEPMessage? = nil
+    var currentPepMessageToSend: PEPMessage? = nil
 
     public init(encryptionData: EncryptionData) {
-        super.init(comp: "SendMailOperation", encryptionData: encryptionData)
+        super.init(comp: "SendMessageOperation", encryptionData: encryptionData)
     }
 
     override open func main() {
@@ -30,31 +30,32 @@ open class SendMailOperation: EncryptBaseOperation {
         smtpSend.start()
     }
 
-    func sendNextMailOrMarkAsFinished() {
-        if encryptionData.mailsToSend.count > 0 {
-            currentPepMailToSend = encryptionData.mailsToSend.removeLast()
-            let pantMail = PEPUtil.pantomime(pEpMessage: currentPepMailToSend!)
+    func sendNextMessageOrMarkAsFinished() {
+        if encryptionData.messagesToSend.count > 0 {
+            currentPepMessageToSend = encryptionData.messagesToSend.removeLast()
+            // pantMail for e-mail message
+            let pantMail = PEPUtil.pantomime(pEpMessage: currentPepMessageToSend!)
             smtpSend.smtp.setRecipients(nil)
             smtpSend.smtp.setMessageData(nil)
             smtpSend.smtp.setMessage(pantMail)
             smtpSend.smtp.sendMessage()
             return
         }
-        // No emails left
+        // No messages left
         markAsFinished()
     }
 
-    func handleNextMail() {
-        if let lastSentMail = currentPepMailToSend {
-            encryptionData.mailsSent.append(lastSentMail)
+    func handleNextMessage() {
+        if let lastSentMessage = currentPepMessageToSend {
+            encryptionData.messagesSent.append(lastSentMessage)
         }
-        sendNextMailOrMarkAsFinished()
+        sendNextMessageOrMarkAsFinished()
     }
 }
 
-extension SendMailOperation: SmtpSendDelegate {
+extension SendMessageOperation: SmtpSendDelegate {
     public func messageSent(_ smtp: SmtpSend, theNotification: Notification?) {
-        handleNextMail()
+        handleNextMessage()
     }
 
     public func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?) {
@@ -86,7 +87,7 @@ extension SendMailOperation: SmtpSendDelegate {
     }
 
     public func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
-        handleNextMail()
+        handleNextMessage()
     }
 
     public func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
