@@ -11,9 +11,9 @@ import CoreData
 import MessageModel
 
 /**
- Contains all data that is needed for encrypting and sending emails.
+ Contains all data that is needed for encrypting and sending messages.
  By sourcing out all needed data, it becomes possible to chain operations, like
- one for encrypting, one for sending the mails,
+ one for encrypting, one for sending the messages (like e-mails),
  and one for persisting the result on the IMAP server.
  */
 open class EncryptionData {
@@ -50,23 +50,24 @@ open class EncryptionData {
     let outgoing: Bool
 
     /**
-     After encryption has happened, all mails supposed to be sent are stored here.
+     After encryption has happened, all messages supposed to be sent are stored here.
      This may include both encrypted and unencrypted messages, and should have a count > 0.
-     Those mails can then be sent with `SendMailOperation`.
-     When `SendMailOperation` executes, mails will move from `mailsToSend` to `mailsSent`.
+     Those messages can then be sent with `SendMessageOperation`.
+     When `SendMessageOperation` executes, messages will move from `messagesToSend` to 
+     `messagesSent`.
      */
-    open var mailsToSend: [PEPMessage] = []
+    open var messagesToSend: [PEPMessage] = []
 
     /**
      After encryption, the original mail will be stored here, in encrypted form.
      This is the message that should be stored then in the sent folder.
      */
-    open var mailEncryptedForSelf: PEPMessage?
+    open var messageEncryptedForSelf: PEPMessage?
 
     /**
      After the `SendMailOperation` has done its job, all sent mails should be noted here.
      */
-    open var mailsSent: [PEPMessage] = []
+    open var messagesSent: [PEPMessage] = []
 
     public init(imapConnectInfo: EmailConnectInfo, smtpConnectInfo: EmailConnectInfo,
                 connectionManager: ConnectionManager, messageID: NSManagedObjectID,

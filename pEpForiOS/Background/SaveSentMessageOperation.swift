@@ -47,7 +47,7 @@ open class SaveSentMessageOperation: EncryptBaseOperation {
                 return
             }
 
-            guard let msg = self.encryptionData.mailEncryptedForSelf else {
+            guard let msg = self.encryptionData.messageEncryptedForSelf else {
                 let msg = NSLocalizedString(
                     "Could not save sent mail: Not encrypted", comment:
                     "Error message when no encrypted mail was given for saving as sent")

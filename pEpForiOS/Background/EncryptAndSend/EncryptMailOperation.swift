@@ -36,7 +36,7 @@ open class EncryptMailOperation: EncryptBaseOperation {
         }
         let pepMailOrig = PEPUtil.pEp(cdMessage: message, outgoing: encryptionData.outgoing)
         let session = PEPSession.init()
-        var mailsToSend: [PEPMessage] = []
+        var messagesToSend: [PEPMessage] = []
         let (mailsToEncrypt, mailsUnencrypted) = session.bucketsForPEPMessage(pepMailOrig)
 
         // They should all get the pEp treatment, even though they don't all get
@@ -57,10 +57,10 @@ open class EncryptMailOperation: EncryptBaseOperation {
                 return
             }
             if let m = mail {
-                mailsToSend.append(m as! PEPMessage)
+                messagesToSend.append(m as! PEPMessage)
             }
         }
-        self.encryptionData.mailsToSend = mailsToSend
+        self.encryptionData.messagesToSend = messagesToSend
 
         // Encrypt mail to yourself
         let ident = PEPUtil.identity(account: account)
@@ -71,7 +71,7 @@ open class EncryptMailOperation: EncryptBaseOperation {
         let (mail, _) = PEPUtil.check(comp: self.comp, status: status,
                                                encryptedMail: encryptedMail)
         if let m = mail {
-            self.encryptionData.mailEncryptedForSelf = m as? PEPMessage
+            self.encryptionData.messageEncryptedForSelf = m as? PEPMessage
         }
 
         self.markAsFinished()
