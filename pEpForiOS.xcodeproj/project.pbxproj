@@ -132,7 +132,7 @@
 		43F7BEB01DC8DFC5009048D6 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */; };
 		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
-		5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */; };
+		5D039AA21D0EEA3700AD59EC /* DecryptMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMessageOperation.swift */; };
 		5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */; };
 		5DF003981DBE430E00F11C04 /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003911DBE430E00F11C04 /* ConnectInfo.swift */; };
 		5DF003991DBE430E00F11C04 /* EmailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF003921DBE430E00F11C04 /* EmailConnectInfo.swift */; };
@@ -378,7 +378,7 @@
 		43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersOperation.swift; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
-		5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMailOperation.swift; sourceTree = "<group>"; };
+		5D039AA11D0EEA3700AD59EC /* DecryptMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMessageOperation.swift; sourceTree = "<group>"; };
 		5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
 		5DF003911DBE430E00F11C04 /* ConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConnectInfo.swift; path = pEpForiOS/Network/ConnectInfo.swift; sourceTree = SOURCE_ROOT; };
 		5DF003921DBE430E00F11C04 /* EmailConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailConnectInfo.swift; path = pEpForiOS/Network/EmailConnectInfo.swift; sourceTree = SOURCE_ROOT; };
@@ -446,7 +446,7 @@
 				43463AAD1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift */,
 				43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */,
 				43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */,
-				5D039AA11D0EEA3700AD59EC /* DecryptMailOperation.swift */,
+				5D039AA11D0EEA3700AD59EC /* DecryptMessageOperation.swift */,
 				437671471D8FF2A5004DD205 /* DeleteFolderOperation.swift */,
 				43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */,
 				43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */,
@@ -1011,7 +1011,7 @@
 				43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */,
 				5DF003981DBE430E00F11C04 /* ConnectInfo.swift in Sources */,
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
-				5D039AA21D0EEA3700AD59EC /* DecryptMailOperation.swift in Sources */,
+				5D039AA21D0EEA3700AD59EC /* DecryptMessageOperation.swift in Sources */,
 				431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */,
 				43B3E4721D3CCF79007CA3C9 /* OutgoingMessageColorOperation.swift in Sources */,
 				431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */,
