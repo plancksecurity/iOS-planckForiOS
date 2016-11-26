@@ -75,17 +75,17 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             self.targetFolderName = targetFolder.name
             Record.saveAndWait(context: self.privateMOC)
 
-            // Encrypt mail
+            // Encrypt message
             let session = PEPSession.init()
             let ident = PEPUtil.identity(account: account)
-            let pepMailOrig = PEPUtil.pEp(cdMessage: message)
-            var encryptedMail: NSDictionary? = nil
+            let pepMessageOrig = PEPUtil.pEp(cdMessage: message)
+            var encryptedMessage: NSDictionary? = nil
             let status = session.encryptMessageDict(
-                pepMailOrig,
+                pepMessageOrig,
                 identity: ident,
-                dest: &encryptedMail)
+                dest: &encryptedMessage)
             let (mail, _) = PEPUtil.check(comp: self.comp, status: status,
-                encryptedMail: encryptedMail)
+                encryptedMessage: encryptedMessage)
             if let m = mail {
                 // Append the email
                 self.cwMessageToAppend = PEPUtil.pantomime(pEpMessage: m as! PEPMessage)

@@ -28,12 +28,12 @@ open class EncryptBaseOperation: ConcurrentBaseOperation {
             let error = Constants.errorInvalidParameter(
                 self.comp,
                 errorMessage:
-                NSLocalizedString("Email for encryption could not be accessed",
+                NSLocalizedString("Message for encryption could not be accessed",
                                   comment: "Error message when message to encrypt could not be found."))
             self.addError(error)
             Log.error(component: self.comp, error: Constants.errorInvalidParameter(
                 self.comp,
-                errorMessage:"Email for encryption could not be accessed"))
+                errorMessage:"Message for encryption could not be accessed"))
             return nil
         }
         return message

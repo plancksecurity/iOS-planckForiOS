@@ -69,7 +69,7 @@
 		43800D951D112A0800821E34 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D921D112A0800821E34 /* XPathQuery.m */; };
 		43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
 		4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */; };
-		4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */; };
+		4380F7C61D1BBD5D00326F62 /* EncryptMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C31D1BBD5D00326F62 /* EncryptMessageOperation.swift */; };
 		4380F7C71D1BBD5D00326F62 /* SendMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C41D1BBD5D00326F62 /* SendMessageOperation.swift */; };
 		4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7DA1D1BFB3100326F62 /* KeyboardObserver.m */; };
 		4380F7EF1D1C1C7300326F62 /* PEPSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7EE1D1C1C7300326F62 /* PEPSession+Extensions.swift */; };
@@ -299,7 +299,7 @@
 		43800D921D112A0800821E34 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
 		43800D981D112A2A00821E34 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionData.swift; sourceTree = "<group>"; };
-		4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptMailOperation.swift; sourceTree = "<group>"; };
+		4380F7C31D1BBD5D00326F62 /* EncryptMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptMessageOperation.swift; sourceTree = "<group>"; };
 		4380F7C41D1BBD5D00326F62 /* SendMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageOperation.swift; sourceTree = "<group>"; };
 		4380F7D91D1BFB3100326F62 /* KeyboardObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardObserver.h; sourceTree = "<group>"; };
 		4380F7DA1D1BFB3100326F62 /* KeyboardObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardObserver.m; sourceTree = "<group>"; };
@@ -535,7 +535,7 @@
 			children = (
 				4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */,
 				43299A7A1DDDE7E300EBF506 /* EncryptBaseOperation.swift */,
-				4380F7C31D1BBD5D00326F62 /* EncryptMailOperation.swift */,
+				4380F7C31D1BBD5D00326F62 /* EncryptMessageOperation.swift */,
 				4380F7C41D1BBD5D00326F62 /* SendMessageOperation.swift */,
 				430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */,
 			);
@@ -1084,7 +1084,7 @@
 				431B0B9A1D6734DF0082D0DB /* AccountsFoldersTableViewController.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
-				4380F7C61D1BBD5D00326F62 /* EncryptMailOperation.swift in Sources */,
+				4380F7C61D1BBD5D00326F62 /* EncryptMessageOperation.swift in Sources */,
 				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
 				5DF0039E1DBE430E00F11C04 /* SmtpService.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
