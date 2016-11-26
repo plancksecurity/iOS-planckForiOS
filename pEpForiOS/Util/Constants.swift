@@ -64,7 +64,7 @@ open class Constants {
     public enum CoreDataErrorCode: Int {
         case couldNotInsertOrUpdate = 3000
         case folderDoesNotExist
-        case cannotStoreMail
+        case cannotStoreMessage
         case couldNotUpdateOrAddContact
         case couldNotStoreFolder
         case cannotFindAccountForEmail
@@ -183,12 +183,12 @@ open class Constants {
         return error
     }
 
-    static func errorCannotStoreMail(_ component: String) -> NSError {
+    static func errorCannotStoreMessage(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.cannotStoreMail.rawValue,
+            domain: component, code: CoreDataErrorCode.cannotStoreMessage.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
-                NSLocalizedString("Cannot store mail",
-                    comment: "General error description for not being able to store a mail")])
+                NSLocalizedString("Cannot store message",
+                    comment: "General error description for not being able to store a message")])
         return error
     }
 

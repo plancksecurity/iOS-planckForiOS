@@ -62,14 +62,14 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             }
 
             guard let targetFolder = tf else {
-                self.addError(Constants.errorCannotStoreMail(self.comp))
+                self.addError(Constants.errorCannotStoreMessage(self.comp))
                 self.markAsFinished()
                 return
             }
 
             message.parent = targetFolder
 
-            // In case the append fails, the mail will be easy to find
+            // In case the append fails, the message will be easy to find
             message.uid = 0
 
             self.targetFolderName = targetFolder.name

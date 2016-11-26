@@ -17,7 +17,7 @@ open class SaveSentMessageOperation: EncryptBaseOperation {
     var targetFolderName: String!
 
     /**
-     If there was an encrypted mail, this is the raw data.
+     If there was an encrypted message, this is the raw data.
      */
     var rawMessageData: Data!
 

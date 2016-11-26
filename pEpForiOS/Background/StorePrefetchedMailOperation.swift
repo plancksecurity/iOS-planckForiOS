@@ -48,7 +48,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
         if result != nil {
             Record.saveAndWait(context: context)
         } else {
-            self.errors.append(Constants.errorCannotStoreMail(self.comp))
+            self.errors.append(Constants.errorCannotStoreMessage(self.comp))
         }
     }
 
