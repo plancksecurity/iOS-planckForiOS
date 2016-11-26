@@ -580,7 +580,7 @@ class SimpleOperationsTest: XCTestCase {
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo,
             connectionManager: grandOperator.connectionManager,
             messageID: mail.objectID, outgoing: true)
-        let encOp = EncryptMailOperation(encryptionData: encryptionData)
+        let encOp = EncryptMessageOperation(encryptionData: encryptionData)
 
         let expEncrypted = expectation(description: "expEncrypted")
         encOp.completionBlock = {
@@ -589,10 +589,10 @@ class SimpleOperationsTest: XCTestCase {
         queue.addOperation(encOp)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(encryptionData.mailsToSend.count, 3)
+            XCTAssertEqual(encryptionData.messagesToSend.count, 3)
             var encounteredBCC = false
             var encounteredCC = false
-            for msg in encryptionData.mailsToSend {
+            for msg in encryptionData.messagesToSend {
                 if let bccs = msg[kPepBCC] as? NSArray, bccs.count > 0 {
                     encounteredBCC = true
                     XCTAssertTrue(PEPUtil.isProbablyPGPMime(pEpMessage: msg))
@@ -614,7 +614,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSimpleDecryptMailOperation() {
-        let (queue, mail, ids) = createBasicMail()
+        let (queue, message, ids) = createBasicMail()
         let (identity, _, _, _, _) = ids
 
         let subject = "Subject"
@@ -623,11 +623,11 @@ class SimpleOperationsTest: XCTestCase {
 
         let myself = CdIdentity.firstOrCreate(dictionary: identity)
 
-        mail.from = myself
-        mail.addTo(identity: myself)
-        mail.shortMessage = subject
-        mail.longMessage = longMessage
-        mail.longMessageFormatted = longMessageFormatted
+        message.from = myself
+        message.addTo(identity: myself)
+        message.shortMessage = subject
+        message.longMessage = longMessage
+        message.longMessageFormatted = longMessageFormatted
 
         Record.saveAndWait()
 
@@ -637,8 +637,8 @@ class SimpleOperationsTest: XCTestCase {
         let encryptionData = EncryptionData(
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo,
             connectionManager: grandOperator.connectionManager,
-            messageID: mail.objectID, outgoing: true)
-        let encOp = EncryptMailOperation(encryptionData: encryptionData)
+            messageID: message.objectID, outgoing: true)
+        let encOp = EncryptMessageOperation(encryptionData: encryptionData)
 
         let expEncrypted = expectation(description: "expEncrypted")
         encOp.completionBlock = {
@@ -650,10 +650,10 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertFalse(encOp.hasErrors())
         })
 
-        XCTAssertEqual(encryptionData.mailsToSend.count, 1)
-        XCTAssertTrue(PEPUtil.isProbablyPGPMime(pEpMessage: encryptionData.mailsToSend[0]))
+        XCTAssertEqual(encryptionData.messagesToSend.count, 1)
+        XCTAssertTrue(PEPUtil.isProbablyPGPMime(pEpMessage: encryptionData.messagesToSend[0]))
 
-        mail.delete()
+        message.delete()
         let folder = CdFolder.firstOrCreate(
             with: ["folderType": FolderType.drafts.rawValue, "account": account, "uuid": "fake",
                    "name": "Drafts"])
@@ -661,7 +661,7 @@ class SimpleOperationsTest: XCTestCase {
         let newMail = CdMessage.create(messageID: "fake", uid: 0, parent: folder)
         XCTAssertEqual(newMail.pEpRating, PEPUtil.pEpRatingNone)
 
-        newMail.update(pEpMail: encryptionData.mailsToSend[0])
+        newMail.update(pEpMail: encryptionData.messagesToSend[0])
         XCTAssertTrue(newMail.bodyFetched)
 
         XCTAssertEqual(newMail.pEpRating, PEPUtil.pEpRatingNone)
@@ -722,12 +722,12 @@ class SimpleOperationsTest: XCTestCase {
             fakeMail[kPepTo] = [contact]
             fakeMail[kPepShortMessage] = "Subject \(i)"
             fakeMail[kPepLongMessage]  = "Body \(i)"
-            encryptionData.mailsToSend.append(fakeMail as NSDictionary as! PEPMessage)
+            encryptionData.messagesToSend.append(fakeMail as NSDictionary as! PEPMessage)
         }
 
         let expMailsSent = expectation(description: "expMailsSent")
 
-        let sendOp = SendMailOperation.init(encryptionData: encryptionData)
+        let sendOp = SendMessageOperation.init(encryptionData: encryptionData)
         sendOp.completionBlock = {
             expMailsSent.fulfill()
         }
@@ -737,7 +737,7 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime * 2, handler: { error in
             XCTAssertNil(error)
             XCTAssertEqual(sendOp.errors.count, 0)
-            XCTAssertEqual(encryptionData.mailsSent.count, numMails)
+            XCTAssertEqual(encryptionData.messagesSent.count, numMails)
        })
     }
 
