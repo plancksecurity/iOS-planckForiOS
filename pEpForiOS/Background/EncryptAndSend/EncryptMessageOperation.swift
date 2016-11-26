@@ -1,5 +1,5 @@
 //
-//  EncryptMailOperation.swift
+//  EncryptMessageOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 23/06/16.
