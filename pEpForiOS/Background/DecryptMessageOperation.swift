@@ -41,7 +41,7 @@ open class DecryptMessageOperation: ConcurrentBaseOperation {
                 let color = session.decryptMessageDict(
                     pepMessage, dest: &pepDecryptedMessage, keys: &keys)
                 Log.info(component: self.comp,
-                    "Decrypted mail \(message.logString()) with color \(color)")
+                    "Decrypted message \(message.logString()) with color \(color)")
 
                 self.numberOfMessagesDecrypted += 1
 
@@ -77,7 +77,7 @@ open class DecryptMessageOperation: ConcurrentBaseOperation {
                         break
                         //TODO: new method to get de logstring?
                         /*Log.warn(component: self.comp,
-                        "No default action for decrypted mail \(mail.logString())")*/
+                        "No default action for decrypted message \(message.logString())")*/
                 }
             }
             if modelChanged {
