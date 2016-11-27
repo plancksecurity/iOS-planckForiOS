@@ -49,11 +49,11 @@ open class SaveSentMessageOperation: EncryptBaseOperation {
 
             guard let msg = self.encryptionData.messageEncryptedForSelf else {
                 let msg = NSLocalizedString(
-                    "Could not save sent mail: Not encrypted", comment:
-                    "Error message when no encrypted mail was given for saving as sent")
+                    "Could not save sent message: Not encrypted", comment:
+                    "Error when no encrypted message was given for saving as sent")
                 self.addError(Constants.errorOperationFailed(self.comp, errorMessage: msg))
                 Log.error(component: self.comp,
-                    errorString: "Could not save sent mail: Not encrypted")
+                    errorString: "Could not save sent message: Not encrypted")
                 self.markAsFinished()
                 return
             }
@@ -146,10 +146,10 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
                     let error = Constants.errorInvalidParameter(
                         self.comp,
                         errorMessage:
-                        NSLocalizedString("Email for encryption could not be accessed",
-                                          comment: "Error message when message to encrypt could not be found."))
+                        NSLocalizedString("Message for encryption could not be accessed",
+                                          comment: "Error when message to encrypt could not be found."))
                     self.handleEntryError(error,
-                                          message: "Email for encryption could not be accessed")
+                                          message: "Message for encryption could not be accessed")
                     return
             }
 
