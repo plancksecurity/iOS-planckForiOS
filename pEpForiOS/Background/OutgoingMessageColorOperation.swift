@@ -8,20 +8,20 @@
 
 class OutgoingMessageColorOperation: Operation {
     /**
-     Input: The pEp mail dictionary to check.
+     Input: The pEp message dictionary to check.
      */
-    var pepMail: PEPMessage?
+    var pepMessage: PEPMessage?
 
     /**
-     Output: The pEp color rating for the mail.
+     Output: The pEp color rating for the message.
      */
     var pepColorRating: PEP_rating?
 
     override func main() {
-        if let mail = pepMail {
+        if let message = pepMessage {
             pepColorRating = nil
             let session = PEPSession.init()
-            pepColorRating = session.outgoingMessageColor(mail)
+            pepColorRating = session.outgoingMessageColor(message)
         }
     }
 }
