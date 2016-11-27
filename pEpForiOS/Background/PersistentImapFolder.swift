@@ -184,7 +184,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage) {
         Log.warn(component: comp, "Writing message \(message)")
 
-        // Quickly store the most important email proporties (synchronously)
+        // Quickly store the most important message proporties (synchronously)
         let opQuick = StorePrefetchedMailOperation(
             connectInfo: connectInfo, message: message, quick: true)
         opQuick.start()
