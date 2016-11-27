@@ -72,16 +72,16 @@ open class PrefetchEmailsOperation: ConcurrentBaseOperation {
             self.sync.start()
         } else {
             if self.sync.imapState.currentFolder != nil {
-                self.syncMails(self.sync)
+                self.syncMessages(self.sync)
             } else {
                 self.sync.openMailBox(self.folderToOpen)
             }
         }
     }
 
-    func syncMails(_ sync: ImapSync) {
+    func syncMessages(_ sync: ImapSync) {
         do {
-            try sync.syncMails()
+            try sync.syncMessages()
         } catch let err as NSError {
             addError(err)
             waitForFinished()
@@ -136,7 +136,7 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        syncMails(sync)
+        syncMessages(sync)
     }
 
     public func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {

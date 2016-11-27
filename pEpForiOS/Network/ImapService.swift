@@ -105,15 +105,15 @@ public protocol IImapSync {
     func start()
 
     /**
-     Opens the folder with the given name, prefetching all emails contained if wanted.
+     Opens the folder with the given name, prefetching all messages contained if wanted.
      Should call this after receiving receivedFolderNames().
      */
     func openMailBox(_ name: String)
 
     /**
-     Sync the mails from the curently selected folder.
+     Sync the messages from the curently selected folder.
      */
-    func syncMails() throws
+    func syncMessages() throws
 
     /**
      Creates a new folder on the server.
@@ -184,12 +184,12 @@ open class ImapSync: Service, IImapSync {
         }
     }
 
-    open func syncMails() throws {
+    open func syncMessages() throws {
         guard let folderName = imapState.currentFolder else {
             throw Constants.errorIllegalState(
                 comp,
                 stateName: NSLocalizedString("No open folder",
-                    comment: "Need an open folder to sync mails"))
+                    comment: "Need an open folder to sync messages"))
         }
         guard let folder = imapStore.folder(forName: imapState.currentFolder) else {
             throw Constants.errorFolderNotOpen(comp, folderName: folderName)
@@ -252,7 +252,7 @@ extension ImapSync: CWServiceClient {
             Log.info(component: comp, "folderPrefetchCompleted: \(notification)")
         }
         if let bq = folderBuilder?.backgroundQueue {
-            // Wait until all newly synced mails are stored
+            // Wait until all newly synced messages are stored
             bq.waitUntilAllOperationsAreFinished()
         }
         delegate?.folderPrefetchCompleted(self, notification: notification)

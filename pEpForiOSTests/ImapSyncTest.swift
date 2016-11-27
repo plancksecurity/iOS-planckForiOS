@@ -124,7 +124,7 @@ class TestImapSyncDelegate: DefaultImapSyncDelegate {
         }
         if preFetchMails {
             do {
-                try sync.syncMails()
+                try sync.syncMessages()
             } catch  {
                 folderPrefetchSuccess = false
                 folderPrefetchSuccessExpectation?.fulfill()
