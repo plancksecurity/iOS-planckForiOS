@@ -356,7 +356,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 return
             }
             let op = OutgoingMessageColorOperation()
-            op.pepMail = ComposeViewHelper.pepMailFromViewForCheckingRating(self)
+            op.pepMessage = ComposeViewHelper.pepMailFromViewForCheckingRating(self)
             op.completionBlock = {
                 if !op.isCancelled {
                     if let pepColor = op.pepColorRating {
