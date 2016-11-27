@@ -811,7 +811,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 cell.subjectTextField.delegate = self
 
                 if let m = replyFromMessage() {
-                    subjectTextField?.text = ReplyUtil.replySubjectForMail(m)
+                    subjectTextField?.text = ReplyUtil.replySubjectForMessage(m)
                 }
 
                 if let m = composeFromDraftMessage() {
@@ -832,7 +832,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
 
                 let replyAll = composeMode == .replyAll
                 if let om = replyFromMessage() {
-                    let text = ReplyUtil.quotedMailTextForMail(om, replyAll: replyAll)
+                    let text = ReplyUtil.quotedMessageTextForMessage(om, replyAll: replyAll)
                     cell.bodyTextView.text = text
                     cell.bodyTextView.selectedRange = NSRange(location: 0, length: 0)
                 } else {

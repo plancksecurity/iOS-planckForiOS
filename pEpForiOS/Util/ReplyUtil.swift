@@ -88,13 +88,13 @@ public struct ReplyUtil {
 
     public static func footer() -> String {
         return NSLocalizedString("Sent with p≡p",
-                                 comment: "Mail footer/default text")
+                                 comment: "Message footer/default text")
     }
 
-    public static func quotedMailTextForMail(_ mail: Message, replyAll: Bool) -> String {
-        if let text = mail.longMessage {
+    public static func quotedMessageTextForMessage(_ message: Message, replyAll: Bool) -> String {
+        if let text = message.longMessage {
             let quotedText = quoteText(text)
-            let citation: String? = citationHeaderForMessage(mail, replyAll: replyAll)
+            let citation: String? = citationHeaderForMessage(message, replyAll: replyAll)
             if let c = citation {
                 return "\n\n\(footer())\n\n\(c)\n\n\(quotedText)"
             }
@@ -102,8 +102,8 @@ public struct ReplyUtil {
         return footer()
     }
 
-    public static func replySubjectForMail(_ mail: Message) -> String {
-        if let subject = mail.shortMessage {
+    public static func replySubjectForMessage(_ message: Message) -> String {
+        if let subject = message.shortMessage {
             let re = NSLocalizedString(
                 "Re: ", comment: "The 'Re:' that gets appended to the subject line")
             return "\(re) \(subject)"
