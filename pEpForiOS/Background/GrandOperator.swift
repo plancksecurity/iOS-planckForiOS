@@ -44,7 +44,7 @@ public protocol IGrandOperator: class {
     func fetchFolders(_ connectInfo: EmailConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asychronously fetches mails for the given `EmailConnectInfo`s
+     Asychronously fetches messages for the given `EmailConnectInfo`s
      and the given folder name and stores them into the persistent store.
      Will also decrypt them, and fetch folders if necessary.
 
@@ -57,7 +57,7 @@ public protocol IGrandOperator: class {
         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Syncs all mails' flags in the given folder that are out of date to the server.
+     Syncs all messages' flags in the given folder that are out of date to the server.
      */
     func syncFlagsToServerForFolder(_ folder: CdFolder,
                                     completionBlock: GrandOperatorCompletionBlock?)
@@ -178,7 +178,7 @@ open class GrandOperator: IGrandOperator {
             operations.append(fetchOp)
         }
 
-        // Wait with the decryption until all mails have been downloaded.
+        // Wait with the decryption until all messages have been downloaded.
         let decryptOp = DecryptMessageOperation()
         for fetchOp in fetchOperations {
             decryptOp.addDependency(fetchOp)
