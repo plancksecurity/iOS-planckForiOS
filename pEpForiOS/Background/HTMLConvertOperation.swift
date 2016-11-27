@@ -9,7 +9,7 @@
 import MessageModel
 
 /**
- Finds email that only contain html and creates a text version of it.
+ Finds message that only contains html and creates a text version of it.
  */
 open class HTMLConvertOperation: BaseOperation {
     let comp = "HTMLConvertOperation"
