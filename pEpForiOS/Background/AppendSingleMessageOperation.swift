@@ -84,10 +84,10 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
                 pepMessageOrig,
                 identity: ident,
                 dest: &encryptedMessage)
-            let (mail, _) = PEPUtil.check(comp: self.comp, status: status,
+            let (msg, _) = PEPUtil.check(comp: self.comp, status: status,
                 encryptedMessage: encryptedMessage)
-            if let m = mail {
-                // Append the email
+            if let m = msg {
+                // Append the message
                 self.cwMessageToAppend = PEPUtil.pantomime(pEpMessage: m as! PEPMessage)
                 self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
                 self.imapSync.delegate = self
