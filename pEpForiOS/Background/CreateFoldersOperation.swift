@@ -22,6 +22,7 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
     let accountID: NSManagedObjectID
     var account: CdAccount!
     var imapSync: ImapSync!
+    var folderNamesToCreate = [String]()
 
     public init(imapConnectInfo: EmailConnectInfo, account: CdAccount,
                 connectionManager: ConnectionManager) {
@@ -44,13 +45,32 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
             return
         }
 
-        imapSync = connectionManager.emailSyncConnection(imapConnectInfo)
-        imapSync.delegate = self
-        imapSync.start()
+        if let foldersSet = account.folders {
+            for f in foldersSet {
+                if let fol = f as? CdFolder {
+                    if let fn = fol.name {
+                        folderNamesToCreate.append(fn)
+                    }
+                }
+            }
+        }
+
+        if folderNamesToCreate.count > 0 {
+            imapSync = connectionManager.emailSyncConnection(imapConnectInfo)
+            imapSync.delegate = self
+            imapSync.start()
+        } else {
+            markAsFinished()
+        }
     }
 
     func createNextFolder() {
-
+        if !isCancelled, let fn = folderNamesToCreate.first {
+            imapSync.createFolderWithName(fn)
+            folderNamesToCreate.removeFirst()
+        } else {
+            markAsFinished()
+        }
     }
 }
 
@@ -142,8 +162,7 @@ extension CreateFoldersOperation: ImapSyncDelegate {
     }
 
     public func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderCreateCompleted"))
-        markAsFinished()
+        createNextFolder()
     }
 
     public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {

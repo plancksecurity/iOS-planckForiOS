@@ -58,7 +58,7 @@ open class DeleteFoldersOperation: ConcurrentBaseOperation {
 
     func deleteNextRemoteFolder(sync: ImapSync) {
         if let fn = currentFolderName {
-            privateMOC.perform() {
+            privateMOC.performAndWait() {
                 if let folder = CdFolder.by(name: fn, account: self.account) {
                     self.privateMOC.delete(folder)
                 }
@@ -68,8 +68,9 @@ open class DeleteFoldersOperation: ConcurrentBaseOperation {
             if let fn = folderNamesToDelete.first {
                 currentFolderName = fn
                 imapSync.deleteFolderWithName(fn)
+                folderNamesToDelete.removeFirst()
+                return
             }
-            return
         }
         markAsFinished()
     }

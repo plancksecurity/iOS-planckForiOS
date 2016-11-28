@@ -310,13 +310,13 @@ class SimpleOperationsTest: XCTestCase {
         let folder1 = CdFolder.create()
         folder1.account = account
         folder1.uuid = uuid1
-        folder1.name = "Folder1 \(uuid1)"
+        folder1.name = "Inbox.Folder1 \(uuid1)"
 
         let uuid2 = UUID.generate()
         let folder2 = CdFolder.create()
         folder2.account = account
         folder2.uuid = uuid1
-        folder2.name = "Folder2 \(uuid2)"
+        folder2.name = "Inbox.Folder2 \(uuid2)"
 
         Record.saveAndWait()
 
@@ -326,6 +326,9 @@ class SimpleOperationsTest: XCTestCase {
         opCreate.completionBlock = {
             expCreated.fulfill()
         }
+
+        let backgroundQueue = OperationQueue()
+        backgroundQueue.addOperation(opCreate)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
@@ -341,42 +344,6 @@ class SimpleOperationsTest: XCTestCase {
         let opDelete = DeleteFoldersOperation(
             imapConnectInfo: imapConnectInfo, account: account,
             connectionManager: grandOperator.connectionManager)
-        opDelete.completionBlock = {
-            expDeleted.fulfill()
-        }
-
-        let backgroundQueue = OperationQueue()
-        backgroundQueue.addOperation(opCreate)
-        backgroundQueue.addOperation(opDelete)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(opDelete.hasErrors())
-        })
-
-        XCTAssertNil(CdFolder.by(folderType: .drafts, account: account))
-
-        // Recreate drafts folder
-        testCreateFolders()
-        XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: account))
-    }
-
-    func testDeleteFolderOperation() {
-        testCreateFolders()
-
-        let backgroundQueue = OperationQueue.init()
-        guard let folder = CdFolder.by(folderType: .drafts, account: account) else {
-                XCTFail()
-                return
-        }
-
-        let expDeleted = expectation(description: "expDeleted")
-        guard let opDelete = DeleteFolderOperation(
-            connectInfo: imapConnectInfo, folder: folder,
-            connectionManager: grandOperator.connectionManager) else {
-                XCTFail()
-                return
-        }
         opDelete.completionBlock = {
             expDeleted.fulfill()
         }
