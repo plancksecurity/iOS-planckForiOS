@@ -752,7 +752,35 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(myself[kPepFingerprint])
 
         let color2 = session.outgoingColor(from: myself as NSDictionary as! PEPIdentity,
-                                               to: myself as NSDictionary as! PEPIdentity)
+                                           to: myself as NSDictionary as! PEPIdentity)
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
+    }
+
+    func testOutgoingMailColorPerformanceWithMySelf() {
+        let session = PEPSession.init()
+        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        let myself = identity.mutableCopy() as! NSMutableDictionary
+        session.mySelf(myself)
+        XCTAssertNotNil(myself[kPepFingerprint])
+
+        self.measure {
+            for _ in [1...1000] {
+                let _ = session.outgoingColor(from: myself as NSDictionary as! PEPIdentity,
+                                              to: myself as NSDictionary as! PEPIdentity)
+            }
+        }
+    }
+
+    func testOutgoingMailColorPerformanceWithoutMySelf() {
+        let session = PEPSession.init()
+        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        let myself = identity.mutableCopy() as! NSMutableDictionary
+
+        self.measure {
+            for _ in [1...1000] {
+                let _ = session.outgoingColor(from: myself as NSDictionary as! PEPIdentity,
+                                              to: myself as NSDictionary as! PEPIdentity)
+            }
+        }
     }
 }
