@@ -59,13 +59,13 @@ open class EncryptionData {
     open var messagesToSend: [PEPMessage] = []
 
     /**
-     After encryption, the original mail will be stored here, in encrypted form.
+     After encryption, the original message will be stored here, in encrypted form.
      This is the message that should be stored then in the sent folder.
      */
     open var messageEncryptedForSelf: PEPMessage?
 
     /**
-     After the `SendMailOperation` has done its job, all sent mails should be noted here.
+     After the `SendMessageOperation` has done its job, all sent messages should be noted here.
      */
     open var messagesSent: [PEPMessage] = []
 
