@@ -75,10 +75,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         let accounts = Account.all()
         for acc in accounts {
-            let email = acc.user.address
-            Log.info(component: comp, "Starting myself for \(email)")
+            let userAddress = acc.user.address
+            Log.info(component: comp, "Starting myself for \(userAddress)")
             PEPUtil.myself(account: acc, queue: backgroundQueue) { identity in
-                Log.info(component: self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
+                Log.info(component: self.comp, "Finished myself for \(userAddress) (\(identity[kPepFingerprint]))")
                 application.endBackgroundTask(bgId)
             }
         }
