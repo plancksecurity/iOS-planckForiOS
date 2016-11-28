@@ -1,27 +1,25 @@
 //
-//  CreateFoldersOperation.swift
+//  DeleteFolderOperation.swift
 //  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 28/11/16.
+//  Created by Dirk Zimmermann on 19/09/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 import MessageModel
 
-/**
- Tries to create all local folders on the server.
- */
-open class CreateFoldersOperation: ConcurrentBaseOperation {
-    let comp = "CreateFoldersOperation"
+open class DeleteFoldersOperation: ConcurrentBaseOperation {
+    let comp = "DeleteFoldersOperation"
 
     let imapConnectInfo: EmailConnectInfo
     let connectionManager: ConnectionManager
     let accountID: NSManagedObjectID
     var account: CdAccount!
     var imapSync: ImapSync!
+    var folderNamesToDelete = [String]()
+    var currentFolderName: String?
 
     public init(imapConnectInfo: EmailConnectInfo, account: CdAccount,
                 connectionManager: ConnectionManager) {
@@ -44,21 +42,42 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
             return
         }
 
+        let p = NSPredicate(format: "shouldDelete = true and account = %@", account)
+        if let folders = CdFolder.all(with: p) as? [CdFolder] {
+            for f in folders {
+                if let fn = f.name {
+                    folderNamesToDelete.append(fn)
+                }
+            }
+        }
+
         imapSync = connectionManager.emailSyncConnection(imapConnectInfo)
         imapSync.delegate = self
         imapSync.start()
     }
 
-    func createNextFolder() {
-
+    func deleteNextRemoteFolder(sync: ImapSync) {
+        if let fn = currentFolderName {
+            privateMOC.perform() {
+                if let folder = CdFolder.by(name: fn, account: self.account) {
+                    self.privateMOC.delete(folder)
+                }
+            }
+        }
+        if !self.isCancelled {
+            if let fn = folderNamesToDelete.first {
+                currentFolderName = fn
+                imapSync.deleteFolderWithName(fn)
+            }
+            return
+        }
+        markAsFinished()
     }
 }
 
-extension CreateFoldersOperation: ImapSyncDelegate {
+extension DeleteFoldersOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            createNextFolder()
-        }
+        deleteNextRemoteFolder(sync: sync)
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
@@ -152,12 +171,11 @@ extension CreateFoldersOperation: ImapSyncDelegate {
     }
 
     public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteCompleted"))
-        markAsFinished()
+        deleteNextRemoteFolder(sync: sync)
     }
 
     public func folderDeleteFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
+        addError(Constants.errorFolderDeleteFailed(comp, name: currentFolderName ?? ""))
         markAsFinished()
     }
 

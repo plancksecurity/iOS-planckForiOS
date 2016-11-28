@@ -305,6 +305,62 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
+    func testCreateDeleteFolderOperation() {
+        let uuid1 = UUID.generate()
+        let folder1 = CdFolder.create()
+        folder1.account = account
+        folder1.uuid = uuid1
+        folder1.name = "Folder1 \(uuid1)"
+
+        let uuid2 = UUID.generate()
+        let folder2 = CdFolder.create()
+        folder2.account = account
+        folder2.uuid = uuid1
+        folder2.name = "Folder2 \(uuid2)"
+
+        Record.saveAndWait()
+
+        let expCreated = expectation(description: "expCreated")
+        let opCreate = CreateFoldersOperation(imapConnectInfo: imapConnectInfo, account: account,
+                                              connectionManager: grandOperator.connectionManager)
+        opCreate.completionBlock = {
+            expCreated.fulfill()
+        }
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(opCreate.hasErrors())
+        })
+
+        folder1.shouldDelete = true
+        folder2.shouldDelete = true
+
+        Record.saveAndWait()
+
+        let expDeleted = expectation(description: "expDeleted")
+        let opDelete = DeleteFoldersOperation(
+            imapConnectInfo: imapConnectInfo, account: account,
+            connectionManager: grandOperator.connectionManager)
+        opDelete.completionBlock = {
+            expDeleted.fulfill()
+        }
+
+        let backgroundQueue = OperationQueue()
+        backgroundQueue.addOperation(opCreate)
+        backgroundQueue.addOperation(opDelete)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(opDelete.hasErrors())
+        })
+
+        XCTAssertNil(CdFolder.by(folderType: .drafts, account: account))
+
+        // Recreate drafts folder
+        testCreateFolders()
+        XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: account))
+    }
+
     func testDeleteFolderOperation() {
         testCreateFolders()
 
