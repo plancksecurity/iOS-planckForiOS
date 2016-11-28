@@ -22,8 +22,6 @@ open class ConcurrentBaseOperation: BaseOperation {
      */
     let backgroundQueue = OperationQueue.init()
 
-    let coreDataUtil = CoreDataUtil()
-
     lazy var privateMOC: NSManagedObjectContext = Record.Context.background
 
     var myFinished: Bool = false
@@ -38,6 +36,11 @@ open class ConcurrentBaseOperation: BaseOperation {
 
     open override var isFinished: Bool {
         return myFinished && backgroundQueue.operationCount == 0
+    }
+
+    open override func start() {
+        // Just call main directly, relying on it to schedule a task in the background.
+        main()
     }
 
     /**
@@ -76,7 +79,9 @@ open class ConcurrentBaseOperation: BaseOperation {
      */
     func markAsFinished() {
         willChangeValue(forKey: "isFinished")
+        willChangeValue(forKey: "isExecuting")
         myFinished = true
         didChangeValue(forKey: "isFinished")
+        didChangeValue(forKey: "isExecuting")
     }
 }

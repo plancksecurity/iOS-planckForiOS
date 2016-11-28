@@ -305,22 +305,45 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
-    func testDeleteFolderOperation() {
-        testCreateFolders()
+    func testCreateDeleteFolderOperation() {
+        let uuid1 = UUID.generate()
+        let folder1 = CdFolder.create()
+        folder1.account = account
+        folder1.uuid = uuid1
+        folder1.name = "Inbox.Folder1 \(uuid1)"
 
-        let backgroundQueue = OperationQueue.init()
-        guard let folder = CdFolder.by(folderType: .drafts, account: account) else {
-                XCTFail()
-                return
+        let uuid2 = UUID.generate()
+        let folder2 = CdFolder.create()
+        folder2.account = account
+        folder2.uuid = uuid1
+        folder2.name = "Inbox.Folder2 \(uuid2)"
+
+        Record.saveAndWait()
+
+        let expCreated = expectation(description: "expCreated")
+        let opCreate = CreateFoldersOperation(imapConnectInfo: imapConnectInfo, account: account,
+                                              connectionManager: grandOperator.connectionManager)
+        opCreate.completionBlock = {
+            expCreated.fulfill()
         }
+
+        let backgroundQueue = OperationQueue()
+        backgroundQueue.addOperation(opCreate)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(opCreate.hasErrors())
+        })
+
+        folder1.shouldDelete = true
+        folder2.shouldDelete = true
+
+        Record.saveAndWait()
 
         let expDeleted = expectation(description: "expDeleted")
-        guard let opDelete = DeleteFolderOperation(
-            connectInfo: imapConnectInfo, folder: folder,
-            connectionManager: grandOperator.connectionManager) else {
-                XCTFail()
-                return
-        }
+        let opDelete = DeleteFoldersOperation(
+            imapConnectInfo: imapConnectInfo, account: account,
+            connectionManager: grandOperator.connectionManager)
         opDelete.completionBlock = {
             expDeleted.fulfill()
         }
@@ -752,7 +775,35 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(myself[kPepFingerprint])
 
         let color2 = session.outgoingColor(from: myself as NSDictionary as! PEPIdentity,
-                                               to: myself as NSDictionary as! PEPIdentity)
+                                           to: myself as NSDictionary as! PEPIdentity)
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
+    }
+
+    func testOutgoingMailColorPerformanceWithMySelf() {
+        let session = PEPSession.init()
+        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        let myself = identity.mutableCopy() as! NSMutableDictionary
+        session.mySelf(myself)
+        XCTAssertNotNil(myself[kPepFingerprint])
+
+        self.measure {
+            for _ in [1...1000] {
+                let _ = session.outgoingColor(from: myself as NSDictionary as! PEPIdentity,
+                                              to: myself as NSDictionary as! PEPIdentity)
+            }
+        }
+    }
+
+    func testOutgoingMailColorPerformanceWithoutMySelf() {
+        let session = PEPSession.init()
+        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        let myself = identity.mutableCopy() as! NSMutableDictionary
+
+        self.measure {
+            for _ in [1...1000] {
+                let _ = session.outgoingColor(from: myself as NSDictionary as! PEPIdentity,
+                                              to: myself as NSDictionary as! PEPIdentity)
+            }
+        }
     }
 }

@@ -91,7 +91,8 @@ extension CdMessage {
             pFolder = NSPredicate(format: "parent = %@", f)
         }
         let pFlags = NSPredicate(format: "imap.flagsCurrent != imap.flagsFromServer")
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [pFolder, pFlags])
+        let pUid = NSPredicate(format: "uid != 0")
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [pUid, pFolder, pFlags])
     }
 
     public static func countBy(predicate: NSPredicate) -> Int {

@@ -71,6 +71,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         var isDirty = false
     }
 
+    lazy var session = PEPSession.init()
+
     var model: UIModel = UIModel()
 
     let comp = "ComposeViewController"
@@ -355,21 +357,11 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 Log.warn(component: comp, "Won't check outgoing color, already one in operation")
                 return
             }
-            let op = OutgoingMessageColorOperation()
-            op.pepMessage = ComposeViewHelper.pepMailFromViewForCheckingRating(self)
-            op.completionBlock = {
-                if !op.isCancelled {
-                    if let pepColor = op.pepColorRating {
-                        let color = PEPUtil.pEpColor(pEpRating: pepColor)
-                        GCD.onMain() {
-                            self.setPrivacyColor(color, toSendButton: self.sendButton)
-                        }
-                    } else {
-                        Log.warn(component: self.comp, "Could not get outgoing message color")
-                    }
-                }
+            if let msg = ComposeViewHelper.pepMailFromViewForCheckingRating(self) {
+                let pepColor = session.outgoingMessageColor(msg)
+                let color = PEPUtil.pEpColor(pEpRating: pepColor)
+                self.setPrivacyColor(color, toSendButton: self.sendButton)
             }
-            operationQueue.addOperation(op)
         }
     }
 
