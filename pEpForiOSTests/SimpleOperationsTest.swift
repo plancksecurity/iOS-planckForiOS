@@ -658,19 +658,19 @@ class SimpleOperationsTest: XCTestCase {
             with: ["folderType": FolderType.drafts.rawValue, "account": account, "uuid": "fake",
                    "name": "Drafts"])
 
-        let newMail = CdMessage.create(messageID: "fake", uid: 0, parent: folder)
-        XCTAssertEqual(newMail.pEpRating, PEPUtil.pEpRatingNone)
+        let newMessage = CdMessage.create(messageID: "fake", uid: 0, parent: folder)
+        XCTAssertEqual(newMessage.pEpRating, PEPUtil.pEpRatingNone)
 
-        newMail.update(pEpMail: encryptionData.messagesToSend[0])
-        XCTAssertTrue(newMail.bodyFetched)
+        newMessage.update(pEpMessage: encryptionData.messagesToSend[0])
+        XCTAssertTrue(newMessage.bodyFetched)
 
-        XCTAssertEqual(newMail.pEpRating, PEPUtil.pEpRatingNone)
-        XCTAssertNotEqual(newMail.shortMessage, subject)
-        XCTAssertNotEqual(newMail.longMessage, longMessage)
-        XCTAssertNil(newMail.longMessageFormatted)
-        XCTAssertEqual(newMail.shortMessage, "pEp")
-        XCTAssertNotNil(newMail.longMessage)
-        if let lm = newMail.longMessage {
+        XCTAssertEqual(newMessage.pEpRating, PEPUtil.pEpRatingNone)
+        XCTAssertNotEqual(newMessage.shortMessage, subject)
+        XCTAssertNotEqual(newMessage.longMessage, longMessage)
+        XCTAssertNil(newMessage.longMessageFormatted)
+        XCTAssertEqual(newMessage.shortMessage, "pEp")
+        XCTAssertNotNil(newMessage.longMessage)
+        if let lm = newMessage.longMessage {
             XCTAssertTrue(lm.contains("p≡p"))
         } else {
             XCTFail()
@@ -692,10 +692,10 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         XCTAssertEqual(decrOp.numberOfMessagesDecrypted, 1)
-        newMail.managedObjectContext!.refresh(newMail, mergeChanges: true)
-        XCTAssertEqual(newMail.shortMessage, subject)
-        XCTAssertEqual(newMail.longMessage, longMessage)
-        XCTAssertEqual(newMail.longMessageFormatted, longMessageFormatted)
+        newMessage.managedObjectContext!.refresh(newMessage, mergeChanges: true)
+        XCTAssertEqual(newMessage.shortMessage, subject)
+        XCTAssertEqual(newMessage.longMessage, longMessage)
+        XCTAssertEqual(newMessage.longMessageFormatted, longMessageFormatted)
     }
 
     func testSendMailOperation() {

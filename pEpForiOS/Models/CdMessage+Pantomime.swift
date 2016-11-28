@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
-
 import MessageModel
 
 extension CdMessage {
@@ -209,7 +207,7 @@ extension CdMessage {
      where inserts should be quick and the persistent store should be up-to-date
      nevertheless (especially in terms of UIDs, messageNumbers etc.)
      - Returns: A tuple of the optional message just created or updated, and a Bool
-     for whether the mail already existed or has been freshly added (true for having been
+     for whether the message already existed or has been freshly added (true for having been
      freshly added).
      */
     public static func quickInsertOrUpdate(
