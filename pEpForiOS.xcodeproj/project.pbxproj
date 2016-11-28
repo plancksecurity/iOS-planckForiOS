@@ -100,7 +100,6 @@
 		43B2660D1D252C93009D57E8 /* ConcurrentBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */; };
 		43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */; };
 		43B3E46E1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B3E46D1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift */; };
-		43B3E4721D3CCF79007CA3C9 /* OutgoingMessageColorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B3E4711D3CCF79007CA3C9 /* OutgoingMessageColorOperation.swift */; };
 		43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */; };
 		43BB86831DB4C3CE00980267 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43BB867E1DB4C3BC00980267 /* MessageModel.framework */; };
 		43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */; };
@@ -346,7 +345,6 @@
 		43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentBaseOperation.swift; sourceTree = "<group>"; };
 		43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc; sourceTree = "<group>"; };
 		43B3E46D1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubjectTableViewCell.swift; sourceTree = "<group>"; };
-		43B3E4711D3CCF79007CA3C9 /* OutgoingMessageColorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingMessageColorOperation.swift; sourceTree = "<group>"; };
 		43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewWidthsAligner.swift; sourceTree = "<group>"; };
 		43BB86781DB4C3BC00980267 /* MessageModel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MessageModel.xcodeproj; path = ../MailModel/MessageModel/MessageModel.xcodeproj; sourceTree = "<group>"; };
 		43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+Extension.swift"; sourceTree = "<group>"; };
@@ -453,7 +451,6 @@
 				431144AB1CC0CCE20007639D /* GrandOperator.swift */,
 				4339477A1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift */,
 				4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */,
-				43B3E4711D3CCF79007CA3C9 /* OutgoingMessageColorOperation.swift */,
 				43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */,
 				4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */,
 				431144A91CC0CB480007639D /* PrefetchEmailsOperation.swift */,
@@ -1013,7 +1010,6 @@
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
 				5D039AA21D0EEA3700AD59EC /* DecryptMessageOperation.swift in Sources */,
 				431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */,
-				43B3E4721D3CCF79007CA3C9 /* OutgoingMessageColorOperation.swift in Sources */,
 				431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */,
 				431144AA1CC0CB480007639D /* PrefetchEmailsOperation.swift in Sources */,
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
