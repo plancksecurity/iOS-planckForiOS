@@ -60,4 +60,8 @@ extension CdMessage {
     public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
         return PEPUtil.pEp(cdMessage: self, outgoing: outgoing)
     }
+
+    public func isProbablyPGPMime() -> Bool {
+        return PEPUtil.isProbablyPGPMime(cdMessage: self)
+    }
 }

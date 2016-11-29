@@ -79,10 +79,31 @@ class SimpleOperationsTest: XCTestCase {
             return
         }
 
-        // Check for duplicates
+        guard let hostnameData = CWMIMEUtility.hostname() else {
+            XCTFail()
+            return
+        }
+        guard let localHostname = hostnameData.toStringWithIANACharset("UTF-8") else {
+            XCTFail()
+            return
+        }
+
+        // Check all messages for validity
         for m in allMessages {
             XCTAssertNotNil(m.uid)
             XCTAssertGreaterThan(m.uid, 0)
+
+            XCTAssertNotNil(m.shortMessage)
+
+            guard let uuid = m.uuid else {
+                XCTFail()
+                continue
+            }
+            XCTAssertFalse(uuid.contains(localHostname))
+
+            XCTAssertTrue(m.longMessage != nil || m.longMessageFormatted != nil ||
+                (m.attachments?.count ?? 0 > 0 && m.isProbablyPGPMime()))
+
             guard let folder = m.parent else {
                 XCTFail()
                 break
@@ -173,7 +194,7 @@ class SimpleOperationsTest: XCTestCase {
                 address: "somemail\(i)@test.com"))
             message.setSubject("Subject \(i)")
             message.setRecipients([CWInternetAddress.init(personal: "thisIsMe",
-                address: "myaddress@test.com", type: .toRecipient)])
+                                                          address: "myaddress@test.com", type: .toRecipient)])
             message.setFolder(folder)
             message.setUID(UInt(i))
             message.setMessageID("\(i)@whatever.test")
@@ -208,8 +229,8 @@ class SimpleOperationsTest: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             guard let folders = CdFolder.all() as? [CdFolder] else {
-                    XCTAssertTrue(false, "Expected folders created")
-                    return
+                XCTAssertTrue(false, "Expected folders created")
+                return
             }
             XCTAssertEqual(folders.count, FolderType.allValuesToCreate.count)
             let p = NSPredicate(format: "folderType = %d and account = %@",
@@ -267,7 +288,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertFalse(opCreate.hasErrors())
         })
-        
+
         let c1 = CdIdentity.create()
         let c2 = CdIdentity.create()
         c1.address = "user1@example.com"
@@ -761,7 +782,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertEqual(sendOp.errors.count, 0)
             XCTAssertEqual(encryptionData.messagesSent.count, numMails)
-       })
+        })
     }
 
     /**

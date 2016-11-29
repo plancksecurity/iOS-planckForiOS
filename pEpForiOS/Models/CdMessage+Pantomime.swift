@@ -203,12 +203,10 @@ extension CdMessage {
     }
 
     /**
-     Quickly inserts essential parts of a pantomime into the store. Needed for networking,
-     where inserts should be quick and the persistent store should be up-to-date
-     nevertheless (especially in terms of UIDs, messageNumbers etc.)
-     - Returns: A tuple of the optional message just created or updated, and a Bool
-     for whether the message already existed or has been freshly added (true for having been
-     freshly added).
+     Quickly inserts essential parts of a pantomime message into the store.
+     Useful for networking, where inserts should be quick and the persistent store
+     correct (especially in terms of UIDs, messageNumbers etc.)
+     - Returns: The message just created or updated, or nil.
      */
     public static func quickInsertOrUpdate(
         pantomimeMessage message: CWIMAPMessage,
@@ -255,10 +253,9 @@ extension CdMessage {
      Don't use this on the main thread as there is potentially a lot of processing involved
      (e.g., parsing of HTML and/or attachments).
      - Parameter message: The pantomime message to insert.
-     - Parameter accountEmail: The email for the account this email is supposed to be stored
-     for.
+     - Parameter account: The account this email is supposed to be stored for.
      - Parameter forceParseAttachments: If true, this will parse the attachments even
-     if the pantomime has not been initialized yet (useful for testing only).
+     if the pantomime has not been initialized yet (useful for testing).
      - Returns: The newly created or updated Message
      */
     public static func insertOrUpdate(

@@ -322,7 +322,7 @@ open class PEPUtil {
     }
 
     /**
-     For a PEPMessage, checks whether it is PGP/MIME encrypted.
+     For a PEPMessage, checks whether it is probably PGP/MIME encrypted.
      */
     open static func isProbablyPGPMime(pEpMessage: PEPMessage) -> Bool {
         guard let attachments = pEpMessage[kPepAttachments] as? NSArray else {
@@ -343,6 +343,13 @@ open class PEPUtil {
             }
         }
         return foundAttachmentPGPEncrypted
+    }
+
+    /**
+     For a CdMessage, checks whether it is probably PGP/MIME encrypted.
+     */
+    open static func isProbablyPGPMime(cdMessage: CdMessage) -> Bool {
+        return isProbablyPGPMime(pEpMessage: pEp(cdMessage: cdMessage))
     }
 
     /**
