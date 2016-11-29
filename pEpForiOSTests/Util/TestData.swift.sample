@@ -169,11 +169,13 @@ class TestData {
     }
 
     /**
-     - Returns: A `Account` that should not be able to be verified.
+     - Returns: A `Account` with servers that should yield a quick timeout.
      */
-    func createDisfunctionalAccount() -> Account {
+    func createTimeoutAccount() -> Account {
         populateAccounts()
         var account = testAccounts[0]
+        account.imapServerAddress = "localhost"
+        account.smtpServerAddress = "localhost"
         account.smtpServerPort = 2323
         account.imapServerPort = 2323
         return account.account()

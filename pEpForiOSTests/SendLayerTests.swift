@@ -34,7 +34,7 @@ class SendLayerTests: XCTestCase {
         XCTAssertTrue(accs.isEmpty)
 
         CdAccount.sendLayer = grandOp
-        let _ = TestData().createDisfunctionalAccount()
+        let _ = TestData().createTimeoutAccount()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
