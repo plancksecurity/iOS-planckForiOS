@@ -171,7 +171,7 @@ open class GrandOperator: IGrandOperator {
                 connectInfo: connectInfo, connectionManager: connectionManager,
                 onlyUpdateIfNecessary: true))
 
-            let fetchOp = PrefetchEmailsOperation.init(
+            let fetchOp = PrefetchMessagesOperation.init(
                 grandOperator: self, connectInfo: connectInfo,
                 folder: folderName)
             fetchOperations.append(fetchOp)
