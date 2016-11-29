@@ -108,30 +108,21 @@ extension CdMessage {
      The original (`addToTo`) crashes
      */
     public func addTo(identity: CdIdentity) {
-        let key = "to"
-        willChangeValue(forKey: key)
         to = NSOrderedSet.adding(elements: [identity], toSet: to)
-        didChangeValue(forKey: key)
     }
 
     /**
      The original (`addToCc`) crashes
      */
     public func addCc(identity: CdIdentity) {
-        let key = "cc"
-        willChangeValue(forKey: key)
         cc = NSOrderedSet.adding(elements: [identity], toSet: cc)
-        didChangeValue(forKey: key)
     }
 
     /**
      The original (`addToBcc`) crashes
      */
     public func addBcc(identity: CdIdentity) {
-        let key = "bcc"
-        willChangeValue(forKey: key)
         bcc = NSOrderedSet.adding(elements: [identity], toSet: bcc)
-        didChangeValue(forKey: key)
     }
 
     static func insertAttachment(
