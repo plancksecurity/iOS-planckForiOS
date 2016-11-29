@@ -20,6 +20,7 @@ class MessageModelTests: XCTestCase {
         persistentSetup = PersistentSetup()
     }
 
+    /*
     func testFolderLookUp() {
         MessageModelConfig.observer.delegate = ObserverDelegate(
             expSaved: expectation(description: "saved"))
@@ -36,6 +37,7 @@ class MessageModelTests: XCTestCase {
         XCTAssertFalse(Folder.by(folderType: FolderType.sent).isEmpty)
         XCTAssertFalse(Folder.by(folderType: FolderType.drafts).isEmpty)
     }
+     */
 
     func testAccountSave() {
         CdAccount.sendLayer = DefaultSendLayer()
