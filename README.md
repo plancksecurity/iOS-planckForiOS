@@ -33,6 +33,7 @@ For building the engine, you need a working python2 environment
 and all dependencies:
 
 ```
+sudo port install python27
 sudo port install asn1c
 sudo port install py27-lxml
 
