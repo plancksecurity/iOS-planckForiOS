@@ -36,9 +36,9 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             return uid
         }
         set {
-            privateMOC.perform({
+            privateMOC.performAndWait({
                 self.folder.uidNext = NSNumber(value: newValue).int64Value
-                Record.save()
+                Record.saveAndWait()
             })
         }
     }
@@ -52,9 +52,9 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             return count
         }
         set {
-            privateMOC.perform({
+            privateMOC.performAndWait({
                 self.folder.existsCount = NSNumber(value: newValue).int64Value
-                Record.save()
+                Record.saveAndWait()
             })
         }
     }
@@ -82,7 +82,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             }
             if let fo = CdFolder.insertOrUpdate(
                 folderName: self.name(), folderSeparator: nil, account: account) {
-                Record.save()
+                Record.saveAndWait()
                 folder = fo
             }
         })
@@ -90,14 +90,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
-        privateMOC.perform() {
+        privateMOC.performAndWait() {
             if self.folder.uidValidity != Int32(theUIDValidity) {
                 Log.warn(component: self.comp,
                          "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
                 self.folder.messages = []
             }
             self.folder.uidValidity = Int32(theUIDValidity)
-            Record.save()
+            Record.saveAndWait()
         }
     }
 
