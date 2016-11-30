@@ -11,6 +11,7 @@ import CoreData
 import MessageModel
 
 /**
+ Fetches messages from the server.
  This operation is not intended to be put in a queue (though this should work too).
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
@@ -72,16 +73,16 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
             self.sync.start()
         } else {
             if self.sync.imapState.currentFolder != nil {
-                self.syncMessages(self.sync)
+                self.fetchMessages(self.sync)
             } else {
                 self.sync.openMailBox(self.folderToOpen)
             }
         }
     }
 
-    func syncMessages(_ sync: ImapSync) {
+    func fetchMessages(_ sync: ImapSync) {
         do {
-            try sync.syncMessages()
+            try sync.fetchMessages()
         } catch let err as NSError {
             addError(err)
             waitForFinished()
@@ -136,7 +137,7 @@ extension FetchMessagesOperation: ImapSyncDelegate {
     }
 
     public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        syncMessages(sync)
+        fetchMessages(sync)
     }
 
     public func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {

@@ -111,9 +111,9 @@ public protocol IImapSync {
     func openMailBox(_ name: String)
 
     /**
-     Sync the messages from the curently selected folder.
+     Fetch the latest messages from the curently selected folder.
      */
-    func syncMessages() throws
+    func fetchMessages() throws
 
     /**
      Creates a new folder on the server.
@@ -184,7 +184,7 @@ open class ImapSync: Service, IImapSync {
         }
     }
 
-    open func syncMessages() throws {
+    open func fetchMessages() throws {
         guard let folderName = imapState.currentFolder else {
             throw Constants.errorIllegalState(
                 comp,
