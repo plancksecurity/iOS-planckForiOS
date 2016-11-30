@@ -144,6 +144,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return UInt(count)
     }
 
+    override func firstUID() -> UInt {
+        var uid: UInt = 0
+        privateMOC.performAndWait({
+            uid = self.folder.firstUID()
+        })
+        return uid
+    }
+
     override func lastUID() -> UInt {
         var uid: UInt = 0
         privateMOC.performAndWait({

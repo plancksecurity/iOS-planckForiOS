@@ -117,6 +117,15 @@ public extension CdFolder {
         return []
     }
 
+    public func firstUID() -> UInt {
+        if let msg = CdMessage.first(
+            with: allMessagesPredicate(),
+            orderedBy: [NSSortDescriptor(key: "uid", ascending: true)]) {
+            return UInt(msg.uid)
+        }
+        return 0
+    }
+
     public func lastUID() -> UInt {
         if let msg = CdMessage.first(
             with: allMessagesPredicate(),
