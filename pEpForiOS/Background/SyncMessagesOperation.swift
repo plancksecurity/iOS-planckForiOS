@@ -116,15 +116,10 @@ extension SyncMessagesOperation: ImapSyncDelegate {
                 markAsFinished()
                 return
         }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CdMessage")
-        fetchRequest.predicate = NSPredicate(format: "parent = %@ and uid >= %d and uid < %d",
-                                             folder, startUID, excludingUID)
-        let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        do {
-            try context.execute(request)
-        } catch {
-            addError(error as NSError)
-            markAsFinished()
+        for deleteUID in startUID + 1..<excludingUID {
+            if let msg = CdMessage.first(with: ["parent": folder, "uid": deleteUID]) {
+                msg.delete(from: context)
+            }
         }
     }
 
