@@ -54,13 +54,13 @@ class SimpleOperationsTest: XCTestCase {
     func testFetchMessagesOperation() {
         XCTAssertNil(CdMessage.all())
 
-        let expMailsPrefetched1 = expectation(description: "expMailsPrefetched1")
+        let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
         let op = FetchMessagesOperation(grandOperator: grandOperator,
                                          connectInfo: imapConnectInfo,
                                          folder: ImapSync.defaultImapInboxName)
         op.completionBlock = {
-            expMailsPrefetched1.fulfill()
+            expMailsPrefetched.fulfill()
         }
 
         op.start()
@@ -116,6 +116,15 @@ class SimpleOperationsTest: XCTestCase {
             }
             XCTAssertEqual(messages.count, 1)
         }
+    }
+
+    func testSyncMessagesOperation() {
+        testFetchMessagesOperation()
+
+        guard let allMessages = CdMessage.all() as? [CdMessage] else {
+            XCTFail()
+            return
+        }
 
         // Change all flags locally
         for m in allMessages {
@@ -125,7 +134,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expMailsPrefetched2 = expectation(description: "expMailsPrefetched2")
 
-        let op2 = FetchMessagesOperation(grandOperator: grandOperator,
+        let op2 = SyncMessagesOperation(grandOperator: grandOperator,
                                         connectInfo: imapConnectInfo,
                                         folder: ImapSync.defaultImapInboxName)
         op2.completionBlock = {

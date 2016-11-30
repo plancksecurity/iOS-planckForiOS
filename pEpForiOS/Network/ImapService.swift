@@ -116,6 +116,11 @@ public protocol IImapSync {
     func fetchMessages() throws
 
     /**
+     Synchronizes existing messages from the curently selected folder.
+     */
+    func syncMessages() throws
+
+    /**
      Creates a new folder on the server.
      */
     func createFolderWithName(_ folderName: String)
@@ -184,17 +189,27 @@ open class ImapSync: Service, IImapSync {
         }
     }
 
-    open func fetchMessages() throws {
+    func openFolder() throws -> CWIMAPFolder{
         guard let folderName = imapState.currentFolder else {
             throw Constants.errorIllegalState(
                 comp,
                 stateName: NSLocalizedString("No open folder",
-                    comment: "Need an open folder to sync messages"))
+                                             comment: "Need an open folder to sync messages"))
         }
         guard let folder = imapStore.folder(forName: imapState.currentFolder) else {
             throw Constants.errorFolderNotOpen(comp, folderName: folderName)
         }
-        (folder as AnyObject).prefetch()
+        return folder as! CWIMAPFolder
+    }
+
+    open func fetchMessages() throws {
+        let folder = try openFolder()
+        folder.prefetch()
+    }
+
+    open func syncMessages() throws {
+        let folder = try openFolder()
+        folder.syncExisting()
     }
 
     open func createFolderWithName(_ folderName: String) {

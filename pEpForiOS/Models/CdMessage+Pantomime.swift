@@ -202,6 +202,20 @@ extension CdMessage {
         }
     }
 
+    public func updateFromServer(flags: CWFlags) {
+        let theImap = imap ?? CdImapFields.create()
+        imap = theImap
+
+        theImap.flagsFromServer = Int16(flags.rawFlagsAsShort())
+        theImap.flagsCurrent = theImap.flagsFromServer
+        theImap.flagSeen = flags.contain(.seen)
+        theImap.flagAnswered = flags.contain(.answered)
+        theImap.flagFlagged = flags.contain(.flagged)
+        theImap.flagDeleted = flags.contain(.deleted)
+        theImap.flagDraft = flags.contain(.draft)
+        theImap.flagRecent = flags.contain(.recent)
+    }
+
     /**
      Quickly inserts essential parts of a pantomime message into the store.
      Useful for networking, where inserts should be quick and the persistent store
@@ -236,14 +250,7 @@ extension CdMessage {
 
         // sync flags
         let flags = message.flags()
-        imap.flagsFromServer = Int16(flags.rawFlagsAsShort())
-        imap.flagsCurrent = imap.flagsFromServer
-        imap.flagSeen = flags.contain(.seen)
-        imap.flagAnswered = flags.contain(.answered)
-        imap.flagFlagged = flags.contain(.flagged)
-        imap.flagDeleted = flags.contain(.deleted)
-        imap.flagDraft = flags.contain(.draft)
-        imap.flagRecent = flags.contain(.recent)
+        mail.updateFromServer(flags: flags)
 
         return mail
     }

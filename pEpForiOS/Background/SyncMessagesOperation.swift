@@ -11,7 +11,7 @@ import CoreData
 
 import MessageModel
 
-class SyncMessagesOperation: ConcurrentBaseOperation {
+open class SyncMessagesOperation: ConcurrentBaseOperation {
     let comp = "SyncMessagesOperation"
     let connectInfo: EmailConnectInfo
     var sync: ImapSync!
@@ -76,10 +76,20 @@ class SyncMessagesOperation: ConcurrentBaseOperation {
 
     func syncMessages(_ sync: ImapSync) {
         do {
-            try sync.fetchMessages()
+            try sync.syncMessages()
         } catch let err as NSError {
             addError(err)
             waitForFinished()
+        }
+    }
+
+    func handle(cwMessage: CWIMAPMessage, uuid: String) {
+        if let msg = CdMessage.first(with: ["uuid": uuid]) {
+            msg.updateFromServer(flags: cwMessage.flags())
+        } else {
+            addError(Constants.errorIllegalState(
+                comp, stateName: "PantomimeMessageChanged: Could not find message by id: \(uuid)"))
+            markAsFinished()
         }
     }
 }
@@ -118,16 +128,28 @@ extension SyncMessagesOperation: ImapSyncDelegate {
     }
 
     public func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        waitForFinished()
-    }
-
-    public func messageChanged(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
+        addError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
         markAsFinished()
     }
 
+    public func messageChanged(_ sync: ImapSync, notification: Notification?) {
+        if let userDict = notification?.userInfo?[PantomimeMessageChanged] as? [String: Any],
+            let cwMessage = userDict["Message"] as? CWIMAPMessage,
+            let uuid = cwMessage.messageID() {
+            Record.Context.default.performAndWait {
+                self.handle(cwMessage: cwMessage, uuid: uuid)
+                Record.saveAndWait()
+            }
+        } else {
+            addError(Constants.errorIllegalState(
+                comp, stateName: "PantomimeMessageChanged without valid message"))
+            markAsFinished()
+        }
+    }
+
     public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        // do nothing
+        addError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
+        markAsFinished()
     }
 
     public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
