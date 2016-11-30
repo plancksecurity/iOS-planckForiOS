@@ -54,13 +54,13 @@ class SimpleOperationsTest: XCTestCase {
     func testFetchMessagesOperation() {
         XCTAssertNil(CdMessage.all())
 
-        let expMailsPrefetched = expectation(description: "expMailsPrefetched")
+        let expMailsPrefetched1 = expectation(description: "expMailsPrefetched1")
 
         let op = FetchMessagesOperation(grandOperator: grandOperator,
                                          connectInfo: imapConnectInfo,
                                          folder: ImapSync.defaultImapInboxName)
         op.completionBlock = {
-            expMailsPrefetched.fulfill()
+            expMailsPrefetched1.fulfill()
         }
 
         op.start()
@@ -92,7 +92,7 @@ class SimpleOperationsTest: XCTestCase {
         for m in allMessages {
             XCTAssertNotNil(m.uid)
             XCTAssertGreaterThan(m.uid, 0)
-
+            XCTAssertNotNil(m.imap)
             XCTAssertNotNil(m.shortMessage)
 
             guard let uuid = m.uuid else {
@@ -115,6 +115,32 @@ class SimpleOperationsTest: XCTestCase {
                     break
             }
             XCTAssertEqual(messages.count, 1)
+        }
+
+        // Change flags locally
+        for m in allMessages {
+            m.imap?.flagFlagged = true
+            XCTAssertTrue(m.imap?.flagFlagged ?? false)
+        }
+
+        let expMailsPrefetched2 = expectation(description: "expMailsPrefetched2")
+
+        let op2 = FetchMessagesOperation(grandOperator: grandOperator,
+                                        connectInfo: imapConnectInfo,
+                                        folder: ImapSync.defaultImapInboxName)
+        op2.completionBlock = {
+            expMailsPrefetched2.fulfill()
+        }
+
+        op2.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op2.hasErrors())
+        })
+
+        // Flags should be reverted to server version
+        for m in allMessages {
+            XCTAssertFalse(m.imap?.flagFlagged ?? true)
         }
     }
 
@@ -384,7 +410,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationEmpty() {
-        testPrefetchMailsOperation()
+        testFetchMessagesOperation()
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
             XCTFail()
@@ -411,7 +437,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperation() {
-        testPrefetchMailsOperation()
+        testFetchMessagesOperation()
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
             XCTFail()
@@ -473,7 +499,7 @@ class SimpleOperationsTest: XCTestCase {
      while the others will cancel early and not do anything.
      */
     func testSyncFlagsToServerOperationMulti() {
-        testPrefetchMailsOperation()
+        testFetchMessagesOperation()
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
             XCTFail()
