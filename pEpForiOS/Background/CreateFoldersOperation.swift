@@ -106,6 +106,11 @@ extension CreateFoldersOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderSyncCompleted"))
+        markAsFinished()
+    }
+
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
         markAsFinished()

@@ -136,6 +136,11 @@ extension FetchFoldersOperation: ImapSyncDelegate {
         addError(Constants.errorIllegalState(comp, stateName: "folderPrefetchCompleted"))
     }
 
+    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderSyncCompleted"))
+        markAsFinished()
+    }
+
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
     }

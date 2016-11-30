@@ -19,6 +19,7 @@ public protocol ImapSyncDelegate: class {
     func connectionTerminated(_ sync: ImapSync, notification: Notification?)
     func connectionTimedOut(_ sync: ImapSync, notification: Notification?)
     func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)
+    func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)
     func messageChanged(_ sync: ImapSync, notification: Notification?)
     func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?)
     func folderOpenCompleted(_ sync: ImapSync, notification: Notification?)
@@ -52,6 +53,7 @@ open class DefaultImapSyncDelegate: ImapSyncDelegate {
     open func connectionTerminated(_ sync: ImapSync, notification: Notification?)  {}
     open func connectionTimedOut(_ sync: ImapSync, notification: Notification?)  {}
     open func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
+    open func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)  {}
     open func messageChanged(_ sync: ImapSync, notification: Notification?)  {}
     open func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
     open func folderOpenCompleted(_ sync: ImapSync, notification: Notification?)  {}
@@ -271,6 +273,21 @@ extension ImapSync: CWServiceClient {
             bq.waitUntilAllOperationsAreFinished()
         }
         delegate?.folderPrefetchCompleted(self, notification: notification)
+    }
+
+    @objc public func folderSyncCompleted(_ notification: Notification?) {
+        dumpMethodName("folderSyncCompleted", notification: notification)
+        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
+            as? CWFolder) {
+            Log.info(component: comp, "synced folder: \(folder.name())")
+        } else {
+            Log.info(component: comp, "folderSyncCompleted: \(notification)")
+        }
+        if let bq = folderBuilder?.backgroundQueue {
+            // Wait until all newly synced messages are stored
+            bq.waitUntilAllOperationsAreFinished()
+        }
+        delegate?.folderSyncCompleted(self, notification: notification)
     }
 
     @objc public func messagePrefetchCompleted(_ notification: Notification?) {

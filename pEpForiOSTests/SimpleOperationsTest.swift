@@ -128,28 +128,30 @@ class SimpleOperationsTest: XCTestCase {
 
         // Change all flags locally
         for m in allMessages {
-            m.imap?.flagFlagged = true
-            XCTAssertTrue(m.imap?.flagFlagged ?? false)
+            m.imap?.flagSeen = false
+            XCTAssertFalse(m.imap?.flagFlagged ?? true)
         }
 
-        let expMailsPrefetched2 = expectation(description: "expMailsPrefetched2")
+        Record.saveAndWait()
 
-        let op2 = SyncMessagesOperation(grandOperator: grandOperator,
-                                        connectInfo: imapConnectInfo,
-                                        folder: ImapSync.defaultImapInboxName)
-        op2.completionBlock = {
-            expMailsPrefetched2.fulfill()
+        let expMailsPrefetched = expectation(description: "expMailsPrefetched")
+
+        let op = SyncMessagesOperation(grandOperator: grandOperator,
+                                       connectInfo: imapConnectInfo,
+                                       folder: ImapSync.defaultImapInboxName)
+        op.completionBlock = {
+            expMailsPrefetched.fulfill()
         }
 
-        op2.start()
+        op.start()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op2.hasErrors())
+            XCTAssertFalse(op.hasErrors())
         })
 
         // Flags should be reverted to server version
         for m in allMessages {
-            XCTAssertFalse(m.imap?.flagFlagged ?? true)
+            XCTAssertTrue(m.imap?.flagSeen ?? false)
         }
     }
 

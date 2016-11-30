@@ -82,16 +82,6 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
             waitForFinished()
         }
     }
-
-    func handle(cwMessage: CWIMAPMessage, uuid: String) {
-        if let msg = CdMessage.first(with: ["uuid": uuid]) {
-            msg.updateFromServer(flags: cwMessage.flags())
-        } else {
-            addError(Constants.errorIllegalState(
-                comp, stateName: "PantomimeMessageChanged: Could not find message by id: \(uuid)"))
-            markAsFinished()
-        }
-    }
 }
 
 extension SyncMessagesOperation: ImapSyncDelegate {
@@ -132,19 +122,12 @@ extension SyncMessagesOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        markAsFinished()
+    }
+
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
-        if let userDict = notification?.userInfo?[PantomimeMessageChanged] as? [String: Any],
-            let cwMessage = userDict["Message"] as? CWIMAPMessage,
-            let uuid = cwMessage.messageID() {
-            Record.Context.default.performAndWait {
-                self.handle(cwMessage: cwMessage, uuid: uuid)
-                Record.saveAndWait()
-            }
-        } else {
-            addError(Constants.errorIllegalState(
-                comp, stateName: "PantomimeMessageChanged without valid message"))
-            markAsFinished()
-        }
+        // Nothing to do, should be handled by the `PersistentFolder`
     }
 
     public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
