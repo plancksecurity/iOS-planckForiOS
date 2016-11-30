@@ -117,7 +117,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertEqual(messages.count, 1)
         }
 
-        // Change flags locally
+        // Change all flags locally
         for m in allMessages {
             m.imap?.flagFlagged = true
             XCTAssertTrue(m.imap?.flagFlagged ?? false)
