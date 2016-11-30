@@ -51,7 +51,7 @@ class SimpleOperationsTest: XCTestCase {
         })
     }
 
-    func testPrefetchMailsOperation() {
+    func testFetchMessagesOperation() {
         XCTAssertNil(CdMessage.all())
 
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
