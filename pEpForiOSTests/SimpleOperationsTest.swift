@@ -56,7 +56,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
-        let op = PrefetchMessagesOperation(grandOperator: grandOperator,
+        let op = FetchMessagesOperation(grandOperator: grandOperator,
                                          connectInfo: imapConnectInfo,
                                          folder: ImapSync.defaultImapInboxName)
         op.completionBlock = {

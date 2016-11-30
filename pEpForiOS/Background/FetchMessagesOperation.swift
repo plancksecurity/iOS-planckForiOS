@@ -1,5 +1,5 @@
 //
-//  PrefetchMessagesOperation.swift
+//  FetchMessagesOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 15/04/16.
@@ -15,8 +15,8 @@ import MessageModel
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-open class PrefetchMessagesOperation: ConcurrentBaseOperation {
-    let comp = "PrefetchMessagesOperation"
+open class FetchMessagesOperation: ConcurrentBaseOperation {
+    let comp = "FetchMessagesOperation"
 
     let connectInfo: EmailConnectInfo
     var sync: ImapSync!
@@ -89,7 +89,7 @@ open class PrefetchMessagesOperation: ConcurrentBaseOperation {
     }
 }
 
-extension PrefetchMessagesOperation: ImapSyncDelegate {
+extension FetchMessagesOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
         if !self.isCancelled {
