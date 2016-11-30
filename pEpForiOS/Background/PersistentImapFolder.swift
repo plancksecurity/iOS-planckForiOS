@@ -47,13 +47,13 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         get {
             var count: UInt = 0
             privateMOC.performAndWait({
-                count = UInt(self.folder.exists)
+                count = UInt(self.folder.existsCount)
             })
             return count
         }
         set {
             privateMOC.perform({
-                self.folder.exists = NSNumber(value: newValue).int64Value
+                self.folder.existsCount = NSNumber(value: newValue).int64Value
                 Record.save()
             })
         }
