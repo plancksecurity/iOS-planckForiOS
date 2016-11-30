@@ -15,17 +15,16 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
     let comp = "SyncMessagesOperation"
     let connectInfo: EmailConnectInfo
     var sync: ImapSync!
-    var folderToOpen: String
+    let folderID: NSManagedObjectID
+    let folderToOpen: String
     let connectionManager: ConnectionManager
+    var lastUID: UInt?
 
-    public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo, folder: String?) {
+    public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo, folder: CdFolder) {
         self.connectInfo = connectInfo
         self.connectionManager = grandOperator.connectionManager
-        if let folder = folder {
-            folderToOpen = folder
-        } else {
-            folderToOpen = ImapSync.defaultImapInboxName
-        }
+        folderID = folder.objectID
+        folderToOpen = folder.name!
     }
 
     override open func main() {
@@ -42,23 +41,6 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
     func process(context: NSManagedObjectContext) {
         let folderBuilder = ImapFolderBuilder.init(connectInfo: self.connectInfo,
                                                    backgroundQueue: self.backgroundQueue)
-
-        guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
-            as? CdAccount else {
-                errors.append(Constants.errorCannotFindAccount(component: comp))
-                markAsFinished()
-                return
-        }
-
-        // Treat Inbox specially, as it is the only mailbox
-        // that is mandatorily case-insensitive.
-        if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
-            if let folder = CdFolder.first(with: ["folderType": FolderType.inbox.rawValue,
-                                                  "account": account]) {
-                self.folderToOpen = folder.name!
-            }
-        }
-
         self.sync = self.connectionManager.emailSyncConnection(self.connectInfo)
         self.sync.delegate = self
         self.sync.folderBuilder = folderBuilder
@@ -126,8 +108,40 @@ extension SyncMessagesOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    func deleteMessagesInBetween(
+        context: NSManagedObjectContext, startUID: UInt, excludingUID: UInt) {
+        guard let folder = context.object(with: folderID)
+            as? CdFolder else {
+                addError(Constants.errorCannotFindAccount(component: comp))
+                markAsFinished()
+                return
+        }
+        for deleteUID in startUID + 1..<excludingUID {
+            if let msg = CdMessage.first(with: ["parent": folder, "uid": deleteUID]) {
+                msg.delete(from: context)
+            }
+        }
+    }
+
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
-        // Nothing to do, should be handled by the `PersistentFolder`
+        // The update of the flags is already handled by `PersistentFolder`.
+        if let userDict = notification?.userInfo?[PantomimeMessageChanged] as? [String: Any],
+            let cwMessage = userDict["Message"] as? CWIMAPMessage {
+            let uid = cwMessage.uid()
+            if let theLastUID = lastUID, uid - 1 > theLastUID {
+                let context = Record.Context.default
+                context.performAndWait {
+                    self.deleteMessagesInBetween(
+                        context: context, startUID: theLastUID + 1, excludingUID: uid)
+                    Record.saveAndWait()
+                }
+            }
+            lastUID = uid
+        } else {
+            addError(Constants.errorIllegalState(
+                comp, stateName: "PantomimeMessageChanged without valid message"))
+            markAsFinished()
+        }
     }
 
     public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {

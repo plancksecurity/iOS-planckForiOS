@@ -121,6 +121,11 @@ class SimpleOperationsTest: XCTestCase {
     func testSyncMessagesOperation() {
         testFetchMessagesOperation()
 
+        guard let folder = CdFolder.by(folderType: .inbox, account: account) else {
+            XCTFail()
+            return
+        }
+
         guard let allMessages = CdMessage.all() as? [CdMessage] else {
             XCTFail()
             return
@@ -136,9 +141,8 @@ class SimpleOperationsTest: XCTestCase {
 
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
-        let op = SyncMessagesOperation(grandOperator: grandOperator,
-                                       connectInfo: imapConnectInfo,
-                                       folder: ImapSync.defaultImapInboxName)
+        let op = SyncMessagesOperation(grandOperator: grandOperator, connectInfo: imapConnectInfo,
+                                       folder: folder)
         op.completionBlock = {
             expMailsPrefetched.fulfill()
         }
