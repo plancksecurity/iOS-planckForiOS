@@ -129,7 +129,7 @@ class SimpleOperationsTest: XCTestCase {
         // Change all flags locally
         for m in allMessages {
             m.imap?.flagSeen = false
-            XCTAssertFalse(m.imap?.flagFlagged ?? true)
+            XCTAssertFalse(m.imap?.flagSeen ?? true)
         }
 
         Record.saveAndWait()
