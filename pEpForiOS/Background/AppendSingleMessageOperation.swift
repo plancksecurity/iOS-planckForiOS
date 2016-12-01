@@ -6,7 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 import MessageModel
@@ -30,87 +29,66 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     var cwMessageToAppend: CWIMAPMessage!
     var targetFolderName: String!
 
-    public init(message: CdMessage, account: CdAccount, targetFolder: CdFolder?,
-                folderType: FolderType?,
-                connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
+    public init(connectInfo: EmailConnectInfo, message: CdMessage, account: CdAccount,
+                targetFolder: CdFolder? = nil, folderType: FolderType? = nil,
+                connectionManager: ConnectionManager) {
+        self.connectInfo = connectInfo
         self.messageID = message.objectID
-
-        if let folder = targetFolder {
-            self.targetFolderID = folder.objectID
-        } else {
-            self.targetFolderID = nil
-        }
+        self.targetFolderID = targetFolder?.objectID
         self.folderType = folderType
-
         self.accountID = account.objectID
-
-        self.connectInfo = account.connectInfo
         self.connectionManager = connectionManager
-
-        super.init(coreDataUtil: coreDataUtil)
-    }
-
-    convenience public init(message: CdMessage, account: CdAccount, targetFolder: CdFolder,
-                            connectionManager: ConnectionManager,
-                            coreDataUtil: CoreDataUtil) {
-        self.init(message: message, account: account, targetFolder: targetFolder,
-                  folderType: nil, connectionManager: connectionManager,
-                  coreDataUtil: coreDataUtil)
-    }
-
-    convenience public init(message: CdMessage, account: CdAccount, folderType: FolderType,
-                            connectionManager: ConnectionManager,
-                            coreDataUtil: CoreDataUtil) {
-        self.init(message: message, account: account, targetFolder: nil,
-                  folderType: folderType, connectionManager: connectionManager,
-                  coreDataUtil: coreDataUtil)
     }
 
     override open func main() {
         privateMOC.perform({
             guard let message = self.privateMOC.object(with: self.messageID) as?
                 CdMessage else {
+                    self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                    self.markAsFinished()
                     return
             }
             guard let account = self.privateMOC.object(with: self.accountID) as?
                 CdAccount else {
+                    self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                    self.markAsFinished()
                     return
             }
             var tf: CdFolder?
             if let ft = self.folderType {
-                tf = self.model.folderByType(ft, email: account.email)
+                tf = CdFolder.by(folderType: ft, account: account)
             } else if let folderID = self.targetFolderID {
                 tf = self.privateMOC.object(with: folderID) as? CdFolder
             }
 
             guard let targetFolder = tf else {
-                self.addError(Constants.errorCannotStoreMail(self.comp))
+                self.addError(Constants.errorCannotStoreMessage(self.comp))
                 self.markAsFinished()
                 return
             }
 
-            message.folder = targetFolder
+            message.parent = targetFolder
 
-            // In case the append fails, the mail will be easy to find
+            // In case the append fails, the message will be easy to find
             message.uid = 0
 
             self.targetFolderName = targetFolder.name
-            CoreDataUtil.saveContext(self.privateMOC)
+            Record.saveAndWait(context: self.privateMOC)
 
-            // Encrypt mail
+            // Encrypt message
             let session = PEPSession.init()
-            let ident = PEPUtil.identityFromAccount(account, isMyself: true)
-            let pepMailOrig = PEPUtil.pepMail(message)
-            var encryptedMail: NSDictionary? = nil
+            let ident = PEPUtil.identity(account: account)
+            let pepMessageOrig = PEPUtil.pEp(cdMessage: message)
+            var encryptedMessage: NSDictionary? = nil
             let status = session.encryptMessageDict(
-                pepMailOrig,
-                identity: NSDictionary.init(dictionary: ident) as! [AnyHashable : Any],
-                dest: &encryptedMail)
-            let (mail, _) = PEPUtil.checkPepStatus(self.comp, status: status,
-                encryptedMail: encryptedMail)
-            if let m = mail {
-                // Append the email
-                self.cwMessageToAppend = PEPUtil.pantomimeMailFromPep(m as! PEPMail)
+                pepMessageOrig,
+                identity: ident,
+                dest: &encryptedMessage)
+            let (msg, _) = PEPUtil.check(comp: self.comp, status: status,
+                encryptedMessage: encryptedMessage)
+            if let m = msg {
+                // Append the message
+                self.cwMessageToAppend = PEPUtil.pantomime(pEpMessage: m as! PEPMessage)
                 self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
                 self.imapSync.delegate = self
                 self.imapSync.start()
@@ -157,6 +135,11 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderSyncCompleted"))
+        markAsFinished()
+    }
+
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
         markAsFinished()
@@ -196,7 +179,7 @@ extension AppendSingleMessageOperation: ImapSyncDelegate {
         privateMOC.perform({
             let message = self.privateMOC.object(with: self.messageID)
             self.privateMOC.delete(message)
-            CoreDataUtil.saveContext(self.privateMOC)
+            Record.saveAndWait(context: self.privateMOC)
             self.markAsFinished()
         })
     }

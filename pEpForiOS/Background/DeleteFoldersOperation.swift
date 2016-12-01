@@ -1,93 +1,84 @@
 //
-//  PrefetchEmailsOperation.swift
+//  DeleteFolderOperation.swift
 //  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 15/04/16.
+//  Created by Dirk Zimmermann on 19/09/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import CoreData
 
-/**
- This operation is not intended to be put in a queue (though this should work too).
- It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
- Therefore it behaves as a concurrent operation, handling the state itself.
- */
-open class PrefetchEmailsOperation: ConcurrentBaseOperation {
-    let comp = "PrefetchEmailsOperation"
+import MessageModel
 
-    let connectInfo: EmailConnectInfo
-    var sync: ImapSync!
-    var folderToOpen: String
+open class DeleteFoldersOperation: ConcurrentBaseOperation {
+    let comp = "DeleteFoldersOperation"
+
+    let imapConnectInfo: EmailConnectInfo
     let connectionManager: ConnectionManager
+    let accountID: NSManagedObjectID
+    var account: CdAccount!
+    var imapSync: ImapSync!
+    var folderNamesToDelete = [String]()
+    var currentFolderName: String?
 
-    public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo, folder: String?) {
-        self.connectInfo = connectInfo
-        self.connectionManager = grandOperator.connectionManager
-        if let folder = folder {
-            folderToOpen = folder
-        } else {
-            folderToOpen = ImapSync.defaultImapInboxName
-        }
-        super.init(coreDataUtil: grandOperator.coreDataUtil)
+    public init(imapConnectInfo: EmailConnectInfo, account: CdAccount,
+                connectionManager: ConnectionManager) {
+        self.imapConnectInfo = imapConnectInfo
+        self.accountID = account.objectID
+        self.connectionManager = connectionManager
     }
 
-    override open func main() {
-        if self.isCancelled {
+    open override func main() {
+        privateMOC.perform() {
+            self.mainInternal()
+        }
+    }
+
+    func mainInternal() {
+        account = privateMOC.object(with: accountID) as? CdAccount
+        guard account != nil else {
+            addError(Constants.errorCannotFindAccount(component: comp))
+            markAsFinished()
             return
         }
 
-        privateMOC.perform() {
-            let folderBuilder = ImapFolderBuilder.init(coreDataUtil: self.coreDataUtil,
-                connectInfo: self.connectInfo,
-                backgroundQueue: self.backgroundQueue)
-
-            // Treat Inbox specially, as it is the only mailbox
-            // that is mandatorily case-insensitive.
-            if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
-                if let folder = self.model.folderByType(.inbox, email: self.connectInfo.userId) {
-                    self.folderToOpen = folder.name!
-                }
-            }
-
-            self.sync = self.connectionManager.emailSyncConnection(self.connectInfo)
-            self.sync.delegate = self
-            self.sync.folderBuilder = folderBuilder
-
-            if self.sync.imapState.authenticationCompleted == false {
-                self.sync.start()
-            } else {
-                if self.sync.imapState.currentFolder != nil {
-                    self.syncMails(self.sync)
-                } else {
-                    self.sync.openMailBox(self.folderToOpen)
+        let p = NSPredicate(format: "shouldDelete = true and account = %@", account)
+        if let folders = CdFolder.all(with: p) as? [CdFolder] {
+            for f in folders {
+                if let fn = f.name {
+                    folderNamesToDelete.append(fn)
                 }
             }
         }
+
+        imapSync = connectionManager.emailSyncConnection(imapConnectInfo)
+        imapSync.delegate = self
+        imapSync.start()
     }
 
-    func syncMails(_ sync: ImapSync) {
-        do {
-            try sync.syncMails()
-        } catch let err as NSError {
-            addError(err)
-            waitForFinished()
+    func deleteNextRemoteFolder(sync: ImapSync) {
+        if let fn = currentFolderName {
+            privateMOC.performAndWait() {
+                if let folder = CdFolder.by(name: fn, account: self.account) {
+                    self.privateMOC.delete(folder)
+                }
+            }
         }
+        if !self.isCancelled {
+            if let fn = folderNamesToDelete.first {
+                currentFolderName = fn
+                imapSync.deleteFolderWithName(fn)
+                folderNamesToDelete.removeFirst()
+                return
+            }
+        }
+        markAsFinished()
     }
 }
 
-extension PrefetchEmailsOperation: ImapSyncDelegate {
-
+extension DeleteFoldersOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            sync.openMailBox(folderToOpen)
-        }
-    }
-
-    public func receivedFolderNames(_ sync: ImapSync, folderNames: [String]?) {
-        addError(Constants.errorIllegalState(comp, stateName: "receivedFolderNames"))
-        markAsFinished()
+        deleteNextRemoteFolder(sync: sync)
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
@@ -106,12 +97,18 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorTimeout(comp))
+        addError(Constants.errorConnectionTimeout(comp))
         markAsFinished()
     }
 
     public func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        waitForFinished()
+        addError(Constants.errorIllegalState(comp, stateName: "folderPrefetchCompleted"))
+        markAsFinished()
+    }
+
+    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderSyncCompleted"))
+        markAsFinished()
     }
 
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
@@ -120,11 +117,13 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        // do nothing
+        addError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
+        markAsFinished()
     }
 
     public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        syncMails(sync)
+        addError(Constants.errorIllegalState(comp, stateName: "folderOpenCompleted"))
+        markAsFinished()
     }
 
     public func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
@@ -178,12 +177,11 @@ extension PrefetchEmailsOperation: ImapSyncDelegate {
     }
 
     public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteCompleted"))
-        markAsFinished()
+        deleteNextRemoteFolder(sync: sync)
     }
 
     public func folderDeleteFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
+        addError(Constants.errorFolderDeleteFailed(comp, name: currentFolderName ?? ""))
         markAsFinished()
     }
 

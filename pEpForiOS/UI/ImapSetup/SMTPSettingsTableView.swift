@@ -133,7 +133,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         self.status.activityIndicatorViewEnable =  true
         updateView()
 
-        let identity = Identity.create(address: model.email!, userName: model.name!, userID: nil)
+        let identity = Identity.create(address: model.email!, userName: model.name!)
         identity.isMySelf = true
         let userName = (model.username ?? model.email)!
 
@@ -151,7 +151,6 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         credentials.needsVerification = true
         let account = Account.create(identity: identity, credentials: [credentials])
         account.needsVerification = true
-        account.save()
     }
 
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {

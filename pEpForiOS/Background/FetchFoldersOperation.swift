@@ -6,20 +6,14 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-import CoreData
-
 import MessageModel
 
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let connectInfo: EmailConnectInfo
-    let coreDataUtil: CoreDataUtil
     open let backgroundQueue: OperationQueue?
 
-    public init(coreDataUtil: CoreDataUtil, connectInfo: EmailConnectInfo,
-                backgroundQueue: OperationQueue) {
+    public init(connectInfo: EmailConnectInfo, backgroundQueue: OperationQueue) {
         self.connectInfo = connectInfo
-        self.coreDataUtil = coreDataUtil
         self.backgroundQueue = backgroundQueue
     }
 
@@ -51,23 +45,16 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(connectInfo: EmailConnectInfo, coreDataUtil: CoreDataUtil,
-                connectionManager: ConnectionManager, onlyUpdateIfNecessary: Bool) {
+    public init(connectInfo: EmailConnectInfo, connectionManager: ConnectionManager,
+                onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.connectInfo = connectInfo
         self.connectionManager = connectionManager
 
-        super.init(coreDataUtil: coreDataUtil)
+        super.init()
 
-        folderBuilder = ImapFolderBuilder.init(coreDataUtil: coreDataUtil,
-                                               connectInfo: connectInfo,
-                                               backgroundQueue: backgroundQueue)
-    }
-
-    convenience public init(connectInfo: EmailConnectInfo, coreDataUtil: CoreDataUtil,
-                            connectionManager: ConnectionManager) {
-        self.init(connectInfo: connectInfo, coreDataUtil: coreDataUtil,
-                  connectionManager: connectionManager, onlyUpdateIfNecessary: false)
+        folderBuilder = ImapFolderBuilder(connectInfo: connectInfo,
+                                          backgroundQueue: backgroundQueue)
     }
 
     open override func main() {
@@ -81,10 +68,17 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
         if onlyUpdateIfNecessary {
             // Check if the local folder list is fairly complete
             privateMOC.perform({
+                guard let account = self.privateMOC.object(with: self.connectInfo.accountObjectID)
+                    as? CdAccount else {
+                        self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                        self.markAsFinished()
+                        return
+                }
+
                 var needSync = false
                 let requiredTypes: [FolderType] = [.inbox, .sent, .drafts, .trash]
                 for ty in requiredTypes {
-                    if self.model.folderByType(ty, email: self.connectInfo.userId) == nil {
+                    if CdFolder.by(folderType: ty, account: account) == nil {
                         needSync = true
                         break
                     }
@@ -142,6 +136,11 @@ extension FetchFoldersOperation: ImapSyncDelegate {
         addError(Constants.errorIllegalState(comp, stateName: "folderPrefetchCompleted"))
     }
 
+    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderSyncCompleted"))
+        markAsFinished()
+    }
+
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
     }
@@ -176,15 +175,10 @@ extension FetchFoldersOperation: ImapSyncDelegate {
         guard let folderName = folderInfoDict[PantomimeFolderNameKey] as? String else {
             return
         }
-        guard let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey]
-            as? String else {
-            return
-        }
 
-        let folderInfo = FolderInfo.init(name: folderName, separator: folderSeparator)
-        let op = StoreFolderOperation.init(
-            coreDataUtil: coreDataUtil, folderInfo: folderInfo,
-            email: self.connectInfo.userId)
+        let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey] as? String
+        let folderInfo = FolderInfo(name: folderName, separator: folderSeparator)
+        let op = StoreFolderOperation(connectInfo: self.connectInfo, folderInfo: folderInfo)
         backgroundQueue.addOperation(op)
     }
 

@@ -6,16 +6,30 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
+import MessageModel
 
 extension CdAttachment {
+    /**
+     When removing attachments from a message, there will be the old attachments with
+     message = nil in the system, which will trigger a NSValidationException.
+     Therefore, call this function.
+     */
+    public static func deleteOrphans() {
+        if let orphans = CdAttachment.all(
+            with: NSPredicate(format: "message = nil")) as? [CdAttachment] {
+            for o in orphans {
+                o.delete()
+            }
+        }
+    }
+
     override open var description: String {
         let s = NSMutableString()
         s.append("Part \(size) bytes")
-        if let fn = filename {
+        if let fn = fileName {
             s.append(", \(fn)")
         }
-        if let ct = contentType {
+        if let ct = mimeType {
             s.append(", \(ct)")
         }
         return String(s)

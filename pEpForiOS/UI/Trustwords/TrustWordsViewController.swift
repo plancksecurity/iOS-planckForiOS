@@ -76,13 +76,13 @@ class TrustWordsViewController: UITableViewController {
 
             if let m = message {
                 cell.backgroundColor = defaultBackground
-                if let pEpRating = m.pEpRating {
-                    let privateColor = PEPUtil.pEpColorFromRating(pEpRating)
+                if let pEpRating = PEPUtil.pEpRatingFromInt(m.pEpRatingInt) {
+                    let privateColor = PEPUtil.pEpColor(pEpRating: pEpRating)
                     if let uiColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
                         privateColor) {
                         cell.backgroundColor = uiColor
                     }
-                    let securityTitleText = PEPUtil.pEpTitleFromRating(pEpRating)
+                    let securityTitleText = PEPUtil.pEpTitle(pEpRating: pEpRating)
                     let lenghtOfSecurityLabel = securityTitleText?.characters.count
                     let attributedString = NSMutableAttributedString(string:securityTitleText!)
                     attributedString.addAttribute(NSLinkAttributeName, value: "https://", range: NSRange(location: 0, length: lenghtOfSecurityLabel!))
@@ -97,9 +97,9 @@ class TrustWordsViewController: UITableViewController {
 
             cell.mailExplanationSecurityUILabel.text = ""
             if let m = message {
-                if let pEpRating = m.pEpRating {
+                if let pEpRating = PEPUtil.pEpRatingFromInt(m.pEpRatingInt) {
                     cell.mailExplanationSecurityUILabel.text =
-                        PEPUtil.pEpExplanationFromRating(pEpRating)
+                        PEPUtil.pEpExplanation(pEpRating: pEpRating)
                 }
             }
             return cell
@@ -143,8 +143,8 @@ class TrustWordsViewController: UITableViewController {
 
     @IBAction func showMoreInfo(_ sender: AnyObject) {
         if let m = message {
-            if let pEpRating = m.pEpRating {
-                if let suggestion = PEPUtil.pEpSuggestionFromRating(pEpRating) {
+            if let pEpRating = PEPUtil.pEpRatingFromInt(m.pEpRatingInt) {
+                if let suggestion = PEPUtil.pEpSuggestion(pEpRating: pEpRating) {
                     self.showSuggestionMessage(suggestion)
                 }
             }

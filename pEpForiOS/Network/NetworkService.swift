@@ -6,38 +6,42 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 protocol INetworkService {
-    func start()
 }
 
 /**
- * A class which provides an OO layer and doing syncing between CoreData and Pantomime
- * and any other (later) libraries providing in- and outbond transports of messages.
+ * A thread class which provides an OO layer and doing syncing between CoreData and Pantomime
+ * and any other (later) libraries providing in- and outbond transports of messages by managing
+ * different background tasks and run loops (to be implemented).
  */
-public class NetworkService: INetworkService {
-    let comp = "NetworkBackgroundService"
-    let backgroundQueue: DispatchQueue!
+public class NetworkService: Thread, INetworkService {
+    let comp = "NetworkService"
+    let backgroundQueue = DispatchQueue(label: "pep.app.network.service", qos: .background,
+                                                                         target: nil)
+    var connectInfos = [ConnectInfo]()
     
-    var connections: [Service]?
-    
-    public init() {
-        // Swift 3 GCD way according to http://swiftable.io/2016/06/dispatch-queues-swift-3/
-        backgroundQueue = DispatchQueue(label: "pep.app.network.service",
-                                      qos: .background,
-                                      target: nil)
+    /*!
+     * @brief Initilization without any connection info to be used (for testing).
+     */
+    public override init()
+    {
+        // noop
     }
     
-    public func start() {
+    /*!
+     * @brief Initialization of the Network Service for one connection.
+     * @param connectInfo Single connection information (e. g. an IMAP server).
+     */
+    public init(connectInfo: ConnectInfo) {
+        connectInfos.append(connectInfo)
     }
     
-    public func isBackgroundQueueExistent() -> Bool {
-        if backgroundQueue != nil {
-            return true
-        }
-        // default
-        return false
+    /*!
+     * @brief Initialization of Network Service for several connections.
+     * @param connectInfos Array for multiple connection informations (e. g. several IMAP servers).
+     */
+    public init(connectInfos: [ConnectInfo]) {
+        self.connectInfos = connectInfos
     }
     
     /*!

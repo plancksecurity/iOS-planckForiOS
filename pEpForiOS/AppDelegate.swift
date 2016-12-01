@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
-import CoreData
 import MessageModel
 
 @UIApplicationMain
@@ -46,13 +44,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.warn(component: comp, "Library url: \(applicationDirectory())")
 
         setupDefaultSettings()
+
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            return false
+        }
+
         loadCoreDataStack()
 
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
         }
 
-        return true
+        return false
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -62,26 +65,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, "applicationDidEnterBackground")
-        appConfig?.model.save()
 
         // Do mySelf on all accounts
-        let accounts = Account.all
         let bgId = application.beginBackgroundTask(expirationHandler: {
             Log.info(component: self.comp, "Could not complete all myself in background")
-            self.appConfig?.model.save()
 
             // Shutdown pEp engine
             self.firstSession = nil
         })
+        let accounts = Account.all()
         for acc in accounts {
-            let email = acc.user.address
-            Log.info(component: comp, "Starting myself for \(email)")
-            PEPUtil.myselfFromAccount(acc, queue: backgroundQueue) { identity in
-                Log.info(component: self.comp, "Finished myself for \(email) (\(identity[kPepFingerprint]))")
+            let userAddress = acc.user.address
+            Log.info(component: comp, "Starting myself for \(userAddress)")
+            PEPUtil.myself(account: acc, queue: backgroundQueue) { identity in
+                Log.info(component: self.comp, "Finished myself for \(userAddress) (\(identity[kPepFingerprint]))")
                 application.endBackgroundTask(bgId)
             }
         }
-        self.appConfig?.model.save()
 
         // Shutdown pEp engine
         firstSession = nil
@@ -104,7 +104,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        appConfig?.model.save()
     }
 
     func setupDefaultSettings() {
@@ -113,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func loadCoreDataStack() {
-        let objectModel = AppDataModel.appModel()
+        let objectModel = MessageModelData.MessageModelData()
         do {
             try Record.loadCoreDataStack(
                 managedObjectModel: objectModel)

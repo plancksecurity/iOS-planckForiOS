@@ -6,7 +6,6 @@
 //  Copyright © 2016 pEp Foundation. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 #import "KeyboardObserver.h"

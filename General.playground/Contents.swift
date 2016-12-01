@@ -24,3 +24,6 @@ var dict = [String: AnyObject]()
 let key = "bool"
 dict[key] = true as AnyObject?
 dict[key]
+
+Int16.max
+Int16.min

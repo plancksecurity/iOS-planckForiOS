@@ -6,9 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
-import CoreData
-
 import MessageModel
 
 /**
@@ -26,7 +23,7 @@ open class MessageToAttachmentOperation: BaseOperation {
     }
 
     open override func main() {
-        let pantMail = PEPUtil.pantomimeMail(message: message)
+        let pantMail = PEPUtil.pantomime(message: message)
         guard let data = pantMail.dataValue() else {
             errorMessage(NSLocalizedString(
                 "Could not get data from forwarded message", comment: "Internal error"),

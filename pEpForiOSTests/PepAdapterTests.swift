@@ -11,6 +11,7 @@ import XCTest
 import pEpForiOS
 
 class PepAdapterTests: XCTestCase {
+    let comp = "PepAdapterTests"
     let identity_me: NSMutableDictionary = [kPepAddress: "some@mail.com",
                                             kPepUsername: "This is me"]
     var pEpSession: PEPSession!
@@ -50,7 +51,7 @@ class PepAdapterTests: XCTestCase {
                         + "(successfully) modified by reference.")
 
         for key in identity.allKeys {
-            NSLog("key = \(key)")
+            Log.info(component: comp, "key = \(key)")
         }
         
         XCTAssertNotNil(identity[kPepFingerprint], "A fingerprint, there is!")
@@ -61,20 +62,22 @@ class PepAdapterTests: XCTestCase {
     func testPepPaths() {
         var error: NSError?
         
-        NSLog("Home folder: " + String(describing: PEPUtil.pEpUrls["home"]))
-        NSLog("pEp management DB file: " + String(describing: PEPUtil.pEpUrls["pEpManagementDb"]))
-        NSLog("GnuPG folder: " + String(describing: PEPUtil.pEpUrls["gnupg"]))
-        NSLog("Secring file: " + String(describing: PEPUtil.pEpUrls["gnupgSecring"]))
-        NSLog("Pubring file: " + String(describing: PEPUtil.pEpUrls["gnupgPubring"]))
+        // Test if paths exist.
+        for key in PEPUtil.pEpUrls.keys {
+            XCTAssertTrue((PEPUtil.pEpUrls[key]! as NSURL).checkResourceIsReachableAndReturnError(&error))
+        }
+        
+        Log.info(component: comp, "Home folder: " + String(describing: PEPUtil.pEpUrls["home"]))
+        Log.info(component: comp, "pEp management DB file: " + String(describing: PEPUtil.pEpUrls["pEpManagementDb"]))
+        Log.info(component: comp, "GnuPG folder: " + String(describing: PEPUtil.pEpUrls["gnupg"]))
+        Log.info(component: comp, "Secring file: " + String(describing: PEPUtil.pEpUrls["gnupgSecring"]))
+        Log.info(component: comp, "Pubring file: " + String(describing: PEPUtil.pEpUrls["gnupgPubring"]))
         
         // Test if paths are not nil.
         for key in PEPUtil.pEpUrls.keys {
             XCTAssertNotNil(PEPUtil.pEpUrls[key])
         }
-        // Test if paths exist.
-        for key in PEPUtil.pEpUrls.keys {
-            XCTAssertTrue((PEPUtil.pEpUrls[key]! as NSURL).checkResourceIsReachableAndReturnError(&error))
-        }
+
     }
     
     func testPepClean() {

@@ -6,22 +6,32 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 import MessageModel
 
 /**
- Contains all data that is needed for encrypting and sending emails.
+ Contains all data that is needed for encrypting and sending messages.
  By sourcing out all needed data, it becomes possible to chain operations, like
- one for encrypting, one for sending the mails,
+ one for encrypting, one for sending the messages (like e-mails),
  and one for persisting the result on the IMAP server.
  */
 open class EncryptionData {
     /**
      Needed for accessing core data.
+     TODO: Should be removed as soon as all Ops dealing with it have been updated.
      */
-    let coreDataUtil: CoreDataUtil
+    let coreDataUtil: CoreDataUtil = CoreDataUtil()
+
+    /**
+     For the save message operation.
+     */
+    let imapConnectInfo: EmailConnectInfo
+
+    /**
+     For the send message operation.
+     */
+    let smtpConnectInfo: EmailConnectInfo
 
     /**
      For getting a SMTP connection.
@@ -32,13 +42,7 @@ open class EncryptionData {
      The original unencrypted message ID. Needed as an object ID so it can be passed
      between operations.
      */
-    let coreDataMessageID: NSManagedObjectID
-
-    /**
-     The email of the account this message belongs to, in case the folder and account
-     are not yet setup.
-     */
-    let accountEmail: String
+    let messageID: NSManagedObjectID
 
     /**
      Message to encrypt is meant for sending?
@@ -46,31 +50,32 @@ open class EncryptionData {
     let outgoing: Bool
 
     /**
-     After encryption has happened, all mails supposed to be sent are stored here.
+     After encryption has happened, all messages supposed to be sent are stored here.
      This may include both encrypted and unencrypted messages, and should have a count > 0.
-     Those mails can then be sent with `SendMailOperation`.
-     When `SendMailOperation` executes, mails will move from `mailsToSend` to `mailsSent`.
+     Those messages can then be sent with `SendMessageOperation`.
+     When `SendMessageOperation` executes, messages will move from `messagesToSend` to 
+     `messagesSent`.
      */
-    open var mailsToSend: [PEPMail] = []
+    open var messagesToSend: [PEPMessage] = []
 
     /**
-     After encryption, the original mail will be stored here, in encrypted form.
+     After encryption, the original message will be stored here, in encrypted form.
      This is the message that should be stored then in the sent folder.
      */
-    open var mailEncryptedForSelf: PEPMail?
+    open var messageEncryptedForSelf: PEPMessage?
 
     /**
-     After the `SendMailOperation` has done its job, all sent mails should be noted here.
+     After the `SendMessageOperation` has done its job, all sent messages should be noted here.
      */
-    open var mailsSent: [PEPMail] = []
+    open var messagesSent: [PEPMessage] = []
 
-    public init(connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil,
-                coreDataMessageID: NSManagedObjectID, accountEmail: String,
+    public init(imapConnectInfo: EmailConnectInfo, smtpConnectInfo: EmailConnectInfo,
+                connectionManager: ConnectionManager, messageID: NSManagedObjectID,
                 outgoing: Bool = true) {
         self.connectionManager = connectionManager
-        self.coreDataUtil = coreDataUtil
-        self.coreDataMessageID = coreDataMessageID
-        self.accountEmail = accountEmail
+        self.imapConnectInfo = imapConnectInfo
+        self.smtpConnectInfo = smtpConnectInfo
+        self.messageID = messageID
         self.outgoing = outgoing
     }
 }

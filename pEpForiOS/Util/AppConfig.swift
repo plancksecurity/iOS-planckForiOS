@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 import MessageModel
 
 /**
@@ -16,14 +14,8 @@ import MessageModel
 class AppConfig: NSObject {
 
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
-    let connectionManager: ConnectionManager
+    let connectionManager = ConnectionManager()
     let grandOperator: IGrandOperator
-
-    /**
-     The model gives access to the complete application model. It has access
-     to the main thread's `NSManagedObjectContext`.
-     */
-    let model: ICdModel
 
     /**
      As soon as the UI has at least one account that is in use, this is set here.
@@ -31,12 +23,9 @@ class AppConfig: NSObject {
     var currentAccount: Account? = nil
 
     override init() {
-        connectionManager = ConnectionManager()
-        model = CdModel.init(context: coreDataUtil.defaultContext())
-        let gOp = GrandOperator.init(connectionManager: connectionManager,
-                                     coreDataUtil: coreDataUtil)
+        let gOp = GrandOperator(connectionManager: connectionManager)
         grandOperator = gOp
-        MessageModel.CdAccount.sendLayer = gOp
+        CdAccount.sendLayer = gOp
 
     }
 

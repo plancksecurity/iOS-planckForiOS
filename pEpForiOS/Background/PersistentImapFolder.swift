@@ -6,7 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import CoreData
 
 import MessageModel
@@ -25,7 +24,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     let backgroundQueue: OperationQueue
 
     var privateMOC: NSManagedObjectContext {
-        return Record.Context.default
+        return Record.Context.background
     }
 
     override var nextUID: UInt {
@@ -37,9 +36,9 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             return uid
         }
         set {
-            privateMOC.perform({
+            privateMOC.performAndWait({
                 self.folder.uidNext = NSNumber(value: newValue).int64Value
-                Record.save()
+                Record.saveAndWait()
             })
         }
     }
@@ -48,14 +47,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         get {
             var count: UInt = 0
             privateMOC.performAndWait({
-                count = UInt(self.folder.exists)
+                count = UInt(self.folder.existsCount)
             })
             return count
         }
         set {
-            privateMOC.perform({
-                self.folder.exists = NSNumber(value: newValue).int64Value
-                Record.save()
+            privateMOC.performAndWait({
+                self.folder.existsCount = NSNumber(value: newValue).int64Value
+                Record.saveAndWait()
             })
         }
     }
@@ -83,7 +82,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             }
             if let fo = CdFolder.insertOrUpdate(
                 folderName: self.name(), folderSeparator: nil, account: account) {
-                Record.save()
+                Record.saveAndWait()
                 folder = fo
             }
         })
@@ -91,14 +90,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
-        privateMOC.perform() {
+        privateMOC.performAndWait() {
             if self.folder.uidValidity != Int32(theUIDValidity) {
                 Log.warn(component: self.comp,
                          "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
                 self.folder.messages = []
             }
             self.folder.uidValidity = Int32(theUIDValidity)
-            Record.save()
+            Record.saveAndWait()
         }
     }
 
@@ -125,16 +124,16 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     /**
      This implementation assumes that the index is typically referred to by pantomime
      as the messageNumber.
+     Relying on that is dangerous and should be avoided.
      */
     override func message(at theIndex: UInt) -> CWMessage? {
-        let p = NSPredicate.init(
-            format: "folder.account.email = %@ and folder.name = %@ and messageNumber = %d",
-            connectInfo.userId, self.name(), theIndex)
         var msg: CdMessage?
         privateMOC.performAndWait({
+            let p = NSPredicate(
+                format: "folder = %@ messageNumber = %d", self.folder, theIndex)
             msg = CdMessage.first(with: p)
         })
-        return msg?.pantomimeMessageWithFolder(self)
+        return msg?.pantomime(folder: self)
     }
 
     override func count() -> UInt {
@@ -143,6 +142,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             count = self.folder.allMessages().count
         })
         return UInt(count)
+    }
+
+    override func firstUID() -> UInt {
+        var uid: UInt = 0
+        privateMOC.performAndWait({
+            uid = self.folder.firstUID()
+        })
+        return uid
     }
 
     override func lastUID() -> UInt {
@@ -164,11 +171,11 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         var result: CWIMAPMessage?
         privateMOC.performAndWait({
             let pUid = NSPredicate.init(format: "uid = %d", theUID)
-            let pFolderName = NSPredicate.init(format: "folder.name = %@", self.folder.name!)
-            let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolderName])
+            let pFolder = NSPredicate.init(format: "parent = %@", self.folder)
+            let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolder])
 
             if let msg = CdMessage.first(with: p) {
-                result = msg.pantomimeMessageWithFolder(self)
+                result = msg.pantomime(folder: self)
             } else {
                 result = nil
             }
@@ -179,22 +186,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     /**
      - TODO: This gets called for some weird reason, and it should not. Investigate.
      */
-    func removeMessage(withUID theUID: UInt) {
+    func removeMessage(withUID: UInt) {
     }
 
     func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage) {
         Log.warn(component: comp, "Writing message \(message)")
 
-        // Quickly store the most important email proporties (synchronously)
-        let opQuick = StorePrefetchedMailOperation.init(coreDataUtil: CoreDataUtil(),
-                                                        accountEmail: connectInfo.userId,
-                                                        message: message, quick: true)
+        let opQuick = StorePrefetchedMailOperation(
+            connectInfo: connectInfo, message: message, quick: false)
         opQuick.start()
-
-        // Do all the time-consuming details in the background (asynchronously)
-        let op = StorePrefetchedMailOperation.init(coreDataUtil: CoreDataUtil(),
-                                                   accountEmail: connectInfo.userId,
-                                                   message: message, quick: false)
-        backgroundQueue.addOperation(op)
     }
 }

@@ -47,7 +47,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         /**
          The search table model.
          */
-        var contacts: [AddressbookContact] = []
+        var contacts: [Identity] = []
 
         /**
          The recipient cell that is currently used for contact completion.
@@ -70,6 +70,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
          */
         var isDirty = false
     }
+
+    lazy var session = PEPSession.init()
 
     var model: UIModel = UIModel()
 
@@ -292,24 +294,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
 
     func updateContacts() {
         if let snippet = model.searchSnippet {
-            if let privateMOC = appConfig?.coreDataUtil.privateContext() {
-                privateMOC.perform() {
-                    let modelBackground = CdModel(context: privateMOC)
-                    let contacts = modelBackground.contactsBySnippet(snippet).map() {
-                        AddressbookContact(contact: $0)
-                    }
-                    GCD.onMain() {
-                        self.model.contacts.removeAll()
-
-                        // At the moment, append(contentsOf:) does not work
-                        for c in contacts {
-                            self.model.contacts.append(c)
-                        }
-
-                        self.tableView.reloadData()
-                    }
-                }
-            }
+            model.contacts = Identity.by(snippet: snippet)
+            self.tableView.reloadData()
         }
     }
 
@@ -371,21 +357,11 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 Log.warn(component: comp, "Won't check outgoing color, already one in operation")
                 return
             }
-            let op = OutgoingMessageColorOperation()
-            op.pepMail = ComposeViewHelper.pepMailFromViewForCheckingRating(self)
-            op.completionBlock = {
-                if !op.isCancelled {
-                    if let pepColor = op.pepColorRating {
-                        let color = PEPUtil.pEpColorFromRating(pepColor)
-                        GCD.onMain() {
-                            self.setPrivacyColor(color, toSendButton: self.sendButton)
-                        }
-                    } else {
-                        Log.warn(component: self.comp, "Could not get outgoing message color")
-                    }
-                }
+            if let msg = ComposeViewHelper.pepMailFromViewForCheckingRating(self) {
+                let pepColor = session.outgoingMessageColor(msg)
+                let color = PEPUtil.pEpColor(pEpRating: pepColor)
+                self.setPrivacyColor(color, toSendButton: self.sendButton)
             }
-            operationQueue.addOperation(op)
         }
     }
 
@@ -413,8 +389,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
     /**
      Updates the given message with data from the view.
      */
-    func populate(message: Message, account: Account,
-                  model: ICdModel) {
+    func populate(message: Message, account: Account) {
         // reset
         message.to = []
         message.cc = []
@@ -501,11 +476,6 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         guard let _ = forwardedMessage() else {
             return
         }
-
-        guard let _ = appConfig?.model else {
-            Log.warn(component: comp, "Can't do anything without model")
-            return
-        }
     }
 
     func populate(message: Message, withAttachmentsFromTextView theTextView: UITextView?) {
@@ -544,7 +514,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
             return nil
         }
 
-        populate(message: msg, account: account, model: appC.model)
+        populate(message: msg, account: account)
         populateWithReplyData(message: msg)
         populateWithForwardedData(message: msg)
         populate(message: msg, withAttachmentsFromTextView: longBodyMessageTextView)
@@ -676,7 +646,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                     cell.recipientTextView.text as NSString,
                     aroundCaretPosition: cell.recipientTextView.selectedRange.location) {
                     let newString = cell.recipientTextView.text.stringByReplacingCharactersInRange(
-                        r, withString: " \(c.email)")
+                        r, withString: " \(c.address)")
                     let replacement = "\(newString)\(delimiterWithSpace)"
                     cell.recipientTextView.text = replacement
                     colorRecipients(cell.recipientTextView)
@@ -833,7 +803,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                 cell.subjectTextField.delegate = self
 
                 if let m = replyFromMessage() {
-                    subjectTextField?.text = ReplyUtil.replySubjectForMail(m)
+                    subjectTextField?.text = ReplyUtil.replySubjectForMessage(m)
                 }
 
                 if let m = composeFromDraftMessage() {
@@ -854,7 +824,7 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
 
                 let replyAll = composeMode == .replyAll
                 if let om = replyFromMessage() {
-                    let text = ReplyUtil.quotedMailTextForMail(om, replyAll: replyAll)
+                    let text = ReplyUtil.quotedMessageTextForMessage(om, replyAll: replyAll)
                     cell.bodyTextView.text = text
                     cell.bodyTextView.selectedRange = NSRange(location: 0, length: 0)
                 } else {
@@ -895,16 +865,12 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
         if parts.count == 0 {
             return
         }
-        guard let ap = appConfig else {
-            return
-        }
+
         guard let origAttributes = recipientTextAttributes else {
             return
         }
 
-        let model = CdModel(context: ap.coreDataUtil.privateContext())
-
-        model.context.perform() {
+        Record.Context.background.perform() {
             let recipientText = NSMutableAttributedString()
             let session = PEPSession()
             var firstPart = true
@@ -923,8 +889,8 @@ open class ComposeViewController: UITableViewController, UINavigationControllerD
                         attributes: origAttributes))
                 } else {
                     var attributes = origAttributes
-                    if let c = model.contactByEmail(thePart) {
-                        let color = PEPUtil.privacyColorForContact(c, session: session)
+                    if let c = Identity.by(address: thePart) {
+                        let color = PEPUtil.pEpColor(identity: c, session: session)
                         if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(color) {
                             attributes[NSBackgroundColorAttributeName] = uiColor
                         }

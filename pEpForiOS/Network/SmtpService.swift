@@ -6,10 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
-import MessageModel
-
 public protocol SmtpSendDelegate: class {
     func messageSent(_ smtp: SmtpSend, theNotification: Notification?)
     func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?)
@@ -194,8 +190,8 @@ extension SmtpSend: CWServiceClient {
             self.smtpStatus.haveStartedTLS = true
             self.smtp.startTLS()
         } else {
-            self.smtp.authenticate(self.connectInfo.userName,
-                                   password: self.connectInfo.userPassword,
+            self.smtp.authenticate(self.connectInfo.loginName!,
+                                   password: self.connectInfo.loginPassword!,
                                    mechanism: self.bestAuthMethod().rawValue)
         }
     }

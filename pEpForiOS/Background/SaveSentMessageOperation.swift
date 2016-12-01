@@ -6,19 +6,9 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
-import CoreData
-
 import MessageModel
 
-open class SaveSentMessageOperation: ConcurrentBaseOperation {
-    let comp = "SaveSentMessageOperation"
-
-    /**
-     All the parameters for the operation come from here.
-     */
-    let encryptionData: EncryptionData
-
+open class SaveSentMessageOperation: EncryptBaseOperation {
     var imapSync: ImapSync!
 
     /**
@@ -27,25 +17,26 @@ open class SaveSentMessageOperation: ConcurrentBaseOperation {
     var targetFolderName: String!
 
     /**
-     If there was an encrypted mail, this is the raw data.
+     If there was an encrypted message, this is the raw data.
      */
     var rawMessageData: Data!
 
     public init(encryptionData: EncryptionData) {
-        self.encryptionData = encryptionData
-        super.init(coreDataUtil: encryptionData.coreDataUtil)
+        super.init(comp: "SaveSentMessageOperation", encryptionData: encryptionData)
     }
 
     open override func main() {
         privateMOC.perform({
-            guard let account = self.model.accountByEmail(
-                self.encryptionData.accountEmail) else {
-                    self.addError(Constants.errorCannotFindAccountForEmail(
-                        self.comp, email: self.encryptionData.accountEmail))
+            guard let message = self.fetchMessage(context: self.privateMOC) else {
                     return
             }
 
-            guard let sentFolder = self.model.folderByType(.sent, account: account) else {
+            guard let account = message.parent?.account else {
+                self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                return
+            }
+
+            guard let sentFolder = CdFolder.by(folderType: .sent, account: account) else {
                 let msg = NSLocalizedString(
                     "No sent folder available", comment:
                     "Error message when no sent folder exists")
@@ -56,23 +47,23 @@ open class SaveSentMessageOperation: ConcurrentBaseOperation {
                 return
             }
 
-            guard let msg = self.encryptionData.mailEncryptedForSelf else {
+            guard let msg = self.encryptionData.messageEncryptedForSelf else {
                 let msg = NSLocalizedString(
-                    "Could not save sent mail: Not encrypted", comment:
-                    "Error message when no encrypted mail was given for saving as sent")
+                    "Could not save sent message: Not encrypted", comment:
+                    "Error when no encrypted message was given for saving as sent")
                 self.addError(Constants.errorOperationFailed(self.comp, errorMessage: msg))
                 Log.error(component: self.comp,
-                    errorString: "Could not save sent mail: Not encrypted")
+                    errorString: "Could not save sent message: Not encrypted")
                 self.markAsFinished()
                 return
             }
 
             self.targetFolderName = sentFolder.name
-            let cwMessage = PEPUtil.pantomimeMailFromPep(msg)
+            let cwMessage = PEPUtil.pantomime(pEpMessage: msg)
             self.rawMessageData = cwMessage.dataValue()
 
             self.imapSync = self.encryptionData.connectionManager.emailSyncConnection(
-                account.connectInfo)
+                self.encryptionData.imapConnectInfo)
             self.imapSync.delegate = self
             self.imapSync.start()
         })
@@ -113,6 +104,11 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderSyncCompleted"))
+        markAsFinished()
+    }
+
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
         markAsFinished()
@@ -150,7 +146,18 @@ extension SaveSentMessageOperation: ImapSyncDelegate {
 
     public func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
         privateMOC.perform() {
-            let message = self.privateMOC.object(with: self.encryptionData.coreDataMessageID)
+            guard let message = self.privateMOC.object(
+                with: self.encryptionData.messageID) as? CdMessage else {
+                    let error = Constants.errorInvalidParameter(
+                        self.comp,
+                        errorMessage:
+                        NSLocalizedString("Message for encryption could not be accessed",
+                                          comment: "Error when message to encrypt could not be found."))
+                    self.handleEntryError(error,
+                                          message: "Message for encryption could not be accessed")
+                    return
+            }
+
             self.privateMOC.delete(message)
             CoreDataUtil.saveContext(self.privateMOC)
             self.markAsFinished()

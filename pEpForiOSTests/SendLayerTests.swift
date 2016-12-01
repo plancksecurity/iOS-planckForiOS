@@ -14,10 +14,12 @@ import pEpForiOS
 class SendLayerTests: XCTestCase {
     let coreDataUtil = CoreDataUtil()
     let connectionManager = ConnectionManager()
+    let grandOp = GrandOperator()
+    var persistentSetup: PersistentSetup!
 
     override func setUp() {
         super.setUp()
-        let _ = PersistentSetup()
+        persistentSetup = PersistentSetup()
     }
 
     func testVerifyBad() {
@@ -25,16 +27,19 @@ class SendLayerTests: XCTestCase {
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
 
-        let grandOp = GrandOperator(connectionManager: connectionManager,
-                                    coreDataUtil: coreDataUtil)
+        let accounts = Account.all
+        XCTAssertTrue(accounts().isEmpty)
+
+        let accs = CdAccount.all() ?? []
+        XCTAssertTrue(accs.isEmpty)
+
         CdAccount.sendLayer = grandOp
-        let account = TestData().createDisfunctionalAccount()
-        account.save()
+        let _ = TestData().createTimeoutAccount()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNotNil(accountDelegate.error)
-            XCTAssertTrue(Account.all.isEmpty)
+            XCTAssertTrue(Account.all().isEmpty)
         })
     }
 
@@ -43,16 +48,13 @@ class SendLayerTests: XCTestCase {
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
 
-        let grandOp = GrandOperator(connectionManager: connectionManager,
-                                    coreDataUtil: coreDataUtil)
         CdAccount.sendLayer = grandOp
-        let account = TestData().createWorkingAccount()
-        account.save()
+        let _ = TestData().createWorkingAccount()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNil(accountDelegate.error)
-            XCTAssertEqual(Account.all.count, 1)
+            XCTAssertEqual(Account.all().count, 1)
         })
     }
 }

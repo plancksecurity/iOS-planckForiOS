@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 open class ConnectionManager {
     fileprivate let comp = "ConnectionManager"
     open var cacheImapConnections: Bool = false

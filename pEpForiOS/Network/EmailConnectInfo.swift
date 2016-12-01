@@ -6,7 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import CoreData
 
 import MessageModel
@@ -42,14 +41,14 @@ public extension ConnectionTransport {
     }
     
     public func localizedString() -> String {
+        let transport_security_text = "Transport security (ConnectionTransport)"
         switch self {
         case .plain:
-            return NSLocalizedString("None", comment: "Transport security (ConnectionTransport)")
+            return NSLocalizedString("None", comment: transport_security_text)
         case .TLS:
-            return NSLocalizedString("TLS", comment: "Transport security (ConnectionTransport)")
+            return NSLocalizedString("TLS", comment: transport_security_text)
         case .startTLS:
-            return NSLocalizedString("StartTLS",
-                                     comment: "Transport security (ConnectionTransport)")
+            return NSLocalizedString("StartTLS", comment: transport_security_text)
         }
     }
     
@@ -122,31 +121,37 @@ public enum EmailProtocol: String {
 /**
  Holds additional connection info (like server, port etc.) for IMAP and SMTP.
  */
-public protocol IEmailConnectInfo: IConnectInfo {
-    var emailProtocol: EmailProtocol? { get }
-    var connectionTransport: ConnectionTransport? { get }
-    var userPassword: String? { get }
-    var authMethod: AuthMethod? { get }
-}
+public class EmailConnectInfo: ConnectInfo {
+    public var userPassword: String?
 
-public class EmailConnectInfo: ConnectInfo, IEmailConnectInfo {
     public var emailProtocol: EmailProtocol?
     public var connectionTransport: ConnectionTransport?
     public var authMethod: AuthMethod?
+    public var trusted: Bool
 
-    public init(accountObjectID: NSManagedObjectID, userName: String, userPassword: String? = nil,
+    public init(accountObjectID: NSManagedObjectID,
+                serverObjectID: NSManagedObjectID,
+                loginName: String? = nil,
+                loginPassword: String? = nil,
                 networkAddress: String,
-                networkPort: UInt16, networkAddressType: NetworkAddressType? = nil,
+                networkPort: UInt16,
+                networkAddressType: NetworkAddressType? = nil,
                 networkTransportType: NetworkTransportType? = nil,
                 emailProtocol: EmailProtocol? = nil,
-                connectionTransport: ConnectionTransport? = nil, authMethod: AuthMethod? = nil) {
-        super.init(accountObjectID: accountObjectID, userName: userName, userPassword: userPassword,
-                   networkAddress: networkAddress, networkPort: networkPort,
-                   networkAddressType: networkAddressType,
-                   networkTransportType: networkTransportType)
+                connectionTransport: ConnectionTransport? = nil,
+                authMethod: AuthMethod? = nil,
+                trusted: Bool = false) {
         self.emailProtocol = emailProtocol
         self.connectionTransport = connectionTransport
-        self.userPassword = userPassword
         self.authMethod = authMethod
+        self.trusted = trusted
+        super.init(accountObjectID: accountObjectID,
+                   serverObjectID: serverObjectID,
+                   loginName: loginName,
+                   loginPassword: loginPassword,
+                   networkAddress: networkAddress,
+                   networkPort: networkPort,
+                   networkAddressType: networkAddressType,
+                   networkTransportType: networkTransportType)
     }
 }

@@ -15,8 +15,8 @@ open class ComposeViewHelper {
      Builds a pEp mail dictionary from all the related views. This is just a quick
      method for checking the pEp color rating, it's not exhaustive!
      */
-    open static func pepMailFromViewForCheckingRating(_ vc: ComposeViewController) -> PEPMail? {
-        var message = PEPMail()
+    open static func pepMailFromViewForCheckingRating(_ vc: ComposeViewController) -> PEPMessage? {
+        var message = PEPMessage()
         for (_, cell) in vc.recipientCells {
             let tf = cell.recipientTextView
             if let text = tf?.text {
@@ -30,12 +30,11 @@ open class ComposeViewHelper {
                     let mailStrings2 = mailStrings1.filter() {
                         !$0.isOnlyWhiteSpace()
                     }
-                    let model = vc.appConfig?.model
-                    let contacts: [PEPContact] = mailStrings2.map() {
-                        if let c = model?.contactByEmail($0) {
-                            return PEPUtil.pepContact(c)
+                    let contacts: [PEPIdentity] = mailStrings2.map() {
+                        if let c = Identity.by(address: $0) {
+                            return PEPUtil.pEp(identity: c)
                         }
-                        return PEPUtil.pepContactFromEmail($0, name: $0.namePartOfEmail())
+                        return PEPUtil.pEpIdentity(email: $0, name: $0.namePartOfEmail())
                     }
                     if contacts.count > 0 {
                         if let rt = cell.recipientType {

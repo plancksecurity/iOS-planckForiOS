@@ -5,9 +5,6 @@
 //  Created by Dirk Zimmermann on 05/04/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
-
-import Foundation
-
 import MessageModel
 
 public struct ImapState {
@@ -22,6 +19,7 @@ public protocol ImapSyncDelegate: class {
     func connectionTerminated(_ sync: ImapSync, notification: Notification?)
     func connectionTimedOut(_ sync: ImapSync, notification: Notification?)
     func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)
+    func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)
     func messageChanged(_ sync: ImapSync, notification: Notification?)
     func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?)
     func folderOpenCompleted(_ sync: ImapSync, notification: Notification?)
@@ -55,6 +53,7 @@ open class DefaultImapSyncDelegate: ImapSyncDelegate {
     open func connectionTerminated(_ sync: ImapSync, notification: Notification?)  {}
     open func connectionTimedOut(_ sync: ImapSync, notification: Notification?)  {}
     open func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
+    open func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)  {}
     open func messageChanged(_ sync: ImapSync, notification: Notification?)  {}
     open func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
     open func folderOpenCompleted(_ sync: ImapSync, notification: Notification?)  {}
@@ -108,15 +107,20 @@ public protocol IImapSync {
     func start()
 
     /**
-     Opens the folder with the given name, prefetching all emails contained if wanted.
+     Opens the folder with the given name, prefetching all messages contained if wanted.
      Should call this after receiving receivedFolderNames().
      */
     func openMailBox(_ name: String)
 
     /**
-     Sync the mails from the curently selected folder.
+     Fetch the latest messages from the curently selected folder.
      */
-    func syncMails() throws
+    func fetchMessages() throws
+
+    /**
+     Synchronizes existing messages from the curently selected folder.
+     */
+    func syncMessages() throws
 
     /**
      Creates a new folder on the server.
@@ -187,17 +191,27 @@ open class ImapSync: Service, IImapSync {
         }
     }
 
-    open func syncMails() throws {
+    func openFolder() throws -> CWIMAPFolder{
         guard let folderName = imapState.currentFolder else {
             throw Constants.errorIllegalState(
                 comp,
                 stateName: NSLocalizedString("No open folder",
-                    comment: "Need an open folder to sync mails"))
+                                             comment: "Need an open folder to sync messages"))
         }
         guard let folder = imapStore.folder(forName: imapState.currentFolder) else {
             throw Constants.errorFolderNotOpen(comp, folderName: folderName)
         }
-        (folder as AnyObject).prefetch()
+        return folder as! CWIMAPFolder
+    }
+
+    open func fetchMessages() throws {
+        let folder = try openFolder()
+        folder.prefetch()
+    }
+
+    open func syncMessages() throws {
+        let folder = try openFolder()
+        folder.syncExisting()
     }
 
     open func createFolderWithName(_ folderName: String) {
@@ -255,10 +269,25 @@ extension ImapSync: CWServiceClient {
             Log.info(component: comp, "folderPrefetchCompleted: \(notification)")
         }
         if let bq = folderBuilder?.backgroundQueue {
-            // Wait until all newly synced mails are stored
+            // Wait until all newly synced messages are stored
             bq.waitUntilAllOperationsAreFinished()
         }
         delegate?.folderPrefetchCompleted(self, notification: notification)
+    }
+
+    @objc public func folderSyncCompleted(_ notification: Notification?) {
+        dumpMethodName("folderSyncCompleted", notification: notification)
+        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
+            as? CWFolder) {
+            Log.info(component: comp, "synced folder: \(folder.name())")
+        } else {
+            Log.info(component: comp, "folderSyncCompleted: \(notification)")
+        }
+        if let bq = folderBuilder?.backgroundQueue {
+            // Wait until all newly synced messages are stored
+            bq.waitUntilAllOperationsAreFinished()
+        }
+        delegate?.folderSyncCompleted(self, notification: notification)
     }
 
     @objc public func messagePrefetchCompleted(_ notification: Notification?) {
@@ -269,8 +298,8 @@ extension ImapSync: CWServiceClient {
     @objc public func serviceInitialized(_ notification: Notification?) {
         dumpMethodName("serviceInitialized", notification: notification)
 
-        imapStore.authenticate(connectInfo.userName,
-                               password: connectInfo.userPassword,
+        imapStore.authenticate(connectInfo.loginName!,
+                               password: connectInfo.loginPassword!,
                                mechanism: bestAuthMethod().rawValue)
     }
 

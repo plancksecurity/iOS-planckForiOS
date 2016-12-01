@@ -6,7 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {

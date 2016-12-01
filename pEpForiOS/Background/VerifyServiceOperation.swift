@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 open class VerifyServiceOperation: ConcurrentBaseOperation {
     var service: Service!
     let connectInfo: EmailConnectInfo
@@ -25,7 +23,6 @@ open class VerifyServiceOperation: ConcurrentBaseOperation {
     public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
         self.connectionManager = grandOperator.connectionManager
-        super.init(coreDataUtil: grandOperator.coreDataUtil)
     }
 
     func close(_ finish: Bool) {

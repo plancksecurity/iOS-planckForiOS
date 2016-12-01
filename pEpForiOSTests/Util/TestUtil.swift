@@ -12,11 +12,24 @@ import XCTest
 import pEpForiOS
 import MessageModel
 
+/**
+ Equality (==) for 3-tuples of optional Strings.
+ */
+func ==<T1: Equatable, T2: Equatable, T3: Equatable>(
+    lhs: (T1?, T2?, T3?), rhs: (T1?, T2?, T3?)) -> Bool {
+    return lhs.0 == rhs.0 && lhs.1 == rhs.1 && lhs.2 == rhs.2
+}
+
 class TestUtil {
     /**
      The maximum time most tests are allowed to run.
      */
-    static let waitTime: TimeInterval = 50
+    static let waitTime: TimeInterval = 20
+
+    /**
+     The maximum time model save tests are allowed to run.
+     */
+    static let modelSaveWaitTime: TimeInterval = 6
 
     static let connectonShutDownWaitTime: TimeInterval = 1
     static let numberOfTriesConnectonShutDown = 5
@@ -126,11 +139,11 @@ class TestUtil {
     }
 
     static func setupSomeIdentities(_ session: PEPSession)
-        -> (identity: NSMutableDictionary, receiver1: PEPContact,
-        receiver2: PEPContact, receiver3: PEPContact,
-        receiver4: PEPContact) {
+        -> (identity: NSMutableDictionary, receiver1: PEPIdentity,
+        receiver2: PEPIdentity, receiver3: PEPIdentity,
+        receiver4: PEPIdentity) {
             let identity = NSMutableDictionary()
-            identity[kPepUsername] = "myself"
+            identity[kPepUsername] = "Unit Test"
             identity[kPepAddress] = "somewhere@overtherainbow.com"
 
             let receiver1 = NSMutableDictionary()
@@ -149,10 +162,10 @@ class TestUtil {
             receiver4[kPepUsername] = "receiver4"
             receiver4[kPepAddress] = "receiver4@shopsmart.com"
 
-            return (identity, receiver1 as NSDictionary as! PEPContact,
-                    receiver2 as NSDictionary as! PEPContact,
-                    receiver3 as NSDictionary as! PEPContact,
-                    receiver4 as NSDictionary as! PEPContact)
+            return (identity, receiver1 as NSDictionary as! PEPIdentity,
+                    receiver2 as NSDictionary as! PEPIdentity,
+                    receiver3 as NSDictionary as! PEPIdentity,
+                    receiver4 as NSDictionary as! PEPIdentity)
     }
 
     /**
@@ -160,7 +173,7 @@ class TestUtil {
      so they don't interfere with `isEqual`.
      */
     static func removeUnneededKeysForComparison(
-        _ keys: [String], fromMail: PEPMail) -> PEPMail {
+        _ keys: [String], fromMail: PEPMessage) -> PEPMessage {
         var m: [String: AnyObject] = fromMail
         for k in keys {
             m.removeValue(forKey: k)
@@ -168,7 +181,7 @@ class TestUtil {
         let keysToCheckRecursively = m.keys
         for k in keysToCheckRecursively {
             let value = m[k]
-            if let dict = value as? PEPMail {
+            if let dict = value as? PEPMessage {
                 m[k] = removeUnneededKeysForComparison(keys, fromMail: dict) as AnyObject?
             }
         }
@@ -223,6 +236,37 @@ class TestUtil {
         func didVerify(account: Account, error: NSError?) {
             self.error = error
             expVerifyCalled?.fulfill()
+        }
+    }
+
+    /**
+     Validates all servers and their credentials without actually validating them.
+     */
+    static func skipValidation() {
+        guard let accs = CdAccount.all() as? [CdAccount] else {
+            XCTAssertTrue(false)
+            return
+        }
+        for acc in accs {
+            acc.needsVerification = false
+        }
+
+        guard let servers = CdServer.all() as? [CdServer] else {
+            XCTAssertTrue(false)
+            return
+        }
+        for server in servers {
+            guard let creds = server.credentials else {
+                XCTAssertTrue(false)
+                return
+            }
+            for c in creds {
+                guard let cred = c as? CdServerCredentials else {
+                    XCTAssertTrue(false)
+                    return
+                }
+                cred.needsVerification = false
+            }
         }
     }
 }

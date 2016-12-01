@@ -6,9 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-import UIKit
-
 import MessageModel
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -40,9 +37,7 @@ class UIHelper {
 
     static func labelFromContact(_ contact: CdIdentity) -> UILabel {
         let l = UILabel.init()
-        // l.text = contact.displayString()
-        // XXX: Refactoring occured here.
-        l.text = "No text for now."
+        l.text = contact.address
         return l
     }
 

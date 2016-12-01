@@ -6,7 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import AddressBook
 
 import MessageModel
@@ -16,36 +15,6 @@ public enum AddressBookStatus {
     case notDetermined
     case restricted
     case denied
-}
-
-/**
- With this we are compatible with our model layer, but don't have a dependency on Core Data.
- */
-open class AddressbookContact: NSObject {
-    open var email: String
-    open var name: String?
-    open var addressBookID: NSNumber?
-    open var isMySelf: NSNumber
-    open var pepUserID: String?
-
-    public init(email: String, name: String?, addressBookID: Int32? = nil) {
-        self.email = email
-        self.name = name
-        self.isMySelf = NSNumber.init(booleanLiteral: false)
-        if let ident = addressBookID {
-            self.addressBookID = NSNumber.init(value: ident as Int32)
-        }
-    }
-
-    /* XXX: addressBookID is nil now. */
-    convenience public init(contact: CdIdentity) {
-        self.init(email: contact.address!, name: contact.userName,
-                  addressBookID: nil)
-    }
-
-    convenience public init(email: String) {
-        self.init(email: email, name: nil, addressBookID: nil)
-    }
 }
 
 /**
@@ -121,12 +90,12 @@ open class AddressBook {
     /**
      For testing only.
      */
-    open func addContact(_ contact: AddressbookContact) -> Bool {
+    open func addContact(_ contact: Identity) -> Bool {
         if let ab = addressBook {
             let p = NSPredicate.init(block: { (record, bindings) -> Bool in
                 let contacts = self.addressBookContactToContacts(record! as ABRecord)
                 for c in contacts {
-                    if c.name == contact.name && c.email == contact.email {
+                    if c.userName == contact.userName && c.address == contact.address {
                         return true
                     }
                 }
@@ -139,7 +108,7 @@ open class AddressBook {
 
             let entry = ABPersonCreate().takeRetainedValue()
 
-            if let name = contact.name {
+            if let name = contact.userName {
                 let (first, middle, last) = splitContactNameInTuple(name)
                 if !setAddressbookComponent(kABPersonFirstNameProperty, content: first, entry: entry) {
                     return false
@@ -153,7 +122,8 @@ open class AddressBook {
             }
 
             let emailMultiRef = createMultiStringRef()
-            if !ABMultiValueAddValueAndLabel(emailMultiRef, contact.email as CFTypeRef!, kABOtherLabel, nil) {
+            if !ABMultiValueAddValueAndLabel(emailMultiRef,
+                                             contact.address as CFTypeRef!, kABOtherLabel, nil) {
                 return false
             }
             if !ABRecordSetValue(entry, kABPersonEmailProperty, emailMultiRef, nil) {
@@ -185,8 +155,8 @@ open class AddressBook {
     /**
      - Returns: An `Contact` for each email address of a given address book contact.
      */
-    func addressBookContactToContacts(_ contact: ABRecord) -> [AddressbookContact] {
-        var result: [AddressbookContact] = []
+    func addressBookContactToContacts(_ contact: ABRecord) -> [Identity] {
+        var result: [Identity] = []
         let identifier = ABRecordGetRecordID(contact)
         var contactName: String? = nil
         if let contactNameRef = ABRecordCopyCompositeName(contact) {
@@ -198,8 +168,9 @@ open class AddressBook {
                 ABMultiValueCopyArrayOfAllValues(emailMulti)?.takeUnretainedValue() {
                 for email in emails {
                     if let emailString = email as? String {
-                        result.append(AddressbookContact.init(
-                            email: emailString, name: contactName, addressBookID: identifier))
+                        result.append(Identity.create(
+                            address: emailString, userName: contactName,
+                            userID: String(identifier)))
                     }
                 }
             }
@@ -211,8 +182,8 @@ open class AddressBook {
      - Returns: All contacts with an email address found in the address book as `Contact`.
      If there are several emails for a contact, several contacts are returned.
      */
-    func contactsByPredicate(_ predicate: NSPredicate) -> [AddressbookContact] {
-        var result: [AddressbookContact] = []
+    func contactsByPredicate(_ predicate: NSPredicate) -> [Identity] {
+        var result: [Identity] = []
 
         if authorizationStatus == .denied {
             return result
@@ -231,36 +202,6 @@ open class AddressBook {
             }
         }
         return result
-    }
-
-    /**
-     - Returns: All contacts found in the address book with an email address.
-     If there are several emails for a contact, several contacts are returned.
-     */
-    open func allContacts() -> [AddressbookContact] {
-        return contactsByPredicate(NSPredicate.init(value: true))
-    }
-
-    /**
-     - Returns: All contacts with an email that match the given snippet in either email or name.
-     If there are several emails for a contact, several contacts are returned.
-     */
-    open func contactsBySnippet(_ snippet: String) -> [AddressbookContact] {
-        let p = NSPredicate.init(block: { (rec, bindings) in
-            if let record = rec {
-                let contacts = self.addressBookContactToContacts(record as ABRecord)
-                for c in contacts {
-                    if c.email.containsString(snippet) {
-                        return true
-                    }
-                    if let name = c.name {
-                        return name.containsString(snippet)
-                    }
-                }
-            }
-            return false
-        })
-        return contactsByPredicate(p)
     }
 
     func determineStatus() -> AddressBookStatus {
@@ -294,17 +235,17 @@ open class AddressBook {
         }
     }
 
+    open func allContacts() -> [Identity] {
+        return contactsByPredicate(NSPredicate.init(value: true))
+    }
+
     static func transferAddressBook(_ addressBook: AddressBook) {
         if addressBook.authorizationStatus == .authorized {
             var insertedContacts = [Identity]()
             let ab = AddressBook()
             let contacts = ab.allContacts()
             for c in contacts {
-                let id = Identity.create(address: c.email, userName: c.name, userID: nil)
-                if let addId = c.addressBookID, id.userID == nil {
-                    id.userID = String(describing: addId)
-                }
-                insertedContacts.append(id)
+                insertedContacts.append(c)
             }
         }
     }

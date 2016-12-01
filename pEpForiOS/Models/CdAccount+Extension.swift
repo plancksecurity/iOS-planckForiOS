@@ -6,39 +6,12 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
-
 import MessageModel
 
 extension CdAccount {
-    open var connectInfo: EmailConnectInfo {
-        let password = KeyChain.password(key: self.email,
-                                         serverType: (self.connectInfo.emailProtocol?.rawValue)!)
-        return EmailConnectInfo(
-            accountObjectID: objectID, userName: self.connectInfo.userName,
-            userPassword: password,
-            networkAddress: self.connectInfo.networkAddress,
-            networkPort: self.connectInfo.networkPort,
-            networkAddressType: nil,
-            networkTransportType: nil, emailProtocol: self.connectInfo.emailProtocol!,
-            connectionTransport: self.connectInfo.connectionTransport,
-            authMethod: self.connectInfo.authMethod)
-    }
-
-    open var rawImapTransport: ConnectionTransport {
-        return ConnectionTransport(rawValue: self.imapTransport.intValue)!
-    }
-
-    open var rawSmtpTransport: ConnectionTransport {
-        return ConnectionTransport(rawValue: self.smtpTransport.intValue)!
-    }
-}
-
-extension MessageModel.CdAccount {
     func serverNTuple(credentials: CdServerCredentials,
                       server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
-        if let iServerType = server.serverType?.intValue,
-            let serverType = Server.ServerType.init(rawValue: iServerType)?.asString(),
+        if let serverType = Server.ServerType.init(rawValue: Int(server.serverType))?.asString(),
             let key = credentials.key {
             return (server, credentials, KeyChain.password(key: key, serverType: serverType))
         }
@@ -56,8 +29,8 @@ extension MessageModel.CdAccount {
                 let servers = theCred.servers {
                 for theServer in servers {
                     if let server = theServer as? CdServer {
-                        if server.serverType?.intValue == Server.ServerType.imap.rawValue ||
-                            server.serverType?.intValue == Server.ServerType.smtp.rawValue {
+                        if Int(server.serverType) == Server.ServerType.imap.rawValue ||
+                            Int(server.serverType) == Server.ServerType.smtp.rawValue {
                             let password = theCred.password
                             if let emailConnectInfo = emailConnectInfo(
                                 account: self, server: server, credentials: theCred,
@@ -72,25 +45,61 @@ extension MessageModel.CdAccount {
         return result
     }
 
-    func emailConnectInfo(account: MessageModel.CdAccount, server: CdServer,
+    /**
+     - Returns: The first found IMAP connect info. Used by some tests.
+     */
+    open var imapConnectInfo: EmailConnectInfo? {
+        let cis = emailConnectInfos
+        for k in cis.keys {
+            if k.emailProtocol == .imap {
+                return k
+            }
+        }
+        return nil
+    }
+
+    /**
+     - Returns: The first found SMTP connect info. Used by some tests.
+     */
+    open var smtpConnectInfo: EmailConnectInfo? {
+        let cis = emailConnectInfos
+        for k in cis.keys {
+            if k.emailProtocol == .smtp {
+                return k
+            }
+        }
+        return nil
+    }
+
+    func emailConnectInfo(account: CdAccount, server: CdServer,
                           credentials: CdServerCredentials,
                           password: String?) -> EmailConnectInfo? {
-        let connectionTransport = ConnectionTransport.init(fromInt: server.transport?.intValue)
+        let connectionTransport = ConnectionTransport(fromInt: Int(server.transport))
 
+        let serverTypeInt = Int(server.serverType)
         if let port = server.port?.int16Value,
             let address = server.address,
-            let serverTypeInt = server.serverType?.intValue,
-            let serverType = Server.ServerType.init(rawValue: serverTypeInt),
-            let emailProtocol = EmailProtocol.init(serverType: serverType) {
+            let serverType = Server.ServerType(rawValue: serverTypeInt),
+            let emailProtocol = EmailProtocol(serverType: serverType) {
             return EmailConnectInfo(
-                accountObjectID: account.objectID, userName: credentials.userName!,
-                userPassword: password,
+                accountObjectID: account.objectID, serverObjectID: server.objectID,
+                loginName: credentials.userName,
+                loginPassword: password,
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,
                 networkTransportType: nil, emailProtocol: emailProtocol,
                 connectionTransport: connectionTransport,
-                authMethod: AuthMethod.init(string: server.authMethod))
+                authMethod: AuthMethod(string: server.authMethod),
+                trusted: server.trusted)
         }
         return nil
     }
+
+    /**
+     - Returns: A folder under this account with the given name.
+     */
+    open func folder(byName name: String) -> CdFolder? {
+        return CdFolder.first(with: ["account": self, "name": name])
+    }
+
 }

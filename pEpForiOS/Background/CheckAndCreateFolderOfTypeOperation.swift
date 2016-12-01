@@ -6,7 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 import MessageModel
@@ -18,7 +17,6 @@ import MessageModel
 open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     let comp = "CheckAndCreateFolderOfTypeOperation"
     let folderType: FolderType
-    let accountEmail: String
     let connectInfo: EmailConnectInfo
     let connectionManager: ConnectionManager
     var folderName: String
@@ -30,35 +28,37 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
      */
     var numberOfFailures = 0
 
-    var folderSeparator: String?
+    var account: CdAccount?
 
-    public init(account: CdAccount, folderType: FolderType,
-                connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
-        self.accountEmail = account.email
-        self.connectInfo = account.connectInfo
+    public init(connectInfo: EmailConnectInfo, account: CdAccount,
+                folderType: FolderType, connectionManager: ConnectionManager) {
+        self.connectInfo = connectInfo
         self.folderType = folderType
         self.folderName = folderType.folderName()
         self.connectionManager = connectionManager
-        super.init(coreDataUtil: coreDataUtil)
     }
 
     open override func main() {
         privateMOC.perform() {
-            let folder = self.model.folderByType(self.folderType, email: self.accountEmail)
-            if folder == nil {
-                guard let account = self.model.accountByEmail(self.accountEmail) else {
-                    self.addError(Constants.errorCannotFindAccountForEmail(
-                        self.comp, email: self.accountEmail))
-                    self.markAsFinished()
-                    return
-                }
-                self.folderSeparator = account.folderSeparator
-                self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
-                self.imapSync.delegate = self
-                self.imapSync.start()
-            } else {
-                self.markAsFinished()
-            }
+            self.process(context: self.privateMOC)
+        }
+    }
+
+    func process(context privateMOC: NSManagedObjectContext) {
+        guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
+            as? CdAccount else {
+                errors.append(Constants.errorCannotFindAccount(component: comp))
+                markAsFinished()
+                return
+        }
+
+        let folder = CdFolder.by(folderType: self.folderType, account: account)
+        if folder == nil {
+            self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+            self.imapSync.delegate = self
+            self.imapSync.start()
+        } else {
+            self.markAsFinished()
         }
     }
 }
@@ -92,6 +92,11 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
 
     public func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderPrefetchCompleted"))
+        markAsFinished()
+    }
+
+    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderSyncCompleted"))
         markAsFinished()
     }
 
@@ -152,30 +157,42 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
 
     public func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
         privateMOC.perform() {
-            if self.model.insertOrUpdateFolderName(
-                self.folderName, folderSeparator: self.folderSeparator,
-                accountEmail: self.accountEmail) == nil {
-                self.addError(Constants.errorFolderCreateFailed(self.comp,
-                    name: self.folderName))
-            }
-            self.model.save()
-            self.markAsFinished()
+            self.completed(context: self.privateMOC)
         }
     }
 
-    public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            if numberOfFailures == 0 {
-                if let fs = folderSeparator {
-                    self.folderName = "INBOX\(fs)\(folderName)"
-                    sync.createFolderWithName(folderName)
-                    numberOfFailures += 1
-                    return
-                }
+    func completed(context: NSManagedObjectContext) {
+        if let ac = account {
+            let server = context.object(with: connectInfo.serverObjectID) as? CdServer
+            if CdFolder.insertOrUpdate(folderName: folderName,
+                                       folderSeparator: server?.imapFolderSeparator,
+                                       account: ac) == nil {
+                self.addError(Constants.errorFolderCreateFailed(comp, name: folderName))
+            } else {
+                Record.saveAndWait(context: context)
             }
         }
-        addError(Constants.errorFolderCreateFailed(comp, name: folderName))
         markAsFinished()
+    }
+
+    public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
+        privateMOC.perform() {
+            self.tryAgain(context: self.privateMOC, sync: sync)
+        }
+    }
+
+    func tryAgain(context: NSManagedObjectContext, sync: ImapSync) {
+        if !isCancelled {
+            let server = context.object(with: connectInfo.serverObjectID) as? CdServer
+            if numberOfFailures == 0, let fs = server?.imapFolderSeparator {
+                folderName = "INBOX\(fs)\(folderName)"
+                sync.createFolderWithName(folderName)
+                numberOfFailures += 1
+                return
+            }
+            addError(Constants.errorFolderCreateFailed(comp, name: folderName))
+            markAsFinished()
+        }
     }
 
     public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {

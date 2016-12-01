@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 open class Constants {
     /** Settings key for storing the email of the last used account */
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
@@ -66,11 +64,17 @@ open class Constants {
     public enum CoreDataErrorCode: Int {
         case couldNotInsertOrUpdate = 3000
         case folderDoesNotExist
-        case cannotStoreMail
+        case cannotStoreMessage
         case couldNotUpdateOrAddContact
         case couldNotStoreFolder
         case cannotFindAccountForEmail
+        case cannotFindAccount
+        case cannotFindFolder
         case cannotFindServerForAccount
+        case cannotFindServer
+        case cannotFindMessage
+        case noImapConnectInfo
+        case noFlags
     }
 
     public enum SmtpErrorCode: Int {
@@ -138,6 +142,12 @@ open class Constants {
         return error
     }
 
+    static func errorInvalidParameter(_ component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: GeneralErrorCode.invalidParameter.rawValue)
+        return error
+    }
+
     static func errorInvalidParameter(_ component: String, errorMessage: String) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.invalidParameter.rawValue,
@@ -173,12 +183,12 @@ open class Constants {
         return error
     }
 
-    static func errorCannotStoreMail(_ component: String) -> NSError {
+    static func errorCannotStoreMessage(_ component: String) -> NSError {
         let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.cannotStoreMail.rawValue,
+            domain: component, code: CoreDataErrorCode.cannotStoreMessage.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
-                NSLocalizedString("Cannot store mail",
-                    comment: "General error description for not being able to store a mail")])
+                NSLocalizedString("Cannot store message",
+                    comment: "General error description for not being able to store a message")])
         return error
     }
 
@@ -214,6 +224,26 @@ open class Constants {
         return error
     }
 
+    static func errorCannotFindAccount(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.cannotFindAccount.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find account from object ID", comment:
+                    "Technical error description when not being able to fetch an account by object ID")])
+        return error
+    }
+    
+    static func errorCannotFindFolder(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.cannotFindFolder.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find folder from object ID", comment:
+                    "Technical error description when not being able to fetch a folder by object ID")])
+        return error
+    }
+
     static func errorCannotFindServer(
         component: String, accountEmail: String) -> NSError {
         let error = NSError.init(
@@ -223,6 +253,46 @@ open class Constants {
                     "Cannot find server for account with email: %@", comment:
                     "Error description when not being able to fetch an account's server"),
                             accountEmail)])
+        return error
+    }
+
+    static func errorCannotFindServer(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.cannotFindServer.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find server for objectID", comment:
+                    "Error description when not being able to fetch a server from its object ID")])
+        return error
+    }
+
+    static func errorCannotFindMessage(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.cannotFindMessage.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find message from object ID", comment:
+                    "Technical error description when not being able to fetch a message by object ID")])
+        return error
+    }
+
+    static func errorNoImapConnectInfo(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.noImapConnectInfo.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find IMAP connect info", comment:
+                    "Technical error description when not being able to determine the connect info")])
+        return error
+    }
+
+    static func errorNoFlags(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.noFlags.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Message without flags", comment:
+                    "Technical error description when not being able to determine a message's flags")])
         return error
     }
 

@@ -56,7 +56,6 @@ class EmailViewController: UIViewController {
 
         // Mark as read. Duh!
         message.imapFlags?.seen = true
-        appConfig.model.save()
 
         if webView.scrollView.contentInset.top == 0 {
             loadWebViewContent()

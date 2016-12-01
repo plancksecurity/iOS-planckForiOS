@@ -6,36 +6,42 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
+import CoreData
 
 import MessageModel
 
 open class CreateLocalSpecialFoldersOperation: BaseOperation {
     let comp = "CreateLocalSpecialFoldersOperation"
-    let coreDataUtil: CoreDataUtil
-    let accountEmail: String
+    let accountObjectID: NSManagedObjectID
 
-    public init(coreDataUtil: CoreDataUtil, accountEmail: String) {
-        self.coreDataUtil = coreDataUtil
-        self.accountEmail = accountEmail
+    public init(account: CdAccount) {
+        accountObjectID = account.objectID
         super.init()
     }
 
     open override func main() {
-        let privateMOC = coreDataUtil.privateContext()
+        let privateMOC = Record.Context.default
         privateMOC.performAndWait({
-            let model = CdModel.init(context: privateMOC)
-            for kind in FolderType.allValuesToCreate {
-                let folderName = kind.folderName()
-                if let folder = model.insertOrUpdateFolderName(
-                    folderName, folderSeparator: nil, accountEmail: self.accountEmail) {
-                    folder.folderType = Int16(kind.rawValue)
-                } else  {
-                    self.addError(Constants.errorCouldNotStoreFolder(self.comp,
-                        name: folderName))
-                }
-            }
-            model.save()
+            self.createFolders(context: privateMOC)
         })
+    }
+
+    func createFolders(context: NSManagedObjectContext) {
+        guard let account = context.object(with: accountObjectID)
+            as? CdAccount else {
+                errors.append(Constants.errorCannotFindAccount(component: comp))
+                return
+        }
+        for kind in FolderType.allValuesToCreate {
+            let folderName = kind.folderName()
+            if let folder = CdFolder.insertOrUpdate(
+                folderName: folderName, folderSeparator: nil, account: account) {
+                folder.folderType = Int16(kind.rawValue)
+            } else  {
+                self.addError(Constants.errorCouldNotStoreFolder(self.comp,
+                                                                 name: folderName))
+            }
+        }
+        Record.saveAndWait(context: context)
     }
 }

@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
-
 import MessageModel
 
 class AccountsFoldersViewController: UITableViewController {
@@ -55,6 +53,11 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            super.viewWillAppear(animated)
+            return
+        }
+
         if appConfig == nil {
             guard let appDelegate = UIApplication.shared.delegate as?
                 AppDelegate else {
@@ -79,15 +82,12 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     func updateModel() {
-        accounts = Account.all
+        accounts = Account.all()
         tableView.reloadData()
     }
 
     func doMyself() {
-        guard let model = appConfig?.model else {
-            return
-        }
-        let accounts = Account.all
+        let accounts = Account.all()
         for acc in accounts {
             let op = PEPMyselfOperation(account: acc)
             backgroundQueue.addOperation(op)

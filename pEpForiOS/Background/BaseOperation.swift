@@ -6,12 +6,10 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-import CoreData
-
 /**
  Basic NSOperation that can gather errors.
  */
+
 open class BaseOperation: Operation {
     open var errors: [NSError] = []
 

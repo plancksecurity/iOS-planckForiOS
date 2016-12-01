@@ -124,7 +124,6 @@ class EmailListViewController: UITableViewController {
         // TODO: IOS 222: Save as draft
         if let folder = draftMessageToStore?.parent as? Folder {
             if folder.folderType == .drafts {
-                message.save()
                 return
             }
         }
@@ -133,8 +132,7 @@ class EmailListViewController: UITableViewController {
             return
         }
         
-        if let folder = account.folder(ofType: FolderType.drafts) {
-            folder.save(message: message)
+        if account.folder(ofType: FolderType.drafts) != nil {
             return
         }
     }
@@ -234,8 +232,8 @@ class EmailListViewController: UITableViewController {
             return
         }
         if let email = messageAt(indexPath: indexPath) {
-            if let pEpRating = email.pEpRating {
-                let privacyColor = PEPUtil.pEpColorFromRating(pEpRating)
+            if let pEpRating = PEPUtil.pEpRatingFromInt(email.pEpRatingInt) {
+                let privacyColor = PEPUtil.pEpColor(pEpRating: pEpRating)
                 if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor) {
                     cell.backgroundColor = uiColor
                 } else {
@@ -294,7 +292,6 @@ class EmailListViewController: UITableViewController {
             destination.appConfig = config.appConfig
             if let draft = draftMessageToCompose {
                 draft.imapFlags?.seen = true
-                config.appConfig.model.save()
 
                 destination.originalMessage = draft
                 destination.composeMode = .composeDraft

@@ -6,8 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
-
 import MessageModel
 
 public typealias GrandOperatorCompletionBlock = (_ error: NSError?) -> Void
@@ -46,7 +44,7 @@ public protocol IGrandOperator: class {
     func fetchFolders(_ connectInfo: EmailConnectInfo, completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asychronously fetches mails for the given `EmailConnectInfo`s
+     Asychronously fetches messages for the given `EmailConnectInfo`s
      and the given folder name and stores them into the persistent store.
      Will also decrypt them, and fetch folders if necessary.
 
@@ -59,39 +57,10 @@ public protocol IGrandOperator: class {
         completionBlock: GrandOperatorCompletionBlock?)
 
     /**
-     Asynchronously create local special folders, like Outbox, Sent etc.
-
-     - parameter accountEmail: The email of the account those folders belong to.
-     - parameter completionBlock: Will be called on completion of the operation, with
-     a non-nil error object if there was an error during execution.
-     */
-    func createSpecialLocalFolders(_ accountEmail: String,
-                                   completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
-     Sends the given mail via SMTP. Also saves it into the drafts folder. You
-     might have to trigger a fetch for that mail to appear in your drafts folder.
-     */
-    func sendMail(_ email: CdMessage, account: CdAccount, completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
-     Saves the given email as a draft, both on the server and locally.
-     */
-    func saveDraftMail(_ message: CdMessage, account: CdAccount,
-                       completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
-     Syncs all mails' flags in the given folder that are out of date to the server.
+     Syncs all messages' flags in the given folder that are out of date to the server.
      */
     func syncFlagsToServerForFolder(_ folder: CdFolder,
                                     completionBlock: GrandOperatorCompletionBlock?)
-
-    /**
-     Creates a folder with the given properties if it doesn't exist,
-     both locally and on the server.
-     */
-    func createFolderOfType(_ account: CdAccount, folderType: FolderType,
-                            completionBlock: GrandOperatorCompletionBlock?)
 
     /**
      Deletes the given folder, both locally and remotely.
@@ -110,27 +79,23 @@ open class GrandOperator: IGrandOperator {
     let comp = "GrandOperator"
 
     open let connectionManager: ConnectionManager
-    open let coreDataUtil: CoreDataUtil
+    open let coreDataUtil = CoreDataUtil()
 
     fileprivate let verificationQueue = OperationQueue()
     fileprivate let backgroundQueue = OperationQueue()
-
-    /**
-     The main model (for use on the main thread)
-     */
-    fileprivate lazy var model: ICdModel = {
-        return CdModel.init(context: self.coreDataUtil.defaultContext())
-    }()
 
     /**
      Used for storing running flag sync operations to avoid duplicate work.
      */
     fileprivate var flagSyncOperations = [String: BaseOperation]()
 
-    public init(connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
+    public init(connectionManager: ConnectionManager) {
         self.connectionManager = connectionManager
-        self.coreDataUtil = coreDataUtil
         self.connectionManager.grandOperator = self
+    }
+
+    public convenience init() {
+        self.init(connectionManager: ConnectionManager())
     }
 
     open func chainOperations(_ operations: [BaseOperation],
@@ -184,8 +149,8 @@ open class GrandOperator: IGrandOperator {
     open func fetchFolders(_ connectInfo: EmailConnectInfo,
                              completionBlock: GrandOperatorCompletionBlock?) {
         let op = FetchFoldersOperation.init(
-            connectInfo: connectInfo, coreDataUtil: coreDataUtil,
-            connectionManager: connectionManager, onlyUpdateIfNecessary: false)
+            connectInfo: connectInfo, connectionManager: connectionManager,
+            onlyUpdateIfNecessary: false)
         kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
@@ -196,22 +161,25 @@ open class GrandOperator: IGrandOperator {
         var fetchOperations = [BaseOperation]()
 
         for connectInfo in connectInfos {
-            operations.append(CreateLocalSpecialFoldersOperation.init(
-                coreDataUtil: coreDataUtil,
-                accountEmail: connectInfo.userId))
+            guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
+                as? CdAccount else {
+                    completionBlock?(Constants.errorCannotFindAccount(component: comp))
+                    return
+            }
+            operations.append(CreateLocalSpecialFoldersOperation(account: account))
             operations.append(FetchFoldersOperation.init(
-                connectInfo: connectInfo, coreDataUtil: coreDataUtil,
-                connectionManager: connectionManager, onlyUpdateIfNecessary: true))
+                connectInfo: connectInfo, connectionManager: connectionManager,
+                onlyUpdateIfNecessary: true))
 
-            let fetchOp = PrefetchEmailsOperation.init(
+            let fetchOp = FetchMessagesOperation.init(
                 grandOperator: self, connectInfo: connectInfo,
                 folder: folderName)
             fetchOperations.append(fetchOp)
             operations.append(fetchOp)
         }
 
-        // Wait with the decryption until all mails have been downloaded.
-        let decryptOp = DecryptMailOperation.init(coreDataUtil: coreDataUtil)
+        // Wait with the decryption until all messages have been downloaded.
+        let decryptOp = DecryptMessageOperation()
         for fetchOp in fetchOperations {
             decryptOp.addDependency(fetchOp)
         }
@@ -223,13 +191,6 @@ open class GrandOperator: IGrandOperator {
                 // by chainOperations.
                 completionBlock?(error)
         })
-    }
-
-    open func createSpecialLocalFolders(_ accountEmail: String,
-                                          completionBlock: GrandOperatorCompletionBlock?) {
-        let op = CreateLocalSpecialFoldersOperation.init(coreDataUtil: coreDataUtil,
-                                                         accountEmail: accountEmail)
-        kickOffConcurrentOperation(operation: op, completionBlock: completionBlock)
     }
 
     func handleVerificationCompletionFinished1(_ finished1: Bool, finished2: Bool,
@@ -256,7 +217,7 @@ open class GrandOperator: IGrandOperator {
      Asynchronously verifies the given `EmailConnectInfo`s.
      */
     open func verify(
-        account: MessageModel.CdAccount, emailConnectInfos: [EmailConnectInfo: CdServerCredentials],
+        account: CdAccount, emailConnectInfos: [EmailConnectInfo: CdServerCredentials],
         completionBlock: GrandOperatorCompletionBlock?) {
 
         // The operations tha will be run
@@ -323,79 +284,22 @@ open class GrandOperator: IGrandOperator {
         })
     }
 
-    open func sendMail(_ message: CdMessage, account: CdAccount,
-                         completionBlock: GrandOperatorCompletionBlock?) {
-        let encryptionData = EncryptionData.init(
-            connectionManager: connectionManager, coreDataUtil: coreDataUtil,
-            coreDataMessageID: message.objectID, accountEmail: account.email)
-
-        let opEncrypt = EncryptMailOperation.init(encryptionData: encryptionData)
-        let opSend = SendMailOperation.init(encryptionData: encryptionData)
-        let opCreateSentFolder = CheckAndCreateFolderOfTypeOperation.init(
-            account: account, folderType: .sent, connectionManager: connectionManager,
-            coreDataUtil: coreDataUtil)
-        let opSaveSent = SaveSentMessageOperation.init(encryptionData: encryptionData)
-
-        opSaveSent.addDependency(opSend)
-        opSaveSent.addDependency(opCreateSentFolder)
-        opSend.addDependency(opEncrypt)
-
-        opSaveSent.completionBlock = {
-            GCD.onMain() {
-                var firstError: NSError?
-                for op in [opEncrypt, opSend, opCreateSentFolder, opSaveSent] {
-                    if let err = op.errors.first {
-                        firstError = err
-                        break
-                    }
-                }
-                completionBlock?(firstError)
-            }
-        }
-
-        backgroundQueue.addOperation(opEncrypt)
-        backgroundQueue.addOperation(opSend)
-        backgroundQueue.addOperation(opCreateSentFolder)
-        backgroundQueue.addOperation(opSaveSent)
-    }
-
-    open func saveDraftMail(_ message: CdMessage, account: CdAccount,
-                              completionBlock: GrandOperatorCompletionBlock?) {
-        let opCreateDraftFolder = CheckAndCreateFolderOfTypeOperation.init(
-            account: account, folderType: .drafts, connectionManager: connectionManager, coreDataUtil: coreDataUtil)
-
-        let opStore = AppendSingleMessageOperation.init(
-            message: message, account: account, folderType: .drafts,
-            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
-        opStore.completionBlock = {
-            GCD.onMain() {
-                var firstError: NSError?
-                for op in [opCreateDraftFolder, opStore] {
-                    if let err = op.errors.first {
-                        firstError = err
-                        break
-                    }
-                }
-                completionBlock?(firstError)
-            }
-        }
-        opStore.addDependency(opCreateDraftFolder)
-
-        backgroundQueue.addOperation(opCreateDraftFolder)
-        backgroundQueue.addOperation(opStore)
-    }
-
     open func syncFlagsToServerForFolder(_ folder: CdFolder,
                                            completionBlock: GrandOperatorCompletionBlock?) {
         
-        let hashable = folder.hashableID()
-        var operation: BaseOperation? = flagSyncOperations[hashable]
+        guard let connectInfo = folder.account?.imapConnectInfo else {
+            let error = Constants.errorNoImapConnectInfo(component: comp)
+            completionBlock?(error)
+            return
+        }
+
+        let uuid = folder.uuid!
+        var operation: BaseOperation? = flagSyncOperations[uuid]
         let blockOrig = operation?.completionBlock
 
         if operation == nil {
-            operation = SyncFlagsToServerOperation.init(
-                folder: folder, connectionManager: connectionManager,
-                coreDataUtil: coreDataUtil)
+            operation = SyncFlagsToServerOperation(
+                connectInfo: connectInfo, folder: folder, connectionManager: connectionManager)
         }
 
         operation?.completionBlock = {
@@ -410,24 +314,25 @@ open class GrandOperator: IGrandOperator {
         }
     }
 
-    open func createFolderOfType(_ account: CdAccount, folderType: FolderType,
-                                   completionBlock: GrandOperatorCompletionBlock?) {
-        let op = CheckAndCreateFolderOfTypeOperation.init(
-            account: account, folderType: folderType,
-            connectionManager: connectionManager, coreDataUtil: coreDataUtil)
-        op.completionBlock = {
-            GCD.onMain() {
-                completionBlock?(op.errors.first)
-            }
-        }
-        backgroundQueue.addOperation(op)
-    }
-
     open func deleteFolder(_ folder: CdFolder,
                              completionBlock: GrandOperatorCompletionBlock?) {
-        let op = DeleteFolderOperation.init(
-            folder: folder, connectionManager: connectionManager,
-            coreDataUtil: coreDataUtil)
+        guard let account = folder.account else {
+            let error = Constants.errorCannotFindAccount(component: comp)
+            completionBlock?(error)
+            return
+        }
+        guard let connectInfo = account.imapConnectInfo else {
+            let error = Constants.errorNoImapConnectInfo(component: comp)
+            completionBlock?(error)
+            return
+        }
+        guard let op = DeleteFolderOperation(
+            connectInfo: connectInfo, folder: folder,
+            connectionManager: connectionManager) else {
+                let error = Constants.errorInvalidParameter(comp)
+                completionBlock?(error)
+                return
+        }
         op.completionBlock = {
             GCD.onMain() {
                 completionBlock?(op.errors.first)
@@ -440,7 +345,7 @@ open class GrandOperator: IGrandOperator {
 // MARK: - SendLayerProtocol
 
 extension GrandOperator: SendLayerProtocol {
-    public func verify(account: MessageModel.CdAccount,
+    public func verify(account: CdAccount,
                        completionBlock: SendLayerCompletionBlock?) {
         let cis = account.emailConnectInfos
         verify(account: account, emailConnectInfos: cis, completionBlock: { error in
@@ -448,30 +353,30 @@ extension GrandOperator: SendLayerProtocol {
         })
     }
 
-    public func send(message: MessageModel.CdMessage, completionBlock: SendLayerCompletionBlock?) {
+    public func send(message: CdMessage, completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("GrandOperator.send not implemented")
     }
 
-    public func saveDraft(message: MessageModel.CdMessage,
+    public func saveDraft(message: CdMessage,
                           completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("GrandOperator.saveDraft not implemented")
     }
 
-    public func syncFlagsToServer(folder: MessageModel.CdFolder,
+    public func syncFlagsToServer(folder: CdFolder,
                                   completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("GrandOperator.syncFlagsToServer not implemented")
     }
 
-    public func create(folderType: FolderType, account: MessageModel.CdAccount,
+    public func create(folderType: FolderType, account: CdAccount,
                        completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("not implemented")
     }
 
-    public func delete(folder: MessageModel.CdFolder, completionBlock: SendLayerCompletionBlock?) {
+    public func delete(folder: CdFolder, completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("not implemented")
     }
 
-    public func delete(message: MessageModel.CdMessage,
+    public func delete(message: CdMessage,
                        completionBlock: SendLayerCompletionBlock?) {
         assertionFailure("not implemented")
     }

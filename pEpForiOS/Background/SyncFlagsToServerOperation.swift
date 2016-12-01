@@ -6,7 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 import MessageModel
@@ -14,70 +13,85 @@ import MessageModel
 open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     let comp = "SyncFlagsToServerOperation"
 
+    let connectInfo: EmailConnectInfo
     let connectionManager: ConnectionManager
 
-    var targetFolderName: String!
-
-    let connectInfo: EmailConnectInfo
+    var folderID: NSManagedObjectID
+    let folderName: String
 
     var imapSync: ImapSync!
 
     open var numberOfMessagesSynced = 0
 
-    public init(folder: CdFolder,
-                connectionManager: ConnectionManager, coreDataUtil: CoreDataUtil) {
-        
-        /* XXX: To be refactored."
-        self.connectInfo = folder.account.connectInfo
-        */
-        self.connectInfo = EmailConnectInfo(accountObjectID: folder.objectID,
-                                            userName: "",
-                                            networkAddress: "", networkPort: 007)
-        self.targetFolderName = folder.name
+    public init?(connectInfo: EmailConnectInfo, folder: CdFolder,
+                connectionManager: ConnectionManager) {
+        if let fn = folder.name {
+            folderName = fn
+        } else {
+            return nil
+        }
+        self.connectInfo = connectInfo
+        self.folderID = folder.objectID
         self.connectionManager = connectionManager
-        super.init(coreDataUtil: coreDataUtil)
     }
 
     open override func main() {
         privateMOC.perform() {
-            // Immediately check for work. If there is none, bail out
-            if let _ = self.nextMessageToBeSynced() {
-                self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
-                self.imapSync.delegate = self
-                self.imapSync.start()
-            } else {
-                self.markAsFinished()
-            }
+            self.startSync(context: self.privateMOC)
         }
     }
 
-    func nextMessageToBeSynced() -> CdMessage? {
-        let pFlagsChanged = NSPredicate.init(format: "flags != flagsFromServer")
-        let pFolder = NSPredicate.init(format: "folder.name = %@",
-                                       self.targetFolderName)
-        let p = NSCompoundPredicate.init(
-            andPredicateWithSubpredicates: [pFlagsChanged, pFolder])
-        let messages = self.model.messagesByPredicate(
-            p, sortDescriptors: [NSSortDescriptor.init(
-                key: "receivedDate", ascending: true)])
-        return messages?.first
+    func startSync(context: NSManagedObjectContext) {
+        // Immediately check for work. If there is none, bail out
+        if let _ = nextMessageToBeSynced(context: context) {
+            self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+            self.imapSync.delegate = self
+            self.imapSync.start()
+        } else {
+            self.markAsFinished()
+        }
+    }
+
+    public static func messagesToBeSynced(
+        folder: CdFolder, context: NSManagedObjectContext) -> [CdMessage]? {
+        let pFlagsChanged = CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
+        return CdMessage.all(
+            with: pFlagsChanged,
+            orderedBy: [NSSortDescriptor(key: "received", ascending: true)], in: context)
+            as? [CdMessage]
+    }
+
+    func nextMessageToBeSynced(context: NSManagedObjectContext) -> CdMessage? {
+        guard let folder = context.object(with: folderID) as? CdFolder else {
+            addError(Constants.errorCannotFindFolder(component: comp))
+            markAsFinished()
+            return nil
+        }
+        return SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: folder, context: context)?.first
     }
 
     func syncNextMessage() {
-        privateMOC.perform() {
-            guard let m = self.nextMessageToBeSynced() else {
+        let context = Record.Context.default
+        context.perform() {
+            guard let m = self.nextMessageToBeSynced(context: context) else {
                 self.markAsFinished()
                 return
             }
-            self.updateFlagsForMessage(m)
+            self.updateFlags(message: m)
         }
     }
 
-    func updateFlagsForMessage(_ message: CdMessage) {
-        let (cmd, dict) = message.storeCommandForUpdate()
-        imapSync.imapStore.send(
-            IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)
+    func updateFlags(message: CdMessage) {
+        if let (cmd, dict) = message.storeCommandForUpdate() {
+            imapSync.imapStore.send(
+                IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)
+        } else {
+            addError(Constants.errorNoFlags(component: comp))
+            markAsFinished()
+        }
     }
+
 
     func errorOperation(_ localizedMessage: String, logMessage: String) {
         markAsFinished()
@@ -89,7 +103,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 extension SyncFlagsToServerOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
         if !self.isCancelled {
-            sync.openMailBox(targetFolderName)
+            sync.openMailBox(folderName)
         }
     }
 
@@ -115,6 +129,11 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
 
     public func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "folderPrefetchCompleted"))
+        markAsFinished()
+    }
+
+    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderSyncCompleted"))
         markAsFinished()
     }
 
@@ -169,38 +188,59 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
                 "messageStoreCompleted with nil notification")
             return
         }
-        privateMOC.perform() {
-            guard let dict = (n as NSNotification).userInfo else {
-                self.errorOperation(NSLocalizedString(
-                    "UID STORE: Response with missing user info",
-                    comment: "Technical error"),
-                    logMessage: "messageStoreCompleted notification without user info")
-                return
-            }
-            guard let cwMessages = dict[PantomimeMessagesKey] as? [CWIMAPMessage] else {
-                self.errorOperation(NSLocalizedString(
-                    "UID STORE: Response without messages",
-                    comment: "Technical error"),
-                    logMessage: "messageStoreCompleted no messages")
-                return
-            }
-            for cw in cwMessages {
-                if let msg = self.model.messageByUID(Int(cw.uid()),
-                    folderName: self.targetFolderName) {
-                    let flags = cw.flags()
-                    msg.flags = NSNumber.init(value: flags.rawFlagsAsShort() as Int16)
-                    msg.flagsFromServer = msg.flags
-                } else {
-                    self.errorOperation(NSLocalizedString(
-                        "UID STORE: Response for message that can't be found",
-                        comment: "Technical error"), logMessage:
-                        "messageStoreCompleted message not found, UID: \(cw.uid())")
+        privateMOC.performAndWait() {
+            self.storeMessages(context: self.privateMOC, notification: n)
+        }
+
+        syncNextMessage()
+    }
+
+    func storeMessages(context: NSManagedObjectContext, notification n: Notification) {
+        guard let folder = context.object(with: folderID) as? CdFolder else {
+            addError(Constants.errorCannotFindFolder(component: comp))
+            markAsFinished()
+            return
+        }
+
+        guard let dict = (n as NSNotification).userInfo else {
+            self.errorOperation(NSLocalizedString(
+                "UID STORE: Response with missing user info",
+                comment: "Technical error"),
+                                logMessage: "messageStoreCompleted notification without user info")
+            return
+        }
+        guard let cwMessages = dict[PantomimeMessagesKey] as? [CWIMAPMessage] else {
+            self.errorOperation(NSLocalizedString(
+                "UID STORE: Response without messages",
+                comment: "Technical error"),
+                                logMessage: "messageStoreCompleted no messages")
+            return
+        }
+        for cw in cwMessages {
+            if let all = CdMessage.all(
+                with: ["uid": cw.uid(), "parent": folder], in: context)
+                as? [CdMessage] {
+                for m in all {
+                    print("\(m.uid) \(m.imap?.flagsCurrent) \(m.imap?.flagsFromServer) \(m.parent?.objectID)")
                 }
             }
-            self.model.save()
-            self.numberOfMessagesSynced += 1
+
+            if let msg = CdMessage.first(
+                with: ["uid": cw.uid(), "parent": folder], in: context) {
+                let flags = cw.flags()
+                let imap = msg.imap ?? CdImapFields.createWithDefaults(in: context)
+                msg.imap = imap
+                imap.flagsFromServer = flags.rawFlagsAsShort() as Int16
+                imap.flagsCurrent = imap.flagsFromServer
+            } else {
+                self.errorOperation(NSLocalizedString(
+                    "UID STORE: Response for message that can't be found",
+                    comment: "Technical error"), logMessage:
+                    "messageStoreCompleted message not found, UID: \(cw.uid())")
+            }
         }
-        syncNextMessage()
+        Record.saveAndWait(context: context)
+        self.numberOfMessagesSynced += 1
     }
 
     public func messageStoreFailed(_ sync: ImapSync, notification: Notification?) {

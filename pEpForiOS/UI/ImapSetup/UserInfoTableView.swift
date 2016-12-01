@@ -127,7 +127,7 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
             }
         }
 
-        navigationItem.hidesBackButton = Account.all.isEmpty
+        navigationItem.hidesBackButton = Account.all().isEmpty
         updateView()
     }
     

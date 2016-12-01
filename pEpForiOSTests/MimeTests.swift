@@ -9,7 +9,6 @@
 import XCTest
 
 class MimeTests: XCTestCase {
-
     override func setUp() {
         super.setUp()
     }
