@@ -6,7 +6,6 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-
 import MessageModel
 
 import XCTest
@@ -18,6 +17,10 @@ class MessageModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup()
+    }
+
+    override func tearDown() {
+        persistentSetup = nil
     }
 
     /*
