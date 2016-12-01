@@ -22,6 +22,10 @@ class SendLayerTests: XCTestCase {
         persistentSetup = PersistentSetup()
     }
 
+    override func tearDown() {
+        persistentSetup = nil
+    }
+
     func testVerifyBad() {
         let accountDelegate = TestUtil.TestAccountDelegate()
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")

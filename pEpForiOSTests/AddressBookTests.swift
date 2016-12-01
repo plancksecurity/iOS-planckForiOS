@@ -20,6 +20,10 @@ class AddressBookTests: XCTestCase {
         persistentSetup = PersistentSetup()
     }
 
+    override func tearDown() {
+        persistentSetup = nil
+    }
+
     func testSimpleContactSearch() {
         MessageModelConfig.observer.delegate = ObserverDelegate(
             expSaved: expectation(description: "saved"))

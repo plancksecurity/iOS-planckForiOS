@@ -41,10 +41,9 @@ class NetworkServiceTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        // Nothing yet.
+        persistenceSetup = nil
     }
-    
+
     func testNetworkServiceExistenceAfterStart() {
         XCTAssertFalse(networkServiceBasic.isMainThread)
         XCTAssertFalse(networkServiceBasic.isFinished)
