@@ -344,8 +344,8 @@ class SimpleOperationsTest: XCTestCase {
         message.longMessage = "Long message"
         message.longMessageFormatted = "<h1>Long HTML</h1>"
 
-        message.addTo(identity: c1)
-        message.addCc(identity: c2)
+        message.addTo(cdIdentity: c1)
+        message.addCc(cdIdentity: c2)
 
         Record.saveAndWait()
 
@@ -655,9 +655,9 @@ class SimpleOperationsTest: XCTestCase {
         // So we should receive 3 mails:
         // One encrypted to identity (CC), one encrypted to receiver4 (BCC),
         // and one unencrypted to receiver1 (TO).
-        mail.addTo(identity: CdIdentity.firstOrCreate(pEpContact: receiver1))
-        mail.addCc(identity: CdIdentity.firstOrCreate(dictionary: identity))
-        mail.addBcc(identity: CdIdentity.firstOrCreate(pEpContact: receiver4))
+        mail.addTo(cdIdentity: CdIdentity.firstOrCreate(pEpContact: receiver1))
+        mail.addCc(cdIdentity: CdIdentity.firstOrCreate(dictionary: identity))
+        mail.addBcc(cdIdentity: CdIdentity.firstOrCreate(pEpContact: receiver4))
         mail.shortMessage = "Subject"
         mail.longMessage = "Long Message"
         mail.longMessageFormatted = "<b>HTML message</b>"
@@ -713,7 +713,7 @@ class SimpleOperationsTest: XCTestCase {
         let myself = CdIdentity.firstOrCreate(dictionary: identity)
 
         message.from = myself
-        message.addTo(identity: myself)
+        message.addTo(cdIdentity: myself)
         message.shortMessage = subject
         message.longMessage = longMessage
         message.longMessageFormatted = longMessageFormatted

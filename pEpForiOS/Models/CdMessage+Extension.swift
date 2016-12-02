@@ -107,22 +107,29 @@ extension CdMessage {
     /**
      The original (`addToTo`) crashes
      */
-    public func addTo(identity: CdIdentity) {
-        to = NSOrderedSet.adding(elements: [identity], toSet: to)
+    public func addTo(cdIdentity: CdIdentity) {
+        to = NSOrderedSet.adding(elements: [cdIdentity], toSet: to)
     }
 
     /**
      The original (`addToCc`) crashes
      */
-    public func addCc(identity: CdIdentity) {
-        cc = NSOrderedSet.adding(elements: [identity], toSet: cc)
+    public func addCc(cdIdentity: CdIdentity) {
+        cc = NSOrderedSet.adding(elements: [cdIdentity], toSet: cc)
     }
 
     /**
      The original (`addToBcc`) crashes
      */
-    public func addBcc(identity: CdIdentity) {
-        bcc = NSOrderedSet.adding(elements: [identity], toSet: bcc)
+    public func addBcc(cdIdentity: CdIdentity) {
+        bcc = NSOrderedSet.adding(elements: [cdIdentity], toSet: bcc)
+    }
+
+    /**
+     The original (`addToReferences`) crashes
+     */
+    public func addReference(cdMessageReference: CdMessageReference) {
+        references = NSOrderedSet.adding(elements: [cdMessageReference], toSet: references)
     }
 
     static func insertAttachment(
