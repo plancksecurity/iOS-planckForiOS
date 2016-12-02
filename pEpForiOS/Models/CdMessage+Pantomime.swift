@@ -318,7 +318,7 @@ extension CdMessage {
 
         for refID in referenceStrings {
             let ref = insertOrUpdateMessageReference(refID as! String)
-            mail.addToReferences(ref)
+            mail.addReference(cdMessageReference: ref)
         }
 
         let imap = mail.imap ?? CdImapFields.create()
@@ -358,7 +358,7 @@ extension CdMessage {
 
     static func insertOrUpdateMessageReference(_ messageID: String) -> CdMessageReference {
         let ref = CdMessageReference.firstOrCreate(with: "reference", value: messageID)
-        ref.message = CdMessage.first(with: "messageID", value: messageID)
+        ref.message = CdMessage.first(with: "uuid", value: messageID)
         return ref
     }
 
