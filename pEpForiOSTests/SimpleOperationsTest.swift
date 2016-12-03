@@ -207,7 +207,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expStored = expectation(description: "expStored")
         let op = StorePrefetchedMailOperation(
-            connectInfo: imapConnectInfo, message: message, quick: false)
+            accountID: imapConnectInfo.accountObjectID, message: message, quick: false)
         op.completionBlock = {
             expStored.fulfill()
         }
@@ -243,8 +243,8 @@ class SimpleOperationsTest: XCTestCase {
             message.setFolder(folder)
             message.setUID(UInt(i))
             message.setMessageID("\(i)@whatever.test")
-            let op = StorePrefetchedMailOperation(connectInfo: imapConnectInfo, message: message,
-                                                  quick: i % 2 == 0)
+            let op = StorePrefetchedMailOperation(accountID: imapConnectInfo.accountObjectID,
+                                                  message: message, quick: i % 2 == 0)
             op.completionBlock = {
                 numberOfCallbacksCalled += 1
                 XCTAssertEqual(op.errors.count, 0)

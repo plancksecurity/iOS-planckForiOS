@@ -46,7 +46,7 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     }
 
     func process(context: NSManagedObjectContext) {
-        let folderBuilder = ImapFolderBuilder.init(connectInfo: self.connectInfo,
+        let folderBuilder = ImapFolderBuilder.init(accountID: self.connectInfo.accountObjectID,
                                                    backgroundQueue: self.backgroundQueue)
 
         guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
