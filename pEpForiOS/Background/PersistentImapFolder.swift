@@ -16,7 +16,7 @@ import MessageModel
 class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     let comp = "PersistentImapFolder"
 
-    let connectInfo: EmailConnectInfo
+    let accountID: NSManagedObjectID
 
     /** The underlying core data object */
     var folder: CdFolder!
@@ -59,8 +59,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
-    init(name: String, connectInfo: EmailConnectInfo, backgroundQueue: OperationQueue) {
-        self.connectInfo = connectInfo
+    init(name: String, accountID: NSManagedObjectID, backgroundQueue: OperationQueue) {
+        self.accountID = accountID
         self.backgroundQueue = backgroundQueue
         super.init(name: name)
         self.setCacheManager(self)
@@ -74,7 +74,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     func folderObject() -> CdFolder {
         var folder: CdFolder? = nil
         privateMOC.performAndWait({
-            guard let account = self.privateMOC.object(with: self.connectInfo.accountObjectID)
+            guard let account = self.privateMOC.object(with: self.accountID)
                 as? CdAccount else {
                     Log.error(component: self.comp,
                               errorString: "Given objectID is not an account")
@@ -193,7 +193,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         Log.warn(component: comp, "Writing message \(message)")
 
         let opQuick = StorePrefetchedMailOperation(
-            connectInfo: connectInfo, message: message, quick: false)
+            accountID: accountID, message: message, quick: false)
         opQuick.start()
     }
 }

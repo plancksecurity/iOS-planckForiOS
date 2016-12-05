@@ -16,16 +16,16 @@ import MessageModel
 open class StorePrefetchedMailOperation: BaseOperation {
     let comp = "StorePrefetchedMailOperation"
     let message: CWIMAPMessage
-    let connectInfo: EmailConnectInfo
     let quick: Bool
+    let accountID: NSManagedObjectID
 
     /**
      - parameter quick: Store only the most important properties (for true), or do it completely,
      including attachments?
      */
-    public init(connectInfo: EmailConnectInfo, message: CWIMAPMessage,
+    public init(accountID: NSManagedObjectID, message: CWIMAPMessage,
                 quick: Bool = true) {
-        self.connectInfo = connectInfo
+        self.accountID = accountID
         self.message = message
         self.quick = quick
         super.init()
@@ -39,7 +39,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
     }
 
     func storeMessage(context: NSManagedObjectContext) {
-        guard let account = context.object(with: connectInfo.accountObjectID)
+        guard let account = context.object(with: accountID)
             as? CdAccount else {
                 errors.append(Constants.errorCannotFindAccount(component: comp))
                 return

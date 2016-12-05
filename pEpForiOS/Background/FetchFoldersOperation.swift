@@ -6,19 +6,21 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import CoreData
+
 import MessageModel
 
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {
-    let connectInfo: EmailConnectInfo
+    let accountID: NSManagedObjectID
     open let backgroundQueue: OperationQueue?
 
-    public init(connectInfo: EmailConnectInfo, backgroundQueue: OperationQueue) {
-        self.connectInfo = connectInfo
+    public init(accountID: NSManagedObjectID, backgroundQueue: OperationQueue) {
+        self.accountID = accountID
         self.backgroundQueue = backgroundQueue
     }
 
     open func folder(withName name: String) -> CWFolder {
-        return PersistentImapFolder(name: name, connectInfo: connectInfo,
+        return PersistentImapFolder(name: name, accountID: accountID,
                                     backgroundQueue: backgroundQueue!) as CWFolder
     }
 
@@ -53,7 +55,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
 
         super.init()
 
-        folderBuilder = ImapFolderBuilder(connectInfo: connectInfo,
+        folderBuilder = ImapFolderBuilder(accountID: connectInfo.accountObjectID,
                                           backgroundQueue: backgroundQueue)
     }
 
