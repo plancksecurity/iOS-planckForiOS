@@ -66,25 +66,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, "applicationDidEnterBackground")
 
-        // Do mySelf on all accounts
-        let bgId = application.beginBackgroundTask(expirationHandler: {
-            Log.info(component: self.comp, "Could not complete all myself in background")
-
+        var bgId = 0
+        bgId = application.beginBackgroundTask(expirationHandler: {
             // Shutdown pEp engine
             self.firstSession = nil
+            application.endBackgroundTask(bgId)
         })
-        let accounts = Account.all()
-        for acc in accounts {
-            let userAddress = acc.user.address
-            Log.info(component: comp, "Starting myself for \(userAddress)")
-            PEPUtil.myself(account: acc, queue: backgroundQueue) { identity in
-                Log.info(component: self.comp, "Finished myself for \(userAddress) (\(identity[kPepFingerprint]))")
-                application.endBackgroundTask(bgId)
-            }
-        }
-
-        // Shutdown pEp engine
-        firstSession = nil
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
