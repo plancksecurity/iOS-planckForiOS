@@ -25,6 +25,7 @@ class SimpleOperationsTest: XCTestCase {
         persistentSetup = PersistentSetup()
 
         let cdAccount = TestData().createWorkingCdAccount()
+        cdAccount.identity?.isMySelf = true
         TestUtil.skipValidation()
         Record.saveAndWait()
         self.account = cdAccount
@@ -871,5 +872,25 @@ class SimpleOperationsTest: XCTestCase {
                                               to: myself as NSDictionary as! PEPIdentity)
             }
         }
+    }
+
+    func testMyselfOperation() {
+        XCTAssertNotNil(account.identity)
+        XCTAssertNil(account.identity?.fingerPrint)
+        let expCompleted = expectation(description: "expCompleted")
+
+        let op = MySelfOperation()
+        op.completionBlock = {
+            expCompleted.fulfill()
+        }
+
+        OperationQueue().addOperation(op)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
+        })
+
+        XCTAssertNotNil(account.identity?.fingerPrint)
     }
 }
