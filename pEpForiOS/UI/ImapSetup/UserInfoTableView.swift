@@ -89,12 +89,14 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
     @IBOutlet weak var usernameTitle: UILabel!
     @IBOutlet weak var passwordTitle: UILabel!
     @IBOutlet weak var nameTitle: UILabel!
+    @IBOutlet weak var cancelBarbutton: UIBarButtonItem!
 
     var appConfig: AppConfig?
     var IMAPSettings = "IMAPSettings"
     var fields = [UITextField]()
     var responder = 0
-
+    var accounts = [Account]()
+    
     open var model = ModelUserInfoTable()
 
     let viewWidthAligner = ViewWidthsAligner()
@@ -102,6 +104,7 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
     open override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.handleCancelButtonVisibility()
         passwordValue.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [nameValue, emailValue, usernameValue, passwordValue]
@@ -116,6 +119,13 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
             passwordTitle,
             nameTitle
             ], parentView: view)
+    }
+    
+    func handleCancelButtonVisibility() {
+        accounts = Account.all()
+        if accounts.isEmpty {
+            self.navigationItem.leftBarButtonItem = nil
+        }
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -190,4 +200,8 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
         model.name = sender.text
         updateView()
     }
+    
+    @IBAction func cancelButtonTapped(_ sender: UIButton) {
+    }
+    
 }

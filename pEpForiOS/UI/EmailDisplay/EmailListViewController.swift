@@ -143,7 +143,7 @@ class EmailListViewController: UITableViewController {
     }
     
     func updateModel() {
-        config.folder = MockData.createFolder(config.account!)
+       // config.folder = MockData.createFolder(config.account!)
     }
 
     // MARK: - UI State
