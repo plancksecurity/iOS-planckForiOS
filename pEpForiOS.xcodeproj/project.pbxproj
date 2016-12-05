@@ -154,6 +154,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		43122B021DF5B24A00610253 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43BB86781DB4C3BC00980267 /* MessageModel.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 43CB60811DA4EB4E0015281E;
+			remoteInfo = MessageModel;
+		};
 		434662CD1CBF808D0053FC48 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */;
@@ -817,6 +824,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				43122B031DF5B24A00610253 /* PBXTargetDependency */,
 				439D406A1CC7883D009A4E7C /* PBXTargetDependency */,
 				434662CE1CBF808D0053FC48 /* PBXTargetDependency */,
 			);
@@ -1158,6 +1166,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		43122B031DF5B24A00610253 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MessageModel;
+			targetProxy = 43122B021DF5B24A00610253 /* PBXContainerItemProxy */;
+		};
 		434662CE1CBF808D0053FC48 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = PantomimeStatic;
