@@ -39,6 +39,8 @@ open class MockData {
         for i in 1...10 {
             let msg = Message.create(uuid: UUID.generate())
             msg.shortMessage = "Test \(i)"
+            msg.from = Identity.create(address: "igor.vojinovic@appculture.com")
+            msg.to = [Identity.create(address: "igor.vojinovic@appculture.com")]
             msg.longMessage = "<html><head></head><body>Test Message Nr: \(i) </body></html>"
             msg.sent = Date() as NSDate?
             folder.add(message: msg)

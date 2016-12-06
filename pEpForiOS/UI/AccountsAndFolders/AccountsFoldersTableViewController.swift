@@ -33,7 +33,7 @@ class AccountsFoldersViewController: UITableViewController {
     var accounts = [Account]()
 
     /** For email list configuration */
-    var emailListConfig: EmailListViewController.EmailListConfig?
+    var emailListConfig: EmailListConfig?
 
     /** For folder list configuration */
     var folderListConfig: FolderListViewController.FolderListConfig?
@@ -173,7 +173,7 @@ class AccountsFoldersViewController: UITableViewController {
             let account = accounts[(indexPath as NSIndexPath).row]
             let inbox = account.inbox()
 
-            emailListConfig = EmailListViewController.EmailListConfig.init(
+            emailListConfig = EmailListConfig.init(
                 appConfig: ac, account: account, folder: inbox)
 
             self.performSegue(withIdentifier: segueEmailList, sender: self)

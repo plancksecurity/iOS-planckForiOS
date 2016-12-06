@@ -146,7 +146,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5566" y="1168"/>
+            <point key="canvasLocation" x="5505" y="1176"/>
         </scene>
         <!--Compose View Controller-->
         <scene sceneID="YkL-8B-UDO">
@@ -468,7 +468,7 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="New Account" id="QS1-DH-6Lg">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="93D-9e-gLu">
+                        <barButtonItem key="leftBarButtonItem" id="93D-9e-gLu">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cUk-RH-Yos">
                                 <rect key="frame" x="16" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1191,7 +1191,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="YFp-bx-xP9">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="xcm-Pq-FiP">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="xcm-Pq-FiP">
                             <connections>
                                 <action selector="addAccountButtonTapped:" destination="cPx-YX-3ty" id="sKP-hA-93i"/>
                             </connections>

@@ -19,7 +19,7 @@ class FolderListViewController: UITableViewController {
         let appConfig: AppConfig
     }
 
-    var emailListConfig: EmailListViewController.EmailListConfig? = nil
+    var emailListConfig: EmailListConfig? = nil
 
     /** Our vanilla table view cell */
     let standardCell = "standardCell"
@@ -144,7 +144,7 @@ class FolderListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView,
                             didSelectRowAt indexPath: IndexPath) {
         let fi = folderAt(indexPath: indexPath)
-        emailListConfig = EmailListViewController.EmailListConfig.init(
+        emailListConfig = EmailListConfig.init(
             appConfig: config.appConfig,
             account: config.account, folder: fi)
 

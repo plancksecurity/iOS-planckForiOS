@@ -36,13 +36,13 @@ class UIHelper {
     }
 
     static func labelFromContact(_ contact: CdIdentity) -> UILabel {
-        let l = UILabel.init()
+        let l = UILabel()
         l.text = contact.address
         return l
     }
 
     static func dateFormatterEmailList() -> DateFormatter {
-        let formatter = DateFormatter.init()
+        let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         return formatter
