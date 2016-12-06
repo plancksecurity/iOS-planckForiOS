@@ -13,7 +13,7 @@ import pEpForiOS
 import MessageModel
 
 class SimpleOperationsTest: XCTestCase {
-    let grandOperator = GrandOperator()
+    let connectionManager = ConnectionManager()
     var account: CdAccount!
     var persistentSetup: PersistentSetup!
 
@@ -43,7 +43,7 @@ class SimpleOperationsTest: XCTestCase {
 
     func testVerifyConnection() {
         let expCompleted = expectation(description: "expCompleted")
-        let op = VerifyImapConnectionOperation(grandOperator: grandOperator,
+        let op = VerifyImapConnectionOperation(connectionManager: connectionManager,
                                                connectInfo: imapConnectInfo)
         op.completionBlock = {
             expCompleted.fulfill()
@@ -61,7 +61,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
-        let op = FetchMessagesOperation(grandOperator: grandOperator,
+        let op = FetchMessagesOperation(connectionManager: connectionManager,
                                          connectInfo: imapConnectInfo,
                                          folder: ImapSync.defaultImapInboxName)
         op.completionBlock = {
@@ -146,8 +146,8 @@ class SimpleOperationsTest: XCTestCase {
 
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
-        let op = SyncMessagesOperation(grandOperator: grandOperator, connectInfo: imapConnectInfo,
-                                       folder: folder)
+        let op = SyncMessagesOperation(connectionManager: connectionManager,
+                                       connectInfo: imapConnectInfo, folder: folder)
         op.completionBlock = {
             expMailsPrefetched.fulfill()
         }
@@ -169,7 +169,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let op = FetchFoldersOperation(
             connectInfo: imapConnectInfo,
-            connectionManager: grandOperator.connectionManager)
+            connectionManager: connectionManager)
         op.completionBlock = {
             expFoldersFetched.fulfill()
         }
@@ -292,12 +292,12 @@ class SimpleOperationsTest: XCTestCase {
         // Fetch folders to get the folder separator
         let opFetchFolders = FetchFoldersOperation(
             connectInfo: imapConnectInfo,
-            connectionManager: grandOperator.connectionManager)
+            connectionManager: connectionManager)
 
         let expCreated = expectation(description: "expCreated")
         let opCreate = CheckAndCreateFolderOfTypeOperation(
             connectInfo: imapConnectInfo, account: account, folderType: .drafts,
-            connectionManager: grandOperator.connectionManager)
+            connectionManager: connectionManager)
         opCreate.addDependency(opFetchFolders)
         opCreate.completionBlock = {
             expCreated.fulfill()
@@ -322,7 +322,7 @@ class SimpleOperationsTest: XCTestCase {
         let expCreated = expectation(description: "expCreated")
         let opCreate = CheckAndCreateFolderOfTypeOperation(
             connectInfo: imapConnectInfo, account: account, folderType: .drafts,
-            connectionManager: grandOperator.connectionManager)
+            connectionManager: connectionManager)
         opCreate.completionBlock = {
             expCreated.fulfill()
         }
@@ -358,7 +358,7 @@ class SimpleOperationsTest: XCTestCase {
         let op = AppendSingleMessageOperation(
             connectInfo: imapConnectInfo,
             message: message, account: account, targetFolder: targetFolder,
-            connectionManager: grandOperator.connectionManager)
+            connectionManager: connectionManager)
 
         let expMessageAppended = expectation(description: "expMessageAppended")
         op.completionBlock = {
@@ -389,7 +389,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expCreated = expectation(description: "expCreated")
         let opCreate = CreateFoldersOperation(imapConnectInfo: imapConnectInfo, account: account,
-                                              connectionManager: grandOperator.connectionManager)
+                                              connectionManager: connectionManager)
         opCreate.completionBlock = {
             expCreated.fulfill()
         }
@@ -410,7 +410,7 @@ class SimpleOperationsTest: XCTestCase {
         let expDeleted = expectation(description: "expDeleted")
         let opDelete = DeleteFoldersOperation(
             imapConnectInfo: imapConnectInfo, account: account,
-            connectionManager: grandOperator.connectionManager)
+            connectionManager: connectionManager)
         opDelete.completionBlock = {
             expDeleted.fulfill()
         }
@@ -438,7 +438,7 @@ class SimpleOperationsTest: XCTestCase {
         }
         guard let op = SyncFlagsToServerOperation(
             connectInfo: imapConnectInfo, folder: inbox,
-            connectionManager: grandOperator.connectionManager) else {
+            connectionManager: connectionManager) else {
                 XCTFail()
                 return
         }
@@ -491,7 +491,7 @@ class SimpleOperationsTest: XCTestCase {
 
         guard let op = SyncFlagsToServerOperation(
             connectInfo: imapConnectInfo, folder: inbox,
-            connectionManager: grandOperator.connectionManager) else {
+            connectionManager: connectionManager) else {
                 XCTFail()
                 return
         }
@@ -552,7 +552,7 @@ class SimpleOperationsTest: XCTestCase {
         for i in 1...1 {
             guard let op = SyncFlagsToServerOperation(
                 connectInfo: imapConnectInfo, folder: inbox,
-                connectionManager: grandOperator.connectionManager) else {
+                connectionManager: connectionManager) else {
                     XCTFail()
                     return
             }
@@ -668,7 +668,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let encryptionData = EncryptionData(
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo,
-            connectionManager: grandOperator.connectionManager,
+            connectionManager: connectionManager,
             messageID: mail.objectID, outgoing: true)
         let encOp = EncryptMessageOperation(encryptionData: encryptionData)
 
@@ -726,7 +726,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let encryptionData = EncryptionData(
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo,
-            connectionManager: grandOperator.connectionManager,
+            connectionManager: connectionManager,
             messageID: message.objectID, outgoing: true)
         let encOp = EncryptMessageOperation(encryptionData: encryptionData)
 
@@ -796,7 +796,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let encryptionData = EncryptionData(
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo,
-            connectionManager: grandOperator.connectionManager,
+            connectionManager: connectionManager,
             messageID: message.objectID, outgoing: true)
 
         let contact = NSMutableDictionary()

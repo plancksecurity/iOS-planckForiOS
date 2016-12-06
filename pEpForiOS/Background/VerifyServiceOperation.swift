@@ -20,9 +20,9 @@ open class VerifyServiceOperation: ConcurrentBaseOperation {
      */
     var isFinishing: Bool = false
 
-    public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo) {
+    public init(connectionManager: ConnectionManagerProtocol, connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
-        self.connectionManager = grandOperator.connectionManager
+        self.connectionManager = connectionManager
     }
 
     func close(_ finish: Bool) {

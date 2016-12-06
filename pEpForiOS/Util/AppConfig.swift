@@ -15,7 +15,6 @@ class AppConfig: NSObject {
 
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
     let connectionManager = ConnectionManager()
-    let grandOperator: IGrandOperator
 
     /**
      As soon as the UI has at least one account that is in use, this is set here.
@@ -23,10 +22,6 @@ class AppConfig: NSObject {
     var currentAccount: Account? = nil
 
     override init() {
-        let gOp = GrandOperator(connectionManager: connectionManager)
-        grandOperator = gOp
-        CdAccount.sendLayer = gOp
-
+        CdAccount.sendLayer = GrandOperator(connectionManager: connectionManager)
     }
-
 }

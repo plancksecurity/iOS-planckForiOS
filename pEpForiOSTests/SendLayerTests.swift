@@ -14,7 +14,7 @@ import pEpForiOS
 class SendLayerTests: XCTestCase {
     let coreDataUtil = CoreDataUtil()
     let connectionManager = ConnectionManager()
-    let grandOp = GrandOperator()
+    let grandOp = GrandOperator(connectionManager: ConnectionManager())
     var persistentSetup: PersistentSetup!
 
     override func setUp() {

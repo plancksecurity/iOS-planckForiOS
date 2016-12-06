@@ -22,7 +22,6 @@ open class ConnectionManager: ConnectionManagerProtocol {
     open var cacheImapConnections: Bool = false
 
     var imapConnections: [EmailConnectInfo: ImapSync] = [:]
-    weak var grandOperator: IGrandOperator!
 
     public init() {}
 

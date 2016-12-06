@@ -20,9 +20,10 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
     let connectionManager: ImapConnectionManagerProtocol
     var lastUID: UInt?
 
-    public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo, folder: CdFolder) {
+    public init(connectionManager: ImapConnectionManagerProtocol,
+                connectInfo: EmailConnectInfo, folder: CdFolder) {
         self.connectInfo = connectInfo
-        self.connectionManager = grandOperator.connectionManager
+        self.connectionManager = connectionManager
         folderID = folder.objectID
         folderToOpen = folder.name!
     }

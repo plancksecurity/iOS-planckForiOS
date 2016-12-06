@@ -24,9 +24,10 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     var folderToOpen: String
     let connectionManager: ImapConnectionManagerProtocol
 
-    public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo, folder: String?) {
+    public init(connectionManager: ImapConnectionManagerProtocol,
+                connectInfo: EmailConnectInfo, folder: String?) {
         self.connectInfo = connectInfo
-        self.connectionManager = grandOperator.connectionManager
+        self.connectionManager = connectionManager
         if let folder = folder {
             folderToOpen = folder
         } else {
