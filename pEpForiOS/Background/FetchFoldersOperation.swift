@@ -98,6 +98,13 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
 
     func startSync() {
         imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
+
+        if imapSync == nil {
+            addError(Constants.errorImapInvalidConnection(component: comp))
+            markAsFinished()
+            return
+        }
+
         imapSync.delegate = self
         imapSync.folderBuilder = folderBuilder
         imapSync.start()

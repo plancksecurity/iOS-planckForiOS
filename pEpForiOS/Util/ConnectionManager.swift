@@ -7,11 +7,11 @@
 //
 
 public protocol ImapConnectionManagerProtocol {
-    func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync
+    func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync?
 }
 
 public protocol SmtpConnectionManagerProtocol {
-    func smtpConnection(connectInfo: EmailConnectInfo) -> SmtpSend
+    func smtpConnection(connectInfo: EmailConnectInfo) -> SmtpSend?
 }
 
 public protocol ConnectionManagerProtocol: ImapConnectionManagerProtocol,
@@ -29,7 +29,7 @@ open class ConnectionManager: ConnectionManagerProtocol {
         closeAll()
     }
 
-    open func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync {
+    open func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync? {
         if cacheImapConnections {
             if let sync = imapConnections[connectInfo] {
                 return sync
@@ -45,7 +45,7 @@ open class ConnectionManager: ConnectionManagerProtocol {
         return sync
     }
 
-    open func smtpConnection(connectInfo: EmailConnectInfo) -> SmtpSend {
+    open func smtpConnection(connectInfo: EmailConnectInfo) -> SmtpSend? {
         return SmtpSend(connectInfo: connectInfo)
     }
 

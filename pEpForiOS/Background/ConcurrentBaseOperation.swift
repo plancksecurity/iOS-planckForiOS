@@ -84,4 +84,13 @@ open class ConcurrentBaseOperation: BaseOperation {
         didChangeValue(forKey: "isFinished")
         didChangeValue(forKey: "isExecuting")
     }
+
+    func checkImapSync(sync: ImapSync?) -> Bool {
+        if sync == nil {
+            addError(Constants.errorImapInvalidConnection(component: "ConcurrentBaseOperation"))
+            markAsFinished()
+            return false
+        }
+        return true
+    }
 }

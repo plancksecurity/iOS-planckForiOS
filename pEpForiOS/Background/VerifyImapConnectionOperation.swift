@@ -14,6 +14,13 @@ open class VerifyImapConnectionOperation: VerifyServiceOperation {
             return
         }
         service = connectionManager.imapConnection(connectInfo: connectInfo)
+
+        if service == nil {
+            addError(Constants.errorImapInvalidConnection(component: comp))
+            markAsFinished()
+            return
+        }
+
         (service as! ImapSync).delegate = self
         service.start()
     }

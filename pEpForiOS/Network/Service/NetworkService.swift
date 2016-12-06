@@ -82,11 +82,11 @@ public class NetworkService: INetworkService {
         opAllFinished.addDependency(opSmtpFinished)
 
         var operations = [opImapFinished, opSmtpFinished, opAllFinished]
-        let imapSyncData = ImapSyncData()
 
         for ai in accountConnectInfos {
             // login IMAP
             if let imapCI = ai.imapConnectInfo {
+                let imapSyncData = ImapSyncData(connectInfo: imapCI)
                 let op = LoginImapOperation(connectInfo: imapCI, imapSyncData: imapSyncData)
                 opImapFinished.addDependency(op)
                 operations.append(op)

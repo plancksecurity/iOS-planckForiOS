@@ -43,6 +43,13 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
         let folderBuilder = ImapFolderBuilder.init(accountID: self.connectInfo.accountObjectID,
                                                    backgroundQueue: self.backgroundQueue)
         self.sync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
+
+        if self.sync == nil {
+            self.addError(Constants.errorImapInvalidConnection(component: self.comp))
+            self.markAsFinished()
+            return
+        }
+
         self.sync.delegate = self
         self.sync.folderBuilder = folderBuilder
 

@@ -57,6 +57,13 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
 
         if folderNamesToCreate.count > 0 {
             imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
+
+            if imapSync == nil {
+                addError(Constants.errorImapInvalidConnection(component: comp))
+                markAsFinished()
+                return
+            }
+
             imapSync.delegate = self
             imapSync.start()
         } else {

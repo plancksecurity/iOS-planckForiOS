@@ -55,6 +55,13 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
         let folder = CdFolder.by(folderType: self.folderType, account: account)
         if folder == nil {
             self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
+
+            if self.imapSync == nil {
+                self.addError(Constants.errorImapInvalidConnection(component: self.comp))
+                self.markAsFinished()
+                return
+            }
+
             self.imapSync.delegate = self
             self.imapSync.start()
         } else {

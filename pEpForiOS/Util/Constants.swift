@@ -108,6 +108,7 @@ open class Constants {
      */
     public enum ImapErrorCode: Int {
         case unknownError = 7000
+        case invalidConnection
         case badResponseError
         case messageStoreFailed
         case folderCreateFailed
@@ -366,6 +367,14 @@ open class Constants {
             domain: component, code: ImapErrorCode.unknownError.rawValue,
             userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
                 "Unknown IMAP error", comment: "Unknown IMAP error.")])
+        return error
+    }
+
+    static func errorImapInvalidConnection(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: ImapErrorCode.invalidConnection.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
+                "Invalid connection", comment: "used internally")])
         return error
     }
 

@@ -90,6 +90,13 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
                 // Append the message
                 self.cwMessageToAppend = PEPUtil.pantomime(pEpMessage: m as! PEPMessage)
                 self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
+
+                if self.imapSync == nil {
+                    self.addError(Constants.errorImapInvalidConnection(component: self.comp))
+                    self.markAsFinished()
+                    return
+                }
+
                 self.imapSync.delegate = self
                 self.imapSync.start()
             }

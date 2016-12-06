@@ -20,6 +20,19 @@ public struct AccountConnectInfo {
 /**
  Used for parameters/state shared between IMAP related operations.
  */
-open class ImapSyncData {
+open class ImapSyncData: ImapConnectionManagerProtocol {
+    public let connectInfo: EmailConnectInfo
+
     public var sync: ImapSync?
+
+    init(connectInfo: EmailConnectInfo) {
+        self.connectInfo = connectInfo
+    }
+
+    public func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync? {
+        if self.connectInfo == connectInfo {
+            return sync
+        }
+        return nil
+    }
 }

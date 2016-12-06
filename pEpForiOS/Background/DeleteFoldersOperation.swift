@@ -52,6 +52,13 @@ open class DeleteFoldersOperation: ConcurrentBaseOperation {
         }
 
         imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
+
+        if self.imapSync == nil {
+            self.addError(Constants.errorImapInvalidConnection(component: self.comp))
+            self.markAsFinished()
+            return
+        }
+
         imapSync.delegate = self
         imapSync.start()
     }
