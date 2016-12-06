@@ -25,7 +25,7 @@ open class ImapSyncData: ImapConnectionManagerProtocol {
 
     public var sync: ImapSync?
 
-    init(connectInfo: EmailConnectInfo) {
+    public init(connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
     }
 

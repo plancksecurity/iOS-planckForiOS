@@ -10,7 +10,12 @@ import CoreData
 
 import MessageModel
 
-protocol INetworkService {
+public protocol INetworkService {
+}
+
+public protocol NetworkServiceDelegate: class {
+    /** Called after each sync of all accounts */
+    func didSyncAllAccounts(service: NetworkService)
 }
 
 /**
@@ -21,10 +26,14 @@ protocol INetworkService {
 public class NetworkService: INetworkService {
     let comp = "NetworkService"
 
-    let workerQueue = DispatchQueue(label: "net.pep-security.apps.pEp.service", qos: .background,
-                                    target: nil)
+    let workerQueue = DispatchQueue(
+        label: "net.pep-security.apps.pEp.service", qos: .background, target: nil)
+    let backgroundQueue = OperationQueue()
+
     var canceled = false
     var currentOperations = Set<Operation>()
+
+    public weak var delegate: NetworkServiceDelegate?
 
     public init() {}
 
@@ -32,8 +41,15 @@ public class NetworkService: INetworkService {
      Start endlessly synchronizing in the background.
      */
     public func start() {
+        self.process()
+    }
+
+    /**
+     Start endlessly synchronizing in the background.
+     */
+    public func process() {
         workerQueue.async {
-            self.process()
+            self.processInternal()
         }
     }
 
@@ -69,12 +85,21 @@ public class NetworkService: INetworkService {
         return connectInfos
     }
 
-    func buildOperationLine(accountConnectInfos: [AccountConnectInfo]) -> [Operation] {
+    struct OperationLine {
+        let operations: [Operation]
+        let finalOperation: Operation
+    }
+
+    func buildOperationLine(accountConnectInfos: [AccountConnectInfo]) -> OperationLine {
         // Operation depending on all IMAP operations for this account
-        let opImapFinished = Operation()
+        let opImapFinished = BlockOperation(block: {
+            Log.warn(component: self.comp, "IMAP sync finished")
+        })
 
         // Operation depending on all SMTP operations for this account
-        let opSmtpFinished = Operation()
+        let opSmtpFinished = BlockOperation(block: {
+            Log.warn(component: self.comp, "SMTP sync finished")
+        })
 
         // Operation depending on all IMAP and SMTP operations
         let opAllFinished = Operation()
@@ -84,28 +109,42 @@ public class NetworkService: INetworkService {
         var operations = [opImapFinished, opSmtpFinished, opAllFinished]
 
         for ai in accountConnectInfos {
-            // login IMAP
-            if let imapCI = ai.imapConnectInfo {
-                let imapSyncData = ImapSyncData(connectInfo: imapCI)
-                let op = LoginImapOperation(connectInfo: imapCI, imapSyncData: imapSyncData)
-                opImapFinished.addDependency(op)
-                operations.append(op)
-            }
-
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
 
-            // 3.b Fetch current list of interesting mailboxes
+            if let imapCI = ai.imapConnectInfo {
+                let imapSyncData = ImapSyncData(connectInfo: imapCI)
+                // login IMAP
+                let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+                opImapFinished.addDependency(opLogin)
+                operations.append(opLogin)
+
+                // 3.b Fetch current list of interesting mailboxes
+                let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData)
+                operations.append(opFetchFolders)
+                opFetchFolders.addDependency(opLogin)
+                opImapFinished.addDependency(opFetchFolders)
+            }
 
             // ...
         }
-        return operations
+        return OperationLine(operations: operations, finalOperation: opAllFinished)
     }
 
     /**
      Main entry point for the main loop.
      Implements RFC 4549 (https://tools.ietf.org/html/rfc4549).
      */
-    func process() {
-        let connectInfos = gatherConnectInfos()
+    func processInternal() {
+        if !canceled {
+            let connectInfos = gatherConnectInfos()
+            let opLine = buildOperationLine(accountConnectInfos: connectInfos)
+            opLine.finalOperation.completionBlock = {
+                self.delegate?.didSyncAllAccounts(service: self)
+                self.process()
+            }
+            for op in opLine.operations {
+                backgroundQueue.addOperation(op)
+            }
+        }
     }
 }

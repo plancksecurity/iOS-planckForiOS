@@ -9,17 +9,15 @@
 import UIKit
 
 open class LoginImapOperation: ConcurrentBaseOperation {
-    let connectInfo: EmailConnectInfo
     var sync: ImapSync!
     var imapSyncData: ImapSyncData
 
-    public init(connectInfo: EmailConnectInfo, imapSyncData: ImapSyncData) {
-        self.connectInfo = connectInfo
+    public init(imapSyncData: ImapSyncData) {
         self.imapSyncData = imapSyncData
     }
 
     open override func main() {
-        sync = ImapSync(connectInfo: connectInfo)
+        sync = ImapSync(connectInfo: imapSyncData.connectInfo)
         sync.delegate = self
         sync.start()
     }
@@ -27,6 +25,7 @@ open class LoginImapOperation: ConcurrentBaseOperation {
 
 extension LoginImapOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
+        imapSyncData.sync = sync
         markAsFinished()
     }
 

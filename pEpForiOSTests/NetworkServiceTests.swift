@@ -18,21 +18,47 @@ class NetworkServiceTests: XCTestCase {
     let networkService = NetworkService()
 
     var cdAccount1: CdAccount!
-    var cdAccount2: CdAccount!
-    
+
     override func setUp() {
         super.setUp()
         
         // Initialize Core Data layer.
         persistenceSetup = PersistentSetup()
         cdAccount1 = TestData().createWorkingCdAccount()
-        cdAccount2 = TestData().createWorkingCdAccount(number: 2)
+        TestUtil.skipValidation()
         Record.saveAndWait()
-
-        networkService.start()
     }
     
     override func tearDown() {
         persistenceSetup = nil
     }
+
+    class NetworkServiceObserver: NetworkServiceDelegate {
+        let expAccountsSynced: XCTestExpectation?
+
+        init(expAccountsSynced: XCTestExpectation? = nil) {
+            self.expAccountsSynced = expAccountsSynced
+        }
+
+        func didSyncAllAccounts(service: NetworkService) {
+            expAccountsSynced?.fulfill()
+            service.cancel()
+        }
+    }
+
+    func testSyncOneTime() {
+        XCTAssertNil(CdFolder.all())
+
+        let expSynced = expectation(description: "expSynced")
+        let del = NetworkServiceObserver(expAccountsSynced: expSynced)
+
+        networkService.delegate = del
+        networkService.start()
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        XCTAssertNotNil(CdFolder.all())
+}
 }

@@ -35,9 +35,8 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
 open class FetchFoldersOperation: ConcurrentBaseOperation {
+    let imapSyncData: ImapSyncData
     var imapSync: ImapSync!
-    let connectInfo: EmailConnectInfo
-    let connectionManager: ImapConnectionManagerProtocol
     var folderBuilder: ImapFolderBuilder!
 
     /**
@@ -46,15 +45,13 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(connectInfo: EmailConnectInfo, connectionManager: ImapConnectionManagerProtocol,
-                onlyUpdateIfNecessary: Bool = false) {
+    public init(imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
-        self.connectInfo = connectInfo
-        self.connectionManager = connectionManager
+        self.imapSyncData = imapSyncData
 
         super.init()
 
-        folderBuilder = ImapFolderBuilder(accountID: connectInfo.accountObjectID,
+        folderBuilder = ImapFolderBuilder(accountID: imapSyncData.connectInfo.accountObjectID,
                                           backgroundQueue: backgroundQueue)
     }
 
@@ -63,7 +60,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
             return
         }
 
-        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
+        imapSync = imapSyncData.sync
         if !checkImapSync(sync: imapSync) {
             return
         }
@@ -74,7 +71,8 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
         if onlyUpdateIfNecessary {
             // Check if the local folder list is fairly complete
             privateMOC.perform({
-                guard let account = self.privateMOC.object(with: self.connectInfo.accountObjectID)
+                guard let account = self.privateMOC.object(
+                    with: self.imapSyncData.connectInfo.accountObjectID)
                     as? CdAccount else {
                         self.addError(Constants.errorCannotFindAccount(component: self.comp))
                         self.markAsFinished()
@@ -103,7 +101,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
     func startSync() {
         imapSync.delegate = self
         imapSync.folderBuilder = folderBuilder
-        imapSync.start()
+        readFolderNamesFromImapSync(imapSync)
     }
 
     func readFolderNamesFromImapSync(_ sync: ImapSync) {
@@ -116,9 +114,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
 extension FetchFoldersOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            readFolderNamesFromImapSync(sync)
-        }
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
@@ -183,7 +179,8 @@ extension FetchFoldersOperation: ImapSyncDelegate {
 
         let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey] as? String
         let folderInfo = FolderInfo(name: folderName, separator: folderSeparator)
-        let op = StoreFolderOperation(connectInfo: self.connectInfo, folderInfo: folderInfo)
+        let op = StoreFolderOperation(connectInfo: self.imapSyncData.connectInfo,
+                                      folderInfo: folderInfo)
         backgroundQueue.addOperation(op)
     }
 

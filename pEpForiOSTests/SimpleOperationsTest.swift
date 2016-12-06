@@ -42,8 +42,8 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testComp() {
-        let f = FetchFoldersOperation(connectInfo: imapConnectInfo,
-                                      connectionManager: connectionManager)
+        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+        let f = FetchFoldersOperation(imapSyncData: imapSyncData)
         XCTAssertEqual(f.comp, "FetchFoldersOperation")
     }
 
@@ -173,14 +173,19 @@ class SimpleOperationsTest: XCTestCase {
     func testFetchFoldersOperation() {
         let expFoldersFetched = expectation(description: "expFoldersFetched")
 
-        let op = FetchFoldersOperation(
-            connectInfo: imapConnectInfo,
-            connectionManager: connectionManager)
+        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+
+        let op = FetchFoldersOperation(imapSyncData: imapSyncData)
         op.completionBlock = {
             expFoldersFetched.fulfill()
         }
+        op.addDependency(opLogin)
 
-        op.start()
+        let bgQueue = OperationQueue()
+        bgQueue.addOperation(opLogin)
+        bgQueue.addOperation(op)
+
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
@@ -295,10 +300,13 @@ class SimpleOperationsTest: XCTestCase {
     func testCreateFolders() {
         let backgroundQueue = OperationQueue.init()
 
+        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+
+        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+
         // Fetch folders to get the folder separator
-        let opFetchFolders = FetchFoldersOperation(
-            connectInfo: imapConnectInfo,
-            connectionManager: connectionManager)
+        let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData)
+        opFetchFolders.addDependency(opLogin)
 
         let expCreated = expectation(description: "expCreated")
         let opCreate = CheckAndCreateFolderOfTypeOperation(
@@ -309,6 +317,7 @@ class SimpleOperationsTest: XCTestCase {
             expCreated.fulfill()
         }
 
+        backgroundQueue.addOperation(opLogin)
         backgroundQueue.addOperation(opFetchFolders)
         backgroundQueue.addOperation(opCreate)
 

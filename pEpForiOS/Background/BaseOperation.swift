@@ -37,7 +37,5 @@ open class BaseOperation: Operation {
         } catch let error as NSError {
             Log.error(component: comp, error: error)
         }
-
-        Log.info(component: comp, "Say hi!")
     }
 }
