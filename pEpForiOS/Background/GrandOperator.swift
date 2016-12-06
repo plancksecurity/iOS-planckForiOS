@@ -299,7 +299,8 @@ open class GrandOperator: IGrandOperator {
 
         if operation == nil {
             operation = SyncFlagsToServerOperation(
-                connectInfo: connectInfo, folder: folder, connectionManager: connectionManager)
+                connectInfo: connectInfo, folder: folder,
+                connectionManager: connectionManager)
         }
 
         operation?.completionBlock = {

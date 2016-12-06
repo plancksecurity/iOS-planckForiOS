@@ -38,7 +38,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
     let comp = "FetchFoldersOperation"
     var imapSync: ImapSync!
     let connectInfo: EmailConnectInfo
-    let connectionManager: ConnectionManager
+    let connectionManager: ImapConnectionManagerProtocol
     var folderBuilder: ImapFolderBuilder!
 
     /**
@@ -47,7 +47,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(connectInfo: EmailConnectInfo, connectionManager: ConnectionManager,
+    public init(connectInfo: EmailConnectInfo, connectionManager: ImapConnectionManagerProtocol,
                 onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.connectInfo = connectInfo
@@ -97,7 +97,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
     }
 
     func startSync() {
-        imapSync = connectionManager.emailSyncConnection(connectInfo)
+        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
         imapSync.delegate = self
         imapSync.folderBuilder = folderBuilder
         imapSync.start()

@@ -6,7 +6,18 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-open class ConnectionManager {
+public protocol ImapConnectionManagerProtocol {
+    func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync
+}
+
+public protocol SmtpConnectionManagerProtocol {
+    func smtpConnection(connectInfo: EmailConnectInfo) -> SmtpSend
+}
+
+public protocol ConnectionManagerProtocol: ImapConnectionManagerProtocol,
+SmtpConnectionManagerProtocol {}
+
+open class ConnectionManager: ConnectionManagerProtocol {
     fileprivate let comp = "ConnectionManager"
     open var cacheImapConnections: Bool = false
 
@@ -19,14 +30,14 @@ open class ConnectionManager {
         closeAll()
     }
 
-    open func emailSyncConnection(_ connectInfo: EmailConnectInfo) -> ImapSync {
+    open func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync {
         if cacheImapConnections {
             if let sync = imapConnections[connectInfo] {
                 return sync
             }
         }
 
-        let sync = ImapSync.init(connectInfo: connectInfo)
+        let sync = ImapSync(connectInfo: connectInfo)
 
         if cacheImapConnections {
             imapConnections[connectInfo] = sync
@@ -35,17 +46,8 @@ open class ConnectionManager {
         return sync
     }
 
-    /**
-     - Returns: A one-way/throw-away IMAP sync connection, e.g., for testing/verifying
-      a connection.
-     */
-    open func emailSyncConnectionOneWay(_ connectInfo: EmailConnectInfo) -> ImapSync {
-        return ImapSync.init(connectInfo: connectInfo)
-    }
-
-    open func smtpConnection(_ connectInfo: EmailConnectInfo) -> SmtpSend {
-        // Don't cache
-        return SmtpSend.init(connectInfo: connectInfo)
+    open func smtpConnection(connectInfo: EmailConnectInfo) -> SmtpSend {
+        return SmtpSend(connectInfo: connectInfo)
     }
 
     /**

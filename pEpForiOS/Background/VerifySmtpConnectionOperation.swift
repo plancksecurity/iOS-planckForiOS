@@ -13,7 +13,7 @@ class VerifySmtpConnectionOperation: VerifyServiceOperation {
         if self.isCancelled {
             return
         }
-        service = connectionManager.smtpConnection(connectInfo)
+        service = connectionManager.smtpConnection(connectInfo: connectInfo)
         (service as! SmtpSend).delegate = self
         service.start()
     }

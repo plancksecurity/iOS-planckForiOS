@@ -22,7 +22,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
     let connectInfo: EmailConnectInfo
 
-    let connectionManager: ConnectionManager
+    let connectionManager: ImapConnectionManagerProtocol
 
     var imapSync: ImapSync!
 
@@ -31,7 +31,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
     public init(connectInfo: EmailConnectInfo, message: CdMessage, account: CdAccount,
                 targetFolder: CdFolder? = nil, folderType: FolderType? = nil,
-                connectionManager: ConnectionManager) {
+                connectionManager: ImapConnectionManagerProtocol) {
         self.connectInfo = connectInfo
         self.messageID = message.objectID
         self.targetFolderID = targetFolder?.objectID
@@ -89,7 +89,7 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             if let m = msg {
                 // Append the message
                 self.cwMessageToAppend = PEPUtil.pantomime(pEpMessage: m as! PEPMessage)
-                self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+                self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
                 self.imapSync.delegate = self
                 self.imapSync.start()
             }

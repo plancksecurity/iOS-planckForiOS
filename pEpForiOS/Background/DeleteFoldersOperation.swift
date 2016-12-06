@@ -14,7 +14,7 @@ open class DeleteFoldersOperation: ConcurrentBaseOperation {
     let comp = "DeleteFoldersOperation"
 
     let imapConnectInfo: EmailConnectInfo
-    let connectionManager: ConnectionManager
+    let connectionManager: ImapConnectionManagerProtocol
     let accountID: NSManagedObjectID
     var account: CdAccount!
     var imapSync: ImapSync!
@@ -22,7 +22,7 @@ open class DeleteFoldersOperation: ConcurrentBaseOperation {
     var currentFolderName: String?
 
     public init(imapConnectInfo: EmailConnectInfo, account: CdAccount,
-                connectionManager: ConnectionManager) {
+                connectionManager: ImapConnectionManagerProtocol) {
         self.imapConnectInfo = imapConnectInfo
         self.accountID = account.objectID
         self.connectionManager = connectionManager
@@ -51,7 +51,7 @@ open class DeleteFoldersOperation: ConcurrentBaseOperation {
             }
         }
 
-        imapSync = connectionManager.emailSyncConnection(imapConnectInfo)
+        imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
         imapSync.delegate = self
         imapSync.start()
     }

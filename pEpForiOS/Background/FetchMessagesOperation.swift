@@ -22,7 +22,7 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     let connectInfo: EmailConnectInfo
     var sync: ImapSync!
     var folderToOpen: String
-    let connectionManager: ConnectionManager
+    let connectionManager: ImapConnectionManagerProtocol
 
     public init(grandOperator: IGrandOperator, connectInfo: EmailConnectInfo, folder: String?) {
         self.connectInfo = connectInfo
@@ -65,7 +65,7 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
             }
         }
 
-        self.sync = self.connectionManager.emailSyncConnection(self.connectInfo)
+        self.sync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
         self.sync.delegate = self
         self.sync.folderBuilder = folderBuilder
 

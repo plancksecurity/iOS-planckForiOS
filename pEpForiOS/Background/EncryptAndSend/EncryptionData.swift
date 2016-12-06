@@ -36,7 +36,7 @@ open class EncryptionData {
     /**
      For getting a SMTP connection.
      */
-    let connectionManager: ConnectionManager
+    let connectionManager: ConnectionManagerProtocol
 
     /**
      The original unencrypted message ID. Needed as an object ID so it can be passed
@@ -70,7 +70,7 @@ open class EncryptionData {
     open var messagesSent: [PEPMessage] = []
 
     public init(imapConnectInfo: EmailConnectInfo, smtpConnectInfo: EmailConnectInfo,
-                connectionManager: ConnectionManager, messageID: NSManagedObjectID,
+                connectionManager: ConnectionManagerProtocol, messageID: NSManagedObjectID,
                 outgoing: Bool = true) {
         self.connectionManager = connectionManager
         self.imapConnectInfo = imapConnectInfo

@@ -9,7 +9,7 @@
 open class VerifyServiceOperation: ConcurrentBaseOperation {
     var service: Service!
     let connectInfo: EmailConnectInfo
-    let connectionManager: ConnectionManager
+    let connectionManager: ConnectionManagerProtocol
 
     /**
      Flag that the connection has already been finished, and was probably closed on request,

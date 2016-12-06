@@ -18,7 +18,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     let comp = "CheckAndCreateFolderOfTypeOperation"
     let folderType: FolderType
     let connectInfo: EmailConnectInfo
-    let connectionManager: ConnectionManager
+    let connectionManager: ImapConnectionManagerProtocol
     var folderName: String
     var imapSync: ImapSync!
 
@@ -31,7 +31,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     var account: CdAccount?
 
     public init(connectInfo: EmailConnectInfo, account: CdAccount,
-                folderType: FolderType, connectionManager: ConnectionManager) {
+                folderType: FolderType, connectionManager: ImapConnectionManagerProtocol) {
         self.connectInfo = connectInfo
         self.folderType = folderType
         self.folderName = folderType.folderName()
@@ -54,7 +54,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
 
         let folder = CdFolder.by(folderType: self.folderType, account: account)
         if folder == nil {
-            self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+            self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
             self.imapSync.delegate = self
             self.imapSync.start()
         } else {

@@ -62,8 +62,8 @@ open class SaveSentMessageOperation: EncryptBaseOperation {
             let cwMessage = PEPUtil.pantomime(pEpMessage: msg)
             self.rawMessageData = cwMessage.dataValue()
 
-            self.imapSync = self.encryptionData.connectionManager.emailSyncConnection(
-                self.encryptionData.imapConnectInfo)
+            self.imapSync = self.encryptionData.connectionManager.imapConnection(
+                connectInfo: self.encryptionData.imapConnectInfo)
             self.imapSync.delegate = self
             self.imapSync.start()
         })

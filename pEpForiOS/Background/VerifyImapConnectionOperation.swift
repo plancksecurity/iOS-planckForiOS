@@ -13,7 +13,7 @@ open class VerifyImapConnectionOperation: VerifyServiceOperation {
         if self.isCancelled {
             return
         }
-        service = connectionManager.emailSyncConnectionOneWay(connectInfo)
+        service = connectionManager.imapConnection(connectInfo: connectInfo)
         (service as! ImapSync).delegate = self
         service.start()
     }

@@ -18,14 +18,14 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
     let comp = "CreateFoldersOperation"
 
     let imapConnectInfo: EmailConnectInfo
-    let connectionManager: ConnectionManager
+    let connectionManager: ImapConnectionManagerProtocol
     let accountID: NSManagedObjectID
     var account: CdAccount!
     var imapSync: ImapSync!
     var folderNamesToCreate = [String]()
 
     public init(imapConnectInfo: EmailConnectInfo, account: CdAccount,
-                connectionManager: ConnectionManager) {
+                connectionManager: ImapConnectionManagerProtocol) {
         self.imapConnectInfo = imapConnectInfo
         self.accountID = account.objectID
         self.connectionManager = connectionManager
@@ -56,7 +56,7 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
         }
 
         if folderNamesToCreate.count > 0 {
-            imapSync = connectionManager.emailSyncConnection(imapConnectInfo)
+            imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
             imapSync.delegate = self
             imapSync.start()
         } else {

@@ -14,7 +14,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     let comp = "SyncFlagsToServerOperation"
 
     let connectInfo: EmailConnectInfo
-    let connectionManager: ConnectionManager
+    let connectionManager: ImapConnectionManagerProtocol
 
     var folderID: NSManagedObjectID
     let folderName: String
@@ -24,7 +24,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     open var numberOfMessagesSynced = 0
 
     public init?(connectInfo: EmailConnectInfo, folder: CdFolder,
-                connectionManager: ConnectionManager) {
+                connectionManager: ImapConnectionManagerProtocol) {
         if let fn = folder.name {
             folderName = fn
         } else {
@@ -44,7 +44,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     func startSync(context: NSManagedObjectContext) {
         // Immediately check for work. If there is none, bail out
         if let _ = nextMessageToBeSynced(context: context) {
-            self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+            self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
             self.imapSync.delegate = self
             self.imapSync.start()
         } else {

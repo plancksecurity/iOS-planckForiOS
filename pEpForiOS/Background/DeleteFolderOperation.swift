@@ -14,14 +14,14 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
     let comp = "DeleteFolderOperation"
 
     let connectInfo: EmailConnectInfo
-    let connectionManager: ConnectionManager
+    let connectionManager: ImapConnectionManagerProtocol
     var folderName: String
     let accountID: NSManagedObjectID
     var account: CdAccount!
     var imapSync: ImapSync!
 
     public init(connectInfo: EmailConnectInfo, account: CdAccount, folderName: String,
-                connectionManager: ConnectionManager) {
+                connectionManager: ImapConnectionManagerProtocol) {
         self.connectInfo = connectInfo
         self.accountID = account.objectID
         self.folderName = folderName
@@ -29,7 +29,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
     }
 
     convenience public init?(connectInfo: EmailConnectInfo, folder: CdFolder,
-                             connectionManager: ConnectionManager) {
+                             connectionManager: ImapConnectionManagerProtocol) {
         guard let fn = folder.name else {
             Log.error(component: "DeleteFolderOperation.init",
                       errorString: "Cannot delete folder without name")
@@ -53,7 +53,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
                 return
             }
 
-            self.imapSync = self.connectionManager.emailSyncConnection(self.connectInfo)
+            self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
             self.imapSync.delegate = self
             self.imapSync.start()
         }
