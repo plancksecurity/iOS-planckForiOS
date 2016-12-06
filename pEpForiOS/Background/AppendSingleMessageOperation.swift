@@ -39,6 +39,15 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
     }
 
     override open func main() {
+        if isCancelled {
+            return
+        }
+
+        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
+        if !checkImapSync(sync: imapSync) {
+            return
+        }
+
         privateMOC.perform({
             guard let message = self.privateMOC.object(with: self.messageID) as?
                 CdMessage else {
@@ -87,14 +96,6 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
             if let m = msg {
                 // Append the message
                 self.cwMessageToAppend = PEPUtil.pantomime(pEpMessage: m as! PEPMessage)
-                self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
-
-                if self.imapSync == nil {
-                    self.addError(Constants.errorImapInvalidConnection(component: self.comp))
-                    self.markAsFinished()
-                    return
-                }
-
                 self.imapSync.delegate = self
                 self.imapSync.start()
             }

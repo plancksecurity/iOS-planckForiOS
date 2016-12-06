@@ -43,6 +43,15 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
+        if isCancelled {
+            return
+        }
+
+        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
+        if !checkImapSync(sync: imapSync) {
+            return
+        }
+
         privateMOC.perform() {
             self.account = self.privateMOC.object(with: self.accountID) as? CdAccount
             guard self.account != nil else {
@@ -50,15 +59,6 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
                 self.markAsFinished()
                 return
             }
-
-            self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
-
-            if self.imapSync == nil {
-                self.addError(Constants.errorImapInvalidConnection(component: self.comp))
-                self.markAsFinished()
-                return
-            }
-
             self.imapSync.delegate = self
             self.imapSync.start()
         }

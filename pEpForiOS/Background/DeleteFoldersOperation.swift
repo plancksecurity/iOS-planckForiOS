@@ -27,6 +27,15 @@ open class DeleteFoldersOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
+        if isCancelled {
+            return
+        }
+
+        imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
+        if !checkImapSync(sync: imapSync) {
+            return
+        }
+
         privateMOC.perform() {
             self.mainInternal()
         }
@@ -47,14 +56,6 @@ open class DeleteFoldersOperation: ConcurrentBaseOperation {
                     folderNamesToDelete.append(fn)
                 }
             }
-        }
-
-        imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
-
-        if self.imapSync == nil {
-            self.addError(Constants.errorImapInvalidConnection(component: self.comp))
-            self.markAsFinished()
-            return
         }
 
         imapSync.delegate = self

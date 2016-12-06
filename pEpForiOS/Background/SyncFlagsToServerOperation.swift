@@ -34,6 +34,11 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
+        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
+        if !checkImapSync(sync: imapSync) {
+            return
+        }
+
         privateMOC.perform() {
             self.startSync(context: self.privateMOC)
         }
@@ -42,14 +47,6 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
     func startSync(context: NSManagedObjectContext) {
         // Immediately check for work. If there is none, bail out
         if let _ = nextMessageToBeSynced(context: context) {
-            self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
-
-            if self.imapSync == nil {
-                self.addError(Constants.errorImapInvalidConnection(component: self.comp))
-                self.markAsFinished()
-                return
-            }
-
             self.imapSync.delegate = self
             self.imapSync.start()
         } else {

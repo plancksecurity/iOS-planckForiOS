@@ -87,7 +87,7 @@ open class ConcurrentBaseOperation: BaseOperation {
 
     func checkImapSync(sync: ImapSync?) -> Bool {
         if sync == nil {
-            addError(Constants.errorImapInvalidConnection(component: "ConcurrentBaseOperation"))
+            addError(Constants.errorImapInvalidConnection(component: comp))
             markAsFinished()
             return false
         }

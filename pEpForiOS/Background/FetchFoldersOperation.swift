@@ -59,7 +59,12 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
-        if self.isCancelled {
+        if isCancelled {
+            return
+        }
+
+        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
+        if !checkImapSync(sync: imapSync) {
             return
         }
 
@@ -96,14 +101,6 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
     }
 
     func startSync() {
-        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
-
-        if imapSync == nil {
-            addError(Constants.errorImapInvalidConnection(component: comp))
-            markAsFinished()
-            return
-        }
-
         imapSync.delegate = self
         imapSync.folderBuilder = folderBuilder
         imapSync.start()

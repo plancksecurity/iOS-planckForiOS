@@ -18,7 +18,7 @@ import MessageModel
  */
 open class FetchMessagesOperation: ConcurrentBaseOperation {
     let connectInfo: EmailConnectInfo
-    var sync: ImapSync!
+    var imapSync: ImapSync!
     var folderToOpen: String
     let connectionManager: ImapConnectionManagerProtocol
 
@@ -34,7 +34,12 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     }
 
     override open func main() {
-        if self.isCancelled {
+        if isCancelled {
+            return
+        }
+
+        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
+        if !checkImapSync(sync: imapSync) {
             return
         }
 
@@ -64,24 +69,16 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
             }
         }
 
-        self.sync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
+        self.imapSync.delegate = self
+        self.imapSync.folderBuilder = folderBuilder
 
-        if self.sync == nil {
-            self.addError(Constants.errorImapInvalidConnection(component: self.comp))
-            self.markAsFinished()
-            return
-        }
-
-        self.sync.delegate = self
-        self.sync.folderBuilder = folderBuilder
-
-        if self.sync.imapState.authenticationCompleted == false {
-            self.sync.start()
+        if self.imapSync.imapState.authenticationCompleted == false {
+            self.imapSync.start()
         } else {
-            if self.sync.imapState.currentFolder != nil {
-                self.fetchMessages(self.sync)
+            if self.imapSync.imapState.currentFolder != nil {
+                self.fetchMessages(self.imapSync)
             } else {
-                self.sync.openMailBox(self.folderToOpen)
+                self.imapSync.openMailBox(self.folderToOpen)
             }
         }
     }

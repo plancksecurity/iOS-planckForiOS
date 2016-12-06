@@ -30,6 +30,15 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
+        if isCancelled {
+            return
+        }
+
+        imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
+        if !checkImapSync(sync: imapSync) {
+            return
+        }
+
         privateMOC.perform() {
             self.mainInternal()
         }
@@ -54,14 +63,6 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
         }
 
         if folderNamesToCreate.count > 0 {
-            imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
-
-            if imapSync == nil {
-                addError(Constants.errorImapInvalidConnection(component: comp))
-                markAsFinished()
-                return
-            }
-
             imapSync.delegate = self
             imapSync.start()
         } else {

@@ -8,14 +8,12 @@
 
 open class VerifyImapConnectionOperation: VerifyServiceOperation {
     open override func main() {
-        if self.isCancelled {
+        if isCancelled {
             return
         }
-        service = connectionManager.imapConnection(connectInfo: connectInfo)
 
-        if service == nil {
-            addError(Constants.errorImapInvalidConnection(component: comp))
-            markAsFinished()
+        service = connectionManager.imapConnection(connectInfo: connectInfo)
+        if !checkImapSync(sync: (service as! ImapSync)) {
             return
         }
 

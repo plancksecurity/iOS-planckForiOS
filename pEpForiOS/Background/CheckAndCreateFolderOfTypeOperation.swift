@@ -38,6 +38,15 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
+        if isCancelled {
+            return
+        }
+
+        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
+        if !checkImapSync(sync: imapSync) {
+            return
+        }
+
         privateMOC.perform() {
             self.process(context: self.privateMOC)
         }
@@ -53,14 +62,6 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
 
         let folder = CdFolder.by(folderType: self.folderType, account: account)
         if folder == nil {
-            self.imapSync = self.connectionManager.imapConnection(connectInfo: self.connectInfo)
-
-            if self.imapSync == nil {
-                self.addError(Constants.errorImapInvalidConnection(component: self.comp))
-                self.markAsFinished()
-                return
-            }
-
             self.imapSync.delegate = self
             self.imapSync.start()
         } else {
