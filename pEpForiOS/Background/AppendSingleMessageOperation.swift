@@ -11,8 +11,6 @@ import CoreData
 import MessageModel
 
 open class AppendSingleMessageOperation: ConcurrentBaseOperation {
-    let comp = "AppendSingleMessageOperation"
-
     let messageID: NSManagedObjectID
 
     let targetFolderID: NSManagedObjectID?

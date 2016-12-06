@@ -7,8 +7,6 @@
 //
 
 open class VerifyImapConnectionOperation: VerifyServiceOperation {
-    let comp = "VerifyImapConnectionOperation"
-
     open override func main() {
         if self.isCancelled {
             return

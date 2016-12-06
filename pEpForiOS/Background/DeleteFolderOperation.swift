@@ -11,8 +11,6 @@ import CoreData
 import MessageModel
 
 open class DeleteFolderOperation: ConcurrentBaseOperation {
-    let comp = "DeleteFolderOperation"
-
     let connectInfo: EmailConnectInfo
     let connectionManager: ImapConnectionManagerProtocol
     var folderName: String

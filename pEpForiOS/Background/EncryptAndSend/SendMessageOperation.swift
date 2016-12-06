@@ -19,10 +19,6 @@ open class SendMessageOperation: EncryptBaseOperation {
      */
     var currentPepMessageToSend: PEPMessage? = nil
 
-    public init(encryptionData: EncryptionData) {
-        super.init(comp: "SendMessageOperation", encryptionData: encryptionData)
-    }
-
     override open func main() {
         smtpSend = encryptionData.connectionManager.smtpConnection(
             connectInfo: encryptionData.smtpConnectInfo)

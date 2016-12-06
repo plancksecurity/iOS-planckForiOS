@@ -16,10 +16,6 @@ import MessageModel
  sent folder.
  */
 open class EncryptMessageOperation: EncryptBaseOperation {
-    public init(encryptionData: EncryptionData) {
-        super.init(comp: "EncryptMessageOperation", encryptionData: encryptionData)
-    }
-
     override open func main() {
         privateMOC.perform({
             self.encryptMessage(context: self.privateMOC)

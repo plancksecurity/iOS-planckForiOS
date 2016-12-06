@@ -9,8 +9,8 @@
 /**
  Basic NSOperation that can gather errors.
  */
-
 open class BaseOperation: Operation {
+    open var comp = "BaseOperation"
     open var errors: [NSError] = []
 
     open func addError(_ error: NSError) {
@@ -19,5 +19,25 @@ open class BaseOperation: Operation {
 
     open func hasErrors() -> Bool {
         return !errors.isEmpty
+    }
+
+    public override init() {
+        super.init()
+        comp = String(describing: self)
+
+        do {
+            let regex = try NSRegularExpression(pattern: "<pEpForiOS\\.(\\w+):", options: [])
+            if let m = regex.firstMatch(in: comp, options: [], range: comp.wholeRange()) {
+                if m.numberOfRanges > 1 {
+                    let r = m.rangeAt(1)
+                    let s = comp as NSString
+                    comp = s.substring(with: r)
+                }
+            }
+        } catch let error as NSError {
+            Log.error(component: comp, error: error)
+        }
+
+        Log.info(component: comp, "Say hi!")
     }
 }

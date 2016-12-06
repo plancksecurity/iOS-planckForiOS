@@ -15,8 +15,6 @@ import MessageModel
  Tries to create all local folders on the server.
  */
 open class CreateFoldersOperation: ConcurrentBaseOperation {
-    let comp = "CreateFoldersOperation"
-
     let imapConnectInfo: EmailConnectInfo
     let connectionManager: ImapConnectionManagerProtocol
     let accountID: NSManagedObjectID

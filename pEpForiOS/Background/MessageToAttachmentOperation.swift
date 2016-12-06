@@ -12,8 +12,6 @@ import MessageModel
  Converts a given Message to a (non-core-data) attachment object.
  */
 open class MessageToAttachmentOperation: BaseOperation {
-    let comp = "MessageToAttachmentOperation"
-
     let message: Message
 
     var attachment: Attachment?

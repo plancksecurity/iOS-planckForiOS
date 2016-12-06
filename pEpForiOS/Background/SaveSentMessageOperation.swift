@@ -21,10 +21,6 @@ open class SaveSentMessageOperation: EncryptBaseOperation {
      */
     var rawMessageData: Data!
 
-    public init(encryptionData: EncryptionData) {
-        super.init(comp: "SaveSentMessageOperation", encryptionData: encryptionData)
-    }
-
     open override func main() {
         privateMOC.perform({
             guard let message = self.fetchMessage(context: self.privateMOC) else {

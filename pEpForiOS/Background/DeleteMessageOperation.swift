@@ -11,7 +11,6 @@ import CoreData
 import MessageModel
 
 open class DeleteMessageOperation: ConcurrentBaseOperation {
-    let comp = "DeleteMessageOperation"
     let messageID: NSManagedObjectID
 
     public init(message: CdMessage, coreDataUtil: CoreDataUtil) {

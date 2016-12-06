@@ -41,6 +41,12 @@ class SimpleOperationsTest: XCTestCase {
         persistentSetup = nil
     }
 
+    func testComp() {
+        let f = FetchFoldersOperation(connectInfo: imapConnectInfo,
+                                      connectionManager: connectionManager)
+        XCTAssertEqual(f.comp, "FetchFoldersOperation")
+    }
+
     func testVerifyConnection() {
         let expCompleted = expectation(description: "expCompleted")
         let op = VerifyImapConnectionOperation(connectionManager: connectionManager,

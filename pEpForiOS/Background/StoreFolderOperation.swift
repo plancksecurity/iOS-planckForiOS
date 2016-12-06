@@ -16,7 +16,6 @@ struct FolderInfo {
 }
 
 class StoreFolderOperation: ConcurrentBaseOperation {
-    let comp = "StoreFolderOperation"
     let folderInfo: FolderInfo
     let connectInfo: EmailConnectInfo
 

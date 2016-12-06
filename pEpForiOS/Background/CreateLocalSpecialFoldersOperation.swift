@@ -11,7 +11,6 @@ import CoreData
 import MessageModel
 
 open class CreateLocalSpecialFoldersOperation: BaseOperation {
-    let comp = "CreateLocalSpecialFoldersOperation"
     let accountObjectID: NSManagedObjectID
 
     public init(account: CdAccount) {

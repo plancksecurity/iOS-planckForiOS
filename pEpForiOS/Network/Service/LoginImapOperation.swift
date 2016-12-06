@@ -9,8 +9,6 @@
 import UIKit
 
 open class LoginImapOperation: ConcurrentBaseOperation {
-    let comp = "LoginImapOperation"
-
     let connectInfo: EmailConnectInfo
     var sync: ImapSync!
     var imapSyncData: ImapSyncData

@@ -11,8 +11,6 @@ import CoreData
 import MessageModel
 
 open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
-    let comp = "SyncFlagsToServerOperation"
-
     let connectInfo: EmailConnectInfo
     let connectionManager: ImapConnectionManagerProtocol
 

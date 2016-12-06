@@ -14,7 +14,6 @@ import MessageModel
  This can be used in a queue, or directly called with ```start()```.
  */
 open class StorePrefetchedMailOperation: BaseOperation {
-    let comp = "StorePrefetchedMailOperation"
     let message: CWIMAPMessage
     let quick: Bool
     let accountID: NSManagedObjectID

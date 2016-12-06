@@ -9,7 +9,6 @@
 import MessageModel
 
 open class DecryptMessageOperation: ConcurrentBaseOperation {
-    let comp = "DecryptMessageOperation"
     open var numberOfMessagesDecrypted = 0
 
     open override func main() {

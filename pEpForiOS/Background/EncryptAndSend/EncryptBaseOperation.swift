@@ -11,15 +11,12 @@ import CoreData
 import MessageModel
 
 open class EncryptBaseOperation: ConcurrentBaseOperation {
-    let comp: String
-
     /**
      All the parameters for the operation come from here.
      */
     let encryptionData: EncryptionData
 
-    init(comp: String, encryptionData: EncryptionData) {
-        self.comp = comp
+    public init(encryptionData: EncryptionData) {
         self.encryptionData = encryptionData
     }
 

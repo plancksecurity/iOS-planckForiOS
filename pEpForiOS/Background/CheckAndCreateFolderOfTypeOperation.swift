@@ -15,7 +15,6 @@ import MessageModel
  (with a dependency), to make sure that folder does exist.
  */
 open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
-    let comp = "CheckAndCreateFolderOfTypeOperation"
     let folderType: FolderType
     let connectInfo: EmailConnectInfo
     let connectionManager: ImapConnectionManagerProtocol

@@ -17,8 +17,6 @@ import MessageModel
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
 open class FetchMessagesOperation: ConcurrentBaseOperation {
-    let comp = "FetchMessagesOperation"
-
     let connectInfo: EmailConnectInfo
     var sync: ImapSync!
     var folderToOpen: String

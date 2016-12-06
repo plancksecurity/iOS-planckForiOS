@@ -35,7 +35,6 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
 open class FetchFoldersOperation: ConcurrentBaseOperation {
-    let comp = "FetchFoldersOperation"
     var imapSync: ImapSync!
     let connectInfo: EmailConnectInfo
     let connectionManager: ImapConnectionManagerProtocol

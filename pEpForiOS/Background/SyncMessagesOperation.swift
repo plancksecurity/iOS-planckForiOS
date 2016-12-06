@@ -12,7 +12,6 @@ import CoreData
 import MessageModel
 
 open class SyncMessagesOperation: ConcurrentBaseOperation {
-    let comp = "SyncMessagesOperation"
     let connectInfo: EmailConnectInfo
     var sync: ImapSync!
     let folderID: NSManagedObjectID
