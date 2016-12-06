@@ -46,9 +46,59 @@ public class NetworkService: INetworkService {
         }
     }
 
-    func fetchValidatedAccounts() -> [CdAccount] {
-        return CdAccount.all(with: NSPredicate(format: "needsVerification = false"))
+    func fetchValidatedAccounts(context: NSManagedObjectContext) -> [CdAccount] {
+        return CdAccount.all(with: NSPredicate(format: "needsVerification = false"),
+                             in: context)
             as? [CdAccount] ?? []
+    }
+
+    func gatherConnectInfos() -> [AccountConnectInfo] {
+        var connectInfos = [AccountConnectInfo]()
+        let context = Record.Context.background
+        context.performAndWait {
+            let accounts = self.fetchValidatedAccounts(context: context)
+            for acc in accounts {
+                let smtpCI = acc.smtpConnectInfo
+                let imapCI = acc.imapConnectInfo
+                if (smtpCI != nil || imapCI != nil) {
+                    connectInfos.append(AccountConnectInfo(
+                        accountID: acc.objectID, imapConnectInfo: imapCI, smtpConnectInfo: smtpCI))
+                }
+            }
+        }
+        return connectInfos
+    }
+
+    func buildOperationLine(accountConnectInfos: [AccountConnectInfo]) -> [Operation] {
+        // Operation depending on all IMAP operations for this account
+        let opImapFinished = Operation()
+
+        // Operation depending on all SMTP operations for this account
+        let opSmtpFinished = Operation()
+
+        // Operation depending on all IMAP and SMTP operations
+        let opAllFinished = Operation()
+        opAllFinished.addDependency(opImapFinished)
+        opAllFinished.addDependency(opSmtpFinished)
+
+        var operations = [opImapFinished, opSmtpFinished, opAllFinished]
+        let imapSyncData = ImapSyncData()
+
+        for ai in accountConnectInfos {
+            // login IMAP
+            if let imapCI = ai.imapConnectInfo {
+                let op = LoginImapOperation(connectInfo: imapCI, imapSyncData: imapSyncData)
+                opImapFinished.addDependency(op)
+                operations.append(op)
+            }
+
+            // 3.a Items not associated with any mailbox (e.g., SMTP send)
+
+            // 3.b Fetch current list of interesting mailboxes
+
+            // ...
+        }
+        return operations
     }
 
     /**
@@ -56,15 +106,6 @@ public class NetworkService: INetworkService {
      Implements RFC 4549 (https://tools.ietf.org/html/rfc4549).
      */
     func process() {
-        let accounts = fetchValidatedAccounts()
-
-        for acc in accounts {
-            // 3.a Items not associated with any mailbox (e.g., SMTP send)
-            if let _ = acc.smtpConnectInfo {
-                // TODO
-            }
-
-            // 3.b Fetch current list of interesting mailboxes
-        }
+        let connectInfos = gatherConnectInfos()
     }
 }
