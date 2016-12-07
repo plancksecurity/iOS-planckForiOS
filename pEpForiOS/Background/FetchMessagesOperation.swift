@@ -22,10 +22,9 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     var folderToOpen: String
     let connectionManager: ImapConnectionManagerProtocol
 
-    public init(connectionManager: ImapConnectionManagerProtocol,
-                connectInfo: EmailConnectInfo, folder: String?) {
-        self.connectInfo = connectInfo
-        self.connectionManager = connectionManager
+    public init(imapSyncData: ImapSyncData, folder: String?) {
+        self.connectInfo = imapSyncData.connectInfo
+        self.connectionManager = imapSyncData
         if let folder = folder {
             folderToOpen = folder
         } else {
@@ -72,14 +71,11 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
         self.imapSync.delegate = self
         self.imapSync.folderBuilder = folderBuilder
 
-        if self.imapSync.imapState.authenticationCompleted == false {
-            self.imapSync.start()
+        if let fn = self.imapSync.imapState.currentFolder,
+            fn == self.folderToOpen {
+            self.fetchMessages(self.imapSync)
         } else {
-            if self.imapSync.imapState.currentFolder != nil {
-                self.fetchMessages(self.imapSync)
-            } else {
-                self.imapSync.openMailBox(self.folderToOpen)
-            }
+            self.imapSync.openMailBox(self.folderToOpen)
         }
     }
 

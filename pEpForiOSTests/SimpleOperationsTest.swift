@@ -19,6 +19,7 @@ class SimpleOperationsTest: XCTestCase {
 
     var imapConnectInfo: EmailConnectInfo!
     var smtpConnectInfo: EmailConnectInfo!
+    var imapSyncData: ImapSyncData!
 
     override func setUp() {
         super.setUp()
@@ -32,6 +33,7 @@ class SimpleOperationsTest: XCTestCase {
 
         imapConnectInfo = account.imapConnectInfo
         smtpConnectInfo = account.smtpConnectInfo
+        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
 
         XCTAssertNotNil(imapConnectInfo)
         XCTAssertNotNil(smtpConnectInfo)
@@ -42,7 +44,6 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testComp() {
-        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let f = FetchFoldersOperation(imapSyncData: imapSyncData)
         XCTAssertEqual(f.comp, "FetchFoldersOperation")
     }
@@ -67,14 +68,18 @@ class SimpleOperationsTest: XCTestCase {
 
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
-        let op = FetchMessagesOperation(connectionManager: connectionManager,
-                                         connectInfo: imapConnectInfo,
-                                         folder: ImapSync.defaultImapInboxName)
+        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+        let op = FetchMessagesOperation(imapSyncData: imapSyncData,
+                                        folder: ImapSync.defaultImapInboxName)
+        op.addDependency(opLogin)
         op.completionBlock = {
             expMailsPrefetched.fulfill()
         }
 
-        op.start()
+        let bgQueue = OperationQueue()
+        bgQueue.addOperation(opLogin)
+        bgQueue.addOperation(op)
+
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
@@ -173,9 +178,7 @@ class SimpleOperationsTest: XCTestCase {
     func testFetchFoldersOperation() {
         let expFoldersFetched = expectation(description: "expFoldersFetched")
 
-        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
-
         let op = FetchFoldersOperation(imapSyncData: imapSyncData)
         op.completionBlock = {
             expFoldersFetched.fulfill()
@@ -299,8 +302,6 @@ class SimpleOperationsTest: XCTestCase {
 
     func testCreateFolders() {
         let backgroundQueue = OperationQueue.init()
-
-        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
 
         let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
 
