@@ -14,8 +14,8 @@ public protocol INetworkService {
 }
 
 public protocol NetworkServiceDelegate: class {
-    /** Called after each sync of all accounts */
-    func didSyncAllAccounts(service: NetworkService)
+    /** Called after each account sync */
+    func didSync(service: NetworkService, accountInfo: AccountConnectInfo)
 }
 
 /**
@@ -49,7 +49,7 @@ public class NetworkService: INetworkService {
      */
     public func process() {
         workerQueue.async {
-            self.processInternal()
+            self.processAllInternal()
         }
     }
 
@@ -85,12 +85,7 @@ public class NetworkService: INetworkService {
         return connectInfos
     }
 
-    struct OperationLine {
-        let operations: [Operation]
-        let finalOperation: Operation
-    }
-
-    func buildOperationLine(accountConnectInfos: [AccountConnectInfo]) -> OperationLine {
+    func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
         // Operation depending on all IMAP operations for this account
         let opImapFinished = BlockOperation(block: {
             Log.warn(component: self.comp, "IMAP sync finished")
@@ -108,43 +103,68 @@ public class NetworkService: INetworkService {
 
         var operations = [opImapFinished, opSmtpFinished, opAllFinished]
 
-        for ai in accountConnectInfos {
-            // 3.a Items not associated with any mailbox (e.g., SMTP send)
+        // 3.a Items not associated with any mailbox (e.g., SMTP send)
 
-            if let imapCI = ai.imapConnectInfo {
-                let imapSyncData = ImapSyncData(connectInfo: imapCI)
-                // login IMAP
-                let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
-                opImapFinished.addDependency(opLogin)
-                operations.append(opLogin)
+        if let imapCI = accountInfo.imapConnectInfo {
+            let imapSyncData = ImapSyncData(connectInfo: imapCI)
+            // login IMAP
+            let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+            opImapFinished.addDependency(opLogin)
+            operations.append(opLogin)
 
-                // 3.b Fetch current list of interesting mailboxes
-                let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData)
-                operations.append(opFetchFolders)
-                opFetchFolders.addDependency(opLogin)
-                opImapFinished.addDependency(opFetchFolders)
-            }
-
-            // ...
+            // 3.b Fetch current list of interesting mailboxes
+            let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData)
+            operations.append(opFetchFolders)
+            opFetchFolders.addDependency(opLogin)
+            opImapFinished.addDependency(opFetchFolders)
         }
-        return OperationLine(operations: operations, finalOperation: opAllFinished)
+
+        // ...
+
+        return OperationLine(accountInfo: accountInfo, operations: operations,
+                             finalOperation: opAllFinished)
+    }
+
+    func buildOperationLines(accountConnectInfos: [AccountConnectInfo]) -> [OperationLine] {
+        return accountConnectInfos.map { return buildOperationLine(accountInfo: $0) }
+    }
+
+    func scheduleOperationLine(operationLine: OperationLine, completionBlock: (() -> Void)?) {
+        operationLine.finalOperation.completionBlock = completionBlock
+        for op in operationLine.operations {
+            backgroundQueue.addOperation(op)
+        }
     }
 
     /**
      Main entry point for the main loop.
      Implements RFC 4549 (https://tools.ietf.org/html/rfc4549).
      */
-    func processInternal() {
+    func processAllInternal() {
         if !canceled {
             let connectInfos = gatherConnectInfos()
-            let opLine = buildOperationLine(accountConnectInfos: connectInfos)
-            opLine.finalOperation.completionBlock = {
-                self.delegate?.didSyncAllAccounts(service: self)
-                self.process()
-            }
-            for op in opLine.operations {
-                backgroundQueue.addOperation(op)
-            }
+            let operationLines = buildOperationLines(accountConnectInfos: connectInfos)
+            processOperationLinesInternal(operationLines: operationLines)
+        }
+    }
+
+    func processOperationLines(operationLines: [OperationLine]) {
+        workerQueue.async {
+            self.processOperationLinesInternal(operationLines: operationLines)
+        }
+    }
+
+    func processOperationLinesInternal(operationLines: [OperationLine]) {
+        var myLines = operationLines
+        if myLines.first != nil {
+            let ol = myLines.removeFirst()
+            scheduleOperationLine(operationLine: ol, completionBlock: {
+                self.delegate?.didSync(service: self, accountInfo: ol.accountInfo)
+                // Process the rest
+                self.processOperationLines(operationLines: myLines)
+            })
+        } else {
+            processAllInternal()
         }
     }
 }

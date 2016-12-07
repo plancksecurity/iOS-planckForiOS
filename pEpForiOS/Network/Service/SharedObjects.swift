@@ -18,6 +18,15 @@ public struct AccountConnectInfo {
 }
 
 /**
+ Some information about a list of operations needed to sync a single account.
+ */
+struct OperationLine {
+    let accountInfo: AccountConnectInfo
+    let operations: [Operation]
+    let finalOperation: Operation
+}
+
+/**
  Used for parameters/state shared between IMAP related operations.
  */
 open class ImapSyncData: ImapConnectionManagerProtocol {
