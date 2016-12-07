@@ -108,8 +108,11 @@ public class NetworkService: INetworkService {
         }
 
         if let imapCI = accountInfo.imapConnectInfo {
+            // TODO: Reuse connections
             let imapSyncData = ImapSyncData(connectInfo: imapCI)
+
             // login IMAP
+            // TODO: Check if needed
             let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
             opImapFinished.addDependency(opLogin)
             operations.append(opLogin)
@@ -123,6 +126,7 @@ public class NetworkService: INetworkService {
             // 3.c Client-to-server synchronization (IMAP)
 
             // 3.d Server-to-client synchronization (IMAP)
+            // Determine interesting mailboxes, and for each:
             // Determine current lastUID, and store it (for later sync of existing messages)
             let opFetchMessages = FetchMessagesOperation(imapSyncData: imapSyncData)
             operations.append(opFetchMessages)
