@@ -27,7 +27,7 @@ public class NetworkService: INetworkService {
     let comp = "NetworkService"
 
     let workerQueue = DispatchQueue(
-        label: "net.pep-security.apps.pEp.service", qos: .background, target: nil)
+        label: "net.pep-security.apps.pEp.service", qos: .utility, target: nil)
     let backgroundQueue = OperationQueue()
 
     var canceled = false
@@ -103,7 +103,9 @@ public class NetworkService: INetworkService {
 
         var operations = [opImapFinished, opSmtpFinished, opAllFinished]
 
-        // 3.a Items not associated with any mailbox (e.g., SMTP send)
+        if let _ = accountInfo.smtpConnectInfo {
+            // 3.a Items not associated with any mailbox (e.g., SMTP send)
+        }
 
         if let imapCI = accountInfo.imapConnectInfo {
             let imapSyncData = ImapSyncData(connectInfo: imapCI)
@@ -117,6 +119,15 @@ public class NetworkService: INetworkService {
             operations.append(opFetchFolders)
             opFetchFolders.addDependency(opLogin)
             opImapFinished.addDependency(opFetchFolders)
+
+            // 3.c Client-to-server synchronization (IMAP)
+
+            // 3.d Server-to-client synchronization (IMAP)
+            // Determine current lastUID, and store it (for later sync of existing messages)
+            let opFetchMessages = FetchMessagesOperation(imapSyncData: imapSyncData)
+            operations.append(opFetchMessages)
+            opFetchMessages.addDependency(opFetchFolders)
+            opImapFinished.addDependency(opFetchMessages)
         }
 
         // ...

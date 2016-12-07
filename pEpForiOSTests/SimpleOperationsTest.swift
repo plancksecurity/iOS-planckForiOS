@@ -70,7 +70,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
         let op = FetchMessagesOperation(imapSyncData: imapSyncData,
-                                        folder: ImapSync.defaultImapInboxName)
+                                        folderName: ImapSync.defaultImapInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
             expMailsPrefetched.fulfill()

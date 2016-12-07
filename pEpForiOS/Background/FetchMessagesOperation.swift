@@ -22,14 +22,10 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     var folderToOpen: String
     let connectionManager: ImapConnectionManagerProtocol
 
-    public init(imapSyncData: ImapSyncData, folder: String?) {
+    public init(imapSyncData: ImapSyncData, folderName: String = ImapSync.defaultImapInboxName) {
         self.connectInfo = imapSyncData.connectInfo
         self.connectionManager = imapSyncData
-        if let folder = folder {
-            folderToOpen = folder
-        } else {
-            folderToOpen = ImapSync.defaultImapInboxName
-        }
+        self.folderToOpen = folderName
     }
 
     override open func main() {

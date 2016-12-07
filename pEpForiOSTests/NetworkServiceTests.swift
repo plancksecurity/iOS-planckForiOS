@@ -51,6 +51,7 @@ class NetworkServiceTests: XCTestCase {
 
     func testSyncOneTime() {
         XCTAssertNil(CdFolder.all())
+        XCTAssertNil(CdMessage.all())
 
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
@@ -64,5 +65,6 @@ class NetworkServiceTests: XCTestCase {
 
         XCTAssertNotNil(del.accountInfo)
         XCTAssertNotNil(CdFolder.all())
+        XCTAssertNotNil(CdMessage.all())
     }
 }
