@@ -63,7 +63,8 @@ open class ConcurrentBaseOperation: BaseOperation {
                                                 context: UnsafeMutableRawPointer?) {
         if keyPath == "operationCount" {
             if let newValue = change?[NSKeyValueChangeKey.newKey] {
-                if (newValue as AnyObject).int32Value == 0 {
+                let opCount = (newValue as? NSNumber)?.intValue
+                if let c = opCount, c == 0 {
                     markAsFinished()
                 }
             }
@@ -81,8 +82,8 @@ open class ConcurrentBaseOperation: BaseOperation {
         willChangeValue(forKey: "isFinished")
         willChangeValue(forKey: "isExecuting")
         myFinished = true
-        didChangeValue(forKey: "isFinished")
         didChangeValue(forKey: "isExecuting")
+        didChangeValue(forKey: "isFinished")
     }
 
     func checkImapSync(sync: ImapSync?) -> Bool {

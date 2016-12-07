@@ -60,7 +60,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
                 return
             }
             self.imapSync.delegate = self
-            self.imapSync.start()
+            self.imapSync.deleteFolderWithName(self.folderName)
         }
     }
 
@@ -76,9 +76,8 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
 
 extension DeleteFolderOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            imapSync.deleteFolderWithName(folderName)
-        }
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        markAsFinished()
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
