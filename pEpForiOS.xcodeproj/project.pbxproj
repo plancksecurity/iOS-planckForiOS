@@ -22,6 +22,7 @@
 		222B357E1DF97675007A1F82 /* SuggestTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B357D1DF97675007A1F82 /* SuggestTableView.swift */; };
 		222B35831DF97A44007A1F82 /* ComposeData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 222B35811DF97A44007A1F82 /* ComposeData.plist */; };
 		222B35861DF97A44007A1F82 /* ComposeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35821DF97A44007A1F82 /* ComposeDataSource.swift */; };
+		222B358A1DF99C48007A1F82 /* Actionsheet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35891DF99C48007A1F82 /* Actionsheet+Extension.swift */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		2280386A1DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
@@ -275,6 +276,7 @@
 		222B357D1DF97675007A1F82 /* SuggestTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestTableView.swift; sourceTree = "<group>"; };
 		222B35811DF97A44007A1F82 /* ComposeData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ComposeData.plist; sourceTree = "<group>"; };
 		222B35821DF97A44007A1F82 /* ComposeDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeDataSource.swift; sourceTree = "<group>"; };
+		222B35891DF99C48007A1F82 /* Actionsheet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Actionsheet+Extension.swift"; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
 		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 				43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */,
 				4380F7EE1D1C1C7300326F62 /* PEPSession+Extensions.swift */,
 				436F8E0F1D367039007E9829 /* StringExtensions.swift */,
+				222B35891DF99C48007A1F82 /* Actionsheet+Extension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -952,6 +955,9 @@
 							com.apple.Keychain = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 					43980E391CBD0BCA00A7FC3C = {
@@ -1145,6 +1151,7 @@
 				4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */,
 				43CE63CF1DE8845E00FAC505 /* CdAttachment+pEp.swift in Sources */,
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
+				222B358A1DF99C48007A1F82 /* Actionsheet+Extension.swift in Sources */,
 				43A0E73E1D16C99900159F41 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				43122B1A1DF5B48B00610253 /* ImapService.swift in Sources */,
 				222B35651DF96A9C007A1F82 /* ComposeCellProtocols.swift in Sources */,

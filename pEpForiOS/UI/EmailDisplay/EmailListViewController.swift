@@ -199,15 +199,14 @@ class EmailListViewController: UITableViewController {
         config.appConfig.currentAccount = config.account
 
         if segue.identifier == segueCompose {
-            let destination = segue.destination
-                as! ComposeTableViewController
-            destination.appConfig = config.appConfig
-            if let draft = draftMessageToCompose {
-                draft.imapFlags?.seen = true
-
-                destination.originalMessage = draft
-                destination.composeMode = .draft
-            }
+            //let destination = segue.destination as! ComposeTableViewController
+            // destination.appConfig = config.appConfig
+//            if let draft = draftMessageToCompose {
+//                draft.imapFlags?.seen = true
+//
+//                destination.originalMessage = draft
+//                destination.composeMode = .draft
+//            }
         } else if segue.identifier == segueShowEmail {
             guard
                 let vc = segue.destination as? EmailViewController,
