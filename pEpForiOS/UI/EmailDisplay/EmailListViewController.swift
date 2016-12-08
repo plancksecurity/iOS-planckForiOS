@@ -200,13 +200,13 @@ class EmailListViewController: UITableViewController {
 
         if segue.identifier == segueCompose {
             let destination = segue.destination
-                as! ComposeViewController
+                as! ComposeTableViewController
             destination.appConfig = config.appConfig
             if let draft = draftMessageToCompose {
                 draft.imapFlags?.seen = true
 
                 destination.originalMessage = draft
-                destination.composeMode = .composeDraft
+                destination.composeMode = .draft
             }
         } else if segue.identifier == segueShowEmail {
             guard

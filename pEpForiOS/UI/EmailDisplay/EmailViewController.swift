@@ -130,13 +130,13 @@ class EmailViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == segueReplyFrom) {
             let destination = segue.destination
-                as? ComposeViewController;
-            destination?.composeMode = .replyFrom
+                as? ComposeTableViewController
+            destination?.composeMode = .from
             destination?.appConfig = appConfig
             destination?.originalMessage = message
         } else if (segue.identifier == segueForward) {
             let destination = segue.destination
-                as? ComposeViewController;
+                as? ComposeTableViewController
             destination?.composeMode = .forward
             destination?.appConfig = appConfig
             destination?.originalMessage = message
