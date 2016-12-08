@@ -7,17 +7,37 @@
 //
 
 public extension String {
+
     static let internalRecipientDelimiter = ","
     static let externalRecipientDelimiter = ", "
+    static let returnKey = "\n"
     static let comp = "String.Extensions"
-
+    
+    public var localized: String {
+        return NSLocalizedString(self, comment: "")
+    }
+    
+    public var trim: String {
+        return trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    public static var isEmail: Bool {
+        let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let predicate = NSPredicate(format:"SELF MATCHES %@", regex)
+        return predicate.evaluate(with: self)
+    }
+    
+    public func contains(find: String) -> Bool {
+        return (self.range(of: find, options: .caseInsensitive) != nil)
+    }
+    
     public func wholeRange() -> NSRange {
-        return NSRange.init(location: 0, length: characters.count)
+        return NSRange(location: 0, length: characters.count)
     }
 
     public func unquote() -> String {
         do {
-            let regex = try NSRegularExpression.init(
+            let regex = try NSRegularExpression(
                 pattern: "^\"(.*)\"$", options: [])
             if let match = regex.firstMatch(
                 in: self, options: [],
@@ -38,7 +58,7 @@ public extension String {
      */
     public func isProbablyValidEmail() -> Bool {
         do {
-            let internalExpression = try NSRegularExpression.init(
+            let internalExpression = try NSRegularExpression(
                 pattern: "^[^@,]+@[^@,]+$", options: .caseInsensitive)
             let matches = internalExpression.matches(in: self, options: [], range: wholeRange())
             return matches.count == 1
@@ -70,7 +90,7 @@ public extension String {
      */
     public func namePartOfEmail() -> String {
         do {
-            let regex = try NSRegularExpression.init(pattern: "^([^@]+)@", options: [])
+            let regex = try NSRegularExpression(pattern: "^([^@]+)@", options: [])
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
@@ -166,7 +186,7 @@ public extension String {
         }
 
         do {
-            let regex = try NSRegularExpression.init(pattern: "^(.*?)\\s*$",
+            let regex = try NSRegularExpression(pattern: "^(.*?)\\s*$",
                                                      options: [])
             let matches = regex.matches(in: result, options: [], range: result.wholeRange())
             if matches.count > 0 {
@@ -201,7 +221,7 @@ public extension String {
     public func matchesPattern(
         _ pattern: String, reOptions: NSRegularExpression.Options) -> Bool {
         do {
-            let regex = try NSRegularExpression.init(pattern: pattern, options: reOptions)
+            let regex = try NSRegularExpression(pattern: pattern, options: reOptions)
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
         } catch let err as NSError {
@@ -224,7 +244,7 @@ public extension String {
      */
     public func removeTrailingPattern(_ pattern: String) -> String {
         do {
-            let regex = try NSRegularExpression.init(pattern: "(.*?)\(pattern)$", options: [])
+            let regex = try NSRegularExpression(pattern: "(.*?)\(pattern)$", options: [])
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
@@ -247,7 +267,7 @@ public extension String {
      */
     public func removeLeadingPattern(_ pattern: String) -> String {
         do {
-            let regex = try NSRegularExpression.init(pattern: "^\(pattern)(.*?)$", options: [])
+            let regex = try NSRegularExpression(pattern: "^\(pattern)(.*?)$", options: [])
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
@@ -287,7 +307,7 @@ public extension String {
      */
     public func removeAngleBrackets() -> String {
         do {
-            let regex = try NSRegularExpression.init(
+            let regex = try NSRegularExpression(
                 pattern: "^\\s*<(.*)>\\s*$", options: [])
             if let match = regex.firstMatch(
                 in: self, options: [],
@@ -307,7 +327,7 @@ public extension String {
      */
     public func extractTextFromHTML() -> String {
         let htmlData = data(using: String.Encoding.utf8)
-        let doc = TFHpple.init(data: htmlData, encoding: "UTF-8", isXML: false)
+        let doc = TFHpple(data: htmlData, encoding: "UTF-8", isXML: false)
         let elms = doc?.search(withXPathQuery: "//body//text()[normalize-space()]")
 
         var result = ""
@@ -341,7 +361,7 @@ public extension String {
 
 public extension NSAttributedString {
     public func wholeRange() -> NSRange {
-        return NSRange.init(location: 0, length: length)
+        return NSRange(location: 0, length: length)
     }
 }
 
@@ -373,7 +393,7 @@ class Regex {
     init?(pattern: String, options: NSRegularExpression.Options) {
         self.pattern = pattern
         do {
-            try internalExpression = NSRegularExpression.init(
+            try internalExpression = NSRegularExpression(
                 pattern: pattern, options: options)
         } catch let err as NSError {
             Log.error(component: comp, error: err)

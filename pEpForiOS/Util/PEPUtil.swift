@@ -258,15 +258,15 @@ open class PEPUtil {
 
         dict[kPepShortMessage] = message.shortMessage as AnyObject
 
-        dict[kPepTo] = NSArray.init(array: message.to.map() { return pEp(identity: $0) })
-        dict[kPepCC] = NSArray.init(array: message.cc.map() { return pEp(identity: $0) })
-        dict[kPepBCC] = NSArray.init(array: message.bcc.map() { return pEp(identity: $0) })
+        dict[kPepTo] = NSArray(array: message.to.map() { return pEp(identity: $0) })
+        dict[kPepCC] = NSArray(array: message.cc.map() { return pEp(identity: $0) })
+        dict[kPepBCC] = NSArray(array: message.bcc.map() { return pEp(identity: $0) })
 
         dict[kPepFrom]  = pEpOptional(identity: message.from) as AnyObject
         dict[kPepID] = message.messageID as AnyObject
         dict[kPepOutgoing] = outgoing as AnyObject?
 
-        dict[kPepAttachments] = NSArray.init(array: message.attachments.map() {
+        dict[kPepAttachments] = NSArray(array: message.attachments.map() {
             return pEp(attachment: $0)
         })
 
@@ -356,7 +356,7 @@ open class PEPUtil {
      Converts a pEp identity dict to a pantomime address.
      */
     open static func pantomime(pEpIdentity: PEPIdentity) -> CWInternetAddress {
-        let address = CWInternetAddress.init()
+        let address = CWInternetAddress()
         if let email = pEpIdentity[kPepAddress] as? String {
             address.setAddress(email)
         }
@@ -409,11 +409,11 @@ open class PEPUtil {
      */
     open static func pantomime(pEpMessage: PEPMessage) -> CWIMAPMessage {
         if let rawMessageData = pEpMessage[kPepRawMessage] as? Data {
-            let message = CWIMAPMessage.init(data: rawMessageData)
+            let message = CWIMAPMessage(data: rawMessageData)
             return message
         }
 
-        let message = CWIMAPMessage.init()
+        let message = CWIMAPMessage()
 
         if let from = pEpMessage[kPepFrom] as? PEPIdentity {
             let address = pantomime(pEpIdentity: from)
@@ -462,7 +462,7 @@ open class PEPUtil {
             let encrypted = isProbablyPGPMime(pEpMessage: pEpMessage)
 
             // Create multipart mail
-            let multiPart = CWMIMEMultipart.init()
+            let multiPart = CWMIMEMultipart()
             if encrypted {
                 message.setContentType(Constants.contentTypeMultipartEncrypted)
                 message.setParameter(Constants.protocolPGPEncrypted, forKey: "protocol")
@@ -482,7 +482,7 @@ open class PEPUtil {
                     guard let at = attachmentDict as? [String:NSObject]  else {
                         continue
                     }
-                    let part = CWPart.init()
+                    let part = CWPart()
                     part.setContentType(at[kPepMimeType] as? String)
                     part.setContent(at[kPepMimeData])
                     part.setFilename(at[kPepMimeFilename] as? String)
@@ -511,9 +511,9 @@ open class PEPUtil {
         if theBodyParts.count == 1 {
             return theBodyParts[0]
         } else if theBodyParts.count > 1 {
-            let partAlt = CWPart.init()
+            let partAlt = CWPart()
             partAlt.setContentType(Constants.contentTypeMultipartAlternative)
-            let partMulti = CWMIMEMultipart.init()
+            let partMulti = CWMIMEMultipart()
             for part in theBodyParts {
                 partMulti.add(part)
             }
@@ -530,7 +530,7 @@ open class PEPUtil {
      */
     static func makePart(text: String?, contentType: String) -> CWPart? {
         if let t = text {
-            let part = CWPart.init()
+            let part = CWPart()
             part.setContentType(contentType)
             part.setContent(t.data(using: String.Encoding.utf8) as NSObject?)
             part.setCharset("UTF-8")
@@ -592,7 +592,7 @@ open class PEPUtil {
         guard let theInt = i else {
             return nil
         }
-        return PEP_rating.init(Int32(theInt))
+        return PEP_rating(Int32(theInt))
     }
 
     open static func pEpTitle(pEpRating: PEP_rating) -> String? {
@@ -634,7 +634,7 @@ open class PEPUtil {
         if let s = session {
             return s
         }
-        return PEPSession.init()
+        return PEPSession()
     }
 
     open static func fingerPrint(identity: Identity, session: PEPSession? = nil) -> String? {
@@ -644,7 +644,7 @@ open class PEPUtil {
 
         let theSession = reuse(session: session)
         let pEpID = pEp(identity: identity)
-        let pEpDict = NSMutableDictionary.init(dictionary: pEpID)
+        let pEpDict = NSMutableDictionary(dictionary: pEpID)
         theSession.updateIdentity(pEpDict)
         return pEpDict[kPepFingerprint] as? String
     }
@@ -654,7 +654,7 @@ open class PEPUtil {
      */
     open static func trust(identity: Identity, session: PEPSession? = nil) {
         let theSession = reuse(session: session)
-        let pepC = NSMutableDictionary.init(dictionary: pEp(identity: identity))
+        let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
         theSession.updateIdentity(pepC)
         theSession.trustPersonalKey(pepC)
     }
@@ -664,7 +664,7 @@ open class PEPUtil {
      */
     open static func mistrust(identity: Identity, session: PEPSession? = nil) {
         let theSession = reuse(session: session)
-        let pepC = NSMutableDictionary.init(dictionary: pEp(identity: identity))
+        let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
         theSession.updateIdentity(pepC)
         theSession.keyMistrusted(pepC)
     }
@@ -675,7 +675,7 @@ open class PEPUtil {
      */
     open static func resetTrust(identity: Identity, session: PEPSession? = nil) {
         let theSession = reuse(session: session)
-        let pepC = NSMutableDictionary.init(dictionary: pEp(identity: identity))
+        let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
         theSession.updateIdentity(pepC)
         theSession.keyResetTrust(pepC)
     }
@@ -698,5 +698,52 @@ open class PEPUtil {
             return (encryptedMessage, error)
         }
         return (encryptedMessage, nil)
+    }
+}
+
+extension String {
+    
+    public static var pepSignature: String {
+        return "pEp.Mail.Signature".localized
+    }
+}
+
+extension UIColor {
+    
+    open class var pEpColor: UIColor {
+        get {
+            return UIColor(hex: "#03AA4B")
+        }
+    }
+    
+    open class var pEpGray: UIColor {
+        get {
+            return UIColor(hex: "#E8E8E8")
+        }
+    }
+    
+    convenience init(hex: String) {
+        var hexstr = hex
+        if hexstr.hasPrefix("#") {
+            hexstr = String(hexstr.characters.dropFirst())
+        }
+        
+        var rgbValue: UInt32 = 0
+        Scanner(string: hexstr).scanHexInt32(&rgbValue)
+        
+        let r = CGFloat((rgbValue >> 16) & 0xff) / 255.0
+        let g = CGFloat((rgbValue >> 08) & 0xff) / 255.0
+        let b = CGFloat((rgbValue >> 00) & 0xff) / 255.0
+        
+        self.init(red: r, green: g, blue: b, alpha: 1.0)
+    }
+}
+
+extension UIFont {
+    
+    open class var pEpInput: UIFont {
+        get {
+            return self.systemFont(ofSize: 14.0)
+        }
     }
 }

@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         // Open the first session from the main thread and keep it open
-        firstSession = PEPSession.init()
+        firstSession = PEPSession()
 
         Log.warn(component: comp, "Library url: \(applicationDirectory())")
 
@@ -107,5 +107,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("Error While Loading DataStack")
         }
+    }
+    
+    fileprivate final func appearance() {
+        UINavigationBar.appearance().backgroundColor = .pEpColor
+        UINavigationBar.appearance().barTintColor = .pEpColor
+        UINavigationBar.appearance().tintColor = .white
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
+        UIToolbar.appearance().backgroundColor = .pEpColor
+        UIToolbar.appearance().barTintColor = .pEpColor
+        UIToolbar.appearance().tintColor = .white
+        
+        UITextView.appearance().tintColor = .pEpColor
+        UITextField.appearance().tintColor = .pEpColor
     }
 }
