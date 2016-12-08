@@ -29,7 +29,7 @@ open class MessageToAttachmentOperation: BaseOperation {
             return
         }
         attachment = Attachment.create(data: data, mimeType: Constants.attachedEmailMimeType,
-                                       fileName: "mail.eml")
+                                       fileName: "mail.eml", url: nil)
     }
 
     func errorMessage(_ localizedMessage: String, logMessage: String) {
