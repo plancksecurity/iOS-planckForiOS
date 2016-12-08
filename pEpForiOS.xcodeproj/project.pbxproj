@@ -10,6 +10,8 @@
 		222B35521DF95C1C007A1F82 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35511DF95C1C007A1F82 /* Array+Extension.swift */; };
 		222B35531DF95C25007A1F82 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35511DF95C1C007A1F82 /* Array+Extension.swift */; };
 		222B35541DF95C25007A1F82 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35511DF95C1C007A1F82 /* Array+Extension.swift */; };
+		222B35561DF962D7007A1F82 /* ComposeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35551DF962D7007A1F82 /* ComposeHelpers.swift */; };
+		222B35581DF96389007A1F82 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35571DF96389007A1F82 /* Capability.swift */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		2280386A1DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
@@ -254,6 +256,8 @@
 
 /* Begin PBXFileReference section */
 		222B35511DF95C1C007A1F82 /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		222B35551DF962D7007A1F82 /* ComposeHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeHelpers.swift; sourceTree = "<group>"; };
+		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
 		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
@@ -530,6 +534,7 @@
 		431AE5D11D2EC0A700F609D3 /* Compose */ = {
 			isa = PBXGroup;
 			children = (
+				222B35551DF962D7007A1F82 /* ComposeHelpers.swift */,
 				4340F5F81D363BE6006A5C82 /* ContactTableViewCell.swift */,
 				431AE5D41D2EC0C000F609D3 /* ComposeViewController.swift */,
 				4346D33B1D86E2E50017E24E /* ComposeViewHelper.swift */,
@@ -712,6 +717,7 @@
 				228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */,
 				436C5A8D1CFEDF59006A195F /* UIHelper.swift */,
 				43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */,
+				222B35571DF96389007A1F82 /* Capability.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1069,6 +1075,7 @@
 				4380F7C71D1BBD5D00326F62 /* SendMessageOperation.swift in Sources */,
 				4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */,
 				A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */,
+				222B35561DF962D7007A1F82 /* ComposeHelpers.swift in Sources */,
 				43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */,
 				439864481D6C486200D0FDE1 /* FolderListViewController.swift in Sources */,
@@ -1094,6 +1101,7 @@
 				4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */,
 				43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */,
 				43B3E46E1D3CC2A9007CA3C9 /* SubjectTableViewCell.swift in Sources */,
+				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
 				43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */,
 				43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */,
 				435B42411D211E5900119048 /* MiscUtil.swift in Sources */,
