@@ -67,11 +67,8 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
         self.imapSync.delegate = self
         self.imapSync.folderBuilder = folderBuilder
 
-        if let fn = self.imapSync.imapState.currentFolder,
-            fn == self.folderToOpen {
+        if !self.imapSync.openMailBox(name: self.folderToOpen) {
             self.fetchMessages(self.imapSync)
-        } else {
-            self.imapSync.openMailBox(self.folderToOpen)
         }
     }
 
@@ -88,9 +85,8 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
 extension FetchMessagesOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            sync.openMailBox(folderToOpen)
-        }
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        markAsFinished()
     }
 
     public func receivedFolderNames(_ sync: ImapSync, folderNames: [String]?) {

@@ -86,6 +86,39 @@ public class NetworkService: INetworkService {
     }
 
     func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
+        struct FolderInfo {
+            let name: String
+            let lastUID: UInt?
+        }
+
+        /**
+         Determine "interesting" folder names that should be synced, and for each:
+         Determine current lastUID, and store it (for later sync of existing messages).
+         - Note: Interesting mailboxes are Inbox (always), and the most recently looked at
+         folders (see lastLookedAt, IOS-291).
+         */
+        func determineInterestingFolders() -> [FolderInfo] {
+            var folderInfos = [FolderInfo]()
+            let context = Record.Context.background
+            context.performAndWait {
+                guard let account = context.object(with: accountInfo.accountID) as? CdAccount else {
+                    return
+                }
+
+                // Currently, the only interesting mailbox is Inbox.
+                if let inboxFolder = CdFolder.by(folderType: .inbox, account: account) {
+                    let name = inboxFolder.name ?? ImapSync.defaultImapInboxName
+                    folderInfos.append(FolderInfo(name: name, lastUID: inboxFolder.lastUID()))
+                }
+            }
+            if folderInfos.count == 0 {
+                // If no interesting folders have been found, at least sync the inbox.
+                folderInfos.append(FolderInfo(name: ImapSync.defaultImapInboxName,
+                                              lastUID: nil))
+            }
+            return folderInfos
+        }
+
         // Operation depending on all IMAP operations for this account
         let opImapFinished = BlockOperation(block: {
             Log.warn(component: self.comp, "IMAP sync finished")
@@ -126,12 +159,25 @@ public class NetworkService: INetworkService {
             // 3.c Client-to-server synchronization (IMAP)
 
             // 3.d Server-to-client synchronization (IMAP)
-            // Determine interesting mailboxes, and for each:
-            // Determine current lastUID, and store it (for later sync of existing messages)
-            let opFetchMessages = FetchMessagesOperation(imapSyncData: imapSyncData)
-            operations.append(opFetchMessages)
-            opFetchMessages.addDependency(opFetchFolders)
-            opImapFinished.addDependency(opFetchMessages)
+
+            let folderInfos = determineInterestingFolders()
+
+            // sync new messages
+            var lastFetchMessagesOp: Operation? = nil
+            for fi in folderInfos {
+                let fetchMessagesOp = FetchMessagesOperation(imapSyncData: imapSyncData,
+                                                             folderName: fi.name)
+                operations.append(fetchMessagesOp)
+                fetchMessagesOp.addDependency(opFetchFolders)
+                opImapFinished.addDependency(fetchMessagesOp)
+                if let op = lastFetchMessagesOp {
+                    fetchMessagesOp.addDependency(op)
+                }
+                lastFetchMessagesOp = fetchMessagesOp
+            }
+
+            // sync existing messages
+            // TODO
         }
 
         // ...

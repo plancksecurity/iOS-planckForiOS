@@ -155,12 +155,12 @@ class SimpleOperationsTest: XCTestCase {
 
         Record.saveAndWait()
 
-        let expMailsPrefetched = expectation(description: "expMailsPrefetched")
+        let expMailsSynced = expectation(description: "expMailsSynced")
 
-        let op = SyncMessagesOperation(connectionManager: connectionManager,
-                                       connectInfo: imapConnectInfo, folder: folder)
+        let op = SyncMessagesOperation(imapSyncData: imapSyncData, folder: folder,
+                                       lastUID: folder.lastUID())
         op.completionBlock = {
-            expMailsPrefetched.fulfill()
+            expMailsSynced.fulfill()
         }
 
         op.start()

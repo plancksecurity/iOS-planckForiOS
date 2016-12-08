@@ -105,7 +105,7 @@ open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
 extension SyncFlagsToServerOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
         if !self.isCancelled {
-            sync.openMailBox(folderName)
+            sync.openMailBox(name: folderName)
         }
     }
 

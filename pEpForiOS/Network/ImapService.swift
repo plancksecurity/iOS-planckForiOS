@@ -77,68 +77,7 @@ public enum ImapError: Int {
     case folderNotOpen = 1000
 }
 
-public protocol IImapSync {
-    /**
-     The delegate.
-     */
-    weak var delegate: ImapSyncDelegate? { get set }
-
-    /**
-     The maximum number of messages to prefetch in one gulp.
-     */
-    var maxPrefetchCount: UInt { get set }
-
-    /**
-     An instance of `CWFolderBuilding` can be used for persistence.
-     */
-    var folderBuilder: CWFolderBuilding? { get set }
-
-    /**
-     The list of all IMAP folders on the server.
-     
-     - Note: This will return nil the first time you access it. Try again when you have
-     received `folderListCompleted`.
-     */
-    var folderNames: [String]? { get }
-
-    /**
-     Start to connect.
-     */
-    func start()
-
-    /**
-     Opens the folder with the given name, prefetching all messages contained if wanted.
-     Should call this after receiving receivedFolderNames().
-     */
-    func openMailBox(_ name: String)
-
-    /**
-     Fetch the latest messages from the curently selected folder.
-     */
-    func fetchMessages() throws
-
-    /**
-     Synchronizes existing messages from the curently selected folder.
-     */
-    func syncMessages() throws
-
-    /**
-     Creates a new folder on the server.
-     */
-    func createFolderWithName(_ folderName: String)
-
-    /**
-     Deletes the folder with the given name from the server.
-     */
-    func deleteFolderWithName(_ folderName: String)
-
-    /**
-     Close the connection.
-     */
-    func close()
-}
-
-open class ImapSync: Service, IImapSync {
+open class ImapSync: Service {
     open override var comp: String { get { return "ImapSync" } }
 
     static open let defaultImapInboxName = "INBOX"
@@ -181,13 +120,24 @@ open class ImapSync: Service, IImapSync {
         super.start()
     }
 
-    open func openMailBox(_ name: String) {
-        imapState.currentFolder = nil
-        // Note: If you open a folder with PantomimeReadOnlyMode,
-        // all messages will be prefetched by default,
-        // independent of the prefetch parameter.
-        if let folder = imapStore.folder(forName: name, mode: PantomimeReadWriteMode) {
-            Log.info(component: comp, "openMailBox \(folder.name())")
+    /**
+     Opens the given mailbox (by name). If already open, do nothing.
+     - Returns: true if the mailbox had to opened, false if it already was open.
+     */
+    open func openMailBox(name: String) -> Bool {
+        if let currentFolderName = imapState.currentFolder,
+            currentFolderName == name {
+            return false
+        } else {
+            imapState.currentFolder = nil
+            // Note: If you open a folder with PantomimeReadOnlyMode,
+            // all messages will be prefetched by default,
+            // independent of the prefetch parameter.
+            if let folder = imapStore.folder(forName: name, mode: PantomimeReadWriteMode) {
+                Log.info(component: comp, "openMailBox \(folder.name())")
+                return true
+            }
+            return false
         }
     }
 
@@ -209,9 +159,9 @@ open class ImapSync: Service, IImapSync {
         folder.prefetch()
     }
 
-    open func syncMessages() throws {
+    open func syncMessages(lastUID: UInt) throws {
         let folder = try openFolder()
-        folder.syncExisting()
+        folder.syncExisting(lastUID)
     }
 
     open func createFolderWithName(_ folderName: String) {

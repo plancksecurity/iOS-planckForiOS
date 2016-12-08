@@ -17,14 +17,15 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
     let folderID: NSManagedObjectID
     let folderToOpen: String
     let connectionManager: ImapConnectionManagerProtocol
-    var lastUID: UInt?
+    let lastUID: UInt
+    var lastSeenUID: UInt?
 
-    public init(connectionManager: ImapConnectionManagerProtocol,
-                connectInfo: EmailConnectInfo, folder: CdFolder) {
-        self.connectInfo = connectInfo
-        self.connectionManager = connectionManager
+    public init(imapSyncData: ImapSyncData, folder: CdFolder, lastUID: UInt) {
+        self.connectInfo = imapSyncData.connectInfo
+        self.connectionManager = imapSyncData
         folderID = folder.objectID
         folderToOpen = folder.name!
+        self.lastUID = lastUID
     }
 
     override open func main() {
@@ -49,20 +50,14 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
         self.imapSync.delegate = self
         self.imapSync.folderBuilder = folderBuilder
 
-        if self.imapSync.imapState.authenticationCompleted == false {
-            self.imapSync.start()
-        } else {
-            if self.imapSync.imapState.currentFolder != nil {
-                self.syncMessages(self.imapSync)
-            } else {
-                self.imapSync.openMailBox(self.folderToOpen)
-            }
+        if !self.imapSync.openMailBox(name: self.folderToOpen) {
+            self.syncMessages(self.imapSync)
         }
     }
 
     func syncMessages(_ sync: ImapSync) {
         do {
-            try sync.syncMessages()
+            try sync.syncMessages(lastUID: lastUID)
         } catch let err as NSError {
             addError(err)
             waitForFinished()
@@ -73,9 +68,8 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
 extension SyncMessagesOperation: ImapSyncDelegate {
 
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            sync.openMailBox(folderToOpen)
-        }
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        markAsFinished()
     }
 
     public func receivedFolderNames(_ sync: ImapSync, folderNames: [String]?) {
@@ -137,7 +131,7 @@ extension SyncMessagesOperation: ImapSyncDelegate {
         if let userDict = notification?.userInfo?[PantomimeMessageChanged] as? [String: Any],
             let cwMessage = userDict["Message"] as? CWIMAPMessage {
             let uid = cwMessage.uid()
-            if let theLastUID = lastUID, uid - 1 > theLastUID {
+            if let theLastUID = lastSeenUID, uid - 1 > theLastUID {
                 let context = Record.Context.default
                 context.performAndWait {
                     self.deleteMessagesInBetween(
@@ -145,7 +139,7 @@ extension SyncMessagesOperation: ImapSyncDelegate {
                     Record.saveAndWait()
                 }
             }
-            lastUID = uid
+            lastSeenUID = uid
         } else {
             addError(Constants.errorIllegalState(
                 comp, stateName: "PantomimeMessageChanged without valid message"))
