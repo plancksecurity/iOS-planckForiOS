@@ -1,0 +1,27 @@
+/* 
+  Localizable.strings
+  pEpForiOS
+
+  Created by Yves Landert on 08.12.16.
+  Copyright © 2016 p≡p Security S.A. All rights reserved.
+*/
+
+// pEp Global
+
+"pEp.Mail.Signature" = "\r\rSent with p≡p\r";
+
+// Mailcomposer UI
+
+"MailComp.To" = "To:";
+"MailComp.Cc" = "Cc:";
+"MailComp.Bcc" = "Bcc:";
+"MailComp.From" = "From:";
+"MailComp.Subject" = "Subject:";
+"MailComp.Video" = "Video.";
+
+"MailComp.Action.Cancel" = "Cancel";
+"MailComp.Action.Save" = "Save Draft";
+"MailComp.Action.Delete" = "Delete Draft";
+
+"MenuCtrl.Cameraroll" = "Insert Photo or Video";
+"MenuCtrl.Attachment" = "Add Attachment";
