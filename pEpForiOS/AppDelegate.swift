@@ -37,7 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
+        appearance()
+        
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession()
 
