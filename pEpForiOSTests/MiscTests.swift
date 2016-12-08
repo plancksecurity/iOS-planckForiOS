@@ -26,6 +26,7 @@ class MiscTests: XCTestCase {
         XCTAssertEqual(u2, UInt32.max)
     }
 
+    /*
     func testExtractRecipientFromText() {
         XCTAssertNil(ComposeViewHelper.extractRecipientFromText("", aroundCaretPosition: 5))
         XCTAssertNil(ComposeViewHelper.extractRecipientFromText("01", aroundCaretPosition: 3))
@@ -46,4 +47,5 @@ class MiscTests: XCTestCase {
         XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
             "to: 001, 002 ", aroundCaretPosition: 9), "002")
     }
+     */
 }
