@@ -157,8 +157,11 @@ class SimpleOperationsTest: XCTestCase {
 
         let expMailsSynced = expectation(description: "expMailsSynced")
 
-        let op = SyncMessagesOperation(imapSyncData: imapSyncData, folder: folder,
-                                       lastUID: folder.lastUID())
+        guard let op = SyncMessagesOperation(
+            imapSyncData: imapSyncData, folder: folder, lastUID: folder.lastUID()) else {
+                XCTFail()
+                return
+        }
         op.completionBlock = {
             expMailsSynced.fulfill()
         }

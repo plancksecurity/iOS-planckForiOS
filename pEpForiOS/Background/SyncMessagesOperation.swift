@@ -20,12 +20,21 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
     let lastUID: UInt
     var lastSeenUID: UInt?
 
-    public init(imapSyncData: ImapSyncData, folder: CdFolder, lastUID: UInt) {
+    public init(imapSyncData: ImapSyncData, folderID: NSManagedObjectID, folderName: String,
+                lastUID: UInt) {
         self.connectInfo = imapSyncData.connectInfo
         self.connectionManager = imapSyncData
-        folderID = folder.objectID
-        folderToOpen = folder.name!
+        self.folderID = folderID
+        self.folderToOpen = folderName
         self.lastUID = lastUID
+    }
+
+    public convenience init?(imapSyncData: ImapSyncData, folder: CdFolder, lastUID: UInt) {
+        guard let folderName = folder.name else {
+            return nil
+        }
+        self.init(imapSyncData: imapSyncData, folderID: folder.objectID, folderName: folderName,
+                  lastUID: lastUID)
     }
 
     override open func main() {

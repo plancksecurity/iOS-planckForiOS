@@ -34,18 +34,23 @@ class NetworkServiceTests: XCTestCase {
 
     class NetworkServiceObserver: NetworkServiceDelegate {
         let expSingleAccountSynced: XCTestExpectation?
+        let expCanceled: XCTestExpectation?
         var accountInfo: AccountConnectInfo?
 
-        init(expAccountsSynced: XCTestExpectation? = nil) {
+        init(expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil) {
             self.expSingleAccountSynced = expAccountsSynced
+            self.expCanceled = expCanceled
         }
 
         func didSync(service: NetworkService, accountInfo: AccountConnectInfo) {
             if self.accountInfo == nil {
                 self.accountInfo = accountInfo
                 expSingleAccountSynced?.fulfill()
-                service.cancel()
             }
+        }
+
+        func didCancel(service: NetworkService) {
+            expCanceled?.fulfill()
         }
     }
 
@@ -63,8 +68,28 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
 
+        networkService.cancel()
         XCTAssertNotNil(del.accountInfo)
         XCTAssertNotNil(CdFolder.all())
         XCTAssertNotNil(CdMessage.all())
+    }
+
+    func testCancelSync() {
+        XCTAssertNil(CdFolder.all())
+        XCTAssertNil(CdMessage.all())
+
+        let del = NetworkServiceObserver(
+            expCanceled: expectation(description: "expCanceled"))
+
+        networkService.delegate = del
+        networkService.start()
+        networkService.cancel()
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        XCTAssertNil(CdFolder.all())
+        XCTAssertNil(CdMessage.all())
     }
 }

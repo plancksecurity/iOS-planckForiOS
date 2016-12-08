@@ -16,6 +16,9 @@ public protocol INetworkService {
 public protocol NetworkServiceDelegate: class {
     /** Called after each account sync */
     func didSync(service: NetworkService, accountInfo: AccountConnectInfo)
+
+    /** Called after all operations have been canceled */
+    func didCancel(service: NetworkService)
 }
 
 /**
@@ -26,6 +29,11 @@ public protocol NetworkServiceDelegate: class {
 public class NetworkService: INetworkService {
     let comp = "NetworkService"
 
+    /**
+     Amount of time to "sleep" between complete syncs of all accounts.
+     */
+    let sleepTimeInSeconds: Double
+
     let workerQueue = DispatchQueue(
         label: "net.pep-security.apps.pEp.service", qos: .utility, target: nil)
     let backgroundQueue = OperationQueue()
@@ -35,7 +43,9 @@ public class NetworkService: INetworkService {
 
     public weak var delegate: NetworkServiceDelegate?
 
-    public init() {}
+    public init(sleepTimeInSeconds: Double = 5.0) {
+        self.sleepTimeInSeconds = sleepTimeInSeconds
+    }
 
     /**
      Start endlessly synchronizing in the background.
@@ -59,6 +69,10 @@ public class NetworkService: INetworkService {
     public func cancel() {
         workerQueue.async {
             self.canceled = true
+            self.delegate?.didCancel(service: self)
+            for op in self.backgroundQueue.operations {
+                op.cancel()
+            }
         }
     }
 
@@ -89,6 +103,7 @@ public class NetworkService: INetworkService {
         struct FolderInfo {
             let name: String
             let lastUID: UInt?
+            let folderID: NSManagedObjectID?
         }
 
         /**
@@ -108,13 +123,14 @@ public class NetworkService: INetworkService {
                 // Currently, the only interesting mailbox is Inbox.
                 if let inboxFolder = CdFolder.by(folderType: .inbox, account: account) {
                     let name = inboxFolder.name ?? ImapSync.defaultImapInboxName
-                    folderInfos.append(FolderInfo(name: name, lastUID: inboxFolder.lastUID()))
+                    folderInfos.append(FolderInfo(name: name, lastUID: inboxFolder.lastUID(),
+                                                  folderID: inboxFolder.objectID))
                 }
             }
             if folderInfos.count == 0 {
                 // If no interesting folders have been found, at least sync the inbox.
                 folderInfos.append(FolderInfo(name: ImapSync.defaultImapInboxName,
-                                              lastUID: nil))
+                                              lastUID: nil, folderID: nil))
             }
             return folderInfos
         }
@@ -163,21 +179,33 @@ public class NetworkService: INetworkService {
             let folderInfos = determineInterestingFolders()
 
             // sync new messages
-            var lastFetchMessagesOp: Operation? = nil
+            var lastImapOp: Operation? = nil
             for fi in folderInfos {
-                let fetchMessagesOp = FetchMessagesOperation(imapSyncData: imapSyncData,
-                                                             folderName: fi.name)
+                let fetchMessagesOp = FetchMessagesOperation(
+                    imapSyncData: imapSyncData, folderName: fi.name)
                 operations.append(fetchMessagesOp)
                 fetchMessagesOp.addDependency(opFetchFolders)
                 opImapFinished.addDependency(fetchMessagesOp)
-                if let op = lastFetchMessagesOp {
+                if let op = lastImapOp {
                     fetchMessagesOp.addDependency(op)
                 }
-                lastFetchMessagesOp = fetchMessagesOp
+                lastImapOp = fetchMessagesOp
             }
 
             // sync existing messages
-            // TODO
+            for fi in folderInfos {
+                if let folderID = fi.folderID, let lastUID = fi.lastUID {
+                    let syncMessagesOp = SyncMessagesOperation(
+                        imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
+                        lastUID: lastUID)
+                    if let lastOp = lastImapOp {
+                        syncMessagesOp.addDependency(lastOp)
+                    }
+                    operations.append(syncMessagesOp)
+                    opImapFinished.addDependency(syncMessagesOp)
+                    lastImapOp = syncMessagesOp
+                }
+            }
         }
 
         // ...
@@ -190,7 +218,8 @@ public class NetworkService: INetworkService {
         return accountConnectInfos.map { return buildOperationLine(accountInfo: $0) }
     }
 
-    func scheduleOperationLine(operationLine: OperationLine, completionBlock: (() -> Void)?) {
+    func scheduleOperationLineInternal(
+        operationLine: OperationLine, completionBlock: (() -> Void)?) {
         operationLine.finalOperation.completionBlock = completionBlock
         for op in operationLine.operations {
             backgroundQueue.addOperation(op)
@@ -216,16 +245,20 @@ public class NetworkService: INetworkService {
     }
 
     func processOperationLinesInternal(operationLines: [OperationLine]) {
-        var myLines = operationLines
-        if myLines.first != nil {
-            let ol = myLines.removeFirst()
-            scheduleOperationLine(operationLine: ol, completionBlock: {
-                self.delegate?.didSync(service: self, accountInfo: ol.accountInfo)
-                // Process the rest
-                self.processOperationLines(operationLines: myLines)
-            })
-        } else {
-            processAllInternal()
+        if !self.canceled {
+            var myLines = operationLines
+            if myLines.first != nil {
+                let ol = myLines.removeFirst()
+                scheduleOperationLineInternal(operationLine: ol, completionBlock: {
+                    self.delegate?.didSync(service: self, accountInfo: ol.accountInfo)
+                    // Process the rest
+                    self.processOperationLines(operationLines: myLines)
+                })
+            } else {
+                workerQueue.asyncAfter(deadline: DispatchTime.now() + self.sleepTimeInSeconds) {
+                    self.processAllInternal()
+                }
+            }
         }
     }
 }
