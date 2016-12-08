@@ -12,6 +12,9 @@
 		222B35541DF95C25007A1F82 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35511DF95C1C007A1F82 /* Array+Extension.swift */; };
 		222B35561DF962D7007A1F82 /* ComposeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35551DF962D7007A1F82 /* ComposeHelpers.swift */; };
 		222B35581DF96389007A1F82 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35571DF96389007A1F82 /* Capability.swift */; };
+		222B355D1DF96478007A1F82 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 222B35611DF96478007A1F82 /* Localizable.strings */; };
+		222B355E1DF96478007A1F82 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 222B35611DF96478007A1F82 /* Localizable.strings */; };
+		222B355F1DF96478007A1F82 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 222B35611DF96478007A1F82 /* Localizable.strings */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		2280386A1DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
@@ -258,6 +261,8 @@
 		222B35511DF95C1C007A1F82 /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		222B35551DF962D7007A1F82 /* ComposeHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeHelpers.swift; sourceTree = "<group>"; };
 		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
+		222B35601DF96478007A1F82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		222B35631DF964A4007A1F82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
 		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
@@ -646,6 +651,7 @@
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
 				43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */,
 				22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */,
+				222B35611DF96478007A1F82 /* Localizable.strings */,
 			);
 			path = pEpForiOS;
 			sourceTree = "<group>";
@@ -1024,6 +1030,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
+				222B355D1DF96478007A1F82 /* Localizable.strings in Resources */,
 				22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */,
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
 				430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
@@ -1040,6 +1047,7 @@
 				43A5DE3E1D631F74001153AF /* EncryptedHTMLMail_to_1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.txt in Resources */,
 				430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				438D25401D4B9EDB00BFF7AA /* PGPMimeMail.txt in Resources */,
+				222B355E1DF96478007A1F82 /* Localizable.strings in Resources */,
 				43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */,
 				43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */,
 			);
@@ -1050,6 +1058,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22DA56DA1DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */,
+				222B355F1DF96478007A1F82 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1237,6 +1246,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		222B35611DF96478007A1F82 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				222B35601DF96478007A1F82 /* Base */,
+				222B35631DF964A4007A1F82 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		43980E2A1CBD0BC900A7FC3C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
