@@ -1,4 +1,4 @@
-g//
+//
 //  SuggestTableView.swift
 //
 //  Created by Yves Landert on 21.11.16.
@@ -38,7 +38,7 @@ open class SuggestTableView: UITableView, UITableViewDataSource {
         
         let search = string.cleanAttachments
         if (search.characters.count >= 3) {
-            identities = Identity.by(snippet: string)
+            identities = Identity.by(snippet: search)
             
             if identities.count > 0 {
                 reloadData()
