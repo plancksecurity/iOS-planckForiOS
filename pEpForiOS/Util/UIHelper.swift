@@ -34,6 +34,10 @@ class UIHelper {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44
     }
+    
+    static func emailListTableHeight(_ tableView: UITableView) {
+        tableView.rowHeight = 100
+    }
 
     static func labelFromContact(_ contact: CdIdentity) -> UILabel {
         let l = UILabel()

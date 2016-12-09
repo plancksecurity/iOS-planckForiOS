@@ -76,7 +76,7 @@ class EmailListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIHelper.variableCellHeightsTableView(self.tableView)
+        UIHelper.emailListTableHeight(self.tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
