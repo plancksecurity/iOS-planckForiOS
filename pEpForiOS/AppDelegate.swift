@@ -19,6 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /** Keep open at all times */
     var firstSession: PEPSession?
 
+    /** The SMTP/IMAP backend */
+    var networkService: NetworkService?
+
     let backgroundQueue = OperationQueue()
 
     func applicationDirectory() -> URL? {
@@ -29,28 +32,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func dumpFontSizes() {
         let styles = [UIFontTextStyle.body, UIFontTextStyle.caption1, UIFontTextStyle.caption2,
-                      UIFontTextStyle.footnote, UIFontTextStyle.headline, UIFontTextStyle.subheadline]
+                      UIFontTextStyle.footnote, UIFontTextStyle.headline,
+                      UIFontTextStyle.subheadline]
         for sty in styles {
             let font = UIFont.preferredFont(forTextStyle: sty)
             print("\(sty) \(font)")
         }
     }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(
+        _ application: UIApplication, didFinishLaunchingWithOptions
+        launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         appearance()
-        
-        // Open the first session from the main thread and keep it open
-        firstSession = PEPSession()
 
         Log.warn(component: comp, content: "Library url: \(applicationDirectory())")
 
-        setupDefaultSettings()
-
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            // If unit tests are running, leave the stage for them
+            // and pretty much don't do anything.
             return false
         }
 
+        // Open the first session from the main thread and keep it open
+        firstSession = PEPSession()
+
+        setupDefaultSettings()
+
         loadCoreDataStack()
+
+        networkService = NetworkService()
+        CdAccount.sendLayer = networkService
 
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
@@ -114,7 +125,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().backgroundColor = .pEpColor
         UINavigationBar.appearance().barTintColor = .pEpColor
         UINavigationBar.appearance().tintColor = .white
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        UINavigationBar.appearance().titleTextAttributes =
+            [NSForegroundColorAttributeName: UIColor.white]
         
         UIToolbar.appearance().backgroundColor = .pEpColor
         UIToolbar.appearance().barTintColor = .pEpColor

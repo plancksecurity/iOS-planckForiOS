@@ -57,9 +57,9 @@ public class NetworkService: INetworkService {
     /**
      Start endlessly synchronizing in the background.
      */
-    public func process() {
+    public func process(repeatProcess: Bool = true) {
         workerQueue.async {
-            self.processAllInternal()
+            self.processAllInternal(repeatProcess: repeatProcess)
         }
     }
 
@@ -77,9 +77,7 @@ public class NetworkService: INetworkService {
     }
 
     func fetchValidatedAccounts(context: NSManagedObjectContext) -> [CdAccount] {
-        return CdAccount.all(with: NSPredicate(format: "needsVerification = false"),
-                             in: context)
-            as? [CdAccount] ?? []
+        return CdAccount.all(in: context) as? [CdAccount] ?? []
     }
 
     func gatherConnectInfos() -> [AccountConnectInfo] {
@@ -230,11 +228,12 @@ public class NetworkService: INetworkService {
      Main entry point for the main loop.
      Implements RFC 4549 (https://tools.ietf.org/html/rfc4549).
      */
-    func processAllInternal() {
+    func processAllInternal(repeatProcess: Bool = true) {
         if !canceled {
             let connectInfos = gatherConnectInfos()
             let operationLines = buildOperationLines(accountConnectInfos: connectInfos)
-            processOperationLinesInternal(operationLines: operationLines)
+            processOperationLinesInternal(operationLines: operationLines,
+                                          repeatProcess: repeatProcess)
         }
     }
 
@@ -244,7 +243,8 @@ public class NetworkService: INetworkService {
         }
     }
 
-    func processOperationLinesInternal(operationLines: [OperationLine]) {
+    func processOperationLinesInternal(operationLines: [OperationLine],
+                                       repeatProcess: Bool = true) {
         if !self.canceled {
             var myLines = operationLines
             if myLines.first != nil {
@@ -255,10 +255,47 @@ public class NetworkService: INetworkService {
                     self.processOperationLines(operationLines: myLines)
                 })
             } else {
-                workerQueue.asyncAfter(deadline: DispatchTime.now() + self.sleepTimeInSeconds) {
-                    self.processAllInternal()
+                if repeatProcess {
+                    workerQueue.asyncAfter(deadline: DispatchTime.now() + self.sleepTimeInSeconds) {
+                        self.processAllInternal()
+                    }
                 }
             }
         }
+    }
+}
+
+extension NetworkService: SendLayerProtocol {
+    public func verify(account: CdAccount,
+                       completionBlock: SendLayerCompletionBlock?) {
+        process(repeatProcess: false)
+    }
+
+    public func send(message: CdMessage, completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("NetworkService.send not implemented")
+    }
+
+    public func saveDraft(message: CdMessage,
+                          completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("NetworkService.saveDraft not implemented")
+    }
+
+    public func syncFlagsToServer(folder: CdFolder,
+                                  completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("NetworkService.syncFlagsToServer not implemented")
+    }
+
+    public func create(folderType: FolderType, account: CdAccount,
+                       completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("NetworkService.create(folderType:) not implemented")
+    }
+
+    public func delete(folder: CdFolder, completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("NetworkService.delete(folder:) not implemented")
+    }
+
+    public func delete(message: CdMessage,
+                       completionBlock: SendLayerCompletionBlock?) {
+        assertionFailure("NetworkService.delete(message:) not implemented")
     }
 }

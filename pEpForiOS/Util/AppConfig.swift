@@ -21,7 +21,5 @@ class AppConfig: NSObject {
      */
     var currentAccount: Account? = nil
 
-    override init() {
-        CdAccount.sendLayer = GrandOperator(connectionManager: connectionManager)
-    }
+    override init() {}
 }
