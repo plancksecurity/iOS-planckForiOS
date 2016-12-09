@@ -38,7 +38,8 @@ open class HTMLConvertOperation: BaseOperation {
 
             for m in messages {
                 guard let message = m as? CdMessage else {
-                    Log.warn(component: self.comp, "Could not cast message to CdMessage type")
+                    Log.warn(component: self.comp,
+                             content: "Could not cast message to CdMessage type")
                     continue
                 }
                 if let htmlString = message.longMessageFormatted {

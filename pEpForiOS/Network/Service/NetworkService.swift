@@ -137,12 +137,12 @@ public class NetworkService: INetworkService {
 
         // Operation depending on all IMAP operations for this account
         let opImapFinished = BlockOperation(block: {
-            Log.warn(component: self.comp, "IMAP sync finished")
+            Log.warn(component: self.comp, content: "IMAP sync finished")
         })
 
         // Operation depending on all SMTP operations for this account
         let opSmtpFinished = BlockOperation(block: {
-            Log.warn(component: self.comp, "SMTP sync finished")
+            Log.warn(component: self.comp, content: "SMTP sync finished")
         })
 
         // Operation depending on all IMAP and SMTP operations

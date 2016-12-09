@@ -297,8 +297,9 @@ extension CdMessage {
             case .bccRecipient:
                 bccs.add(contacts[addr.address()]!)
             default:
-                Log.warn(component: "Message",
-                         "Unsupported recipient type \(addr.type()) for \(addr.address())")
+                Log.warn(
+                    component: "Message",
+                    content: "Unsupported recipient type \(addr.type()) for \(addr.address())")
             }
         }
         mail.to = tos

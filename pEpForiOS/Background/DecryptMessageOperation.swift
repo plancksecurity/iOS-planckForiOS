@@ -40,7 +40,7 @@ open class DecryptMessageOperation: ConcurrentBaseOperation {
                 let color = session.decryptMessageDict(
                     pepMessage, dest: &pepDecryptedMessage, keys: &keys)
                 Log.info(component: self.comp,
-                    "Decrypted message \(message.logString()) with color \(color)")
+                    content: "Decrypted message \(message.logString()) with color \(color)")
 
                 self.numberOfMessagesDecrypted += 1
 

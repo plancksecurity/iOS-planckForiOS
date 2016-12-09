@@ -92,8 +92,9 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     override func setUIDValidity(_ theUIDValidity: UInt) {
         privateMOC.performAndWait() {
             if self.folder.uidValidity != Int32(theUIDValidity) {
-                Log.warn(component: self.comp,
-                         "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
+                Log.warn(
+                    component: self.comp,
+                    content: "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
                 self.folder.messages = []
             }
             self.folder.uidValidity = Int32(theUIDValidity)
@@ -190,7 +191,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage) {
-        Log.warn(component: comp, "Writing message \(message)")
+        Log.warn(component: comp, content: "Writing message \(message)")
 
         let opQuick = StorePrefetchedMailOperation(
             accountID: accountID, message: message, quick: false)

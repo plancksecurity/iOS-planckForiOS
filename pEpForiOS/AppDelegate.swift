@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession()
 
-        Log.warn(component: comp, "Library url: \(applicationDirectory())")
+        Log.warn(component: comp, content: "Library url: \(applicationDirectory())")
 
         setupDefaultSettings()
 
@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        Log.info(component: comp, "applicationDidEnterBackground")
+        Log.info(component: comp, content: "applicationDidEnterBackground")
 
         var bgId = 0
         bgId = application.beginBackgroundTask(expirationHandler: {

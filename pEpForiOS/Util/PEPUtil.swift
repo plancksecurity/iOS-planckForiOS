@@ -599,7 +599,7 @@ open class PEPUtil {
         if let (title, _, _) = PEPUtil.pEpRatingTranslations[pEpRating] {
             return title
         }
-        Log.warn(component: comp, "No privacy title for color rating \(pEpRating)")
+        Log.warn(component: comp, content: "No privacy title for color rating \(pEpRating)")
         return nil
     }
 
@@ -607,7 +607,7 @@ open class PEPUtil {
         if let (_, explanation, _) = PEPUtil.pEpRatingTranslations[pEpRating] {
             return explanation
         }
-        Log.warn(component: comp, "No privacy explanation for color rating \(pEpRating)")
+        Log.warn(component: comp, content: "No privacy explanation for color rating \(pEpRating)")
         return nil
     }
 
@@ -615,7 +615,7 @@ open class PEPUtil {
         if let (_, _, suggestion) = pEpRatingTranslations[pEpRating] {
             return suggestion
         }
-        Log.warn(component: comp, "No privacy suggestion for color rating \(pEpRating)")
+        Log.warn(component: comp, content: "No privacy suggestion for color rating \(pEpRating)")
         return nil
     }
 

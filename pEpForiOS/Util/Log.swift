@@ -7,19 +7,19 @@
 //
 
 /** Very primitive Logging class. */
-@objc open class Log: NSObject, CWLogging {
+@objc open class Log: NSObject {
 
     fileprivate static let disallow: Set<String> = []
 
     /** Somewhat verbose */
-    static open func info(component: String, _ content: String) {
+    static open func info(component: String, content: String) {
         if !disallow.contains(component) {
             print("\(component): \(content)")
         }
     }
 
     /** More important */
-    static open func warn(component: String, _ content: String) {
+    static open func warn(component: String, content: String) {
         if !disallow.contains(component) {
             print("\(component): \(content)")
         }
@@ -38,12 +38,18 @@
     static open func error(component: String, errorString: String) {
         print("\(component): \(errorString)")
     }
+}
 
+extension Log: CWLogging {
     @objc open func infoComponent(_ component: String!, message: String!) {
-        Log.info(component: component, message)
+        Log.info(component: component, content: message)
     }
 
     @objc open func warnComponent(_ component: String!, message: String!) {
-        Log.warn(component: component, message)
+        Log.warn(component: component, content: message)
+    }
+
+    @objc open func errorComponent(_ component: String!, message: String!) {
+        Log.error(component: component, errorString: message)
     }
 }

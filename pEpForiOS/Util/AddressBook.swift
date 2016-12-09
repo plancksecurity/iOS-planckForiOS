@@ -190,7 +190,8 @@ open class AddressBook {
         }
         guard let theAddressBook = addressBook
             else {
-                Log.warn(component: comp, "Could not open address book, although authorized")
+                Log.warn(component: comp,
+                         content: "Could not open address book, although authorized")
                 return result
         }
         let people: NSArray = ABAddressBookCopyArrayOfAllPeople(theAddressBook).takeRetainedValue()

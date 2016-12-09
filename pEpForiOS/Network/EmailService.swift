@@ -81,6 +81,6 @@ open class Service: IEmailService {
     }
 
     open func dumpMethodName(_ methodName: String, notification: Notification?) {
-        Log.info(component: comp, "\(methodName): \(notification)")
+        Log.info(component: comp, content: "\(methodName): \(notification)")
     }
 }
