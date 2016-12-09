@@ -15,14 +15,14 @@ class ContactCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     
-    func updateCell(_ recipient: Recipient) {
-        nameLabel.text = recipient.name
-        emailLabel.text = recipient.email
-    }
-    
     var contact: Identity? {
         didSet {
             nameLabel.text = contact?.displayString ?? String()
         }
+    }
+
+    func updateCell(_ identity: Identity) {
+        nameLabel.text = identity.userName
+        emailLabel.text = identity.address
     }
 }

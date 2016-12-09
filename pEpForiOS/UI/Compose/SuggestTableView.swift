@@ -1,4 +1,4 @@
-//
+g//
 //  SuggestTableView.swift
 //
 //  Created by Yves Landert on 21.11.16.
@@ -7,12 +7,11 @@
 
 import Foundation
 import UIKit
-import Contacts
+import MessageModel
 
 open class SuggestTableView: UITableView, UITableViewDataSource {
 
-    var contactStore = CNContactStore()
-    var contacts = [Recipient?]()
+    var identities = [Identity?]()
     
     open override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,57 +20,27 @@ open class SuggestTableView: UITableView, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contacts.count
+        return identities.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! ContactCell
         
-        guard let contact = contacts[indexPath.row] else { return cell }
-        cell.updateCell(contact)
+        guard let identity = identities[indexPath.row] else { return cell }
+        cell.updateCell(identity)
         
         return cell
     }
     
     public func updateContacts(_ string: String) -> Bool {
         hide()
-        contacts.removeAll()
+        identities.removeAll()
         
         let search = string.cleanAttachments
         if (search.characters.count >= 3) {
-            let keys = [
-                CNContactEmailAddressesKey,
-                CNContactGivenNameKey,
-                CNContactFamilyNameKey,
-                CNContactMiddleNameKey
-            ]
-            let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
-            do {
-                try contactStore.enumerateContacts(with: request) { contact, stop in
-                    if contact.emailAddresses.count > 0  {
-                        var recipient: Recipient? = nil
-                        if contact.givenName.contains(find: search) ||
-                            contact.familyName.contains(find: search) ||
-                            contact.middleName.contains(find: search) {
-                            recipient = Recipient(email: contact.firstEmail, name: contact.fullname, contact: contact)
-                        } else {
-                            contact.emailAddresses.forEach({ (email) in
-                                let mailaddress = String(email.value)
-                                if mailaddress.contains(find: search) {
-                                    recipient = Recipient(email: mailaddress, name: contact.fullname, contact: contact)
-                                }
-                            })
-                        }
-                        if recipient != nil {
-                            self.contacts.append(recipient)
-                        }
-                    }
-                }
-            } catch {
-                print(error)
-            }
+            identities = Identity.by(snippet: string)
             
-            if contacts.count > 0 {
+            if identities.count > 0 {
                 reloadData()
                 isHidden = false
             }
@@ -79,7 +48,7 @@ open class SuggestTableView: UITableView, UITableViewDataSource {
             hide()
             reloadData()
         }
-        
+ 
         return !isHidden
     }
     
@@ -87,9 +56,9 @@ open class SuggestTableView: UITableView, UITableViewDataSource {
         isHidden = true
     }
     
-    public func didSelectContact(index: IndexPath) -> CNContact?  {
+    public func didSelectIdentity(index: IndexPath) -> Identity?  {
         hide()
-        guard let contact = contacts[index.row]?.contact else { return nil }
-        return contact
+        guard let identity = identities[index.row] else { return nil }
+        return identity
     }
 }

@@ -61,21 +61,10 @@ class ComposeTableViewController: UITableViewController {
         super.viewDidLoad()
         
         addContactSuggestTable()
-        authorizeAdressbook()
         prepareFields()
     }
     
     // MARK: - Private Methods
-    
-    private final func authorizeAdressbook() {
-        let addressBook = Capability.addressbook
-        addressBook.authorized { (success, error) in
-            if success {
-                self.contactPicker.predicateForEnablingContact = CNContact.emailPredicate
-                self.contactPicker.delegate = self
-            }
-        }
-    }
     
     private final func prepareFields()  {
         if let path = Bundle.main.path(forResource: "ComposeData", ofType: "plist") {
@@ -217,10 +206,10 @@ class ComposeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView is SuggestTableView {
-            let contact = suggestTableView.didSelectContact(index: indexPath)
+            let identity = suggestTableView.didSelectIdentity(index: indexPath)
             
             guard let cell = self.tableView.cellForRow(at: currentCell) as? RecipientCell else { return }
-            cell.addContact(contact!)
+            cell.addContact(identity!)
             cell.textView.scrollToTop()
             
             self.tableView.updateSize()
@@ -338,8 +327,8 @@ extension ComposeTableViewController:
     // MARK: - CNContactPickerViewController Delegate
     
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
-        guard let cell = tableView.cellForRow(at: currentCell) as? RecipientCell else { return }
-        cell.addContact(contact)
+        //guard let cell = tableView.cellForRow(at: currentCell) as? RecipientCell else { return }
+        //cell.addContact(contact)
         
         tableView.updateSize()
     }

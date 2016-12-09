@@ -8,20 +8,13 @@
 
 import UIKit
 import Contacts
-
-public struct Recipient {
-    
-    var email: String!
-    var name: String?
-    var contact: CNContact?
-}
-
+import MessageModel
 
 class RecipientCell: ComposeCell {
     
     @IBOutlet weak var addButton: UIButton!
     
-    public var addresses = [Recipient]()
+    public var identities = [Identity]()
     private var ccEnabled = false
     
     fileprivate var recipients = [Int]()
@@ -32,18 +25,17 @@ class RecipientCell: ComposeCell {
         addButton.isHidden = true
     }
     
-    public func addContact(_ contact: CNContact) {
-        let recipient = Recipient(email: contact.firstEmail, name: contact.fullname, contact: contact)
-        addresses.append(recipient)
+    public func addContact(_ identity: Identity) {
+        identities.append(identity)
         
-        textView.insertImage(contact.fullname)
+        textView.insertImage(identity.userName!)
         textView.removePlainText()
     }
     
     fileprivate func removeRecepients() {
         recipients.forEach({ (recepient: Int) in
-            if addresses.isSafe(recepient) != nil {
-                addresses.remove(at: recepient)
+            if identities.isSafe(recepient) != nil {
+                identities.remove(at: recepient)
             }
         })
     }
@@ -59,28 +51,28 @@ class RecipientCell: ComposeCell {
 extension RecipientCell {
     
     public override func textViewDidBeginEditing(_ textView: UITextView) {
-        guard let cmTextview = textView as? ComposeTextView else { return }
+        guard let cTextview = textView as? ComposeTextView else { return }
         
         addButton.isHidden = false
-        delegate?.textdidStartEditing(at: index, textView: cmTextview)
+        delegate?.textdidStartEditing(at: index, textView: cTextview)
     }
     
     public override func textViewDidChange(_ textView: UITextView) {
-        guard let cmTextview = textView as? ComposeTextView else { return }
+        guard let cTextview = textView as? ComposeTextView else { return }
         
         recipients.removeAll()
-        delegate?.textdidChange(at: index, textView: cmTextview)
+        delegate?.textdidChange(at: index, textView: cTextview)
     }
     
     public func textViewDidChangeSelection(_ textView: UITextView) {
-        guard let cmTextview = textView as? ComposeTextView else { return }
+        guard let cTextview = textView as? ComposeTextView else { return }
         
         if textView.selectedRange.length > 0 {
             let range = textView.selectedTextRange!
             let selected = textView.text(in: range)
             
             // Extract text attachments form selection
-            let attachments = cmTextview.getAttachments(selected!)
+            let attachments = cTextview.getAttachments(selected!)
             if attachments.count > 0 {
                 recipients.append(textView.selectedRange.location)
             }
@@ -89,8 +81,8 @@ extension RecipientCell {
     
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == .returnKey) {
-            guard let cmTextview = textView as? ComposeTextView else { return false }
-            delegate?.textShouldReturn(at: index, textView: cmTextview)
+            guard let cTextview = textView as? ComposeTextView else { return false }
+            delegate?.textShouldReturn(at: index, textView: cTextview)
             return false
         }
         
@@ -118,17 +110,18 @@ extension RecipientCell {
     }
     
     public override func textViewDidEndEditing(_ textView: UITextView) {
-        guard let cmTextview = textView as? ComposeTextView else { return }
+        guard let cTextview = textView as? ComposeTextView else { return }
         
-        var string = cmTextview.attributedText.string.cleanAttachments
-        if string.characters.count >= 3 {
-            addresses.append(Recipient(email: string, name: nil, contact: nil))
-            cmTextview.insertImage(string)
-            cmTextview.removePlainText()
+        var string = cTextview.attributedText.string.cleanAttachments
+        if string.characters.count >= 3 && string.isEmail {
+            identities.append(Identity.create(address: string))
+            
+            cTextview.insertImage(string)
+            cTextview.removePlainText()
         }
         
-        addButton.isHidden = cmTextview.text.isEmpty
-        delegate?.textDidEndEditing(at: index, textView: cmTextview)
+        addButton.isHidden = cTextview.text.isEmpty
+        delegate?.textDidEndEditing(at: index, textView: cTextview)
     }
     
 }

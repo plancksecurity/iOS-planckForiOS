@@ -7,9 +7,7 @@
 //
 
 import UIKit
-import Contacts
 import MessageModel
-
 
 let defaultCellHeight: CGFloat = 64.0
 
@@ -50,29 +48,6 @@ extension String {
             return true
         }
         return false
-    }
-}
-
-extension CNContact {
-    
-    var fullname: String {
-        let midName = middleName.isEmpty ? String() : " " + middleName
-        return givenName + midName + " " + familyName
-    }
-    
-    var firstEmail: String? {
-        guard let mail = emailAddresses.first else { return nil }
-        return String(mail.value)
-    }
-    
-    static var emailPredicate: NSPredicate {
-         return NSPredicate(format: "emailAddresses.@count > 0", argumentArray: nil)
-    }
-    
-    subscript(email index: Int) -> String {
-        get {
-            return String(emailAddresses[index].value)
-        }
     }
 }
 
