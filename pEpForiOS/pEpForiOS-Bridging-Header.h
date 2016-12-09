@@ -11,6 +11,7 @@
 
 #pragma mark -- Pantomime headers
 
+#import "Pantomime/CWLogger.h"
 #import "Pantomime/CWConstants.h"
 #import "Pantomime/CWFolder.h"
 #import "Pantomime/CWService.h"

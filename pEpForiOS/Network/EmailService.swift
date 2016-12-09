@@ -34,11 +34,12 @@ open class Service: IEmailService {
     var memoryLeakData: Data?
 
     public init(connectInfo: EmailConnectInfo) {
+        CWLogger.setLogger(Log.shared)
+
         self.connectInfo = connectInfo
 
         service = self.createService()
         service.setDelegate(self)
-        service.setLogger(Log())
         Service.refCounter.inc()
     }
 

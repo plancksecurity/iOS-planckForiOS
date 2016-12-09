@@ -51,7 +51,7 @@ class PepAdapterTests: XCTestCase {
                         + "(successfully) modified by reference.")
 
         for key in identity.allKeys {
-            Log.info(component: comp, "key = \(key)")
+            Log.info(component: comp, content: "key = \(key)")
         }
         
         XCTAssertNotNil(identity[kPepFingerprint], "A fingerprint, there is!")
@@ -67,11 +67,16 @@ class PepAdapterTests: XCTestCase {
             XCTAssertTrue((PEPUtil.pEpUrls[key]! as NSURL).checkResourceIsReachableAndReturnError(&error))
         }
         
-        Log.info(component: comp, "Home folder: " + String(describing: PEPUtil.pEpUrls["home"]))
-        Log.info(component: comp, "pEp management DB file: " + String(describing: PEPUtil.pEpUrls["pEpManagementDb"]))
-        Log.info(component: comp, "GnuPG folder: " + String(describing: PEPUtil.pEpUrls["gnupg"]))
-        Log.info(component: comp, "Secring file: " + String(describing: PEPUtil.pEpUrls["gnupgSecring"]))
-        Log.info(component: comp, "Pubring file: " + String(describing: PEPUtil.pEpUrls["gnupgPubring"]))
+        Log.info(component: comp,
+                 content: "Home folder: " + String(describing: PEPUtil.pEpUrls["home"]))
+        Log.info(component: comp,
+                 content: "pEp management DB file: " + String(describing: PEPUtil.pEpUrls["pEpManagementDb"]))
+        Log.info(component: comp,
+                 content: "GnuPG folder: " + String(describing: PEPUtil.pEpUrls["gnupg"]))
+        Log.info(component: comp,
+                 content: "Secring file: " + String(describing: PEPUtil.pEpUrls["gnupgSecring"]))
+        Log.info(component: comp,
+                 content: "Pubring file: " + String(describing: PEPUtil.pEpUrls["gnupgPubring"]))
         
         // Test if paths are not nil.
         for key in PEPUtil.pEpUrls.keys {
