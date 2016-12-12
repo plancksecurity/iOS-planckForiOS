@@ -41,9 +41,13 @@ extension LoginImapOperation: ImapSyncDelegate {
                     return
             }
 
-            creds.needsVerification = false
+            if !self.isCancelled {
+                if creds.needsVerification == true {
+                    creds.needsVerification = false
+                }
 
-            Record.saveAndWait(context: context)
+                Record.saveAndWait(context: context)
+            }
         }
 
         markAsFinished()

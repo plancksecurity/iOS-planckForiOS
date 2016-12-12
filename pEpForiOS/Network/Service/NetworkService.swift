@@ -6,6 +6,7 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import Foundation
 import CoreData
 
 import MessageModel
@@ -77,20 +78,18 @@ public class NetworkService: INetworkService {
         }
     }
 
-    func fetchValidatedAccounts(
+    func fetchAccounts(
         context: NSManagedObjectContext, needsVerificationOnly: Bool = false) -> [CdAccount] {
-        if needsVerificationOnly {
-            let p = NSPredicate(format: "needsVerification = true")
-            return CdAccount.all(with: p, in: context) as? [CdAccount] ?? []
-        }
-        return CdAccount.all(in: context) as? [CdAccount] ?? []
+        let p = NSPredicate(format: "needsVerification = %@",
+                            NSNumber(booleanLiteral: needsVerificationOnly))
+        return CdAccount.all(with: p, in: context) as? [CdAccount] ?? []
     }
 
     func gatherConnectInfos(needsVerificationOnly: Bool = false) -> [AccountConnectInfo] {
         var connectInfos = [AccountConnectInfo]()
         let context = Record.Context.background
         context.performAndWait {
-            let accounts = self.fetchValidatedAccounts(
+            let accounts = self.fetchAccounts(
                 context: context, needsVerificationOnly: needsVerificationOnly)
             for acc in accounts {
                 let smtpCI = acc.smtpConnectInfo
@@ -104,7 +103,30 @@ public class NetworkService: INetworkService {
         return connectInfos
     }
 
-    func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
+    func checkVerified(accountInfo: AccountConnectInfo, needsVerificationOnly: Bool) {
+        if needsVerificationOnly {
+            let context = Record.Context.background
+            context.performAndWait {
+                guard let account = context.object(with: accountInfo.accountID) as? CdAccount else {
+                    return
+                }
+                var accountVerified = true
+                let allCreds = account.credentials?.array as? [CdServerCredentials] ?? []
+                for theCreds in allCreds {
+                    if theCreds.needsVerification == true {
+                        accountVerified = false
+                        break
+                    }
+                }
+                if accountVerified {
+                    account.needsVerification = false
+                }
+            }
+        }
+    }
+
+    func buildOperationLine(
+        accountInfo: AccountConnectInfo, needsVerificationOnly: Bool) -> OperationLine {
         struct FolderInfo {
             let name: String
             let lastUID: UInt?
@@ -168,6 +190,10 @@ public class NetworkService: INetworkService {
             // login IMAP
             // TODO: Check if needed
             let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+            opLogin.completionBlock = {
+                self.checkVerified(accountInfo: accountInfo,
+                                   needsVerificationOnly: needsVerificationOnly)
+            }
             opImapFinished.addDependency(opLogin)
             operations.append(opLogin)
 
@@ -219,8 +245,13 @@ public class NetworkService: INetworkService {
                              finalOperation: opAllFinished)
     }
 
-    func buildOperationLines(accountConnectInfos: [AccountConnectInfo]) -> [OperationLine] {
-        return accountConnectInfos.map { return buildOperationLine(accountInfo: $0) }
+    func buildOperationLines(
+        accountConnectInfos: [AccountConnectInfo],
+        needsVerificationOnly: Bool = false) -> [OperationLine] {
+        return accountConnectInfos.map {
+            return buildOperationLine(
+                accountInfo: $0, needsVerificationOnly: needsVerificationOnly)
+        }
     }
 
     func scheduleOperationLineInternal(
@@ -238,7 +269,8 @@ public class NetworkService: INetworkService {
     func processAllInternal(repeatProcess: Bool = true, needsVerificationOnly: Bool = false) {
         if !canceled {
             let connectInfos = gatherConnectInfos(needsVerificationOnly: needsVerificationOnly)
-            let operationLines = buildOperationLines(accountConnectInfos: connectInfos)
+            let operationLines = buildOperationLines(
+                accountConnectInfos: connectInfos, needsVerificationOnly: needsVerificationOnly)
             processOperationLinesInternal(operationLines: operationLines,
                                           repeatProcess: repeatProcess)
         }

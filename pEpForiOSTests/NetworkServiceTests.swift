@@ -114,7 +114,6 @@ class NetworkServiceTests: XCTestCase {
         }
     }
 
-    /*
     func testAccountVerification() {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
@@ -156,5 +155,4 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertFalse(cr.needsVerification)
         }
     }
-     */
 }
