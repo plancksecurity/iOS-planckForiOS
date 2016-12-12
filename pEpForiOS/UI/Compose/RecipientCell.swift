@@ -28,7 +28,7 @@ class RecipientCell: ComposeCell {
     public func addContact(_ identity: Identity) {
         identities.append(identity)
         
-        textView.insertImage(identity.userName!)
+        textView.insertImage(identity, true)
         textView.removePlainText()
     }
     
@@ -114,9 +114,10 @@ extension RecipientCell {
         
         var string = cTextview.attributedText.string.cleanAttachments
         if string.characters.count >= 3 && string.isEmail {
-            identities.append(Identity.create(address: string))
+            let identity = Identity.create(address: string)
+            identities.append(identity)
             
-            cTextview.insertImage(string)
+            cTextview.insertImage(identity)
             cTextview.removePlainText()
         }
         

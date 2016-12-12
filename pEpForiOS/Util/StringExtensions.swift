@@ -360,6 +360,7 @@ public extension String {
 }
 
 public extension NSAttributedString {
+    
     public func wholeRange() -> NSRange {
         return NSRange(location: 0, length: length)
     }

@@ -124,11 +124,69 @@ class ComposeTableViewController: UITableViewController {
         tableView.addSubview(suggestTableView)
     }
     
-    fileprivate func updateSuggestTable(_ position: CGFloat, _ start: Bool = false) {
+    fileprivate final func updateSuggestTable(_ position: CGFloat, _ start: Bool = false) {
         var pos = position
         if pos < defaultCellHeight && !start { pos = defaultCellHeight * (position + 1) + 2 }
         suggestTableView.frame.origin.y = pos
         suggestTableView.frame.size.height = tableView.bounds.size.height - pos + 2
+    }
+    
+    fileprivate final func populateMessage() {
+        var toAddresses = [String]()
+        var ccAddresses = [String]()
+        var bccAddresses = [String]()
+        var messageBody = NSAttributedString()
+        var from = String()
+        var subject = String()
+        var attachments = [Attachment?]()
+        
+        allCells.forEach({ (cell) in
+            if cell is RecipientCell {
+                let addresses = (cell as! RecipientCell).identities
+                
+                switch cell.fieldModel!.type {
+                case .to:
+                    addresses.forEach({ (recipient) in
+                        toAddresses.append(recipient.address)
+                    })
+                    break
+                case .cc:
+                    addresses.forEach({ (recipient) in
+                        ccAddresses.append(recipient.address)
+                    })
+                    break
+                case .bcc:
+                    addresses.forEach({ (recipient) in
+                        bccAddresses.append(recipient.address)
+                    })
+                    break
+                default: ()
+                    break
+                }
+            } else if cell is MessageBodyCell {
+                messageBody = cell.textView.attributedText
+                attachments = (cell as! MessageBodyCell).getAllAttachments()
+            } else {
+                switch cell.fieldModel!.type {
+                case .from:
+                    from = cell.textView.text
+                    break
+                default:
+                    subject = cell.textView.text
+                    break
+                }
+            }
+        })
+        
+        print("--------------------------------------")
+        print("To: \(toAddresses)")
+        print("Cc: \(ccAddresses)")
+        print("Bcc: \(bccAddresses)")
+        print("From: \(from)")
+        print("Subject: \(subject)")
+        print("Attachments: \(attachments)")
+        print("Body: \(messageBody)")
+        print("--------------------------------------")
     }
     
     // MARK: - Public Methods
@@ -229,6 +287,7 @@ class ComposeTableViewController: UITableViewController {
         
         alertCtrl.addAction(alertCtrl.action("MailComp.Action.Save", .default, {
             // Save Daft action here!
+            self.dismiss()
         }))
         
         present(alertCtrl, animated: true, completion: nil)

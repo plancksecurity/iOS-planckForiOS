@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MkG-yt-QmY">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MkG-yt-QmY">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -123,7 +123,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5504.8000000000002" y="1175.2623688155923"/>
+            <point key="canvasLocation" x="5921" y="1245"/>
         </scene>
         <!--New Email-->
         <scene sceneID="YkL-8B-UDO">
@@ -151,7 +151,7 @@
                                             <rect key="frame" x="39" y="10" width="286" height="40"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                             <connections>
                                                 <outlet property="delegate" destination="Epo-ru-S9d" id="Mlo-a9-pVX"/>
                                             </connections>
@@ -278,7 +278,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28t-ga-UrZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="PzE-hl-iFq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6711" y="2029"/>
+            <point key="canvasLocation" x="6350" y="2183"/>
         </scene>
         <!--New Account-->
         <scene sceneID="hJo-oO-Yib">
@@ -511,7 +511,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wgp-fk-alI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6318" y="421"/>
+            <point key="canvasLocation" x="6351" y="421"/>
         </scene>
         <!--Email View-->
         <scene sceneID="adb-B5-lMP">
@@ -537,7 +537,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmA-rc-hEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6352" y="1176"/>
+            <point key="canvasLocation" x="6777" y="1234"/>
         </scene>
         <!--Trust Words View Controller-->
         <scene sceneID="N0g-A9-3RW">
@@ -704,7 +704,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="7133" y="1176"/>
+            <point key="canvasLocation" x="7543" y="1234"/>
         </scene>
         <!--Handshake View Controller-->
         <scene sceneID="AUD-mP-0Gm">
@@ -836,7 +836,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lXa-9X-nRI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7842" y="1176"/>
+            <point key="canvasLocation" x="8300" y="1234"/>
         </scene>
         <!--IMAP Settings Table View-->
         <scene sceneID="hV9-Ts-Xp9">
@@ -1174,6 +1174,14 @@
                             <outlet property="delegate" destination="cPx-YX-3ty" id="RjX-cD-Blp"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="V3I-Qf-y0g"/>
+                        <barButtonItem systemItem="compose" id="eLo-P1-6VE">
+                            <connections>
+                                <segue destination="NY2-HI-4ou" kind="presentation" id="vpF-Ug-Qlh"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="YFp-bx-xP9">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="xcm-Pq-FiP">
                             <connections>
@@ -1189,7 +1197,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5484" y="421"/>
+            <point key="canvasLocation" x="5434" y="421"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dXO-Q2-oVZ">
@@ -1248,7 +1256,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aWP-YW-F6w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5919.1999999999998" y="2028.9355322338831"/>
+            <point key="canvasLocation" x="5558" y="2183"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="CA5-x5-bU5">
@@ -1296,7 +1304,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Bo-Mb-Gy6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7457" y="2029"/>
+            <point key="canvasLocation" x="7161" y="2183"/>
         </scene>
     </scenes>
     <resources>
@@ -1305,6 +1313,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Soh-zf-Qvc"/>
-        <segue reference="TnR-me-YgK"/>
+        <segue reference="GPW-U8-tyH"/>
     </inferredMetricsTieBreakers>
 </document>

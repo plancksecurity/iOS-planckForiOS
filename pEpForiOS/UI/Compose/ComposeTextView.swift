@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import MessageModel
+
 
 open class ComposeTextView: UITextView {
 
@@ -32,9 +34,19 @@ open class ComposeTextView: UITextView {
         contentOffset = .zero
     }
         
-    public final func insertImage(_ text: String) {
+    public final func insertImage(_ identity: Identity, _ hasName: Bool = false) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
-        let img = UIImage(named: "pep-user-status-green")!.recepient(text.trim, textColor: .pEpColor)
+        
+        var string = identity.address.trim
+        var scheme: (color: UIColor, image: UIImage)
+        if !hasName {
+           scheme = identity.pEpDefaultScheme
+        } else {
+            string = identity.userName!
+            scheme = identity.pEpScheme
+        }
+        
+        let img = scheme.image.recepient(string, textColor: scheme.color)
         let at = TextAttachment()
         at.image = img
         at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)
