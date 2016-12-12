@@ -8,27 +8,6 @@
 
 import XCTest
 
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
-
 class NewAccountSetupUITest: XCTestCase {
     override func setUp() {
         super.setUp()
@@ -56,7 +35,13 @@ class NewAccountSetupUITest: XCTestCase {
         let string = textField.value as? String
         XCTAssertNotNil(string)
 
-        while (textField.value as? String)?.characters.count > 0 {
+        while true {
+            guard let text = textField.value as? String else {
+                break
+            }
+            if text.characters.count == 0 {
+                break
+            }
             textField.typeText("\u{8}")
         }
     }
