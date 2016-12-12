@@ -72,6 +72,7 @@ open class Constants {
         case cannotFindFolder
         case cannotFindServerForAccount
         case cannotFindServer
+        case cannotFindServerCredentials
         case cannotFindMessage
         case noImapConnectInfo
         case noFlags
@@ -230,8 +231,8 @@ open class Constants {
             domain: component, code: CoreDataErrorCode.cannotFindAccount.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
                 NSLocalizedString(
-                    "Cannot find account from object ID", comment:
-                    "Technical error description when not being able to fetch an account by object ID")])
+                    "Cannot find/access account", comment:
+                    "Technical error description when not being able to fetch an account")])
         return error
     }
     
@@ -264,6 +265,16 @@ open class Constants {
                 NSLocalizedString(
                     "Cannot find server for objectID", comment:
                     "Error description when not being able to fetch a server from its object ID")])
+        return error
+    }
+
+    static func errorCannotFindServerCredentials(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: CoreDataErrorCode.cannotFindServerCredentials.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                NSLocalizedString(
+                    "Cannot find server credentials for objectID", comment:
+                    "Error description when not being able to fetch server credentials from its object ID")])
         return error
     }
 

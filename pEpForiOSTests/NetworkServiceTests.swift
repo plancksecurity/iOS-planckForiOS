@@ -81,6 +81,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNil(CdMessage.all())
 
         let del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced"),
             expCanceled: expectation(description: "expCanceled"))
 
         networkService.delegate = del
@@ -96,6 +97,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
 
+        print("testCancelSync finishing asserts")
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
     }
@@ -112,6 +114,7 @@ class NetworkServiceTests: XCTestCase {
         }
     }
 
+    /*
     func testAccountVerification() {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
@@ -153,4 +156,5 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertFalse(cr.needsVerification)
         }
     }
+     */
 }

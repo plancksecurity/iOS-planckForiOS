@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 open class LoginImapOperation: ConcurrentBaseOperation {
     var sync: ImapSync!
     var imapSyncData: ImapSyncData
@@ -26,6 +28,24 @@ open class LoginImapOperation: ConcurrentBaseOperation {
 extension LoginImapOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
         imapSyncData.sync = sync
+
+        let context = Record.Context.background
+        context.performAndWait {
+            if self.isCancelled {
+                return
+            }
+            guard let creds = context.object(
+                with: self.imapSyncData.connectInfo.credentialsObjectID)
+                as? CdServerCredentials else {
+                    self.addError(Constants.errorCannotFindServerCredentials(component: self.comp))
+                    return
+            }
+
+            creds.needsVerification = false
+
+            Record.saveAndWait(context: context)
+        }
+
         markAsFinished()
     }
 

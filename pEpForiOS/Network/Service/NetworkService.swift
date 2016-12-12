@@ -57,9 +57,10 @@ public class NetworkService: INetworkService {
     /**
      Start endlessly synchronizing in the background.
      */
-    public func process(repeatProcess: Bool = true) {
+    public func process(repeatProcess: Bool = true, needsVerificationOnly: Bool = false) {
         workerQueue.async {
-            self.processAllInternal(repeatProcess: repeatProcess)
+            self.processAllInternal(repeatProcess: repeatProcess,
+                                    needsVerificationOnly: needsVerificationOnly)
         }
     }
 
@@ -76,15 +77,21 @@ public class NetworkService: INetworkService {
         }
     }
 
-    func fetchValidatedAccounts(context: NSManagedObjectContext) -> [CdAccount] {
+    func fetchValidatedAccounts(
+        context: NSManagedObjectContext, needsVerificationOnly: Bool = false) -> [CdAccount] {
+        if needsVerificationOnly {
+            let p = NSPredicate(format: "needsVerification = true")
+            return CdAccount.all(with: p, in: context) as? [CdAccount] ?? []
+        }
         return CdAccount.all(in: context) as? [CdAccount] ?? []
     }
 
-    func gatherConnectInfos() -> [AccountConnectInfo] {
+    func gatherConnectInfos(needsVerificationOnly: Bool = false) -> [AccountConnectInfo] {
         var connectInfos = [AccountConnectInfo]()
         let context = Record.Context.background
         context.performAndWait {
-            let accounts = self.fetchValidatedAccounts(context: context)
+            let accounts = self.fetchValidatedAccounts(
+                context: context, needsVerificationOnly: needsVerificationOnly)
             for acc in accounts {
                 let smtpCI = acc.smtpConnectInfo
                 let imapCI = acc.imapConnectInfo
@@ -228,9 +235,9 @@ public class NetworkService: INetworkService {
      Main entry point for the main loop.
      Implements RFC 4549 (https://tools.ietf.org/html/rfc4549).
      */
-    func processAllInternal(repeatProcess: Bool = true) {
+    func processAllInternal(repeatProcess: Bool = true, needsVerificationOnly: Bool = false) {
         if !canceled {
-            let connectInfos = gatherConnectInfos()
+            let connectInfos = gatherConnectInfos(needsVerificationOnly: needsVerificationOnly)
             let operationLines = buildOperationLines(accountConnectInfos: connectInfos)
             processOperationLinesInternal(operationLines: operationLines,
                                           repeatProcess: repeatProcess)
@@ -268,7 +275,7 @@ public class NetworkService: INetworkService {
 extension NetworkService: SendLayerProtocol {
     public func verify(account: CdAccount,
                        completionBlock: SendLayerCompletionBlock?) {
-        process(repeatProcess: false)
+        process(repeatProcess: false, needsVerificationOnly: true)
     }
 
     public func send(message: CdMessage, completionBlock: SendLayerCompletionBlock?) {

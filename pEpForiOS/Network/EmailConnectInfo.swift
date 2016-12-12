@@ -131,6 +131,7 @@ public class EmailConnectInfo: ConnectInfo {
 
     public init(accountObjectID: NSManagedObjectID,
                 serverObjectID: NSManagedObjectID,
+                credentialsObjectID: NSManagedObjectID,
                 loginName: String? = nil,
                 loginPassword: String? = nil,
                 networkAddress: String,
@@ -147,6 +148,7 @@ public class EmailConnectInfo: ConnectInfo {
         self.trusted = trusted
         super.init(accountObjectID: accountObjectID,
                    serverObjectID: serverObjectID,
+                   credentialsObjectID: credentialsObjectID,
                    loginName: loginName,
                    loginPassword: loginPassword,
                    networkAddress: networkAddress,

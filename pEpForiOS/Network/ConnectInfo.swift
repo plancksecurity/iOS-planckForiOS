@@ -26,6 +26,7 @@ public enum NetworkTransportType: String {
 public class ConnectInfo {
     public var accountObjectID: NSManagedObjectID
     public var serverObjectID: NSManagedObjectID
+    public let credentialsObjectID: NSManagedObjectID
 
     public var loginName: String?
     public var loginPassword: String?
@@ -36,6 +37,7 @@ public class ConnectInfo {
 
     public init(accountObjectID: NSManagedObjectID,
                 serverObjectID: NSManagedObjectID,
+                credentialsObjectID: NSManagedObjectID,
                 loginName: String? = nil,
                 loginPassword: String? = nil,
                 networkAddress: String,
@@ -44,6 +46,7 @@ public class ConnectInfo {
                 networkTransportType: NetworkTransportType? = nil) {
         self.accountObjectID = accountObjectID
         self.serverObjectID = serverObjectID
+        self.credentialsObjectID = credentialsObjectID
         self.loginName = loginName
         self.loginPassword = loginPassword
         self.networkAddress = networkAddress
@@ -56,6 +59,7 @@ public class ConnectInfo {
 extension ConnectInfo: Hashable {
     public var hashValue: Int {
         return 31 &* accountObjectID.hashValue &+ serverObjectID.hashValue &+
+            credentialsObjectID.hashValue &+
             MiscUtil.optionalHashValue(loginName) &+
             MiscUtil.optionalHashValue(loginPassword) &+
             MiscUtil.optionalHashValue(networkPort) &+

@@ -83,6 +83,7 @@ extension CdAccount {
             let emailProtocol = EmailProtocol(serverType: serverType) {
             return EmailConnectInfo(
                 accountObjectID: account.objectID, serverObjectID: server.objectID,
+                credentialsObjectID: credentials.objectID,
                 loginName: credentials.userName,
                 loginPassword: password,
                 networkAddress: address, networkPort: UInt16(port),
