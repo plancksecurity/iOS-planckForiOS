@@ -31,11 +31,13 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
 
     open override func main() {
         if isCancelled {
+            markAsFinished()
             return
         }
 
         imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
         if !checkImapSync(sync: imapSync) {
+            markAsFinished()
             return
         }
 

@@ -40,11 +40,13 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
     override open func main() {
         if isCancelled {
+            markAsFinished()
             return
         }
 
         imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
         if !checkImapSync(sync: imapSync) {
+            markAsFinished()
             return
         }
 

@@ -9,11 +9,13 @@
 open class VerifyImapConnectionOperation: VerifyServiceOperation {
     open override func main() {
         if isCancelled {
+            markAsFinished()
             return
         }
 
         service = connectionManager.imapConnection(connectInfo: connectInfo)
         if !checkImapSync(sync: (service as! ImapSync)) {
+            markAsFinished()
             return
         }
 

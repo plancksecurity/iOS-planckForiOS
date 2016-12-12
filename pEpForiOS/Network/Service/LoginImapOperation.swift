@@ -14,8 +14,9 @@ open class LoginImapOperation: ConcurrentBaseOperation {
     var sync: ImapSync!
     var imapSyncData: ImapSyncData
 
-    public init(imapSyncData: ImapSyncData) {
+    public init(imapSyncData: ImapSyncData, name: String? = nil) {
         self.imapSyncData = imapSyncData
+        super.init(name: name)
     }
 
     open override func main() {
@@ -32,6 +33,7 @@ extension LoginImapOperation: ImapSyncDelegate {
         let context = Record.Context.background
         context.performAndWait {
             if self.isCancelled {
+                self.markAsFinished()
                 return
             }
             guard let creds = context.object(

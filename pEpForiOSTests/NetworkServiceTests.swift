@@ -14,8 +14,6 @@ import pEpForiOS
 class NetworkServiceTests: XCTestCase {
     
     var persistenceSetup: PersistentSetup!
-    
-    let networkService = NetworkService()
 
     override func setUp() {
         super.setUp()
@@ -29,7 +27,7 @@ class NetworkServiceTests: XCTestCase {
 
     class NetworkServiceObserver: NetworkServiceDelegate {
         let expSingleAccountSynced: XCTestExpectation?
-        let expCanceled: XCTestExpectation?
+        var expCanceled: XCTestExpectation?
         var accountInfo: AccountConnectInfo?
 
         init(expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil) {
@@ -57,6 +55,7 @@ class NetworkServiceTests: XCTestCase {
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
 
+        let networkService = NetworkService(parentName: #function)
         networkService.delegate = del
 
         _ = TestData().createWorkingCdAccount()
@@ -84,6 +83,7 @@ class NetworkServiceTests: XCTestCase {
             expAccountsSynced: expectation(description: "expSingleAccountSynced"),
             expCanceled: expectation(description: "expCanceled"))
 
+        let networkService = NetworkService(parentName: #function)
         networkService.delegate = del
 
         _ = TestData().createWorkingCdAccount()
@@ -97,7 +97,6 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
 
-        print("testCancelSync finishing asserts")
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
     }
@@ -121,6 +120,7 @@ class NetworkServiceTests: XCTestCase {
 
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
+        let networkService = NetworkService(parentName: #function)
         networkService.delegate = del
 
         let expAccountVerified = expectation(description: "expAccountVerified")
@@ -154,5 +154,11 @@ class NetworkServiceTests: XCTestCase {
             Record.Context.default.refresh(cr, mergeChanges: true)
             XCTAssertFalse(cr.needsVerification)
         }
+
+        del.expCanceled = expectation(description: "expCanceled")
+        networkService.cancel()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
     }
 }

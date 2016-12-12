@@ -13,19 +13,22 @@ import MessageModel
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let accountID: NSManagedObjectID
     open let backgroundQueue: OperationQueue?
+    let name: String?
 
-    public init(accountID: NSManagedObjectID, backgroundQueue: OperationQueue) {
+    public init(accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
+                name: String? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
+        self.name = name
     }
 
     open func folder(withName name: String) -> CWFolder {
         return PersistentImapFolder(name: name, accountID: accountID,
-                                    backgroundQueue: backgroundQueue!) as CWFolder
+                                    backgroundQueue: backgroundQueue!, logName: name) as CWFolder
     }
 
     deinit {
-        print("ImapFolderBuilder.deinit")
+        Log.info(component: "ImapFolderBuilder: \(name)", content: "ImapFolderBuilder.deinit")
     }
 }
 
@@ -45,11 +48,12 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
+    public init(imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false,
+                name: String? = nil) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.imapSyncData = imapSyncData
 
-        super.init()
+        super.init(name: name)
 
         folderBuilder = ImapFolderBuilder(accountID: imapSyncData.connectInfo.accountObjectID,
                                           backgroundQueue: backgroundQueue)
@@ -57,11 +61,13 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
 
     open override func main() {
         if isCancelled {
+            markAsFinished()
             return
         }
 
         imapSync = imapSyncData.sync
         if !checkImapSync(sync: imapSync) {
+            markAsFinished()
             return
         }
 

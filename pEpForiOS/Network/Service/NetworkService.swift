@@ -39,13 +39,16 @@ public class NetworkService: INetworkService {
         label: "net.pep-security.apps.pEp.service", qos: .utility, target: nil)
     let backgroundQueue = OperationQueue()
 
-    var canceled = false
+    var cancelled = false
     var currentOperations = Set<Operation>()
 
     public weak var delegate: NetworkServiceDelegate?
 
-    public init(sleepTimeInSeconds: Double = 5.0) {
+    let name: String?
+
+    public init(sleepTimeInSeconds: Double = 5.0, parentName: String? = nil) {
         self.sleepTimeInSeconds = sleepTimeInSeconds
+        self.name = parentName
     }
 
     /**
@@ -70,11 +73,12 @@ public class NetworkService: INetworkService {
      */
     public func cancel() {
         workerQueue.async {
-            self.canceled = true
+            Log.info(component: self.comp, content: "cancel()")
+            self.cancelled = true
+            self.backgroundQueue.cancelAllOperations()
+            Log.info(component: self.comp, content: "all operations cancelled")
+            self.backgroundQueue.waitUntilAllOperationsAreFinished()
             self.delegate?.didCancel(service: self)
-            for op in self.backgroundQueue.operations {
-                op.cancel()
-            }
         }
     }
 
@@ -163,21 +167,32 @@ public class NetworkService: INetworkService {
         }
 
         // Operation depending on all IMAP operations for this account
-        let opImapFinished = BlockOperation(block: {
-            Log.warn(component: self.comp, content: "IMAP sync finished")
-        })
+        let opImapFinished = BlockOperation {
+            self.workerQueue.async {
+                Log.warn(component: self.comp, content: "IMAP sync finished")
+            }
+        }
 
         // Operation depending on all SMTP operations for this account
-        let opSmtpFinished = BlockOperation(block: {
-            Log.warn(component: self.comp, content: "SMTP sync finished")
-        })
+        let opSmtpFinished = BlockOperation {
+            self.workerQueue.async {
+                Log.warn(component: self.comp, content: "SMTP sync finished")
+            }
+        }
 
         // Operation depending on all IMAP and SMTP operations
-        let opAllFinished = Operation()
+        let opAllFinished = BlockOperation {
+            self.workerQueue.async {
+                Log.info(component: self.comp, content: "sync finished")
+                if self.cancelled {
+                    //self.delegate?.didCancel(service: self)
+                }
+            }
+        }
         opAllFinished.addDependency(opImapFinished)
         opAllFinished.addDependency(opSmtpFinished)
 
-        var operations = [opImapFinished, opSmtpFinished, opAllFinished]
+        var operations: [Operation] = []
 
         if let _ = accountInfo.smtpConnectInfo {
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
@@ -189,16 +204,25 @@ public class NetworkService: INetworkService {
 
             // login IMAP
             // TODO: Check if needed
-            let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+            let opLogin = LoginImapOperation(imapSyncData: imapSyncData, name: name)
             opLogin.completionBlock = {
-                self.checkVerified(accountInfo: accountInfo,
-                                   needsVerificationOnly: needsVerificationOnly)
+                self.workerQueue.async {
+                    self.checkVerified(accountInfo: accountInfo,
+                                       needsVerificationOnly: needsVerificationOnly)
+                    Log.info(component: self.comp, content: "opLogin finished")
+                }
             }
             opImapFinished.addDependency(opLogin)
             operations.append(opLogin)
 
             // 3.b Fetch current list of interesting mailboxes
-            let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData)
+            let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData,
+                                                       name: name)
+            opFetchFolders.completionBlock = {
+                self.workerQueue.async {
+                    Log.info(component: self.comp, content: "opFetchFolders finished")
+                }
+            }
             operations.append(opFetchFolders)
             opFetchFolders.addDependency(opLogin)
             opImapFinished.addDependency(opFetchFolders)
@@ -213,7 +237,10 @@ public class NetworkService: INetworkService {
             var lastImapOp: Operation? = nil
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
-                    imapSyncData: imapSyncData, folderName: fi.name)
+                    imapSyncData: imapSyncData, folderName: fi.name, name: name)
+                self.workerQueue.async {
+                    Log.info(component: self.comp, content: "fetchMessagesOp finished")
+                }
                 operations.append(fetchMessagesOp)
                 fetchMessagesOp.addDependency(opFetchFolders)
                 opImapFinished.addDependency(fetchMessagesOp)
@@ -228,7 +255,10 @@ public class NetworkService: INetworkService {
                 if let folderID = fi.folderID, let lastUID = fi.lastUID {
                     let syncMessagesOp = SyncMessagesOperation(
                         imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
-                        lastUID: lastUID)
+                        lastUID: lastUID, name: name)
+                    syncMessagesOp.completionBlock = {
+                        Log.info(component: self.comp, content: "syncMessagesOp finished")
+                    }
                     if let lastOp = lastImapOp {
                         syncMessagesOp.addDependency(lastOp)
                     }
@@ -240,6 +270,8 @@ public class NetworkService: INetworkService {
         }
 
         // ...
+
+        operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
 
         return OperationLine(accountInfo: accountInfo, operations: operations,
                              finalOperation: opAllFinished)
@@ -267,7 +299,7 @@ public class NetworkService: INetworkService {
      Implements RFC 4549 (https://tools.ietf.org/html/rfc4549).
      */
     func processAllInternal(repeatProcess: Bool = true, needsVerificationOnly: Bool = false) {
-        if !canceled {
+        if !cancelled {
             let connectInfos = gatherConnectInfos(needsVerificationOnly: needsVerificationOnly)
             let operationLines = buildOperationLines(
                 accountConnectInfos: connectInfos, needsVerificationOnly: needsVerificationOnly)
@@ -284,7 +316,7 @@ public class NetworkService: INetworkService {
 
     func processOperationLinesInternal(operationLines: [OperationLine],
                                        repeatProcess: Bool = true) {
-        if !self.canceled {
+        if !self.cancelled {
             var myLines = operationLines
             if myLines.first != nil {
                 let ol = myLines.removeFirst()

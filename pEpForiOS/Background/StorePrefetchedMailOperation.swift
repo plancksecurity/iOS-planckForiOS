@@ -23,11 +23,11 @@ open class StorePrefetchedMailOperation: BaseOperation {
      including attachments?
      */
     public init(accountID: NSManagedObjectID, message: CWIMAPMessage,
-                quick: Bool = true) {
+                quick: Bool = true, name: String? = nil) {
         self.accountID = accountID
         self.message = message
         self.quick = quick
-        super.init()
+        super.init(name: name)
     }
 
     override open func main() {

@@ -21,7 +21,7 @@ open class BaseOperation: Operation {
         return !errors.isEmpty
     }
 
-    public override init() {
+    public init(name: String? = nil) {
         super.init()
         comp = String(describing: self)
 
@@ -36,6 +36,11 @@ open class BaseOperation: Operation {
             }
         } catch let error as NSError {
             Log.error(component: comp, error: error)
+        }
+
+        if let n = name {
+            comp = "\(comp): \(n)"
+            self.name = comp
         }
     }
 }

@@ -21,12 +21,13 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
     var lastSeenUID: UInt?
 
     public init(imapSyncData: ImapSyncData, folderID: NSManagedObjectID, folderName: String,
-                lastUID: UInt) {
+                lastUID: UInt, name: String? = nil) {
         self.connectInfo = imapSyncData.connectInfo
         self.connectionManager = imapSyncData
         self.folderID = folderID
         self.folderToOpen = folderName
         self.lastUID = lastUID
+        super.init(name: name)
     }
 
     public convenience init?(imapSyncData: ImapSyncData, folder: CdFolder, lastUID: UInt) {
@@ -39,11 +40,13 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
 
     override open func main() {
         if isCancelled {
+            markAsFinished()
             return
         }
 
         imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
         if !checkImapSync(sync: imapSync) {
+            markAsFinished()
             return
         }
 

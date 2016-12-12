@@ -81,6 +81,10 @@ open class Service: IEmailService {
         service.setDelegate(nil)
     }
 
+    open func cancel() {
+        service.cancelRequest()
+    }
+
     open func dumpMethodName(_ methodName: String, notification: Notification?) {
         Log.info(component: comp, content: "\(methodName): \(notification)")
     }

@@ -39,6 +39,10 @@ open class ConcurrentBaseOperation: BaseOperation {
     }
 
     open override func start() {
+        if isCancelled {
+            markAsFinished()
+            return
+        }
         // Just call main directly, relying on it to schedule a task in the background.
         main()
     }

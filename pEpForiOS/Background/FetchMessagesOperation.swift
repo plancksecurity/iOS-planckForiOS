@@ -22,19 +22,23 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     var folderToOpen: String
     let connectionManager: ImapConnectionManagerProtocol
 
-    public init(imapSyncData: ImapSyncData, folderName: String = ImapSync.defaultImapInboxName) {
+    public init(imapSyncData: ImapSyncData, folderName: String = ImapSync.defaultImapInboxName,
+                name: String? = nil) {
         self.connectInfo = imapSyncData.connectInfo
         self.connectionManager = imapSyncData
         self.folderToOpen = folderName
+        super.init(name: name)
     }
 
     override open func main() {
         if isCancelled {
+            markAsFinished()
             return
         }
 
         imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
         if !checkImapSync(sync: imapSync) {
+            markAsFinished()
             return
         }
 
@@ -45,8 +49,9 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     }
 
     func process(context: NSManagedObjectContext) {
-        let folderBuilder = ImapFolderBuilder.init(accountID: self.connectInfo.accountObjectID,
-                                                   backgroundQueue: self.backgroundQueue)
+        let folderBuilder = ImapFolderBuilder(accountID: self.connectInfo.accountObjectID,
+                                              backgroundQueue: self.backgroundQueue,
+                                              name: name)
 
         guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
             as? CdAccount else {
@@ -79,6 +84,19 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
             addError(err)
             waitForFinished()
         }
+    }
+
+    open override func cancel() {
+        Log.info(component: comp, content: "cancel")
+        if let sync = imapSync {
+            sync.cancel()
+        }
+        super.cancel()
+    }
+
+    override func markAsFinished() {
+        Log.info(component: comp, content: "markAsFinished")
+        super.markAsFinished()
     }
 }
 

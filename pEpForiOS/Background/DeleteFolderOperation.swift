@@ -44,11 +44,13 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
 
     open override func main() {
         if isCancelled {
+            markAsFinished()
             return
         }
 
         imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
         if !checkImapSync(sync: imapSync) {
+            markAsFinished()
             return
         }
 

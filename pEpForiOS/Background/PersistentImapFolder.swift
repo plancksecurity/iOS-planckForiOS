@@ -23,6 +23,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     let backgroundQueue: OperationQueue
 
+    let logName: String?
+
     var privateMOC: NSManagedObjectContext {
         return Record.Context.background
     }
@@ -59,16 +61,18 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
-    init(name: String, accountID: NSManagedObjectID, backgroundQueue: OperationQueue) {
+    init(name: String, accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
+         logName: String? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
+        self.logName = logName
         super.init(name: name)
         self.setCacheManager(self)
         self.folder = folderObject()
     }
 
     deinit {
-        print("PersistentImapFolder")
+        Log.info(component: "PersistentImapFolder: \(logName)", content: "PersistentImapFolder")
     }
 
     func folderObject() -> CdFolder {
@@ -194,7 +198,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         Log.warn(component: comp, content: "Writing message \(message)")
 
         let opQuick = StorePrefetchedMailOperation(
-            accountID: accountID, message: message, quick: false)
+            accountID: accountID, message: message, quick: false, name: logName)
         opQuick.start()
     }
 }
