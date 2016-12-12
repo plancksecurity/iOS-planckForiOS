@@ -55,6 +55,9 @@ open class ConcurrentBaseOperation: BaseOperation {
             backgroundQueue.addObserver(self, forKeyPath: "operationCount",
                                         options: [.initial, .new],
                                         context: nil)
+            self.addObserver(self, forKeyPath: "isCancelled",
+                             options: [.initial, .new],
+                             context: nil)
         }
     }
 
@@ -67,6 +70,10 @@ open class ConcurrentBaseOperation: BaseOperation {
                 if let c = opCount, c == 0 {
                     markAsFinished()
                 }
+            }
+        } else if keyPath == "isCancelled" {
+            for op in backgroundQueue.operations {
+                op.cancel()
             }
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change,

@@ -31,10 +31,14 @@ open class StorePrefetchedMailOperation: BaseOperation {
     }
 
     override open func main() {
-        let privateMOC = Record.Context.default
-        privateMOC.performAndWait({
-            self.storeMessage(context: privateMOC)
-        })
+        if !isCancelled {
+            let privateMOC = Record.Context.default
+            privateMOC.performAndWait({
+                if !self.isCancelled {
+                    self.storeMessage(context: privateMOC)
+                }
+            })
+        }
     }
 
     func storeMessage(context: NSManagedObjectContext) {
