@@ -109,7 +109,8 @@ public class NetworkService: INetworkService {
         return connectInfos
     }
 
-    func checkVerified(accountInfo: AccountConnectInfo, needsVerificationOnly: Bool) {
+    func checkVerified(accountInfo: AccountConnectInfo,
+                       operations: [BaseOperation], needsVerificationOnly: Bool) {
         if needsVerificationOnly {
             let context = Record.Context.background
             context.performAndWait {
@@ -127,6 +128,26 @@ public class NetworkService: INetworkService {
                 if accountVerified {
                     account.needsVerification = false
                     self.sendLayerDelegate?.didVerify(cdAccount: account, error: nil)
+                } else {
+                    var error: NSError?
+                    for op in operations {
+                        if let err = op.error {
+                            error = err
+                            break
+                        }
+                    }
+                    if let err = error {
+                        self.sendLayerDelegate?.didVerify(cdAccount: account, error: err)
+                    } else {
+                        self.sendLayerDelegate?.didVerify(
+                            cdAccount: account,
+                            error: Constants.errorIllegalState(
+                                self.comp,
+                                stateName: NSLocalizedString(
+                                    "Failed Verification",
+                                    comment:
+                                    "error messages when verification failed without error")))
+                    }
                 }
             }
         }
@@ -187,9 +208,6 @@ public class NetworkService: INetworkService {
         let opAllFinished = BlockOperation {
             self.workerQueue.async {
                 Log.info(component: self.comp, content: "sync finished")
-                if self.cancelled {
-                    //self.delegate?.didCancel(service: self)
-                }
             }
         }
         opAllFinished.addDependency(opImapFinished)
@@ -197,8 +215,19 @@ public class NetworkService: INetworkService {
 
         var operations: [Operation] = []
 
-        if let _ = accountInfo.smtpConnectInfo {
+        var opSmtpLoginOpt: BaseOperation?
+        if let smtpCI = accountInfo.smtpConnectInfo {
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
+            let smtpSendData = SmtpSendData(connectInfo: smtpCI)
+            let opSmtpLogin = LoginSmtpOpration(smtpSendData: smtpSendData)
+            opSmtpLogin.completionBlock = {
+                self.workerQueue.async {
+                    Log.info(component: self.comp, content: "opSmtpLogin finished")
+                }
+            }
+            opSmtpLoginOpt = opSmtpLogin
+            opSmtpFinished.addDependency(opSmtpLogin)
+            operations.append(opSmtpLogin)
         }
 
         if let imapCI = accountInfo.imapConnectInfo {
@@ -207,16 +236,22 @@ public class NetworkService: INetworkService {
 
             // login IMAP
             // TODO: Check if needed
-            let opLogin = LoginImapOperation(imapSyncData: imapSyncData, name: name)
-            opLogin.completionBlock = {
+            let opImapLogin = LoginImapOperation(imapSyncData: imapSyncData, name: name)
+            opImapLogin.completionBlock = {
                 self.workerQueue.async {
-                    self.checkVerified(accountInfo: accountInfo,
-                                       needsVerificationOnly: needsVerificationOnly)
-                    Log.info(component: self.comp, content: "opLogin finished")
+                    var ops: [BaseOperation] = [opImapLogin]
+                    if let op = opSmtpLoginOpt {
+                        ops.append(op)
+                    }
+                    self.checkVerified(
+                        accountInfo: accountInfo, operations: ops,
+                        needsVerificationOnly: needsVerificationOnly)
+                    Log.info(component: self.comp, content: "opImapLogin finished")
                 }
             }
-            opImapFinished.addDependency(opLogin)
-            operations.append(opLogin)
+            opImapLogin.addDependency(opSmtpFinished)
+            opImapFinished.addDependency(opImapLogin)
+            operations.append(opImapLogin)
 
             // 3.b Fetch current list of interesting mailboxes
             let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData,
@@ -227,7 +262,7 @@ public class NetworkService: INetworkService {
                 }
             }
             operations.append(opFetchFolders)
-            opFetchFolders.addDependency(opLogin)
+            opFetchFolders.addDependency(opImapLogin)
             opImapFinished.addDependency(opFetchFolders)
 
             // 3.c Client-to-server synchronization (IMAP)

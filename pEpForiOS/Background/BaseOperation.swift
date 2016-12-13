@@ -13,6 +13,10 @@ open class BaseOperation: Operation {
     open var comp = "BaseOperation"
     open var errors: [NSError] = []
 
+    open var error: NSError? {
+        return errors.first
+    }
+
     open func addError(_ error: NSError) {
         errors.append(error)
     }

@@ -11,7 +11,7 @@ import UIKit
 import MessageModel
 
 open class LoginImapOperation: ConcurrentBaseOperation {
-    var sync: ImapSync!
+    var service: ImapSync!
     var imapSyncData: ImapSyncData
 
     public init(imapSyncData: ImapSyncData, name: String? = nil) {
@@ -20,9 +20,9 @@ open class LoginImapOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
-        sync = ImapSync(connectInfo: imapSyncData.connectInfo)
-        sync.delegate = self
-        sync.start()
+        service = ImapSync(connectInfo: imapSyncData.connectInfo)
+        service.delegate = self
+        service.start()
     }
 }
 

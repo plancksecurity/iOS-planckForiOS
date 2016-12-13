@@ -1,25 +1,30 @@
 //
-//  VerifySmtpConnectionOperation.swift
+//  LoginSmtpOpration.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 29/04/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-class VerifySmtpConnectionOperation: VerifyServiceOperation {
-    let errorDomain = "VerifySmtpConnectionOperation"
+class LoginSmtpOpration: ConcurrentBaseOperation {
+    var service: SmtpSend!
+    var smtpSendData: SmtpSendData
+
+    init(smtpSendData: SmtpSendData) {
+        self.smtpSendData = smtpSendData
+    }
 
     override func main() {
         if self.isCancelled {
             return
         }
-        service = connectionManager.smtpConnection(connectInfo: connectInfo)
-        (service as! SmtpSend).delegate = self
+        service = SmtpSend(connectInfo: smtpSendData.connectInfo)
+        service.delegate = self
         service.start()
     }
 }
 
-extension VerifySmtpConnectionOperation: SmtpSendDelegate {
+extension LoginSmtpOpration: SmtpSendDelegate {
     func messageSent(_ smtp: SmtpSend, theNotification: Notification?) {}
     func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?) {}
     func transactionInitiationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
@@ -30,41 +35,29 @@ extension VerifySmtpConnectionOperation: SmtpSendDelegate {
     func transactionResetFailed(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
-        self.isFinishing = true
-        close(true)
+        markAsFinished()
     }
 
     func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        if !isFinishing {
-            errors.append(Constants.errorAuthenticationFailed(errorDomain))
-            close(true)
-        }
+        errors.append(Constants.errorAuthenticationFailed(comp))
+        markAsFinished()
     }
 
     func connectionEstablished(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     func connectionLost(_ smtp: SmtpSend, theNotification: Notification?) {
-        if !isFinishing {
-            errors.append(Constants.errorConnectionLost(errorDomain))
-            isFinishing = true
-            markAsFinished()
-        }
+        errors.append(Constants.errorConnectionLost(comp))
+        markAsFinished()
     }
 
     func connectionTerminated(_ smtp: SmtpSend, theNotification: Notification?) {
-        if !isFinishing {
-            errors.append(Constants.errorConnectionTerminated(errorDomain))
-            isFinishing = true
-            markAsFinished()
-        }
+        errors.append(Constants.errorConnectionTerminated(comp))
+        markAsFinished()
     }
 
     func connectionTimedOut(_ smtp: SmtpSend, theNotification: Notification?) {
-        if !isFinishing {
-            errors.append(Constants.errorTimeout(errorDomain))
-            isFinishing = true
-            markAsFinished()
-        }
+        errors.append(Constants.errorTimeout(comp))
+        markAsFinished()
     }
 
     func requestCancelled(_ smtp: SmtpSend, theNotification: Notification?) {}

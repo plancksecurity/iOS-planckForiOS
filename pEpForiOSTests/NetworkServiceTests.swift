@@ -139,7 +139,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertTrue(cr.needsVerification)
         }
 
-        networkService.start()
+        networkService.verify(cdAccount: cdAccount)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)

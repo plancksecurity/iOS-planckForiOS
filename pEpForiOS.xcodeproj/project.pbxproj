@@ -134,6 +134,7 @@
 		43CE63CD1DE8837200FAC505 /* Account+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CC1DE8837200FAC505 /* Account+pEp.swift */; };
 		43CE63CF1DE8845E00FAC505 /* CdAttachment+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CE1DE8845E00FAC505 /* CdAttachment+pEp.swift */; };
 		43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63D01DE8866C00FAC505 /* Message+pEp.swift */; };
+		43D400DE1E004EFF008E30EE /* LoginSmtpOpration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D400DD1E004EFF008E30EE /* LoginSmtpOpration.swift */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */; };
@@ -399,6 +400,7 @@
 		43CE63CC1DE8837200FAC505 /* Account+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Account+pEp.swift"; sourceTree = "<group>"; };
 		43CE63CE1DE8845E00FAC505 /* CdAttachment+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+pEp.swift"; sourceTree = "<group>"; };
 		43CE63D01DE8866C00FAC505 /* Message+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+pEp.swift"; sourceTree = "<group>"; };
+		43D400DD1E004EFF008E30EE /* LoginSmtpOpration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSmtpOpration.swift; sourceTree = "<group>"; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLocalSpecialFoldersOperation.swift; sourceTree = "<group>"; };
@@ -544,6 +546,7 @@
 			children = (
 				43122B3B1DF5B75000610253 /* NetworkService.swift */,
 				432198E71DF6B51B00318A74 /* LoginImapOperation.swift */,
+				43D400DD1E004EFF008E30EE /* LoginSmtpOpration.swift */,
 				432198EC1DF6B66800318A74 /* SharedObjects.swift */,
 			);
 			path = Service;
@@ -1090,6 +1093,7 @@
 				43313DF41DEC7AE600C111C8 /* CreateFoldersOperation.swift in Sources */,
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
 				5D039AA21D0EEA3700AD59EC /* DecryptMessageOperation.swift in Sources */,
+				43D400DE1E004EFF008E30EE /* LoginSmtpOpration.swift in Sources */,
 				431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */,
 				431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */,
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
