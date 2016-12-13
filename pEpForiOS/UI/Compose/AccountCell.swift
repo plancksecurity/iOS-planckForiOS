@@ -12,19 +12,19 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var picker: UIPickerView!
     
-    var accounts = ["yves@pep-project.org", "ylandert@gmail.com", "yves@wildsow.ch"]
+    var accounts = Account.all()
     var account: String?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         if account == nil {
-            textView.text = accounts.first
+            textView.text = accounts.first?.user.address
         }
     }
     
     public func togglePicker() {
-        picker.isHidden = !isExpanded
+        picker.isHidden = !isExpanded && accounts.count > 1
     }
     
     // MARK: UIPickerView Delegate & Datasource
@@ -38,10 +38,10 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return accounts[row]
+        return accounts[row].user.address
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        textView.text = accounts[row]
+        textView.text = accounts[row].user.address
     }
 }
