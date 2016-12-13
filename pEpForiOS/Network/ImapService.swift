@@ -124,7 +124,7 @@ open class ImapSync: Service {
      Opens the given mailbox (by name). If already open, do nothing.
      - Returns: true if the mailbox had to opened, false if it already was open.
      */
-    open func openMailBox(name: String) -> Bool {
+    @discardableResult open func openMailBox(name: String) -> Bool {
         if let currentFolderName = imapState.currentFolder,
             currentFolderName == name {
             return false

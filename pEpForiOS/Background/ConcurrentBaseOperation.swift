@@ -53,6 +53,7 @@ open class ConcurrentBaseOperation: BaseOperation {
      Although this method has 'wait' in the name, it certainly does not block.
      */
     func waitForFinished() {
+        Log.verbose(component: comp, content: "waitForFinished \(backgroundQueue.operationCount)")
         if backgroundQueue.operationCount == 0 {
             markAsFinished()
         } else {
@@ -71,6 +72,7 @@ open class ConcurrentBaseOperation: BaseOperation {
         if keyPath == "operationCount" {
             if let newValue = change?[NSKeyValueChangeKey.newKey] {
                 let opCount = (newValue as? NSNumber)?.intValue
+                Log.verbose(component: comp, content: "opCount \(opCount)")
                 if let c = opCount, c == 0 {
                     markAsFinished()
                 }

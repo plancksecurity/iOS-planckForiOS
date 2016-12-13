@@ -9,8 +9,6 @@
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
 
-    fileprivate static let disallow: Set<String> = []
-
     static let shared: Log = {
         let instance = Log()
         return instance
@@ -19,18 +17,18 @@
     fileprivate override init() {
         super.init()}
 
+    static open func verbose(component: String, content: String) {
+        print("\(component): \(content)")
+    }
+
     /** Somewhat verbose */
     static open func info(component: String, content: String) {
-        if !disallow.contains(component) {
-            print("\(component): \(content)")
-        }
+        print("\(component): \(content)")
     }
 
     /** More important */
     static open func warn(component: String, content: String) {
-        if !disallow.contains(component) {
-            print("\(component): \(content)")
-        }
+        print("\(component): \(content)")
     }
 
     static open func error(component: String, error: NSError?) {

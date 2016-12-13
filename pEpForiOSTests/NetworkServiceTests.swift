@@ -56,7 +56,7 @@ class NetworkServiceTests: XCTestCase {
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
 
         let networkService = NetworkService(parentName: #function)
-        networkService.delegate = del
+        networkService.networkServiceDelegate = del
 
         _ = TestData().createWorkingCdAccount()
         TestUtil.skipValidation()
@@ -84,7 +84,7 @@ class NetworkServiceTests: XCTestCase {
             expCanceled: expectation(description: "expCanceled"))
 
         let networkService = NetworkService(parentName: #function)
-        networkService.delegate = del
+        networkService.networkServiceDelegate = del
 
         _ = TestData().createWorkingCdAccount()
         TestUtil.skipValidation()
@@ -121,7 +121,7 @@ class NetworkServiceTests: XCTestCase {
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
         let networkService = NetworkService(parentName: #function)
-        networkService.delegate = del
+        networkService.networkServiceDelegate = del
 
         let expAccountVerified = expectation(description: "expAccountVerified")
         let accountDelegate = AccountObserver(expAccountVerified: expAccountVerified)

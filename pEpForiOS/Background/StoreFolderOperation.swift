@@ -22,9 +22,12 @@ class StoreFolderOperation: ConcurrentBaseOperation {
     init(connectInfo: EmailConnectInfo, folderInfo: FolderInfo) {
         self.folderInfo = folderInfo
         self.connectInfo = connectInfo
+        super.init()
+        Log.info(component: comp, content: "init \(folderInfo.name)")
     }
 
     override func main() {
+        Log.verbose(component: comp, content: "main \(folderInfo.name)")
         let privateMOC = Record.Context.default
         privateMOC.perform({
             self.process(context: privateMOC)
@@ -32,6 +35,7 @@ class StoreFolderOperation: ConcurrentBaseOperation {
     }
 
     func process(context: NSManagedObjectContext) {
+        Log.verbose(component: comp, content: "process \(folderInfo.name)")
         guard let account = context.object(with: connectInfo.accountObjectID)
             as? CdAccount else {
                 errors.append(Constants.errorCannotFindAccount(component: comp))

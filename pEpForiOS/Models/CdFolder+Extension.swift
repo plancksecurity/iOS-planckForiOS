@@ -9,6 +9,8 @@
 import MessageModel
 
 public extension CdFolder {
+    static let comp = "CdFolder"
+
     /**
      If the folder has been deleted, undelete it.
      */
@@ -65,22 +67,24 @@ public extension CdFolder {
         }
     }
 
-    static func insert(folderName name: String, account: CdAccount) -> CdFolder {
+    static func insert(folderName: String, account: CdAccount) -> CdFolder {
+        Log.verbose(component: comp, content: "insert \(folderName)")
+
         // Reactivate if previously deleted
-        if let folder = by(name: name, account: account) {
+        if let folder = by(name: folderName, account: account) {
             return reactivate(folder: folder)
         }
 
-        let folder = CdFolder.create(with: ["name": name, "account": account,
+        let folder = CdFolder.create(with: ["name": folderName, "account": account,
                                             "uuid": UUID.generate()])
 
-        if name.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
+        if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
             folder.folderType = FolderType.inbox.rawValue
         } else {
             var foundMatch = false
             for ty in FolderType.allValuesToCheckFromServer {
                 for theName in ty.folderNames() {
-                    if name.matchesPattern("\(theName)",
+                    if folderName.matchesPattern("\(theName)",
                         reOptions: [.caseInsensitive]) {
                         foundMatch = true
                         folder.folderType = ty.rawValue
@@ -96,9 +100,10 @@ public extension CdFolder {
             }
         }
 
+        Log.verbose(component: comp, content: "insert \(folderName): \(folder.folderType)")
         return folder
     }
-    
+
     /**
      - Returns: The predicate (for CdMessage) to get all (undeleted, valid)
      messages contained in that folder.

@@ -24,7 +24,8 @@ class MessageModelTests: XCTestCase {
     }
 
     func testAccountSave() {
-        CdAccount.sendLayer = DefaultSendLayer()
+        let sendLayer = ShortCircuitSendLayer()
+        CdAccount.sendLayer = sendLayer
 
         // setup AccountDelegate
         let accountDelegate = TestUtil.TestAccountDelegate()

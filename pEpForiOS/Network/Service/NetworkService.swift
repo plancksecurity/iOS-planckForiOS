@@ -30,6 +30,8 @@ public protocol NetworkServiceDelegate: class {
 public class NetworkService: INetworkService {
     let comp = "NetworkService"
 
+    public var sendLayerDelegate: SendLayerDelegate?
+
     /**
      Amount of time to "sleep" between complete syncs of all accounts.
      */
@@ -42,7 +44,7 @@ public class NetworkService: INetworkService {
     var cancelled = false
     var currentOperations = Set<Operation>()
 
-    public weak var delegate: NetworkServiceDelegate?
+    public weak var networkServiceDelegate: NetworkServiceDelegate?
 
     let name: String?
 
@@ -78,7 +80,7 @@ public class NetworkService: INetworkService {
             self.backgroundQueue.cancelAllOperations()
             Log.info(component: self.comp, content: "all operations cancelled")
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
-            self.delegate?.didCancel(service: self)
+            self.networkServiceDelegate?.didCancel(service: self)
         }
     }
 
@@ -124,6 +126,7 @@ public class NetworkService: INetworkService {
                 }
                 if accountVerified {
                     account.needsVerification = false
+                    self.sendLayerDelegate?.didVerify(cdAccount: account, error: nil)
                 }
             }
         }
@@ -321,7 +324,8 @@ public class NetworkService: INetworkService {
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
                 scheduleOperationLineInternal(operationLine: ol, completionBlock: {
-                    self.delegate?.didSync(service: self, accountInfo: ol.accountInfo)
+                    self.networkServiceDelegate?.didSync(
+                        service: self, accountInfo: ol.accountInfo)
                     // Process the rest
                     self.processOperationLines(operationLines: myLines)
                 })
@@ -337,36 +341,7 @@ public class NetworkService: INetworkService {
 }
 
 extension NetworkService: SendLayerProtocol {
-    public func verify(account: CdAccount,
-                       completionBlock: SendLayerCompletionBlock?) {
+    public func verify(cdAccount account: CdAccount) {
         process(repeatProcess: false, needsVerificationOnly: true)
-    }
-
-    public func send(message: CdMessage, completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("NetworkService.send not implemented")
-    }
-
-    public func saveDraft(message: CdMessage,
-                          completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("NetworkService.saveDraft not implemented")
-    }
-
-    public func syncFlagsToServer(folder: CdFolder,
-                                  completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("NetworkService.syncFlagsToServer not implemented")
-    }
-
-    public func create(folderType: FolderType, account: CdAccount,
-                       completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("NetworkService.create(folderType:) not implemented")
-    }
-
-    public func delete(folder: CdFolder, completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("NetworkService.delete(folder:) not implemented")
-    }
-
-    public func delete(message: CdMessage,
-                       completionBlock: SendLayerCompletionBlock?) {
-        assertionFailure("NetworkService.delete(message:) not implemented")
     }
 }

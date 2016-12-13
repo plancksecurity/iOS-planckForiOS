@@ -80,8 +80,7 @@
 		4346D33C1D86E2E50017E24E /* _ComposeViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4346D33B1D86E2E50017E24E /* _ComposeViewHelper.swift */; };
 		434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */; };
 		434F84451CEB018A0055B7A9 /* NSData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */; };
-		4352FA171DC79A3D0081161A /* SendLayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA161DC79A3D0081161A /* SendLayerTests.swift */; };
-		4352FA1F1DC79E9B0081161A /* DefaultSendLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA1E1DC79E9B0081161A /* DefaultSendLayer.swift */; };
+		4352FA1F1DC79E9B0081161A /* ShortCircuitSendLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA1E1DC79E9B0081161A /* ShortCircuitSendLayer.swift */; };
 		4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
 		436F8E101D367039007E9829 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E0F1D367039007E9829 /* StringExtensions.swift */; };
@@ -331,8 +330,7 @@
 		4346D33B1D86E2E50017E24E /* _ComposeViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _ComposeViewHelper.swift; sourceTree = "<group>"; };
 		434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+Extension.swift"; sourceTree = "<group>"; };
 		434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+Extensions.swift"; sourceTree = "<group>"; };
-		4352FA161DC79A3D0081161A /* SendLayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendLayerTests.swift; sourceTree = "<group>"; };
-		4352FA1E1DC79E9B0081161A /* DefaultSendLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultSendLayer.swift; sourceTree = "<group>"; };
+		4352FA1E1DC79E9B0081161A /* ShortCircuitSendLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortCircuitSendLayer.swift; sourceTree = "<group>"; };
 		4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncMessagesOperation.swift; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
@@ -607,7 +605,7 @@
 			isa = PBXGroup;
 			children = (
 				438ACD2B1DE860200016F954 /* ObserverDelegate.swift */,
-				4352FA1E1DC79E9B0081161A /* DefaultSendLayer.swift */,
+				4352FA1E1DC79E9B0081161A /* ShortCircuitSendLayer.swift */,
 				439BA8821DC9E3B000D0683E /* TestData.swift */,
 				4374320A1CFC49B1000F8D35 /* TestUtil.swift */,
 			);
@@ -698,7 +696,6 @@
 				430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */,
 				431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */,
 				432F7D601D2102F10094F097 /* PEPSessionTest.swift */,
-				4352FA161DC79A3D0081161A /* SendLayerTests.swift */,
 				43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */,
 				436F8E131D36706A007E9829 /* StringExtensionsTest.swift */,
 				432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */,
@@ -1220,7 +1217,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4352FA1F1DC79E9B0081161A /* DefaultSendLayer.swift in Sources */,
+				4352FA1F1DC79E9B0081161A /* ShortCircuitSendLayer.swift in Sources */,
 				43409CE01DD30102008F8F49 /* TestData.swift in Sources */,
 				438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */,
 				432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */,
@@ -1234,7 +1231,6 @@
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
 				43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
-				4352FA171DC79A3D0081161A /* SendLayerTests.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
 				43409CE31DD301CD008F8F49 /* CdMessagePantomimeTests.swift in Sources */,
 			);
