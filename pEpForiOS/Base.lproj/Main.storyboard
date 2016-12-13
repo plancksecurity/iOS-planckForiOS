@@ -249,6 +249,55 @@
                                     <outlet property="textView" destination="bVM-o9-45O" id="KYm-Xp-jJp"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accountCell" rowHeight="190" id="prY-xp-1rI" customClass="AccountCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="404" width="375" height="190"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="prY-xp-1rI" id="FU0-SW-FOj">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="189"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2j-jK-hcO">
+                                            <rect key="frame" x="8" y="17" width="42" height="20"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="LYT-ZY-0H8" customClass="ComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
+                                            <rect key="frame" x="58" y="10" width="308" height="30"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="sdL-dD-ANd"/>
+                                            </constraints>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" enablesReturnKeyAutomatically="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="prY-xp-1rI" id="B20-to-lTM"/>
+                                            </connections>
+                                        </textView>
+                                        <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8S-M4-JdW">
+                                            <rect key="frame" x="0.0" y="40" width="375" height="140"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="prY-xp-1rI" id="VoP-0P-HiT"/>
+                                                <outlet property="delegate" destination="prY-xp-1rI" id="67r-ij-inF"/>
+                                            </connections>
+                                        </pickerView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="LYT-ZY-0H8" firstAttribute="leading" secondItem="U2j-jK-hcO" secondAttribute="trailing" constant="7.5" id="O4S-Du-IVw"/>
+                                        <constraint firstItem="U2j-jK-hcO" firstAttribute="leading" secondItem="FU0-SW-FOj" secondAttribute="leading" constant="8" id="a9Q-pf-ixM"/>
+                                        <constraint firstItem="U2j-jK-hcO" firstAttribute="top" secondItem="FU0-SW-FOj" secondAttribute="top" constant="17" id="b62-Ab-8ua"/>
+                                        <constraint firstAttribute="trailing" secondItem="LYT-ZY-0H8" secondAttribute="trailing" constant="9" id="bMj-dT-w6k"/>
+                                        <constraint firstItem="LYT-ZY-0H8" firstAttribute="top" secondItem="FU0-SW-FOj" secondAttribute="top" constant="10" id="hco-1v-Cgc"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="picker" destination="u8S-M4-JdW" id="0D1-1j-HCM"/>
+                                    <outlet property="textView" destination="LYT-ZY-0H8" id="qdN-xm-3LN"/>
+                                    <outlet property="titleLabel" destination="U2j-jK-hcO" id="Urc-fF-QIN"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>

@@ -228,8 +228,11 @@ class ComposeTableViewController: UITableViewController {
         guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else { return row.height }
         
         let height = cell.textView.fieldHeight
+        let expandable = cell.fieldModel?.expanded
+        
         if cell.fieldModel?.display == .conditional {
             if ccEnabled {
+                if (expandable != nil) && cell.isExpanded { return expandable! }
                 if height <= row.height { return row.height }
                 return height
             } else {
@@ -270,6 +273,14 @@ class ComposeTableViewController: UITableViewController {
             cell.addContact(identity!)
             cell.textView.scrollToTop()
             
+            self.tableView.updateSize()
+        }
+        
+        guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else { return }
+        if cell is AccountCell {
+            let accountCell = cell as! AccountCell
+            accountCell.isExpanded = !accountCell.isExpanded
+            accountCell.togglePicker()
             self.tableView.updateSize()
         }
     }

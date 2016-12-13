@@ -19,6 +19,7 @@ open class ComposeCell: UITableViewCell, CellProtocol {
 
     public var index: IndexPath!
     public var fieldModel: ComposeFieldModel?
+    public var isExpanded = false
     
     override open func awakeFromNib() {
         super.awakeFromNib()

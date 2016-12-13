@@ -23,6 +23,7 @@
 		222B35831DF97A44007A1F82 /* ComposeData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 222B35811DF97A44007A1F82 /* ComposeData.plist */; };
 		222B35861DF97A44007A1F82 /* ComposeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35821DF97A44007A1F82 /* ComposeDataSource.swift */; };
 		222B358A1DF99C48007A1F82 /* Actionsheet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35891DF99C48007A1F82 /* Actionsheet+Extension.swift */; };
+		222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35BB1E00049C007A1F82 /* AccountCell.swift */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
 		22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		22DA56D91DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
@@ -276,6 +277,7 @@
 		222B35811DF97A44007A1F82 /* ComposeData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ComposeData.plist; sourceTree = "<group>"; };
 		222B35821DF97A44007A1F82 /* ComposeDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeDataSource.swift; sourceTree = "<group>"; };
 		222B35891DF99C48007A1F82 /* Actionsheet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Actionsheet+Extension.swift"; sourceTree = "<group>"; };
+		222B35BB1E00049C007A1F82 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
 		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
@@ -487,11 +489,11 @@
 		222B35701DF96C7F007A1F82 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				222B35681DF96AFE007A1F82 /* ComposeTextView.swift */,
 				222B35641DF96A9C007A1F82 /* ComposeCellProtocols.swift */,
 				222B356C1DF96C30007A1F82 /* ComposeCell.swift */,
 				431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */,
 				431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */,
+				222B35BB1E00049C007A1F82 /* AccountCell.swift */,
 				4340F5F81D363BE6006A5C82 /* ContactCell.swift */,
 			);
 			name = Cells;
@@ -569,6 +571,7 @@
 				222B35811DF97A44007A1F82 /* ComposeData.plist */,
 				222B35701DF96C7F007A1F82 /* Cells */,
 				222B357D1DF97675007A1F82 /* SuggestTableView.swift */,
+				222B35681DF96AFE007A1F82 /* ComposeTextView.swift */,
 				222B35551DF962D7007A1F82 /* ComposeHelpers.swift */,
 				431AE5D41D2EC0C000F609D3 /* ComposeTableViewController.swift */,
 				4346D33B1D86E2E50017E24E /* _ComposeViewHelper.swift */,
@@ -1187,6 +1190,7 @@
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
+				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,
 				4380F7C61D1BBD5D00326F62 /* EncryptMessageOperation.swift in Sources */,
 				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,

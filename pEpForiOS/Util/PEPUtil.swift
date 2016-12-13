@@ -716,7 +716,7 @@ extension UIColor {
         }
     }
     
-    open class var pEpGray: UIColor {
+    open class var pEpNoColor: UIColor {
         get {
             return UIColor(hex: "#B4B0B0")
         }

@@ -21,6 +21,7 @@ open class ComposeFieldModel {
     var type: FieldType = .to
     var display: FieldDisplayType = .always
     var height: CGFloat = defaultCellHeight
+    var expanded: CGFloat = 0
     var identifier = "recipientCell"
     var title = String()
     var value = NSAttributedString()
@@ -33,5 +34,9 @@ open class ComposeFieldModel {
         height = CGFloat((data["height"] as! NSString).floatValue)
         identifier = data["identifier"] as! String
         contactSuggestion = data["contactSuggestion"] as! Bool
+        
+        if let expandable = data["expanded"] as? NSString {
+            expanded = CGFloat(expandable.floatValue)
+        }
     }
 }

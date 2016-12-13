@@ -54,7 +54,7 @@
 		</dict>
 		<dict>
 			<key>identifier</key>
-			<string>subjectCell</string>
+			<string>accountCell</string>
 			<key>value</key>
 			<string></string>
 			<key>type</key>
@@ -65,6 +65,8 @@
 			<string>conditional</string>
 			<key>height</key>
 			<string>64.0</string>
+			<key>expanded</key>
+			<string>190.0</string>
 			<key>contactSuggestion</key>
 			<false/>
 		</dict>
