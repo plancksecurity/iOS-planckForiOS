@@ -69,17 +69,27 @@ open class ConcurrentBaseOperation: BaseOperation {
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?,
                                                 change: [NSKeyValueChangeKey : Any]?,
                                                 context: UnsafeMutableRawPointer?) {
+        guard let newValue = change?[NSKeyValueChangeKey.newKey] else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change,
+                               context: context)
+            return
+        }
         if keyPath == "operationCount" {
-            if let newValue = change?[NSKeyValueChangeKey.newKey] {
-                let opCount = (newValue as? NSNumber)?.intValue
-                Log.verbose(component: comp, content: "opCount \(opCount)")
-                if let c = opCount, c == 0 {
-                    markAsFinished()
-                }
+            let opCount = (newValue as? NSNumber)?.intValue
+            Log.verbose(component: comp, content: "opCount \(opCount)")
+            if let c = opCount, c == 0 {
+                markAsFinished()
             }
         } else if keyPath == "isCancelled" {
-            for op in backgroundQueue.operations {
-                op.cancel()
+            guard let cancelled = (newValue as? NSNumber)?.boolValue else {
+                super.observeValue(forKeyPath: keyPath, of: object, change: change,
+                                   context: context)
+                return
+            }
+            if cancelled {
+                for op in backgroundQueue.operations {
+                    op.cancel()
+                }
             }
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change,
