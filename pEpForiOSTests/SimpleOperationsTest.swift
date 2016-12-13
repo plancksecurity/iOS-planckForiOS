@@ -48,21 +48,6 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(f.comp, "FetchFoldersOperation")
     }
 
-    func testVerifyConnection() {
-        let expCompleted = expectation(description: "expCompleted")
-        let op = VerifyImapConnectionOperation(connectionManager: connectionManager,
-                                               connectInfo: imapConnectInfo)
-        op.completionBlock = {
-            expCompleted.fulfill()
-        }
-
-        OperationQueue().addOperation(op)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
-    }
-
     func testFetchMessagesOperation() {
         XCTAssertNil(CdMessage.all())
 

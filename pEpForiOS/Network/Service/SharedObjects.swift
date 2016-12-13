@@ -45,3 +45,12 @@ open class ImapSyncData: ImapConnectionManagerProtocol {
         return nil
     }
 }
+
+open class SmtpSendData {
+    public let connectInfo: EmailConnectInfo
+    public var smtp: SmtpSend?
+
+    public init(connectInfo: EmailConnectInfo) {
+        self.connectInfo = connectInfo
+    }
+}
