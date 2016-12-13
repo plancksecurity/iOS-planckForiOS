@@ -108,7 +108,7 @@ class EmailListViewCell: UITableViewCell {
     
     func messageAt(indexPath: IndexPath, config: EmailListConfig) -> Message? {
         if let fol = config.folder {
-            return fol.messageByIndex(indexPath.row)
+            return fol.messageBy(index: indexPath.row)
         }
         return nil
     }
