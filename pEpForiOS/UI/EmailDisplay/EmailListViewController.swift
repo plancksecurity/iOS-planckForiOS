@@ -99,9 +99,7 @@ class EmailListViewController: UITableViewController {
     }
     
     func addRefreshControl() {
-        refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(refreshTableData), for: UIControlEvents.valueChanged)
-        self.tableView.addSubview(refreshControl!)
     }
 
     @IBAction func mailSentSegue(_ segue: UIStoryboardSegue) {
