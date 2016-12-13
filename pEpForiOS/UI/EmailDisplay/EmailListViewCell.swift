@@ -16,7 +16,9 @@ class EmailListViewCell: UITableViewCell {
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var isImportantImage: UIImageView!
+    @IBOutlet weak var isReadMessageImage: UIImageView!
+    @IBOutlet weak var disclousureImage: UIImageView!
+    @IBOutlet weak var ratingImage: UIImageView!
     
     /**
      Indicates whether `defaultCellBackgroundColor` has been determined or not.
@@ -35,11 +37,11 @@ class EmailListViewCell: UITableViewCell {
         self.selectionStyle = UITableViewCellSelectionStyle.none
 
         // generated an circle image
-        isImportantImage.layer.cornerRadius = isImportantImage.frame.size.width / 2
-        isImportantImage.clipsToBounds = true
+        isReadMessageImage.layer.cornerRadius = isReadMessageImage.frame.size.width / 2
+        isReadMessageImage.clipsToBounds = true
 
-        isImportantImage.isHidden = false
-        isImportantImage.backgroundColor = UIColor.blue
+        isReadMessageImage.isHidden = false
+        isReadMessageImage.backgroundColor = UIColor.blue
     }
     
     func configureCell(indexPath: IndexPath, config: EmailListConfig) {
@@ -82,20 +84,20 @@ class EmailListViewCell: UITableViewCell {
                 UIHelper.putString(nil, toLabel: self.dateLabel)
             }
             
-            if (isImportant(message: email) && isRead(message: email)) {
-                self.isImportantImage.isHidden = false
-                self.isImportantImage.backgroundColor = UIColor.orange
+            if (isRead(message: email)) {
+                self.isReadMessageImage.isHidden = false
+                self.isReadMessageImage.backgroundColor = UIColor.orange
             }
-            else if (isImportant(message: email) && !isRead(message: email)) {
-                self.isImportantImage.isHidden = false
-                self.isImportantImage.backgroundColor = UIColor.blue
-                self.isImportantImage.layer.borderWidth = 2
-                self.isImportantImage.layer.borderColor = UIColor.orange.cgColor
+            else if (!isRead(message: email)) {
+                self.isReadMessageImage.isHidden = false
+                self.isReadMessageImage.backgroundColor = UIColor.blue
+                self.isReadMessageImage.layer.borderWidth = 2
+                self.isReadMessageImage.layer.borderColor = UIColor.orange.cgColor
             } else if (!isImportant(message: email) && isRead(message: email)) {
-                self.isImportantImage.isHidden = true
+                self.isReadMessageImage.isHidden = true
             } else if (!isImportant(message: email) && !isRead(message: email)) {
-                self.isImportantImage.isHidden = false
-                self.isImportantImage.backgroundColor = UIColor.blue
+                self.isReadMessageImage.isHidden = false
+                self.isReadMessageImage.backgroundColor = UIColor.blue
             }
         }
     }
