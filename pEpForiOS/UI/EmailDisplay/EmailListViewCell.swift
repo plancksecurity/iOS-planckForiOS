@@ -85,17 +85,10 @@ class EmailListViewCell: UITableViewCell {
             }
             
             if (isRead(message: email)) {
-                self.isReadMessageImage.isHidden = false
-                self.isReadMessageImage.backgroundColor = UIColor.orange
+                self.isReadMessageImage.isHidden = true
+                //self.isReadMessageImage.backgroundColor = UIColor.orange
             }
             else if (!isRead(message: email)) {
-                self.isReadMessageImage.isHidden = false
-                self.isReadMessageImage.backgroundColor = UIColor.blue
-                self.isReadMessageImage.layer.borderWidth = 2
-                self.isReadMessageImage.layer.borderColor = UIColor.orange.cgColor
-            } else if (!isImportant(message: email) && isRead(message: email)) {
-                self.isReadMessageImage.isHidden = true
-            } else if (!isImportant(message: email) && !isRead(message: email)) {
                 self.isReadMessageImage.isHidden = false
                 self.isReadMessageImage.backgroundColor = UIColor.blue
             }

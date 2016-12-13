@@ -56,7 +56,7 @@ class EmailListViewController: UITableViewController {
     var state = UIState()
     
 
-    var refreshController: UIRefreshControl!
+    //var refreshController: UIRefreshControl!
 
     /**
      The message that should be saved as a draft when compose gets aborted.
@@ -68,6 +68,7 @@ class EmailListViewController: UITableViewController {
      and should be given to the compose view.
      */
     var draftMessageToCompose: Message?
+    let searchController = UISearchController(searchResultsController: nil)
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -76,12 +77,31 @@ class EmailListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         UIHelper.emailListTableHeight(self.tableView)
+        addSearchBar()
+        addRefreshControl()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        updateModel()
         super.viewWillAppear(animated)
+        
+        updateModel()
+    }
+    
+    func addSearchBar() {
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.delegate = self
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+        tableView.setContentOffset(CGPoint(x: 0.0, y: 40.0), animated: false)
+    }
+    
+    func addRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refreshTableData), for: UIControlEvents.valueChanged)
+        self.tableView.addSubview(refreshControl!)
     }
 
     @IBAction func mailSentSegue(_ segue: UIStoryboardSegue) {
@@ -358,5 +378,28 @@ class EmailListViewController: UITableViewController {
     func createMarkAction() -> UIAlertAction {
         return UIAlertAction(title: "Mark", style: .default) { (action) in
         }
+    }
+    
+    // MARK: - Content Search
+    
+    func filterContentForSearchText(searchText: String) {
+        
+    }
+    
+    // MARK: - Refresh Table Data
+    
+    func refreshTableData() {
+        refreshControl?.beginRefreshing()
+        refreshControl?.endRefreshing()
+    }
+
+}
+
+extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
+    public func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchText: searchController.searchBar.text!)
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
     }
 }
