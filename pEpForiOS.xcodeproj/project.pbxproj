@@ -131,14 +131,12 @@
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
 		43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */; };
 		43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */; };
-		43CE63CD1DE8837200FAC505 /* Account+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CC1DE8837200FAC505 /* Account+pEp.swift */; };
 		43CE63CF1DE8845E00FAC505 /* CdAttachment+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CE1DE8845E00FAC505 /* CdAttachment+pEp.swift */; };
 		43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63D01DE8866C00FAC505 /* Message+pEp.swift */; };
 		43D400DE1E004EFF008E30EE /* LoginSmtpOpration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D400DD1E004EFF008E30EE /* LoginSmtpOpration.swift */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */; };
-		43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */; };
 		43E42FF71D7096E400164CB1 /* DeleteMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */; };
 		43E430191D70AC8900164CB1 /* AppendSingleMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */; };
 		43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */; };
@@ -397,14 +395,12 @@
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
 		43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
-		43CE63CC1DE8837200FAC505 /* Account+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Account+pEp.swift"; sourceTree = "<group>"; };
 		43CE63CE1DE8845E00FAC505 /* CdAttachment+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+pEp.swift"; sourceTree = "<group>"; };
 		43CE63D01DE8866C00FAC505 /* Message+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+pEp.swift"; sourceTree = "<group>"; };
 		43D400DD1E004EFF008E30EE /* LoginSmtpOpration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSmtpOpration.swift; sourceTree = "<group>"; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLocalSpecialFoldersOperation.swift; sourceTree = "<group>"; };
-		43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPMyselfOperation.swift; sourceTree = "<group>"; };
 		43E42FF61D7096E400164CB1 /* DeleteMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteMessageOperation.swift; sourceTree = "<group>"; };
 		43E430181D70AC8900164CB1 /* AppendSingleMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendSingleMessageOperation.swift; sourceTree = "<group>"; };
 		43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+pEp.swift"; sourceTree = "<group>"; };
@@ -517,7 +513,6 @@
 				43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */,
 				4339477A1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift */,
 				4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */,
-				43E1D10A1D1976AC002DB305 /* PEPMyselfOperation.swift */,
 				4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */,
 				431144B41CC0FCA40007639D /* StoreFolderOperation.swift */,
 				431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */,
@@ -814,7 +809,6 @@
 				43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */,
 				430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */,
 				43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */,
-				43CE63CC1DE8837200FAC505 /* Account+pEp.swift */,
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				43CE63D01DE8866C00FAC505 /* Message+pEp.swift */,
 			);
@@ -1099,7 +1093,6 @@
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
 				4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */,
 				433019E61E01A71300788B89 /* PeriodicTask.swift in Sources */,
-				43CE63CD1DE8837200FAC505 /* Account+pEp.swift in Sources */,
 				5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */,
 				222B35691DF96AFE007A1F82 /* ComposeTextView.swift in Sources */,
 				43F6DFD71DEEC752006B526F /* FetchMessagesOperation.swift in Sources */,
@@ -1161,7 +1154,6 @@
 				431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */,
 				222B35521DF95C1C007A1F82 /* Array+Extension.swift in Sources */,
 				430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */,
-				43E1D10B1D1976AC002DB305 /* PEPMyselfOperation.swift in Sources */,
 				431B04801DE5774800E40CD3 /* CdMessage+Pantomime.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */,

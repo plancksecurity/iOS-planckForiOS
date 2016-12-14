@@ -172,18 +172,6 @@ open class PEPUtil {
         return [:]
     }
 
-    /**
-     Kicks off myself in the background, optionally notifies via block of termination/success.
-     */
-    open static func myself(account: Account, queue: OperationQueue,
-                            block: ((_ identity: NSDictionary) -> Void)? = nil) {
-        let op = PEPMyselfOperation(account: account)
-        op.completionBlock = {
-            block?(op.identity)
-        }
-        queue.addOperation(op)
-    }
-
     open static func pEp(identity: Identity) -> PEPIdentity {
         var contact = PEPIdentity()
         contact[kPepAddress] = identity.address as AnyObject

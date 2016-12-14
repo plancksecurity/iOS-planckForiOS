@@ -87,14 +87,6 @@ class AccountsFoldersViewController: UITableViewController {
         tableView.reloadData()
     }
 
-    func doMyself() {
-        let accounts = Account.all()
-        for acc in accounts {
-            let op = PEPMyselfOperation(account: acc)
-            backgroundQueue.addOperation(op)
-        }
-    }
-
     func updateUI() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = state.isSynching
     }
@@ -102,8 +94,6 @@ class AccountsFoldersViewController: UITableViewController {
     @IBAction func newAccountCreatedSegue(_ segue: UIStoryboardSegue) {
         // load new account
         updateModel()
-
-        doMyself()
     }
 
     // MARK: - Table view data source
