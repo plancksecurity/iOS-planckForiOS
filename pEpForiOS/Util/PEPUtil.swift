@@ -734,6 +734,12 @@ extension UIColor {
         }
     }
     
+    open class var pEpBlue: UIColor {
+        get {
+            return UIColor(hex: "#007AFF")
+        }
+    }
+    
     convenience init(hex: String) {
         var hexstr = hex
         if hexstr.hasPrefix("#") {

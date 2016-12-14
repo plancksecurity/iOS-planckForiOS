@@ -41,7 +41,7 @@ class EmailListViewCell: UITableViewCell {
         isReadMessageImage.clipsToBounds = true
 
         isReadMessageImage.isHidden = false
-        isReadMessageImage.backgroundColor = UIColor.blue
+        isReadMessageImage.backgroundColor = .pEpBlue
     }
     
     func configureCell(indexPath: IndexPath, config: EmailListConfig) {
@@ -86,11 +86,10 @@ class EmailListViewCell: UITableViewCell {
             
             if (isRead(message: email)) {
                 self.isReadMessageImage.isHidden = true
-                //self.isReadMessageImage.backgroundColor = UIColor.orange
             }
             else if (!isRead(message: email)) {
                 self.isReadMessageImage.isHidden = false
-                self.isReadMessageImage.backgroundColor = UIColor.blue
+                self.isReadMessageImage.backgroundColor = .pEpBlue
             }
         }
     }

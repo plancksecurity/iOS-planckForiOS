@@ -120,13 +120,23 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="bgm-ua-A0f"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="WAS-Ps-NXk">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
                     <connections>
+                        <outlet property="searchDisplayController" destination="wi1-9j-AQt" id="5ik-CT-83m"/>
                         <segue destination="SRN-tu-1xe" kind="show" identifier="segueShowEmail" id="Ovv-97-Yig"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="wi1-9j-AQt">
+                    <connections>
+                        <outlet property="delegate" destination="kcA-RK-9Xg" id="HF4-ec-Iga"/>
+                        <outlet property="searchContentsController" destination="kcA-RK-9Xg" id="AAL-23-yNu"/>
+                        <outlet property="searchResultsDataSource" destination="kcA-RK-9Xg" id="Z6E-8J-aKn"/>
+                        <outlet property="searchResultsDelegate" destination="kcA-RK-9Xg" id="AVQ-xH-DgN"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="5921" y="1245"/>
         </scene>
@@ -256,7 +266,7 @@
                                 <rect key="frame" x="0.0" y="404" width="375" height="190"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="prY-xp-1rI" id="FU0-SW-FOj">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="189"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="190"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2j-jK-hcO">
@@ -697,7 +707,9 @@
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irB-0r-1CK">
                                             <rect key="frame" x="286" y="12" width="77" height="19.5"/>
-                                            <state key="normal" title="Handshake"/>
+                                            <state key="normal" title="Handshake">
+                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
                                             <connections>
                                                 <action selector="goToHandshakeScreen:" destination="2d7-Da-IgM" eventType="touchUpInside" id="XZ7-Rx-3Hx"/>
                                             </connections>
@@ -1366,7 +1378,7 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="TnR-me-YgK"/>
         <segue reference="Soh-zf-Qvc"/>
+        <segue reference="GPW-U8-tyH"/>
     </inferredMetricsTieBreakers>
 </document>

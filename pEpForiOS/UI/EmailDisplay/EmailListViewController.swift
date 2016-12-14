@@ -141,6 +141,7 @@ class EmailListViewController: UITableViewController {
     
     func updateModel() {
         config.folder = MockData.createFolder(config.account!)
+        tableView.reloadData()
     }
 
     // MARK: - UI State
@@ -162,7 +163,7 @@ class EmailListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let fol = config.folder {
+        if let fol = config.folder  {
             return fol.messageCount()
         }
         return 0

@@ -125,6 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().backgroundColor = .pEpColor
         UINavigationBar.appearance().barTintColor = .pEpColor
         UINavigationBar.appearance().tintColor = .white
+        UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().titleTextAttributes =
             [NSForegroundColorAttributeName: UIColor.white]
         
@@ -134,5 +135,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITextView.appearance().tintColor = .pEpColor
         UITextField.appearance().tintColor = .pEpColor
+        
+        UISearchBar.appearance().barTintColor = .pEpColor
+        UISearchBar.appearance().backgroundColor = .pEpColor
+        UISearchBar.appearance().tintColor = .white
     }
 }
