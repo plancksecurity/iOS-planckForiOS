@@ -226,7 +226,7 @@ class NetworkServiceTests: XCTestCase {
         }
 
         XCTAssertFalse(verifiedAccount.rootFolders.isEmpty)
-        let inbox = verifiedAccount.folder(ofType: .inbox)
+        let inbox = verifiedAccount.inbox()
         XCTAssertNotNil(inbox)
         if let inb = inbox {
             XCTAssertGreaterThan(inb.messageCount(), 0)
