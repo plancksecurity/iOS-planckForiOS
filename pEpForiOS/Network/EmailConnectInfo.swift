@@ -115,12 +115,10 @@ public enum EmailProtocol: String {
  Holds additional connection info (like server, port etc.) for IMAP and SMTP.
  */
 public class EmailConnectInfo: ConnectInfo {
-    public var userPassword: String?
-
-    public var emailProtocol: EmailProtocol?
-    public var connectionTransport: ConnectionTransport?
-    public var authMethod: AuthMethod?
-    public var trusted: Bool
+    public let emailProtocol: EmailProtocol?
+    public let connectionTransport: ConnectionTransport?
+    public let authMethod: AuthMethod?
+    public let trusted: Bool
 
     public init(accountObjectID: NSManagedObjectID,
                 serverObjectID: NSManagedObjectID,

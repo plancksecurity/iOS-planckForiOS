@@ -24,16 +24,16 @@ public enum NetworkTransportType: String {
  Holds basic info to connect to peers (perhaps servers).
  */
 public class ConnectInfo {
-    public var accountObjectID: NSManagedObjectID
-    public var serverObjectID: NSManagedObjectID
+    public let accountObjectID: NSManagedObjectID
+    public let serverObjectID: NSManagedObjectID
     public let credentialsObjectID: NSManagedObjectID
 
-    public var loginName: String?
-    public var loginPassword: String?
-    public var networkAddress: String
-    public var networkPort: UInt16 = 0
-    public var networkAddressType: NetworkAddressType?
-    public var networkTransportType: NetworkTransportType?
+    public let loginName: String?
+    public let loginPassword: String?
+    public let networkAddress: String
+    public let networkPort: UInt16
+    public let networkAddressType: NetworkAddressType?
+    public let networkTransportType: NetworkTransportType?
 
     public init(accountObjectID: NSManagedObjectID,
                 serverObjectID: NSManagedObjectID,
@@ -58,12 +58,14 @@ public class ConnectInfo {
 
 extension ConnectInfo: Hashable {
     public var hashValue: Int {
-        return 31 &* accountObjectID.hashValue &+ serverObjectID.hashValue &+
+        return 31 &*
+            accountObjectID.hashValue &+
+            serverObjectID.hashValue &+
             credentialsObjectID.hashValue &+
             MiscUtil.optionalHashValue(loginName) &+
             MiscUtil.optionalHashValue(loginPassword) &+
-            MiscUtil.optionalHashValue(networkPort) &+
             MiscUtil.optionalHashValue(networkAddress) &+
+            MiscUtil.optionalHashValue(networkPort) &+
             MiscUtil.optionalHashValue(networkAddressType) &+
             MiscUtil.optionalHashValue(networkTransportType)
     }
