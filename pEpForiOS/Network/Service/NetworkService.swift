@@ -46,11 +46,11 @@ public class NetworkService: INetworkService {
 
     public weak var networkServiceDelegate: NetworkServiceDelegate?
 
-    let name: String?
+    let parentName: String?
 
     public init(sleepTimeInSeconds: Double = 5.0, parentName: String? = nil) {
         self.sleepTimeInSeconds = sleepTimeInSeconds
-        self.name = parentName
+        self.parentName = parentName
     }
 
     /**
@@ -236,7 +236,7 @@ public class NetworkService: INetworkService {
 
             // login IMAP
             // TODO: Check if needed
-            let opImapLogin = LoginImapOperation(imapSyncData: imapSyncData, name: name)
+            let opImapLogin = LoginImapOperation(imapSyncData: imapSyncData, name: parentName)
             opImapLogin.completionBlock = {
                 self.workerQueue.async {
                     var ops: [BaseOperation] = [opImapLogin]
@@ -255,7 +255,7 @@ public class NetworkService: INetworkService {
 
             // 3.b Fetch current list of interesting mailboxes
             let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData,
-                                                       name: name)
+                                                       name: parentName)
             opFetchFolders.completionBlock = {
                 self.workerQueue.async {
                     Log.info(component: self.comp, content: "opFetchFolders finished")
@@ -275,7 +275,7 @@ public class NetworkService: INetworkService {
             var lastImapOp: Operation? = nil
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
-                    imapSyncData: imapSyncData, folderName: fi.name, name: name)
+                    imapSyncData: imapSyncData, folderName: fi.name, name: parentName)
                 self.workerQueue.async {
                     Log.info(component: self.comp, content: "fetchMessagesOp finished")
                 }
@@ -293,7 +293,7 @@ public class NetworkService: INetworkService {
                 if let folderID = fi.folderID, let lastUID = fi.lastUID {
                     let syncMessagesOp = SyncMessagesOperation(
                         imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
-                        lastUID: lastUID, name: name)
+                        lastUID: lastUID, name: parentName)
                     syncMessagesOp.completionBlock = {
                         Log.info(component: self.comp, content: "syncMessagesOp finished")
                     }
