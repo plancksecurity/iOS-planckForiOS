@@ -174,4 +174,68 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
     }
+
+    class AccountObserver: AccountDelegate {
+        let expAccountVerified: XCTestExpectation?
+        var account: Account?
+
+        init(expAccountVerified: XCTestExpectation?) {
+            self.expAccountVerified = expAccountVerified
+        }
+
+        func didVerify(account: Account, error: NSError?) {
+            XCTAssertNil(error)
+            expAccountVerified?.fulfill()
+            self.account = account
+        }
+    }
+
+    func testAccountVerification() {
+        XCTAssertTrue(Account.all().isEmpty)
+
+        let del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced"))
+        let networkService = NetworkService(parentName: #function)
+        networkService.networkServiceDelegate = del
+
+        CdAccount.sendLayer = networkService
+
+        let accountObserver = AccountObserver(
+            expAccountVerified: expectation(description: "expAccountVerified"))
+        MessageModelConfig.accountDelegate = accountObserver
+
+        let account = TestData().createWorkingAccount()
+
+        XCTAssertTrue(account.needsVerification)
+        for cr in account.serverCredentials {
+            XCTAssertTrue(cr.needsVerification)
+        }
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        guard let verifiedAccount = accountObserver.account else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertFalse(verifiedAccount.needsVerification)
+        for cr in verifiedAccount.serverCredentials {
+            XCTAssertFalse(cr.needsVerification)
+        }
+
+        XCTAssertFalse(verifiedAccount.rootFolders.isEmpty)
+        let inbox = verifiedAccount.folder(ofType: .inbox)
+        XCTAssertNotNil(inbox)
+        if let inb = inbox {
+            XCTAssertGreaterThan(inb.messageCount(), 0)
+        }
+
+        del.expCanceled = expectation(description: "expCanceled")
+        networkService.cancel()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+    }
 }
