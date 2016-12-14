@@ -127,6 +127,7 @@ public class NetworkService: INetworkService {
                 }
                 if accountVerified {
                     account.needsVerification = false
+                    Record.saveAndWait(context: context)
                     self.sendLayerDelegate?.didVerify(cdAccount: account, error: nil)
                 } else {
                     var error: NSError?

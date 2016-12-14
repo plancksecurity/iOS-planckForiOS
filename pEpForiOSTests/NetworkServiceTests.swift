@@ -220,6 +220,12 @@ class NetworkServiceTests: XCTestCase {
             return
         }
 
+        guard let cdAccount = CdAccount.first() else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(cdAccount.needsVerification)
+
         XCTAssertFalse(verifiedAccount.needsVerification)
         for cr in verifiedAccount.serverCredentials {
             XCTAssertFalse(cr.needsVerification)
