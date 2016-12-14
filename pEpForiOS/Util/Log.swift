@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import MessageModel
+
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
 
@@ -57,5 +59,27 @@ extension Log: CWLogging {
 
     @objc open func errorComponent(_ component: String, message: String) {
         Log.error(component: component, errorString: message)
+    }
+}
+
+extension Log: MessageModelLogging {
+    public func info(component: String, content: String) {
+        Log.info(component: component, content: content)
+    }
+
+    public func warn(component: String, content: String) {
+        Log.warn(component: component, content: content)
+    }
+
+    public func error(component: String, error: NSError) {
+        Log.error(component: component, error: error)
+    }
+
+    public func error(component: String, errorString: String, error: NSError) {
+        Log.error(component: component, errorString: errorString, error: error)
+    }
+
+    public func error(component: String, errorString: String) {
+        Log.error(component: component, errorString: errorString)
     }
 }
