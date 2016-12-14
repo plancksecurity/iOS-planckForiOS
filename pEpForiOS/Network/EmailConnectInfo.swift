@@ -63,13 +63,6 @@ public extension ConnectionTransport {
 
 }
 
-// This enum also exists in the MessageModel: to be put to a third (shared code) place.
-public enum Transport: Int {
-    case plain
-    case tls
-    case startTls
-}
-
 public enum AuthMethod: String {
     case Plain = "PLAIN"
     case Login = "LOGIN"
