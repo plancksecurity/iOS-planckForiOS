@@ -49,6 +49,7 @@ class AccountsFoldersViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: standardCell)
     }
 
@@ -145,17 +146,18 @@ class AccountsFoldersViewController: UITableViewController {
                 withIdentifier: standardCell, for: indexPath)
 
             let email = accounts[(indexPath as NSIndexPath).row].user.address
-            cell.textLabel?.text = String.init(
+            cell.textLabel?.text = String(
                 format: NSLocalizedString(
                     "Inbox (%@)", comment: "Table view label for an inbox for an account"), email)
+            cell.imageView?.image = UIImage(named: "folders-icon-inbox")
             cell.accessoryType = .disclosureIndicator
 
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: standardCell, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: standardCell, for: indexPath)
 
             cell.textLabel?.text = accounts[(indexPath as NSIndexPath).row].user.address
+            cell.imageView?.image = UIImage(named: "folders-icon-inbox")
             cell.accessoryType = .disclosureIndicator
 
             return cell

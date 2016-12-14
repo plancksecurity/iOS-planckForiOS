@@ -19,15 +19,18 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
         super.awakeFromNib()
         
         if account == nil {
-            textView.text = accounts.first?.user.address
+            account = accounts.first?.user.address
+            textView.text = account
         }
     }
     
-    public func togglePicker() {
-        picker.isHidden = !isExpanded && accounts.count > 1
+    // MARK: - Public Methods
+    
+    public final func togglePicker() {
+        picker.isHidden = !isExpanded
     }
     
-    // MARK: UIPickerView Delegate & Datasource
+    // MARK: - UIPickerView Delegate & Datasource
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
