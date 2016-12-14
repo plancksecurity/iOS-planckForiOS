@@ -38,7 +38,7 @@ public class NetworkService: INetworkService {
     let sleepTimeInSeconds: Double
 
     let workerQueue = DispatchQueue(
-        label: "net.pep-security.apps.pEp.service", qos: .utility, target: nil)
+        label: "net.pep-security.apps.pEp.service.NetworkService", qos: .utility, target: nil)
     let backgroundQueue = OperationQueue()
 
     var cancelled = false
