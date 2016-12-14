@@ -101,19 +101,32 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNil(CdMessage.all())
     }
 
-    class AccountObserver: AccountDelegate {
+    class SendLayerObserver: SendLayerDelegate {
         let expAccountVerified: XCTestExpectation?
 
         init(expAccountVerified: XCTestExpectation? = nil) {
             self.expAccountVerified = expAccountVerified
         }
 
-        public func didVerify(account: MessageModel.Account, error: NSError?) {
+        func didVerify(cdAccount: CdAccount, error: NSError?) {
+            XCTAssertNil(error)
             expAccountVerified?.fulfill()
+        }
+
+        func newMessage(cdMessage: CdMessage) {
+            XCTFail()
+        }
+
+        func didRemove(cdFolder: CdFolder) {
+            XCTFail()
+        }
+
+        func didRemove(cdMessage: CdMessage) {
+            XCTFail()
         }
     }
 
-    func testAccountVerification() {
+    func testCdAccountVerification() {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
@@ -124,8 +137,8 @@ class NetworkServiceTests: XCTestCase {
         networkService.networkServiceDelegate = del
 
         let expAccountVerified = expectation(description: "expAccountVerified")
-        let accountDelegate = AccountObserver(expAccountVerified: expAccountVerified)
-        MessageModelConfig.accountDelegate = accountDelegate
+        let sendLayerDelegate = SendLayerObserver(expAccountVerified: expAccountVerified)
+        networkService.sendLayerDelegate = sendLayerDelegate
 
         let cdAccount = TestData().createWorkingCdAccount()
         Record.saveAndWait()
