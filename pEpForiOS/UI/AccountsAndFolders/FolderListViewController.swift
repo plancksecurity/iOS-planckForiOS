@@ -144,9 +144,7 @@ class FolderListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView,
                             didSelectRowAt indexPath: IndexPath) {
         let fi = folderAt(indexPath: indexPath)
-        emailListConfig = EmailListConfig.init(
-            appConfig: config.appConfig,
-            account: config.account, folder: fi)
+        emailListConfig = EmailListConfig(appConfig: config.appConfig, folder: fi)
 
         performSegue(withIdentifier: segueShowEmails, sender: self)
     }

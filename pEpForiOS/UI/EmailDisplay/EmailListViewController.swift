@@ -14,7 +14,7 @@ import MessageModel
 
 struct EmailListConfig {
     let appConfig: AppConfig
-    let account: Account?
+
     /** The folder to display, if it exists */
     var folder: Folder?
 }
@@ -35,16 +35,6 @@ class EmailListViewController: UITableViewController {
 
     var state = UIState()
     
-    /**
-     The message that should be saved as a draft when compose gets aborted.
-     */
-    var draftMessageToStore: Message?
-
-    /**
-     When the user taps on a draft email, this is the message that was selected
-     and should be given to the compose view.
-     */
-    var draftMessageToCompose: Message?
     let searchController = UISearchController(searchResultsController: nil)
 
     required init?(coder aDecoder: NSCoder) {
@@ -86,29 +76,6 @@ class EmailListViewController: UITableViewController {
     }
 
     @IBAction func backFromComposeSaveDraftSegue(_ segue: UIStoryboardSegue) {
-        guard let message = draftMessageToStore else {
-            return
-        }
-
-        state.isSynching = true
-        updateUI()
-
-        message.imapFlags?.draft = true
-
-        // TODO: IOS 222: Save as draft
-        if let folder = draftMessageToStore?.parent as? Folder {
-            if folder.folderType == .drafts {
-                return
-            }
-        }
-
-        guard let account = config.account else {
-            return
-        }
-        
-        if account.folder(ofType: FolderType.drafts) != nil {
-            return
-        }
     }
 
     
@@ -151,19 +118,13 @@ class EmailListViewController: UITableViewController {
         return cell
     }
 
-    
-
     // MARK: - UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView,
-                            didSelectRowAt indexPath: IndexPath) {
-        draftMessageToCompose = nil
-
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
 
         if let fol = config.folder {
             if fol.folderType == .drafts {
-                draftMessageToCompose = cell.messageAt(indexPath: indexPath, config: config)
                 performSegue(withIdentifier: segueCompose, sender: cell)
                 return
             }
@@ -188,9 +149,6 @@ class EmailListViewController: UITableViewController {
     // MARK: - Misc
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Make sure the current account is set, if defined
-        config.appConfig.currentAccount = config.account
-
         if segue.identifier == segueCompose {
             //let destination = segue.destination as! ComposeTableViewController
             // destination.appConfig = config.appConfig
@@ -213,23 +171,7 @@ class EmailListViewController: UITableViewController {
         }
     }
 
-    func syncFlagsToServer(message: Message) {
-        // TODO: IOS 222: Sync flags back to server
-    }
-
     func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-        // preparing the title action to show when user swipe
-//        var localizedIsFlagTitle = " "
-//        if (isImportant(message: message)) {
-//            localizedIsFlagTitle = NSLocalizedString(
-//                "Unflag",
-//                comment: "Unflag button title in swipe action on EmailListViewController")
-//        } else {
-//            localizedIsFlagTitle = NSLocalizedString(
-//                "Flag",
-//                comment: "Flag button title in swipe action on EmailListViewController")
-//        }
-
         // preparing action to trigger when user swipe
         let isFlagCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
@@ -239,7 +181,6 @@ class EmailListViewController: UITableViewController {
                 } else {
                     message.imapFlags?.flagged = true
                 }
-                self.syncFlagsToServer(message: message)
                 self.tableView.reloadRows(at: [indexPath], with: .none)
         }
         // creating the action
@@ -261,7 +202,6 @@ class EmailListViewController: UITableViewController {
             { (action, indexPath) in
                 let message = cell.messageAt(indexPath: indexPath, config: self.config)
                 message?.imapFlags?.deleted = true
-                self.syncFlagsToServer(message: message!)
         }
 
         // creating the action
@@ -294,7 +234,6 @@ class EmailListViewController: UITableViewController {
                 } else {
                     message.imapFlags?.seen = true
                 }
-                self.syncFlagsToServer(message: message)
                 self.tableView.reloadRows(at: [indexPath], with: .none)
         }
         let isReadAction = UITableViewRowAction(style: .default, title: localizedisReadTitle,

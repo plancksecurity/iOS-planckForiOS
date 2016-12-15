@@ -105,8 +105,7 @@ class AccountsFoldersViewController: UITableViewController {
         let account = accounts[0]
         let inbox = account.inbox()
         
-        emailListConfig = EmailListConfig.init(
-            appConfig: ac, account: account, folder: inbox)
+        emailListConfig = EmailListConfig(appConfig: ac, folder: inbox)
     
         self.performSegue(withIdentifier: segueEmailList, sender: self)
         Log.verbose(component: comp, content: "Account verified")
@@ -181,8 +180,7 @@ class AccountsFoldersViewController: UITableViewController {
             let account = accounts[(indexPath as NSIndexPath).row]
             let inbox = account.inbox()
 
-            emailListConfig = EmailListConfig.init(
-                appConfig: ac, account: account, folder: inbox)
+            emailListConfig = EmailListConfig(appConfig: ac, folder: inbox)
 
             self.performSegue(withIdentifier: segueEmailList, sender: self)
         } else {
