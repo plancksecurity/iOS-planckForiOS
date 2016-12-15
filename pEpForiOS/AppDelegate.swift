@@ -59,7 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // and pretty much don't do anything.
             return false
         }
-
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession()
 

@@ -54,6 +54,8 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
             super.viewWillAppear(animated)
             return
@@ -73,13 +75,7 @@ class AccountsFoldersViewController: UITableViewController {
         if accounts.isEmpty {
             self.performSegue(withIdentifier: segueSetupNewAccount, sender: self)
         }
-
-        super.viewWillAppear(animated)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        print("Account Verified! 2")
     }
 
     func updateModel() {
@@ -93,9 +89,32 @@ class AccountsFoldersViewController: UITableViewController {
 
     @IBAction func newAccountCreatedSegue(_ segue: UIStoryboardSegue) {
         // load new account
-        updateModel()
+        
+        //_myself()
     }
-
+    
+    func accountVerified() {
+        updateModel()
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "VerifyShowInbox"), object: nil)
+        self.navigationController?.dismiss(animated: true, completion: { 
+            self.showInbox()
+        })
+    }
+    
+    func showInbox() {
+        guard let ac = appConfig else {
+            return
+        }
+        let account = accounts[0]
+        let inbox = account.inbox()
+        
+        emailListConfig = EmailListConfig.init(
+            appConfig: ac, account: account, folder: inbox)
+    
+        self.performSegue(withIdentifier: segueEmailList, sender: self)
+        print("Account Verified! 1")
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -191,6 +210,9 @@ class AccountsFoldersViewController: UITableViewController {
                     return
             }
             vc.config = folderListConfig
+        }
+        else if segue.identifier == segueSetupNewAccount {
+            NotificationCenter.default.addObserver(self, selector: #selector(accountVerified) , name: NSNotification.Name(rawValue: "VerifyShowInbox"), object: nil)
         }
     }
     

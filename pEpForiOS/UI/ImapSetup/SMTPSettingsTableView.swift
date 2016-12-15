@@ -177,7 +177,8 @@ extension SMTPSettingsTableView: AccountDelegate {
                 self.showErrorMessage(err.localizedDescription)
             } else {
                 // unwind back to INBOX on success
-                self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "VerifyShowInbox"), object: nil)
+                //self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: nil)
             }
         }
     }
