@@ -17,8 +17,8 @@ import MessageModel
 open class MySelfOperation: BaseOperation {
     let backgrounder: BackgroundTaskProtocol?
 
-    public init(backgroundTaskExe: BackgroundTaskProtocol? = nil) {
-        self.backgrounder = backgroundTaskExe
+    public init(backgrounder: BackgroundTaskProtocol? = nil) {
+        self.backgrounder = backgrounder
     }
 
     open override func main() {
@@ -42,7 +42,7 @@ open class MySelfOperation: BaseOperation {
         // Invoke mySelf on all identities
         var session: PEPSession? = PEPSession()
         for pEpIdDict in ids.values {
-            let taskID = backgrounder?.beginBackgroundTask() { session = nil }
+            let taskID = backgrounder?.beginBackgroundTask(taskName: comp) { session = nil }
             session?.mySelf(pEpIdDict)
             backgrounder?.endBackgroundTask(taskID)
         }

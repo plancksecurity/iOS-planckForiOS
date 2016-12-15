@@ -25,7 +25,7 @@ open class BaseOperation: Operation {
         return !errors.isEmpty
     }
 
-    public init(name: String? = nil) {
+    public init(parentName: String? = nil) {
         super.init()
         comp = String(describing: self)
 
@@ -42,9 +42,9 @@ open class BaseOperation: Operation {
             Log.error(component: comp, error: error)
         }
 
-        if let n = name {
+        if let n = parentName {
             comp = "\(comp): \(n)"
-            self.name = comp
         }
+        self.name = comp
     }
 }

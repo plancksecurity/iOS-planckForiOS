@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var application: UIApplication!
 
-    let backgroundQueue = OperationQueue()
+    let mySelfQueue = LimitedOperationQueue()
 
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
@@ -66,7 +66,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         loadCoreDataStack()
 
-        networkService = NetworkService()
+        kickOffMySelf()
+
+        networkService = NetworkService(backgrounder: self)
         CdAccount.sendLayer = networkService
 
         DispatchQueue.global(qos: .userInitiated).async {
@@ -87,9 +89,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.info(component: comp, content: "applicationDidEnterBackground")
 
         self.application = application
+        kickOffMySelf()
+    }
 
-        let mySelfOp = MySelfOperation(backgroundTaskExe: self)
-        backgroundQueue.addOperation(mySelfOp)
+    func kickOffMySelf() {
+        mySelfQueue.addOperation(MySelfOperation(backgrounder: self))
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -170,5 +174,11 @@ extension AppDelegate: BackgroundTaskProtocol {
         if let bID = taskID {
             application.endBackgroundTask(bID)
         }
+    }
+}
+
+extension AppDelegate: KickOffMySelfProtocol {
+    func startMySelf() {
+        kickOffMySelf()
     }
 }

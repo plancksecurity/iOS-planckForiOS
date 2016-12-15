@@ -190,12 +190,58 @@ class NetworkServiceTests: XCTestCase {
         }
     }
 
+    class Backgrounder: BackgroundTaskProtocol {
+        let expBackgrounded: XCTestExpectation?
+        let taskName: String?
+        let taskID = 1
+
+        init(taskName: String? = nil, expBackgrounded: XCTestExpectation? = nil) {
+            self.expBackgrounded = expBackgrounded
+            self.taskName = taskName
+        }
+
+        func beginBackgroundTask(taskName: String?,
+                                 expirationHandler: (() -> Void)?) -> BackgroundTaskID {
+            XCTAssertEqual(taskName, self.taskName)
+            return taskID
+        }
+
+        func endBackgroundTask(_ taskID: BackgroundTaskID?) {
+            XCTAssertEqual(taskID, taskID)
+            expBackgrounded?.fulfill()
+        }
+    }
+
+    class MySelfObserver: KickOffMySelfProtocol {
+        let expMySelfed: XCTestExpectation?
+        let queue = LimitedOperationQueue()
+        let backgrounder: Backgrounder
+
+        init(expMySelfed: XCTestExpectation?, expBackgrounded: XCTestExpectation?) {
+            self.expMySelfed = expMySelfed
+            backgrounder = Backgrounder(
+                taskName: "MySelfOperation", expBackgrounded: expBackgrounded)
+        }
+
+        func startMySelf() {
+            let op = MySelfOperation(backgrounder: backgrounder)
+            op.completionBlock = {
+                self.expMySelfed?.fulfill()
+            }
+            queue.addOperation(op)
+        }
+    }
+
     func testAccountVerification() {
         XCTAssertTrue(Account.all().isEmpty)
 
+        let mySelfObserver = MySelfObserver(
+            expMySelfed: expectation(description: "expMySelfed"),
+            expBackgrounded: expectation(description: "expBackgrounded"))
+
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-        let networkService = NetworkService(parentName: #function)
+        let networkService = NetworkService(parentName: #function, mySelfer: mySelfObserver)
         networkService.networkServiceDelegate = del
 
         CdAccount.sendLayer = networkService
@@ -211,7 +257,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertTrue(cr.needsVerification)
         }
 
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime * 2, handler: { error in
             XCTAssertNil(error)
         })
 
@@ -237,6 +283,8 @@ class NetworkServiceTests: XCTestCase {
         if let inb = inbox {
             XCTAssertGreaterThan(inb.messageCount(), 0)
         }
+
+        XCTAssertNotNil(cdAccount.identity?.fingerPrint)
 
         del.expCanceled = expectation(description: "expCanceled")
         networkService.cancel()

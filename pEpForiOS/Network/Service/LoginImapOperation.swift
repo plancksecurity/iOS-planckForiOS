@@ -16,7 +16,7 @@ open class LoginImapOperation: ConcurrentBaseOperation {
 
     public init(imapSyncData: ImapSyncData, name: String? = nil) {
         self.imapSyncData = imapSyncData
-        super.init(name: name)
+        super.init(parentName: name)
     }
 
     open override func main() {

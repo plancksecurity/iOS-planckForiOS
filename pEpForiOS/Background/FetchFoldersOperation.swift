@@ -53,7 +53,7 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
         self.imapSyncData = imapSyncData
 
-        super.init(name: name)
+        super.init(parentName: name)
 
         folderBuilder = ImapFolderBuilder(accountID: imapSyncData.connectInfo.accountObjectID,
                                           backgroundQueue: backgroundQueue)

@@ -48,9 +48,16 @@ public class NetworkService: INetworkService {
 
     let parentName: String?
 
-    public init(sleepTimeInSeconds: Double = 5.0, parentName: String? = nil) {
+    let backgrounder: BackgroundTaskProtocol?
+    let mySelfer: KickOffMySelfProtocol?
+
+    public init(sleepTimeInSeconds: Double = 5.0, parentName: String? = nil,
+                backgrounder: BackgroundTaskProtocol? = nil,
+                mySelfer: KickOffMySelfProtocol? = nil) {
         self.sleepTimeInSeconds = sleepTimeInSeconds
         self.parentName = parentName
+        self.backgrounder = backgrounder
+        self.mySelfer = mySelfer
     }
 
     /**
@@ -129,6 +136,7 @@ public class NetworkService: INetworkService {
                     account.needsVerification = false
                     Record.saveAndWait(context: context)
                     self.sendLayerDelegate?.didVerify(cdAccount: account, error: nil)
+                    self.mySelfer?.startMySelf()
                 } else {
                     var error: NSError?
                     for op in operations {

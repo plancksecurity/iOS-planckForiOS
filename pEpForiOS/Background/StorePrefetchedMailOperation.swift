@@ -27,7 +27,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
         self.accountID = accountID
         self.message = message
         self.quick = quick
-        super.init(name: name)
+        super.init(parentName: name)
     }
 
     override open func main() {

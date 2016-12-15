@@ -27,7 +27,7 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
         self.folderID = folderID
         self.folderToOpen = folderName
         self.lastUID = lastUID
-        super.init(name: name)
+        super.init(parentName: name)
     }
 
     public convenience init?(imapSyncData: ImapSyncData, folder: CdFolder, lastUID: UInt) {

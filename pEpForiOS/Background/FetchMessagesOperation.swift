@@ -27,7 +27,7 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
         self.connectInfo = imapSyncData.connectInfo
         self.connectionManager = imapSyncData
         self.folderToOpen = folderName
-        super.init(name: name)
+        super.init(parentName: name)
     }
 
     override open func main() {

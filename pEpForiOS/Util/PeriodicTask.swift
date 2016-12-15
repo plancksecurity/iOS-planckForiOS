@@ -11,18 +11,14 @@ import UIKit
 open class PeriodicTask {
     public typealias OperationProvider = () -> Operation
 
-    let maxNumberOfTasks = 2
     let operationProvider: OperationProvider
     let checkEverySecond: TimeInterval
 
-    let workerQueue = DispatchQueue(
-        label: "net.pep-security.apps.pEp.service.OperationProvider", qos: .utility, target: nil)
-    let backgroundQueue = OperationQueue()
+    let backgroundQueue = LimitedOperationQueue()
 
     public init(checkEvery: TimeInterval, operationProvider: @escaping OperationProvider) {
         self.checkEverySecond = checkEvery
         self.operationProvider = operationProvider
-        backgroundQueue.maxConcurrentOperationCount = 1
     }
 
     public func start() {
@@ -30,20 +26,12 @@ open class PeriodicTask {
     }
 
     func addNewWork() {
-        workerQueue.async {
-            self.addNewWorkInternal()
-        }
-    }
-
-    func addNewWorkInternal() {
-        if backgroundQueue.operationCount < maxNumberOfTasks {
-            let op = operationProvider()
-            op.completionBlock = {
-                self.workerQueue.asyncAfter(deadline: DispatchTime.now() + self.checkEverySecond) {
-                    self.addNewWork()
-                }
+        let op = operationProvider()
+        op.completionBlock = {
+            self.backgroundQueue.asyncAfter(deadline: DispatchTime.now() + self.checkEverySecond) {
+                self.addNewWork()
             }
-            backgroundQueue.addOperation(op)
         }
+        backgroundQueue.addOperation(op)
     }
 }
