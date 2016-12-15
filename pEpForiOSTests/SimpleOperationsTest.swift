@@ -102,8 +102,9 @@ class SimpleOperationsTest: XCTestCase {
             }
             XCTAssertFalse(uuid.contains(localHostname))
 
-            XCTAssertTrue(m.longMessage != nil || m.longMessageFormatted != nil ||
-                (m.attachments?.count ?? 0 > 0 && m.isProbablyPGPMime()))
+            let isValidMessage = m.longMessage != nil || m.longMessageFormatted != nil ||
+                m.attachments?.count ?? 0 > 0
+            XCTAssertTrue(isValidMessage)
 
             guard let folder = m.parent else {
                 XCTFail()
