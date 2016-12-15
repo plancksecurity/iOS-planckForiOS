@@ -75,7 +75,7 @@ class AccountsFoldersViewController: UITableViewController {
         if accounts.isEmpty {
             self.performSegue(withIdentifier: segueSetupNewAccount, sender: self)
         }
-        print("Account Verified! 2")
+        Log.verbose(component: comp, content: "Account Verified! 2")
     }
 
     func updateModel() {
