@@ -12,26 +12,6 @@ import CoreData
 
 import MessageModel
 
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 struct EmailListConfig {
     let appConfig: AppConfig
     let account: Account?
@@ -55,9 +35,6 @@ class EmailListViewController: UITableViewController {
 
     var state = UIState()
     
-
-    //var refreshController: UIRefreshControl!
-
     /**
      The message that should be saved as a draft when compose gets aborted.
      */
@@ -135,12 +112,9 @@ class EmailListViewController: UITableViewController {
     }
 
     
-    @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {
-        
-    }
+    @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {}
     
     func updateModel() {
-        config.folder = MockData.createFolder(config.account!)
         tableView.reloadData()
     }
 
