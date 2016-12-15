@@ -88,9 +88,6 @@ class AccountsFoldersViewController: UITableViewController {
     }
 
     @IBAction func newAccountCreatedSegue(_ segue: UIStoryboardSegue) {
-        // load new account
-        
-        //_myself()
     }
     
     func accountVerified() {
@@ -112,7 +109,7 @@ class AccountsFoldersViewController: UITableViewController {
             appConfig: ac, account: account, folder: inbox)
     
         self.performSegue(withIdentifier: segueEmailList, sender: self)
-        print("Account Verified! 1")
+        Log.verbose(component: comp, content: "Account verified")
     }
     
     // MARK: - Table view data source
