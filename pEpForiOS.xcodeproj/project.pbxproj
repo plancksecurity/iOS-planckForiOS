@@ -81,6 +81,7 @@
 		4352FA1F1DC79E9B0081161A /* ShortCircuitSendLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA1E1DC79E9B0081161A /* ShortCircuitSendLayer.swift */; };
 		4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
+		436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C23271E02948400071430 /* BackgroundTaskProtocol.swift */; };
 		436F8E101D367039007E9829 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E0F1D367039007E9829 /* StringExtensions.swift */; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
 		43701BF51D92B6B4007D63B2 /* LoadUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43701BF41D92B6B4007D63B2 /* LoadUITest.swift */; };
@@ -326,6 +327,7 @@
 		4352FA1E1DC79E9B0081161A /* ShortCircuitSendLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortCircuitSendLayer.swift; sourceTree = "<group>"; };
 		4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncMessagesOperation.swift; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
+		436C23271E02948400071430 /* BackgroundTaskProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundTaskProtocol.swift; sourceTree = "<group>"; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		436F8E0F1D367039007E9829 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
@@ -735,6 +737,7 @@
 				43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */,
 				222B35571DF96389007A1F82 /* Capability.swift */,
 				433019E51E01A71300788B89 /* PeriodicTask.swift */,
+				436C23271E02948400071430 /* BackgroundTaskProtocol.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1151,6 +1154,7 @@
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				222B356D1DF96C30007A1F82 /* ComposeCell.swift in Sources */,
 				222B35721DF96CC8007A1F82 /* ComposeFieldModel.swift in Sources */,
+				436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */,
 				431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */,
 				222B35521DF95C1C007A1F82 /* Array+Extension.swift in Sources */,
 				430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */,

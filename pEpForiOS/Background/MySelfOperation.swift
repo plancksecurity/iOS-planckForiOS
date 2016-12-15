@@ -15,6 +15,12 @@ import MessageModel
  Triggers myself on all identities who are own identities.
  */
 open class MySelfOperation: BaseOperation {
+    let backgrounder: BackgroundTaskProtocol?
+
+    public init(backgroundTaskExe: BackgroundTaskProtocol? = nil) {
+        self.backgrounder = backgroundTaskExe
+    }
+
     open override func main() {
         let context = Record.Context.background
         var ids = [NSManagedObjectID: NSMutableDictionary]()
@@ -34,9 +40,11 @@ open class MySelfOperation: BaseOperation {
         }
 
         // Invoke mySelf on all identities
-        let session = PEPSession()
+        var session: PEPSession? = PEPSession()
         for pEpIdDict in ids.values {
-            session.mySelf(pEpIdDict)
+            let taskID = backgrounder?.beginBackgroundTask() { session = nil }
+            session?.mySelf(pEpIdDict)
+            backgrounder?.endBackgroundTask(taskID)
         }
 
         context.performAndWait {
