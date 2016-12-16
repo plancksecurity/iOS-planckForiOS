@@ -28,7 +28,7 @@ open class CreateLocalSpecialFoldersOperation: BaseOperation {
     func createFolders(context: NSManagedObjectContext) {
         guard let account = context.object(with: accountObjectID)
             as? CdAccount else {
-                errors.append(Constants.errorCannotFindAccount(component: comp))
+                addError(Constants.errorCannotFindAccount(component: comp))
                 return
         }
         for kind in FolderType.allValuesToCreate {

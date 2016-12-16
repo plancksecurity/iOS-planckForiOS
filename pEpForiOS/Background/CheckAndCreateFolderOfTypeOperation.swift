@@ -57,7 +57,7 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     func process(context privateMOC: NSManagedObjectContext) {
         guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
             as? CdAccount else {
-                errors.append(Constants.errorCannotFindAccount(component: comp))
+                addError(Constants.errorCannotFindAccount(component: comp))
                 markAsFinished()
                 return
         }

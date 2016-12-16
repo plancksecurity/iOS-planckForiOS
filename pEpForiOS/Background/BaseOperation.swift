@@ -9,24 +9,27 @@
 /**
  Basic NSOperation that can gather errors.
  */
-open class BaseOperation: Operation {
+open class BaseOperation: Operation, ErrorProtocol {
     open var comp = "BaseOperation"
-    open var errors: [NSError] = []
+    let errorContainer: ErrorProtocol
 
     open var error: NSError? {
-        return errors.first
+        return errorContainer.error
     }
 
     open func addError(_ error: NSError) {
-        errors.append(error)
+        errorContainer.addError(error)
     }
 
     open func hasErrors() -> Bool {
-        return !errors.isEmpty
+        return errorContainer.hasErrors()
     }
 
-    public init(parentName: String? = nil) {
+    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer()) {
+        self.errorContainer = errorContainer
+
         super.init()
+
         comp = String(describing: self)
 
         do {

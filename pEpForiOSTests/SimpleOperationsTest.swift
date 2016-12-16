@@ -251,7 +251,7 @@ class SimpleOperationsTest: XCTestCase {
                                                   message: message, quick: i % 2 == 0)
             op.completionBlock = {
                 numberOfCallbacksCalled += 1
-                XCTAssertEqual(op.errors.count, 0)
+                XCTAssertFalse(op.hasErrors())
                 if numberOfCallbacksCalled == numMails {
                     expMailsStored.fulfill()
                 }
@@ -704,7 +704,7 @@ class SimpleOperationsTest: XCTestCase {
             }
             XCTAssertTrue(encounteredBCC)
             XCTAssertTrue(encounteredCC)
-            XCTAssertEqual(encOp.errors.count, 0)
+            XCTAssertFalse(encOp.hasErrors())
         })
     }
 
@@ -831,7 +831,7 @@ class SimpleOperationsTest: XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime * 2, handler: { error in
             XCTAssertNil(error)
-            XCTAssertEqual(sendOp.errors.count, 0)
+            XCTAssertFalse(sendOp.hasErrors())
             XCTAssertEqual(encryptionData.messagesSent.count, numMails)
         })
     }

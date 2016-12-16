@@ -55,7 +55,7 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
 
         guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
             as? CdAccount else {
-                errors.append(Constants.errorCannotFindAccount(component: comp))
+                addError(Constants.errorCannotFindAccount(component: comp))
                 markAsFinished()
                 return
         }

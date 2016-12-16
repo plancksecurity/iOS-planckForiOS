@@ -44,14 +44,14 @@ open class StorePrefetchedMailOperation: BaseOperation {
     func storeMessage(context: NSManagedObjectContext) {
         guard let account = context.object(with: accountID)
             as? CdAccount else {
-                errors.append(Constants.errorCannotFindAccount(component: comp))
+                addError(Constants.errorCannotFindAccount(component: comp))
                 return
         }
         let result = insert(pantomimeMessage: message, account: account, quick: quick)
         if result != nil {
             Record.saveAndWait(context: context)
         } else {
-            self.errors.append(Constants.errorCannotStoreMessage(self.comp))
+            self.addError(Constants.errorCannotStoreMessage(self.comp))
         }
     }
 
