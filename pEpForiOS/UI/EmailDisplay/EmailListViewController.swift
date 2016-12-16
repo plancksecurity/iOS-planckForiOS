@@ -13,7 +13,7 @@ import CoreData
 import MessageModel
 
 struct EmailListConfig {
-    let appConfig: AppConfig
+    var appConfig: AppConfig?
 
     /** The folder to display, if it exists */
     var folder: Folder?
@@ -26,15 +26,10 @@ class EmailListViewController: UITableViewController {
     struct UIState {
         var isSynching: Bool = false
     }
-    
-    let segueShowEmail = "segueShowEmail"
-    let segueCompose = "segueCompose"
-    let segueUserSettings = "segueUserSettings"
 
     var config: EmailListConfig!
-
     var state = UIState()
-    
+    var accounts = [Account]()
     let searchController = UISearchController(searchResultsController: nil)
 
     required init?(coder aDecoder: NSCoder) {
@@ -46,6 +41,7 @@ class EmailListViewController: UITableViewController {
         super.viewDidLoad()
         
         UIHelper.emailListTableHeight(self.tableView)
+        initialConfig()
         addSearchBar()
         addRefreshControl()
     }
@@ -54,6 +50,21 @@ class EmailListViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         updateModel()
+    }
+    
+    func initialConfig() {
+//        if config.appConfig == nil {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        else {
+            return
+        }
+        config = EmailListConfig(appConfig: appDelegate.appConfig, folder: Folder.unifiedInbox())
+//        }
+        //config.folder = Folder.unifiedInbox()
+        accounts = Account.all()
+        if accounts.isEmpty {
+            performSegue(withIdentifier:.segueAddNewAccount, sender: self)
+        }
     }
     
     func addSearchBar() {
@@ -125,12 +136,14 @@ class EmailListViewController: UITableViewController {
 
         if let fol = config.folder {
             if fol.folderType == .drafts {
-                performSegue(withIdentifier: segueCompose, sender: cell)
+                //performSegue(withIdentifier: segueCompose, sender: cell)
+                performSegue(withIdentifier: .segueCompose, sender: cell)
                 return
             }
         }
 
-        performSegue(withIdentifier: segueShowEmail, sender: cell)
+       // performSegue(withIdentifier: segueShowEmail, sender: cell)
+        performSegue(withIdentifier: .segueShowEmail, sender: cell)
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt
@@ -147,29 +160,6 @@ class EmailListViewController: UITableViewController {
     }
 
     // MARK: - Misc
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == segueCompose {
-            //let destination = segue.destination as! ComposeTableViewController
-            // destination.appConfig = config.appConfig
-//            if let draft = draftMessageToCompose {
-//                draft.imapFlags?.seen = true
-//
-//                destination.originalMessage = draft
-//                destination.composeMode = .draft
-//            }
-        } else if segue.identifier == segueShowEmail {
-            guard
-                let vc = segue.destination as? EmailViewController,
-                let cell = sender as? EmailListViewCell,
-                let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config) else {
-                    return
-            }
-            vc.appConfig = config.appConfig
-            vc.message = email
-        }
-    }
 
     func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
         // preparing action to trigger when user swipe
@@ -277,13 +267,15 @@ class EmailListViewController: UITableViewController {
     
     func createReplyAction(cell: EmailListViewCell) ->  UIAlertAction {
         return UIAlertAction(title: "Reply", style: .default) { (action) in
-            self.performSegue(withIdentifier: self.segueCompose, sender: cell)
+           // self.performSegue(withIdentifier: self.segueCompose, sender: cell)
+            self.performSegue(withIdentifier: .segueCompose, sender: cell)
         }
     }
     
     func createForwardAction(cell: EmailListViewCell) -> UIAlertAction {
         return UIAlertAction(title: "Forward", style: .default) { (action) in
-            self.performSegue(withIdentifier: self.segueCompose, sender: cell)
+            //self.performSegue(withIdentifier: self.segueCompose, sender: cell)
+            self.performSegue(withIdentifier: .segueCompose, sender: cell)
         }
     }
     
@@ -304,7 +296,12 @@ class EmailListViewController: UITableViewController {
         refreshControl?.beginRefreshing()
         refreshControl?.endRefreshing()
     }
-
+    
+    // MARK: - Actions
+    @IBAction func unwindToEmailList(for unwindSegue: UIStoryboardSegue) {
+        
+    }
+   
 }
 
 extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
@@ -313,5 +310,47 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
     }
     
     func didDismissSearchController(_ searchController: UISearchController) {
+    }
+}
+
+// MARK: - Navigation
+
+extension EmailListViewController: SegueHandlerType {
+    
+    // MARK: - SegueHandlerType
+    
+    enum SegueIdentifier: String {
+        case segueAddNewAccount
+        case segueEditAccounts
+        case segueShowEmail
+        case segueCompose
+        case noSegue
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .segueCompose:
+            //let destination = segue.destination as! ComposeTableViewController
+            // destination.appConfig = config.appConfig
+            //            if let draft = draftMessageToCompose {
+            //                draft.imapFlags?.seen = true
+            //
+            //                destination.originalMessage = draft
+            //                destination.composeMode = .draft
+        //            }
+            break
+        case .segueShowEmail:
+            guard
+                let vc = segue.destination as? EmailViewController,
+                let cell = sender as? EmailListViewCell,
+                let indexPath = self.tableView.indexPath(for: cell),
+                let email = cell.messageAt(indexPath: indexPath, config: config) else {
+                    return
+            }
+            vc.appConfig = config.appConfig
+            vc.message = email
+            break
+        default: ()
+        }
     }
 }

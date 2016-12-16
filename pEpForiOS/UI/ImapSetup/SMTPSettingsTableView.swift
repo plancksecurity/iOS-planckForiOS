@@ -16,7 +16,6 @@ open class ViewStatus {
 
 open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
-    let unwindToEmailListSegue = "unwindToEmailListSegue"
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var serverValue: UITextField!
@@ -177,9 +176,16 @@ extension SMTPSettingsTableView: AccountDelegate {
                 self.showErrorMessage(err.localizedDescription)
             } else {
                 // unwind back to INBOX on success
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "VerifyShowInbox"), object: nil)
-                //self.performSegue(withIdentifier: self.unwindToEmailListSegue, sender: nil)
+                self.performSegue(withIdentifier: .unwindSegueEmailList, sender: self)
             }
         }
+    }
+}
+
+extension SMTPSettingsTableView: SegueHandlerType {
+    
+   public enum SegueIdentifier: String {
+        case unwindSegueEmailList
+        case noSegue
     }
 }

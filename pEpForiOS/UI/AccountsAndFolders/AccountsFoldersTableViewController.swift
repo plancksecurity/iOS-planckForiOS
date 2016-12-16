@@ -75,7 +75,6 @@ class AccountsFoldersViewController: UITableViewController {
         if accounts.isEmpty {
             self.performSegue(withIdentifier: segueSetupNewAccount, sender: self)
         }
-        Log.verbose(component: comp, content: "Account Verified! 2")
     }
 
     func updateModel() {
@@ -108,7 +107,6 @@ class AccountsFoldersViewController: UITableViewController {
         emailListConfig = EmailListConfig(appConfig: ac, folder: inbox)
     
         self.performSegue(withIdentifier: segueEmailList, sender: self)
-        Log.verbose(component: comp, content: "Account verified")
     }
     
     // MARK: - Table view data source
@@ -217,7 +215,16 @@ class AccountsFoldersViewController: UITableViewController {
         self.performSegue(withIdentifier: segueSetupNewAccount, sender: self)
     }
     
-    @IBAction func unwindToAccounts(for unwindSegue: UIStoryboardSegue) {
-        
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: .unwindSegueEmailList, sender: self)
+    }
+    
+}
+
+extension AccountsFoldersViewController: SegueHandlerType {
+    
+    enum SegueIdentifier: String {
+        case unwindSegueEmailList
+        case noSegue
     }
 }
