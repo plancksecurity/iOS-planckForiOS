@@ -72,6 +72,33 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNotNil(del.accountInfo)
         XCTAssertNotNil(CdFolder.all())
         XCTAssertNotNil(CdMessage.all())
+
+        guard let cdFolder = CdFolder.first(with: ["folderType": FolderType.inbox.rawValue]) else {
+            XCTFail()
+            return
+        }
+        XCTAssertGreaterThan(cdFolder.messages?.count ?? 0, 0)
+        let cdMessages = cdFolder.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
+        XCTAssertGreaterThan(cdMessages.count, 0)
+        for cdMsg in cdMessages {
+            guard let parentF = cdMsg.parent else {
+                XCTFail()
+                continue
+            }
+            XCTAssertEqual(parentF.folderType, FolderType.inbox.rawValue)
+        }
+
+        let inbox = Folder.unifiedInbox()
+        let mc = inbox.messageCount()
+        XCTAssertGreaterThan(mc, 0)
+        for i in 0..<mc {
+            let msg = inbox.messageAt(index: i)
+            XCTAssertNotNil(msg?.shortMessage)
+            XCTAssertTrue(
+                msg?.longMessage != nil || msg?.longMessageFormatted != nil ||
+                    (msg?.attachments.count ?? 0) > 0)
+        }
     }
 
     func testCancelSync() {
