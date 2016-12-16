@@ -38,7 +38,7 @@ public class NetworkService: INetworkService {
     let sleepTimeInSeconds: Double
 
     let workerQueue = DispatchQueue(
-        label: "net.pep-security.apps.pEp.service.NetworkService", qos: .utility, target: nil)
+        label: "NetworkService", qos: .utility, target: nil)
     let backgroundQueue = OperationQueue()
 
     var cancelled = false
@@ -335,7 +335,11 @@ public class NetworkService: INetworkService {
 
     func scheduleOperationLineInternal(
         operationLine: OperationLine, completionBlock: (() -> Void)?) {
-        operationLine.finalOperation.completionBlock = completionBlock
+        let bgID = backgrounder?.beginBackgroundTask()
+        operationLine.finalOperation.completionBlock = {
+            self.backgrounder?.endBackgroundTask(bgID)
+            completionBlock?()
+        }
         for op in operationLine.operations {
             backgroundQueue.addOperation(op)
         }
