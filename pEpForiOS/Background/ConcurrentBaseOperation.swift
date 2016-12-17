@@ -39,7 +39,7 @@ open class ConcurrentBaseOperation: BaseOperation {
     }
 
     open override func start() {
-        if isCancelled {
+        if !shouldRun() {
             markAsFinished()
             return
         }

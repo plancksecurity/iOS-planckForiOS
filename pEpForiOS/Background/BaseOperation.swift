@@ -50,4 +50,14 @@ open class BaseOperation: Operation, ErrorProtocol {
         }
         self.name = comp
     }
+
+    public func shouldRun() -> Bool {
+        if isCancelled {
+            return false
+        }
+        if hasErrors() {
+            return false
+        }
+        return true
+    }
 }

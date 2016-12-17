@@ -30,7 +30,7 @@ open class CreateFoldersOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
-        if isCancelled {
+        if !shouldRun() {
             markAsFinished()
             return
         }

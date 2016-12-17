@@ -43,7 +43,7 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
-        if isCancelled {
+        if !shouldRun() {
             markAsFinished()
             return
         }

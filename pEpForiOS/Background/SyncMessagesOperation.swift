@@ -39,7 +39,7 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
     }
 
     override open func main() {
-        if isCancelled {
+        if !shouldRun() {
             markAsFinished()
             return
         }

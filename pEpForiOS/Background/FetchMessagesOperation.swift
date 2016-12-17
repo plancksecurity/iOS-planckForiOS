@@ -31,7 +31,7 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     }
 
     override open func main() {
-        if isCancelled {
+        if !shouldRun() {
             markAsFinished()
             return
         }
