@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Log.warn(component: comp, content: "Library url: \(applicationDirectory())")
 
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+        if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
             // and pretty much don't do anything.
             return false

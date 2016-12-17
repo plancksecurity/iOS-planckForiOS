@@ -30,6 +30,7 @@ class EmailListViewCell: UITableViewCell {
      created.
      */
     var defaultCellBackgroundColor: UIColor?
+
     let dateFormatter = UIHelper.dateFormatterEmailList()
 
     override func awakeFromNib() {
@@ -44,7 +45,7 @@ class EmailListViewCell: UITableViewCell {
         isReadMessageImage.backgroundColor = .pEpBlue
     }
     
-    func configureCell(indexPath: IndexPath, config: EmailListConfig) {
+    func configureCell(indexPath: IndexPath, config: EmailListConfig?) {
         
         if !determinedCellBackgroundColor {
             defaultCellBackgroundColor = self.backgroundColor
@@ -105,8 +106,8 @@ class EmailListViewCell: UITableViewCell {
         return message.imapFlags?.flagged ?? false
     }
     
-    func messageAt(indexPath: IndexPath, config: EmailListConfig) -> Message? {
-        if let fol = config.folder {
+    func messageAt(indexPath: IndexPath, config: EmailListConfig?) -> Message? {
+        if let fol = config?.folder {
             return fol.messageAt(index: indexPath.row)
         }
         return nil

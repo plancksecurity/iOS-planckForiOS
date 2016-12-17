@@ -28,4 +28,8 @@ open class MiscUtil {
         }
         return false
     }
+
+    open static func isUnitTest() -> Bool {
+        return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
 }

@@ -27,7 +27,7 @@ class EmailListViewController: UITableViewController {
         var isSynching: Bool = false
     }
 
-    var config: EmailListConfig!
+    var config: EmailListConfig?
     var state = UIState()
     var accounts = [Account]()
     let searchController = UISearchController(searchResultsController: nil)
@@ -41,7 +41,6 @@ class EmailListViewController: UITableViewController {
         super.viewDidLoad()
         
         UIHelper.emailListTableHeight(self.tableView)
-        initialConfig()
         addSearchBar()
         addRefreshControl()
     }
@@ -49,18 +48,24 @@ class EmailListViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if MiscUtil.isUnitTest() {
+            super.viewWillAppear(animated)
+            return
+        }
+
+        initialConfig()
         updateModel()
     }
     
     func initialConfig() {
-//        if config.appConfig == nil {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        else {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-        config = EmailListConfig(appConfig: appDelegate.appConfig, folder: Folder.unifiedInbox())
-//        }
-        //config.folder = Folder.unifiedInbox()
+
+        if config == nil {
+            config = EmailListConfig(appConfig: appDelegate.appConfig,
+                                     folder: Folder.unifiedInbox())
+        }
         accounts = Account.all()
         if accounts.isEmpty {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
@@ -108,14 +113,14 @@ class EmailListViewController: UITableViewController {
     // MARK: - UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let _ = config.folder {
+        if let _ = config?.folder {
             return 1
         }
         return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let fol = config.folder  {
+        if let fol = config?.folder  {
             return fol.messageCount()
         }
         return 0
@@ -134,7 +139,7 @@ class EmailListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
 
-        if let fol = config.folder {
+        if let fol = config?.folder {
             if fol.folderType == .drafts {
                 //performSegue(withIdentifier: segueCompose, sender: cell)
                 performSegue(withIdentifier: .segueCompose, sender: cell)
@@ -347,7 +352,7 @@ extension EmailListViewController: SegueHandlerType {
                 let email = cell.messageAt(indexPath: indexPath, config: config) else {
                     return
             }
-            vc.appConfig = config.appConfig
+            vc.appConfig = config?.appConfig
             vc.message = email
             break
         default: ()

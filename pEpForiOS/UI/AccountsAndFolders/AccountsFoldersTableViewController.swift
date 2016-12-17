@@ -56,7 +56,7 @@ class AccountsFoldersViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+        if MiscUtil.isUnitTest() {
             super.viewWillAppear(animated)
             return
         }
