@@ -14,12 +14,9 @@ import MessageModel
  Can be run before operations that operate on folders, like "save draft"
  (with a dependency), to make sure that folder does exist.
  */
-open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
+open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
     let folderType: FolderType
-    let connectInfo: EmailConnectInfo
-    let connectionManager: ImapConnectionManagerProtocol
     var folderName: String
-    var imapSync: ImapSync!
 
     /**
      Used to keep track of attempts. First try to create top-level,
@@ -29,23 +26,20 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
 
     var account: CdAccount?
 
-    public init(connectInfo: EmailConnectInfo, account: CdAccount,
-                folderType: FolderType, connectionManager: ImapConnectionManagerProtocol) {
-        self.connectInfo = connectInfo
+    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+                imapSyncData: ImapSyncData, account: CdAccount, folderType: FolderType) {
         self.folderType = folderType
         self.folderName = folderType.folderName()
-        self.connectionManager = connectionManager
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
     }
 
     open override func main() {
         if !shouldRun() {
-            markAsFinished()
             return
         }
 
-        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
-        if !checkImapSync(sync: imapSync) {
-            markAsFinished()
+        if !checkImapSync() {
             return
         }
 
@@ -55,7 +49,8 @@ open class CheckAndCreateFolderOfTypeOperation: ConcurrentBaseOperation {
     }
 
     func process(context privateMOC: NSManagedObjectContext) {
-        guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
+        guard let account = Record.Context.default.object(
+            with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
                 addError(Constants.errorCannotFindAccount(component: comp))
                 markAsFinished()
@@ -172,7 +167,7 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
 
     func completed(context: NSManagedObjectContext) {
         if let ac = account {
-            let server = context.object(with: connectInfo.serverObjectID) as? CdServer
+            let server = context.object(with: imapSyncData.connectInfo.serverObjectID) as? CdServer
             if CdFolder.insertOrUpdate(folderName: folderName,
                                        folderSeparator: server?.imapFolderSeparator,
                                        account: ac) == nil {
@@ -192,7 +187,7 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
 
     func tryAgain(context: NSManagedObjectContext, sync: ImapSync) {
         if !isCancelled {
-            let server = context.object(with: connectInfo.serverObjectID) as? CdServer
+            let server = context.object(with: imapSyncData.connectInfo.serverObjectID) as? CdServer
             if numberOfFailures == 0, let fs = server?.imapFolderSeparator {
                 folderName = "INBOX\(fs)\(folderName)"
                 sync.createFolderWithName(folderName)

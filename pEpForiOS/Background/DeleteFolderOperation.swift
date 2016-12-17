@@ -10,22 +10,21 @@ import CoreData
 
 import MessageModel
 
-open class DeleteFolderOperation: ConcurrentBaseOperation {
-    let connectInfo: EmailConnectInfo
-    let connectionManager: ImapConnectionManagerProtocol
+open class DeleteFolderOperation: ImapSyncOperation {
     var folderName: String
     let accountID: NSManagedObjectID
     var account: CdAccount!
-    var imapSync: ImapSync!
 
-    public init(connectInfo: EmailConnectInfo, account: CdAccount, folderName: String,
-                connectionManager: ImapConnectionManagerProtocol) {
-        self.connectInfo = connectInfo
+    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+                imapSyncData: ImapSyncData, account: CdAccount,
+                folderName: String) {
         self.accountID = account.objectID
         self.folderName = folderName
-        self.connectionManager = connectionManager
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
     }
 
+    /*
     convenience public init?(connectInfo: EmailConnectInfo, folder: CdFolder,
                              connectionManager: ImapConnectionManagerProtocol) {
         guard let fn = folder.name else {
@@ -41,16 +40,14 @@ open class DeleteFolderOperation: ConcurrentBaseOperation {
         self.init(connectInfo: connectInfo, account: account, folderName: fn,
                   connectionManager: connectionManager)
     }
+     */
 
     open override func main() {
         if !shouldRun() {
-            markAsFinished()
             return
         }
 
-        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
-        if !checkImapSync(sync: imapSync) {
-            markAsFinished()
+        if !checkImapSync() {
             return
         }
 

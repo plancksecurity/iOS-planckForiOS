@@ -37,9 +37,7 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-open class FetchFoldersOperation: ConcurrentBaseOperation {
-    let imapSyncData: ImapSyncData
-    var imapSync: ImapSync!
+open class FetchFoldersOperation: ImapSyncOperation {
     var folderBuilder: ImapFolderBuilder!
 
     /**
@@ -48,12 +46,12 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false,
-                name: String? = nil) {
+    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+                imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
-        self.imapSyncData = imapSyncData
 
-        super.init(parentName: name)
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
 
         folderBuilder = ImapFolderBuilder(accountID: imapSyncData.connectInfo.accountObjectID,
                                           backgroundQueue: backgroundQueue)
@@ -61,13 +59,10 @@ open class FetchFoldersOperation: ConcurrentBaseOperation {
 
     open override func main() {
         if !shouldRun() {
-            markAsFinished()
             return
         }
 
-        imapSync = imapSyncData.sync
-        if !checkImapSync(sync: imapSync) {
-            markAsFinished()
+        if !checkImapSync() {
             return
         }
 

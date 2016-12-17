@@ -14,30 +14,24 @@ import MessageModel
 /**
  Tries to create all local folders on the server.
  */
-open class CreateFoldersOperation: ConcurrentBaseOperation {
-    let imapConnectInfo: EmailConnectInfo
-    let connectionManager: ImapConnectionManagerProtocol
+open class CreateFoldersOperation: ImapSyncOperation {
     let accountID: NSManagedObjectID
     var account: CdAccount!
-    var imapSync: ImapSync!
     var folderNamesToCreate = [String]()
 
-    public init(imapConnectInfo: EmailConnectInfo, account: CdAccount,
-                connectionManager: ImapConnectionManagerProtocol) {
-        self.imapConnectInfo = imapConnectInfo
+    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+                imapSyncData: ImapSyncData, account: CdAccount) {
         self.accountID = account.objectID
-        self.connectionManager = connectionManager
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
     }
 
     open override func main() {
         if !shouldRun() {
-            markAsFinished()
             return
         }
 
-        imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
-        if !checkImapSync(sync: imapSync) {
-            markAsFinished()
+        if !checkImapSync() {
             return
         }
 

@@ -10,7 +10,7 @@ import CoreData
 
 import MessageModel
 
-open class AppendSingleMessageOperation: ConcurrentBaseOperation {
+open class AppendSingleMessageOperation: ImapSyncOperation {
     let messageID: NSManagedObjectID
 
     let targetFolderID: NSManagedObjectID?
@@ -18,35 +18,27 @@ open class AppendSingleMessageOperation: ConcurrentBaseOperation {
 
     let accountID: NSManagedObjectID
 
-    let connectInfo: EmailConnectInfo
-
-    let connectionManager: ImapConnectionManagerProtocol
-
-    var imapSync: ImapSync!
-
     var cwMessageToAppend: CWIMAPMessage!
     var targetFolderName: String!
 
-    public init(connectInfo: EmailConnectInfo, message: CdMessage, account: CdAccount,
-                targetFolder: CdFolder? = nil, folderType: FolderType? = nil,
-                connectionManager: ImapConnectionManagerProtocol) {
-        self.connectInfo = connectInfo
+    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+                imapSyncData: ImapSyncData,
+                message: CdMessage, account: CdAccount, targetFolder: CdFolder? = nil,
+                folderType: FolderType? = nil) {
         self.messageID = message.objectID
         self.targetFolderID = targetFolder?.objectID
         self.folderType = folderType
         self.accountID = account.objectID
-        self.connectionManager = connectionManager
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
     }
 
     override open func main() {
         if !shouldRun() {
-            markAsFinished()
             return
         }
 
-        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
-        if !checkImapSync(sync: imapSync) {
-            markAsFinished()
+        if !checkImapSync() {
             return
         }
 

@@ -11,25 +11,23 @@ import CoreData
 
 import MessageModel
 
-open class SyncMessagesOperation: ConcurrentBaseOperation {
-    let connectInfo: EmailConnectInfo
-    var imapSync: ImapSync!
+open class SyncMessagesOperation: ImapSyncOperation {
     let folderID: NSManagedObjectID
     let folderToOpen: String
-    let connectionManager: ImapConnectionManagerProtocol
     let lastUID: UInt
     var lastSeenUID: UInt?
 
-    public init(imapSyncData: ImapSyncData, folderID: NSManagedObjectID, folderName: String,
-                lastUID: UInt, name: String? = nil) {
-        self.connectInfo = imapSyncData.connectInfo
-        self.connectionManager = imapSyncData
+    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+                imapSyncData: ImapSyncData, folderID: NSManagedObjectID,
+                folderName: String, lastUID: UInt) {
         self.folderID = folderID
         self.folderToOpen = folderName
         self.lastUID = lastUID
-        super.init(parentName: name)
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
     }
 
+    /*
     public convenience init?(imapSyncData: ImapSyncData, folder: CdFolder, lastUID: UInt) {
         guard let folderName = folder.name else {
             return nil
@@ -37,16 +35,14 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
         self.init(imapSyncData: imapSyncData, folderID: folder.objectID, folderName: folderName,
                   lastUID: lastUID)
     }
+     */
 
     override open func main() {
         if !shouldRun() {
-            markAsFinished()
             return
         }
 
-        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
-        if !checkImapSync(sync: imapSync) {
-            markAsFinished()
+        if !checkImapSync() {
             return
         }
 
@@ -57,8 +53,9 @@ open class SyncMessagesOperation: ConcurrentBaseOperation {
     }
 
     func process(context: NSManagedObjectContext) {
-        let folderBuilder = ImapFolderBuilder.init(accountID: self.connectInfo.accountObjectID,
-                                                   backgroundQueue: self.backgroundQueue)
+        let folderBuilder = ImapFolderBuilder.init(
+            accountID: self.imapSyncData.connectInfo.accountObjectID,
+            backgroundQueue: self.backgroundQueue)
         self.imapSync.delegate = self
         self.imapSync.folderBuilder = folderBuilder
 

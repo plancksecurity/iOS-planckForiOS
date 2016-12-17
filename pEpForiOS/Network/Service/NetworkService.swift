@@ -263,8 +263,8 @@ public class NetworkService: INetworkService {
             operations.append(opImapLogin)
 
             // 3.b Fetch current list of interesting mailboxes
-            let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData,
-                                                       name: parentName)
+            let opFetchFolders = FetchFoldersOperation(
+                parentName: parentName, imapSyncData: imapSyncData)
             opFetchFolders.completionBlock = {
                 self.workerQueue.async {
                     Log.info(component: self.comp, content: "opFetchFolders finished")
@@ -284,7 +284,7 @@ public class NetworkService: INetworkService {
             var lastImapOp: Operation? = nil
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
-                    imapSyncData: imapSyncData, folderName: fi.name, name: parentName)
+                    parentName: parentName, imapSyncData: imapSyncData, folderName: fi.name)
                 self.workerQueue.async {
                     Log.info(component: self.comp, content: "fetchMessagesOp finished")
                 }
@@ -301,8 +301,8 @@ public class NetworkService: INetworkService {
             for fi in folderInfos {
                 if let folderID = fi.folderID, let lastUID = fi.lastUID {
                     let syncMessagesOp = SyncMessagesOperation(
-                        imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
-                        lastUID: lastUID, name: parentName)
+                        parentName: parentName, imapSyncData: imapSyncData,
+                        folderID: folderID, folderName: fi.name, lastUID: lastUID)
                     syncMessagesOp.completionBlock = {
                         Log.info(component: self.comp, content: "syncMessagesOp finished")
                     }

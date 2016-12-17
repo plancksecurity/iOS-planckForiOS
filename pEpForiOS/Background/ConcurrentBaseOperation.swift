@@ -109,9 +109,12 @@ open class ConcurrentBaseOperation: BaseOperation {
         didChangeValue(forKey: "isFinished")
     }
 
-    func checkImapSync(sync: ImapSync?) -> Bool {
-        if sync == nil {
-            addError(Constants.errorImapInvalidConnection(component: comp))
+    public func shouldRun() -> Bool {
+        if isCancelled {
+            markAsFinished()
+            return false
+        }
+        if hasErrors() {
             markAsFinished()
             return false
         }

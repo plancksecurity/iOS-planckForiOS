@@ -10,32 +10,30 @@ import CoreData
 
 import MessageModel
 
-open class SyncFlagsToServerOperation: ConcurrentBaseOperation {
-    let connectInfo: EmailConnectInfo
-    let connectionManager: ImapConnectionManagerProtocol
-
+open class SyncFlagsToServerOperation: ImapSyncOperation {
     var folderID: NSManagedObjectID
     let folderName: String
 
-    var imapSync: ImapSync!
-
     open var numberOfMessagesSynced = 0
 
-    public init?(connectInfo: EmailConnectInfo, folder: CdFolder,
-                connectionManager: ImapConnectionManagerProtocol) {
+    public init?(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+                 imapSyncData: ImapSyncData, folder: CdFolder) {
         if let fn = folder.name {
             folderName = fn
         } else {
             return nil
         }
-        self.connectInfo = connectInfo
         self.folderID = folder.objectID
-        self.connectionManager = connectionManager
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
     }
 
     open override func main() {
-        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
-        if !checkImapSync(sync: imapSync) {
+        if !shouldRun() {
+            return
+        }
+
+        if !checkImapSync() {
             return
         }
 

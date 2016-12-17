@@ -10,31 +10,26 @@ import CoreData
 
 import MessageModel
 
-open class DeleteFoldersOperation: ConcurrentBaseOperation {
-    let imapConnectInfo: EmailConnectInfo
-    let connectionManager: ImapConnectionManagerProtocol
+open class DeleteFoldersOperation: ImapSyncOperation {
     let accountID: NSManagedObjectID
     var account: CdAccount!
-    var imapSync: ImapSync!
     var folderNamesToDelete = [String]()
     var currentFolderName: String?
 
-    public init(imapConnectInfo: EmailConnectInfo, account: CdAccount,
+    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+                imapSyncData: ImapSyncData, account: CdAccount,
                 connectionManager: ImapConnectionManagerProtocol) {
-        self.imapConnectInfo = imapConnectInfo
         self.accountID = account.objectID
-        self.connectionManager = connectionManager
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
     }
 
     open override func main() {
         if !shouldRun() {
-            markAsFinished()
             return
         }
 
-        imapSync = connectionManager.imapConnection(connectInfo: imapConnectInfo)
-        if !checkImapSync(sync: imapSync) {
-            markAsFinished()
+        if !checkImapSync() {
             return
         }
 

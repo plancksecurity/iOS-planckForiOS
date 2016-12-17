@@ -16,29 +16,23 @@ import MessageModel
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-open class FetchMessagesOperation: ConcurrentBaseOperation {
-    let connectInfo: EmailConnectInfo
-    var imapSync: ImapSync!
+open class FetchMessagesOperation: ImapSyncOperation {
     var folderToOpen: String
-    let connectionManager: ImapConnectionManagerProtocol
 
-    public init(imapSyncData: ImapSyncData, folderName: String = ImapSync.defaultImapInboxName,
-                name: String? = nil) {
-        self.connectInfo = imapSyncData.connectInfo
-        self.connectionManager = imapSyncData
+    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+                imapSyncData: ImapSyncData,
+                folderName: String = ImapSync.defaultImapInboxName) {
         self.folderToOpen = folderName
-        super.init(parentName: name)
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
     }
 
     override open func main() {
         if !shouldRun() {
-            markAsFinished()
             return
         }
 
-        imapSync = connectionManager.imapConnection(connectInfo: connectInfo)
-        if !checkImapSync(sync: imapSync) {
-            markAsFinished()
+        if !checkImapSync() {
             return
         }
 
@@ -49,11 +43,12 @@ open class FetchMessagesOperation: ConcurrentBaseOperation {
     }
 
     func process(context: NSManagedObjectContext) {
-        let folderBuilder = ImapFolderBuilder(accountID: self.connectInfo.accountObjectID,
-                                              backgroundQueue: self.backgroundQueue,
-                                              name: name)
+        let folderBuilder = ImapFolderBuilder(
+            accountID: self.imapSyncData.connectInfo.accountObjectID,
+            backgroundQueue: self.backgroundQueue, name: name)
 
-        guard let account = Record.Context.default.object(with: connectInfo.accountObjectID)
+        guard let account = Record.Context.default.object(
+            with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
                 addError(Constants.errorCannotFindAccount(component: comp))
                 markAsFinished()
