@@ -88,26 +88,30 @@ open class AppendSingleMessageOperation: ImapSyncOperation {
             let (msg, _) = PEPUtil.check(comp: self.comp, status: status,
                 encryptedMessage: encryptedMessage)
             if let m = msg {
-                // Append the message
-                self.cwMessageToAppend = PEPUtil.pantomime(pEpMessage: m as! PEPMessage)
-                self.imapSync.delegate = self
-                self.imapSync.start()
+                self.append(messageDict: m)
             }
         })
     }
-}
 
-extension AppendSingleMessageOperation: ImapSyncDelegate {
-    public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
+    func append(messageDict: NSDictionary) {
         if !self.isCancelled {
+            self.cwMessageToAppend = PEPUtil.pantomime(pEpMessage: messageDict as! PEPMessage)
+            self.imapSync.delegate = self
             let folder = CWIMAPFolder.init(name: targetFolderName)
-            folder.setStore(sync.imapStore)
+            folder.setStore(imapSync.imapStore)
             guard let rawData = cwMessageToAppend.dataValue() else {
                 markAsFinished()
                 return
             }
             folder.appendMessage(fromRawSource: rawData, flags: nil, internalDate: nil)
         }
+    }
+}
+
+extension AppendSingleMessageOperation: ImapSyncDelegate {
+    public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        markAsFinished()
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {

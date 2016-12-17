@@ -60,7 +60,7 @@ open class CreateFoldersOperation: ImapSyncOperation {
 
         if folderNamesToCreate.count > 0 {
             imapSync.delegate = self
-            imapSync.start()
+            createNextFolder()
         } else {
             markAsFinished()
         }
@@ -78,9 +78,8 @@ open class CreateFoldersOperation: ImapSyncOperation {
 
 extension CreateFoldersOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            createNextFolder()
-        }
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        markAsFinished()
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {

@@ -55,7 +55,7 @@ open class DeleteFoldersOperation: ImapSyncOperation {
         }
 
         imapSync.delegate = self
-        imapSync.start()
+        deleteNextRemoteFolder(sync: imapSync)
     }
 
     func deleteNextRemoteFolder(sync: ImapSync) {
@@ -80,7 +80,8 @@ open class DeleteFoldersOperation: ImapSyncOperation {
 
 extension DeleteFoldersOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        deleteNextRemoteFolder(sync: sync)
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        markAsFinished()
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {

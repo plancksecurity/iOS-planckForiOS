@@ -60,7 +60,9 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
         let folder = CdFolder.by(folderType: self.folderType, account: account)
         if folder == nil {
             self.imapSync.delegate = self
-            self.imapSync.start()
+            if !self.isCancelled {
+                self.imapSync.createFolderWithName(self.folderName)
+            }
         } else {
             self.markAsFinished()
         }
@@ -69,9 +71,8 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 
 extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            sync.createFolderWithName(folderName)
-        }
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        markAsFinished()
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {

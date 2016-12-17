@@ -43,10 +43,14 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     func startSync(context: NSManagedObjectContext) {
+        imapSync.delegate = self
         // Immediately check for work. If there is none, bail out
         if let _ = nextMessageToBeSynced(context: context) {
-            self.imapSync.delegate = self
-            self.imapSync.start()
+            if !self.isCancelled {
+                if !imapSync.openMailBox(name: folderName) {
+                    syncNextMessage()
+                }
+            }
         } else {
             self.markAsFinished()
         }
@@ -102,9 +106,8 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
 
 extension SyncFlagsToServerOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        if !self.isCancelled {
-            sync.openMailBox(name: folderName)
-        }
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        markAsFinished()
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
@@ -144,6 +147,7 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
 
     public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
+        markAsFinished()
     }
 
     public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {

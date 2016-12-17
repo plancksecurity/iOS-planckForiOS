@@ -394,8 +394,11 @@ class SimpleOperationsTest: XCTestCase {
         opCreate.completionBlock = {
             expCreated.fulfill()
         }
+        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+        opCreate.addDependency(opLogin)
 
         let backgroundQueue = OperationQueue()
+        backgroundQueue.addOperation(opLogin)
         backgroundQueue.addOperation(opCreate)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
@@ -488,8 +491,8 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(messagesToBeSynced?.count, messages.count)
 
         guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-                XCTFail()
-                return
+            XCTFail()
+            return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
