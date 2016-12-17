@@ -300,8 +300,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expCreated = expectation(description: "expCreated")
         let opCreate = CheckAndCreateFolderOfTypeOperation(
-            connectInfo: imapConnectInfo, account: account, folderType: .drafts,
-            connectionManager: connectionManager)
+            imapSyncData: imapSyncData, account: account, folderType: .drafts)
         opCreate.addDependency(opFetchFolders)
         opCreate.completionBlock = {
             expCreated.fulfill()
@@ -326,8 +325,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expCreated = expectation(description: "expCreated")
         let opCreate = CheckAndCreateFolderOfTypeOperation(
-            connectInfo: imapConnectInfo, account: account, folderType: .drafts,
-            connectionManager: connectionManager)
+            imapSyncData: imapSyncData, account: account, folderType: .drafts)
         opCreate.completionBlock = {
             expCreated.fulfill()
         }
@@ -361,9 +359,8 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         let op = AppendSingleMessageOperation(
-            connectInfo: imapConnectInfo,
-            message: message, account: account, targetFolder: targetFolder,
-            connectionManager: connectionManager)
+            imapSyncData: imapSyncData, message: message, account: account,
+            targetFolder: targetFolder)
 
         let expMessageAppended = expectation(description: "expMessageAppended")
         op.completionBlock = {
@@ -393,8 +390,7 @@ class SimpleOperationsTest: XCTestCase {
         Record.saveAndWait()
 
         let expCreated = expectation(description: "expCreated")
-        let opCreate = CreateFoldersOperation(imapConnectInfo: imapConnectInfo, account: account,
-                                              connectionManager: connectionManager)
+        let opCreate = CreateFoldersOperation(imapSyncData: imapSyncData, account: account)
         opCreate.completionBlock = {
             expCreated.fulfill()
         }
@@ -414,8 +410,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expDeleted = expectation(description: "expDeleted")
         let opDelete = DeleteFoldersOperation(
-            imapConnectInfo: imapConnectInfo, account: account,
-            connectionManager: connectionManager)
+            imapSyncData: imapSyncData, account: account)
         opDelete.completionBlock = {
             expDeleted.fulfill()
         }
@@ -441,9 +436,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTFail()
             return
         }
-        guard let op = SyncFlagsToServerOperation(
-            connectInfo: imapConnectInfo, folder: inbox,
-            connectionManager: connectionManager) else {
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
                 XCTFail()
                 return
         }
@@ -494,9 +487,7 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(messagesToBeSynced)
         XCTAssertEqual(messagesToBeSynced?.count, messages.count)
 
-        guard let op = SyncFlagsToServerOperation(
-            connectInfo: imapConnectInfo, folder: inbox,
-            connectionManager: connectionManager) else {
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
                 XCTFail()
                 return
         }
@@ -556,8 +547,7 @@ class SimpleOperationsTest: XCTestCase {
         var ops = [SyncFlagsToServerOperation]()
         for i in 1...1 {
             guard let op = SyncFlagsToServerOperation(
-                connectInfo: imapConnectInfo, folder: inbox,
-                connectionManager: connectionManager) else {
+                imapSyncData: imapSyncData, folder: inbox) else {
                     XCTFail()
                     return
             }

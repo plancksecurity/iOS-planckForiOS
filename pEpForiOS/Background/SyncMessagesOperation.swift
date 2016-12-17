@@ -27,15 +27,17 @@ open class SyncMessagesOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    /*
-    public convenience init?(imapSyncData: ImapSyncData, folder: CdFolder, lastUID: UInt) {
+    public convenience init?(parentName: String? = nil,
+                             errorContainer: ErrorProtocol = ErrorContainer(),
+                             imapSyncData: ImapSyncData,
+        folder: CdFolder, lastUID: UInt) {
         guard let folderName = folder.name else {
             return nil
         }
-        self.init(imapSyncData: imapSyncData, folderID: folder.objectID, folderName: folderName,
+        self.init(parentName: parentName, errorContainer: errorContainer,
+                  imapSyncData: imapSyncData, folderID: folder.objectID, folderName: folderName,
                   lastUID: lastUID)
     }
-     */
 
     override open func main() {
         if !shouldRun() {

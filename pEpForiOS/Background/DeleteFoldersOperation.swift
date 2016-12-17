@@ -17,8 +17,7 @@ open class DeleteFoldersOperation: ImapSyncOperation {
     var currentFolderName: String?
 
     public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
-                imapSyncData: ImapSyncData, account: CdAccount,
-                connectionManager: ImapConnectionManagerProtocol) {
+                imapSyncData: ImapSyncData, account: CdAccount) {
         self.accountID = account.objectID
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
