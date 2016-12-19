@@ -11,8 +11,7 @@ import CoreData
 import MessageModel
 
 extension CdMessage {
-
-    func allRecipienst() -> NSOrderedSet {
+    public func allRecipienst() -> NSOrderedSet {
         let recipients: NSMutableOrderedSet = []
         recipients.addObjects(from: (to?.array)!)
         recipients.addObjects(from: (cc?.array)!)
@@ -23,7 +22,7 @@ extension CdMessage {
     /**
      - Returns: Some string that identifies a mail, useful for logging.
      */
-    func logString() -> String {
+    public func logString() -> String {
         let string = NSMutableString()
 
         let append = {
@@ -139,5 +138,4 @@ extension CdMessage {
         attachment.fileName = filename
         return attachment
     }
-
 }

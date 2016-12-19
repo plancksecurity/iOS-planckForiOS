@@ -78,17 +78,23 @@ class NetworkServiceTests: XCTestCase {
             return
         }
         XCTAssertGreaterThan(cdFolder.messages?.count ?? 0, 0)
-        let cdMessages = cdFolder.messages?.sortedArray(
+        let allCdMessages = cdFolder.messages?.sortedArray(
             using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
-        XCTAssertGreaterThan(cdMessages.count, 0)
-        for cdMsg in cdMessages {
+        XCTAssertGreaterThan(allCdMessages.count, 0)
+        var cdDecryptAgainCount = 0
+        for cdMsg in allCdMessages {
             guard let parentF = cdMsg.parent else {
                 XCTFail()
                 continue
             }
             XCTAssertEqual(parentF.folderType, FolderType.inbox.rawValue)
+            if cdMsg.pEpRating == PEPUtil.pEpRatingNone {
+                cdDecryptAgainCount += 1
+            }
         }
+        XCTAssertGreaterThan(allCdMessages.count, cdDecryptAgainCount)
 
+        var decryptAgainCount = 0
         let inbox = Folder.unifiedInbox()
         let mc = inbox.messageCount()
         XCTAssertGreaterThan(mc, 0)
@@ -98,7 +104,15 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertTrue(
                 msg?.longMessage != nil || msg?.longMessageFormatted != nil ||
                     (msg?.attachments.count ?? 0) > 0)
+            guard let pEpRating = msg?.pEpRatingInt else {
+                XCTFail()
+                continue
+            }
+            if pEpRating == Int(PEPUtil.pEpRatingNone) {
+                decryptAgainCount += 1
+            }
         }
+        XCTAssertEqual(cdDecryptAgainCount, decryptAgainCount)
     }
 
     func testCancelSync() {

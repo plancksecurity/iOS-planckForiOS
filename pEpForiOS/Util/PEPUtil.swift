@@ -580,6 +580,9 @@ open class PEPUtil {
         guard let theInt = i else {
             return nil
         }
+        if theInt == Int(pEpRatingNone) {
+            return PEP_rating_undefined
+        }
         return PEP_rating(Int32(theInt))
     }
 

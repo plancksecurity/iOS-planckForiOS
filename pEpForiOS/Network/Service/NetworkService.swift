@@ -199,6 +199,8 @@ public class NetworkService: INetworkService {
             return folderInfos
         }
 
+        let errorContainer = ErrorContainer()
+
         // Operation depending on all IMAP operations for this account
         let opImapFinished = BlockOperation {
             self.workerQueue.async {
@@ -297,6 +299,13 @@ public class NetworkService: INetworkService {
                 lastImapOp = fetchMessagesOp
             }
 
+            let opDecrypt = DecryptMessageOperation(parentName: comp)
+            if let lastImap = lastImapOp {
+                opDecrypt.addDependency(lastImap)
+            }
+            opImapFinished.addDependency(opDecrypt)
+            operations.append(opDecrypt)
+
             // sync existing messages
             for fi in folderInfos {
                 if let folderID = fi.folderID, let lastUID = fi.lastUID {
@@ -321,7 +330,7 @@ public class NetworkService: INetworkService {
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
 
         return OperationLine(accountInfo: accountInfo, operations: operations,
-                             finalOperation: opAllFinished)
+                             finalOperation: opAllFinished, errorContainer: errorContainer)
     }
 
     func buildOperationLines(

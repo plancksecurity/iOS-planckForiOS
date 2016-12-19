@@ -12,4 +12,8 @@ extension Message {
     public func pEpMessage(message: Message, outgoing: Bool = true) -> PEPMessage {
         return PEPUtil.pEp(message: self)
     }
+
+    public func pEpRating() -> PEP_rating? {
+        return PEPUtil.pEpRatingFromInt(pEpRatingInt)
+    }
 }

@@ -20,10 +20,33 @@ public struct AccountConnectInfo {
 /**
  Some information about a list of operations needed to sync a single account.
  */
-struct OperationLine {
+class OperationLine {
     let accountInfo: AccountConnectInfo
     let operations: [Operation]
     let finalOperation: Operation
+    let errorContainer: ErrorProtocol
+
+    init(accountInfo: AccountConnectInfo, operations: [Operation], finalOperation: Operation,
+         errorContainer: ErrorProtocol) {
+        self.accountInfo = accountInfo
+        self.operations = operations
+        self.finalOperation = finalOperation
+        self.errorContainer = errorContainer
+    }
+}
+
+extension OperationLine: ErrorProtocol {
+    var error: NSError? {
+        return errorContainer.error
+    }
+
+    func addError(_ error: NSError) {
+        errorContainer.addError(error)
+    }
+
+    func hasErrors() -> Bool {
+        return errorContainer.hasErrors()
+    }
 }
 
 /**
