@@ -142,11 +142,11 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertGreaterThan(allCdMessages.count, cdDecryptAgainCount)
 
         var decryptAgainCount = 0
-        let inbox = Folder.unifiedInbox()
-        let mc = inbox.messageCount()
+        let unifiedInbox = Folder.unifiedInbox()
+        let mc = unifiedInbox.messageCount()
         XCTAssertGreaterThan(mc, 0)
         for i in 0..<mc {
-            let msg = inbox.messageAt(index: i)
+            let msg = unifiedInbox.messageAt(index: i)
             XCTAssertNotNil(msg?.shortMessage)
             XCTAssertTrue(
                 msg?.longMessage != nil || msg?.longMessageFormatted != nil ||
@@ -161,11 +161,14 @@ class NetworkServiceTests: XCTestCase {
         }
         XCTAssertEqual(cdDecryptAgainCount, decryptAgainCount)
 
+        let inbox = Folder.from(cdFolder: cdFolder)
         XCTAssertEqual(sendLayerDelegate.messageIDs.count, mc)
         XCTAssertEqual(modelDelegate.messages.count, mc)
         for msg in modelDelegate.messages {
             XCTAssertTrue(msg.isOriginal)
             XCTAssertTrue(sendLayerDelegate.messageIDs.contains(msg.messageID))
+            XCTAssertTrue(inbox.contains(message: msg))
+            XCTAssertTrue(unifiedInbox.contains(message: msg))
         }
     }
 

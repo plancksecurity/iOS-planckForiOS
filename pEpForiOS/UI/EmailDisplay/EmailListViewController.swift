@@ -29,7 +29,6 @@ class EmailListViewController: UITableViewController {
 
     var config: EmailListConfig?
     var state = UIState()
-    var accounts = [Account]()
     let searchController = UISearchController(searchResultsController: nil)
 
     required init?(coder aDecoder: NSCoder) {
@@ -55,6 +54,13 @@ class EmailListViewController: UITableViewController {
 
         initialConfig()
         updateModel()
+
+        MessageModelConfig.messageFolderDelegate = self
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        MessageModelConfig.messageFolderDelegate = nil
     }
     
     func initialConfig() {
@@ -66,8 +72,7 @@ class EmailListViewController: UITableViewController {
             config = EmailListConfig(appConfig: appDelegate.appConfig,
                                      folder: Folder.unifiedInbox())
         }
-        accounts = Account.all()
-        if accounts.isEmpty {
+        if Account.all().isEmpty {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
     }
@@ -356,6 +361,18 @@ extension EmailListViewController: SegueHandlerType {
             vc.message = email
             break
         default: ()
+        }
+    }
+}
+
+// MARK: - MessageFolderDelegate
+
+extension EmailListViewController: MessageFolderDelegate {
+    func didChange(messageFolder: MessageFolder) {
+        if let msg = messageFolder as? Message {
+            if msg.isOriginal {
+                // new message, add it
+            }
         }
     }
 }

@@ -29,8 +29,7 @@ open class MockData {
             [("INBOX", FolderType.inbox), ("Drafts", FolderType.drafts),
              ("Outbox", FolderType.localOutbox)] {
                 let folder = Folder.createRootFolder(
-                    name: name, uuid: UUID.generate(), account: account)
-                folder.folderType = folderType
+                    name: name, uuid: UUID.generate(), account: account, folderType: folderType)
                 insertMessages(folder: folder)
         }
     }
@@ -48,8 +47,8 @@ open class MockData {
     }
     
     static func createFolder(_ account: Account) -> Folder {
-        let f = Folder.createRootFolder(name: "pEpSi", uuid: UUID.generate(), account: account)
-        f.folderType = .normal
+        let f = Folder.createRootFolder(name: "pEpSi", uuid: UUID.generate(), account: account,
+                                        folderType: .normal)
         MockData.insertMessages(folder: f)
         return f
     }
