@@ -64,13 +64,15 @@ class PepAdapterTests: XCTestCase {
         
         // Test if paths exist.
         for key in PEPUtil.pEpUrls.keys {
-            XCTAssertTrue((PEPUtil.pEpUrls[key]! as NSURL).checkResourceIsReachableAndReturnError(&error))
+            XCTAssertTrue(
+                (PEPUtil.pEpUrls[key]! as NSURL).checkResourceIsReachableAndReturnError(&error))
         }
         
         Log.info(component: comp,
                  content: "Home folder: " + String(describing: PEPUtil.pEpUrls["home"]))
         Log.info(component: comp,
-                 content: "pEp management DB file: " + String(describing: PEPUtil.pEpUrls["pEpManagementDb"]))
+                 content: "pEp management DB file: " +
+                    String(describing: PEPUtil.pEpUrls["pEpManagementDb"]))
         Log.info(component: comp,
                  content: "GnuPG folder: " + String(describing: PEPUtil.pEpUrls["gnupg"]))
         Log.info(component: comp,
@@ -89,5 +91,23 @@ class PepAdapterTests: XCTestCase {
         // XXX: To test later
         // XCTAssertTrue(PEPUtil.pEpClean())
     }
-    
+
+    /**
+     - See: https://cacert.pep.foundation/jira/browse/IOSAD-10
+     https://cacert.pep.foundation/jira/browse/ENGINE-159
+     */
+    func testDecryptMessageWithoutAttachments() {
+        let pepMessage: PEPMessage = [
+            kPepAttachments: NSArray(),
+            kPepTo: NSArray(array: [identity_me]),
+            kPepFrom: identity_me,
+            kPepShortMessage: "Subject" as NSString,
+            kPepLongMessage: "Long long message" as NSString
+        ]
+        var pepDecryptedMessage: NSDictionary? = nil
+        var keys: NSArray?
+        let color = pEpSession.decryptMessageDict(
+            pepMessage, dest: &pepDecryptedMessage, keys: &keys)
+        XCTAssertEqual(color, PEP_rating_unencrypted)
+    }
 }
