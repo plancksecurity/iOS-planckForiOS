@@ -47,16 +47,63 @@ class NetworkServiceTests: XCTestCase {
         }
     }
 
+    class MessageModelObserver: MessageFolderDelegate {
+        var messages = [Message]()
+
+        func didChange(messageFolder: MessageFolder) {
+            if let msg = messageFolder as? Message {
+                messages.append(msg)
+            }
+        }
+    }
+
+    class SendLayerObserver: SendLayerDelegate {
+        let expAccountVerified: XCTestExpectation?
+        var messageIDs = [String]()
+
+        init(expAccountVerified: XCTestExpectation? = nil) {
+            self.expAccountVerified = expAccountVerified
+        }
+
+        func didVerify(cdAccount: CdAccount, error: NSError?) {
+            XCTAssertNil(error)
+            expAccountVerified?.fulfill()
+        }
+
+        func didFetchMessage(messageID: String) {
+            messageIDs.append(messageID)
+            if let msg = Message.byUUID(messageID) {
+                MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+            } else {
+                XCTFail()
+            }
+        }
+
+        func didRemove(cdFolder: CdFolder) {
+            XCTFail()
+        }
+
+        func didRemove(cdMessage: CdMessage) {
+            XCTFail()
+        }
+    }
+
     func testSyncOneTime() {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
 
+        let modelDelegate = MessageModelObserver()
+        MessageModelConfig.messageFolderDelegate = modelDelegate
+
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
 
+        let sendLayerDelegate = SendLayerObserver()
+
         let networkService = NetworkService(parentName: #function)
         networkService.networkServiceDelegate = del
+        networkService.sendLayerDelegate = sendLayerDelegate
 
         _ = TestData().createWorkingCdAccount()
         TestUtil.skipValidation()
@@ -113,6 +160,13 @@ class NetworkServiceTests: XCTestCase {
             }
         }
         XCTAssertEqual(cdDecryptAgainCount, decryptAgainCount)
+
+        XCTAssertEqual(sendLayerDelegate.messageIDs.count, mc)
+        XCTAssertEqual(modelDelegate.messages.count, mc)
+        for msg in modelDelegate.messages {
+            XCTAssertTrue(msg.isOriginal)
+            XCTAssertTrue(sendLayerDelegate.messageIDs.contains(msg.messageID))
+        }
     }
 
     func testCancelSync() {
@@ -140,31 +194,6 @@ class NetworkServiceTests: XCTestCase {
 
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
-    }
-
-    class SendLayerObserver: SendLayerDelegate {
-        let expAccountVerified: XCTestExpectation?
-
-        init(expAccountVerified: XCTestExpectation? = nil) {
-            self.expAccountVerified = expAccountVerified
-        }
-
-        func didVerify(cdAccount: CdAccount, error: NSError?) {
-            XCTAssertNil(error)
-            expAccountVerified?.fulfill()
-        }
-
-        func newMessage(cdMessage: CdMessage) {
-            XCTFail()
-        }
-
-        func didRemove(cdFolder: CdFolder) {
-            XCTFail()
-        }
-
-        func didRemove(cdMessage: CdMessage) {
-            XCTFail()
-        }
     }
 
     func testCdAccountVerification() {

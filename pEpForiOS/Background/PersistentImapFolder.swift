@@ -61,11 +61,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         }
     }
 
+    let messageFetchedBlock: MessageFetchedBlock?
+
     init(name: String, accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
-         logName: String? = nil) {
+         logName: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
         self.logName = logName
+        self.messageFetchedBlock = messageFetchedBlock
         super.init(name: name)
         self.setCacheManager(self)
         self.folder = folderObject()
@@ -198,7 +201,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         Log.warn(component: comp, content: "Writing message \(message)")
 
         let opQuick = StorePrefetchedMailOperation(
-            accountID: accountID, message: message, quick: false, name: logName)
+            accountID: accountID, message: message, quick: false, name: logName,
+            messageFetchedBlock: messageFetchedBlock)
         opQuick.start()
     }
 }

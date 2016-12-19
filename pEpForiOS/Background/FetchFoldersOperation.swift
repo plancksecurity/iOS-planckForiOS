@@ -10,21 +10,29 @@ import CoreData
 
 import MessageModel
 
+/**
+ Calling this block indicates that a message has been fetched and stored.
+ */
+public typealias MessageFetchedBlock = (_ message: CdMessage) -> ()
+
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {
     let accountID: NSManagedObjectID
     open let backgroundQueue: OperationQueue?
     let name: String?
+    let messageFetchedBlock: MessageFetchedBlock?
 
     public init(accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
-                name: String? = nil) {
+                name: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
         self.name = name
+        self.messageFetchedBlock = messageFetchedBlock
     }
 
     open func folder(withName name: String) -> CWFolder {
-        return PersistentImapFolder(name: name, accountID: accountID,
-                                    backgroundQueue: backgroundQueue!, logName: name) as CWFolder
+        return PersistentImapFolder(
+            name: name, accountID: accountID, backgroundQueue: backgroundQueue!,
+            logName: name, messageFetchedBlock: messageFetchedBlock) as CWFolder
     }
 
     deinit {
@@ -47,14 +55,16 @@ open class FetchFoldersOperation: ImapSyncOperation {
     let onlyUpdateIfNecessary: Bool
 
     public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
-                imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
+                imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false,
+                messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
 
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
 
-        folderBuilder = ImapFolderBuilder(accountID: imapSyncData.connectInfo.accountObjectID,
-                                          backgroundQueue: backgroundQueue)
+        folderBuilder = ImapFolderBuilder(
+            accountID: imapSyncData.connectInfo.accountObjectID,
+            backgroundQueue: backgroundQueue, messageFetchedBlock: messageFetchedBlock)
     }
 
     open override func main() {

@@ -18,11 +18,15 @@ import MessageModel
  */
 open class FetchMessagesOperation: ImapSyncOperation {
     var folderToOpen: String
+    let messageFetchedBlock: MessageFetchedBlock?
 
-    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
-                imapSyncData: ImapSyncData,
-                folderName: String = ImapSync.defaultImapInboxName) {
+    public init(
+        parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+        imapSyncData: ImapSyncData,
+        folderName: String = ImapSync.defaultImapInboxName,
+        messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.folderToOpen = folderName
+        self.messageFetchedBlock = messageFetchedBlock
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
@@ -45,7 +49,8 @@ open class FetchMessagesOperation: ImapSyncOperation {
     func process(context: NSManagedObjectContext) {
         let folderBuilder = ImapFolderBuilder(
             accountID: self.imapSyncData.connectInfo.accountObjectID,
-            backgroundQueue: self.backgroundQueue, name: name)
+            backgroundQueue: self.backgroundQueue, name: name,
+            messageFetchedBlock: messageFetchedBlock)
 
         guard let account = Record.Context.default.object(
             with: imapSyncData.connectInfo.accountObjectID)
@@ -87,11 +92,6 @@ open class FetchMessagesOperation: ImapSyncOperation {
             sync.cancel()
         }
         super.cancel()
-    }
-
-    override func markAsFinished() {
-        Log.info(component: comp, content: "markAsFinished")
-        super.markAsFinished()
     }
 }
 

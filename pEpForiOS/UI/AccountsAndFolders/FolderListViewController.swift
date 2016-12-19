@@ -132,7 +132,7 @@ class FolderListViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView,
                             indentationLevelForRowAt indexPath: IndexPath) -> Int {
-        var folder = folderAt(indexPath: indexPath) as MessageFolder
+        var folder = folderAt(indexPath: indexPath)
         var count = 0
         while folder.parent != nil {
             count += 1

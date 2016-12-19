@@ -17,16 +17,19 @@ open class StorePrefetchedMailOperation: BaseOperation {
     let message: CWIMAPMessage
     let quick: Bool
     let accountID: NSManagedObjectID
+    let messageFetchedBlock: MessageFetchedBlock?
 
     /**
      - parameter quick: Store only the most important properties (for true), or do it completely,
      including attachments?
      */
-    public init(accountID: NSManagedObjectID, message: CWIMAPMessage,
-                quick: Bool = true, name: String? = nil) {
+    public init(
+        accountID: NSManagedObjectID, message: CWIMAPMessage,
+        quick: Bool = true, name: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.message = message
         self.quick = quick
+        self.messageFetchedBlock = messageFetchedBlock
         super.init(parentName: name)
     }
 
@@ -48,8 +51,11 @@ open class StorePrefetchedMailOperation: BaseOperation {
                 return
         }
         let result = insert(pantomimeMessage: message, account: account, quick: quick)
-        if result != nil {
+        if let msg = result {
             Record.saveAndWait(context: context)
+            if !quick {
+                messageFetchedBlock?(msg)
+            }
         } else {
             self.addError(Constants.errorCannotStoreMessage(self.comp))
         }

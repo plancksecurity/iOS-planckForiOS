@@ -286,7 +286,9 @@ public class NetworkService: INetworkService {
             var lastImapOp: Operation? = nil
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
-                    parentName: parentName, imapSyncData: imapSyncData, folderName: fi.name)
+                parentName: parentName, imapSyncData: imapSyncData, folderName: fi.name) {
+                    [weak self] message in self?.messageFetched(cdMessage: message)
+                }
                 self.workerQueue.async {
                     Log.info(component: self.comp, content: "fetchMessagesOp finished")
                 }
@@ -331,6 +333,12 @@ public class NetworkService: INetworkService {
 
         return OperationLine(accountInfo: accountInfo, operations: operations,
                              finalOperation: opAllFinished, errorContainer: errorContainer)
+    }
+
+    func messageFetched(cdMessage: CdMessage) {
+        if let mid = cdMessage.messageID {
+            sendLayerDelegate?.didFetchMessage(messageID: mid)
+        }
     }
 
     func buildOperationLines(
