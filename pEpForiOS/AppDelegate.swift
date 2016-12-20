@@ -70,6 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         networkService = NetworkService(backgrounder: self)
         CdAccount.sendLayer = networkService
+        networkService?.start()
 
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
