@@ -701,7 +701,7 @@ extension String {
 
 extension UIColor {
     
-    open class var pEpColor: UIColor {
+    open class var pEpGreen: UIColor {
         get {
             return UIColor(hex: "#03AA4B")
         }

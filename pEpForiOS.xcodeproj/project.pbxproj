@@ -25,6 +25,8 @@
 		222B358A1DF99C48007A1F82 /* Actionsheet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35891DF99C48007A1F82 /* Actionsheet+Extension.swift */; };
 		222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35BB1E00049C007A1F82 /* AccountCell.swift */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
+		22AF46701E083C79009815B7 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AF466F1E083C79009815B7 /* MessageCell.swift */; };
+		22AF46721E0939F6009815B7 /* MessageData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22AF46711E0939F6009815B7 /* MessageData.plist */; };
 		22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		22DA56D91DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		22DA56DA1DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
@@ -279,6 +281,8 @@
 		222B35891DF99C48007A1F82 /* Actionsheet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Actionsheet+Extension.swift"; sourceTree = "<group>"; };
 		222B35BB1E00049C007A1F82 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
+		22AF466F1E083C79009815B7 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		22AF46711E0939F6009815B7 /* MessageData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MessageData.plist; sourceTree = "<group>"; };
 		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
 		430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveSentMessageOperation.swift; path = ../SaveSentMessageOperation.swift; sourceTree = "<group>"; };
@@ -497,6 +501,14 @@
 				4340F5F81D363BE6006A5C82 /* ContactCell.swift */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		22AF466B1E083C59009815B7 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				22AF466F1E083C79009815B7 /* MessageCell.swift */,
+			);
+			name = Message;
 			sourceTree = "<group>";
 		};
 		43001F761D9185E600306BF0 /* TableViews */ = {
@@ -859,6 +871,8 @@
 		43ED53621CC77F95006AB156 /* EmailDisplay */ = {
 			isa = PBXGroup;
 			children = (
+				22AF46711E0939F6009815B7 /* MessageData.plist */,
+				22AF466B1E083C59009815B7 /* Message */,
 				43ED53631CC77F95006AB156 /* EmailListViewCell.swift */,
 				43ED53641CC77F95006AB156 /* EmailListViewController.swift */,
 				431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */,
@@ -1062,6 +1076,7 @@
 			files = (
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
 				222B355D1DF96478007A1F82 /* Localizable.strings in Resources */,
+				22AF46721E0939F6009815B7 /* MessageData.plist in Resources */,
 				222B35831DF97A44007A1F82 /* ComposeData.plist in Resources */,
 				22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */,
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
@@ -1130,6 +1145,7 @@
 				43404B481D17D36D00D8B6FF /* EmailHeaderView.swift in Sources */,
 				43122B1B1DF5B48B00610253 /* SmtpService.swift in Sources */,
 				43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */,
+				22AF46701E083C79009815B7 /* MessageCell.swift in Sources */,
 				436F8E101D367039007E9829 /* StringExtensions.swift in Sources */,
 				A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,

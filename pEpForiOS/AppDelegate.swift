@@ -139,22 +139,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     fileprivate final func appearance() {
-        UINavigationBar.appearance().backgroundColor = .pEpColor
-        UINavigationBar.appearance().barTintColor = .pEpColor
+        UINavigationBar.appearance().backgroundColor = .pEpGreen
+        UINavigationBar.appearance().barTintColor = .pEpGreen
         UINavigationBar.appearance().tintColor = .white
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().titleTextAttributes =
             [NSForegroundColorAttributeName: UIColor.white]
         
-        UIToolbar.appearance().backgroundColor = .pEpColor
-        UIToolbar.appearance().barTintColor = .pEpColor
+        UIToolbar.appearance().backgroundColor = .pEpGreen
+        UIToolbar.appearance().barTintColor = .pEpGreen
         UIToolbar.appearance().tintColor = .white
         
-        UITextView.appearance().tintColor = .pEpColor
-        UITextField.appearance().tintColor = .pEpColor
+        UITextView.appearance().tintColor = .pEpGreen
+        UITextField.appearance().tintColor = .pEpGreen
         
-        UISearchBar.appearance().barTintColor = .pEpColor
-        UISearchBar.appearance().backgroundColor = .pEpColor
+        UISearchBar.appearance().barTintColor = .pEpGreen
+        UISearchBar.appearance().backgroundColor = .pEpGreen
         UISearchBar.appearance().tintColor = .white
     }
 }

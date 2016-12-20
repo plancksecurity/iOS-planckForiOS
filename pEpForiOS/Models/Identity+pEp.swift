@@ -34,7 +34,7 @@ extension Identity {
             case PEP_color_yellow:
                 return (color: .pEpYellow, image: UIImage(named: "pep-user-status-yellow")!)
             case PEP_color_green:
-                return (color: .pEpColor, image: UIImage(named: "pep-user-status-green")!)
+                return (color: .pEpGreen, image: UIImage(named: "pep-user-status-green")!)
             case PEP_color_red:
                 return (color: .pEpRed, image: UIImage(named: "pep-user-status-red")!)
             default:

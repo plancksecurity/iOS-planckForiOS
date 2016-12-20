@@ -91,11 +91,11 @@ class UIHelper {
     static func sendButtonBackgroundColorFromPepColor(_ pepColor: PEP_color) -> UIColor? {
         switch pepColor {
         case PEP_color_green:
-            return UIColor.green
+            return .pEpGreen
         case PEP_color_yellow:
-            return UIColor.yellow
+            return .pEpYellow
         case PEP_color_red:
-            return UIColor.red
+            return .pEpRed
         default:
             return nil
         }
@@ -116,11 +116,11 @@ class UIHelper {
     static func textBackgroundUIColorFromPrivacyColor(_ pepColor: PEP_color) -> UIColor? {
         switch pepColor {
         case PEP_color_green:
-            return UIColor.green
+            return .pEpGreen
         case PEP_color_yellow:
-            return UIColor.yellow
+            return .pEpYellow
         case PEP_color_red:
-            return UIColor.red
+            return .pEpRed
         default:
             return nil
         }
