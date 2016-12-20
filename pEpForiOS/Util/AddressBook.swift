@@ -169,8 +169,8 @@ open class AddressBook {
                 for email in emails {
                     if let emailString = email as? String {
                         result.append(Identity.create(
-                            address: emailString, userName: contactName,
-                            userID: String(identifier)))
+                            address: emailString, userID: String(identifier),
+                            userName: contactName))
                     }
                 }
             }

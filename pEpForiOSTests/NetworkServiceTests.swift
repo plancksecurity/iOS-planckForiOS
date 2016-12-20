@@ -366,7 +366,7 @@ class NetworkServiceTests: XCTestCase {
         })
     }
 
-    func testRunForever() {
+    func ttestRunForever() {
         XCTAssertTrue(Account.all().isEmpty)
 
         let mySelfObserver = MySelfObserver(
