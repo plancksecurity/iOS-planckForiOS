@@ -49,5 +49,10 @@ open class BaseOperation: Operation, ErrorProtocol {
             comp = "\(comp): \(n)"
         }
         self.name = comp
+        Log.info(component: comp, content: "init()")
+    }
+
+    deinit {
+        Log.info(component: comp, content: "deinit()")
     }
 }
