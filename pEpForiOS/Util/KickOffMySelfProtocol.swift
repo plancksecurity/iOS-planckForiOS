@@ -14,3 +14,17 @@ public protocol KickOffMySelfProtocol {
      */
     func startMySelf()
 }
+
+open class DefaultMySelfer: KickOffMySelfProtocol {
+    let backgrounder: BackgroundTaskProtocol?
+    let queue = LimitedOperationQueue()
+
+    public init(backgrounder: BackgroundTaskProtocol?) {
+        self.backgrounder = backgrounder
+    }
+
+    public func startMySelf() {
+        let op = MySelfOperation(backgrounder: backgrounder)
+        queue.addOperation(op)
+    }
+}

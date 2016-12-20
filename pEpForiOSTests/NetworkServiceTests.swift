@@ -365,4 +365,65 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
     }
+
+    func testRunForever() {
+        XCTAssertTrue(Account.all().isEmpty)
+
+        let mySelfObserver = MySelfObserver(
+            expMySelfed: expectation(description: "expMySelfed"),
+            expBackgrounded: expectation(description: "expBackgrounded"))
+
+        let del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced"))
+        let networkService = NetworkService(parentName: #function, mySelfer: mySelfObserver)
+        networkService.networkServiceDelegate = del
+
+        CdAccount.sendLayer = networkService
+
+        let accountObserver = AccountObserver(
+            expAccountVerified: expectation(description: "expAccountVerified"))
+        MessageModelConfig.accountDelegate = accountObserver
+
+        let account = TestData().createWorkingAccount()
+
+        XCTAssertTrue(account.needsVerification)
+        for cr in account.serverCredentials {
+            XCTAssertTrue(cr.needsVerification)
+        }
+
+        waitForExpectations(timeout: TestUtil.waitTimeForever, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        guard let verifiedAccount = accountObserver.account else {
+            XCTFail()
+            return
+        }
+
+        guard let cdAccount = CdAccount.first() else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(cdAccount.needsVerification)
+
+        XCTAssertFalse(verifiedAccount.needsVerification)
+        for cr in verifiedAccount.serverCredentials {
+            XCTAssertFalse(cr.needsVerification)
+        }
+
+        XCTAssertFalse(verifiedAccount.rootFolders.isEmpty)
+        let inbox = verifiedAccount.inbox()
+        XCTAssertNotNil(inbox)
+        if let inb = inbox {
+            XCTAssertGreaterThan(inb.messageCount(), 0)
+        }
+
+        XCTAssertNotNil(cdAccount.identity?.fingerPrint)
+
+        // Wait a long time, just let it sync over and over again
+        let _ = expectation(description: "expForever")
+        waitForExpectations(timeout: TestUtil.waitTimeForever, handler: { error in
+            XCTAssertNil(error)
+        })
+    }
 }

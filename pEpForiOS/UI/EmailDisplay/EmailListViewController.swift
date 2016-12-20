@@ -363,22 +363,26 @@ extension EmailListViewController: SegueHandlerType {
         default: ()
         }
     }
+
+    func didChangeInternal(messageFolder: MessageFolder) {
+        if let folder = config?.folder,
+            let message = messageFolder as? Message,
+            folder.contains(message: message) {
+            if let msg = messageFolder as? Message {
+                if msg.isOriginal {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
 }
 
 // MARK: - MessageFolderDelegate
 
 extension EmailListViewController: MessageFolderDelegate {
     func didChange(messageFolder: MessageFolder) {
-        if let folder = config?.folder,
-            let message = messageFolder as? Message,
-            folder.contains(message: message) {
-            if let msg = messageFolder as? Message {
-                if msg.isOriginal {
-                    GCD.onMain {
-                        self.tableView.reloadData()
-                    }
-                }
-            }
+        GCD.onMain {
+            self.didChangeInternal(messageFolder: messageFolder)
         }
     }
 }

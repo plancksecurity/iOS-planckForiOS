@@ -31,6 +31,11 @@ class TestUtil {
      */
     static let modelSaveWaitTime: TimeInterval = 6
 
+    /**
+     The maximum time.
+     */
+    static let waitTimeForever: TimeInterval = 20000
+
     static let connectonShutDownWaitTime: TimeInterval = 1
     static let numberOfTriesConnectonShutDown = 5
 

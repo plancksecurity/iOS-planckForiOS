@@ -57,7 +57,7 @@ public class NetworkService: INetworkService {
         self.sleepTimeInSeconds = sleepTimeInSeconds
         self.parentName = parentName
         self.backgrounder = backgrounder
-        self.mySelfer = mySelfer
+        self.mySelfer = mySelfer ?? DefaultMySelfer(backgrounder: backgrounder)
     }
 
     /**
@@ -407,6 +407,7 @@ public class NetworkService: INetworkService {
 
 extension NetworkService: SendLayerProtocol {
     public func verify(cdAccount account: CdAccount) {
+        Log.info(component: comp, content: "verify")
         process(repeatProcess: false, needsVerificationOnly: true)
     }
 }
