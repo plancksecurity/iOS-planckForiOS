@@ -52,9 +52,8 @@
                                                 <constraint firstAttribute="height" constant="14" id="f4y-vH-ugI"/>
                                             </constraints>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3BC-6k-zL0">
+                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment-list-icon" translatesAutoresizingMaskIntoConstraints="NO" id="3BC-6k-zL0">
                                             <rect key="frame" x="8" y="30" width="14" height="14"/>
-                                            <color key="backgroundColor" red="0.94810354709625244" green="0.12631212174892426" blue="0.05694907158613205" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="14" id="7Kd-vL-J6T"/>
                                                 <constraint firstAttribute="height" constant="14" id="BQW-DX-8aC"/>
@@ -73,6 +72,14 @@
                                                 <constraint firstAttribute="width" constant="14" id="Ra7-d5-8tZ"/>
                                             </constraints>
                                         </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="m0u-Jn-mQU">
+                                            <rect key="frame" x="8" y="51" width="14" height="14"/>
+                                            <color key="backgroundColor" red="0.9481035471" green="0.1263121217" blue="0.056949071589999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="14" id="VDm-M5-hLA"/>
+                                                <constraint firstAttribute="width" constant="14" id="eCE-oP-1de"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Wkg-wf-Dbd" firstAttribute="leading" secondItem="tWZ-jW-sUg" secondAttribute="trailing" constant="8" id="1Ht-Db-ChC"/>
@@ -89,16 +96,19 @@
                                         <constraint firstItem="5Py-55-oem" firstAttribute="leading" secondItem="3BC-6k-zL0" secondAttribute="trailing" constant="8" id="iVp-yU-bvU"/>
                                         <constraint firstItem="BLq-0g-OgR" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="8" id="kCs-l4-lOq"/>
                                         <constraint firstAttribute="trailing" secondItem="5Py-55-oem" secondAttribute="trailing" constant="8" id="kcV-mx-HZt"/>
+                                        <constraint firstItem="m0u-Jn-mQU" firstAttribute="centerY" secondItem="BvI-Zi-zU6" secondAttribute="centerY" id="lsb-0v-Mds"/>
                                         <constraint firstItem="BLq-0g-OgR" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leading" constant="8" id="qWg-nY-p5U"/>
+                                        <constraint firstItem="m0u-Jn-mQU" firstAttribute="leading" secondItem="3BC-6k-zL0" secondAttribute="leading" id="sEo-ZD-nCa"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leading" constant="30" id="uxq-Ih-cLL"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="5" id="vTp-KP-1xV"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="attachmentIcon" destination="3BC-6k-zL0" id="ZMO-5d-OGj"/>
                                     <outlet property="dateLabel" destination="Wkg-wf-Dbd" id="TSP-tH-GR2"/>
                                     <outlet property="disclousureImage" destination="MDV-jl-oqJ" id="Ths-fW-VMY"/>
                                     <outlet property="isReadMessageImage" destination="BLq-0g-OgR" id="srw-Yw-Bqg"/>
-                                    <outlet property="ratingImage" destination="3BC-6k-zL0" id="7c4-IO-IYB"/>
+                                    <outlet property="ratingImage" destination="m0u-Jn-mQU" id="Xod-5v-9K3"/>
                                     <outlet property="senderLabel" destination="tWZ-jW-sUg" id="lM6-YZ-J7S"/>
                                     <outlet property="subjectLabel" destination="5Py-55-oem" id="UtV-Po-SPg"/>
                                     <outlet property="summaryLabel" destination="BvI-Zi-zU6" id="oGG-8D-EeC"/>
@@ -1553,12 +1563,13 @@
     <resources>
         <image name="arrow-lft-active" width="10" height="18"/>
         <image name="arrow-rgt-active" width="10" height="18"/>
+        <image name="attachment-list-icon" width="14" height="15"/>
         <image name="button-add" width="22" height="22"/>
         <image name="pep-user-status-gray" width="20" height="20"/>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="7dj-mG-eBK"/>
-        <segue reference="Uuc-rG-mIk"/>
+        <segue reference="TnR-me-YgK"/>
     </inferredMetricsTieBreakers>
 </document>

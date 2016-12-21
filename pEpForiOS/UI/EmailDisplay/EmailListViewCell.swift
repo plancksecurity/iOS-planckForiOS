@@ -19,6 +19,7 @@ class EmailListViewCell: UITableViewCell {
     @IBOutlet weak var isReadMessageImage: UIImageView!
     @IBOutlet weak var disclousureImage: UIImageView!
     @IBOutlet weak var ratingImage: UIImageView!
+    @IBOutlet weak var attachmentIcon: UIImageView!
     
     /**
      Indicates whether `defaultCellBackgroundColor` has been determined or not.
@@ -92,6 +93,8 @@ class EmailListViewCell: UITableViewCell {
                 self.isReadMessageImage.isHidden = false
                 self.isReadMessageImage.backgroundColor = .pEpBlue
             }
+            
+            attachmentIcon.isHidden = email.attachments.count > 0 ? false : true
         }
     }
     
