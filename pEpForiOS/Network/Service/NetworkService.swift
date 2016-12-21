@@ -202,23 +202,29 @@ public class NetworkService: INetworkService {
         let errorContainer = ErrorContainer()
 
         // Operation depending on all IMAP operations for this account
-        let opImapFinished = BlockOperation {
-            self.workerQueue.async {
-                Log.warn(component: self.comp, content: "IMAP sync finished")
+        let opImapFinished = BlockOperation { [weak self] in
+            self?.workerQueue.async {
+                if let me = self {
+                    Log.warn(component: me.comp, content: "IMAP sync finished")
+                }
             }
         }
 
         // Operation depending on all SMTP operations for this account
-        let opSmtpFinished = BlockOperation {
-            self.workerQueue.async {
-                Log.warn(component: self.comp, content: "SMTP sync finished")
-            }
+        let opSmtpFinished = BlockOperation { [weak self] in
+                self?.workerQueue.async {
+                    if let me = self {
+                        Log.warn(component: me.comp, content: "SMTP sync finished")
+                    }
+                }
         }
 
         // Operation depending on all IMAP and SMTP operations
-        let opAllFinished = BlockOperation {
-            self.workerQueue.async {
-                Log.info(component: self.comp, content: "sync finished")
+        let opAllFinished = BlockOperation { [weak self] in
+            self?.workerQueue.async {
+                if let me = self {
+                    Log.info(component: me.comp, content: "sync finished")
+                }
             }
         }
         opAllFinished.addDependency(opImapFinished)
