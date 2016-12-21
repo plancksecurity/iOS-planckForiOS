@@ -237,9 +237,11 @@ public class NetworkService: INetworkService {
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
             let smtpSendData = SmtpSendData(connectInfo: smtpCI)
             let opSmtpLogin = LoginSmtpOpration(smtpSendData: smtpSendData)
-            opSmtpLogin.completionBlock = {
-                self.workerQueue.async {
-                    Log.info(component: self.comp, content: "opSmtpLogin finished")
+            opSmtpLogin.completionBlock = { [weak self] in
+                if let me = self {
+                    me.workerQueue.async {
+                        Log.info(component: me.comp, content: "opSmtpLogin finished")
+                    }
                 }
             }
             opSmtpLoginOpt = opSmtpLogin
@@ -254,16 +256,18 @@ public class NetworkService: INetworkService {
             // login IMAP
             // TODO: Check if needed
             let opImapLogin = LoginImapOperation(imapSyncData: imapSyncData, name: parentName)
-            opImapLogin.completionBlock = {
-                self.workerQueue.async {
-                    var ops: [BaseOperation] = [opImapLogin]
-                    if let op = opSmtpLoginOpt {
-                        ops.append(op)
+            opImapLogin.completionBlock = { [weak self] in
+                self?.workerQueue.async {
+                    if let me = self {
+                        var ops: [BaseOperation] = [opImapLogin]
+                        if let op = opSmtpLoginOpt {
+                            ops.append(op)
+                        }
+                        me.checkVerified(
+                            accountInfo: accountInfo, operations: ops,
+                            needsVerificationOnly: needsVerificationOnly)
+                        Log.info(component: me.comp, content: "opImapLogin finished")
                     }
-                    self.checkVerified(
-                        accountInfo: accountInfo, operations: ops,
-                        needsVerificationOnly: needsVerificationOnly)
-                    Log.info(component: self.comp, content: "opImapLogin finished")
                 }
             }
             opImapLogin.addDependency(opSmtpFinished)
@@ -273,9 +277,11 @@ public class NetworkService: INetworkService {
             // 3.b Fetch current list of interesting mailboxes
             let opFetchFolders = FetchFoldersOperation(
                 parentName: parentName, imapSyncData: imapSyncData)
-            opFetchFolders.completionBlock = {
-                self.workerQueue.async {
-                    Log.info(component: self.comp, content: "opFetchFolders finished")
+            opFetchFolders.completionBlock = { [weak self] in
+                if let me = self {
+                    me.workerQueue.async {
+                        Log.info(component: me.comp, content: "opFetchFolders finished")
+                    }
                 }
             }
             operations.append(opFetchFolders)
@@ -320,8 +326,10 @@ public class NetworkService: INetworkService {
                     let syncMessagesOp = SyncMessagesOperation(
                         parentName: parentName, imapSyncData: imapSyncData,
                         folderID: folderID, folderName: fi.name, lastUID: lastUID)
-                    syncMessagesOp.completionBlock = {
-                        Log.info(component: self.comp, content: "syncMessagesOp finished")
+                    syncMessagesOp.completionBlock = { [weak self] in
+                        if let me = self {
+                            Log.info(component: me.comp, content: "syncMessagesOp finished")
+                        }
                     }
                     if let lastOp = lastImapOp {
                         syncMessagesOp.addDependency(lastOp)
@@ -359,8 +367,8 @@ public class NetworkService: INetworkService {
     func scheduleOperationLineInternal(
         operationLine: OperationLine, completionBlock: (() -> Void)?) {
         let bgID = backgrounder?.beginBackgroundTask()
-        operationLine.finalOperation.completionBlock = {
-            self.backgrounder?.endBackgroundTask(bgID)
+        operationLine.finalOperation.completionBlock = { [weak self] in
+            self?.backgrounder?.endBackgroundTask(bgID)
             completionBlock?()
         }
         for op in operationLine.operations {
@@ -394,11 +402,13 @@ public class NetworkService: INetworkService {
             var myLines = operationLines
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
-                scheduleOperationLineInternal(operationLine: ol, completionBlock: {
-                    self.networkServiceDelegate?.didSync(
-                        service: self, accountInfo: ol.accountInfo)
-                    // Process the rest
-                    self.processOperationLines(operationLines: myLines)
+                scheduleOperationLineInternal(operationLine: ol, completionBlock: { [weak self] in
+                    if let me = self {
+                        me.networkServiceDelegate?.didSync(
+                            service: me, accountInfo: ol.accountInfo)
+                        // Process the rest
+                        me.processOperationLines(operationLines: myLines)
+                    }
                 })
             } else {
                 if repeatProcess {
