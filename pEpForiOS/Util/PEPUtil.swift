@@ -629,10 +629,6 @@ open class PEPUtil {
     }
 
     open static func fingerPrint(identity: Identity, session: PEPSession? = nil) -> String? {
-        if let fpr = identity.fingerPrint {
-            return fpr
-        }
-
         let theSession = reuse(session: session)
         let pEpID = pEp(identity: identity)
         let pEpDict = NSMutableDictionary(dictionary: pEpID)

@@ -42,4 +42,8 @@ extension Identity {
             }
         }
     }
+
+    open func fingerPrint(session: PEPSession? = nil) -> String? {
+        return PEPUtil.fingerPrint(identity: self, session: session)
+    }
 }

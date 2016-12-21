@@ -357,8 +357,6 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertGreaterThan(inb.messageCount(), 0)
         }
 
-        XCTAssertNotNil(cdAccount.identity?.fingerPrint)
-
         del.expCanceled = expectation(description: "expCanceled")
         networkService.cancel()
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
@@ -417,8 +415,6 @@ class NetworkServiceTests: XCTestCase {
         if let inb = inbox {
             XCTAssertGreaterThan(inb.messageCount(), 0)
         }
-
-        XCTAssertNotNil(cdAccount.identity?.fingerPrint)
 
         // Wait a long time, just let it sync over and over again
         let _ = expectation(description: "expForever")

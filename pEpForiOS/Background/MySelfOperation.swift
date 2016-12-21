@@ -28,8 +28,7 @@ open class MySelfOperation: BaseOperation {
         // Which identities are owned?
         context.performAndWait {
             let pOwnIdentity = NSPredicate(format: "isMySelf = true")
-            let pHasNoFpr = NSPredicate(format: "fingerPrint = nil or fingerPrint = \"\"")
-            let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pOwnIdentity, pHasNoFpr])
+            let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pOwnIdentity])
             guard let cdIds = CdIdentity.all(with: p)
                 as? [CdIdentity] else {
                     return
@@ -45,18 +44,6 @@ open class MySelfOperation: BaseOperation {
             let taskID = backgrounder?.beginBackgroundTask(taskName: comp) { session = nil }
             session?.mySelf(pEpIdDict)
             backgrounder?.endBackgroundTask(taskID)
-        }
-
-        context.performAndWait {
-            for (cdId, idDict) in ids {
-                guard let cdIdentity = context.object(with: cdId) as? CdIdentity else {
-                    continue
-                }
-                if let fpr = idDict[kPepFingerprint] as? String {
-                    cdIdentity.fingerPrint = fpr
-                }
-            }
-            Record.saveAndWait(context: context)
         }
     }
 }
