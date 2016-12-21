@@ -25,3 +25,13 @@
 
 "MenuCtrl.Cameraroll" = "Foto od. Video einfügen";
 "MenuCtrl.Attachment" = "Anhang hinzufügen";
+
+// Messages
+
+"Messages.All" = "Alle";
+"Message.Mailinglist" = "Diese E-Mail ist von einer Mailing-Liste.";
+"Message.Unsubscribe" = "Abmelden";
+"Message.From" = "Von: ";
+"Message.Subject" = "Betreff: ";
+"Message.To" = "An: ";
+

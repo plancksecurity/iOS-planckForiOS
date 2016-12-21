@@ -11,7 +11,7 @@ import UIKit
 open class ComposeFieldModel {
     
     enum FieldType: String {
-        case to, cc, bcc, from, subject, content
+        case to, cc, bcc, from, subject, content, none
     }
     
     enum FieldDisplayType: String {
@@ -28,12 +28,12 @@ open class ComposeFieldModel {
     var contactSuggestion = false
     
     init(with data: [String: Any]) {
-        type = FieldType(rawValue: data["type"] as! String)!
+        type = FieldType(rawValue: (data["type"] as? String)!) ?? .none
         title = (data["title"] as! String).localized
         display = FieldDisplayType(rawValue: data["visible"] as! String)!
         height = CGFloat((data["height"] as! NSString).floatValue)
         identifier = data["identifier"] as! String
-        contactSuggestion = data["contactSuggestion"] as! Bool
+        contactSuggestion = data["contactSuggestion"] as? Bool ?? false
         
         if let expandable = data["expanded"] as? NSString {
             expanded = CGFloat(expandable.floatValue)

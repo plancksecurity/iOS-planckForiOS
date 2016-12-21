@@ -25,3 +25,13 @@
 
 "MenuCtrl.Cameraroll" = "Insert Photo or Video";
 "MenuCtrl.Attachment" = "Add Attachment";
+
+// Messages
+
+"Messages.All" = "All";
+"Message.Mailinglist" = "This message is from a mailing list.";
+"Message.Unsubscribe" = "Unsubscribe";
+"Message.From" = "From: ";
+"Message.Subject" = "Subject: ";
+"Message.To" = "To: ";
+
