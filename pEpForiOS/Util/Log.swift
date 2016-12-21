@@ -63,6 +63,10 @@ extension Log: CWLogging {
 }
 
 extension Log: MessageModelLogging {
+    public func verbose(component: String, content: String) {
+        Log.verbose(component: component, content: content)
+    }
+
     public func info(component: String, content: String) {
         Log.info(component: component, content: content)
     }
