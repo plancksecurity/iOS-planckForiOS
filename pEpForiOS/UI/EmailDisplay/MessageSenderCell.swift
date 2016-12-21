@@ -15,7 +15,7 @@ open class MessageSenderCell: MessageCell {
         fieldModel = model
         titleLabel?.text = message.from?.displayString
         
-        let attributed = NSMutableAttributedString(string: "Message.From".localized)
+        let attributed = NSMutableAttributedString(string: "Message.To".localized)
         let attributes = [
             NSFontAttributeName: UIFont.systemFont(ofSize: 15.0),
             NSForegroundColorAttributeName: UIColor.lightGray

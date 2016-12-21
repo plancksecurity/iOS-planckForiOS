@@ -20,7 +20,6 @@ class EmailViewController: UITableViewController {
     var otherCellsHeight: CGFloat = 0.0
     var computedHeight: CGFloat = 0.0
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadDatasource("MessageData")

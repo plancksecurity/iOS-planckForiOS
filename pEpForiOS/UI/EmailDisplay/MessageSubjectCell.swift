@@ -10,10 +10,16 @@ import MessageModel
 
 open class MessageSubjectCell: MessageCell {
     
+    let dateFormatter = UIHelper.dateFormatterEmailDetails()
+    
     public override func updateCell(_ model: ComposeFieldModel, _ message: Message) {
         fieldModel = model
-        
         titleLabel?.text = message.shortMessage
-        valueLabel?.text = "\(message.received)"
+        
+        if let receivedDate = message.received {
+            UIHelper.putString(dateFormatter.string(from: receivedDate as Date), toLabel: valueLabel)
+        } else {
+            UIHelper.putString(nil, toLabel: valueLabel)
+        }
     }
 }
