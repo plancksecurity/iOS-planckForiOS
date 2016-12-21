@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lPr-gi-BrG">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lPr-gi-BrG">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -131,8 +132,8 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="wi1-9j-AQt" id="5ik-CT-83m"/>
-                        <segue destination="SRN-tu-1xe" kind="show" identifier="segueShowEmail" id="Ovv-97-Yig"/>
                         <segue destination="Efv-29-FEv" kind="presentation" identifier="segueAddNewAccount" id="Na7-CM-lbe"/>
+                        <segue destination="JmV-bH-Nfe" kind="show" identifier="segueShowEmail" id="7dj-mG-eBK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -580,32 +581,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wgp-fk-alI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4185" y="593"/>
-        </scene>
-        <!--Email View-->
-        <scene sceneID="adb-B5-lMP">
-            <objects>
-                <tableViewController title="Email View" id="SRN-tu-1xe" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems>
-                        <barButtonItem systemItem="reply" id="ifs-G2-Ixn">
-                            <connections>
-                                <action selector="pressReply:" destination="SRN-tu-1xe" id="oqM-Lb-d3c"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="O3J-Mr-T4Y"/>
-                        <barButtonItem title="pEp" id="5eH-31-eed">
-                            <connections>
-                                <segue destination="2d7-Da-IgM" kind="show" identifier="segueTrustWordsContactList" id="bY7-gu-tb1"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <connections>
-                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="GPW-U8-tyH"/>
-                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="E2j-Ld-4K8"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lmA-rc-hEc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="7183" y="377"/>
         </scene>
         <!--Trust Words View Controller-->
         <scene sceneID="N0g-A9-3RW">
@@ -1070,7 +1045,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <activityIndicatorView key="tableFooterView" hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="c3w-UO-9n8">
-                            <rect key="frame" x="0.0" y="264" width="375" height="37"/>
+                            <rect key="frame" x="0.0" y="200" width="375" height="37"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="color" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </activityIndicatorView>
@@ -1396,12 +1371,194 @@
             </objects>
             <point key="canvasLocation" x="4185" y="-982"/>
         </scene>
+        <!--EMail View-->
+        <scene sceneID="ceF-od-h6m">
+            <objects>
+                <tableViewController storyboardIdentifier="messageView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JmV-bH-Nfe" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="28" sectionFooterHeight="28" id="bgW-Sf-KkO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="mailingListCell" rowHeight="50" id="AG3-ER-cfD" customClass="MailinglistCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AG3-ER-cfD" id="JOb-sZ-a1C">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Diese E-Mail ist von einer Mailing-Liste." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztf-Kk-ftR">
+                                            <rect key="frame" x="15" y="5" width="331" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLd-uW-xHl">
+                                            <rect key="frame" x="0.0" y="21" width="95" height="28"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <state key="normal" title="Abmelden"/>
+                                        </button>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <connections>
+                                    <outlet property="titleLabel" destination="ztf-Kk-ftR" id="Oc8-Nz-UVK"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderCell" rowHeight="72" id="FOp-nH-amt" customClass="MessageSenderCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="78" width="375" height="72"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FOp-nH-amt" id="C2Z-v9-OqA">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjv-cG-kwa">
+                                            <rect key="frame" x="18" y="27" width="339" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CjU-M5-GBB">
+                                            <rect key="frame" x="18" y="8" width="309" height="15"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pep-user-status-gray" translatesAutoresizingMaskIntoConstraints="NO" id="VXF-cp-hOg">
+                                            <rect key="frame" x="331" y="8" width="32" height="32"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="32" id="4LD-rI-CF5"/>
+                                                <constraint firstAttribute="height" constant="32" id="BFE-aF-Wid"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="CjU-M5-GBB" secondAttribute="trailing" constant="40" id="BXo-tL-9Tt"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="VXF-cp-hOg" secondAttribute="trailing" constant="4" id="EOo-dj-TbH"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="CjU-M5-GBB" secondAttribute="bottom" constant="40" id="H4e-Ad-uTn"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="yjv-cG-kwa" secondAttribute="trailing" constant="10" id="LHt-Eu-fLp"/>
+                                        <constraint firstItem="yjv-cG-kwa" firstAttribute="top" secondItem="CjU-M5-GBB" secondAttribute="bottom" constant="4" id="LZ8-Hu-AMd"/>
+                                        <constraint firstAttribute="topMargin" secondItem="VXF-cp-hOg" secondAttribute="top" id="Xeu-Zs-N9q"/>
+                                        <constraint firstItem="yjv-cG-kwa" firstAttribute="leading" secondItem="C2Z-v9-OqA" secondAttribute="leadingMargin" constant="10" id="grn-KG-yz5"/>
+                                        <constraint firstAttribute="topMargin" secondItem="CjU-M5-GBB" secondAttribute="top" id="kcL-SB-SFi"/>
+                                        <constraint firstItem="CjU-M5-GBB" firstAttribute="leading" secondItem="C2Z-v9-OqA" secondAttribute="leadingMargin" constant="10" id="m4x-7f-DhM"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="titleLabel" destination="CjU-M5-GBB" id="NEd-uq-adz"/>
+                                    <outlet property="valueLabel" destination="yjv-cG-kwa" id="eJx-lF-BFd"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderSubjectCell" rowHeight="72" id="7VL-kN-Rz4" customClass="MessageSubjectCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="150" width="375" height="72"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7VL-kN-Rz4" id="y9e-lH-wwx">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7b-Sk-Sew">
+                                            <rect key="frame" x="18" y="37" width="33" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Subject" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M4V-33-a3G">
+                                            <rect key="frame" x="18" y="8" width="349" height="25"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="M4V-33-a3G" firstAttribute="leading" secondItem="y9e-lH-wwx" secondAttribute="leadingMargin" constant="10" id="DnK-4c-eHl"/>
+                                        <constraint firstItem="M7b-Sk-Sew" firstAttribute="top" secondItem="M4V-33-a3G" secondAttribute="bottom" constant="4" id="Ebw-MF-oue"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="M4V-33-a3G" secondAttribute="trailing" id="P6A-L1-bJa"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="M4V-33-a3G" secondAttribute="bottom" constant="30" id="d1g-Fu-eBH"/>
+                                        <constraint firstItem="M7b-Sk-Sew" firstAttribute="leading" secondItem="y9e-lH-wwx" secondAttribute="leadingMargin" constant="10" id="ntY-Do-oVz"/>
+                                        <constraint firstAttribute="topMargin" secondItem="M4V-33-a3G" secondAttribute="top" id="vJj-ZV-Ebm"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="titleLabel" destination="M4V-33-a3G" id="27g-zD-owI"/>
+                                    <outlet property="valueLabel" destination="M7b-Sk-Sew" id="HhQ-XT-8es"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="senderBodyCell" rowHeight="200" id="cD0-l0-h5A" customClass="MessageContentCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="222" width="375" height="200"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cD0-l0-h5A" id="Hzq-CN-6yV">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="199"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CaA-eK-nTs">
+                                            <rect key="frame" x="0.0" y="-0.5" width="374.5" height="199"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="cD0-l0-h5A" id="G1q-PP-UqA"/>
+                                            </connections>
+                                        </webView>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="webView" destination="CaA-eK-nTs" id="SAi-iF-ZDn"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="JmV-bH-Nfe" id="iYd-jg-9r6"/>
+                            <outlet property="delegate" destination="JmV-bH-Nfe" id="bWa-mD-2Ah"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems>
+                        <barButtonItem systemItem="reply" id="qxE-Vd-QoS">
+                            <connections>
+                                <action selector="pressReply:" destination="JmV-bH-Nfe" id="gr2-Ps-S32"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Pba-MT-N93"/>
+                        <barButtonItem title="p≡p" id="JcY-wz-7Mb">
+                            <connections>
+                                <segue destination="2d7-Da-IgM" kind="show" identifier="segueTrustWords" id="dgh-Nl-qIC"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="EMail View" id="GHh-uN-Pd4">
+                        <rightBarButtonItems>
+                            <barButtonItem enabled="NO" image="arrow-lft-active" id="x32-sa-grP">
+                                <connections>
+                                    <segue destination="JmV-bH-Nfe" kind="show" identifier="segueNext" id="XT3-ns-FN9"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem enabled="NO" image="arrow-rgt-active" id="44j-qr-6wQ">
+                                <connections>
+                                    <segue destination="JmV-bH-Nfe" kind="show" identifier="seguePrevious" id="ZgS-ED-oJt"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Uuc-rG-mIk"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="N8x-Mt-P4Y"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jHG-0H-b1J" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7161" y="378"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="arrow-lft-active" width="10" height="18"/>
+        <image name="arrow-rgt-active" width="10" height="18"/>
         <image name="button-add" width="22" height="22"/>
+        <image name="pep-user-status-gray" width="20" height="20"/>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="TnR-me-YgK"/>
+        <segue reference="7dj-mG-eBK"/>
+        <segue reference="Uuc-rG-mIk"/>
     </inferredMetricsTieBreakers>
 </document>

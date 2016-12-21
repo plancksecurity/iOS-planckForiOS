@@ -8,151 +8,154 @@
 
 import Foundation
 import UIKit
-import WebKit
-
 import MessageModel
 
-class EmailViewController: UIViewController {
-    /** Segue name for replying to the sender (from) */
-    let segueReplyFrom = "segueReplyFrom"
+class EmailViewController: UITableViewController {
 
-    /** Segue name for forwarding email */
-    let segueForward = "segueForward"
-
-    /** Segue for invoking the trustwords controller */
-    let segueTrustWordsContactList = "segueTrustWordsContactList"
-
-    let headerGapToContentY: CGFloat = 25
-
-    struct UIState {
-        var loadingMail = false
-    }
-
-    var state = UIState()
     var appConfig: AppConfig!
-    let headerView = EmailHeaderView.init()
-    var webView: WKWebView!
-
     var message: Message!
-
+    var tableData: ComposeDataSource?
+    var datasource = [Message]()
+    var page = 0
+    var otherCellsHeight: CGFloat = 0.0
+    var computedHeight: CGFloat = 0.0
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let config = WKWebViewConfiguration.init()
-        webView = WKWebView.init(frame: view.frame, configuration: config)
-        view.addSubview(webView)
-        webView.scrollView.addSubview(headerView)
+        loadDatasource("MessageData")
+        
+        tableView.estimatedRowHeight = 72.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.setNeedsLayout()
+        tableView.layoutIfNeeded()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        updateContents()
-    }
-
-    func updateContents() {
-        // If the contentInset.top is already set, this means the view never
-        // really disappeared. So there is nothing to update in that case.
-        headerView.message = message
-        headerView.update(view.bounds.size.width)
-
-        // Mark as read. Duh!
-        message.imapFlags?.seen = true
-
-        if webView.scrollView.contentInset.top == 0 {
-            loadWebViewContent()
-
-            let headerViewSize = headerView.preferredSize
-
-            let calculatedInsetTop = headerViewSize.height + headerGapToContentY
-            webView.scrollView.contentInset.top += calculatedInsetTop
-
-            headerView.frame = CGRect.init(origin: CGPoint.init(x: 0, y: -calculatedInsetTop),
-                                           size: headerViewSize)
-            webView.frame = CGRect.init(origin: CGPoint.init(x: 0, y: 0),
-                                        size: CGSize.init(width: view.bounds.size.width,
-                                            height: view.bounds.size.height))
-        }
-    }
-
-    func loadWebViewContent() {
-        let font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
-        let fontSize = font.pointSize
-        let fontFamily = font.familyName
-
-        if let url = URL.init(string: "file:///") {
-            if let s = message.longMessage {
-                let s2 = s.replacingOccurrences(of: "\r\n", with: "<br>")
-                let s3 = s2.replacingOccurrences(of: "\n", with: "<br>")
-                let html: String = "<!DOCTYPE html>"
-                    + "<html>"
-                    + "<head>"
-                    + "<meta name=\"viewport\" content=\"initial-scale=1.0\" />"
-                    + "<style>"
-                    + "body {font-size: \(fontSize); font-family: '\(fontFamily)'}"
-                    + "</style>"
-                    + "</head>"
-                    + "<body>"
-                    + s3
-                    + "</body>"
-                    + "</html>"
-
-                webView.loadHTMLString(html, baseURL: url)
+    
+    fileprivate final func loadDatasource(_ file: String) {
+        if let path = Bundle.main.path(forResource: file, ofType: "plist") {
+            if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
+                tableData = ComposeDataSource(with: dict["Rows"] as! [[String: Any]])
             }
         }
     }
+    
+    // MARK: - IBActions
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
         let alertViewWithoutTitle = UIAlertController()
 
-        let alertActionReply = UIAlertAction (
-            title: NSLocalizedString("Reply",
-                comment: "Reply email button"), style: .default) { (action) in
-                    self.performSegue(withIdentifier: self.segueReplyFrom , sender: self)
+        let alertActionReply = UIAlertAction (title: "Reply".localized, style: .default) { (action) in
+            self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionReply)
 
-        let alertActionForward = UIAlertAction (
-            title: NSLocalizedString("Forward",
-                comment: "Forward email button"), style: .default) { (action) in
-                    self.performSegue(withIdentifier: self.segueForward , sender: self)
+        let alertActionForward = UIAlertAction (title: "Forward".localized, style: .default) { (action) in
+            self.performSegue(withIdentifier: .segueForward , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionForward)
 
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel",
-                comment: "Cancel button text for email actions menu (reply, forward etc.)"),
-            style: .cancel) { (action) in }
-
+        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel) { (action) in }
         alertViewWithoutTitle.addAction(cancelAction)
 
         present(alertViewWithoutTitle, animated: true, completion: nil)
     }
+}
 
+// MARK: TableView Delegate & Datasource
+
+extension EmailViewController {
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewAutomaticDimension }
+        
+        if row.display == .conditional {
+            return 0
+        }
+        
+        otherCellsHeight += row.height
+        if indexPath.row == (tableData?.numberOfRows())! - 1 {
+            let availableSpace = tableView.bounds.size.height - otherCellsHeight + 94.0
+            if computedHeight > 0 {
+                if availableSpace < computedHeight {
+                    return computedHeight
+                }
+            }
+            return (availableSpace > row.height) ? availableSpace : row.height
+        }
+        
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableData?.numberOfRows() ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewCell() }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier, for: indexPath) as! MessageCell
+        cell.updateCell(row, message)
+        cell.delegate = self
+        
+        return cell
+    }
+}
+
+// MARK: - MessageContentCellDelegate
+
+extension EmailViewController: MessageContentCellDelegate {
+    
+    func cellDidUpdateHeight(_ with: CGFloat) {
+        computedHeight = with
+        tableView.updateSize()
+    }
+}
+
+
+// MARK: - SegueHandlerType
+
+extension EmailViewController: SegueHandlerType {
+    
+    enum SegueIdentifier: String {
+        case segueReplyFrom
+        case segueForward
+        case segueTrustWords
+        case seguePrevious
+        case segueNext
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == segueReplyFrom) {
-            let destination = segue.destination
-                as? ComposeTableViewController
+        switch segueIdentifier(for: segue) {
+        case .segueReplyFrom:
+            let destination = segue.destination as? ComposeTableViewController
             destination?.composeMode = .from
             destination?.appConfig = appConfig
             destination?.originalMessage = message
-        } else if (segue.identifier == segueForward) {
-            let destination = segue.destination
-                as? ComposeTableViewController
+            break
+        case .segueForward:
+            let destination = segue.destination as? ComposeTableViewController
             destination?.composeMode = .forward
             destination?.appConfig = appConfig
             destination?.originalMessage = message
-        } else if (segue.identifier == segueTrustWordsContactList) {
+            break
+        case .segueTrustWords:
             let destination = segue.destination as? TrustWordsViewController
-            destination?.message = self.message
+            destination?.message = message
             destination?.appConfig = appConfig
+            break
+        case .seguePrevious:
+            let destination = segue.destination as! EmailViewController
+            if page > 0 { page -= 1 }
+            destination.message = message
+            destination.appConfig = appConfig
+            break
+        case .segueNext:
+            let destination = segue.destination as! EmailViewController
+            if page < datasource.count  { page += 1 }
+            destination.message = message
+            destination.appConfig = appConfig
+            destination.page = page
+            break
         }
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        print("Transition size: \(size)")
-        updateViews(with: size)
-    }
-    
-    func updateViews(with size: CGSize) {
-        webView.frame.size = size
     }
 }
