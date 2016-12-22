@@ -32,7 +32,6 @@ class PepAdapterTests: XCTestCase {
     func testMyself() {
         // This includes that a new key is generated.
         pEpSession.mySelf(identity_me)
-        NSLog("PGP fingerprint (me): " + String(describing: identity_me[kPepFingerprint]!))
         XCTAssertNotNil(identity_me[kPepUserID])
     }
     
@@ -59,39 +58,6 @@ class PepAdapterTests: XCTestCase {
         PEPiOSAdapter.stopKeyserverLookup()
     }
     
-    func testPepPaths() {
-        var error: NSError?
-        
-        // Test if paths exist.
-        for key in PEPUtil.pEpUrls.keys {
-            XCTAssertTrue(
-                (PEPUtil.pEpUrls[key]! as NSURL).checkResourceIsReachableAndReturnError(&error))
-        }
-        
-        Log.info(component: comp,
-                 content: "Home folder: " + String(describing: PEPUtil.pEpUrls["home"]))
-        Log.info(component: comp,
-                 content: "pEp management DB file: " +
-                    String(describing: PEPUtil.pEpUrls["pEpManagementDb"]))
-        Log.info(component: comp,
-                 content: "GnuPG folder: " + String(describing: PEPUtil.pEpUrls["gnupg"]))
-        Log.info(component: comp,
-                 content: "Secring file: " + String(describing: PEPUtil.pEpUrls["gnupgSecring"]))
-        Log.info(component: comp,
-                 content: "Pubring file: " + String(describing: PEPUtil.pEpUrls["gnupgPubring"]))
-        
-        // Test if paths are not nil.
-        for key in PEPUtil.pEpUrls.keys {
-            XCTAssertNotNil(PEPUtil.pEpUrls[key])
-        }
-
-    }
-    
-    func testPepClean() {
-        // XXX: To test later
-        // XCTAssertTrue(PEPUtil.pEpClean())
-    }
-
     /**
      - See: https://cacert.pep.foundation/jira/browse/IOSAD-10
      https://cacert.pep.foundation/jira/browse/ENGINE-159

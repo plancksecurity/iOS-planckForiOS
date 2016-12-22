@@ -306,6 +306,8 @@ class NetworkServiceTests: XCTestCase {
     }
 
     func testAccountVerification() {
+        XCTAssertTrue(PEPUtil.pEpClean())
+
         XCTAssertTrue(Account.all().isEmpty)
 
         let mySelfObserver = MySelfObserver(

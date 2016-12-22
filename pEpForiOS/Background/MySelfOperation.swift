@@ -23,7 +23,7 @@ open class MySelfOperation: BaseOperation {
 
     open override func main() {
         let context = Record.Context.background
-        var ids = [NSManagedObjectID: NSMutableDictionary]()
+        var ids = [NSMutableDictionary]()
 
         // Which identities are owned?
         context.performAndWait {
@@ -34,13 +34,13 @@ open class MySelfOperation: BaseOperation {
                     return
             }
             for id in cdIds {
-                ids[id.objectID] = NSMutableDictionary(dictionary: PEPUtil.pEp(cdIdentity: id))
+                ids.append(NSMutableDictionary(dictionary: PEPUtil.pEp(cdIdentity: id)))
             }
         }
 
         // Invoke mySelf on all identities
         var session: PEPSession? = PEPSession()
-        for pEpIdDict in ids.values {
+        for pEpIdDict in ids {
             let taskID = backgrounder?.beginBackgroundTask(taskName: comp) { session = nil }
             session?.mySelf(pEpIdDict)
             backgrounder?.endBackgroundTask(taskID)
