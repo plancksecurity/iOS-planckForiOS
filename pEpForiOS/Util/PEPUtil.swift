@@ -125,41 +125,25 @@ open class PEPUtil {
      */
     open static let kMimeTypeMultipartAlternative = "multipart/alternative"
 
-    fileprivate static let homeUrl = URL(fileURLWithPath:
-        ProcessInfo.processInfo.environment["HOME"]!)
-    fileprivate static let pEpManagementDbUrl =
-        homeUrl.appendingPathComponent(".pEp_management.db")
-    fileprivate static let systemDbUrl = homeUrl.appendingPathComponent("system.db")
-    fileprivate static let gnupgUrl = homeUrl.appendingPathComponent(".gnupg")
-    fileprivate static let gnupgSecringUrl = gnupgUrl.appendingPathComponent("secring.gpg")
-    fileprivate static let gnupgPubringUrl = gnupgUrl.appendingPathComponent("pubring.gpg")
-
-    /**
-     Provide filepath URLs as public dictionary.
-     */
-    open static let pEpUrls: [String:URL] = [
-        "home": homeUrl,
-        "pEpManagementDb": pEpManagementDbUrl,
-        "systemDb": systemDbUrl,
-        "gnupg": gnupgUrl,
-        "gnupgSecring": gnupgSecringUrl,
-        "gnupgPubring": gnupgPubringUrl]
-    
     /** Delete pEp working data. */
     open static func pEpClean() -> Bool {
-        let pEpItemsToDelete: [String] = ["pEpManagementDb", "gnupg", "systemDb"]
-        var error: NSError?
-        
-        for key in pEpItemsToDelete {
-            let fileManager: FileManager = FileManager.default
-            let itemToDelete: URL = pEpUrls[key]!
-            if (itemToDelete as NSURL).checkResourceIsReachableAndReturnError(&error) {
-                do {
+        let homeURL = PEPiOSAdapter.homeURL() as URL
+
+        let pEpItemsToDelete: [URL] = [
+            homeURL.appendingPathComponent(".pEp_management.db"),
+            homeURL.appendingPathComponent(".gnupg"),
+            homeURL.appendingPathComponent("secring.gpg"),
+            homeURL.appendingPathComponent("secring.gpg")]
+
+        let fileManager: FileManager = FileManager.default
+        for itemToDelete in pEpItemsToDelete {
+            do {
+                if try itemToDelete.checkResourceIsReachable() {
                     try fileManager.removeItem(at: itemToDelete)
                 }
-                catch {
-                    return false
-                }
+            }
+            catch {
+                continue
             }
         }
         return true
