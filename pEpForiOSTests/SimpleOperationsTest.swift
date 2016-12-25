@@ -875,7 +875,6 @@ class SimpleOperationsTest: XCTestCase {
     func testMyselfOperation() {
         XCTAssertNotNil(account.identity)
         let identity = account.identity?.identity()
-        XCTAssertNil(identity?.fingerPrint())
         let expCompleted = expectation(description: "expCompleted")
 
         let op = MySelfOperation()
