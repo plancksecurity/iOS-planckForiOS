@@ -59,10 +59,6 @@ class TrustWordsViewController: UITableViewController {
         return lenght
     }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if ((indexPath as NSIndexPath).row == 0) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "mailSecurityLabelCell", for: indexPath) as!
@@ -84,9 +80,9 @@ class TrustWordsViewController: UITableViewController {
                     }
                     let securityTitleText = PEPUtil.pEpTitle(pEpRating: pEpRating)
                     let lenghtOfSecurityLabel = securityTitleText?.characters.count
-                    let attributedString = NSMutableAttributedString(string:securityTitleText!)
-                    attributedString.addAttribute(NSLinkAttributeName, value: "https://", range: NSRange(location: 0, length: lenghtOfSecurityLabel!))
-                    cell.mailSecurityUILabel.attributedText = attributedString
+                   // let attributedString = NSMutableAttributedString(string:securityTitleText!)
+                   //attributedString.addAttribute(NSLinkAttributeName, value: "https://", range: NSRange(location: 0, length: lenghtOfSecurityLabel!))
+                    //cell.mailSecurityUILabel.attributedText = attributedString
                 }
             }
             return cell
@@ -111,25 +107,24 @@ class TrustWordsViewController: UITableViewController {
 
             cell.handshakeContactUILabel.text = contact.displayString
             cell.handshakeUIButton.tag = contactIndex
-            let privacyColor = PEPUtil.pEpColor(identity: contact)
-            cell.backgroundColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(
-                privacyColor)
+           // let privacyColor = PEPUtil.pEpColor(identity: contact)
+           // cell.backgroundColor = UIHelper.trustWordsCellBackgroundColorFromPepColor(privacyColor)
 
             cell.handshakeUIButton.isEnabled = !otherMyselfAccount.contains(contact)
 
-            switch privacyColor {
-            case PEP_color_red:
-                cell.handshakeUIButton.setTitle(
-                    NSLocalizedString("Trust Again", comment: "handshake red"), for: UIControlState())
-            case PEP_color_green:
-                cell.handshakeUIButton.setTitle(
-                    NSLocalizedString("Reset trust", comment: "handshake green"), for: UIControlState())
-            case PEP_color_yellow:
-                cell.handshakeUIButton.setTitle(
-                    NSLocalizedString("Handshake", comment: "handshake yellow"), for: UIControlState())
-            default:
-                cell.handshakeUIButton.isEnabled = false
-            }
+//            switch privacyColor {
+//            case PEP_color_red:
+//                cell.handshakeUIButton.setTitle(
+//                    NSLocalizedString("Trust Again", comment: "handshake red"), for: UIControlState())
+//            case PEP_color_green:
+//                cell.handshakeUIButton.setTitle(
+//                    NSLocalizedString("Reset trust", comment: "handshake green"), for: UIControlState())
+//            case PEP_color_yellow:
+//                cell.handshakeUIButton.setTitle(
+//                    NSLocalizedString("Handshake", comment: "handshake yellow"), for: UIControlState())
+//            default:
+//                cell.handshakeUIButton.isEnabled = false
+//            }
             return cell
         }
     }

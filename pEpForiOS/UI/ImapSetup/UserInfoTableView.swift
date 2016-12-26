@@ -92,7 +92,6 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
     @IBOutlet weak var cancelBarbutton: UIBarButtonItem!
 
     var appConfig: AppConfig?
-    var IMAPSettings = "IMAPSettings"
     var fields = [UITextField]()
     var responder = 0
     var accounts = [Account]()
@@ -104,7 +103,7 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.handleCancelButtonVisibility()
+        handleCancelButtonVisibility()
         passwordValue.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [nameValue, emailValue, usernameValue, passwordValue]
@@ -160,19 +159,11 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
         super.didReceiveMemoryWarning()
     }
 
-    override open func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "IMAPSettings" {
-            let destination = segue.destination as! IMAPSettingsTableView
-            destination.appConfig = appConfig
-            destination.model = model
-        }
-    }
-
     open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
         
         if model.isValidUser {
-            performSegue(withIdentifier: IMAPSettings, sender: nil)
+            performSegue(withIdentifier: .IMAPSettings , sender: self)
         }
         return true
     }
@@ -202,6 +193,30 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
     }
     
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+// MARK: - Navigation
+
+extension UserInfoTableView: SegueHandlerType {
+    
+    public enum SegueIdentifier: String {
+        case IMAPSettings
+        case noSegue
+    }
+    
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .IMAPSettings:
+            let destination = segue.destination as! IMAPSettingsTableView
+            destination.appConfig = appConfig
+            destination.model = model
+            break
+        default:()
+        }
+        
     }
     
 }

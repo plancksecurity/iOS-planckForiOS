@@ -26,12 +26,12 @@
 "MenuCtrl.Cameraroll" = "Foto od. Video einfügen";
 "MenuCtrl.Attachment" = "Anhang hinzufügen";
 
-// Messages
+// Account List
 
-"Messages.All" = "Alle";
-"Message.Mailinglist" = "Diese E-Mail ist von einer Mailing-Liste.";
-"Message.Unsubscribe" = "Abmelden";
-"Message.From" = "Von: ";
-"Message.Subject" = "Betreff: ";
-"Message.To" = "An: ";
+"Accounts.HeaderTitle" = "Accounts";
 
+// Account Settings
+
+"AccountsSettings.Account" = "Account";
+"AccountsSettings.IMAP" = "IMAP Settings";
+"AccountsSettings.SMTP" = "SMTP Settings";

@@ -35,3 +35,13 @@
 "Message.Subject" = "Subject: ";
 "Message.To" = "To: ";
 
+
+// Account List
+
+"Accounts.HeaderTitle" = "Accounts";
+
+// Account Settings
+
+"AccountsSettings.Account" = "Account";
+"AccountsSettings.IMAP" = "IMAP Settings";
+"AccountsSettings.SMTP" = "SMTP Settings";
