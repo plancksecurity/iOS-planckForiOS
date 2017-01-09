@@ -402,10 +402,11 @@ public class NetworkService: INetworkService {
             var myLines = operationLines
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
-                scheduleOperationLineInternal(operationLine: ol, completionBlock: { [weak self] in
-                    if let me = self {
+                scheduleOperationLineInternal(operationLine: ol, completionBlock: {
+                    [weak self, weak ol] in
+                    if let me = self, let theOl = ol {
                         me.networkServiceDelegate?.didSync(
-                            service: me, accountInfo: ol.accountInfo)
+                            service: me, accountInfo: theOl.accountInfo)
                         // Process the rest
                         me.processOperationLines(operationLines: myLines)
                     }
