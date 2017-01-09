@@ -256,10 +256,10 @@ public class NetworkService: INetworkService {
             // login IMAP
             // TODO: Check if needed
             let opImapLogin = LoginImapOperation(imapSyncData: imapSyncData, name: parentName)
-            opImapLogin.completionBlock = { [weak self] in
+            opImapLogin.completionBlock = { [weak self, weak opImapLogin] in
                 self?.workerQueue.async {
-                    if let me = self {
-                        var ops: [BaseOperation] = [opImapLogin]
+                    if let me = self, let theOpImapLogin = opImapLogin {
+                        var ops: [BaseOperation] = [theOpImapLogin]
                         if let op = opSmtpLoginOpt {
                             ops.append(op)
                         }
