@@ -376,6 +376,8 @@ class NetworkServiceTests: XCTestCase {
         let networkService = NetworkService(parentName: #function, mySelfer: mySelfObserver)
         networkService.networkServiceDelegate = del
 
+        networkService.start()
+
         CdAccount.sendLayer = networkService
 
         let accountObserver = AccountObserver(

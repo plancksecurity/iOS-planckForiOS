@@ -51,7 +51,7 @@ public class NetworkService: INetworkService {
     let backgrounder: BackgroundTaskProtocol?
     let mySelfer: KickOffMySelfProtocol?
 
-    public init(sleepTimeInSeconds: Double = 250.0, parentName: String? = nil,
+    public init(sleepTimeInSeconds: Double = 10.0, parentName: String? = nil,
                 backgrounder: BackgroundTaskProtocol? = nil,
                 mySelfer: KickOffMySelfProtocol? = nil) {
         self.sleepTimeInSeconds = sleepTimeInSeconds
