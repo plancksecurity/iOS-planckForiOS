@@ -367,7 +367,8 @@ public class NetworkService: INetworkService {
     func scheduleOperationLineInternal(
         operationLine: OperationLine, completionBlock: (() -> Void)?) {
         let bgID = backgrounder?.beginBackgroundTask()
-        operationLine.finalOperation.completionBlock = { [weak self] in
+        operationLine.finalOperation.completionBlock = { [weak self, weak operationLine] in
+            operationLine?.finalOperation.completionBlock = nil
             self?.backgrounder?.endBackgroundTask(bgID)
             completionBlock?()
         }
