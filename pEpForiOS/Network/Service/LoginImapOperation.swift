@@ -19,6 +19,8 @@ open class LoginImapOperation: ConcurrentBaseOperation {
         super.init(parentName: name)
     }
 
+    deinit {}
+
     open override func main() {
         service = ImapSync(connectInfo: imapSyncData.connectInfo)
         service.delegate = self

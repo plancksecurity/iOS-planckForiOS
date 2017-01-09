@@ -33,6 +33,8 @@ class OperationLine {
         self.finalOperation = finalOperation
         self.errorContainer = errorContainer
     }
+
+    deinit {}
 }
 
 extension OperationLine: ErrorProtocol {
@@ -60,6 +62,8 @@ open class ImapSyncData: ImapConnectionManagerProtocol {
     public init(connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
     }
+
+    deinit {}
 
     public func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync? {
         if self.connectInfo == connectInfo {

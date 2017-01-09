@@ -67,6 +67,8 @@ open class FetchFoldersOperation: ImapSyncOperation {
             backgroundQueue: backgroundQueue, messageFetchedBlock: messageFetchedBlock)
     }
 
+    deinit {}
+
     open override func main() {
         if !shouldRun() {
             return

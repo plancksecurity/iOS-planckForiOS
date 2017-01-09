@@ -31,6 +31,8 @@ open class FetchMessagesOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
+    deinit {}
+
     override open func main() {
         if !shouldRun() {
             return

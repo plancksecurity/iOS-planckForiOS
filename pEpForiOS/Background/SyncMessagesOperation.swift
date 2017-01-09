@@ -39,6 +39,8 @@ open class SyncMessagesOperation: ImapSyncOperation {
                   lastUID: lastUID)
     }
 
+    deinit {}
+
     override open func main() {
         if !shouldRun() {
             return
