@@ -400,6 +400,8 @@ public class NetworkService: INetworkService {
                                        repeatProcess: Bool = true) {
         if !self.cancelled {
             var myLines = operationLines
+            Log.verbose(component: comp,
+                        content: "\(operationLines.count) operations left, repeat? \(repeatProcess)")
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
                 scheduleOperationLineInternal(operationLine: ol, completionBlock: {
@@ -418,6 +420,8 @@ public class NetworkService: INetworkService {
                     }
                 }
             }
+        } else {
+            Log.verbose(component: comp, content: "canceled with \(operationLines.count)")
         }
     }
 }
