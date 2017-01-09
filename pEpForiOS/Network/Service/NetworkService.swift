@@ -398,14 +398,17 @@ public class NetworkService: INetworkService {
 
     func processOperationLinesInternal(operationLines: [OperationLine],
                                        repeatProcess: Bool = true) {
+        let theComp = "\(comp) processOperationLinesInternal"
         if !self.cancelled {
             var myLines = operationLines
-            Log.verbose(component: comp,
-                        content: "\(operationLines.count) operations left, repeat? \(repeatProcess)")
+            Log.verbose(component: theComp,
+                        content: "\(operationLines.count) left, repeat? \(repeatProcess)")
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
                 scheduleOperationLineInternal(operationLine: ol, completionBlock: {
                     [weak self, weak ol] in
+                    Log.verbose(component: theComp,
+                                content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")
                     if let me = self, let theOl = ol {
                         me.networkServiceDelegate?.didSync(
                             service: me, accountInfo: theOl.accountInfo)
@@ -421,7 +424,7 @@ public class NetworkService: INetworkService {
                 }
             }
         } else {
-            Log.verbose(component: comp, content: "canceled with \(operationLines.count)")
+            Log.verbose(component: theComp, content: "canceled with \(operationLines.count)")
         }
     }
 }
