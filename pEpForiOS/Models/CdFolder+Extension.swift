@@ -9,7 +9,7 @@
 import MessageModel
 
 public extension CdFolder {
-    static let comp = "CdFolder"
+    @nonobjc static let comp = "CdFolder"
 
     /**
      If the folder has been deleted, undelete it.
