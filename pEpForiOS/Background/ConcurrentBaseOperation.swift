@@ -17,10 +17,15 @@ import MessageModel
  */
 open class ConcurrentBaseOperation: BaseOperation {
     /**
+     Don't even start if an error already has occurred, e.g. through another Operation.
+     */
+    let bailOutEarlyOnError = true
+
+    /**
      If you need to spawn child operations (that is, subtasks that should be waited upon),
      schedule them on this queue.
      */
-    let backgroundQueue = OperationQueue.init()
+    let backgroundQueue = OperationQueue()
 
     lazy var privateMOC: NSManagedObjectContext = Record.Context.background
 
@@ -39,10 +44,11 @@ open class ConcurrentBaseOperation: BaseOperation {
     }
 
     open override func start() {
-        if !shouldRun() {
+        if !shouldRun() || (bailOutEarlyOnError && hasErrors()) {
             markAsFinished()
             return
         }
+        Log.verbose(component: comp, content: "calling main()")
         // Just call main directly, relying on it to schedule a task in the background.
         main()
     }
@@ -102,6 +108,7 @@ open class ConcurrentBaseOperation: BaseOperation {
      to signal the end of this operation.
      */
     func markAsFinished() {
+        Log.verbose(component: comp, content: "markAsFinished()")
         willChangeValue(forKey: "isFinished")
         willChangeValue(forKey: "isExecuting")
         myFinished = true
