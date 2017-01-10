@@ -22,6 +22,12 @@ open class ConcurrentBaseOperation: BaseOperation {
      */
     let backgroundQueue = OperationQueue()
 
+    /** Do we observe the `operationCount` of `backgroundQueue`? */
+    var operationCountObserverAdded = false
+
+    /** Constant for observing the background queue */
+    let operationCountKeyPath = "operationCount"
+
     lazy var privateMOC: NSManagedObjectContext = Record.Context.background
 
     var myFinished: Bool = false
@@ -36,6 +42,12 @@ open class ConcurrentBaseOperation: BaseOperation {
 
     open override var isFinished: Bool {
         return myFinished && backgroundQueue.operationCount == 0
+    }
+
+    deinit {
+        if operationCountObserverAdded {
+            backgroundQueue.removeObserver(self, forKeyPath: operationCountKeyPath)
+        }
     }
 
     open override func start() {
@@ -58,7 +70,8 @@ open class ConcurrentBaseOperation: BaseOperation {
         if backgroundQueue.operationCount == 0 {
             markAsFinished()
         } else {
-            backgroundQueue.addObserver(self, forKeyPath: "operationCount",
+            operationCountObserverAdded = true
+            backgroundQueue.addObserver(self, forKeyPath: operationCountKeyPath,
                                         options: [.initial, .new],
                                         context: nil)
             self.addObserver(self, forKeyPath: "isCancelled",
