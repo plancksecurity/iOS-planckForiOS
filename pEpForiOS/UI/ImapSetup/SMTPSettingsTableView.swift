@@ -92,13 +92,14 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         present(alertView, animated: true, completion: nil)
     }
 
-    @IBAction func alertWithSecurityValues(_ sender: AnyObject) {
+    @IBAction func alertWithSecurityValues(_ sender: UIButton) {
         let alertController = UIAlertController(
             title: NSLocalizedString("Transport protocol",
                 comment: "UI alert title for transport protocol"),
             message: NSLocalizedString("Choose a Security protocol for your accont",
                 comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
+        alertController.popoverPresentationController?.sourceView = sender
 
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportSMTP = transport
