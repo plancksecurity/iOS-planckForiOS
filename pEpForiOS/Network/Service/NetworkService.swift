@@ -236,7 +236,8 @@ public class NetworkService: INetworkService {
         if let smtpCI = accountInfo.smtpConnectInfo {
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
             let smtpSendData = SmtpSendData(connectInfo: smtpCI)
-            let opSmtpLogin = LoginSmtpOpration(smtpSendData: smtpSendData)
+            let opSmtpLogin = LoginSmtpOpration(
+                smtpSendData: smtpSendData, errorContainer: errorContainer)
             opSmtpLogin.completionBlock = { [weak self] in
                 if let me = self {
                     me.workerQueue.async {
@@ -255,7 +256,8 @@ public class NetworkService: INetworkService {
 
             // login IMAP
             // TODO: Check if needed
-            let opImapLogin = LoginImapOperation(imapSyncData: imapSyncData, name: parentName)
+            let opImapLogin = LoginImapOperation(
+                imapSyncData: imapSyncData, name: parentName, errorContainer: errorContainer)
             opImapLogin.completionBlock = { [weak self, weak opImapLogin] in
                 self?.workerQueue.async {
                     if let me = self, let theOpImapLogin = opImapLogin {
@@ -276,7 +278,7 @@ public class NetworkService: INetworkService {
 
             // 3.b Fetch current list of interesting mailboxes
             let opFetchFolders = FetchFoldersOperation(
-                parentName: parentName, imapSyncData: imapSyncData)
+                parentName: parentName, errorContainer: errorContainer, imapSyncData: imapSyncData)
             opFetchFolders.completionBlock = { [weak self] in
                 if let me = self {
                     me.workerQueue.async {
@@ -298,8 +300,9 @@ public class NetworkService: INetworkService {
             var lastImapOp: Operation? = nil
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
-                parentName: parentName, imapSyncData: imapSyncData, folderName: fi.name) {
-                    [weak self] message in self?.messageFetched(cdMessage: message)
+                    parentName: parentName, errorContainer: errorContainer,
+                    imapSyncData: imapSyncData, folderName: fi.name) {
+                        [weak self] message in self?.messageFetched(cdMessage: message)
                 }
                 self.workerQueue.async {
                     Log.info(component: self.comp, content: "fetchMessagesOp finished")
@@ -313,7 +316,13 @@ public class NetworkService: INetworkService {
                 lastImapOp = fetchMessagesOp
             }
 
-            let opDecrypt = DecryptMessageOperation(parentName: comp)
+            let opDecrypt = DecryptMessageOperation(
+                parentName: comp, errorContainer: errorContainer)
+
+            // Decrypting messages can always run, no need to bail out early
+            // if errors occurred earlier
+            opDecrypt.bailOutEarlyOnError = false
+
             if let lastImap = lastImapOp {
                 opDecrypt.addDependency(lastImap)
             }
@@ -324,8 +333,9 @@ public class NetworkService: INetworkService {
             for fi in folderInfos {
                 if let folderID = fi.folderID, let lastUID = fi.lastUID {
                     let syncMessagesOp = SyncMessagesOperation(
-                        parentName: parentName, imapSyncData: imapSyncData,
-                        folderID: folderID, folderName: fi.name, lastUID: lastUID)
+                        parentName: parentName, errorContainer: errorContainer,
+                        imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
+                        lastUID: lastUID)
                     syncMessagesOp.completionBlock = { [weak self] in
                         if let me = self {
                             Log.info(component: me.comp, content: "syncMessagesOp finished")

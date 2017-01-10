@@ -11,6 +11,12 @@
  */
 open class BaseOperation: Operation, ErrorProtocol {
     open var comp = "BaseOperation"
+
+    /**
+     Don't even start if an error already has occurred, e.g. through another Operation.
+     */
+    var bailOutEarlyOnError = true
+
     let errorContainer: ErrorProtocol
 
     open var error: NSError? {
@@ -54,5 +60,12 @@ open class BaseOperation: Operation, ErrorProtocol {
 
     deinit {
         Log.info(component: comp, content: "deinit()")
+    }
+
+    public func shouldRun() -> Bool {
+        if isCancelled || (bailOutEarlyOnError && hasErrors()) {
+            return false
+        }
+        return true
     }
 }

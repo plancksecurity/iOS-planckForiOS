@@ -17,11 +17,6 @@ import MessageModel
  */
 open class ConcurrentBaseOperation: BaseOperation {
     /**
-     Don't even start if an error already has occurred, e.g. through another Operation.
-     */
-    let bailOutEarlyOnError = true
-
-    /**
      If you need to spawn child operations (that is, subtasks that should be waited upon),
      schedule them on this queue.
      */
@@ -44,7 +39,7 @@ open class ConcurrentBaseOperation: BaseOperation {
     }
 
     open override func start() {
-        if !shouldRun() || (bailOutEarlyOnError && hasErrors()) {
+        if !shouldRun() {
             markAsFinished()
             return
         }
@@ -116,12 +111,8 @@ open class ConcurrentBaseOperation: BaseOperation {
         didChangeValue(forKey: "isFinished")
     }
 
-    public func shouldRun() -> Bool {
-        if isCancelled {
-            markAsFinished()
-            return false
-        }
-        if hasErrors() {
+    public override func shouldRun() -> Bool {
+        if !super.shouldRun() {
             markAsFinished()
             return false
         }

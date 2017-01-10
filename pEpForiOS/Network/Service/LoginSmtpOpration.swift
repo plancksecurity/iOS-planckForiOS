@@ -10,8 +10,9 @@ class LoginSmtpOpration: ConcurrentBaseOperation {
     var service: SmtpSend!
     var smtpSendData: SmtpSendData
 
-    init(smtpSendData: SmtpSendData) {
+    init(smtpSendData: SmtpSendData, errorContainer: ErrorProtocol = ErrorContainer()) {
         self.smtpSendData = smtpSendData
+        super.init(errorContainer: errorContainer)
     }
 
     override func main() {

@@ -14,9 +14,10 @@ open class LoginImapOperation: ConcurrentBaseOperation {
     var service: ImapSync!
     var imapSyncData: ImapSyncData
 
-    public init(imapSyncData: ImapSyncData, name: String? = nil) {
+    public init(imapSyncData: ImapSyncData, name: String? = nil,
+                errorContainer: ErrorProtocol = ErrorContainer()) {
         self.imapSyncData = imapSyncData
-        super.init(parentName: name)
+        super.init(parentName: name, errorContainer: errorContainer)
     }
 
     open override func main() {
