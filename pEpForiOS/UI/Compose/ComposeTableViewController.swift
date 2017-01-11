@@ -132,6 +132,14 @@ class ComposeTableViewController: UITableViewController {
     }
     
     fileprivate final func populateMessage() {
+        guard let f = Folder.by(folderType: .drafts) else {
+            Log.error(component: #function, errorString: "No drafts folder")
+            return
+        }
+
+        // Use this message (initially, a draft)
+        let _ = f.createMessage()
+
         var toAddresses = [String]()
         var ccAddresses = [String]()
         var bccAddresses = [String]()
