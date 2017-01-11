@@ -35,18 +35,4 @@ open class EncryptBaseOperation: ConcurrentBaseOperation {
         }
         return message
     }
-
-    /**
-     Indicates an error setting up the operation. For now, this is handled
-     the same as any other error, but that might change.
-     */
-    func handleEntryError(_ error: NSError, message: String) {
-        handleError(error, message: message)
-    }
-
-    func handleError(_ error: NSError, message: String) {
-        addError(error)
-        Log.error(component: comp, errorString: message, error: error)
-        markAsFinished()
-    }
 }
