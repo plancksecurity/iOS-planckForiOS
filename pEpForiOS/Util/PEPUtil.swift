@@ -651,6 +651,24 @@ open class PEPUtil {
         theSession.keyResetTrust(pepC)
     }
 
+    open static func encrypt(
+        pEpMessageDict: PEPMessage, forIdentity: PEPIdentity? = nil,
+        session: PEPSession = PEPSession()) -> (PEP_STATUS, NSDictionary?) {
+        var encryptedMessage: NSDictionary? = nil
+
+        if let ident = forIdentity {
+            let pepStatus = session.encryptMessageDict(
+                pEpMessageDict, identity: ident,
+                dest: &encryptedMessage)
+            return (pepStatus, encryptedMessage)
+        } else {
+            let pepStatus = session.encryptMessageDict(
+                pEpMessageDict, extra: nil,
+                dest: &encryptedMessage)
+            return (pepStatus, encryptedMessage)
+        }
+    }
+
     /**
      Checks the given pEp status and the given encrypted mail for errors and
      logs them.

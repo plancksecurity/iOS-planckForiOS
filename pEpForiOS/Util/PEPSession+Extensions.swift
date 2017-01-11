@@ -250,6 +250,12 @@ public extension PEPSession {
 
         return (encryptedMails, unencryptedMails)
     }
+
+    public func encrypt(pEpMessageDict: PEPMessage,
+                        forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, NSDictionary?) {
+        return PEPUtil.encrypt(
+            pEpMessageDict: pEpMessageDict, forIdentity: forIdentity, session: self)
+    }
 }
 
 /**

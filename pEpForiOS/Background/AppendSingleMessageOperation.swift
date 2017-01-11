@@ -80,11 +80,8 @@ open class AppendSingleMessageOperation: ImapSyncOperation {
             let session = PEPSession.init()
             let ident = PEPUtil.identity(account: account)
             let pepMessageOrig = PEPUtil.pEp(cdMessage: message)
-            var encryptedMessage: NSDictionary? = nil
-            let status = session.encryptMessageDict(
-                pepMessageOrig,
-                identity: ident,
-                dest: &encryptedMessage)
+            let (status, encryptedMessage) = session.encrypt(
+                pEpMessageDict: pepMessageOrig, forIdentity: ident)
             let (msg, _) = PEPUtil.check(comp: self.comp, status: status,
                 encryptedMessage: encryptedMessage)
             if let m = msg {

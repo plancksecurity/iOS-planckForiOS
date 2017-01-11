@@ -41,10 +41,7 @@ open class EncryptMessageOperation: EncryptBaseOperation {
         allMessages.append(contentsOf: messagesUnencrypted)
 
         for origMessage in allMessages {
-            var encryptedMessage: NSDictionary? = nil
-            let pepStatus = session.encryptMessageDict(
-                origMessage, extra: nil,
-                dest: &encryptedMessage)
+            let (pepStatus, encryptedMessage) = session.encrypt(pEpMessageDict: origMessage)
             let (msg, error) = PEPUtil.check(comp: self.comp, status: pepStatus,
                                                        encryptedMessage: encryptedMessage)
             if let er = error {
@@ -60,12 +57,10 @@ open class EncryptMessageOperation: EncryptBaseOperation {
 
         // Encrypt message to yourself
         let ident = PEPUtil.identity(account: account)
-        var encryptedMail: NSDictionary? = nil
-        let status = session.encryptMessageDict(
-            pepMessageOrig, identity: ident,
-            dest: &encryptedMail)
-        let (msg, _) = PEPUtil.check(comp: self.comp, status: status,
-                                               encryptedMessage: encryptedMail)
+        let (status, encryptedMail) = session.encrypt(
+            pEpMessageDict: pepMessageOrig, forIdentity: ident)
+        let (msg, _) = PEPUtil.check(
+            comp: self.comp, status: status, encryptedMessage: encryptedMail)
         if let m = msg {
             self.encryptionData.messageEncryptedForSelf = m as? PEPMessage
         }
