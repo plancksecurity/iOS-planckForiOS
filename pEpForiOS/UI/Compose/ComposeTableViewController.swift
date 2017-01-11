@@ -129,7 +129,7 @@ class ComposeTableViewController: UITableViewController {
         }
 
         // Use this message (initially, a draft)
-        let _ = f.createMessage()
+        //let _ = f.createMessage()
 
         var toAddresses = [String]()
         var ccAddresses = [String]()

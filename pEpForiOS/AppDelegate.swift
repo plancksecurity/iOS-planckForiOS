@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
 
-        appearance()
+        pepAppearance()
 
         Log.warn(component: comp, content: "Library url: \(applicationDirectory())")
 
@@ -157,6 +157,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UISearchBar.appearance().barTintColor = .pEpGreen
         UISearchBar.appearance().backgroundColor = .pEpGreen
         UISearchBar.appearance().tintColor = .white
+    }
+    
+    fileprivate final func pepAppearance() {
+        UINavigationBar.appearance().tintColor = .black
+         UIToolbar.appearance().tintColor = .black
+        UISearchBar.appearance().tintColor = .black
     }
 }
 
