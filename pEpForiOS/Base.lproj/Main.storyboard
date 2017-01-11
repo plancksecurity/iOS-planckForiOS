@@ -1187,9 +1187,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="Eri-pJ-T3J" kind="show" identifier="segueEditAccount" id="Kzh-TE-yRD"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -1209,11 +1206,13 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="xcm-Pq-FiP">
                             <connections>
-                                <action selector="addAccountButtonTapped:" destination="cPx-YX-3ty" id="sKP-hA-93i"/>
                                 <segue destination="Efv-29-FEv" kind="presentation" identifier="segueAddNewAccount" id="3ib-x8-sKW"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="Eri-pJ-T3J" kind="show" identifier="segueEditAccount" id="WKY-VX-I5i"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1890,7 +1889,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="dEP-ah-AVP"/>
-        <segue reference="Na7-CM-lbe"/>
+        <segue reference="3ib-x8-sKW"/>
         <segue reference="Usl-iS-7fo"/>
     </inferredMetricsTieBreakers>
 </document>

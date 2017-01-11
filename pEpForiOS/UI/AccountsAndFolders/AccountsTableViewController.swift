@@ -83,7 +83,6 @@ class AccountsTableViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
         cell.textLabel?.text = accounts[indexPath.row].user.address
-        cell.imageView?.image = UIImage(named: "settings_icon")
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -92,14 +91,10 @@ class AccountsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedAccount = accounts[indexPath.row]
-        //performSegue(withIdentifier: .segueEditAccount, sender: self)
+        performSegue(withIdentifier: .segueEditAccount, sender: self)
     }
     
     // MARK: - Actions
-    
-    @IBAction func addAccountButtonTapped(_ sender: UIBarButtonItem) {
-        //self.performSegue(withIdentifier: .segueAddNewAccount, sender: self)
-    }
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
