@@ -92,17 +92,17 @@ class AccountsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedAccount = accounts[indexPath.row]
-        performSegue(withIdentifier: .segueEditAccount, sender: self)
+        //performSegue(withIdentifier: .segueEditAccount, sender: self)
     }
     
     // MARK: - Actions
     
     @IBAction func addAccountButtonTapped(_ sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: .segueAddNewAccount, sender: self)
+        //self.performSegue(withIdentifier: .segueAddNewAccount, sender: self)
     }
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: .unwindSegueEmailList, sender: self)
+        dismiss(animated: true, completion: nil)
     }
     
 }
@@ -113,7 +113,6 @@ extension AccountsTableViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueAddNewAccount
-        case unwindSegueEmailList
         case segueEditAccount
         case noSegue
     }

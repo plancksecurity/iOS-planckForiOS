@@ -106,15 +106,6 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
     @IBAction func changeServer(_ sender: UITextField) {
         model.serverIMAP = serverValue.text!
     }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "SMTPSettings" {
-            if let destination = segue.destination as? SMTPSettingsTableView {
-                destination.appConfig = self.appConfig
-                destination.model = self.model
-            }
-        }
-    }
     
     open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
@@ -124,4 +115,27 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
     public func textFieldDidEndEditing(_ textField: UITextField) {
         changedResponder(textField)
     }
+}
+
+// MARK: - Navigation
+
+extension IMAPSettingsTableView: SegueHandlerType {
+    
+    public enum SegueIdentifier: String {
+        case SMTPSettings
+        case noSegue
+    }
+    
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .SMTPSettings:
+            let destination = segue.destination as! SMTPSettingsTableView
+            destination.appConfig = self.appConfig
+            destination.model = self.model
+            break
+        default:()
+        }
+        
+    }
+    
 }

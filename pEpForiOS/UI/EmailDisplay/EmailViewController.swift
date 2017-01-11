@@ -106,7 +106,7 @@ extension EmailViewController: MessageContentCellDelegate {
     
     func cellDidUpdateHeight(_ with: CGFloat) {
         computedHeight = with
-        tableView.updateSize()
+        tableView.updateSize(true)
     }
 }
 
@@ -124,6 +124,7 @@ extension EmailViewController: SegueHandlerType {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         switch segueIdentifier(for: segue) {
         case .segueReplyFrom:
             let destination = segue.destination as? ComposeTableViewController

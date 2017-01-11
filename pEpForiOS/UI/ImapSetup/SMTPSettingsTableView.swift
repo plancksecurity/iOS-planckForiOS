@@ -178,7 +178,7 @@ extension SMTPSettingsTableView: AccountDelegate {
                 self.showErrorMessage(err.localizedDescription)
             } else {
                 // unwind back to INBOX on success
-                self.performSegue(withIdentifier: .unwindSegueEmailList, sender: self)
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -187,7 +187,6 @@ extension SMTPSettingsTableView: AccountDelegate {
 extension SMTPSettingsTableView: SegueHandlerType {
     
    public enum SegueIdentifier: String {
-        case unwindSegueEmailList
         case noSegue
     }
 }

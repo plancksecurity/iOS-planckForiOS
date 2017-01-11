@@ -37,6 +37,7 @@ class AccountSettingsTableViewController: UITableViewController {
         nameTextfield.text = account?.user.displayString
         emailTextfield.text = account?.user.address
         usernameTextfield.text = account?.user.userName
+       print("Transport:\(account?.serverCredentials[safe: 0]?.servers[safe: 0]?.transport)") 
     }
     
     func  populateIMAP() {

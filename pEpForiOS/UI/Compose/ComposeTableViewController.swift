@@ -44,15 +44,6 @@ class ComposeTableViewController: UITableViewController {
 
     lazy var session = PEPSession()
     lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-
-    /// Segue name back to email list when email was sent successfully.
-    let unwindToEmailListMailSentSegue = "unwindToEmailListMailSentSegue"
-
-    /// Segue name back to email list when a draft mail should be stored.
-    let unwindToEmailListSaveDraftSegue = "unwindToEmailListSaveDraftSegue"
-
-    /// Segue name back to email list, doing nothing else.
-    let unwindToEmailListSegue = "unwindToEmailListSegue"
     
     
     // MARK: - Lifecycle

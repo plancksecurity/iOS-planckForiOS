@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import CoreData
-
 import MessageModel
 
 struct EmailListConfig {
@@ -21,8 +20,6 @@ struct EmailListConfig {
 
 class EmailListViewController: UITableViewController {
     
-    var comp = "EmailListViewController"
-
     struct UIState {
         var isSynching: Bool = false
     }
@@ -31,24 +28,17 @@ class EmailListViewController: UITableViewController {
     var state = UIState()
     let searchController = UISearchController(searchResultsController: nil)
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.comp = "EmailListViewController"
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         UIHelper.emailListTableHeight(self.tableView)
         addSearchBar()
-        addRefreshControl()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if MiscUtil.isUnitTest() {
-            super.viewWillAppear(animated)
             return
         }
 
@@ -69,8 +59,7 @@ class EmailListViewController: UITableViewController {
         }
 
         if config == nil {
-            config = EmailListConfig(appConfig: appDelegate.appConfig,
-                                     folder: Folder.unifiedInbox())
+            config = EmailListConfig(appConfig: appDelegate.appConfig, folder: Folder.unifiedInbox())
         }
         if Account.all().isEmpty {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
@@ -84,19 +73,6 @@ class EmailListViewController: UITableViewController {
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
         tableView.setContentOffset(CGPoint(x: 0.0, y: 40.0), animated: false)
-    }
-    
-    func addRefreshControl() {
-        refreshControl?.addTarget(self, action: #selector(refreshTableData), for: UIControlEvents.valueChanged)
-    }
-
-    @IBAction func mailSentSegue(_ segue: UIStoryboardSegue) {
-    }
-
-    @IBAction func backFromComposeWithoutSavingDraftSegue(_ segue: UIStoryboardSegue) {
-    }
-
-    @IBAction func backFromComposeSaveDraftSegue(_ segue: UIStoryboardSegue) {
     }
 
     
@@ -146,14 +122,11 @@ class EmailListViewController: UITableViewController {
 
         if let fol = config?.folder {
             if fol.folderType == .drafts {
-                //performSegue(withIdentifier: segueCompose, sender: cell)
-                performSegue(withIdentifier: .segueCompose, sender: cell)
+                //performSegue(withIdentifier: .segueCompose, sender: cell)
                 return
             }
         }
-
-       // performSegue(withIdentifier: segueShowEmail, sender: cell)
-        performSegue(withIdentifier: .segueShowEmail, sender: cell)
+        //performSegue(withIdentifier: .segueShowEmail, sender: cell)
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt
@@ -299,18 +272,11 @@ class EmailListViewController: UITableViewController {
     func filterContentForSearchText(searchText: String) {
         
     }
-    
-    // MARK: - Refresh Table Data
-    
-    func refreshTableData() {
-        refreshControl?.beginRefreshing()
-        refreshControl?.endRefreshing()
-    }
-    
+ 
     // MARK: - Actions
-    @IBAction func unwindToEmailList(for unwindSegue: UIStoryboardSegue) {
-        
-    }
+//    @IBAction func unwindToEmailList(for unwindSegue: UIStoryboardSegue) {
+//        
+//    }
    
 }
 
