@@ -79,7 +79,8 @@ open class Constants {
     }
 
     public enum SmtpErrorCode: Int {
-        case messageNotSent = 4000
+        case invalidConnection = 4000
+        case messageNotSent
         case transactionInitiationFailed
         case recipientIdentificationFailed
         case transactionResetFailed
@@ -370,6 +371,14 @@ open class Constants {
                 "Could not encrypt message, pEp status: %d",
                 comment: "Error message when the engine failed to encrypt a message."),
                 status.rawValue)])
+        return error
+    }
+
+    static func errorSmtpInvalidConnection(component: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: SmtpErrorCode.invalidConnection.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
+                "Invalid connection", comment: "used internally")])
         return error
     }
 

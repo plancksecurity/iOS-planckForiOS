@@ -402,8 +402,10 @@ public class NetworkService: INetworkService {
     }
 
     func processOperationLines(operationLines: [OperationLine]) {
-        workerQueue.async {
-            self.processOperationLinesInternal(operationLines: operationLines)
+        if !cancelled {
+            workerQueue.async {
+                self.processOperationLinesInternal(operationLines: operationLines)
+            }
         }
     }
 
