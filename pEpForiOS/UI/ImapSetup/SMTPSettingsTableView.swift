@@ -156,6 +156,12 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
 
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
         verifyAccount()
+        hideKeybord()
+    }
+    
+    func hideKeybord() {
+        serverValue.resignFirstResponder()
+        portValue.resignFirstResponder()
     }
     
     open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
