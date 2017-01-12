@@ -797,10 +797,18 @@ class SimpleOperationsTest: XCTestCase {
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
+        let folder = CdFolder.create()
+        folder.uuid = UUID.generate()
+        folder.name = "Sent"
+        folder.folderType = FolderType.sent.rawValue
+        folder.account = account
+
         // Build emails
         let numMails = 5
         for i in 1...numMails {
             let message = CdMessage.create(messageID: "#\(i)", uid: 0)
+            message.from = from
+            message.parent = folder
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
@@ -810,6 +818,8 @@ class SimpleOperationsTest: XCTestCase {
 
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
+                XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
+                XCTAssertEqual(m.uid, Int32(0))
                 XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
             }
         } else {
@@ -821,13 +831,22 @@ class SimpleOperationsTest: XCTestCase {
         let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
         let errorContainer = ErrorContainer()
 
+        let smtpLogin = LoginSmtpOperation(
+            smtpSendData: smtpSendData, errorContainer: errorContainer)
+        smtpLogin.completionBlock = {
+            XCTAssertNotNil(smtpSendData.smtp)
+        }
+
         let sendOp = EncryptAndSendOperation(
             smtpSendData: smtpSendData, errorContainer: errorContainer)
+        XCTAssertNotNil(sendOp.retrieveNextMessage(context: Record.Context.default))
+        sendOp.addDependency(smtpLogin)
         sendOp.completionBlock = {
             expMailsSent.fulfill()
         }
 
-        let queue = OperationQueue.init()
+        let queue = OperationQueue()
+        queue.addOperation(smtpLogin)
         queue.addOperation(sendOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in

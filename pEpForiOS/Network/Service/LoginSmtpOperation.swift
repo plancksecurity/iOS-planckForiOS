@@ -36,6 +36,7 @@ extension LoginSmtpOperation: SmtpSendDelegate {
     public func transactionResetFailed(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     public func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
+        smtpSendData.smtp = smtp
         markAsFinished()
     }
 

@@ -12,7 +12,6 @@ import MessageModel
 
 /**
  Encrypts and SMTPs all suitable messages.
- Currently, that means all messages with a UID of 0 in the Sent folder.
  */
 open class EncryptAndSendOperation: ConcurrentBaseOperation {
     var smtpSend: SmtpSend!
@@ -47,14 +46,15 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         }
 
         smtpSend.delegate = self
-        smtpSend.start()
+        handleNextMessage()
     }
 
-    func retrieveNextMessage(context: NSManagedObjectContext) -> (PEPMessage, NSManagedObjectID)? {
+    public func retrieveNextMessage(
+        context: NSManagedObjectContext) -> (PEPMessage, NSManagedObjectID)? {
         var msg: CdMessage?
         context.performAndWait {
             let p = NSPredicate(
-                format: "uid = 0 and folder.folderType = %d and sendStatus = %d",
+                format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
                 FolderType.sent.rawValue, SendStatus.none.rawValue)
             msg = CdMessage.first(with: p)
         }
@@ -146,7 +146,8 @@ extension EncryptAndSendOperation: SmtpSendDelegate {
     }
 
     public func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
-        handleNextMessage()
+        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        markAsFinished()
     }
 
     public func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
@@ -158,7 +159,7 @@ extension EncryptAndSendOperation: SmtpSendDelegate {
 
     public func connectionLost(_ smtp: SmtpSend, theNotification: Notification?) {
         let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.connectionLost)
-        handleError(error, message: "connectionEstablished")
+        handleError(error, message: "connectionLost")
     }
 
     public func connectionTerminated(_ smtp: SmtpSend, theNotification: Notification?) {
