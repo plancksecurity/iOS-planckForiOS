@@ -787,11 +787,15 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testEncryptAndSendOperation() {
+        let session = PEPSession()
+        TestUtil.importKeyByFileName(
+            session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
+
         XCTAssertNotNil(smtpConnectInfo)
 
         let from = CdIdentity.create()
-        from.userName = "Unit 004"
-        from.address = "unittest.ios.4@peptest.ch"
+        from.userName = account.identity?.userName ?? "Unit 004"
+        from.address = account.identity?.address ?? "unittest.ios.4@peptest.ch"
 
         let to = CdIdentity.create()
         to.userName = "Unit 001"
