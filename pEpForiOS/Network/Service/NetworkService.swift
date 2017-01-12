@@ -236,7 +236,7 @@ public class NetworkService: INetworkService {
         if let smtpCI = accountInfo.smtpConnectInfo {
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
             let smtpSendData = SmtpSendData(connectInfo: smtpCI)
-            let opSmtpLogin = LoginSmtpOpration(
+            let opSmtpLogin = LoginSmtpOperation(
                 smtpSendData: smtpSendData, errorContainer: errorContainer)
             opSmtpLogin.completionBlock = { [weak self] in
                 if let me = self {
