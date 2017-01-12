@@ -31,6 +31,7 @@ class EmailListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "EmailList.title".localized
         UIHelper.emailListTableHeight(self.tableView)
         addSearchBar()
     }

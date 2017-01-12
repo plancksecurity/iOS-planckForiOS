@@ -103,6 +103,7 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
     open override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "NewAccount.title".localized
         handleCancelButtonVisibility()
         passwordValue.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)

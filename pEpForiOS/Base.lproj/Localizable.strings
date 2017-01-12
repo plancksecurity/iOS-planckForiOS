@@ -26,12 +26,16 @@
 "MenuCtrl.Cameraroll" = "Foto od. Video einfügen";
 "MenuCtrl.Attachment" = "Anhang hinzufügen";
 
-// Account List
-
-"Accounts.HeaderTitle" = "Accounts";
-
 // Account Settings
 
 "AccountsSettings.Account" = "Account";
 "AccountsSettings.IMAP" = "IMAP Settings";
 "AccountsSettings.SMTP" = "SMTP Settings";
+
+// titles strings
+
+"EmailList.title" = "Inbox";
+"Accounts.title" = "Accounts";
+"NewAccount.title" = "New Account"; 
+"ImapSettings.title" = "IMAP Settings";
+"SmtpSettings.title" = "SMTP Settings";

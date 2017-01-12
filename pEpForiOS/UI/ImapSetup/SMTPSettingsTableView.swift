@@ -37,6 +37,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
     open override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "SmtpSettings.title".localized
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [serverValue, portValue]
     }

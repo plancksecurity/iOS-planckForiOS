@@ -874,11 +874,11 @@
 			isa = PBXGroup;
 			children = (
 				43C32E201DBF94A6007CFB1A /* MockData.swift */,
+				43ED53621CC77F95006AB156 /* EmailDisplay */,
 				43001F761D9185E600306BF0 /* TableViews */,
 				431B0B961D6734BF0082D0DB /* AccountsSettings */,
 				4327221F1D33F2CB009EC395 /* Trustwords */,
 				431AE5D11D2EC0A700F609D3 /* Compose */,
-				43ED53621CC77F95006AB156 /* EmailDisplay */,
 				43ED53651CC77F95006AB156 /* ImapSetup */,
 			);
 			path = UI;
