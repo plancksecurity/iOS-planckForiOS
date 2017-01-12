@@ -6,7 +6,9 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
+import CoreData
+
+import MessageModel
 
 /**
  Encrypts and SMTPs all suitable messages.
@@ -15,6 +17,10 @@ import UIKit
 class EncryptAndSendOperation: ConcurrentBaseOperation {
     var smtpSend: SmtpSend!
     var smtpSendData: SmtpSendData
+    lazy var session = PEPSession()
+
+    /** The object ID of the last sent message, so we can change the sendStatus on success */
+    var lastSentMessageObjectID: NSManagedObjectID?
 
     init(smtpSendData: SmtpSendData, errorContainer: ErrorProtocol = ErrorContainer()) {
         self.smtpSendData = smtpSendData
@@ -44,7 +50,65 @@ class EncryptAndSendOperation: ConcurrentBaseOperation {
         smtpSend.start()
     }
 
+    func retrieveNextMessage(context: NSManagedObjectContext) -> (PEPMessage, NSManagedObjectID)? {
+        var msg: CdMessage?
+        context.performAndWait {
+            let p = NSPredicate(
+                format: "uid = 0 and folder.folderType = %d and sendStatus = %d",
+                FolderType.sent.rawValue, SendStatus.none.rawValue)
+            msg = CdMessage.first(with: p)
+        }
+        if let m = msg {
+            return (m.pEpMessage(), m.objectID)
+        }
+        return nil
+    }
+
+    func send(pEpMessage: PEPMessage?) {
+        guard let msg = pEpMessage else {
+            handleError(Constants.errorInvalidParameter(comp), message: "Cannot send nil message")
+            return
+        }
+        let pantMail = PEPUtil.pantomime(pEpMessage: msg)
+        smtpSend.smtp.setRecipients(nil)
+        smtpSend.smtp.setMessageData(nil)
+        smtpSend.smtp.setMessage(pantMail)
+        smtpSend.smtp.sendMessage()
+    }
+
+    func markLastSentMessageAsSent(context: NSManagedObjectContext) {
+        if let objID = lastSentMessageObjectID {
+            context.performAndWait {
+                if let msg = context.object(with: objID) as? CdMessage {
+                    msg.sendStatus = Int16(SendStatus.smtpDone.rawValue)
+                    Record.save(context: context)
+                } else {
+                    Log.error(
+                        component: self.comp, errorString: "Could not access sent message by ID")
+                }
+            }
+        }
+    }
+
     func handleNextMessage() {
+        let context = Record.Context.background
+        markLastSentMessageAsSent(context: context)
+
+        lastSentMessageObjectID = nil
+        if let (msg, objID) = retrieveNextMessage(context: context) {
+            lastSentMessageObjectID = objID
+            let (status, encMsg) = session.encrypt(pEpMessageDict: msg)
+            let (encMsg2, error) = PEPUtil.check(
+                comp: comp, status: status, encryptedMessage: encMsg)
+            if let err = error {
+                handleError(err, message: "Cannot encrypt message")
+                send(pEpMessage: encMsg as? PEPMessage)
+            } else {
+                send(pEpMessage: encMsg2 as? PEPMessage)
+            }
+        } else {
+            markAsFinished()
+        }
     }
 }
 
