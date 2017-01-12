@@ -14,7 +14,7 @@ import MessageModel
  Encrypts and SMTPs all suitable messages.
  Currently, that means all messages with a UID of 0 in the Sent folder.
  */
-class EncryptAndSendOperation: ConcurrentBaseOperation {
+open class EncryptAndSendOperation: ConcurrentBaseOperation {
     var smtpSend: SmtpSend!
     var smtpSendData: SmtpSendData
     lazy var session = PEPSession()
@@ -22,7 +22,7 @@ class EncryptAndSendOperation: ConcurrentBaseOperation {
     /** The object ID of the last sent message, so we can change the sendStatus on success */
     var lastSentMessageObjectID: NSManagedObjectID?
 
-    init(smtpSendData: SmtpSendData, errorContainer: ErrorProtocol = ErrorContainer()) {
+    public init(smtpSendData: SmtpSendData, errorContainer: ErrorProtocol = ErrorContainer()) {
         self.smtpSendData = smtpSendData
         super.init(errorContainer: errorContainer)
     }

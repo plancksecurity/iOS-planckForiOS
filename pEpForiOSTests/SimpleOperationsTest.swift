@@ -786,6 +786,64 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(newMessage.longMessageFormatted, longMessageFormatted)
     }
 
+    func testEncryptAndSendOperation() {
+        XCTAssertNotNil(smtpConnectInfo)
+
+        let from = CdIdentity.create()
+        from.userName = "Unit 004"
+        from.address = "unittest.ios.4@peptest.ch"
+
+        let to = CdIdentity.create()
+        to.userName = "Unit 001"
+        to.address = "unittest.ios.1@peptest.ch"
+
+        // Build emails
+        let numMails = 5
+        for i in 1...numMails {
+            let message = CdMessage.create(messageID: "#\(i)", uid: 0)
+            message.shortMessage = "Some subject \(i)"
+            message.longMessage = "Long message \(i)"
+            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
+            message.addTo(cdIdentity: to)
+        }
+        Record.saveAndWait()
+
+        if let msgs = CdMessage.all() as? [CdMessage] {
+            for m in msgs {
+                XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+            }
+        } else {
+            XCTFail()
+        }
+
+        let expMailsSent = expectation(description: "expMailsSent")
+
+        let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
+        let errorContainer = ErrorContainer()
+
+        let sendOp = EncryptAndSendOperation(
+            smtpSendData: smtpSendData, errorContainer: errorContainer)
+        sendOp.completionBlock = {
+            expMailsSent.fulfill()
+        }
+
+        let queue = OperationQueue.init()
+        queue.addOperation(sendOp)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(sendOp.hasErrors())
+        })
+
+        if let msgs = CdMessage.all() as? [CdMessage] {
+            for m in msgs {
+                XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))
+            }
+        } else {
+            XCTFail()
+        }
+    }
+
     func testSendMailOperation() {
         let (queue, message, ids) = createBasicMail()
         let (identity, _, _, _, _) = ids
@@ -822,7 +880,7 @@ class SimpleOperationsTest: XCTestCase {
 
         queue.addOperation(sendOp)
 
-        waitForExpectations(timeout: TestUtil.waitTime * 2, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(sendOp.hasErrors())
             XCTAssertEqual(encryptionData.messagesSent.count, numMails)

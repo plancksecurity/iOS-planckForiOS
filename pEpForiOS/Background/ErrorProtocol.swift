@@ -20,6 +20,8 @@ public protocol ErrorProtocol {
 open class ErrorContainer: ErrorProtocol {
     public var error: NSError?
 
+    public init() {}
+
     public func addError(_ error: NSError) {
         if self.error == nil {
             self.error = error
