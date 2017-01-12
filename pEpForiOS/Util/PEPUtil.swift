@@ -17,6 +17,14 @@ extension PEP_rating: Hashable {
     }
 }
 
+public struct TrustwordsLanguage {
+    /** The language code that you have to feed to the trustwords functions */
+    public let languageCode: String
+
+    /** The name of the language, for display to the user */
+    public let languageName: String
+}
+
 open class PEPUtil {
     static let comp = "PEPUtil"
     
@@ -687,6 +695,14 @@ open class PEPUtil {
             return (encryptedMessage, error)
         }
         return (encryptedMessage, nil)
+    }
+
+    public static func trustwordsLanguages() -> [TrustwordsLanguage] {
+        // TODO: Hook up with real data from the engine
+        return [
+            TrustwordsLanguage(languageCode: "en", languageName: "English"),
+            TrustwordsLanguage(languageCode: "de", languageName: "German"),
+        ]
     }
 }
 
