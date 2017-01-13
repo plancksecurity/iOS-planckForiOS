@@ -294,6 +294,11 @@ open class PEPUtil {
         for ref in cdMessage.references! {
             refs.append((ref as! CdMessageReference).reference!)
         }
+
+        dict[kPepReplyTo] = refs.last as AnyObject
+
+        dict[kPepSent] = cdMessage.sent as AnyObject
+
         if refs.count > 0 {
             dict[kPepReferences] = refs as AnyObject
         }
