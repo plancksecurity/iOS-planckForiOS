@@ -45,7 +45,7 @@ open class PEPUtil {
              NSLocalizedString("Separately verify the content of this message with your communication partner.",
                                comment: "Privacy status suggestion")),
          PEP_rating_b0rken:
-            (NSLocalizedString("Ooops: Internal problem",
+            (NSLocalizedString("Broken",
                                comment: "Privacy status title"),
              NSLocalizedString("-",
                                comment: "Privacy status explanation"),
