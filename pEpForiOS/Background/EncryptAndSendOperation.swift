@@ -101,7 +101,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
             let (encMsg2, error) = PEPUtil.check(
                 comp: comp, status: status, encryptedMessage: encMsg)
             if let err = error {
-                handleError(err, message: "Cannot encrypt message")
+                Log.error(component: comp, error: err)
                 send(pEpMessage: encMsg as? PEPMessage)
             } else {
                 send(pEpMessage: encMsg2 as? PEPMessage)

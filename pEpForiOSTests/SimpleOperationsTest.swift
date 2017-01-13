@@ -343,7 +343,7 @@ class SimpleOperationsTest: XCTestCase {
         c1.address = "user1@example.com"
         c2.address = "user2@example.com"
 
-        let message = CdMessage.create(messageID: "#1", uid: 1)
+        let message = CdMessage.create(messageID: UUID.generate(), uid: 1)
         message.shortMessage = "Some subject"
         message.longMessage = "Long message"
         message.longMessageFormatted = "<h1>Long HTML</h1>"
@@ -593,7 +593,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func insertNewMessageForSending(account: CdAccount) -> CdMessage {
-        let msg = CdMessage.create(messageID: "1@1", uid: 1)
+        let msg = CdMessage.create(messageID: UUID.generate(), uid: 1)
         msg.from = account.identity
         msg.longMessage = "Inserted by insertNewMessageForSending()"
         msg.bodyFetched = true
@@ -746,7 +746,7 @@ class SimpleOperationsTest: XCTestCase {
             with: ["folderType": FolderType.drafts.rawValue, "account": account, "uuid": "fake",
                    "name": "Drafts"])
 
-        let newMessage = CdMessage.create(messageID: "fake", uid: 0, parent: folder)
+        let newMessage = CdMessage.create(messageID: UUID.generate(), uid: 0, parent: folder)
         XCTAssertEqual(newMessage.pEpRating, PEPUtil.pEpRatingNone)
 
         newMessage.update(pEpMessage: encryptionData.messagesToSend[0])
@@ -810,7 +810,7 @@ class SimpleOperationsTest: XCTestCase {
         // Build emails
         let numMails = 5
         for i in 1...numMails {
-            let message = CdMessage.create(messageID: "#\(i)", uid: 0)
+            let message = CdMessage.create()
             message.from = from
             message.parent = folder
             message.shortMessage = "Some subject \(i)"
@@ -865,6 +865,93 @@ class SimpleOperationsTest: XCTestCase {
         } else {
             XCTFail()
         }
+    }
+
+    func testAppendMailsOperation() {
+        let session = PEPSession()
+        TestUtil.importKeyByFileName(
+            session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
+
+        XCTAssertNotNil(smtpConnectInfo)
+
+        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+        let errorContainer = ErrorContainer()
+
+        let imapLogin = LoginImapOperation(
+            imapSyncData: imapSyncData, errorContainer: errorContainer)
+        imapLogin.completionBlock = {
+            XCTAssertNotNil(imapSyncData.sync)
+        }
+
+        let expFoldersFetched = expectation(description: "expFoldersFetched")
+        let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
+        fetchFoldersOp.addDependency(imapLogin)
+        fetchFoldersOp.completionBlock = {
+            expFoldersFetched.fulfill()
+        }
+
+        let queue = OperationQueue()
+        queue.addOperation(imapLogin)
+        queue.addOperation(fetchFoldersOp)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(imapLogin.hasErrors())
+            XCTAssertFalse(fetchFoldersOp.hasErrors())
+        })
+
+        let from = CdIdentity.create()
+        from.userName = account.identity?.userName ?? "Unit 004"
+        from.address = account.identity?.address ?? "unittest.ios.4@peptest.ch"
+
+        let to = CdIdentity.create()
+        to.userName = "Unit 001"
+        to.address = "unittest.ios.1@peptest.ch"
+
+        let folder = CdFolder.by(folderType: .sent, account: account)
+        XCTAssertNotNil(folder)
+
+        // Build emails
+        let numMails = 5
+        for i in 1...numMails {
+            let message = CdMessage.create()
+            message.from = from
+            message.parent = folder
+            message.shortMessage = "Some subject \(i)"
+            message.longMessage = "Long message \(i)"
+            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
+            message.sendStatus = Int16(SendStatus.smtpDone.rawValue)
+            message.addTo(cdIdentity: to)
+        }
+        Record.saveAndWait()
+
+        if let msgs = CdMessage.all() as? [CdMessage] {
+            for m in msgs {
+                XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
+                XCTAssertEqual(m.uid, Int32(0))
+                XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))
+            }
+        } else {
+            XCTFail()
+        }
+
+        let expMailsSent = expectation(description: "expMailsSent")
+
+        let appendOp = AppendMailsOperation(
+            imapSyncData: imapSyncData, errorContainer: errorContainer)
+        XCTAssertNotNil(appendOp.retrieveNextMessage())
+        appendOp.completionBlock = {
+            expMailsSent.fulfill()
+        }
+
+        queue.addOperation(appendOp)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(appendOp.hasErrors())
+        })
+
+        XCTAssertEqual((CdMessage.all() ?? []).count, 0)
     }
 
     func testSendMailOperation() {
