@@ -177,7 +177,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Anc-8J-vDp" customClass="ComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="39" y="10" width="286" height="40"/>
+                                            <rect key="frame" x="39" y="17" width="286" height="33"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -195,11 +195,11 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="lwf-Sw-cKo" firstAttribute="leading" secondItem="KqB-b6-IoI" secondAttribute="leading" constant="8" id="2HN-3E-FxZ"/>
-                                        <constraint firstItem="Anc-8J-vDp" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" constant="10" id="9Vj-75-oUR"/>
+                                        <constraint firstItem="Anc-8J-vDp" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" priority="1" constant="10" id="9Vj-75-oUR"/>
                                         <constraint firstAttribute="trailing" secondItem="Vj4-L8-0TL" secondAttribute="trailing" constant="10" id="Ckl-3C-ClW"/>
                                         <constraint firstItem="Anc-8J-vDp" firstAttribute="leading" secondItem="lwf-Sw-cKo" secondAttribute="trailing" constant="7.5" id="DAd-Gp-wwF"/>
-                                        <constraint firstItem="lwf-Sw-cKo" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" constant="17" id="KT9-to-rrM"/>
-                                        <constraint firstItem="Vj4-L8-0TL" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" constant="16" id="LF7-8i-5AK"/>
+                                        <constraint firstItem="lwf-Sw-cKo" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" priority="1" constant="17" id="KT9-to-rrM"/>
+                                        <constraint firstItem="Vj4-L8-0TL" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" priority="1" constant="16" id="LF7-8i-5AK"/>
                                         <constraint firstAttribute="bottom" secondItem="Anc-8J-vDp" secondAttribute="bottom" constant="8" id="WUm-BF-ifd"/>
                                         <constraint firstItem="Vj4-L8-0TL" firstAttribute="leading" secondItem="Anc-8J-vDp" secondAttribute="trailing" constant="18" id="geX-Fh-d0G"/>
                                         <constraint firstAttribute="trailing" secondItem="Anc-8J-vDp" secondAttribute="trailing" constant="50" id="qAV-qc-JnG"/>
@@ -303,7 +303,7 @@
                                             </connections>
                                         </textView>
                                         <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8S-M4-JdW">
-                                            <rect key="frame" x="-1" y="40" width="376" height="140"/>
+                                            <rect key="frame" x="-2" y="40" width="376" height="140"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="prY-xp-1rI" id="VoP-0P-HiT"/>
@@ -1823,7 +1823,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aso-tc-Ukd">
-                                            <rect key="frame" x="-1" y="-1" width="373" height="199"/>
+                                            <rect key="frame" x="-1" y="-1" width="372" height="198"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
