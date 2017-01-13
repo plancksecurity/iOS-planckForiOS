@@ -295,9 +295,15 @@ open class PEPUtil {
             refs.append((ref as! CdMessageReference).reference!)
         }
 
-        dict[kPepReplyTo] = refs.last as AnyObject
+        if let l = refs.last {
+            dict[kPepReplyTo] = l as AnyObject
+        }
 
-        dict[kPepSent] = cdMessage.sent as AnyObject
+        if let d = cdMessage.sent {
+            dict[kPepSent] = d
+        } else if outgoing {
+            dict[kPepSent] = Date() as AnyObject
+        }
 
         if refs.count > 0 {
             dict[kPepReferences] = refs as AnyObject
