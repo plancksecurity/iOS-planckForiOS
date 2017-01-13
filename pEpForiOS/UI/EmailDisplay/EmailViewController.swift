@@ -42,6 +42,10 @@ class EmailViewController: UITableViewController {
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
         let alertViewWithoutTitle = UIAlertController()
+        
+        if let popoverPresentationController = alertViewWithoutTitle.popoverPresentationController {
+            popoverPresentationController.sourceView = view
+        }
 
         let alertActionReply = UIAlertAction (title: "Reply".localized, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReplyFrom , sender: self)

@@ -240,6 +240,9 @@ class EmailListViewController: UITableViewController {
         alertControler.addAction(replyAction)
         alertControler.addAction(forwardAction)
         alertControler.addAction(markAction)
+        if let popoverPresentationController = alertControler.popoverPresentationController {
+            popoverPresentationController.sourceView = cell
+        }
         present(alertControler, animated: true, completion: nil)
     }
     

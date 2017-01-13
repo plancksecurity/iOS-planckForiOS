@@ -100,11 +100,14 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
             message: NSLocalizedString("Choose a Security protocol for your accont",
                 comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
-        alertController.popoverPresentationController?.sourceView = sender
 
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportSMTP = transport
             self.updateView()
+        }
+        
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = sender
         }
 
         alertController.setupActionFromConnectionTransport(.plain, block: block)

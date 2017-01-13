@@ -78,11 +78,14 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
             message: NSLocalizedString("Choose a Security protocol for your accont",
                 comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
-        alertController.popoverPresentationController?.sourceView = sender
 
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportIMAP = transport
             self.updateView()
+        }
+        
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = sender
         }
 
         alertController.setupActionFromConnectionTransport(.plain, block: block)

@@ -288,6 +288,9 @@ class ComposeTableViewController: UITableViewController {
     
     @IBAction func cancel() {
         let alertCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        if let popoverPresentationController = alertCtrl.popoverPresentationController {
+            popoverPresentationController.sourceView = view
+        }
         
         alertCtrl.addAction(alertCtrl.action("MailComp.Action.Cancel", .cancel, {}))
         
