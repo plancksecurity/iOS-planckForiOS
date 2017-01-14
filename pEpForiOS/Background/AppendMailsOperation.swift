@@ -145,7 +145,7 @@ open class AppendMailsOperation: ImapSyncOperation {
                 comp: comp, status: status, encryptedMessage: encMsg)
             if let err = error {
                 handleError(err, message: "Cannot encrypt message".localized)
-                appendMessage(pEpMessage: encMsg as? PEPMessage)
+                appendMessage(pEpMessage: msg as? PEPMessage)
             } else {
                 appendMessage(pEpMessage: encMsg2 as? PEPMessage)
             }
