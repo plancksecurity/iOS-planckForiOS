@@ -145,4 +145,40 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(unencrypted[0][kPepCC] as? NSArray, [receiver2])
         XCTAssertEqual(unencrypted[0][kPepBCC] as? NSArray, [receiver3])
     }
+
+    func testMessageIDAfterEncrypt() {
+        let testData = TestData()
+        let myself = testData.createWorkingIdentity(number: 0)
+        let myID = "myID"
+        let dict = [
+            kPepFrom: myself as AnyObject,
+            kPepTo: NSArray(array: [myself]),
+            kPepID: myID as AnyObject,
+            kPepShortMessage: "Some Subject" as AnyObject,
+            kPepLongMessage: "The text body" as AnyObject,
+            kPepOutgoing: NSNumber(booleanLiteral: true)
+        ] as PEPMessage
+
+        let session = PEPSession()
+
+        session.mySelf(NSMutableDictionary(dictionary: myself))
+
+        let (status1, encMsg1) = session.encrypt(
+            pEpMessageDict: dict, forIdentity: myself)
+        XCTAssertEqual(status1, PEP_STATUS_OK)
+        if let theEncMsg = encMsg1 {
+            XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
+        } else {
+            XCTFail()
+        }
+
+        let (status2, encMsg2) = session.encrypt(
+            pEpMessageDict: dict)
+        XCTAssertEqual(status2, PEP_STATUS_OK)
+        if let theEncMsg = encMsg2 {
+            XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
+        } else {
+            XCTFail()
+        }
+    }
 }
