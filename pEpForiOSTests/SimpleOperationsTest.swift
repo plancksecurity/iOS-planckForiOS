@@ -319,61 +319,6 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: account))
     }
 
-    func testAppendMessageOperation() {
-        // Fetch remote folders first
-        testFetchFoldersOperation()
-
-        let expCreated = expectation(description: "expCreated")
-        let opCreate = CheckAndCreateFolderOfTypeOperation(
-            imapSyncData: imapSyncData, account: account, folderType: .drafts)
-        opCreate.completionBlock = {
-            expCreated.fulfill()
-        }
-
-        let backgroundQueue = OperationQueue.init()
-        backgroundQueue.addOperation(opCreate)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(opCreate.hasErrors())
-        })
-
-        let c1 = CdIdentity.create()
-        let c2 = CdIdentity.create()
-        c1.address = "user1@example.com"
-        c2.address = "user2@example.com"
-
-        let message = CdMessage.create(messageID: UUID.generate(), uid: 1)
-        message.shortMessage = "Some subject"
-        message.longMessage = "Long message"
-        message.longMessageFormatted = "<h1>Long HTML</h1>"
-
-        message.addTo(cdIdentity: c1)
-        message.addCc(cdIdentity: c2)
-
-        Record.saveAndWait()
-
-        guard let targetFolder = CdFolder.by(folderType: .drafts, account: account) else {
-            XCTFail()
-            return
-        }
-
-        let op = AppendSingleMessageOperation(
-            imapSyncData: imapSyncData, message: message, account: account,
-            targetFolder: targetFolder)
-
-        let expMessageAppended = expectation(description: "expMessageAppended")
-        op.completionBlock = {
-            expMessageAppended.fulfill()
-        }
-
-        op.start()
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
-        })
-    }
-
     func testCreateDeleteFolderOperation() {
         let uuid1 = UUID.generate()
         let folder1 = CdFolder.create()
