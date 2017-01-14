@@ -316,7 +316,7 @@ public class NetworkService: INetworkService {
                 lastImapOp = fetchMessagesOp
             }
 
-            let opDecrypt = DecryptMessageOperation(
+            let opDecrypt = DecryptMessagesOperation(
                 parentName: comp, errorContainer: errorContainer)
 
             // Decrypting messages can always run, no need to bail out early

@@ -1,5 +1,5 @@
 //
-//  DecryptMessageOperation.swift
+//  DecryptMessagesOperation.swift
 //  pEpForiOS
 //
 //  Created by hernani on 13/06/16.
@@ -8,7 +8,7 @@
 
 import MessageModel
 
-open class DecryptMessageOperation: ConcurrentBaseOperation {
+open class DecryptMessagesOperation: ConcurrentBaseOperation {
     open var numberOfMessagesDecrypted = 0
 
     open override func main() {
@@ -71,7 +71,6 @@ open class DecryptMessageOperation: ConcurrentBaseOperation {
                         modelChanged = true
                     }
                     break
-                // TODO: Again, why is the default needed when all cases are there?
                 default:
                     Log.warn(
                         component: self.comp,
