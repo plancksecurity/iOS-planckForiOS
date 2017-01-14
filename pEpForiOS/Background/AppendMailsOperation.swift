@@ -44,13 +44,13 @@ open class AppendMailsOperation: ImapSyncOperation {
         handleNextMessage()
     }
 
-    public func retrieveNextMessage() -> (PEPMessage, PEPIdentity, NSManagedObjectID)? {
+    func retrieveNextMessage() -> (PEPMessage, PEPIdentity, NSManagedObjectID)? {
         var msg: CdMessage?
         context.performAndWait {
             let p = NSPredicate(
                 format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
                 FolderType.sent.rawValue, SendStatus.smtpDone.rawValue)
-            msg = CdMessage.first(with: p)
+            msg = CdMessage.first(with: p, in: self.context)
         }
         if let m = msg, let cdIdent = m.parent?.account?.identity {
             return (m.pEpMessage(), cdIdent.pEpIdentity(), m.objectID)
@@ -58,7 +58,7 @@ open class AppendMailsOperation: ImapSyncOperation {
         return nil
     }
 
-    public func retrieveFolderForAppend(
+    func retrieveFolderForAppend(
         account: CdAccount, context: NSManagedObjectContext) -> CdFolder? {
         return CdFolder.by(folderType: .sent, account: account, context: context)
     }
