@@ -36,7 +36,6 @@
 		22DA56DA1DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43001F791D91860A00306BF0 /* FetchTableViewController.swift */; };
 		4301B3161E28D259007D626C /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4301B3151E28D259007D626C /* AppendMailsOperation.swift */; };
-		430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */; };
 		430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */; };
 		430A6E541DFB08CE006273A5 /* UITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A6E531DFB08CE006273A5 /* UITestData.swift */; };
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
@@ -68,7 +67,6 @@
 		43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */; };
 		432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */; };
 		432722251D33F2FD009EC395 /* TrustWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722231D33F2FD009EC395 /* TrustWordsViewController.swift */; };
-		43299A7B1DDDE7E300EBF506 /* EncryptBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43299A7A1DDDE7E300EBF506 /* EncryptBaseOperation.swift */; };
 		432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */; };
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
 		433019E61E01A71300788B89 /* PeriodicTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433019E51E01A71300788B89 /* PeriodicTask.swift */; };
@@ -103,9 +101,6 @@
 		43800D941D112A0800821E34 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D901D112A0800821E34 /* TFHppleElement.m */; };
 		43800D951D112A0800821E34 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 43800D921D112A0800821E34 /* XPathQuery.m */; };
 		43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
-		4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */; };
-		4380F7C61D1BBD5D00326F62 /* EncryptMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C31D1BBD5D00326F62 /* EncryptMessageOperation.swift */; };
-		4380F7C71D1BBD5D00326F62 /* SendMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7C41D1BBD5D00326F62 /* SendMessageOperation.swift */; };
 		4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7DA1D1BFB3100326F62 /* KeyboardObserver.m */; };
 		4380F7EF1D1C1C7300326F62 /* PEPSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380F7EE1D1C1C7300326F62 /* PEPSession+Extensions.swift */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
@@ -298,7 +293,6 @@
 		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
 		4301B3151E28D259007D626C /* AppendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendMailsOperation.swift; sourceTree = "<group>"; };
-		430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaveSentMessageOperation.swift; path = ../SaveSentMessageOperation.swift; sourceTree = "<group>"; };
 		430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+Extension.swift"; sourceTree = "<group>"; };
 		430A6E531DFB08CE006273A5 /* UITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestData.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = pEpTrustWords.bundle; path = ../pEpTrustWords.bundle; sourceTree = "<group>"; };
@@ -330,7 +324,6 @@
 		43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperation.swift; sourceTree = "<group>"; };
 		432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewCell.swift; sourceTree = "<group>"; };
 		432722231D33F2FD009EC395 /* TrustWordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewController.swift; sourceTree = "<group>"; };
-		43299A7A1DDDE7E300EBF506 /* EncryptBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptBaseOperation.swift; sourceTree = "<group>"; };
 		432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePantomimeTests.swift; sourceTree = "<group>"; };
 		432F7D601D2102F10094F097 /* PEPSessionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionTest.swift; sourceTree = "<group>"; };
 		433019E51E01A71300788B89 /* PeriodicTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodicTask.swift; sourceTree = "<group>"; };
@@ -367,9 +360,6 @@
 		43800D911D112A0800821E34 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
 		43800D921D112A0800821E34 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
 		43800D981D112A2A00821E34 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
-		4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionData.swift; sourceTree = "<group>"; };
-		4380F7C31D1BBD5D00326F62 /* EncryptMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptMessageOperation.swift; sourceTree = "<group>"; };
-		4380F7C41D1BBD5D00326F62 /* SendMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageOperation.swift; sourceTree = "<group>"; };
 		4380F7D91D1BFB3100326F62 /* KeyboardObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardObserver.h; sourceTree = "<group>"; };
 		4380F7DA1D1BFB3100326F62 /* KeyboardObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardObserver.m; sourceTree = "<group>"; };
 		4380F7EE1D1C1C7300326F62 /* PEPSession+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPSession+Extensions.swift"; sourceTree = "<group>"; };
@@ -563,7 +553,6 @@
 				431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */,
 				43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */,
 				43122B3D1DF5BB6600610253 /* MySelfOperation.swift */,
-				4380F7C11D1BBD5D00326F62 /* EncryptAndSend */,
 				43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */,
 				43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */,
 				4301B3151E28D259007D626C /* AppendMailsOperation.swift */,
@@ -658,18 +647,6 @@
 				43800D921D112A0800821E34 /* XPathQuery.m */,
 			);
 			path = HTMLParser;
-			sourceTree = "<group>";
-		};
-		4380F7C11D1BBD5D00326F62 /* EncryptAndSend */ = {
-			isa = PBXGroup;
-			children = (
-				4380F7C21D1BBD5D00326F62 /* EncryptionData.swift */,
-				43299A7A1DDDE7E300EBF506 /* EncryptBaseOperation.swift */,
-				4380F7C31D1BBD5D00326F62 /* EncryptMessageOperation.swift */,
-				4380F7C41D1BBD5D00326F62 /* SendMessageOperation.swift */,
-				430207FD1D74278A00353911 /* SaveSentMessageOperation.swift */,
-			);
-			path = EncryptAndSend;
 			sourceTree = "<group>";
 		};
 		43980E1A1CBD0BC900A7FC3C = {
@@ -1158,7 +1135,6 @@
 				43F6DFD71DEEC752006B526F /* FetchMessagesOperation.swift in Sources */,
 				436C232D1E02A2D900071430 /* KickOffMySelfProtocol.swift in Sources */,
 				220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */,
-				4380F7C71D1BBD5D00326F62 /* SendMessageOperation.swift in Sources */,
 				4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */,
 				A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */,
 				222B35561DF962D7007A1F82 /* ComposeHelpers.swift in Sources */,
@@ -1187,7 +1163,6 @@
 				43800D931D112A0800821E34 /* TFHpple.m in Sources */,
 				43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */,
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
-				4380F7C51D1BBD5D00326F62 /* EncryptionData.swift in Sources */,
 				43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
 				43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */,
@@ -1221,13 +1196,11 @@
 				436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */,
 				431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */,
 				222B35521DF95C1C007A1F82 /* Array+Extension.swift in Sources */,
-				430207FE1D74278A00353911 /* SaveSentMessageOperation.swift in Sources */,
 				431B04801DE5774800E40CD3 /* CdMessage+Pantomime.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */,
 				43E430191D70AC8900164CB1 /* AppendSingleMessageOperation.swift in Sources */,
 				43A0E73D1D16C99900159F41 /* NSArray+PureLayout.m in Sources */,
-				43299A7B1DDDE7E300EBF506 /* EncryptBaseOperation.swift in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
 				43122B171DF5B48B00610253 /* ConnectInfo.swift in Sources */,
 				436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */,
@@ -1239,7 +1212,6 @@
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,
-				4380F7C61D1BBD5D00326F62 /* EncryptMessageOperation.swift in Sources */,
 				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
