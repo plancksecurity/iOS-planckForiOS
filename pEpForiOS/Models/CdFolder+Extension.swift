@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import CoreData
+
 import MessageModel
 
 public extension CdFolder {
@@ -19,8 +21,10 @@ public extension CdFolder {
         return folder
     }
 
-    public static func by(folderType: FolderType, account: CdAccount) -> CdFolder? {
-        return CdFolder.first(with: ["folderType": folderType.rawValue, "account": account])
+    public static func by(folderType: FolderType, account: CdAccount,
+                          context: NSManagedObjectContext = Record.Context.default) -> CdFolder? {
+        return CdFolder.first(with: ["folderType": folderType.rawValue, "account": account],
+                              in: context)
     }
 
     public static func by(name: String, account: CdAccount) -> CdFolder? {

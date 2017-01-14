@@ -11,6 +11,10 @@ import CoreData
 
 import MessageModel
 
+/**
+ Stores SMTPed mails in the sent folder. Can be used more generically for storing mails
+ in other types of folders. Overwrite `retrieveNextMessage` and `retrieveFolderForAppend`.
+ */
 open class AppendMailsOperation: ImapSyncOperation {
     lazy var session = PEPSession()
     lazy var context = Record.Context.background
@@ -52,6 +56,11 @@ open class AppendMailsOperation: ImapSyncOperation {
             return (m.pEpMessage(), cdIdent.pEpIdentity(), m.objectID)
         }
         return nil
+    }
+
+    public func retrieveFolderForAppend(
+        account: CdAccount, context: NSManagedObjectContext) -> CdFolder? {
+        return CdFolder.by(folderType: .sent, account: account, context: context)
     }
 
     func markLastMessageAsFinished() {
@@ -107,11 +116,12 @@ open class AppendMailsOperation: ImapSyncOperation {
                         "Cannot append message without parent folder and this, account".localized)
                     return
                 }
-                guard let folder = CdFolder.by(folderType: .sent, account: account) else {
-                    self.handleError(
-                        Constants.errorInvalidParameter(self.comp),
-                        message: "Cannot find sent folder for message to append".localized)
-                    return
+                guard let folder = self.retrieveFolderForAppend(
+                    account: account, context: self.context) else {
+                        self.handleError(
+                            Constants.errorInvalidParameter(self.comp),
+                            message: "Cannot find sent folder for message to append".localized)
+                        return
                 }
                 guard let fn = folder.name else {
                     self.handleError(
