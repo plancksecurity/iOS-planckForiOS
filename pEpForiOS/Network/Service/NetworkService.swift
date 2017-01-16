@@ -168,19 +168,24 @@ public class NetworkService: INetworkService {
         if let smtpCI = accountInfo.smtpConnectInfo {
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
             let smtpSendData = SmtpSendData(connectInfo: smtpCI)
-            let opSmtpLogin = LoginSmtpOperation(
+            let loginOp = LoginSmtpOperation(
                 smtpSendData: smtpSendData, errorContainer: errorContainer)
-            opSmtpLogin.completionBlock = { [weak self] in
+            loginOp.completionBlock = { [weak self] in
                 if let me = self {
                     me.workerQueue.async {
                         Log.info(component: me.comp, content: "opSmtpLogin finished")
                     }
                 }
             }
-            opSmtpFinished.addDependency(opSmtpLogin)
+            opSmtpFinished.addDependency(loginOp)
             var operations = [Operation]()
-            operations.append(opSmtpLogin)
-            return (opSmtpLogin, operations)
+            operations.append(loginOp)
+
+            let sendOp = EncryptAndSendOperation(smtpSendData: smtpSendData)
+            sendOp.addDependency(loginOp)
+            operations.append(sendOp)
+
+            return (sendOp, operations)
         } else {
             return (nil, [])
         }
