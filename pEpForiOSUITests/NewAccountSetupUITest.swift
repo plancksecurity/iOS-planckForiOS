@@ -110,6 +110,33 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
+    func testAddSingleWorkingAccounts() {
+        let app = XCUIApplication()
+
+        app.navigationBars["Inbox"].buttons["Accounts"].tap()
+        app.navigationBars["Accounts"].buttons["Add"].tap()
+
+        let account = UITestData.workingAccount3
+        newAccountSetup(account)
+
+        waitForever()
+    }
+
+    func testAddTwoWorkingAccounts() {
+        let app = XCUIApplication()
+
+        var account = UITestData.workingAccount1
+        newAccountSetup(account)
+
+        app.navigationBars["Inbox"].buttons["Accounts"].tap()
+        app.navigationBars["Accounts"].buttons["Add"].tap()
+
+        account = UITestData.workingAccount2
+        newAccountSetup(account)
+
+        waitForever()
+    }
+    
     func testAddThreeWorkingAccounts() {
         let app = XCUIApplication()
 
@@ -127,19 +154,7 @@ class NewAccountSetupUITest: XCTestCase {
 
         account = UITestData.workingAccount3
         newAccountSetup(account)
-
-        waitForever()
-    }
-
-    func testAddSingleWorkingAccounts() {
-        let app = XCUIApplication()
-
-        app.navigationBars["Inbox"].buttons["Accounts"].tap()
-        app.navigationBars["Accounts"].buttons["Add"].tap()
-
-        let account = UITestData.workingAccount3
-        newAccountSetup(account)
-
+        
         waitForever()
     }
 }
