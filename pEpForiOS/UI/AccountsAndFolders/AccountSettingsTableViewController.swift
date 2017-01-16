@@ -62,7 +62,7 @@ class AccountSettingsTableViewController: UITableViewController {
         case 1:
             return "AccountsSettings.IMAP".localized
         case 2:
-            return "AccountsSettings.SMPT".localized
+            return "AccountsSettings.SMTP".localized
         default:
             return""
         }
