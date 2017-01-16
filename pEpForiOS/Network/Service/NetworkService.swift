@@ -162,6 +162,30 @@ public class NetworkService: INetworkService {
         }
     }
 
+    func addSmtpOperations(
+        accountInfo: AccountConnectInfo, errorContainer: ErrorProtocol,
+        opSmtpFinished: Operation) -> (BaseOperation?, [Operation]) {
+        if let smtpCI = accountInfo.smtpConnectInfo {
+            // 3.a Items not associated with any mailbox (e.g., SMTP send)
+            let smtpSendData = SmtpSendData(connectInfo: smtpCI)
+            let opSmtpLogin = LoginSmtpOperation(
+                smtpSendData: smtpSendData, errorContainer: errorContainer)
+            opSmtpLogin.completionBlock = { [weak self] in
+                if let me = self {
+                    me.workerQueue.async {
+                        Log.info(component: me.comp, content: "opSmtpLogin finished")
+                    }
+                }
+            }
+            opSmtpFinished.addDependency(opSmtpLogin)
+            var operations = [Operation]()
+            operations.append(opSmtpLogin)
+            return (opSmtpLogin, operations)
+        } else {
+            return (nil, [])
+        }
+    }
+
     func buildOperationLine(
         accountInfo: AccountConnectInfo, needsVerificationOnly: Bool) -> OperationLine {
         struct FolderInfo {
@@ -232,23 +256,11 @@ public class NetworkService: INetworkService {
 
         var operations: [Operation] = []
 
-        var opSmtpLoginOpt: BaseOperation?
-        if let smtpCI = accountInfo.smtpConnectInfo {
-            // 3.a Items not associated with any mailbox (e.g., SMTP send)
-            let smtpSendData = SmtpSendData(connectInfo: smtpCI)
-            let opSmtpLogin = LoginSmtpOperation(
-                smtpSendData: smtpSendData, errorContainer: errorContainer)
-            opSmtpLogin.completionBlock = { [weak self] in
-                if let me = self {
-                    me.workerQueue.async {
-                        Log.info(component: me.comp, content: "opSmtpLogin finished")
-                    }
-                }
-            }
-            opSmtpLoginOpt = opSmtpLogin
-            opSmtpFinished.addDependency(opSmtpLogin)
-            operations.append(opSmtpLogin)
-        }
+        // 3.a Items not associated with any mailbox (e.g., SMTP send)
+        let (lastSmtpOp, smtpOperations) = addSmtpOperations(
+            accountInfo: accountInfo, errorContainer: errorContainer,
+            opSmtpFinished: opSmtpFinished)
+        operations.append(contentsOf: smtpOperations)
 
         if let imapCI = accountInfo.imapConnectInfo {
             // TODO: Reuse connections
@@ -262,7 +274,7 @@ public class NetworkService: INetworkService {
                 self?.workerQueue.async {
                     if let me = self, let theOpImapLogin = opImapLogin {
                         var ops: [BaseOperation] = [theOpImapLogin]
-                        if let op = opSmtpLoginOpt {
+                        if let op = lastSmtpOp {
                             ops.append(op)
                         }
                         me.checkVerified(
