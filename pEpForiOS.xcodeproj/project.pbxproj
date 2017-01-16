@@ -163,6 +163,10 @@
 		5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */; };
 		8B77BD691E0C1D930060F11F /* AccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77BD681E0C1D930060F11F /* AccountSettingsTableViewController.swift */; };
 		8B81BB901E03F73100D38C82 /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B81BB8F1E03F73100D38C82 /* SegueHandlerType.swift */; };
+		8B91C3831E2D04450087BBB5 /* PrivacyStatusTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B91C3801E2D04450087BBB5 /* PrivacyStatusTableViewController.swift */; };
+		8B91C3841E2D04450087BBB5 /* TrustwordsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B91C3811E2D04450087BBB5 /* TrustwordsTableViewController.swift */; };
+		8B91C3851E2D04450087BBB5 /* FingerprintTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B91C3821E2D04450087BBB5 /* FingerprintTableViewController.swift */; };
+		8B91C3871E2D04540087BBB5 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B91C3861E2D04540087BBB5 /* RoundedButton.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A13D9F611D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */; };
 		A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */; };
@@ -437,6 +441,10 @@
 		5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
 		8B77BD681E0C1D930060F11F /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
 		8B81BB8F1E03F73100D38C82 /* SegueHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandlerType.swift; sourceTree = "<group>"; };
+		8B91C3801E2D04450087BBB5 /* PrivacyStatusTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyStatusTableViewController.swift; sourceTree = "<group>"; };
+		8B91C3811E2D04450087BBB5 /* TrustwordsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustwordsTableViewController.swift; sourceTree = "<group>"; };
+		8B91C3821E2D04450087BBB5 /* FingerprintTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FingerprintTableViewController.swift; sourceTree = "<group>"; };
+		8B91C3861E2D04540087BBB5 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeButtonTableViewCell.swift; sourceTree = "<group>"; };
 		A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeLabelTableViewCell.swift; sourceTree = "<group>"; };
 		A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTexViewTableViewCell.swift; sourceTree = "<group>"; };
@@ -856,6 +864,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				8B91C37C1E2CFFA50087BBB5 /* New Handshake */,
 				43C32E201DBF94A6007CFB1A /* MockData.swift */,
 				43ED53621CC77F95006AB156 /* EmailDisplay */,
 				43001F761D9185E600306BF0 /* TableViews */,
@@ -889,6 +898,17 @@
 				43ED536C1CC77F95006AB156 /* OneValueSettingCell.swift */,
 			);
 			path = ImapSetup;
+			sourceTree = "<group>";
+		};
+		8B91C37C1E2CFFA50087BBB5 /* New Handshake */ = {
+			isa = PBXGroup;
+			children = (
+				8B91C3861E2D04540087BBB5 /* RoundedButton.swift */,
+				8B91C3801E2D04450087BBB5 /* PrivacyStatusTableViewController.swift */,
+				8B91C3811E2D04450087BBB5 /* TrustwordsTableViewController.swift */,
+				8B91C3821E2D04450087BBB5 /* FingerprintTableViewController.swift */,
+			);
+			name = "New Handshake";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1127,6 +1147,7 @@
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
 				4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */,
 				433019E61E01A71300788B89 /* PeriodicTask.swift in Sources */,
+				8B91C3871E2D04540087BBB5 /* RoundedButton.swift in Sources */,
 				5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */,
 				222B35691DF96AFE007A1F82 /* ComposeTextView.swift in Sources */,
 				43F6DFD71DEEC752006B526F /* FetchMessagesOperation.swift in Sources */,
@@ -1138,6 +1159,7 @@
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
 				43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */,
+				8B91C3851E2D04450087BBB5 /* FingerprintTableViewController.swift in Sources */,
 				439D407A1CC79423009A4E7C /* GCD.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
 				43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */,
@@ -1204,6 +1226,7 @@
 				43800D951D112A0800821E34 /* XPathQuery.m in Sources */,
 				A13D9F611D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift in Sources */,
 				431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */,
+				8B91C3841E2D04450087BBB5 /* TrustwordsTableViewController.swift in Sources */,
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
@@ -1214,6 +1237,7 @@
 				431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */,
 				43A0E73C1D16C99900159F41 /* ALView+PureLayout.m in Sources */,
 				43463AAE1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift in Sources */,
+				8B91C3831E2D04450087BBB5 /* PrivacyStatusTableViewController.swift in Sources */,
 				430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */,
 				431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */,
 				4340F5F91D363BE6006A5C82 /* ContactCell.swift in Sources */,

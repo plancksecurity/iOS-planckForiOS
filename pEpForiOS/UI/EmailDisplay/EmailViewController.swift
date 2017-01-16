@@ -125,6 +125,7 @@ extension EmailViewController: SegueHandlerType {
         case segueTrustWords
         case seguePrevious
         case segueNext
+        case noSegue
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -159,6 +160,8 @@ extension EmailViewController: SegueHandlerType {
             destination.message = message
             destination.appConfig = appConfig
             destination.page = page
+            break
+        case .noSegue:
             break
         }
     }
