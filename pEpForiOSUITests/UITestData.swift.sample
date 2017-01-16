@@ -29,9 +29,23 @@ struct Account {
 }
 
 struct UITestData {
-    static let workingAccount = Account.init(
+    static let workingAccount1 = Account.init(
         nameOfTheUser: "Name",
-        email: "email@example.com",
+        email: "email1@example.com",
+        imapServerName: "localhost", smtpServerName: "localhost",
+        password: "secret", imapPort: 993, smtpPort: 587,
+        imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
+
+    static let workingAccount2 = Account.init(
+        nameOfTheUser: "Name",
+        email: "email2@example.com",
+        imapServerName: "localhost", smtpServerName: "localhost",
+        password: "secret", imapPort: 993, smtpPort: 587,
+        imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
+
+    static let workingAccount3 = Account.init(
+        nameOfTheUser: "Name",
+        email: "email3@example.com",
         imapServerName: "localhost", smtpServerName: "localhost",
         password: "secret", imapPort: 993, smtpPort: 587,
         imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")

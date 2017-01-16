@@ -91,7 +91,7 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func testNewAccountThatShouldFail() {
-        var account = UITestData.workingAccount
+        var account = UITestData.workingAccount1
         account.password = "CLEArlyWRong"
         newAccountSetup(account)
         // TODO: Verify error message
@@ -99,7 +99,7 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func testInsertNewWorkingAccount() {
-        let account = UITestData.workingAccount
+        let account = UITestData.workingAccount1
         newAccountSetup(account)
         waitForever()
     }
@@ -107,6 +107,39 @@ class NewAccountSetupUITest: XCTestCase {
     func testInsertNewYahooAccount() {
         let account = UITestData.workingYahooAccount
         newAccountSetup(account)
+        waitForever()
+    }
+
+    func testAddThreeWorkingAccounts() {
+        let app = XCUIApplication()
+
+        var account = UITestData.workingAccount1
+        newAccountSetup(account)
+
+        app.navigationBars["Inbox"].buttons["Accounts"].tap()
+        app.navigationBars["Accounts"].buttons["Add"].tap()
+
+        account = UITestData.workingAccount2
+        newAccountSetup(account)
+
+        app.navigationBars["Inbox"].buttons["Accounts"].tap()
+        app.navigationBars["Accounts"].buttons["Add"].tap()
+
+        account = UITestData.workingAccount3
+        newAccountSetup(account)
+
+        waitForever()
+    }
+
+    func testAddSingleWorkingAccounts() {
+        let app = XCUIApplication()
+
+        app.navigationBars["Inbox"].buttons["Accounts"].tap()
+        app.navigationBars["Accounts"].buttons["Add"].tap()
+
+        let account = UITestData.workingAccount3
+        newAccountSetup(account)
+
         waitForever()
     }
 }
