@@ -1547,8 +1547,16 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="oKJ-Nt-kdk">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Xsz-Uf-FsK"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Xy6-Rf-YDv"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Xsz-Uf-FsK">
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="Eri-pJ-T3J" id="k25-SP-CV2"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Xy6-Rf-YDv">
+                            <connections>
+                                <action selector="doneButtonTapped:" destination="Eri-pJ-T3J" id="DpQ-4s-6zg"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>

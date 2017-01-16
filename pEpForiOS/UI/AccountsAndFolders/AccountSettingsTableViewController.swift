@@ -71,4 +71,14 @@ class AccountSettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
     }
+    
+    // MARK: - Actions
+    
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+      let _ =  navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
+    }
+
 }
