@@ -728,31 +728,31 @@ extension UIColor {
     
     open class var pEpGreen: UIColor {
         get {
-            return UIColor(hex: "#03AA4B")
+            return .green //(hex: "#03AA4B")
         }
     }
     
     open class var pEpNoColor: UIColor {
         get {
-            return UIColor(hex: "#B4B0B0")
+            return .gray //(hex: "#B4B0B0")
         }
     }
     
     open class var pEpRed: UIColor {
         get {
-            return UIColor(hex: "#D0011B")
+            return .red //(hex: "#D0011B")
         }
     }
     
     open class var pEpYellow: UIColor {
         get {
-            return UIColor(hex: "#FFC901")
+            return .yellow //UIColor(hex: "#FFC901")
         }
     }
     
     open class var pEpBlue: UIColor {
         get {
-            return UIColor(hex: "#007AFF")
+            return .blue //UIColor(hex: "#007AFF")
         }
     }
     

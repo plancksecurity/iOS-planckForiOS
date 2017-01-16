@@ -121,4 +121,19 @@ open class ComposeTextView: UITextView {
             }
         }
     }
+    
+    public func toHtml() -> String? {
+        let string = NSMutableAttributedString(attributedString: attributedText)
+        let range = NSMakeRange(0, string.length)
+        string.fixAttributes(in: range)
+        
+        let docAttributes = [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]
+        do {
+            let data = try string.data(from: range, documentAttributes: docAttributes)
+            return String(data: data, encoding: .utf8)
+        } catch {
+            print("Could not covert into html")
+            return nil
+        }
+    }
 }

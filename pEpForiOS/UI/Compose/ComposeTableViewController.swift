@@ -129,15 +129,7 @@ class ComposeTableViewController: UITableViewController {
         }
 
         // Use this message (initially, a draft)
-        let _ = f.createMessage()
-
-        var toAddresses = [String]()
-        var ccAddresses = [String]()
-        var bccAddresses = [String]()
-        var messageBody = NSAttributedString()
-        var from = String()
-        var subject = String()
-        var attachments = [Attachment?]()
+        let message = f.createMessage()
         
         allCells.forEach({ (cell) in
             if cell is RecipientCell {
@@ -146,46 +138,40 @@ class ComposeTableViewController: UITableViewController {
                 switch cell.fieldModel!.type {
                 case .to:
                     addresses.forEach({ (recipient) in
-                        toAddresses.append(recipient.address)
+                        message.to.append(recipient)
                     })
                     break
                 case .cc:
                     addresses.forEach({ (recipient) in
-                        ccAddresses.append(recipient.address)
+                        message.cc.append(recipient)
                     })
                     break
                 case .bcc:
                     addresses.forEach({ (recipient) in
-                        bccAddresses.append(recipient.address)
+                        message.bcc.append(recipient)
                     })
                     break
                 default: ()
                     break
                 }
             } else if cell is MessageBodyCell {
-                messageBody = cell.textView.attributedText
-                attachments = (cell as! MessageBodyCell).getAllAttachments()
+                message.longMessageFormatted = cell.textView.toHtml()
+                if let attachments = (cell as? MessageBodyCell)?.getAllAttachments() {
+                    message.attachments = attachments as! [Attachment]
+                }
             } else {
                 switch cell.fieldModel!.type {
                 case .from:
-                    from = cell.textView.text
+                    message.from = (cell as! AccountCell).getAccount()
                     break
                 default:
-                    subject = cell.textView.text
+                    message.shortMessage = cell.textView.text
                     break
                 }
             }
         })
-        
-        print("--------------------------------------")
-        print("To: \(toAddresses)")
-        print("Cc: \(ccAddresses)")
-        print("Bcc: \(bccAddresses)")
-        print("From: \(from)")
-        print("Subject: \(subject)")
-        print("Attachments: \(attachments)")
-        print("Body: \(messageBody)")
-        print("--------------------------------------")
+        print(message)
+        message.notifyObserver()
     }
     
     // MARK: - Public Methods
@@ -311,8 +297,7 @@ class ComposeTableViewController: UITableViewController {
     }
     
     @IBAction func send() {
-        // Extract all data from composer HERE!!!
-        
+        populateMessage()
         dismiss(animated: true, completion: nil)
     }
 }

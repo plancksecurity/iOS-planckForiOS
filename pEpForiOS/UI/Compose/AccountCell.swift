@@ -30,6 +30,11 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
         picker.isHidden = !isExpanded
     }
     
+    public final func getAccount() -> Identity {
+        let selected = picker.selectedRow(inComponent: 1)
+        return accounts[selected].user
+    }
+    
     // MARK: - UIPickerView Delegate & Datasource
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
