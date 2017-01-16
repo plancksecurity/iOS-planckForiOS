@@ -169,6 +169,14 @@ class TestData {
     }
 
     /**
+     - Returns: A valid `PEPIdentity`.
+     */
+    func createWorkingIdentity(number: Int = 0) -> [String: AnyObject] {
+        populateAccounts()
+        return testAccounts[number].pEpIdentity()
+    }
+
+    /**
      - Returns: A `Account` with servers that should yield a quick timeout.
      */
     func createTimeoutAccount() -> Account {
