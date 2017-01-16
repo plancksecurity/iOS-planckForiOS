@@ -81,6 +81,8 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
             context.performAndWait {
                 if let msg = context.object(with: objID) as? CdMessage {
                     msg.sendStatus = Int16(SendStatus.smtpDone.rawValue)
+                    Log.info(component: #function,
+                             content: "Setting \(msg.messageID): \(msg.sendStatus)")
                     Record.save(context: context)
                 } else {
                     Log.error(

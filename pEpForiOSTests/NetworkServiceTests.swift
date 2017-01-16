@@ -88,6 +88,97 @@ class NetworkServiceTests: XCTestCase {
         }
     }
 
+    func testSyncOutgoing() {
+        XCTAssertNil(CdAccount.all())
+        XCTAssertNil(CdFolder.all())
+        XCTAssertNil(CdMessage.all())
+
+        let modelDelegate = MessageModelObserver()
+        MessageModelConfig.messageFolderDelegate = modelDelegate
+
+        let sendLayerDelegate = SendLayerObserver()
+
+        let networkService = NetworkService(parentName: #function)
+
+        // A temp variable is necassary, since the networkServiceDelegate is weak
+        var del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced1"))
+
+        networkService.networkServiceDelegate = del
+        networkService.sendLayerDelegate = sendLayerDelegate
+
+        let cdAccount = TestData().createWorkingCdAccount()
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+
+        networkService.start()
+
+        // Wait for first sync, mainly to have folders
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        let from = CdIdentity.create()
+        from.userName = cdAccount.identity?.userName ?? "Unit 004"
+        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+
+        let to = CdIdentity.create()
+        to.userName = "Unit 001"
+        to.address = "unittest.ios.1@peptest.ch"
+
+        let folder = CdFolder.by(folderType: .sent, account: cdAccount)
+
+        // Build outgoing emails
+        var outgoingMails = [CdMessage]()
+        let numMails = 5
+        for i in 1...numMails {
+            let message = CdMessage.create()
+            message.from = from
+            message.parent = folder
+            message.shortMessage = "Some subject \(i)"
+            message.longMessage = "Long message \(i)"
+            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
+            message.addTo(cdIdentity: to)
+            outgoingMails.append(message)
+        }
+        Record.saveAndWait()
+
+        // Verify outgoing mails
+        for m in outgoingMails {
+            XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
+            XCTAssertEqual(m.uid, Int32(0))
+            XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+        }
+
+        del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced2"))
+        networkService.networkServiceDelegate = del
+
+        // Wait for second sync, to verify outgoing mails
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        for m in outgoingMails {
+            m.refresh()
+            Log.info(component: #function, content: "Checking \(m.messageID): \(m.sendStatus)")
+            XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
+            XCTAssertEqual(m.uid, Int32(0))
+            XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))
+        }
+
+        // Cancel
+        del = NetworkServiceObserver(
+            expCanceled: expectation(description: "expCanceled"))
+        networkService.networkServiceDelegate = del
+        networkService.cancel()
+
+        // Wait for cancellation
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+    }
+
     func testSyncOneTime() {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
@@ -96,13 +187,14 @@ class NetworkServiceTests: XCTestCase {
         let modelDelegate = MessageModelObserver()
         MessageModelConfig.messageFolderDelegate = modelDelegate
 
-        let del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-
         let sendLayerDelegate = SendLayerObserver()
 
         let networkService = NetworkService(parentName: #function)
+
+        var del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced"))
         networkService.networkServiceDelegate = del
+
         networkService.sendLayerDelegate = sendLayerDelegate
 
         _ = TestData().createWorkingCdAccount()
@@ -115,7 +207,6 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
 
-        networkService.cancel()
         XCTAssertNotNil(del.accountInfo)
         XCTAssertNotNil(CdFolder.all())
         XCTAssertNotNil(CdMessage.all())
@@ -170,18 +261,29 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertTrue(inbox.contains(message: msg))
             XCTAssertTrue(unifiedInbox.contains(message: msg))
         }
+
+        // Cancel
+        del = NetworkServiceObserver(
+            expCanceled: expectation(description: "expCanceled"))
+        networkService.networkServiceDelegate = del
+        networkService.cancel()
+
+        // Wait for cancellation
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
     }
 
-    func testCancelSync() {
+    func testCancelSyncImmediately() {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
 
+        let networkService = NetworkService(parentName: #function)
+
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"),
             expCanceled: expectation(description: "expCanceled"))
-
-        let networkService = NetworkService(parentName: #function)
         networkService.networkServiceDelegate = del
 
         _ = TestData().createWorkingCdAccount()
@@ -204,9 +306,10 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
 
+        let networkService = NetworkService(parentName: #function)
+
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-        let networkService = NetworkService(parentName: #function)
         networkService.networkServiceDelegate = del
 
         let expAccountVerified = expectation(description: "expAccountVerified")
@@ -312,9 +415,10 @@ class NetworkServiceTests: XCTestCase {
             expMySelfed: expectation(description: "expMySelfed"),
             expBackgrounded: expectation(description: "expBackgrounded"))
 
+        let networkService = NetworkService(parentName: #function, mySelfer: mySelfObserver)
+
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-        let networkService = NetworkService(parentName: #function, mySelfer: mySelfObserver)
         networkService.networkServiceDelegate = del
 
         CdAccount.sendLayer = networkService
@@ -371,9 +475,10 @@ class NetworkServiceTests: XCTestCase {
             expMySelfed: expectation(description: "expMySelfed"),
             expBackgrounded: expectation(description: "expBackgrounded"))
 
+        let networkService = NetworkService(parentName: #function, mySelfer: mySelfObserver)
+
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-        let networkService = NetworkService(parentName: #function, mySelfer: mySelfObserver)
         networkService.networkServiceDelegate = del
 
         networkService.start()

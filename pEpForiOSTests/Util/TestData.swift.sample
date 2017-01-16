@@ -110,6 +110,14 @@ fileprivate struct AccountSettings {
 
         return acc
     }
+
+    func pEpIdentity() -> [String: AnyObject] {
+        let theID = [
+            kPepAddress: idAddress as AnyObject,
+            kPepUsername: accountName as AnyObject
+            ] as [String: AnyObject]
+        return theID
+    }
 }
 
 class TestData {
@@ -166,6 +174,14 @@ class TestData {
     func createWorkingAccount(number: Int = 0) -> Account {
         populateAccounts()
         return testAccounts[number].account()
+    }
+
+    /**
+     - Returns: A valid `PEPIdentity`.
+     */
+    func createWorkingIdentity(number: Int = 0) -> [String: AnyObject] {
+        populateAccounts()
+        return testAccounts[number].pEpIdentity()
     }
 
     /**
