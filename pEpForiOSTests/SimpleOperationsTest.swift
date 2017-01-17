@@ -91,6 +91,7 @@ class SimpleOperationsTest: XCTestCase {
 
         // Check all messages for validity
         for m in allMessages {
+            XCTAssertNotNil(m.messageID)
             XCTAssertNotNil(m.uid)
             XCTAssertGreaterThan(m.uid, 0)
             XCTAssertNotNil(m.imap)
