@@ -159,9 +159,8 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
 
+        Record.refreshRegisteredObjects(mergeChanges: true)
         for m in outgoingMails {
-            m.refresh()
-            Log.info(component: #function, content: "Checking \(m.messageID): \(m.sendStatus)")
             XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
             XCTAssertEqual(m.uid, Int32(0))
             XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))

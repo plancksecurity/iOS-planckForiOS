@@ -83,7 +83,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
                     msg.sendStatus = Int16(SendStatus.smtpDone.rawValue)
                     Log.info(component: #function,
                              content: "Setting \(msg.messageID): \(msg.sendStatus)")
-                    Record.save(context: context)
+                    Record.saveAndWait(context: context)
                 } else {
                     Log.error(
                         component: self.comp, errorString: "Could not access sent message by ID")

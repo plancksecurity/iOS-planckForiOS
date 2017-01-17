@@ -182,6 +182,7 @@ public class NetworkService: INetworkService {
             operations.append(loginOp)
 
             let sendOp = EncryptAndSendOperation(smtpSendData: smtpSendData)
+            opSmtpFinished.addDependency(sendOp)
             sendOp.addDependency(loginOp)
             operations.append(sendOp)
 
