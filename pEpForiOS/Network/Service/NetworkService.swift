@@ -162,7 +162,7 @@ public class NetworkService: INetworkService {
         }
     }
 
-    func addSmtpOperations(
+    func buildSmtpOperations(
         accountInfo: AccountConnectInfo, errorContainer: ErrorProtocol,
         opSmtpFinished: Operation) -> (BaseOperation?, [Operation]) {
         if let smtpCI = accountInfo.smtpConnectInfo {
@@ -191,6 +191,22 @@ public class NetworkService: INetworkService {
             return (nil, [])
         }
     }
+
+    func buildSendOperations(
+        imapSyncData: ImapSyncData, errorContainer: ErrorProtocol,
+        opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
+
+        let opAppend = AppendMailsOperation(imapSyncData: imapSyncData)
+        opAppend.addDependency(previousOp)
+        opImapFinished.addDependency(opAppend)
+
+        let opDrafts = AppendDraftMailsOperation(imapSyncData: imapSyncData)
+        opDrafts.addDependency(opAppend)
+        opImapFinished.addDependency(opDrafts)
+
+        return (opDrafts, [opAppend, opDrafts])
+    }
+
 
     func buildOperationLine(
         accountInfo: AccountConnectInfo, needsVerificationOnly: Bool) -> OperationLine {
@@ -263,7 +279,7 @@ public class NetworkService: INetworkService {
         var operations: [Operation] = []
 
         // 3.a Items not associated with any mailbox (e.g., SMTP send)
-        let (lastSmtpOp, smtpOperations) = addSmtpOperations(
+        let (lastSmtpOp, smtpOperations) = buildSmtpOperations(
             accountInfo: accountInfo, errorContainer: errorContainer,
             opSmtpFinished: opSmtpFinished)
         operations.append(contentsOf: smtpOperations)
@@ -309,13 +325,17 @@ public class NetworkService: INetworkService {
             opImapFinished.addDependency(opFetchFolders)
 
             // 3.c Client-to-server synchronization (IMAP)
+            let (lastSendOp, sendOperations) = buildSendOperations(
+                imapSyncData: imapSyncData, errorContainer: errorContainer,
+                opImapFinished: opImapFinished, previousOp: opFetchFolders)
+            operations.append(contentsOf: sendOperations)
 
             // 3.d Server-to-client synchronization (IMAP)
 
             let folderInfos = determineInterestingFolders()
 
             // sync new messages
-            var lastImapOp: Operation? = nil
+            var lastImapOp: Operation = lastSendOp ?? opFetchFolders
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
                     parentName: parentName, errorContainer: errorContainer,
@@ -326,11 +346,8 @@ public class NetworkService: INetworkService {
                     Log.info(component: self.comp, content: "fetchMessagesOp finished")
                 }
                 operations.append(fetchMessagesOp)
-                fetchMessagesOp.addDependency(opFetchFolders)
+                fetchMessagesOp.addDependency(lastImapOp)
                 opImapFinished.addDependency(fetchMessagesOp)
-                if let op = lastImapOp {
-                    fetchMessagesOp.addDependency(op)
-                }
                 lastImapOp = fetchMessagesOp
             }
 
@@ -341,9 +358,7 @@ public class NetworkService: INetworkService {
             // if errors occurred earlier
             opDecrypt.bailOutEarlyOnError = false
 
-            if let lastImap = lastImapOp {
-                opDecrypt.addDependency(lastImap)
-            }
+            opDecrypt.addDependency(lastImapOp)
             opImapFinished.addDependency(opDecrypt)
             operations.append(opDecrypt)
 
@@ -359,9 +374,7 @@ public class NetworkService: INetworkService {
                             Log.info(component: me.comp, content: "syncMessagesOp finished")
                         }
                     }
-                    if let lastOp = lastImapOp {
-                        syncMessagesOp.addDependency(lastOp)
-                    }
+                    syncMessagesOp.addDependency(lastImapOp)
                     operations.append(syncMessagesOp)
                     opImapFinished.addDependency(syncMessagesOp)
                     lastImapOp = syncMessagesOp

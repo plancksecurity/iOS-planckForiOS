@@ -127,6 +127,8 @@ class NetworkServiceTests: XCTestCase {
         to.address = "unittest.ios.1@peptest.ch"
 
         let folder = CdFolder.by(folderType: .sent, account: cdAccount)
+        XCTAssertNotNil(folder)
+        XCTAssertEqual((folder?.messages ?? NSSet()).count, 0)
 
         // Build outgoing emails
         var outgoingMails = [CdMessage]()
