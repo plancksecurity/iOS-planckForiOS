@@ -183,13 +183,14 @@ class UIHelper {
             theTitle = NSLocalizedString(
                 "Error", comment: "General error alert title")
         }
-        let alert = UIAlertController.init(
+        let alertController = UIAlertController(
             title: theTitle, message: errorMessage, preferredStyle: .alert)
+        alertController.view.tintColor = .pEpGreen
         let okTitle = NSLocalizedString(
             "Ok", comment: "OK for error alert (no other interaction possible)")
         let action = UIAlertAction.init(
             title: okTitle, style: .default, handler: nil)
-        alert.addAction(action)
-        controller.present(alert, animated: true, completion: nil)
+        alertController.addAction(action)
+        controller.present(alertController, animated: true, completion: nil)
     }
 }

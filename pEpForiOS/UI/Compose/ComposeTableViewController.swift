@@ -274,6 +274,7 @@ class ComposeTableViewController: UITableViewController {
     
     @IBAction func cancel() {
         let alertCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertCtrl.view.tintColor = .pEpGreen
         if let popoverPresentationController = alertCtrl.popoverPresentationController {
             popoverPresentationController.sourceView = view
         }

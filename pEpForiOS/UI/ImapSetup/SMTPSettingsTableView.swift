@@ -86,7 +86,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
             title: NSLocalizedString("Error",
                 comment: "the text in the title for the error message AlerView in account settings"),
             message:message, preferredStyle: .alert)
-
+        alertView.view.tintColor = .pEpGreen
         alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok",
             comment: "confirmation button text for error message AlertView in account settings"),
             style: .default, handler: nil))
@@ -100,7 +100,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
             message: NSLocalizedString("Choose a Security protocol for your accont",
                 comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
-
+        alertController.view.tintColor = .pEpGreen
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportSMTP = transport
             self.updateView()

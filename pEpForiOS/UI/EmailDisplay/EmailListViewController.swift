@@ -232,6 +232,7 @@ class EmailListViewController: UITableViewController {
     
     func showMoreActionSheet(cell: EmailListViewCell) {
         let alertControler = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertControler.view.tintColor = .pEpGreen
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction(cell: cell)
         let forwardAction = createForwardAction(cell: cell)
