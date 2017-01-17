@@ -51,15 +51,19 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     public func retrieveNextMessage(
         context: NSManagedObjectContext) -> (PEPMessage, NSManagedObjectID)? {
-        var msg: CdMessage?
+        var pepMessage: PEPMessage?
+        var objID: NSManagedObjectID?
         context.performAndWait {
             let p = NSPredicate(
                 format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
                 FolderType.sent.rawValue, SendStatus.none.rawValue)
-            msg = CdMessage.first(with: p)
+            if let m = CdMessage.first(with: p) {
+                pepMessage = m.pEpMessage()
+                objID = m.objectID
+            }
         }
-        if let m = msg {
-            return (m.pEpMessage(), m.objectID)
+        if let o = objID, let p = pepMessage {
+            return (p, o)
         }
         return nil
     }
