@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lPr-gi-BrG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lPr-gi-BrG">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -26,8 +26,8 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Sender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-jW-sUg">
-                                            <rect key="frame" x="30" y="5" width="274" height="18"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                            <rect key="frame" x="30" y="5" width="274" height="17"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1759,27 +1759,18 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="18" y="8" width="309" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                            <rect key="frame" x="18" y="8" width="341" height="15"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pep-user-status-gray" translatesAutoresizingMaskIntoConstraints="NO" id="J9q-zw-aAw">
-                                            <rect key="frame" x="331" y="8" width="32" height="32"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="32" id="6cm-R5-tVv"/>
-                                                <constraint firstAttribute="width" constant="32" id="jiq-8d-3lW"/>
-                                            </constraints>
-                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Mfx-AS-hpP" firstAttribute="top" secondItem="hnw-Tp-mga" secondAttribute="bottom" constant="4" id="0eV-GZ-phc"/>
                                         <constraint firstAttribute="topMargin" secondItem="hnw-Tp-mga" secondAttribute="top" id="BpX-2f-9Cg"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Mfx-AS-hpP" secondAttribute="trailing" constant="10" id="UPA-Mw-lNd"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="hnw-Tp-mga" secondAttribute="trailing" constant="40" id="oUv-TY-bIw"/>
-                                        <constraint firstAttribute="topMargin" secondItem="J9q-zw-aAw" secondAttribute="top" id="rUy-WS-SOd"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="hnw-Tp-mga" secondAttribute="trailing" constant="8" id="oUv-TY-bIw"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="hnw-Tp-mga" secondAttribute="bottom" constant="40" id="snq-aA-mrq"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="J9q-zw-aAw" secondAttribute="trailing" constant="4" id="uD0-4N-tB1"/>
                                         <constraint firstItem="Mfx-AS-hpP" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leadingMargin" constant="10" id="wAa-F4-F07"/>
                                         <constraint firstItem="hnw-Tp-mga" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leadingMargin" constant="10" id="yzu-p3-Qxp"/>
                                     </constraints>
@@ -2639,15 +2630,14 @@ APPLEPIE RESEARCH</string>
         <image name="button-fingerprint-icon" width="21" height="21"/>
         <image name="button-trustwords-icon" width="21" height="21"/>
         <image name="handshake-button-icon" width="34" height="24"/>
-        <image name="pep-user-status-gray" width="20" height="20"/>
         <image name="trus-partner-icon" width="46" height="46"/>
         <image name="trust-line-icon" width="113" height="20"/>
         <image name="trust-myself-icon" width="46" height="46"/>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="FBd-9l-9Iu"/>
         <segue reference="Na7-CM-lbe"/>
         <segue reference="Usl-iS-7fo"/>
-        <segue reference="FBd-9l-9Iu"/>
     </inferredMetricsTieBreakers>
 </document>

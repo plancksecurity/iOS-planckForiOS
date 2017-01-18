@@ -55,6 +55,15 @@ class AccountSettingsTableViewController: UITableViewController {
         smtpPortTextfield.text = "\(server.port)"
     }
     
+    // MARK: - UItableViewDataSource
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        if (account?.hasBeenPopulated)! {
+            return 1
+        }
+        return 3
+    }
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
