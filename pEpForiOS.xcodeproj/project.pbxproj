@@ -41,6 +41,9 @@
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */; };
+		430EF5921E2F94EC0056B88A /* ServerConfig.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 430EF58A1E2F7EA80056B88A /* ServerConfig.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		430EF59E1E2FA7D90056B88A /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 430EF58A1E2F7EA80056B88A /* ServerConfig.framework */; };
+		430EF59F1E2FA7E50056B88A /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43BB867E1DB4C3BC00980267 /* MessageModel.framework */; };
 		431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B41CC0FCA40007639D /* StoreFolderOperation.swift */; };
 		431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B61CC11D6A0007639D /* BaseOperation.swift */; };
 		431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */; };
@@ -130,7 +133,6 @@
 		43B2660D1D252C93009D57E8 /* ConcurrentBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */; };
 		43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */; };
 		43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */; };
-		43BB86831DB4C3CE00980267 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43BB867E1DB4C3BC00980267 /* MessageModel.framework */; };
 		43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */; };
 		43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */; };
 		43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C046BC1CF48D6300BD0D9D /* AddressBook.swift */; };
@@ -193,7 +195,7 @@
 			remoteGlobalIDString = 439BD1A11E2E1C4E007A1112;
 			remoteInfo = ServerConfigTests;
 		};
-		430EF58D1E2F7EC60056B88A /* PBXContainerItemProxy */ = {
+		430EF5A01E2FA7FD0056B88A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */;
 			proxyType = 1;
@@ -286,6 +288,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				430EF5921E2F94EC0056B88A /* ServerConfig.framework in CopyFiles */,
 				4377D9341DB7EB13003432BB /* MessageModel.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -482,8 +485,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43BB86831DB4C3CE00980267 /* MessageModel.framework in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
+				430EF59F1E2FA7E50056B88A /* MessageModel.framework in Frameworks */,
+				430EF59E1E2FA7D90056B88A /* ServerConfig.framework in Frameworks */,
 				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
 				43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */,
 				439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */,
@@ -958,7 +962,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				430EF58E1E2F7EC60056B88A /* PBXTargetDependency */,
+				430EF5A11E2FA7FD0056B88A /* PBXTargetDependency */,
 				43122B031DF5B24A00610253 /* PBXTargetDependency */,
 				439D406A1CC7883D009A4E7C /* PBXTargetDependency */,
 				434662CE1CBF808D0053FC48 /* PBXTargetDependency */,
@@ -1347,10 +1351,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		430EF58E1E2F7EC60056B88A /* PBXTargetDependency */ = {
+		430EF5A11E2FA7FD0056B88A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ServerConfig;
-			targetProxy = 430EF58D1E2F7EC60056B88A /* PBXContainerItemProxy */;
+			targetProxy = 430EF5A01E2FA7FD0056B88A /* PBXContainerItemProxy */;
 		};
 		43122B031DF5B24A00610253 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

@@ -23,7 +23,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
     let explanationTrustwords = 4
     let trustwords = 5
     let confirmButton = 6
-
+    lazy var session = PEPSession()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +79,7 @@ class HandshakeViewController: UITableViewController, UIGestureRecognizerDelegat
                 if !hexamode {
                     cell.handshakeTextView.text = PEPUtil.trustwords(
                         identity1: myselfContactPepContact, identity2: partnerPepContact,
-                        language: "en", session: nil)
+                        language: "en", session: session)
                 } else {
                     let myselfFingerprints = PEPUtil.fingerPrint(identity: myselfContact)
 

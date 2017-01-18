@@ -10,11 +10,11 @@ import MessageModel
 
 extension Identity {
  
-    public func pEpRating(session: PEPSession? = nil) -> PEP_rating {
+    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
         return PEPUtil.pEpRating(identity: self, session: session)
     }
 
-    public func pEpColor(session: PEPSession? = nil) -> PEP_color {
+    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
         return PEPUtil.pEpColor(identity: self, session: session)
     }
 
@@ -43,7 +43,7 @@ extension Identity {
         }
     }
 
-    open func fingerPrint(session: PEPSession? = nil) -> String? {
+    open func fingerPrint(session: PEPSession = PEPSession()) -> String? {
         return PEPUtil.fingerPrint(identity: self, session: session)
     }
 }
