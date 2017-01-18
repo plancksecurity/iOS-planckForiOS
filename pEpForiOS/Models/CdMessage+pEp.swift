@@ -26,6 +26,15 @@ extension CdMessage {
         longMessage = pEpMessage[kPepLongMessage] as? String
         longMessageFormatted = pEpMessage[kPepLongMessageFormatted] as? String
 
+        if let testsent = pEpMessage[kPepSent] as? NSDate {
+            sent = testsent
+        }
+        if let testrecived = pEpMessage[kPepReceived] as? NSDate {
+            received = testrecived
+        }
+
+        uuid = pEpMessage[kPepID] as! String?
+        replyTo = pEpMessage[kPepReplyTo] as! NSOrderedSet?
         var attachments = [CdAttachment]()
         if let attachmentDicts = pEpMessage[kPepAttachments] as? NSArray {
             for atDict in attachmentDicts {
