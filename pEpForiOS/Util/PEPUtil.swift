@@ -612,9 +612,10 @@ open class PEPUtil {
     }
 
     open static func trustwords(identity1: PEPIdentity, identity2: PEPIdentity,
-                                language: String, session: PEPSession = PEPSession()) -> String? {
+                                language: String, full: Bool = true,
+                                session: PEPSession = PEPSession()) -> String? {
         return session.getTrustwordsIdentity1(identity1, identity2: identity2,
-                                              language: language, full: true)
+                                              language: language, full: full)
     }
 
     open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) -> String? {
