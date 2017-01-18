@@ -98,8 +98,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNotNil(m.shortMessage)
 
 
-            //transform the message from CdMessage to Message
-
+            // Transform the message from CdMessage to Message to check conversion
             guard let normalMessage = Message.from(cdMessage: m) else {
                 XCTFail()
                 return
