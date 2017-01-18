@@ -132,6 +132,7 @@ class NetworkServiceTests: XCTestCase {
 
         // Build outgoing emails
         var outgoingMails = [CdMessage]()
+        var outgoingMessageIDs = [String]()
         let numMails = 5
         for i in 1...numMails {
             let message = CdMessage.create()
@@ -141,7 +142,10 @@ class NetworkServiceTests: XCTestCase {
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.addTo(cdIdentity: to)
+            let messageID = UUID.generate()
+            message.uuid = messageID
             outgoingMails.append(message)
+            outgoingMessageIDs.append(messageID)
         }
         Record.saveAndWait()
 
@@ -163,10 +167,10 @@ class NetworkServiceTests: XCTestCase {
 
         Record.refreshRegisteredObjects(mergeChanges: true)
         for m in outgoingMails {
-            XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
-            XCTAssertEqual(m.uid, Int32(0))
-            XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))
+            XCTAssertTrue(m.isDeleted)
         }
+
+        // TODO: sync sent folder, and check for sent message IDs
 
         // Cancel
         del = NetworkServiceObserver(
