@@ -11,6 +11,8 @@ import MessageModel
 
 class TrustwordsTableViewController: UITableViewController {
 
+    @IBOutlet weak var fingerprintButton: RoundedButton!
+    
     var message: Message!
     var appConfig: AppConfig!
     
@@ -18,10 +20,15 @@ class TrustwordsTableViewController: UITableViewController {
         super.viewDidLoad()
         
         configureTableView()
+        configureUI()
     }
     
     func configureTableView() {
         tableView.estimatedRowHeight = 44.0
+    }
+    
+    func configureUI() {
+        //needs isPGPUser() and here you hide fingerprintButton
     }
 
     // MARK: - TableView Datasource

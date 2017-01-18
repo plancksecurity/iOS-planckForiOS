@@ -2339,6 +2339,7 @@ APPLEPIE RESEARCH</string>
                     </tableView>
                     <toolbarItems/>
                     <connections>
+                        <outlet property="fingerprintButton" destination="hb0-ae-adG" id="ZEv-Js-OSJ"/>
                         <segue destination="JYd-mR-vle" kind="presentation" identifier="segueFingerprint" modalTransitionStyle="crossDissolve" id="1Qm-rM-DSR"/>
                     </connections>
                 </tableViewController>
