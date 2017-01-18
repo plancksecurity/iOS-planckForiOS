@@ -179,6 +179,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		430EF5891E2F7EA80056B88A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 439BD1981E2E1C4E007A1112;
+			remoteInfo = ServerConfig;
+		};
+		430EF58B1E2F7EA80056B88A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 439BD1A11E2E1C4E007A1112;
+			remoteInfo = ServerConfigTests;
+		};
+		430EF58D1E2F7EC60056B88A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 439BD1971E2E1C4E007A1112;
+			remoteInfo = ServerConfig;
+		};
 		43122B021DF5B24A00610253 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43BB86781DB4C3BC00980267 /* MessageModel.xcodeproj */;
@@ -300,6 +321,7 @@
 		430A6E531DFB08CE006273A5 /* UITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestData.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = pEpTrustWords.bundle; path = ../pEpTrustWords.bundle; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
+		430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ServerConfig.xcodeproj; path = ../ServerConfig/xcode/ServerConfig.xcodeproj; sourceTree = "<group>"; };
 		431144B41CC0FCA40007639D /* StoreFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreFolderOperation.swift; sourceTree = "<group>"; };
 		431144B61CC11D6A0007639D /* BaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseOperation.swift; sourceTree = "<group>"; };
 		431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorePrefetchedMailOperation.swift; sourceTree = "<group>"; };
@@ -535,6 +557,15 @@
 			path = TableViews;
 			sourceTree = "<group>";
 		};
+		430EF5851E2F7EA80056B88A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				430EF58A1E2F7EA80056B88A /* ServerConfig.framework */,
+				430EF58C1E2F7EA80056B88A /* ServerConfigTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		431144A61CC0CB0A0007639D /* Background */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,6 +773,7 @@
 				43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */,
 				439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */,
 				43BB86781DB4C3BC00980267 /* MessageModel.xcodeproj */,
+				430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -926,6 +958,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				430EF58E1E2F7EC60056B88A /* PBXTargetDependency */,
 				43122B031DF5B24A00610253 /* PBXTargetDependency */,
 				439D406A1CC7883D009A4E7C /* PBXTargetDependency */,
 				434662CE1CBF808D0053FC48 /* PBXTargetDependency */,
@@ -1033,6 +1066,10 @@
 					ProductGroup = 439D405D1CC78825009A4E7C /* Products */;
 					ProjectRef = 439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */;
 				},
+				{
+					ProductGroup = 430EF5851E2F7EA80056B88A /* Products */;
+					ProjectRef = 430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1044,6 +1081,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		430EF58A1E2F7EA80056B88A /* ServerConfig.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ServerConfig.framework;
+			remoteRef = 430EF5891E2F7EA80056B88A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		430EF58C1E2F7EA80056B88A /* ServerConfigTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ServerConfigTests.xctest;
+			remoteRef = 430EF58B1E2F7EA80056B88A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		439D40661CC78825009A4E7C /* libpEpiOSAdapter.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1296,6 +1347,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		430EF58E1E2F7EC60056B88A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ServerConfig;
+			targetProxy = 430EF58D1E2F7EC60056B88A /* PBXContainerItemProxy */;
+		};
 		43122B031DF5B24A00610253 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MessageModel;
@@ -1393,8 +1449,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework/",
+					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
 					"$(SDKROOT)/usr/include/libxml2",
+					"$(SRCROOT)/../ServerConfig/xcode/ServerConfig/objc",
+					"$(SRCROOT)/../ServerConfig/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1441,8 +1499,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework/",
+					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
 					"$(SDKROOT)/usr/include/libxml2",
+					"$(SRCROOT)/../ServerConfig/xcode/ServerConfig/objc",
+					"$(SRCROOT)/../ServerConfig/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
