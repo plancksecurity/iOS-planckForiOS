@@ -550,29 +550,27 @@ open class PEPUtil {
     }
 
     open static func pEpRating(cdIdentity: CdIdentity,
-                               session: PEPSession? = nil) -> PEP_rating {
-        let theSession = reuse(session: session)
+                               session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEp(cdIdentity: cdIdentity)
-        let rating = theSession.identityRating(pepC)
+        let rating = session.identityRating(pepC)
         return rating
     }
 
     open static func pEpColor(cdIdentity: CdIdentity,
-                              session: PEPSession? = nil) -> PEP_color {
-        return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity))
+                              session: PEPSession = PEPSession()) -> PEP_color {
+        return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity, session: session))
     }
 
     open static func pEpRating(identity: Identity,
-                               session: PEPSession? = nil) -> PEP_rating {
-        let theSession = reuse(session: session)
+                               session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEp(identity: identity)
-        let rating = theSession.identityRating(pepC)
+        let rating = session.identityRating(pepC)
         return rating
     }
 
     open static func pEpColor(identity: Identity,
-                              session: PEPSession? = nil) -> PEP_color {
-        return pEpColor(pEpRating: pEpRating(identity: identity))
+                              session: PEPSession = PEPSession()) -> PEP_color {
+        return pEpColor(pEpRating: pEpRating(identity: identity, session: session))
     }
 
     open static func pEpColor(pEpRating: PEP_rating) -> PEP_color {
@@ -614,60 +612,44 @@ open class PEPUtil {
     }
 
     open static func trustwords(identity1: PEPIdentity, identity2: PEPIdentity,
-                                language: String, session: PEPSession?) -> String? {
-        let theSession = reuse(session: session)
-        return theSession.getTrustwordsIdentity1(identity1, identity2: identity2,
-                                                 language: language, full: true)
+                                language: String, session: PEPSession = PEPSession()) -> String? {
+        return session.getTrustwordsIdentity1(identity1, identity2: identity2,
+                                              language: language, full: true)
     }
 
-    /**
-     - Returns: A non-optional session from an optional one. If the input session is nil,
-     one is created on the spot.
-     */
-    open static func reuse(session: PEPSession?) -> PEPSession {
-        if let s = session {
-            return s
-        }
-        return PEPSession()
-    }
-
-    open static func fingerPrint(identity: Identity, session: PEPSession? = nil) -> String? {
-        let theSession = reuse(session: session)
+    open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) -> String? {
         let pEpID = pEp(identity: identity)
         let pEpDict = NSMutableDictionary(dictionary: pEpID)
-        theSession.updateIdentity(pEpDict)
+        session.updateIdentity(pEpDict)
         return pEpDict[kPepFingerprint] as? String
     }
 
     /**
      Trust that contact (yellow to green).
      */
-    open static func trust(identity: Identity, session: PEPSession? = nil) {
-        let theSession = reuse(session: session)
+    open static func trust(identity: Identity, session: PEPSession = PEPSession()) {
         let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
-        theSession.updateIdentity(pepC)
-        theSession.trustPersonalKey(pepC)
+        session.updateIdentity(pepC)
+        session.trustPersonalKey(pepC)
     }
 
     /**
      Mistrust the identity (yellow to red)
      */
-    open static func mistrust(identity: Identity, session: PEPSession? = nil) {
-        let theSession = reuse(session: session)
+    open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) {
         let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
-        theSession.updateIdentity(pepC)
-        theSession.keyMistrusted(pepC)
+        session.updateIdentity(pepC)
+        session.keyMistrusted(pepC)
     }
 
     /**
      Resets the trust for the given `Identity`. Use both for trusting again after
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
-    open static func resetTrust(identity: Identity, session: PEPSession? = nil) {
-        let theSession = reuse(session: session)
+    open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) {
         let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
-        theSession.updateIdentity(pepC)
-        theSession.keyResetTrust(pepC)
+        session.updateIdentity(pepC)
+        session.keyResetTrust(pepC)
     }
 
     open static func encrypt(

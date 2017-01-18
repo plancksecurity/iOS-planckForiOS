@@ -76,11 +76,11 @@ extension CdIdentity {
         return CdIdentity.firstOrCreate(with: dict)
     }
 
-    public func pEpRating(session: PEPSession? = nil) -> PEP_rating {
+    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
         return PEPUtil.pEpRating(cdIdentity: self, session: session)
     }
 
-    public func pEpColor(session: PEPSession? = nil) -> PEP_color {
+    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
         return PEPUtil.pEpColor(cdIdentity: self, session: session)
     }
 
