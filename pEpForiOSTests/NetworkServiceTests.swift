@@ -170,10 +170,33 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertTrue(m.isDeleted)
         }
 
-        // TODO: sync sent folder, and check for sent message IDs
+        guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+            XCTFail()
+            cancelNetworkService(networkService: networkService)
+            return
+        }
 
-        // Cancel
+        sentFolder.lastLookedAt = Date() as NSDate?
+        Record.saveAndWait()
+
+        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
+        let fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
+        XCTAssertGreaterThan(fis.count, 0)
+
         del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced2"))
+        networkService.networkServiceDelegate = del
+
+        // Wait for second sync, to verify outgoing mails
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        cancelNetworkService(networkService: networkService)
+    }
+
+    func cancelNetworkService(networkService: NetworkService) {
+        let del = NetworkServiceObserver(
             expCanceled: expectation(description: "expCanceled"))
         networkService.networkServiceDelegate = del
         networkService.cancel()

@@ -10,7 +10,7 @@ import CoreData
 
 import MessageModel
 
-struct FolderInfo {
+public struct FolderInfo {
     let name: String
     let separator: String?
 }

@@ -17,6 +17,14 @@ public struct AccountConnectInfo {
     public let smtpConnectInfo: EmailConnectInfo?
 }
 
+extension AccountConnectInfo {
+    public init(accountID: NSManagedObjectID) {
+        self.accountID = accountID
+        self.imapConnectInfo = nil
+        self.smtpConnectInfo = nil
+    }
+}
+
 /**
  Some information about a list of operations needed to sync a single account.
  */
