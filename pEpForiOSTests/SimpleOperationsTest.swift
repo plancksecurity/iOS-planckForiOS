@@ -97,6 +97,18 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNotNil(m.imap)
             XCTAssertNotNil(m.shortMessage)
 
+
+            //transform the message from CdMessage to Message
+
+            guard let normalMessage = Message.from(cdMessage: m) else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertEqual(m.from?.address, normalMessage.from?.address)
+            XCTAssertNotNil(normalMessage.uuid)
+            XCTAssertNotNil(normalMessage.shortMessage)
+
             guard let uuid = m.uuid else {
                 XCTFail()
                 continue
