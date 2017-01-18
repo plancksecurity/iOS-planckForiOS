@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import MessageModel
 
 class PrivacyStatusTableViewController: UITableViewController {
 
     @IBOutlet weak var explanationLabel: UILabel!
     @IBOutlet weak var suggestionLabel: UILabel!
+    
+    var message: Message!
+    var appConfig: AppConfig!
     
     
     override func viewDidLoad() {
@@ -33,11 +37,18 @@ class PrivacyStatusTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
+}
 
+extension PrivacyStatusTableViewController: SegueHandlerType {
+    
+    // MARK: - SegueHandlerType
+    
+    enum SegueIdentifier: String {
+        case noSegue
+    }
+    
     // MARK: - Navigation
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     }
-
-
 }

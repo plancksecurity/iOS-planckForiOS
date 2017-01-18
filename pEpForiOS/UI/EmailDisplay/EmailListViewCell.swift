@@ -64,7 +64,7 @@ class EmailListViewCell: UITableViewCell {
                     }
                 }
             }
-            UIHelper.putString(email.from?.displayString, toLabel: self.senderLabel)
+            UIHelper.putString(email.from?.userName, toLabel: self.senderLabel)
             UIHelper.putString(email.shortMessage, toLabel: self.subjectLabel)
             
             // Snippet

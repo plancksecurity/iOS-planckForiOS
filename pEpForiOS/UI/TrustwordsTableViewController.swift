@@ -7,9 +7,13 @@
 //
 
 import UIKit
+import MessageModel
 
 class TrustwordsTableViewController: UITableViewController {
 
+    var message: Message!
+    var appConfig: AppConfig!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,6 +33,22 @@ class TrustwordsTableViewController: UITableViewController {
     // MARK: - Actions
 
     @IBAction func fingerprintButtonTapped(_ sender: RoundedButton) {
-        performSegue(withIdentifier: "segueTrustwords", sender: self)
+        performSegue(withIdentifier: "segueFingerprint", sender: self)
     }
 }
+
+extension TrustwordsTableViewController: SegueHandlerType {
+    
+    // MARK: - SegueHandlerType
+    
+    enum SegueIdentifier: String {
+        case segueFingerprint
+        case noSegue
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    }
+}
+

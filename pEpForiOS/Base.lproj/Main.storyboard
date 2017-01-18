@@ -1860,18 +1860,20 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Pba-MT-N93"/>
                         <barButtonItem title="New p≡p rating" id="1oP-DI-wuJ">
                             <connections>
-                                <segue destination="aYL-lZ-KDs" kind="show" id="nZe-So-Hz6"/>
+                                <action selector="showRatingPressed:" destination="3bx-34-vLD" id="x3L-cM-QwV"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem title="p≡p" id="JcY-wz-7Mb">
                             <connections>
-                                <segue destination="2d7-Da-IgM" kind="show" identifier="segueTrustWords" id="dgh-Nl-qIC"/>
+                                <segue destination="2d7-Da-IgM" kind="show" identifier="segueTrustWords1" id="dgh-Nl-qIC"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3"/>
                     <connections>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
+                        <segue destination="aYL-lZ-KDs" kind="show" identifier="seguePrivacyStatus" id="Fbk-Sz-nC1"/>
+                        <segue destination="lsn-TN-3vZ" kind="show" identifier="segueTrustwords" id="FBd-9l-9Iu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2016,7 +2018,7 @@
                                                         <constraint firstAttribute="height" constant="40" id="Wbz-ma-aHb"/>
                                                         <constraint firstAttribute="width" constant="150" id="Wrp-jA-W5b"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="HANDSHAKE" image="handshake-button-icon"/>
                                                     <userDefinedRuntimeAttributes>
@@ -2076,7 +2078,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vle-7l-FFA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7206" y="1066"/>
+            <point key="canvasLocation" x="7196" y="1182"/>
         </scene>
         <!--Trustwords Table View Controller-->
         <scene sceneID="JSM-oA-P5w">
@@ -2220,7 +2222,7 @@
                                                         <constraint firstAttribute="width" constant="150" id="97h-Gu-2oU"/>
                                                         <constraint firstAttribute="height" constant="40" id="dKo-Jh-vje"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <state key="normal" title="PGP FINGERPRINT" image="button-fingerprint-icon"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -2271,11 +2273,11 @@ APPLEPIE RESEARCH</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="jzN-H1-XCy">
-                                        <rect key="frame" x="0.0" y="370" width="375" height="60"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="79" id="jzN-H1-XCy">
+                                        <rect key="frame" x="0.0" y="370" width="375" height="79"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jzN-H1-XCy" id="wq3-mM-OEU">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="18Y-fV-B5f">
@@ -2287,7 +2289,7 @@ APPLEPIE RESEARCH</string>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="nEg-kT-Xah"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
                                                             <state key="normal" title="CONFIRM TRUSTWORDS">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -2309,7 +2311,7 @@ APPLEPIE RESEARCH</string>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="yqe-z9-MNv"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
                                                             <state key="normal" title="WRONG TRUSTWORDS">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -2332,7 +2334,7 @@ APPLEPIE RESEARCH</string>
                                                 <constraint firstItem="18Y-fV-B5f" firstAttribute="top" secondItem="wq3-mM-OEU" secondAttribute="top" constant="15" id="5sg-a4-asv"/>
                                                 <constraint firstItem="18Y-fV-B5f" firstAttribute="leading" secondItem="wq3-mM-OEU" secondAttribute="leading" constant="15" id="JhY-HG-P3p"/>
                                                 <constraint firstAttribute="trailing" secondItem="18Y-fV-B5f" secondAttribute="trailing" constant="15" id="OMX-Ls-F2o"/>
-                                                <constraint firstAttribute="bottom" secondItem="18Y-fV-B5f" secondAttribute="bottom" id="z0m-lm-xzm"/>
+                                                <constraint firstAttribute="bottom" secondItem="18Y-fV-B5f" secondAttribute="bottom" constant="15" id="z0m-lm-xzm"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2346,12 +2348,12 @@ APPLEPIE RESEARCH</string>
                     </tableView>
                     <toolbarItems/>
                     <connections>
-                        <segue destination="JYd-mR-vle" kind="presentation" identifier="segueTrustwords" modalTransitionStyle="crossDissolve" id="1Qm-rM-DSR"/>
+                        <segue destination="JYd-mR-vle" kind="presentation" identifier="segueFingerprint" modalTransitionStyle="crossDissolve" id="1Qm-rM-DSR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aMO-1d-a9s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8046" y="1066"/>
+            <point key="canvasLocation" x="7994" y="1182"/>
         </scene>
         <!--Fingerprint Table View Controller-->
         <scene sceneID="BlL-i8-qNY">
@@ -2503,7 +2505,7 @@ APPLEPIE RESEARCH</string>
                                                         <constraint firstAttribute="width" constant="150" id="7W8-1h-QiS"/>
                                                         <constraint firstAttribute="height" constant="40" id="NBT-Qt-FxQ"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <state key="normal" title="TRUSTWORDS" image="button-trustwords-icon">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -2549,7 +2551,7 @@ APPLEPIE RESEARCH</string>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="zdp-d1-BLQ"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
                                                             <state key="normal" title="CONFIRM FINGERPRINT">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -2571,7 +2573,7 @@ APPLEPIE RESEARCH</string>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="abn-PG-cH5"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
                                                             <state key="normal" title="WRONG FINGERPRINT">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -2610,7 +2612,7 @@ APPLEPIE RESEARCH</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5gX-0n-UVi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9802" y="1066"/>
+            <point key="canvasLocation" x="9534" y="1182"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="22N-kk-wT6">
@@ -2628,7 +2630,7 @@ APPLEPIE RESEARCH</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AOU-GF-dia" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8862" y="1066"/>
+            <point key="canvasLocation" x="8766" y="1182"/>
         </scene>
     </scenes>
     <resources>
@@ -2646,5 +2648,6 @@ APPLEPIE RESEARCH</string>
     <inferredMetricsTieBreakers>
         <segue reference="Na7-CM-lbe"/>
         <segue reference="Usl-iS-7fo"/>
+        <segue reference="FBd-9l-9Iu"/>
     </inferredMetricsTieBreakers>
 </document>

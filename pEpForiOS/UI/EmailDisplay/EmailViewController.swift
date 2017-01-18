@@ -63,6 +63,17 @@ class EmailViewController: UITableViewController {
 
         present(alertViewWithoutTitle, animated: true, completion: nil)
     }
+    
+    @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
+        let allIdentities = message.allIdentities
+        if allIdentities.count == 1 {
+            performSegue(withIdentifier: .segueTrustwords, sender: self)
+        }
+        else if allIdentities.count > 1 {
+            performSegue(withIdentifier: .seguePrivacyStatus, sender: self)
+        }
+    }
+    
 }
 
 // MARK: TableView Delegate & Datasource
@@ -123,9 +134,11 @@ extension EmailViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case segueReplyFrom
         case segueForward
-        case segueTrustWords
+        case segueTrustWords1
         case seguePrevious
         case segueNext
+        case segueTrustwords
+        case seguePrivacyStatus
         case noSegue
     }
     
@@ -144,7 +157,7 @@ extension EmailViewController: SegueHandlerType {
             destination?.appConfig = appConfig
             destination?.originalMessage = message
             break
-        case .segueTrustWords:
+        case .segueTrustWords1:
             let destination = segue.destination as? TrustWordsViewController
             destination?.message = message
             destination?.appConfig = appConfig
@@ -161,6 +174,16 @@ extension EmailViewController: SegueHandlerType {
             destination.message = message
             destination.appConfig = appConfig
             destination.page = page
+            break
+        case .seguePrivacyStatus:
+            let destination = segue.destination as? PrivacyStatusTableViewController
+            destination?.message = message
+            destination?.appConfig = appConfig
+            break
+        case .segueTrustwords:
+            let destination = segue.destination as? TrustwordsTableViewController
+            destination?.message = message
+            destination?.appConfig = appConfig
             break
         case .noSegue:
             break
