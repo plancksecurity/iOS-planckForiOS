@@ -159,9 +159,9 @@ open class ImapSync: Service {
         folder.prefetch()
     }
 
-    open func syncMessages(lastUID: UInt) throws {
+    open func syncMessages(firstUID: UInt, lastUID: UInt) throws {
         let folder = try openFolder()
-        folder.syncExisting(lastUID)
+        folder.syncExistingFirstUID(firstUID, lastUID: lastUID)
     }
 
     open func createFolderWithName(_ folderName: String) {

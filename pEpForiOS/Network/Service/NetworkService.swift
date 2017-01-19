@@ -29,6 +29,7 @@ public class NetworkService: INetworkService {
     public struct FolderInfo {
         public let name: String
         public let folderType: FolderType
+        public let firstUID: UInt?
         public let lastUID: UInt?
         public let folderID: NSManagedObjectID?
     }
@@ -246,9 +247,12 @@ public class NetworkService: INetworkService {
                     if f.folderType == FolderType.inbox.rawValue {
                         haveInbox = true
                     }
+                    if f.firstUID() > f.lastUID() {
+                        Log.error(component: self.comp, errorString: "firstUID > lastUID")
+                    }
                     folderInfos.append(FolderInfo(
                         name: name, folderType: FolderType(rawValue: f.folderType) ?? .normal,
-                        lastUID: f.lastUID(), folderID: f.objectID))
+                        firstUID: f.firstUID(), lastUID: f.lastUID(), folderID: f.objectID))
                 }
             }
 
@@ -260,14 +264,15 @@ public class NetworkService: INetworkService {
                         FolderInfo(
                             name: name,
                             folderType: FolderType(rawValue: inboxFolder.folderType) ?? .inbox,
-                            lastUID: inboxFolder.lastUID(), folderID: inboxFolder.objectID))
+                            firstUID: inboxFolder.firstUID(), lastUID: inboxFolder.lastUID(),
+                            folderID: inboxFolder.objectID))
                 }
             }
         }
         if folderInfos.count == 0 {
             // If no interesting folders have been found, at least sync the inbox.
             folderInfos.append(FolderInfo(
-                name: ImapSync.defaultImapInboxName, folderType: .inbox,
+                name: ImapSync.defaultImapInboxName, folderType: .inbox, firstUID: nil,
                 lastUID: nil, folderID: nil))
         }
         return folderInfos
@@ -395,11 +400,12 @@ public class NetworkService: INetworkService {
 
             // sync existing messages
             for fi in folderInfos {
-                if let folderID = fi.folderID, let lastUID = fi.lastUID {
+                if let folderID = fi.folderID, let firstUID = fi.firstUID,
+                    let lastUID = fi.lastUID {
                     let syncMessagesOp = SyncMessagesOperation(
                         parentName: parentName, errorContainer: errorContainer,
                         imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
-                        lastUID: lastUID)
+                        firstUID: firstUID, lastUID: lastUID)
                     syncMessagesOp.completionBlock = { [weak self] in
                         if let me = self {
                             Log.info(component: me.comp, content: "syncMessagesOp finished")
