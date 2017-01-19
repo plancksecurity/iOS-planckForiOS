@@ -132,6 +132,7 @@ class NetworkServiceTests: XCTestCase {
 
         // Build outgoing emails
         var outgoingMails = [CdMessage]()
+        var outgoingMessageIDs = [String]()
         let numMails = 5
         for i in 1...numMails {
             let message = CdMessage.create()
@@ -141,7 +142,10 @@ class NetworkServiceTests: XCTestCase {
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.addTo(cdIdentity: to)
+            let messageID = UUID.generate()
+            message.uuid = messageID
             outgoingMails.append(message)
+            outgoingMessageIDs.append(messageID)
         }
         Record.saveAndWait()
 
@@ -163,13 +167,36 @@ class NetworkServiceTests: XCTestCase {
 
         Record.refreshRegisteredObjects(mergeChanges: true)
         for m in outgoingMails {
-            XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
-            XCTAssertEqual(m.uid, Int32(0))
-            XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))
+            XCTAssertTrue(m.isDeleted)
         }
 
-        // Cancel
+        guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+            XCTFail()
+            cancelNetworkService(networkService: networkService)
+            return
+        }
+
+        sentFolder.lastLookedAt = Date() as NSDate?
+        Record.saveAndWait()
+
+        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
+        let fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
+        XCTAssertGreaterThan(fis.count, 0)
+
         del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced2"))
+        networkService.networkServiceDelegate = del
+
+        // Wait for second sync, to verify outgoing mails
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        cancelNetworkService(networkService: networkService)
+    }
+
+    func cancelNetworkService(networkService: NetworkService) {
+        let del = NetworkServiceObserver(
             expCanceled: expectation(description: "expCanceled"))
         networkService.networkServiceDelegate = del
         networkService.cancel()

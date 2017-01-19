@@ -9,15 +9,19 @@
 import XCTest
 
 import pEpForiOS
+import MessageModel
 
 class PEPSessionTest: XCTestCase {
+    var persistentSetup: PersistentSetup!
 
     override func setUp() {
         super.setUp()
-    }
+        persistentSetup = PersistentSetup()
 
+    }
     override func tearDown() {
-        super.tearDown()
+        persistentSetup = nil
+
     }
 
     func testFilterOutUnencryptedReceiversForPEPMessage() {
@@ -47,6 +51,39 @@ class PEPSessionTest: XCTestCase {
             as? NSArray, NSArray.init(array: [identity]))
         XCTAssertEqual(pepMailPurged[kPepCC] as? NSArray, NSArray.init(array: [identity]))
         XCTAssertEqual(pepMailPurged[kPepBCC] as? NSArray, NSArray.init(array: []))
+    }
+
+    func testPEPConversio() {
+
+        let account = TestData().createWorkingAccount()
+        account.save()
+
+        let folder = Folder.create(name: "inbox", account: account, folderType: .inbox)
+        folder.save()
+
+        let uuid = UUID.generate()
+        let message = Message.create(uuid: uuid)
+        message.comments = "comment"
+        message.shortMessage = "short message"
+        message.longMessage = "long message"
+        message.longMessageFormatted = "long message"
+        message.from = account.user
+        message.to = [account.user]
+        message.cc = [account.user]
+        message.bcc = [account.user]
+        message.parent = folder
+        message.sent = NSDate()
+        message.save()
+
+        let cdmessage1 = CdMessage.first()!
+        let pepmessage = cdmessage1.pEpMessage()
+        let cdmessage2 = CdMessage.create()
+        cdmessage2.update(pEpMessage: pepmessage)
+
+        XCTAssertEqual(cdmessage2, cdmessage1)
+
+
+
     }
 
     func testPEPMessageBuckets() {

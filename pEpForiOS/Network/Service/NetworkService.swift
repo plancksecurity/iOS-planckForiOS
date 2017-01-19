@@ -28,6 +28,19 @@ public protocol NetworkServiceDelegate: class {
  * different background tasks and run loops (to be implemented).
  */
 public class NetworkService: INetworkService {
+    public struct FolderInfo {
+        let name: String
+        let lastUID: UInt?
+        let folderID: NSManagedObjectID?
+    }
+
+    /**
+     Folders (other than inbox) that the user looked at
+     in the last `timeIntervalForInterestingFolders`
+     are considered sync-worthy.
+     */
+    let timeIntervalForInterestingFolders: TimeInterval = 60 * 60 * 48
+
     let comp = "NetworkService"
 
     public var sendLayerDelegate: SendLayerDelegate?
@@ -208,42 +221,56 @@ public class NetworkService: INetworkService {
     }
 
 
-    func buildOperationLine(
-        accountInfo: AccountConnectInfo, needsVerificationOnly: Bool) -> OperationLine {
-        struct FolderInfo {
-            let name: String
-            let lastUID: UInt?
-            let folderID: NSManagedObjectID?
-        }
+    /**
+     Determine "interesting" folder names that should be synced, and for each:
+     Determine current lastUID, and store it (for later sync of existing messages).
+     - Note: Interesting mailboxes are Inbox (always), and the most recently looked at
+     folders.
+     */
+    public func determineInterestingFolders(accountInfo: AccountConnectInfo) -> [FolderInfo] {
+        var folderInfos = [FolderInfo]()
+        let context = Record.Context.background
+        context.performAndWait {
+            guard let account = context.object(with: accountInfo.accountID) as? CdAccount else {
+                return
+            }
 
-        /**
-         Determine "interesting" folder names that should be synced, and for each:
-         Determine current lastUID, and store it (for later sync of existing messages).
-         - Note: Interesting mailboxes are Inbox (always), and the most recently looked at
-         folders (see lastLookedAt, IOS-291).
-         */
-        func determineInterestingFolders() -> [FolderInfo] {
-            var folderInfos = [FolderInfo]()
-            let context = Record.Context.background
-            context.performAndWait {
-                guard let account = context.object(with: accountInfo.accountID) as? CdAccount else {
-                    return
+            let earlierTimestamp = Date(
+                timeIntervalSinceNow: -self.timeIntervalForInterestingFolders)
+            let pInteresting = NSPredicate(
+                format: "account = %@ and lastLookedAt > %@", account,
+                earlierTimestamp as CVarArg)
+            let folders = CdFolder.all(with: pInteresting) as? [CdFolder] ?? []
+            var haveInbox = false
+            for f in folders {
+                if let name = f.name {
+                    if f.folderType == FolderType.inbox.rawValue {
+                        haveInbox = true
+                    }
+                    folderInfos.append(FolderInfo(name: name, lastUID: f.lastUID(),
+                                                  folderID: f.objectID))
                 }
+            }
 
-                // Currently, the only interesting mailbox is Inbox.
+            // Try to determine and add the inbox if it's not already there
+            if !haveInbox {
                 if let inboxFolder = CdFolder.by(folderType: .inbox, account: account) {
                     let name = inboxFolder.name ?? ImapSync.defaultImapInboxName
                     folderInfos.append(FolderInfo(name: name, lastUID: inboxFolder.lastUID(),
                                                   folderID: inboxFolder.objectID))
                 }
             }
-            if folderInfos.count == 0 {
-                // If no interesting folders have been found, at least sync the inbox.
-                folderInfos.append(FolderInfo(name: ImapSync.defaultImapInboxName,
-                                              lastUID: nil, folderID: nil))
-            }
-            return folderInfos
         }
+        if folderInfos.count == 0 {
+            // If no interesting folders have been found, at least sync the inbox.
+            folderInfos.append(FolderInfo(name: ImapSync.defaultImapInboxName,
+                                          lastUID: nil, folderID: nil))
+        }
+        return folderInfos
+    }
+
+    func buildOperationLine(
+        accountInfo: AccountConnectInfo, needsVerificationOnly: Bool) -> OperationLine {
 
         let errorContainer = ErrorContainer()
 
@@ -332,7 +359,7 @@ public class NetworkService: INetworkService {
 
             // 3.d Server-to-client synchronization (IMAP)
 
-            let folderInfos = determineInterestingFolders()
+            let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
             // sync new messages
             var lastImapOp: Operation = lastSendOp ?? opFetchFolders

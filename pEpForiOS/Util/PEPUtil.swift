@@ -308,7 +308,9 @@ open class PEPUtil {
         if refs.count > 0 {
             dict[kPepReferences] = refs as AnyObject
         }
-        
+
+        //dict[kPepOptFields] = NSArray(array: cdMessage.optionalFields!.array())
+
         return dict as PEPMessage
     }
 
