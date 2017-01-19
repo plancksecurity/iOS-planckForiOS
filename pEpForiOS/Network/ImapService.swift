@@ -20,6 +20,7 @@ public protocol ImapSyncDelegate: class {
     func connectionTimedOut(_ sync: ImapSync, notification: Notification?)
     func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)
     func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)
+    func folderSyncFailed(_ sync: ImapSync, notification: Notification?)
     func messageChanged(_ sync: ImapSync, notification: Notification?)
     func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?)
     func folderOpenCompleted(_ sync: ImapSync, notification: Notification?)
@@ -54,6 +55,7 @@ open class DefaultImapSyncDelegate: ImapSyncDelegate {
     open func connectionTimedOut(_ sync: ImapSync, notification: Notification?)  {}
     open func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
     open func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)  {}
+    open func folderSyncFailed(_ sync: ImapSync, notification: Notification?)  {}
     open func messageChanged(_ sync: ImapSync, notification: Notification?)  {}
     open func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
     open func folderOpenCompleted(_ sync: ImapSync, notification: Notification?)  {}

@@ -119,6 +119,11 @@ extension SyncMessagesOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderSyncFailed(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorFolderSyncFailed(comp, folderName: folderToOpen))
+        markAsFinished()
+    }
+
     func deleteMessagesInBetween(
         context: NSManagedObjectContext, startUID: UInt, excludingUID: UInt) {
         guard let folder = context.object(with: folderID)
