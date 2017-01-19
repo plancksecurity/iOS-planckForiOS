@@ -182,16 +182,33 @@ class NetworkServiceTests: XCTestCase {
             return
         }
 
+        // Make sure the sent folder will still *not* be synced in the next step
+        sentFolder.lastLookedAt = Date(
+            timeIntervalSinceNow: -(networkService.timeIntervalForInterestingFolders + 1))
+            as NSDate?
+        Record.saveAndWait()
+
+        // Will the sent folder be synced on next sync?
+        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
+        var fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
+        XCTAssertEqual(fis.count, 1) // still only inbox
+
+        var haveSentFolder = false
+        for f in fis {
+            if f.folderType == .sent {
+                haveSentFolder = true
+            }
+        }
+        XCTAssertFalse(haveSentFolder)
+
         // Make sure the sent folder will be synced in the next step
         sentFolder.lastLookedAt = Date() as NSDate?
         Record.saveAndWait()
 
         // Will the sent folder be synced on next sync?
-        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
-        let fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
+        fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
         XCTAssertGreaterThan(fis.count, 1)
 
-        var haveSentFolder = false
         for f in fis {
             if f.folderType == .sent {
                 haveSentFolder = true

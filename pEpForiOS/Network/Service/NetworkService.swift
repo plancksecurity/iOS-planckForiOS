@@ -39,7 +39,7 @@ public class NetworkService: INetworkService {
      in the last `timeIntervalForInterestingFolders`
      are considered sync-worthy.
      */
-    let timeIntervalForInterestingFolders: TimeInterval = 60 * 60 * 48
+    public var timeIntervalForInterestingFolders: TimeInterval = 60 * 60 * 24
 
     let comp = "NetworkService"
 
