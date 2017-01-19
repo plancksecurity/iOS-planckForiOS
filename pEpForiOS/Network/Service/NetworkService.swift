@@ -23,15 +23,14 @@ public protocol NetworkServiceDelegate: class {
 }
 
 /**
- * A thread class which provides an OO layer and doing syncing between CoreData and Pantomime
- * and any other (later) libraries providing in- and outbond transports of messages by managing
- * different background tasks and run loops (to be implemented).
+ * Provides all the IMAP and SMTP syncing. Will constantly run in the background.
  */
 public class NetworkService: INetworkService {
     public struct FolderInfo {
-        let name: String
-        let lastUID: UInt?
-        let folderID: NSManagedObjectID?
+        public let name: String
+        public let folderType: FolderType
+        public let lastUID: UInt?
+        public let folderID: NSManagedObjectID?
     }
 
     /**
@@ -247,8 +246,9 @@ public class NetworkService: INetworkService {
                     if f.folderType == FolderType.inbox.rawValue {
                         haveInbox = true
                     }
-                    folderInfos.append(FolderInfo(name: name, lastUID: f.lastUID(),
-                                                  folderID: f.objectID))
+                    folderInfos.append(FolderInfo(
+                        name: name, folderType: FolderType(rawValue: f.folderType) ?? .normal,
+                        lastUID: f.lastUID(), folderID: f.objectID))
                 }
             }
 
@@ -256,15 +256,19 @@ public class NetworkService: INetworkService {
             if !haveInbox {
                 if let inboxFolder = CdFolder.by(folderType: .inbox, account: account) {
                     let name = inboxFolder.name ?? ImapSync.defaultImapInboxName
-                    folderInfos.append(FolderInfo(name: name, lastUID: inboxFolder.lastUID(),
-                                                  folderID: inboxFolder.objectID))
+                    folderInfos.append(
+                        FolderInfo(
+                            name: name,
+                            folderType: FolderType(rawValue: inboxFolder.folderType) ?? .inbox,
+                            lastUID: inboxFolder.lastUID(), folderID: inboxFolder.objectID))
                 }
             }
         }
         if folderInfos.count == 0 {
             // If no interesting folders have been found, at least sync the inbox.
-            folderInfos.append(FolderInfo(name: ImapSync.defaultImapInboxName,
-                                          lastUID: nil, folderID: nil))
+            folderInfos.append(FolderInfo(
+                name: ImapSync.defaultImapInboxName, folderType: .inbox,
+                lastUID: nil, folderID: nil))
         }
         return folderInfos
     }
@@ -481,6 +485,8 @@ public class NetworkService: INetworkService {
                     Log.verbose(component: theComp,
                                 content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")
                     if let me = self, let theOl = ol {
+                        Log.info(component: theComp,
+                                 content: "didSync \(me.networkServiceDelegate)")
                         me.networkServiceDelegate?.didSync(
                             service: me, accountInfo: theOl.accountInfo)
                         // Process the rest

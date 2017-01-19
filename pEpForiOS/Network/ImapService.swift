@@ -134,7 +134,7 @@ open class ImapSync: Service {
             // all messages will be prefetched by default,
             // independent of the prefetch parameter.
             if let folder = imapStore.folder(forName: name, mode: PantomimeReadWriteMode) {
-                Log.info(component: comp, content: "openMailBox \(folder.name())")
+                Log.info(component: comp, content: "openMailBox have to open \(folder.name())")
                 return true
             }
             return false
