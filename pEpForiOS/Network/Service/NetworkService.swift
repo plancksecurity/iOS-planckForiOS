@@ -247,9 +247,6 @@ public class NetworkService: INetworkService {
                     if f.folderType == FolderType.inbox.rawValue {
                         haveInbox = true
                     }
-                    if f.firstUID() > f.lastUID() {
-                        Log.error(component: self.comp, errorString: "firstUID > lastUID")
-                    }
                     folderInfos.append(FolderInfo(
                         name: name, folderType: FolderType(rawValue: f.folderType) ?? .normal,
                         firstUID: f.firstUID(), lastUID: f.lastUID(), folderID: f.objectID))
