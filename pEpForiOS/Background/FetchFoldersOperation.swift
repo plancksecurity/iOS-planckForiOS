@@ -54,7 +54,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false,
                 messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary

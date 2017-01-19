@@ -1,5 +1,5 @@
 //
-//  ErrorProtocol.swift
+//  ServiceErrorProtocol.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 16/12/16.
@@ -11,13 +11,13 @@ import Foundation
 /**
  For exchanging errors between `BaseOperation`s.
  */
-public protocol ErrorProtocol {
+public protocol ServiceErrorProtocol {
     var error: NSError? { get }
     func addError(_ error: NSError)
     func hasErrors() -> Bool
 }
 
-open class ErrorContainer: ErrorProtocol {
+open class ErrorContainer: ServiceErrorProtocol {
     public var error: NSError?
 
     public init() {}

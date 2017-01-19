@@ -32,10 +32,10 @@ class OperationLine {
     let accountInfo: AccountConnectInfo
     let operations: [Operation]
     let finalOperation: Operation
-    let errorContainer: ErrorProtocol
+    let errorContainer: ServiceErrorProtocol
 
     init(accountInfo: AccountConnectInfo, operations: [Operation], finalOperation: Operation,
-         errorContainer: ErrorProtocol) {
+         errorContainer: ServiceErrorProtocol) {
         self.accountInfo = accountInfo
         self.operations = operations
         self.finalOperation = finalOperation
@@ -43,7 +43,7 @@ class OperationLine {
     }
 }
 
-extension OperationLine: ErrorProtocol {
+extension OperationLine: ServiceErrorProtocol {
     var error: NSError? {
         return errorContainer.error
     }

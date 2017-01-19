@@ -39,8 +39,13 @@ class NetworkServiceTests: XCTestCase {
             self.expCanceled = expCanceled
         }
 
-        func didSync(service: NetworkService, accountInfo: AccountConnectInfo) {
+        func didSync(service: NetworkService, accountInfo: AccountConnectInfo,
+                     errorProtocol: ServiceErrorProtocol) {
             Log.info(component: #function, content: "\(self)")
+            if errorProtocol.hasErrors() {
+                Log.error(component: #function, error: errorProtocol.error)
+                XCTFail()
+            }
             if self.accountInfo == nil {
                 self.accountInfo = accountInfo
                 expSingleAccountSynced?.fulfill()

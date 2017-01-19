@@ -26,7 +26,7 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 
     var account: CdAccount?
 
-    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount, folderType: FolderType) {
         self.folderType = folderType
         self.folderName = folderType.folderName()

@@ -15,7 +15,7 @@ open class DeleteFolderOperation: ImapSyncOperation {
     let accountID: NSManagedObjectID
     var account: CdAccount!
 
-    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount,
                 folderName: String) {
         self.accountID = account.objectID

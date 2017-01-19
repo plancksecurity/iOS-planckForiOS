@@ -12,7 +12,7 @@ open class ImapSyncOperation: ConcurrentBaseOperation {
     var imapSync: ImapSync!
     let imapSyncData: ImapSyncData
 
-    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData) {
         self.imapSyncData = imapSyncData
         super.init(parentName: parentName, errorContainer: errorContainer)
