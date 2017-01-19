@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
 
-        pepAppearance()
+        Appearance.standard()
 
         Log.warn(component: comp, content: "Library url: \(applicationDirectory())")
 
@@ -137,32 +137,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("Error While Loading DataStack")
         }
-    }
-    
-    fileprivate final func appearance() {
-        UINavigationBar.appearance().backgroundColor = .pEpGreen
-        UINavigationBar.appearance().barTintColor = .pEpGreen
-        UINavigationBar.appearance().tintColor = .white
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().titleTextAttributes =
-            [NSForegroundColorAttributeName: UIColor.white]
-        
-        UIToolbar.appearance().backgroundColor = .pEpGreen
-        UIToolbar.appearance().barTintColor = .pEpGreen
-        UIToolbar.appearance().tintColor = .white
-        
-        UITextView.appearance().tintColor = .pEpGreen
-        UITextField.appearance().tintColor = .pEpGreen
-        
-        UISearchBar.appearance().barTintColor = .pEpGreen
-        UISearchBar.appearance().backgroundColor = .pEpGreen
-        UISearchBar.appearance().tintColor = .white
-    }
-    
-    fileprivate final func pepAppearance() {
-        UINavigationBar.appearance().tintColor = .black
-         UIToolbar.appearance().tintColor = .black
-        UISearchBar.appearance().tintColor = .black
     }
 }
 
