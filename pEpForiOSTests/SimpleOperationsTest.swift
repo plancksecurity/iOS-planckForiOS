@@ -177,6 +177,32 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
+    func testSyncMessagesFailedOperation() {
+        testFetchFoldersOperation()
+
+        guard let folder = CdFolder.by(folderType: .inbox, account: account) else {
+            XCTFail()
+            return
+        }
+
+        let expMailsSynced = expectation(description: "expMailsSynced")
+
+        guard let op = SyncMessagesOperation(
+            imapSyncData: imapSyncData, folder: folder, firstUID: 10, lastUID: 1) else {
+                XCTFail()
+                return
+        }
+        op.completionBlock = {
+            expMailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertTrue(op.hasErrors())
+        })
+    }
+
     func testFetchFoldersOperation() {
         let expFoldersFetched = expectation(description: "expFoldersFetched")
 

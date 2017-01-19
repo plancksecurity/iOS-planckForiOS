@@ -242,6 +242,15 @@ extension ImapSync: CWServiceClient {
         delegate?.folderSyncCompleted(self, notification: notification)
     }
 
+    @objc public func folderSyncFailed(_ notification: Notification?) {
+        dumpMethodName("folderSyncFailed", notification: notification)
+        if let bq = folderBuilder?.backgroundQueue {
+            // Wait until all newly synced messages are stored
+            bq.waitUntilAllOperationsAreFinished()
+        }
+        delegate?.folderSyncFailed(self, notification: notification)
+    }
+
     @objc public func messagePrefetchCompleted(_ notification: Notification?) {
         dumpMethodName("messagePrefetchCompleted", notification: notification)
         delegate?.messagePrefetchCompleted(self, notification: notification)
