@@ -53,8 +53,7 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(pepMailPurged[kPepBCC] as? NSArray, NSArray.init(array: []))
     }
 
-    func testPEPConversio() {
-
+    func testPEPConversion() {
         let account = TestData().createWorkingAccount()
         account.save()
 
@@ -81,9 +80,6 @@ class PEPSessionTest: XCTestCase {
         cdmessage2.update(pEpMessage: pepmessage)
 
         XCTAssertEqual(cdmessage2, cdmessage1)
-
-
-
     }
 
     func testPEPMessageBuckets() {

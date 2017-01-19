@@ -15,14 +15,16 @@ open class SyncMessagesOperation: ImapSyncOperation {
     let folderID: NSManagedObjectID
     let folderToOpen: String
     let lastUID: UInt
+    let firstUID: UInt
     var lastSeenUID: UInt?
 
     public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, folderID: NSManagedObjectID,
-                folderName: String, lastUID: UInt) {
+                folderName: String, firstUID: UInt, lastUID: UInt) {
         self.folderID = folderID
         self.folderToOpen = folderName
         self.lastUID = lastUID
+        self.firstUID = firstUID
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
@@ -30,13 +32,13 @@ open class SyncMessagesOperation: ImapSyncOperation {
     public convenience init?(parentName: String? = nil,
                              errorContainer: ErrorProtocol = ErrorContainer(),
                              imapSyncData: ImapSyncData,
-        folder: CdFolder, lastUID: UInt) {
+                             folder: CdFolder, firstUID: UInt, lastUID: UInt) {
         guard let folderName = folder.name else {
             return nil
         }
         self.init(parentName: parentName, errorContainer: errorContainer,
                   imapSyncData: imapSyncData, folderID: folder.objectID, folderName: folderName,
-                  lastUID: lastUID)
+                  firstUID: firstUID, lastUID: lastUID)
     }
 
     override open func main() {
@@ -68,7 +70,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
 
     func syncMessages(_ sync: ImapSync) {
         do {
-            try sync.syncMessages(lastUID: lastUID)
+            try sync.syncMessages(firstUID: firstUID, lastUID: lastUID)
         } catch let err as NSError {
             addError(err)
             waitForFinished()
@@ -114,6 +116,11 @@ extension SyncMessagesOperation: ImapSyncDelegate {
     }
 
     public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        markAsFinished()
+    }
+
+    public func folderSyncFailed(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorFolderSyncFailed(comp, folderName: folderToOpen))
         markAsFinished()
     }
 

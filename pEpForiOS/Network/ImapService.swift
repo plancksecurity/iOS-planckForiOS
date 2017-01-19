@@ -20,6 +20,7 @@ public protocol ImapSyncDelegate: class {
     func connectionTimedOut(_ sync: ImapSync, notification: Notification?)
     func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)
     func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)
+    func folderSyncFailed(_ sync: ImapSync, notification: Notification?)
     func messageChanged(_ sync: ImapSync, notification: Notification?)
     func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?)
     func folderOpenCompleted(_ sync: ImapSync, notification: Notification?)
@@ -54,6 +55,7 @@ open class DefaultImapSyncDelegate: ImapSyncDelegate {
     open func connectionTimedOut(_ sync: ImapSync, notification: Notification?)  {}
     open func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
     open func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)  {}
+    open func folderSyncFailed(_ sync: ImapSync, notification: Notification?)  {}
     open func messageChanged(_ sync: ImapSync, notification: Notification?)  {}
     open func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
     open func folderOpenCompleted(_ sync: ImapSync, notification: Notification?)  {}
@@ -134,7 +136,7 @@ open class ImapSync: Service {
             // all messages will be prefetched by default,
             // independent of the prefetch parameter.
             if let folder = imapStore.folder(forName: name, mode: PantomimeReadWriteMode) {
-                Log.info(component: comp, content: "openMailBox \(folder.name())")
+                Log.info(component: comp, content: "openMailBox have to open \(folder.name())")
                 return true
             }
             return false
@@ -159,9 +161,9 @@ open class ImapSync: Service {
         folder.prefetch()
     }
 
-    open func syncMessages(lastUID: UInt) throws {
+    open func syncMessages(firstUID: UInt, lastUID: UInt) throws {
         let folder = try openFolder()
-        folder.syncExisting(lastUID)
+        folder.syncExistingFirstUID(firstUID, lastUID: lastUID)
     }
 
     open func createFolderWithName(_ folderName: String) {
@@ -238,6 +240,15 @@ extension ImapSync: CWServiceClient {
             bq.waitUntilAllOperationsAreFinished()
         }
         delegate?.folderSyncCompleted(self, notification: notification)
+    }
+
+    @objc public func folderSyncFailed(_ notification: Notification?) {
+        dumpMethodName("folderSyncFailed", notification: notification)
+        if let bq = folderBuilder?.backgroundQueue {
+            // Wait until all newly synced messages are stored
+            bq.waitUntilAllOperationsAreFinished()
+        }
+        delegate?.folderSyncFailed(self, notification: notification)
     }
 
     @objc public func messagePrefetchCompleted(_ notification: Notification?) {

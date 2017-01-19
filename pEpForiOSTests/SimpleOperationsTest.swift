@@ -156,7 +156,8 @@ class SimpleOperationsTest: XCTestCase {
         let expMailsSynced = expectation(description: "expMailsSynced")
 
         guard let op = SyncMessagesOperation(
-            imapSyncData: imapSyncData, folder: folder, lastUID: folder.lastUID()) else {
+            imapSyncData: imapSyncData, folder: folder, firstUID: folder.firstUID(),
+            lastUID: folder.lastUID()) else {
                 XCTFail()
                 return
         }
@@ -174,6 +175,32 @@ class SimpleOperationsTest: XCTestCase {
         for m in allMessages {
             XCTAssertTrue(m.imap?.flagSeen ?? false)
         }
+    }
+
+    func testSyncMessagesFailedOperation() {
+        testFetchFoldersOperation()
+
+        guard let folder = CdFolder.by(folderType: .inbox, account: account) else {
+            XCTFail()
+            return
+        }
+
+        let expMailsSynced = expectation(description: "expMailsSynced")
+
+        guard let op = SyncMessagesOperation(
+            imapSyncData: imapSyncData, folder: folder, firstUID: 10, lastUID: 1) else {
+                XCTFail()
+                return
+        }
+        op.completionBlock = {
+            expMailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertTrue(op.hasErrors())
+        })
     }
 
     func testFetchFoldersOperation() {

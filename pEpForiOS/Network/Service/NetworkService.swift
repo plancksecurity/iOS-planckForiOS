@@ -23,15 +23,15 @@ public protocol NetworkServiceDelegate: class {
 }
 
 /**
- * A thread class which provides an OO layer and doing syncing between CoreData and Pantomime
- * and any other (later) libraries providing in- and outbond transports of messages by managing
- * different background tasks and run loops (to be implemented).
+ * Provides all the IMAP and SMTP syncing. Will constantly run in the background.
  */
 public class NetworkService: INetworkService {
     public struct FolderInfo {
-        let name: String
-        let lastUID: UInt?
-        let folderID: NSManagedObjectID?
+        public let name: String
+        public let folderType: FolderType
+        public let firstUID: UInt?
+        public let lastUID: UInt?
+        public let folderID: NSManagedObjectID?
     }
 
     /**
@@ -39,7 +39,7 @@ public class NetworkService: INetworkService {
      in the last `timeIntervalForInterestingFolders`
      are considered sync-worthy.
      */
-    let timeIntervalForInterestingFolders: TimeInterval = 60 * 60 * 48
+    public var timeIntervalForInterestingFolders: TimeInterval = 60 * 60 * 24
 
     let comp = "NetworkService"
 
@@ -247,8 +247,9 @@ public class NetworkService: INetworkService {
                     if f.folderType == FolderType.inbox.rawValue {
                         haveInbox = true
                     }
-                    folderInfos.append(FolderInfo(name: name, lastUID: f.lastUID(),
-                                                  folderID: f.objectID))
+                    folderInfos.append(FolderInfo(
+                        name: name, folderType: FolderType(rawValue: f.folderType) ?? .normal,
+                        firstUID: f.firstUID(), lastUID: f.lastUID(), folderID: f.objectID))
                 }
             }
 
@@ -256,15 +257,20 @@ public class NetworkService: INetworkService {
             if !haveInbox {
                 if let inboxFolder = CdFolder.by(folderType: .inbox, account: account) {
                     let name = inboxFolder.name ?? ImapSync.defaultImapInboxName
-                    folderInfos.append(FolderInfo(name: name, lastUID: inboxFolder.lastUID(),
-                                                  folderID: inboxFolder.objectID))
+                    folderInfos.append(
+                        FolderInfo(
+                            name: name,
+                            folderType: FolderType(rawValue: inboxFolder.folderType) ?? .inbox,
+                            firstUID: inboxFolder.firstUID(), lastUID: inboxFolder.lastUID(),
+                            folderID: inboxFolder.objectID))
                 }
             }
         }
         if folderInfos.count == 0 {
             // If no interesting folders have been found, at least sync the inbox.
-            folderInfos.append(FolderInfo(name: ImapSync.defaultImapInboxName,
-                                          lastUID: nil, folderID: nil))
+            folderInfos.append(FolderInfo(
+                name: ImapSync.defaultImapInboxName, folderType: .inbox, firstUID: nil,
+                lastUID: nil, folderID: nil))
         }
         return folderInfos
     }
@@ -391,11 +397,12 @@ public class NetworkService: INetworkService {
 
             // sync existing messages
             for fi in folderInfos {
-                if let folderID = fi.folderID, let lastUID = fi.lastUID {
+                if let folderID = fi.folderID, let firstUID = fi.firstUID,
+                    let lastUID = fi.lastUID {
                     let syncMessagesOp = SyncMessagesOperation(
                         parentName: parentName, errorContainer: errorContainer,
                         imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
-                        lastUID: lastUID)
+                        firstUID: firstUID, lastUID: lastUID)
                     syncMessagesOp.completionBlock = { [weak self] in
                         if let me = self {
                             Log.info(component: me.comp, content: "syncMessagesOp finished")
@@ -481,6 +488,8 @@ public class NetworkService: INetworkService {
                     Log.verbose(component: theComp,
                                 content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")
                     if let me = self, let theOl = ol {
+                        Log.info(component: theComp,
+                                 content: "didSync \(me.networkServiceDelegate)")
                         me.networkServiceDelegate?.didSync(
                             service: me, accountInfo: theOl.accountInfo)
                         // Process the rest

@@ -116,6 +116,7 @@ open class Constants {
         case folderCreateFailed
         case folderDeleteFailed
         case appendFailed
+        case folderSyncFailed
     }
 
     static func errorNotImplemented(_ component: String) -> NSError {
@@ -445,6 +446,17 @@ open class Constants {
                     "IMAP: Could not append message to folder '%@'",
                     comment: "IMAP error when remote folder could not be deleted"),
                     folderName)])
+        return error
+    }
+
+    static func errorFolderSyncFailed(_ component: String, folderName: String) -> NSError {
+        let error = NSError.init(
+            domain: component, code: ImapErrorCode.folderSyncFailed.rawValue,
+            userInfo: [NSLocalizedDescriptionKey:
+                String.init(format: NSLocalizedString(
+                    "IMAP: Could not sync messages for folder '%@'",
+                    comment: "IMAP error when remote folder could not be synced"),
+                            folderName)])
         return error
     }
 }

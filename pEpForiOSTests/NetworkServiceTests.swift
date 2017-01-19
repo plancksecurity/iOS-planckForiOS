@@ -25,10 +25,14 @@ class NetworkServiceTests: XCTestCase {
         persistenceSetup = nil
     }
 
-    class NetworkServiceObserver: NetworkServiceDelegate {
+    class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertible {
         let expSingleAccountSynced: XCTestExpectation?
         var expCanceled: XCTestExpectation?
         var accountInfo: AccountConnectInfo?
+
+        var debugDescription: String {
+            return expSingleAccountSynced?.debugDescription ?? "unknown"
+        }
 
         init(expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil) {
             self.expSingleAccountSynced = expAccountsSynced
@@ -36,6 +40,7 @@ class NetworkServiceTests: XCTestCase {
         }
 
         func didSync(service: NetworkService, accountInfo: AccountConnectInfo) {
+            Log.info(component: #function, content: "\(self)")
             if self.accountInfo == nil {
                 self.accountInfo = accountInfo
                 expSingleAccountSynced?.fulfill()
@@ -160,11 +165,12 @@ class NetworkServiceTests: XCTestCase {
             expAccountsSynced: expectation(description: "expSingleAccountSynced2"))
         networkService.networkServiceDelegate = del
 
-        // Wait for second sync, to verify outgoing mails
+        // Wait for next sync, to verify outgoing mails
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
+        // Check that the sent mails have been deleted
         Record.refreshRegisteredObjects(mergeChanges: true)
         for m in outgoingMails {
             XCTAssertTrue(m.isDeleted)
@@ -176,21 +182,57 @@ class NetworkServiceTests: XCTestCase {
             return
         }
 
+        // Make sure the sent folder will still *not* be synced in the next step
+        sentFolder.lastLookedAt = Date(
+            timeIntervalSinceNow: -(networkService.timeIntervalForInterestingFolders + 1))
+            as NSDate?
+        Record.saveAndWait()
+
+        // Will the sent folder be synced on next sync?
+        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
+        var fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
+        XCTAssertEqual(fis.count, 1) // still only inbox
+
+        var haveSentFolder = false
+        for f in fis {
+            if f.folderType == .sent {
+                haveSentFolder = true
+            }
+        }
+        XCTAssertFalse(haveSentFolder)
+
+        // Make sure the sent folder will be synced in the next step
         sentFolder.lastLookedAt = Date() as NSDate?
         Record.saveAndWait()
 
-        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
-        let fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
-        XCTAssertGreaterThan(fis.count, 0)
+        // Will the sent folder be synced on next sync?
+        fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
+        XCTAssertGreaterThan(fis.count, 1)
+
+        for f in fis {
+            if f.folderType == .sent {
+                haveSentFolder = true
+            }
+        }
+        XCTAssertTrue(haveSentFolder)
 
         del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced2"))
+            expAccountsSynced: expectation(description: "expSingleAccountSynced3"))
         networkService.networkServiceDelegate = del
 
-        // Wait for second sync, to verify outgoing mails
+        // Wait for next sync
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            Log.info(component: "didSync", content: "expSingleAccountSynced3 timeout?")
             XCTAssertNil(error)
         })
+
+        for msgID in outgoingMessageIDs {
+            guard let cdMsg = CdMessage.first(with: ["uuid": msgID]) else {
+                XCTFail()
+                continue
+            }
+            XCTAssertGreaterThan(cdMsg.uid, 0)
+        }
 
         cancelNetworkService(networkService: networkService)
     }
@@ -219,7 +261,7 @@ class NetworkServiceTests: XCTestCase {
 
         let networkService = NetworkService(parentName: #function)
 
-        var del = NetworkServiceObserver(
+        let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
         networkService.networkServiceDelegate = del
 
@@ -290,16 +332,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertTrue(unifiedInbox.contains(message: msg))
         }
 
-        // Cancel
-        del = NetworkServiceObserver(
-            expCanceled: expectation(description: "expCanceled"))
-        networkService.networkServiceDelegate = del
-        networkService.cancel()
-
-        // Wait for cancellation
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
+        cancelNetworkService(networkService: networkService)
     }
 
     func testCancelSyncImmediately() {
@@ -319,11 +352,7 @@ class NetworkServiceTests: XCTestCase {
         Record.saveAndWait()
 
         networkService.start()
-        networkService.cancel()
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
+        cancelNetworkService(networkService: networkService)
 
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
@@ -372,11 +401,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertFalse(cr.needsVerification)
         }
 
-        del.expCanceled = expectation(description: "expCanceled")
-        networkService.cancel()
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
+        cancelNetworkService(networkService: networkService)
     }
 
     class AccountObserver: AccountDelegate {
@@ -489,11 +514,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertGreaterThan(inb.messageCount(), 0)
         }
 
-        del.expCanceled = expectation(description: "expCanceled")
-        networkService.cancel()
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
+        cancelNetworkService(networkService: networkService)
     }
 
     func _testRunForever() {

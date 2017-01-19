@@ -114,6 +114,11 @@ extension DeleteFoldersOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
+    public func folderSyncFailed(_ sync: ImapSync, notification: Notification?) {
+        addError(Constants.errorIllegalState(comp, stateName: "folderSyncFailed"))
+        markAsFinished()
+    }
+
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
         markAsFinished()
