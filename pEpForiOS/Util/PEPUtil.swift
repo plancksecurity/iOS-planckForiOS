@@ -305,12 +305,6 @@ open class PEPUtil {
             dict[kPepReplyTo] = l as AnyObject
         }
 
-        if let d = cdMessage.sent {
-            dict[kPepSent] = d
-        } else if outgoing {
-            dict[kPepSent] = Date() as AnyObject
-        }
-
         if refs.count > 0 {
             dict[kPepReferences] = refs as AnyObject
         }
