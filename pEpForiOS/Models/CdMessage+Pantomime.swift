@@ -121,7 +121,7 @@ extension CdMessage {
         let msg = CWIMAPMessage.init()
 
         if let date = received {
-            msg.setReceivedDate(date as Date)
+            msg.setOriginationDate(date as Date)
         }
 
         if let sub = shortMessage {
@@ -237,7 +237,7 @@ extension CdMessage {
 
         mail.parent = folder
         mail.bodyFetched = message.isInitialized()
-        mail.received = message.receivedDate() as NSDate?
+        mail.sent = message.originationDate() as NSDate?
         mail.shortMessage = message.subject()
         mail.uuid = message.messageID()
         mail.uid = Int32(message.uid())

@@ -28,6 +28,9 @@ open class ConcurrentBaseOperation: BaseOperation {
     /** Constant for observing the background queue */
     let operationCountKeyPath = "operationCount"
 
+    /** Keypath for `OperationQueue.isCancelled` */
+    let isCancelledKeyPath = "isCancelled"
+
     lazy var privateMOC: NSManagedObjectContext = Record.Context.background
 
     var myFinished: Bool = false
@@ -74,7 +77,7 @@ open class ConcurrentBaseOperation: BaseOperation {
             backgroundQueue.addObserver(self, forKeyPath: operationCountKeyPath,
                                         options: [.initial, .new],
                                         context: nil)
-            self.addObserver(self, forKeyPath: "isCancelled",
+            self.addObserver(self, forKeyPath: isCancelledKeyPath,
                              options: [.initial, .new],
                              context: nil)
         }
@@ -88,13 +91,13 @@ open class ConcurrentBaseOperation: BaseOperation {
                                context: context)
             return
         }
-        if keyPath == "operationCount" {
+        if keyPath == operationCountKeyPath {
             let opCount = (newValue as? NSNumber)?.intValue
             Log.verbose(component: comp, content: "opCount \(opCount)")
             if let c = opCount, c == 0 {
                 markAsFinished()
             }
-        } else if keyPath == "isCancelled" {
+        } else if keyPath == isCancelledKeyPath {
             guard let cancelled = (newValue as? NSNumber)?.boolValue else {
                 super.observeValue(forKeyPath: keyPath, of: object, change: change,
                                    context: context)

@@ -16,8 +16,8 @@ open class MessageSubjectCell: MessageCell {
         fieldModel = model
         titleLabel?.text = message.shortMessage
         
-        if let receivedDate = message.received {
-            UIHelper.putString(dateFormatter.string(from: receivedDate as Date), toLabel: valueLabel)
+        if let originationDate = message.received {
+            UIHelper.putString(dateFormatter.string(from: originationDate as Date), toLabel: valueLabel)
         } else {
             UIHelper.putString(nil, toLabel: valueLabel)
         }

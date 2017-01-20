@@ -35,6 +35,8 @@ public class NetworkService: INetworkService {
         public let folderID: NSManagedObjectID?
     }
 
+    let operationCountKeyPath = "operationCount"
+
     /**
      Folders (other than inbox) that the user looked at
      in the last `timeIntervalForInterestingFolders`
@@ -49,7 +51,7 @@ public class NetworkService: INetworkService {
     /**
      Amount of time to "sleep" between complete syncs of all accounts.
      */
-    let sleepTimeInSeconds: Double
+    public var sleepTimeInSeconds: Double
 
     let workerQueue = DispatchQueue(
         label: "NetworkService", qos: .utility, target: nil)
@@ -96,12 +98,58 @@ public class NetworkService: INetworkService {
      */
     public func cancel() {
         workerQueue.async {
-            Log.info(component: self.comp, content: "cancel()")
+            let myComp = "cancelOp"
+            Log.info(component: myComp, content: "cancel()")
+
+            let observer = ObjectObserver(
+                backgroundQueue: self.backgroundQueue,
+                operationCountKeyPath: self.operationCountKeyPath, myComp: myComp)
+            self.backgroundQueue.addObserver(observer, forKeyPath: self.operationCountKeyPath,
+                                             options: [.initial, .new],
+                                             context: nil)
+
             self.cancelled = true
             self.backgroundQueue.cancelAllOperations()
-            Log.info(component: self.comp, content: "all operations cancelled")
+            Log.info(component: myComp, content: "all operations cancelled")
+
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
             self.networkServiceDelegate?.didCancel(service: self)
+        }
+    }
+
+    class ObjectObserver: NSObject {
+        let backgroundQueue: OperationQueue
+        let operationCountKeyPath: String
+        let myComp: String
+
+        init(backgroundQueue: OperationQueue, operationCountKeyPath: String, myComp: String) {
+            self.backgroundQueue = backgroundQueue
+            self.operationCountKeyPath = operationCountKeyPath
+            self.myComp = myComp
+        }
+
+        override open func observeValue(forKeyPath keyPath: String?, of object: Any?,
+                                        change: [NSKeyValueChangeKey : Any]?,
+                                        context: UnsafeMutableRawPointer?) {
+            guard let newValue = change?[NSKeyValueChangeKey.newKey] else {
+                super.observeValue(forKeyPath: keyPath, of: object, change: change,
+                                   context: context)
+                return
+            }
+            if keyPath == operationCountKeyPath {
+                let opCount = (newValue as? NSNumber)?.intValue
+                Log.verbose(component: myComp, content: "operationCount \(opCount)")
+                dumpOperations()
+            } else {
+                super.observeValue(forKeyPath: keyPath, of: object, change: change,
+                                   context: context)
+            }
+        }
+
+        func dumpOperations() {
+            for op in self.backgroundQueue.operations {
+                Log.info(component: myComp, content: "Still running: \(op)")
+            }
         }
     }
 
@@ -224,7 +272,7 @@ public class NetworkService: INetworkService {
 
     /**
      Determine "interesting" folder names that should be synced, and for each:
-     Determine current lastUID, and store it (for later sync of existing messages).
+     Determine current firstUID, lastUID, and store it (for later sync of existing messages).
      - Note: Interesting mailboxes are Inbox (always), and the most recently looked at
      folders.
      */
@@ -399,7 +447,8 @@ public class NetworkService: INetworkService {
             // sync existing messages
             for fi in folderInfos {
                 if let folderID = fi.folderID, let firstUID = fi.firstUID,
-                    let lastUID = fi.lastUID {
+                    let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
+                    firstUID <= lastUID {
                     let syncMessagesOp = SyncMessagesOperation(
                         parentName: parentName, errorContainer: errorContainer,
                         imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
