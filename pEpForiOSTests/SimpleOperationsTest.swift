@@ -111,6 +111,7 @@ class SimpleOperationsTest: XCTestCase {
                 Log.warn(component: #function, content: "nil sent \(m.shortMessage) \(m.uuid)")
             }
             XCTAssertNotNil(m.sent)
+            XCTAssertNotNil(m.received)
 
             // Transform the message from CdMessage to Message to check conversion
             guard let normalMessage = Message.from(cdMessage: m) else {

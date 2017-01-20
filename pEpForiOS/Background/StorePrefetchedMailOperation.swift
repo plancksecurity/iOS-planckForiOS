@@ -52,6 +52,9 @@ open class StorePrefetchedMailOperation: BaseOperation {
         }
         let result = insert(pantomimeMessage: message, account: account, quick: quick)
         if let msg = result {
+            if msg.received == nil {
+                msg.received = NSDate()
+            }
             Record.saveAndWait(context: context)
             if !quick {
                 messageFetchedBlock?(msg)
