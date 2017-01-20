@@ -109,6 +109,7 @@ class NetworkServiceTests: XCTestCase {
         let sendLayerDelegate = SendLayerObserver()
 
         let networkService = NetworkService(parentName: #function)
+        networkService.sleepTimeInSeconds = 2
 
         // A temp variable is necassary, since the networkServiceDelegate is weak
         var del = NetworkServiceObserver(

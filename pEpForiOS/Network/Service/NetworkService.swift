@@ -49,7 +49,7 @@ public class NetworkService: INetworkService {
     /**
      Amount of time to "sleep" between complete syncs of all accounts.
      */
-    let sleepTimeInSeconds: Double
+    public var sleepTimeInSeconds: Double
 
     let workerQueue = DispatchQueue(
         label: "NetworkService", qos: .utility, target: nil)
@@ -224,7 +224,7 @@ public class NetworkService: INetworkService {
 
     /**
      Determine "interesting" folder names that should be synced, and for each:
-     Determine current lastUID, and store it (for later sync of existing messages).
+     Determine current firstUID, lastUID, and store it (for later sync of existing messages).
      - Note: Interesting mailboxes are Inbox (always), and the most recently looked at
      folders.
      */
@@ -399,7 +399,8 @@ public class NetworkService: INetworkService {
             // sync existing messages
             for fi in folderInfos {
                 if let folderID = fi.folderID, let firstUID = fi.firstUID,
-                    let lastUID = fi.lastUID {
+                    let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
+                    firstUID <= lastUID {
                     let syncMessagesOp = SyncMessagesOperation(
                         parentName: parentName, errorContainer: errorContainer,
                         imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
