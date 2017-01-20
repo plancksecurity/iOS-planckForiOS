@@ -10,9 +10,6 @@ import UIKit
 import MessageModel
 
 class PrivacyStatusTableViewController: UITableViewController {
-
-    @IBOutlet weak var explanationLabel: UILabel!
-    @IBOutlet weak var suggestionLabel: UILabel!
     
     var message: Message!
     var appConfig: AppConfig!
@@ -22,20 +19,49 @@ class PrivacyStatusTableViewController: UITableViewController {
         super.viewDidLoad()
 
         configureTableView()
-        updateLabelsText()
     }
     
     func configureTableView() {
         tableView.estimatedRowHeight = 44.0
     }
-    
-    func updateLabelsText() {
-        explanationLabel.text = "This message is secure but you still need to verify the identity of your communication partner."
-        suggestionLabel.text = "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication."
-    }
-    
+
+    // MARK: - UITableViewDataSource
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 2
+        }
+        return 5
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            let infoCell = tableView.dequeueReusableCell(withIdentifier: PrivacyInfoTableViewCell.reuseIdentifier,
+                                                         for: indexPath) as! PrivacyInfoTableViewCell
+            if indexPath.row == 0 {
+                infoCell.showExplanation()
+            }
+            else {
+                infoCell.showSuggestion()
+            }
+            return infoCell
+        }
+        let handshakeCell = tableView.dequeueReusableCell(withIdentifier: HandshakeTableViewCell.reuseIdentifier,
+                                                          for: indexPath) as! HandshakeTableViewCell
+        return handshakeCell
+    }
+    
+    // MARK: - UITableViewDelegate
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
 }
 

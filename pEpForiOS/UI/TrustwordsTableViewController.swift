@@ -14,6 +14,9 @@ class TrustwordsTableViewController: UITableViewController {
     @IBOutlet weak var fingerprintButton: RoundedButton!
     @IBOutlet weak var languagePicker: UIPickerView!
     @IBOutlet weak var languagePickerHeight: NSLayoutConstraint!
+    @IBOutlet weak var trustwordsLanaguageLabel: UILabel!
+    @IBOutlet weak var longTrustwordsSwitch: UISwitch!
+    
     
     var message: Message!
     var appConfig: AppConfig!
@@ -77,6 +80,11 @@ class TrustwordsTableViewController: UITableViewController {
     @IBAction func fingerprintButtonTapped(_ sender: RoundedButton) {
         performSegue(withIdentifier: "segueFingerprint", sender: self)
     }
+    
+    @IBAction func toggleLongTrustwords(_ sender: UISwitch) {
+    }
+    
+    
 }
 
 extension TrustwordsTableViewController: UIPickerViewDataSource, UIPickerViewDelegate {
@@ -86,11 +94,17 @@ extension TrustwordsTableViewController: UIPickerViewDataSource, UIPickerViewDel
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 5
+        return PEPUtil.trustwordsLanguages().count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "Row - \(row)"
+        let language = PEPUtil.trustwordsLanguages()[row]
+        return language.languageName
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let language = PEPUtil.trustwordsLanguages()[row]
+        trustwordsLanaguageLabel.text = language.languageName
     }
 }
 

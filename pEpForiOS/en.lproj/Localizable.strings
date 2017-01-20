@@ -48,3 +48,10 @@
 "NewAccount.title" = "New Account";
 "ImapSettings.title" = "IMAP Settings";
 "SmtpSettings.title" = "SMTP Settings";
+
+// PrivacyStatus
+
+"Explanation.title" = "Explanation";
+"Explanation.text" = "This message is secure but you still need to verify the identity of your communication partner.";
+"Suggestion.title" = "Suggestion";
+"Suggestion.text" = "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.";
