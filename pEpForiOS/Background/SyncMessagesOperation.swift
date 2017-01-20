@@ -41,6 +41,22 @@ open class SyncMessagesOperation: ImapSyncOperation {
                   firstUID: firstUID, lastUID: lastUID)
     }
 
+    public override func shouldRun() -> Bool {
+        if !super.shouldRun() {
+            return false
+        }
+        if firstUID == 0 || lastUID == 0 {
+            handleError(Constants.errorInvalidParameter(comp), message: "Cannot sync UIDs of 0")
+            return false
+        }
+        if firstUID > lastUID {
+            handleError(Constants.errorInvalidParameter(comp),
+                        message: "firstUID should be <= lastUID?")
+            return false
+        }
+        return true
+    }
+
     override open func main() {
         if !shouldRun() {
             return
