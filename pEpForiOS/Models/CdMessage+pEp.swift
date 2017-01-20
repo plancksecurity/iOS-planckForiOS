@@ -34,7 +34,33 @@ extension CdMessage {
         }
 
         uuid = pEpMessage[kPepID] as! String?
-        replyTo = pEpMessage[kPepReplyTo] as! NSOrderedSet?
+
+        var refsToConvert = Set<String>()// [String]()
+        var localReferences = [CdMessageReference]()
+        if let refs = pEpMessage[kPepReferences] as? [String] {
+            for item in refs {
+                refsToConvert.insert(item)
+            }
+        }
+
+        if let refs2 = pEpMessage[kPepInReplyTo] as? [String] {
+            for item in refs2 {
+                refsToConvert.insert(item)
+            }
+        }
+        for ref in refsToConvert {
+            let cdref = CdMessageReference.create()
+            cdref.message = self
+            cdref.reference = ref
+            localReferences.append(cdref)
+        }
+        self.references = NSOrderedSet(array: localReferences)
+        CdMessageReference.deleteOrphans()
+
+        if let replyToTest = pEpMessage[kPepReplyTo] as? NSOrderedSet {
+            replyTo = replyToTest
+        }
+
         var attachments = [CdAttachment]()
         if let attachmentDicts = pEpMessage[kPepAttachments] as? NSArray {
             for atDict in attachmentDicts {

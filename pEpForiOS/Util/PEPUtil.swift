@@ -301,14 +301,17 @@ open class PEPUtil {
             refs.append((ref as! CdMessageReference).reference!)
         }
 
-        if let l = refs.last {
-            dict[kPepReplyTo] = l as AnyObject
-        }
-
         if refs.count > 0 {
             dict[kPepReferences] = refs as AnyObject
         }
 
+        if let l = refs.last {
+            dict[kPepInReplyTo] = l as AnyObject
+        }
+
+        if let r = cdMessage.replyTo {
+            dict[kPepReplyTo] = r.array as AnyObject
+        }
         //dict[kPepOptFields] = NSArray(array: cdMessage.optionalFields!.array())
 
         return dict as PEPMessage
