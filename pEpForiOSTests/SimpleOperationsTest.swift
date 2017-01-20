@@ -48,9 +48,7 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(f.comp, "FetchFoldersOperation")
     }
 
-    func testFetchMessagesOperation() {
-        XCTAssertNil(CdMessage.all())
-
+    func fetchMessages() {
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
         let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
@@ -69,6 +67,12 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
         })
+    }
+
+    func testFetchMessagesOperation() {
+        XCTAssertNil(CdMessage.all())
+
+        fetchMessages()
 
         XCTAssertGreaterThan(
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 0)
@@ -92,10 +96,20 @@ class SimpleOperationsTest: XCTestCase {
         // Check all messages for validity
         for m in allMessages {
             XCTAssertNotNil(m.messageID)
+            if let uuid = m.messageID {
+                if let ms = CdMessage.all(with: ["uuid": uuid]) {
+                    XCTAssertEqual(ms.count, 1)
+                } else {
+                    XCTFail()
+                }
+            }
             XCTAssertNotNil(m.uid)
             XCTAssertGreaterThan(m.uid, 0)
             XCTAssertNotNil(m.imap)
             XCTAssertNotNil(m.shortMessage)
+            if m.sent == nil {
+                Log.warn(component: #function, content: "nil sent \(m.shortMessage) \(m.uuid)")
+            }
             XCTAssertNotNil(m.sent)
 
             // Transform the message from CdMessage to Message to check conversion
@@ -133,7 +147,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncMessagesOperation() {
-        testFetchMessagesOperation()
+        fetchMessages()
 
         guard let folder = CdFolder.by(folderType: .inbox, account: account) else {
             XCTFail()
@@ -417,7 +431,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationEmpty() {
-        testFetchMessagesOperation()
+        fetchMessages()
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
             XCTFail()
@@ -442,7 +456,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperation() {
-        testFetchMessagesOperation()
+        fetchMessages()
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
             XCTFail()
@@ -502,7 +516,7 @@ class SimpleOperationsTest: XCTestCase {
      while the others will cancel early and not do anything.
      */
     func testSyncFlagsToServerOperationMulti() {
-        testFetchMessagesOperation()
+        fetchMessages()
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
             XCTFail()
