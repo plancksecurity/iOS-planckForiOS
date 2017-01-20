@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageModel
 
 class HandshakeTableViewCell: UITableViewCell {
 
@@ -16,5 +17,9 @@ class HandshakeTableViewCell: UITableViewCell {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var handShakeButton: RoundedButton!
     
+    func updateCell(_ identity: Identity) {
+        nameLabel.text = identity.userName
+        nameLabel.text = identity.address
+    }
     
 }

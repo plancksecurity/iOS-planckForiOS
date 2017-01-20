@@ -13,12 +13,13 @@ class PrivacyStatusTableViewController: UITableViewController {
     
     var message: Message!
     var appConfig: AppConfig!
-    
+    var allRecipients: [Identity] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configureTableView()
+        allRecipients = Array(message.allIdentities)
     }
     
     func configureTableView() {
@@ -39,7 +40,7 @@ class PrivacyStatusTableViewController: UITableViewController {
         if section == 0 {
             return 2
         }
-        return 5
+        return allRecipients.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -56,6 +57,8 @@ class PrivacyStatusTableViewController: UITableViewController {
         }
         let handshakeCell = tableView.dequeueReusableCell(withIdentifier: HandshakeTableViewCell.reuseIdentifier,
                                                           for: indexPath) as! HandshakeTableViewCell
+        let identity = allRecipients[indexPath.row]
+        handshakeCell.updateCell(identity)
         return handshakeCell
     }
     
