@@ -120,7 +120,7 @@ extension CdMessage {
     func pantomime(folder: CWIMAPFolder) -> CWIMAPMessage {
         let msg = CWIMAPMessage.init()
 
-        if let date = received {
+        if let date = sent {
             msg.setOriginationDate(date as Date)
         }
 
