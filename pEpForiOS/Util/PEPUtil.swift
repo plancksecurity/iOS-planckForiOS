@@ -435,7 +435,7 @@ open class PEPUtil {
             message.setMessageID(messageID)
         }
         if let sentDate = pEpMessage[kPepSent] as? Date {
-            message.setReceivedDate(sentDate)
+            message.setOriginationDate(sentDate)
         }
         if let shortMsg = pEpMessage[kPepShortMessage] as? String {
             message.setSubject(shortMsg)

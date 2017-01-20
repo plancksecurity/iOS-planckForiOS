@@ -79,8 +79,8 @@ class EmailListViewCell: UITableViewCell {
                 UIHelper.putString(nil, toLabel: self.summaryLabel)
             }
             
-            if let receivedDate = email.received {
-                UIHelper.putString(dateFormatter.string(from: receivedDate as Date),
+            if let originationDate = email.received {
+                UIHelper.putString(dateFormatter.string(from: originationDate as Date),
                                    toLabel: self.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: self.dateLabel)
