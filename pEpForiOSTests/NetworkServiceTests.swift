@@ -348,11 +348,6 @@ class NetworkServiceTests: XCTestCase {
 
         let networkService = NetworkService(parentName: #function)
 
-        let del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced"),
-            expCanceled: expectation(description: "expCanceled"))
-        networkService.networkServiceDelegate = del
-
         _ = TestData().createWorkingCdAccount()
         TestUtil.skipValidation()
         Record.saveAndWait()
