@@ -237,7 +237,7 @@ extension CdMessage {
 
         mail.parent = folder
         mail.bodyFetched = message.isInitialized()
-        mail.received = message.receivedDate() as NSDate?
+        mail.sent = message.receivedDate() as NSDate?
         mail.shortMessage = message.subject()
         mail.uuid = message.messageID()
         mail.uid = Int32(message.uid())

@@ -96,7 +96,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertGreaterThan(m.uid, 0)
             XCTAssertNotNil(m.imap)
             XCTAssertNotNil(m.shortMessage)
-
+            XCTAssertNotNil(m.sent)
 
             // Transform the message from CdMessage to Message to check conversion
             guard let normalMessage = Message.from(cdMessage: m) else {
