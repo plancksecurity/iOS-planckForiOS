@@ -19,16 +19,19 @@ extension CdIdentity {
         guard let addr = pEpC[kPepAddress] as? String else {
             return nil
         }
-        let ident = CdIdentity.create()
-        ident.address = addr
-        ident.userName = pEpC[kPepUsername] as? String
+        var ident = CdIdentity.search(address: addr)
+        if ident == nil{
+            ident = CdIdentity.create()
+        }
+        ident!.userName = pEpC[kPepUsername] as? String
         if let mySelfNum = pEpC[kPepIsMe] as? NSNumber {
-            ident.isMySelf = mySelfNum
+            ident!.isMySelf = mySelfNum
         }
         if let ctNum = pEpC[kPepCommType] as? NSNumber {
-            ident.commType = ctNum
+            ident!.commType = ctNum
         }
-        ident.userID = pEpC[kPepUserID] as? String
+        ident!.userID = pEpC[kPepUserID] as? String
+        Record.saveAndWait()
         return ident
     }
 

@@ -312,6 +312,10 @@ open class PEPUtil {
         if let r = cdMessage.replyTo {
             dict[kPepReplyTo] = r.array as AnyObject
         }
+
+        dict[kPepReplyTo] = NSArray(array: cdMessage.replyTo!.map()
+            { return pEp(cdIdentity: $0 as! CdIdentity) })
+
         //dict[kPepOptFields] = NSArray(array: cdMessage.optionalFields!.array())
 
         return dict as PEPMessage

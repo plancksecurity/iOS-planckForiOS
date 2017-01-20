@@ -57,10 +57,6 @@ extension CdMessage {
         self.references = NSOrderedSet(array: localReferences)
         CdMessageReference.deleteOrphans()
 
-        if let replyToTest = pEpMessage[kPepReplyTo] as? NSOrderedSet {
-            replyTo = replyToTest
-        }
-
         var attachments = [CdAttachment]()
         if let attachmentDicts = pEpMessage[kPepAttachments] as? NSArray {
             for atDict in attachmentDicts {
@@ -90,6 +86,7 @@ extension CdMessage {
         to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepTo] as? [PEPIdentity]))
         cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepCC] as? [PEPIdentity]))
         bcc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepBCC] as? [PEPIdentity]))
+        replyTo = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepReplyTo] as? [PEPIdentity]))
     }
 
     public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
