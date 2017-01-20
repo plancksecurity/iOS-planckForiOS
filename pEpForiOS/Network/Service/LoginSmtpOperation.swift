@@ -10,7 +10,7 @@ open class LoginSmtpOperation: ConcurrentBaseOperation {
     var service: SmtpSend!
     var smtpSendData: SmtpSendData
 
-    public init(smtpSendData: SmtpSendData, errorContainer: ErrorProtocol = ErrorContainer()) {
+    public init(smtpSendData: SmtpSendData, errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.smtpSendData = smtpSendData
         super.init(errorContainer: errorContainer)
     }

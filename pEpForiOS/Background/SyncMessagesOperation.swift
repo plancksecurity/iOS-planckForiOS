@@ -18,7 +18,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
     let firstUID: UInt
     var lastSeenUID: UInt?
 
-    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, folderID: NSManagedObjectID,
                 folderName: String, firstUID: UInt, lastUID: UInt) {
         self.folderID = folderID
@@ -30,7 +30,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
     }
 
     public convenience init?(parentName: String? = nil,
-                             errorContainer: ErrorProtocol = ErrorContainer(),
+                             errorContainer: ServiceErrorProtocol = ErrorContainer(),
                              imapSyncData: ImapSyncData,
                              folder: CdFolder, firstUID: UInt, lastUID: UInt) {
         guard let folderName = folder.name else {

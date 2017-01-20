@@ -21,7 +21,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
     let messageFetchedBlock: MessageFetchedBlock?
 
     public init(
-        parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+        parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
         imapSyncData: ImapSyncData,
         folderName: String = ImapSync.defaultImapInboxName,
         messageFetchedBlock: MessageFetchedBlock? = nil) {

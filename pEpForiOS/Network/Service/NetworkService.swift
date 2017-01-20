@@ -16,7 +16,8 @@ public protocol INetworkService {
 
 public protocol NetworkServiceDelegate: class {
     /** Called after each account sync */
-    func didSync(service: NetworkService, accountInfo: AccountConnectInfo)
+    func didSync(service: NetworkService, accountInfo: AccountConnectInfo,
+                 errorProtocol: ServiceErrorProtocol)
 
     /** Called after all operations have been canceled */
     func didCancel(service: NetworkService)
@@ -176,7 +177,7 @@ public class NetworkService: INetworkService {
     }
 
     func buildSmtpOperations(
-        accountInfo: AccountConnectInfo, errorContainer: ErrorProtocol,
+        accountInfo: AccountConnectInfo, errorContainer: ServiceErrorProtocol,
         opSmtpFinished: Operation) -> (BaseOperation?, [Operation]) {
         if let smtpCI = accountInfo.smtpConnectInfo {
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
@@ -206,7 +207,7 @@ public class NetworkService: INetworkService {
     }
 
     func buildSendOperations(
-        imapSyncData: ImapSyncData, errorContainer: ErrorProtocol,
+        imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
         opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
 
         let opAppend = AppendMailsOperation(imapSyncData: imapSyncData)
@@ -491,7 +492,8 @@ public class NetworkService: INetworkService {
                         Log.info(component: theComp,
                                  content: "didSync \(me.networkServiceDelegate)")
                         me.networkServiceDelegate?.didSync(
-                            service: me, accountInfo: theOl.accountInfo)
+                            service: me, accountInfo: theOl.accountInfo,
+                            errorProtocol: theOl.errorContainer)
                         // Process the rest
                         me.processOperationLines(operationLines: myLines)
                     }

@@ -25,7 +25,7 @@ open class AppendMailsOperation: ImapSyncOperation {
     var targetFolderName: String?
 
     public init(parentName: String? = nil, imapSyncData: ImapSyncData,
-                errorContainer: ErrorProtocol = ErrorContainer()) {
+                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }

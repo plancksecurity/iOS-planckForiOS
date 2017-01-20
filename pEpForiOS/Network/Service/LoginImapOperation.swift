@@ -15,7 +15,7 @@ open class LoginImapOperation: ConcurrentBaseOperation {
     var imapSyncData: ImapSyncData
 
     public init(imapSyncData: ImapSyncData, name: String? = nil,
-                errorContainer: ErrorProtocol = ErrorContainer()) {
+                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.imapSyncData = imapSyncData
         super.init(parentName: name, errorContainer: errorContainer)
     }

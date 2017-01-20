@@ -19,7 +19,7 @@ open class CreateFoldersOperation: ImapSyncOperation {
     var account: CdAccount!
     var folderNamesToCreate = [String]()
 
-    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount) {
         self.accountID = account.objectID
         super.init(parentName: parentName, errorContainer: errorContainer,

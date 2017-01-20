@@ -16,7 +16,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
 
     open var numberOfMessagesSynced = 0
 
-    public init?(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer(),
+    public init?(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                  imapSyncData: ImapSyncData, folder: CdFolder) {
         if let fn = folder.name {
             folderName = fn

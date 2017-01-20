@@ -9,7 +9,7 @@
 /**
  Basic NSOperation that can gather errors.
  */
-open class BaseOperation: Operation, ErrorProtocol {
+open class BaseOperation: Operation, ServiceErrorProtocol {
     open var comp = "BaseOperation"
 
     /**
@@ -17,7 +17,7 @@ open class BaseOperation: Operation, ErrorProtocol {
      */
     var bailOutEarlyOnError = true
 
-    let errorContainer: ErrorProtocol
+    let errorContainer: ServiceErrorProtocol
 
     open var error: NSError? {
         return errorContainer.error
@@ -31,7 +31,7 @@ open class BaseOperation: Operation, ErrorProtocol {
         return errorContainer.hasErrors()
     }
 
-    public init(parentName: String? = nil, errorContainer: ErrorProtocol = ErrorContainer()) {
+    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.errorContainer = errorContainer
 
         super.init()
