@@ -776,6 +776,7 @@ class SimpleOperationsTest: XCTestCase {
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.sendStatus = Int16(SendStatus.smtpDone.rawValue)
+            message.sent = Date() as NSDate
             message.addTo(cdIdentity: to)
         }
         Record.saveAndWait()
