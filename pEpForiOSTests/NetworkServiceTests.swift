@@ -352,8 +352,10 @@ class NetworkServiceTests: XCTestCase {
         TestUtil.skipValidation()
         Record.saveAndWait()
 
-        networkService.start()
-        cancelNetworkService(networkService: networkService)
+        for _ in 0...10 {
+            networkService.start()
+            cancelNetworkService(networkService: networkService)
+        }
 
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
