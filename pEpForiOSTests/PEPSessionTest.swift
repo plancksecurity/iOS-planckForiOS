@@ -72,7 +72,9 @@ class PEPSessionTest: XCTestCase {
         message.bcc = [account.user]
         message.parent = folder
         message.sent = NSDate()
-        message.save()
+        message.replyTo = [account.user]
+        message.references = ["ref1"]
+        message.save( )
 
         let cdmessage1 = CdMessage.first()!
         let pepmessage = cdmessage1.pEpMessage()
