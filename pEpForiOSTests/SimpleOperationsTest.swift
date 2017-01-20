@@ -660,6 +660,7 @@ class SimpleOperationsTest: XCTestCase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
+            message.sent = Date() as NSDate
             message.addTo(cdIdentity: to)
         }
         Record.saveAndWait()

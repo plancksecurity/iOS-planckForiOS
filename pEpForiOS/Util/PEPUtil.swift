@@ -263,14 +263,20 @@ open class PEPUtil {
     open static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessage {
         var dict = PEPMessage()
 
+        if let sent = cdMessage.sent {
+            dict[kPepSent] = sent
+        }
+
         if let subject = cdMessage.shortMessage {
             dict[kPepShortMessage] = subject as AnyObject
         }
 
-        dict[kPepTo] = NSArray(array: cdMessage.to!.map() { return pEp(cdIdentity: $0 as! CdIdentity) })
-        dict[kPepCC] = NSArray(array: cdMessage.cc!.map() { return pEp(cdIdentity: $0 as! CdIdentity) })
-        dict[kPepBCC] = NSArray(array: cdMessage.bcc!.map() { return pEp(cdIdentity: $0 as! CdIdentity)
-        })
+        dict[kPepTo] = NSArray(array: cdMessage.to!.map()
+            { return pEp(cdIdentity: $0 as! CdIdentity) })
+        dict[kPepCC] = NSArray(array: cdMessage.cc!.map()
+            { return pEp(cdIdentity: $0 as! CdIdentity) })
+        dict[kPepBCC] = NSArray(array: cdMessage.bcc!.map()
+            { return pEp(cdIdentity: $0 as! CdIdentity) })
 
         if let longMessage = cdMessage.longMessage {
             dict[kPepLongMessage] = longMessage as AnyObject
