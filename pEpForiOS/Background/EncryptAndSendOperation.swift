@@ -58,6 +58,10 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
                 format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
                 FolderType.sent.rawValue, SendStatus.none.rawValue)
             if let m = CdMessage.first(with: p) {
+                if m.sent == nil {
+                    m.sent = NSDate()
+                    Record.saveAndWait(context: context)
+                }
                 pepMessage = m.pEpMessage()
                 objID = m.objectID
             }
