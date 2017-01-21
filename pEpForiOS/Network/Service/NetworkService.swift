@@ -324,6 +324,34 @@ public class NetworkService: INetworkService {
         return folderInfos
     }
 
+    func syncExistingMessages(
+        folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
+        imapSyncData: ImapSyncData,
+        lastImapOp: Operation, opImapFinished: Operation) -> (lastImapOp: Operation, [Operation]) {
+        var theLastImapOp = lastImapOp
+        var operations: [Operation] = []
+        for fi in folderInfos {
+            if let folderID = fi.folderID, let firstUID = fi.firstUID,
+                let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
+                firstUID <= lastUID {
+                let syncMessagesOp = SyncMessagesOperation(
+                    parentName: parentName, errorContainer: errorContainer,
+                    imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
+                    firstUID: firstUID, lastUID: lastUID)
+                syncMessagesOp.completionBlock = { [weak self] in
+                    if let me = self {
+                        Log.info(component: me.comp, content: "syncMessagesOp finished")
+                    }
+                }
+                syncMessagesOp.addDependency(theLastImapOp)
+                operations.append(syncMessagesOp)
+                opImapFinished.addDependency(syncMessagesOp)
+                theLastImapOp = syncMessagesOp
+            }
+        }
+        return (theLastImapOp, operations)
+    }
+
     func buildOperationLine(
         accountInfo: AccountConnectInfo, needsVerificationOnly: Bool) -> OperationLine {
 
@@ -445,25 +473,11 @@ public class NetworkService: INetworkService {
             operations.append(opDecrypt)
 
             // sync existing messages
-            for fi in folderInfos {
-                if let folderID = fi.folderID, let firstUID = fi.firstUID,
-                    let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
-                    firstUID <= lastUID {
-                    let syncMessagesOp = SyncMessagesOperation(
-                        parentName: parentName, errorContainer: errorContainer,
-                        imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
-                        firstUID: firstUID, lastUID: lastUID)
-                    syncMessagesOp.completionBlock = { [weak self] in
-                        if let me = self {
-                            Log.info(component: me.comp, content: "syncMessagesOp finished")
-                        }
-                    }
-                    syncMessagesOp.addDependency(lastImapOp)
-                    operations.append(syncMessagesOp)
-                    opImapFinished.addDependency(syncMessagesOp)
-                    lastImapOp = syncMessagesOp
-                }
-            }
+            let (lastOp, syncOperations) = syncExistingMessages(
+                folderInfos: folderInfos, errorContainer: errorContainer,
+                imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
+            lastImapOp = lastOp
+            operations.append(contentsOf: syncOperations)
         }
 
         // ...
