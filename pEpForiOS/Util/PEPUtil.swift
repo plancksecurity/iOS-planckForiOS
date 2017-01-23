@@ -322,7 +322,10 @@ open class PEPUtil {
         dict[kPepReplyTo] = NSArray(array: cdMessage.replyTo!.map()
             { return pEp(cdIdentity: $0 as! CdIdentity) })
 
-        //dict[kPepOptFields] = NSArray(array: cdMessage.optionalFields!.array())
+        dict[kPepOptFields] = NSArray(array: cdMessage.optionalFields!.map() {
+            let c = $0 as! CdHeaderField
+            return NSArray(array: [c.name!, c.value!])
+        })
 
         return dict as PEPMessage
     }
