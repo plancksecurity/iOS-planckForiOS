@@ -261,7 +261,6 @@ class PEPSessionTest: XCTestCase {
         }
     }
 
-    /*
     func testDecryptMessageHeapBufferOverflow() {
         let _ = PersistentSetup()
 
@@ -290,5 +289,4 @@ class PEPSessionTest: XCTestCase {
         let _ = session.decryptMessageDict(
             pEpMessage, dest: &pepDecryptedMessage, keys: &keys)
     }
-     */
 }
