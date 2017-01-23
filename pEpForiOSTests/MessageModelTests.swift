@@ -23,7 +23,7 @@ class MessageModelTests: XCTestCase {
         persistentSetup = nil
     }
 
-    func testAccountSave() {
+    func testAccountSaveAndVerify() {
         let sendLayer = ShortCircuitSendLayer()
         CdAccount.sendLayer = sendLayer
 
@@ -32,11 +32,17 @@ class MessageModelTests: XCTestCase {
         accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
         MessageModelConfig.accountDelegate = accountDelegate
 
-        let _ = TestData().createWorkingAccount()
+        let account = TestData().createWorkingAccount()
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertNil(accountDelegate.error)
         })
+
+        guard let ident = Identity.by(address: account.user.address) else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(ident.isMySelf)
     }
 }
