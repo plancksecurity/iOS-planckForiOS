@@ -368,6 +368,7 @@ extension CdMessage {
      */
     static func addAttachmentsFromPantomimePart(
         _ part: CWPart, targetMail: CdMessage, level: Int) {
+        Log.info(component: #function, content: "Parsing level \(level) \(part)")
         guard let content = part.content() else {
             return
         }
