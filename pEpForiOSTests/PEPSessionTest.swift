@@ -230,4 +230,42 @@ class PEPSessionTest: XCTestCase {
             XCTFail()
         }
     }
+
+    /*
+    func testDecryptMessageHeapBufferOverflow() {
+        let _ = PersistentSetup()
+
+        let cdAccount = TestData().createWorkingCdAccount()
+
+        let folder = CdFolder.create()
+        folder.account = cdAccount
+        folder.name = ImapSync.defaultImapInboxName
+
+        guard let data = TestUtil.loadDataWithFileName("MessageHeapBufferOverflow.txt") else {
+            XCTAssertTrue(false)
+            return
+        }
+        let pantMessage = CWIMAPMessage.init(data: data)
+        pantMessage.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        let msg = CdMessage.insertOrUpdate(
+            pantomimeMessage: pantMessage, account: cdAccount, forceParseAttachments: true)
+        XCTAssertNotNil(msg)
+        if let m = msg {
+            XCTAssertNotNil(m.longMessage)
+            XCTAssertNotNil(m.longMessageFormatted)
+        }
+
+        guard let cdMessage = CdMessage.insertOrUpdate(
+            pantomimeMessage: pantMessage, account: cdAccount) else {
+                XCTFail()
+                return
+        }
+        let pEpMessage = cdMessage.pEpMessage(outgoing: false)
+        let session = PEPSession()
+        var pepDecryptedMessage: NSDictionary? = nil
+        var keys: NSArray?
+        let _ = session.decryptMessageDict(
+            pEpMessage, dest: &pepDecryptedMessage, keys: &keys)
+    }
+     */
 }

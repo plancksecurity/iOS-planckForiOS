@@ -122,11 +122,25 @@ class TestUtil {
             XCTAssertTrue(false, "Could not load key with file name \(fileName)")
             return
         }
-        guard let content = NSString.init(data: data, encoding: String.Encoding.ascii.rawValue) else {
-            XCTAssertTrue(false, "Could not convert key with file name \(fileName) into data")
-            return
+        guard let content = NSString.init(data: data, encoding: String.Encoding.ascii.rawValue)
+            else {
+                XCTAssertTrue(false, "Could not convert key with file name \(fileName) into data")
+                return
         }
         session.importKey(content as String)
+    }
+
+    static func loadData(fileName: String) -> Data? {
+        let testBundle = Bundle.init(for: PEPSessionTest.self)
+        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
+            XCTAssertTrue(false, "Could not find key with file name \(fileName)")
+            return nil
+        }
+        guard let data = try? Data.init(contentsOf: URL(fileURLWithPath: keyPath)) else {
+            XCTAssertTrue(false, "Could not load key with file name \(fileName)")
+            return nil
+        }
+        return data
     }
 
     static func loadDataWithFileName(_ fileName: String) -> Data? {

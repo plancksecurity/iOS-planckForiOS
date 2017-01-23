@@ -37,6 +37,8 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                 let pepMessage = PEPUtil.pEp(cdMessage: message, outgoing: outgoing)
                 var pepDecryptedMessage: NSDictionary? = nil
                 var keys: NSArray?
+                Log.info(component: self.comp,
+                         content: "Will decrypt \(message.logString())")
                 let color = session.decryptMessageDict(
                     pepMessage, dest: &pepDecryptedMessage, keys: &keys)
                 Log.info(component: self.comp,
