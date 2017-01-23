@@ -74,6 +74,8 @@ class PEPSessionTest: XCTestCase {
         message.sent = NSDate()
         message.replyTo = [account.user]
         message.references = ["ref1"]
+        let hf = HeaderField(name: "name", value: "Value")
+        message.optionalFields = [hf]
         message.save( )
 
         let cdmessage1 = CdMessage.first()!
