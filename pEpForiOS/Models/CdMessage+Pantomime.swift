@@ -364,11 +364,7 @@ extension CdMessage {
     }
 
     /**
-     Inserts or updates a pantomime message into the data store with only the bare minimum
-     of data.
-     - Returns: A tuple consisting of the message inserted and a Bool denoting
-     whether this message was just inserted (true)
-     or an existing message was found (false).
+     Adds pantomime attachments to a `CdMessage`.
      */
     static func addAttachmentsFromPantomimePart(
         _ part: CWPart, targetMail: CdMessage, level: Int) {
