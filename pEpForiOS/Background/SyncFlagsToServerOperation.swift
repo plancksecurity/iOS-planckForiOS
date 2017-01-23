@@ -28,6 +28,17 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
+    public convenience init?(parentName: String? = nil,
+                             errorContainer: ServiceErrorProtocol = ErrorContainer(),
+                             imapSyncData: ImapSyncData, folderID: NSManagedObjectID) {
+        guard let folder = Record.Context.default.object(with: folderID) as? CdFolder else {
+            return nil
+        }
+        self.init(parentName: parentName, errorContainer: errorContainer,
+                  imapSyncData: imapSyncData, folder: folder)
+
+    }
+
     open override func main() {
         if !shouldRun() {
             return

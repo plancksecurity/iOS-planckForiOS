@@ -347,6 +347,15 @@ public class NetworkService: INetworkService {
                 operations.append(syncMessagesOp)
                 opImapFinished.addDependency(syncMessagesOp)
                 theLastImapOp = syncMessagesOp
+
+                if let syncFlagsOp = SyncFlagsToServerOperation(
+                    parentName: parentName, errorContainer: errorContainer,
+                    imapSyncData: imapSyncData, folderID: folderID) {
+                    syncFlagsOp.addDependency(theLastImapOp)
+                    operations.append(syncFlagsOp)
+                    opImapFinished.addDependency(syncFlagsOp)
+                    theLastImapOp = syncFlagsOp
+                }
             }
         }
         return (theLastImapOp, operations)
