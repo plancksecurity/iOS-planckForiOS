@@ -233,8 +233,8 @@ class PEPSessionTest: XCTestCase {
         }
     }
 
-    /*
     func testParseMessageHeapBufferOverflow() {
+        CWLogger.setLogger(Log.shared)
         let _ = PersistentSetup()
 
         let cdAccount = TestData().createWorkingCdAccount()
@@ -260,7 +260,6 @@ class PEPSessionTest: XCTestCase {
             XCTAssertNotNil(attch.data)
         }
     }
-     */
 
     /*
     func testDecryptMessageHeapBufferOverflow() {
