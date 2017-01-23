@@ -11,7 +11,7 @@ import MessageModel
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
 
-    static let shared: Log = {
+    static open let shared: Log = {
         let instance = Log()
         return instance
     }()
