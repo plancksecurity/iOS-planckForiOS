@@ -167,7 +167,9 @@ open class PEPUtil {
     open static func pEp(identity: Identity) -> PEPIdentity {
         var contact = PEPIdentity()
         contact[kPepAddress] = identity.address as AnyObject
-        contact[kPepUsername] = identity.userName as AnyObject
+        if let userN = identity.userName {
+            contact[kPepUsername] = userN as AnyObject
+        }
         contact[kPepIsMe] = identity.isMySelf as AnyObject
         return contact
     }

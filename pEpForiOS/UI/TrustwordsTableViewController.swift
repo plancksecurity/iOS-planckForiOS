@@ -61,10 +61,8 @@ class TrustwordsTableViewController: UITableViewController {
     }
     
     func setTrustwords() {
-        let myselfContactPepContact = NSMutableDictionary(
-            dictionary: myselfContact.pEpIdentity())
-        let partnerPepContact = NSMutableDictionary(
-            dictionary: partnerIdentity.pEpIdentity())
+        let myselfContactPepContact = NSMutableDictionary(dictionary: myselfContact.pEpIdentity())
+        let partnerPepContact = NSMutableDictionary(dictionary: partnerIdentity.pEpIdentity())
         session.updateIdentity(myselfContactPepContact)
         session.updateIdentity(partnerPepContact)
         trustwordsLabel.text = PEPUtil.trustwords(
