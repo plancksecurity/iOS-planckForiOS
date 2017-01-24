@@ -33,7 +33,7 @@ extension CdMessage {
             received = testrecived
         }
 
-        uuid = pEpMessage[kPepID] as! String?
+        uuid = pEpMessage[kPepID] as? String
 
         var refsToConvert = Set<String>()// [String]()
         var localReferences = [CdMessageReference]()
@@ -81,6 +81,23 @@ extension CdMessage {
 
         self.attachments = NSOrderedSet(array: attachments)
         CdAttachment.deleteOrphans()
+
+        var optfield = [CdHeaderField]()
+        if let optFieldDict = pEpMessage[kPepOptFields] as? NSArray {
+            for item in optFieldDict {
+                if let headerfield = item as? NSArray {
+                    for inneritem in headerfield {
+                        var cdHeaderField = CdHeaderField.create()
+                        cdHeaderField.name = headerfield[0] as? String
+                        cdHeaderField.value = headerfield[1] as? String
+                        optfield.append(cdHeaderField)
+                    }
+                }
+            }
+        }
+
+        self.optionalFields = NSOrderedSet(array: optfield)
+        CdHeaderField.deleteOrphans()
 
         from = CdIdentity.from(pEpContact: pEpMessage[kPepFrom] as? PEPIdentity)
         to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepTo] as? [PEPIdentity]))

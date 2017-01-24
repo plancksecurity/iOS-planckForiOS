@@ -311,9 +311,9 @@ open class PEPUtil {
             dict[kPepReferences] = refs as AnyObject
         }
 
-        if let l = refs.last {
+        /*if let l = refs.last {
             dict[kPepInReplyTo] = l as AnyObject
-        }
+        }*/
 
         if let r = cdMessage.replyTo {
             dict[kPepReplyTo] = r.array as AnyObject

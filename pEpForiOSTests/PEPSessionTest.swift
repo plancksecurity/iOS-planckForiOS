@@ -77,12 +77,13 @@ class PEPSessionTest: XCTestCase {
         let hf = HeaderField(name: "name", value: "Value")
         message.optionalFields = [hf]
         message.save( )
-
+        let sesion = PEPSession()
         let cdmessage1 = CdMessage.first()!
+        let cdmessage2 = cdmessage1
         let pepmessage = cdmessage1.pEpMessage()
-        let cdmessage2 = CdMessage.create()
+        let nose = sesion.encryptMessageDict(pepmessage, extra: nil, dest: nil)
+        let nose2 = sesion.decryptMessageDict(pepmessage, dest: nil, keys: nil)
         cdmessage2.update(pEpMessage: pepmessage)
-
         XCTAssertEqual(cdmessage2, cdmessage1)
     }
 
