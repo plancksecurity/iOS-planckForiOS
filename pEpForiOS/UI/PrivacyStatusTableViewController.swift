@@ -14,6 +14,7 @@ class PrivacyStatusTableViewController: UITableViewController {
     var message: Message!
     var appConfig: AppConfig!
     var allRecipients: [Identity] = []
+    var selectedIdentity: Identity!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,15 +58,17 @@ class PrivacyStatusTableViewController: UITableViewController {
         }
         let handshakeCell = tableView.dequeueReusableCell(withIdentifier: HandshakeTableViewCell.reuseIdentifier,
                                                           for: indexPath) as! HandshakeTableViewCell
-        let identity = allRecipients[indexPath.row]
-        handshakeCell.updateCell(identity)
+        handshakeCell.updateCell(allRecipients, indexPath: indexPath)
         return handshakeCell
     }
     
-    // MARK: - UITableViewDelegate
+    // MARK: - Actions
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @IBAction func handshakeButtonTapped(_ sender: RoundedButton) {
+        selectedIdentity = allRecipients[sender.tag]
+        performSegue(withIdentifier: .segueHandshake, sender: self)
     }
+    
 }
 
 extension PrivacyStatusTableViewController: SegueHandlerType {
@@ -73,11 +76,17 @@ extension PrivacyStatusTableViewController: SegueHandlerType {
     // MARK: - SegueHandlerType
     
     enum SegueIdentifier: String {
+        case segueHandshake
         case noSegue
     }
     
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destination = segue.destination as? TrustwordsTableViewController
+        destination?.message = message
+        destination?.appConfig = appConfig
+        destination?.partnerIdentity = selectedIdentity
+        destination?.myselfContact = PEPUtil.mySelfIdentity(message)
     }
 }

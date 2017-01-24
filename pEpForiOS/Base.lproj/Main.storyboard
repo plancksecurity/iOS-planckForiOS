@@ -1822,7 +1822,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aso-tc-Ukd">
-                                            <rect key="frame" x="-2" y="-1" width="372" height="196"/>
+                                            <rect key="frame" x="-2" y="-2" width="372" height="196"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
@@ -1985,7 +1985,7 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                             <connections>
-                                                <segue destination="lsn-TN-3vZ" kind="show" id="S1m-2Y-dRk"/>
+                                                <action selector="handshakeButtonTapped:" destination="aYL-lZ-KDs" eventType="touchUpInside" id="eRe-49-F2H"/>
                                             </connections>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hyS-Qp-hZh">
@@ -2025,6 +2025,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Privacy Status" id="xH1-vU-8Xq"/>
+                    <connections>
+                        <segue destination="lsn-TN-3vZ" kind="show" identifier="segueHandshake" id="Uv1-kK-r61"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vle-7l-FFA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2362,6 +2365,9 @@ APPLEPIE RESEARCH</string>
                                                                     <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="confirmTrustwordsTapped:" destination="lsn-TN-3vZ" eventType="touchUpInside" id="btz-Fk-Dx4"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ASC-Uk-nLV" customClass="RoundedButton" customModule="pEpForiOS" customModuleProvider="target">
                                                             <rect key="frame" x="176.5" y="0.0" width="168.5" height="45"/>
@@ -2384,6 +2390,9 @@ APPLEPIE RESEARCH</string>
                                                                     <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="wrongTrustwordsTapped:" destination="lsn-TN-3vZ" eventType="touchUpInside" id="pBh-E9-Opg"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                 </stackView>
@@ -2410,6 +2419,9 @@ APPLEPIE RESEARCH</string>
                         <outlet property="languagePicker" destination="dhM-Ez-ikz" id="epF-of-V9k"/>
                         <outlet property="languagePickerHeight" destination="GLH-wo-uW1" id="lCe-wY-tsC"/>
                         <outlet property="longTrustwordsSwitch" destination="TxH-fe-xdi" id="sPN-RV-lq1"/>
+                        <outlet property="myEmailLabel" destination="Dii-kS-R66" id="D68-dp-u9F"/>
+                        <outlet property="partnerEmailLabel" destination="mGo-7p-j8J" id="FsM-yn-Rue"/>
+                        <outlet property="trustwordsLabel" destination="Zfz-MF-3Y8" id="uDU-Fz-NxY"/>
                         <outlet property="trustwordsLanaguageLabel" destination="mUu-Az-xb3" id="xEW-fh-3t1"/>
                         <segue destination="JYd-mR-vle" kind="presentation" identifier="segueFingerprint" modalTransitionStyle="crossDissolve" id="1Qm-rM-DSR"/>
                     </connections>
@@ -2711,6 +2723,6 @@ APPLEPIE RESEARCH</string>
     <inferredMetricsTieBreakers>
         <segue reference="Na7-CM-lbe"/>
         <segue reference="Usl-iS-7fo"/>
-        <segue reference="S1m-2Y-dRk"/>
+        <segue reference="Uv1-kK-r61"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -17,7 +17,9 @@ class HandshakeTableViewCell: UITableViewCell {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var handShakeButton: RoundedButton!
     
-    func updateCell(_ identity: Identity) {
+    func updateCell(_ allRecipients:[Identity], indexPath: IndexPath) {
+        let identity = allRecipients[indexPath.row]
+        handShakeButton.tag = indexPath.row
         nameLabel.text = identity.userName
         nameLabel.text = identity.address
     }

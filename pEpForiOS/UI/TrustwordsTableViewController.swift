@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageModel
+import ServerConfig
 
 class TrustwordsTableViewController: UITableViewController {
 
@@ -16,10 +17,16 @@ class TrustwordsTableViewController: UITableViewController {
     @IBOutlet weak var languagePickerHeight: NSLayoutConstraint!
     @IBOutlet weak var trustwordsLanaguageLabel: UILabel!
     @IBOutlet weak var longTrustwordsSwitch: UISwitch!
+    @IBOutlet weak var myEmailLabel: UILabel!
+    @IBOutlet weak var partnerEmailLabel: UILabel!
+    @IBOutlet weak var trustwordsLabel: UILabel!
     
     
     var message: Message!
     var appConfig: AppConfig!
+    var partnerIdentity: Identity!
+    var myselfContact: Identity!
+    var selectedTrustwordsLanguage: TrustwordsLanguage!
     
     fileprivate let pickerHeight = 135.0
     
@@ -28,6 +35,8 @@ class TrustwordsTableViewController: UITableViewController {
         
         configureTableView()
         configureUI()
+        setInitialLanguage()
+        setTrustwords()
     }
     
     func configureTableView() {
@@ -36,6 +45,26 @@ class TrustwordsTableViewController: UITableViewController {
     
     func configureUI() {
         //needs isPGPUser() and here you hide fingerprintButton
+        myEmailLabel.text = myselfContact.address
+        partnerEmailLabel.text = partnerIdentity.address
+    }
+    
+    func setInitialLanguage() {
+        let systemLangCode = PEPUtil.systemLanguage()
+        for language in PEPUtil.trustwordsLanguages() {
+            if language.languageCode == systemLangCode {
+                selectedTrustwordsLanguage = language
+                trustwordsLanaguageLabel.text = language.languageName
+            }
+        }
+    }
+    
+    func setTrustwords() {
+        let myselfContactPepContact = PEPUtil.pEp(identity: myselfContact)
+        let partnerPepContact = PEPUtil.pEp(identity: partnerIdentity)
+        trustwordsLabel.text = PEPUtil.trustwords(
+            identity1: myselfContactPepContact, identity2: partnerPepContact,
+            language: selectedTrustwordsLanguage.languageCode)
     }
 
     // MARK: - TableView Datasource
@@ -84,6 +113,13 @@ class TrustwordsTableViewController: UITableViewController {
     @IBAction func toggleLongTrustwords(_ sender: UISwitch) {
     }
     
+    @IBAction func confirmTrustwordsTapped(_ sender: RoundedButton) {
+        PEPUtil.trust(identity: partnerIdentity)
+    }
+    
+    @IBAction func wrongTrustwordsTapped(_ sender: RoundedButton) {
+        PEPUtil.mistrust(identity: partnerIdentity)
+    }
     
 }
 
@@ -104,6 +140,7 @@ extension TrustwordsTableViewController: UIPickerViewDataSource, UIPickerViewDel
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let language = PEPUtil.trustwordsLanguages()[row]
+        selectedTrustwordsLanguage = language
         trustwordsLanaguageLabel.text = language.languageName
     }
 }
