@@ -20,8 +20,7 @@ class TrustwordsTableViewController: UITableViewController {
     @IBOutlet weak var myEmailLabel: UILabel!
     @IBOutlet weak var partnerEmailLabel: UILabel!
     @IBOutlet weak var trustwordsLabel: UILabel!
-    
-    
+
     var message: Message!
     var appConfig: AppConfig!
     var partnerIdentity: Identity!
@@ -29,6 +28,8 @@ class TrustwordsTableViewController: UITableViewController {
     var selectedTrustwordsLanguage: TrustwordsLanguage!
     
     fileprivate let pickerHeight = 135.0
+
+    lazy var session = PEPSession()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,10 +61,15 @@ class TrustwordsTableViewController: UITableViewController {
     }
     
     func setTrustwords() {
-        let myselfContactPepContact = PEPUtil.pEp(identity: myselfContact)
-        let partnerPepContact = PEPUtil.pEp(identity: partnerIdentity)
+        let myselfContactPepContact = NSMutableDictionary(
+            dictionary: myselfContact.pEpIdentity())
+        let partnerPepContact = NSMutableDictionary(
+            dictionary: partnerIdentity.pEpIdentity())
+        session.updateIdentity(myselfContactPepContact)
+        session.updateIdentity(partnerPepContact)
         trustwordsLabel.text = PEPUtil.trustwords(
-            identity1: myselfContactPepContact, identity2: partnerPepContact,
+            identity1: myselfContactPepContact.pEpIdentity(),
+            identity2: partnerPepContact.pEpIdentity(),
             language: selectedTrustwordsLanguage.languageCode)
     }
 

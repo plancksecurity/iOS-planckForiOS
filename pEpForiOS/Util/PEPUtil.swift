@@ -793,3 +793,15 @@ extension UIFont {
         }
     }
 }
+
+extension NSDictionary {
+    func pEpIdentity() -> PEPIdentity {
+        var id = PEPIdentity()
+        for (k, v) in self {
+            if let ks = k as? String {
+                id[ks] = v as AnyObject
+            }
+        }
+        return id
+    }
+}
