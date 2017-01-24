@@ -144,6 +144,8 @@ class SimpleOperationsTest: XCTestCase {
                     break
             }
             XCTAssertEqual(messages.count, 1)
+
+            XCTAssertNotNil(m.imap)
         }
     }
 
