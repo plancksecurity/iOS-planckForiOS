@@ -119,7 +119,7 @@ class EmailListViewController: UITableViewController {
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
+        let _ = tableView.cellForRow(at: indexPath) as! EmailListViewCell
 
         if let fol = config?.folder {
             if fol.folderType == .drafts {
@@ -134,9 +134,8 @@ class EmailListViewController: UITableViewController {
         indexPath: IndexPath)-> [UITableViewRowAction]? {
         let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
         if let email = cell.messageAt(indexPath: indexPath, config: config) {
-            let isFlagAction = createIsFlagAction(message: email, cell: cell)
-            let deleteAction = createDeleteAction(cell)
-            //let isReadAction = createIsReadAction(message: email, cell: cell)
+            let isFlagAction = createFlagAction(message: email, cell: cell)
+            let deleteAction = createDeleteAction(message: email, cell: cell)
             let moreAction = createMoreAction(message: email, cell: cell)
             return [deleteAction,isFlagAction,moreAction]
         }
@@ -145,73 +144,84 @@ class EmailListViewController: UITableViewController {
 
     // MARK: - Misc
 
-    func createIsFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-        // preparing action to trigger when user swipe
-        let isFlagCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
-            { (action, indexPath) in
-                if (cell.isImportant(message: message)) {
-                    message.imapFlags?.flagged = false
+    func createRowAction(cell: EmailListViewCell,
+        image: UIImage?, action: @escaping (UITableViewRowAction, IndexPath) -> Void,
+        titleBlock: () -> String) -> UITableViewRowAction {
+        let rowAction = UITableViewRowAction(style: .normal, title: titleBlock(),
+                                             handler: action)
 
-                } else {
-                    message.imapFlags?.flagged = true
-                }
-                self.tableView.reloadRows(at: [indexPath], with: .none)
+        if let theImage = image {
+            let iconColor = UIColor(patternImage: theImage)
+            rowAction.backgroundColor = iconColor
         }
-        // creating the action
-        let isFlagAction = UITableViewRowAction(style: .normal, title: "          ",
-                                                handler: isFlagCompletionHandler)
-        // changing default action color
-        let swipeFlagImage = UIImage(named: "swipe-flag")
-        let flagIconColor = UIColor(patternImage: swipeFlagImage!)
-        isFlagAction.backgroundColor = flagIconColor
 
-        return isFlagAction
+        return rowAction
     }
 
-    func createDeleteAction (_ cell: EmailListViewCell) -> UITableViewRowAction {
-
-        // preparing the title action to show when user swipe
-
-        let deleteCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
-            { (action, indexPath) in
-                let message = cell.messageAt(indexPath: indexPath, config: self.config)
-                message?.imapFlags?.deleted = true
+    func createFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+            if (cell.isImportant(message: message)) {
+                message.imapFlags?.flagged = false
+            } else {
+                message.imapFlags?.flagged = true
+            }
+            message.save()
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+        }
+        func title() -> String {
+            var title = "Flag".localized
+            if (message.imapFlags?.flagged ?? true) {
+                title = "UnFlag".localized
+            }
+            return title
         }
 
-        // creating the action
-        let deleteAction = UITableViewRowAction(style: .normal, title: "          ",
-                                                handler: deleteCompletionHandler)
-        let swipeTrashImage = UIImage(named: "swipe-trash")
-        let trashIconColor = UIColor(patternImage: swipeTrashImage!)
-        deleteAction.backgroundColor = trashIconColor
-        return deleteAction
+        let image = UIImage(named: "swipe-flag")
+
+        return createRowAction(cell: cell, image: image, action: action, titleBlock: title)
     }
 
-    func createIsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-        // preparing the title action to show when user swipe
-        var localizedisReadTitle = " "
-        if (cell.isRead(message: message)) {
-            localizedisReadTitle = NSLocalizedString(
-                "Unread",
-                comment: "Unread button title in swipe action on EmailListViewController")
-        } else {
-            localizedisReadTitle = NSLocalizedString(
-                "Read",
-                comment: "Read button title in swipe action on EmailListViewController")
+    func createDeleteAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+            guard let message = cell.messageAt(indexPath: indexPath, config: self.config) else {
+                return
+            }
+            message.imapFlags?.deleted = true
+            message.save()
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+        }
+        func title() -> String {
+            return "Delete".localized
         }
 
-        // creating the action
-        let isReadCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
-            { (action, indexPath) in
-                if (cell.isRead(message: message)) {
-                    message.imapFlags?.seen = false
-                } else {
-                    message.imapFlags?.seen = true
-                }
-                self.tableView.reloadRows(at: [indexPath], with: .none)
+        let image = UIImage(named: "swipe-trash")
+
+        return createRowAction(cell: cell, image: image, action: action, titleBlock: title)
+    }
+
+    func createMarkAsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+            if (cell.isRead(message: message)) {
+                message.imapFlags?.seen = false
+            } else {
+                message.imapFlags?.seen = true
+            }
+            self.tableView.reloadRows(at: [indexPath], with: .none)
         }
-        let isReadAction = UITableViewRowAction(style: .default, title: localizedisReadTitle,
-                                                handler: isReadCompletionHandler)
+        func title() -> String {
+            if (cell.isRead(message: message)) {
+                return NSLocalizedString(
+                    "Unread",
+                    comment: "Unread button title in swipe action on EmailListViewController")
+            } else {
+                return NSLocalizedString(
+                    "Read",
+                    comment: "Read button title in swipe action on EmailListViewController")
+            }
+        }
+
+        let isReadAction = createRowAction(cell: cell, image: nil, action: action,
+                                           titleBlock: title)
         isReadAction.backgroundColor = UIColor.blue
 
         return isReadAction
