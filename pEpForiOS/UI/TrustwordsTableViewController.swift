@@ -24,7 +24,7 @@ class TrustwordsTableViewController: UITableViewController {
     var message: Message!
     var appConfig: AppConfig!
     var partnerIdentity: Identity!
-    var myselfContact: Identity!
+    var myselfIdentity: Identity!
     var selectedTrustwordsLanguage: TrustwordsLanguage!
     
     fileprivate let pickerHeight = 135.0
@@ -37,7 +37,7 @@ class TrustwordsTableViewController: UITableViewController {
         configureTableView()
         configureUI()
         setInitialLanguage()
-        setTrustwords()
+        //setTrustwords()
     }
     
     func configureTableView() {
@@ -46,8 +46,8 @@ class TrustwordsTableViewController: UITableViewController {
     
     func configureUI() {
         //needs isPGPUser() and here you hide fingerprintButton
-        myEmailLabel.text = myselfContact.address
-        partnerEmailLabel.text = partnerIdentity.address
+        myEmailLabel.text = myselfIdentity.displayString
+        partnerEmailLabel.text = partnerIdentity.displayString
     }
     
     func setInitialLanguage() {
@@ -60,15 +60,15 @@ class TrustwordsTableViewController: UITableViewController {
         }
     }
     
-    func setTrustwords() {
-        let myselfContactPepContact = NSMutableDictionary(dictionary: myselfContact.pEpIdentity())
+    func setTrustwords(long: Bool = false) {
+        let myselfContactPepContact = NSMutableDictionary(dictionary: myselfIdentity.pEpIdentity())
         let partnerPepContact = NSMutableDictionary(dictionary: partnerIdentity.pEpIdentity())
         session.updateIdentity(myselfContactPepContact)
         session.updateIdentity(partnerPepContact)
         trustwordsLabel.text = PEPUtil.trustwords(
             identity1: myselfContactPepContact.pEpIdentity(),
             identity2: partnerPepContact.pEpIdentity(),
-            language: selectedTrustwordsLanguage.languageCode)
+            language: selectedTrustwordsLanguage.languageCode, full: long)
     }
 
     // MARK: - TableView Datasource
@@ -115,6 +115,8 @@ class TrustwordsTableViewController: UITableViewController {
     }
     
     @IBAction func toggleLongTrustwords(_ sender: UISwitch) {
+        setTrustwords(long: sender.isOn)
+        tableView.reloadData()
     }
     
     @IBAction func confirmTrustwordsTapped(_ sender: RoundedButton) {
@@ -161,7 +163,13 @@ extension TrustwordsTableViewController: SegueHandlerType {
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        let navigationController = segue.destination
+        let destination = navigationController.childViewControllers[0] as! FingerprintTableViewController
+        destination.myselfIdentity = myselfIdentity
+        destination.message = message
+        destination.appConfig = appConfig
+        destination.partnerIdentity = partnerIdentity
+        destination.selectedTrustwordsLanguage = selectedTrustwordsLanguage
     }
 }
 

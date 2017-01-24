@@ -87,6 +87,6 @@ extension PrivacyStatusTableViewController: SegueHandlerType {
         destination?.message = message
         destination?.appConfig = appConfig
         destination?.partnerIdentity = selectedIdentity
-        destination?.myselfContact = PEPUtil.mySelfIdentity(message)
+        destination?.myselfIdentity = PEPUtil.mySelfIdentity(message)
     }
 }
