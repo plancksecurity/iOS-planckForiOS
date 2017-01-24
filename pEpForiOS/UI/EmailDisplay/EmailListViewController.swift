@@ -146,9 +146,9 @@ class EmailListViewController: UITableViewController {
 
     func createRowAction(cell: EmailListViewCell,
         image: UIImage?, action: @escaping (UITableViewRowAction, IndexPath) -> Void,
-        titleBlock: () -> String) -> UITableViewRowAction {
-        let rowAction = UITableViewRowAction(style: .normal, title: titleBlock(),
-                                             handler: action)
+        title: String) -> UITableViewRowAction {
+        let rowAction = UITableViewRowAction(
+            style: .normal, title: title, handler: action)
 
         if let theImage = image {
             let iconColor = UIColor(patternImage: theImage)
@@ -168,17 +168,14 @@ class EmailListViewController: UITableViewController {
             message.save()
             self.tableView.reloadRows(at: [indexPath], with: .none)
         }
-        func title() -> String {
-            var title = "Flag".localized
-            if (message.imapFlags?.flagged ?? true) {
-                title = "UnFlag".localized
-            }
-            return title
+
+        var title = "Flag".localized
+        if (message.imapFlags?.flagged ?? true) {
+            title = "UnFlag".localized
         }
 
-        let image = UIImage(named: "swipe-flag")
-
-        return createRowAction(cell: cell, image: image, action: action, titleBlock: title)
+        return createRowAction(
+            cell: cell, image: UIImage(named: "swipe-flag"), action: action, title: title)
     }
 
     func createDeleteAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
@@ -190,13 +187,10 @@ class EmailListViewController: UITableViewController {
             message.save()
             self.tableView.reloadRows(at: [indexPath], with: .none)
         }
-        func title() -> String {
-            return "Delete".localized
-        }
 
-        let image = UIImage(named: "swipe-trash")
-
-        return createRowAction(cell: cell, image: image, action: action, titleBlock: title)
+        return createRowAction(
+            cell: cell, image: UIImage(named: "swipe-trash"), action: action,
+            title: "Delete".localized)
     }
 
     func createMarkAsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
@@ -208,34 +202,29 @@ class EmailListViewController: UITableViewController {
             }
             self.tableView.reloadRows(at: [indexPath], with: .none)
         }
-        func title() -> String {
-            if (cell.isRead(message: message)) {
-                return NSLocalizedString(
-                    "Unread",
-                    comment: "Unread button title in swipe action on EmailListViewController")
-            } else {
-                return NSLocalizedString(
-                    "Read",
-                    comment: "Read button title in swipe action on EmailListViewController")
-            }
+
+        var title = NSLocalizedString(
+            "Unread", comment: "Unread button title in swipe action on EmailListViewController")
+        if (!cell.isRead(message: message)) {
+            title = NSLocalizedString(
+                "Read", comment: "Read button title in swipe action on EmailListViewController")
         }
 
         let isReadAction = createRowAction(cell: cell, image: nil, action: action,
-                                           titleBlock: title)
+                                           title: title)
         isReadAction.backgroundColor = UIColor.blue
 
         return isReadAction
     }
     
     func createMoreAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-        let moreCompletitionHandler :(UITableViewRowAction, IndexPath) -> Void = {(action, indexPath) in
+        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
             self.showMoreActionSheet(cell: cell)
         }
-        let moreAction = UITableViewRowAction(style: .normal, title: "          ", handler: moreCompletitionHandler)
-        let swipeMoreImage = UIImage(named: "swipe-more")
-        let moreIconColor = UIColor(patternImage: swipeMoreImage!)
-        moreAction.backgroundColor = moreIconColor
-        return moreAction
+
+        return createRowAction(
+            cell: cell, image: UIImage(named: "swipe-more"), action: action,
+            title: "More".localized)
     }
     
     // MARK: - Action Sheet
