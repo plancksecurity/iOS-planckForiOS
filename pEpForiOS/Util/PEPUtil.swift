@@ -27,7 +27,7 @@ public struct TrustwordsLanguage {
 
 open class PEPUtil {
     static let comp = "PEPUtil"
-    
+
     /**
      Default pEpRating value when there's none.
      */
@@ -318,10 +318,12 @@ open class PEPUtil {
         dict[kPepReplyTo] = NSArray(array: cdMessage.replyTo!.map()
             { return pEp(cdIdentity: $0 as! CdIdentity) })
 
-        dict[kPepOptFields] = NSArray(array: cdMessage.optionalFields!.map() {
-            let c = $0 as! CdHeaderField
-            return NSArray(array: [c.name!, c.value!])
-        })
+        if (cdMessage.optionalFields != nil) && (cdMessage.optionalFields?.count)! > 0 {
+            dict[kPepOptFields] = NSArray(array: cdMessage.optionalFields!.map() {
+                let c = $0 as! CdHeaderField
+                return NSArray(array: [c.name!, c.value!])
+            })
+        }
 
         return dict as PEPMessage
     }
@@ -715,7 +717,7 @@ open class PEPUtil {
             TrustwordsLanguage(languageCode: "de", languageName: "German"),
         ]
     }
-    
+
     public static func mySelfIdentity(_ message: Message) -> Identity? {
         let allRecipients = Array(message.allIdentities)
         let mySelfIdent = message.parent!.account!.user
@@ -726,7 +728,7 @@ open class PEPUtil {
         }
         return nil
     }
-    
+
     public static func systemLanguage() -> String {
         let language = Bundle.main.preferredLocalizations.first
         print("LANG: \(language)")
@@ -735,57 +737,57 @@ open class PEPUtil {
 }
 
 extension String {
-    
+
     public static var pepSignature: String {
         return "pEp.Mail.Signature".localized
     }
 }
 
 extension UIColor {
-    
+
     open class var pEpGreen: UIColor {
         get {
             return .green //(hex: "#03AA4B")
         }
     }
-    
+
     open class var pEpNoColor: UIColor {
         get {
             return .gray //(hex: "#B4B0B0")
         }
     }
-    
+
     open class var pEpRed: UIColor {
         get {
             return .red //(hex: "#D0011B")
         }
     }
-    
+
     open class var pEpYellow: UIColor {
         get {
             return .yellow //UIColor(hex: "#FFC901")
         }
     }
-    
+
     open class var pEpBlue: UIColor {
         get {
             return .blue //UIColor(hex: "#007AFF")
         }
     }
-    
+
     convenience init(hex: String) {
         var hexstr = hex
         if hexstr.hasPrefix("#") {
             hexstr = String(hexstr.characters.dropFirst())
         }
-        
+
         var rgbValue: UInt32 = 0
         Scanner(string: hexstr).scanHexInt32(&rgbValue)
-        
+
         let r = CGFloat((rgbValue >> 16) & 0xff) / 255.0
         let g = CGFloat((rgbValue >> 08) & 0xff) / 255.0
         let b = CGFloat((rgbValue >> 00) & 0xff) / 255.0
-        
+
         self.init(red: r, green: g, blue: b, alpha: 1.0)
     }
 }

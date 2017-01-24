@@ -86,12 +86,10 @@ extension CdMessage {
         if let optFieldDict = pEpMessage[kPepOptFields] as? NSArray {
             for item in optFieldDict {
                 if let headerfield = item as? NSArray {
-                    for inneritem in headerfield {
-                        var cdHeaderField = CdHeaderField.create()
-                        cdHeaderField.name = headerfield[0] as? String
-                        cdHeaderField.value = headerfield[1] as? String
-                        optfield.append(cdHeaderField)
-                    }
+                    let cdHeaderField = CdHeaderField.create()
+                    cdHeaderField.name = headerfield[0] as? String
+                    cdHeaderField.value = headerfield[1] as? String
+                    optfield.append(cdHeaderField)
                 }
             }
         }
