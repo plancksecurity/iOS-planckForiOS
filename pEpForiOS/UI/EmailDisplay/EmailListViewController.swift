@@ -151,7 +151,6 @@ class EmailListViewController: UITableViewController {
             { (action, indexPath) in
                 if (cell.isImportant(message: message)) {
                     message.imapFlags?.flagged = false
-
                 } else {
                     message.imapFlags?.flagged = true
                 }
@@ -169,9 +168,7 @@ class EmailListViewController: UITableViewController {
     }
 
     func createDeleteAction (_ cell: EmailListViewCell) -> UITableViewRowAction {
-
         // preparing the title action to show when user swipe
-
         let deleteCompletionHandler: (UITableViewRowAction, IndexPath) -> Void =
             { (action, indexPath) in
                 let message = cell.messageAt(indexPath: indexPath, config: self.config)
