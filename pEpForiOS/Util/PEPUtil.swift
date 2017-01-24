@@ -183,8 +183,6 @@ open class PEPUtil {
         var dict = PEPIdentity()
         if let name = cdIdentity.userName{
             dict[kPepUsername] = name as NSObject
-        } else {
-            dict[kPepUsername] = cdIdentity.address as AnyObject
         }
         dict[kPepAddress] = cdIdentity.address as AnyObject
         dict[kPepIsMe] = cdIdentity.isMySelf
