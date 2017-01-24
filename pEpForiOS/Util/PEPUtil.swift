@@ -170,6 +170,9 @@ open class PEPUtil {
         if let userN = identity.userName {
             contact[kPepUsername] = userN as AnyObject
         }
+        if let userID = identity.userID {
+            contact[kPepUserID] = userID as AnyObject
+        }
         contact[kPepIsMe] = identity.isMySelf as AnyObject
         return contact
     }
@@ -181,8 +184,11 @@ open class PEPUtil {
      */
     open static func pEp(cdIdentity: CdIdentity) -> PEPIdentity {
         var dict = PEPIdentity()
-        if let name = cdIdentity.userName{
+        if let name = cdIdentity.userName {
             dict[kPepUsername] = name as NSObject
+        }
+        if let userID = cdIdentity.userID {
+            dict[kPepUserID] = userID as NSObject
         }
         dict[kPepAddress] = cdIdentity.address as AnyObject
         dict[kPepIsMe] = cdIdentity.isMySelf
