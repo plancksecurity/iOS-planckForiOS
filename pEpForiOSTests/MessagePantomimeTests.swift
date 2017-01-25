@@ -28,7 +28,7 @@ class MessagePantomimeTests: XCTestCase {
         m.imap = CdImapFields.createWithDefaults()
 
         m.imap?.flagFlagged = true
-        m.updateFlags()
+        m.updateCurrentFlags()
 
         for f: PantomimeFlag in [.answered, .deleted, .draft, .recent, .seen] {
             XCTAssertFalse(m.pantomimeFlags().contain(f))
@@ -36,28 +36,18 @@ class MessagePantomimeTests: XCTestCase {
         XCTAssertTrue(m.pantomimeFlags().contain(.flagged))
 
         m.imap?.flagAnswered = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.answered))
-        m.updateFlags()
         XCTAssertTrue(m.pantomimeFlags().contain(.answered))
 
         m.imap?.flagDeleted = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.deleted))
-        m.updateFlags()
         XCTAssertTrue(m.pantomimeFlags().contain(.deleted))
 
         m.imap?.flagRecent = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.recent))
-        m.updateFlags()
         XCTAssertTrue(m.pantomimeFlags().contain(.recent))
 
         m.imap?.flagDraft = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.draft))
-        m.updateFlags()
         XCTAssertTrue(m.pantomimeFlags().contain(.draft))
 
         m.imap?.flagSeen = true
-        XCTAssertFalse(m.pantomimeFlags().contain(.seen))
-        m.updateFlags()
         XCTAssertTrue(m.pantomimeFlags().contain(.seen))
     }
 
@@ -98,8 +88,8 @@ class MessagePantomimeTests: XCTestCase {
             case .deleted:
                 m.imap?.flagDeleted = true
             }
+            m.updateCurrentFlags()
             valuesSoFar += Int(fl.rawValue)
-            m.updateFlags()
             XCTAssertEqual(m.imap?.flagsCurrent, valuesSoFar)
         }
     }
@@ -111,28 +101,23 @@ class MessagePantomimeTests: XCTestCase {
         m.uid = 1024
         m.imap?.flagsFromServer = 0
         m.imap?.flagDeleted = true
-        m.updateFlags()
         XCTAssertEqual(m.storeCommandForUpdate()?.0,
                        "UID STORE 1024 FLAGS.SILENT (\\Deleted)")
 
         // Check if 'difference' is taken into account
         m.imap?.flagsFromServer = CWFlags(flags: PantomimeFlag.deleted).rawFlagsAsShort()
-        m.updateFlags()
         XCTAssertEqual(m.storeCommandForUpdate()?.0,
                        "UID STORE 1024 FLAGS.SILENT (\\Deleted)")
 
         m.imap?.flagAnswered = true
-        m.updateFlags()
         XCTAssertEqual(m.storeCommandForUpdate()?.0,
                        "UID STORE 1024 FLAGS.SILENT (\\Answered \\Deleted)")
 
         m.imap?.flagSeen = true
-        m.updateFlags()
         XCTAssertEqual(m.storeCommandForUpdate()?.0,
                        "UID STORE 1024 FLAGS.SILENT (\\Answered \\Seen \\Deleted)")
 
         m.imap?.flagFlagged = true
-        m.updateFlags()
         XCTAssertEqual(
             m.storeCommandForUpdate()?.0,
             "UID STORE 1024 FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")

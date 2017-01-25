@@ -483,7 +483,6 @@ class SimpleOperationsTest: XCTestCase {
                 break
             }
             imap.flagFlagged = !imap.flagFlagged
-            m.updateFlags()
         }
 
         Record.saveAndWait()
@@ -541,7 +540,6 @@ class SimpleOperationsTest: XCTestCase {
                 break
             }
             imap.flagSeen = !imap.flagSeen
-            m.updateFlags()
         }
 
         Record.saveAndWait()

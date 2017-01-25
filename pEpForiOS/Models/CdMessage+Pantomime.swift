@@ -33,7 +33,12 @@ extension CdMessage {
      - Returns: `flags` as `CWFlags`
      */
     public func pantomimeFlags() -> CWFlags {
-        return CdMessage.pantomimeFlagsFromNumber(imap!.flagsCurrent)
+        updateCurrentFlags()
+        if let theImap = imap {
+            return CdMessage.pantomimeFlagsFromNumber(theImap.flagsCurrent)
+        } else {
+            return CWFlags()
+        }
     }
 
     /**
@@ -71,6 +76,8 @@ extension CdMessage {
      on the server with the local one. It will not figure out individual flags.
      */
     public func storeCommandForUpdate() -> (String, [AnyHashable: Any])? {
+        updateCurrentFlags()
+
         guard let flags = imap?.flagsCurrent else {
             return nil
         }
@@ -88,28 +95,6 @@ extension CdMessage {
 
         dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: flags)
         return (command: result, dictionary: dict)
-    }
-
-    /**
-     Call this after any update to the flags. Should be automated with `didSet`.
-     */
-    public func updateFlags() {
-        let theImap = imap ?? CdImapFields.create()
-        imap = theImap
-        let cwFlags = CWFlags.init()
-        let allFlags: [(Bool, PantomimeFlag)] = [
-            (theImap.flagSeen, PantomimeFlag.seen),
-            (theImap.flagDraft, PantomimeFlag.draft),
-            (theImap.flagRecent, PantomimeFlag.recent),
-            (theImap.flagDeleted, PantomimeFlag.deleted),
-            (theImap.flagAnswered, PantomimeFlag.answered),
-            (theImap.flagFlagged, PantomimeFlag.flagged)]
-        for (p, f) in allFlags {
-            if p {
-                cwFlags.add(f)
-            }
-        }
-        theImap.flagsCurrent = cwFlags.rawFlagsAsShort()
     }
 
     /**
@@ -207,7 +192,6 @@ extension CdMessage {
         imap = theImap
 
         theImap.flagsFromServer = Int16(flags.rawFlagsAsShort())
-        theImap.flagsCurrent = theImap.flagsFromServer
         theImap.flagSeen = flags.contain(.seen)
         theImap.flagAnswered = flags.contain(.answered)
         theImap.flagFlagged = flags.contain(.flagged)

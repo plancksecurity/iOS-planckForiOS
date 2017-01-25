@@ -251,7 +251,6 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
                 let imap = msg.imap ?? CdImapFields.createWithDefaults(in: context)
                 msg.imap = imap
                 imap.flagsFromServer = flags.rawFlagsAsShort() as Int16
-                imap.flagsCurrent = imap.flagsFromServer
             } else {
                 self.errorOperation(NSLocalizedString(
                     "UID STORE: Response for message that can't be found",
