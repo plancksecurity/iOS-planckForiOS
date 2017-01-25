@@ -172,7 +172,7 @@ class EmailListViewController: UITableViewController {
             self.tableView.reloadRows(at: [indexPath], with: .none)
         }
 
-        var title = "Flag".localized
+        var title = "\n\nFlag".localized
         if (message.imapFlags?.flagged ?? true) {
             title = "UnFlag".localized
         }
@@ -193,7 +193,7 @@ class EmailListViewController: UITableViewController {
 
         return createRowAction(
             cell: cell, image: UIImage(named: "swipe-trash"), action: action,
-            title: "Delete".localized)
+            title: "\n\nDelete".localized)
     }
 
     func createMarkAsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
@@ -227,7 +227,7 @@ class EmailListViewController: UITableViewController {
 
         return createRowAction(
             cell: cell, image: UIImage(named: "swipe-more"), action: action,
-            title: "More".localized)
+            title: "\n\nMore".localized)
     }
     
     // MARK: - Action Sheet
