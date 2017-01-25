@@ -85,7 +85,6 @@ class EmailListViewCell: UITableViewCell {
             } else {
                 UIHelper.putString(nil, toLabel: self.dateLabel)
             }
-            
             if (isRead(message: email)) {
                 self.isReadMessageImage.isHidden = true
             }

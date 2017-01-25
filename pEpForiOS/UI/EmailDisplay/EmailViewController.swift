@@ -14,6 +14,7 @@ class EmailViewController: UITableViewController {
 
     var appConfig: AppConfig!
     var message: Message!
+    var partnerIdentity: Identity!
     var tableData: ComposeDataSource?
     var datasource = [Message]()
     var page = 0
@@ -65,13 +66,27 @@ class EmailViewController: UITableViewController {
     }
     
     @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
-        let allIdentities = message.allIdentities
-        if allIdentities.count == 1 {
+        
+        let filtedredIdentities = filterIdentities(message: message)
+        
+        if filtedredIdentities.count == 1 {
+            partnerIdentity = filtedredIdentities.first
             performSegue(withIdentifier: .segueTrustwords, sender: self)
         }
-        else if allIdentities.count > 1 {
+        else if filtedredIdentities.count > 1 {
             performSegue(withIdentifier: .seguePrivacyStatus, sender: self)
         }
+    }
+    
+    func filterIdentities(message: Message) -> [Identity] {
+        var allIdentities = Array(message.allIdentities)
+        let myselfIdentity = PEPUtil.mySelfIdentity(message)
+        for identity in allIdentities {
+            if identity.address == myselfIdentity?.address {
+               allIdentities.remove(at: allIdentities.index(of: identity)!)
+            }
+        }
+        return allIdentities
     }
     
 }
@@ -184,6 +199,8 @@ extension EmailViewController: SegueHandlerType {
             let destination = segue.destination as? TrustwordsTableViewController
             destination?.message = message
             destination?.appConfig = appConfig
+            destination?.myselfIdentity = PEPUtil.mySelfIdentity(message)
+            destination?.partnerIdentity = partnerIdentity
             break
         case .noSegue:
             break

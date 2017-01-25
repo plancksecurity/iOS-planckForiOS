@@ -65,10 +65,16 @@ class TrustwordsTableViewController: UITableViewController {
         let partnerPepContact = NSMutableDictionary(dictionary: partnerIdentity.pEpIdentity())
         session.updateIdentity(myselfContactPepContact)
         session.updateIdentity(partnerPepContact)
-        trustwordsLabel.text = PEPUtil.trustwords(
+        if let trustWordsString = PEPUtil.trustwords(
             identity1: myselfContactPepContact.pEpIdentity(),
             identity2: partnerPepContact.pEpIdentity(),
-            language: selectedTrustwordsLanguage.languageCode, full: long)
+            language: selectedTrustwordsLanguage.languageCode, full: long){
+            trustwordsLabel.text = trustWordsString
+        }
+        else {
+            trustwordsLabel.text = ""
+        }
+        
     }
 
     // MARK: - TableView Datasource
@@ -81,12 +87,14 @@ class TrustwordsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 2 {
-            togglePicker()
+            togglePicker(indexPath: indexPath)
         }
     }
 
-    func togglePicker() {
+    func togglePicker(indexPath: IndexPath) {
+        
         if languagePickerHeight.constant == 0 {
+            tableView .scrollToRow(at: indexPath, at: .top, animated: true)
             showLangPicker()
         }
         else {
@@ -115,7 +123,7 @@ class TrustwordsTableViewController: UITableViewController {
     }
     
     @IBAction func toggleLongTrustwords(_ sender: UISwitch) {
-        setTrustwords(long: sender.isOn)
+        //setTrustwords(long: sender.isOn)
         tableView.reloadData()
     }
     
@@ -148,6 +156,7 @@ extension TrustwordsTableViewController: UIPickerViewDataSource, UIPickerViewDel
         let language = PEPUtil.trustwordsLanguages()[row]
         selectedTrustwordsLanguage = language
         trustwordsLanaguageLabel.text = language.languageName
+        //setTrustwords(long: longTrustwordsSwitch.isOn)
     }
 }
 

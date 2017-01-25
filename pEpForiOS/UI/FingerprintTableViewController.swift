@@ -41,10 +41,19 @@ class FingerprintTableViewController: UITableViewController {
     }
     
     func setFingerprints() {
-        let myselfFingerprints = PEPUtil.fingerPrint(identity: myselfIdentity)
-        let partnerFingerprints = PEPUtil.fingerPrint(identity: partnerIdentity)
-        mySelfFingerprintLabel.text = fingerprintFormat(myselfFingerprints!)
-        partnerFingerprintLabel.text = fingerprintFormat(partnerFingerprints!)
+        if let myselfFingerprints = PEPUtil.fingerPrint(identity: myselfIdentity) {
+            mySelfFingerprintLabel.text = fingerprintFormat(myselfFingerprints)
+        }
+        else {
+            mySelfFingerprintLabel.text = ""
+        }
+        
+        if let partnerFingerprints = PEPUtil.fingerPrint(identity: partnerIdentity) {
+            partnerFingerprintLabel.text = fingerprintFormat(partnerFingerprints)
+        }
+        else {
+            partnerFingerprintLabel.text = ""
+        }
     }
     
     // MARK: - TableView Datasource
