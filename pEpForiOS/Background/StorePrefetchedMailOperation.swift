@@ -15,9 +15,9 @@ import MessageModel
  */
 open class StorePrefetchedMailOperation: BaseOperation {
     let message: CWIMAPMessage
-    let quick: Bool
     let accountID: NSManagedObjectID
     let messageFetchedBlock: MessageFetchedBlock?
+    let messageUpdate: CWMessageUpdate
 
     /**
      - parameter quick: Store only the most important properties (for true), or do it completely,
@@ -25,10 +25,11 @@ open class StorePrefetchedMailOperation: BaseOperation {
      */
     public init(
         accountID: NSManagedObjectID, message: CWIMAPMessage,
-        quick: Bool = true, name: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
+        messageUpdate: CWMessageUpdate, name: String? = nil,
+        messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.message = message
-        self.quick = quick
+        self.messageUpdate = messageUpdate
         self.messageFetchedBlock = messageFetchedBlock
         super.init(parentName: name)
     }
@@ -50,13 +51,12 @@ open class StorePrefetchedMailOperation: BaseOperation {
                 addError(Constants.errorCannotFindAccount(component: comp))
                 return
         }
-        let result = insert(pantomimeMessage: message, account: account, quick: quick)
-        if let msg = result {
+        if let msg = insert(pantomimeMessage: message, account: account) {
             if msg.received == nil {
                 msg.received = NSDate()
             }
             Record.saveAndWait(context: context)
-            if !quick {
+            if messageUpdate.rfc822 {
                 messageFetchedBlock?(msg)
             }
         } else {
@@ -64,15 +64,8 @@ open class StorePrefetchedMailOperation: BaseOperation {
         }
     }
 
-    func insert(pantomimeMessage: CWIMAPMessage, account: CdAccount,
-                quick: Bool = true) -> CdMessage? {
-        if quick {
-            let result = CdMessage.quickInsertOrUpdate(
-                pantomimeMessage: self.message, account: account)
-            return result
-        } else {
-            return CdMessage.insertOrUpdate(
-                pantomimeMessage: self.message, account: account)
-        }
+    func insert(pantomimeMessage: CWIMAPMessage, account: CdAccount) -> CdMessage? {
+        return CdMessage.insertOrUpdate(
+            pantomimeMessage: self.message, account: account, messageUpdate: messageUpdate)
     }
 }

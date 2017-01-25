@@ -251,7 +251,8 @@ class PEPSessionTest: XCTestCase {
         let pantMessage = CWIMAPMessage(data: data)
         pantMessage.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let cdMessage = CdMessage.insertOrUpdate(
-            pantomimeMessage: pantMessage, account: cdAccount, forceParseAttachments: true) else {
+            pantomimeMessage: pantMessage, account: cdAccount, messageUpdate: CWMessageUpdate(),
+            forceParseAttachments: true) else {
                 XCTFail()
                 return
         }
@@ -278,7 +279,8 @@ class PEPSessionTest: XCTestCase {
         let pantMessage = CWIMAPMessage(data: data)
         pantMessage.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let cdMessage = CdMessage.insertOrUpdate(
-            pantomimeMessage: pantMessage, account: cdAccount, forceParseAttachments: true) else {
+            pantomimeMessage: pantMessage, account: cdAccount, messageUpdate: CWMessageUpdate(),
+            forceParseAttachments: true) else {
                 XCTFail()
                 return
         }

@@ -33,7 +33,8 @@ class CdMessagePantomimeTests: XCTestCase {
         let message = CWIMAPMessage.init(data: data)
         message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
         let msg = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, forceParseAttachments: true)
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
+            forceParseAttachments: true)
         XCTAssertNotNil(msg)
         if let m = msg {
             XCTAssertNotNil(m.longMessage)

@@ -197,11 +197,12 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     func removeMessage(withUID: UInt) {
     }
 
-    func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage) {
+    public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
+                      messageUpdate: CWMessageUpdate) {
         Log.warn(component: comp, content: "Writing message \(message)")
 
         let opQuick = StorePrefetchedMailOperation(
-            accountID: accountID, message: message, quick: false, name: logName,
+            accountID: accountID, message: message, messageUpdate: messageUpdate, name: logName,
             messageFetchedBlock: messageFetchedBlock)
         opQuick.start()
     }

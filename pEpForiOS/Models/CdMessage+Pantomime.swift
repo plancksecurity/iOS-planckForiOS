@@ -224,11 +224,22 @@ extension CdMessage {
      */
     public static func quickInsertOrUpdate(
         pantomimeMessage message: CWIMAPMessage,
-        account: CdAccount) -> CdMessage? {
+        account: CdAccount, messageUpdate: CWMessageUpdate) -> CdMessage? {
         guard let folderName = message.folder()?.name() else {
             return nil
         }
         guard let folder = account.folder(byName: folderName) else {
+            return nil
+        }
+
+        // Bail out quickly if there is only a flag change needed
+        if messageUpdate.isFlagsOnly() {
+            if let mail = existing(pantomimeMessage: message) {
+                if (mail.imap?.flagsCurrent ?? 0) != message.flags().rawFlagsAsShort() {
+                    mail.updateFromServer(flags: message.flags())
+                }
+                return mail
+            }
             return nil
         }
 
@@ -248,9 +259,7 @@ extension CdMessage {
         imap.messageNumber = Int32(message.messageNumber())
         imap.mimeBoundary = (message.boundary() as NSData?)?.asciiString()
 
-        // sync flags
-        let flags = message.flags()
-        mail.updateFromServer(flags: flags)
+        mail.updateFromServer(flags: message.flags())
 
         return mail
     }
@@ -267,10 +276,14 @@ extension CdMessage {
      */
     public static func insertOrUpdate(
         pantomimeMessage message: CWIMAPMessage, account: CdAccount,
-        forceParseAttachments: Bool = false) -> CdMessage? {
-        let quickMail = quickInsertOrUpdate(pantomimeMessage: message, account: account)
-        guard let mail = quickMail else {
-            return nil
+        messageUpdate: CWMessageUpdate, forceParseAttachments: Bool = false) -> CdMessage? {
+        guard let mail = quickInsertOrUpdate(
+            pantomimeMessage: message, account: account, messageUpdate: messageUpdate) else {
+                return nil
+        }
+
+        if messageUpdate.isFlagsOnly() {
+            return mail
         }
 
         if let from = message.from() {
