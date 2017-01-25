@@ -160,6 +160,9 @@ class EmailListViewController: UITableViewController {
 
     func createFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
         func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+            if message.imapFlags == nil {
+                Log.warn(component: #function, content: "message.imapFlags == nil")
+            }
             if (cell.isImportant(message: message)) {
                 message.imapFlags?.flagged = false
             } else {
