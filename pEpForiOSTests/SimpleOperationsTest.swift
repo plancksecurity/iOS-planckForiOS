@@ -164,11 +164,19 @@ class SimpleOperationsTest: XCTestCase {
 
         // Change all flags locally
         for m in allMessages {
-            m.imap?.flagSeen = false
-            XCTAssertFalse(m.imap?.flagSeen ?? true)
+            guard let imap = m.imap else {
+                XCTFail()
+                continue
+            }
+            imap.flagSeen = false
+            XCTAssertFalse(imap.flagSeen)
         }
 
         Record.saveAndWait()
+
+        let changedMessages = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: folder, context: Record.Context.default) ?? []
+        XCTAssertEqual(changedMessages.count, allMessages.count)
 
         let expMailsSynced = expectation(description: "expMailsSynced")
 
