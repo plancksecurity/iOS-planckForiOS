@@ -28,7 +28,7 @@ class MessagePantomimeTests: XCTestCase {
         m.imap = CdImapFields.createWithDefaults()
 
         m.imap?.flagFlagged = true
-        m.updateCurrentFlags()
+        m.imap?.updateCurrentFlags()
 
         for f: PantomimeFlag in [.answered, .deleted, .draft, .recent, .seen] {
             XCTAssertFalse(m.pantomimeFlags().contain(f))
@@ -88,7 +88,7 @@ class MessagePantomimeTests: XCTestCase {
             case .deleted:
                 m.imap?.flagDeleted = true
             }
-            m.updateCurrentFlags()
+            m.imap?.updateCurrentFlags()
             valuesSoFar += Int(fl.rawValue)
             XCTAssertEqual(m.imap?.flagsCurrent, valuesSoFar)
         }

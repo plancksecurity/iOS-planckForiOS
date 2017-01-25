@@ -33,8 +33,8 @@ extension CdMessage {
      - Returns: `flags` as `CWFlags`
      */
     public func pantomimeFlags() -> CWFlags {
-        updateCurrentFlags()
         if let theImap = imap {
+            theImap.updateCurrentFlags()
             return CdMessage.pantomimeFlagsFromNumber(theImap.flagsCurrent)
         } else {
             return CWFlags()
@@ -76,7 +76,7 @@ extension CdMessage {
      on the server with the local one. It will not figure out individual flags.
      */
     public func storeCommandForUpdate() -> (String, [AnyHashable: Any])? {
-        updateCurrentFlags()
+        imap?.updateCurrentFlags()
 
         guard let flags = imap?.flagsCurrent else {
             return nil
