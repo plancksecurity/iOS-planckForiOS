@@ -64,7 +64,9 @@ class ImapFlagsTests: XCTestCase {
     }
     
     func testCdImapFields() {
-        let _ = PersistentSetup()
+        let ps = PersistentSetup()
+        ps.dummyToAvoidCompilerWarning()
+
         let cdFields = CdImapFields.create()
         let cwFlags = CWFlags()
 

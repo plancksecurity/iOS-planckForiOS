@@ -58,11 +58,33 @@ class NetworkServiceTests: XCTestCase {
     }
 
     class MessageModelObserver: MessageFolderDelegate {
-        var messages = [Message]()
+        var messages: [Message] {
+            return Array(messagesByID.values).sorted { m1, m2 in
+                if let d1 = m1.received, let d2 = m2.received {
+                    return areInIncreasingOrder(d1: d1, d2: d2)
+                } else if let d1 = m1.sent, let d2 = m2.sent {
+                    return areInIncreasingOrder(d1: d1, d2: d2)
+                }
+                return false
+            }
+        }
+        var messagesByID = [MessageID: Message]()
+
+        func areInIncreasingOrder(d1: Date, d2: Date) -> Bool {
+            switch d1.compare(d2 as Date) {
+            case .orderedAscending: return true
+            default: return false
+            }
+        }
 
         func didChange(messageFolder: MessageFolder) {
             if let msg = messageFolder as? Message {
-                messages.append(msg)
+                if msg.isOriginal {
+                    messagesByID[msg.messageID] = msg
+                } else {
+                    XCTAssertNotNil(messagesByID[msg.messageID])
+                    messagesByID[msg.messageID] = msg
+                }
             }
         }
     }

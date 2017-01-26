@@ -237,13 +237,15 @@ class PEPSessionTest: XCTestCase {
 
     func testParseMessageHeapBufferOverflow() {
         CWLogger.setLogger(Log.shared)
-        let _ = PersistentSetup()
+        let ps = PersistentSetup()
+        ps.dummyToAvoidCompilerWarning()
 
         let cdAccount = TestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
+        folder.uuid = MessageID.generate()
 
         guard let data = TestUtil.loadDataWithFileName("MessageHeapBufferOverflow.txt") else {
             XCTAssertTrue(false)

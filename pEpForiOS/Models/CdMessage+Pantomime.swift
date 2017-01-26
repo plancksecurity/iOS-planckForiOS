@@ -195,8 +195,6 @@ extension CdMessage {
             return
         }
 
-        serialNumber = serialNumber + 1
-
         let theImap = imap ?? CdImapFields.create()
         imap = theImap
 
@@ -207,11 +205,6 @@ extension CdMessage {
         theImap.flagDeleted = flags.contain(.deleted)
         theImap.flagDraft = flags.contain(.draft)
         theImap.flagRecent = flags.contain(.recent)
-
-        Record.saveAndWait()
-        if let msg = message() {
-            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
-        }
     }
 
     /**
@@ -234,6 +227,7 @@ extension CdMessage {
         if messageUpdate.isFlagsOnly() {
             if let mail = existing(pantomimeMessage: message) {
                 mail.updateFromServer(flags: message.flags())
+                mail.serialNumber = mail.serialNumber + 1
                 return mail
             }
             return nil
@@ -271,27 +265,32 @@ extension CdMessage {
      - Returns: The newly created or updated Message
      */
     public static func insertOrUpdate(
-        pantomimeMessage message: CWIMAPMessage, account: CdAccount,
+        pantomimeMessage: CWIMAPMessage, account: CdAccount,
         messageUpdate: CWMessageUpdate, forceParseAttachments: Bool = false) -> CdMessage? {
         guard let mail = quickInsertOrUpdate(
-            pantomimeMessage: message, account: account, messageUpdate: messageUpdate) else {
+            pantomimeMessage: pantomimeMessage, account: account, messageUpdate: messageUpdate)
+            else {
                 return nil
         }
 
         if messageUpdate.isFlagsOnly() {
+            Record.saveAndWait()
+            if let msg = mail.message() {
+                MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+            }
             return mail
         }
 
-        if let from = message.from() {
+        if let from = pantomimeMessage.from() {
             let contactsFrom = add(contacts: [from])
             let email = from.address()
             let c = contactsFrom[email!]
             mail.from = c
         }
 
-        mail.bodyFetched = message.isInitialized()
+        mail.bodyFetched = pantomimeMessage.isInitialized()
 
-        let addresses = message.recipients() as! [CWInternetAddress]
+        let addresses = pantomimeMessage.recipients() as! [CWInternetAddress]
         let contacts = add(contacts: addresses)
 
         let tos: NSMutableOrderedSet = []
@@ -316,13 +315,13 @@ extension CdMessage {
         mail.bcc = bccs
 
         let referenceStrings = NSMutableOrderedSet()
-        if let pantomimeRefs = message.allReferences() {
+        if let pantomimeRefs = pantomimeMessage.allReferences() {
             for ref in pantomimeRefs {
                 referenceStrings.add(ref)
             }
         }
         // Append inReplyTo to references (https://cr.yp.to/immhf/thread.html)
-        if let inReplyTo = message.inReplyTo() {
+        if let inReplyTo = pantomimeMessage.inReplyTo() {
             referenceStrings.add(inReplyTo)
         }
 
@@ -334,12 +333,17 @@ extension CdMessage {
         let imap = mail.imap ?? CdImapFields.create()
         mail.imap = imap
 
-        imap.contentType = message.contentType()
+        imap.contentType = pantomimeMessage.contentType()
 
         if forceParseAttachments || mail.bodyFetched {
             // Parsing attachments only makes sense once pantomime has received the
             // mail body. Same goes for the snippet.
-            addAttachmentsFromPantomimePart(message, targetMail: mail, level: 0)
+            addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail, level: 0)
+        }
+
+        Record.saveAndWait()
+        if let msg = mail.message() {
+            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
         }
 
         return mail
