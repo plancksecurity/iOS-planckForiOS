@@ -19,10 +19,6 @@ open class StorePrefetchedMailOperation: BaseOperation {
     let messageFetchedBlock: MessageFetchedBlock?
     let messageUpdate: CWMessageUpdate
 
-    /**
-     - parameter quick: Store only the most important properties (for true), or do it completely,
-     including attachments?
-     */
     public init(
         accountID: NSManagedObjectID, message: CWIMAPMessage,
         messageUpdate: CWMessageUpdate, name: String? = nil,
