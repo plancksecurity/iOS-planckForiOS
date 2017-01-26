@@ -31,7 +31,7 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     public final func getAccount() -> Identity {
-        let selected = picker.selectedRow(inComponent: 1)
+        let selected = picker.selectedRow(inComponent: 0)
         return accounts[selected].user
     }
     
