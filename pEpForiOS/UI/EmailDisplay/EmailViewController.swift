@@ -11,7 +11,6 @@ import UIKit
 import MessageModel
 
 class EmailViewController: UITableViewController {
-
     var appConfig: AppConfig!
     var message: Message!
     var partnerIdentity: Identity!
@@ -66,7 +65,6 @@ class EmailViewController: UITableViewController {
     }
     
     @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
-        
         let filtedredIdentities = filterIdentities(message: message)
         
         if filtedredIdentities.count == 1 {
@@ -94,7 +92,6 @@ class EmailViewController: UITableViewController {
 // MARK: TableView Delegate & Datasource
 
 extension EmailViewController {
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewAutomaticDimension }
         
@@ -134,7 +131,6 @@ extension EmailViewController {
 // MARK: - MessageContentCellDelegate
 
 extension EmailViewController: MessageContentCellDelegate {
-    
     func cellDidUpdateHeight(_ with: CGFloat) {
         computedHeight = with
         tableView.updateSize(true)
@@ -145,7 +141,6 @@ extension EmailViewController: MessageContentCellDelegate {
 // MARK: - SegueHandlerType
 
 extension EmailViewController: SegueHandlerType {
-    
     enum SegueIdentifier: String {
         case segueReplyFrom
         case segueForward
@@ -158,13 +153,14 @@ extension EmailViewController: SegueHandlerType {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         switch segueIdentifier(for: segue) {
         case .segueReplyFrom:
-            let destination = segue.destination as? ComposeTableViewController
-            destination?.composeMode = .from
-            destination?.appConfig = appConfig
-            destination?.originalMessage = message
+            if let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? ComposeTableViewController {
+                destination.composeMode = .replyFrom
+                destination.appConfig = appConfig
+                destination.originalMessage = message
+            }
             break
         case .segueForward:
             let destination = segue.destination as? ComposeTableViewController

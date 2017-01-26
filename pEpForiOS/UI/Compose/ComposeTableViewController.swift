@@ -19,8 +19,8 @@ class ComposeTableViewController: UITableViewController {
     
     enum ComposeMode {
         case normal
-        case from
-        case all
+        case replyFrom
+        case replyAll
         case forward
         case draft
     }
@@ -33,7 +33,7 @@ class ComposeTableViewController: UITableViewController {
     var tableDict: NSDictionary?
     var tableData: ComposeDataSource? = nil
     var currentCell: IndexPath!
-    var allCells = [ComposeCell]()
+    var allCells = MutableOrderedSet<ComposeCell>()
     var ccEnabled = false
     
     var appConfig: AppConfig?
@@ -54,8 +54,33 @@ class ComposeTableViewController: UITableViewController {
         addContactSuggestTable()
         prepareFields()
     }
-    
+
     // MARK: - Private Methods
+
+    func updateInitialContent(recipientCell: RecipientCell) {
+        if let fm = recipientCell.fieldModel, let om = originalMessage {
+            switch fm.type {
+            case .to:
+                if composeMode == .replyFrom, let from = om.from {
+                    recipientCell.addContact(from)
+                }
+            default:
+                break
+            }
+        }
+    }
+
+    /**
+     - Returns: The `RecipientCell` of the given type, or nil.
+     */
+    func recipientCell(fieldType: ComposeFieldModel.FieldType) -> RecipientCell? {
+        for cell in allCells {
+            if let rc = cell as? RecipientCell, let fm = rc.fieldModel, fm.type == fieldType {
+                return rc
+            }
+        }
+        return nil
+    }
     
     private final func prepareFields()  {
         if let path = Bundle.main.path(forResource: "ComposeData", ofType: "plist") {
@@ -132,10 +157,10 @@ class ComposeTableViewController: UITableViewController {
         let message = f.createMessage()
         
         allCells.forEach({ (cell) in
-            if cell is RecipientCell {
+            if cell is RecipientCell, let fm = cell.fieldModel {
                 let addresses = (cell as! RecipientCell).identities
                 
-                switch cell.fieldModel!.type {
+                switch fm.type {
                 case .to:
                     addresses.forEach({ (recipient) in
                         message.to.append(recipient)
@@ -159,8 +184,8 @@ class ComposeTableViewController: UITableViewController {
                 if let attachments = (cell as? MessageBodyCell)?.getAllAttachments() {
                     message.attachments = attachments as! [Attachment]
                 }
-            } else {
-                switch cell.fieldModel!.type {
+            } else if let fm = cell.fieldModel {
+                switch fm.type {
                 case .from:
                     message.from = (cell as! AccountCell).getAccount()
                     break
@@ -245,11 +270,14 @@ class ComposeTableViewController: UITableViewController {
         
         if !allCells.contains(cell) {
             allCells.append(cell)
+            if let rc = cell as? RecipientCell {
+                updateInitialContent(recipientCell: rc)
+            }
         }
         
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView is SuggestTableView {
             let identity = suggestTableView.didSelectIdentity(index: indexPath)
