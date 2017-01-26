@@ -187,12 +187,15 @@ extension CdMessage {
         }
     }
 
-    public func updateFromServer(flags: CWFlags) {
+    /**
+     - Returns: true if the flags were updated.
+     */
+    public func updateFromServer(flags: CWFlags) -> Bool {
         // Since we frequently sync the flags, don't modify anything
         // if the version from the server has already been known,
         // since this could overwrite changes just made by the user.
         if flags.rawFlagsAsShort() == imap?.flagsFromServer {
-            return
+            return false
         }
 
         let theImap = imap ?? CdImapFields.create()
@@ -205,6 +208,8 @@ extension CdMessage {
         theImap.flagDeleted = flags.contain(.deleted)
         theImap.flagDraft = flags.contain(.draft)
         theImap.flagRecent = flags.contain(.recent)
+
+        return true
     }
 
     /**
@@ -226,8 +231,14 @@ extension CdMessage {
         // Bail out quickly if there is only a flag change needed
         if messageUpdate.isFlagsOnly() {
             if let mail = existing(pantomimeMessage: message) {
-                mail.updateFromServer(flags: message.flags())
-                mail.serialNumber = mail.serialNumber + 1
+                if mail.updateFromServer(flags: message.flags()) {
+                    mail.serialNumber = mail.serialNumber + 1
+                    Record.saveAndWait()
+                    if let msg = mail.message() {
+                        MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+                    }
+                }
+
                 return mail
             }
             return nil
@@ -274,10 +285,6 @@ extension CdMessage {
         }
 
         if messageUpdate.isFlagsOnly() {
-            Record.saveAndWait()
-            if let msg = mail.message() {
-                MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
-            }
             return mail
         }
 

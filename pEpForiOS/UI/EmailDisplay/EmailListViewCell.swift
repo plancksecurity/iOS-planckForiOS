@@ -44,6 +44,10 @@ class EmailListViewCell: UITableViewCell {
         isReadMessageImage.isHidden = false
         isReadMessageImage.backgroundColor = .pEpBlue
     }
+
+    func updateFlags(message: Message) {
+        // TODO
+    }
     
     func configureCell(indexPath: IndexPath, config: EmailListConfig?) -> MessageID? {
         if !determinedCellBackgroundColor {
@@ -51,8 +55,8 @@ class EmailListViewCell: UITableViewCell {
             determinedCellBackgroundColor = true
         }
         
-        if let email = messageAt(indexPath: indexPath, config: config) {
-            if let pEpRating = PEPUtil.pEpRatingFromInt(email.pEpRatingInt) {
+        if let message = messageAt(indexPath: indexPath, config: config) {
+            if let pEpRating = PEPUtil.pEpRatingFromInt(message.pEpRatingInt) {
                 let privacyColor = PEPUtil.pEpColor(pEpRating: pEpRating)
                 if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor) {
                     self.backgroundColor = uiColor
@@ -62,14 +66,14 @@ class EmailListViewCell: UITableViewCell {
                     }
                 }
             }
-            UIHelper.putString(email.from?.userName, toLabel: self.senderLabel)
-            UIHelper.putString(email.shortMessage, toLabel: self.subjectLabel)
+            UIHelper.putString(message.from?.userName, toLabel: self.senderLabel)
+            UIHelper.putString(message.shortMessage, toLabel: self.subjectLabel)
             
             // Snippet
-            if let text = email.longMessage {
+            if let text = message.longMessage {
                 let theText = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
                 UIHelper.putString(UIHelper.cleanHtml(theText), toLabel: self.summaryLabel)
-            } else if let html = email.longMessageFormatted {
+            } else if let html = message.longMessageFormatted {
                 var text = html.extractTextFromHTML()
                 text = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
                 UIHelper.putString(text, toLabel: self.summaryLabel)
@@ -77,22 +81,25 @@ class EmailListViewCell: UITableViewCell {
                 UIHelper.putString(nil, toLabel: self.summaryLabel)
             }
             
-            if let originationDate = email.received {
+            if let originationDate = message.received {
                 UIHelper.putString(dateFormatter.string(from: originationDate as Date),
                                    toLabel: self.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: self.dateLabel)
             }
-            if (isRead(message: email)) {
+            if (isRead(message: message)) {
                 self.isReadMessageImage.isHidden = true
             }
-            else if (!isRead(message: email)) {
+            else if (!isRead(message: message)) {
                 self.isReadMessageImage.isHidden = false
                 self.isReadMessageImage.backgroundColor = .pEpBlue
             }
             
-            attachmentIcon.isHidden = email.attachments.count > 0 ? false : true
-            return email.messageID
+            attachmentIcon.isHidden = message.attachments.count > 0 ? false : true
+
+            updateFlags(message: message)
+
+            return message.messageID
         }
         return nil
     }

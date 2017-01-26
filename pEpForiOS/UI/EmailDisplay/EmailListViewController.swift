@@ -19,7 +19,6 @@ struct EmailListConfig {
 }
 
 class EmailListViewController: UITableViewController {
-    
     struct UIState {
         var isSynching: Bool = false
     }
@@ -27,6 +26,7 @@ class EmailListViewController: UITableViewController {
     var config: EmailListConfig?
     var state = UIState()
     let searchController = UISearchController(searchResultsController: nil)
+    let cellsByMessageID = NSCache<NSString, EmailListViewCell>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,7 +112,9 @@ class EmailListViewController: UITableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
-        cell.configureCell(indexPath: indexPath, config: config)
+        if let messageID = cell.configureCell(indexPath: indexPath, config: config) {
+            cellsByMessageID.setObject(cell, forKey: messageID as NSString)
+        }
         return cell
     }
 
@@ -347,6 +349,9 @@ extension EmailListViewController: SegueHandlerType {
                     self.tableView.reloadData()
                 } else {
                     // flags must have been changed
+                    if let cell = cellsByMessageID.object(forKey: msg.uuid as NSString) {
+                        cell.updateFlags(message: message)
+                    }
                 }
             }
         }
@@ -357,6 +362,13 @@ extension EmailListViewController: SegueHandlerType {
 
 extension EmailListViewController: MessageFolderDelegate {
     func didChange(messageFolder: MessageFolder) {
+        if let msg = messageFolder as? Message {
+            if msg.isOriginal {
+                Log.info(component: #function, content: "new message")
+            } else {
+                Log.info(component: #function, content: "flag changes?")
+            }
+        }
         GCD.onMain {
             self.didChangeInternal(messageFolder: messageFolder)
         }
