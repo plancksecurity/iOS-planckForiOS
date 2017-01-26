@@ -386,13 +386,13 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testCreateDeleteFolderOperation() {
-        let uuid1 = UUID.generate()
+        let uuid1 = MessageID.generate()
         let folder1 = CdFolder.create()
         folder1.account = account
         folder1.uuid = uuid1
         folder1.name = "Inbox.Folder1 \(uuid1)"
 
-        let uuid2 = UUID.generate()
+        let uuid2 = MessageID.generate()
         let folder2 = CdFolder.create()
         folder2.account = account
         folder2.uuid = uuid1
@@ -602,7 +602,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func insertNewMessageForSending(account: CdAccount) -> CdMessage {
-        let msg = CdMessage.create(messageID: UUID.generate(), uid: 1)
+        let msg = CdMessage.create(messageID: MessageID.generate(), uid: 1)
         msg.from = account.identity
         msg.longMessage = "Inserted by insertNewMessageForSending()"
         msg.bodyFetched = true
@@ -671,7 +671,7 @@ class SimpleOperationsTest: XCTestCase {
         to.address = "unittest.ios.1@peptest.ch"
 
         let folder = CdFolder.create()
-        folder.uuid = UUID.generate()
+        folder.uuid = MessageID.generate()
         folder.name = "Sent"
         folder.folderType = FolderType.sent.rawValue
         folder.account = account

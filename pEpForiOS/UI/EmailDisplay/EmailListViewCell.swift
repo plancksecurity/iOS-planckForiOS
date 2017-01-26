@@ -11,7 +11,6 @@ import UIKit
 import MessageModel
 
 class EmailListViewCell: UITableViewCell {
-
     @IBOutlet weak var senderLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
@@ -46,8 +45,7 @@ class EmailListViewCell: UITableViewCell {
         isReadMessageImage.backgroundColor = .pEpBlue
     }
     
-    func configureCell(indexPath: IndexPath, config: EmailListConfig?) {
-        
+    func configureCell(indexPath: IndexPath, config: EmailListConfig?) -> MessageID? {
         if !determinedCellBackgroundColor {
             defaultCellBackgroundColor = self.backgroundColor
             determinedCellBackgroundColor = true
@@ -94,7 +92,9 @@ class EmailListViewCell: UITableViewCell {
             }
             
             attachmentIcon.isHidden = email.attachments.count > 0 ? false : true
+            return email.messageID
         }
+        return nil
     }
     
     /**

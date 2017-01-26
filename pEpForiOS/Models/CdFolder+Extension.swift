@@ -80,7 +80,7 @@ public extension CdFolder {
         }
 
         let folder = CdFolder.create(with: ["name": folderName, "account": account,
-                                            "uuid": UUID.generate()])
+                                            "uuid": MessageID.generate()])
 
         if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
             folder.folderType = FolderType.inbox.rawValue

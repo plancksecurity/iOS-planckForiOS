@@ -82,7 +82,7 @@ class NetworkServiceTests: XCTestCase {
 
         func didFetchMessage(messageID: String) {
             messageIDs.append(messageID)
-            if let msg = Message.byUUID(messageID) {
+            if let msg = Message.byMessageID(messageID) {
                 MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
             } else {
                 XCTFail()
@@ -153,7 +153,7 @@ class NetworkServiceTests: XCTestCase {
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.addTo(cdIdentity: to)
-            let messageID = UUID.generate()
+            let messageID = MessageID.generate()
             message.uuid = messageID
             outgoingMails.append(message)
             outgoingMessageIDs.append(messageID)

@@ -29,14 +29,14 @@ open class MockData {
             [("INBOX", FolderType.inbox), ("Drafts", FolderType.drafts),
              ("Outbox", FolderType.localOutbox)] {
                 let folder = Folder.createRootFolder(
-                    name: name, uuid: UUID.generate(), account: account, folderType: folderType)
+                    name: name, uuid: MessageID.generate(), account: account, folderType: folderType)
                 insertMessages(folder: folder)
         }
     }
 
     static func insertMessages(folder: Folder) {
         for i in 1...10 {
-            let msg = Message.create(uuid: UUID.generate())
+            let msg = Message.create(uuid: MessageID.generate())
             msg.shortMessage = "Test \(i)"
             msg.from = Identity.create(address: "igor.vojinovic@appculture.com")
             msg.to = [Identity.create(address: "igor.vojinovic@appculture.com")]
@@ -47,7 +47,7 @@ open class MockData {
     }
     
     static func createFolder(_ account: Account) -> Folder {
-        let f = Folder.createRootFolder(name: "pEpSi", uuid: UUID.generate(), account: account,
+        let f = Folder.createRootFolder(name: "pEpSi", uuid: MessageID.generate(), account: account,
                                         folderType: .normal)
         MockData.insertMessages(folder: f)
         return f

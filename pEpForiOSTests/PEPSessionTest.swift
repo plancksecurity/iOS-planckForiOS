@@ -60,7 +60,7 @@ class PEPSessionTest: XCTestCase {
         let folder = Folder.create(name: "inbox", account: account, folderType: .inbox)
         folder.save()
 
-        let uuid = UUID.generate()
+        let uuid = MessageID.generate()
         let message = Message.create(uuid: uuid)
         message.comments = "comment"
         message.shortMessage = "short message"
