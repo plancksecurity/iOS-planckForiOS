@@ -149,6 +149,10 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
+    /**
+     Currently doesn't do a real test, since what comes from the server will not overwrite
+     local flags, to avoid getting rid of user-initiated changes.
+     */
     func testSyncMessagesOperation() {
         fetchMessages()
 
@@ -196,9 +200,12 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertFalse(op.hasErrors())
         })
 
-        // Flags should be reverted to server version
+        // Since the server flags have not changed, we still know that we have local changes
+        // that should not get overwritten by the server.
+        // Hence, all messages are still the same.
         for m in allMessages {
-            XCTAssertTrue(m.imap?.flagSeen ?? false)
+            m.refresh(mergeChanges: true, in: Record.Context.default)
+            XCTAssertFalse(m.imap?.flagSeen ?? true)
         }
     }
 
