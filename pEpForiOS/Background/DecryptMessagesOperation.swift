@@ -17,7 +17,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
             let session = PEPSession()
 
             guard let messages = CdMessage.all(
-                with: CdMessage.unencryptedMessagesPredicate(),
+                predicate: CdMessage.unencryptedMessagesPredicate(),
                 orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
                 in: context) as? [CdMessage] else {
                     self.markAsFinished()

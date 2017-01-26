@@ -57,7 +57,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
             let p = NSPredicate(
                 format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
                 FolderType.sent.rawValue, SendStatus.none.rawValue)
-            if let m = CdMessage.first(with: p) {
+            if let m = CdMessage.first(predicate: p) {
                 if m.sent == nil {
                     m.sent = NSDate()
                     Record.saveAndWait(context: context)

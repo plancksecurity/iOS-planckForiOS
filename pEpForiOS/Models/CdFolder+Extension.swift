@@ -23,12 +23,12 @@ public extension CdFolder {
 
     public static func by(folderType: FolderType, account: CdAccount,
                           context: NSManagedObjectContext = Record.Context.default) -> CdFolder? {
-        return CdFolder.first(with: ["folderType": folderType.rawValue, "account": account],
+        return CdFolder.first(attributes: ["folderType": folderType.rawValue, "account": account],
                               in: context)
     }
 
     public static func by(name: String, account: CdAccount) -> CdFolder? {
-        return CdFolder.first(with: ["name": name, "account": account])
+        return CdFolder.first(attributes: ["name": name, "account": account])
     }
 
     public static func insertOrUpdate(folderName: String, folderSeparator: String?,
@@ -79,7 +79,7 @@ public extension CdFolder {
             return reactivate(folder: folder)
         }
 
-        let folder = CdFolder.create(with: ["name": folderName, "account": account,
+        let folder = CdFolder.create(attributes: ["name": folderName, "account": account,
                                             "uuid": MessageID.generate()])
 
         if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
@@ -120,7 +120,7 @@ public extension CdFolder {
      - Returns: All (undeleted, valid) messages in that folder.
      */
     public func allMessages() -> [CdMessage] {
-        if let msgs = CdMessage.all(with: allMessagesPredicate()) {
+        if let msgs = CdMessage.all(predicate: allMessagesPredicate()) {
             return msgs as! [CdMessage]
         }
         return []
@@ -128,7 +128,7 @@ public extension CdFolder {
 
     public func firstUID() -> UInt {
         if let msg = CdMessage.first(
-            with: allMessagesPredicate(),
+            predicate: allMessagesPredicate(),
             orderedBy: [NSSortDescriptor(key: "uid", ascending: true)]) {
             return UInt(msg.uid)
         }
@@ -137,7 +137,7 @@ public extension CdFolder {
 
     public func lastUID() -> UInt {
         if let msg = CdMessage.first(
-            with: allMessagesPredicate(),
+            predicate: allMessagesPredicate(),
             orderedBy: [NSSortDescriptor(key: "uid", ascending: false)]) {
             return UInt(msg.uid)
         }

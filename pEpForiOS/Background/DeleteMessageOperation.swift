@@ -25,7 +25,7 @@ open class DeleteMessageOperation: ConcurrentBaseOperation {
 
             let pred = NSPredicate(format: "folderType = %d or folderType = %d",
                                    FolderType.trash.rawValue, FolderType.archive.rawValue)
-            guard let targetFolder = MessageModel.CdFolder.first(with: pred) else {
+            guard let targetFolder = MessageModel.CdFolder.first(predicate: pred) else {
                 Log.error(component: self.comp, errorString: "No trash folder defined")
                 return
             }

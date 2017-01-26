@@ -97,7 +97,7 @@ class SimpleOperationsTest: XCTestCase {
         for m in allMessages {
             XCTAssertNotNil(m.messageID)
             if let uuid = m.messageID {
-                if let ms = CdMessage.all(with: ["uuid": uuid]) {
+                if let ms = CdMessage.all(attributes: ["uuid": uuid]) {
                     XCTAssertEqual(ms.count, 1)
                 } else {
                     XCTFail()
@@ -139,7 +139,7 @@ class SimpleOperationsTest: XCTestCase {
             }
             XCTAssertEqual(folder.name?.lowercased(), ImapSync.defaultImapInboxName.lowercased())
             guard let messages = CdMessage.all(
-                with: ["uid": m.uid, "parent": folder]) as? [CdMessage] else {
+                attributes: ["uid": m.uid, "parent": folder]) as? [CdMessage] else {
                     XCTFail()
                     break
             }
@@ -258,13 +258,13 @@ class SimpleOperationsTest: XCTestCase {
 
         var options: [String: Any] = ["folderType": FolderType.inbox.rawValue,
                                       "account": account]
-        let inboxFolder = CdFolder.first(with: options)
+        let inboxFolder = CdFolder.first(attributes: options)
         options["folderType"] = FolderType.sent.rawValue
         XCTAssertNotNil(inboxFolder)
         XCTAssertEqual(inboxFolder?.name?.lowercased(),
                        ImapSync.defaultImapInboxName.lowercased())
 
-        let sentFolder = CdFolder.first(with: options)
+        let sentFolder = CdFolder.first(attributes: options)
         XCTAssertNotNil(sentFolder)
     }
 
@@ -357,7 +357,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertEqual(folders.count, FolderType.allValuesToCreate.count)
             let p = NSPredicate(format: "folderType = %d and account = %@",
                                 FolderType.localOutbox.rawValue, self.account)
-            let outbox = CdFolder.first(with: p)
+            let outbox = CdFolder.first(predicate: p)
             XCTAssertNotNil(outbox, "Expected outbox to exist")
         })
     }

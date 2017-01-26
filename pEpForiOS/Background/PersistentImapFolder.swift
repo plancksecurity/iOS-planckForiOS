@@ -120,7 +120,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     override func allMessages() -> [Any] {
         var result = [Any]()
         privateMOC.performAndWait({
-            if let messages = CdMessage.all(with: self.folder.allMessagesPredicate()) {
+            if let messages = CdMessage.all(predicate: self.folder.allMessagesPredicate()) {
                 for m in messages {
                     result.append(m)
                 }
@@ -139,7 +139,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         privateMOC.performAndWait({
             let p = NSPredicate(
                 format: "folder = %@ messageNumber = %d", self.folder, theIndex)
-            msg = CdMessage.first(with: p)
+            msg = CdMessage.first(predicate: p)
         })
         return msg?.pantomime(folder: self)
     }
@@ -182,7 +182,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             let pFolder = NSPredicate.init(format: "parent = %@", self.folder)
             let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolder])
 
-            if let msg = CdMessage.first(with: p) {
+            if let msg = CdMessage.first(predicate: p) {
                 result = msg.pantomime(folder: self)
             } else {
                 result = nil

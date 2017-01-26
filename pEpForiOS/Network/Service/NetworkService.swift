@@ -157,7 +157,7 @@ public class NetworkService: INetworkService {
         context: NSManagedObjectContext, needsVerificationOnly: Bool = false) -> [CdAccount] {
         let p = NSPredicate(format: "needsVerification = %@",
                             NSNumber(booleanLiteral: needsVerificationOnly))
-        return CdAccount.all(with: p, in: context) as? [CdAccount] ?? []
+        return CdAccount.all(predicate: p, in: context) as? [CdAccount] ?? []
     }
 
     func gatherConnectInfos(needsVerificationOnly: Bool = false) -> [AccountConnectInfo] {
@@ -289,7 +289,7 @@ public class NetworkService: INetworkService {
             let pInteresting = NSPredicate(
                 format: "account = %@ and lastLookedAt > %@", account,
                 earlierTimestamp as CVarArg)
-            let folders = CdFolder.all(with: pInteresting) as? [CdFolder] ?? []
+            let folders = CdFolder.all(predicate: pInteresting) as? [CdFolder] ?? []
             var haveInbox = false
             for f in folders {
                 if let name = f.name {

@@ -27,7 +27,7 @@ open class HTMLConvertOperation: BaseOperation {
                 format: "longMessage == nil or longMessage == %@", "")
 
             guard let messages = CdMessage.all(
-                with: NSCompoundPredicate(
+                predicate: NSCompoundPredicate(
                     andPredicateWithSubpredicates:
                     [CdMessage.basicMessagePredicate(),
                      predicateHasHTML, predicateHasNoLongMessage])) else {

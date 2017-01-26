@@ -261,7 +261,7 @@ class NetworkServiceTests: XCTestCase {
         })
 
         for msgID in outgoingMessageIDs {
-            guard let cdMsg = CdMessage.first(with: ["uuid": msgID]) else {
+            guard let cdMsg = CdMessage.first(attributes: ["uuid": msgID]) else {
                 XCTFail()
                 continue
             }
@@ -315,7 +315,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNotNil(CdFolder.all())
         XCTAssertNotNil(CdMessage.all())
 
-        guard let cdFolder = CdFolder.first(with: ["folderType": FolderType.inbox.rawValue]) else {
+        guard let cdFolder = CdFolder.first(attributes: ["folderType": FolderType.inbox.rawValue]) else {
             XCTFail()
             return
         }
