@@ -174,7 +174,7 @@ class EmailListViewController: UITableViewController {
 
         var title = "\n\nFlag".localized
         if (message.imapFlags?.flagged ?? true) {
-            title = "UnFlag".localized
+            title = "\n\nUnFlag".localized
         }
 
         return createRowAction(
