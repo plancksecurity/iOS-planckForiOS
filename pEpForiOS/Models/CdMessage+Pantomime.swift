@@ -188,6 +188,13 @@ extension CdMessage {
     }
 
     public func updateFromServer(flags: CWFlags) {
+        // Since we frequently sync the flags, don't modify anything
+        // if the version from the server has already been known,
+        // since this could overwrite changes just made by the user.
+        if flags.rawFlagsAsShort() == imap?.flagsFromServer {
+            return
+        }
+
         let theImap = imap ?? CdImapFields.create()
         imap = theImap
 
@@ -219,9 +226,7 @@ extension CdMessage {
         // Bail out quickly if there is only a flag change needed
         if messageUpdate.isFlagsOnly() {
             if let mail = existing(pantomimeMessage: message) {
-                if (mail.imap?.flagsCurrent ?? 0) != message.flags().rawFlagsAsShort() {
-                    mail.updateFromServer(flags: message.flags())
-                }
+                mail.updateFromServer(flags: message.flags())
                 return mail
             }
             return nil
