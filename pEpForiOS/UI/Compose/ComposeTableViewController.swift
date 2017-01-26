@@ -89,22 +89,16 @@ class ComposeTableViewController: UITableViewController {
     func updateInitialContent(messageBodyCell: MessageBodyCell) {
         if let om = originalMessage, composeMode == .replyFrom || composeMode == .replyAll {
             messageBodyCell.setInitial(
-                text: ReplyUtil.quotedMessageTextForMessage(om, replyAll: composeMode == .replyAll))
+                text: ReplyUtil.quotedMessageText(message: om, replyAll: composeMode == .replyAll))
         }
     }
 
-    /**
-     - Returns: The `RecipientCell` of the given type, or nil.
-     */
-    func recipientCell(fieldType: ComposeFieldModel.FieldType) -> RecipientCell? {
-        for cell in allCells {
-            if let rc = cell as? RecipientCell, let fm = rc.fieldModel, fm.type == fieldType {
-                return rc
-            }
+    func updateInitialContent(composeCell: ComposeCell) {
+        if let om = originalMessage, composeMode == .replyFrom || composeMode == .replyAll {
+            composeCell.setInitial(text: ReplyUtil.replySubject(message: om))
         }
-        return nil
     }
-    
+
     private final func prepareFields()  {
         if let path = Bundle.main.path(forResource: "ComposeData", ofType: "plist") {
             tableDict = NSDictionary(contentsOfFile: path)
@@ -295,8 +289,10 @@ class ComposeTableViewController: UITableViewController {
             allCells.append(cell)
             if let rc = cell as? RecipientCell {
                 updateInitialContent(recipientCell: rc)
-            } else if let rc = cell as? MessageBodyCell {
-                updateInitialContent(messageBodyCell: rc)
+            } else if let mc = cell as? MessageBodyCell {
+                updateInitialContent(messageBodyCell: mc)
+            } else if let fm = cell.fieldModel, fm.type == .subject {
+                updateInitialContent(composeCell: cell)
             }
         }
         

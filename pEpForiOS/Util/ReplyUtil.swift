@@ -12,6 +12,33 @@ public struct ReplyUtil {
     static let nameSeparator = ", "
     static let newline = "\n"
 
+    /**
+     Gets the quoted message body for the given `Message`.
+     */
+    public static func quotedMessageText(message: Message, replyAll: Bool) -> String {
+        if let text = message.longMessage {
+            let quotedText = quoteText(text)
+            let citation: String? = citationHeaderForMessage(message, replyAll: replyAll)
+            if let c = citation {
+                return "\n\n\(footer())\n\n\(c)\n\n\(quotedText)"
+            }
+        }
+        return footer()
+    }
+
+    /**
+     Gets the subject for replying to the given `Message`.
+     */
+    public static func replySubject(message: Message) -> String {
+        if let subject = message.shortMessage {
+            let re = NSLocalizedString(
+                "Re: ", comment: "The 'Re:' that gets appended to the subject line")
+            return "\(re) \(subject)"
+        } else {
+            return ""
+        }
+    }
+
     public static func replyNameFromIdentity(_ identity: Identity) -> String {
         if let name = identity.userName {
             return name
@@ -89,29 +116,5 @@ public struct ReplyUtil {
     public static func footer() -> String {
         return NSLocalizedString("Sent with p≡p",
                                  comment: "Message footer/default text")
-    }
-
-    /**
-     Gets the quoted message body for the given `Message`.
-     */
-    public static func quotedMessageTextForMessage(_ message: Message, replyAll: Bool) -> String {
-        if let text = message.longMessage {
-            let quotedText = quoteText(text)
-            let citation: String? = citationHeaderForMessage(message, replyAll: replyAll)
-            if let c = citation {
-                return "\n\n\(footer())\n\n\(c)\n\n\(quotedText)"
-            }
-        }
-        return footer()
-    }
-
-    public static func replySubjectForMessage(_ message: Message) -> String {
-        if let subject = message.shortMessage {
-            let re = NSLocalizedString(
-                "Re: ", comment: "The 'Re:' that gets appended to the subject line")
-            return "\(re) \(subject)"
-        } else {
-            return ""
-        }
     }
 }

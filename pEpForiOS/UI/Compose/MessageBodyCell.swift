@@ -26,10 +26,6 @@ class MessageBodyCell: ComposeCell {
         textView.text.append(.pepSignature)
     }
 
-    func setInitial(text: String) {
-        textView.text = text
-    }
-    
     override func textViewDidBeginEditing(_ textView: UITextView) {
         super.textViewDidBeginEditing(textView)
         

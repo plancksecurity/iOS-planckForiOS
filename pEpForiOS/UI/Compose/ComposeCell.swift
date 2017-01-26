@@ -25,6 +25,10 @@ open class ComposeCell: UITableViewCell, CellProtocol {
         selectionStyle = .none        
     }
 
+    func setInitial(text: String) {
+        textView.text = text
+    }
+
     public func updateCell(_ model: ComposeFieldModel, _ indexPath: IndexPath) {
         index = indexPath
         fieldModel = model
