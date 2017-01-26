@@ -25,7 +25,7 @@ class MessagePantomimeTests: XCTestCase {
 
     func testPantomimeFlagsFromMessage() {
         let m = CdMessage.create()
-        m.imap = CdImapFields.createWithDefaults()
+        m.imap = CdImapFields.create()
 
         m.imap?.flagFlagged = true
         m.imap?.updateCurrentFlags()
@@ -68,7 +68,7 @@ class MessagePantomimeTests: XCTestCase {
 
     func testUpdateFlags() {
         let m = CdMessage.create()
-        m.imap = CdImapFields.createWithDefaults()
+        m.imap = CdImapFields.create()
 
         XCTAssertEqual(m.imap?.flagsFromServer, 0)
 
@@ -96,7 +96,7 @@ class MessagePantomimeTests: XCTestCase {
 
     func testStoreCommandForUpdate() {
         let m = CdMessage.create()
-        m.imap = CdImapFields.createWithDefaults()
+        m.imap = CdImapFields.create()
 
         m.uid = 1024
         m.imap?.flagsFromServer = 0

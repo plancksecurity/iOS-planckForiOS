@@ -51,14 +51,14 @@ extension CdMessage {
         msg.uuid = messageID
         msg.uid = Int32(uid)
         msg.parent = parent
-        msg.imap = CdImapFields.createWithDefaults()
+        msg.imap = CdImapFields.create()
         return msg
     }
 
     public static func createWithDefaults(
         messageID: String, uid: Int, parent: CdFolder? = nil,
         in context: NSManagedObjectContext = Record.Context.default) -> CdMessage {
-        let imap = CdImapFields.createWithDefaults(in: context)
+        let imap = CdImapFields.create(in: context)
         var dict: [String: Any] = ["uuid": messageID, "uid": uid, "imap": imap]
         if let pf = parent {
             dict["parent"] = pf

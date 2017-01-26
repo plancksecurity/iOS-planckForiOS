@@ -248,7 +248,7 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
             if let msg = CdMessage.first(
                 with: ["uid": cw.uid(), "parent": folder], in: context) {
                 let flags = cw.flags()
-                let imap = msg.imap ?? CdImapFields.createWithDefaults(in: context)
+                let imap = msg.imap ?? CdImapFields.create(in: context)
                 msg.imap = imap
                 imap.flagsFromServer = flags.rawFlagsAsShort() as Int16
             } else {
