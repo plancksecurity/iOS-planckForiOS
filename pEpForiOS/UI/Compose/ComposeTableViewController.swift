@@ -164,10 +164,10 @@ class ComposeTableViewController: UITableViewController {
         suggestTableView.frame.size.height = tableView.bounds.size.height - pos + 2
     }
     
-    fileprivate final func populateMessage() {
+    fileprivate final func populateDraftMessage() -> Message? {
         guard let f = Folder.by(folderType: .drafts) else {
             Log.error(component: #function, errorString: "No drafts folder")
-            return
+            return nil
         }
 
         // Use this message (initially, a draft)
@@ -212,8 +212,7 @@ class ComposeTableViewController: UITableViewController {
                 }
             }
         })
-        print(message)
-        message.notifyObserver()
+        return message
     }
     
     // MARK: - Public Methods
@@ -347,7 +346,14 @@ class ComposeTableViewController: UITableViewController {
     }
     
     @IBAction func send() {
-        populateMessage()
+        if let msg = populateDraftMessage() {
+            if let f = Folder.by(folderType: .sent) {
+                msg.parent = f
+                msg.save()
+            } else {
+                Log.error(component: #function, errorString: "No sent folder")
+            }
+        }
         dismiss(animated: true, completion: nil)
     }
 }
