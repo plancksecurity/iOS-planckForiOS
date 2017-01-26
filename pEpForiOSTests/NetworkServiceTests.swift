@@ -69,6 +69,11 @@ class NetworkServiceTests: XCTestCase {
             }
         }
         var messagesByID = [MessageID: Message]()
+        var changedMessagesByID = [MessageID: Message]()
+
+        var hasChangedMessages: Bool {
+            return !changedMessagesByID.isEmpty
+        }
 
         func areInIncreasingOrder(d1: Date, d2: Date) -> Bool {
             switch d1.compare(d2 as Date) {
@@ -84,6 +89,7 @@ class NetworkServiceTests: XCTestCase {
                 } else {
                     XCTAssertNotNil(messagesByID[msg.messageID])
                     messagesByID[msg.messageID] = msg
+                    changedMessagesByID[msg.messageID] = msg
                 }
             }
         }
@@ -359,6 +365,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertTrue(inbox.contains(message: msg))
             XCTAssertTrue(unifiedInbox.contains(message: msg))
         }
+        XCTAssertFalse(modelDelegate.hasChangedMessages)
 
         cancelNetworkService(networkService: networkService)
     }
