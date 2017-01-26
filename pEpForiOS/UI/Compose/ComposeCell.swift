@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 open class ComposeCell: UITableViewCell, CellProtocol {
     
     @IBOutlet weak public var textView: ComposeTextView!

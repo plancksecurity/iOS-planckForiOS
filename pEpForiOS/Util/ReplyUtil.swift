@@ -91,6 +91,9 @@ public struct ReplyUtil {
                                  comment: "Message footer/default text")
     }
 
+    /**
+     Gets the quoted message body for the given `Message`.
+     */
     public static func quotedMessageTextForMessage(_ message: Message, replyAll: Bool) -> String {
         if let text = message.longMessage {
             let quotedText = quoteText(text)

@@ -57,16 +57,39 @@ class ComposeTableViewController: UITableViewController {
 
     // MARK: - Private Methods
 
+    /**
+     Updates the given `RecipientCell` with data from the `originalMessage`,
+     if this is a suitable `ComposeMode`.
+     */
     func updateInitialContent(recipientCell: RecipientCell) {
         if let fm = recipientCell.fieldModel, let om = originalMessage {
             switch fm.type {
             case .to:
-                if composeMode == .replyFrom, let from = om.from {
+                if composeMode == .replyFrom || composeMode == .replyAll, let from = om.from {
                     recipientCell.addContact(from)
+                }
+            case .cc:
+                if composeMode == .replyAll {
+                    for ident in om.cc {
+                        recipientCell.addContact(ident)
+                    }
+                }
+            case .bcc:
+                if composeMode == .replyAll {
+                    for ident in om.bcc {
+                        recipientCell.addContact(ident)
+                    }
                 }
             default:
                 break
             }
+        }
+    }
+
+    func updateInitialContent(messageBodyCell: MessageBodyCell) {
+        if let om = originalMessage, composeMode == .replyFrom || composeMode == .replyAll {
+            messageBodyCell.setInitial(
+                text: ReplyUtil.quotedMessageTextForMessage(om, replyAll: composeMode == .replyAll))
         }
     }
 
@@ -272,6 +295,8 @@ class ComposeTableViewController: UITableViewController {
             allCells.append(cell)
             if let rc = cell as? RecipientCell {
                 updateInitialContent(recipientCell: rc)
+            } else if let rc = cell as? MessageBodyCell {
+                updateInitialContent(messageBodyCell: rc)
             }
         }
         
