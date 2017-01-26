@@ -195,6 +195,8 @@ extension CdMessage {
             return
         }
 
+        serialNumber = serialNumber + 1
+
         let theImap = imap ?? CdImapFields.create()
         imap = theImap
 
@@ -205,6 +207,11 @@ extension CdMessage {
         theImap.flagDeleted = flags.contain(.deleted)
         theImap.flagDraft = flags.contain(.draft)
         theImap.flagRecent = flags.contain(.recent)
+
+        Record.saveAndWait()
+        if let msg = message() {
+            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+        }
     }
 
     /**

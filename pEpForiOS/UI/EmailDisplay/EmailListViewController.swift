@@ -343,7 +343,10 @@ extension EmailListViewController: SegueHandlerType {
             folder.contains(message: message) {
             if let msg = messageFolder as? Message {
                 if msg.isOriginal {
+                    // new message has arrived
                     self.tableView.reloadData()
+                } else {
+                    // flags must have been changed
                 }
             }
         }
