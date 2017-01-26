@@ -71,7 +71,8 @@ class PEPSessionTest: XCTestCase {
         message.cc = [account.user]
         message.bcc = [account.user]
         message.parent = folder
-        message.sent = NSDate()
+        message.sent = Date()
+        message.received = Date()
         message.replyTo = [account.user]
         message.references = ["ref1"]
         let hf = HeaderField(name: "name", value: "Value")

@@ -41,7 +41,7 @@ open class MockData {
             msg.from = Identity.create(address: "igor.vojinovic@appculture.com")
             msg.to = [Identity.create(address: "igor.vojinovic@appculture.com")]
             msg.longMessage = "<html><head></head><body>Test Message Nr: \(i) </body></html>"
-            msg.sent = Date() as NSDate?
+            msg.sent = Date()
             folder.add(message: msg)
         }
     }
