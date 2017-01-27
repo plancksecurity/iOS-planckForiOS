@@ -36,7 +36,7 @@ extension CdMessage {
             append()
             string.append("messageID: \(msgID)")
         }
-        string.append("\(uid)")
+        string.append(" UID: \(uid)")
         if let oDate = received {
             append()
             string.append("date: \(oDate)")
