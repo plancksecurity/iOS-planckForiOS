@@ -72,7 +72,7 @@ fileprivate struct AccountSettings {
                    "address": imapServerAddress,
                    "transport": imapServerTransport])
 
-        let key = UUID.generate()
+        let key = MessageID.generate()
         CdServerCredentials.add(password: password, forKey: key)
 
         let cred = CdServerCredentials.create(
