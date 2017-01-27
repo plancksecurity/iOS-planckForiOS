@@ -199,7 +199,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
                       messageUpdate: CWMessageUpdate) {
-        Log.warn(component: comp, content: "Writing message \(message)")
+        Log.warn(component: comp, content: "Writing message \(message), \(messageUpdate)")
 
         let opQuick = StorePrefetchedMailOperation(
             accountID: accountID, message: message, messageUpdate: messageUpdate, name: logName,
