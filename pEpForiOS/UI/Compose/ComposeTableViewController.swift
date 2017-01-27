@@ -197,9 +197,12 @@ class ComposeTableViewController: UITableViewController {
                     break
                 }
             } else if cell is MessageBodyCell {
-                message.longMessageFormatted = cell.textView.toHtml()
                 if let attachments = (cell as? MessageBodyCell)?.getAllAttachments() {
                     message.attachments = attachments as! [Attachment]
+                }
+                message.longMessageFormatted = cell.textView.toHtml()
+                if message.attachments.isEmpty {
+                    message.longMessage = cell.textView.text
                 }
             } else if let fm = cell.fieldModel {
                 switch fm.type {
