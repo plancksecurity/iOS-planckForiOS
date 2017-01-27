@@ -47,6 +47,13 @@ class EmailListViewCell: UITableViewCell {
 
     func updateFlags(message: Message) {
         // TODO
+        if (isRead(message: message)) {
+            self.isReadMessageImage.isHidden = true
+        }
+        else if (!isRead(message: message)) {
+            self.isReadMessageImage.isHidden = false
+            self.isReadMessageImage.backgroundColor = .pEpBlue
+        }
     }
     
     func configureCell(indexPath: IndexPath, config: EmailListConfig?) -> MessageID? {
@@ -86,13 +93,6 @@ class EmailListViewCell: UITableViewCell {
                                    toLabel: self.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: self.dateLabel)
-            }
-            if (isRead(message: message)) {
-                self.isReadMessageImage.isHidden = true
-            }
-            else if (!isRead(message: message)) {
-                self.isReadMessageImage.isHidden = false
-                self.isReadMessageImage.backgroundColor = .pEpBlue
             }
             
             attachmentIcon.isHidden = message.attachments.count > 0 ? false : true
