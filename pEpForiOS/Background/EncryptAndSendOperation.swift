@@ -49,7 +49,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         handleNextMessage()
     }
 
-    public func retrieveNextMessage(
+    public static func retrieveNextMessage(
         context: NSManagedObjectContext) -> (PEPMessage, NSManagedObjectID)? {
         var pepMessage: PEPMessage?
         var objID: NSManagedObjectID?
@@ -105,7 +105,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         markLastSentMessageAsSent(context: context)
 
         lastSentMessageObjectID = nil
-        if let (msg, objID) = retrieveNextMessage(context: context) {
+        if let (msg, objID) = EncryptAndSendOperation.retrieveNextMessage(context: context) {
             lastSentMessageObjectID = objID
             let (status, encMsg) = session.encrypt(pEpMessageDict: msg)
             let (encMsg2, error) = PEPUtil.check(

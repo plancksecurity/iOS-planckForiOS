@@ -720,7 +720,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let sendOp = EncryptAndSendOperation(
             smtpSendData: smtpSendData, errorContainer: errorContainer)
-        XCTAssertNotNil(sendOp.retrieveNextMessage(context: Record.Context.default))
+        XCTAssertNotNil(EncryptAndSendOperation.retrieveNextMessage(context: Record.Context.default))
         sendOp.addDependency(smtpLogin)
         sendOp.completionBlock = {
             expMailsSent.fulfill()

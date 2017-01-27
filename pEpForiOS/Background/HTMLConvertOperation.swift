@@ -49,7 +49,7 @@ open class HTMLConvertOperation: BaseOperation {
             }
 
             if modelChanged {
-                Record.save()
+                Record.saveAndWait()
             }
         }
     }

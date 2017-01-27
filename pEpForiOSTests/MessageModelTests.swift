@@ -6,6 +6,7 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import pEpForiOS
 import MessageModel
 
 import XCTest
@@ -44,5 +45,31 @@ class MessageModelTests: XCTestCase {
             return
         }
         XCTAssertTrue(ident.isMySelf)
+    }
+
+    func testSaveMessageForSending() {
+        let testData = TestData()
+        let account = testData.createWorkingAccount()
+        account.save()
+        let sentFolder = Folder.create(name: "Sent", account: account, folderType: .sent)
+        sentFolder.save()
+        let msg = sentFolder.createMessage()
+        msg.shortMessage = "Some subject"
+        msg.from = account.user
+        msg.to.append(account.user)
+        msg.save()
+
+        guard let cdMsg = CdMessage.first() else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(msg.uuid, cdMsg.uuid)
+
+        if let (_, _) = EncryptAndSendOperation.retrieveNextMessage(
+            context: Record.Context.default) {
+        } else {
+            XCTFail()
+        }
+
     }
 }
