@@ -15,10 +15,10 @@ let defaultFilenameLength = 20
 extension UITableView {
     
     public final func updateSize(_ animated: Bool = false) {
-        UIView.setAnimationsEnabled(animated)
+        // UIView.setAnimationsEnabled(animated)
         beginUpdates()
         endUpdates()
-        UIView.setAnimationsEnabled(animated)
+        // UIView.setAnimationsEnabled(animated)
     }
 
     public final func scrollToTopOf(_ cell: UITableViewCell) {

@@ -124,31 +124,6 @@ class ComposeTableViewController: UITableViewController {
         return Attachment.inline(name: filename, url: url, type: filetype, image: nil)
     }
     
-    fileprivate final func shouldShowCC(for textview: ComposeTextView) -> Bool {
-        if (textview.fieldModel?.type == .to ||
-            textview.fieldModel?.type == .subject ||
-            textview.fieldModel?.type == .content) &&
-            textViewsValidate() == false {
-            return false
-        }
-        return true
-    }
-    
-    fileprivate final func textViewsValidate() -> Bool {
-        var result = false
-        let types: [ComposeFieldModel.FieldType] = [.cc, .bcc]
-        let filteredModels = tableData?.rows.filter { types.contains($0.type) }
-        
-        filteredModels?.forEach {
-            if $0.value.length > 0 {
-                result = true
-            } else {
-                result = result || false
-            }
-        }
-        return result
-    }
-    
     fileprivate final func addContactSuggestTable() {
         suggestTableView = storyboard?.instantiateViewController(withIdentifier: "contactSuggestionTable").view as! SuggestTableView
         suggestTableView.delegate = self
@@ -259,9 +234,14 @@ class ComposeTableViewController: UITableViewController {
         let height = cell.textView.fieldHeight
         let expandable = cell.fieldModel?.expanded
         
+        if cell is AccountCell {
+            if (cell as! AccountCell).shouldDisplayPicker {
+                if (expandable != nil) && cell.isExpanded { return expandable! }
+            }
+        }
+        
         if cell.fieldModel?.display == .conditional {
             if ccEnabled {
-                if (expandable != nil) && cell.isExpanded { return expandable! }
                 if height <= row.height { return row.height }
                 return height
             } else {
@@ -315,8 +295,7 @@ class ComposeTableViewController: UITableViewController {
         guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else { return }
         if cell is AccountCell {
             let accountCell = cell as! AccountCell
-            accountCell.isExpanded = !accountCell.isExpanded
-            accountCell.togglePicker()
+            ccEnabled = accountCell.expand()
             self.tableView.updateSize()
         }
     }
@@ -365,13 +344,7 @@ class ComposeTableViewController: UITableViewController {
 
 extension ComposeTableViewController: ComposeCellDelegate {
     
-    func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {
-        if tableData?.ccEnabled != shouldShowCC(for: textView) {
-            tableData?.ccEnabled = shouldShowCC(for: textView)
-            ccEnabled = (tableData?.ccEnabled)!
-            tableView.updateSize(true)
-        }
-    }
+    func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {}
     
     func textdidChange(at indexPath: IndexPath, textView: ComposeTextView) {
         let fModel = tableData?.rows.filter{ $0.type == textView.fieldModel?.type }

@@ -15,7 +15,8 @@
 "MailComp.To" = "To:";
 "MailComp.Cc" = "Cc:";
 "MailComp.Bcc" = "Bcc:";
-"MailComp.From" = "From:";
+"MailComp.From" = "Cc/Bcc, From:";
+"MailComp.From.Expanded" = "From:";
 "MailComp.Subject" = "Subject:";
 "MailComp.Video" = "Video.";
 
