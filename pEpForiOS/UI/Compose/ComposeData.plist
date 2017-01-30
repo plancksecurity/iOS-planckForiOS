@@ -30,7 +30,7 @@
 			<key>value</key>
 			<string></string>
 			<key>visible</key>
-			<string>always</string>
+			<string>conditional</string>
 			<key>height</key>
 			<string>64.0</string>
 			<key>contactSuggestion</key>
@@ -61,8 +61,10 @@
 			<string>from</string>
 			<key>title</key>
 			<string>MailComp.From</string>
+			<key>titleExpanded</key>
+			<string>MailComp.From.Expanded</string>
 			<key>visible</key>
-			<string>conditional</string>
+			<string>always</string>
 			<key>height</key>
 			<string>64.0</string>
 			<key>expanded</key>

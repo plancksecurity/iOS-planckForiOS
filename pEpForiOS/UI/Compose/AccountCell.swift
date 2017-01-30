@@ -15,6 +15,12 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
     var accounts = Account.all()
     var account: String?
     
+    public var shouldDisplayPicker: Bool = false {
+        didSet {
+            picker.isHidden = !shouldDisplayPicker
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -26,8 +32,20 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: - Public Methods
     
-    public final func togglePicker() {
-        picker.isHidden = !isExpanded
+    public final func expand() -> Bool {
+        if isExpanded && !shouldDisplayPicker {
+            shouldDisplayPicker = true
+        } else {
+            shouldDisplayPicker = false
+            isExpanded = !isExpanded
+            
+            titleLabel?.text = fieldModel?.title
+            
+            if isExpanded {
+                titleLabel?.text = fieldModel?.expandedTitle
+            }
+        }
+        return isExpanded
     }
     
     public final func getAccount() -> Identity {

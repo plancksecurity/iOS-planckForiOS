@@ -206,6 +206,9 @@ extension CdMessage {
         theImap.flagAnswered = flags.contain(.answered)
         theImap.flagFlagged = flags.contain(.flagged)
         theImap.flagDeleted = flags.contain(.deleted)
+        if flags.contain(.deleted) {
+            Log.info(component: #function, content: "Message with flag deleted")
+        }
         theImap.flagDraft = flags.contain(.draft)
         theImap.flagRecent = flags.contain(.recent)
 
@@ -260,7 +263,7 @@ extension CdMessage {
         imap.messageNumber = Int32(message.messageNumber())
         imap.mimeBoundary = (message.boundary() as NSData?)?.asciiString()
 
-        mail.updateFromServer(flags: message.flags())
+        let _ = mail.updateFromServer(flags: message.flags())
 
         return mail
     }

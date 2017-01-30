@@ -10,6 +10,7 @@ import MessageModel
 public struct ImapState {
     var authenticationCompleted = false
     var currentFolderName: String?
+    var currentFolder: CWIMAPFolder?
 }
 
 public protocol ImapSyncDelegate: class {
@@ -129,13 +130,17 @@ open class ImapSync: Service {
     @discardableResult open func openMailBox(name: String) -> Bool {
         if let currentFolderName = imapState.currentFolderName,
             currentFolderName == name {
+            imapState.currentFolder = imapStore.folder(forName: name) as? CWIMAPFolder
             return false
         } else {
             imapState.currentFolderName = nil
+            imapState.currentFolder = nil
             // Note: If you open a folder with PantomimeReadOnlyMode,
             // all messages will be prefetched by default,
             // independent of the prefetch parameter.
-            if let folder = imapStore.folder(forName: name, mode: PantomimeReadWriteMode) {
+            let fol = imapStore.folder(forName: name, mode: PantomimeReadWriteMode)
+            imapState.currentFolder = fol
+            if let folder = fol {
                 Log.info(component: comp, content: "openMailBox have to open \(folder.name())")
                 return true
             }
@@ -143,7 +148,7 @@ open class ImapSync: Service {
         }
     }
 
-    func openFolder() throws -> CWIMAPFolder{
+    func openFolder() throws -> CWIMAPFolder {
         guard let folderName = imapState.currentFolderName else {
             throw Constants.errorIllegalState(
                 comp,

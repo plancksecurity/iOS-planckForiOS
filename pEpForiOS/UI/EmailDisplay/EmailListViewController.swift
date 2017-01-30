@@ -342,13 +342,21 @@ extension EmailListViewController: SegueHandlerType {
     func didChangeInternal(messageFolder: MessageFolder) {
         if let folder = config?.folder,
             let message = messageFolder as? Message,
-            folder.contains(message: message) {
+            folder.contains(message: message, deletedMessagesAreContained: true) {
             if let msg = messageFolder as? Message {
                 if msg.isOriginal {
                     // new message has arrived
-                    self.tableView.reloadData()
+                    tableView.reloadData()
+                } else if msg.isGhost {
+                    if let cell = cellsByMessageID.object(forKey: msg.uuid as NSString) {
+                        if let ip = cell.indexPath {
+                            tableView.deleteRows(at: [ip], with: .automatic)
+                        } else {
+                            tableView.reloadData()
+                        }
+                    }
                 } else {
-                    // flags must have been changed
+                    // other flags than delete must have been changed
                     if let cell = cellsByMessageID.object(forKey: msg.uuid as NSString) {
                         cell.updateFlags(message: message)
                     }

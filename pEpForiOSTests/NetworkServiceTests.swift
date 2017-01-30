@@ -109,9 +109,11 @@ class NetworkServiceTests: XCTestCase {
         }
 
         func didFetchMessage(messageID: String) {
-            messageIDs.append(messageID)
             if let msg = Message.byMessageID(messageID) {
                 MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+                if !msg.isGhost {
+                    messageIDs.append(messageID)
+                }
             } else {
                 XCTFail()
             }
