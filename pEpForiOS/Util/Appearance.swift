@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Appearance {
     
@@ -51,5 +52,4 @@ class Appearance {
         UISearchBar.appearance().backgroundColor = color
         UISearchBar.appearance().tintColor = .white
     }
-    
 }

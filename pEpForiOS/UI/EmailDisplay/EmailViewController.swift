@@ -19,15 +19,43 @@ class EmailViewController: UITableViewController {
     var page = 0
     var otherCellsHeight: CGFloat = 0.0
     var computedHeight: CGFloat = 0.0
+    var defaultToolbarColor: UIColor = .pEpGreen
+    var defaultNavigationColor: UIColor = .pEpGreen
     
+   
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Appearance.pep()
+        
         loadDatasource("MessageData")
         
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        customizeBar()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setDefaultBarColors()
+    }
+    
+    func customizeBar() {
+        defaultNavigationColor = (navigationController?.navigationBar.barTintColor)!
+        defaultToolbarColor = (navigationController?.toolbar.barTintColor)!
+        
+        navigationController?.navigationBar.barTintColor = .pEpToolBarYellow
+        navigationController?.toolbar.barTintColor = .pEpToolBarYellow
+    }
+    
+    func setDefaultBarColors() {
+        navigationController?.navigationBar.barTintColor = defaultNavigationColor
+        navigationController?.toolbar.barTintColor = defaultToolbarColor
     }
     
     fileprivate final func loadDatasource(_ file: String) {

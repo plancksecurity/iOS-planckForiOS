@@ -768,6 +768,12 @@ extension UIColor {
             return .yellow //UIColor(hex: "#FFC901")
         }
     }
+    
+    open class var pEpToolBarYellow: UIColor {
+        get {
+            return UIColor(hex: "#FFC801")
+        }
+    }
 
     open class var pEpBlue: UIColor {
         get {
