@@ -38,18 +38,21 @@ open class ComposeTextView: UITextView {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
         
         var string = identity.address.trim
-        var scheme: (color: UIColor, image: UIImage)
+        var scheme: (color: UIColor, image: UIImage?)
         if !hasName {
-           scheme = identity.pEpDefaultScheme
+           scheme = (.pEpNoColor, UIImage().noColorImage(string))
         } else {
             string = identity.userName!
             scheme = identity.pEpScheme
+            if scheme.image == nil {
+               scheme = (.pEpNoColor, UIImage().noColorImage(string))
+            }
         }
         
-        let img = scheme.image.recepient(string, textColor: scheme.color)
+        let img = scheme.image?.recepient(string, textColor: scheme.color)
         let at = TextAttachment()
         at.image = img
-        at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)
+        at.bounds = CGRect(x: 0, y: fontDescender, width: img!.size.width, height: img!.size.height)
         
         let attachString = NSAttributedString(attachment: at)
         attrText.replaceCharacters(in: selectedRange, with: attachString)

@@ -26,11 +26,11 @@ extension Identity {
         return (color: .pEpNoColor, image: UIImage(named: "pep-user-status-gray")!)
     }
     
-    public var pEpScheme: (color: UIColor, image: UIImage) {
+    public var pEpScheme: (color: UIColor, image: UIImage?) {
         get {
             switch self.pEpColor() {
             case PEP_color_no_color:
-                return (color: .pEpNoColor, image: UIImage(named: "pep-user-status-gray")!)
+                return (color: .pEpNoColor, image: nil)
             case PEP_color_yellow:
                 return (color: .pEpYellow, image: UIImage(named: "pep-user-status-yellow")!)
             case PEP_color_green:
@@ -38,7 +38,7 @@ extension Identity {
             case PEP_color_red:
                 return (color: .pEpRed, image: UIImage(named: "pep-user-status-red")!)
             default:
-                return (color: .pEpNoColor, image: UIImage(named: "pep-user-status-gray")!)
+                return (color: .pEpNoColor, image: nil)
             }
         }
     }
