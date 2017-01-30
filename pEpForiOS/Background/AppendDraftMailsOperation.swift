@@ -18,7 +18,7 @@ open class AppendDraftMailsOperation: AppendMailsOperation {
             let p = NSPredicate(
                 format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
                 FolderType.drafts.rawValue, SendStatus.none.rawValue)
-            msg = CdMessage.first(with: p, in: self.context)
+            msg = CdMessage.first(predicate: p, in: self.context)
         }
         if let m = msg, let cdIdent = m.parent?.account?.identity {
             return (m.pEpMessage(), cdIdent.pEpIdentity(), m.objectID)

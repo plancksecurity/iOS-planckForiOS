@@ -29,7 +29,7 @@ open class MySelfOperation: BaseOperation {
         context.performAndWait {
             let pOwnIdentity = NSPredicate(format: "isMySelf = true")
             let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pOwnIdentity])
-            guard let cdIds = CdIdentity.all(with: p)
+            guard let cdIds = CdIdentity.all(predicate: p)
                 as? [CdIdentity] else {
                     return
             }

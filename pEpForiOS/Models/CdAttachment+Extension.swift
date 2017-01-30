@@ -16,7 +16,7 @@ extension CdAttachment {
      */
     public static func deleteOrphans() {
         if let orphans = CdAttachment.all(
-            with: NSPredicate(format: "message = nil")) as? [CdAttachment] {
+            predicate: NSPredicate(format: "message = nil")) as? [CdAttachment] {
             for o in orphans {
                 o.delete()
             }

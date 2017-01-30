@@ -71,7 +71,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         folder: CdFolder, context: NSManagedObjectContext) -> [CdMessage]? {
         let pFlagsChanged = CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
         return CdMessage.all(
-            with: pFlagsChanged,
+            predicate: pFlagsChanged,
             orderedBy: [NSSortDescriptor(key: "received", ascending: true)], in: context)
             as? [CdMessage]
     }
@@ -238,7 +238,7 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
         }
         for cw in cwMessages {
             if let all = CdMessage.all(
-                with: ["uid": cw.uid(), "parent": folder], in: context)
+                attributes: ["uid": cw.uid(), "parent": folder], in: context)
                 as? [CdMessage] {
                 for m in all {
                     print("\(m.uid) \(m.imap?.flagsCurrent) \(m.imap?.flagsFromServer) \(m.parent?.objectID)")
@@ -246,9 +246,9 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
             }
 
             if let msg = CdMessage.first(
-                with: ["uid": cw.uid(), "parent": folder], in: context) {
+                attributes: ["uid": cw.uid(), "parent": folder], in: context) {
                 let flags = cw.flags()
-                let imap = msg.imap ?? CdImapFields.create(in: context)
+                let imap = msg.imap ?? CdImapFields.create(context: context)
                 msg.imap = imap
                 imap.flagsFromServer = flags.rawFlagsAsShort() as Int16
             } else {

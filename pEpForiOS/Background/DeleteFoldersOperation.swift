@@ -46,7 +46,7 @@ open class DeleteFoldersOperation: ImapSyncOperation {
         }
 
         let p = NSPredicate(format: "shouldDelete = true and account = %@", account)
-        if let folders = CdFolder.all(with: p) as? [CdFolder] {
+        if let folders = CdFolder.all(predicate: p) as? [CdFolder] {
             for f in folders {
                 if let fn = f.name {
                     folderNamesToDelete.append(fn)

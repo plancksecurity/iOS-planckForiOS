@@ -58,12 +58,12 @@ extension CdMessage {
     public static func createWithDefaults(
         messageID: String, uid: Int, parent: CdFolder? = nil,
         in context: NSManagedObjectContext = Record.Context.default) -> CdMessage {
-        let imap = CdImapFields.create(in: context)
+        let imap = CdImapFields.create(context: context)
         var dict: [String: Any] = ["uuid": messageID, "uid": uid, "imap": imap]
         if let pf = parent {
             dict["parent"] = pf
         }
-        return create(with: dict)
+        return create(attributes: dict)
     }
 
     static func existingMessagesPredicate() -> NSPredicate {
@@ -95,12 +95,12 @@ extension CdMessage {
     }
 
     public static func countBy(predicate: NSPredicate) -> Int {
-        let objs = all(with: predicate)
+        let objs = all(predicate: predicate)
         return objs?.count ?? 0
     }
 
     public static func by(uid: Int) -> CdMessage? {
-        return first(with: "uid", value: uid)
+        return first(attribute: "uid", value: uid)
     }
 
     /**
@@ -133,7 +133,7 @@ extension CdMessage {
 
     static func insertAttachment(
         contentType: String?, filename: String?, data: Data) -> CdAttachment {
-        let attachment = CdAttachment.create(with: ["data": data, "size": data.count])
+        let attachment = CdAttachment.create(attributes: ["data": data, "size": data.count])
         attachment.mimeType = contentType
         attachment.fileName = filename
         return attachment

@@ -100,7 +100,7 @@ extension CdAccount {
      - Returns: A folder under this account with the given name.
      */
     open func folder(byName name: String) -> CdFolder? {
-        return CdFolder.first(with: ["account": self, "name": name])
+        return CdFolder.first(attributes: ["account": self, "name": name])
     }
 
 }

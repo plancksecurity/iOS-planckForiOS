@@ -363,14 +363,14 @@ extension CdMessage {
         guard let mid = pantomimeMessage.messageID() else {
             return nil
         }
-        return CdMessage.first(with: "uuid", value: mid)
+        return CdMessage.first(attribute: "uuid", value: mid)
     }
 
     static func add(contacts: [CWInternetAddress]) -> [String: CdIdentity] {
         var added: [String: CdIdentity] = [:]
         for address in contacts {
-            let addr = CdIdentity.first(with: "address", value: address.address()) ??
-                CdIdentity.create(with: ["address": address.address(), "isMySelf": false])
+            let addr = CdIdentity.first(attribute: "address", value: address.address()) ??
+                CdIdentity.create(attributes: ["address": address.address(), "isMySelf": false])
             addr.userName = address.personal()
             added[address.address()] = addr
         }
@@ -378,8 +378,8 @@ extension CdMessage {
     }
 
     static func insertOrUpdateMessageReference(_ messageID: String) -> CdMessageReference {
-        let ref = CdMessageReference.firstOrCreate(with: "reference", value: messageID)
-        ref.message = CdMessage.first(with: "uuid", value: messageID)
+        let ref = CdMessageReference.firstOrCreate(attribute: "reference", value: messageID)
+        ref.message = CdMessage.first(attribute: "uuid", value: messageID)
         return ref
     }
 
