@@ -24,7 +24,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                     return
             }
 
-            var modelChanged = false
+            var updatedMessages = [CdMessage]()
             for message in messages {
                 var outgoing = false
                 let folderTypeNum = message.parent?.folderType
@@ -57,7 +57,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_unencrypted_for_some:
                     // Set the color, nothing else to update
                     message.pEpRating = Int16(color.rawValue)
-                    modelChanged = true
+                    updatedMessages.append(message)
                     break
                 case PEP_rating_unreliable,
                      PEP_rating_mistrust,
@@ -70,7 +70,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_fully_anonymous:
                     if let decrypted = pepDecryptedMessage {
                         message.update(pEpMessage: decrypted as! PEPMessage, pepColorRating: color)
-                        modelChanged = true
+                        updatedMessages.append(message)
                     }
                     break
                 default:
@@ -79,12 +79,14 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                         content: "No default action for decrypted message \(message.logString())")
                     break
                 }
+                if !updatedMessages.isEmpty {
+                    Record.saveAndWait()
+                    for m in updatedMessages {
+                        m.updateDecrypted()
+                    }
+                }
+                self.markAsFinished()
             }
-            if modelChanged {
-                // TODO: Give UI a chance to reload, via persistence layer
-                Record.saveAndWait()
-            }
-            self.markAsFinished()
         }
     }
 }
