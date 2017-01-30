@@ -80,6 +80,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
         self.imapSync.folderBuilder = folderBuilder
 
         if !self.imapSync.openMailBox(name: self.folderToOpen) {
+            imapSync.imapState.currentFolder?.resetMatchedUIDs()
             self.syncMessages(self.imapSync)
         }
     }
@@ -90,6 +91,25 @@ open class SyncMessagesOperation: ImapSyncOperation {
         } catch let err as NSError {
             addError(err)
             waitForFinished()
+        }
+    }
+
+    func deleteDeletedMails(context: NSManagedObjectContext, existingUIDs: Set<AnyHashable>) {
+        guard let folder = context.object(with: folderID)
+            as? CdFolder else {
+                handleError(Constants.errorCannotFindAccount(component: comp),
+                            message: "No folder given")
+                return
+        }
+        let p1 = NSPredicate(format: "uid >= %d and uid <= %d", firstUID, lastUID)
+        let p2 = NSPredicate(format: "parent = %@", folder)
+        let messages = CdMessage.all(
+            predicate: NSCompoundPredicate(
+                andPredicateWithSubpredicates: [p1, p2])) as? [CdMessage] ?? []
+        for msg in messages {
+            if !existingUIDs.contains(NSNumber(value: msg.uid)) {
+                Log.info(component: comp, content: "Should remove message with UID \(msg.uid)")
+            }
         }
     }
 }
@@ -132,8 +152,13 @@ extension SyncMessagesOperation: ImapSyncDelegate {
     }
 
     public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
-        for uid in firstUID...lastUID {
-
+        // delete locally whatever was not mentioned in our big sync
+        if let folder = sync.imapState.currentFolder {
+            let existingUIDs = folder.existingUIDs()
+            let context = Record.Context.background
+            context.performAndWait() {
+                self.deleteDeletedMails(context: context, existingUIDs:existingUIDs)
+            }
         }
         markAsFinished()
     }
@@ -151,9 +176,14 @@ extension SyncMessagesOperation: ImapSyncDelegate {
                 markAsFinished()
                 return
         }
+        let p1 = NSPredicate(
+            format: "parent = %@ and uid >= %d and uid < %d", folder, startUID, excludingUID)
+        for msg in CdMessage.all(predicate: p1) as? [CdMessage] ?? [] {
+            Log.info(component: comp, content: "Should remove message with UID \(msg.uid)")
+        }
+
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CdMessage")
-        fetchRequest.predicate = NSPredicate(format: "parent = %@ and uid >= %d and uid < %d",
-                                             folder, startUID, excludingUID)
+        fetchRequest.predicate = p1
         let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         do {
             try context.execute(request)

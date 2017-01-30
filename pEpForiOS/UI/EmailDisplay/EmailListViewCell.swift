@@ -33,6 +33,8 @@ class EmailListViewCell: UITableViewCell {
 
     let dateFormatter = UIHelper.dateFormatterEmailList()
 
+    var indexPath: IndexPath?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.none
@@ -50,6 +52,8 @@ class EmailListViewCell: UITableViewCell {
     }
     
     func configureCell(indexPath: IndexPath, config: EmailListConfig?) -> MessageID? {
+        self.indexPath = indexPath
+
         if !determinedCellBackgroundColor {
             defaultCellBackgroundColor = self.backgroundColor
             determinedCellBackgroundColor = true
