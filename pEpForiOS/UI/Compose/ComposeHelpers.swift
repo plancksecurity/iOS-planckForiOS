@@ -124,73 +124,38 @@ extension UIImage {
         
         return image!
     }
+    
+    public final func noColorImage(_ name: String) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 16, height: 16), false, 0)
+        
+        let ovalRect = CGRect(x: 0.5, y: 0.5, width: 15, height: 15)
+        let ovalPath = UIBezierPath(ovalIn: ovalRect)
+        
+        UIColor.gray.setStroke()
+        ovalPath.lineWidth = 1
+        ovalPath.stroke()
+        
+        let ovalStyle = NSMutableParagraphStyle()
+        ovalStyle.alignment = .center
+        
+        let ovalFontAttributes = [
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 10),
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSParagraphStyleAttributeName: ovalStyle
+        ]
+        
+        let initials = String(describing: name.characters.first!).uppercased()
+        initials.draw(in: ovalRect.insetBy(dx: 1.5, dy: 1), withAttributes: ovalFontAttributes)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
 }
 
 // MARK: - Compose Helper Class
 
 open class ComposeHelper {
     
-    // Builds a pEp mail dictionary from all the related views. This is just a quick
-    // method for checking the pEp color rating, it's not exhaustive!
-    
-//    open static func pepMailFromViewForCheckingRating(_ vc: ComposeTableViewController) -> PEPMessage? {
-//        var message = PEPMessage()
-//        
-//        for (_, cell) in vc.recipientCells {
-//            let tf = cell.textView
-//            if let text = tf?.text {
-//                let mailStrings0 = text.removeLeadingPattern(vc.leadingPattern)
-//                if !mailStrings0.isOnlyWhiteSpace() {
-//                    let mailStrings1 = mailStrings0.components(
-//                        separatedBy: vc.recipientStringDelimiter).map() {
-//                            $0.trimmedWhiteSpace()
-//                    }
-//                    
-//                    let mailStrings2 = mailStrings1.filter() {
-//                        !$0.isOnlyWhiteSpace()
-//                    }
-//                    let contacts: [PEPIdentity] = mailStrings2.map() {
-//                        if let c = Identity.by(address: $0) {
-//                            return PEPUtil.pEp(identity: c)
-//                        }
-//                        return PEPUtil.pEpIdentity(email: $0, name: $0.namePartOfEmail())
-//                    }
-//                    if contacts.count > 0 {
-//                        if let rt = cell.fieldModel?.type {
-//                            var pepKey: String? = nil
-//                            switch rt {
-//                            case .to:
-//                                pepKey = kPepTo
-//                            case .cc:
-//                                pepKey = kPepCC
-//                            case .bcc:
-//                                pepKey = kPepBCC
-//                            default: ()
-//                                break
-//                            }
-//                            if let key = pepKey {
-//                                message[key] = NSArray(array: contacts)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        
-//        guard let account = vc.appConfig?.currentAccount else {
-//            Log.warn(component: vc.comp, "Need valid account for determining pEp rating")
-//            return nil
-//        }
-//        message[kPepFrom] = PEPUtil.pEp(identity: account.user) as AnyObject?
-//        
-//        if let subjectText = vc.subjectTextField?.text {
-//            message[kPepShortMessage] = subjectText as AnyObject?
-//        }
-//        if let bodyText = vc.longBodyMessageTextView?.text {
-//            message[kPepLongMessage] = bodyText as AnyObject?
-//        }
-//        message[kPepOutgoing] = NSNumber(booleanLiteral: true)
-//        return message
-//    }
 }
 
