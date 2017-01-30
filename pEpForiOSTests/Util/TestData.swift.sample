@@ -57,31 +57,33 @@ fileprivate struct AccountSettings {
     }
 
     func cdAccount() -> CdAccount {
-        let id = CdIdentity.create(
-            with: ["address": idAddress, "userName": idUserName])
+        let id = CdIdentity.create()
+        id.address = idAddress
+        id.userName = idUserName
 
-        let smtp = CdServer.create(
-            with: ["serverType": smtpServerType,
-                   "port": NSNumber(value: smtpServerPort),
-                   "address": smtpServerAddress,
-                   "transport": smtpServerTransport])
+        let smtp = CdServer.create()
+        smtp.serverType = Int16(smtpServerType)
+        smtp.port = NSNumber(value: smtpServerPort)
+        smtp.address = smtpServerAddress
+        smtp.transport = Int16(smtpServerTransport)
 
-        let imap = CdServer.create(
-            with: ["serverType": imapServerType,
-                   "port": NSNumber(value: imapServerPort),
-                   "address": imapServerAddress,
-                   "transport": imapServerTransport])
+        let imap = CdServer.create()
+        imap.serverType = Int16(imapServerType)
+        imap.port = NSNumber(value: imapServerPort)
+        imap.address = imapServerAddress
+        imap.transport = Int16(imapServerTransport)
 
         let key = MessageID.generate()
         CdServerCredentials.add(password: password, forKey: key)
 
-        let cred = CdServerCredentials.create(
-            with: ["userName": id.address!,
-                   "key": key,
-                   "servers": NSSet(array: [imap, smtp])])
+        let cred = CdServerCredentials.create()
+        cred.userName = id.address
+        cred.key = key
+        cred.servers = NSSet(array: [imap, smtp])
 
-        let acc = CdAccount.create(with: ["identity": id,
-                                          "credentials": NSOrderedSet(array: [cred])])
+        let acc = CdAccount.create()
+        acc.identity = id
+        acc.credentials = NSOrderedSet(array: [cred])
 
         return acc
     }

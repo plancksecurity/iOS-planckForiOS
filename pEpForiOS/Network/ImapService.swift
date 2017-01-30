@@ -9,7 +9,7 @@ import MessageModel
 
 public struct ImapState {
     var authenticationCompleted = false
-    var currentFolder: String?
+    var currentFolderName: String?
 }
 
 public protocol ImapSyncDelegate: class {
@@ -127,11 +127,11 @@ open class ImapSync: Service {
      - Returns: true if the mailbox had to opened, false if it already was open.
      */
     @discardableResult open func openMailBox(name: String) -> Bool {
-        if let currentFolderName = imapState.currentFolder,
+        if let currentFolderName = imapState.currentFolderName,
             currentFolderName == name {
             return false
         } else {
-            imapState.currentFolder = nil
+            imapState.currentFolderName = nil
             // Note: If you open a folder with PantomimeReadOnlyMode,
             // all messages will be prefetched by default,
             // independent of the prefetch parameter.
@@ -144,13 +144,13 @@ open class ImapSync: Service {
     }
 
     func openFolder() throws -> CWIMAPFolder{
-        guard let folderName = imapState.currentFolder else {
+        guard let folderName = imapState.currentFolderName else {
             throw Constants.errorIllegalState(
                 comp,
                 stateName: NSLocalizedString("No open folder",
                                              comment: "Need an open folder to sync messages"))
         }
-        guard let folder = imapStore.folder(forName: imapState.currentFolder) else {
+        guard let folder = imapStore.folder(forName: imapState.currentFolderName) else {
             throw Constants.errorFolderNotOpen(comp, folderName: folderName)
         }
         return folder as! CWIMAPFolder
@@ -342,10 +342,10 @@ extension ImapSync: PantomimeFolderDelegate {
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
             Log.info(component: comp, content: "folderOpenCompleted: \(folder.name())")
-            imapState.currentFolder = folder.name()
+            imapState.currentFolderName = folder.name()
         } else {
             Log.info(component: comp, content: "folderOpenCompleted: \(notification)")
-            imapState.currentFolder = nil
+            imapState.currentFolderName = nil
         }
         delegate?.folderOpenCompleted(self, notification: notification)
     }

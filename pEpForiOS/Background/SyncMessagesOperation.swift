@@ -132,6 +132,9 @@ extension SyncMessagesOperation: ImapSyncDelegate {
     }
 
     public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        for uid in firstUID...lastUID {
+
+        }
         markAsFinished()
     }
 
