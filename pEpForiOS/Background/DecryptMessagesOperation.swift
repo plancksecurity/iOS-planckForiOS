@@ -81,6 +81,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                 }
             }
             if modelChanged {
+                // TODO: Give UI a chance to reload, via persistence layer
                 Record.saveAndWait()
             }
             self.markAsFinished()
