@@ -13,7 +13,6 @@ extension CdMessage {
     /**
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.
-     TODO: Take care of optional fields (`kPepOptFields`)!
      */
     public func update(pEpMessage: PEPMessage, pepColorRating: PEP_rating? = nil) {
         if let color = pepColorRating {
