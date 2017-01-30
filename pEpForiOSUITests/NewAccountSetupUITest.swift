@@ -90,17 +90,17 @@ class NewAccountSetupUITest: XCTestCase {
         nextButton.tap()
     }
 
+    func testInsertNewWorkingAccount() {
+        let account = UITestData.workingAccount1
+        newAccountSetup(account)
+        waitForever()
+    }
+
     func testNewAccountThatShouldFail() {
         var account = UITestData.workingAccount1
         account.password = "CLEArlyWRong"
         newAccountSetup(account)
         // TODO: Verify error message
-        waitForever()
-    }
-
-    func testInsertNewWorkingAccount() {
-        let account = UITestData.workingAccount1
-        newAccountSetup(account)
         waitForever()
     }
 
