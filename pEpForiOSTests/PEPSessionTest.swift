@@ -185,26 +185,30 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(unencrypted[0][kPepBCC] as? NSArray, [receiver3])
     }
 
-    func tryDecryptMessage(message: NSDictionary, myID: String, session: PEPSession) {
+    func tryDecryptMessage(
+        message: NSDictionary, myID: String, references: [String], session: PEPSession) {
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
         let _ = session.decryptMessageDict(message as! PEPMessage,
                                            dest: &pepDecryptedMessage, keys: &keys)
         if let decMsg = pepDecryptedMessage {
             XCTAssertEqual(decMsg[kPepID] as? String, myID)
+            XCTAssertEqual(decMsg[kPepReferences] as? [String] ?? [], references)
         } else {
             XCTFail()
         }
     }
 
-    func testMessageIDAfterEncrypt() {
+    func testMessageIDAndReferencesAfterEncrypt() {
         let testData = TestData()
         let myself = testData.createWorkingIdentity(number: 0)
         let myID = "myID"
+        let references = ["ref1", "ref2"]
         let dict = [
             kPepFrom: myself as AnyObject,
             kPepTo: NSArray(array: [myself]),
             kPepID: myID as AnyObject,
+            kPepReferences: NSArray(array: references),
             kPepShortMessage: "Some Subject" as AnyObject,
             kPepLongMessage: "The text body" as AnyObject,
             kPepOutgoing: NSNumber(booleanLiteral: true)
@@ -219,7 +223,8 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(status1, PEP_STATUS_OK)
         if let theEncMsg = encMsg1 {
             XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
-            tryDecryptMessage(message: theEncMsg, myID:myID, session: session)
+            tryDecryptMessage(
+                message: theEncMsg, myID:myID, references: references, session: session)
         } else {
             XCTFail()
         }
@@ -229,7 +234,8 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(status2, PEP_STATUS_OK)
         if let theEncMsg = encMsg2 {
             XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
-            tryDecryptMessage(message: theEncMsg, myID: myID, session: session)
+            tryDecryptMessage(
+                message: theEncMsg, myID: myID, references: references, session: session)
         } else {
             XCTFail()
         }
