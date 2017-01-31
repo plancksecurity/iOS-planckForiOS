@@ -303,8 +303,10 @@ open class PEPUtil {
         })
 
         var refs = [String]()
-        for ref in cdMessage.references! {
-            refs.append((ref as! CdMessageReference).reference!)
+        for ref in cdMessage.references?.array as? [CdMessageReference] ?? [] {
+            if let refString = ref.reference {
+                refs.append(refString)
+            }
         }
 
         if refs.count > 0 {
@@ -318,10 +320,17 @@ open class PEPUtil {
         dict[kPepReplyTo] = NSArray(array: cdMessage.replyTo!.map()
             { return pEp(cdIdentity: $0 as! CdIdentity) })
 
-        if (cdMessage.optionalFields != nil) && (cdMessage.optionalFields?.count)! > 0 {
-            dict[kPepOptFields] = NSArray(array: cdMessage.optionalFields!.map() {
-                let c = $0 as! CdHeaderField
-                return NSArray(array: [c.name!, c.value!])
+        let headerFields = cdMessage.optionalFields?.array as? [CdHeaderField] ?? []
+        var theFields = [(String, String)]()
+        for field in headerFields {
+            if let name = field.name, let value = field.value {
+                theFields.append((name, value))
+            }
+        }
+        if !theFields.isEmpty {
+            dict[kPepOptFields] = NSArray(
+                array: theFields.map() {
+                    return NSArray(array: [$0.0, $0.1])
             })
         }
 
