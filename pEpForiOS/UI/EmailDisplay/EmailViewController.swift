@@ -92,6 +92,18 @@ class EmailViewController: UITableViewController {
         present(alertViewWithoutTitle, animated: true, completion: nil)
     }
     
+    @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
+    }
+    
+    @IBAction func archiveButtonTapped(_ sender: UIBarButtonItem) {
+    }
+    
+    @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
+    }
+    
+    @IBAction func composeButtonTapped(_ sender: UIBarButtonItem) {
+    }
+    
     @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
         let filtedredIdentities = filterIdentities(message: message)
         
