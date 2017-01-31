@@ -42,7 +42,9 @@ open class ComposeTextView: UITextView {
         if !hasName {
            scheme = (.pEpNoColor, UIImage().noColorImage(string))
         } else {
-            string = identity.userName!
+            if let username = identity.userName {
+                string = username
+            }
             scheme = identity.pEpScheme
             if scheme.image == nil {
                scheme = (.pEpNoColor, UIImage().noColorImage(string))
