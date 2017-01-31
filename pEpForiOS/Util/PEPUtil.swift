@@ -29,9 +29,9 @@ open class PEPUtil {
     static let comp = "PEPUtil"
 
     /**
-     Default pEpRating value when there's none.
+     Default pEpRating value when there's none, i.e. the message has never been decrypted.
      */
-    public static let pEpRatingNone = Int16.min
+    public static let pEpRatingNone = CdMessage.pEpRatingNone
 
     /**
      All privacy status strings, i18n ready.

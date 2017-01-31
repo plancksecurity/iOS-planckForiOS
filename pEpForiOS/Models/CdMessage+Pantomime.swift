@@ -352,7 +352,8 @@ extension CdMessage {
         }
 
         Record.saveAndWait()
-        if let msg = mail.message() {
+        if mail.pEpRating != PEPUtil.pEpRatingNone,
+            let msg = mail.message() {
             MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
         }
 

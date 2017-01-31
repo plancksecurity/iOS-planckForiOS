@@ -13,7 +13,6 @@ extension CdMessage {
     /**
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.
-     TODO: Take care of optional fields (`kPepOptFields`)!
      */
     public func update(pEpMessage: PEPMessage, pepColorRating: PEP_rating? = nil) {
         if let color = pepColorRating {
@@ -110,5 +109,14 @@ extension CdMessage {
 
     public func isProbablyPGPMime() -> Bool {
         return PEPUtil.isProbablyPGPMime(cdMessage: self)
+    }
+
+    /**
+     Message has just been decrypted, so present it to the UI as new.
+     */
+    public func updateDecrypted() {
+        if let msg = message() {
+            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+        }
     }
 }

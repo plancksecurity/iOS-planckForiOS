@@ -297,5 +297,6 @@ class PEPSessionTest: XCTestCase {
         var keys: NSArray?
         let _ = session.decryptMessageDict(
             pEpMessage, dest: &pepDecryptedMessage, keys: &keys)
+        XCTAssertNotNil(pepDecryptedMessage?[kPepLongMessage])
     }
 }
