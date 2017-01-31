@@ -235,10 +235,12 @@ extension CdMessage {
         if messageUpdate.isFlagsOnly() {
             if let mail = existing(pantomimeMessage: message) {
                 if mail.updateFromServer(flags: message.flags()) {
-                    mail.serialNumber = mail.serialNumber + 1
                     Record.saveAndWait()
-                    if let msg = mail.message() {
-                        MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+                    if mail.pEpRating != pEpRatingNone {
+                        mail.serialNumber = mail.serialNumber + 1
+                        if let msg = mail.message() {
+                            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+                        }
                     }
                 }
 
