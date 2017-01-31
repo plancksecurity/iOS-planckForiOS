@@ -85,8 +85,8 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                         m.updateDecrypted()
                     }
                 }
-                self.markAsFinished()
             }
+            self.markAsFinished()
         }
     }
 }
