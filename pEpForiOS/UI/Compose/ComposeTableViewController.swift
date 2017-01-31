@@ -190,6 +190,18 @@ class ComposeTableViewController: UITableViewController {
                 }
             }
         })
+
+        if composeMode == .replyFrom || composeMode == .replyAll,
+            let om = originalMessage {
+            // According to https://cr.yp.to/immhf/thread.html
+            var refs = om.references
+            refs.append(om.messageID)
+            if refs.count > 11 {
+                refs.remove(at: 2)
+            }
+            message.references = refs
+        }
+
         return message
     }
     
