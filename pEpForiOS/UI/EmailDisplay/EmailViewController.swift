@@ -93,6 +93,12 @@ class EmailViewController: UITableViewController {
     }
     
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
+        if (message.imapFlags?.flagged == true) {
+            message.imapFlags?.flagged = false
+        } else {
+            message.imapFlags?.flagged = true
+        }
+        message.save()
     }
     
     @IBAction func archiveButtonTapped(_ sender: UIBarButtonItem) {

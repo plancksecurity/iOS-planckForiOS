@@ -134,12 +134,13 @@ class EmailListViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt
         indexPath: IndexPath)-> [UITableViewRowAction]? {
+        
         let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
         if let email = cell.messageAt(indexPath: indexPath, config: config) {
-            let isFlagAction = createFlagAction(message: email, cell: cell)
+            let flagAction = createFlagAction(message: email, cell: cell)
             let deleteAction = createDeleteAction(message: email, cell: cell)
             let moreAction = createMoreAction(message: email, cell: cell)
-            return [deleteAction,isFlagAction,moreAction]
+            return [deleteAction, flagAction, moreAction]
         }
         return nil
     }
@@ -188,9 +189,10 @@ class EmailListViewController: UITableViewController {
             guard let message = cell.messageAt(indexPath: indexPath, config: self.config) else {
                 return
             }
+            
             message.imapFlags?.deleted = true
             message.save()
-            self.tableView.reloadRows(at: [indexPath], with: .none)
+            self.tableView.reloadData()
         }
 
         return createRowAction(
