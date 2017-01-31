@@ -75,6 +75,10 @@ class NetworkServiceTests: XCTestCase {
             return !changedMessagesByID.isEmpty
         }
 
+        func contains(messageID: MessageID) -> Bool {
+            return messagesByID[messageID] != nil
+        }
+
         func areInIncreasingOrder(d1: Date, d2: Date) -> Bool {
             switch d1.compare(d2 as Date) {
             case .orderedAscending: return true
@@ -108,12 +112,9 @@ class NetworkServiceTests: XCTestCase {
             expAccountVerified?.fulfill()
         }
 
-        func didFetchMessage(messageID: String) {
-            if let msg = Message.byMessageID(messageID) {
-                MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
-                if !msg.isGhost {
-                    messageIDs.append(messageID)
-                }
+        func didFetch(cdMessage: CdMessage) {
+            if let msg = cdMessage.message() {
+                messageIDs.append(msg.messageID)
             } else {
                 XCTFail()
             }
@@ -317,9 +318,10 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNotNil(CdFolder.all())
         XCTAssertNotNil(CdMessage.all())
 
-        guard let cdFolder = CdFolder.first(attributes: ["folderType": FolderType.inbox.rawValue]) else {
-            XCTFail()
-            return
+        guard let cdFolder = CdFolder.first(
+            attributes: ["folderType": FolderType.inbox.rawValue]) else {
+                XCTFail()
+                return
         }
         XCTAssertGreaterThan(cdFolder.messages?.count ?? 0, 0)
         let allCdMessages = cdFolder.messages?.sortedArray(
@@ -338,34 +340,37 @@ class NetworkServiceTests: XCTestCase {
         }
         XCTAssertGreaterThan(allCdMessages.count, cdDecryptAgainCount)
 
-        var decryptAgainCount = 0
         let unifiedInbox = Folder.unifiedInbox()
-        let mc = unifiedInbox.messageCount()
-        XCTAssertGreaterThan(mc, 0)
-        for i in 0..<mc {
-            let msg = unifiedInbox.messageAt(index: i)
-            XCTAssertNotNil(msg?.shortMessage)
-            XCTAssertTrue(
-                msg?.longMessage != nil || msg?.longMessageFormatted != nil ||
-                    (msg?.attachments.count ?? 0) > 0)
-            guard let pEpRating = msg?.pEpRatingInt else {
+
+        let unifiedMessageCount = unifiedInbox.messageCount()
+        XCTAssertGreaterThan(unifiedMessageCount, 0)
+        for i in 0..<unifiedMessageCount {
+            guard let msg = unifiedInbox.messageAt(index: i) else {
                 XCTFail()
                 continue
             }
-            if pEpRating == Int(PEPUtil.pEpRatingNone) {
-                decryptAgainCount += 1
+            XCTAssertNotNil(msg.shortMessage)
+            XCTAssertTrue(
+                msg.longMessage != nil || msg.longMessageFormatted != nil ||
+                    msg.attachments.count > 0)
+            let pEpRating = Int16(msg.pEpRatingInt ?? -1)
+            XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
+            if !modelDelegate.contains(messageID: msg.messageID) {
+                XCTFail()
             }
         }
-        XCTAssertEqual(cdDecryptAgainCount, decryptAgainCount)
 
         let inbox = Folder.from(cdFolder: cdFolder)
-        XCTAssertEqual(sendLayerDelegate.messageIDs.count, mc)
-        XCTAssertEqual(modelDelegate.messages.count, mc)
+        XCTAssertGreaterThan(sendLayerDelegate.messageIDs.count, unifiedMessageCount)
+        XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
+
         for msg in modelDelegate.messages {
             XCTAssertTrue(msg.isOriginal)
             XCTAssertTrue(sendLayerDelegate.messageIDs.contains(msg.messageID))
             XCTAssertTrue(inbox.contains(message: msg))
-            XCTAssertTrue(unifiedInbox.contains(message: msg))
+            if !unifiedInbox.contains(message: msg) {
+                XCTFail()
+            }
         }
         XCTAssertFalse(modelDelegate.hasChangedMessages)
 

@@ -498,9 +498,7 @@ public class NetworkService: INetworkService {
     }
 
     func messageFetched(cdMessage: CdMessage) {
-        if let mid = cdMessage.messageID {
-            sendLayerDelegate?.didFetchMessage(messageID: mid)
-        }
+        sendLayerDelegate?.didFetch(cdMessage: cdMessage)
     }
 
     func buildOperationLines(
