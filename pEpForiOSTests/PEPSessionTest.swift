@@ -223,6 +223,7 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(status1, PEP_STATUS_OK)
         if let theEncMsg = encMsg1 {
             XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
+            XCTAssertEqual(theEncMsg[kPepReferences] as? [String] ?? [], references)
             tryDecryptMessage(
                 message: theEncMsg, myID:myID, references: references, session: session)
         } else {
@@ -234,6 +235,7 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(status2, PEP_STATUS_OK)
         if let theEncMsg = encMsg2 {
             XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
+            XCTAssertEqual(theEncMsg[kPepReferences] as? [String] ?? [], references)
             tryDecryptMessage(
                 message: theEncMsg, myID: myID, references: references, session: session)
         } else {
