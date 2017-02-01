@@ -122,4 +122,45 @@ class MessagePantomimeTests: XCTestCase {
             m.storeCommandForUpdate()?.0,
             "UID STORE 1024 FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")
     }
+
+    func testReferences() {
+        let testData = TestData()
+        let refs = ["ref1", "ref2", "ref3"]
+        let inReplyTo = "ref4"
+        var allRefs = refs
+        allRefs.append(inReplyTo)
+
+        let cdAccount = testData.createWorkingCdAccount()
+
+        let cdFolder = CdFolder.create()
+        let folderName = "inbox"
+        cdFolder.folderType = FolderType.inbox.rawValue
+        cdFolder.name = folderName
+        cdFolder.uuid = MessageID.generate()
+        cdFolder.account = cdAccount
+
+        let cwFolder = CWFolder(name: folderName)
+
+        let cwMsg = CWIMAPMessage()
+        cwMsg.setReferences(refs)
+        cwMsg.setFolder(cwFolder)
+        cwMsg.setInReplyTo(inReplyTo)
+
+        let update = CWMessageUpdate()
+        update.rfc822 = true
+        guard let cdMsg = CdMessage.insertOrUpdate(
+            pantomimeMessage: cwMsg, account: cdAccount, messageUpdate: update) else {
+                XCTFail()
+                return
+        }
+        let cdRefs = cdMsg.references?.array as? [CdMessageReference] ?? []
+        XCTAssertEqual(cdRefs.count, refs.count + 1)
+
+        guard let msg = cdMsg.message() else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(msg.references.count, refs.count + 1)
+        XCTAssertEqual(msg.references, allRefs)
+    }
 }

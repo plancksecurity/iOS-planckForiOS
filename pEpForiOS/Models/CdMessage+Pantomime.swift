@@ -326,21 +326,23 @@ extension CdMessage {
         mail.cc = ccs
         mail.bcc = bccs
 
-        let referenceStrings = NSMutableOrderedSet()
-        if let pantomimeRefs = pantomimeMessage.allReferences() {
+        let referenceStrings = MutableOrderedSet<String>()
+        if let pantomimeRefs = pantomimeMessage.allReferences() as? [String] {
             for ref in pantomimeRefs {
-                referenceStrings.add(ref)
+                referenceStrings.append(ref)
             }
         }
         // Append inReplyTo to references (https://cr.yp.to/immhf/thread.html)
         if let inReplyTo = pantomimeMessage.inReplyTo() {
-            referenceStrings.add(inReplyTo)
+            referenceStrings.append(inReplyTo)
         }
 
+        let theRefs = NSMutableOrderedSet()
         for refID in referenceStrings {
-            let ref = insertOrUpdateMessageReference(refID as! String)
-            mail.addReference(cdMessageReference: ref)
+            let ref = insertOrUpdateMessageReference(refID)
+            theRefs.add(ref)
         }
+        mail.references = theRefs
 
         let imap = mail.imap ?? CdImapFields.create()
         mail.imap = imap
