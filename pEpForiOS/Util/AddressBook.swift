@@ -242,20 +242,19 @@ open class AddressBook {
 
     static func transferAddressBook(_ addressBook: AddressBook) {
         if addressBook.authorizationStatus == .authorized {
-            var insertedContacts = [Identity]()
             let ab = AddressBook()
             let contacts = ab.allContacts()
             for c in contacts {
-                insertedContacts.append(c)
+                c.save()
             }
         }
     }
 
     /**
-     Asks for addressbook acces and tries to transfer all contacts from there.
+     Asks for addressbook access and tries to transfer all contacts from there.
      */
     open static func checkAndTransfer() {
-        let addressBook = AddressBook.init()
+        let addressBook = AddressBook()
         let status = addressBook.authorizationStatus
         if status == .notDetermined {
             let _ = addressBook.authorize() { ab in

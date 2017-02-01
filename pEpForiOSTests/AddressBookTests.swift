@@ -28,23 +28,30 @@ class AddressBookTests: XCTestCase {
         let ab = AddressBook()
         XCTAssertTrue(ab.splitContactNameInTuple("uiae dtrn qfgh") == ("uiae", "dtrn", "qfgh"))
         XCTAssertTrue(ab.splitContactNameInTuple("uiae   dtrn    qfgh") == ("uiae", "dtrn", "qfgh"))
-        XCTAssertTrue(ab.splitContactNameInTuple("uiae   dtrn   123  qfgh") == ("uiae", "dtrn 123",
-                                                                                "qfgh"))
+        XCTAssertTrue(ab.splitContactNameInTuple("uiae   dtrn   123  qfgh") == (
+            "uiae", "dtrn 123", "qfgh"))
         XCTAssertTrue(ab.splitContactNameInTuple("") == (nil, nil, nil))
         XCTAssertTrue(ab.splitContactNameInTuple("uiae") == ("uiae", nil, nil))
         XCTAssertTrue(ab.splitContactNameInTuple("uiae   xvlc") == ("uiae", nil, "xvlc"))
     }
 
     func testAddressBookTransfer() {
-        MessageModelConfig.observer.delegate = ObserverDelegate(
-            expSaved: expectation(description: "saved"))
+        let expAddressbookSynced = expectation(description: "expAddressbookSynced")
 
-        AddressBook.checkAndTransfer()
-
+        DispatchQueue.global(qos: .userInitiated).async {
+            AddressBook.checkAndTransfer()
+            expAddressbookSynced.fulfill()
+        }
         waitForExpectations(timeout: waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
-        XCTAssertGreaterThan((CdIdentity.all() ?? []).count, 0)
+        let ab = AddressBook()
+        if ab.authorizationStatus == .authorized {
+            XCTAssertGreaterThan((CdIdentity.all() ?? []).count, 0)
+        } else {
+            XCTAssertTrue(
+                ab.authorizationStatus == .notDetermined || ab.authorizationStatus == .denied)
+        }
     }
 }
