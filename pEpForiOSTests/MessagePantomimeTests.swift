@@ -162,5 +162,11 @@ class MessagePantomimeTests: XCTestCase {
         }
         XCTAssertEqual(msg.references.count, refs.count + 1)
         XCTAssertEqual(msg.references, allRefs)
+
+        let pEpMsg = cdMsg.pEpMessage()
+        XCTAssertEqual(pEpMsg[kPepReferences] as? [String] ?? [], allRefs)
+
+        let cwMsg2 = PEPUtil.pantomime(pEpMessage: pEpMsg)
+        XCTAssertEqual(cwMsg2.allReferences() as? [String] ?? [], allRefs)
     }
 }
