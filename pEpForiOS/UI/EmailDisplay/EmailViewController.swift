@@ -22,16 +22,16 @@ class EmailViewController: UITableViewController {
     var defaultToolbarColor: UIColor = .pEpGreen
     var defaultNavigationColor: UIColor = .pEpGreen
     
+   // <991C4AC8.7BE7.40DB.B96B.54B8A91CD48C@localhost>")
+    //"<422AD67A-096F-4F70-8A6C-F2249C648E7C@appculture.com>"
     override func viewDidLoad() {
         super.viewDidLoad()
         
         loadDatasource("MessageData")
         
-        for messageID in message.references {
-            let message = Message.byMessageID(messageID)
-            print("MESSAGE ID : \(messageID)")
-            print("MESSAGE: \(message)")
-        }
+        let folder = message.parent
+        
+        print("MSG FOLDER COUNT: \(folder?.debugDescription)")
         
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -172,28 +172,17 @@ extension EmailViewController {
         return UITableViewAutomaticDimension
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return message.references.count
-    }
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableData?.numberOfRows() ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewCell() }
-        let messageID = message.references[indexPath.section]
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier, for: indexPath) as! MessageCell
-        if let  messageRefernce = Message.byMessageID(messageID) {
-            cell.updateCell(row, messageRefernce)
-            cell.delegate = self
-            
-        }
-        else {
-            /// this needs to resolved when everything is finished for BE.
-            cell.updateCell(row, message)
-            cell.delegate = self
-        }
+        cell.updateCell(row, message)
+        cell.delegate = self
+        
         return cell
     }
 }
