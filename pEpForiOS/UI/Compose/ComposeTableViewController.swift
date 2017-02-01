@@ -326,9 +326,16 @@ class ComposeTableViewController: UITableViewController {
         alertCtrl.addAction(alertCtrl.action("MailComp.Action.Delete", .destructive, {
             self.dismiss()
         }))
-        
+
         alertCtrl.addAction(alertCtrl.action("MailComp.Action.Save", .default, {
-            // Save Daft action here!
+            if let msg = self.populateDraftMessage() {
+                if let f = Folder.by(folderType: .drafts) {
+                    msg.parent = f
+                    msg.save()
+                } else {
+                    Log.error(component: #function, errorString: "No sent folder")
+                }
+            }
             self.dismiss()
         }))
         
