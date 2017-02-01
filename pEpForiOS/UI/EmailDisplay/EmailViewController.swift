@@ -22,16 +22,10 @@ class EmailViewController: UITableViewController {
     var defaultToolbarColor: UIColor = .pEpGreen
     var defaultNavigationColor: UIColor = .pEpGreen
     
-   // <991C4AC8.7BE7.40DB.B96B.54B8A91CD48C@localhost>")
-    //"<422AD67A-096F-4F70-8A6C-F2249C648E7C@appculture.com>"
     override func viewDidLoad() {
         super.viewDidLoad()
         
         loadDatasource("MessageData")
-        
-        let folder = message.parent
-        
-        print("MSG FOLDER COUNT: \(folder?.debugDescription)")
         
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
