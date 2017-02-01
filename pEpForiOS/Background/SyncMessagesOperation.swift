@@ -106,10 +106,17 @@ open class SyncMessagesOperation: ImapSyncOperation {
         let messages = CdMessage.all(
             predicate: NSCompoundPredicate(
                 andPredicateWithSubpredicates: [p1, p2])) as? [CdMessage] ?? []
+        var deletedMessage = false
         for msg in messages {
             if !existingUIDs.contains(NSNumber(value: msg.uid)) {
-                Log.info(component: comp, content: "Should remove message with UID \(msg.uid)")
+                Log.info(component: comp,
+                         content: "removing message UID \(msg.uid) messageID \(msg.uuid)")
+                msg.delete()
+                deletedMessage = true
             }
+        }
+        if deletedMessage {
+            Record.saveAndWait(context: context)
         }
     }
 }
