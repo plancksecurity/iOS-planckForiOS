@@ -201,9 +201,9 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                       messageUpdate: CWMessageUpdate) {
         Log.warn(component: comp, content: "Writing message \(message), \(messageUpdate)")
 
-        let opQuick = StorePrefetchedMailOperation(
+        let opStore = StorePrefetchedMailOperation(
             accountID: accountID, message: message, messageUpdate: messageUpdate, name: logName,
             messageFetchedBlock: messageFetchedBlock)
-        opQuick.start()
+        opStore.start()
     }
 }
