@@ -10,6 +10,9 @@ import MessageModel
 
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
+    // usar objeto externo para evitar crear multiples elementos.
+    private static let title = "pEpForiOS"
+    private static var session = PEPSession()
 
     static open let shared: Log = {
         let instance = Log()
@@ -17,34 +20,50 @@ import MessageModel
     }()
 
     fileprivate override init() {
-        super.init()}
+        super.init()
+    }
+
+    static private func saveLog(title: String, entity: String, description: String, comment: String) {
+        DispatchQueue.global(qos: .background).async {
+            #if DEBUG_LOGGING
+                print("\(entity): \(description)")
+                session.logTitle(title, entity: entity, description: description, comment: comment)
+            #else
+                session.logTitle(title, entity: entity, description: description, comment: comment)
+            #endif
+        }
+    }
 
     static open func verbose(component: String, content: String) {
-        print("\(component): \(content)")
+        saveLog(title: title, entity: component, description: content, comment: "verbose")
     }
 
     /** Somewhat verbose */
     static open func info(component: String, content: String) {
-        print("\(component): \(content)")
+        saveLog(title: title, entity: component, description: content, comment: "info")
     }
 
     /** More important */
     static open func warn(component: String, content: String) {
-        print("\(component): \(content)")
+        saveLog(title: title, entity: component, description: content, comment: "warn")
     }
 
     static open func error(component: String, error: NSError?) {
         if let err = error {
-            print("\(component): Error: \(err)")
+            saveLog(title: title, entity: component, description: " \(err)", comment: "error")
         }
     }
 
     static open func error(component: String, errorString: String, error: NSError) {
-        print("\(component): \(errorString): \(error)")
+        saveLog(title: title, entity: component, description: errorString + " \(error)", comment: "error")
     }
 
     static open func error(component: String, errorString: String) {
-        print("\(component): \(errorString)")
+        saveLog(title: title, entity: component, description: errorString, comment: "error")
+    }
+
+    static open func getlog() -> String {
+        return session.getLog()
     }
 }
 

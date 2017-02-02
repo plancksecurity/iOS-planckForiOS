@@ -15,7 +15,7 @@ class AccountsTableViewController: UITableViewController {
     let accountsCellIdentifier = "accountsCell"
 
     /** Two sections, one for the folders, one for the accounts */
-    let numberOfSections = 1
+    let numberOfSections = 2
 
     /** The index of the section where important folders are listed */
     let folderSection = 0
@@ -74,10 +74,38 @@ class AccountsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
             return accounts.count
+        case 1:
+            return 1
+        default:
+            return 0
+        }
+            //return accounts.count
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return numberOfSections
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        if indexPath.section == 0 {
+
+            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
+            cell.textLabel?.text = accounts[indexPath.row].user.address
+            cell.accessoryType = .disclosureIndicator
+            return cell
+
+        } else if indexPath.section == 1 {
+
+            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
+            cell.textLabel?.text = "Logging"
+            cell.accessoryType = .disclosureIndicator
+            return cell
+
+        }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
         cell.textLabel?.text = accounts[indexPath.row].user.address
@@ -88,8 +116,15 @@ class AccountsTableViewController: UITableViewController {
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedAccount = accounts[indexPath.row]
-        performSegue(withIdentifier: .segueEditAccount, sender: self)
+
+        if indexPath.section == 1 {
+            performSegue(withIdentifier: .segueShowLog, sender: self)
+        } else {
+            selectedAccount = accounts[indexPath.row]
+            performSegue(withIdentifier: .segueEditAccount, sender: self)
+        }
+
+
     }
     
     // MARK: - Actions
@@ -107,6 +142,7 @@ extension AccountsTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case segueAddNewAccount
         case segueEditAccount
+        case segueShowLog
         case noSegue
     }
     

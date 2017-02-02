@@ -54,6 +54,7 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testPEPConversion() {
+        Log.info(component: "testPEPConversion", content: "test")
         let account = TestData().createWorkingAccount()
         account.save()
 
@@ -85,7 +86,11 @@ class PEPSessionTest: XCTestCase {
         sesion.encryptMessageDict(pepmessage, extra: nil, dest: nil)
         sesion.decryptMessageDict(pepmessage, dest: nil, keys: nil)
         cdmessage2.update(pEpMessage: pepmessage)
-        XCTAssertEqual(cdmessage2, cdmessage1)
+        XCTAssertEqual(cdmessage2,cdmessage1)
+
+        Log.verbose(component: "testPEPConversion", content: "test")
+        Log.error(component: "testPEPConversion", errorString: "test")
+        print(Log.getlog())
     }
 
     func testPEPMessageBuckets() {

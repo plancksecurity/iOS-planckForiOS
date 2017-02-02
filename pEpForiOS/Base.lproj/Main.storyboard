@@ -1170,6 +1170,41 @@
             </objects>
             <point key="canvasLocation" x="9512.7999999999993" y="-395.35232383808096"/>
         </scene>
+        <!--Log View Controller-->
+        <scene sceneID="cbu-sz-o8C">
+            <objects>
+                <viewController id="01V-rr-Nt1" customClass="LogViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QZZ-tr-QTf"/>
+                        <viewControllerLayoutGuide type="bottom" id="rBB-CM-MCF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tns-XA-Mrg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3rg-vA-cxG">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="3rg-vA-cxG" secondAttribute="trailing" id="G1z-Kf-Ir1"/>
+                            <constraint firstItem="3rg-vA-cxG" firstAttribute="top" secondItem="QZZ-tr-QTf" secondAttribute="bottom" id="GUm-i1-oTq"/>
+                            <constraint firstItem="3rg-vA-cxG" firstAttribute="leading" secondItem="tns-XA-Mrg" secondAttribute="leading" id="ZkF-3M-T9S"/>
+                            <constraint firstItem="rBB-CM-MCF" firstAttribute="top" secondItem="3rg-vA-cxG" secondAttribute="bottom" id="btC-bC-MZW"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="logTextView" destination="3rg-vA-cxG" id="vbr-KE-kvf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XWE-s0-h4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3372" y="-54.422788605697157"/>
+        </scene>
         <!--Accounts Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">
             <objects>
@@ -1211,6 +1246,7 @@
                     </navigationItem>
                     <connections>
                         <segue destination="Eri-pJ-T3J" kind="show" identifier="segueEditAccount" id="WKY-VX-I5i"/>
+                        <segue destination="01V-rr-Nt1" kind="show" identifier="segueShowLog" id="uAI-I4-HaK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2755,8 +2791,8 @@ APPLEPIE RESEARCH</string>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Na7-CM-lbe"/>
         <segue reference="FBd-9l-9Iu"/>
         <segue reference="Usl-iS-7fo"/>
+        <segue reference="3ib-x8-sKW"/>
     </inferredMetricsTieBreakers>
 </document>
