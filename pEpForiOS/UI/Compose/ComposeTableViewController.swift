@@ -199,6 +199,7 @@ class ComposeTableViewController: UITableViewController {
             if refs.count > 11 {
                 refs.remove(at: 2)
             }
+            Log.info(component: #function, content: "IOS-433 sending refs \(refs)")
             message.references = refs
         }
 
