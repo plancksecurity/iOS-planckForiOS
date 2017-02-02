@@ -34,11 +34,12 @@ extension CdMessage {
 
         uuid = pEpMessage[kPepID] as? String
 
-        var refsToConvert = Set<String>()// [String]()
-        var localReferences = [CdMessageReference]()
+        Log.info(component: #function, content: "before")
+        dumpReferences()
+        let refsToConvert = MutableOrderedSet<String>()
         if let refs = pEpMessage[kPepReferences] as? [String] {
             for item in refs {
-                refsToConvert.insert(item)
+                refsToConvert.append(item)
             }
         }
 
@@ -47,14 +48,12 @@ extension CdMessage {
                 refsToConvert.insert(item)
             }
         }
-        for ref in refsToConvert {
-            let cdref = CdMessageReference.create()
-            cdref.message = self
-            cdref.reference = ref
-            localReferences.append(cdref)
-        }
-        self.references = NSOrderedSet(array: localReferences)
-        CdMessageReference.deleteOrphans()
+        self.replace(referenceStrings: refsToConvert.array)
+        Log.info(component: #function, content: "after decryption")
+        dumpReferences()
+
+        Log.info(component: #function, content: "after deleting orphans")
+        dumpReferences()
 
         var attachments = [CdAttachment]()
         if let attachmentDicts = pEpMessage[kPepAttachments] as? NSArray {

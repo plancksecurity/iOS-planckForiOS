@@ -337,12 +337,9 @@ extension CdMessage {
             referenceStrings.append(inReplyTo)
         }
 
-        let theRefs = NSMutableOrderedSet()
-        for refID in referenceStrings {
-            let ref = insertOrUpdateMessageReference(refID)
-            theRefs.add(ref)
-        }
-        mail.references = theRefs
+        mail.replace(referenceStrings: referenceStrings.array)
+
+        mail.dumpReferences()
 
         let imap = mail.imap ?? CdImapFields.create()
         mail.imap = imap
@@ -383,12 +380,6 @@ extension CdMessage {
             added[address.address()] = addr
         }
         return added
-    }
-
-    static func insertOrUpdateMessageReference(_ messageID: String) -> CdMessageReference {
-        let ref = CdMessageReference.firstOrCreate(attribute: "reference", value: messageID)
-        ref.message = CdMessage.first(attribute: "uuid", value: messageID)
-        return ref
     }
 
     /**

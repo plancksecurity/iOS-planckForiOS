@@ -327,15 +327,13 @@ extension EmailListViewController: SegueHandlerType {
         //            }
             break
         case .segueShowEmail:
-            guard
-                let vc = segue.destination as? EmailViewController,
+            if let vc = segue.destination as? EmailViewController,
                 let cell = sender as? EmailListViewCell,
                 let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config) else {
-                    return
+                let email = cell.messageAt(indexPath: indexPath, config: config) {
+                    vc.appConfig = config?.appConfig
+                    vc.message = email
             }
-            vc.appConfig = config?.appConfig
-            vc.message = email
             break
         default: ()
         }
