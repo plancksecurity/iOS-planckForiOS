@@ -1182,23 +1182,51 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3rg-vA-cxG">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AzW-rt-GWz">
+                                <rect key="frame" x="36" y="84" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="copyAction:" destination="01V-rr-Nt1" eventType="touchUpInside" id="T5t-mG-hCM"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APq-dm-jI3">
+                                <rect key="frame" x="290" y="84" width="51" height="31"/>
+                                <connections>
+                                    <action selector="enableAction:" destination="01V-rr-Nt1" eventType="valueChanged" id="JR9-o2-1qw"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Imh-fw-p8J">
+                                <rect key="frame" x="228" y="89" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3rg-vA-cxG">
+                                <rect key="frame" x="0.0" y="155" width="375" height="512"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="3rg-vA-cxG" firstAttribute="top" secondItem="APq-dm-jI3" secondAttribute="bottom" constant="40" id="80M-MH-5Af"/>
+                            <constraint firstItem="APq-dm-jI3" firstAttribute="top" secondItem="QZZ-tr-QTf" secondAttribute="bottom" constant="20" id="994-fS-lY9"/>
+                            <constraint firstItem="AzW-rt-GWz" firstAttribute="leading" secondItem="tns-XA-Mrg" secondAttribute="leadingMargin" constant="20" id="Br1-21-HyP"/>
                             <constraint firstAttribute="trailing" secondItem="3rg-vA-cxG" secondAttribute="trailing" id="G1z-Kf-Ir1"/>
-                            <constraint firstItem="3rg-vA-cxG" firstAttribute="top" secondItem="QZZ-tr-QTf" secondAttribute="bottom" id="GUm-i1-oTq"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="APq-dm-jI3" secondAttribute="trailing" constant="20" id="Gom-cj-nP4"/>
+                            <constraint firstItem="AzW-rt-GWz" firstAttribute="top" secondItem="QZZ-tr-QTf" secondAttribute="bottom" constant="20" id="Rfg-KR-Obx"/>
                             <constraint firstItem="3rg-vA-cxG" firstAttribute="leading" secondItem="tns-XA-Mrg" secondAttribute="leading" id="ZkF-3M-T9S"/>
                             <constraint firstItem="rBB-CM-MCF" firstAttribute="top" secondItem="3rg-vA-cxG" secondAttribute="bottom" id="btC-bC-MZW"/>
+                            <constraint firstItem="APq-dm-jI3" firstAttribute="leading" secondItem="Imh-fw-p8J" secondAttribute="trailing" constant="20" id="coG-gx-ovt"/>
+                            <constraint firstItem="Imh-fw-p8J" firstAttribute="top" secondItem="QZZ-tr-QTf" secondAttribute="bottom" constant="25" id="zhP-OR-4bE"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="copyButton" destination="AzW-rt-GWz" id="SFC-bV-zg2"/>
+                        <outlet property="eableLogSwitch" destination="APq-dm-jI3" id="DZj-XC-uHl"/>
                         <outlet property="logTextView" destination="3rg-vA-cxG" id="vbr-KE-kvf"/>
+                        <outlet property="switchLabel" destination="Imh-fw-p8J" id="MPf-tx-XeS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XWE-s0-h4d" userLabel="First Responder" sceneMemberID="firstResponder"/>

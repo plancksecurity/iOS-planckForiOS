@@ -88,7 +88,18 @@ class AccountsTableViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return numberOfSections
     }
-    
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Accounts"
+        case 1:
+            return "Settings"
+        default:
+            return ""
+        }
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         if indexPath.section == 0 {
