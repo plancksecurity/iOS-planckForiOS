@@ -175,50 +175,8 @@ extension SyncMessagesOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
-    func deleteMessagesInBetween(
-        context: NSManagedObjectContext, startUID: UInt, excludingUID: UInt) {
-        guard let folder = context.object(with: folderID)
-            as? CdFolder else {
-                addError(Constants.errorCannotFindAccount(component: comp))
-                markAsFinished()
-                return
-        }
-        let p1 = NSPredicate(
-            format: "parent = %@ and uid >= %d and uid < %d", folder, startUID, excludingUID)
-        for msg in CdMessage.all(predicate: p1) as? [CdMessage] ?? [] {
-            Log.info(component: comp, content: "Should remove message with UID \(msg.uid)")
-        }
-
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CdMessage")
-        fetchRequest.predicate = p1
-        let request = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        do {
-            try context.execute(request)
-        } catch {
-            addError(error as NSError)
-            markAsFinished()
-        }
-    }
-
     public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         // The update of the flags is already handled by `PersistentFolder`.
-        if let userDict = notification?.userInfo?[PantomimeMessageChanged] as? [String: Any],
-            let cwMessage = userDict["Message"] as? CWIMAPMessage {
-            let uid = cwMessage.uid()
-            if let theLastUID = lastSeenUID, uid - 1 > theLastUID {
-                let context = Record.Context.default
-                context.performAndWait {
-                    self.deleteMessagesInBetween(
-                        context: context, startUID: theLastUID + 1, excludingUID: uid)
-                    Record.saveAndWait()
-                }
-            }
-            lastSeenUID = uid
-        } else {
-            addError(Constants.errorIllegalState(
-                comp, stateName: "PantomimeMessageChanged without valid message"))
-            markAsFinished()
-        }
     }
 
     public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
