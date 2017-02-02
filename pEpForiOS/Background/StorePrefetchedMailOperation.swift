@@ -14,8 +14,6 @@ import MessageModel
  This can be used in a queue, or directly called with ```start()```.
  */
 open class StorePrefetchedMailOperation: BaseOperation {
-    static var someDict = [String:CWMessageUpdate]()
-
     let message: CWIMAPMessage
     let accountID: NSManagedObjectID
     let messageFetchedBlock: MessageFetchedBlock?
@@ -29,17 +27,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
         self.message = message
         self.messageUpdate = messageUpdate
         self.messageFetchedBlock = messageFetchedBlock
-
         super.init(parentName: name)
-
-        if let mid = message.messageID() {
-            if let oldUp = StorePrefetchedMailOperation.someDict[mid] {
-                if oldUp.rfc822 && messageUpdate.rfc822 {
-                    Log.warn(component: comp, content: "why double? \(mid)")
-                }
-            }
-            StorePrefetchedMailOperation.someDict[mid] = messageUpdate
-        }
     }
 
     override open func main() {
