@@ -166,7 +166,7 @@ class EmailListViewController: UITableViewController {
             if message.imapFlags == nil {
                 Log.warn(component: #function, content: "message.imapFlags == nil")
             }
-            if (cell.isImportant(message: message)) {
+            if cell.isFlagged(message: message) {
                 message.imapFlags?.flagged = false
             } else {
                 message.imapFlags?.flagged = true
@@ -176,7 +176,7 @@ class EmailListViewController: UITableViewController {
         }
 
         var title = "\n\nFlag".localized
-        if (message.imapFlags?.flagged ?? true) {
+        if message.imapFlags?.flagged ?? true {
             title = "\n\nUnFlag".localized
         }
 
@@ -202,7 +202,7 @@ class EmailListViewController: UITableViewController {
 
     func createMarkAsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
         func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            if (cell.isRead(message: message)) {
+            if cell.haveSeen(message: message) {
                 message.imapFlags?.seen = false
             } else {
                 message.imapFlags?.seen = true
@@ -212,7 +212,7 @@ class EmailListViewController: UITableViewController {
 
         var title = NSLocalizedString(
             "Unread", comment: "Unread button title in swipe action on EmailListViewController")
-        if (!cell.isRead(message: message)) {
+        if !cell.haveSeen(message: message) {
             title = NSLocalizedString(
                 "Read", comment: "Read button title in swipe action on EmailListViewController")
         }

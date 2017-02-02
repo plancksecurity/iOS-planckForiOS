@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+
 import MessageModel
 
 class EmailListViewCell: UITableViewCell {
@@ -15,8 +16,15 @@ class EmailListViewCell: UITableViewCell {
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+
+    /**
+     This is not just the image for the "seen" flag, it is used for all.
+     */
     @IBOutlet weak var isReadMessageImage: UIImageView!
+
+    /** Not used */
     @IBOutlet weak var disclousureImage: UIImageView!
+
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     
@@ -38,23 +46,21 @@ class EmailListViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.none
-
-        // generated an circle image
-        isReadMessageImage.layer.cornerRadius = isReadMessageImage.frame.size.width / 2
-        isReadMessageImage.clipsToBounds = true
-
-        isReadMessageImage.isHidden = false
-        isReadMessageImage.backgroundColor = .pEpBlue
     }
 
     func updateFlags(message: Message) {
-        // TODO
-        if (isRead(message: message)) {
+        let seen = haveSeen(message: message)
+        let flagged = isFlagged(message: message)
+
+        self.isReadMessageImage.backgroundColor = nil
+        if seen && !flagged {
+            // show nothing
             self.isReadMessageImage.isHidden = true
-        }
-        else if (!isRead(message: message)) {
+            self.isReadMessageImage.image = nil
+        } else {
+            let fi = FlagImages.create(imageSize: isReadMessageImage.frame.size)
             self.isReadMessageImage.isHidden = false
-            self.isReadMessageImage.backgroundColor = .pEpBlue
+            self.isReadMessageImage.image = fi.flagsImage(message: message)
         }
     }
     
@@ -111,11 +117,11 @@ class EmailListViewCell: UITableViewCell {
     /**
      The message at the given position.
      */
-    func isRead(message: Message)-> Bool {
+    func haveSeen(message: Message) -> Bool {
         return message.imapFlags?.seen ?? false
     }
     
-    func isImportant(message: Message)-> Bool {
+    func isFlagged(message: Message) -> Bool {
         return message.imapFlags?.flagged ?? false
     }
     
