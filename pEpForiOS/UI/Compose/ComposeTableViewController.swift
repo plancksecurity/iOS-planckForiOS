@@ -197,7 +197,7 @@ class ComposeTableViewController: UITableViewController {
             var refs = om.references
             refs.append(om.messageID)
             if refs.count > 11 {
-                refs.remove(at: 2)
+                refs.remove(at: 1)
             }
             Log.info(component: #function, content: "IOS-433 sending refs \(refs)")
             message.references = refs
