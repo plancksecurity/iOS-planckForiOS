@@ -86,6 +86,17 @@ open class Service: IEmailService {
     }
 
     open func dumpMethodName(_ methodName: String, notification: Notification?) {
-        Log.info(component: comp, content: "\(methodName): \(notification)")
+        // rm certain keys that are too long for logging
+        var notificationCopy = notification
+        if let dict = notification?.userInfo {
+            var dictCopy = dict
+            for k in ["NSDataToAppend", "NSData"] {
+                if let data = dictCopy[k] as? NSData {
+                    dictCopy[k] = "NSData with \(data.length) bytes"
+                }
+            }
+            notificationCopy?.userInfo = dictCopy
+        }
+        Log.info(component: comp, content: "\(methodName): \(notificationCopy)")
     }
 }
