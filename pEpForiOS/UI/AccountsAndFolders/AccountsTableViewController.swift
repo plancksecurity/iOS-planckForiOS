@@ -92,9 +92,9 @@ class AccountsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "Accounts"
+            return "Accounts.title".localized
         case 1:
-            return "Settings"
+            return "Settings.title".localized
         default:
             return ""
         }
@@ -112,7 +112,7 @@ class AccountsTableViewController: UITableViewController {
         } else if indexPath.section == 1 {
 
             let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
-            cell.textLabel?.text = "Logging"
+            cell.textLabel?.text = "Log.title".localized
             cell.accessoryType = .disclosureIndicator
             return cell
 

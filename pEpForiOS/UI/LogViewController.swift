@@ -18,13 +18,16 @@ class LogViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        logTextView.text = Log.getlog()
+        copyButton.setTitle("copebutton".localized, for: .normal)
+        switchLabel.text = "enableDisableLog".localized
+        // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        eableLogSwitch.isOn = Log.isenabled()
         if eableLogSwitch.isOn {
             logTextView.text = Log.getlog()
-        } else {
-            logTextView.text = ""
         }
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,9 +54,9 @@ class LogViewController: UIViewController {
     @IBAction func enableAction(_ sender: Any) {
 
         if eableLogSwitch.isOn {
-            logTextView.text = Log.getlog()
+            Log.enableLog()
         } else {
-            logTextView.text = ""
+            Log.disableLog()
         }
     }
 }

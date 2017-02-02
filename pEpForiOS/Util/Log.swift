@@ -13,6 +13,7 @@ import MessageModel
     // usar objeto externo para evitar crear multiples elementos.
     private static let title = "pEpForiOS"
     private static var session = PEPSession()
+    private static var logEnabled = true
 
     static open let shared: Log = {
         let instance = Log()
@@ -24,14 +25,27 @@ import MessageModel
     }
 
     static private func saveLog(title: String, entity: String, description: String, comment: String) {
-        DispatchQueue.global(qos: .background).async {
-            #if DEBUG_LOGGING
-                print("\(entity): \(description)")
-                session.logTitle(title, entity: entity, description: description, comment: comment)
-            #else
-                session.logTitle(title, entity: entity, description: description, comment: comment)
-            #endif
+        if logEnabled {
+            DispatchQueue.global(qos: .background).async {
+                #if DEBUG_LOGGING
+                    print("\(entity): \(description)")
+                    session.logTitle(title, entity: entity, description: description, comment: comment)
+                #else
+                    session.logTitle(title, entity: entity, description: description, comment: comment)
+                #endif
+            }
         }
+    }
+    static open func disableLog() {
+        logEnabled = false
+    }
+
+    static open func enableLog() {
+        logEnabled = true
+    }
+
+    static open func isenabled() -> Bool {
+        return logEnabled
     }
 
     static open func verbose(component: String, content: String) {
