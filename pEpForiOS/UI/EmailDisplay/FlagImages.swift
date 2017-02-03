@@ -40,17 +40,15 @@ open class FlagImages {
 
     func createImages() {
         var circleSize = imageSize
-
         notSeenImage = createCircleImage(size: circleSize, color: .orange)
-        circleSize.width -= 2
-        circleSize.height -= 2
-        let bufferCircle = createCircleImage(size: circleSize, color: .white)
-        circleSize.width -= 2
-        circleSize.height -= 2
-        flaggedImage = createCircleImage(size: circleSize, color: .pEpBlue)
+        flaggedImage = createCircleImage(size: circleSize, color: .blue)
+
+        circleSize.width -= 5
+        circleSize.height -= 5
+        let flaggedImageSmall = createCircleImage(size: circleSize, color: .blue)
 
         flaggedAndNotSeenImage = createImageOverlay(
-            size: circleSize, images: [flaggedImage, bufferCircle, notSeenImage])
+            size: imageSize, images: [notSeenImage, flaggedImageSmall])
     }
 
     func createImageOverlay(size: CGSize, images: [UIImage?]) -> UIImage? {
@@ -73,12 +71,8 @@ open class FlagImages {
         return produceImage(size: size, block: { ctx in
             ctx.setFillColor(color.cgColor)
             ctx.setStrokeColor(color.cgColor)
-            let center = CGPoint.init(x: size.width / 2, y: size.height / 2)
-            let r = size.width / 2
-            ctx.addArc(
-                center: center, radius: r, startAngle: 0.0, endAngle: 1.0,
-                clockwise: true)
-            ctx.fillPath()
+            let r = CGRect.init(origin: CGPoint(x: 0.0, y: 0.0), size: size)
+            ctx.fillEllipse(in: r)
         })
     }
 
