@@ -30,7 +30,7 @@ class EmailListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         title = "EmailList.title".localized
         UIHelper.emailListTableHeight(self.tableView)
         addSearchBar()
@@ -38,7 +38,7 @@ class EmailListViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         if MiscUtil.isUnitTest() {
             return
         }
@@ -53,7 +53,7 @@ class EmailListViewController: UITableViewController {
         super.viewWillDisappear(animated)
         MessageModelConfig.messageFolderDelegate = nil
     }
-    
+
     func initialConfig() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
@@ -66,7 +66,7 @@ class EmailListViewController: UITableViewController {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
     }
-    
+
     func addSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -76,9 +76,9 @@ class EmailListViewController: UITableViewController {
         tableView.setContentOffset(CGPoint(x: 0.0, y: 40.0), animated: false)
     }
 
-    
+
     @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {}
-    
+
     func updateModel() {
         tableView.reloadData()
     }
@@ -134,7 +134,7 @@ class EmailListViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt
         indexPath: IndexPath)-> [UITableViewRowAction]? {
-        
+
         let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
         if let email = cell.messageAt(indexPath: indexPath, config: config) {
             let flagAction = createFlagAction(message: email, cell: cell)
@@ -148,8 +148,8 @@ class EmailListViewController: UITableViewController {
     // MARK: - Misc
 
     func createRowAction(cell: EmailListViewCell,
-        image: UIImage?, action: @escaping (UITableViewRowAction, IndexPath) -> Void,
-        title: String) -> UITableViewRowAction {
+                         image: UIImage?, action: @escaping (UITableViewRowAction, IndexPath) -> Void,
+                         title: String) -> UITableViewRowAction {
         let rowAction = UITableViewRowAction(
             style: .normal, title: title, handler: action)
 
@@ -189,7 +189,7 @@ class EmailListViewController: UITableViewController {
             guard let message = cell.messageAt(indexPath: indexPath, config: self.config) else {
                 return
             }
-            
+
             message.imapFlags?.deleted = true
             message.save()
             self.tableView.reloadData()
@@ -223,7 +223,7 @@ class EmailListViewController: UITableViewController {
 
         return isReadAction
     }
-    
+
     func createMoreAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
         func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
             self.showMoreActionSheet(cell: cell)
@@ -233,15 +233,15 @@ class EmailListViewController: UITableViewController {
             cell: cell, image: UIImage(named: "swipe-more"), action: action,
             title: "\n\nMore".localized)
     }
-    
+
     // MARK: - Action Sheet
-    
+
     func showMoreActionSheet(cell: EmailListViewCell) {
         let alertControler = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertControler.view.tintColor = .pEpGreen
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction(cell: cell)
-        let replyAllAction = createReplyAction(cell: cell)
+        let replyAllAction = createReplyAllAction(cell: cell)
         let forwardAction = createForwardAction(cell: cell)
         let markAction = createMarkAction()
         alertControler.addAction(cancelAction)
@@ -254,23 +254,23 @@ class EmailListViewController: UITableViewController {
         }
         present(alertControler, animated: true, completion: nil)
     }
-    
+
     // MARK: - Action Sheet Actions
 
     func createCancelAction() -> UIAlertAction {
-      return  UIAlertAction(title: "Cancel", style: .cancel) { (action) in}
+        return  UIAlertAction(title: "Cancel", style: .cancel) { (action) in}
     }
-    
+
     func createReplyAction(cell: EmailListViewCell) ->  UIAlertAction {
         return UIAlertAction(title: "Reply", style: .default) { (action) in
-           // self.performSegue(withIdentifier: self.segueCompose, sender: cell)
+            // self.performSegue(withIdentifier: self.segueCompose, sender: cell)
             self.performSegue(withIdentifier: .segueCompose, sender: cell)
         }
     }
 
     func createReplyAllAction(cell: EmailListViewCell) ->  UIAlertAction {
-        return UIAlertAction(title: "ReplyAll", style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueCompose, sender: cell)
+        return UIAlertAction(title: "Reply All", style: .default) { (action) in
+            self.performSegue(withIdentifier: .segueReplyAll, sender: cell)
         }
     }
 
@@ -280,30 +280,30 @@ class EmailListViewController: UITableViewController {
             self.performSegue(withIdentifier: .segueCompose, sender: cell)
         }
     }
-    
+
     func createMarkAction() -> UIAlertAction {
         return UIAlertAction(title: "Mark", style: .default) { (action) in
         }
     }
-    
+
     // MARK: - Content Search
-    
+
     func filterContentForSearchText(searchText: String) {
-        
+
     }
- 
+
     // MARK: - Actions
-//    @IBAction func unwindToEmailList(for unwindSegue: UIStoryboardSegue) {
-//        
-//    }
-   
+    //    @IBAction func unwindToEmailList(for unwindSegue: UIStoryboardSegue) {
+    //
+    //    }
+
 }
 
 extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
     public func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchText: searchController.searchBar.text!)
     }
-    
+
     func didDismissSearchController(_ searchController: UISearchController) {
     }
 }
@@ -311,17 +311,18 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - Navigation
 
 extension EmailListViewController: SegueHandlerType {
-    
+
     // MARK: - SegueHandlerType
-    
+
     enum SegueIdentifier: String {
         case segueAddNewAccount
         case segueEditAccounts
         case segueShowEmail
         case segueCompose
+        case segueReplyAll
         case noSegue
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .segueCompose:
@@ -332,15 +333,26 @@ extension EmailListViewController: SegueHandlerType {
             //
             //                destination.originalMessage = draft
             //                destination.composeMode = .draft
-        //            }
+            //            }
+            break
+        case .segueReplyAll:
+            if let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? ComposeTableViewController,
+                let cell = sender as? EmailListViewCell,
+                let indexPath = self.tableView.indexPath(for: cell),
+                let email = cell.messageAt(indexPath: indexPath, config: config) {
+                destination.composeMode = .replyAll
+                destination.appConfig = config?.appConfig
+                destination.originalMessage = email
+            }
             break
         case .segueShowEmail:
             if let vc = segue.destination as? EmailViewController,
                 let cell = sender as? EmailListViewCell,
                 let indexPath = self.tableView.indexPath(for: cell),
                 let email = cell.messageAt(indexPath: indexPath, config: config) {
-                    vc.appConfig = config?.appConfig
-                    vc.message = email
+                vc.appConfig = config?.appConfig
+                vc.message = email
             }
             break
         default: ()
