@@ -13,19 +13,20 @@ class LogViewController: UIViewController {
     @IBOutlet weak var logTextView: UITextView!
     @IBOutlet weak var copyButton: UIButton!
     @IBOutlet weak var switchLabel: UILabel!
-    @IBOutlet weak var eableLogSwitch: UISwitch!
+    @IBOutlet weak var enableLogSwitch: UISwitch!
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        copyButton.setTitle("copebutton".localized, for: .normal)
-        switchLabel.text = "enableDisableLog".localized
+        copyButton.setTitle("logCopybutton".localized, for: .normal)
+        switchLabel.text = "logEnableDisableLog".localized
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        eableLogSwitch.isOn = Log.isenabled()
-        if eableLogSwitch.isOn {
+
+        enableLogSwitch.isOn = Log.isenabled()
+        if enableLogSwitch.isOn {
             logTextView.text = Log.getlog()
         }
     }
@@ -53,7 +54,7 @@ class LogViewController: UIViewController {
     }
     @IBAction func enableAction(_ sender: Any) {
 
-        if eableLogSwitch.isOn {
+        if enableLogSwitch.isOn {
             Log.enableLog()
         } else {
             Log.disableLog()

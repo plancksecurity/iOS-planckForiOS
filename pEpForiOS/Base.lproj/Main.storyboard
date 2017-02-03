@@ -224,7 +224,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="8ci-S4-tmv" customClass="ComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="76" y="10" width="289" height="40"/>
+                                            <rect key="frame" x="76" y="10" width="289" height="39"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" enablesReturnKeyAutomatically="YES"/>
@@ -255,7 +255,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bVM-o9-45O" customClass="ComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="4" y="8" width="361" height="232"/>
+                                            <rect key="frame" x="4" y="8" width="361" height="231"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -878,7 +878,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Server" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TQX-jQ-6wQ">
-                                                    <rect key="frame" x="8" y="14" width="50" height="20.5"/>
+                                                    <rect key="frame" x="8" y="14" width="50" height="21"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                                     </accessibility>
@@ -887,7 +887,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="mail.pep.li" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HOb-bu-iVh">
-                                                    <rect key="frame" x="68" y="16.5" width="299" height="17"/>
+                                                    <rect key="frame" x="68" y="17" width="299" height="17"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="imapServer" label="IMAP Server"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
@@ -914,7 +914,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="miu-ep-BRp">
-                                                    <rect key="frame" x="8" y="14" width="32.5" height="20.5"/>
+                                                    <rect key="frame" x="8" y="14" width="33" height="21"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                                     </accessibility>
@@ -923,7 +923,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="993" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lZX-n9-ibu">
-                                                    <rect key="frame" x="50.5" y="16.5" width="316.5" height="17"/>
+                                                    <rect key="frame" x="51" y="17" width="316" height="17"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="imapPort" label="IMAP Port"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad"/>
@@ -950,7 +950,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H6H-wM-1tb">
-                                                    <rect key="frame" x="156" y="10.5" width="211" height="29"/>
+                                                    <rect key="frame" x="156" y="11" width="211" height="29"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="imapTransportSecurity" label="Transport Security"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <state key="normal" title="Plain &gt;">
@@ -961,7 +961,7 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TransportSecurity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b0p-Pv-I3v">
-                                                    <rect key="frame" x="8" y="14" width="138" height="20.5"/>
+                                                    <rect key="frame" x="8" y="14" width="138" height="21"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                                     </accessibility>
@@ -1036,7 +1036,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Server" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VW4-JJ-HKV">
-                                                    <rect key="frame" x="8" y="14" width="50" height="20.5"/>
+                                                    <rect key="frame" x="8" y="14" width="50" height="21"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                                     </accessibility>
@@ -1045,7 +1045,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="smtp.pep.li" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HIi-Wv-jJs">
-                                                    <rect key="frame" x="68" y="16.5" width="299" height="17"/>
+                                                    <rect key="frame" x="68" y="17" width="299" height="17"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="smtpServer" label="SMTP Server"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
@@ -1072,7 +1072,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Port" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N1c-o2-ebQ">
-                                                    <rect key="frame" x="8" y="14" width="32.5" height="20.5"/>
+                                                    <rect key="frame" x="8" y="14" width="33" height="21"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                                     </accessibility>
@@ -1081,7 +1081,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="587" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LfP-KG-Zok">
-                                                    <rect key="frame" x="50.5" y="16.5" width="316.5" height="17"/>
+                                                    <rect key="frame" x="51" y="17" width="316" height="17"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="smtpPort" label="SMTP Port"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad"/>
@@ -1108,7 +1108,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TransportSecurity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HKb-4V-2g6">
-                                                    <rect key="frame" x="8" y="14" width="138" height="20.5"/>
+                                                    <rect key="frame" x="8" y="14" width="138" height="21"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                                     </accessibility>
@@ -1117,7 +1117,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cjb-ue-OdU">
-                                                    <rect key="frame" x="156" y="10.5" width="211" height="29"/>
+                                                    <rect key="frame" x="156" y="11" width="211" height="29"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="smtpTransportSecurity" label="Transport Security"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <state key="normal" title="Plain &gt;">
@@ -1224,7 +1224,7 @@
                     </view>
                     <connections>
                         <outlet property="copyButton" destination="AzW-rt-GWz" id="SFC-bV-zg2"/>
-                        <outlet property="eableLogSwitch" destination="APq-dm-jI3" id="DZj-XC-uHl"/>
+                        <outlet property="enableLogSwitch" destination="APq-dm-jI3" id="3MK-vL-raf"/>
                         <outlet property="logTextView" destination="3rg-vA-cxG" id="vbr-KE-kvf"/>
                         <outlet property="switchLabel" destination="Imh-fw-p8J" id="MPf-tx-XeS"/>
                     </connections>
@@ -1306,7 +1306,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RpU-jD-tx7">
-                                                    <rect key="frame" x="66" y="5" width="301" height="33.5"/>
+                                                    <rect key="frame" x="66" y="5" width="301" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1330,13 +1330,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ne5-6o-O4F">
-                                                    <rect key="frame" x="8" y="11" width="45.5" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="46" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FIa-wa-uSF">
-                                                    <rect key="frame" x="61" y="5" width="306" height="33.5"/>
+                                                    <rect key="frame" x="62" y="5" width="305" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1360,13 +1360,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGG-ns-Pes">
-                                                    <rect key="frame" x="8" y="11" width="83.5" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="84" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6bk-kI-Bqc">
-                                                    <rect key="frame" x="99" y="5" width="268" height="33.5"/>
+                                                    <rect key="frame" x="100" y="5" width="267" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1396,7 +1396,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="74n-su-y4m">
-                                                    <rect key="frame" x="95" y="5" width="272" height="33.5"/>
+                                                    <rect key="frame" x="95" y="5" width="272" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -1430,7 +1430,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LOO-6m-Q5O">
-                                                    <rect key="frame" x="71" y="5" width="296" height="33.5"/>
+                                                    <rect key="frame" x="71" y="5" width="296" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1460,7 +1460,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ukB-K0-MMG">
-                                                    <rect key="frame" x="53" y="5" width="314" height="33.5"/>
+                                                    <rect key="frame" x="53" y="5" width="314" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1484,13 +1484,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TransportSecurity:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="daw-LF-EZF">
-                                                    <rect key="frame" x="8" y="11" width="142.5" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="143" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rCJ-UW-Jmn">
-                                                    <rect key="frame" x="158" y="5" width="209" height="33.5"/>
+                                                    <rect key="frame" x="159" y="5" width="208" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1518,13 +1518,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Server:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DQ0-sB-CRx">
-                                                    <rect key="frame" x="8" y="11" width="54.5" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="55" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fSa-9P-hot">
-                                                    <rect key="frame" x="70" y="5" width="297" height="33.5"/>
+                                                    <rect key="frame" x="71" y="5" width="296" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1554,7 +1554,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f4i-WV-eyd">
-                                                    <rect key="frame" x="53" y="5" width="314" height="33.5"/>
+                                                    <rect key="frame" x="53" y="5" width="314" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1578,13 +1578,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TransportSecurity:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hAL-c1-ngD">
-                                                    <rect key="frame" x="8" y="11" width="142.5" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="143" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JLc-di-cx2">
-                                                    <rect key="frame" x="158" y="5" width="209" height="33.5"/>
+                                                    <rect key="frame" x="159" y="5" width="208" height="34"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1752,7 +1752,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="C7k-Jh-fNo" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IxL-Z3-iil">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="IxL-Z3-iil">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2144,7 +2144,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="156"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fUP-bg-t0G">
-                                                            <rect key="frame" x="0.0" y="0.0" width="187.5" height="156"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="188" height="156"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact-icon" translatesAutoresizingMaskIntoConstraints="NO" id="APS-zq-VWj">
                                                                     <rect key="frame" x="61" y="10" width="65" height="65"/>
@@ -2154,13 +2154,13 @@
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Myself" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z0V-0b-LLx">
-                                                                    <rect key="frame" x="0.0" y="80" width="187.5" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="80" width="188" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lksdjsdlkj;sdlkj;sdalkfjk" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dii-kS-R66">
-                                                                    <rect key="frame" x="20" y="103" width="147.5" height="36"/>
+                                                                    <rect key="frame" x="20" y="103" width="148" height="36"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -2179,10 +2179,10 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gph-tE-tcn">
-                                                            <rect key="frame" x="187.5" y="0.0" width="187.5" height="156"/>
+                                                            <rect key="frame" x="188" y="0.0" width="187" height="156"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact-icon" translatesAutoresizingMaskIntoConstraints="NO" id="tl0-Lm-Zaz">
-                                                                    <rect key="frame" x="61.5" y="10" width="65" height="65"/>
+                                                                    <rect key="frame" x="61" y="10" width="65" height="65"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="65" id="1uq-Vm-aRr"/>
                                                                         <constraint firstAttribute="height" constant="65" id="KDz-pJ-lyw"/>
@@ -2792,7 +2792,7 @@ APPLEPIE RESEARCH</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JYd-mR-vle" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LQ5-EO-Adp">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="LQ5-EO-Adp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
