@@ -19,8 +19,8 @@ class EmailViewController: UITableViewController {
     var page = 0
     var otherCellsHeight: CGFloat = 0.0
     var computedHeight: CGFloat = 0.0
-    var defaultToolbarColor: UIColor = .pEpGreen
-    var defaultNavigationColor: UIColor = .pEpGreen
+    var defaultToolbarColor: UIColor?
+    var defaultNavigationColor: UIColor?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,26 +35,27 @@ class EmailViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        customizeBar()
+        storeDefaultBarColors()
+        setPepRating()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setDefaultBarColors()
     }
-    
-    func customizeBar() {
-        guard
-            let defaultNavColor = navigationController!.navigationBar.barTintColor,
-            let defaultToolColor = navigationController!.toolbar.barTintColor
-        else {
-            return
+
+    func setPepRating() {
+        if let color = message.pEpRating()?.uiColor() {
+            navigationController?.navigationBar.barTintColor = color
+            navigationController?.toolbar.barTintColor = color
+        } else {
+            setDefaultBarColors()
         }
-        defaultNavigationColor = defaultNavColor
-        defaultToolbarColor = defaultToolColor
-        
-        navigationController?.navigationBar.barTintColor = .pEpToolBarYellow
-        navigationController?.toolbar.barTintColor = .pEpToolBarYellow
+    }
+    
+    func storeDefaultBarColors() {
+        defaultNavigationColor = navigationController?.navigationBar.barTintColor
+        defaultToolbarColor = navigationController?.toolbar.barTintColor
     }
     
     func setDefaultBarColors() {

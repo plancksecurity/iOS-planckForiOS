@@ -756,23 +756,6 @@ extension String {
     }
 }
 
-extension PEP_color {
-    func statusIcon() -> UIImage? {
-        switch self {
-        case PEP_color_no_color:
-            return nil
-        case PEP_color_red:
-            return UIImage(named: "pep-user-status-red")
-        case PEP_color_yellow:
-            return UIImage(named: "pep-user-status-yellow")
-        case PEP_color_green:
-            return UIImage(named: "pep-user-status-green")
-        default:
-            return nil
-        }
-    }
-}
-
 extension UIColor {
 
     open class var pEpGreen: UIColor {
