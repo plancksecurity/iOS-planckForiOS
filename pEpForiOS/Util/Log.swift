@@ -10,9 +10,11 @@ import MessageModel
 
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
+
     private let title = "pEpForiOS"
     lazy private var session = PEPSession()
     private var logEnabled = true
+    private let queue = DispatchQueue(label: "logging")
 
     static open let shared: Log = {
         let instance = Log()
@@ -24,8 +26,8 @@ import MessageModel
     }
 
     private func saveLog(entity: String, description: String, comment: String) {
-        if logEnabled {
-            DispatchQueue.global(qos: .background).async {
+        queue.async {
+            if self.logEnabled {
                 #if DEBUG_LOGGING
                     print("\(entity): \(description)")
                     self.session.logTitle(
@@ -38,11 +40,15 @@ import MessageModel
         }
     }
     static open func disableLog() {
-        Log.shared.logEnabled = false
+        Log.shared.queue.async {
+            Log.shared.logEnabled = false
+        }
     }
 
     static open func enableLog() {
-        Log.shared.logEnabled = true
+        Log.shared.queue.async {
+            Log.shared.logEnabled = true
+        }
     }
 
     static open func isenabled() -> Bool {
