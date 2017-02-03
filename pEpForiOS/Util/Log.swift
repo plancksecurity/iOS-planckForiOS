@@ -10,10 +10,9 @@ import MessageModel
 
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
-    // usar objeto externo para evitar crear multiples elementos.
-    private static let title = "pEpForiOS"
-    private static var session = PEPSession()
-    private static var logEnabled = true
+    private let title = "pEpForiOS"
+    lazy private var session = PEPSession()
+    private var logEnabled = true
 
     static open let shared: Log = {
         let instance = Log()
@@ -24,60 +23,63 @@ import MessageModel
         super.init()
     }
 
-    static private func saveLog(title: String, entity: String, description: String, comment: String) {
+    private func saveLog(entity: String, description: String, comment: String) {
         if logEnabled {
             DispatchQueue.global(qos: .background).async {
                 #if DEBUG_LOGGING
                     print("\(entity): \(description)")
-                    session.logTitle(title, entity: entity, description: description, comment: comment)
+                    self.session.logTitle(
+                        self.title, entity: entity, description: description, comment: comment)
                 #else
-                    session.logTitle(title, entity: entity, description: description, comment: comment)
+                    session.logTitle(
+                        title, entity: entity, description: description, comment: comment)
                 #endif
             }
         }
     }
     static open func disableLog() {
-        logEnabled = false
+        Log.shared.logEnabled = false
     }
 
     static open func enableLog() {
-        logEnabled = true
+        Log.shared.logEnabled = true
     }
 
     static open func isenabled() -> Bool {
-        return logEnabled
+        return Log.shared.logEnabled
     }
 
     static open func verbose(component: String, content: String) {
-        saveLog(title: title, entity: component, description: content, comment: "verbose")
+        Log.shared.saveLog(entity: component, description: content, comment: "verbose")
     }
 
     /** Somewhat verbose */
     static open func info(component: String, content: String) {
-        saveLog(title: title, entity: component, description: content, comment: "info")
+        Log.shared.saveLog(entity: component, description: content, comment: "info")
     }
 
     /** More important */
     static open func warn(component: String, content: String) {
-        saveLog(title: title, entity: component, description: content, comment: "warn")
+        Log.shared.saveLog(entity: component, description: content, comment: "warn")
     }
 
     static open func error(component: String, error: NSError?) {
         if let err = error {
-            saveLog(title: title, entity: component, description: " \(err)", comment: "error")
+            Log.shared.saveLog(entity: component, description: " \(err)", comment: "error")
         }
     }
 
     static open func error(component: String, errorString: String, error: NSError) {
-        saveLog(title: title, entity: component, description: errorString + " \(error)", comment: "error")
+        Log.shared.saveLog(
+            entity: component, description: errorString + " \(error)", comment: "error")
     }
 
     static open func error(component: String, errorString: String) {
-        saveLog(title: title, entity: component, description: errorString, comment: "error")
+        Log.shared.saveLog(entity: component, description: errorString, comment: "error")
     }
 
     static open func getlog() -> String {
-        return session.getLog()
+        return Log.shared.session.getLog()
     }
 }
 
