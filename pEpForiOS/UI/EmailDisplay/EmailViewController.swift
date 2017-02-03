@@ -36,7 +36,7 @@ class EmailViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         storeDefaultBarColors()
-        setPepRating()
+        showPepRating()
         self.title = message.shortMessage
     }
     
@@ -45,12 +45,21 @@ class EmailViewController: UITableViewController {
         setDefaultBarColors()
     }
 
-    func setPepRating() {
+    func showPepRating() {
+        // color
         if let color = message.pEpRating()?.uiColor() {
             navigationController?.navigationBar.barTintColor = color
             navigationController?.toolbar.barTintColor = color
         } else {
             setDefaultBarColors()
+        }
+
+        // icon
+        if let img = message.pEpRating()?.pepColor().statusIcon() {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                image: img, style: .plain, target: nil, action: nil)
+        } else {
+            navigationItem.rightBarButtonItem = nil
         }
     }
     
