@@ -37,6 +37,7 @@ class EmailViewController: UITableViewController {
         super.viewWillAppear(animated)
         storeDefaultBarColors()
         setPepRating()
+        self.title = message.shortMessage
     }
     
     override func viewWillDisappear(_ animated: Bool) {
