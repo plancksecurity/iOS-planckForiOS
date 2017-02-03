@@ -85,6 +85,11 @@ class EmailViewController: UITableViewController {
         }
         alertViewWithoutTitle.addAction(alertActionReply)
 
+        let alertActionReplyAll = UIAlertAction (title: "Reply.All".localized, style: .default) { (action) in
+            self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
+        }
+        alertViewWithoutTitle.addAction(alertActionReplyAll)
+
         let alertActionForward = UIAlertAction (title: "Forward".localized, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueForward , sender: self)
         }
@@ -196,6 +201,7 @@ extension EmailViewController: MessageContentCellDelegate {
 extension EmailViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case segueReplyFrom
+        case segueReplyAllForm
         case segueForward
         case segueTrustWords1
         case seguePrevious
@@ -211,6 +217,14 @@ extension EmailViewController: SegueHandlerType {
             if let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController {
                 destination.composeMode = .replyFrom
+                destination.appConfig = appConfig
+                destination.originalMessage = message
+            }
+            break
+        case .segueReplyAllForm:
+            if let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? ComposeTableViewController {
+                destination.composeMode = .replyAll
                 destination.appConfig = appConfig
                 destination.originalMessage = message
             }

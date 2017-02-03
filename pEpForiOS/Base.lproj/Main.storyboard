@@ -1224,7 +1224,7 @@
                     </view>
                     <connections>
                         <outlet property="copyButton" destination="AzW-rt-GWz" id="SFC-bV-zg2"/>
-                        <outlet property="enableLogSwitch" destination="APq-dm-jI3" id="3MK-vL-raf"/>
+                        <outlet property="eableLogSwitch" destination="APq-dm-jI3" id="DZj-XC-uHl"/>
                         <outlet property="logTextView" destination="3rg-vA-cxG" id="vbr-KE-kvf"/>
                         <outlet property="switchLabel" destination="Imh-fw-p8J" id="MPf-tx-XeS"/>
                     </connections>
@@ -1948,6 +1948,7 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
                         <segue destination="aYL-lZ-KDs" kind="show" identifier="seguePrivacyStatus" id="Fbk-Sz-nC1"/>
                         <segue destination="lsn-TN-3vZ" kind="show" identifier="segueTrustwords" id="FBd-9l-9Iu"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2428,7 +2429,7 @@ APPLEPIE RESEARCH</string>
                                                     <rect key="frame" x="15" y="15" width="345" height="45"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IIV-5W-Waa" customClass="RoundedButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="168.5" height="45"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="169" height="45"/>
                                                             <color key="backgroundColor" red="0.01176470588" green="0.66666666669999997" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="nEg-kT-Xah"/>
@@ -2453,7 +2454,7 @@ APPLEPIE RESEARCH</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ASC-Uk-nLV" customClass="RoundedButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                            <rect key="frame" x="176.5" y="0.0" width="168.5" height="45"/>
+                                                            <rect key="frame" x="177" y="0.0" width="168" height="45"/>
                                                             <color key="backgroundColor" red="0.81568627449999997" green="0.0078431372550000003" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="yqe-z9-MNv"/>
@@ -2819,8 +2820,8 @@ APPLEPIE RESEARCH</string>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Na7-CM-lbe"/>
         <segue reference="FBd-9l-9Iu"/>
-        <segue reference="Usl-iS-7fo"/>
-        <segue reference="3ib-x8-sKW"/>
+        <segue reference="1zD-EW-3fN"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -65,7 +65,16 @@ class ComposeTableViewController: UITableViewController {
         if let fm = recipientCell.fieldModel, let om = originalMessage {
             switch fm.type {
             case .to:
-                if composeMode == .replyFrom || composeMode == .replyAll, let from = om.from {
+                if composeMode == .replyFrom, let from = om.from {
+                    recipientCell.addContact(from)
+                }
+                if composeMode == .replyAll, let from = om.from {
+                    let to = om.to
+                    for identity in to {
+                        if !identity.isMySelf {
+                            recipientCell.addContact(identity)
+                        }
+                    }
                     recipientCell.addContact(from)
                 }
             case .cc:
