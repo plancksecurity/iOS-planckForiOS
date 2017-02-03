@@ -601,8 +601,12 @@ open class PEPUtil {
         return pEpColor(pEpRating: pEpRating(identity: identity, session: session))
     }
 
-    open static func pEpColor(pEpRating: PEP_rating) -> PEP_color {
-        return color_from_rating(pEpRating)
+    open static func pEpColor(pEpRating: PEP_rating?) -> PEP_color {
+        if let rating = pEpRating {
+            return color_from_rating(rating)
+        } else {
+            return PEP_color_no_color
+        }
     }
 
     open static func pEpRatingFromInt(_ i: Int?) -> PEP_rating? {
@@ -749,6 +753,23 @@ extension String {
 
     public static var pepSignature: String {
         return "pEp.Mail.Signature".localized
+    }
+}
+
+extension PEP_color {
+    func statusIcon() -> UIImage? {
+        switch self {
+        case PEP_color_no_color:
+            return nil
+        case PEP_color_red:
+            return UIImage(named: "pep-user-status-red")
+        case PEP_color_yellow:
+            return UIImage(named: "pep-user-status-yellow")
+        case PEP_color_green:
+            return UIImage(named: "pep-user-status-green")
+        default:
+            return nil
+        }
     }
 }
 
