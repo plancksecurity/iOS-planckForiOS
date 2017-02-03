@@ -16,6 +16,11 @@ class FlagImageTests: XCTestCase {
     
     func testSimple() {
         let fi = FlagImages.create(imageSize: CGSize(width: 16, height: 16))
+
+        XCTAssertNotNil(fi.notSeenImage)
+        XCTAssertNotNil(fi.flaggedImage)
+        XCTAssertNotNil(fi.flaggedAndNotSeenImage)
+
         let msg = Message.create(uuid: MessageID.generate())
 
         msg.imapFlags?.seen = true
@@ -26,5 +31,28 @@ class FlagImageTests: XCTestCase {
 
         msg.imapFlags?.seen = false
         XCTAssertEqual(fi.flagsImage(message: msg), fi.flaggedAndNotSeenImage)
+
+        msg.imapFlags?.flagged = false
+        XCTAssertEqual(fi.flagsImage(message: msg), fi.notSeenImage)
+
+        save(image: fi.flaggedImage, name: "flagged.png")
+        save(image: fi.flaggedAndNotSeenImage, name: "flaggedAndNotSeenImage.png")
+        save(image: fi.notSeenImage, name: "notSeenImage.png")
+    }
+
+    func getTargetDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
+
+    func save(image: UIImage?, name: String) {
+        if let img = image {
+            if let data = UIImagePNGRepresentation(img) {
+                let filename = getTargetDirectory().appendingPathComponent(name)
+                print("filename \(filename)")
+                try? data.write(to: filename)
+            }
+        }
     }
 }
