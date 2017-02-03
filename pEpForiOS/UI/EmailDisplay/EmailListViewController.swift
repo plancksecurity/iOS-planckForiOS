@@ -241,10 +241,12 @@ class EmailListViewController: UITableViewController {
         alertControler.view.tintColor = .pEpGreen
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction(cell: cell)
+        let replyAllAction = createReplyAction(cell: cell)
         let forwardAction = createForwardAction(cell: cell)
         let markAction = createMarkAction()
         alertControler.addAction(cancelAction)
         alertControler.addAction(replyAction)
+        alertControler.addAction(replyAllAction)
         alertControler.addAction(forwardAction)
         alertControler.addAction(markAction)
         if let popoverPresentationController = alertControler.popoverPresentationController {
@@ -265,7 +267,13 @@ class EmailListViewController: UITableViewController {
             self.performSegue(withIdentifier: .segueCompose, sender: cell)
         }
     }
-    
+
+    func createReplyAllAction(cell: EmailListViewCell) ->  UIAlertAction {
+        return UIAlertAction(title: "ReplyAll", style: .default) { (action) in
+            self.performSegue(withIdentifier: .segueCompose, sender: cell)
+        }
+    }
+
     func createForwardAction(cell: EmailListViewCell) -> UIAlertAction {
         return UIAlertAction(title: "Forward", style: .default) { (action) in
             //self.performSegue(withIdentifier: self.segueCompose, sender: cell)
