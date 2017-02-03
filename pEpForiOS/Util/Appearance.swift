@@ -12,13 +12,12 @@ import UIKit
 class Appearance {
     
     static func standard() {
-
         UINavigationBar.appearance().backgroundColor = .white
         UINavigationBar.appearance().barTintColor = .white
         UINavigationBar.appearance().tintColor = .black
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().titleTextAttributes =
-            [NSForegroundColorAttributeName: UIColor.white]
+            [NSForegroundColorAttributeName: UIColor.black]
         
         UIToolbar.appearance().backgroundColor = .white
         UIToolbar.appearance().barTintColor = .white
@@ -33,7 +32,6 @@ class Appearance {
     }
     
     static func pep(_ color: UIColor = .pEpGreen) {
-        
         UINavigationBar.appearance().backgroundColor = color
         UINavigationBar.appearance().barTintColor = color
         UINavigationBar.appearance().tintColor = .white
