@@ -33,8 +33,8 @@ import MessageModel
                     self.session.logTitle(
                         self.title, entity: entity, description: description, comment: comment)
                 #else
-                    session.logTitle(
-                        title, entity: entity, description: description, comment: comment)
+                    self.session.logTitle(
+                        self.title, entity: entity, description: description, comment: comment)
                 #endif
             }
         }
