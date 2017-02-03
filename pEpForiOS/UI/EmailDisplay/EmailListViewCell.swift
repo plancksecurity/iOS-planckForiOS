@@ -63,7 +63,13 @@ class EmailListViewCell: UITableViewCell {
             self.isReadMessageImage.image = fi.flagsImage(message: message)
         }
     }
-    
+
+    func updatePepRating(message: Message) {
+        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
+        ratingImage.image = color.statusIcon()
+        ratingImage.backgroundColor = nil
+    }
+
     func configureCell(indexPath: IndexPath, config: EmailListConfig?) -> MessageID? {
         self.indexPath = indexPath
 
@@ -106,8 +112,8 @@ class EmailListViewCell: UITableViewCell {
             }
             
             attachmentIcon.isHidden = message.attachments.count > 0 ? false : true
-
             updateFlags(message: message)
+            updatePepRating(message: message)
 
             return message.messageID
         }
