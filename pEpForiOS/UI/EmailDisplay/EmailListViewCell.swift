@@ -28,17 +28,6 @@ class EmailListViewCell: UITableViewCell {
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     
-    /**
-     Indicates whether `defaultCellBackgroundColor` has been determined or not.
-     */
-    var determinedCellBackgroundColor: Bool = false
-    
-    /**
-     The default background color for an email cell, as determined the first time a cell is
-     created.
-     */
-    var defaultCellBackgroundColor: UIColor?
-
     let dateFormatter = UIHelper.dateFormatterEmailList()
 
     var indexPath: IndexPath?
@@ -73,22 +62,7 @@ class EmailListViewCell: UITableViewCell {
     func configureCell(indexPath: IndexPath, config: EmailListConfig?) -> MessageID? {
         self.indexPath = indexPath
 
-        if !determinedCellBackgroundColor {
-            defaultCellBackgroundColor = self.backgroundColor
-            determinedCellBackgroundColor = true
-        }
-        
         if let message = messageAt(indexPath: indexPath, config: config) {
-            if let pEpRating = PEPUtil.pEpRatingFromInt(message.pEpRatingInt) {
-                let privacyColor = PEPUtil.pEpColor(pEpRating: pEpRating)
-                if let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor) {
-                    self.backgroundColor = uiColor
-                } else {
-                    if determinedCellBackgroundColor {
-                        self.backgroundColor = defaultCellBackgroundColor
-                    }
-                }
-            }
             UIHelper.putString(message.from?.userName, toLabel: self.senderLabel)
             UIHelper.putString(message.shortMessage, toLabel: self.subjectLabel)
             
