@@ -94,7 +94,7 @@ class AccountsTableViewController: UITableViewController {
         case 0:
             return "Accounts.title".localized
         case 1:
-            return "Settings.title".localized
+            return "Settings".localized
         default:
             return ""
         }
@@ -112,7 +112,7 @@ class AccountsTableViewController: UITableViewController {
         } else if indexPath.section == 1 {
 
             let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
-            cell.textLabel?.text = "Log.title".localized
+            cell.textLabel?.text = "Logging".localized
             cell.accessoryType = .disclosureIndicator
             return cell
 
