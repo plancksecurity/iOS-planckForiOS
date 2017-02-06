@@ -90,7 +90,6 @@ class PEPSessionTest: XCTestCase {
 
         Log.verbose(component: "testPEPConversion", content: "test")
         Log.error(component: "testPEPConversion", errorString: "test")
-        print(Log.getlog())
     }
 
     func testPEPMessageBuckets() {
