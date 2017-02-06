@@ -51,8 +51,18 @@ import MessageModel
         }
     }
 
-    static open func isenabled() -> Bool {
-        return Log.shared.logEnabled
+    static open func checkEnabled(_ block: ((Bool) -> ())?) {
+        Log.shared.queue.sync {
+            let b = Log.shared.logEnabled
+            block?(b)
+        }
+    }
+
+    static open func checklog(_ block: ((String) -> ())?) {
+        Log.shared.queue.async {
+            let s = Log.shared.session.getLog()
+            block?(s)
+        }
     }
 
     static open func verbose(component: String, content: String) {
@@ -82,10 +92,6 @@ import MessageModel
 
     static open func error(component: String, errorString: String) {
         Log.shared.saveLog(entity: component, description: errorString, comment: "error")
-    }
-
-    static open func getlog() -> String {
-        return Log.shared.session.getLog()
     }
 }
 

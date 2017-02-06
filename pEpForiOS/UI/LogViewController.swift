@@ -25,9 +25,17 @@ class LogViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        enableLogSwitch.isOn = Log.isenabled()
-        if enableLogSwitch.isOn {
-            logTextView.text = Log.getlog()
+        Log.checkEnabled() { enabled in
+            GCD.onMain {
+                self.enableLogSwitch.isOn = enabled
+                if self.enableLogSwitch.isOn {
+                    Log.checklog() { logString in
+                        GCD.onMain {
+                            self.logTextView.text = logString
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -48,12 +56,14 @@ class LogViewController: UIViewController {
     */
 
     @IBAction func copyAction(_ sender: Any) {
-
-        UIPasteboard.general.string = Log.getlog()
-
+        Log.checklog() { logString in
+            GCD.onMain {
+                UIPasteboard.general.string = logString
+            }
+        }
     }
-    @IBAction func enableAction(_ sender: Any) {
 
+    @IBAction func enableAction(_ sender: Any) {
         if enableLogSwitch.isOn {
             Log.enableLog()
         } else {
