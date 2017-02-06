@@ -122,14 +122,14 @@ class ComposeTableViewController: UITableViewController {
         present(contactPicker, animated: true, completion: nil)
     }
 
-    fileprivate final func createAttachment(_ url: URL, _ isMovie: Bool = false) -> Attachment? {
+    fileprivate final func createAttachment(_ url: URL, _ isMovie: Bool = false, image: UIImage? = nil) -> Attachment? {
         let filetype = url.pathExtension
         var filename = url.standardizedFileURL.lastPathComponent
 
         if isMovie {
             filename = "MailComp.Video".localized + filetype
         }
-        if let att = Attachment.inline(name: filename, url: url, type: filetype, image: nil) {
+        if let att = Attachment.inline(name: filename, url: url, type: filetype, image: image) {
             return att
         }
         return nil
@@ -466,7 +466,7 @@ UINavigationControllerDelegate {
             } else {
                 guard let url = info[UIImagePickerControllerReferenceURL] as? URL else { return }
                 guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
-                if let attachment = Attachment.inline(name: String(), url: url, type: String(), image: image) {
+                if let attachment = createAttachment(url, image: image) {
                     cell.insert(attachment)
                 }
             }
