@@ -47,6 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.application = application
 
+        // Open the first session from the main thread and keep it open
+        firstSession = PEPSession()
+
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
 
@@ -59,9 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // and pretty much don't do anything.
             return false
         }
-        // Open the first session from the main thread and keep it open
-        firstSession = PEPSession()
-
         setupDefaultSettings()
 
         loadCoreDataStack()
