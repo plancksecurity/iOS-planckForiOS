@@ -15,13 +15,6 @@ class LogViewController: UIViewController {
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var enableLogSwitch: UISwitch!
 
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        copyButton.setTitle("logCopybutton".localized, for: .normal)
-        switchLabel.text = "logEnableDisableLog".localized
-        // Do any additional setup after loading the view.
-    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -43,7 +36,6 @@ class LogViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
