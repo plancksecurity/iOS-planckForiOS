@@ -28,6 +28,7 @@ def dump_folders(c):
     pprint.pprint(data)
 
 def dump_folder(c, folderName):
+    print(folderName)
     c.select(mailbox=folderName, readonly=True)
     messages = c.fetch('1:*', '(UID INTERNALDATE FLAGS)')
     pprint.pprint(messages)
@@ -37,5 +38,6 @@ if __name__ == '__main__':
     try:
         print(c)
         dump_folder(c, 'INBOX')
+        dump_folder(c, 'INBOX.Trash')
     finally:
         c.logout()

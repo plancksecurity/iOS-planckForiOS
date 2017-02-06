@@ -14,6 +14,7 @@ import MessageModel
 /**
  Stores SMTPed mails in the sent folder. Can be used more generically for storing mails
  in other types of folders. Overwrite `retrieveNextMessage` and `retrieveFolderForAppend`.
+ For marking the message as done, overwrite `markLastMessageAsFinished`.
  */
 open class AppendMailsOperation: ImapSyncOperation {
     lazy var session = PEPSession()
