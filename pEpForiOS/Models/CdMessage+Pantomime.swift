@@ -362,13 +362,16 @@ extension CdMessage {
     }
 
     /**
+     Will match existing messages on UUID (message ID) and UID.
+     Message ID alone is not sufficient, trashed emails can and will exist in more than one folder.
      - Returns: An existing message that matches the given pantomime one.
      */
     static func existing(pantomimeMessage: CWIMAPMessage) -> CdMessage? {
         guard let mid = pantomimeMessage.messageID() else {
             return nil
         }
-        return CdMessage.first(attribute: "uuid", value: mid)
+        let uid = pantomimeMessage.uid()
+        return CdMessage.by(uuid: mid, uid: uid)
     }
 
     static func add(contacts: [CWInternetAddress]) -> [String: CdIdentity] {

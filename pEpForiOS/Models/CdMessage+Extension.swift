@@ -99,10 +99,6 @@ extension CdMessage {
         return objs?.count ?? 0
     }
 
-    public static func by(uid: Int) -> CdMessage? {
-        return first(attribute: "uid", value: uid)
-    }
-
     /**
      The original (`addToTo`) crashes
      */
