@@ -681,6 +681,12 @@ class SimpleOperationsTest: XCTestCase {
         folder.folderType = FolderType.sent.rawValue
         folder.account = account
 
+        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
+        guard let imageData = TestUtil.loadDataWithFileName(imageFileName) else {
+            XCTAssertTrue(false)
+            return
+        }
+
         // Build emails
         let numMails = 5
         for i in 1...numMails {
@@ -692,6 +698,14 @@ class SimpleOperationsTest: XCTestCase {
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.sent = Date() as NSDate
             message.addTo(cdIdentity: to)
+
+            // add attachment
+            if i == numMails {
+                let attachment = Attachment.create(
+                    data: imageData, mimeType: "", fileName: imageFileName)
+                let cdAttachment = CdAttachment.create(attachment: attachment)
+                message.addAttachment(cdAttachment)
+            }
         }
         Record.saveAndWait()
 
