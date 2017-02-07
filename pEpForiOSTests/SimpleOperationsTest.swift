@@ -1027,6 +1027,10 @@ class SimpleOperationsTest: XCTestCase {
             XCTFail()
             return
         }
+        guard let draftsFolder = CdFolder.by(folderType: .drafts, account: account) else {
+            XCTFail()
+            return
+        }
         guard let trashFolder = CdFolder.by(folderType: .trash, account: account) else {
             XCTFail()
             return
@@ -1038,7 +1042,11 @@ class SimpleOperationsTest: XCTestCase {
         for i in 1...numMails {
             let message = CdMessage.create()
             message.from = from
-            message.parent = inboxFolder
+            if i == 1 {
+                message.parent = draftsFolder
+            } else {
+                message.parent = inboxFolder
+            }
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
@@ -1054,12 +1062,20 @@ class SimpleOperationsTest: XCTestCase {
 
         let foldersToTrash = TrashMailsOperation.foldersWithTrashedMessages(
             context: Record.Context.default)
-        XCTAssertEqual(foldersToTrash.count, 1)
+        XCTAssertEqual(foldersToTrash.count, 2)
+        if inboxFolder.name ?? "" < draftsFolder.name ?? "" {
+            XCTAssertEqual(foldersToTrash[safe: 0], inboxFolder)
+            XCTAssertEqual(foldersToTrash[safe: 1], draftsFolder)
+        } else {
+            XCTAssertEqual(foldersToTrash[safe: 1], inboxFolder)
+            XCTAssertEqual(foldersToTrash[safe: 0], draftsFolder)
+        }
 
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
                 XCTAssertNotNil(m.messageID)
-                XCTAssertEqual(m.parent?.folderType, FolderType.inbox.rawValue)
+                XCTAssertTrue(m.parent?.folderType == FolderType.inbox.rawValue ||
+                    m.parent?.folderType == FolderType.drafts.rawValue)
                 XCTAssertEqual(m.uid, Int32(0))
                 XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
             }
@@ -1069,17 +1085,21 @@ class SimpleOperationsTest: XCTestCase {
 
         let expTrashed = expectation(description: "expTrashed")
 
-        let trashMailsOp = TrashMailsOperation(
+        let trashMailsOp1 = TrashMailsOperation(
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder)
-        trashMailsOp.completionBlock = {
+        let trashMailsOp2 = TrashMailsOperation(
+            imapSyncData: imapSyncData, errorContainer: errorContainer, folder: draftsFolder)
+        trashMailsOp2.addDependency(trashMailsOp1)
+        trashMailsOp2.completionBlock = {
             expTrashed.fulfill()
         }
 
-        queue.addOperation(trashMailsOp)
+        queue.addOperation(trashMailsOp1)
+        queue.addOperation(trashMailsOp2)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(trashMailsOp.hasErrors())
+            XCTAssertFalse(trashMailsOp2.hasErrors())
         })
 
         Record.Context.default.refreshAllObjects()
@@ -1098,7 +1118,7 @@ class SimpleOperationsTest: XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(trashMailsOp.hasErrors())
+            XCTAssertFalse(trashMailsOp2.hasErrors())
         })
 
         for m in originalMessages {
@@ -1117,7 +1137,8 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 continue
             }
-            XCTAssertEqual(folder.folderType, FolderType.inbox.rawValue)
+            XCTAssertTrue(folder.folderType == FolderType.inbox.rawValue ||
+                folder.folderType == FolderType.drafts.rawValue)
             guard let imap = m.imap else {
                 XCTFail()
                 continue
