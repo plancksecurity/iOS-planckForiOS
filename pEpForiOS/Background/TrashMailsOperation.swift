@@ -67,4 +67,26 @@ open class TrashMailsOperation: AppendMailsOperation {
             }
         }
     }
+
+    public static func foldersWithTrashedMessages(context: NSManagedObjectContext) -> [CdFolder] {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: CdMessage.entityName)
+        request.resultType = .managedObjectResultType
+        request.returnsDistinctResults = true
+        request.propertiesToFetch = ["parent"]
+        request.predicate = NSPredicate(
+            format: "imap.flagDeleted = true and imap.trashedStatus = %d",
+            TrashedStatus.shouldBeTrashed.rawValue)
+        do {
+            if let folders = try context.fetch(request) as? [CdMessage] {
+                Log.warn(component: #function, content: "Have object \(folders)")
+                for o in folders {
+                    Log.warn(component: #function, content: "Have object \(o)")
+                }
+                return []
+            }
+        } catch let err as NSError {
+            Log.error(component: #function, error: err)
+        }
+        return []
+    }
 }

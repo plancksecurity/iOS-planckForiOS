@@ -1052,6 +1052,10 @@ class SimpleOperationsTest: XCTestCase {
         }
         Record.saveAndWait()
 
+        let foldersToTrash = TrashMailsOperation.foldersWithTrashedMessages(
+            context: Record.Context.default)
+        XCTAssertEqual(foldersToTrash.count, 1)
+
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
                 XCTAssertNotNil(m.messageID)
