@@ -671,9 +671,13 @@ class SimpleOperationsTest: XCTestCase {
         from.userName = account.identity?.userName ?? "Unit 004"
         from.address = account.identity?.address ?? "unittest.ios.4@peptest.ch"
 
-        let to = CdIdentity.create()
-        to.userName = "Unit 001"
-        to.address = "unittest.ios.1@peptest.ch"
+        let toWithKey = CdIdentity.create()
+        toWithKey.userName = "Unit 001"
+        toWithKey.address = "unittest.ios.1@peptest.ch"
+
+        let toWithoutKey = CdIdentity.create()
+        toWithoutKey.userName = "Unit 002"
+        toWithoutKey.address = "unittest.ios.2@peptest.ch"
 
         let folder = CdFolder.create()
         folder.uuid = MessageID.generate()
@@ -688,7 +692,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         // Build emails
-        let numMails = 5
+        let numMails = 3
         for i in 1...numMails {
             let message = CdMessage.create()
             message.from = from
@@ -697,14 +701,18 @@ class SimpleOperationsTest: XCTestCase {
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.sent = Date() as NSDate
-            message.addTo(cdIdentity: to)
+            message.addTo(cdIdentity: toWithKey)
 
             // add attachment
-            if i == numMails {
+            if i == numMails || i == numMails - 1 {
                 let attachment = Attachment.create(
                     data: imageData, mimeType: "", fileName: imageFileName)
                 let cdAttachment = CdAttachment.create(attachment: attachment)
                 message.addAttachment(cdAttachment)
+            }
+            if i == numMails {
+                // prevent encryption
+                message.bcc = NSOrderedSet(object: toWithoutKey)
             }
         }
         Record.saveAndWait()
