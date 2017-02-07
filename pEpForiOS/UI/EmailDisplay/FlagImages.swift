@@ -40,12 +40,12 @@ open class FlagImages {
 
     func createImages() {
         var circleSize = imageSize
-        notSeenImage = createCircleImage(size: circleSize, color: .orange)
-        flaggedImage = createCircleImage(size: circleSize, color: .blue)
+        flaggedImage = createCircleImage(size: circleSize, color: .orange)
+        notSeenImage = createCircleImage(size: circleSize, color: .blue)
 
         circleSize.width -= 5
         circleSize.height -= 5
-        let flaggedImageSmall = createCircleImage(size: circleSize, color: .blue)
+        let flaggedImageSmall = createCircleImage(size: circleSize, color: .orange)
 
         flaggedAndNotSeenImage = createImageOverlay(
             size: imageSize, images: [notSeenImage, flaggedImageSmall])
