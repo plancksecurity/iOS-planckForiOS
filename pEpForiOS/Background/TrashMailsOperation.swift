@@ -56,6 +56,7 @@ open class TrashMailsOperation: AppendMailsOperation {
                 if let obj = self.context.object(with: msgID) as? CdMessage {
                     let imap = obj.imap ?? CdImapFields.create(context: self.context)
                     imap.trashedStatus = TrashedStatus.trashed.rawValue
+                    obj.imap = imap
                     Record.save(context: self.context)
                 } else {
                     self.handleError(Constants.errorInvalidParameter(self.comp),

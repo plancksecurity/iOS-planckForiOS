@@ -1034,7 +1034,7 @@ class SimpleOperationsTest: XCTestCase {
 
         // Build emails
         var originalMessages = [CdMessage]()
-        let numMails = 5
+        let numMails = 3
         for i in 1...numMails {
             let message = CdMessage.create()
             message.from = from
@@ -1065,17 +1065,17 @@ class SimpleOperationsTest: XCTestCase {
 
         let expTrashed = expectation(description: "expTrashed")
 
-        let appendOp = TrashMailsOperation(
+        let trashMailsOp = TrashMailsOperation(
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder)
-        appendOp.completionBlock = {
+        trashMailsOp.completionBlock = {
             expTrashed.fulfill()
         }
 
-        queue.addOperation(appendOp)
+        queue.addOperation(trashMailsOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(appendOp.hasErrors())
+            XCTAssertFalse(trashMailsOp.hasErrors())
         })
 
         Record.Context.default.refreshAllObjects()
@@ -1094,7 +1094,7 @@ class SimpleOperationsTest: XCTestCase {
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(appendOp.hasErrors())
+            XCTAssertFalse(trashMailsOp.hasErrors())
         })
 
         for m in originalMessages {
@@ -1102,8 +1102,28 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 continue
             }
-            let trashedP = NSPredicate(format: "parent = %@ and uuid = %@", trashFolder, mID)
-            let trashedCdMessage = CdMessage.first(predicate: trashedP)
+            let uuidP = NSPredicate(format: "uuid = %@", mID)
+            guard let cdMessages = CdMessage.all(predicate: uuidP) else {
+                XCTFail()
+                continue
+            }
+            XCTAssertEqual(cdMessages.count, 2)
+
+            guard let folder = m.parent else {
+                XCTFail()
+                continue
+            }
+            XCTAssertEqual(folder.folderType, FolderType.inbox.rawValue)
+            guard let imap = m.imap else {
+                XCTFail()
+                continue
+            }
+            XCTAssertTrue(imap.flagDeleted)
+            XCTAssertEqual(imap.trashedStatus, TrashedStatus.trashed.rawValue)
+            // Make sure the email now exists in the trash folder as well
+            let trashedP = NSPredicate(format: "parent = %@", trashFolder)
+            let trashedP1 = NSCompoundPredicate(andPredicateWithSubpredicates: [uuidP, trashedP])
+            let trashedCdMessage = CdMessage.first(predicate: trashedP1)
             XCTAssertNotNil(trashedCdMessage)
         }
     }
