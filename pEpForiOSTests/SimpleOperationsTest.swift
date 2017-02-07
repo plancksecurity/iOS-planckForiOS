@@ -706,7 +706,7 @@ class SimpleOperationsTest: XCTestCase {
             // add attachment
             if i == numMails || i == numMails - 1 {
                 let attachment = Attachment.create(
-                    data: imageData, mimeType: "", fileName: imageFileName)
+                    data: imageData, mimeType: "image/jpeg", fileName: imageFileName)
                 let cdAttachment = CdAttachment.create(attachment: attachment)
                 message.addAttachment(cdAttachment)
             }

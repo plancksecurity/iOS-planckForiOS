@@ -298,8 +298,9 @@ open class PEPUtil {
         }
         dict[kPepOutgoing] = NSNumber(booleanLiteral: outgoing)
 
-        dict[kPepAttachments] = NSArray(array: cdMessage.attachments!.map() {
-            return pEp(cdAttachment: $0 as! CdAttachment)
+        dict[kPepAttachments] = NSArray(
+            array: (cdMessage.attachments?.array as? [CdAttachment] ?? []).map() {
+                return pEp(cdAttachment: $0)
         })
 
         var refs = [String]()
@@ -503,8 +504,21 @@ open class PEPUtil {
                     }
                     let part = CWPart()
                     part.setContentType(at[kPepMimeType] as? String)
-                    part.setContent(at[kPepMimeData])
                     part.setFilename(at[kPepMimeFilename] as? String)
+                    if let theData = at[kPepMimeData] as? NSData {
+                        part.setContent(theData)
+                        part.setSize(theData.length)
+                    }
+
+                    if !encrypted {
+                        // We have to add base64 if this was not encrypted by the engine.
+                        // Otherwise, leave it as-is.
+                        part.setContentTransferEncoding(PantomimeEncodingBase64)
+                    }
+
+                    // handle this as an attachment
+                    part.setContentDisposition(PantomimeAttachmentDisposition)
+
                     multiPart.add(part)
                 }
             }
