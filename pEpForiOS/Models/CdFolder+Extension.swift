@@ -113,7 +113,17 @@ public extension CdFolder {
      messages contained in that folder.
      */
     public func allMessagesPredicate() -> NSPredicate {
-        return NSPredicate(format: "parent = %@ and imap.flagDeleted = false", self)
+        let p1 = allMessagesIncludingDeletedPredicate()
+        let p2 = NSPredicate(format: "imap.flagDeleted = false")
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
+    }
+
+    /**
+     - Returns: The predicate (for CdMessage) to get all messages contained in that folder,
+     even the deleted ones, so we don't fetch them again from the server.
+     */
+    public func allMessagesIncludingDeletedPredicate() -> NSPredicate {
+        return NSPredicate(format: "parent = %@", self)
     }
 
     /**
@@ -128,7 +138,7 @@ public extension CdFolder {
 
     public func firstUID() -> UInt {
         if let msg = CdMessage.first(
-            predicate: allMessagesPredicate(),
+            predicate: allMessagesIncludingDeletedPredicate(),
             orderedBy: [NSSortDescriptor(key: "uid", ascending: true)]) {
             return UInt(msg.uid)
         }
@@ -137,7 +147,7 @@ public extension CdFolder {
 
     public func lastUID() -> UInt {
         if let msg = CdMessage.first(
-            predicate: allMessagesPredicate(),
+            predicate: allMessagesIncludingDeletedPredicate(),
             orderedBy: [NSSortDescriptor(key: "uid", ascending: false)]) {
             return UInt(msg.uid)
         }
