@@ -26,6 +26,12 @@ class MiscTests: XCTestCase {
         XCTAssertEqual(u2, UInt32.max)
     }
 
+    func testMimeTypeJson() {
+        //PEPUtil
+        let s = MimeTypeUtil.getMimeType(Extension: "pdf")
+        XCTAssertEqual(s, "application/pdf")
+    }
+
     /*
     func testExtractRecipientFromText() {
         XCTAssertNil(ComposeViewHelper.extractRecipientFromText("", aroundCaretPosition: 5))

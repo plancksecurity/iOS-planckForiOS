@@ -129,7 +129,7 @@ class ComposeTableViewController: UITableViewController {
         if isMovie {
             filename = "MailComp.Video".localized + filetype
         }
-        if let att = Attachment.inline(name: filename, url: url, type: filetype, image: image) {
+        if let att = Attachment.inline(name: filename, url: url, type: MimeTypeUtil.getMimeType(Extension: filetype), image: image) {
             return att
         }
         return nil
