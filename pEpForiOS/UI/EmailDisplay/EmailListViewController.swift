@@ -277,7 +277,7 @@ class EmailListViewController: UITableViewController {
     func createForwardAction(cell: EmailListViewCell) -> UIAlertAction {
         return UIAlertAction(title: "Forward", style: .default) { (action) in
             //self.performSegue(withIdentifier: self.segueCompose, sender: cell)
-            self.performSegue(withIdentifier: .segueCompose, sender: cell)
+            self.performSegue(withIdentifier: .segueForward, sender: cell)
         }
     }
 
@@ -320,6 +320,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueShowEmail
         case segueCompose
         case segueReplyAll
+        case segueForward
         case noSegue
     }
 
@@ -353,6 +354,17 @@ extension EmailListViewController: SegueHandlerType {
                 let email = cell.messageAt(indexPath: indexPath, config: config) {
                 vc.appConfig = config?.appConfig
                 vc.message = email
+            }
+            break
+        case .segueForward:
+            if let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? ComposeTableViewController,
+                let cell = sender as? EmailListViewCell,
+                let indexPath = self.tableView.indexPath(for: cell),
+                let email = cell.messageAt(indexPath: indexPath, config: config) {
+                destination.composeMode = .forward
+                destination.appConfig = config?.appConfig
+                destination.originalMessage = email
             }
             break
         default: ()

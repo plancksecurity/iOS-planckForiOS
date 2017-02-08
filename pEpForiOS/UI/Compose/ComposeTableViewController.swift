@@ -108,6 +108,9 @@ class ComposeTableViewController: UITableViewController {
         if let om = originalMessage, composeMode == .replyFrom || composeMode == .replyAll {
             composeCell.setInitial(text: ReplyUtil.replySubject(message: om))
         }
+        if let om = originalMessage, composeMode == .forward {
+           // composeCell.setInitial(text: <#T##String#>)
+        }
     }
 
     private final func prepareFields()  {
