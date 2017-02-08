@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.application = application
 
-        deleteManagementDBIfRequired()
+        let shouldReinit = deleteManagementDBIfRequired()
 
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession()
@@ -67,6 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
         loadCoreDataStack()
+
+        forceReDecryption(shouldRun: shouldReinit)
 
         kickOffMySelf()
 
@@ -129,17 +131,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 managedObjectModel: objectModel)
             appConfig = AppConfig()
         } catch {
-            Log.error(component: comp, errorString: "Error While Loading DataStack")
+            Log.error(component: comp, errorString: "Error while Loading DataStack")
         }
     }
 
     /**
      Removes all keys, and the management DB, when the user chooses so.
+     - Returns: True if the pEp management DB was deleted, so further actions can be taken.
      */
-    func deleteManagementDBIfRequired() {
+    func deleteManagementDBIfRequired() -> Bool {
         if appSettings.shouldReinitializePepOnNextStartup {
-            appSettings.shouldReinitializePepOnNextStartup = false
+            //appSettings.shouldReinitializePepOnNextStartup = false
             let _ = PEPUtil.pEpClean()
+            return true
+        }
+        return false
+    }
+
+    func forceReDecryption(shouldRun: Bool) {
+        // force re-decryption of *all* messages
+        if shouldRun {
+            let msgs = CdMessage.all() as? [CdMessage] ?? []
+            for m in msgs {
+                m.pEpRating = PEPUtil.pEpRatingNone
+            }
+            Record.saveAndWait()
         }
     }
 }
