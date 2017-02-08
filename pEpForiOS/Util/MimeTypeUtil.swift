@@ -9,17 +9,14 @@
 import Foundation
 
 open class MimeTypeUtil {
+    open static let comp = "MimeTypeUtil"
 
     open static func getMimeType(Extension:String) -> String {
-        let path = Bundle.main.path(forResource: "jsonMimeType", ofType: "txt")
-
-        //reading
         do {
-            //let text2 = try String(contentsOf: path, encoding: String.Encoding.utf8)
-            if let file = path {
+            if let file = Bundle.main.path(forResource: "jsonMimeType", ofType: "txt") {
                 let data = try Data(contentsOf: URL(fileURLWithPath: file))
-
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] {
+                if let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    as? [String:Any] {
                     if let ex = json["mimeType"] as? [String : String] {
                         for (key,value) in ex {
                             if key == Extension.lowercased() {
@@ -30,7 +27,9 @@ open class MimeTypeUtil {
                 }
             }
         }
-        catch {/* error handling here */}
+        catch let error as NSError {
+            Log.shared.error(component: comp, error: error)
+        }
         return "application/octet-stream"
     }
 }
