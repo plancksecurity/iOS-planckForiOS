@@ -45,6 +45,8 @@ class ComposeTableViewController: UITableViewController {
     lazy var session = PEPSession()
     lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
+    let mimeTypeController = MimeTypeUtil()
+
 
     // MARK: - Lifecycle
 
@@ -129,7 +131,15 @@ class ComposeTableViewController: UITableViewController {
         if isMovie {
             filename = "MailComp.Video".localized + filetype
         }
-        if let att = Attachment.inline(name: filename, url: url, type: MimeTypeUtil.getMimeType(Extension: filetype), image: image) {
+        var mimeType :String
+        if let mimeController = mimeTypeController {
+            mimeType = mimeController.getMimeType(Extension: filetype)
+
+        } else {
+            //default mime type
+            mimeType = "application/octet-stream"
+        }
+        if let att = Attachment.inline(name: filename, url: url, type: mimeType, image: image) {
             return att
         }
         return nil

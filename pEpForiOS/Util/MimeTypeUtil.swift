@@ -9,26 +9,34 @@
 import Foundation
 
 open class MimeTypeUtil {
-    open static let comp = "MimeTypeUtil"
+    let comp = "MimeTypeUtil"
+    var json : [String : Any]?
 
-    open static func getMimeType(Extension:String) -> String {
+
+    public init?() {
+        let resource = "jsonMimeType"
+        let type = "txt"
         do {
-            if let file = Bundle.main.path(forResource: "jsonMimeType", ofType: "txt") {
+            if let file = Bundle.main.path(forResource: resource, ofType: type) {
                 let data = try Data(contentsOf: URL(fileURLWithPath: file))
-                if let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    as? [String:Any] {
-                    if let ex = json["mimeType"] as? [String : String] {
-                        for (key,value) in ex {
-                            if key == Extension.lowercased() {
-                                return value as String
-                            }
-                        }
+                json = try JSONSerialization.jsonObject(with: data, options: [])
+                    as? [String:Any]
+            }
+        } catch let error as NSError {
+            Log.shared.error(component: comp, error: error)
+            return nil
+        }
+    }
+    
+    open func getMimeType(Extension:String) -> String {
+        if let data = json {
+            if let ex = data["mimeType"] as? [String : String] {
+                for (key,value) in ex {
+                    if key == Extension.lowercased() {
+                        return value as String
                     }
                 }
             }
-        }
-        catch let error as NSError {
-            Log.shared.error(component: comp, error: error)
         }
         return "application/octet-stream"
     }
