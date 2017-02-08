@@ -54,6 +54,7 @@
 		43122B1B1DF5B48B00610253 /* SmtpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B161DF5B48B00610253 /* SmtpService.swift */; };
 		43122B3C1DF5B75000610253 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B3B1DF5B75000610253 /* NetworkService.swift */; };
 		43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B3D1DF5BB6600610253 /* MySelfOperation.swift */; };
+		431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 431394A81E4B03AA00D92F33 /* Settings.bundle */; };
 		431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798761CF87FE6007DD655 /* ReferenceCounter.swift */; };
 		4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */; };
 		431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D41D2EC0C000F609D3 /* ComposeTableViewController.swift */; };
@@ -346,6 +347,7 @@
 		43122B161DF5B48B00610253 /* SmtpService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpService.swift; sourceTree = "<group>"; };
 		43122B3B1DF5B75000610253 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		43122B3D1DF5BB6600610253 /* MySelfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySelfOperation.swift; sourceTree = "<group>"; };
+		431394A81E4B03AA00D92F33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageToAttachmentOperation.swift; sourceTree = "<group>"; };
@@ -648,6 +650,14 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		431394A31E4B036000D92F33 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				431394A81E4B03AA00D92F33 /* Settings.bundle */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		431AE5D11D2EC0A700F609D3 /* Compose */ = {
 			isa = PBXGroup;
 			children = (
@@ -743,6 +753,7 @@
 				43ED53611CC77F95006AB156 /* UI */,
 				43122B111DF5B48B00610253 /* Network */,
 				43980EDE1CBD24B000A7FC3C /* Util */,
+				431394A31E4B036000D92F33 /* Settings */,
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
 				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
@@ -1204,6 +1215,7 @@
 				22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */,
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
 				430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
+				431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */,
 				43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
