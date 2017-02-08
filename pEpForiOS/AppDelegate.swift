@@ -161,6 +161,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 m.delete()
             }
             if !msgs.isEmpty {
+                CdHeaderField.deleteOrphans()
                 Record.saveAndWait()
             }
         }
