@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let mySelfQueue = LimitedOperationQueue()
 
+    lazy var appSettings = AppSettings()
+
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -47,6 +49,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.application = application
 
+        deleteManagementDBIfRequired()
+
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession()
 
@@ -62,8 +66,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // and pretty much don't do anything.
             return false
         }
-        setupDefaultSettings()
-
         loadCoreDataStack()
 
         kickOffMySelf()
@@ -100,9 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.application = application
 
-        // Open the first session from the main thread and keep it open
-        firstSession = PEPSession()
-
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
         }
@@ -123,11 +122,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.firstSession = nil
     }
 
-    func setupDefaultSettings() {
-        let settings: [String: AnyObject] = [Constants.kSettingLastAccountEmail: "" as AnyObject]
-        UserDefaults.standard.register(defaults: settings)
-    }
-
     func loadCoreDataStack() {
         let objectModel = MessageModelData.MessageModelData()
         do {
@@ -135,7 +129,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 managedObjectModel: objectModel)
             appConfig = AppConfig()
         } catch {
-            print("Error While Loading DataStack")
+            Log.error(component: comp, errorString: "Error While Loading DataStack")
+        }
+    }
+
+    /**
+     Removes all keys, and the management DB, when the user chooses so.
+     */
+    func deleteManagementDBIfRequired() {
+        if appSettings.shouldReinitializePepOnNextStartup {
+            appSettings.shouldReinitializePepOnNextStartup = false
+            let _ = PEPUtil.pEpClean()
         }
     }
 }

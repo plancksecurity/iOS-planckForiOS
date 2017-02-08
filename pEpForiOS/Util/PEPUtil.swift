@@ -136,17 +136,19 @@ open class PEPUtil {
     /** Delete pEp working data. */
     open static func pEpClean() -> Bool {
         let homeURL = PEPiOSAdapter.homeURL() as URL
+        let keyRingURL = homeURL.appendingPathComponent(".gnupg")
 
         let pEpItemsToDelete: [URL] = [
             homeURL.appendingPathComponent(".pEp_management.db"),
-            homeURL.appendingPathComponent(".gnupg"),
-            homeURL.appendingPathComponent("secring.gpg"),
-            homeURL.appendingPathComponent("secring.gpg")]
+            keyRingURL.appendingPathComponent("secring.gpg"),
+            keyRingURL.appendingPathComponent("pubring.gpg"),
+        ]
 
         let fileManager: FileManager = FileManager.default
         for itemToDelete in pEpItemsToDelete {
             do {
                 if try itemToDelete.checkResourceIsReachable() {
+                    Log.warn(component: comp, content: "Deleting \(itemToDelete.absoluteString)")
                     try fileManager.removeItem(at: itemToDelete)
                 }
             }
