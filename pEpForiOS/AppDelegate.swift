@@ -153,13 +153,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func deleteAllMessages(pEpReInitialized: Bool) {
         // delete *all* messages, they could contain keys no longer valid
         if pEpReInitialized {
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: CdMessage.entityName)
-            let batch = NSBatchDeleteRequest(fetchRequest: request)
-            do {
-                try Record.Context.default.execute(batch)
+            // NSBatchDeleteRequest doesn't work so well here because of the need
+            // to nullify the relations. This is used only for internal testing, so the
+            // performance should suffice.
+            let msgs = CdMessage.all() as? [CdMessage] ?? []
+            for m in msgs {
+                m.delete()
+            }
+            if !msgs.isEmpty {
                 Record.saveAndWait()
-            } catch let e as NSError {
-                Log.error(component: comp, error: e)
             }
         }
     }
