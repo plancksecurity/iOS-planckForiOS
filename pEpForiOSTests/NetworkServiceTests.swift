@@ -168,9 +168,11 @@ class NetworkServiceTests: XCTestCase {
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
-        let folder = CdFolder.by(folderType: .sent, account: cdAccount)
-        XCTAssertNotNil(folder)
-        XCTAssertEqual((folder?.messages ?? NSSet()).count, 0)
+        guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual((sentFolder.messages ?? NSSet()).count, 0)
 
         // Build outgoing emails
         var outgoingMails = [CdMessage]()
@@ -179,7 +181,7 @@ class NetworkServiceTests: XCTestCase {
         for i in 1...numMails {
             let message = CdMessage.create()
             message.from = from
-            message.parent = folder
+            message.parent = sentFolder
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
@@ -211,12 +213,6 @@ class NetworkServiceTests: XCTestCase {
         Record.refreshRegisteredObjects(mergeChanges: true)
         for m in outgoingMails {
             XCTAssertTrue(m.isDeleted)
-        }
-
-        guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
-            XCTFail()
-            cancelNetworkService(networkService: networkService)
-            return
         }
 
         // Make sure the sent folder will still *not* be synced in the next step

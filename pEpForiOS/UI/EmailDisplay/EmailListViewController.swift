@@ -190,7 +190,7 @@ class EmailListViewController: UITableViewController {
                 return
             }
 
-            message.imapFlags?.deleted = true
+            message.delete() // mark for deletion/trash
             message.save()
             self.tableView.reloadData()
         }

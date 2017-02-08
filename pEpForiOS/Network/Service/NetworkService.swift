@@ -67,6 +67,8 @@ public class NetworkService: INetworkService {
     let backgrounder: BackgroundTaskProtocol?
     let mySelfer: KickOffMySelfProtocol?
 
+    let context = Record.Context.background
+
     public init(sleepTimeInSeconds: Double = 10.0, parentName: String? = nil,
                 backgrounder: BackgroundTaskProtocol? = nil,
                 mySelfer: KickOffMySelfProtocol? = nil) {
@@ -153,8 +155,7 @@ public class NetworkService: INetworkService {
         }
     }
 
-    func fetchAccounts(
-        context: NSManagedObjectContext, needsVerificationOnly: Bool = false) -> [CdAccount] {
+    func fetchAccounts(needsVerificationOnly: Bool = false) -> [CdAccount] {
         let p = NSPredicate(format: "needsVerification = %@",
                             NSNumber(booleanLiteral: needsVerificationOnly))
         return CdAccount.all(predicate: p, in: context) as? [CdAccount] ?? []
@@ -162,10 +163,8 @@ public class NetworkService: INetworkService {
 
     func gatherConnectInfos(needsVerificationOnly: Bool = false) -> [AccountConnectInfo] {
         var connectInfos = [AccountConnectInfo]()
-        let context = Record.Context.background
         context.performAndWait {
-            let accounts = self.fetchAccounts(
-                context: context, needsVerificationOnly: needsVerificationOnly)
+            let accounts = self.fetchAccounts(needsVerificationOnly: needsVerificationOnly)
             for acc in accounts {
                 let smtpCI = acc.smtpConnectInfo
                 let imapCI = acc.imapConnectInfo
@@ -181,9 +180,8 @@ public class NetworkService: INetworkService {
     func checkVerified(accountInfo: AccountConnectInfo,
                        operations: [BaseOperation], needsVerificationOnly: Bool) {
         if needsVerificationOnly {
-            let context = Record.Context.background
             context.performAndWait {
-                guard let account = context.object(with: accountInfo.accountID) as? CdAccount else {
+                guard let account = self.context.object(with: accountInfo.accountID) as? CdAccount else {
                     return
                 }
                 var accountVerified = true
@@ -196,7 +194,7 @@ public class NetworkService: INetworkService {
                 }
                 if accountVerified {
                     account.needsVerification = false
-                    Record.saveAndWait(context: context)
+                    Record.saveAndWait(context: self.context)
                     self.sendLayerDelegate?.didVerify(cdAccount: account, error: nil)
                     self.mySelfer?.startMySelf()
                 } else {
@@ -269,6 +267,21 @@ public class NetworkService: INetworkService {
         return (opDrafts, [opAppend, opDrafts])
     }
 
+    func buildTrashOperations(
+        imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
+        opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
+        var lastOp = previousOp
+        var trashOps = [TrashMailsOperation]()
+        let folders = TrashMailsOperation.foldersWithTrashedMessages(context: context)
+        for cdF in folders {
+            let op = TrashMailsOperation(imapSyncData: imapSyncData, folder: cdF)
+            op.addDependency(lastOp)
+            opImapFinished.addDependency(op)
+            lastOp = op
+            trashOps.append(op)
+        }
+        return (lastOp, trashOps)
+    }
 
     /**
      Determine "interesting" folder names that should be synced, and for each:
@@ -449,12 +462,17 @@ public class NetworkService: INetworkService {
                 opImapFinished: opImapFinished, previousOp: opFetchFolders)
             operations.append(contentsOf: sendOperations)
 
+            let (lastTrashOp, trashOperations) = buildTrashOperations(
+                imapSyncData: imapSyncData, errorContainer: errorContainer,
+                opImapFinished: opImapFinished, previousOp: lastSendOp ?? opFetchFolders)
+            operations.append(contentsOf: trashOperations)
+
             // 3.d Server-to-client synchronization (IMAP)
 
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
             // sync new messages
-            var lastImapOp: Operation = lastSendOp ?? opFetchFolders
+            var lastImapOp: Operation = lastTrashOp ?? opFetchFolders
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
                     parentName: parentName, errorContainer: errorContainer,
