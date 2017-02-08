@@ -148,7 +148,6 @@ open class PEPUtil {
         for itemToDelete in pEpItemsToDelete {
             do {
                 if try itemToDelete.checkResourceIsReachable() {
-                    Log.warn(component: comp, content: "Deleting \(itemToDelete.absoluteString)")
                     try fileManager.removeItem(at: itemToDelete)
                 }
             }

@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import CoreData
+
 import MessageModel
 
 @UIApplicationMain
@@ -49,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.application = application
 
-        let shouldReinit = deleteManagementDBIfRequired()
+        let pEpReInitialized = deleteManagementDBIfRequired()
 
         // Open the first session from the main thread and keep it open
         firstSession = PEPSession()
@@ -68,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         loadCoreDataStack()
 
-        forceReDecryption(shouldRun: shouldReinit)
+        deleteAllMessages(pEpReInitialized: pEpReInitialized)
 
         kickOffMySelf()
 
@@ -148,14 +150,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return false
     }
 
-    func forceReDecryption(shouldRun: Bool) {
-        // force re-decryption of *all* messages
-        if shouldRun {
-            let msgs = CdMessage.all() as? [CdMessage] ?? []
-            for m in msgs {
-                m.pEpRating = PEPUtil.pEpRatingNone
+    func deleteAllMessages(pEpReInitialized: Bool) {
+        // delete *all* messages, they could contain keys no longer valid
+        if pEpReInitialized {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: CdMessage.entityName)
+            let batch = NSBatchDeleteRequest(fetchRequest: request)
+            do {
+                try Record.Context.default.execute(batch)
+                Record.saveAndWait()
+            } catch let e as NSError {
+                Log.error(component: comp, error: e)
             }
-            Record.saveAndWait()
         }
     }
 }
