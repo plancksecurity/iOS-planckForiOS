@@ -206,7 +206,6 @@ extension EmailViewController: MessageContentCellDelegate {
     }
 }
 
-
 // MARK: - SegueHandlerType
 
 extension EmailViewController: SegueHandlerType {
