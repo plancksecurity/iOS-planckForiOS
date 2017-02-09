@@ -109,13 +109,4 @@ extension CdMessage {
     public func isProbablyPGPMime() -> Bool {
         return PEPUtil.isProbablyPGPMime(cdMessage: self)
     }
-
-    /**
-     Message has just been decrypted, so present it to the UI as new.
-     */
-    public func updateDecrypted() {
-        if let msg = message() {
-            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
-        }
-    }
 }
