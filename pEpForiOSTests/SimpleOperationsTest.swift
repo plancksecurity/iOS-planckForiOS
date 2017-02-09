@@ -1152,4 +1152,8 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNotNil(trashedCdMessage)
         }
     }
+
+    func testMessageToAttachmentOperation() {
+
+    }
 }

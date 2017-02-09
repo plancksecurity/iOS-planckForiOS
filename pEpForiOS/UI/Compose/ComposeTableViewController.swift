@@ -102,6 +102,15 @@ class ComposeTableViewController: UITableViewController {
             messageBodyCell.setInitial(
                 text: ReplyUtil.quotedMessageText(message: om, replyAll: composeMode == .replyAll))
         }
+        if let om = originalMessage, composeMode == .forward {
+            messageBodyCell.setInitial(
+                text: ReplyUtil.quotedMessageText(message: om, replyAll: composeMode == .forward))
+            let mtao = MessageToAttachmentOperation(message: om)
+            mtao.main()
+            if let attachment = mtao.attachment {
+                messageBodyCell.add(attachment)
+            }
+        }
     }
 
     func updateInitialContent(composeCell: ComposeCell) {
@@ -109,7 +118,7 @@ class ComposeTableViewController: UITableViewController {
             composeCell.setInitial(text: ReplyUtil.replySubject(message: om))
         }
         if let om = originalMessage, composeMode == .forward {
-           // composeCell.setInitial(text: <#T##String#>)
+           composeCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
         }
     }
 

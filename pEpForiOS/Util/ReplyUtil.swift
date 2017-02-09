@@ -39,6 +39,16 @@ public struct ReplyUtil {
         }
     }
 
+    public static func forwardSubject(message: Message) -> String {
+        if let subject = message.shortMessage {
+            let re = NSLocalizedString(
+                "Fwd: ", comment: "The 'Fwd:' that gets appended to the subject line")
+            return "\(re) \(subject)"
+        } else {
+            return ""
+        }
+    }
+
     public static func replyNameFromIdentity(_ identity: Identity) -> String {
         if let name = identity.userName {
             return name
