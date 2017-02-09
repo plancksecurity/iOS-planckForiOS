@@ -34,7 +34,7 @@ class RecipientCell: ComposeCell {
     
     fileprivate func removeRecepients() {
         recipients.forEach({ (recepient: Int) in
-            if identities.isSafe(recepient) != nil {
+            if identities[safe: recepient] != nil {
                 identities.remove(at: recepient)
             }
         })

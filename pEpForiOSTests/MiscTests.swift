@@ -27,32 +27,30 @@ class MiscTests: XCTestCase {
     }
 
     func testMimeTypeJson() {
-        //PEPUtil
         let mimeTypeController = MimeTypeUtil()
         let s = mimeTypeController?.getMimeType(Extension: "pdf")
         XCTAssertEqual(s, "application/pdf")
     }
 
-    /*
-    func testExtractRecipientFromText() {
-        XCTAssertNil(ComposeViewHelper.extractRecipientFromText("", aroundCaretPosition: 5))
-        XCTAssertNil(ComposeViewHelper.extractRecipientFromText("01", aroundCaretPosition: 3))
-        XCTAssertNil(ComposeViewHelper.extractRecipientFromText("001,002",
-            aroundCaretPosition: 4))
-        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
-            "001,002", aroundCaretPosition: 5), "002")
-        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
-            "001, 002 ", aroundCaretPosition: 6), "002")
-        XCTAssertNil(ComposeViewHelper.extractRecipientFromText(
-            "to: 001, 002 ", aroundCaretPosition: 3))
-        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
-            "to: 001, 002 ", aroundCaretPosition: 4), "001")
-        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
-            "to: 001, 002 ", aroundCaretPosition: 7), "001")
-        XCTAssertNil(ComposeViewHelper.extractRecipientFromText(
-            "to: 001, 002 ", aroundCaretPosition: 8))
-        XCTAssertEqual(ComposeViewHelper.extractRecipientFromText(
-            "to: 001, 002 ", aroundCaretPosition: 9), "002")
+    func testBinaryIndex() {
+        func shouldInsert(e1: Int, e2: Int) -> Bool {
+            if e1 < e2 || e1 == e2 {
+                return true
+            }
+            return false
+        }
+
+        let ar = [1, 3, 4, 5, 7, 8, 9]
+
+        for e in 1...10 {
+            let i1 = ar.insertIndexByTraversing(element: e, shouldInsert: shouldInsert)
+            let i2 = ar.insertIndex(element: e, shouldInsert: shouldInsert)
+            XCTAssertEqual(i1, i2)
+        }
+
+        XCTAssertEqual(ar.insertIndexByTraversing(element: 6, shouldInsert: shouldInsert), 4)
+        XCTAssertEqual(ar.insertIndexByTraversing(element: 2, shouldInsert: shouldInsert), 1)
+        XCTAssertEqual(ar.insertIndexByTraversing(element: 9, shouldInsert: shouldInsert), 6)
+        XCTAssertEqual(ar.insertIndexByTraversing(element: 10, shouldInsert: shouldInsert), 7)
     }
-     */
 }
