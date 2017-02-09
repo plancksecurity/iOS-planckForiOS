@@ -112,6 +112,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
                 Log.info(component: comp,
                          content: "removing message UID \(msg.uid) messageID \(msg.uuid)")
                 msg.delete()
+                CdHeaderField.deleteOrphans()
                 deletedMessage = true
             }
         }
