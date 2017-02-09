@@ -10,6 +10,7 @@ import Foundation
 import XCTest
 
 import pEpForiOS
+import MessageModel
 
 /**
  Tests for things not covered elsewhere.

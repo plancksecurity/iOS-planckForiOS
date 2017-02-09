@@ -13,9 +13,6 @@
 		220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */; };
 		220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE321E0AB5CC002FE716 /* MessageSenderCell.swift */; };
 		220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */; };
-		222B35521DF95C1C007A1F82 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35511DF95C1C007A1F82 /* Array+Extension.swift */; };
-		222B35531DF95C25007A1F82 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35511DF95C1C007A1F82 /* Array+Extension.swift */; };
-		222B35541DF95C25007A1F82 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35511DF95C1C007A1F82 /* Array+Extension.swift */; };
 		222B35561DF962D7007A1F82 /* ComposeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35551DF962D7007A1F82 /* ComposeHelpers.swift */; };
 		222B35581DF96389007A1F82 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35571DF96389007A1F82 /* Capability.swift */; };
 		222B355D1DF96478007A1F82 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 222B35611DF96478007A1F82 /* Localizable.strings */; };
@@ -317,7 +314,6 @@
 		220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContentCell.swift; sourceTree = "<group>"; };
 		220DCE321E0AB5CC002FE716 /* MessageSenderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSenderCell.swift; sourceTree = "<group>"; };
 		220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSubjectCell.swift; sourceTree = "<group>"; };
-		222B35511DF95C1C007A1F82 /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		222B35551DF962D7007A1F82 /* ComposeHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeHelpers.swift; sourceTree = "<group>"; };
 		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
 		222B35601DF96478007A1F82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -560,7 +556,6 @@
 		222B354D1DF95BD2007A1F82 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				222B35511DF95C1C007A1F82 /* Array+Extension.swift */,
 				434F84441CEB018A0055B7A9 /* NSData+Extensions.swift */,
 				43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */,
 				4380F7EE1D1C1C7300326F62 /* PEPSession+Extensions.swift */,
@@ -1359,7 +1354,6 @@
 				222B35721DF96CC8007A1F82 /* ComposeFieldModel.swift in Sources */,
 				436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */,
 				431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */,
-				222B35521DF95C1C007A1F82 /* Array+Extension.swift in Sources */,
 				431B04801DE5774800E40CD3 /* CdMessage+Pantomime.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */,
@@ -1417,7 +1411,6 @@
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */,
-				222B35531DF95C25007A1F82 /* Array+Extension.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
@@ -1435,7 +1428,6 @@
 				43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */,
 				43701BF51D92B6B4007D63B2 /* LoadUITest.swift in Sources */,
 				A1950C6B1D928A9700A7C865 /* ChooseAttachmentTest.swift in Sources */,
-				222B35541DF95C25007A1F82 /* Array+Extension.swift in Sources */,
 				430A6E541DFB08CE006273A5 /* UITestData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
