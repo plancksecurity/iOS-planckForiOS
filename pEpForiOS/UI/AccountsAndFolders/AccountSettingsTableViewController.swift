@@ -37,22 +37,23 @@ class AccountSettingsTableViewController: UITableViewController {
         nameTextfield.text = account?.user.displayString
         emailTextfield.text = account?.user.address
         usernameTextfield.text = account?.user.userName
-       print("Transport:\(account?.serverCredentials[safe: 0]?.servers[safe: 0]?.transport)") 
     }
     
     func  populateIMAP() {
-        let serverCredentials = (account?.serverCredentials[safe: 0])! as ServerCredentials
-        let server = serverCredentials.servers[safe: 0]! as Server
-        imapServerTextfield.text = server.address
-        imapPortTextfield.text = "\(server.port)"
+        if let serverCredentials = account?.serverCredentials[safe: 0],
+            let server = serverCredentials.servers[safe: 0] {
+            imapServerTextfield.text = server.address
+            imapPortTextfield.text = "\(server.port)"
+        }
         
     }
     
     func populateSMTP() {
-        let serverCredentials = (account?.serverCredentials[safe: 0])! as ServerCredentials
-        let server = serverCredentials.servers[safe: 0]! as Server
-        smtpServerTextfield.text = server.address
-        smtpPortTextfield.text = "\(server.port)"
+        if let serverCredentials = account?.serverCredentials[safe: 0],
+            let server = serverCredentials.servers[safe: 0] {
+            smtpServerTextfield.text = server.address
+            smtpPortTextfield.text = "\(server.port)"
+        }
     }
     
     // MARK: - UItableViewDataSource
@@ -64,7 +65,8 @@ class AccountSettingsTableViewController: UITableViewController {
         return 3
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(
+        _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
             return "AccountsSettings.Account".localized
@@ -77,7 +79,8 @@ class AccountSettingsTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(
+        _ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
     }
     
@@ -89,5 +92,4 @@ class AccountSettingsTableViewController: UITableViewController {
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
     }
-
 }
