@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MessageModel
 
 public protocol CellProtocol {
     
@@ -21,6 +22,8 @@ public protocol ComposeCellDelegate: class {
     func textdidChange(at indexPath: IndexPath, textView: ComposeTextView)
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView)
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView)
+    func haveToUpdateColor(newIdentity: [Identity])
+    func fromAccountChanged(newIdentity: Identity)
 }
 
 public protocol RecipientCellDelegate: ComposeCellDelegate {

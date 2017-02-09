@@ -611,6 +611,17 @@ open class PEPUtil {
         return rating
     }
 
+    open static func outgoingMessageColor(from: Identity, to: [Identity]) -> PEP_rating {
+        let fakemail = Message.create(uuid: "fakeuuid")
+        fakemail.from = from
+        fakemail.to = to
+        fakemail.shortMessage = ""
+        fakemail.longMessage = ""
+        return PEPSession().outgoingMessageColor(
+            fakemail.pEpMessage(message: fakemail, outgoing: true))
+
+    }
+
     open static func pEpColor(identity: Identity,
                               session: PEPSession = PEPSession()) -> PEP_color {
         return pEpColor(pEpRating: pEpRating(identity: identity, session: session))

@@ -123,6 +123,7 @@ extension RecipientCell {
         
         addButton.isHidden = cTextview.text.isEmpty
         delegate?.textDidEndEditing(at: index, textView: cTextview)
+        delegate?.haveToUpdateColor(newIdentity: identities)
     }
     
 }

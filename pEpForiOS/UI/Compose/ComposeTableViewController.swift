@@ -59,6 +59,24 @@ class ComposeTableViewController: UITableViewController {
 
     // MARK: - Private Methods
 
+    func showPepRating(peprating: PEP_rating) {
+        // color
+        if let color = peprating.uiColor() {
+            navigationController?.navigationBar.barTintColor = color
+            navigationController?.toolbar.barTintColor = color
+        } else {
+            //setDefaultBarColors()
+        }
+
+        // icon
+        if let img = peprating.pepColor().statusIcon() {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                image: img, style: .plain, target: nil, action: nil)
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+
     /**
      Updates the given `RecipientCell` with data from the `originalMessage`,
      if this is a suitable `ComposeMode`.
@@ -395,6 +413,15 @@ class ComposeTableViewController: UITableViewController {
 // MARK: - Extensions
 
 extension ComposeTableViewController: ComposeCellDelegate {
+
+    public func fromAccountChanged(newIdentity: Identity) {
+        //
+    }
+
+
+    public func haveToUpdateColor(newIdentity: [Identity]) {
+        //PEPUtil.outgoingMessageColor(from: , to: newIdentity)
+    }
 
     func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {}
 

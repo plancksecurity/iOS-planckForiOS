@@ -14,6 +14,7 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var accounts = Account.all()
     var account: String?
+    open weak var del: ComposeCellDelegate?
     
     public var shouldDisplayPicker: Bool = false {
         didSet {
@@ -69,5 +70,7 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         textView.text = accounts[row].user.address
+        let id = accounts[row].user
+        del?.fromAccountChanged(newIdentity: id)
     }
 }
