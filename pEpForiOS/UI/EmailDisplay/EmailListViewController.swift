@@ -19,9 +19,6 @@ struct EmailListConfig {
 }
 
 class EmailListViewController: UITableViewController {
-    /** For debug output */
-    let compMessageCount = "messageCount"
-
     struct UIState {
         var isSynching: Bool = false
     }
@@ -106,7 +103,6 @@ class EmailListViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let fol = config?.folder  {
-            Log.info(component: #function, content: "\(compMessageCount) \(fol.messageCount())")
             return fol.messageCount()
         }
         return 0
@@ -384,13 +380,7 @@ extension EmailListViewController: SegueHandlerType {
                     // new message has arrived
                     if let index = folder.indexOf(message: msg) {
                         let ip = IndexPath(row: index, section: 0)
-                        Log.info(
-                            component: #function,
-                            content: "\(compMessageCount) inserting at \(ip), current \(tableView.numberOfRows(inSection: 0))")
                         tableView.insertRows(at: [ip], with: .automatic)
-                        Log.info(
-                            component: #function,
-                            content: "\(compMessageCount) now \(tableView.numberOfRows(inSection: 0))")
                     } else {
                         tableView.reloadData()
                     }
@@ -417,9 +407,14 @@ extension EmailListViewController: SegueHandlerType {
 
 extension EmailListViewController: MessageFolderDelegate {
     func didChange(messageFolder: MessageFolder) {
+        if let msg = messageFolder as? Message {
+            if msg.isOriginal {
+                Log.info(component: #function, content: "new message")
+            } else {
+                Log.info(component: #function, content: "flag changes?")
+            }
+        }
         GCD.onMainWait {
-            Log.info(component: #function,
-                     content: "\(self.compMessageCount) \(self.config?.folder?.messageCount())")
             self.didChangeInternal(messageFolder: messageFolder)
         }
     }
