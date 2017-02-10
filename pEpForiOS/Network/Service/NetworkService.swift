@@ -516,7 +516,10 @@ public class NetworkService: INetworkService {
     }
 
     func messageFetched(cdMessage: CdMessage) {
-        sendLayerDelegate?.didFetch(cdMessage: cdMessage)
+        // only send out notifications if the message is ready for UI
+        if cdMessage.pEpRating != PEPUtil.pEpRatingNone && !(cdMessage.imap?.flagDeleted ?? false) {
+            sendLayerDelegate?.didFetch(cdMessage: cdMessage)
+        }
     }
 
     func buildOperationLines(
