@@ -407,13 +407,6 @@ extension EmailListViewController: SegueHandlerType {
 
 extension EmailListViewController: MessageFolderDelegate {
     func didChange(messageFolder: MessageFolder) {
-        if let msg = messageFolder as? Message {
-            if msg.isOriginal {
-                Log.info(component: #function, content: "new message")
-            } else {
-                Log.info(component: #function, content: "flag changes?")
-            }
-        }
         GCD.onMainWait {
             self.didChangeInternal(messageFolder: messageFolder)
         }
