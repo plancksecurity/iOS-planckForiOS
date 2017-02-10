@@ -26,7 +26,7 @@ import MessageModel
     }
 
     private func saveLog(entity: String, description: String, comment: String) {
-        queue.async {
+        queue.sync {
             if self.logEnabled {
                 #if DEBUG_LOGGING
                     print("\(entity): \(description)")
