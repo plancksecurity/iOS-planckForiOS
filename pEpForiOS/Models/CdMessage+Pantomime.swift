@@ -352,6 +352,13 @@ extension CdMessage {
             addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail, level: 0)
         }
 
+        if mail.pEpRating != PEPUtil.pEpRatingNone && messageUpdate.rfc822 {
+            // This is a contradiction in itself. At least make sure this will be interpreted
+            // as update.
+            Log.warn(component: #function, content: "rfc2822 update for already decrypted message")
+            mail.serialNumber += 1
+        }
+
         Record.saveAndWait()
         if mail.pEpRating != PEPUtil.pEpRatingNone,
             let msg = mail.message() {
