@@ -98,7 +98,6 @@
 		436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */; };
 		436F8E101D367039007E9829 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E0F1D367039007E9829 /* StringExtensions.swift */; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
-		43701BF51D92B6B4007D63B2 /* LoadUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43701BF41D92B6B4007D63B2 /* LoadUITest.swift */; };
 		4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4374320A1CFC49B1000F8D35 /* TestUtil.swift */; };
 		437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437671471D8FF2A5004DD205 /* DeleteFolderOperation.swift */; };
 		4377D9341DB7EB13003432BB /* MessageModel.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 43BB867E1DB4C3BC00980267 /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -183,7 +182,6 @@
 		A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */; };
 		A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */; };
 		A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */; };
-		A1950C6B1D928A9700A7C865 /* ChooseAttachmentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1950C6A1D928A9700A7C865 /* ChooseAttachmentTest.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
 		A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */; };
 		A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */; };
@@ -394,7 +392,6 @@
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		436F8E0F1D367039007E9829 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
-		43701BF41D92B6B4007D63B2 /* LoadUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadUITest.swift; sourceTree = "<group>"; };
 		4374320A1CFC49B1000F8D35 /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
 		437671471D8FF2A5004DD205 /* DeleteFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteFolderOperation.swift; sourceTree = "<group>"; };
 		43800D8D1D112A0800821E34 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
@@ -497,7 +494,6 @@
 		A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeLabelTableViewCell.swift; sourceTree = "<group>"; };
 		A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTexViewTableViewCell.swift; sourceTree = "<group>"; };
 		A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeViewController.swift; sourceTree = "<group>"; };
-		A1950C6A1D928A9700A7C865 /* ChooseAttachmentTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseAttachmentTest.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailSecurityTableViewCell.swift; sourceTree = "<group>"; };
 		A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailExplantionSecurityTableViewCell.swift; sourceTree = "<group>"; };
@@ -800,8 +796,6 @@
 				430A6E531DFB08CE006273A5 /* UITestData.swift */,
 				43980E4B1CBD0BCA00A7FC3C /* Info.plist */,
 				43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */,
-				A1950C6A1D928A9700A7C865 /* ChooseAttachmentTest.swift */,
-				43701BF41D92B6B4007D63B2 /* LoadUITest.swift */,
 			);
 			path = pEpForiOSUITests;
 			sourceTree = "<group>";
@@ -1426,8 +1420,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */,
-				43701BF51D92B6B4007D63B2 /* LoadUITest.swift in Sources */,
-				A1950C6B1D928A9700A7C865 /* ChooseAttachmentTest.swift in Sources */,
 				430A6E541DFB08CE006273A5 /* UITestData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
