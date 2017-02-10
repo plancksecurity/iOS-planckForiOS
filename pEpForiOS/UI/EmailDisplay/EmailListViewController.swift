@@ -378,7 +378,12 @@ extension EmailListViewController: SegueHandlerType {
             if let msg = messageFolder as? Message {
                 if msg.isOriginal {
                     // new message has arrived
-                    tableView.reloadData()
+                    if let index = folder.indexOf(message: msg) {
+                        let ip = IndexPath(row: index, section: 0)
+                        tableView.insertRows(at: [ip], with: .automatic)
+                    } else {
+                        tableView.reloadData()
+                    }
                 } else if msg.isGhost {
                     if let cell = cellsByMessageID.object(forKey: msg.uuid as NSString) {
                         if let ip = cell.indexPath {
@@ -409,7 +414,7 @@ extension EmailListViewController: MessageFolderDelegate {
                 Log.info(component: #function, content: "flag changes?")
             }
         }
-        GCD.onMain {
+        GCD.onMainWait {
             self.didChangeInternal(messageFolder: messageFolder)
         }
     }
