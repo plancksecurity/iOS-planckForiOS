@@ -343,6 +343,8 @@ class ComposeTableViewController: UITableViewController {
                 updateInitialContent(messageBodyCell: mc)
             } else if let fm = cell.fieldModel, fm.type == .subject {
                 updateInitialContent(composeCell: cell)
+            } else if let ac = cell as? AccountCell {
+                self.origin = ac.accounts[0].user
             }
         }
 
@@ -450,8 +452,8 @@ extension ComposeTableViewController: ComposeCellDelegate {
             destiny += bcc
         }
         if let from = origin {
-            _ = PEPUtil.outgoingMessageColor(from: from, to: destiny)
-            //change color
+            showPepRating(peprating:
+                PEPUtil.outgoingMessageColor(from: from, to: destiny))
         }
     }
 
