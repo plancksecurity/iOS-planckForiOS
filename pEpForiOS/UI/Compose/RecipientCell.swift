@@ -30,6 +30,8 @@ class RecipientCell: ComposeCell {
         
         textView.insertImage(identity, true)
         textView.removePlainText()
+        //change to remove de !
+        delegate?.haveToUpdateColor(newIdentity: identities, type: super.fieldModel!)
     }
     
     fileprivate func removeRecepients() {
@@ -123,7 +125,7 @@ extension RecipientCell {
         
         addButton.isHidden = cTextview.text.isEmpty
         delegate?.textDidEndEditing(at: index, textView: cTextview)
-        delegate?.haveToUpdateColor(newIdentity: identities)
+        delegate?.haveToUpdateColor(newIdentity: identities, type: super.fieldModel!)
     }
     
 }

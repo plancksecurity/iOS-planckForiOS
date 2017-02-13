@@ -15,15 +15,13 @@ public protocol CellProtocol {
     weak var textView: ComposeTextView! { get set }
 }
 
-
 public protocol ComposeCellDelegate: class {
-    
     func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView)
     func textdidChange(at indexPath: IndexPath, textView: ComposeTextView)
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView)
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView)
-    func haveToUpdateColor(newIdentity: [Identity])
-    func fromAccountChanged(newIdentity: Identity)
+    func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel)
+    func fromAccountChanged(newIdentity: Identity, type: ComposeFieldModel)
 }
 
 public protocol RecipientCellDelegate: ComposeCellDelegate {

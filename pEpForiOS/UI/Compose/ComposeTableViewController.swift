@@ -47,6 +47,11 @@ class ComposeTableViewController: UITableViewController {
 
     let mimeTypeController = MimeTypeUtil()
 
+    var origin : Identity?
+    var destinyTo : [Identity]?
+    var destinyCc : [Identity]?
+    var destinyBcc : [Identity]?
+
 
     // MARK: - Lifecycle
 
@@ -414,13 +419,29 @@ class ComposeTableViewController: UITableViewController {
 
 extension ComposeTableViewController: ComposeCellDelegate {
 
-    public func fromAccountChanged(newIdentity: Identity) {
-        //
+    public func fromAccountChanged(newIdentity: Identity, type: ComposeFieldModel) {
+        origin = newIdentity
+        if let from = origin, let to = destinyTo, let cc = destinyCc, let bcc = destinyBcc {
+            let destiny = to + cc + bcc
+            PEPUtil.outgoingMessageColor(from: from, to: destiny)
+        }
     }
 
-
-    public func haveToUpdateColor(newIdentity: [Identity]) {
-        //PEPUtil.outgoingMessageColor(from: , to: newIdentity)
+    public func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel) {
+        switch type.type {
+        case .to:
+            destinyTo = newIdentity
+        case .cc:
+            destinyCc = newIdentity
+        case .bcc:
+            destinyBcc = newIdentity
+        default:
+            break
+        }
+        if let from = origin, let to = destinyTo, let cc = destinyCc, let bcc = destinyBcc {
+            let destiny = to + cc + bcc
+            PEPUtil.outgoingMessageColor(from: from, to: destiny)
+        }
     }
 
     func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {}
