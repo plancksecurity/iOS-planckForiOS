@@ -421,10 +421,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
 
     public func fromAccountChanged(newIdentity: Identity, type: ComposeFieldModel) {
         origin = newIdentity
-        if let from = origin, let to = destinyTo, let cc = destinyCc, let bcc = destinyBcc {
-            let destiny = to + cc + bcc
-            PEPUtil.outgoingMessageColor(from: from, to: destiny)
-        }
+        calculateComposeColor()
     }
 
     public func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel) {
@@ -438,9 +435,23 @@ extension ComposeTableViewController: ComposeCellDelegate {
         default:
             break
         }
-        if let from = origin, let to = destinyTo, let cc = destinyCc, let bcc = destinyBcc {
-            let destiny = to + cc + bcc
-            PEPUtil.outgoingMessageColor(from: from, to: destiny)
+        calculateComposeColor()
+    }
+
+    func calculateComposeColor() {
+        var destiny = [Identity]()
+        if let to = destinyTo {
+            destiny += to
+        }
+        if let cc = destinyCc {
+            destiny += cc
+        }
+        if let bcc = destinyBcc {
+            destiny += bcc
+        }
+        if let from = origin, (destiny.count > 0) {
+            _ = PEPUtil.outgoingMessageColor(from: from, to: destiny)
+            //change color
         }
     }
 
