@@ -223,7 +223,8 @@ class NetworkServiceTests: XCTestCase {
 
         // Will the sent folder be synced on next sync?
         let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
-        var fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
+        var fis = networkService.currentWorker?.determineInterestingFolders(
+            accountInfo: accountInfo) ?? []
         XCTAssertEqual(fis.count, 1) // still only inbox
 
         var haveSentFolder = false
@@ -239,7 +240,8 @@ class NetworkServiceTests: XCTestCase {
         Record.saveAndWait()
 
         // Will the sent folder be synced on next sync?
-        fis = networkService.determineInterestingFolders(accountInfo: accountInfo)
+        fis = networkService.currentWorker?.determineInterestingFolders(
+            accountInfo: accountInfo) ?? []
         XCTAssertGreaterThan(fis.count, 1)
 
         for f in fis {
@@ -403,6 +405,7 @@ class NetworkServiceTests: XCTestCase {
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
         networkService.networkServiceDelegate = del
+        networkService.start()
 
         let expAccountVerified = expectation(description: "expAccountVerified")
         let sendLayerDelegate = SendLayerObserver(expAccountVerified: expAccountVerified)
@@ -508,6 +511,7 @@ class NetworkServiceTests: XCTestCase {
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
         networkService.networkServiceDelegate = del
+        networkService.start()
 
         CdAccount.sendLayer = networkService
 

@@ -10,12 +10,12 @@ import CoreData
 
 import MessageModel
 
-public struct FolderInfo {
-    let name: String
-    let separator: String?
-}
-
-class StoreFolderOperation: ConcurrentBaseOperation {
+open class StoreFolderOperation: ConcurrentBaseOperation {
+    public struct FolderInfo {
+        let name: String
+        let separator: String?
+    }
+    
     let folderInfo: FolderInfo
     let connectInfo: EmailConnectInfo
 
@@ -26,7 +26,7 @@ class StoreFolderOperation: ConcurrentBaseOperation {
         Log.info(component: comp, content: "init \(folderInfo.name)")
     }
 
-    override func main() {
+    override open func main() {
         Log.verbose(component: comp, content: "main \(folderInfo.name)")
         let privateMOC = Record.Context.default
         privateMOC.perform({

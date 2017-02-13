@@ -12,6 +12,7 @@ import CoreData
  Used for building a line of operations for synching an account.
  */
 public struct AccountConnectInfo {
+    public let needsVerification: Bool
     public let accountID: NSManagedObjectID
     public let imapConnectInfo: EmailConnectInfo?
     public let smtpConnectInfo: EmailConnectInfo?
@@ -19,6 +20,7 @@ public struct AccountConnectInfo {
 
 extension AccountConnectInfo {
     public init(accountID: NSManagedObjectID) {
+        self.needsVerification = false
         self.accountID = accountID
         self.imapConnectInfo = nil
         self.smtpConnectInfo = nil

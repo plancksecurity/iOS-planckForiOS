@@ -194,7 +194,8 @@ extension FetchFoldersOperation: ImapSyncDelegate {
         }
 
         let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey] as? String
-        let folderInfo = FolderInfo(name: folderName, separator: folderSeparator)
+        let folderInfo = StoreFolderOperation.FolderInfo(
+            name: folderName, separator: folderSeparator)
         let op = StoreFolderOperation(connectInfo: self.imapSyncData.connectInfo,
                                       folderInfo: folderInfo)
         backgroundQueue.addOperation(op)
