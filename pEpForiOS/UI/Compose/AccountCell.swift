@@ -28,9 +28,10 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
             let selectedAccount = accounts.first
             account = selectedAccount?.user.address
             textView.text = account
+            //remove the !
             if let user = selectedAccount?.user {
-                delegate?.fromAccountChanged(
-                    newIdentity: user, type: super.fieldModel!)
+                delegate?.haveToUpdateColor(
+                    newIdentity: [user], type: super.fieldModel!)
             }
         }
     }
@@ -75,6 +76,6 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         textView.text = accounts[row].user.address
         let id = accounts[row].user
-        delegate?.fromAccountChanged(newIdentity: id, type: super.fieldModel!)
+        delegate?.haveToUpdateColor(newIdentity: [id], type: super.fieldModel!)
     }
 }

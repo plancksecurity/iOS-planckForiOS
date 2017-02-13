@@ -434,6 +434,8 @@ extension ComposeTableViewController: ComposeCellDelegate {
             destinyCc = newIdentity
         case .bcc:
             destinyBcc = newIdentity
+        case .from:
+            origin = newIdentity.last
         default:
             break
         }
