@@ -449,7 +449,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
         if let bcc = destinyBcc {
             destiny += bcc
         }
-        if let from = origin, (destiny.count > 0) {
+        if let from = origin {
             _ = PEPUtil.outgoingMessageColor(from: from, to: destiny)
             //change color
         }
