@@ -120,18 +120,6 @@ class EmailListViewController: UITableViewController {
 
     // MARK: - UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let _ = tableView.cellForRow(at: indexPath) as! EmailListViewCell
-
-        if let fol = config?.folder {
-            if fol.folderType == .drafts {
-                //performSegue(withIdentifier: .segueCompose, sender: cell)
-                return
-            }
-        }
-        //performSegue(withIdentifier: .segueShowEmail, sender: cell)
-    }
-
     override func tableView(_ tableView: UITableView, editActionsForRowAt
         indexPath: IndexPath)-> [UITableViewRowAction]? {
 
