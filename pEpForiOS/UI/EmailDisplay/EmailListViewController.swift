@@ -385,15 +385,10 @@ extension EmailListViewController: SegueHandlerType {
                         tableView.reloadData()
                     }
                 } else if msg.isGhost {
-                    var found = false
                     if let cell = cellsByMessageID.object(forKey: msg.uuid as NSString) {
                         if let ip = tableView.indexPath(for: cell) {
-                            found = true
                             tableView.deleteRows(at: [ip], with: .automatic)
                         }
-                    }
-                    if !found {
-                        tableView.reloadData()
                     }
                 } else {
                     // other flags than delete must have been changed
