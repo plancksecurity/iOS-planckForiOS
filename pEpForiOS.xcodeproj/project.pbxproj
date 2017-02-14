@@ -68,8 +68,6 @@
 		432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432198E71DF6B51B00318A74 /* LoginImapOperation.swift */; };
 		432198ED1DF6B66800318A74 /* SharedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432198EC1DF6B66800318A74 /* SharedObjects.swift */; };
 		43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */; };
-		432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */; };
-		432722251D33F2FD009EC395 /* TrustWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432722231D33F2FD009EC395 /* TrustWordsViewController.swift */; };
 		432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */; };
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
 		433019E61E01A71300788B89 /* PeriodicTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433019E51E01A71300788B89 /* PeriodicTask.swift */; };
@@ -179,13 +177,7 @@
 		8B91C3851E2D04450087BBB5 /* FingerprintTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B91C3821E2D04450087BBB5 /* FingerprintTableViewController.swift */; };
 		8B91C3871E2D04540087BBB5 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B91C3861E2D04540087BBB5 /* RoundedButton.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
-		A13D9F611D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */; };
-		A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */; };
-		A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */; };
-		A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
-		A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */; };
-		A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */; };
 		B7208EB01E437C1C00B08B22 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7208EAF1E437C1C00B08B22 /* LogViewController.swift */; };
 		B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */; };
 		B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */; };
@@ -363,8 +355,6 @@
 		432198E71DF6B51B00318A74 /* LoginImapOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperation.swift; sourceTree = "<group>"; };
 		432198EC1DF6B66800318A74 /* SharedObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedObjects.swift; sourceTree = "<group>"; };
 		43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperation.swift; sourceTree = "<group>"; };
-		432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewCell.swift; sourceTree = "<group>"; };
-		432722231D33F2FD009EC395 /* TrustWordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustWordsViewController.swift; sourceTree = "<group>"; };
 		432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePantomimeTests.swift; sourceTree = "<group>"; };
 		432F7D601D2102F10094F097 /* PEPSessionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionTest.swift; sourceTree = "<group>"; };
 		433019E51E01A71300788B89 /* PeriodicTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodicTask.swift; sourceTree = "<group>"; };
@@ -492,13 +482,7 @@
 		8B91C3811E2D04450087BBB5 /* TrustwordsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustwordsTableViewController.swift; sourceTree = "<group>"; };
 		8B91C3821E2D04450087BBB5 /* FingerprintTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FingerprintTableViewController.swift; sourceTree = "<group>"; };
 		8B91C3861E2D04540087BBB5 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
-		A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeButtonTableViewCell.swift; sourceTree = "<group>"; };
-		A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeLabelTableViewCell.swift; sourceTree = "<group>"; };
-		A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTexViewTableViewCell.swift; sourceTree = "<group>"; };
-		A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeViewController.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailSecurityTableViewCell.swift; sourceTree = "<group>"; };
-		A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelMailExplantionSecurityTableViewCell.swift; sourceTree = "<group>"; };
 		B7208EAF1E437C1C00B08B22 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypeUtil.swift; sourceTree = "<group>"; };
@@ -681,21 +665,6 @@
 			);
 			name = AccountsSettings;
 			path = AccountsAndFolders;
-			sourceTree = "<group>";
-		};
-		4327221F1D33F2CB009EC395 /* Trustwords */ = {
-			isa = PBXGroup;
-			children = (
-				432722221D33F2FD009EC395 /* TrustWordsViewCell.swift */,
-				432722231D33F2FD009EC395 /* TrustWordsViewController.swift */,
-				A1BF16591D351518005B98F0 /* LabelMailSecurityTableViewCell.swift */,
-				A1D1C24B1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift */,
-				A15448C61D40D5CF0035D18F /* HandshakeViewController.swift */,
-				A14E10B31D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift */,
-				A14E10B51D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift */,
-				A13D9F601D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift */,
-			);
-			path = Trustwords;
 			sourceTree = "<group>";
 		};
 		437432061CFC49A4000F8D35 /* Util */ = {
@@ -946,7 +915,6 @@
 				43ED53621CC77F95006AB156 /* EmailDisplay */,
 				43001F761D9185E600306BF0 /* TableViews */,
 				431B0B961D6734BF0082D0DB /* AccountsSettings */,
-				4327221F1D33F2CB009EC395 /* Trustwords */,
 				431AE5D11D2EC0A700F609D3 /* Compose */,
 				43ED53651CC77F95006AB156 /* ImapSetup */,
 			);
@@ -1286,7 +1254,6 @@
 				436C232D1E02A2D900071430 /* KickOffMySelfProtocol.swift in Sources */,
 				220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */,
 				4380F7DB1D1BFB3100326F62 /* KeyboardObserver.m in Sources */,
-				A15448C71D40D5CF0035D18F /* HandshakeViewController.swift in Sources */,
 				222B35561DF962D7007A1F82 /* ComposeHelpers.swift in Sources */,
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
 				43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */,
@@ -1304,14 +1271,12 @@
 				436F8E101D367039007E9829 /* StringExtensions.swift in Sources */,
 				43DB81331E2A56BE00A20902 /* AppendDraftMailsOperation.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
-				A14E10B61D4BA043004DC1C9 /* HandshakeTexViewTableViewCell.swift in Sources */,
 				431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */,
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
 				43A26FBA1E0408FB00AF0B84 /* ErrorProtocol.swift in Sources */,
 				4339477B1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift in Sources */,
 				43122B3C1DF5B75000610253 /* NetworkService.swift in Sources */,
-				432722241D33F2FD009EC395 /* TrustWordsViewCell.swift in Sources */,
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */,
 				431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */,
 				B7208EB01E437C1C00B08B22 /* LogViewController.swift in Sources */,
@@ -1327,7 +1292,6 @@
 				4380F7EF1D1C1C7300326F62 /* PEPSession+Extensions.swift in Sources */,
 				8B69897A1E3254DA00545CDB /* HandshakeTableViewCell.swift in Sources */,
 				222B35861DF97A44007A1F82 /* ComposeDataSource.swift in Sources */,
-				A14E10B41D4B8E8B004DC1C9 /* HandshakeLabelTableViewCell.swift in Sources */,
 				4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */,
 				43CE63CF1DE8845E00FAC505 /* CdAttachment+pEp.swift in Sources */,
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
@@ -1340,7 +1304,6 @@
 				222B35651DF96A9C007A1F82 /* ComposeCellProtocols.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
-				432722251D33F2FD009EC395 /* TrustWordsViewController.swift in Sources */,
 				43122B191DF5B48B00610253 /* EmailService.swift in Sources */,
 				222B357E1DF97675007A1F82 /* SuggestTableView.swift in Sources */,
 				431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */,
@@ -1361,14 +1324,12 @@
 				436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */,
 				43800D941D112A0800821E34 /* TFHppleElement.m in Sources */,
 				43800D951D112A0800821E34 /* XPathQuery.m in Sources */,
-				A13D9F611D4F600900EDBFD9 /* HandshakeButtonTableViewCell.swift in Sources */,
 				431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */,
 				8B91C3841E2D04450087BBB5 /* TrustwordsTableViewController.swift in Sources */,
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,
-				A1BF165A1D351518005B98F0 /* LabelMailSecurityTableViewCell.swift in Sources */,
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
 				431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */,
@@ -1385,7 +1346,6 @@
 				43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
-				A1D1C24C1D37A8B9004786AF /* LabelMailExplantionSecurityTableViewCell.swift in Sources */,
 				4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				8B77BD691E0C1D930060F11F /* AccountSettingsTableViewController.swift in Sources */,

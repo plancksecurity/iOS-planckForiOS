@@ -213,7 +213,6 @@ extension EmailViewController: SegueHandlerType {
         case segueReplyFrom
         case segueReplyAllForm
         case segueForward
-        case segueTrustWords1
         case seguePrevious
         case segueNext
         case segueTrustwords
@@ -244,11 +243,6 @@ extension EmailViewController: SegueHandlerType {
             destination?.composeMode = .forward
             destination?.appConfig = appConfig
             destination?.originalMessage = message
-            break
-        case .segueTrustWords1:
-            let destination = segue.destination as? TrustWordsViewController
-            destination?.message = message
-            destination?.appConfig = appConfig
             break
         case .seguePrevious:
             let destination = segue.destination as! EmailViewController
