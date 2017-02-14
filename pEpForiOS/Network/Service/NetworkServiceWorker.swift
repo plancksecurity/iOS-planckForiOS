@@ -76,6 +76,7 @@ open class NetworkServiceWorker {
      Start endlessly synchronizing in the background.
      */
     public func start() {
+        Log.info(component: #function, content: "\(String(describing: self)) starting")
         self.process()
     }
 
@@ -83,20 +84,19 @@ open class NetworkServiceWorker {
      Cancel all background operations, finish main loop.
      */
     public func cancel(networkService: NetworkService) {
-        workerQueue.async {
-            let myComp = "cancelOp"
-            Log.info(component: myComp, content: "cancel()")
+        let myComp = #function
 
+        self.cancelled = true
+        self.backgroundQueue.cancelAllOperations()
+        Log.info(component: myComp, content: "\(String(describing: self)): all operations cancelled")
+
+        workerQueue.async {
             let observer = ObjectObserver(
                 backgroundQueue: self.backgroundQueue,
                 operationCountKeyPath: self.operationCountKeyPath, myComp: myComp)
             self.backgroundQueue.addObserver(observer, forKeyPath: self.operationCountKeyPath,
                                              options: [.initial, .new],
                                              context: nil)
-
-            self.cancelled = true
-            self.backgroundQueue.cancelAllOperations()
-            Log.info(component: myComp, content: "all operations cancelled")
 
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
             self.serviceConfig.networkServiceDelegate?.didCancel(service: networkService)
@@ -491,6 +491,9 @@ open class NetworkServiceWorker {
 
     func scheduleOperationLineInternal(
         operationLine: OperationLine, completionBlock: (() -> Void)?) {
+        if cancelled {
+            return
+        }
         let bgID = serviceConfig.backgrounder?.beginBackgroundTask()
         operationLine.finalOperation.completionBlock = { [weak self, weak operationLine] in
             operationLine?.finalOperation.completionBlock = nil
@@ -535,7 +538,7 @@ open class NetworkServiceWorker {
                     }
                 })
             } else {
-                if repeatProcess {
+                if repeatProcess && !cancelled {
                     workerQueue.asyncAfter(deadline: DispatchTime.now() +
                         self.serviceConfig.sleepTimeInSeconds) {
                         self.processAllInternal()
