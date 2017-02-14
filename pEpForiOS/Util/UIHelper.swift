@@ -193,4 +193,22 @@ class UIHelper {
         alertController.addAction(action)
         controller.present(alertController, animated: true, completion: nil)
     }
+
+    static func showPepRating(navBar: UINavigationController?, peprating: PEP_rating) {
+        // color
+        if let color = peprating.uiColor() {
+            navBar?.navigationBar.barTintColor = color
+            navBar?.toolbar.barTintColor = color
+        } else {
+            //setDefaultBarColors()
+        }
+
+        // icon
+        if let img = peprating.pepColor().statusIcon() {
+            navBar?.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                image: img, style: .plain, target: nil, action: nil)
+        } else {
+            navBar?.navigationItem.rightBarButtonItem = nil
+        }
+    }
 }

@@ -64,7 +64,7 @@ class ComposeTableViewController: UITableViewController {
 
     // MARK: - Private Methods
 
-    func showPepRating(peprating: PEP_rating) {
+    /*func showPepRating(peprating: PEP_rating) {
         // color
         if let color = peprating.uiColor() {
             navigationController?.navigationBar.barTintColor = color
@@ -80,7 +80,7 @@ class ComposeTableViewController: UITableViewController {
         } else {
             navigationItem.rightBarButtonItem = nil
         }
-    }
+    }*/
 
     /**
      Updates the given `RecipientCell` with data from the `originalMessage`,
@@ -454,8 +454,9 @@ extension ComposeTableViewController: ComposeCellDelegate {
             destiny += bcc
         }
         if let from = origin {
-            showPepRating(peprating:
-                PEPUtil.outgoingMessageColor(from: from, to: destiny))
+            UIHelper.showPepRating(navBar: self.navigationController,
+                                   peprating:PEPUtil.outgoingMessageColor(
+                                    from: from, to: destiny))
         }
     }
 
