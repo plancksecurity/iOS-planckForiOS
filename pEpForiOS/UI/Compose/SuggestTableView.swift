@@ -11,7 +11,7 @@ import MessageModel
 
 open class SuggestTableView: UITableView, UITableViewDataSource {
 
-    var identities = [Identity?]()
+    var identities = [Identity]()
     
     open override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,11 +23,12 @@ open class SuggestTableView: UITableView, UITableViewDataSource {
         return identities.count
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = dequeueReusableCell(withIdentifier: "contactCell", for: indexPath) as! ContactCell
+    public func tableView(
+        _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = dequeueReusableCell(
+            withIdentifier: "contactCell", for: indexPath) as! ContactCell
         
-        guard let identity = identities[indexPath.row] else { return cell }
-        cell.updateCell(identity)
+        cell.updateCell(identities[indexPath.row])
         
         return cell
     }
@@ -58,7 +59,6 @@ open class SuggestTableView: UITableView, UITableViewDataSource {
     
     public func didSelectIdentity(index: IndexPath) -> Identity?  {
         hide()
-        guard let identity = identities[index.row] else { return nil }
-        return identity
+        return identities[index.row]
     }
 }
