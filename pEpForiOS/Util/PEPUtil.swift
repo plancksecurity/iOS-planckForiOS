@@ -645,28 +645,26 @@ open class PEPUtil {
         return PEP_rating(Int32(theInt))
     }
 
-    open static func pEpTitle(pEpRating: PEP_rating) -> String? {
-        if let (title, _, _) = PEPUtil.pEpRatingTranslations[pEpRating] {
-            return title
+    open static func pEpRatingTranslation(pEpRating: PEP_rating?) -> (String, String, String) {
+        let defResult = ("", "", "")
+        if let rating = pEpRating {
+            return PEPUtil.pEpRatingTranslations[rating] ??
+                PEPUtil.pEpRatingTranslations[PEP_rating_undefined] ?? defResult
+        } else {
+            return defResult
         }
-        Log.warn(component: comp, content: "No privacy title for color rating \(pEpRating)")
-        return nil
     }
 
-    open static func pEpExplanation(pEpRating: PEP_rating) -> String? {
-        if let (_, explanation, _) = PEPUtil.pEpRatingTranslations[pEpRating] {
-            return explanation
-        }
-        Log.warn(component: comp, content: "No privacy explanation for color rating \(pEpRating)")
-        return nil
+    open static func pEpTitle(pEpRating: PEP_rating?) -> String {
+        return pEpRatingTranslation(pEpRating: pEpRating).0
     }
 
-    open static func pEpSuggestion(pEpRating: PEP_rating) -> String? {
-        if let (_, _, suggestion) = pEpRatingTranslations[pEpRating] {
-            return suggestion
-        }
-        Log.warn(component: comp, content: "No privacy suggestion for color rating \(pEpRating)")
-        return nil
+    open static func pEpExplanation(pEpRating: PEP_rating?) -> String {
+        return pEpRatingTranslation(pEpRating: pEpRating).1
+    }
+
+    open static func pEpSuggestion(pEpRating: PEP_rating?) -> String {
+        return pEpRatingTranslation(pEpRating: pEpRating).2
     }
 
     open static func trustwords(identity1: PEPIdentity, identity2: PEPIdentity,

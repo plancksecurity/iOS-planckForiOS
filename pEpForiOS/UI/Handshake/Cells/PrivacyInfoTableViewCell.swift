@@ -8,21 +8,24 @@
 
 import UIKit
 
+import MessageModel
+
 class PrivacyInfoTableViewCell: UITableViewCell {
-    
     static let reuseIdentifier = "pivacyInfoCell"
     
     @IBOutlet weak var infoTitleLabel: UILabel!
     @IBOutlet weak var infoTextLabel: UILabel!
     
-    func showExplanation() {
-        infoTitleLabel.text = "Explanation.title".localized
-        infoTextLabel.text = "Explanation.text".localized
+    lazy var session = PEPSession()
+
+    func showExplanation(message: Message) {
+        infoTitleLabel.text = PEPUtil.pEpTitle(pEpRating: message.pEpRating())
+        infoTextLabel.text = PEPUtil.pEpExplanation(pEpRating: message.pEpRating())
     }
     
-    func showSuggestion() {
-        infoTitleLabel.text = "Suggestion.title".localized
-        infoTextLabel.text = "Suggestion.text".localized
+    func showSuggestion(message: Message) {
+        infoTitleLabel.text = "Suggestion".localized
+        infoTextLabel.text = PEPUtil.pEpSuggestion(pEpRating: message.pEpRating())
     }
     
 }

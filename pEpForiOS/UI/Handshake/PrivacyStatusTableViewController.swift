@@ -10,7 +10,6 @@ import UIKit
 import MessageModel
 
 class PrivacyStatusTableViewController: UITableViewController {
-    
     var message: Message!
     var appConfig: AppConfig!
     var allRecipients: [Identity] = []
@@ -29,7 +28,8 @@ class PrivacyStatusTableViewController: UITableViewController {
 
     // MARK: - UITableViewDataSource
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(
+        _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
@@ -44,20 +44,22 @@ class PrivacyStatusTableViewController: UITableViewController {
         return allRecipients.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(
+        _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let infoCell = tableView.dequeueReusableCell(withIdentifier: PrivacyInfoTableViewCell.reuseIdentifier,
-                                                         for: indexPath) as! PrivacyInfoTableViewCell
+            let infoCell = tableView.dequeueReusableCell(
+                withIdentifier: PrivacyInfoTableViewCell.reuseIdentifier,
+                for: indexPath) as! PrivacyInfoTableViewCell
             if indexPath.row == 0 {
-                infoCell.showExplanation()
-            }
-            else {
-                infoCell.showSuggestion()
+                infoCell.showExplanation(message: message)
+            } else {
+                infoCell.showSuggestion(message: message)
             }
             return infoCell
         }
-        let handshakeCell = tableView.dequeueReusableCell(withIdentifier: HandshakeTableViewCell.reuseIdentifier,
-                                                          for: indexPath) as! HandshakeTableViewCell
+        let handshakeCell = tableView.dequeueReusableCell(
+            withIdentifier: HandshakeTableViewCell.reuseIdentifier,
+            for: indexPath) as! HandshakeTableViewCell
         handshakeCell.updateCell(allRecipients, indexPath: indexPath)
         return handshakeCell
     }
