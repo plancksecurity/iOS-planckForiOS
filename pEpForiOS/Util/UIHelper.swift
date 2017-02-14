@@ -194,13 +194,16 @@ class UIHelper {
         controller.present(alertController, animated: true, completion: nil)
     }
 
-    static func showPepRating(navBar: UINavigationController?, peprating: PEP_rating) {
+    static func showPepRating(navBar: UINavigationController?, peprating: PEP_rating,
+                              defaultToolBarColor: UIColor?,
+                              defaultNavigationBarColor: UIColor?) {
         // color
         if let color = peprating.uiColor() {
             navBar?.navigationBar.barTintColor = color
             navBar?.toolbar.barTintColor = color
         } else {
-            //setDefaultBarColors()
+            navBar?.navigationBar.barTintColor = defaultNavigationBarColor
+            navBar?.toolbar.barTintColor = defaultToolBarColor
         }
 
         // icon

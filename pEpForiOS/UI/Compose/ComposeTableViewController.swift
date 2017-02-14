@@ -52,6 +52,9 @@ class ComposeTableViewController: UITableViewController {
     var destinyCc : [Identity]?
     var destinyBcc : [Identity]?
 
+    var defaultToolbarColor: UIColor?
+    var defaultNavigationColor: UIColor?
+
 
     // MARK: - Lifecycle
 
@@ -62,25 +65,23 @@ class ComposeTableViewController: UITableViewController {
         prepareFields()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setDefaultBarColors()
+
+    }
+
     // MARK: - Private Methods
 
-    /*func showPepRating(peprating: PEP_rating) {
-        // color
-        if let color = peprating.uiColor() {
-            navigationController?.navigationBar.barTintColor = color
-            navigationController?.toolbar.barTintColor = color
-        } else {
-            //setDefaultBarColors()
-        }
+    func storeDefaultBarColors() {
+        defaultNavigationColor = navigationController?.navigationBar.barTintColor
+        defaultToolbarColor = navigationController?.toolbar.barTintColor
+    }
 
-        // icon
-        if let img = peprating.pepColor().statusIcon() {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                image: img, style: .plain, target: nil, action: nil)
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
-    }*/
+    func setDefaultBarColors() {
+        navigationController?.navigationBar.barTintColor = defaultNavigationColor
+        navigationController?.toolbar.barTintColor = defaultToolbarColor
+    }
 
     /**
      Updates the given `RecipientCell` with data from the `originalMessage`,
@@ -420,12 +421,7 @@ class ComposeTableViewController: UITableViewController {
 // MARK: - Extensions
 
 extension ComposeTableViewController: ComposeCellDelegate {
-
-    public func fromAccountChanged(newIdentity: Identity, type: ComposeFieldModel) {
-        origin = newIdentity
-        calculateComposeColor()
-    }
-
+    
     public func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel) {
         switch type.type {
         case .to:
@@ -456,7 +452,9 @@ extension ComposeTableViewController: ComposeCellDelegate {
         if let from = origin {
             UIHelper.showPepRating(navBar: self.navigationController,
                                    peprating:PEPUtil.outgoingMessageColor(
-                                    from: from, to: destiny))
+                                    from: from, to: destiny),
+                                   defaultToolBarColor: defaultToolbarColor,
+                                   defaultNavigationBarColor: defaultNavigationColor)
         }
     }
 
