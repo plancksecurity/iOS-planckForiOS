@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lPr-gi-BrG">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lPr-gi-BrG">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -304,7 +304,7 @@
                                             </connections>
                                         </textView>
                                         <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8S-M4-JdW">
-                                            <rect key="frame" x="-5" y="40" width="376.5" height="140"/>
+                                            <rect key="frame" x="-5" y="40" width="377" height="140"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="prY-xp-1rI" id="VoP-0P-HiT"/>
@@ -1889,7 +1889,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aso-tc-Ukd">
-                                            <rect key="frame" x="-2.5" y="-2" width="372" height="191"/>
+                                            <rect key="frame" x="-2" y="-2" width="372" height="191"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
@@ -1967,28 +1967,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="Isc-la-8AH">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="p≡p – Security" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jhS-CJ-JVX">
-                                    <rect key="frame" x="8" y="0.0" width="367" height="55"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" red="1" green="0.7843137255" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstItem="jhS-CJ-JVX" firstAttribute="top" secondItem="Isc-la-8AH" secondAttribute="top" id="6Ue-9S-e0W"/>
-                                <constraint firstItem="jhS-CJ-JVX" firstAttribute="leading" secondItem="Isc-la-8AH" secondAttribute="leading" constant="8" id="Ke0-96-jkw"/>
-                                <constraint firstAttribute="bottom" secondItem="jhS-CJ-JVX" secondAttribute="bottom" id="UYN-TX-JXG"/>
-                                <constraint firstAttribute="trailing" secondItem="jhS-CJ-JVX" secondAttribute="trailing" id="qDJ-T0-XdS"/>
-                            </constraints>
-                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="pivacyInfoCell" rowHeight="69" id="ha6-xk-7Me" customClass="PrivacyInfoTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="83" width="375" height="69"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="69"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ha6-xk-7Me" id="INM-Xj-rcG">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
@@ -2033,7 +2014,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="handshakeCell" rowHeight="83" id="Sod-wD-E64" customClass="HandshakeTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="152" width="375" height="83"/>
+                                <rect key="frame" x="0.0" y="97" width="375" height="83"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sod-wD-E64" id="fC4-fR-aRH">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
@@ -2825,7 +2806,7 @@ APPLEPIE RESEARCH</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Na7-CM-lbe"/>
-        <segue reference="FBd-9l-9Iu"/>
         <segue reference="2fD-kL-Bvj"/>
+        <segue reference="Uv1-kK-r61"/>
     </inferredMetricsTieBreakers>
 </document>
