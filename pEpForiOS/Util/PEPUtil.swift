@@ -757,15 +757,8 @@ open class PEPUtil {
         ]
     }
 
-    public static func mySelfIdentity(_ message: Message) -> Identity? {
-        let allRecipients = Array(message.allIdentities)
-        let mySelfIdent = message.parent!.account!.user
-        for recipient in allRecipients {
-            if mySelfIdent.isMySelf == true && recipient.address == mySelfIdent.address {
-                return recipient
-            }
-        }
-        return nil
+    public static func mySelf(message: Message) -> Identity? {
+        return message.parent?.account?.user ?? nil
     }
 
     public static func systemLanguage() -> String {

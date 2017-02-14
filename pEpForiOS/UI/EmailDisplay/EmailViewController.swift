@@ -134,28 +134,24 @@ class EmailViewController: UITableViewController {
     }
     
     @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
-        let filtedredIdentities = filterIdentities(message: message)
+        let filtered = filterIdentities(message: message)
         
-        if filtedredIdentities.count == 1 {
-            partnerIdentity = filtedredIdentities.first
+        if filtered.count == 1 {
+            partnerIdentity = filtered.first
             performSegue(withIdentifier: .segueTrustwords, sender: self)
-        }
-        else if filtedredIdentities.count > 1 {
+        } else if filtered.count > 1 || filtered.count == 0 {
             performSegue(withIdentifier: .seguePrivacyStatus, sender: self)
         }
     }
     
     func filterIdentities(message: Message) -> [Identity] {
-        var allIdentities = Array(message.allIdentities)
-        let myselfIdentity = PEPUtil.mySelfIdentity(message)
-        for identity in allIdentities {
-            if identity.address == myselfIdentity?.address {
-               allIdentities.remove(at: allIdentities.index(of: identity)!)
-            }
+        let session = PEPSession()
+        let myselfIdentity = PEPUtil.mySelf(message: message)
+        return Array(message.allIdentities).filter {
+            return $0 != myselfIdentity &&
+                $0.pEpRating(session: session).rawValue == PEP_rating_reliable.rawValue
         }
-        return allIdentities
     }
-    
 }
 
 // MARK: TableView Delegate & Datasource
@@ -266,7 +262,7 @@ extension EmailViewController: SegueHandlerType {
             let destination = segue.destination as? TrustwordsTableViewController
             destination?.message = message
             destination?.appConfig = appConfig
-            destination?.myselfIdentity = PEPUtil.mySelfIdentity(message)
+            destination?.myselfIdentity = PEPUtil.mySelf(message: message)
             destination?.partnerIdentity = partnerIdentity
             break
         case .noSegue:
