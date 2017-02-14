@@ -30,8 +30,6 @@ class EmailListViewCell: UITableViewCell {
     
     let dateFormatter = UIHelper.dateFormatterEmailList()
 
-    var indexPath: IndexPath?
-
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.none
@@ -59,9 +57,7 @@ class EmailListViewCell: UITableViewCell {
         ratingImage.backgroundColor = nil
     }
 
-    func configureCell(indexPath: IndexPath, config: EmailListConfig?) -> MessageID? {
-        self.indexPath = indexPath
-
+    func configureCell(config: EmailListConfig?, indexPath: IndexPath) -> MessageID? {
         if let message = messageAt(indexPath: indexPath, config: config) {
             UIHelper.putString(message.from?.userName, toLabel: self.senderLabel)
             UIHelper.putString(message.shortMessage, toLabel: self.subjectLabel)

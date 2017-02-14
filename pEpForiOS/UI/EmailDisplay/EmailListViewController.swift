@@ -112,7 +112,7 @@ class EmailListViewController: UITableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
-        if let messageID = cell.configureCell(indexPath: indexPath, config: config) {
+        if let messageID = cell.configureCell(config: config, indexPath: indexPath) {
             cellsByMessageID.setObject(cell, forKey: messageID as NSString)
         }
         return cell
@@ -385,12 +385,15 @@ extension EmailListViewController: SegueHandlerType {
                         tableView.reloadData()
                     }
                 } else if msg.isGhost {
+                    var found = false
                     if let cell = cellsByMessageID.object(forKey: msg.uuid as NSString) {
-                        if let ip = cell.indexPath {
+                        if let ip = tableView.indexPath(for: cell) {
+                            found = true
                             tableView.deleteRows(at: [ip], with: .automatic)
-                        } else {
-                            tableView.reloadData()
                         }
+                    }
+                    if !found {
+                        tableView.reloadData()
                     }
                 } else {
                     // other flags than delete must have been changed
