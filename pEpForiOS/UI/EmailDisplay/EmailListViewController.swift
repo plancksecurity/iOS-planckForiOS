@@ -292,11 +292,6 @@ class EmailListViewController: UITableViewController {
 
     }
 
-    // MARK: - Actions
-    //    @IBAction func unwindToEmailList(for unwindSegue: UIStoryboardSegue) {
-    //
-    //    }
-
 }
 
 extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
@@ -326,16 +321,6 @@ extension EmailListViewController: SegueHandlerType {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
-        case .segueCompose:
-            //let destination = segue.destination as! ComposeTableViewController
-            // destination.appConfig = config.appConfig
-            //            if let draft = draftMessageToCompose {
-            //                draft.imapFlags?.seen = true
-            //
-            //                destination.originalMessage = draft
-            //                destination.composeMode = .draft
-            //            }
-            break
         case .segueReplyAll:
             if let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
@@ -367,7 +352,8 @@ extension EmailListViewController: SegueHandlerType {
                 destination.originalMessage = email
             }
             break
-        default: ()
+        case .segueAddNewAccount, .segueEditAccounts, .segueCompose, .noSegue:
+            break
         }
     }
 
