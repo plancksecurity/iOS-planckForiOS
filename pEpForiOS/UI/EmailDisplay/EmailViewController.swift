@@ -21,6 +21,7 @@ class EmailViewController: UITableViewController {
     var computedHeight: CGFloat = 0.0
     var defaultToolbarColor: UIColor?
     var defaultNavigationColor: UIColor?
+    lazy var session = PEPSession()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,22 +135,13 @@ class EmailViewController: UITableViewController {
     }
     
     @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
-        let filtered = filterIdentities(message: message)
+        let filtered = message.identitiesEligibleForHandshake(session: session)
         
         if filtered.count == 1 {
             partnerIdentity = filtered.first
             performSegue(withIdentifier: .segueTrustwords, sender: self)
         } else if filtered.count > 1 || filtered.count == 0 {
             performSegue(withIdentifier: .seguePrivacyStatus, sender: self)
-        }
-    }
-    
-    func filterIdentities(message: Message) -> [Identity] {
-        let session = PEPSession()
-        let myselfIdentity = PEPUtil.mySelf(message: message)
-        return Array(message.allIdentities).filter {
-            return $0 != myselfIdentity &&
-                $0.pEpRating(session: session).rawValue == PEP_rating_reliable.rawValue
         }
     }
 }

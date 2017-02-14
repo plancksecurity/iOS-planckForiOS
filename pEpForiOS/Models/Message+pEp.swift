@@ -16,4 +16,14 @@ extension Message {
     public func pEpRating() -> PEP_rating? {
         return PEPUtil.pEpRatingFromInt(pEpRatingInt)
     }
+
+    /**
+     - Returns: An array of identities you can make a handshake on.
+     */
+    public func identitiesEligibleForHandshake(session: PEPSession = PEPSession()) -> [Identity] {
+        let myselfIdentity = PEPUtil.mySelf(message: self)
+        return Array(allIdentities).filter {
+            return $0 != myselfIdentity && $0.canHandshakeOn(session: session)
+        }
+    }
 }

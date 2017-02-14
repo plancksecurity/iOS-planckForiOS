@@ -46,4 +46,9 @@ extension Identity {
     open func fingerPrint(session: PEPSession = PEPSession()) -> String? {
         return PEPUtil.fingerPrint(identity: self, session: session)
     }
+
+    public func canHandshakeOn(session: PEPSession = PEPSession()) -> Bool {
+        let rating = pEpRating(session: session)
+        return rating.rawValue >= PEP_rating_reliable.rawValue || rating == PEP_rating_mistrust
+    }
 }
