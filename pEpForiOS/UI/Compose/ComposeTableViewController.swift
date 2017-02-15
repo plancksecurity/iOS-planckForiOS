@@ -456,11 +456,19 @@ extension ComposeTableViewController: ComposeCellDelegate {
             destiny += bcc
         }
         if let from = origin {
-            UIHelper.showPepRating(navBar: self.navigationController,
-                                   peprating:PEPUtil.outgoingMessageColor(
-                                    from: from, to: destiny),
-                                   defaultToolBarColor: defaultToolbarColor,
-                                   defaultNavigationBarColor: defaultNavigationColor)
+            var rating : PEP_rating?
+            if let session = appConfig?.session {
+                rating = PEPUtil.outgoingMessageColor(from: from, to: destiny,
+                                                      session: session)
+            } else {
+                rating = PEPUtil.outgoingMessageColor(from: from, to: destiny)
+            }
+            if let rate = rating {
+                UIHelper.showPepRating(navBar: self.navigationController,
+                                       peprating: rate,
+                                       defaultToolBarColor: defaultToolbarColor,
+                                       defaultNavigationBarColor: defaultNavigationColor)
+            }
         }
     }
 

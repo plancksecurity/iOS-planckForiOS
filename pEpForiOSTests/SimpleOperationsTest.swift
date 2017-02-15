@@ -958,6 +958,15 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
+    func testOutgoingMessageColor() {
+        let identity = TestData().createWorkingAccount().user
+        self.measure {
+            for _ in [1...1000] {
+                let _ = PEPUtil.outgoingMessageColor(from: identity, to: [identity])
+            }
+        }
+    }
+
     func testOutgoingMailColorPerformanceWithoutMySelf() {
         let session = PEPSession.init()
         let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
