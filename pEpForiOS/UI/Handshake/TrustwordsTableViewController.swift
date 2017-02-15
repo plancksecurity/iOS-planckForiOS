@@ -11,8 +11,7 @@ import MessageModel
 import ServerConfig
 
 class TrustwordsTableViewController: UITableViewController {
-
-    @IBOutlet weak var fingerprintButton: RoundedButton!
+    @IBOutlet weak var fingerprintButton: UIButton!
     @IBOutlet weak var languagePicker: UIPickerView!
     @IBOutlet weak var languagePickerHeight: NSLayoutConstraint!
     @IBOutlet weak var trustwordsLanaguageLabel: UILabel!

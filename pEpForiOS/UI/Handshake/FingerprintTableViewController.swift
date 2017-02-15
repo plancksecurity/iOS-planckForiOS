@@ -15,7 +15,7 @@ class FingerprintTableViewController: UITableViewController {
     @IBOutlet weak var partnerFingerprintLabel: UILabel!
     @IBOutlet weak var mySelfNameLabel: UILabel!
     @IBOutlet weak var mySelfFingerprintLabel: UILabel!
-    @IBOutlet weak var trustwordsButton: RoundedButton!
+    @IBOutlet weak var trustwordsButton: UIButton!
 
     var message: Message!
     var appConfig: AppConfig!
