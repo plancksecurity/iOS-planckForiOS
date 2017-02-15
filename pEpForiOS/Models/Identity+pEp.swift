@@ -9,7 +9,18 @@
 import MessageModel
 
 extension Identity {
- 
+
+    open static func from(pEpIdentity: PEPIdentity) -> Identity? {
+        if let address = pEpIdentity[kPepAddress] as? String {
+            let id = Identity.create(address: address, userID: pEpIdentity[kPepUserID] as? String,
+                                     userName: pEpIdentity[kPepUsername] as? String)
+            id.isMySelf = (pEpIdentity[kPepIsMe] as? NSNumber)?.boolValue ?? false
+            id.commType = (pEpIdentity[kPepCommType] as? NSNumber)?.intValue
+            return id
+        }
+        return nil
+    }
+
     public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
         return PEPUtil.pEpRating(identity: self, session: session)
     }
