@@ -2032,27 +2032,14 @@
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F4e-So-Iob" customClass="RoundedButton" customModule="pEpForiOS" customModuleProvider="target">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F4e-So-Iob">
                                             <rect key="frame" x="247" y="18" width="120" height="40"/>
-                                            <color key="backgroundColor" red="1" green="0.7843137255" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="Pbm-b9-g9h"/>
                                                 <constraint firstAttribute="width" constant="120" id="VJb-f8-3Fo"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="HANDSHAKE" image="handshake-button-icon"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                    <color key="value" red="1" green="0.7843137255" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="borderHighlightedColor">
-                                                    <color key="value" red="1" green="0.7843137255" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="backgroundHighlightedColor">
-                                                    <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
+                                            <state key="normal" title="Handshake"/>
                                             <connections>
                                                 <action selector="handshakeButtonTapped:" destination="aYL-lZ-KDs" eventType="touchUpInside" id="eRe-49-F2H"/>
                                             </connections>
@@ -2800,7 +2787,6 @@ APPLEPIE RESEARCH</string>
         <image name="button-trustwords-icon" width="21" height="21"/>
         <image name="contact-icon" width="46" height="46"/>
         <image name="flag-tab-button-icon" width="19" height="22"/>
-        <image name="handshake-button-icon" width="34" height="24"/>
         <image name="trust-line-icon" width="113" height="20"/>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
