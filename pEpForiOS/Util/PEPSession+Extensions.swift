@@ -86,23 +86,6 @@ public extension PEPSession {
         _ session: PEPSession) -> Bool
 
     /**
-     - Returns: True if a mail from `from` to `contact` would be encrypted.
-     */
-    public func isEncryptedPEPIdentity(_ contact: PEPIdentity,
-                                      from: PEPIdentity) -> Bool {
-        let color = outgoingColor(from: from, to: contact)
-        return color.rawValue >= PEP_rating_reliable.rawValue
-    }
-
-    /**
-     - Returns: False if a mail from `from` to `contact` would be encrypted.
-     */
-    public func isUnencryptedPEPIdentity(_ contact: PEPIdentity,
-                                        from: PEPIdentity) -> Bool {
-        return !isEncryptedPEPIdentity(contact, from: from)
-    }
-
-    /**
      Sorts the receivers from a pEp mail into a set of ordered an unordered recipients.
      - Parameter recipients: An `NSArray` of pEp contacts (`NSMutableDictionary`) taken
      directly from a pEp mail (e.g., `pEpMail[kPepTo]`)
@@ -137,55 +120,6 @@ public extension PEPSession {
     }
 
     /**
-     Removes all unencrypted receivers and encrypted BCC receivers from a given PEP mail.
-     - Parameter pepMail: The PEP mail
-     - Returns: A 3-tuple consisting of all unencrypted receivers, all encrypted BCCs,
-     and an encryptable PEP mail without all the "unencrypted receivers" and the encrypted BCCs.
-     */
-    public func filterOutSpecialReceiversForPEPMessage(
-        _ pepMail: PEPMessage) -> (unencryptedReceivers: [PEPRecipient],
-        encryptedBCC: [PEPRecipient], pepMailEncryptable: PEPMessage) {
-            var pepMailPurged = pepMail
-
-            let session = PEPSession.init()
-
-            let unencryptedPredicate: RecipientSortPredicate = { contact, session in
-                return self.isUnencryptedPEPIdentity(
-                    contact, from: pepMail[kPepFrom] as! PEPIdentity)
-            }
-
-            var unencrypted: [PEPRecipient] = []
-
-            if let tos = pepMail[kPepTo] as? NSArray {
-                let (unencryptedTo, encryptedTo) = filterOutUnencryptedReceivers(
-                    tos, recipientType: RecipientType.to, session: session,
-                    sortOutPredicate: unencryptedPredicate)
-                pepMailPurged[kPepTo] = encryptedTo.map({$0.recipient}) as NSArray
-                unencrypted.append(contentsOf: unencryptedTo)
-            }
-
-            if let ccs = pepMail[kPepCC] as? NSArray {
-                let (unencryptedCC, encryptedCC) = filterOutUnencryptedReceivers(
-                    ccs, recipientType: RecipientType.cc, session: session,
-                    sortOutPredicate: unencryptedPredicate)
-                pepMailPurged[kPepCC] = encryptedCC.map({$0.recipient}) as NSArray
-                unencrypted.append(contentsOf: unencryptedCC)
-            }
-
-            var resultEncryptedBCC: [PEPRecipient] = []
-            if let bccs = pepMail[kPepBCC] as? NSArray {
-                let (unencryptedBCC, encryptedBCC) = filterOutUnencryptedReceivers(
-                    bccs, recipientType: RecipientType.bcc, session: session,
-                    sortOutPredicate: unencryptedPredicate)
-                pepMailPurged[kPepBCC] = NSArray()
-                unencrypted.append(contentsOf: unencryptedBCC)
-                resultEncryptedBCC.append(contentsOf: encryptedBCC)
-            }
-
-            return (unencrypted, resultEncryptedBCC, pepMailPurged)
-    }
-
-    /**
      Checks whether a given PEP mail has any recipients.
      - Parameter pepMail: The PEP mail to check for recipients.
      - Returns: true if the mail has any recipients, false otherwise.
@@ -196,59 +130,6 @@ public extension PEPSession {
         let bccs = pepMail[kPepBCC] as? NSArray
         return (tos != nil && tos!.count > 0) || (ccs != nil && ccs!.count > 0) ||
             (bccs != nil && bccs!.count > 0)
-    }
-
-    /**
-     Sorts a given PEP mail into two buckets: One containing all encrypted mails
-     that should be sent, and one for all unencrypted ones. The encrypted BCCs each get
-     an email in the encrypted list. All contacts that can't be encrypted land in the
-     unencrypted bucket.
-     - Parameter pepMail: The PEP mail to put into encryption/non-encryption buckets
-     - Returns: A tuple (encrypted, unencrypted) with the two buckets of mails.
-     */
-    public func bucketsForPEPMessage(
-        _ pepMail: PEPMessage) -> (mailsToEncrypt: [PEPMessage], mailsNotToEncrypt: [PEPMessage]) {
-        let (unencryptedReceivers, encryptedBCC, pepMailPurged) =
-            filterOutSpecialReceiversForPEPMessage(pepMail)
-
-        var encryptedMails: [PEPMessage] = []
-        var unencryptedMails: [PEPMessage] = []
-
-        if pepMailHasRecipients(pepMailPurged) {
-            encryptedMails.append(pepMailPurged)
-        }
-
-        if unencryptedReceivers.count > 0 {
-            var unencryptedMail = pepMailPurged
-            var tos: [PEPIdentity] = []
-            var ccs: [PEPIdentity] = []
-            var bccs: [PEPIdentity] = []
-            for r in unencryptedReceivers {
-                switch r.recipientType {
-                case .to:
-                    tos.append(r.recipient)
-                case .cc:
-                    ccs.append(r.recipient)
-                    print("ccs: \(ccs)")
-                case .bcc:
-                    bccs.append(r.recipient)
-                }
-            }
-            unencryptedMail[kPepTo] = NSArray.init(array: tos)
-            unencryptedMail[kPepCC] = NSArray.init(array: ccs)
-            unencryptedMail[kPepBCC] = NSArray.init(array: bccs)
-            unencryptedMails.append(unencryptedMail)
-        }
-
-        for bcc in encryptedBCC {
-            var mail = pepMailPurged
-            mail[kPepTo] = NSArray()
-            mail[kPepCC] = NSArray()
-            mail[kPepBCC] = NSArray.init(object: bcc.recipient)
-            encryptedMails.append(mail)
-        }
-
-        return (encryptedMails, unencryptedMails)
     }
 
     public func encrypt(pEpMessageDict: PEPMessage,
