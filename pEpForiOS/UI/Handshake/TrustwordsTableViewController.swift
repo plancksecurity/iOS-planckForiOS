@@ -29,8 +29,6 @@ class TrustwordsTableViewController: UITableViewController {
     
     fileprivate let pickerHeight = 135.0
 
-    lazy var session = PEPSession()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,8 +61,8 @@ class TrustwordsTableViewController: UITableViewController {
     func setTrustwords(long: Bool = false) {
         let myselfContactPepContact = NSMutableDictionary(dictionary: myselfIdentity.pEpIdentity())
         let partnerPepContact = NSMutableDictionary(dictionary: partnerIdentity.pEpIdentity())
-        session.updateIdentity(myselfContactPepContact)
-        session.updateIdentity(partnerPepContact)
+        appConfig.session.updateIdentity(myselfContactPepContact)
+        appConfig.session.updateIdentity(partnerPepContact)
         if let trustWordsString = PEPUtil.trustwords(
             identity1: myselfContactPepContact.pEpIdentity(),
             identity2: partnerPepContact.pEpIdentity(),

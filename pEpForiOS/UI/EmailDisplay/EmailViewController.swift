@@ -21,8 +21,7 @@ class EmailViewController: UITableViewController {
     var computedHeight: CGFloat = 0.0
     var defaultToolbarColor: UIColor?
     var defaultNavigationColor: UIColor?
-    lazy var session = PEPSession()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -135,7 +134,7 @@ class EmailViewController: UITableViewController {
     }
     
     @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
-        let filtered = message.identitiesEligibleForHandshake(session: session)
+        let filtered = message.identitiesEligibleForHandshake(session: appConfig.session)
         
         if filtered.count == 1 {
             partnerIdentity = filtered.first

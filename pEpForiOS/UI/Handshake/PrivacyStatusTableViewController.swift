@@ -7,19 +7,20 @@
 //
 
 import UIKit
+
 import MessageModel
 
 class PrivacyStatusTableViewController: UITableViewController {
     var message: Message!
     var appConfig: AppConfig!
     var allRecipients: [Identity] = []
-    var selectedIdentity: Identity!
+    var selectedIdentity: Identity?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configureTableView()
-        allRecipients = Array(message.allIdentities)
+        allRecipients = Array(message.identitiesEligibleForHandshake(session: appConfig.session))
     }
     
     func configureTableView() {

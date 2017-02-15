@@ -16,8 +16,6 @@ class PrivacyInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var infoTitleLabel: UILabel!
     @IBOutlet weak var infoTextLabel: UILabel!
     
-    lazy var session = PEPSession()
-
     func showExplanation(message: Message) {
         infoTitleLabel.text = PEPUtil.pEpTitle(pEpRating: message.pEpRating())
         infoTextLabel.text = PEPUtil.pEpExplanation(pEpRating: message.pEpRating())

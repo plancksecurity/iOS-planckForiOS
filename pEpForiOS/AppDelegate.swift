@@ -18,9 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var appConfig: AppConfig?
 
-    /** Keep open at all times */
-    var firstSession: PEPSession?
-
     /** The SMTP/IMAP backend */
     var networkService: NetworkService?
 
@@ -54,7 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         // Open the first session from the main thread and keep it open
-        firstSession = PEPSession()
+        let firstSession = PEPSession()
+        appConfig = AppConfig(session: firstSession)
 
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
@@ -123,15 +121,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
 
         // Try to cleanly shutdown
-        self.firstSession = nil
+        appConfig?.tearDownSession()
     }
 
     func loadCoreDataStack() {
         let objectModel = MessageModelData.MessageModelData()
         do {
-            try Record.loadCoreDataStack(
-                managedObjectModel: objectModel)
-            appConfig = AppConfig()
+            try Record.loadCoreDataStack(managedObjectModel: objectModel)
         } catch {
             Log.error(component: comp, errorString: "Error while Loading DataStack")
         }

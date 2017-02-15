@@ -42,7 +42,6 @@ class ComposeTableViewController: UITableViewController {
     var originalMessage: Message?
     let operationQueue = OperationQueue()
 
-    lazy var session = PEPSession()
     lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
     let mimeTypeController = MimeTypeUtil()

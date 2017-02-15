@@ -15,11 +15,29 @@ class AppConfig: NSObject {
 
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
     let connectionManager = ConnectionManager()
+    private var theSession: PEPSession?
+    var session: PEPSession {
+        get {
+            if theSession == nil {
+                theSession = PEPSession()
+            }
+            return theSession ?? PEPSession()
+        }
+        set {
+            theSession = newValue
+        }
+    }
 
     /**
      As soon as the UI has at least one account that is in use, this is set here.
      */
     var currentAccount: Account? = nil
 
-    override init() {}
+    init(session: PEPSession) {
+        self.theSession = session
+    }
+
+    public func tearDownSession() {
+        theSession = nil
+    }
 }
