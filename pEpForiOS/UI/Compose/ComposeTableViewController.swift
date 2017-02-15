@@ -134,6 +134,13 @@ class ComposeTableViewController: UITableViewController {
                 messageBodyCell.add(attachment)
             }
         }
+        if let om = originalMessage {
+            origin = om.from
+            destinyTo = om.to
+            destinyCc = om.cc
+            destinyBcc = om.bcc
+            calculateComposeColor()
+        }
     }
 
     func updateInitialContent(composeCell: ComposeCell) {

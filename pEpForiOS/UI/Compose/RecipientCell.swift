@@ -40,6 +40,7 @@ class RecipientCell: ComposeCell {
                 identities.remove(at: recepient)
             }
         })
+        delegate?.haveToUpdateColor(newIdentity: identities, type: super.fieldModel!)
     }
     
     @IBAction func openAdressbook(_ sender: UIButton) {
@@ -110,7 +111,7 @@ extension RecipientCell {
         hasSelection = false
         return true
     }
-    
+
     public override func textViewDidEndEditing(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
         
@@ -125,6 +126,7 @@ extension RecipientCell {
         
         addButton.isHidden = cTextview.text.isEmpty
         delegate?.textDidEndEditing(at: index, textView: cTextview)
+        //remove the !
         delegate?.haveToUpdateColor(newIdentity: identities, type: super.fieldModel!)
     }
     
