@@ -7,15 +7,15 @@
 //
 
 import UIKit
+
 import MessageModel
 
 class HandshakeTableViewCell: UITableViewCell {
-
     static let reuseIdentifier = "handshakeCell"
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var handShakeButton: RoundedButton!
+    @IBOutlet weak var handShakeButton: UIButton!
     
     func updateCell(_ allRecipients:[Identity], indexPath: IndexPath) {
         let identity = allRecipients[indexPath.row]
@@ -26,34 +26,6 @@ class HandshakeTableViewCell: UITableViewCell {
     }
     
     func setButtonColor(identity: Identity) {
-        switch identity.pEpColor() {
-        case PEP_color_no_color:
-            print("NO COLOR")
-            handShakeButton.borderColor = .pEpRed
-            handShakeButton.backgroundColor = .pEpRed
-            handShakeButton.borderHighlightedColor = .pEpRed
-            break
-        case PEP_color_red:
-            print("RED COLOR")
-            handShakeButton.borderColor = .pEpRed
-            handShakeButton.backgroundColor = .pEpRed
-            handShakeButton.borderHighlightedColor = .pEpRed
-            break
-        case PEP_color_green:
-            print("GREEN COLOR")
-            handShakeButton.borderColor = .pEpGreen
-            handShakeButton.backgroundColor = .pEpGreen
-            handShakeButton.borderHighlightedColor = .pEpGreen
-            break
-        case PEP_color_yellow:
-            print("YELLOW COLOR")
-            handShakeButton.borderColor = .pEpYellow
-            handShakeButton.backgroundColor = .pEpYellow
-            handShakeButton.borderHighlightedColor = .pEpYellow
-            break
-        default:
-            break
-        }
-    }
-    
+        identity.decorateButton(button: handShakeButton)
+    }    
 }

@@ -51,4 +51,15 @@ extension Identity {
         let rating = pEpRating(session: session)
         return rating.rawValue >= PEP_rating_reliable.rawValue || rating == PEP_rating_mistrust
     }
+
+    public func decorateButton(button: UIButton) {
+        button.setTitleColor(.black, for: .normal)
+        if let color = pEpColor().uiColor() {
+            button.backgroundColor = color
+        } else {
+            let buttonDefault = UIButton()
+            button.backgroundColor = buttonDefault.backgroundColor
+            button.tintColor = buttonDefault.tintColor
+        }
+    }
 }
