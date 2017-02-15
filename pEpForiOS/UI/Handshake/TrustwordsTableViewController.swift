@@ -76,7 +76,8 @@ class TrustwordsTableViewController: UITableViewController {
 
     // MARK: - TableView Datasource
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(
+        _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
@@ -120,7 +121,7 @@ class TrustwordsTableViewController: UITableViewController {
     }
     
     @IBAction func toggleLongTrustwords(_ sender: UISwitch) {
-        //setTrustwords(long: sender.isOn)
+        setTrustwords(long: sender.isOn)
         tableView.reloadData()
     }
     
@@ -131,7 +132,6 @@ class TrustwordsTableViewController: UITableViewController {
     @IBAction func wrongTrustwordsTapped(_ sender: RoundedButton) {
         PEPUtil.mistrust(identity: partnerIdentity)
     }
-    
 }
 
 extension TrustwordsTableViewController: UIPickerViewDataSource, UIPickerViewDelegate {
@@ -144,7 +144,8 @@ extension TrustwordsTableViewController: UIPickerViewDataSource, UIPickerViewDel
         return PEPUtil.trustwordsLanguages().count
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(
+        _ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let language = PEPUtil.trustwordsLanguages()[row]
         return language.languageName
     }
@@ -153,7 +154,7 @@ extension TrustwordsTableViewController: UIPickerViewDataSource, UIPickerViewDel
         let language = PEPUtil.trustwordsLanguages()[row]
         selectedTrustwordsLanguage = language
         trustwordsLanaguageLabel.text = language.languageName
-        //setTrustwords(long: longTrustwordsSwitch.isOn)
+        setTrustwords(long: longTrustwordsSwitch.isOn)
     }
 }
 
@@ -170,7 +171,8 @@ extension TrustwordsTableViewController: SegueHandlerType {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let navigationController = segue.destination
-        let destination = navigationController.childViewControllers[0] as! FingerprintTableViewController
+        let destination = navigationController.childViewControllers[0]
+            as! FingerprintTableViewController
         destination.myselfIdentity = myselfIdentity
         destination.message = message
         destination.appConfig = appConfig
