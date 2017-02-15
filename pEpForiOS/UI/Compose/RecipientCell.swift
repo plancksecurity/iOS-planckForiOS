@@ -30,8 +30,9 @@ class RecipientCell: ComposeCell {
         
         textView.insertImage(identity, true)
         textView.removePlainText()
-        //change to remove de !
-        delegate?.haveToUpdateColor(newIdentity: identities, type: super.fieldModel!)
+        if let fm = super.fieldModel {
+            delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
+        }
     }
     
     fileprivate func removeRecepients() {
@@ -40,9 +41,11 @@ class RecipientCell: ComposeCell {
                 identities.remove(at: recepient)
             }
         })
-        delegate?.haveToUpdateColor(newIdentity: identities, type: super.fieldModel!)
+        if let fm = super.fieldModel {
+            delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
+        }
     }
-    
+
     @IBAction func openAdressbook(_ sender: UIButton) {
         guard let delegate = delegate as? RecipientCellDelegate else { return }
         delegate.shouldOpenAddressbook(at: index)
@@ -126,8 +129,9 @@ extension RecipientCell {
         
         addButton.isHidden = cTextview.text.isEmpty
         delegate?.textDidEndEditing(at: index, textView: cTextview)
-        //remove the !
-        delegate?.haveToUpdateColor(newIdentity: identities, type: super.fieldModel!)
+        if let fm = super.fieldModel {
+            delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
+        }
     }
-    
+
 }

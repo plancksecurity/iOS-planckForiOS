@@ -28,10 +28,9 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
             let selectedAccount = accounts.first
             account = selectedAccount?.user.address
             textView.text = account
-            //remove the !
-            if let user = selectedAccount?.user {
+            if let user = selectedAccount?.user, let fm = super.fieldModel {
                 delegate?.haveToUpdateColor(
-                    newIdentity: [user], type: super.fieldModel!)
+                    newIdentity: [user], type: fm)
             }
         }
     }
