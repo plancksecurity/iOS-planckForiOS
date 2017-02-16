@@ -379,24 +379,6 @@ extension EmailListViewController: SegueHandlerType {
             }
         }
     }
-
-    /**
-     For the unwind segue from the trustwords controller, when the user choses "trusted".
-     */
-    @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
-        if let p = partnerIdentity {
-            PEPUtil.trust(identity: p)
-        }
-    }
-
-    /**
-     For the unwind segue from the trustwords controller, when the user choses "untrusted".
-     */
-    @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
-        if let p = partnerIdentity {
-            PEPUtil.mistrust(identity: p)
-        }
-    }
 }
 
 // MARK: - MessageFolderDelegate

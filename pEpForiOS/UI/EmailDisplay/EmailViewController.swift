@@ -135,12 +135,31 @@ class EmailViewController: UITableViewController {
     
     @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
         let filtered = message.identitiesEligibleForHandshake(session: appConfig.session)
-        
+
+        partnerIdentity = nil
         if filtered.count == 1 {
             partnerIdentity = filtered.first
             performSegue(withIdentifier: .segueTrustwords, sender: self)
         } else if filtered.count > 1 || filtered.count == 0 {
             performSegue(withIdentifier: .seguePrivacyStatus, sender: self)
+        }
+    }
+
+    /**
+     For the unwind segue from the trustwords controller, when the user choses "trusted".
+     */
+    @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
+        if let p = partnerIdentity {
+            PEPUtil.trust(identity: p)
+        }
+    }
+
+    /**
+     For the unwind segue from the trustwords controller, when the user choses "untrusted".
+     */
+    @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
+        if let p = partnerIdentity {
+            PEPUtil.mistrust(identity: p)
         }
     }
 }
