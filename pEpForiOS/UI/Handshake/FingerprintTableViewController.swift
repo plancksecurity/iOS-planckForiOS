@@ -68,18 +68,16 @@ class FingerprintTableViewController: UITableViewController {
        navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func confirmFingerprintButtonTapped(_ sender: RoundedButton) {
-        PEPUtil.trust(identity: partnerIdentity)
+    @IBAction func confirmFingerprintButtonTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: .segueUnwindTrustedFingerprint, sender: self)
     }
     
-    @IBAction func wrongFingerprintButtonTapped(_ sender: RoundedButton) {
-        PEPUtil.mistrust(identity: partnerIdentity)
+    @IBAction func wrongFingerprintButtonTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: .segueUnwindUnTrustedFingerprint, sender: self)
     }
-    
 }
 
 extension FingerprintTableViewController {
-    
     func fingerprintFormat(_ fingerprint: String) -> String {
         let medio = fingerprint.characters.count/2
         var result = String()
@@ -96,5 +94,26 @@ extension FingerprintTableViewController {
             }
         }
         return result
+    }
+}
+
+extension FingerprintTableViewController: SegueHandlerType {
+
+    // MARK: - SegueHandlerType
+
+    enum SegueIdentifier: String {
+        case segueUnwindTrustedFingerprint
+        case segueUnwindUnTrustedFingerprint
+    }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .segueUnwindTrustedFingerprint, .segueUnwindUnTrustedFingerprint:
+            if let tc = segue.destination as? EmailListViewController {
+                tc.partnerIdentity = partnerIdentity
+            }
+        }
     }
 }

@@ -125,13 +125,11 @@ class TrustwordsTableViewController: UITableViewController {
     }
     
     @IBAction func confirmTrustwordsTapped(_ sender: UIButton) {
-        PEPUtil.trust(identity: partnerIdentity)
-        performSegue(withIdentifier: .segueUnwindUnTrusted, sender: self)
+        performSegue(withIdentifier: .segueUnwindTrustedTrustwords, sender: self)
     }
     
     @IBAction func wrongTrustwordsTapped(_ sender: UIButton) {
-        PEPUtil.mistrust(identity: partnerIdentity)
-        performSegue(withIdentifier: .segueUnwindUnTrusted, sender: self)
+        performSegue(withIdentifier: .segueUnwindUnTrustedTrustwords, sender: self)
     }
 }
 
@@ -165,21 +163,29 @@ extension TrustwordsTableViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueFingerprint
-        case segueUnwindUnTrusted
+        case segueUnwindTrustedTrustwords
+        case segueUnwindUnTrustedTrustwords
         case noSegue
     }
     
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let navigationController = segue.destination
-        let destination = navigationController.childViewControllers[0]
-            as! FingerprintTableViewController
-        destination.myselfIdentity = myselfIdentity
-        destination.message = message
-        destination.appConfig = appConfig
-        destination.partnerIdentity = partnerIdentity
-        destination.selectedTrustwordsLanguage = selectedTrustwordsLanguage
+        switch segueIdentifier(for: segue) {
+        case .segueFingerprint:
+            let navigationController = segue.destination
+            let destination = navigationController.childViewControllers[0]
+                as! FingerprintTableViewController
+            destination.myselfIdentity = myselfIdentity
+            destination.message = message
+            destination.appConfig = appConfig
+            destination.partnerIdentity = partnerIdentity
+            destination.selectedTrustwordsLanguage = selectedTrustwordsLanguage
+        case .segueUnwindTrustedTrustwords, .segueUnwindUnTrustedTrustwords:
+            if let tc = segue.destination as? EmailListViewController {
+                tc.partnerIdentity = partnerIdentity
+            }
+        case .noSegue: ()
+        }
     }
 }
-

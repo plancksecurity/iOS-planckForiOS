@@ -2447,9 +2447,12 @@ APPLEPIE RESEARCH</string>
                         <outlet property="trustwordsLabel" destination="Zfz-MF-3Y8" id="uDU-Fz-NxY"/>
                         <outlet property="trustwordsLanaguageLabel" destination="mUu-Az-xb3" id="xEW-fh-3t1"/>
                         <segue destination="JYd-mR-vle" kind="presentation" identifier="segueFingerprint" modalTransitionStyle="crossDissolve" id="1Qm-rM-DSR"/>
+                        <segue destination="Q27-22-ksB" kind="unwind" identifier="segueUnwindTrustedTrustwords" unwindAction="segueUnwindTrustedWithSegue:" id="xIJ-Gr-juQ"/>
+                        <segue destination="Q27-22-ksB" kind="unwind" identifier="segueUnwindUnTrustedTrustwords" unwindAction="segueUnwindUnTrustedWithSegue:" id="H18-dB-Q4J"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aMO-1d-a9s" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Q27-22-ksB" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="7992.8000000000002" y="1181.5592203898052"/>
         </scene>
@@ -2688,9 +2691,12 @@ APPLEPIE RESEARCH</string>
                         <outlet property="partnerFingerprintLabel" destination="uUK-mt-BxO" id="sF6-cT-1H6"/>
                         <outlet property="partnerNameLabel" destination="BUQ-L0-Mlj" id="kV3-85-cc6"/>
                         <outlet property="trustwordsButton" destination="GzI-Qm-7yH" id="U6c-xr-KKK"/>
+                        <segue destination="reS-BF-jea" kind="unwind" identifier="segueUnwindTrustedFingerprint" unwindAction="segueUnwindTrustedWithSegue:" id="OC9-oT-Rek"/>
+                        <segue destination="reS-BF-jea" kind="unwind" identifier="segueUnwindUnTrustedFingerprint" unwindAction="segueUnwindUnTrustedWithSegue:" id="qpN-cI-4yf"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5gX-0n-UVi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="reS-BF-jea" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="9534" y="1182"/>
         </scene>
