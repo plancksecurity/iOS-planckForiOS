@@ -62,12 +62,44 @@ class ComposeTableViewController: UITableViewController {
 
         addContactSuggestTable()
         prepareFields()
+        prepareColor()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setDefaultBarColors()
 
+    }
+
+    func prepareColor() {
+        if let om = originalMessage {
+            destinyTo = [Identity]()
+            destinyCc = [Identity]()
+            destinyBcc = [Identity]()
+            if let id = om.parent?.account?.user {
+                origin = id
+            }
+            if composeMode == .replyFrom {
+                if let from = om.from {
+                    destinyTo?.append(from)
+                }
+            }
+            if composeMode == .replyAll {
+                if let from = om.from {
+                    destinyTo?.append(from)
+                }
+                let to = om.to
+                for id in to {
+                    if !id.isMySelf {
+                        destinyTo?.append(id)
+                    }
+                }
+                for id in om.cc {
+                    destinyCc?.append(id)
+                }
+            }
+        }
+        calculateComposeColor()
     }
 
     // MARK: - Private Methods
@@ -109,11 +141,8 @@ class ComposeTableViewController: UITableViewController {
                     }
                 }
             case .bcc:
-                if composeMode == .replyAll {
-                    for ident in om.bcc {
-                        recipientCell.addContact(ident)
-                    }
-                }
+                //in case of Bcc we don't do anything
+                break
             default:
                 break
             }
@@ -133,13 +162,6 @@ class ComposeTableViewController: UITableViewController {
             if let attachment = mtao.attachment {
                 messageBodyCell.add(attachment)
             }
-        }
-        if let om = originalMessage {
-            origin = om.from
-            destinyTo = om.to
-            destinyCc = om.cc
-            destinyBcc = om.bcc
-            calculateComposeColor()
         }
     }
 
@@ -445,23 +467,15 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func calculateComposeColor() {
-        var destiny = [Identity]()
-        if let to = destinyTo {
-            destiny += to
-        }
-        if let cc = destinyCc {
-            destiny += cc
-        }
-        if let bcc = destinyBcc {
-            destiny += bcc
-        }
-        if let from = origin {
+        if let to = destinyTo, let cc = destinyCc, let bcc = destinyBcc, let from = origin {
             var rating : PEP_rating?
             if let session = appConfig?.session {
-                rating = PEPUtil.outgoingMessageColor(from: from, to: destiny,
+                rating = PEPUtil.outgoingMessageColor(from: from, to: to,
+                                                      cc: cc, bcc: bcc,
                                                       session: session)
             } else {
-                rating = PEPUtil.outgoingMessageColor(from: from, to: destiny)
+                rating = PEPUtil.outgoingMessageColor(from: from, to: to,
+                                                      cc: cc, bcc: bcc)
             }
             if let rate = rating {
                 UIHelper.showPepRating(navBar: self.navigationController,
