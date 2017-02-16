@@ -126,10 +126,12 @@ class TrustwordsTableViewController: UITableViewController {
     
     @IBAction func confirmTrustwordsTapped(_ sender: UIButton) {
         PEPUtil.trust(identity: partnerIdentity)
+        performSegue(withIdentifier: .segueUnwindUnTrusted, sender: self)
     }
     
     @IBAction func wrongTrustwordsTapped(_ sender: UIButton) {
         PEPUtil.mistrust(identity: partnerIdentity)
+        performSegue(withIdentifier: .segueUnwindUnTrusted, sender: self)
     }
 }
 
@@ -163,6 +165,7 @@ extension TrustwordsTableViewController: SegueHandlerType {
     
     enum SegueIdentifier: String {
         case segueFingerprint
+        case segueUnwindUnTrusted
         case noSegue
     }
     
