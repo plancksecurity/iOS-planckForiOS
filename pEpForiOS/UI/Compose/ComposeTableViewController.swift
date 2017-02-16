@@ -72,10 +72,10 @@ class ComposeTableViewController: UITableViewController {
     }
 
     func prepareColor() {
+        destinyTo = [Identity]()
+        destinyCc = [Identity]()
+        destinyBcc = [Identity]()
         if let om = originalMessage {
-            destinyTo = [Identity]()
-            destinyCc = [Identity]()
-            destinyBcc = [Identity]()
             if let id = om.parent?.account?.user {
                 origin = id
             }
