@@ -373,6 +373,13 @@ extension EmailListViewController: SegueHandlerType {
             }
         }
     }
+
+    /**
+     For the unwind segue from the trustwords controller, when the user chose "trust" or
+     "no trust".
+     */
+    @IBAction func unwindTrustedUntrusted(segue: UIStoryboardSegue) {
+    }
 }
 
 // MARK: - MessageFolderDelegate

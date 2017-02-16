@@ -90,7 +90,6 @@ class TrustwordsTableViewController: UITableViewController {
     }
 
     func togglePicker(indexPath: IndexPath) {
-        
         if languagePickerHeight.constant == 0 {
             tableView .scrollToRow(at: indexPath, at: .top, animated: true)
             showLangPicker()
@@ -125,11 +124,11 @@ class TrustwordsTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    @IBAction func confirmTrustwordsTapped(_ sender: RoundedButton) {
+    @IBAction func confirmTrustwordsTapped(_ sender: UIButton) {
         PEPUtil.trust(identity: partnerIdentity)
     }
     
-    @IBAction func wrongTrustwordsTapped(_ sender: RoundedButton) {
+    @IBAction func wrongTrustwordsTapped(_ sender: UIButton) {
         PEPUtil.mistrust(identity: partnerIdentity)
     }
 }
