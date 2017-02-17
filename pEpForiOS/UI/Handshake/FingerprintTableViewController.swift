@@ -87,7 +87,6 @@ extension FingerprintTableViewController {
             result.append(character)
             if cont % 4 == 0 {
                 result.append(" " as Character)
-                result.append(" " as Character)
             }
             if cont == medio {
                 result.append("\n" as Character)

@@ -26,8 +26,14 @@ class HandshakeTableViewCell: UITableViewCell {
                 NSLocalizedString("Reset", comment: "Reset trust"), for: .normal)
         }
         handShakeButton.tag = indexPath.row
-        nameLabel.text = identity.displayString
-        nameLabel.text = identity.address
+
+        if let un = identity.userName {
+            nameLabel.text = un
+            emailLabel.text = identity.address
+        } else {
+            nameLabel.text = identity.address
+            emailLabel.text = ""
+        }
         setButtonColor(identity: identity)
     }
     
