@@ -54,13 +54,18 @@ extension Identity {
         }
     }
 
-    open func fingerPrint(session: PEPSession = PEPSession()) -> String? {
-        return PEPUtil.fingerPrint(identity: self, session: session)
+    open func fingerPrint(session: PEPSession? = PEPSession()) -> String? {
+        return PEPUtil.fingerPrint(identity: self, session: session ?? PEPSession())
     }
 
-    public func canHandshakeOn(session: PEPSession = PEPSession()) -> Bool {
-        let rating = pEpRating(session: session)
+    public func canHandshakeOn(session: PEPSession? = PEPSession()) -> Bool {
+        let rating = pEpRating(session: session ?? PEPSession())
         return rating.rawValue >= PEP_rating_reliable.rawValue || rating == PEP_rating_mistrust
+    }
+
+    public func canResetTrust(session: PEPSession? = PEPSession()) -> Bool {
+        let color = pEpColor(session: session ?? PEPSession())
+        return color == PEP_color_green || color == PEP_color_red
     }
 
     public func decorateButton(button: UIButton) {

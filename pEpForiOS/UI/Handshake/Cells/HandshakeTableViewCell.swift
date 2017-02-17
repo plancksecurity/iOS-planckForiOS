@@ -16,9 +16,15 @@ class HandshakeTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var handShakeButton: UIButton!
+
+    var session: PEPSession?
     
     func updateCell(_ allRecipients:[Identity], indexPath: IndexPath) {
         let identity = allRecipients[indexPath.row]
+        if identity.canResetTrust(session: session) {
+            handShakeButton.setTitle(
+                NSLocalizedString("Reset", comment: "Reset trust"), for: .normal)
+        }
         handShakeButton.tag = indexPath.row
         nameLabel.text = identity.displayString
         nameLabel.text = identity.address

@@ -13,7 +13,7 @@ import MessageModel
 class EmailViewController: UITableViewController {
     var appConfig: AppConfig!
     var message: Message!
-    var partnerIdentity: Identity!
+    var partnerIdentity: Identity?
     var tableData: ComposeDataSource?
     var datasource = [Message]()
     var page = 0
@@ -137,9 +137,14 @@ class EmailViewController: UITableViewController {
         let filtered = message.identitiesEligibleForHandshake(session: appConfig.session)
 
         partnerIdentity = nil
-        if filtered.count == 1 {
-            partnerIdentity = filtered.first
-            performSegue(withIdentifier: .segueTrustwords, sender: self)
+        if filtered.count == 1, let partnerID = filtered.first {
+            partnerIdentity = partnerID
+            if partnerID.canResetTrust(session: appConfig.session) {
+                // reset trust
+                performSegue(withIdentifier: .seguePrivacyStatus, sender: self)
+            } else {
+                performSegue(withIdentifier: .segueTrustwords, sender: self)
+            }
         } else if filtered.count > 1 || filtered.count == 0 {
             performSegue(withIdentifier: .seguePrivacyStatus, sender: self)
         }
@@ -151,6 +156,7 @@ class EmailViewController: UITableViewController {
     @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
             PEPUtil.trust(identity: p)
+            checkIdentity(identity: p)
         }
     }
 
@@ -160,7 +166,13 @@ class EmailViewController: UITableViewController {
     @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
             PEPUtil.mistrust(identity: p)
+            checkIdentity(identity: p)
         }
+    }
+
+    func checkIdentity(identity: Identity) {
+        let rating = identity.pEpRating(session: appConfig.session)
+        let color = identity.pEpColor(session: appConfig.session)
     }
 }
 
