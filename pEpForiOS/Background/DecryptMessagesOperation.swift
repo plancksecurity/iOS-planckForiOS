@@ -44,6 +44,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                          content: "Decrypted message \(message.logString()) with color \(color)")
 
                 self.numberOfMessagesDecrypted += 1
+                let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
 
                 switch color {
                 case PEP_rating_undefined,
@@ -56,7 +57,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_unencrypted_for_some:
                     // Set the color, nothing else to update
                     message.pEpRating = Int16(color.rawValue)
-                    self.updateMessage(cdMessage: message)
+                    self.updateMessage(cdMessage: message, keys: theKeys)
                     break
                 case PEP_rating_unreliable,
                      PEP_rating_mistrust,
@@ -69,7 +70,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_fully_anonymous:
                     if let decrypted = pepDecryptedMessage {
                         message.update(pEpMessage: decrypted as! PEPMessage, pepColorRating: color)
-                        self.updateMessage(cdMessage: message)
+                        self.updateMessage(cdMessage: message, keys: theKeys)
                     }
                     break
                 default:
@@ -83,7 +84,8 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
         }
     }
 
-    func updateMessage(cdMessage: CdMessage) {
+    func updateMessage(cdMessage: CdMessage, keys: [String]) {
+        cdMessage.updateKeyList(keys: keys)
         Record.saveAndWait()
         cdMessage.updateDecrypted()
     }

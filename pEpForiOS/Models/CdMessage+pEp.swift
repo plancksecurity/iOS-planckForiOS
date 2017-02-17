@@ -102,6 +102,14 @@ extension CdMessage {
         replyTo = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepReplyTo] as? [PEPIdentity]))
     }
 
+    public func updateKeyList(keys: [String]) {
+        if !keys.isEmpty {
+            self.keys = NSOrderedSet(array: keys.map { return CdKey.create(stringKey: $0) })
+        } else {
+            self.keys = NSOrderedSet()
+        }
+    }
+
     public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
         return PEPUtil.pEp(cdMessage: self, outgoing: outgoing)
     }
