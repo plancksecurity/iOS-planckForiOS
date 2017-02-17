@@ -10,7 +10,7 @@ import UIKit
 
 /**
  A serialized `OperationQueue` that limits the number of operations in the queue to 2.
- Useful for throttling the enqueueing of the same operation.
+ Useful for throttling the ongoing enqueueing of the *same* operation.
  */
 open class LimitedOperationQueue: OperationQueue {
     let workerQueue = DispatchQueue(label: "LimitedOperationQueue", qos: .utility, target: nil)

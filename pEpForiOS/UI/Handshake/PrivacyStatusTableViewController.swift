@@ -20,7 +20,8 @@ class PrivacyStatusTableViewController: UITableViewController {
     var appConfig: AppConfig!
     var allRecipients: [Identity] = []
     var selectedIdentity: Identity?
-    
+    var ratingReEvaluator: RatingReEvaluator?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -77,6 +78,7 @@ class PrivacyStatusTableViewController: UITableViewController {
         selectedIdentity = allRecipients[sender.tag]
         if let id = selectedIdentity, id.canResetTrust(session: appConfig.session) {
             PEPUtil.resetTrust(identity: id)
+            ratingReEvaluator?.decryptAgain()
             tableView.reloadRows(
                 at: [IndexPath(row: sender.tag, section: Rows.identities.rawValue)],
                 with: .automatic)

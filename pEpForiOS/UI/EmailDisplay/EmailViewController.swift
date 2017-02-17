@@ -21,6 +21,7 @@ class EmailViewController: UITableViewController {
     var computedHeight: CGFloat = 0.0
     var defaultToolbarColor: UIColor?
     var defaultNavigationColor: UIColor?
+    var ratingReEvaluator: RatingReEvaluator?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,7 @@ class EmailViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         storeDefaultBarColors()
+        checkMessageReEvaluation()
         showPepRating()
         self.title = message.shortMessage
     }
@@ -43,6 +45,13 @@ class EmailViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setDefaultBarColors()
+    }
+
+    func checkMessageReEvaluation() {
+        if ratingReEvaluator?.message != message {
+            ratingReEvaluator = RatingReEvaluator(message: message)
+            ratingReEvaluator?.delegate = self
+        }
     }
 
     func showPepRating() {
@@ -91,22 +100,26 @@ class EmailViewController: UITableViewController {
             popoverPresentationController.sourceView = view
         }
 
-        let alertActionReply = UIAlertAction (title: "Reply".localized, style: .default) { (action) in
+        let alertActionReply = UIAlertAction(
+        title: "Reply".localized, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionReply)
 
-        let alertActionReplyAll = UIAlertAction (title: "Reply.All".localized, style: .default) { (action) in
+        let alertActionReplyAll = UIAlertAction(
+        title: "Reply.All".localized, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionReplyAll)
 
-        let alertActionForward = UIAlertAction (title: "Forward".localized, style: .default) { (action) in
+        let alertActionForward = UIAlertAction(
+        title: "Forward".localized, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueForward , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionForward)
 
-        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel) { (action) in }
+        let cancelAction = UIAlertAction(
+        title: "Cancel".localized, style: .cancel) { (action) in }
         alertViewWithoutTitle.addAction(cancelAction)
 
         present(alertViewWithoutTitle, animated: true, completion: nil)
@@ -156,7 +169,7 @@ class EmailViewController: UITableViewController {
     @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
             PEPUtil.trust(identity: p)
-            checkIdentity(identity: p)
+            decryptAgain()
         }
     }
 
@@ -166,21 +179,23 @@ class EmailViewController: UITableViewController {
     @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
             PEPUtil.mistrust(identity: p)
-            checkIdentity(identity: p)
+            decryptAgain()
         }
     }
 
-    func checkIdentity(identity: Identity) {
-        let rating = identity.pEpRating(session: appConfig.session)
-        let color = identity.pEpColor(session: appConfig.session)
+    func decryptAgain() {
+        ratingReEvaluator?.decryptAgain()
     }
 }
 
 // MARK: TableView Delegate & Datasource
 
 extension EmailViewController {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewAutomaticDimension }
+    override func tableView(
+        _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let row = tableData?.getRow(at: indexPath.row) else {
+            return UITableViewAutomaticDimension
+        }
         
         if row.display == .conditional {
             return 0
@@ -204,10 +219,12 @@ extension EmailViewController {
         return tableData?.numberOfRows() ?? 0
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(
+        _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewCell() }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier, for: indexPath) as! MessageCell
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: row.identifier, for: indexPath) as! MessageCell
         cell.updateCell(row, message)
         cell.delegate = self
         
@@ -279,6 +296,7 @@ extension EmailViewController: SegueHandlerType {
             let destination = segue.destination as? PrivacyStatusTableViewController
             destination?.message = message
             destination?.appConfig = appConfig
+            destination?.ratingReEvaluator = ratingReEvaluator
             break
         case .segueTrustwords:
             let destination = segue.destination as? TrustwordsTableViewController
@@ -293,3 +311,10 @@ extension EmailViewController: SegueHandlerType {
     }
 }
 
+extension EmailViewController: RatingReEvaluatorDelegate {
+    func ratingChanged(message: Message) {
+        GCD.onMain {
+            self.showPepRating()
+        }
+    }
+}
