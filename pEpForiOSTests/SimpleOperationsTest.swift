@@ -950,7 +950,9 @@ class SimpleOperationsTest: XCTestCase {
             let id = Identity.from(pEpIdentity: theID) {
             self.measure {
                 for _ in [1...1000] {
-                    let _ = PEPUtil.outgoingMessageColor(from: id, to: [id])
+                    let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
+                                                         cc: [id], bcc: [id],
+                                                         session: session)
                 }
             }
         } else {
@@ -959,10 +961,13 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testOutgoingMessageColor() {
+        let session = PEPSession.init()
         let identity = TestData().createWorkingAccount().user
         self.measure {
             for _ in [1...1000] {
-                let _ = PEPUtil.outgoingMessageColor(from: identity, to: [identity])
+                let _ = PEPUtil.outgoingMessageColor(from: identity, to: [identity],
+                                                     cc: [identity], bcc: [identity],
+                                                     session: session)
             }
         }
     }
@@ -975,7 +980,9 @@ class SimpleOperationsTest: XCTestCase {
             let id = Identity.from(pEpIdentity: theID) {
             self.measure {
                 for _ in [1...1000] {
-                    let _ = PEPUtil.outgoingMessageColor(from: id, to: [id])
+                    let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
+                                                         cc: [id], bcc: [id],
+                                                         session: session)
                 }
             }
         } else {
