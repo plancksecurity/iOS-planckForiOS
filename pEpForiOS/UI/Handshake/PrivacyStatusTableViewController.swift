@@ -28,6 +28,11 @@ class PrivacyStatusTableViewController: UITableViewController {
         configureTableView()
         allRecipients = Array(message.identitiesEligibleForHandshake(session: appConfig.session))
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showPepRating(pEpRating: message.pEpRating())
+    }
     
     func configureTableView() {
         tableView.estimatedRowHeight = 44.0

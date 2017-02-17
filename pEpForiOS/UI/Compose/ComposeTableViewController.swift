@@ -51,10 +51,6 @@ class ComposeTableViewController: UITableViewController {
     var destinyCc : [Identity]?
     var destinyBcc : [Identity]?
 
-    var defaultToolbarColor: UIColor?
-    var defaultNavigationColor: UIColor?
-
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -68,7 +64,6 @@ class ComposeTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setDefaultBarColors()
-
     }
 
     func prepareColor() {
@@ -103,16 +98,6 @@ class ComposeTableViewController: UITableViewController {
     }
 
     // MARK: - Private Methods
-
-    func storeDefaultBarColors() {
-        defaultNavigationColor = navigationController?.navigationBar.barTintColor
-        defaultToolbarColor = navigationController?.toolbar.barTintColor
-    }
-
-    func setDefaultBarColors() {
-        navigationController?.navigationBar.barTintColor = defaultNavigationColor
-        navigationController?.toolbar.barTintColor = defaultToolbarColor
-    }
 
     /**
      Updates the given `RecipientCell` with data from the `originalMessage`,
@@ -478,10 +463,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
                                                       cc: cc, bcc: bcc)
             }
             if let rate = rating {
-                UIHelper.showPepRating(navBar: self.navigationController,
-                                       peprating: rate,
-                                       defaultToolBarColor: defaultToolbarColor,
-                                       defaultNavigationBarColor: defaultNavigationColor)
+                showPepRating(pEpRating: rate)
             }
         }
     }

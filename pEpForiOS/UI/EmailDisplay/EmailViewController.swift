@@ -19,8 +19,6 @@ class EmailViewController: UITableViewController {
     var page = 0
     var otherCellsHeight: CGFloat = 0.0
     var computedHeight: CGFloat = 0.0
-    var defaultToolbarColor: UIColor?
-    var defaultNavigationColor: UIColor?
     var ratingReEvaluator: RatingReEvaluator?
 
     override func viewDidLoad() {
@@ -36,7 +34,6 @@ class EmailViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        storeDefaultBarColors()
         checkMessageReEvaluation()
         showPepRating()
         self.title = message.shortMessage
@@ -55,31 +52,7 @@ class EmailViewController: UITableViewController {
     }
 
     func showPepRating() {
-        // color
-        if let color = message.pEpRating()?.uiColor() {
-            navigationController?.navigationBar.barTintColor = color
-            navigationController?.toolbar.barTintColor = color
-        } else {
-            setDefaultBarColors()
-        }
-
-        // icon
-        if let img = message.pEpRating()?.pepColor().statusIcon() {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                image: img, style: .plain, target: nil, action: nil)
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
-    }
-    
-    func storeDefaultBarColors() {
-        defaultNavigationColor = navigationController?.navigationBar.barTintColor
-        defaultToolbarColor = navigationController?.toolbar.barTintColor
-    }
-    
-    func setDefaultBarColors() {
-        navigationController?.navigationBar.barTintColor = defaultNavigationColor
-        navigationController?.toolbar.barTintColor = defaultToolbarColor
+        showPepRating(pEpRating: message.pEpRating())
     }
     
     fileprivate final func loadDatasource(_ file: String) {
