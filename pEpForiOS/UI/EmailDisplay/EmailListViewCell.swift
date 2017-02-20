@@ -57,7 +57,7 @@ class EmailListViewCell: UITableViewCell {
         ratingImage.backgroundColor = nil
     }
 
-    func configureCell(config: EmailListConfig?, indexPath: IndexPath) -> MessageID? {
+    func configureCell(config: EmailListConfig?, indexPath: IndexPath) -> Message? {
         if let message = messageAt(indexPath: indexPath, config: config) {
             UIHelper.putString(message.from?.userName, toLabel: self.senderLabel)
             UIHelper.putString(message.shortMessage, toLabel: self.subjectLabel)
@@ -85,7 +85,7 @@ class EmailListViewCell: UITableViewCell {
             updateFlags(message: message)
             updatePepRating(message: message)
 
-            return message.messageID
+            return message
         }
         return nil
     }

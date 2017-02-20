@@ -26,7 +26,7 @@ class EmailListViewController: UITableViewController {
     var config: EmailListConfig?
     var state = UIState()
     let searchController = UISearchController(searchResultsController: nil)
-    let cellsByMessageID = NSCache<NSString, EmailListViewCell>()
+    let cellsInUse = NSCache<NSString, EmailListViewCell>()
 
     /**
      After trustwords have been invoked, this will be the partner identity that
@@ -118,8 +118,8 @@ class EmailListViewController: UITableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
-        if let messageID = cell.configureCell(config: config, indexPath: indexPath) {
-            cellsByMessageID.setObject(cell, forKey: messageID as NSString)
+        if let message = cell.configureCell(config: config, indexPath: indexPath) {
+            associate(message: message, toCell: cell)
         }
         return cell
     }
@@ -360,24 +360,47 @@ extension EmailListViewController: SegueHandlerType {
                     // new message has arrived
                     if let index = folder.indexOf(message: msg) {
                         let ip = IndexPath(row: index, section: 0)
+                        Log.info(
+                            component: #function,
+                            content: "insert message at \(index), \(folder.messageCount()) messages")
                         tableView.insertRows(at: [ip], with: .automatic)
                     } else {
                         tableView.reloadData()
                     }
                 } else if msg.isGhost {
-                    if let cell = cellsByMessageID.object(forKey: msg.uuid as NSString) {
-                        if let ip = tableView.indexPath(for: cell) {
-                            tableView.deleteRows(at: [ip], with: .automatic)
-                        }
+                    if let cell = cellFor(message: msg), let ip = tableView.indexPath(for: cell) {
+                        Log.info(
+                            component: #function,
+                            content: "delete message at \(index), \(folder.messageCount()) messages")
+                        tableView.deleteRows(at: [ip], with: .automatic)
+                    } else {
+                        tableView.reloadData()
                     }
                 } else {
                     // other flags than delete must have been changed
-                    if let cell = cellsByMessageID.object(forKey: msg.uuid as NSString) {
+                    if let cell = cellFor(message: msg) {
                         cell.updateFlags(message: message)
+                    } else {
+                        tableView.reloadData()
                     }
                 }
             }
         }
+    }
+
+    // MARK: - Message -> Cell association
+
+    func keyFor(message: Message) -> NSString {
+        let parentName = message.parent?.name ?? "unknown"
+        return "\(message.uuid) \(parentName) \(message.uuid)" as NSString
+    }
+
+    func associate(message: Message, toCell: EmailListViewCell) {
+        cellsInUse.setObject(toCell, forKey: keyFor(message: message))
+    }
+
+    func cellFor(message: Message) -> EmailListViewCell? {
+        return cellsInUse.object(forKey: keyFor(message: message))
     }
 }
 
