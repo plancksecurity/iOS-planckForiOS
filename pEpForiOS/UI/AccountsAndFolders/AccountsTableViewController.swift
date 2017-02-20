@@ -54,7 +54,7 @@ class AccountsTableViewController: UITableViewController {
             guard let appDelegate = UIApplication.shared.delegate as?
                 AppDelegate
             else {
-                    return
+                return
             }
             appConfig = appDelegate.appConfig
         }
