@@ -104,9 +104,11 @@ extension CdMessage {
 
     public func updateKeyList(keys: [String]) {
         if !keys.isEmpty {
-            self.keys = NSOrderedSet(array: keys.map { return CdKey.create(stringKey: $0) })
+            self.keysFromDecryption = NSOrderedSet(array: keys.map {
+                return CdKey.create(stringKey: $0)
+            })
         } else {
-            self.keys = NSOrderedSet()
+            self.keysFromDecryption = NSOrderedSet()
         }
     }
 

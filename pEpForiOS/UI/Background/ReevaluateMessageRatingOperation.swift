@@ -1,5 +1,5 @@
 //
-//  DecryptSingleMessageOperation.swift
+//  ReevaluateMessageRatingOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 17/02/2017.
@@ -11,10 +11,10 @@ import UIKit
 import MessageModel
 
 /**
- Use that to again decrypt messages whose trust status has changed (that is,
+ Reevaluate the rating for messages whose trust status has changed (that is,
  an identity involved in the message has changed the trust status).
  */
-class DecryptSingleMessageOperation: Operation {
+class ReevaluateMessageRatingOperation: Operation {
     let message: Message
 
     init(message: Message) {
@@ -23,7 +23,8 @@ class DecryptSingleMessageOperation: Operation {
 
     open override func main() {
         // TODO: This is a hack. Has to be replaced by whatever the outcome
-        // of ENGINE-79 will be.
+        // of ENGINE-179 will be. Leads to errors, but at least you have something
+        // to see in the UI.
         if let from = message.from {
             message.pEpRatingInt = Int(from.pEpRating().rawValue)
             message.save()
