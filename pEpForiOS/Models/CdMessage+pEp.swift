@@ -108,7 +108,7 @@ extension CdMessage {
                 return CdKey.create(stringKey: $0)
             })
         } else {
-            self.keysFromDecryption = NSOrderedSet()
+            self.keysFromDecryption = nil
         }
     }
 
