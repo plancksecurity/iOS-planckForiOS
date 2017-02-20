@@ -53,7 +53,7 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
         return isExpanded
     }
     
-    public final func getAccount() -> Identity {
+    public final func getIdentity() -> Identity {
         let selected = picker.selectedRow(inComponent: 0)
         return accounts[selected].user
     }

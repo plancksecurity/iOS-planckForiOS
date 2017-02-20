@@ -209,14 +209,8 @@ class ComposeTableViewController: UITableViewController {
         suggestTableView.frame.size.height = tableView.bounds.size.height - pos + 2
     }
 
-    fileprivate final func populateDraftMessage() -> Message? {
-        guard let f = Folder.by(folderType: .drafts) else {
-            Log.error(component: #function, errorString: "No drafts folder")
-            return nil
-        }
-
-        // Use this message (initially, a draft)
-        let message = f.createMessage()
+    fileprivate final func populateMessageForSending() -> Message? {
+        let message = Message.create(uuid: MessageID.generate())
 
         allCells.forEach({ (cell) in
             if cell is RecipientCell, let fm = cell.fieldModel {
@@ -252,7 +246,7 @@ class ComposeTableViewController: UITableViewController {
             } else if let fm = cell.fieldModel {
                 switch fm.type {
                 case .from:
-                    message.from = (cell as! AccountCell).getAccount()
+                    message.from = (cell as? AccountCell)?.getIdentity()
                     break
                 default:
                     message.shortMessage = cell.textView.text
@@ -270,6 +264,16 @@ class ComposeTableViewController: UITableViewController {
                 refs.remove(at: 1)
             }
             message.references = refs
+        }
+
+        // determine the folder for this message
+        let from = message.from ?? appConfig?.currentAccount?.user ?? Account.all()[0].user
+        if let account = Account.by(address: from.address) {
+            let f = Folder.by(account: account, folderType: .sent)
+            message.parent = f
+        } else {
+            Log.warn(component: #function, content: "Cannot determine message account")
+            return nil
         }
 
         return message
@@ -400,13 +404,12 @@ class ComposeTableViewController: UITableViewController {
         }))
 
         alertCtrl.addAction(alertCtrl.action("MailComp.Action.Save", .default, {
-            if let msg = self.populateDraftMessage() {
-                if let f = Folder.by(folderType: .drafts) {
-                    msg.parent = f
-                    msg.save()
-                } else {
-                    Log.error(component: #function, errorString: "No sent folder")
-                }
+            if let msg = self.populateMessageForSending(),
+                let acc = msg.parent?.account, let f = Folder.by(account:acc, folderType: .drafts) {
+                msg.parent = f
+                msg.save()
+            } else {
+                Log.error(component: #function, errorString: "No drafts folder for message")
             }
             self.dismiss()
         }))
@@ -419,13 +422,10 @@ class ComposeTableViewController: UITableViewController {
     }
 
     @IBAction func send() {
-        if let msg = populateDraftMessage() {
-            if let f = Folder.by(folderType: .sent) {
-                msg.parent = f
-                msg.save()
-            } else {
-                Log.error(component: #function, errorString: "No sent folder")
-            }
+        if let msg = populateMessageForSending() {
+            msg.save()
+        } else {
+            Log.error(component: #function, errorString: "No message for sending")
         }
         dismiss(animated: true, completion: nil)
     }
