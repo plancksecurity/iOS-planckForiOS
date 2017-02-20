@@ -14,7 +14,7 @@ import MessageModel
  Invoke completion block without errors for all actions.
  */
 class ShortCircuitSendLayer: SendLayerProtocol {
-    var sendLayerDelegate: SendLayerDelegate?
+    var sendLayerDelegate: SendLayerDelegate? = DefaultSendLayerDelegate()
 
     func verify(cdAccount: CdAccount) {
         sendLayerDelegate?.didVerify(cdAccount: cdAccount, error: nil)

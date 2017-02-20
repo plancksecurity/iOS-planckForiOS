@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var appSettings = AppSettings()
 
+    let sendLayerDelegate = DefaultUISendLayerDelegate()
+
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -73,6 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         kickOffMySelf()
 
         networkService = NetworkService(backgrounder: self)
+        networkService?.sendLayerDelegate = sendLayerDelegate
         CdAccount.sendLayer = networkService
         networkService?.start()
 

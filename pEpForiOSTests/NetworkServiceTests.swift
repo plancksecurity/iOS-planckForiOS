@@ -506,7 +506,9 @@ class NetworkServiceTests: XCTestCase {
             expMySelfed: expectation(description: "expMySelfed"),
             expBackgrounded: expectation(description: "expBackgrounded"))
 
+        let sendLayerDelegate = DefaultSendLayerDelegate()
         let networkService = NetworkService(parentName: #function, mySelfer: mySelfObserver)
+        networkService.sendLayerDelegate = sendLayerDelegate
 
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
@@ -547,10 +549,10 @@ class NetworkServiceTests: XCTestCase {
         }
 
         XCTAssertFalse(verifiedAccount.rootFolders.isEmpty)
-        let inbox = verifiedAccount.inbox()
-        XCTAssertNotNil(inbox)
-        if let inb = inbox {
-            XCTAssertGreaterThan(inb.messageCount(), 0)
+        if let inbox = verifiedAccount.inbox() {
+            XCTAssertGreaterThan(inbox.messageCount(), 0)
+        } else {
+            XCTFail()
         }
 
         cancelNetworkService(networkService: networkService)
