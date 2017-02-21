@@ -25,7 +25,7 @@ class RecipientCell: ComposeCell {
         addButton.isHidden = true
     }
     
-    public func addContact(_ identity: Identity) {
+    public func addIdentity(_ identity: Identity) {
         identities.append(identity)
         
         textView.insertImage(identity, true)

@@ -108,21 +108,21 @@ class ComposeTableViewController: UITableViewController {
             switch fm.type {
             case .to:
                 if composeMode == .replyFrom, let from = om.from {
-                    recipientCell.addContact(from)
+                    recipientCell.addIdentity(from)
                 }
                 if composeMode == .replyAll, let from = om.from {
                     let to = om.to
                     for identity in to {
                         if !identity.isMySelf {
-                            recipientCell.addContact(identity)
+                            recipientCell.addIdentity(identity)
                         }
                     }
-                    recipientCell.addContact(from)
+                    recipientCell.addIdentity(from)
                 }
             case .cc:
                 if composeMode == .replyAll {
                     for ident in om.cc {
-                        recipientCell.addContact(ident)
+                        recipientCell.addIdentity(ident)
                     }
                 }
             case .bcc:
@@ -170,6 +170,14 @@ class ComposeTableViewController: UITableViewController {
     }
 
     fileprivate final func openAddressBook() {
+        contactPicker.delegate = self
+        contactPicker.displayedPropertyKeys = [
+            CNContactEmailAddressesKey, CNContactGivenNameKey, CNContactFamilyNameKey,
+            CNContactMiddleNameKey, CNContactIdentifierKey]
+        contactPicker.predicateForEnablingContact = NSPredicate(
+            format: "emailAddresses.@count > 0")
+        contactPicker.predicateForSelectionOfContact = NSPredicate(
+            format: "emailAddresses.@count == 1")
         present(contactPicker, animated: true, completion: nil)
     }
 
@@ -371,18 +379,20 @@ class ComposeTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView is SuggestTableView {
-            let identity = suggestTableView.didSelectIdentity(index: indexPath)
-
-            guard let cell = self.tableView.cellForRow(at: currentCell) as? RecipientCell else { return }
-            cell.addContact(identity!)
-            cell.textView.scrollToTop()
-
-            self.tableView.updateSize()
+            guard let cell = self.tableView.cellForRow(at: currentCell) as? RecipientCell else {
+                return
+            }
+            if let identity = suggestTableView.didSelectIdentity(index: indexPath) {
+                cell.addIdentity(identity)
+                cell.textView.scrollToTop()
+                self.tableView.updateSize()
+            }
         }
 
-        guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else { return }
-        if cell is AccountCell {
-            let accountCell = cell as! AccountCell
+        guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else {
+            return
+        }
+        if let accountCell = cell as? AccountCell {
             ccEnabled = accountCell.expand()
             self.tableView.updateSize()
         }
@@ -540,8 +550,16 @@ UINavigationControllerDelegate {
     // MARK: - CNContactPickerViewController Delegate
 
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
-        //guard let cell = tableView.cellForRow(at: currentCell) as? RecipientCell else { return }
-        //cell.addContact(contact)
+        guard let cell = tableView.cellForRow(at: currentCell) as? RecipientCell else {
+            return
+        }
+
+        let address = contact.emailAddresses[0].value as String
+        let partner = Identity.create(address: address, userID: contact.identifier)
+        partner.userName = CNContactFormatter.string(from: contact, style: .fullName)
+        partner.save()
+
+        cell.addIdentity(partner)
 
         tableView.updateSize()
     }
