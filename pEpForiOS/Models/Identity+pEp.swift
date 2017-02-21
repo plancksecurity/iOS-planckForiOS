@@ -59,6 +59,9 @@ extension Identity {
     }
 
     public func canHandshakeOn(session: PEPSession? = PEPSession()) -> Bool {
+        if isMySelf {
+            return false
+        }
         let rating = pEpRating(session: session ?? PEPSession())
         return rating.rawValue >= PEP_rating_reliable.rawValue || rating == PEP_rating_mistrust
     }
