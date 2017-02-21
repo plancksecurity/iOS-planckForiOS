@@ -102,7 +102,7 @@ extension CdMessage {
      - Note: This does not handle attachments and many other fields.
      *It's just for quickly interfacing with Pantomime.*
      */
-    func pantomime(folder: CWIMAPFolder) -> CWIMAPMessage {
+    func pantomimeQuick(folder: CWIMAPFolder) -> CWIMAPMessage {
         let msg = CWIMAPMessage.init()
 
         if let date = sent {
