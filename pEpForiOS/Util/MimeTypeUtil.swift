@@ -9,9 +9,10 @@
 import Foundation
 
 open class MimeTypeUtil {
+    static let defaultMimeType = "application/octet-stream"
+
     let comp = "MimeTypeUtil"
     var json : [String : Any]?
-
 
     public init?() {
         let resource = "jsonMimeType"
@@ -28,16 +29,16 @@ open class MimeTypeUtil {
         }
     }
     
-    open func getMimeType(Extension:String) -> String {
+    open func getMimeType(fileExtension:String) -> String {
         if let data = json {
             if let ex = data["mimeType"] as? [String : String] {
                 for (key,value) in ex {
-                    if key == Extension.lowercased() {
+                    if key == fileExtension.lowercased() {
                         return value as String
                     }
                 }
             }
         }
-        return "application/octet-stream"
+        return MimeTypeUtil.defaultMimeType
     }
 }

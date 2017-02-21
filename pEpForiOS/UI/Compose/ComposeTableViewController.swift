@@ -51,6 +51,9 @@ class ComposeTableViewController: UITableViewController {
     var destinyCc : [Identity]?
     var destinyBcc : [Identity]?
 
+    let attachmentCounter = AttachmentCounter()
+    let mimeTypeUtil = MimeTypeUtil()
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -181,22 +184,16 @@ class ComposeTableViewController: UITableViewController {
         present(contactPicker, animated: true, completion: nil)
     }
 
-    fileprivate final func createAttachment(_ url: URL, _ isMovie: Bool = false, image: UIImage? = nil) -> Attachment? {
-        let filetype = url.pathExtension
-        var filename = url.standardizedFileURL.lastPathComponent
+    fileprivate final func createAttachment(
+        url: URL, _ isMovie: Bool = false, image: UIImage? = nil) -> Attachment? {
+        let fileExtension = url.pathExtension
+        let baseName = NSLocalizedString("Attachment", comment: "Base name for attachments")
+        let fileName = attachmentCounter.filename(baseName: baseName, fileExtension: fileExtension)
 
-        if isMovie {
-            filename = "MailComp.Video".localized + filetype
-        }
-        var mimeType :String
-        if let mimeController = mimeTypeController {
-            mimeType = mimeController.getMimeType(Extension: filetype)
+        let mimeType = mimeTypeUtil?.getMimeType(fileExtension: fileExtension) ??
+            MimeTypeUtil.defaultMimeType
 
-        } else {
-            //default mime type
-            mimeType = "application/octet-stream"
-        }
-        if let att = Attachment.inline(name: filename, url: url, type: mimeType, image: image) {
+        if let att = Attachment.inline(name: fileName, url: url, type: mimeType, image: image) {
             return att
         }
         return nil
@@ -592,7 +589,7 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
         if let mediaType = info[UIImagePickerControllerMediaType] as? String {
             if mediaType == kUTTypeMovie as String {
                 guard let url = info[UIImagePickerControllerMediaURL] as? URL else { return }
-                if let attachment = createAttachment(url, true) {
+                if let attachment = createAttachment(url: url, true) {
                     cell.addMovie(attachment)
                 }
             } else {
@@ -602,7 +599,7 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
                 guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
                     return
                 }
-                if let attachment = createAttachment(url, image: image) {
+                if let attachment = createAttachment(url: url, image: image) {
                     cell.insert(attachment)
                 }
             }
@@ -618,7 +615,7 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
 extension ComposeTableViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else { return }
-        if let attachment = createAttachment(url) {
+        if let attachment = createAttachment(url: url) {
             cell.add(attachment)
         }
         tableView.updateSize()
