@@ -539,34 +539,54 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
     }
 }
 
-// MARK: - MessageBodyCellDelegate
+// MARK: - CNContactPickerViewController Delegate
 
-extension ComposeTableViewController:
-    UIImagePickerControllerDelegate,
-    UIDocumentPickerDelegate,
-    CNContactPickerDelegate,
-UINavigationControllerDelegate {
-
-    // MARK: - CNContactPickerViewController Delegate
-
+extension ComposeTableViewController: CNContactPickerDelegate {
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
-        guard let cell = tableView.cellForRow(at: currentCell) as? RecipientCell else {
-            return
+        add(contact: contact)
+    }
+
+    func contactPicker(
+        _ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
+        add(contact: contactProperty.contact, contactProperty: contactProperty)
+    }
+
+    /**
+     The emails from contact are only traversed if `contactProperty` is nil.
+     Otherwise, the email information is only used by `contactProperty`, which allows the
+     user to select one and only one email for sending.
+     */
+    func add(contact: CNContact, contactProperty: CNContactProperty? = nil) {
+        if let address = contactProperty?.value as? String {
+            let partner = Identity.create(address: address, userID: contactProperty?.identifier)
+            partner.userName = CNContactFormatter.string(
+                from: contact, style: .fullName)
+            add(identity: partner)
+        } else {
+            for emailLabel in contact.emailAddresses {
+                let address = emailLabel.value as String
+                let partner = Identity.create(address: address, userID: contact.identifier)
+                partner.userName = CNContactFormatter.string(from: contact, style: .fullName)
+                add(identity: partner)
+            }
         }
-
-        let address = contact.emailAddresses[0].value as String
-        let partner = Identity.create(address: address, userID: contact.identifier)
-        partner.userName = CNContactFormatter.string(from: contact, style: .fullName)
-        partner.save()
-
-        cell.addIdentity(partner)
-
         tableView.updateSize()
     }
 
-    // MARK: - UIImagePickerController Delegate
+    func add(identity: Identity) {
+        identity.save()
+        guard let cell = tableView.cellForRow(at: currentCell) as? RecipientCell else {
+            return
+        }
+        cell.addIdentity(identity)
+    }
+}
 
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
+// MARK: - UIImagePickerControllerDelegate
+
+extension ComposeTableViewController: UIImagePickerControllerDelegate {
+    public func imagePickerController(
+        _ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
         guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else { return }
 
         if let mediaType = info[UIImagePickerControllerMediaType] as? String {
@@ -576,8 +596,12 @@ UINavigationControllerDelegate {
                     cell.addMovie(attachment)
                 }
             } else {
-                guard let url = info[UIImagePickerControllerReferenceURL] as? URL else { return }
-                guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
+                guard let url = info[UIImagePickerControllerReferenceURL] as? URL else {
+                    return
+                }
+                guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+                    return
+                }
                 if let attachment = createAttachment(url, image: image) {
                     cell.insert(attachment)
                 }
@@ -587,15 +611,21 @@ UINavigationControllerDelegate {
         tableView.updateSize()
         dismiss(animated: true, completion: nil)
     }
+}
 
-    // MARK: - UIDocumentPicker Delegate
+// MARK: - UIDocumentPickerDelegate
 
+extension ComposeTableViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else { return }
         if let attachment = createAttachment(url) {
             cell.add(attachment)
         }
-        
         tableView.updateSize()
     }
+}
+
+// MARK: - UINavigationControllerDelegate
+
+extension ComposeTableViewController: UINavigationControllerDelegate {
 }
