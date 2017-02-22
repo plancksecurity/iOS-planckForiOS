@@ -243,10 +243,9 @@ class ComposeTableViewController: UITableViewController {
                     break
                 }
             } else if cell is MessageBodyCell {
-                if let attachments = (cell as? MessageBodyCell)?.getAllAttachments() {
-                    message.attachments = attachments
-                }
+                message.attachments = (cell as? MessageBodyCell)?.getAllAttachments() ?? []
                 message.longMessageFormatted = cell.textView.toHtml()
+                message.adaptLongImagesTextFormattedToAttachments()
                 if message.attachments.isEmpty {
                     message.longMessage = cell.textView.text
                 }

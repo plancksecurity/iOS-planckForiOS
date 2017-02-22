@@ -12,8 +12,7 @@ class AttachmentCounter {
     var attachmentCount = 0
 
     public func filename(baseName: String, fileExtension: String) -> String {
-        //let newFileName = "\(baseName)_\(attachmentCount).\(fileExtension)"
-        let newFileName = String(format: "%@_%03d_%@", baseName, attachmentCount, fileExtension)
+        let newFileName = String(format: "%@_%03d.%@", baseName, attachmentCount, fileExtension)
         attachmentCount += 1
         return newFileName
     }

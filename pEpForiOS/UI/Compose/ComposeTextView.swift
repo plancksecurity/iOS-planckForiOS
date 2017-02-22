@@ -8,7 +8,6 @@
 import UIKit
 import MessageModel
 
-
 open class ComposeTextView: UITextView {
 
     public var fieldModel: ComposeFieldModel?
@@ -65,16 +64,17 @@ open class ComposeTextView: UITextView {
         attributedText = attrText
     }
     
-    public final func textAttachments() -> [TextAttachment?] {
-        var allAttachments = [TextAttachment?]()
+    public final func textAttachments() -> [TextAttachment] {
+        var allAttachments = [TextAttachment]()
         let range = NSMakeRange(0, attributedText.length)
         if range.length > 0 {
-            attributedText.enumerateAttribute(NSAttachmentAttributeName, in: range,
-                options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) -> Void in
-                if value != nil {
-                    let attachment = value as! TextAttachment
-                    allAttachments.append(attachment)
-                }
+            attributedText.enumerateAttribute(
+                NSAttachmentAttributeName, in: range,
+                options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
+                    (value, range, stop) -> Void in
+                    if let attachment = value as? TextAttachment {
+                        allAttachments.append(attachment)
+                    }
             }
         }
         
@@ -102,7 +102,7 @@ open class ComposeTextView: UITextView {
         if attachments.count > 0  {
             let new = NSMutableAttributedString()
             for at in attachments {
-                let attachString = NSAttributedString(attachment: at!)
+                let attachString = NSAttributedString(attachment: at)
                 new.append(attachString)
             }
             

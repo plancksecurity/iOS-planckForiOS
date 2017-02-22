@@ -97,7 +97,7 @@ extension MessageBodyCell {
         let attachments = textView.textAttachments()
         var mailAttachments = [Attachment]()
         attachments.forEach { (attachment) in
-            if let attch = attachment?.attachment {
+            if let attch = attachment.attachment {
                 mailAttachments.append(attch)
             }
         }
