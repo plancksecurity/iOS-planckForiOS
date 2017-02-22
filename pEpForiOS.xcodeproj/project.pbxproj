@@ -181,7 +181,6 @@
 		8B81BB901E03F73100D38C82 /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B81BB8F1E03F73100D38C82 /* SegueHandlerType.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
-		B70449E51E576C1B001477B5 /* FolderData.plist in Resources */ = {isa = PBXBuildFile; fileRef = B70449E41E576C1B001477B5 /* FolderData.plist */; };
 		B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */; };
 		B7208EB01E437C1C00B08B22 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7208EAF1E437C1C00B08B22 /* LogViewController.swift */; };
 		B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */; };
@@ -189,7 +188,7 @@
 		B722EC651E5B49BA00A2B9D5 /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC641E5B49BA00A2B9D5 /* FolderViewModel.swift */; };
 		B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */; };
 		B722EC831E5CA66900A2B9D5 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC821E5CA66900A2B9D5 /* FolderTableViewCell.swift */; };
-		B726CF761E5DA24C005C19EF /* AccountSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B726CF751E5DA24C005C19EF /* AccountSection.swift */; };
+		B726CF781E5DB1F6005C19EF /* AccountSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B726CF771E5DB1F6005C19EF /* AccountSection.swift */; };
 		B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */; };
 		B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */; };
 /* End PBXBuildFile section */
@@ -497,7 +496,6 @@
 		8B77BD681E0C1D930060F11F /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
 		8B81BB8F1E03F73100D38C82 /* SegueHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandlerType.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		B70449E41E576C1B001477B5 /* FolderData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = FolderData.plist; path = Folder/FolderData.plist; sourceTree = "<group>"; };
 		B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderTableViewController.swift; path = Folder/FolderTableViewController.swift; sourceTree = "<group>"; };
 		B7208EAF1E437C1C00B08B22 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderCellViewModel.swift; path = Folder/ViewModel/FolderCellViewModel.swift; sourceTree = "<group>"; };
@@ -505,7 +503,7 @@
 		B722EC641E5B49BA00A2B9D5 /* FolderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderViewModel.swift; path = Folder/ViewModel/FolderViewModel.swift; sourceTree = "<group>"; };
 		B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderUiProtocols.swift; sourceTree = "<group>"; };
 		B722EC821E5CA66900A2B9D5 /* FolderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderTableViewCell.swift; path = Folder/FolderTableViewCell.swift; sourceTree = "<group>"; };
-		B726CF751E5DA24C005C19EF /* AccountSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSection.swift; path = "Folder/Cells&Sections/AccountSection.swift"; sourceTree = "<group>"; };
+		B726CF771E5DB1F6005C19EF /* AccountSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSection.swift; path = Folder/CellsAndSections/AccountSection.swift; sourceTree = "<group>"; };
 		B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypeUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1005,10 +1003,9 @@
 		B71EBBB41E55E43100150177 /* Folder */ = {
 			isa = PBXGroup;
 			children = (
-				B722EC7B1E5CA59100A2B9D5 /* Cells&Sections */,
+				B722EC7B1E5CA59100A2B9D5 /* CellsAndSections */,
 				B722EC471E5B019B00A2B9D5 /* ViewModel */,
 				B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */,
-				B70449E41E576C1B001477B5 /* FolderData.plist */,
 			);
 			name = Folder;
 			sourceTree = "<group>";
@@ -1031,13 +1028,13 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
-		B722EC7B1E5CA59100A2B9D5 /* Cells&Sections */ = {
+		B722EC7B1E5CA59100A2B9D5 /* CellsAndSections */ = {
 			isa = PBXGroup;
 			children = (
-				B726CF751E5DA24C005C19EF /* AccountSection.swift */,
+				B726CF771E5DB1F6005C19EF /* AccountSection.swift */,
 				B722EC821E5CA66900A2B9D5 /* FolderTableViewCell.swift */,
 			);
-			name = "Cells&Sections";
+			name = CellsAndSections;
 			sourceTree = "<group>";
 		};
 		B740B7571E4B1B80002585E1 /* MimeTypes */ = {
@@ -1254,7 +1251,6 @@
 				222B355D1DF96478007A1F82 /* Localizable.strings in Resources */,
 				220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */,
 				222B35831DF97A44007A1F82 /* ComposeData.plist in Resources */,
-				B70449E51E576C1B001477B5 /* FolderData.plist in Resources */,
 				22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */,
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
 				B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */,
@@ -1339,7 +1335,7 @@
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
 				439A6C761E535827004CBAA6 /* FingerprintTableViewController.swift in Sources */,
-				B726CF761E5DA24C005C19EF /* AccountSection.swift in Sources */,
+				B726CF781E5DB1F6005C19EF /* AccountSection.swift in Sources */,
 				43A26FBA1E0408FB00AF0B84 /* ErrorProtocol.swift in Sources */,
 				4339477B1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift in Sources */,
 				B722EC831E5CA66900A2B9D5 /* FolderTableViewCell.swift in Sources */,
