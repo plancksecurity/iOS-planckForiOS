@@ -137,7 +137,7 @@ open class ComposeTextView: UITextView {
             let data = try string.data(from: range, documentAttributes: docAttributes)
             return String(data: data, encoding: .utf8)
         } catch {
-            print("Could not covert into html")
+            Log.error(component: #function, errorString: "Could not covert into html")
             return nil
         }
     }

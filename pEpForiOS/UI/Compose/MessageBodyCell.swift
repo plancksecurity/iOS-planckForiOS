@@ -10,8 +10,7 @@ import UIKit
 import MessageModel
 
 public class TextAttachment: NSTextAttachment {
-    
-    var attachment: Attachment!
+    var attachment: Attachment?
     var identifier: String?
 }
 
@@ -42,7 +41,6 @@ class MessageBodyCell: ComposeCell {
 }
 
 extension MessageBodyCell {
-    
     public final func insert(_ attachment: Attachment) {
         photos.append(attachment)
         
@@ -95,11 +93,13 @@ extension MessageBodyCell {
         textView.attributedText = attrText
     }
     
-    public final func getAllAttachments() -> [Attachment?] {
+    public final func getAllAttachments() -> [Attachment] {
         let attachments = textView.textAttachments()
-        var mailAttachments = [Attachment?]()
+        var mailAttachments = [Attachment]()
         attachments.forEach { (attachment) in
-            mailAttachments.append(attachment?.attachment)
+            if let attch = attachment?.attachment {
+                mailAttachments.append(attch)
+            }
         }
         return mailAttachments
     }

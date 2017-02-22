@@ -187,7 +187,9 @@ class ComposeTableViewController: UITableViewController {
     fileprivate final func createAttachment(
         url: URL, _ isMovie: Bool = false, image: UIImage? = nil) -> Attachment? {
         let fileExtension = url.pathExtension
-        let baseName = NSLocalizedString("Attachment", comment: "Base name for attachments")
+        let baseName = NSLocalizedString(
+            "Attachment",
+            comment: "Base name for attachments, must be the same name iOS uses for NSHTMLTextDocumentType attachments")
         let fileName = attachmentCounter.filename(baseName: baseName, fileExtension: fileExtension)
 
         let mimeType = mimeTypeUtil?.getMimeType(fileExtension: fileExtension) ??
@@ -242,7 +244,7 @@ class ComposeTableViewController: UITableViewController {
                 }
             } else if cell is MessageBodyCell {
                 if let attachments = (cell as? MessageBodyCell)?.getAllAttachments() {
-                    message.attachments = attachments as! [Attachment]
+                    message.attachments = attachments
                 }
                 message.longMessageFormatted = cell.textView.toHtml()
                 if message.attachments.isEmpty {
