@@ -181,7 +181,15 @@
 		8B81BB901E03F73100D38C82 /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B81BB8F1E03F73100D38C82 /* SegueHandlerType.swift */; };
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
+		B70449E51E576C1B001477B5 /* FolderData.plist in Resources */ = {isa = PBXBuildFile; fileRef = B70449E41E576C1B001477B5 /* FolderData.plist */; };
+		B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */; };
 		B7208EB01E437C1C00B08B22 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7208EAF1E437C1C00B08B22 /* LogViewController.swift */; };
+		B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */; };
+		B722EC511E5B0E9B00A2B9D5 /* ViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC501E5B0E9B00A2B9D5 /* ViewModelTest.swift */; };
+		B722EC651E5B49BA00A2B9D5 /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC641E5B49BA00A2B9D5 /* FolderViewModel.swift */; };
+		B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */; };
+		B722EC831E5CA66900A2B9D5 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC821E5CA66900A2B9D5 /* FolderTableViewCell.swift */; };
+		B726CF761E5DA24C005C19EF /* AccountSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B726CF751E5DA24C005C19EF /* AccountSection.swift */; };
 		B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */; };
 		B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */; };
 /* End PBXBuildFile section */
@@ -489,7 +497,15 @@
 		8B77BD681E0C1D930060F11F /* AccountSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsTableViewController.swift; sourceTree = "<group>"; };
 		8B81BB8F1E03F73100D38C82 /* SegueHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandlerType.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B70449E41E576C1B001477B5 /* FolderData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = FolderData.plist; path = Folder/FolderData.plist; sourceTree = "<group>"; };
+		B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderTableViewController.swift; path = Folder/FolderTableViewController.swift; sourceTree = "<group>"; };
 		B7208EAF1E437C1C00B08B22 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
+		B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderCellViewModel.swift; path = Folder/ViewModel/FolderCellViewModel.swift; sourceTree = "<group>"; };
+		B722EC501E5B0E9B00A2B9D5 /* ViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelTest.swift; sourceTree = "<group>"; };
+		B722EC641E5B49BA00A2B9D5 /* FolderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderViewModel.swift; path = Folder/ViewModel/FolderViewModel.swift; sourceTree = "<group>"; };
+		B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderUiProtocols.swift; sourceTree = "<group>"; };
+		B722EC821E5CA66900A2B9D5 /* FolderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderTableViewCell.swift; path = Folder/FolderTableViewCell.swift; sourceTree = "<group>"; };
+		B726CF751E5DA24C005C19EF /* AccountSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSection.swift; path = "Folder/Cells&Sections/AccountSection.swift"; sourceTree = "<group>"; };
 		B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypeUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -765,6 +781,7 @@
 				5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */,
 				43E74C731E38DE2200A2F7A6 /* ImapFlagsTests.swift */,
 				43EE994D1E4392530060EACE /* FlagImageTests.swift */,
+				B722EC501E5B0E9B00A2B9D5 /* ViewModelTest.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -947,6 +964,7 @@
 			children = (
 				43A6E0591E574A62005BEE69 /* UIViewController+Extension.swift */,
 				43A6E0491E5726C8005BEE69 /* Background */,
+				B71EBBB41E55E43100150177 /* Folder */,
 				B7208EAE1E437BF800B08B22 /* Settings */,
 				439A6C6C1E535827004CBAA6 /* Handshake */,
 				43ED53621CC77F95006AB156 /* EmailDisplay */,
@@ -984,12 +1002,42 @@
 			path = ImapSetup;
 			sourceTree = "<group>";
 		};
+		B71EBBB41E55E43100150177 /* Folder */ = {
+			isa = PBXGroup;
+			children = (
+				B722EC7B1E5CA59100A2B9D5 /* Cells&Sections */,
+				B722EC471E5B019B00A2B9D5 /* ViewModel */,
+				B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */,
+				B70449E41E576C1B001477B5 /* FolderData.plist */,
+			);
+			name = Folder;
+			sourceTree = "<group>";
+		};
 		B7208EAE1E437BF800B08B22 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				B7208EAF1E437C1C00B08B22 /* LogViewController.swift */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		B722EC471E5B019B00A2B9D5 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */,
+				B722EC641E5B49BA00A2B9D5 /* FolderViewModel.swift */,
+				B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */,
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
+		B722EC7B1E5CA59100A2B9D5 /* Cells&Sections */ = {
+			isa = PBXGroup;
+			children = (
+				B726CF751E5DA24C005C19EF /* AccountSection.swift */,
+				B722EC821E5CA66900A2B9D5 /* FolderTableViewCell.swift */,
+			);
+			name = "Cells&Sections";
 			sourceTree = "<group>";
 		};
 		B740B7571E4B1B80002585E1 /* MimeTypes */ = {
@@ -1206,6 +1254,7 @@
 				222B355D1DF96478007A1F82 /* Localizable.strings in Resources */,
 				220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */,
 				222B35831DF97A44007A1F82 /* ComposeData.plist in Resources */,
+				B70449E51E576C1B001477B5 /* FolderData.plist in Resources */,
 				22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */,
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
 				B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */,
@@ -1290,8 +1339,10 @@
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
 				439A6C761E535827004CBAA6 /* FingerprintTableViewController.swift in Sources */,
+				B726CF761E5DA24C005C19EF /* AccountSection.swift in Sources */,
 				43A26FBA1E0408FB00AF0B84 /* ErrorProtocol.swift in Sources */,
 				4339477B1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift in Sources */,
+				B722EC831E5CA66900A2B9D5 /* FolderTableViewCell.swift in Sources */,
 				43122B3C1DF5B75000610253 /* NetworkService.swift in Sources */,
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */,
 				431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */,
@@ -1321,6 +1372,7 @@
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
 				43122B191DF5B48B00610253 /* EmailService.swift in Sources */,
+				B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */,
 				222B357E1DF97675007A1F82 /* SuggestTableView.swift in Sources */,
 				431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */,
 				432198ED1DF6B66800318A74 /* SharedObjects.swift in Sources */,
@@ -1345,6 +1397,7 @@
 				43800D951D112A0800821E34 /* XPathQuery.m in Sources */,
 				431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */,
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
+				B722EC651E5B49BA00A2B9D5 /* FolderViewModel.swift in Sources */,
 				439A6C791E535827004CBAA6 /* TrustwordsTableViewController.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
@@ -1370,7 +1423,9 @@
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				8B77BD691E0C1D930060F11F /* AccountSettingsTableViewController.swift in Sources */,
 				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
+				B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */,
 				43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */,
+				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
 				43ED53781CC77F95006AB156 /* SMTPSettingsTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1391,6 +1446,7 @@
 				43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
+				B722EC511E5B0E9B00A2B9D5 /* ViewModelTest.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
 				43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
