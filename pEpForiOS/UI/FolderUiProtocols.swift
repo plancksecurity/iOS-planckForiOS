@@ -8,6 +8,13 @@
 
 import Foundation
 
+//not used now presenters will be implemented in other moment
+
+protocol LabelPresentable {
+
+}
+ 
+
 public protocol SectionWithText {
 
     var title: String { get }

@@ -309,7 +309,7 @@
                                             </connections>
                                         </textView>
                                         <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8S-M4-JdW">
-                                            <rect key="frame" x="-5" y="40" width="376" height="140"/>
+                                            <rect key="frame" x="-6" y="40" width="377" height="140"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="prY-xp-1rI" id="VoP-0P-HiT"/>
@@ -1186,13 +1186,64 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FolderCell" id="sxc-jM-JsM">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FolderCell" id="sxc-jM-JsM" customClass="FolderTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sxc-jM-JsM" id="M0A-8Z-YDN">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hD2-KD-v8m">
+                                            <rect key="frame" x="53" y="11" width="227" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="folders-icon-folder" translatesAutoresizingMaskIntoConstraints="NO" id="bH0-D2-eqY">
+                                            <rect key="frame" x="8" y="8" width="30" height="27"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="30" id="Puj-o7-7J7"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qzE-mS-G67">
+                                            <rect key="frame" x="295" y="11" width="45" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="45" id="4qa-y7-ksD"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow_down_icon" translatesAutoresizingMaskIntoConstraints="NO" id="svM-LV-4KF">
+                                            <rect key="frame" x="352" y="14" width="15" height="15.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="15" id="elj-GS-sWs"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="hD2-KD-v8m" secondAttribute="bottom" constant="3" id="9K3-3w-Xbb"/>
+                                        <constraint firstItem="qzE-mS-G67" firstAttribute="leading" secondItem="hD2-KD-v8m" secondAttribute="trailing" constant="15" id="DDi-WR-BKD"/>
+                                        <constraint firstItem="bH0-D2-eqY" firstAttribute="top" secondItem="M0A-8Z-YDN" secondAttribute="top" constant="8" id="JBx-sV-rWb"/>
+                                        <constraint firstItem="hD2-KD-v8m" firstAttribute="leading" secondItem="bH0-D2-eqY" secondAttribute="trailing" constant="15" id="SwU-t7-Yxa"/>
+                                        <constraint firstAttribute="bottom" secondItem="svM-LV-4KF" secondAttribute="bottom" constant="14" id="VKh-8G-IRe"/>
+                                        <constraint firstItem="svM-LV-4KF" firstAttribute="leading" secondItem="qzE-mS-G67" secondAttribute="trailing" constant="12" id="WyT-Rd-OhG"/>
+                                        <constraint firstItem="hD2-KD-v8m" firstAttribute="leading" secondItem="bH0-D2-eqY" secondAttribute="trailing" constant="15" id="Yw1-Or-3ns"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="qzE-mS-G67" secondAttribute="bottom" constant="3" id="ctM-je-RpT"/>
+                                        <constraint firstAttribute="trailing" secondItem="svM-LV-4KF" secondAttribute="trailing" constant="8" id="e8b-do-3Re"/>
+                                        <constraint firstItem="svM-LV-4KF" firstAttribute="top" secondItem="M0A-8Z-YDN" secondAttribute="top" constant="14" id="jRX-el-H3Y"/>
+                                        <constraint firstAttribute="bottom" secondItem="bH0-D2-eqY" secondAttribute="bottom" constant="8" id="osh-UP-F0Y"/>
+                                        <constraint firstItem="hD2-KD-v8m" firstAttribute="top" secondItem="M0A-8Z-YDN" secondAttribute="topMargin" constant="3" id="qDv-IO-vdT"/>
+                                        <constraint firstItem="qzE-mS-G67" firstAttribute="top" secondItem="M0A-8Z-YDN" secondAttribute="topMargin" constant="3" id="sTN-Dq-ABf"/>
+                                        <constraint firstItem="bH0-D2-eqY" firstAttribute="leading" secondItem="M0A-8Z-YDN" secondAttribute="leading" constant="8" id="wpK-ya-v0W"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="CollapsedArrow" destination="svM-LV-4KF" id="TmR-8k-wph"/>
+                                    <outlet property="Icon" destination="bH0-D2-eqY" id="krB-hu-An4"/>
+                                    <outlet property="labelName" destination="hD2-KD-v8m" id="pSR-G3-Kxr"/>
+                                    <outlet property="labelUnreadNumber" destination="qzE-mS-G67" id="zQi-14-gWD"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -1204,7 +1255,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="23T-nv-Ark" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7993" y="-1164"/>
+            <point key="canvasLocation" x="7992.8000000000002" y="-1164.4677661169417"/>
         </scene>
         <!--Log View Controller-->
         <scene sceneID="cbu-sz-o8C">
@@ -1923,7 +1974,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aso-tc-Ukd">
-                                            <rect key="frame" x="-2" y="-3" width="371" height="192"/>
+                                            <rect key="frame" x="-3" y="-3" width="372" height="192"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
@@ -2780,6 +2831,7 @@ APPLEPIE RESEARCH</string>
         <image name="button-trustwords-icon" width="21" height="21"/>
         <image name="contact-icon" width="46" height="46"/>
         <image name="flag-tab-button-icon" width="19" height="22"/>
+        <image name="folders-icon-folder" width="25" height="25"/>
         <image name="trust-line-icon" width="113" height="20"/>
         <image name="unread-icon" width="22" height="22"/>
     </resources>

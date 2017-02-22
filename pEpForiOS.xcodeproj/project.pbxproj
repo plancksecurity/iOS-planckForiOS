@@ -191,6 +191,7 @@
 		B726CF781E5DB1F6005C19EF /* AccountSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B726CF771E5DB1F6005C19EF /* AccountSection.swift */; };
 		B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */; };
 		B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */; };
+		B7F19A001E5DE9FB0079A513 /* Folder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F199FF1E5DE9FB0079A513 /* Folder+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -506,6 +507,7 @@
 		B726CF771E5DB1F6005C19EF /* AccountSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSection.swift; path = Folder/CellsAndSections/AccountSection.swift; sourceTree = "<group>"; };
 		B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypeUtil.swift; sourceTree = "<group>"; };
+		B7F199FF1E5DE9FB0079A513 /* Folder+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Folder+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -944,6 +946,7 @@
 				43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */,
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				43CE63D01DE8866C00FAC505 /* Message+pEp.swift */,
+				B7F199FF1E5DE9FB0079A513 /* Folder+Extensions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1319,6 +1322,7 @@
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
 				43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */,
+				B7F19A001E5DE9FB0079A513 /* Folder+Extensions.swift in Sources */,
 				439D407A1CC79423009A4E7C /* GCD.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableView.swift in Sources */,
 				43A6E05A1E574A62005BEE69 /* UIViewController+Extension.swift in Sources */,

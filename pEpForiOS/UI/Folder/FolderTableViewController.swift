@@ -57,10 +57,9 @@ class FolderTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FolderCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FolderCell", for: indexPath) as! FolderTableViewCell
         let fcvm = folderVM[indexPath.section][indexPath.item]
-        let txt = cell.textLabel
-        txt?.text = fcvm.name
+        cell.configure(viewModel: fcvm)
         return cell
     }
 

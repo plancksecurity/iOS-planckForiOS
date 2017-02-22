@@ -11,15 +11,28 @@ import MessageModel
 
 public class FolderCellViewModel {
 
-    var folder:Folder
-    var level : Int
+    public var icon: UIImage {
+        return self.folder.folderType.getIconType()
+    }
+    public var title : String {
+        return self.name
+    }
+    public var number: Int {
+        return 0 //fake number
+    }
+    public var arrow: UIImage {
+        return UIImage(named: "arrow_down_icon")!
+    }
+
+    private var folder:Folder
+    private var level : Int
 
     public init(folder: Folder, level: Int) {
         self.folder = folder
         self.level = level
     }
 
-    var name:String {
+    private var name:String {
         var n = ""
         if let parent = self.folder.parent {
             n = self.folder.name.replacingOccurrences(of: parent.name, with: "")
