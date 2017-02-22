@@ -197,7 +197,7 @@ open class NetworkServiceWorker {
 
     func buildSmtpOperations(
         accountInfo: AccountConnectInfo, errorContainer: ServiceErrorProtocol,
-        opSmtpFinished: Operation) -> (BaseOperation?, [Operation]) {
+        opSmtpFinished: Operation, lastOperation: Operation?) -> (BaseOperation?, [Operation]) {
         if let smtpCI = accountInfo.smtpConnectInfo {
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
             let smtpSendData = SmtpSendData(connectInfo: smtpCI)
@@ -209,6 +209,9 @@ open class NetworkServiceWorker {
                         Log.info(component: #function, content: "opSmtpLogin finished")
                     }
                 }
+            }
+            if let lastOp = lastOperation {
+                loginOp.addDependency(lastOp)
             }
             opSmtpFinished.addDependency(loginOp)
             var operations = [Operation]()
@@ -374,10 +377,15 @@ open class NetworkServiceWorker {
 
         var operations: [Operation] = []
 
+        let fixAttachmentsOp = FixAttachmentsOperation(
+            parentName: serviceConfig.parentName, errorContainer: errorContainer)
+        operations.append(fixAttachmentsOp)
+        opAllFinished.addDependency(fixAttachmentsOp)
+
         // 3.a Items not associated with any mailbox (e.g., SMTP send)
         let (lastSmtpOp, smtpOperations) = buildSmtpOperations(
             accountInfo: accountInfo, errorContainer: errorContainer,
-            opSmtpFinished: opSmtpFinished)
+            opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
         operations.append(contentsOf: smtpOperations)
 
         if let imapCI = accountInfo.imapConnectInfo {

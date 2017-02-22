@@ -52,6 +52,7 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
                         self.privateMOC.performAndWait {
                             cdAttach.data = theData as NSData
                             Record.saveAndWait(context: self.privateMOC)
+                            self.openFetchCount -= 1
                             if self.openFetchCount == 0 {
                                 self.markAsFinished()
                             }
