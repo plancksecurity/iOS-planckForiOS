@@ -8,13 +8,14 @@
 
 import XCTest
 import CoreData
+import Photos
 
 import pEpForiOS
 import MessageModel
 
 class SimpleOperationsTest: XCTestCase {
     let connectionManager = ConnectionManager()
-    var account: CdAccount!
+    var cdAccount: CdAccount!
     var persistentSetup: PersistentSetup!
 
     var imapConnectInfo: EmailConnectInfo!
@@ -29,10 +30,10 @@ class SimpleOperationsTest: XCTestCase {
         cdAccount.identity?.isMySelf = true
         TestUtil.skipValidation()
         Record.saveAndWait()
-        self.account = cdAccount
+        self.cdAccount = cdAccount
 
-        imapConnectInfo = account.imapConnectInfo
-        smtpConnectInfo = account.smtpConnectInfo
+        imapConnectInfo = cdAccount.imapConnectInfo
+        smtpConnectInfo = cdAccount.smtpConnectInfo
         imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
 
         XCTAssertNotNil(imapConnectInfo)
@@ -156,7 +157,7 @@ class SimpleOperationsTest: XCTestCase {
     func testSyncMessagesOperation() {
         fetchMessages()
 
-        guard let folder = CdFolder.by(folderType: .inbox, account: account) else {
+        guard let folder = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
             return
         }
@@ -212,7 +213,7 @@ class SimpleOperationsTest: XCTestCase {
     func testSyncMessagesFailedOperation() {
         testFetchFoldersOperation()
 
-        guard let folder = CdFolder.by(folderType: .inbox, account: account) else {
+        guard let folder = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
             return
         }
@@ -257,7 +258,7 @@ class SimpleOperationsTest: XCTestCase {
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
 
         var options: [String: Any] = ["folderType": FolderType.inbox.rawValue,
-                                      "account": account]
+                                      "account": cdAccount]
         let inboxFolder = CdFolder.first(attributes: options)
         options["folderType"] = FolderType.sent.rawValue
         XCTAssertNotNil(inboxFolder)
@@ -272,7 +273,7 @@ class SimpleOperationsTest: XCTestCase {
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
 
         let _ = CdFolder.insertOrUpdate(
-            folderName: folder.name(), folderSeparator: nil, account: account)
+            folderName: folder.name(), folderSeparator: nil, account: cdAccount)
         Record.saveAndWait()
 
         let message = CWIMAPMessage.init()
@@ -303,7 +304,7 @@ class SimpleOperationsTest: XCTestCase {
         var numberOfCallbacksCalled = 0
 
         let _ = CdFolder.insertOrUpdate(
-            folderName: folder.name(), folderSeparator: nil, account: account)
+            folderName: folder.name(), folderSeparator: nil, account: cdAccount)
         Record.saveAndWait()
         XCTAssertEqual(CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
 
@@ -342,7 +343,7 @@ class SimpleOperationsTest: XCTestCase {
 
     func testCreateLocalSpecialFoldersOperation() {
         let expFoldersStored = expectation(description: "expFoldersStored")
-        let op = CreateLocalSpecialFoldersOperation(account: account)
+        let op = CreateLocalSpecialFoldersOperation(account: cdAccount)
         let queue = OperationQueue()
         op.completionBlock = {
             expFoldersStored.fulfill()
@@ -356,7 +357,7 @@ class SimpleOperationsTest: XCTestCase {
             }
             XCTAssertEqual(folders.count, FolderType.allValuesToCreate.count)
             let p = NSPredicate(format: "folderType = %d and account = %@",
-                                FolderType.localOutbox.rawValue, self.account)
+                                FolderType.localOutbox.rawValue, self.cdAccount)
             let outbox = CdFolder.first(predicate: p)
             XCTAssertNotNil(outbox, "Expected outbox to exist")
         })
@@ -373,7 +374,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expCreated = expectation(description: "expCreated")
         let opCreate = CheckAndCreateFolderOfTypeOperation(
-            imapSyncData: imapSyncData, account: account, folderType: .drafts)
+            imapSyncData: imapSyncData, account: cdAccount, folderType: .drafts)
         opCreate.addDependency(opFetchFolders)
         opCreate.completionBlock = {
             expCreated.fulfill()
@@ -389,26 +390,26 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertFalse(opCreate.hasErrors())
         })
 
-        XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: account))
+        XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: cdAccount))
     }
 
     func testCreateDeleteFolderOperation() {
         let uuid1 = MessageID.generate()
         let folder1 = CdFolder.create()
-        folder1.account = account
+        folder1.account = cdAccount
         folder1.uuid = uuid1
         folder1.name = "Inbox.Folder1 \(uuid1)"
 
         let uuid2 = MessageID.generate()
         let folder2 = CdFolder.create()
-        folder2.account = account
+        folder2.account = cdAccount
         folder2.uuid = uuid1
         folder2.name = "Inbox.Folder2 \(uuid2)"
 
         Record.saveAndWait()
 
         let expCreated = expectation(description: "expCreated")
-        let opCreate = CreateFoldersOperation(imapSyncData: imapSyncData, account: account)
+        let opCreate = CreateFoldersOperation(imapSyncData: imapSyncData, account: cdAccount)
         opCreate.completionBlock = {
             expCreated.fulfill()
         }
@@ -431,7 +432,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expDeleted = expectation(description: "expDeleted")
         let opDelete = DeleteFoldersOperation(
-            imapSyncData: imapSyncData, account: account)
+            imapSyncData: imapSyncData, account: cdAccount)
         opDelete.completionBlock = {
             expDeleted.fulfill()
         }
@@ -443,17 +444,17 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertFalse(opDelete.hasErrors())
         })
 
-        XCTAssertNil(CdFolder.by(folderType: .drafts, account: account))
+        XCTAssertNil(CdFolder.by(folderType: .drafts, account: cdAccount))
 
         // Recreate drafts folder
         testCreateFolders()
-        XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: account))
+        XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: cdAccount))
     }
 
     func testSyncFlagsToServerOperationEmpty() {
         fetchMessages()
 
-        guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
             return
         }
@@ -478,7 +479,7 @@ class SimpleOperationsTest: XCTestCase {
     func testSyncFlagsToServerOperation() {
         fetchMessages()
 
-        guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
             return
         }
@@ -537,7 +538,7 @@ class SimpleOperationsTest: XCTestCase {
     func testSyncFlagsToServerOperationMulti() {
         fetchMessages()
 
-        guard let inbox = CdFolder.by(folderType: .inbox, account: account) else {
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
             return
         }
@@ -624,7 +625,7 @@ class SimpleOperationsTest: XCTestCase {
         (identity: NSMutableDictionary, receiver1: PEPIdentity,
         receiver2: PEPIdentity, receiver3: PEPIdentity,
         receiver4: PEPIdentity)) {
-            let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation(account: account)
+            let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation(account: cdAccount)
             let expFoldersStored = expectation(description: "expFoldersStored")
             opCreateSpecialFolders.completionBlock = {
                 expFoldersStored.fulfill()
@@ -636,7 +637,7 @@ class SimpleOperationsTest: XCTestCase {
                 XCTAssertNil(error)
             })
 
-            let message = insertNewMessageForSending(account: account)
+            let message = insertNewMessageForSending(account: cdAccount)
 
             let session = PEPSession.init()
 
@@ -668,8 +669,8 @@ class SimpleOperationsTest: XCTestCase {
             session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
 
         let from = CdIdentity.create()
-        from.userName = account.identity?.userName ?? "Unit 004"
-        from.address = account.identity?.address ?? "unittest.ios.4@peptest.ch"
+        from.userName = cdAccount.identity?.userName ?? "Unit 004"
+        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
         let toWithKey = CdIdentity.create()
         toWithKey.userName = "Unit 001"
@@ -683,7 +684,7 @@ class SimpleOperationsTest: XCTestCase {
         folder.uuid = MessageID.generate()
         folder.name = "Sent"
         folder.folderType = FolderType.sent.rawValue
-        folder.account = account
+        folder.account = cdAccount
 
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = TestUtil.loadDataWithFileName(imageFileName) else {
@@ -792,14 +793,14 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         let from = CdIdentity.create()
-        from.userName = account.identity?.userName ?? "Unit 004"
-        from.address = account.identity?.address ?? "unittest.ios.4@peptest.ch"
+        from.userName = cdAccount.identity?.userName ?? "Unit 004"
+        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
         let to = CdIdentity.create()
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
-        let folder = CdFolder.by(folderType: .sent, account: account)
+        let folder = CdFolder.by(folderType: .sent, account: cdAccount)
         XCTAssertNotNil(folder)
 
         // Build emails
@@ -873,14 +874,14 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         let from = CdIdentity.create()
-        from.userName = account.identity?.userName ?? "Unit 004"
-        from.address = account.identity?.address ?? "unittest.ios.4@peptest.ch"
+        from.userName = cdAccount.identity?.userName ?? "Unit 004"
+        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
         let to = CdIdentity.create()
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
-        let folder = CdFolder.by(folderType: .drafts, account: account)
+        let folder = CdFolder.by(folderType: .drafts, account: cdAccount)
         XCTAssertNotNil(folder)
 
         // Build emails
@@ -991,8 +992,8 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testMyselfOperation() {
-        XCTAssertNotNil(account.identity)
-        let identity = account.identity?.identity()
+        XCTAssertNotNil(cdAccount.identity)
+        let identity = cdAccount.identity?.identity()
         let expCompleted = expectation(description: "expCompleted")
 
         let op = MySelfOperation()
@@ -1038,22 +1039,22 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         let from = CdIdentity.create()
-        from.userName = account.identity?.userName ?? "Unit 004"
-        from.address = account.identity?.address ?? "unittest.ios.4@peptest.ch"
+        from.userName = cdAccount.identity?.userName ?? "Unit 004"
+        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
         let to = CdIdentity.create()
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
-        guard let inboxFolder = CdFolder.by(folderType: .inbox, account: account) else {
+        guard let inboxFolder = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
             return
         }
-        guard let draftsFolder = CdFolder.by(folderType: .drafts, account: account) else {
+        guard let draftsFolder = CdFolder.by(folderType: .drafts, account: cdAccount) else {
             XCTFail()
             return
         }
-        guard let trashFolder = CdFolder.by(folderType: .trash, account: account) else {
+        guard let trashFolder = CdFolder.by(folderType: .trash, account: cdAccount) else {
             XCTFail()
             return
         }
@@ -1175,7 +1176,43 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
-    func testMessageToAttachmentOperation() {
+    func testFixAttachmentsOperation() {
+        let cdFolder = CdFolder.create()
+        cdFolder.name = "Whatever"
+        cdFolder.uuid = "1"
+        cdFolder.folderType = FolderType.inbox.rawValue
+        cdFolder.account = cdAccount
 
+        let cdMsg = CdMessage.create(messageID: "2", uid: 1, parent: cdFolder)
+
+        let cdAttachWithoutSize = CdAttachment.create()
+        cdAttachWithoutSize.data = "Some bytes".data(using: .utf8) as NSData?
+        cdAttachWithoutSize.message = cdMsg
+        cdAttachWithoutSize.length = 0
+
+        Record.saveAndWait()
+
+        let expAttachmentsFixed = expectation(description: "expAttachmentsFixed")
+        let fixAttachmentsOp = FixAttachmentsOperation()
+        fixAttachmentsOp.completionBlock = {
+            expAttachmentsFixed.fulfill()
+        }
+        let queue = OperationQueue()
+        queue.addOperation(fixAttachmentsOp)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(fixAttachmentsOp.hasErrors())
+        })
+
+        guard let allAttachments = CdAttachment.all() as? [CdAttachment] else {
+            XCTFail()
+            return
+        }
+        for cdAttach in allAttachments {
+            XCTAssertNotNil(cdAttach.data)
+            XCTAssertNotNil(cdAttach.length)
+            XCTAssertGreaterThan(cdAttach.length, 0)
+        }
     }
 }

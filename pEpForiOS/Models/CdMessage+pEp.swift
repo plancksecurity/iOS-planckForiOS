@@ -66,7 +66,7 @@ extension CdMessage {
                 }
                 let attach = CdAttachment.create()
                 attach.data = data as NSData
-                attach.size = Int64(data.count)
+                attach.length = Int64(data.count)
                 if let mt = at[kPepMimeType] as? String {
                     attach.mimeType = mt
                 }
