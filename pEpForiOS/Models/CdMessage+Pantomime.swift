@@ -424,7 +424,8 @@ extension CdMessage {
                 targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
             } else {
                 let attachment = insertAttachment(
-                    contentType: part.contentType(), filename: part.filename(), data: data)
+                    contentType: part.contentType(), filename: part.filename(), data: data,
+                    contentID: part.contentID())
                 targetMail.addAttachment(attachment)
             }
         }

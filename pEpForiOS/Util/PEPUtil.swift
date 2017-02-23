@@ -214,30 +214,41 @@ open class PEPUtil {
         return pEp(identity: id)
     }
 
+    open static func pEpAttachment(
+        fileName: String?, mimeType: String?, data: Data?,
+        contentID: String?) -> [String: AnyObject] {
+        var dict: [String: AnyObject] = [:]
+        if let fn = fileName {
+            dict[kPepMimeFilename] = fn as NSString
+        }
+        if let mt = mimeType {
+            dict[kPepMimeType] = mt as NSString
+        }
+        if let d = data {
+            dict[kPepMimeData] = d as NSData
+        }
+        if let cid = contentID {
+            dict[kPepContentID] = cid as NSString
+        }
+        return dict
+    }
+
     /**
      Converts a `CdAttachment` into a pEp attachment.
      */
     open static func pEp(cdAttachment: CdAttachment) -> [String: AnyObject] {
-        var dict: [String: AnyObject] = [:]
-
-        dict[kPepMimeFilename] = cdAttachment.fileName as NSString?
-        dict[kPepMimeType] = cdAttachment.mimeType as NSString?
-        dict[kPepMimeData] = cdAttachment.data
-
-        return dict
+        return pEpAttachment(
+            fileName: cdAttachment.fileName, mimeType: cdAttachment.mimeType,
+            data: cdAttachment.data as Data?, contentID: cdAttachment.contentID)
     }
 
     /**
      Converts an `Attachment` into a pEp attachment.
      */
     open static func pEp(attachment: Attachment) -> [String: AnyObject] {
-        var dict = [String: AnyObject]()
-
-        dict[kPepMimeFilename] = attachment.fileName as AnyObject
-        dict[kPepMimeType] = attachment.mimeType as AnyObject
-        dict[kPepMimeData] = attachment.data as AnyObject
-
-        return dict
+        return pEpAttachment(
+            fileName: attachment.fileName, mimeType: attachment.mimeType, data: attachment.data,
+            contentID: attachment.contentID)
     }
 
     open static func pEp(message: Message, outgoing: Bool = true) -> PEPMessage {
@@ -502,7 +513,7 @@ open class PEPUtil {
 
             if let attachmentDicts = attachmentDictsOpt {
                 for attachmentDict in attachmentDicts {
-                    guard let at = attachmentDict as? [String:NSObject]  else {
+                    guard let at = attachmentDict as? [String: NSObject] else {
                         continue
                     }
                     let part = CWPart()
@@ -521,6 +532,8 @@ open class PEPUtil {
 
                     // handle this as an attachment
                     part.setContentDisposition(PantomimeAttachmentDisposition)
+
+                    part.setContentID(at[kPepContentID] as? String)
 
                     multiPart.add(part)
                 }
