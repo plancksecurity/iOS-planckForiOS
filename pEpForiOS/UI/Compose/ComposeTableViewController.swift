@@ -202,7 +202,8 @@ class ComposeTableViewController: UITableViewController {
     }
 
     fileprivate final func addContactSuggestTable() {
-        suggestTableView = storyboard?.instantiateViewController(withIdentifier: "contactSuggestionTable").view as! SuggestTableView
+        suggestTableView = storyboard?.instantiateViewController(
+            withIdentifier: "contactSuggestionTable").view as! SuggestTableView
         suggestTableView.delegate = self
         suggestTableView.hide()
         updateSuggestTable(defaultCellHeight, true)
@@ -307,21 +308,30 @@ class ComposeTableViewController: UITableViewController {
     }
 
     public final func addAttachment() {
-        let documentPicker = UIDocumentPickerViewController(documentTypes: ["public.data"], in: .import)
+        let documentPicker = UIDocumentPickerViewController(
+            documentTypes: ["public.data"], in: .import)
         documentPicker.delegate = self
         present(documentPicker, animated: true, completion: nil)
     }
 
     // MARK: - Table view data source
 
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewAutomaticDimension }
+    override func tableView(
+        _ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let row = tableData?.getRow(at: indexPath.row) else {
+            return UITableViewAutomaticDimension
+        }
         return row.height
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewAutomaticDimension }
-        guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else { return row.height }
+    override func tableView(
+        _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let row = tableData?.getRow(at: indexPath.row) else {
+            return UITableViewAutomaticDimension
+        }
+        guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else {
+            return row.height
+        }
 
         let height = cell.textView.fieldHeight
         let expandable = cell.fieldModel?.expanded
@@ -352,10 +362,12 @@ class ComposeTableViewController: UITableViewController {
         return tableData?.numberOfRows() ?? 0
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(
+        _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewCell() }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier, for: indexPath) as! ComposeCell
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: row.identifier, for: indexPath) as! ComposeCell
         cell.updateCell(row, indexPath)
         cell.delegate = self
 
@@ -527,8 +539,10 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
 
     func didStartEditing(at indexPath: IndexPath) {
         currentCell = indexPath
-        let media = UIMenuItem(title: "MenuCtrl.Cameraroll".localized, action: #selector(addMediaToCell))
-        let attachment = UIMenuItem(title: "MenuCtrl.Attachment".localized, action: #selector(addAttachment))
+        let media = UIMenuItem(
+            title: "MenuCtrl.Cameraroll".localized, action: #selector(addMediaToCell))
+        let attachment = UIMenuItem(
+            title: "MenuCtrl.Attachment".localized, action: #selector(addAttachment))
         menuController.menuItems = [media, attachment]
     }
 
