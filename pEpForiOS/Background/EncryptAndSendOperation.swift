@@ -112,7 +112,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
                 comp: comp, status: status, encryptedMessage: encMsg)
             if let err = error {
                 Log.error(component: comp, error: err)
-                send(pEpMessage: msg as? PEPMessage)
+                send(pEpMessage: encMsg as? PEPMessage)
             } else {
                 send(pEpMessage: encMsg2 as? PEPMessage)
             }
