@@ -16,9 +16,11 @@ import MessageModel
  */
 open class MySelfOperation: BaseOperation {
     let backgrounder: BackgroundTaskProtocol?
+    let wholeOperationTaskID: BackgroundTaskID?
 
     public init(backgrounder: BackgroundTaskProtocol? = nil) {
         self.backgrounder = backgrounder
+        self.wholeOperationTaskID = backgrounder?.beginBackgroundTask(taskName: #function)
     }
 
     open override func main() {
@@ -45,5 +47,6 @@ open class MySelfOperation: BaseOperation {
             session?.mySelf(pEpIdDict)
             backgrounder?.endBackgroundTask(taskID)
         }
+        backgrounder?.endBackgroundTask(wholeOperationTaskID)
     }
 }

@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         kickOffMySelf()
 
-        networkService = NetworkService(backgrounder: self)
+        networkService = NetworkService(backgrounder: self, mySelfer: self)
         networkService?.sendLayerDelegate = sendLayerDelegate
         CdAccount.sendLayer = networkService
         networkService?.start()
