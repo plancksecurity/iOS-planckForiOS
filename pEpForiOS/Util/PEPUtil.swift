@@ -753,6 +753,7 @@ open class PEPUtil {
      */
     static func check(comp: String, status: PEP_STATUS,
                       encryptedMessage: NSDictionary?) -> (NSDictionary?, NSError?) {
+        return (nil, Constants.errorEncryption(comp, status: status))
         if encryptedMessage != nil && status == PEP_UNENCRYPTED {
             // Don't interpret that as an error
             return (encryptedMessage, nil)
