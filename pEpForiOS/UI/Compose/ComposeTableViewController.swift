@@ -185,7 +185,7 @@ class ComposeTableViewController: UITableViewController {
     }
 
     fileprivate final func createAttachment(
-        url: URL, _ isMovie: Bool = false, image: UIImage? = nil) -> Attachment? {
+        url: URL, _ isMovie: Bool = false, image: UIImage? = nil) -> Attachment {
         let fileExtension = url.pathExtension
         let baseName = NSLocalizedString(
             "Attachment",
@@ -195,10 +195,10 @@ class ComposeTableViewController: UITableViewController {
         let mimeType = mimeTypeUtil?.getMimeType(fileExtension: fileExtension) ??
             MimeTypeUtil.defaultMimeType
 
-        if let att = Attachment.inline(name: fileName, url: url, type: mimeType, image: image) {
-            return att
-        }
-        return nil
+        let att = Attachment.createWithNewContentID(
+            data: nil, mimeType: mimeType, fileName: fileName, url: url, image: image)
+
+        return att
     }
 
     fileprivate final func addContactSuggestTable() {
@@ -604,9 +604,7 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
         if let mediaType = info[UIImagePickerControllerMediaType] as? String {
             if mediaType == kUTTypeMovie as String {
                 guard let url = info[UIImagePickerControllerMediaURL] as? URL else { return }
-                if let attachment = createAttachment(url: url, true) {
-                    cell.addMovie(attachment)
-                }
+                cell.addMovie(createAttachment(url: url, true))
             } else {
                 guard let url = info[UIImagePickerControllerReferenceURL] as? URL else {
                     return
@@ -614,9 +612,7 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
                 guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
                     return
                 }
-                if let attachment = createAttachment(url: url, image: image) {
-                    cell.insert(attachment)
-                }
+                cell.insert(createAttachment(url: url, image: image))
             }
         }
 
@@ -630,9 +626,7 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
 extension ComposeTableViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else { return }
-        if let attachment = createAttachment(url: url) {
-            cell.add(attachment)
-        }
+        cell.add(createAttachment(url: url))
         tableView.updateSize()
     }
 }

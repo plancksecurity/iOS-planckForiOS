@@ -31,10 +31,6 @@ public extension String {
         return (self.range(of: find, options: .caseInsensitive) != nil)
     }
     
-    public func wholeRange() -> NSRange {
-        return NSRange(location: 0, length: characters.count)
-    }
-
     public func unquote() -> String {
         do {
             let regex = try NSRegularExpression(
@@ -299,27 +295,6 @@ public extension String {
      */
     public func startsWith(_ prefix: String) -> Bool {
         return matchesPattern("^\(prefix)")
-    }
-
-    /**
-     Removes "<" from the start, and ">" from the end. Useful for cleaning
-     up message IDs if you really need that.
-     */
-    public func removeAngleBrackets() -> String {
-        do {
-            let regex = try NSRegularExpression(
-                pattern: "^\\s*<(.*)>\\s*$", options: [])
-            if let match = regex.firstMatch(
-                in: self, options: [],
-                range: wholeRange()) {
-                let r1 = match.rangeAt(1)
-                let name = (self as NSString).substring(with: r1)
-                return name
-            }
-        } catch let err as NSError {
-            Log.error(component: "removeAngleBrackets", error: err)
-        }
-        return self
     }
 
     /**
