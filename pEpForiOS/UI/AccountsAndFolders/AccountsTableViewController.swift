@@ -26,9 +26,6 @@ class AccountsTableViewController: UITableViewController {
     /** For email list configuration */
     var emailListConfig: EmailListConfig?
 
-    /** For starting mySelf() */
-    var backgroundQueue = OperationQueue.init()
-
     struct UIState {
         var isSynching = false
     }

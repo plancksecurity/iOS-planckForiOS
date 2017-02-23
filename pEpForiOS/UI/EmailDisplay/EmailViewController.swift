@@ -275,7 +275,7 @@ extension EmailViewController: SegueHandlerType {
             let destination = segue.destination as? TrustwordsTableViewController
             destination?.message = message
             destination?.appConfig = appConfig
-            destination?.myselfIdentity = PEPUtil.mySelf(message: message)
+            destination?.myselfIdentity = PEPUtil.ownIdentity(message: message)
             destination?.partnerIdentity = partnerIdentity
             break
         case .noSegue:

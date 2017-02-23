@@ -21,7 +21,7 @@ extension Message {
      - Returns: An array of identities you can make a handshake on.
      */
     public func identitiesEligibleForHandshake(session: PEPSession = PEPSession()) -> [Identity] {
-        let myselfIdentity = PEPUtil.mySelf(message: self)
+        let myselfIdentity = PEPUtil.ownIdentity(message: self)
         return Array(allIdentities).filter {
             return $0 != myselfIdentity && $0.canHandshakeOn(session: session)
         }

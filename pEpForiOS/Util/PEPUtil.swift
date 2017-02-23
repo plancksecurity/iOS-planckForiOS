@@ -774,7 +774,7 @@ open class PEPUtil {
         ]
     }
 
-    public static func mySelf(message: Message) -> Identity? {
+    public static func ownIdentity(message: Message) -> Identity? {
         return message.parent?.account?.user ?? nil
     }
 

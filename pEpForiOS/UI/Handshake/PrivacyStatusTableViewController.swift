@@ -111,7 +111,7 @@ extension PrivacyStatusTableViewController: SegueHandlerType {
             destination?.message = message
             destination?.appConfig = appConfig
             destination?.partnerIdentity = selectedIdentity
-            destination?.myselfIdentity = PEPUtil.mySelf(message: message)
+            destination?.myselfIdentity = PEPUtil.ownIdentity(message: message)
         case .noSegue:
             break
         }
