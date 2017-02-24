@@ -54,6 +54,9 @@ class ComposeTableViewController: UITableViewController {
     let attachmentCounter = AttachmentCounter()
     let mimeTypeUtil = MimeTypeUtil()
 
+    var edited = false
+
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -411,30 +414,34 @@ class ComposeTableViewController: UITableViewController {
     // MARK: - IBActions
 
     @IBAction func cancel() {
-        let alertCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertCtrl.view.tintColor = .pEpGreen
-        if let popoverPresentationController = alertCtrl.popoverPresentationController {
-            popoverPresentationController.sourceView = view
-        }
-
-        alertCtrl.addAction(alertCtrl.action("MailComp.Action.Cancel", .cancel, {}))
-
-        alertCtrl.addAction(alertCtrl.action("MailComp.Action.Delete", .destructive, {
-            self.dismiss()
-        }))
-
-        alertCtrl.addAction(alertCtrl.action("MailComp.Action.Save", .default, {
-            if let msg = self.populateMessageForSending(),
-                let acc = msg.parent?.account, let f = Folder.by(account:acc, folderType: .drafts) {
-                msg.parent = f
-                msg.save()
-            } else {
-                Log.error(component: #function, errorString: "No drafts folder for message")
+        if edited {
+            let alertCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alertCtrl.view.tintColor = .pEpGreen
+            if let popoverPresentationController = alertCtrl.popoverPresentationController {
+                popoverPresentationController.sourceView = view
             }
-            self.dismiss()
-        }))
 
-        present(alertCtrl, animated: true, completion: nil)
+            alertCtrl.addAction(alertCtrl.action("MailComp.Action.Cancel", .cancel, {}))
+
+            alertCtrl.addAction(alertCtrl.action("MailComp.Action.Delete", .destructive, {
+                self.dismiss()
+            }))
+
+            alertCtrl.addAction(alertCtrl.action("MailComp.Action.Save", .default, {
+                if let msg = self.populateMessageForSending(),
+                    let acc = msg.parent?.account, let f = Folder.by(account:acc, folderType: .drafts) {
+                    msg.parent = f
+                    msg.save()
+                } else {
+                    Log.error(component: #function, errorString: "No drafts folder for message")
+                }
+                self.dismiss()
+            }))
+            
+            present(alertCtrl, animated: true, completion: nil)
+        } else {
+            self.dismiss()
+        }
     }
 
     @IBAction func dismiss() {
@@ -488,7 +495,9 @@ extension ComposeTableViewController: ComposeCellDelegate {
         }
     }
 
-    func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {}
+    func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {
+    self.edited = true
+    }
 
     func textdidChange(at indexPath: IndexPath, textView: ComposeTextView) {
         let fModel = tableData?.rows.filter{ $0.type == textView.fieldModel?.type }
@@ -538,6 +547,7 @@ extension ComposeTableViewController: RecipientCellDelegate {
 extension ComposeTableViewController: MessageBodyCellDelegate {
 
     func didStartEditing(at indexPath: IndexPath) {
+        self.edited = true
         currentCell = indexPath
         let media = UIMenuItem(
             title: "MenuCtrl.Cameraroll".localized, action: #selector(addMediaToCell))
