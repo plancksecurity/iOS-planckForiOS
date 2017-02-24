@@ -57,10 +57,16 @@ class FolderTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FolderCell", for: indexPath) as! FolderTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
         let fcvm = folderVM[indexPath.section][indexPath.item]
-        cell.configure(viewModel: fcvm)
+        cell.detailTextLabel?.text = "\(fcvm.number)"
+        cell.textLabel?.text = fcvm.title
+        cell.imageView?.image = fcvm.icon
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
+        return folderVM[indexPath.section][indexPath.item].level
     }
 
     /*

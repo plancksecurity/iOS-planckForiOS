@@ -28,7 +28,10 @@ class FolderTableViewCell: UITableViewCell {
         self.labelName.text = viewModel.title
         self.labelUnreadNumber.text = "\(viewModel.number)"
         self.CollapsedArrow.image = viewModel.arrow
-        self.CollapsedArrow.transform.rotated(by: CGFloat(M_PI_2))
+        self.CollapsedArrow.transform = self.CollapsedArrow.transform.rotated(by: CGFloat(M_PI_4))
+        self.indentationLevel = viewModel.level
+        self.indentationWidth = CGFloat(10.0)
+        self.shouldIndentWhileEditing = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -36,5 +39,10 @@ class FolderTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.contentView.layoutMargins.left = CGFloat(self.indentationLevel) * self.indentationWidth + self.contentView.layoutMargins.left
+        //self.contentView.layoutIfNeeded()
+        self.contentView.layoutSubviews()
+    }
 }

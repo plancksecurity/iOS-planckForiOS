@@ -25,7 +25,7 @@ public class FolderCellViewModel {
     }
 
     private var folder:Folder
-    private var level : Int
+    var level : Int
 
     public init(folder: Folder, level: Int) {
         self.folder = folder
@@ -33,7 +33,7 @@ public class FolderCellViewModel {
     }
 
     private var name:String {
-        var n = ""
+        /*var n = ""
         if let parent = self.folder.parent {
             n = self.folder.name.replacingOccurrences(of: parent.name, with: "")
         }
@@ -46,7 +46,8 @@ public class FolderCellViewModel {
         } else {
             ret += self.folder.name
         }
-        return ret
+        return ret*/
+        return self.folder.realName
     }
 
     /*var name:String {
