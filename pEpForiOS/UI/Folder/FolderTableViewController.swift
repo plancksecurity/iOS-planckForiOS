@@ -15,6 +15,8 @@ class FolderTableViewController: UITableViewController {
 
     var folderVM = [FolderViewModel]()
 
+    var folderToShow :Folder?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         initialConfig()
@@ -67,6 +69,18 @@ class FolderTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
         return folderVM[indexPath.section][indexPath.item].level
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        folderToShow = folderVM[indexPath.section][indexPath.item].folder
+        performSegue(withIdentifier: "ShowFolder", sender: nil)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let nav = segue.destination as? EmailListViewController
+        , let folder = folderToShow {
+                nav.config? = EmailListConfig(appConfig: appConfig, folder: folder)
+        }
     }
 
     /*

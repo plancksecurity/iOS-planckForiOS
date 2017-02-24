@@ -24,7 +24,7 @@ public class FolderCellViewModel {
         return UIImage(named: "arrow_down_icon")!
     }
 
-    private var folder:Folder
+    var folder:Folder
     var level : Int
 
     public init(folder: Folder, level: Int) {
