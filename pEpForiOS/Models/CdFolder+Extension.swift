@@ -58,6 +58,10 @@ public extension CdFolder {
                     by: separator)
                 let folder = insert(folderName: pathName, account: account)
                 folder.parent = parentFolder
+                let scalars = separator.unicodeScalars
+                if let first = scalars.first {
+                    folder.folderSeparator = Int16(first.value)
+                }
                 if let pf = parentFolder {
                     folder.parent = pf
                 }
