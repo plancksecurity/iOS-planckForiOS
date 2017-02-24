@@ -59,7 +59,13 @@ class NetworkServiceTests: XCTestCase {
 
     class MessageModelObserver: MessageFolderDelegate {
         var messages: [Message] {
-            return Array(messagesByID.values).sorted { m1, m2 in
+            var messages = [Message]()
+            for ms in messagesByID.values {
+                for m in ms {
+                    messages.append(m)
+                }
+            }
+            return messages.sorted { m1, m2 in
                 if let d1 = m1.received, let d2 = m2.received {
                     return areInIncreasingOrder(d1: d1, d2: d2)
                 } else if let d1 = m1.sent, let d2 = m2.sent {
@@ -68,7 +74,7 @@ class NetworkServiceTests: XCTestCase {
                 return false
             }
         }
-        var messagesByID = [MessageID: Message]()
+        var messagesByID = [MessageID: [Message]]()
         var changedMessagesByID = [MessageID: Message]()
 
         var hasChangedMessages: Bool {
@@ -86,13 +92,23 @@ class NetworkServiceTests: XCTestCase {
             }
         }
 
+        func add(message: Message) {
+            if let existing = messagesByID[message.uuid] {
+                var news = existing
+                news.append(message)
+                messagesByID[message.uuid] = news
+            } else {
+                messagesByID[message.uuid] = [message]
+            }
+        }
+
         func didChange(messageFolder: MessageFolder) {
             if let msg = messageFolder as? Message {
                 if msg.isOriginal {
-                    messagesByID[msg.messageID] = msg
+                    add(message: msg)
                 } else {
                     XCTAssertNotNil(messagesByID[msg.messageID])
-                    messagesByID[msg.messageID] = msg
+                    add(message: msg)
                     changedMessagesByID[msg.messageID] = msg
                 }
             }
@@ -261,14 +277,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
 
-        for msgID in outgoingMessageIDs {
-            guard let cdMsg = CdMessage.first(attributes: ["uuid": msgID]) else {
-                XCTFail()
-                continue
-            }
-            XCTAssertGreaterThan(cdMsg.uid, 0)
-        }
-
+        TestUtil.checkForUniqueness(uuids: outgoingMessageIDs)
         cancelNetworkService(networkService: networkService)
     }
 
@@ -460,7 +469,8 @@ class NetworkServiceTests: XCTestCase {
     class Backgrounder: BackgroundTaskProtocol {
         let expBackgrounded: XCTestExpectation?
         let taskName: String?
-        let taskID = 1
+        var currentTaskID = 1
+        var taskIDs = [BackgroundTaskID: String]()
 
         init(taskName: String? = nil, expBackgrounded: XCTestExpectation? = nil) {
             self.expBackgrounded = expBackgrounded
@@ -469,13 +479,20 @@ class NetworkServiceTests: XCTestCase {
 
         func beginBackgroundTask(taskName: String?,
                                  expirationHandler: (() -> Void)?) -> BackgroundTaskID {
-            XCTAssertEqual(taskName, self.taskName)
+            let taskID = currentTaskID
+            taskIDs[taskID] = taskName
+            currentTaskID += 1
             return taskID
         }
 
         func endBackgroundTask(_ taskID: BackgroundTaskID?) {
-            XCTAssertEqual(taskID, taskID)
-            expBackgrounded?.fulfill()
+            if let theID = taskID, let theTaskName = taskIDs[theID] {
+                if theTaskName == taskName {
+                    expBackgrounded?.fulfill()
+                }
+            } else {
+                XCTFail()
+            }
         }
     }
 
@@ -487,7 +504,7 @@ class NetworkServiceTests: XCTestCase {
         init(expMySelfed: XCTestExpectation?, expBackgrounded: XCTestExpectation?) {
             self.expMySelfed = expMySelfed
             backgrounder = Backgrounder(
-                taskName: "MySelfOperation", expBackgrounded: expBackgrounded)
+                taskName: MySelfOperation.taskNameSubOperation, expBackgrounded: expBackgrounded)
         }
 
         func startMySelf() {

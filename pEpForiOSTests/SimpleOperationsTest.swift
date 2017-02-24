@@ -95,15 +95,14 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         // Check all messages for validity
+        var uuids = [MessageID]()
         for m in allMessages {
-            XCTAssertNotNil(m.messageID)
             if let uuid = m.messageID {
-                if let ms = CdMessage.all(attributes: ["uuid": uuid]) {
-                    XCTAssertEqual(ms.count, 1)
-                } else {
-                    XCTFail()
-                }
+                uuids.append(uuid)
+            } else {
+                XCTFail()
             }
+
             XCTAssertNotNil(m.uid)
             XCTAssertGreaterThan(m.uid, 0)
             XCTAssertNotNil(m.imap)
@@ -148,6 +147,7 @@ class SimpleOperationsTest: XCTestCase {
 
             XCTAssertNotNil(m.imap)
         }
+        TestUtil.checkForUniqueness(uuids: uuids)
     }
 
     /**

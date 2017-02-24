@@ -18,9 +18,20 @@ open class MySelfOperation: BaseOperation {
     let backgrounder: BackgroundTaskProtocol?
     let wholeOperationTaskID: BackgroundTaskID?
 
+    /**
+     The name of the task ID for the whole process of generating mySelf for all identities owned.
+     */
+    public static let taskNameWhole = "MySelfOperation"
+
+    /**
+     The name of the task ID for actual invocations of mySelf.
+     */
+    public static let taskNameSubOperation = "MySelfOperation.Sub"
+
     public init(backgrounder: BackgroundTaskProtocol? = nil) {
         self.backgrounder = backgrounder
-        self.wholeOperationTaskID = backgrounder?.beginBackgroundTask(taskName: #function)
+        self.wholeOperationTaskID = backgrounder?.beginBackgroundTask(
+            taskName: MySelfOperation.taskNameWhole)
     }
 
     open override func main() {
@@ -43,7 +54,10 @@ open class MySelfOperation: BaseOperation {
         // Invoke mySelf on all identities
         var session: PEPSession? = PEPSession()
         for pEpIdDict in ids {
-            let taskID = backgrounder?.beginBackgroundTask(taskName: comp) { session = nil }
+            let taskID = backgrounder?.beginBackgroundTask(
+            taskName: MySelfOperation.taskNameSubOperation) {
+                session = nil
+            }
             session?.mySelf(pEpIdDict)
             backgrounder?.endBackgroundTask(taskID)
         }

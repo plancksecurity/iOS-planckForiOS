@@ -288,4 +288,25 @@ class TestUtil {
             }
         }
     }
+
+    static func checkForUniqueness(uuids: [MessageID]) {
+        for uuid in uuids {
+            if let ms = CdMessage.all(attributes: ["uuid": uuid]) as? [CdMessage] {
+                var folder: CdFolder? = nil
+                // check if that message is either unique, or all copies are in different folders
+                for m in ms {
+                    if let forig = folder {
+                        if let f = m.parent {
+                            XCTAssertNotEqual(forig, f)
+                            folder = f
+                        } else {
+                            XCTFail()
+                        }
+                    }
+                }
+            } else {
+                XCTFail()
+            }
+        }
+    }
 }
