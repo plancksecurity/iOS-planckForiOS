@@ -192,9 +192,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return result
     }
 
-    /**
-     - TODO: This gets called for some weird reason, and it should not. Investigate.
-     */
     func removeMessage(withUID: UInt) {
     }
 
