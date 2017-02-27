@@ -3,8 +3,10 @@ regexp
 xcuserdata/.*
 Pods/.*
 \.orig$
-^.*TestData\.swift$
-pEpForiOSTests/Util/TestData.swift
 \.git/
 \.gitkeep
 scripts/config.ini$
+
+glob
+pEpForiOSTests/Util/TestData.swift
+pEpForiOSUITests/UITestData.swift

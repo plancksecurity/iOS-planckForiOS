@@ -84,11 +84,11 @@ cp ./pEpForiOSUITests/UITestData.swift.sample ./pEpForiOSUITests/UITestData.swif
 
 ### Unit Tests
 
-You need to create a copy of TestData.swift.sample as TestData.swift
-and populate it with corresponding (valid) settings to run successful tests.
+You need to create a copy of TestDataImpl/sample.swift as TestDataImpl.swift
+and populate it with corresponding (valid) settings to run the tests successfully.
 
 The tests will not compile without a syntactically correct TestData.swift.
 
 ```
-cp pEpForiOSTests/Util/TestData.swift.sample pEpForiOSTests/Util/TestData.swift
+cp pEpForiOSTests/Util/TestData_sample.swift pEpForiOSTests/Util/TestData.swift
 ```
