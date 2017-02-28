@@ -256,6 +256,7 @@ extension CdMessage {
         mail.bodyFetched = message.isInitialized()
         mail.sent = message.originationDate() as NSDate?
         mail.shortMessage = message.subject()
+
         mail.uuid = message.messageID()
         mail.uid = Int32(message.uid())
 
@@ -293,10 +294,9 @@ extension CdMessage {
             return mail
         }
 
-        if let from = pantomimeMessage.from() {
+        if let from = pantomimeMessage.from(), let email = from.address() {
             let contactsFrom = add(contacts: [from])
-            let email = from.address()
-            let c = contactsFrom[email!]
+            let c = contactsFrom[email]
             mail.from = c
         }
 
