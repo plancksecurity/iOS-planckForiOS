@@ -294,6 +294,15 @@ extension CdMessage {
             return mail
         }
 
+        if mail.pEpRating != PEPUtil.pEpRatingNone && messageUpdate.rfc822 {
+            // This is a contradiction in itself, a new message that already existed.
+            // Can happen with yahoo IMAP servers when they send more messages in
+            // FETCH responses than requested.
+            Log.warn(component: #function,
+                     content: "ignoring rfc2822 update for already decrypted message")
+            return mail
+        }
+
         if let from = pantomimeMessage.from(), let email = from.address() {
             let contactsFrom = add(contacts: [from])
             let c = contactsFrom[email]
@@ -350,13 +359,6 @@ extension CdMessage {
             // Parsing attachments only makes sense once pantomime has received the
             // mail body. Same goes for the snippet.
             addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail, level: 0)
-        }
-
-        if mail.pEpRating != PEPUtil.pEpRatingNone && messageUpdate.rfc822 {
-            // This is a contradiction in itself. At least make sure this will be interpreted
-            // as update.
-            Log.warn(component: #function, content: "rfc2822 update for already decrypted message")
-            mail.serialNumber += 1
         }
 
         Record.saveAndWait()
