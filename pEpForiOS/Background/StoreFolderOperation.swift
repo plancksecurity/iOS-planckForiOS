@@ -23,7 +23,7 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
         self.folderInfo = folderInfo
         self.connectInfo = connectInfo
         super.init()
-        Log.info(component: comp, content: "init \(folderInfo.name)")
+        Log.verbose(component: comp, content: "init \(folderInfo.name)")
     }
 
     override open func main() {
