@@ -17,6 +17,7 @@ import MessageModel
  */
 open class CreateSpecialFoldersOperation: ImapSyncOperation {
     var folderNamesToCreate = [String]()
+    public var numberOfFoldersCreated = 0
 
     open override func main() {
         if !shouldRun() {
@@ -48,6 +49,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
                 cdFolder.uuid = MessageID.generate()
                 cdFolder.name = folderName
                 cdFolder.account = cdAccount
+                cdFolder.folderType = ft.rawValue
             }
         }
 
@@ -67,6 +69,10 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
         } else {
             markAsFinished()
         }
+    }
+
+    func createFolderAgain(potentialError: NSError) {
+
     }
 }
 
@@ -167,6 +173,7 @@ extension CreateSpecialFoldersOperation: ImapSyncDelegate {
     }
 
     public func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
+        numberOfFoldersCreated += 1
         createNextFolder()
     }
 

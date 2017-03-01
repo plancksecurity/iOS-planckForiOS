@@ -461,24 +461,46 @@ class SimpleOperationsTest: XCTestCase {
             expFoldersFetched.fulfill()
         }
 
-        let expCreated = expectation(description: "expCreated")
-        let opCreate = CreateSpecialFoldersOperation(imapSyncData: imapSyncData)
-        opCreate.completionBlock = {
-            expCreated.fulfill()
-        }
-        opCreate.addDependency(fetchFoldersOp)
-
         let backgroundQueue = OperationQueue()
         backgroundQueue.addOperation(imapLogin)
         backgroundQueue.addOperation(fetchFoldersOp)
-        backgroundQueue.addOperation(opCreate)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
             XCTAssertFalse(fetchFoldersOp.hasErrors())
+        })
+
+        // Let's delete a special folder, if it exists
+        if let spamFolder = CdFolder.by(folderType: .spam, account: cdAccount),
+            let fn = spamFolder.name {
+            let expDeleted = expectation(description: "expFolderDeleted")
+            let opDelete = DeleteFolderOperation(
+                imapSyncData: imapSyncData, account: cdAccount, folderName: fn)
+            opDelete.completionBlock = {
+                expDeleted.fulfill()
+            }
+            backgroundQueue.addOperation(opDelete)
+            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+                XCTAssertNil(error)
+                XCTAssertFalse(opDelete.hasErrors())
+            })
+            spamFolder.delete()
+            Record.saveAndWait()
+        }
+
+        let expCreated = expectation(description: "expCreated")
+        let opCreate = CreateSpecialFoldersOperation(imapSyncData: imapSyncData)
+        opCreate.completionBlock = {
+            expCreated.fulfill()
+        }
+        backgroundQueue.addOperation(opCreate)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
             XCTAssertFalse(opCreate.hasErrors())
         })
+        XCTAssertGreaterThanOrEqual(opCreate.numberOfFoldersCreated, 1)
 
         for ft in FolderType.neededFolderTypes {
             XCTAssertNotNil(CdFolder.by(folderType: ft, account: cdAccount))
