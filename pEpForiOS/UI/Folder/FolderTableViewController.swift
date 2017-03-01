@@ -77,11 +77,14 @@ class FolderTableViewController: UITableViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let nav = segue.destination as? EmailListViewController
+        if let controller = segue.destination as? EmailListViewController
         , let folder = folderToShow {
-                nav.config? = EmailListConfig(appConfig: appConfig, folder: folder)
+            let config = EmailListConfig(appConfig: appConfig, folder: folder)
+            controller.config = config
         }
     }
+
+    
 
     /*
     // Override to support conditional editing of the table view.
