@@ -416,7 +416,11 @@ extension CdMessage {
             contentData = data
         }
         if let data = contentData {
-            if isText && level < 3 && targetMail.longMessage == nil &&
+            if level == 0 && !isText && !isHtml && targetMail.longMessage == nil &&
+                MiscUtil.isEmptyString(part.filename()) {
+                // some content with unknown content type at the first level must be text
+                targetMail.longMessage = data.toStringWithIANACharset(part.charset())
+            } else if isText && level < 3 && targetMail.longMessage == nil &&
                 MiscUtil.isEmptyString(part.filename()) {
                 targetMail.longMessage = data.toStringWithIANACharset(part.charset())
             } else if isHtml && level < 3 && targetMail.longMessageFormatted == nil &&

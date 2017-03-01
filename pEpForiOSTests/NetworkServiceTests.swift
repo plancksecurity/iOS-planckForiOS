@@ -368,7 +368,7 @@ class NetworkServiceTests: XCTestCase {
         }
 
         let inbox = Folder.from(cdFolder: cdFolder)
-        XCTAssertGreaterThan(sendLayerDelegate.messageIDs.count, unifiedMessageCount)
+        XCTAssertGreaterThanOrEqual(sendLayerDelegate.messageIDs.count, unifiedMessageCount)
         XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
 
         for msg in modelDelegate.messages {
