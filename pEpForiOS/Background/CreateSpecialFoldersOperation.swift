@@ -16,8 +16,26 @@ import MessageModel
  both locally and remote.
  */
 open class CreateSpecialFoldersOperation: ImapSyncOperation {
-    var folderNamesToCreate = [String]()
+    struct FolderToCreate {
+        var folderName: String
+        let folderType: FolderType
+        let cdAccount: CdAccount
+    }
+
+    struct CreationAttempt {
+        var count = 0
+        var folderToCreate: FolderToCreate?
+
+        mutating func reset() {
+            count = 0
+            folderToCreate = nil
+        }
+    }
+    var currentAttempt = CreationAttempt()
+
+    var foldersToCreate = [FolderToCreate]()
     public var numberOfFoldersCreated = 0
+    var folderSeparator: String?
 
     open override func main() {
         if !shouldRun() {
@@ -34,7 +52,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
     }
 
     func mainInternal() {
-        guard let cdAccount = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID)
+        guard let theAccount = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
                 addError(Constants.errorCannotFindAccount(component: comp))
                 markAsFinished()
@@ -42,18 +60,22 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
         }
 
         for ft in FolderType.neededFolderTypes {
-            if CdFolder.by(folderType: ft, account: cdAccount) == nil {
+            if let cdF = CdFolder.by(folderType: ft, account: theAccount) {
+                if folderSeparator == nil {
+                    folderSeparator = cdF.folderSeparatorAsString()
+                }
+            } else {
                 let folderName = ft.folderName()
-                folderNamesToCreate.append(folderName)
-                let cdFolder = CdFolder.create(context: privateMOC)
-                cdFolder.uuid = MessageID.generate()
-                cdFolder.name = folderName
-                cdFolder.account = cdAccount
-                cdFolder.folderType = ft.rawValue
+                foldersToCreate.append(
+                    FolderToCreate(folderName: folderName, folderType: ft, cdAccount: theAccount))
             }
         }
 
-        if folderNamesToCreate.count > 0 {
+        if folderSeparator == nil {
+            folderSeparator = CdFolder.folderSeparatorAsString(cdAccount: theAccount)
+        }
+
+        if foldersToCreate.count > 0 {
             Record.saveAndWait(context: privateMOC)
             imapSync.delegate = self
             createNextFolder()
@@ -63,16 +85,47 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
     }
 
     func createNextFolder() {
-        if !isCancelled, let fn = folderNamesToCreate.first {
-            imapSync.createFolderWithName(fn)
-            folderNamesToCreate.removeFirst()
+        if let lastFolder = currentAttempt.folderToCreate {
+            privateMOC.performAndWait {
+                self.createLocal(folderToCreate: lastFolder, context: self.privateMOC)
+            }
+        }
+        if !isCancelled, let folderToCreate = foldersToCreate.first {
+            currentAttempt.reset()
+            currentAttempt.folderToCreate = folderToCreate
+            startFolderCreation(folderToCreate: folderToCreate)
+            foldersToCreate.removeFirst()
         } else {
             markAsFinished()
         }
     }
 
-    func createFolderAgain(potentialError: NSError) {
+    func startFolderCreation(folderToCreate: FolderToCreate) {
+        imapSync.createFolderWithName(folderToCreate.folderName)
+    }
 
+    func createLocal(folderToCreate: FolderToCreate, context: NSManagedObjectContext) {
+        let cdFolder = CdFolder.create(context: context)
+        cdFolder.uuid = MessageID.generate()
+        cdFolder.name = folderToCreate.folderName
+        cdFolder.account = folderToCreate.cdAccount
+        cdFolder.folderType = folderToCreate.folderType.rawValue
+        Record.saveAndWait(context: context)
+    }
+
+    func createFolderAgain(potentialError: NSError) {
+        if currentAttempt.count == 0, var folderToCreate = currentAttempt.folderToCreate,
+            let fs = folderSeparator {
+            folderToCreate.folderName =
+            "\(ImapSync.defaultImapInboxName)\(fs)\(folderToCreate.folderName)"
+            currentAttempt.folderToCreate = folderToCreate
+            currentAttempt.count += 1
+            startFolderCreation(folderToCreate: folderToCreate)
+        } else {
+            currentAttempt.reset()
+            addError(potentialError)
+            markAsFinished()
+        }
     }
 }
 
@@ -178,8 +231,8 @@ extension CreateSpecialFoldersOperation: ImapSyncDelegate {
     }
 
     public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderCreateFailed"))
-        markAsFinished()
+        createFolderAgain(
+            potentialError: Constants.errorIllegalState(comp, stateName: "folderCreateFailed"))
     }
 
     public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {

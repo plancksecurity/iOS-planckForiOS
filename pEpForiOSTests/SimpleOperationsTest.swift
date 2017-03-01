@@ -471,6 +471,18 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertFalse(fetchFoldersOp.hasErrors())
         })
 
+        let expCreated1 = expectation(description: "expCreated")
+        let opCreate1 = CreateSpecialFoldersOperation(imapSyncData: imapSyncData)
+        opCreate1.completionBlock = {
+            expCreated1.fulfill()
+        }
+        backgroundQueue.addOperation(opCreate1)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(opCreate1.hasErrors())
+        })
+
         // Let's delete a special folder, if it exists
         if let spamFolder = CdFolder.by(folderType: .spam, account: cdAccount),
             let fn = spamFolder.name {
@@ -487,20 +499,22 @@ class SimpleOperationsTest: XCTestCase {
             })
             spamFolder.delete()
             Record.saveAndWait()
+        } else {
+            XCTFail()
         }
 
-        let expCreated = expectation(description: "expCreated")
-        let opCreate = CreateSpecialFoldersOperation(imapSyncData: imapSyncData)
-        opCreate.completionBlock = {
-            expCreated.fulfill()
+        let expCreated2 = expectation(description: "expCreated")
+        let opCreate2 = CreateSpecialFoldersOperation(imapSyncData: imapSyncData)
+        opCreate2.completionBlock = {
+            expCreated2.fulfill()
         }
-        backgroundQueue.addOperation(opCreate)
+        backgroundQueue.addOperation(opCreate2)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(opCreate.hasErrors())
+            XCTAssertFalse(opCreate2.hasErrors())
         })
-        XCTAssertGreaterThanOrEqual(opCreate.numberOfFoldersCreated, 1)
+        XCTAssertGreaterThanOrEqual(opCreate2.numberOfFoldersCreated, 1)
 
         for ft in FolderType.neededFolderTypes {
             XCTAssertNotNil(CdFolder.by(folderType: ft, account: cdAccount))
