@@ -1,28 +1,22 @@
 //
-//  DeleteFolderOperation.swift
+//  CreateSpecialFoldersOperation.swift
 //  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 19/09/16.
+//  Created by Dirk Zimmermann on 01/03/17.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import UIKit
 import CoreData
 
 import MessageModel
 
-open class DeleteFolderOperation: ImapSyncOperation {
-    var folderName: String
-    let accountID: NSManagedObjectID
-    var account: CdAccount!
-
-    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                imapSyncData: ImapSyncData, account: CdAccount,
-                folderName: String) {
-        self.accountID = account.objectID
-        self.folderName = folderName
-        super.init(parentName: parentName, errorContainer: errorContainer,
-                   imapSyncData: imapSyncData)
-    }
+/**
+ Checks for needed folders, like "Drafts", and when they don't exist, create them
+ both locally and remote.
+ */
+open class CreateSpecialFoldersOperation: ImapSyncOperation {
+    var folderNamesToCreate = [String]()
 
     open override func main() {
         if !shouldRun() {
@@ -34,28 +28,49 @@ open class DeleteFolderOperation: ImapSyncOperation {
         }
 
         privateMOC.perform() {
-            self.account = self.privateMOC.object(with: self.accountID) as? CdAccount
-            guard self.account != nil else {
-                self.addError(Constants.errorCannotFindAccount(component: self.comp))
-                self.markAsFinished()
-                return
-            }
-            self.imapSync.delegate = self
-            self.imapSync.deleteFolderWithName(self.folderName)
+            self.mainInternal()
         }
     }
 
-    func deleteLocalFolderAndFinish() {
-        privateMOC.perform() {
-            if let folder = CdFolder.by(name: self.folderName, account: self.account) {
-                self.privateMOC.delete(folder)
+    func mainInternal() {
+        guard let cdAccount = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID)
+            as? CdAccount else {
+                addError(Constants.errorCannotFindAccount(component: comp))
+                markAsFinished()
+                return
+        }
+
+        for ft in FolderType.neededFolderTypes {
+            if CdFolder.by(folderType: ft, account: cdAccount) == nil {
+                let folderName = ft.folderName()
+                folderNamesToCreate.append(folderName)
+                let cdFolder = CdFolder.create(context: privateMOC)
+                cdFolder.uuid = MessageID.generate()
+                cdFolder.name = folderName
+                cdFolder.account = cdAccount
             }
-            self.markAsFinished()
+        }
+
+        if folderNamesToCreate.count > 0 {
+            Record.saveAndWait(context: privateMOC)
+            imapSync.delegate = self
+            createNextFolder()
+        } else {
+            markAsFinished()
+        }
+    }
+
+    func createNextFolder() {
+        if !isCancelled, let fn = folderNamesToCreate.first {
+            imapSync.createFolderWithName(fn)
+            folderNamesToCreate.removeFirst()
+        } else {
+            markAsFinished()
         }
     }
 }
 
-extension DeleteFolderOperation: ImapSyncDelegate {
+extension CreateSpecialFoldersOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
         addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
         markAsFinished()
@@ -152,8 +167,7 @@ extension DeleteFolderOperation: ImapSyncDelegate {
     }
 
     public func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderCreateCompleted"))
-        markAsFinished()
+        createNextFolder()
     }
 
     public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
@@ -162,11 +176,12 @@ extension DeleteFolderOperation: ImapSyncDelegate {
     }
 
     public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
-        deleteLocalFolderAndFinish()
+        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteCompleted"))
+        markAsFinished()
     }
 
     public func folderDeleteFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorFolderDeleteFailed(comp, name: folderName))
+        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
         markAsFinished()
     }
 

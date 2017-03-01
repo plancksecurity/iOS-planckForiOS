@@ -451,6 +451,40 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: cdAccount))
     }
 
+    func testCreateSpecialFoldersOperation() {
+        let imapLogin = LoginImapOperation(imapSyncData: imapSyncData)
+
+        let expFoldersFetched = expectation(description: "expFoldersFetched")
+        let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
+        fetchFoldersOp.addDependency(imapLogin)
+        fetchFoldersOp.completionBlock = {
+            expFoldersFetched.fulfill()
+        }
+
+        let expCreated = expectation(description: "expCreated")
+        let opCreate = CreateSpecialFoldersOperation(imapSyncData: imapSyncData)
+        opCreate.completionBlock = {
+            expCreated.fulfill()
+        }
+        opCreate.addDependency(fetchFoldersOp)
+
+        let backgroundQueue = OperationQueue()
+        backgroundQueue.addOperation(imapLogin)
+        backgroundQueue.addOperation(fetchFoldersOp)
+        backgroundQueue.addOperation(opCreate)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(imapLogin.hasErrors())
+            XCTAssertFalse(fetchFoldersOp.hasErrors())
+            XCTAssertFalse(opCreate.hasErrors())
+        })
+
+        for ft in FolderType.neededFolderTypes {
+            XCTAssertNotNil(CdFolder.by(folderType: ft, account: cdAccount))
+        }
+    }
+
     func testSyncFlagsToServerOperationEmpty() {
         fetchMessages()
 
