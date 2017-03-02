@@ -99,6 +99,7 @@ open class NetworkServiceWorker {
                                              context: nil)
 
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
+            self.backgroundQueue.removeObserver(observer, forKeyPath: self.operationCountKeyPath)
             self.serviceConfig.networkServiceDelegate?.didCancel(service: networkService)
         }
     }
@@ -509,6 +510,10 @@ open class NetworkServiceWorker {
             completionBlock?()
         }
         for op in operationLine.operations {
+            if cancelled {
+                backgroundQueue.cancelAllOperations()
+                return
+            }
             backgroundQueue.addOperation(op)
         }
     }
