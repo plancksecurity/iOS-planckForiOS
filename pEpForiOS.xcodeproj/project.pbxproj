@@ -1575,8 +1575,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
 					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../ServerConfig/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../ServerConfig/include",
+					"$(SRCROOT)/../libAccountSettings/xcode/ServerConfig/objc",
+					"$(SRCROOT)/../libAccountSettings/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1625,8 +1625,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
 					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../ServerConfig/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../ServerConfig/include",
+					"$(SRCROOT)/../libAccountSettings/xcode/ServerConfig/objc",
+					"$(SRCROOT)/../libAccountSettings/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

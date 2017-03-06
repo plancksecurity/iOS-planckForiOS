@@ -8,7 +8,6 @@
 
 import UIKit
 import MessageModel
-import ServerConfig
 
 class TrustwordsTableViewController: UITableViewController {
     @IBOutlet weak var fingerprintButton: UIButton!
