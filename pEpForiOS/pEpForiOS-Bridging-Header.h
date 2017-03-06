@@ -47,6 +47,4 @@
 #import "PureLayout.h"
 #import "KeyboardObserver.h"
 
-#import "ServerConfig.h"
-
 #endif /* pEpForiOS_Bridging_Header_h */
