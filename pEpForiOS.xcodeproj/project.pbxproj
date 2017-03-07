@@ -38,8 +38,6 @@
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */; };
-		430EF5921E2F94EC0056B88A /* ServerConfig.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 430EF58A1E2F7EA80056B88A /* ServerConfig.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		430EF59E1E2FA7D90056B88A /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 430EF58A1E2F7EA80056B88A /* ServerConfig.framework */; };
 		430EF59F1E2FA7E50056B88A /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43BB867E1DB4C3BC00980267 /* MessageModel.framework */; };
 		431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B41CC0FCA40007639D /* StoreFolderOperation.swift */; };
 		431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B61CC11D6A0007639D /* BaseOperation.swift */; };
@@ -175,6 +173,8 @@
 		43F6DFD71DEEC752006B526F /* FetchMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */; };
 		43F7BEB01DC8DFC5009048D6 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */; };
 		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
+		494409AE1E6EBFE40066A205 /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494409AB1E6EB8070066A205 /* ServerConfig.framework */; };
+		494409AF1E6EBFFC0066A205 /* ServerConfig.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 494409AB1E6EB8070066A205 /* ServerConfig.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */; };
 		5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */; };
@@ -196,27 +196,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		430EF5891E2F7EA80056B88A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 439BD1981E2E1C4E007A1112;
-			remoteInfo = ServerConfig;
-		};
-		430EF58B1E2F7EA80056B88A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 439BD1A11E2E1C4E007A1112;
-			remoteInfo = ServerConfigTests;
-		};
-		430EF5A01E2FA7FD0056B88A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 439BD1971E2E1C4E007A1112;
-			remoteInfo = ServerConfig;
-		};
 		43122B021DF5B24A00610253 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43BB86781DB4C3BC00980267 /* MessageModel.xcodeproj */;
@@ -294,6 +273,20 @@
 			remoteGlobalIDString = 43980E5B1CBD1B3E00A7FC3C;
 			remoteInfo = PantomimeStatic;
 		};
+		494409AA1E6EB8070066A205 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 494409A51E6EB8070066A205 /* ServerConfig.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 439BD1981E2E1C4E007A1112;
+			remoteInfo = ServerConfig;
+		};
+		494409AC1E6EB8070066A205 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 494409A51E6EB8070066A205 /* ServerConfig.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 439BD1A11E2E1C4E007A1112;
+			remoteInfo = ServerConfigTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -303,8 +296,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				430EF5921E2F94EC0056B88A /* ServerConfig.framework in CopyFiles */,
 				4377D9341DB7EB13003432BB /* MessageModel.framework in CopyFiles */,
+				494409AF1E6EBFFC0066A205 /* ServerConfig.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,7 +331,6 @@
 		430A6E531DFB08CE006273A5 /* UITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestData.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = pEpTrustWords.bundle; path = ../pEpTrustWords.bundle; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
-		430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ServerConfig.xcodeproj; path = ../ServerConfig/xcode/ServerConfig.xcodeproj; sourceTree = "<group>"; };
 		431144B41CC0FCA40007639D /* StoreFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreFolderOperation.swift; sourceTree = "<group>"; };
 		431144B61CC11D6A0007639D /* BaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseOperation.swift; sourceTree = "<group>"; };
 		431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorePrefetchedMailOperation.swift; sourceTree = "<group>"; };
@@ -493,6 +485,7 @@
 		43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesOperation.swift; sourceTree = "<group>"; };
 		43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersOperation.swift; sourceTree = "<group>"; };
+		494409A51E6EB8070066A205 /* ServerConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ServerConfig.xcodeproj; path = ../libAccountSettings/attic/xcode/ServerConfig.xcodeproj; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMessagesOperation.swift; sourceTree = "<group>"; };
 		5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
@@ -517,9 +510,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				494409AE1E6EBFE40066A205 /* ServerConfig.framework in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
 				430EF59F1E2FA7E50056B88A /* MessageModel.framework in Frameworks */,
-				430EF59E1E2FA7D90056B88A /* ServerConfig.framework in Frameworks */,
 				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
 				43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */,
 				439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */,
@@ -590,15 +583,6 @@
 				43001F791D91860A00306BF0 /* FetchTableViewController.swift */,
 			);
 			path = TableViews;
-			sourceTree = "<group>";
-		};
-		430EF5851E2F7EA80056B88A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				430EF58A1E2F7EA80056B88A /* ServerConfig.framework */,
-				430EF58C1E2F7EA80056B88A /* ServerConfigTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		431144A61CC0CB0A0007639D /* Background */ = {
@@ -808,7 +792,7 @@
 				43980ECF1CBD1CCD00A7FC3C /* Pantomime.xcodeproj */,
 				439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */,
 				43BB86781DB4C3BC00980267 /* MessageModel.xcodeproj */,
-				430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */,
+				494409A51E6EB8070066A205 /* ServerConfig.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1006,6 +990,15 @@
 			path = ImapSetup;
 			sourceTree = "<group>";
 		};
+		494409A61E6EB8070066A205 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				494409AB1E6EB8070066A205 /* ServerConfig.framework */,
+				494409AD1E6EB8070066A205 /* ServerConfigTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B71EBBB41E55E43100150177 /* Folder */ = {
 			isa = PBXGroup;
 			children = (
@@ -1067,7 +1060,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				430EF5A11E2FA7FD0056B88A /* PBXTargetDependency */,
 				43122B031DF5B24A00610253 /* PBXTargetDependency */,
 				439D406A1CC7883D009A4E7C /* PBXTargetDependency */,
 				434662CE1CBF808D0053FC48 /* PBXTargetDependency */,
@@ -1176,8 +1168,8 @@
 					ProjectRef = 439D405C1CC78825009A4E7C /* pEpiOSAdapter.xcodeproj */;
 				},
 				{
-					ProductGroup = 430EF5851E2F7EA80056B88A /* Products */;
-					ProjectRef = 430EF5841E2F7EA80056B88A /* ServerConfig.xcodeproj */;
+					ProductGroup = 494409A61E6EB8070066A205 /* Products */;
+					ProjectRef = 494409A51E6EB8070066A205 /* ServerConfig.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1190,20 +1182,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		430EF58A1E2F7EA80056B88A /* ServerConfig.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ServerConfig.framework;
-			remoteRef = 430EF5891E2F7EA80056B88A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		430EF58C1E2F7EA80056B88A /* ServerConfigTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ServerConfigTests.xctest;
-			remoteRef = 430EF58B1E2F7EA80056B88A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		439D40661CC78825009A4E7C /* libpEpiOSAdapter.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1244,6 +1222,20 @@
 			fileType = archive.ar;
 			path = libPantomimeStatic.a;
 			remoteRef = 43E6A2821CBF802C00787A56 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		494409AB1E6EB8070066A205 /* ServerConfig.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ServerConfig.framework;
+			remoteRef = 494409AA1E6EB8070066A205 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		494409AD1E6EB8070066A205 /* ServerConfigTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ServerConfigTests.xctest;
+			remoteRef = 494409AC1E6EB8070066A205 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1471,11 +1463,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		430EF5A11E2FA7FD0056B88A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ServerConfig;
-			targetProxy = 430EF5A01E2FA7FD0056B88A /* PBXContainerItemProxy */;
-		};
 		43122B031DF5B24A00610253 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MessageModel;
@@ -1575,8 +1562,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
 					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../libAccountSettings/include",
+					"$(SRCROOT)/../libAccountSettings/attic/xcode/ServerConfig/objc",
+					"$(SRCROOT)/../libAccountSettings/attic/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1625,8 +1612,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
 					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../libAccountSettings/include",
+					"$(SRCROOT)/../libAccountSettings/attic/xcode/ServerConfig/objc",
+					"$(SRCROOT)/../libAccountSettings/attic/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
