@@ -30,6 +30,18 @@ class EmailViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
+        
+        guard
+            let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+            let config = appDelegate.appConfig
+            else {
+                #if DEBUG
+                    fatalError()
+                #else
+                    return
+                #endif
+        }
+        appConfig = config
     }
     
     override func viewWillAppear(_ animated: Bool) {
