@@ -120,6 +120,7 @@ class EmailViewController: UITableViewController {
     }
     
     @IBAction func archiveButtonTapped(_ sender: UIBarButtonItem) {
+        //TODO: stubed method
     }
     
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
@@ -129,6 +130,7 @@ class EmailViewController: UITableViewController {
     }
     
     @IBAction func composeButtonTapped(_ sender: UIBarButtonItem) {
+        //TODO: stubed method
     }
     
     @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
