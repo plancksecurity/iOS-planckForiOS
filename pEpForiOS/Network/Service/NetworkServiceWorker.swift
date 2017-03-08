@@ -68,6 +68,8 @@ open class NetworkServiceWorker {
 
     let context = Record.Context.background
 
+    var imapConnectionDataCache = [EmailConnectInfo: ImapSyncData]()
+
     init(serviceConfig: NetworkService.ServiceConfig) {
         self.serviceConfig = serviceConfig
     }
@@ -390,13 +392,12 @@ open class NetworkServiceWorker {
         operations.append(contentsOf: smtpOperations)
 
         if let imapCI = accountInfo.imapConnectInfo {
-            // TODO: Reuse connections
-            let imapSyncData = ImapSyncData(connectInfo: imapCI)
+            let imapSyncData = cachedImapSync(connectInfo: imapCI)
 
             // login IMAP
-            // TODO: Check if needed
             let opImapLogin = LoginImapOperation(
-                imapSyncData: imapSyncData, name: serviceConfig.parentName, errorContainer: errorContainer)
+                imapSyncData: imapSyncData, name: serviceConfig.parentName,
+                errorContainer: errorContainer)
             opImapLogin.completionBlock = { [weak self, weak opImapLogin] in
                 self?.workerQueue.async {
                     if let me = self, let theOpImapLogin = opImapLogin {
@@ -415,7 +416,8 @@ open class NetworkServiceWorker {
 
             // 3.b Fetch current list of interesting mailboxes
             let opFetchFolders = FetchFoldersOperation(
-                parentName: serviceConfig.parentName, errorContainer: errorContainer, imapSyncData: imapSyncData)
+                parentName: serviceConfig.parentName, errorContainer: errorContainer,
+                imapSyncData: imapSyncData)
             opFetchFolders.completionBlock = { [weak self] in
                 if let me = self {
                     me.workerQueue.async {
@@ -484,6 +486,15 @@ open class NetworkServiceWorker {
 
         return OperationLine(accountInfo: accountInfo, operations: operations,
                              finalOperation: opAllFinished, errorContainer: errorContainer)
+    }
+
+    func cachedImapSync(connectInfo: EmailConnectInfo) -> ImapSyncData {
+        if let syncData = imapConnectionDataCache[connectInfo] {
+            return syncData
+        }
+        let imapSyncData = ImapSyncData(connectInfo: connectInfo)
+        imapConnectionDataCache[connectInfo] = imapSyncData
+        return imapSyncData
     }
 
     func messageFetched(cdMessage: CdMessage) {

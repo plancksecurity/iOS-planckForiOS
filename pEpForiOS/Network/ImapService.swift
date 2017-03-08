@@ -11,6 +11,7 @@ public struct ImapState {
     var authenticationCompleted = false
     var currentFolderName: String?
     var currentFolder: CWIMAPFolder?
+    var hasError = false
 }
 
 public protocol ImapSyncDelegate: class {

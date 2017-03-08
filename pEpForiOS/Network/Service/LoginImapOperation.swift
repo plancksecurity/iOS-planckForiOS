@@ -21,9 +21,18 @@ open class LoginImapOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
-        service = ImapSync(connectInfo: imapSyncData.connectInfo)
-        service.delegate = self
-        service.start()
+        if let existingSync = imapSyncData.sync, !existingSync.imapState.hasError {
+            service = existingSync
+        } else {
+            service = ImapSync(connectInfo: imapSyncData.connectInfo)
+            imapSyncData.sync = service
+        }
+        if !service.imapState.authenticationCompleted {
+            service.delegate = self
+            service.start()
+        } else {
+            markAsFinished()
+        }
     }
 }
 
