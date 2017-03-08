@@ -129,10 +129,6 @@ class EmailViewController: UITableViewController {
         _ = navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func composeButtonTapped(_ sender: UIBarButtonItem) {
-        //TODO: stubed method
-    }
-    
     @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
         let filtered = message.identitiesEligibleForHandshake(session: appConfig.session)
 

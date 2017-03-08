@@ -1625,7 +1625,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aso-tc-Ukd">
-                                            <rect key="frame" x="-4" y="-4" width="373" height="191"/>
+                                            <rect key="frame" x="-4" y="-4" width="373" height="190"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
@@ -1646,7 +1646,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem image="flag-tab-button-icon" id="bej-eI-LgY">
+                        <barButtonItem image="flag-tab-button-icon" id="bej-eI-LgY" userLabel="Flag">
                             <connections>
                                 <action selector="flagButtonTapped:" destination="3bx-34-vLD" id="bHB-Of-ApR"/>
                             </connections>
@@ -1672,7 +1672,6 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="eZb-1l-AhY"/>
                         <barButtonItem systemItem="compose" id="olT-gI-RWB">
                             <connections>
-                                <action selector="composeButtonTapped:" destination="3bx-34-vLD" id="BJA-qF-j9u"/>
                                 <segue destination="NY2-HI-4ou" kind="presentation" id="70T-Gu-VTr"/>
                             </connections>
                         </barButtonItem>
@@ -1694,7 +1693,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6482" y="409"/>
+            <point key="canvasLocation" x="6722" y="181"/>
         </scene>
         <!--Privacy Status-->
         <scene sceneID="B8p-4q-xjl">
@@ -2469,8 +2468,8 @@ APPLEPIE RESEARCH</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="coo-Nc-XpZ"/>
-        <segue reference="xmi-xn-p8T"/>
         <segue reference="Na7-CM-lbe"/>
-        <segue reference="Uv1-kK-r61"/>
+        <segue reference="FBd-9l-9Iu"/>
+        <segue reference="1zD-EW-3fN"/>
     </inferredMetricsTieBreakers>
 </document>
