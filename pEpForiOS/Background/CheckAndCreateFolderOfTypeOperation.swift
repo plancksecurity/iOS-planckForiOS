@@ -59,9 +59,9 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 
         let folder = CdFolder.by(folderType: self.folderType, account: account)
         if folder == nil {
-            self.imapSync.delegate = self
+            self.imapSyncData.sync?.delegate = self
             if !self.isCancelled {
-                self.imapSync.createFolderWithName(self.folderName)
+                self.imapSyncData.sync?.createFolderWithName(self.folderName)
             }
         } else {
             self.markAsFinished()

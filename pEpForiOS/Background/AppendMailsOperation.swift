@@ -92,7 +92,7 @@ open class AppendMailsOperation: ImapSyncOperation {
 
         let pantMail = PEPUtil.pantomime(pEpMessage: msg)
         let folder = CWIMAPFolder(name: folderName)
-        folder.setStore(imapSync.imapStore)
+        folder.setStore(imapSyncData.sync?.imapStore)
         guard let rawData = pantMail.dataValue() else {
             markAsFinished()
             return

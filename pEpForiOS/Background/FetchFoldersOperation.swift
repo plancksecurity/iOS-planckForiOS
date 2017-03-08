@@ -110,13 +110,13 @@ open class FetchFoldersOperation: ImapSyncOperation {
     }
 
     func startSync() {
-        imapSync.delegate = self
-        imapSync.folderBuilder = folderBuilder
-        readFolderNamesFromImapSync(imapSync)
+        imapSyncData.sync?.delegate = self
+        imapSyncData.sync?.folderBuilder = folderBuilder
+        readFolderNamesFromImapSync(imapSyncData.sync)
     }
 
-    func readFolderNamesFromImapSync(_ sync: ImapSync) {
-        if let _ = sync.folderNames {
+    func readFolderNamesFromImapSync(_ sync: ImapSync?) {
+        if let _ = sync?.folderNames {
             waitForFinished()
         }
     }

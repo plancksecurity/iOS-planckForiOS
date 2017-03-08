@@ -59,7 +59,7 @@ open class CreateFoldersOperation: ImapSyncOperation {
         }
 
         if folderNamesToCreate.count > 0 {
-            imapSync.delegate = self
+            imapSyncData.sync?.delegate = self
             createNextFolder()
         } else {
             markAsFinished()
@@ -68,7 +68,7 @@ open class CreateFoldersOperation: ImapSyncOperation {
 
     func createNextFolder() {
         if !isCancelled, let fn = folderNamesToCreate.first {
-            imapSync.createFolderWithName(fn)
+            imapSyncData.sync?.createFolderWithName(fn)
             folderNamesToCreate.removeFirst()
         } else {
             markAsFinished()

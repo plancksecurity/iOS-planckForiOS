@@ -69,11 +69,13 @@ open class FetchMessagesOperation: ImapSyncOperation {
             }
         }
 
-        self.imapSync.delegate = self
-        self.imapSync.folderBuilder = folderBuilder
+        self.imapSyncData.sync?.delegate = self
+        self.imapSyncData.sync?.folderBuilder = folderBuilder
 
-        if !self.imapSync.openMailBox(name: self.folderToOpen) {
-            self.fetchMessages(self.imapSync)
+        if let sync = imapSyncData.sync {
+            if !sync.openMailBox(name: self.folderToOpen) {
+                self.fetchMessages(sync)
+            }
         }
     }
 
@@ -88,7 +90,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
 
     open override func cancel() {
         Log.info(component: comp, content: "cancel")
-        if let sync = imapSync {
+        if let sync = imapSyncData.sync {
             sync.cancel()
         }
         super.cancel()

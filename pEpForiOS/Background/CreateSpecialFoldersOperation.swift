@@ -77,7 +77,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
 
         if foldersToCreate.count > 0 {
             Record.saveAndWait(context: privateMOC)
-            imapSync.delegate = self
+            imapSyncData.sync?.delegate = self
             createNextFolder()
         } else {
             markAsFinished()
@@ -101,7 +101,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
     }
 
     func startFolderCreation(folderToCreate: FolderToCreate) {
-        imapSync.createFolderWithName(folderToCreate.folderName)
+        imapSyncData.sync?.createFolderWithName(folderToCreate.folderName)
     }
 
     func createLocal(folderToCreate: FolderToCreate, context: NSManagedObjectContext) {

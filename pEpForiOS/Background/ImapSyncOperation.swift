@@ -9,7 +9,6 @@
 import UIKit
 
 open class ImapSyncOperation: ConcurrentBaseOperation {
-    var imapSync: ImapSync!
     let imapSyncData: ImapSyncData
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
@@ -19,8 +18,7 @@ open class ImapSyncOperation: ConcurrentBaseOperation {
     }
 
     public func checkImapSync() -> Bool {
-        imapSync = imapSyncData.sync
-        if imapSync == nil {
+        if imapSyncData.sync == nil {
             addError(Constants.errorImapInvalidConnection(component: comp))
             markAsFinished()
             return false

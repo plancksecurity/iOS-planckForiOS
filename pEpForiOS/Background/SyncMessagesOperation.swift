@@ -76,12 +76,14 @@ open class SyncMessagesOperation: ImapSyncOperation {
         let folderBuilder = ImapFolderBuilder.init(
             accountID: self.imapSyncData.connectInfo.accountObjectID,
             backgroundQueue: self.backgroundQueue)
-        self.imapSync.delegate = self
-        self.imapSync.folderBuilder = folderBuilder
+        self.imapSyncData.sync?.delegate = self
+        self.imapSyncData.sync?.folderBuilder = folderBuilder
 
-        if !self.imapSync.openMailBox(name: self.folderToOpen) {
-            imapSync.imapState.currentFolder?.resetMatchedUIDs()
-            self.syncMessages(self.imapSync)
+        if let sync = self.imapSyncData.sync {
+            if !sync.openMailBox(name: self.folderToOpen) {
+                sync.imapState.currentFolder?.resetMatchedUIDs()
+                self.syncMessages(sync)
+            }
         }
     }
 

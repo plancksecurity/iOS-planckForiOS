@@ -54,8 +54,10 @@ open class DeleteFoldersOperation: ImapSyncOperation {
             }
         }
 
-        imapSync.delegate = self
-        deleteNextRemoteFolder(sync: imapSync)
+        if let sync = imapSyncData.sync {
+            sync.delegate = self
+            deleteNextRemoteFolder(sync: sync)
+        }
     }
 
     func deleteNextRemoteFolder(sync: ImapSync) {
@@ -69,7 +71,7 @@ open class DeleteFoldersOperation: ImapSyncOperation {
         if !self.isCancelled {
             if let fn = folderNamesToDelete.first {
                 currentFolderName = fn
-                imapSync.deleteFolderWithName(fn)
+                imapSyncData.sync?.deleteFolderWithName(fn)
                 folderNamesToDelete.removeFirst()
                 return
             }

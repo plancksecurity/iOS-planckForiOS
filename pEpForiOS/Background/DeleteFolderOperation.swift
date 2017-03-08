@@ -40,8 +40,8 @@ open class DeleteFolderOperation: ImapSyncOperation {
                 self.markAsFinished()
                 return
             }
-            self.imapSync.delegate = self
-            self.imapSync.deleteFolderWithName(self.folderName)
+            self.imapSyncData.sync?.delegate = self
+            self.imapSyncData.sync?.deleteFolderWithName(self.folderName)
         }
     }
 

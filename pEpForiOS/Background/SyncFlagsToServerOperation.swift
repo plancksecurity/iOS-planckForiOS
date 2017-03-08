@@ -54,11 +54,11 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     func startSync(context: NSManagedObjectContext) {
-        imapSync.delegate = self
+        imapSyncData.sync?.delegate = self
         // Immediately check for work. If there is none, bail out
         if let _ = nextMessageToBeSynced(context: context) {
-            if !self.isCancelled {
-                if !imapSync.openMailBox(name: folderName) {
+            if !self.isCancelled, let sync = imapSyncData.sync {
+                if !sync.openMailBox(name: folderName) {
                     syncNextMessage()
                 }
             }
@@ -99,7 +99,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
 
     func updateFlags(message: CdMessage) {
         if let (cmd, dict) = message.storeCommandForUpdate() {
-            imapSync.imapStore.send(
+            imapSyncData.sync?.imapStore.send(
                 IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)
         } else {
             addError(Constants.errorNoFlags(component: comp))
