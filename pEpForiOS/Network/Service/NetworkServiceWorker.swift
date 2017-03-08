@@ -396,8 +396,8 @@ open class NetworkServiceWorker {
 
             // login IMAP
             let opImapLogin = LoginImapOperation(
-                imapSyncData: imapSyncData, name: serviceConfig.parentName,
-                errorContainer: errorContainer)
+                parentName: serviceConfig.parentName, errorContainer: errorContainer,
+                imapSyncData: imapSyncData)
             opImapLogin.completionBlock = { [weak self, weak opImapLogin] in
                 self?.workerQueue.async {
                     if let me = self, let theOpImapLogin = opImapLogin {

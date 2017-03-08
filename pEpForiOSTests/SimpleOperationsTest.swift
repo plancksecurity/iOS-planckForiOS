@@ -840,7 +840,7 @@ class SimpleOperationsTest: XCTestCase {
         let errorContainer = ErrorContainer()
 
         let imapLogin = LoginImapOperation(
-            imapSyncData: imapSyncData, errorContainer: errorContainer)
+            errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             XCTAssertNotNil(imapSyncData.sync)
         }
@@ -921,7 +921,7 @@ class SimpleOperationsTest: XCTestCase {
         let errorContainer = ErrorContainer()
 
         let imapLogin = LoginImapOperation(
-            imapSyncData: imapSyncData, errorContainer: errorContainer)
+            errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             XCTAssertNotNil(imapSyncData.sync)
         }
@@ -1086,7 +1086,7 @@ class SimpleOperationsTest: XCTestCase {
         let errorContainer = ErrorContainer()
 
         let imapLogin = LoginImapOperation(
-            imapSyncData: imapSyncData, errorContainer: errorContainer)
+            errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             XCTAssertNotNil(imapSyncData.sync)
         }

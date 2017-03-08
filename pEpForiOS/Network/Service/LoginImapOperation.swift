@@ -10,23 +10,15 @@ import UIKit
 
 import MessageModel
 
-open class LoginImapOperation: ConcurrentBaseOperation {
-    var service: ImapSync!
-    var imapSyncData: ImapSyncData
-
-    public init(imapSyncData: ImapSyncData, name: String? = nil,
-                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
-        self.imapSyncData = imapSyncData
-        super.init(parentName: name, errorContainer: errorContainer)
-    }
+open class LoginImapOperation: ImapSyncOperation {
 
     open override func main() {
-        if let existingSync = imapSyncData.sync, !existingSync.imapState.hasError {
-            service = existingSync
-        } else {
+        var service = imapSyncData.sync ?? ImapSync(connectInfo: imapSyncData.connectInfo)
+        if service.imapState.hasError {
             service = ImapSync(connectInfo: imapSyncData.connectInfo)
-            imapSyncData.sync = service
         }
+        imapSyncData.sync = service
+
         if !service.imapState.authenticationCompleted {
             service.delegate = self
             service.start()
