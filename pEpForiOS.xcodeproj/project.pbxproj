@@ -173,6 +173,7 @@
 		43F6DFD71DEEC752006B526F /* FetchMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */; };
 		43F7BEB01DC8DFC5009048D6 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */; };
 		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
+		493B6D071E705A0600364D60 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B6D061E705A0600364D60 /* SystemUtils.swift */; };
 		494409AE1E6EBFE40066A205 /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494409AB1E6EB8070066A205 /* ServerConfig.framework */; };
 		494409AF1E6EBFFC0066A205 /* ServerConfig.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 494409AB1E6EB8070066A205 /* ServerConfig.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
@@ -485,6 +486,7 @@
 		43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesOperation.swift; sourceTree = "<group>"; };
 		43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersOperation.swift; sourceTree = "<group>"; };
+		493B6D061E705A0600364D60 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
 		494409A51E6EB8070066A205 /* ServerConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ServerConfig.xcodeproj; path = ../libAccountSettings/attic/xcode/ServerConfig.xcodeproj; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMessagesOperation.swift; sourceTree = "<group>"; };
@@ -825,6 +827,7 @@
 				436C232C1E02A2D900071430 /* KickOffMySelfProtocol.swift */,
 				436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */,
 				8B69E3981E30F80E0022959E /* Appearance.swift */,
+				493B6D061E705A0600364D60 /* SystemUtils.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1342,6 +1345,7 @@
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableView.swift in Sources */,
 				431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */,
 				B7208EB01E437C1C00B08B22 /* LogViewController.swift in Sources */,
+				493B6D071E705A0600364D60 /* SystemUtils.swift in Sources */,
 				43800D931D112A0800821E34 /* TFHpple.m in Sources */,
 				43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */,
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
@@ -1637,7 +1641,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING";
+				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpAlpha";
 				PRODUCT_MODULE_NAME = pEpForiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
