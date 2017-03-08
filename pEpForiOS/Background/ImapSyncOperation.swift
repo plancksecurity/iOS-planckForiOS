@@ -25,4 +25,9 @@ open class ImapSyncOperation: ConcurrentBaseOperation {
         }
         return true
     }
+
+    open func addIMAPError(_ error: NSError) {
+        addError(error)
+        imapSyncData.sync?.imapState.hasError = true
+    }
 }
