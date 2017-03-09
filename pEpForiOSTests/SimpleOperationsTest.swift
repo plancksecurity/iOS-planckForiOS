@@ -1246,6 +1246,7 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
+    //fails on first run when the an account was setup on
     func testFixAttachmentsOperation() {
         let cdFolder = CdFolder.create()
         cdFolder.name = "Whatever"

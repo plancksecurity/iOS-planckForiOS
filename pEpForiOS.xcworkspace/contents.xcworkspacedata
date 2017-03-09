@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:pEpForiOS.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../pEpiOSAdapter/pEpiOSAdapter.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../pantomime-iOS/Pantomime.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../MailModel/MessageModel/MessageModel.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../libAccountSettings/attic/xcode/ServerConfig.xcodeproj">
+   </FileRef>
+</Workspace>
