@@ -81,6 +81,9 @@ Set up working account for UI tests. After copying, fill in working account:
 ```
 cp ./pEpForiOSUITests/UITestData.swift.sample ./pEpForiOSUITests/UITestData.swift
 ```
+### Build Project
+
+Open pEpForiOS.xcworkspace and build schema "pEp".
 
 ### Unit Tests
 
