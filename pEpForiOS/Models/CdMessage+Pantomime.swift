@@ -456,37 +456,34 @@ extension CdMessage {
             return mail
         }
 
-        if let from = pantomimeMessage.from(), let email = from.address() {
-            let contactsFrom = add(contacts: [from])
-            let c = contactsFrom[email]
-            mail.from = c
+        if let from = pantomimeMessage.from() {
+            mail.from = cdIdentity(pantomimeAddress: from)
         }
 
         mail.bodyFetched = pantomimeMessage.isInitialized()
 
-        let addresses = pantomimeMessage.recipients() as! [CWInternetAddress]
-        let contacts = add(contacts: addresses)
-
-        let tos: NSMutableOrderedSet = []
-        let ccs: NSMutableOrderedSet = []
-        let bccs: NSMutableOrderedSet = []
-        for addr in addresses {
-            switch addr.type() {
-            case .toRecipient:
-                tos.add(contacts[addr.address()]!)
-            case .ccRecipient:
-                ccs.add(contacts[addr.address()]!)
-            case .bccRecipient:
-                bccs.add(contacts[addr.address()]!)
-            default:
-                Log.warn(
-                    component: "Message",
-                    content: "Unsupported recipient type \(addr.type()) for \(addr.address())")
+        if let addresses = pantomimeMessage.recipients() as? [CWInternetAddress] {
+            let tos: NSMutableOrderedSet = []
+            let ccs: NSMutableOrderedSet = []
+            let bccs: NSMutableOrderedSet = []
+            for addr in addresses {
+                switch addr.type() {
+                case .toRecipient:
+                    tos.add(cdIdentity(pantomimeAddress: addr))
+                case .ccRecipient:
+                    ccs.add(cdIdentity(pantomimeAddress: addr))
+                case .bccRecipient:
+                    bccs.add(cdIdentity(pantomimeAddress: addr))
+                default:
+                    Log.warn(
+                        component: "Message",
+                        content: "Unsupported recipient type \(addr.type()) for \(addr.address())")
+                }
             }
+            mail.to = tos
+            mail.cc = ccs
+            mail.bcc = bccs
         }
-        mail.to = tos
-        mail.cc = ccs
-        mail.bcc = bccs
 
         let referenceStrings = MutableOrderedSet<String>()
         if let pantomimeRefs = pantomimeMessage.allReferences() as? [String] {
@@ -539,15 +536,12 @@ extension CdMessage {
         return CdMessage.by(uuid: mid, uid: uid)
     }
 
-    static func add(contacts: [CWInternetAddress]) -> [String: CdIdentity] {
-        var added: [String: CdIdentity] = [:]
-        for address in contacts {
-            let addr = CdIdentity.first(attribute: "address", value: address.address()) ??
-                CdIdentity.create(attributes: ["address": address.address(), "isMySelf": false])
-            addr.userName = address.personal()
-            added[address.address()] = addr
-        }
-        return added
+    static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {
+        let addr = CdIdentity.first(attribute: "address", value: pantomimeAddress.address()) ??
+            CdIdentity.create(attributes: ["address": pantomimeAddress.address(),
+                                           "isMySelf": false])
+        addr.userName = pantomimeAddress.personal()
+        return addr
     }
 
     /**
