@@ -202,7 +202,7 @@
 			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
 			remoteInfo = pEpForiOS;
 		};
-		43AFF3AF1E729FE800F78973 /* PBXContainerItemProxy */ = {
+		43AFF3B31E72AAE900F78973 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980E1B1CBD0BC900A7FC3C /* Project object */;
 			proxyType = 1;
@@ -989,7 +989,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				43AFF3B01E729FE800F78973 /* PBXTargetDependency */,
+				43AFF3B41E72AAE900F78973 /* PBXTargetDependency */,
 			);
 			name = pEpForiOSUITests;
 			productName = pEpForiOSUITests;
@@ -1283,10 +1283,10 @@
 			target = 43980E221CBD0BC900A7FC3C /* pEp */;
 			targetProxy = 43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
 		};
-		43AFF3B01E729FE800F78973 /* PBXTargetDependency */ = {
+		43AFF3B41E72AAE900F78973 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* pEp */;
-			targetProxy = 43AFF3AF1E729FE800F78973 /* PBXContainerItemProxy */;
+			targetProxy = 43AFF3B31E72AAE900F78973 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
