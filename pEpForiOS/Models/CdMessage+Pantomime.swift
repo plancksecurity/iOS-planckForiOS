@@ -68,6 +68,7 @@ extension CdMessage {
         return pantomimeFlags(flagsInt16: flagsInt16).asString()
     }
 
+    //TODO: DELETE
     /**
      - Returns: A tuple consisting of an IMAP command string for updating
      the flags for this message, and a dictionary suitable for using pantomime
@@ -96,6 +97,158 @@ extension CdMessage {
         dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: flags)
         return (command: result, dictionary: dict)
     }
+
+
+    //BUFF: 
+
+    /**
+     - Returns: A tuple consisting of an IMAP command string for flags to remove for this message, 
+     and a dictionary suitable for using pantomime
+     for the actual execution.
+     */
+    public func storeCommandForFlagsToRemove() -> (String, [AnyHashable: Any])? {
+        guard let imap = imap else {
+            return nil
+        }
+        imap.updateCurrentFlags()
+
+        let flags = flagsToRemove()
+
+        if flags.imapNoFlagSet() {
+            return nil
+        }
+
+        let flagsString = CdMessage.flagsString(flagsInt16: flags)
+        let result = "UID STORE \(uid) -FLAGS.SILENT (\(flagsString))"
+
+        // Construct a very minimal pantomime dummy for the info dictionary
+        let pantomimeMail = CWIMAPMessage.init()
+        var dict: [AnyHashable: Any] = [PantomimeMessagesKey: [pantomimeMail]]
+
+        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: flags)
+        return (command: result, dictionary: dict)
+    }
+
+    /**
+     - Returns: A tuple consisting of an IMAP command string for flags to remove for this message,
+     and a dictionary suitable for using pantomime
+     for the actual execution.
+     */
+    public func storeCommandForFlagsToAdd() -> (String, [AnyHashable: Any])? {
+        guard let imap = imap else {
+            return nil
+        }
+        imap.updateCurrentFlags()
+
+        let flags = flagsToAdd()
+        if flags.imapNoFlagSet() {
+            return nil
+        }
+
+        let flagsString = CdMessage.flagsString(flagsInt16: flags)
+        let result = "UID STORE \(uid) +FLAGS.SILENT (\(flagsString))"
+
+        // Construct a very minimal pantomime dummy for the info dictionary
+        let pantomimeMail = CWIMAPMessage.init()
+        var dict: [AnyHashable: Any] = [PantomimeMessagesKey: [pantomimeMail]]
+
+        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: flags)
+        return (command: result, dictionary: dict)
+    }
+
+    /// Returns the flags that have to be added on server, represented in bits.
+    /// A set bit (1) means it has to be added.
+    ///
+    /// - Returns: flags to add
+    private func flagsToAdd() -> Int16 {
+        let diff = flagsDiff()
+
+        if diff == 0 {
+            return Int16(0)
+        }
+
+        guard let flagsCurrent = imap?.flagsCurrent else {
+            return Int16(0)
+        }
+
+        var flagsToRemove = Int16(0)
+
+        if diff.imapFlagBitIsSet(flagbit: .answered) && flagsCurrent.imapFlagBitIsSet(flagbit: .answered) {
+            flagsToRemove += ImapFlagBit.answered.rawValue
+        }
+        if diff.imapFlagBitIsSet(flagbit: .deleted) && flagsCurrent.imapFlagBitIsSet(flagbit: .deleted) {
+            flagsToRemove += ImapFlagBit.deleted.rawValue
+        }
+        if diff.imapFlagBitIsSet(flagbit: .draft) && flagsCurrent.imapFlagBitIsSet(flagbit: .draft) {
+            flagsToRemove += ImapFlagBit.draft.rawValue
+        }
+        if diff.imapFlagBitIsSet(flagbit: .flagged) && flagsCurrent.imapFlagBitIsSet(flagbit: .flagged) {
+            flagsToRemove += ImapFlagBit.flagged.rawValue
+        }
+        // The "Recent" flag is intentionally not handled, as it is modified by the server only.
+        if diff.imapFlagBitIsSet(flagbit: .seen) && flagsCurrent.imapFlagBitIsSet(flagbit: .seen) {
+            flagsToRemove += ImapFlagBit.seen.rawValue
+        }
+
+        return flagsToRemove
+    }
+
+    /// Returns the flags that have to be removed on server, represented in bits.
+    /// A set bit (1) means it has to be removed.
+    ///
+    /// - Returns: flags to remove
+    private func flagsToRemove() -> Int16 {
+        let diff = flagsDiff()
+
+        if diff == 0 {
+            return Int16(0)
+        }
+
+        guard let flagsCurrent = imap?.flagsCurrent else {
+            return Int16(0)
+        }
+
+        var flagsToRemove = Int16(0)
+
+        if diff.imapFlagBitIsSet(flagbit: .answered) && !flagsCurrent.imapFlagBitIsSet(flagbit: .answered) {
+            flagsToRemove += ImapFlagBit.answered.rawValue
+        }
+        if diff.imapFlagBitIsSet(flagbit: .deleted) && !flagsCurrent.imapFlagBitIsSet(flagbit: .deleted) {
+            flagsToRemove += ImapFlagBit.deleted.rawValue
+        }
+        if diff.imapFlagBitIsSet(flagbit: .draft) && !flagsCurrent.imapFlagBitIsSet(flagbit: .draft) {
+            flagsToRemove += ImapFlagBit.draft.rawValue
+        }
+        if diff.imapFlagBitIsSet(flagbit: .flagged) && !flagsCurrent.imapFlagBitIsSet(flagbit: .flagged) {
+            flagsToRemove += ImapFlagBit.flagged.rawValue
+        }
+        // The "Recent" flag is intentionally not handled, as it is modified by the server only.
+        if diff.imapFlagBitIsSet(flagbit: .seen) && !flagsCurrent.imapFlagBitIsSet(flagbit: .seen) {
+            flagsToRemove += ImapFlagBit.seen.rawValue
+        }
+
+        return flagsToRemove
+    }
+
+
+
+    /// Returns the flags that differ in between flagsCurrent and flagsFromServer, represented in bits.
+    /// A set bit (1) means it differs.
+    ///
+    /// - Returns: flags that differ
+    private func flagsDiff() -> Int16 {
+        guard let flagsCurrent = imap?.flagsCurrent else {
+            return Int16(0)
+        }
+
+        var flagsFromServer = Int16(0)
+        if let flags = imap?.flagsFromServer {
+            flagsFromServer = flags
+        }
+
+        return flagsCurrent | flagsFromServer
+    }
+    //FFUBF
 
     /**
      Convert the `Message` into an `CWIMAPMessage`, belonging to the given folder.
