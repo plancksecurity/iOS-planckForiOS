@@ -174,7 +174,6 @@
 		495560881E71517F0016579E /* libpEpiOSAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560871E71517F0016579E /* libpEpiOSAdapter.a */; };
 		4955608A1E7151870016579E /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560891E7151870016579E /* MessageModel.framework */; };
 		4955608C1E71518E0016579E /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4955608B1E71518D0016579E /* ServerConfig.framework */; };
-		495560911E7171E00016579E /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4955608B1E71518D0016579E /* ServerConfig.framework */; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */; };
 		5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */; };
@@ -449,7 +448,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				495560911E7171E00016579E /* ServerConfig.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
