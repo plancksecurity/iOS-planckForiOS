@@ -168,21 +168,6 @@
 		43F6DFD71DEEC752006B526F /* FetchMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */; };
 		43F7BEB01DC8DFC5009048D6 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */; };
 		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
-		490F1A221E72B41200D0EDB9 /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4955608B1E71518D0016579E /* ServerConfig.framework */; };
-		490F1A241E72B42400D0EDB9 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F1A231E72B42400D0EDB9 /* MessageModel.framework */; };
-		490F1A251E72B42A00D0EDB9 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560891E7151870016579E /* MessageModel.framework */; };
-		490F1A271E72B45F00D0EDB9 /* libpEpiOSAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F1A261E72B45F00D0EDB9 /* libpEpiOSAdapter.a */; };
-		490F1A291E72B46500D0EDB9 /* libpEpiOSAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F1A281E72B46500D0EDB9 /* libpEpiOSAdapter.a */; };
-		490F1A2A1E72B47C00D0EDB9 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
-		490F1A2B1E72B48200D0EDB9 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
-		490F1A2D1E72B4B200D0EDB9 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
-		490F1A2E1E72B4BD00D0EDB9 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
-		490F1A2F1E72B4C500D0EDB9 /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
-		490F1A301E72B4CA00D0EDB9 /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
-		490F1A311E72B4D000D0EDB9 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
-		490F1A321E72B4D600D0EDB9 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
-		490F1A331E72B4DE00D0EDB9 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
-		490F1A341E72B4E300D0EDB9 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
 		493B6D071E705A0600364D60 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B6D061E705A0600364D60 /* SystemUtils.swift */; };
 		493B6D221E7078A100364D60 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B6D211E7078A100364D60 /* TestData.swift */; };
 		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
@@ -417,9 +402,6 @@
 		43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesOperation.swift; sourceTree = "<group>"; };
 		43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersOperation.swift; sourceTree = "<group>"; };
-		490F1A231E72B42400D0EDB9 /* MessageModel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageModel.framework; path = "../MailModel/MessageModel/build/Debug-iphoneos/MessageModel.framework"; sourceTree = "<group>"; };
-		490F1A261E72B45F00D0EDB9 /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../pEpiOSAdapter/build/Debug-iphoneos/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
-		490F1A281E72B46500D0EDB9 /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../pEpiOSAdapter/build/Debug-iphoneos/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
 		493B6D061E705A0600364D60 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
 		493B6D211E7078A100364D60 /* TestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		495560851E7150ED0016579E /* libPantomimeStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPantomimeStatic.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libPantomimeStatic.a"; sourceTree = "<group>"; };
@@ -468,13 +450,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				495560911E7171E00016579E /* ServerConfig.framework in Frameworks */,
-				490F1A251E72B42A00D0EDB9 /* MessageModel.framework in Frameworks */,
-				490F1A291E72B46500D0EDB9 /* libpEpiOSAdapter.a in Frameworks */,
-				490F1A2A1E72B47C00D0EDB9 /* libPantomimeStatic.a in Frameworks */,
-				490F1A2E1E72B4BD00D0EDB9 /* libxml2.tbd in Frameworks */,
-				490F1A2F1E72B4C500D0EDB9 /* libiconv.2.tbd in Frameworks */,
-				490F1A321E72B4D600D0EDB9 /* libbz2.tbd in Frameworks */,
-				490F1A331E72B4DE00D0EDB9 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,14 +457,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				490F1A221E72B41200D0EDB9 /* ServerConfig.framework in Frameworks */,
-				490F1A241E72B42400D0EDB9 /* MessageModel.framework in Frameworks */,
-				490F1A271E72B45F00D0EDB9 /* libpEpiOSAdapter.a in Frameworks */,
-				490F1A2B1E72B48200D0EDB9 /* libPantomimeStatic.a in Frameworks */,
-				490F1A2D1E72B4B200D0EDB9 /* libxml2.tbd in Frameworks */,
-				490F1A301E72B4CA00D0EDB9 /* libiconv.2.tbd in Frameworks */,
-				490F1A311E72B4D000D0EDB9 /* libbz2.tbd in Frameworks */,
-				490F1A341E72B4E300D0EDB9 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -920,9 +887,6 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				490F1A281E72B46500D0EDB9 /* libpEpiOSAdapter.a */,
-				490F1A261E72B45F00D0EDB9 /* libpEpiOSAdapter.a */,
-				490F1A231E72B42400D0EDB9 /* MessageModel.framework */,
 				4955608B1E71518D0016579E /* ServerConfig.framework */,
 				495560891E7151870016579E /* MessageModel.framework */,
 				495560871E71517F0016579E /* libpEpiOSAdapter.a */,
@@ -1513,13 +1477,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
-					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/attic/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../libAccountSettings/attic/include",
-					"$(SRCROOT)/pEpForiOS",
-				);
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
@@ -1536,13 +1493,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
-					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/attic/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../libAccountSettings/attic/include",
-					"$(SRCROOT)/pEpForiOS",
-				);
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
