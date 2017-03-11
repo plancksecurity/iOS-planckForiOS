@@ -168,35 +168,15 @@
 		43F6DFD71DEEC752006B526F /* FetchMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */; };
 		43F7BEB01DC8DFC5009048D6 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */; };
 		43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */; };
-		490F1A211E72B09800D0EDB9 /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F1A201E72B09800D0EDB9 /* CdMessage+PantomimeTest.swift */; };
-		490F1A221E72B41200D0EDB9 /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4955608B1E71518D0016579E /* ServerConfig.framework */; };
-		490F1A241E72B42400D0EDB9 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F1A231E72B42400D0EDB9 /* MessageModel.framework */; };
-		490F1A251E72B42A00D0EDB9 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560891E7151870016579E /* MessageModel.framework */; };
-		490F1A271E72B45F00D0EDB9 /* libpEpiOSAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F1A261E72B45F00D0EDB9 /* libpEpiOSAdapter.a */; };
-		490F1A291E72B46500D0EDB9 /* libpEpiOSAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F1A281E72B46500D0EDB9 /* libpEpiOSAdapter.a */; };
-		490F1A2A1E72B47C00D0EDB9 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
-		490F1A2B1E72B48200D0EDB9 /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
-		490F1A2D1E72B4B200D0EDB9 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
-		490F1A2E1E72B4BD00D0EDB9 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
-		490F1A2F1E72B4C500D0EDB9 /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
-		490F1A301E72B4CA00D0EDB9 /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
-		490F1A311E72B4D000D0EDB9 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
-		490F1A321E72B4D600D0EDB9 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
-		490F1A331E72B4DE00D0EDB9 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
-		490F1A341E72B4E300D0EDB9 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
 		493B6D071E705A0600364D60 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B6D061E705A0600364D60 /* SystemUtils.swift */; };
 		493B6D221E7078A100364D60 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B6D211E7078A100364D60 /* TestData.swift */; };
 		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
 		495560881E71517F0016579E /* libpEpiOSAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560871E71517F0016579E /* libpEpiOSAdapter.a */; };
-		4955608A1E7151870016579E /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560891E7151870016579E /* MessageModel.framework */; };
-		4955608C1E71518E0016579E /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4955608B1E71518D0016579E /* ServerConfig.framework */; };
-		495560911E7171E00016579E /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4955608B1E71518D0016579E /* ServerConfig.framework */; };
-		495560931E71D0610016579E /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495560921E71D0610016579E /* Int16+ImapFlagBits.swift */; };
-		495560991E71DBBC0016579E /* Int16+FlagBitsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495560981E71DBBC0016579E /* Int16+FlagBitsTest.swift */; };
-		49E6CE3C1E72F776004EE2AD /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4955608B1E71518D0016579E /* ServerConfig.framework */; };
-		49E6CE3D1E72F776004EE2AD /* ServerConfig.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4955608B1E71518D0016579E /* ServerConfig.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		49E6CE3F1E72F7F2004EE2AD /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560891E7151870016579E /* MessageModel.framework */; };
-		49E6CE401E72F7F2004EE2AD /* MessageModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 495560891E7151870016579E /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		49D521521E73E0690097987B /* Int16+ImapFlagBits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D521511E73E0690097987B /* Int16+ImapFlagBits.swift */; };
+		49D521541E73E1C20097987B /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; };
+		49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		49D521571E73E1C70097987B /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D521561E73E1C70097987B /* ServerConfig.framework */; };
+		49D521581E73E1C70097987B /* ServerConfig.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49D521561E73E1C70097987B /* ServerConfig.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */; };
 		5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */; };
@@ -225,26 +205,25 @@
 			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
 			remoteInfo = pEpForiOS;
 		};
-		43AFF3B31E72AAE900F78973 /* PBXContainerItemProxy */ = {
+		43980E461CBD0BCA00A7FC3C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980E1B1CBD0BC900A7FC3C /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
-			remoteInfo = pEp;
+			remoteInfo = pEpForiOS;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		49E6CE3E1E72F776004EE2AD /* Embed Frameworks */ = {
+		4377D92F1DB7EB03003432BB /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				49E6CE401E72F7F2004EE2AD /* MessageModel.framework in Embed Frameworks */,
-				49E6CE3D1E72F776004EE2AD /* ServerConfig.framework in Embed Frameworks */,
+				49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */,
+				49D521581E73E1C70097987B /* ServerConfig.framework in CopyFiles */,
 			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -427,18 +406,13 @@
 		43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesOperation.swift; sourceTree = "<group>"; };
 		43F7BEAF1DC8DFC5009048D6 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		43F84CD11CD899760092FCAE /* FetchFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersOperation.swift; sourceTree = "<group>"; };
-		490F1A201E72B09800D0EDB9 /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
-		490F1A231E72B42400D0EDB9 /* MessageModel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageModel.framework; path = "../MailModel/MessageModel/build/Debug-iphoneos/MessageModel.framework"; sourceTree = "<group>"; };
-		490F1A261E72B45F00D0EDB9 /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../pEpiOSAdapter/build/Debug-iphoneos/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
-		490F1A281E72B46500D0EDB9 /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../pEpiOSAdapter/build/Debug-iphoneos/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
 		493B6D061E705A0600364D60 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
 		493B6D211E7078A100364D60 /* TestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		495560851E7150ED0016579E /* libPantomimeStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPantomimeStatic.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libPantomimeStatic.a"; sourceTree = "<group>"; };
 		495560871E71517F0016579E /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
-		495560891E7151870016579E /* MessageModel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageModel.framework; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/MessageModel.framework"; sourceTree = "<group>"; };
-		4955608B1E71518D0016579E /* ServerConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServerConfig.framework; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/ServerConfig.framework"; sourceTree = "<group>"; };
-		495560921E71D0610016579E /* Int16+ImapFlagBits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int16+ImapFlagBits.swift"; sourceTree = "<group>"; };
-		495560981E71DBBC0016579E /* Int16+FlagBitsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int16+FlagBitsTest.swift"; sourceTree = "<group>"; };
+		49D521511E73E0690097987B /* Int16+ImapFlagBits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int16+ImapFlagBits.swift"; sourceTree = "<group>"; };
+		49D521531E73E1C20097987B /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49D521561E73E1C70097987B /* ServerConfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ServerConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMessagesOperation.swift; sourceTree = "<group>"; };
 		5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
@@ -463,17 +437,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4955608C1E71518E0016579E /* ServerConfig.framework in Frameworks */,
-				4955608A1E7151870016579E /* MessageModel.framework in Frameworks */,
 				495560881E71517F0016579E /* libpEpiOSAdapter.a in Frameworks */,
+				49D521571E73E1C70097987B /* ServerConfig.framework in Frameworks */,
 				495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */,
-				49E6CE3F1E72F7F2004EE2AD /* MessageModel.framework in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
 				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
 				43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */,
 				439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */,
-				49E6CE3C1E72F776004EE2AD /* ServerConfig.framework in Frameworks */,
 				439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */,
+				49D521541E73E1C20097987B /* MessageModel.framework in Frameworks */,
 				439D40701CC78930009A4E7C /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -482,14 +454,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				495560911E7171E00016579E /* ServerConfig.framework in Frameworks */,
-				490F1A251E72B42A00D0EDB9 /* MessageModel.framework in Frameworks */,
-				490F1A291E72B46500D0EDB9 /* libpEpiOSAdapter.a in Frameworks */,
-				490F1A2A1E72B47C00D0EDB9 /* libPantomimeStatic.a in Frameworks */,
-				490F1A2E1E72B4BD00D0EDB9 /* libxml2.tbd in Frameworks */,
-				490F1A2F1E72B4C500D0EDB9 /* libiconv.2.tbd in Frameworks */,
-				490F1A321E72B4D600D0EDB9 /* libbz2.tbd in Frameworks */,
-				490F1A331E72B4DE00D0EDB9 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,14 +461,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				490F1A221E72B41200D0EDB9 /* ServerConfig.framework in Frameworks */,
-				490F1A241E72B42400D0EDB9 /* MessageModel.framework in Frameworks */,
-				490F1A271E72B45F00D0EDB9 /* libpEpiOSAdapter.a in Frameworks */,
-				490F1A2B1E72B48200D0EDB9 /* libPantomimeStatic.a in Frameworks */,
-				490F1A2D1E72B4B200D0EDB9 /* libxml2.tbd in Frameworks */,
-				490F1A301E72B4CA00D0EDB9 /* libiconv.2.tbd in Frameworks */,
-				490F1A311E72B4D000D0EDB9 /* libbz2.tbd in Frameworks */,
-				490F1A341E72B4E300D0EDB9 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -726,7 +682,6 @@
 			children = (
 				437432061CFC49A4000F8D35 /* Util */,
 				43B2C3151D2280ED00A08557 /* Resources */,
-				495560971E71DBBC0016579E /* Models */,
 				431B049F1DE5AC5E00E40CD3 /* AddressBookTests.swift */,
 				43409CE21DD301CD008F8F49 /* CdMessagePantomimeTests.swift */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
@@ -884,9 +839,9 @@
 				430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */,
 				43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */,
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
+				49D521511E73E0690097987B /* Int16+ImapFlagBits.swift */,
 				43CE63D01DE8866C00FAC505 /* Message+pEp.swift */,
 				B7F199FF1E5DE9FB0079A513 /* Folder+Extensions.swift */,
-				495560921E71D0610016579E /* Int16+ImapFlagBits.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -937,24 +892,12 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				490F1A281E72B46500D0EDB9 /* libpEpiOSAdapter.a */,
-				490F1A261E72B45F00D0EDB9 /* libpEpiOSAdapter.a */,
-				490F1A231E72B42400D0EDB9 /* MessageModel.framework */,
-				4955608B1E71518D0016579E /* ServerConfig.framework */,
-				495560891E7151870016579E /* MessageModel.framework */,
+				49D521561E73E1C70097987B /* ServerConfig.framework */,
+				49D521531E73E1C20097987B /* MessageModel.framework */,
 				495560871E71517F0016579E /* libpEpiOSAdapter.a */,
 				495560851E7150ED0016579E /* libPantomimeStatic.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		495560971E71DBBC0016579E /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				495560981E71DBBC0016579E /* Int16+FlagBitsTest.swift */,
-				490F1A201E72B09800D0EDB9 /* CdMessage+PantomimeTest.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		B71EBBB41E55E43100150177 /* Folder */ = {
@@ -1013,7 +956,7 @@
 				43980E1F1CBD0BC900A7FC3C /* Sources */,
 				43980E201CBD0BC900A7FC3C /* Frameworks */,
 				43980E211CBD0BC900A7FC3C /* Resources */,
-				49E6CE3E1E72F776004EE2AD /* Embed Frameworks */,
+				4377D92F1DB7EB03003432BB /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1053,7 +996,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				43AFF3B41E72AAE900F78973 /* PBXTargetDependency */,
+				43980E471CBD0BCA00A7FC3C /* PBXTargetDependency */,
 			);
 			name = pEpForiOSUITests;
 			productName = pEpForiOSUITests;
@@ -1072,6 +1015,7 @@
 				TargetAttributes = {
 					43980E221CBD0BC900A7FC3C = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = SBPJ2E4G5X;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1090,6 +1034,7 @@
 					};
 					43980E441CBD0BCA00A7FC3C = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = SBPJ2E4G5X;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 43980E221CBD0BC900A7FC3C;
@@ -1171,7 +1116,6 @@
 				43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */,
 				43EE99481E438E320060EACE /* FlagImages.swift in Sources */,
 				220DCE341E0AB5CC002FE716 /* MailinglistCell.swift in Sources */,
-				495560931E71D0610016579E /* Int16+ImapFlagBits.swift in Sources */,
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
 				43313DF41DEC7AE600C111C8 /* CreateFoldersOperation.swift in Sources */,
 				434D09491E44A61500F03EAC /* PEPExtensions.swift in Sources */,
@@ -1264,6 +1208,7 @@
 				43A0E73D1D16C99900159F41 /* NSArray+PureLayout.m in Sources */,
 				4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
+				49D521521E73E0690097987B /* Int16+ImapFlagBits.swift in Sources */,
 				43122B171DF5B48B00610253 /* ConnectInfo.swift in Sources */,
 				436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */,
 				43800D941D112A0800821E34 /* TFHppleElement.m in Sources */,
@@ -1309,7 +1254,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4352FA1F1DC79E9B0081161A /* ShortCircuitSendLayer.swift in Sources */,
-				490F1A211E72B09800D0EDB9 /* CdMessage+PantomimeTest.swift in Sources */,
 				438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */,
 				432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */,
 				438ACD2C1DE860200016F954 /* ObserverDelegate.swift in Sources */,
@@ -1317,7 +1261,6 @@
 				431B04A01DE5AC5E00E40CD3 /* AddressBookTests.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
-				495560991E71DBBC0016579E /* Int16+FlagBitsTest.swift in Sources */,
 				43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */,
 				493B6D221E7078A100364D60 /* TestData.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
@@ -1348,10 +1291,10 @@
 			target = 43980E221CBD0BC900A7FC3C /* pEp */;
 			targetProxy = 43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
 		};
-		43AFF3B41E72AAE900F78973 /* PBXTargetDependency */ = {
+		43980E471CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* pEp */;
-			targetProxy = 43AFF3B31E72AAE900F78973 /* PBXContainerItemProxy */;
+			targetProxy = 43980E461CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1540,13 +1483,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
-					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/attic/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../libAccountSettings/attic/include",
-					"$(SRCROOT)/pEpForiOS",
-				);
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
@@ -1563,13 +1499,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
-					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/attic/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../libAccountSettings/attic/include",
-					"$(SRCROOT)/pEpForiOS",
-				);
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
