@@ -48,6 +48,7 @@ class EmailViewController: UITableViewController {
         super.viewWillAppear(animated)
         checkMessageReEvaluation()
         showPepRating()
+        message.markAsSeen()
         self.title = message.shortMessage
     }
     
