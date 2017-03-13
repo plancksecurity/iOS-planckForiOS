@@ -49,6 +49,8 @@ class EmailListViewController: UITableViewController {
             return
         }
 
+        self.textFilterButton.isEnabled = filterEnabled
+
         setDefaultColors()
         initialConfig()
         updateModel()
@@ -83,11 +85,32 @@ class EmailListViewController: UITableViewController {
         tableView.setContentOffset(CGPoint(x: 0.0, y: 40.0), animated: false)
     }
 
-
-    @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {}
-
     func updateModel() {
         tableView.reloadData()
+    }
+
+
+    private var filterEnabled = false
+    @IBOutlet weak var enableFilterButton: UIBarButtonItem!
+    @IBOutlet weak var textFilterButton: UIBarButtonItem!
+    @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {
+        if filterEnabled {
+            filterEnabled = false
+            textFilterButton.title = ""
+            enableFilterButton.image = UIImage(named: "unread-icon")
+            config?.folder?.updateFilter(filter: Filter.unified())
+            self.tableView.reloadData()
+        } else {
+            filterEnabled = true
+            textFilterButton.title = "Filter by: unread"
+            enableFilterButton.image = UIImage(named: "unread-icon-active")
+            if config != nil {
+                config?.folder?.updateFilter(filter: Filter.unread())
+                self.tableView.reloadData()
+            }
+        }
+        self.textFilterButton.isEnabled = filterEnabled
+
     }
 
     // MARK: - UI State
