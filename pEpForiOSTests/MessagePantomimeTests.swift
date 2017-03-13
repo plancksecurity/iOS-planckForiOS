@@ -155,36 +155,6 @@ class MessagePantomimeTests: XCTestCase {
                        "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")
     }
 
-//BUFF: Delete
-    func testStoreCommandForUpdate() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
-
-        m.uid = 1024
-        m.imap?.flagsFromServer = 0
-        m.imap?.flagDeleted = true
-        XCTAssertEqual(m.storeCommandForUpdate()?.0,
-                       "UID STORE 1024 FLAGS.SILENT (\\Deleted)")
-
-        // Check if 'difference' is taken into account
-        m.imap?.flagsFromServer = CWFlags(flags: PantomimeFlag.deleted).rawFlagsAsShort()
-        XCTAssertEqual(m.storeCommandForUpdate()?.0,
-                       "UID STORE 1024 FLAGS.SILENT (\\Deleted)")
-
-        m.imap?.flagAnswered = true
-        XCTAssertEqual(m.storeCommandForUpdate()?.0,
-                       "UID STORE 1024 FLAGS.SILENT (\\Answered \\Deleted)")
-
-        m.imap?.flagSeen = true
-        XCTAssertEqual(m.storeCommandForUpdate()?.0,
-                       "UID STORE 1024 FLAGS.SILENT (\\Answered \\Seen \\Deleted)")
-
-        m.imap?.flagFlagged = true
-        XCTAssertEqual(
-            m.storeCommandForUpdate()?.0,
-            "UID STORE 1024 FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")
-    }
-
     func testReferences() {
         let testData = TestData()
         let refs = ["ref1", "ref2", "ref3"]

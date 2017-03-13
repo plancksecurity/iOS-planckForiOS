@@ -70,39 +70,6 @@ extension CdMessage {
         return pantomimeFlags(flagsInt16: flagsInt16).asString()
     }
 
-    //TODO: DELETE
-    /**
-     - Returns: A tuple consisting of an IMAP command string for updating
-     the flags for this message, and a dictionary suitable for using pantomime
-     for the actual execution.
-     - Note: The generated command will always simply overwrite the flags
-     on the server with the local one. It will not figure out individual flags.
-     */
-    public func storeCommandForUpdate() -> (String, [AnyHashable: Any])? {
-        imap?.updateCurrentFlags()
-
-        guard let flags = imap?.flagsCurrent else {
-            return nil
-        }
-
-        // Construct a very minimal pantomime dummy for the info dictionary
-        let pantomimeMail = CWIMAPMessage.init()
-        pantomimeMail.setUID(UInt(uid))
-
-        var dict: [AnyHashable: Any] = [PantomimeMessagesKey:
-            NSArray.init(object: pantomimeMail)]
-
-        var result = "UID STORE \(uid) "
-        let flagsString = CdMessage.flagsString(flagsInt16: flags)
-        result += "FLAGS.SILENT (\(flagsString))"
-
-        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: flags)
-        return (command: result, dictionary: dict)
-    }
-
-
-    //BUFF: 
-
     private func pantomimeInfoDict() -> [AnyHashable: Any] {
         // Construct a very minimal pantomime dummy for the info dictionary
         let pantomimeMail = CWIMAPMessage.init()
@@ -120,9 +87,8 @@ extension CdMessage {
         return dict
     }
 
-    ///
     /// - Returns: A tuple consisting of an IMAP command string for flags to remove for this
-    /// message, and a dictionary suitable for using pantomime for the actual execution.
+    ///   message, and a dictionary suitable for using pantomime for the actual execution.
     public func storeCommandForFlagsToRemove() -> ImapStoreCommand? {
         guard let imap = imap else {
             return nil
@@ -143,11 +109,8 @@ extension CdMessage {
         return ImapStoreCommand(command: result, pantomimeDict: dict)
     }
 
-    /**
-     - Returns: A tuple consisting of an IMAP command string for flags to remove for this message,
-     and a dictionary suitable for using pantomime
-     for the actual execution.
-     */
+    /// - Returns: A tuple consisting of an IMAP command string for flags to add for this
+    ///   message, and a dictionary suitable for using pantomime for the actual execution.
     public func storeCommandForFlagsToAdd() -> ImapStoreCommand? {
         guard let imap = imap else {
             return nil
@@ -241,10 +204,10 @@ extension CdMessage {
         return flagsToRemove
     }
 
-
-
     /// Returns the flags that differ in between flagsCurrent and flagsFromServer, represented in bits.
     /// A set bit (1) means it differs.
+    /// 
+    /// Find more details about the semantic of those bits in Int16+ImapFlagBits.swift
     ///
     /// - Returns: flags that differ
     private func flagsDiff() -> Int16 {
@@ -259,7 +222,6 @@ extension CdMessage {
 
         return flagsCurrent ^ flagsFromServer
     }
-    //FFUBF
 
     /**
      Convert the `Message` into an `CWIMAPMessage`, belonging to the given folder.
