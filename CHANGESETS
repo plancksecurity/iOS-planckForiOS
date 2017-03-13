@@ -1,7 +1,6 @@
 v0.0.15
-pEpEngine f954f77387f1
-pEpiOSAdapter b505bfa33f4a
+pEpEngine cc152225ec01
+pEpiOSAdapter 23bb33fa2199
 netpgp-et 1b56d6c557c3
-MailModel 934c6a15b299
-pantomime-iOS 8b19506a60cd
-ServerConfig 3773faab3e05
+MailModel 95817ece27fc
+pantomime-iOS 83f3a1faf52b
