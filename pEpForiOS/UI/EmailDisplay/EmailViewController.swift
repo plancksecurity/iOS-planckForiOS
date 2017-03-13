@@ -49,7 +49,6 @@ class EmailViewController: UITableViewController {
         checkMessageReEvaluation()
         showPepRating()
         message.markAsSeen()
-        self.title = message.shortMessage
     }
     
     override func viewWillDisappear(_ animated: Bool) {
