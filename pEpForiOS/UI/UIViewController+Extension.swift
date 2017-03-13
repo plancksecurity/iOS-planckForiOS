@@ -40,11 +40,11 @@ extension UIViewController {
         }
 
         // icon
+        navigationItem.title = nil
         if let img = pEpRating?.pepColor().statusIcon() {
-            navigationController?.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                image: img, style: .plain, target: nil, action: nil)
+            navigationItem.titleView = UIImageView(image: img)
         } else {
-            navigationController?.navigationItem.rightBarButtonItem = nil
+            navigationItem.titleView = nil
         }
     }
 
