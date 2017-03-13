@@ -94,6 +94,68 @@ class MessagePantomimeTests: XCTestCase {
         }
     }
 
+    //TODO: string representation of flags (like "\Deleted") should be an enum in Pantomime
+    func testStoreCommandForFlagsToAdd() {
+        let m = CdMessage.create()
+        m.imap = CdImapFields.create()
+
+        m.uid = 1024
+        m.imap?.flagsFromServer = Int16.imapNoFlagsSet()
+        m.imap?.flagAnswered = false
+        m.imap?.flagDeleted = false
+        m.imap?.flagSeen = false
+        m.imap?.flagFlagged = false
+
+        XCTAssertNil(m.storeCommandForFlagsToAdd(), "No changes, no commands returned")
+
+        m.imap?.flagAnswered = true
+        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
+                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered)")
+
+        m.imap?.flagDeleted = true
+        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
+                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered \\Deleted)")
+
+        m.imap?.flagSeen = true
+        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
+                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered \\Seen \\Deleted)")
+
+        m.imap?.flagFlagged = true
+        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
+                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")
+    }
+
+    func testStoreCommandForFlagsToRemove() {
+        let m = CdMessage.create()
+        m.imap = CdImapFields.create()
+
+        m.uid = 1024
+        m.imap?.flagsFromServer = Int16.imapAllFlagsSet()
+        m.imap?.flagAnswered = true
+        m.imap?.flagDeleted = true
+        m.imap?.flagSeen = true
+        m.imap?.flagFlagged = true
+
+        XCTAssertNil(m.storeCommandForFlagsToRemove(), "No changes, no commands returned")
+
+        m.imap?.flagAnswered = false
+        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
+                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered)")
+
+        m.imap?.flagDeleted = false
+        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
+                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Deleted)")
+
+        m.imap?.flagSeen = false
+        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
+                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Seen \\Deleted)")
+
+        m.imap?.flagFlagged = false
+        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
+                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")
+    }
+
+//BUFF: Delete
     func testStoreCommandForUpdate() {
         let m = CdMessage.create()
         m.imap = CdImapFields.create()

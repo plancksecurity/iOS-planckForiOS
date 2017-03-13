@@ -114,7 +114,7 @@ extension CdMessage {
 
         let flags = flagsToRemove()
 
-        if flags.imapNoFlagSet() {
+        if flags.imapNoRelevantFlagSet() {
             return nil
         }
 
@@ -141,7 +141,7 @@ extension CdMessage {
         imap.updateCurrentFlags()
 
         let flags = flagsToAdd()
-        if flags.imapNoFlagSet() {
+        if flags.imapNoRelevantFlagSet() {
             return nil
         }
 
@@ -163,7 +163,7 @@ extension CdMessage {
     private func flagsToAdd() -> Int16 {
         let diff = flagsDiff()
 
-        if diff == 0 {
+        if !diff.imapAnyRelevantFlagSet() {
             return Int16(0)
         }
 
@@ -179,9 +179,9 @@ extension CdMessage {
         if diff.imapFlagBitIsSet(flagbit: .deleted) && flagsCurrent.imapFlagBitIsSet(flagbit: .deleted) {
             flagsToRemove += ImapFlagBit.deleted.rawValue
         }
-        if diff.imapFlagBitIsSet(flagbit: .draft) && flagsCurrent.imapFlagBitIsSet(flagbit: .draft) {
-            flagsToRemove += ImapFlagBit.draft.rawValue
-        }
+//        if diff.imapFlagBitIsSet(flagbit: .draft) && flagsCurrent.imapFlagBitIsSet(flagbit: .draft) {
+//            flagsToRemove += ImapFlagBit.draft.rawValue
+//        }
         if diff.imapFlagBitIsSet(flagbit: .flagged) && flagsCurrent.imapFlagBitIsSet(flagbit: .flagged) {
             flagsToRemove += ImapFlagBit.flagged.rawValue
         }
@@ -200,7 +200,7 @@ extension CdMessage {
     private func flagsToRemove() -> Int16 {
         let diff = flagsDiff()
 
-        if diff == 0 {
+        if !diff.imapAnyRelevantFlagSet() {
             return Int16(0)
         }
 
@@ -208,7 +208,7 @@ extension CdMessage {
             return Int16(0)
         }
 
-        var flagsToRemove = Int16(0)
+        var flagsToRemove = Int16.imapNoFlagsSet()
 
         if diff.imapFlagBitIsSet(flagbit: .answered) && !flagsCurrent.imapFlagBitIsSet(flagbit: .answered) {
             flagsToRemove += ImapFlagBit.answered.rawValue
@@ -216,9 +216,9 @@ extension CdMessage {
         if diff.imapFlagBitIsSet(flagbit: .deleted) && !flagsCurrent.imapFlagBitIsSet(flagbit: .deleted) {
             flagsToRemove += ImapFlagBit.deleted.rawValue
         }
-        if diff.imapFlagBitIsSet(flagbit: .draft) && !flagsCurrent.imapFlagBitIsSet(flagbit: .draft) {
-            flagsToRemove += ImapFlagBit.draft.rawValue
-        }
+//        if diff.imapFlagBitIsSet(flagbit: .draft) && !flagsCurrent.imapFlagBitIsSet(flagbit: .draft) {
+//            flagsToRemove += ImapFlagBit.draft.rawValue
+//        }
         if diff.imapFlagBitIsSet(flagbit: .flagged) && !flagsCurrent.imapFlagBitIsSet(flagbit: .flagged) {
             flagsToRemove += ImapFlagBit.flagged.rawValue
         }
@@ -241,12 +241,12 @@ extension CdMessage {
             return Int16(0)
         }
 
-        var flagsFromServer = Int16(0)
+        var flagsFromServer = Int16.imapNoFlagsSet()
         if let flags = imap?.flagsFromServer {
             flagsFromServer = flags
         }
 
-        return flagsCurrent | flagsFromServer
+        return flagsCurrent ^ flagsFromServer
     }
     //FFUBF
 
