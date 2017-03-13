@@ -622,6 +622,7 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 break
             }
+            // all flags set locally ...
             imap.flagAnswered = true
             imap.flagDraft = true
             imap.flagFlagged = true
@@ -629,7 +630,7 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagSeen = true
             imap.flagDeleted = true
             imap.updateCurrentFlags()
-
+            // ...but no flags are set on server, so all flags have to be added
             imap.flagsFromServer = Int16.imapNoFlagsSet()
         }
 
@@ -684,6 +685,7 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 break
             }
+            // no flag set locally ...
             imap.flagAnswered = false
             imap.flagDraft = false
             imap.flagFlagged = false
@@ -691,7 +693,7 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagSeen = false
             imap.flagDeleted = false
             imap.updateCurrentFlags()
-
+            // ... but all flags set on server, so all flags have to be removed
             imap.flagsFromServer = Int16.imapAllFlagsSet()
         }
 
