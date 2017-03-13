@@ -8,6 +8,8 @@
 
 import MessageModel
 
+public typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
+
 extension CdMessage {
     /**
      - Returns: A `CWFlags object` for the given `NSNumber`
@@ -101,12 +103,29 @@ extension CdMessage {
 
     //BUFF: 
 
+    private func pantomimeInfoDict() -> [AnyHashable: Any] {
+        // Construct a very minimal pantomime dummy for the info dictionary
+        let pantomimeMail = CWIMAPMessage.init()
+        pantomimeMail.setUID(UInt(uid))
+        var dict: [AnyHashable: Any] = [PantomimeMessagesKey: NSArray.init(object: pantomimeMail)]
+
+        guard let imap = imap else {
+            Log.shared.errorAndCrash(component:"\(#function)[\(#line)]", errorString: "imap == nil")
+            return [AnyHashable: Any]()
+        }
+
+        let currentFlags = imap.flagsCurrent
+        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: currentFlags)
+
+        return dict
+    }
+
     /**
      - Returns: A tuple consisting of an IMAP command string for flags to remove for this message, 
      and a dictionary suitable for using pantomime
      for the actual execution.
      */
-    public func storeCommandForFlagsToRemove() -> (String, [AnyHashable: Any])? {
+    public func storeCommandForFlagsToRemove() -> ImapStoreCommand? {
         guard let imap = imap else {
             return nil
         }
@@ -121,12 +140,9 @@ extension CdMessage {
         let flagsString = CdMessage.flagsString(flagsInt16: flags)
         let result = "UID STORE \(uid) -FLAGS.SILENT (\(flagsString))"
 
-        // Construct a very minimal pantomime dummy for the info dictionary
-        let pantomimeMail = CWIMAPMessage.init()
-        var dict: [AnyHashable: Any] = [PantomimeMessagesKey: [pantomimeMail]]
+        let dict = pantomimeInfoDict()
 
-        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: flags)
-        return (command: result, dictionary: dict)
+        return ImapStoreCommand(command: result, pantomimeDict: dict)
     }
 
     /**
@@ -134,7 +150,7 @@ extension CdMessage {
      and a dictionary suitable for using pantomime
      for the actual execution.
      */
-    public func storeCommandForFlagsToAdd() -> (String, [AnyHashable: Any])? {
+    public func storeCommandForFlagsToAdd() -> ImapStoreCommand? {
         guard let imap = imap else {
             return nil
         }
@@ -148,12 +164,9 @@ extension CdMessage {
         let flagsString = CdMessage.flagsString(flagsInt16: flags)
         let result = "UID STORE \(uid) +FLAGS.SILENT (\(flagsString))"
 
-        // Construct a very minimal pantomime dummy for the info dictionary
-        let pantomimeMail = CWIMAPMessage.init()
-        var dict: [AnyHashable: Any] = [PantomimeMessagesKey: [pantomimeMail]]
+        let dict = pantomimeInfoDict()
 
-        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: flags)
-        return (command: result, dictionary: dict)
+        return ImapStoreCommand(command: result, pantomimeDict: dict)
     }
 
     /// Returns the flags that have to be added on server, represented in bits.
