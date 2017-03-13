@@ -69,7 +69,7 @@ class ComposeTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setDefaultBarColors()
+        setNoColor()
     }
 
     func prepareColor() {

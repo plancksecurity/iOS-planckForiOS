@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 class Appearance {
-    
     static func standard() {
         UINavigationBar.appearance().backgroundColor = .white
         UINavigationBar.appearance().barTintColor = .white

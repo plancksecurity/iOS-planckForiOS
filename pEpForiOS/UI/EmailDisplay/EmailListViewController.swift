@@ -49,6 +49,7 @@ class EmailListViewController: UITableViewController {
             return
         }
 
+        setDefaultColors()
         initialConfig()
         updateModel()
 
