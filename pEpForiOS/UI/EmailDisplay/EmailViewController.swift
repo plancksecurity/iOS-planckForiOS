@@ -53,7 +53,7 @@ class EmailViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        setDefaultBarColors()
+        setNoColor()
     }
 
     func checkMessageReEvaluation() {

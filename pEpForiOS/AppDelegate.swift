@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
 
-        Appearance.standard()
+        Appearance.pep()
 
         Log.warn(component: comp, content: "Library url: \(applicationDirectory())")
 

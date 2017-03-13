@@ -9,34 +9,14 @@
 import Foundation
 import UIKit
 
-class NavigationBarData {
-    var handledDefault: Bool = false
-    var defaultNavigationBarColor: UIColor?
-    var defaultToolBarColor: UIColor?
-
-    static var sharedData: NavigationBarData = {
-        return NavigationBarData()
-    }()
-
-    func handleDefaults(navigationController: UINavigationController?) {
-        if !handledDefault {
-            handledDefault = true
-            defaultNavigationBarColor = navigationController?.navigationBar.barTintColor
-            defaultToolBarColor = navigationController?.toolbar.barTintColor
-        }
-    }
-}
-
 extension UIViewController {
     func showPepRating(pEpRating: PEP_rating?) {
-        NavigationBarData.sharedData.handleDefaults(navigationController: navigationController)
-
         // color
         if let color = pEpRating?.uiColor() {
             navigationController?.navigationBar.barTintColor = color
             navigationController?.toolbar.barTintColor = color
         } else {
-            setDefaultBarColors()
+            setNoColor()
         }
 
         // icon
@@ -48,11 +28,19 @@ extension UIViewController {
         }
     }
 
-    func setDefaultBarColors() {
-        navigationController?.navigationBar.barTintColor =
-            NavigationBarData.sharedData.defaultNavigationBarColor
-        navigationController?.toolbar.barTintColor =
-            NavigationBarData.sharedData.defaultToolBarColor
+    func setNoColor() {
+        navigationController?.navigationBar.barTintColor = nil
+        navigationController?.toolbar.barTintColor = nil
         navigationController?.navigationItem.rightBarButtonItem = nil
+        navigationController?.navigationBar.backgroundColor = nil
+    }
+
+    func setDefaultColors() {
+        navigationController?.navigationBar.barTintColor =
+            UINavigationBar.appearance().barTintColor
+        navigationController?.toolbar.barTintColor =
+            UIToolbar.appearance().barTintColor
+        navigationController?.navigationBar.backgroundColor =
+            UINavigationBar.appearance().backgroundColor
     }
 }
