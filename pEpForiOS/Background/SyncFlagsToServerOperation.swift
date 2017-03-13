@@ -37,7 +37,6 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         }
         self.init(parentName: parentName, errorContainer: errorContainer,
                   imapSyncData: imapSyncData, folder: folder)
-
     }
 
     open override func main() {
