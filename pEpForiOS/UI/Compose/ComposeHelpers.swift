@@ -94,35 +94,6 @@ extension UIImage {
         return image!
     }
     
-    public final func recepient(_ text: String, textColor: UIColor = .black) -> UIImage {
-        let attributes = [
-            NSForegroundColorAttributeName: textColor,
-            NSFontAttributeName: UIFont.pEpInput
-        ]
-        
-        let textMargin: CGFloat = 4.0
-        let textSize = text.size(attributes: attributes)
-        var textFrame = CGRect(x: 0, y: 0, width: textSize.width, height: textSize.height)
-        
-        var imageSize = size
-        let textPosX = imageSize.width + textMargin
-        let imageWidth = imageSize.width + textFrame.width + (textMargin * 2)
-        
-        textFrame.origin = CGPoint(x: textPosX, y: ((imageSize.height - textFrame.size.height) / 2))
-        imageSize.width = imageWidth
-        imageSize.height = size.height + 2.0
-        
-        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
-        draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-        
-        text.draw(in: textFrame, withAttributes: attributes)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return image!
-    }
-    
     public final func noColorImage(_ name: String) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 16, height: 16), false, 0)
         
@@ -154,6 +125,37 @@ extension UIImage {
 // MARK: - Compose Helper Class
 
 open class ComposeHelper {
-    
+    public static func recepient(_ text: String, textColor: UIColor = .black) -> UIImage {
+        let attributes = [
+            NSForegroundColorAttributeName: textColor,
+            NSFontAttributeName: UIFont.pEpInput
+        ]
+
+        let textMargin: CGFloat = 4.0
+        let textSize = text.size(attributes: attributes)
+        var textFrame = CGRect(x: 0, y: 0, width: textSize.width, height: textSize.height)
+
+        let label = UILabel()
+        label.text = "Hello"
+        label.sizeToFit()
+
+        var imageSize = label.bounds.size
+        imageSize.width = 0
+        let textPosX = imageSize.width + textMargin
+        let imageWidth = imageSize.width + textFrame.width + (textMargin * 2)
+
+        textFrame.origin = CGPoint(x: textPosX, y: ((imageSize.height - textFrame.size.height) / 2))
+        imageSize.width = imageWidth
+        imageSize.height += 2.0
+
+        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
+
+        text.draw(in: textFrame, withAttributes: attributes)
+
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return image!
+    }
 }
 

@@ -33,10 +33,6 @@ extension Identity {
         return PEPUtil.pEp(identity: self)
     }
     
-    public var pEpDefaultScheme: (color: UIColor, image: UIImage) {
-        return (color: .pEpNoColor, image: UIImage(named: "pep-user-status-gray")!)
-    }
-    
     public var pEpScheme: (color: UIColor, image: UIImage?) {
         get {
             switch self.pEpColor() {

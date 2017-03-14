@@ -36,24 +36,11 @@ open class ComposeTextView: UITextView {
     public final func insertImage(_ identity: Identity, _ hasName: Bool = false) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
         
-        var string = identity.address.trim
-        var scheme: (color: UIColor, image: UIImage?)
-        if !hasName {
-           scheme = (.pEpNoColor, UIImage().noColorImage(string))
-        } else {
-            if let username = identity.userName {
-                string = username
-            }
-            scheme = identity.pEpScheme
-            if scheme.image == nil {
-               scheme = (.pEpNoColor, UIImage().noColorImage(string))
-            }
-        }
-        
-        let img = scheme.image?.recepient(string, textColor: scheme.color)
+        let string = identity.userName ?? identity.address.trim
+        let img = ComposeHelper.recepient(string, textColor: .black)
         let at = TextAttachment()
         at.image = img
-        at.bounds = CGRect(x: 0, y: fontDescender, width: img!.size.width, height: img!.size.height)
+        at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)
         
         let attachString = NSAttributedString(attachment: at)
         attrText.replaceCharacters(in: selectedRange, with: attachString)
