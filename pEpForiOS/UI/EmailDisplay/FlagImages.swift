@@ -83,7 +83,8 @@ open class FlagImages {
     }
 
     func createSquareImage(size: CGSize, color: UIColor, text: NSString) -> UIImage? {
-        let image = produceImage(size: size, block: { ctx in
+        let finalsize = CGSize(width: size.width+2.0, height: size.height)
+        let image = produceImage(size: finalsize, block: { ctx in
             ctx.setFillColor(color.cgColor)
             ctx.setStrokeColor(color.cgColor)
             let r = CGRect.init(origin: CGPoint(x: 0.0, y: 0.0), size: size)

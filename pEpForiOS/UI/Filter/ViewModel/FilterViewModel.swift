@@ -55,7 +55,7 @@ public class FilterViewModel {
             items.append(FilterCellViewModel(type: FilterCellType.forMeCc))
             break
         case .other:
-            //init de las celdas otros
+            items.append(FilterCellViewModel(type: FilterCellType.attachment))
             break
         }
     }

@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import MessageModel
 
 class FilterTableViewController: UITableViewController {
 
     open var inFolder: Bool = false
+    open var filterEnabled: Filter?
 
     var sections = [FilterViewModel]()
 
@@ -26,6 +28,11 @@ class FilterTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         initViewModel()
+
+        let view = UIView()
+        view.backgroundColor = UIColor.lightGray
+        self.tableView.tableFooterView = view
+        //self.tableView.backgroundColor = UIColor.lightGray
 
     }
 
@@ -76,9 +83,17 @@ class FilterTableViewController: UITableViewController {
         let cellvm = sections[indexPath.section][indexPath.row]
         cell.textLabel?.text = cellvm.title
         cell.imageView?.image = cellvm.icon
+        cell.accessoryType = (cellvm.enabled) ? .checkmark : .none
+        cell.selectionStyle = .none
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cellvm = sections[indexPath.section][indexPath.row]
+        cellvm.enabled = !cellvm.enabled
+        let cell = self.tableView.cellForRow(at: indexPath)
+        cell?.accessoryType = (cellvm.enabled) ? .checkmark : .none
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
