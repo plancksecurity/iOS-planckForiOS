@@ -11,7 +11,7 @@ import UIKit
 
 extension UIViewController {
     func showPepRating(pEpRating: PEP_rating?) {
-        setNoColor()
+        setEmailDisplayColors()
 
         // icon
         navigationItem.title = nil
@@ -29,6 +29,14 @@ extension UIViewController {
         navigationController?.navigationBar.backgroundColor = nil
     }
 
+    func setEmailDisplayColors() {
+        setNoColor()
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSForegroundColorAttributeName: UIColor.black]
+        navigationController?.navigationBar.tintColor = UIColor.pEpGreen
+        navigationController?.toolbar.tintColor = UIColor.pEpGreen
+    }
+
     func setDefaultColors() {
         navigationController?.navigationBar.barTintColor =
             UINavigationBar.appearance().barTintColor
@@ -36,5 +44,8 @@ extension UIViewController {
             UIToolbar.appearance().barTintColor
         navigationController?.navigationBar.backgroundColor =
             UINavigationBar.appearance().backgroundColor
+
+        navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
+        navigationController?.toolbar.tintColor = UIToolbar.appearance().tintColor
     }
 }

@@ -69,7 +69,7 @@ class ComposeTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNoColor()
+        setEmailDisplayColors()
     }
 
     func prepareColor() {
