@@ -60,7 +60,6 @@ extension String {
 }
 
 extension UIImage {
-    
     public final func attachment(_ text: String, textColor: UIColor = .gray) -> UIImage {
         let attributes = [
             NSForegroundColorAttributeName: textColor,
@@ -91,33 +90,6 @@ extension UIImage {
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return image!
-    }
-    
-    public final func noColorImage(_ name: String) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: 16, height: 16), false, 0)
-        
-        let ovalRect = CGRect(x: 0.5, y: 0.5, width: 15, height: 15)
-        let ovalPath = UIBezierPath(ovalIn: ovalRect)
-        
-        UIColor.gray.setStroke()
-        ovalPath.lineWidth = 1
-        ovalPath.stroke()
-        
-        let ovalStyle = NSMutableParagraphStyle()
-        ovalStyle.alignment = .center
-        
-        let ovalFontAttributes = [
-            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 10),
-            NSForegroundColorAttributeName: UIColor.gray,
-            NSParagraphStyleAttributeName: ovalStyle
-        ]
-        
-        let initials = String(describing: name.characters.first!).uppercased()
-        initials.draw(in: ovalRect.insetBy(dx: 1.5, dy: 1), withAttributes: ovalFontAttributes)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
         return image!
     }
 }
