@@ -11,13 +11,7 @@ import UIKit
 
 extension UIViewController {
     func showPepRating(pEpRating: PEP_rating?) {
-        // color
-        if let color = pEpRating?.uiColor() {
-            navigationController?.navigationBar.barTintColor = color
-            navigationController?.toolbar.barTintColor = color
-        } else {
-            setNoColor()
-        }
+        setNoColor()
 
         // icon
         navigationItem.title = nil

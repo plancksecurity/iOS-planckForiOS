@@ -793,43 +793,24 @@ extension String {
 }
 
 extension UIColor {
-
     open class var pEpGreen: UIColor {
         get {
-            return .green //(hex: "#03AA4B")
-        }
-    }
-
-    open class var pEpNoColor: UIColor {
-        get {
-            return .gray //(hex: "#B4B0B0")
+            return UIColor(hex: "#4CD964")
         }
     }
 
     open class var pEpRed: UIColor {
         get {
-            return .red //(hex: "#D0011B")
+            return UIColor(hex: "#FF3B30")
         }
     }
 
     open class var pEpYellow: UIColor {
         get {
-            return .yellow //UIColor(hex: "#FFC901")
+            return UIColor(hex: "#FFCC00")
         }
     }
     
-    open class var pEpToolBarYellow: UIColor {
-        get {
-            return UIColor(hex: "#FFC801")
-        }
-    }
-
-    open class var pEpBlue: UIColor {
-        get {
-            return .blue //UIColor(hex: "#007AFF")
-        }
-    }
-
     convenience init(hex: String) {
         var hexstr = hex
         if hexstr.hasPrefix("#") {
@@ -848,7 +829,6 @@ extension UIColor {
 }
 
 extension UIFont {
-    
     open class var pEpInput: UIFont {
         get {
             return self.systemFont(ofSize: 14.0)
