@@ -29,24 +29,22 @@ extension UITableView {
 }
 
 extension String {
-    
-    static var TextAttachmentCharacter: UInt64 {
-        return 4799450059485662934 // 0xfffc // hash: 197367
-    }
-    
+    static let textAttachmentCharacter: UInt32 = 65532
+
     var cleanAttachments: String {
-        for ch in self.characters {
-            if UInt64(ch.hashValue) == String.TextAttachmentCharacter {
-                return self.replacingOccurrences(of: String(ch), with: "").trim
-            }
+        if let uc = UnicodeScalar(String.textAttachmentCharacter) {
+            let s = String(Character(uc))
+            return self.replacingOccurrences(of: s, with: "").trim
         }
         return self
     }
-    
+
     var isAttachment: Bool {
-        if self.isEmpty { return false }
-        if UInt64(self.hashValue) == String.TextAttachmentCharacter {
-            return true
+        guard self.characters.count == 1 else {
+            return false
+        }
+        if let ch = self.unicodeScalars.first {
+            return ch.value == String.textAttachmentCharacter
         }
         return false
     }
