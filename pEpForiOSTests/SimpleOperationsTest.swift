@@ -49,27 +49,6 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(f.comp, "FetchFoldersOperation")
     }
 
-    func fetchMessages() {
-        let expMailsPrefetched = expectation(description: "expMailsPrefetched")
-
-        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
-        let op = FetchMessagesOperation(imapSyncData: imapSyncData,
-                                        folderName: ImapSync.defaultImapInboxName)
-        op.addDependency(opLogin)
-        op.completionBlock = {
-            expMailsPrefetched.fulfill()
-        }
-
-        let bgQueue = OperationQueue()
-        bgQueue.addOperation(opLogin)
-        bgQueue.addOperation(op)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
-        })
-    }
-
     func testFetchMessagesOperation() {
         XCTAssertNil(CdMessage.all())
 
@@ -561,6 +540,8 @@ class SimpleOperationsTest: XCTestCase {
                 return
         }
 
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
         for m in messages {
             XCTAssertNotNil(m.messageID)
             XCTAssertGreaterThan(m.uid, 0)
@@ -589,7 +570,7 @@ class SimpleOperationsTest: XCTestCase {
         }
         op.start()
 
-        waitForExpectations(timeout: 300, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
@@ -600,7 +581,7 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
 
-    func testSyncFlagsToServerOperationAddFlags() {
+    func testSyncFlagsToServerOperationAddFlags_changeAllFlags() {
         fetchMessages()
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -609,11 +590,14 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         guard let messages = inbox.messages?.sortedArray(
-            using: [NSSortDescriptor(key: "sent", ascending: true)])
-            as? [CdMessage] else {
+            using: [NSSortDescriptor(key: "sent", ascending: true)]) as? [CdMessage] else {
                 XCTFail()
                 return
         }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
 
         for m in messages {
             XCTAssertNotNil(m.messageID)
@@ -626,6 +610,7 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagAnswered = true
             imap.flagDraft = true
             imap.flagFlagged = true
+            // the client must never change flagRecent according to RFC, so we set it in state of flagsServer
             imap.flagRecent = false
             imap.flagSeen = true
             imap.flagDeleted = true
@@ -652,7 +637,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         op.start()
-        waitForExpectations(timeout: 300, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
@@ -661,6 +646,150 @@ class SimpleOperationsTest: XCTestCase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
+    }
+
+    func testSyncFlagsToServerOperationAddFlags_allFlagsAlreadySetOnServer() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // all flags set locally ...
+            imap.flagAnswered = true
+            imap.flagDraft = true
+            imap.flagFlagged = true
+            // the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer
+            imap.flagRecent = true
+            imap.flagSeen = true
+            imap.flagDeleted = true
+            imap.updateCurrentFlags()
+            // ...and all flags are set on server, so nothing should be updated
+            imap.flagsFromServer = Int16.imapAllFlagsSet()
+        }
+
+        Record.saveAndWait()
+
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNil(messagesToBeSynced)
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: 300, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0, "all done")
+        XCTAssertEqual(op.numberOfMessagesSynced, 0,
+                       "no messages have been synced as all flag were already set before")
+    }
+
+    func testSyncFlagsToServerOperationAddFlags__allFlagsAlreadySetOnServer() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0,"Some messages exist to work with")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // all flags set locally ...
+            imap.flagAnswered = true
+            imap.flagDraft = true
+            imap.flagFlagged = true
+            // the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer
+            imap.flagRecent = false
+            imap.flagSeen = true
+            imap.flagDeleted = true
+            imap.updateCurrentFlags()
+
+            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer.imapSetFlagBit(.answered)
+            imap.flagsFromServer.imapSetFlagBit(.draft)
+            imap.flagsFromServer.imapSetFlagBit(.flagged)
+            // flagSeen differs ...
+            imap.flagsFromServer.imapSetFlagBit(.deleted)
+
+        }
+
+        Record.saveAndWait()
+
+        // ...so all messages should need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox,
+            context: Record.Context.default)
+
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count,
+                       "all messages should need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0, "all done")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "flagDeleted changes, so all messages should be updated")
     }
 
     func testSyncFlagsToServerOperationRemoveFlags() {
@@ -678,6 +807,8 @@ class SimpleOperationsTest: XCTestCase {
                 return
         }
 
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
         for m in messages {
             XCTAssertNotNil(m.messageID)
             XCTAssertGreaterThan(m.uid, 0)
@@ -689,7 +820,7 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagAnswered = false
             imap.flagDraft = false
             imap.flagFlagged = false
-            imap.flagRecent = false
+            //imap.flagRecent // the client must never change flagRecent according to RFC
             imap.flagSeen = false
             imap.flagDeleted = false
             imap.updateCurrentFlags()
@@ -715,7 +846,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         op.start()
-        waitForExpectations(timeout: 300, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors(), "\(op.error!)")
         })
@@ -723,7 +854,8 @@ class SimpleOperationsTest: XCTestCase {
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0)
-        XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been synced")
     }
 
     /**
@@ -745,6 +877,8 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 return
         }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
 
         for m in messages {
             guard let imap = m.imap else {
@@ -1411,5 +1545,28 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNotNil(cdAttach.length)
             XCTAssertGreaterThan(cdAttach.length, 0)
         }
+    }
+
+    //MARK: - HELPER
+
+    func fetchMessages() {
+        let expMailsPrefetched = expectation(description: "expMailsPrefetched")
+
+        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+        let op = FetchMessagesOperation(imapSyncData: imapSyncData,
+                                        folderName: ImapSync.defaultImapInboxName)
+        op.addDependency(opLogin)
+        op.completionBlock = {
+            expMailsPrefetched.fulfill()
+        }
+
+        let bgQueue = OperationQueue()
+        bgQueue.addOperation(opLogin)
+        bgQueue.addOperation(op)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
+        })
     }
 }
