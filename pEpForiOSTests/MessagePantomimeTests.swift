@@ -94,33 +94,76 @@ class MessagePantomimeTests: XCTestCase {
         }
     }
 
-    func testStoreCommandForUpdate() {
+    func testStoreCommandForFlagsToAdd() {
         let m = CdMessage.create()
         m.imap = CdImapFields.create()
 
         m.uid = 1024
-        m.imap?.flagsFromServer = 0
-        m.imap?.flagDeleted = true
-        XCTAssertEqual(m.storeCommandForUpdate()?.0,
-                       "UID STORE 1024 FLAGS.SILENT (\\Deleted)")
+        m.imap?.flagsFromServer = Int16.imapNoFlagsSet()
+        m.imap?.flagAnswered = false
+        m.imap?.flagDraft = false
+        m.imap?.flagDeleted = false
+        m.imap?.flagSeen = false
+        m.imap?.flagFlagged = false
 
-        // Check if 'difference' is taken into account
-        m.imap?.flagsFromServer = CWFlags(flags: PantomimeFlag.deleted).rawFlagsAsShort()
-        XCTAssertEqual(m.storeCommandForUpdate()?.0,
-                       "UID STORE 1024 FLAGS.SILENT (\\Deleted)")
+        XCTAssertNil(m.storeCommandForFlagsToAdd(), "No changes, no commands returned")
 
         m.imap?.flagAnswered = true
-        XCTAssertEqual(m.storeCommandForUpdate()?.0,
-                       "UID STORE 1024 FLAGS.SILENT (\\Answered \\Deleted)")
+        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
+                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered)")
+
+        m.imap?.flagDraft = true
+        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
+                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered \\Draft)")
+
+        m.imap?.flagDeleted = true
+        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
+                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered \\Draft \\Deleted)")
 
         m.imap?.flagSeen = true
-        XCTAssertEqual(m.storeCommandForUpdate()?.0,
-                       "UID STORE 1024 FLAGS.SILENT (\\Answered \\Seen \\Deleted)")
+        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
+                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered \\Draft \\Seen \\Deleted)")
 
         m.imap?.flagFlagged = true
-        XCTAssertEqual(
-            m.storeCommandForUpdate()?.0,
-            "UID STORE 1024 FLAGS.SILENT (\\Answered \\Flagged \\Seen \\Deleted)")
+        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
+                       "UID STORE \(m.uid) +FLAGS.SILENT " +
+                        "(\\Answered \\Draft \\Flagged \\Seen \\Deleted)")
+    }
+
+    func testStoreCommandForFlagsToRemove() {
+        let m = CdMessage.create()
+        m.imap = CdImapFields.create()
+
+        m.uid = 1024
+        m.imap?.flagsFromServer = Int16.imapAllFlagsSet()
+        m.imap?.flagAnswered = true
+        m.imap?.flagDraft = true
+        m.imap?.flagDeleted = true
+        m.imap?.flagSeen = true
+        m.imap?.flagFlagged = true
+
+        XCTAssertNil(m.storeCommandForFlagsToRemove(), "No changes, no commands returned")
+
+        m.imap?.flagAnswered = false
+        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
+                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered)")
+
+        m.imap?.flagDraft = false
+        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
+                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Draft)")
+
+        m.imap?.flagDeleted = false
+        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
+                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Draft \\Deleted)")
+
+        m.imap?.flagSeen = false
+        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
+                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Draft \\Seen \\Deleted)")
+
+        m.imap?.flagFlagged = false
+        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
+                       "UID STORE \(m.uid) -FLAGS.SILENT " +
+                        "(\\Answered \\Draft \\Flagged \\Seen \\Deleted)")
     }
 
     func testReferences() {

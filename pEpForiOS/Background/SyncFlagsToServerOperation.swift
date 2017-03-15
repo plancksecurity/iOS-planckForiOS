@@ -14,6 +14,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     var folderID: NSManagedObjectID
     let folderName: String
 
+    fileprivate var currentlyProcessedMessage: CdMessage?
     open var numberOfMessagesSynced = 0
 
     public init?(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
@@ -36,7 +37,6 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         }
         self.init(parentName: parentName, errorContainer: errorContainer,
                   imapSyncData: imapSyncData, folder: folder)
-
     }
 
     open override func main() {
@@ -82,11 +82,13 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
             markAsFinished()
             return nil
         }
-        return SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: folder, context: context)?.first
+        let messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: folder,
+                                                                               context: context)
+        return messagesToBeSynced?.first
     }
 
     func syncNextMessage() {
+        currentlyProcessedMessage = nil
         let context = Record.Context.default
         context.perform() {
             guard let m = self.nextMessageToBeSynced(context: context) else {
@@ -97,16 +99,45 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         }
     }
 
+    fileprivate func currentMessageNeedSyncRemoveFlagsToServer() -> Bool {
+        guard let message = currentlyProcessedMessage else {
+            return false
+        }
+        return message.storeCommandForFlagsToRemove() != nil
+    }
+
     func updateFlags(message: CdMessage) {
-        if let (cmd, dict) = message.storeCommandForUpdate() {
+            currentlyProcessedMessage = message
+            updateFlagsToAdd(message: message)
+    }
+
+    private func updateFlagsToAdd(message: CdMessage) {
+        if let cmd = message.storeCommandForFlagsToAdd() {
             imapSyncData.sync?.imapStore.send(
-                IMAP_UID_STORE, info: dict as [AnyHashable: Any], string: cmd)
+                IMAP_UID_STORE, info: cmd.pantomimeDict as [AnyHashable: Any], string: cmd.command)
+        } else if currentMessageNeedSyncRemoveFlagsToServer() {
+            updateFlagsToRemove()
         } else {
-            addError(Constants.errorNoFlags(component: comp))
-            markAsFinished()
+            syncNextMessage()
         }
     }
 
+    fileprivate func updateFlagsToRemove() {
+        guard let message = currentlyProcessedMessage else {
+            Log.shared.errorAndCrash(component:"\(#function)[\(#line)]", errorString: "Fatal error!")
+            syncNextMessage()
+            return
+        }
+        
+        if let cmd = message.storeCommandForFlagsToRemove() {
+            currentlyProcessedMessage = nil
+            imapSyncData.sync?.imapStore.send(
+                IMAP_UID_STORE, info: cmd.pantomimeDict as [AnyHashable: Any], string: cmd.command)
+        } else {
+            Log.shared.errorAndCrash(component:"\(#function)[\(#line)]",
+                errorString: "updateFlagsToRemove called with storeCommandForFlagsToRemove() == nil")
+        }
+    }
 
     func errorOperation(_ localizedMessage: String, logMessage: String) {
         markAsFinished()
@@ -114,6 +145,8 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         Log.error(component: comp, errorString: logMessage)
     }
 }
+
+//MARK: - ImapSyncDelegate
 
 extension SyncFlagsToServerOperation: ImapSyncDelegate {
     public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
@@ -201,11 +234,16 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
     }
 
     public func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
+        // flags to add have been synced, but we might need to sync flags to remove also before
+        // processing the next message.
+        if currentMessageNeedSyncRemoveFlagsToServer() {
+            updateFlagsToRemove()
+            return
+        }
         guard let n = notification else {
             errorOperation(NSLocalizedString(
-                "UID STORE: Response with missing notification object",
-                comment: "Technical error"), logMessage:
-                "messageStoreCompleted with nil notification")
+                "UID STORE: Response with missing notification object",comment: "Technical error"),
+                           logMessage: "messageStoreCompleted with nil notification")
             return
         }
         privateMOC.performAndWait() {
@@ -215,7 +253,7 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
         syncNextMessage()
     }
 
-    func storeMessages(context: NSManagedObjectContext, notification n: Notification) {
+    private func storeMessages(context: NSManagedObjectContext, notification n: Notification) {
         guard let folder = context.object(with: folderID) as? CdFolder else {
             addError(Constants.errorCannotFindFolder(component: comp))
             markAsFinished()
@@ -236,12 +274,19 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
                                 logMessage: "messageStoreCompleted no messages")
             return
         }
+
         for cw in cwMessages {
             if let all = CdMessage.all(
                 attributes: ["uid": cw.uid(), "parent": folder], in: context)
                 as? [CdMessage] {
                 for m in all {
-                    print("\(m.uid) \(m.imap?.flagsCurrent) \(m.imap?.flagsFromServer) \(m.parent?.objectID)")
+                    Log.shared.info(component: "\(#function)[\(#line)]",
+                        content: "##### \nBefore syncing flags:\nUID: \(m.uid) \n" +
+                        "flagsCurrent:\t\(m.imap?.flagsCurrent)" +
+                            "\(m.imap?.flagsCurrent.debugString())\n" +
+                        "flagsFromServer: \t\(m.imap?.flagsFromServer) " +
+                            "\(m.imap?.flagsFromServer.debugString())\n" +
+                            "parent?.objectID: \(m.parent?.objectID)")
                 }
             }
 
@@ -251,6 +296,12 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
                 let imap = msg.imap ?? CdImapFields.create(context: context)
                 msg.imap = imap
                 imap.flagsFromServer = flags.rawFlagsAsShort() as Int16
+                print("##### \nAfter syncing flags:\nUID: \(msg.uid) \n" +
+                    "flagsCurrent:\t\(msg.imap?.flagsCurrent) " +
+                    "\(msg.imap?.flagsCurrent.debugString())\n" +
+                    "flagsFromServer: \t\(msg.imap?.flagsFromServer)" +
+                    "\(msg.imap?.flagsFromServer.debugString())\n" +
+                    "parent?.objectID: \(msg.parent?.objectID)")
             } else {
                 self.errorOperation(NSLocalizedString(
                     "UID STORE: Response for message that can't be found",
