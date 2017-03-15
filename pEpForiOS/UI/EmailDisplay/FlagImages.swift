@@ -32,6 +32,8 @@ open class FlagImages {
     public private(set) var flaggedImage: UIImage?
     public private(set) var notSeenImage: UIImage?
     public private(set) var flaggedAndNotSeenImage: UIImage?
+    public private(set) var toMeImage: UIImage?
+    public private(set) var toMeCcImage: UIImage?
 
     fileprivate init(imageSize: CGSize) {
         self.imageSize = imageSize
@@ -39,13 +41,17 @@ open class FlagImages {
     }
 
     func createImages() {
-        var circleSize = imageSize
-        flaggedImage = createCircleImage(size: circleSize, color: .orange)
-        notSeenImage = createCircleImage(size: circleSize, color: .blue)
+        var size = imageSize
+        let textTo = NSLocalizedString("TO", comment: "to me image text") as NSString
+        let textToCc = NSLocalizedString("CC", comment: "to me image text") as NSString
+        flaggedImage = createCircleImage(size: size, color: .orange)
+        notSeenImage = createCircleImage(size: size, color: .blue)
+        toMeImage = createSquareImage(size: textTo.size(), color: .lightGray, text: textTo)
+        toMeCcImage = createSquareImage(size: textToCc.size(), color: .lightGray, text: textToCc)
 
-        circleSize.width -= 5
-        circleSize.height -= 5
-        let flaggedImageSmall = createCircleImage(size: circleSize, color: .orange)
+        size.width -= 5
+        size.height -= 5
+        let flaggedImageSmall = createCircleImage(size: size, color: .orange)
 
         flaggedAndNotSeenImage = createImageOverlay(
             size: imageSize, images: [notSeenImage, flaggedImageSmall])
@@ -76,6 +82,34 @@ open class FlagImages {
         })
     }
 
+    func createSquareImage(size: CGSize, color: UIColor, text: NSString) -> UIImage? {
+        let finalsize = CGSize(width: size.width+2.0, height: size.height)
+        let image = produceImage(size: finalsize, block: { ctx in
+            ctx.setFillColor(color.cgColor)
+            ctx.setStrokeColor(color.cgColor)
+            let r = CGRect.init(origin: CGPoint(x: 0.0, y: 0.0), size: size)
+            let path = UIBezierPath(roundedRect: r, cornerRadius: 2.5)
+            ctx.addPath(path.cgPath)
+            ctx.fillPath()
+        })
+        return addTextToImage(image: image, text: text)
+    }
+
+    func addTextToImage(image: UIImage?, text: NSString) -> UIImage? {
+        let textFontAttributes = [
+            NSFontAttributeName: UIFont(name: "Helvetica Bold", size: 10)!,
+            NSForegroundColorAttributeName: UIColor.white,
+            ] as [String : Any]
+
+            UIGraphicsBeginImageContextWithOptions((image?.size)!, false, 0.0)
+            image?.draw(in: CGRect(origin: CGPoint.zero, size: (image?.size)!))
+            let rect = CGRect(origin: CGPoint(x: 1, y: 1), size: (image?.size)!)
+            text.draw(in: rect, withAttributes: textFontAttributes)
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return newImage
+    }
+
     func produceImage(size: CGSize, block: (CGContext) -> ()) -> UIImage? {
         var theImage: UIImage?
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
@@ -84,6 +118,7 @@ open class FlagImages {
             theImage = UIGraphicsGetImageFromCurrentImageContext()
         }
         UIGraphicsEndImageContext()
+
         return theImage
     }
 }

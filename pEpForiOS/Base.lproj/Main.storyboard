@@ -121,8 +121,18 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem image="unread-icon" id="VEt-1N-tdD"/>
+                        <barButtonItem image="unread-icon" id="VEt-1N-tdD">
+                            <connections>
+                                <action selector="showUnreadButtonTapped:" destination="kcA-RK-9Xg" id="FX3-N7-2dC"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="e6L-xz-NU2"/>
+                        <barButtonItem id="6Ua-EB-dEx">
+                            <connections>
+                                <segue destination="nc4-kR-K9D" kind="show" id="NeG-CV-nex"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Ypz-yH-KbI"/>
                         <barButtonItem systemItem="compose" id="u8o-KA-6lO">
                             <connections>
                                 <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" id="6vv-Jr-8Nm"/>
@@ -142,7 +152,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="enableFilterButton" destination="VEt-1N-tdD" id="0iq-eB-HNI"/>
                         <outlet property="searchDisplayController" destination="wi1-9j-AQt" id="5ik-CT-83m"/>
+                        <outlet property="textFilterButton" destination="6Ua-EB-dEx" id="NqY-wd-9gI"/>
                         <segue destination="Efv-29-FEv" kind="presentation" identifier="segueAddNewAccount" id="Na7-CM-lbe"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAll" id="xmi-xn-p8T"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="YH0-dx-pSs"/>
@@ -309,7 +321,7 @@
                                             </connections>
                                         </textView>
                                         <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8S-M4-JdW">
-                                            <rect key="frame" x="-6" y="40" width="377" height="140"/>
+                                            <rect key="frame" x="-8" y="40" width="377" height="140"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="prY-xp-1rI" id="VoP-0P-HiT"/>
@@ -921,26 +933,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AzW-rt-GWz">
-                                <rect key="frame" x="16" y="63" width="66" height="30"/>
+                                <rect key="frame" x="16" y="107" width="66" height="30"/>
                                 <state key="normal" title="Copy Log"/>
                                 <connections>
                                     <action selector="copyAction:" destination="01V-rr-Nt1" eventType="touchUpInside" id="T5t-mG-hCM"/>
                                 </connections>
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="APq-dm-jI3">
-                                <rect key="frame" x="290" y="30" width="51" height="31"/>
+                                <rect key="frame" x="290" y="74" width="51" height="31"/>
                                 <connections>
                                     <action selector="enableAction:" destination="01V-rr-Nt1" eventType="valueChanged" id="JR9-o2-1qw"/>
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable/Disable Logging" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Imh-fw-p8J">
-                                <rect key="frame" x="16" y="35" width="180" height="20.5"/>
+                                <rect key="frame" x="16" y="79" width="180" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3rg-vA-cxG">
-                                <rect key="frame" x="0.0" y="100" width="375" height="567"/>
+                                <rect key="frame" x="0.0" y="144" width="375" height="523"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
@@ -985,7 +997,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="03J-Ut-4Ls" id="dVc-Gs-baq">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -1504,6 +1516,34 @@
             </objects>
             <point key="canvasLocation" x="4185" y="-982"/>
         </scene>
+        <!--Filter Table View Controller-->
+        <scene sceneID="9dD-N3-Mae">
+            <objects>
+                <tableViewController id="nc4-kR-K9D" customClass="FilterTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="TcR-RD-7eo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="filterCell" id="0W6-7M-pNk">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0W6-7M-pNk" id="rUa-99-bza">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="nc4-kR-K9D" id="Qpl-V8-drd"/>
+                            <outlet property="delegate" destination="nc4-kR-K9D" id="Kco-YV-yOE"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RS6-O5-yYy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4952" y="-690"/>
+        </scene>
         <!--Show email-->
         <scene sceneID="fxT-br-VYt">
             <objects>
@@ -1625,7 +1665,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aso-tc-Ukd">
-                                            <rect key="frame" x="-4" y="-4" width="373" height="190"/>
+                                            <rect key="frame" x="-6" y="-6" width="373" height="189"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
@@ -2467,9 +2507,9 @@ APPLEPIE RESEARCH</string>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="coo-Nc-XpZ"/>
         <segue reference="Na7-CM-lbe"/>
+        <segue reference="VUg-YY-vSY"/>
+        <segue reference="xmi-xn-p8T"/>
         <segue reference="FBd-9l-9Iu"/>
-        <segue reference="1zD-EW-3fN"/>
     </inferredMetricsTieBreakers>
 </document>
