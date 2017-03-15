@@ -500,6 +500,8 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
+    //MARK: - SyncFlagsToServerOperation
+
     func testSyncFlagsToServerOperationEmpty() {
         fetchMessages()
 
@@ -715,7 +717,7 @@ class SimpleOperationsTest: XCTestCase {
                        "no messages have been synced as all flag were already set before")
     }
 
-    func testSyncFlagsToServerOperationAddFlags__allFlagsAlreadySetOnServer() {
+    func testSyncFlagsToServerOperationAddFlags_someFlagsAlreadySetOnServer() {
         fetchMessages()
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -792,7 +794,367 @@ class SimpleOperationsTest: XCTestCase {
                        "flagDeleted changes, so all messages should be updated")
     }
 
-    func testSyncFlagsToServerOperationRemoveFlags() {
+    func testSyncFlagsToServerOperationAddFlags_addFlagAnswered() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is not set on server has been set by the client,
+            // so it has to be added.
+            imap.flagAnswered = true
+            imap.flagDraft = false
+            imap.flagFlagged = false
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = false
+            imap.flagSeen = false
+            imap.flagDeleted = true
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer.imapSetFlagBit(.deleted)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be added on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
+    }
+
+    func testSyncFlagsToServerOperationAddFlags_addFlagDraft() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is not set on server has been set by the client,
+            // so it has to be added.
+            imap.flagAnswered = false
+            imap.flagDraft = true
+            imap.flagFlagged = false
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = false
+            imap.flagSeen = false
+            imap.flagDeleted = true
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer.imapSetFlagBit(.deleted)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be added on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
+    }
+
+    func testSyncFlagsToServerOperationAddFlags_addFlagFlagged() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is not set on server has been set by the client,
+            // so it has to be added.
+            imap.flagAnswered = false
+            imap.flagDraft = false
+            imap.flagFlagged = true
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = false
+            imap.flagSeen = false
+            imap.flagDeleted = true
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer.imapSetFlagBit(.deleted)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be added on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
+    }
+
+    func testSyncFlagsToServerOperationAddFlags_addFlagSeen() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is not set on server has been set by the client,
+            // so it has to be added.
+            imap.flagAnswered = false
+            imap.flagDraft = false
+            imap.flagFlagged = false
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = false
+            imap.flagSeen = true
+            imap.flagDeleted = true
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer.imapSetFlagBit(.deleted)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be added on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
+    }
+
+    func testSyncFlagsToServerOperationAddFlags_addFlagDeleted() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is not set on server has been set by the client,
+            // so it has to be added.
+            imap.flagAnswered = true
+            imap.flagDraft = false
+            imap.flagFlagged = false
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = false
+            imap.flagSeen = false
+            imap.flagDeleted = true
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer.imapSetFlagBit(.answered)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be added on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
+    }
+
+    func testSyncFlagsToServerOperationRemoveFlags_allFlagsAlreadySetOnServer() {
         fetchMessages()
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -820,7 +1182,9 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagAnswered = false
             imap.flagDraft = false
             imap.flagFlagged = false
-            //imap.flagRecent // the client must never change flagRecent according to RFC
+            // the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer
+            imap.flagRecent = true
             imap.flagSeen = false
             imap.flagDeleted = false
             imap.updateCurrentFlags()
@@ -856,6 +1220,438 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
                        "all messages have been synced")
+    }
+
+    func testSyncFlagsToServerOperationRemoveFlags_noChanges() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // flagsCurrent == flagsFromServer, so no syncing should take place
+            imap.flagAnswered = false
+            imap.flagDraft = true
+            imap.flagFlagged = false
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = false
+            imap.flagSeen = true
+            imap.flagDeleted = false
+            imap.updateCurrentFlags()
+            // server flags
+            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer.imapSetFlagBit(.draft)
+            imap.flagsFromServer.imapSetFlagBit(.seen)
+
+        }
+
+        Record.saveAndWait()
+
+        // nothing changed, so no sync should take place
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNil(messagesToBeSynced)
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, 0,
+                       "no message has been processed")
+    }
+
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagAnswered() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is set on server has been unset by the client,
+            // so it has to be removed.
+            imap.flagAnswered = false
+            imap.flagDraft = true
+            imap.flagFlagged = true
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = true
+            imap.flagSeen = true
+            imap.flagDeleted = false
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be removed on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
+    }
+
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagDraft() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is set on server has been unset by the client,
+            // so it has to be removed.
+            imap.flagAnswered = true
+            imap.flagDraft = false
+            imap.flagFlagged = true
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = true
+            imap.flagSeen = true
+            imap.flagDeleted = false
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be removed on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
+    }
+
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagFlagged() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is set on server has been unset by the client,
+            // so it has to be removed.
+            imap.flagAnswered = true
+            imap.flagDraft = true
+            imap.flagFlagged = false
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = true
+            imap.flagSeen = true
+            imap.flagDeleted = false
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be removed on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
+    }
+
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagSeen() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is set on server has been unset by the client,
+            // so it has to be removed.
+            imap.flagAnswered = true
+            imap.flagDraft = true
+            imap.flagFlagged = true
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = true
+            imap.flagSeen = false
+            imap.flagDeleted = false
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be removed on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
+    }
+
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagDeleted() {
+        fetchMessages()
+
+        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        guard let messages = inbox.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "sent", ascending: true)])
+            as? [CdMessage] else {
+                XCTFail()
+                return
+        }
+
+        XCTAssertGreaterThan(messages.count, 0, "there are messages")
+
+        for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
+            guard let imap = m.imap else {
+                XCTFail()
+                break
+            }
+            // one flag that is set on server has been unset by the client,
+            // so it has to be removed.
+            imap.flagAnswered = false
+            imap.flagDraft = true
+            imap.flagFlagged = true
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = true
+            imap.flagSeen = true
+            imap.flagDeleted = false
+            imap.updateCurrentFlags()
+            // set the flag on server side
+            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer.imapUnSetFlagBit(.answered)
+        }
+
+        Record.saveAndWait()
+
+        // since a flag has be removed on all messages, all messages need to be synced
+        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertNotNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count, "all messages need to be synced")
+
+        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+            XCTFail()
+            return
+        }
+
+        let expEmailsSynced = expectation(description: "expEmailsSynced")
+        op.completionBlock = {
+            expEmailsSynced.fulfill()
+        }
+
+        op.start()
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
+        })
+
+        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0,
+                       "no messages have to be synced after syncing")
+        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
+                       "all messages have been processed")
     }
 
     /**
@@ -992,6 +1788,8 @@ class SimpleOperationsTest: XCTestCase {
             }
         }
     }
+
+    //MARK: - EncryptAndSendOperation
 
     func testEncryptAndSendOperation() {
         let session = PEPSession()
