@@ -31,7 +31,7 @@ class PrivacyStatusTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        showPepRating(pEpRating: message.pEpRating())
+        let _ = showPepRating(pEpRating: message.pEpRating())
     }
     
     func configureTableView() {
