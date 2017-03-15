@@ -46,6 +46,8 @@ extension UIViewController {
             UINavigationBar.appearance().backgroundColor
 
         navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
+        navigationController?.navigationBar.titleTextAttributes =
+            UINavigationBar.appearance().titleTextAttributes
         navigationController?.toolbar.tintColor = UIToolbar.appearance().tintColor
     }
 }
