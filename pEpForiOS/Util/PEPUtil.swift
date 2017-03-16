@@ -700,6 +700,14 @@ open class PEPUtil {
         return pEpDict[kPepFingerprint] as? String
     }
 
+    open static func fingerPrint(cdIdentity: CdIdentity,
+                                 session: PEPSession = PEPSession()) -> String? {
+        let pEpID = pEp(cdIdentity: cdIdentity)
+        let pEpDict = NSMutableDictionary(dictionary: pEpID)
+        session.updateIdentity(pEpDict)
+        return pEpDict[kPepFingerprint] as? String
+    }
+
     /**
      Trust that contact (yellow to green).
      */
