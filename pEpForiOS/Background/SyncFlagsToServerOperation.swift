@@ -130,8 +130,9 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
             if mode == .remove {
                 currentlyProcessedMessage = nil
             }
-            imapSyncData.sync?.imapStore.send(
-                IMAP_UID_STORE, info: cmd!.pantomimeDict as [AnyHashable: Any], string: cmd!.command)
+            imapSyncData.sync?.imapStore.send(IMAP_UID_STORE,
+                                              info: cmd!.pantomimeDict,
+                                              string: cmd!.command)
         } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer(){
             updateFlags(to: .remove)
         } else  {
