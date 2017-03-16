@@ -616,9 +616,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = false
             imap.flagSeen = true
             imap.flagDeleted = true
-            imap.updateCurrentFlags()
             // ...but no flags are set on server, so all flags have to be added
-            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
         }
 
         Record.saveAndWait()
@@ -683,9 +682,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = true
             imap.flagSeen = true
             imap.flagDeleted = true
-            imap.updateCurrentFlags()
             // ...and all flags are set on server, so nothing should be updated
-            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
         }
 
         Record.saveAndWait()
@@ -750,9 +748,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = false
             imap.flagSeen = true
             imap.flagDeleted = true
-            imap.updateCurrentFlags()
 
-            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
             imap.flagsFromServer.imapSetFlagBit(.answered)
             imap.flagsFromServer.imapSetFlagBit(.draft)
             imap.flagsFromServer.imapSetFlagBit(.flagged)
@@ -828,9 +825,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = false
             imap.flagSeen = false
             imap.flagDeleted = true
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
             imap.flagsFromServer.imapSetFlagBit(.deleted)
         }
 
@@ -900,9 +896,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = false
             imap.flagSeen = false
             imap.flagDeleted = true
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
             imap.flagsFromServer.imapSetFlagBit(.deleted)
         }
 
@@ -972,9 +967,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = false
             imap.flagSeen = false
             imap.flagDeleted = true
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
             imap.flagsFromServer.imapSetFlagBit(.deleted)
         }
 
@@ -1044,9 +1038,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = false
             imap.flagSeen = true
             imap.flagDeleted = true
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
             imap.flagsFromServer.imapSetFlagBit(.deleted)
         }
 
@@ -1116,9 +1109,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = false
             imap.flagSeen = false
             imap.flagDeleted = true
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
             imap.flagsFromServer.imapSetFlagBit(.answered)
         }
 
@@ -1187,9 +1179,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = true
             imap.flagSeen = false
             imap.flagDeleted = false
-            imap.updateCurrentFlags()
             // ... but all flags set on server, so all flags have to be removed
-            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
         }
 
         Record.saveAndWait()
@@ -1255,9 +1246,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = false
             imap.flagSeen = true
             imap.flagDeleted = false
-            imap.updateCurrentFlags()
             // server flags
-            imap.flagsFromServer = Int16.imapNoFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
             imap.flagsFromServer.imapSetFlagBit(.draft)
             imap.flagsFromServer.imapSetFlagBit(.seen)
 
@@ -1328,9 +1318,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = true
             imap.flagSeen = true
             imap.flagDeleted = false
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
             imap.flagsFromServer.imapUnSetFlagBit(.deleted)
         }
 
@@ -1400,9 +1389,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = true
             imap.flagSeen = true
             imap.flagDeleted = false
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
             imap.flagsFromServer.imapUnSetFlagBit(.deleted)
         }
 
@@ -1472,9 +1460,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = true
             imap.flagSeen = true
             imap.flagDeleted = false
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
             imap.flagsFromServer.imapUnSetFlagBit(.deleted)
         }
 
@@ -1544,9 +1531,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = true
             imap.flagSeen = false
             imap.flagDeleted = false
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
             imap.flagsFromServer.imapUnSetFlagBit(.deleted)
         }
 
@@ -1616,9 +1602,8 @@ class SimpleOperationsTest: XCTestCase {
             imap.flagRecent = true
             imap.flagSeen = true
             imap.flagDeleted = false
-            imap.updateCurrentFlags()
             // set the flag on server side
-            imap.flagsFromServer = Int16.imapAllFlagsSet()
+            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
             imap.flagsFromServer.imapUnSetFlagBit(.answered)
         }
 

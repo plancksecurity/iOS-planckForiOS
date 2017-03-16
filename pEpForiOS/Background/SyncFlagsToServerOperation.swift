@@ -103,7 +103,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         guard let message = currentlyProcessedMessage else {
             return false
         }
-        return message.storeCommandForFlagsToRemove() != nil
+        return message.storeCommandForUpdateFlags(to: .remove) != nil
     }
 
     func updateFlags(message: CdMessage) {
@@ -112,7 +112,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     private func updateFlagsToAdd(message: CdMessage) {
-        if let cmd = message.storeCommandForFlagsToAdd() {
+        if let cmd = message.storeCommandForUpdateFlags(to: .add) {
             imapSyncData.sync?.imapStore.send(
                 IMAP_UID_STORE, info: cmd.pantomimeDict as [AnyHashable: Any], string: cmd.command)
         } else if currentMessageNeedSyncRemoveFlagsToServer() {
@@ -129,7 +129,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
             return
         }
         
-        if let cmd = message.storeCommandForFlagsToRemove() {
+        if let cmd = message.storeCommandForUpdateFlags(to: .remove) {
             currentlyProcessedMessage = nil
             imapSyncData.sync?.imapStore.send(
                 IMAP_UID_STORE, info: cmd.pantomimeDict as [AnyHashable: Any], string: cmd.command)

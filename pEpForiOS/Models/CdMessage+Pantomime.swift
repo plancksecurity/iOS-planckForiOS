@@ -10,6 +10,11 @@ import MessageModel
 
 public typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
 
+    public enum UpdateFlagsMode: String {
+        case add = "+"
+        case remove = "-"
+    }
+
 extension CdMessage {
     /**
      - Returns: A `CWFlags object` for the given `NSNumber`
@@ -30,13 +35,12 @@ extension CdMessage {
     static func flagsStringFromNumber(_ flags: Int16) -> String {
         return pantomimeFlagsFromNumber(flags).asString()
     }
-    
+
     /**
      - Returns: `flags` as `CWFlags`
      */
     public func pantomimeFlags() -> CWFlags {
         if let theImap = imap {
-            theImap.updateCurrentFlags()
             return CdMessage.pantomimeFlagsFromNumber(theImap.flagsCurrent)
         } else {
             return CWFlags()
@@ -46,10 +50,10 @@ extension CdMessage {
     /**
      - Returns: `flagsFromServer` as `CWFlags`
      */
-    public func pantomimeFlagsFromServer() -> CWFlags {
+    public func pantomimeflagsFromServer() -> CWFlags {
         return CdMessage.pantomimeFlagsFromNumber(imap!.flagsFromServer)
     }
-    
+
     /**
      - Returns: A `CWFlags object` for the given `Int16`
      */
@@ -87,43 +91,41 @@ extension CdMessage {
         return dict
     }
 
-    /// - Returns: A tuple consisting of an IMAP command string for flags to remove for this
-    ///   message, and a dictionary suitable for using pantomime for the actual execution.
-    public func storeCommandForFlagsToRemove() -> ImapStoreCommand? {
-        guard let imap = imap else {
+    /// Creates a tuple consisting of an IMAP command string for syncing flags that have been 
+    /// modified by the client for this message, and a dictionary suitable for using pantomime 
+    /// for the actual execution.
+    ///
+    /// - note: Flags added and flags removed by the client use different commands. 
+    ///         Which to use can be chosen by the `mode` parameted.
+    ///
+    /// - seealso: [RFC4549](https://tools.ietf.org/html/rfc4549#section-4.2.3)
+    ///
+    /// - Parameter mode: mode to create command for
+    /// - Returns: tuple consisting of an IMAP command string for syncing flags and a dictionary 
+    ///    suitable for using pantomime
+    /// for the actual execution
+    public func storeCommandForUpdateFlags(to mode: UpdateFlagsMode) -> ImapStoreCommand? {
+        guard imap != nil else {
             return nil
         }
-        imap.updateCurrentFlags()
 
-        let flags = flagsToRemove()
+        let flags:ImapFlagsBits!
+
+        switch mode {
+        case .add:
+            flags = flagsToAdd()
+        case .remove:
+            flags = flagsToRemove()
+        }
 
         if flags.imapNoRelevantFlagSet() {
             return nil
         }
 
-        let flagsString = CdMessage.flagsString(flagsInt16: flags)
-        let result = "UID STORE \(uid) -FLAGS.SILENT (\(flagsString))"
-
-        let dict = pantomimeInfoDict()
-
-        return ImapStoreCommand(command: result, pantomimeDict: dict)
-    }
-
-    /// - Returns: A tuple consisting of an IMAP command string for flags to add for this
-    ///   message, and a dictionary suitable for using pantomime for the actual execution.
-    public func storeCommandForFlagsToAdd() -> ImapStoreCommand? {
-        guard let imap = imap else {
-            return nil
-        }
-        imap.updateCurrentFlags()
-
-        let flags = flagsToAdd()
-        if flags.imapNoRelevantFlagSet() {
-            return nil
-        }
+        let prefixFlagsSilent = mode.rawValue
 
         let flagsString = CdMessage.flagsString(flagsInt16: flags)
-        let result = "UID STORE \(uid) +FLAGS.SILENT (\(flagsString))"
+        let result = "UID STORE \(uid) \(prefixFlagsSilent)FLAGS.SILENT (\(flagsString))"
 
         let dict = pantomimeInfoDict()
 
@@ -138,14 +140,14 @@ extension CdMessage {
         let diff = flagsDiff()
 
         if !diff.imapAnyRelevantFlagSet() {
-            return Int16.imapNoFlagsSet()
+            return ImapFlagsBits.imapNoFlagsSet()
         }
 
         guard let flagsCurrent = imap?.flagsCurrent else {
-            return Int16.imapNoFlagsSet()
+            return ImapFlagsBits.imapNoFlagsSet()
         }
 
-        var flagsToRemove = Int16.imapNoFlagsSet()
+        var flagsToRemove = ImapFlagsBits.imapNoFlagsSet()
 
         if diff.imapFlagBitIsSet(flagbit: .answered) && flagsCurrent.imapFlagBitIsSet(flagbit: .answered) {
             flagsToRemove += ImapFlagBit.answered.rawValue
@@ -175,14 +177,14 @@ extension CdMessage {
         let diff = flagsDiff()
 
         if !diff.imapAnyRelevantFlagSet() {
-            return Int16.imapNoFlagsSet()
+            return ImapFlagsBits.imapNoFlagsSet()
         }
 
         guard let flagsCurrent = imap?.flagsCurrent else {
-            return Int16.imapNoFlagsSet()
+            return ImapFlagsBits.imapNoFlagsSet()
         }
 
-        var flagsToRemove = Int16.imapNoFlagsSet()
+        var flagsToRemove = ImapFlagsBits.imapNoFlagsSet()
 
         if diff.imapFlagBitIsSet(flagbit: .answered) && !flagsCurrent.imapFlagBitIsSet(flagbit: .answered) {
             flagsToRemove += ImapFlagBit.answered.rawValue
@@ -206,16 +208,16 @@ extension CdMessage {
 
     /// Returns the flags that differ in between flagsCurrent and flagsFromServer, represented in bits.
     /// A set bit (1) means it differs.
-    /// 
+    ///
     /// Find more details about the semantic of those bits in Int16+ImapFlagBits.swift
     ///
     /// - Returns: flags that differ
     private func flagsDiff() -> Int16 {
         guard let flagsCurrent = imap?.flagsCurrent else {
-            return Int16.imapNoFlagsSet()
+            return ImapFlagsBits.imapNoFlagsSet()
         }
 
-        var flagsFromServer = Int16.imapNoFlagsSet()
+        var flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
         if let flags = imap?.flagsFromServer {
             flagsFromServer = flags
         }
@@ -297,7 +299,7 @@ extension CdMessage {
     func internetAddressFromContact(_ contact: CdIdentity) -> CWInternetAddress {
         return CWInternetAddress.init(personal: contact.userName, address: contact.address)
     }
-    
+
     func collectContacts(_ contacts: NSOrderedSet?,
                          asPantomimeReceiverType receiverType: PantomimeRecipientType,
                          intoTargetArray target: inout [CWInternetAddress]) {
@@ -555,7 +557,7 @@ extension CdMessage {
                 targetMail.addAttachment(attachment)
             }
         }
-
+        
         if let multiPart = content as? CWMIMEMultipart {
             for i in 0..<multiPart.count() {
                 let subPart = multiPart.part(at: UInt(i))

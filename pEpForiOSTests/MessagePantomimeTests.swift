@@ -8,8 +8,8 @@
 
 import XCTest
 
-import pEpForiOS
 import MessageModel
+import pEpForiOS
 
 class MessagePantomimeTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -28,7 +28,6 @@ class MessagePantomimeTests: XCTestCase {
         m.imap = CdImapFields.create()
 
         m.imap?.flagFlagged = true
-        m.imap?.updateCurrentFlags()
 
         for f: PantomimeFlag in [.answered, .deleted, .draft, .recent, .seen] {
             XCTAssertFalse(m.pantomimeFlags().contain(f))
@@ -64,106 +63,6 @@ class MessagePantomimeTests: XCTestCase {
 
         fl.add(.seen)
         XCTAssertEqual(fl.rawFlagsAsShort(), 57)
-    }
-
-    func testUpdateFlags() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
-
-        XCTAssertEqual(m.imap?.flagsFromServer, 0)
-
-        var valuesSoFar: Int16 = 0
-        for fl in [PantomimeFlag.answered, .draft, .flagged, .recent, .seen, .deleted] {
-            switch fl {
-            case .answered:
-                m.imap?.flagAnswered = true
-            case .draft:
-                m.imap?.flagDraft = true
-            case .flagged:
-                m.imap?.flagFlagged = true
-            case .recent:
-                m.imap?.flagRecent = true
-            case .seen:
-                m.imap?.flagSeen = true
-            case .deleted:
-                m.imap?.flagDeleted = true
-            }
-            m.imap?.updateCurrentFlags()
-            valuesSoFar += Int(fl.rawValue)
-            XCTAssertEqual(m.imap?.flagsCurrent, valuesSoFar)
-        }
-    }
-
-    func testStoreCommandForFlagsToAdd() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
-
-        m.uid = 1024
-        m.imap?.flagsFromServer = Int16.imapNoFlagsSet()
-        m.imap?.flagAnswered = false
-        m.imap?.flagDraft = false
-        m.imap?.flagDeleted = false
-        m.imap?.flagSeen = false
-        m.imap?.flagFlagged = false
-
-        XCTAssertNil(m.storeCommandForFlagsToAdd(), "No changes, no commands returned")
-
-        m.imap?.flagAnswered = true
-        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
-                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered)")
-
-        m.imap?.flagDraft = true
-        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
-                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered \\Draft)")
-
-        m.imap?.flagDeleted = true
-        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
-                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered \\Draft \\Deleted)")
-
-        m.imap?.flagSeen = true
-        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
-                       "UID STORE \(m.uid) +FLAGS.SILENT (\\Answered \\Draft \\Seen \\Deleted)")
-
-        m.imap?.flagFlagged = true
-        XCTAssertEqual(m.storeCommandForFlagsToAdd()?.0,
-                       "UID STORE \(m.uid) +FLAGS.SILENT " +
-                        "(\\Answered \\Draft \\Flagged \\Seen \\Deleted)")
-    }
-
-    func testStoreCommandForFlagsToRemove() {
-        let m = CdMessage.create()
-        m.imap = CdImapFields.create()
-
-        m.uid = 1024
-        m.imap?.flagsFromServer = Int16.imapAllFlagsSet()
-        m.imap?.flagAnswered = true
-        m.imap?.flagDraft = true
-        m.imap?.flagDeleted = true
-        m.imap?.flagSeen = true
-        m.imap?.flagFlagged = true
-
-        XCTAssertNil(m.storeCommandForFlagsToRemove(), "No changes, no commands returned")
-
-        m.imap?.flagAnswered = false
-        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
-                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered)")
-
-        m.imap?.flagDraft = false
-        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
-                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Draft)")
-
-        m.imap?.flagDeleted = false
-        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
-                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Draft \\Deleted)")
-
-        m.imap?.flagSeen = false
-        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
-                       "UID STORE \(m.uid) -FLAGS.SILENT (\\Answered \\Draft \\Seen \\Deleted)")
-
-        m.imap?.flagFlagged = false
-        XCTAssertEqual(m.storeCommandForFlagsToRemove()?.0,
-                       "UID STORE \(m.uid) -FLAGS.SILENT " +
-                        "(\\Answered \\Draft \\Flagged \\Seen \\Deleted)")
     }
 
     func testReferences() {
