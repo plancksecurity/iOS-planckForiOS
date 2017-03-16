@@ -89,7 +89,14 @@ extension CdMessage {
         if let f = folder {
             pFolder = NSPredicate(format: "parent = %@", f)
         }
-        let pFlags = NSPredicate(format: "imap.flagsCurrent != imap.flagsFromServer")
+        
+        let pFlags = NSPredicate(format: "(imap.flagAnswered != imap.flagFromServerAnswered) OR " +
+            "(imap.flagDraft != imap.flagFromServerDraft) OR " +
+            "(imap.flagFlagged != imap.flagFromServerFlagged) OR " +
+            "(imap.flagRecent != imap.flagFromServerRecent) OR " +
+            "(imap.flagSeen != imap.flagFromServerSeen) OR " +
+            "(imap.flagDeleted != imap.flagFromServerDeleted)")
+
         let pUid = NSPredicate(format: "uid != 0")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [pUid, pFolder, pFlags])
     }
