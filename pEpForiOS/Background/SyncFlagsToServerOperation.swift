@@ -7,7 +7,6 @@
 //
 
 import CoreData
-
 import MessageModel
 
 open class SyncFlagsToServerOperation: ImapSyncOperation {
@@ -107,35 +106,36 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     func updateFlags(message: CdMessage) {
-            currentlyProcessedMessage = message
-            updateFlagsToAdd(message: message)
+        currentlyProcessedMessage = message
+        updateFlags(to: .add)
     }
 
-    private func updateFlagsToAdd(message: CdMessage) {
-        if let cmd = message.storeCommandForUpdateFlags(to: .add) {
-            imapSyncData.sync?.imapStore.send(
-                IMAP_UID_STORE, info: cmd.pantomimeDict as [AnyHashable: Any], string: cmd.command)
-        } else if currentMessageNeedSyncRemoveFlagsToServer() {
-            updateFlagsToRemove()
-        } else {
-            syncNextMessage()
-        }
-    }
-
-    fileprivate func updateFlagsToRemove() {
+    fileprivate func updateFlags(to mode:UpdateFlagsMode) {
         guard let message = currentlyProcessedMessage else {
-            Log.shared.errorAndCrash(component:"\(#function)[\(#line)]", errorString: "Fatal error!")
+            Log.shared.errorAndCrash(component:"\(#function)[\(#line)]", errorString: "No message!")
             syncNextMessage()
             return
         }
-        
-        if let cmd = message.storeCommandForUpdateFlags(to: .remove) {
-            currentlyProcessedMessage = nil
+
+        var cmd: ImapStoreCommand?
+
+        switch mode {
+        case .add:
+            cmd = message.storeCommandForUpdateFlags(to: .add)
+        case .remove:
+            cmd = message.storeCommandForUpdateFlags(to: .remove)
+        }
+
+        if cmd != nil {
+            if mode == .remove {
+                currentlyProcessedMessage = nil
+            }
             imapSyncData.sync?.imapStore.send(
-                IMAP_UID_STORE, info: cmd.pantomimeDict as [AnyHashable: Any], string: cmd.command)
-        } else {
-            Log.shared.errorAndCrash(component:"\(#function)[\(#line)]",
-                errorString: "updateFlagsToRemove called with storeCommandForFlagsToRemove() == nil")
+                IMAP_UID_STORE, info: cmd!.pantomimeDict as [AnyHashable: Any], string: cmd!.command)
+        } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer(){
+            updateFlags(to: .remove)
+        } else  {
+            syncNextMessage()
         }
     }
 
@@ -237,7 +237,7 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
         // flags to add have been synced, but we might need to sync flags to remove also before
         // processing the next message.
         if currentMessageNeedSyncRemoveFlagsToServer() {
-            updateFlagsToRemove()
+            updateFlags(to: .remove)
             return
         }
         guard let n = notification else {
@@ -282,11 +282,11 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
                 for m in all {
                     Log.shared.info(component: "\(#function)[\(#line)]",
                         content: "##### \nBefore syncing flags:\nUID: \(m.uid) \n" +
-                        "flagsCurrent:\t\(m.imap?.flagsCurrent)" +
+                            "flagsCurrent:\t\(m.imap?.flagsCurrent)" +
                             "\(m.imap?.flagsCurrent.debugString())\n" +
-                        "flagsFromServer: \t\(m.imap?.flagsFromServer) " +
+                            "flagsFromServer: \t\(m.imap?.flagsFromServer) " +
                             "\(m.imap?.flagsFromServer.debugString())\n" +
-                            "parent?.objectID: \(m.parent?.objectID)")
+                        "parent?.objectID: \(m.parent?.objectID)")
                 }
             }
 
@@ -337,7 +337,7 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
         addError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
         markAsFinished()
     }
-
+    
     public func actionFailed(_ sync: ImapSync, error: NSError) {
         addError(error)
         markAsFinished()
