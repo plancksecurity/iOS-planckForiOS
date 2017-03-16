@@ -56,6 +56,10 @@ class ComposeTableViewController: UITableViewController {
 
     var edited = false
 
+    /**
+     A value of `true` means that the mail will be encrypted.
+     */
+    var pEpProtection = true
 
     // MARK: - Lifecycle
 
@@ -490,13 +494,27 @@ extension ComposeTableViewController: ComposeCellDelegate {
                                                       cc: cc, bcc: bcc)
             }
             if let rate = rating {
-                showPepRating(pEpRating: rate)
+                if let b = showPepRating(pEpRating: rate, pEpProtection: pEpProtection) {
+                    if rate == PEP_rating_reliable || rate == PEP_rating_trusted {
+                        // disable protection only for certain ratings
+                        let r = UILongPressGestureRecognizer(target: self,
+                                                             action: #selector(toggleProtection))
+                        b.addGestureRecognizer(r)
+                    }
+                }
             }
         }
     }
 
+    @IBAction func toggleProtection(gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            pEpProtection = !pEpProtection
+            calculateComposeColor()
+        }
+    }
+
     func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {
-    self.edited = true
+        self.edited = true
     }
 
     func textdidChange(at indexPath: IndexPath, textView: ComposeTextView) {

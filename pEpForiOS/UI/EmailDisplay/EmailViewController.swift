@@ -64,7 +64,7 @@ class EmailViewController: UITableViewController {
     }
 
     func showPepRating() {
-        showPepRating(pEpRating: message.pEpRating())
+        let _ = showPepRating(pEpRating: message.pEpRating())
     }
     
     fileprivate final func loadDatasource(_ file: String) {

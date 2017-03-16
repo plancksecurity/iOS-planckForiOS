@@ -52,11 +52,17 @@ open class ModelUserInfoTable {
     open var transportSMTP = ConnectionTransport.startTLS
 
     open var isValidEmail: Bool {
-        return email != nil && email!.isProbablyValidEmail()
+        if let em = email {
+            return em.isProbablyValidEmail()
+        }
+        return false
     }
 
     open var isValidPassword: Bool {
-        return password != nil && password!.characters.count > 0
+        if let pass = password {
+            return pass.characters.count > 0
+        }
+        return false
     }
 
     open var isValidName: Bool {
@@ -211,13 +217,12 @@ extension UserInfoTableView: SegueHandlerType {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
-            let destination = segue.destination as! IMAPSettingsTableView
-            destination.appConfig = appConfig
-            destination.model = model
+            if let destination = segue.destination as? IMAPSettingsTableView {
+                destination.appConfig = appConfig
+                destination.model = model
+            }
             break
         default:()
         }
-        
     }
-    
 }

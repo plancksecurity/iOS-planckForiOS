@@ -190,9 +190,20 @@ extension SmtpSend: CWServiceClient {
             self.smtpStatus.haveStartedTLS = true
             self.smtp.startTLS()
         } else {
-            self.smtp.authenticate(self.connectInfo.loginName!,
-                                   password: self.connectInfo.loginPassword!,
-                                   mechanism: self.bestAuthMethod().rawValue)
+            if let loginName = connectInfo.loginName, let password = connectInfo.loginPassword {
+                self.smtp.authenticate(loginName, password: password,
+                                       mechanism: self.bestAuthMethod().rawValue)
+            } else {
+                var missingToken = ""
+                if connectInfo.loginName == nil {
+                    missingToken = "loginName"
+                } else {
+                    missingToken = "loginPassword"
+                }
+                Log.warn(
+                    component: #function,
+                    content: "Don't have \(missingToken) for \(connectInfo.networkAddress) (\(connectInfo.emailProtocol))")
+            }
         }
     }
 

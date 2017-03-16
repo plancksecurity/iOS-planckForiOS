@@ -10,15 +10,19 @@ import Foundation
 import UIKit
 
 extension UIViewController {
-    func showPepRating(pEpRating: PEP_rating?) {
+    func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
         setEmailDisplayColors()
 
         // icon
         navigationItem.title = nil
-        if let img = pEpRating?.pepColor().statusIcon() {
-            navigationItem.titleView = UIImageView(image: img)
+        if let img = pEpRating?.pepColor().statusIcon(enabled: pEpProtection) {
+            let v = UIImageView(image: img)
+            navigationItem.titleView = v
+            v.isUserInteractionEnabled = true
+            return v
         } else {
             navigationItem.titleView = nil
+            return nil
         }
     }
 
