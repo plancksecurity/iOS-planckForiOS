@@ -87,10 +87,23 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
                 comment: "the text in the title for the error message AlerView in account settings"),
             message:message, preferredStyle: .alert)
         alertView.view.tintColor = .pEpGreen
-        alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok",
-            comment: "confirmation button text for error message AlertView in account settings"),
+        alertView.addAction(UIAlertAction(
+            title: NSLocalizedString(
+                "View log",
+                comment: "Button for viewing the log on error"),
+            style: .default, handler: { action in
+                self.viewLog()
+        }))
+        alertView.addAction(UIAlertAction(
+            title: NSLocalizedString(
+                "Ok",
+                comment: "confirmation button text for error message AlertView in account settings"),
             style: .default, handler: nil))
         present(alertView, animated: true, completion: nil)
+    }
+
+    func viewLog() {
+        performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
 
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {
@@ -197,6 +210,7 @@ extension SMTPSettingsTableView: AccountDelegate {
 extension SMTPSettingsTableView: SegueHandlerType {
     
    public enum SegueIdentifier: String {
-        case noSegue
+    case noSegue
+    case viewLogSegue
     }
 }

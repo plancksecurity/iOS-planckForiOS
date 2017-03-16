@@ -882,6 +882,7 @@
                         <outlet property="serverTitle" destination="VW4-JJ-HKV" id="LAU-sZ-LS7"/>
                         <outlet property="serverValue" destination="HIi-Wv-jJs" id="yqf-Es-fSK"/>
                         <outlet property="transportSecurity" destination="Cjb-ue-OdU" id="W8X-Rm-6rK"/>
+                        <segue destination="01V-rr-Nt1" kind="show" identifier="viewLogSegue" id="ohe-5h-dsJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBU-82-njk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2507,9 +2508,10 @@ APPLEPIE RESEARCH</string>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Na7-CM-lbe"/>
+        <segue reference="FBd-9l-9Iu"/>
         <segue reference="VUg-YY-vSY"/>
         <segue reference="xmi-xn-p8T"/>
-        <segue reference="FBd-9l-9Iu"/>
+        <segue reference="Na7-CM-lbe"/>
+        <segue reference="ohe-5h-dsJ"/>
     </inferredMetricsTieBreakers>
 </document>
