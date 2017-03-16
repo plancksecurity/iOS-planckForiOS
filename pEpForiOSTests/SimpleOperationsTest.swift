@@ -1662,21 +1662,37 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertGreaterThan(messages.count, 0, "there are messages")
 
         for m in messages {
+            XCTAssertNotNil(m.messageID)
+            XCTAssertGreaterThan(m.uid, 0)
             guard let imap = m.imap else {
                 XCTFail()
                 break
             }
-            imap.flagSeen = !imap.flagSeen
+            // one flag that is set on server has been unset by the client,
+            // so it has to be removed.
+            imap.flagAnswered = true
+            imap.flagDraft = true
+            imap.flagFlagged = true
+            // (the client must never change flagRecent according to RFC,
+            // so we set it in state of flagsServer)
+            imap.flagRecent = true
+            imap.flagSeen = false
+            imap.flagDeleted = false
+            // set the flag on server side
+            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
+            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
         }
 
         Record.saveAndWait()
 
+        // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)?.count ?? 0
-        XCTAssertEqual(messagesToBeSynced, messages.count)
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count, messages.count)
 
+        let numSyncOpsToTrigger = 5
         var ops = [SyncFlagsToServerOperation]()
-        for i in 1...1 {
+        for i in 1...numSyncOpsToTrigger {
             guard let op = SyncFlagsToServerOperation(
                 imapSyncData: imapSyncData, folder: inbox) else {
                     XCTFail()
@@ -1706,8 +1722,8 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)?.count ?? 0
-        XCTAssertEqual(messagesToBeSynced, 0)
+            folder: inbox, context: Record.Context.default)
+        XCTAssertEqual(messagesToBeSynced?.count ?? 0, 0)
 
         var first = true
         for op in ops {
