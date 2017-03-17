@@ -17,6 +17,8 @@ public enum AddressBookStatus {
     case denied
 }
 
+//TODO: adapt new API for iOS9 and above
+@available(iOS, deprecated: 9.0)
 /**
  Access to ABAddressBook. Uses deprecated pre-iOS-9 functionality. Can be adapted
  to the new iOS-9 API when we ditch iOS 8 support.
