@@ -12,12 +12,6 @@ import pEpForiOS
 import MessageModel
 
 class ImapFlagsTests: XCTestCase {
-    
-    override func setUp() {
-    }
-    
-    override func tearDown() {
-    }
 
     func loopAllFlags(
         cdFields: CdImapFields, cwFlags: CWFlags, value: Bool) {
