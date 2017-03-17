@@ -8,6 +8,7 @@
 
 import XCTest
 
+import pEpForiOS
 import MessageModel
 
 class CdMessage_PantomimeTest: XCTestCase {
@@ -124,6 +125,30 @@ class CdMessage_PantomimeTest: XCTestCase {
         m.imap?.flagDeleted = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0, "UID STORE 1024 +FLAGS.SILENT " +
             "(\\Answered \\Draft \\Flagged \\Deleted)")
+    }
+
+    func testInsertOrUpdatePantomimeMessage() {
+        let cdAccount = TestData().createWorkingCdAccount()
+
+        let folder = CdFolder.create()
+        folder.account = cdAccount
+        folder.name = ImapSync.defaultImapInboxName
+        folder.uuid = MessageID.generate()
+
+        guard let data = TestUtil.loadDataWithFileName("UnencryptedHTMLMail.txt") else {
+            XCTAssertTrue(false)
+            return
+        }
+        let message = CWIMAPMessage.init(data: data)
+        message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        let msg = CdMessage.insertOrUpdate(
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
+            forceParseAttachments: true)
+        XCTAssertNotNil(msg)
+        if let m = msg {
+            XCTAssertNotNil(m.longMessage)
+            XCTAssertNotNil(m.longMessageFormatted)
+        }
     }
 
     //MARK: - HELPER
