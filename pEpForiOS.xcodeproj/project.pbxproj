@@ -990,6 +990,7 @@
 				43980E201CBD0BC900A7FC3C /* Frameworks */,
 				43980E211CBD0BC900A7FC3C /* Resources */,
 				4377D92F1DB7EB03003432BB /* CopyFiles */,
+				4961BA0D1E7BEA4200920DF8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1140,6 +1141,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4961BA0D1E7BEA4200920DF8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#mark annotations defined below as warnings\nKEYWORDS=\"TODO|FIXME|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 | \\\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | \\\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		43980E1F1CBD0BC900A7FC3C /* Sources */ = {
