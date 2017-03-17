@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 
 public enum FilterCellType {
-    case unread, indicate, forMe, forMeCc, attachment
+    case unread, flagged, forMe, forMeCc, attachment
 }
 
 public class FilterCellViewModel {
@@ -43,14 +43,16 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("Unread", comment: "title unread filter cell")
+            filter = Filter.unread()
 
-        case .indicate:
+        case .flagged:
             guard let image = FlagImages.create(imageSize: circleSize).flaggedImage else {
                 title = ""
                 return
             }
             icon = image
             title = NSLocalizedString("Flagged", comment: "title unread filter cell")
+            filter = Filter.flagged()
 
         case .forMe:
             guard let image = FlagImages.create(imageSize: squareSize).toMeImage else {
@@ -60,6 +62,7 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("For me", comment: "title unread filter cell")
+            //filter = Filter.toAddress(address: <#T##String#>)
 
         case .forMeCc:
             guard let image = FlagImages.create(imageSize: squareSize).toMeCcImage else {
@@ -69,11 +72,20 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("For me in copy", comment: "title unread filter cell")
+            //filter = Filter.toAddress(address: <#T##String#>)
 
         case .attachment:
             self.icon = UIImage(named: "attachment-list-icon")!
             self.title = NSLocalizedString("Attachments", comment: "title attachments filter cell")
+            filter = Filter.attachment()
         }
+    }
+
+    func getFilter() -> Filter? {
+        if enabled {
+            return filter
+        }
+        return nil
     }
     
 }

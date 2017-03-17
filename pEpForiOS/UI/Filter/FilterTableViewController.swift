@@ -13,6 +13,7 @@ class FilterTableViewController: UITableViewController {
 
     open var inFolder: Bool = false
     open var filterEnabled: Filter?
+    open var filterDelegate: FilterUpdateProtocol?
 
     var sections = [FilterViewModel]()
 
@@ -36,6 +37,7 @@ class FilterTableViewController: UITableViewController {
         for section in sections {
             filterEnabled?.and(filter: section.getFilter())
         }
+        filterDelegate?.updateFilter(filter: filterEnabled!)
 
        _ = self.navigationController?.popViewController(animated: true)
 

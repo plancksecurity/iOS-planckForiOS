@@ -18,7 +18,7 @@ struct EmailListConfig {
     var folder: Folder?
 }
 
-class EmailListViewController: UITableViewController {
+class EmailListViewController: UITableViewController, FilterUpdateProtocol {
     struct UIState {
         var isSynching: Bool = false
     }
@@ -98,19 +98,22 @@ class EmailListViewController: UITableViewController {
             filterEnabled = false
             textFilterButton.title = ""
             enableFilterButton.image = UIImage(named: "unread-icon")
-            config?.folder?.updateFilter(filter: Filter.unified())
-            self.tableView.reloadData()
+            updateFilter(filter: Filter.unified())
         } else {
             filterEnabled = true
             textFilterButton.title = "Filter by: unread"
             enableFilterButton.image = UIImage(named: "unread-icon-active")
             if config != nil {
-                config?.folder?.updateFilter(filter: Filter.unread())
-                self.tableView.reloadData()
+                updateFilter(filter: Filter.unread())
             }
         }
         self.textFilterButton.isEnabled = filterEnabled
 
+    }
+
+    func updateFilter(filter: Filter) {
+        config?.folder?.updateFilter(filter: filter)
+        self.tableView.reloadData()
     }
 
     // MARK: - UI State
@@ -334,6 +337,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueCompose
         case segueReplyAll
         case segueForward
+        case segueFilter
         case noSegue
     }
 
@@ -370,9 +374,16 @@ extension EmailListViewController: SegueHandlerType {
                 destination.originalMessage = email
             }
             break
+        case .segueFilter:
+            if let destiny = segue.destination as? FilterTableViewController {
+                destiny.filterDelegate = self
+                destiny.inFolder = false
+            }
+            break
         case .segueAddNewAccount, .segueEditAccounts, .segueCompose, .noSegue:
             break
         }
+
     }
 
     func didChangeInternal(messageFolder: MessageFolder) {

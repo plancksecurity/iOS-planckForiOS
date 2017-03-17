@@ -48,7 +48,7 @@ public class FilterViewModel {
             break
         case .include:
             items.append(FilterCellViewModel(type: FilterCellType.unread))
-            items.append(FilterCellViewModel(type: FilterCellType.indicate))
+            items.append(FilterCellViewModel(type: FilterCellType.flagged))
             break
         case .to:
             items.append(FilterCellViewModel(type: FilterCellType.forMe))
@@ -61,7 +61,13 @@ public class FilterViewModel {
     }
 
     func getFilter() -> Filter {
-        return Filter.attachment()
+        let filter = Filter.empty()
+        for item in items {
+            if let f = item.getFilter(){
+                filter.and(filter: f)
+            }
+        }
+        return filter
     }
 
 
