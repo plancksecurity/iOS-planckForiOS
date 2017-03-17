@@ -9,13 +9,6 @@
 import XCTest
 
 class MimeTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-    }
 
     func testPGPMimePantomime() {
         guard let data = TestUtil.loadDataWithFileName("PGPMimeMail.txt") else {
