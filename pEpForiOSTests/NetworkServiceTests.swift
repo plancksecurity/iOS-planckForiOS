@@ -17,12 +17,12 @@ class NetworkServiceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        
         persistenceSetup = PersistentSetup()
     }
     
     override func tearDown() {
         persistenceSetup = nil
+        super.tearDown()
     }
 
     class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertible {
