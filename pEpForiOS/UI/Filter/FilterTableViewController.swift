@@ -19,6 +19,10 @@ class FilterTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -26,13 +30,19 @@ class FilterTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
+    func back(sender: UIBarButtonItem) {
+
+        filterEnabled = Filter.unified()
+        for section in sections {
+            filterEnabled?.and(filter: section.getFilter())
+        }
+
+       _ = self.navigationController?.popViewController(animated: true)
+
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         initViewModel()
-
-        let view = UIView()
-        view.backgroundColor = UIColor.lightGray
-        self.tableView.tableFooterView = view
-        //self.tableView.backgroundColor = UIColor.lightGray
 
     }
 
@@ -64,9 +74,6 @@ class FilterTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].title
-    }
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40.0
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {

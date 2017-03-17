@@ -60,6 +60,10 @@ public class FilterViewModel {
         }
     }
 
+    func getFilter() -> Filter {
+        return Filter.attachment()
+    }
+
 
     subscript(index: Int) -> FilterCellViewModel {
         get {
