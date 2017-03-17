@@ -22,6 +22,7 @@ class MessageModelTests: XCTestCase {
 
     override func tearDown() {
         persistentSetup = nil
+        super.tearDown()
     }
 
     func testAccountSaveAndVerify() {
