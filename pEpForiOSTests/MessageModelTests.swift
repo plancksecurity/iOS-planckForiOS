@@ -66,7 +66,7 @@ class MessageModelTests: XCTestCase {
         }
         XCTAssertEqual(msg.uuid, cdMsg.uuid)
 
-        if let (_, _) = EncryptAndSendOperation.retrieveNextMessage(
+        if let (_, _, _) = EncryptAndSendOperation.retrieveNextMessage(
             context: Record.Context.default) {
         } else {
             XCTFail()
