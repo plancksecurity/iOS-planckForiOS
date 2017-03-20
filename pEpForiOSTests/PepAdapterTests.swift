@@ -22,6 +22,7 @@ class PepAdapterTests: XCTestCase {
     }
     
     override func tearDown() {
+        pEpSession = nil
         super.tearDown()
     }
 

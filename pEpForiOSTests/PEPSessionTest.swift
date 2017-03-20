@@ -21,7 +21,7 @@ class PEPSessionTest: XCTestCase {
     }
     override func tearDown() {
         persistentSetup = nil
-
+        super.tearDown()
     }
 
     func testPEPConversion() {

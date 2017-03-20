@@ -42,6 +42,7 @@ class SimpleOperationsTest: XCTestCase {
 
     override func tearDown() {
         persistentSetup = nil
+        super.tearDown()
     }
 
     func testComp() {
