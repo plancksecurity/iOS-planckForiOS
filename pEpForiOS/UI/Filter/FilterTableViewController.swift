@@ -50,11 +50,11 @@ class FilterTableViewController: UITableViewController {
 
     func initViewModel() {
         if !inFolder {
-            sections.append(FilterViewModel(type: .accouts))
+            sections.append(FilterViewModel(type: .accouts, filter: filterEnabled))
         }
-        sections.append(FilterViewModel(type: .include))
-        sections.append(FilterViewModel(type: .to))
-        sections.append(FilterViewModel(type: .other))
+        sections.append(FilterViewModel(type: .include, filter: filterEnabled))
+        sections.append(FilterViewModel(type: .to, filter: filterEnabled))
+        sections.append(FilterViewModel(type: .other, filter: filterEnabled))
     }
 
     override func didReceiveMemoryWarning() {

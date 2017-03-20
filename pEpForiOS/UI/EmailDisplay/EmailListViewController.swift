@@ -378,6 +378,7 @@ extension EmailListViewController: SegueHandlerType {
             if let destiny = segue.destination as? FilterTableViewController {
                 destiny.filterDelegate = self
                 destiny.inFolder = false
+                destiny.filterEnabled = self.config?.folder?.filter as! Filter?
             }
             break
         case .segueAddNewAccount, .segueEditAccounts, .segueCompose, .noSegue:

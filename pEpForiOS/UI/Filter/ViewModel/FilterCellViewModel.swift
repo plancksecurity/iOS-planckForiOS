@@ -9,10 +9,6 @@
 import Foundation
 import MessageModel
 
-public enum FilterCellType {
-    case unread, flagged, forMe, forMeCc, attachment
-}
-
 public class FilterCellViewModel {
 
     var account: Account?
@@ -28,10 +24,11 @@ public class FilterCellViewModel {
         if let acc = account {
             self.title = acc.user.address
         }
-        filter = _filter
+        //enabled = _filter.ofType(.)
+        //filter = _filter
     }
 
-    init(type: FilterCellType, filter _filter: Filter? = nil) {
+    init(type: FilterType, filter _filter: Filter? = nil) {
         filter = _filter
         let circleSize = CGSize(width: 14, height: 14)
         let squareSize = CGSize(width: 20, height: 14)
@@ -44,6 +41,7 @@ public class FilterCellViewModel {
             icon = image
             title = NSLocalizedString("Unread", comment: "title unread filter cell")
             filter = Filter.unread()
+            enabled = filter?.ofType(type: .unread) ?? false
 
         case .flagged:
             guard let image = FlagImages.create(imageSize: circleSize).flaggedImage else {
@@ -53,6 +51,7 @@ public class FilterCellViewModel {
             icon = image
             title = NSLocalizedString("Flagged", comment: "title unread filter cell")
             filter = Filter.flagged()
+            enabled = filter?.ofType(type: .flagged) ?? false
 
         case .forMe:
             guard let image = FlagImages.create(imageSize: squareSize).toMeImage else {
@@ -63,6 +62,7 @@ public class FilterCellViewModel {
             icon = image
             title = NSLocalizedString("For me", comment: "title unread filter cell")
             //filter = Filter.toAddress(address: <#T##String#>)
+            //enabled = filter?.ofType(type: .unread) ?? false
 
         case .forMeCc:
             guard let image = FlagImages.create(imageSize: squareSize).toMeCcImage else {
@@ -73,11 +73,13 @@ public class FilterCellViewModel {
             icon = image
             title = NSLocalizedString("For me in copy", comment: "title unread filter cell")
             //filter = Filter.toAddress(address: <#T##String#>)
+            //enabled = filter?.ofType(type: .unread) ?? false
 
         case .attachment:
             self.icon = UIImage(named: "attachment-list-icon")!
             self.title = NSLocalizedString("Attachments", comment: "title attachments filter cell")
             filter = Filter.attachment()
+            enabled = filter?.ofType(type: .attachment) ?? false
         }
     }
 

@@ -17,7 +17,7 @@ public class FilterViewModel {
     private var items: [FilterCellViewModel]
     public var title: String
 
-    public init(type: FilterSectionType) {
+    public init(type: FilterSectionType, filter: Filter? = nil) {
 
         items = [FilterCellViewModel]()
         switch type {
@@ -35,27 +35,27 @@ public class FilterViewModel {
             break
         }
 
-        generateCells(type: type)
+        generateCells(type: type, filter: filter)
 
     }
 
-    private func generateCells(type: FilterSectionType) {
+    private func generateCells(type: FilterSectionType, filter: Filter? = nil) {
         switch type {
         case .accouts:
             for account in Account.all() {
-                items.append(FilterCellViewModel(account: account))
+                items.append(FilterCellViewModel(account: account, filter: filter))
             }
             break
         case .include:
-            items.append(FilterCellViewModel(type: FilterCellType.unread))
-            items.append(FilterCellViewModel(type: FilterCellType.flagged))
+            items.append(FilterCellViewModel(type: .unread, filter: filter))
+            items.append(FilterCellViewModel(type: .flagged, filter: filter))
             break
         case .to:
-            items.append(FilterCellViewModel(type: FilterCellType.forMe))
-            items.append(FilterCellViewModel(type: FilterCellType.forMeCc))
+            items.append(FilterCellViewModel(type: .forMe, filter: filter))
+            items.append(FilterCellViewModel(type: .forMeCc, filter: filter))
             break
         case .other:
-            items.append(FilterCellViewModel(type: FilterCellType.attachment))
+            items.append(FilterCellViewModel(type: .attachment, filter: filter))
             break
         }
     }
@@ -68,6 +68,10 @@ public class FilterViewModel {
             }
         }
         return filter
+    }
+
+    func updateFilter(filter: Filter) {
+        
     }
 
 
