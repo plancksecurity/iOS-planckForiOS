@@ -27,7 +27,7 @@ class SimpleOperationsTest: XCTestCase {
          The idea is to delete all messages on server befor every test.
          My time went out, I had to leave, so I left it in non-working state.
 
-         What I (want to) do in fagAllMessagesDeletedOnServer() is to:
+         What I (want to) do in flagAllMessagesDeletedOnServer() is to:
          - get all mails from all folders from server
          - flag all mails deleted
          - sync flags to server for all mails from all folders
@@ -35,7 +35,7 @@ class SimpleOperationsTest: XCTestCase {
 
          Even I assert they are flagged deleted afterwards, all mails are still shown in Thunderbird.
          */
-        fagAllMessagesDeletedOnServer()
+        //flagAllMessagesDeletedOnServer()
         setAllProperties()
     }
 
@@ -2349,14 +2349,14 @@ class SimpleOperationsTest: XCTestCase {
     //MARK: - HELPER
 
     //flags all messages deleted on server and wipes out the local storage
-    func fagAllMessagesDeletedOnServer() {
+    func flagAllMessagesDeletedOnServer() {
         setAllProperties()
 
         // fetch all folders and messages from server
         fetchFoldersAndWait()
         fetchMessagesForAllFoldersAndWait()
 
-        //fag all messages deleted ...
+        //flag all messages deleted ...
         var msgs = CdMessage.all() as? [CdMessage] ?? []
         for m in msgs {
             m.imap?.flagDeleted = true
