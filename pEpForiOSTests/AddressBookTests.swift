@@ -47,11 +47,8 @@ class AddressBookTests: XCTestCase {
         })
 
         let ab = AddressBook()
-        if ab.authorizationStatus == .authorized {
+        if ab.isAuthorized() {
             XCTAssertGreaterThan((CdIdentity.all() ?? []).count, 0)
-        } else {
-            XCTAssertTrue(
-                ab.authorizationStatus == .notDetermined || ab.authorizationStatus == .denied)
         }
     }
 }

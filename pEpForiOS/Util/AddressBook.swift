@@ -65,9 +65,8 @@ open class AddressBook {
         }
     }
 
-    func transferContacts() {
-        let store = CNContactStore()
-        let request = CNContactFetchRequest(keysToFetch:
+    func contactFetchRequest() -> CNContactFetchRequest {
+        return CNContactFetchRequest(keysToFetch:
             [CNContactGivenNameKey as CNKeyDescriptor,
              CNContactFamilyNameKey as CNKeyDescriptor,
              CNContactMiddleNameKey as CNKeyDescriptor,
@@ -76,8 +75,12 @@ open class AddressBook {
              CNContactEmailAddressesKey as CNKeyDescriptor,
              CNContactNicknameKey as CNKeyDescriptor,
              CNContactFormatter.descriptorForRequiredKeys(for: .fullName)])
+    }
+
+    func transferContacts() {
+        let store = CNContactStore()
         do {
-            try store.enumerateContacts(with: request, usingBlock: { contact, stop in
+            try store.enumerateContacts(with: contactFetchRequest(), usingBlock: { contact, stop in
                 self.save(contact: contact)
             })
         } catch let e as NSError {
@@ -90,5 +93,18 @@ open class AddressBook {
      */
     open static func checkAndTransfer() {
         AddressBook().transferContacts()
+    }
+
+    open func isAuthorized() -> Bool {
+        let store = CNContactStore()
+        do {
+            let _ = try store.enumerateContacts(with: contactFetchRequest(), usingBlock: {
+                contact, stop in
+                stop[0] = true
+            })
+            return true
+        } catch let _ as NSError {
+            return false
+        }
     }
 }
