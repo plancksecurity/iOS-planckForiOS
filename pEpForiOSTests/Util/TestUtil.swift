@@ -227,24 +227,6 @@ class TestUtil {
         }
     }
 
-    static func runAddressBookTest(_ testBlock: () -> (), addressBook: AddressBook,
-                                   testCase: XCTestCase, waitTime: TimeInterval) {
-        // We need authorization for this test to work
-        if addressBook.authorizationStatus == .notDetermined {
-            let exp = testCase.expectation(description: "granted")
-            let _ = addressBook.authorize({ ab in
-                exp.fulfill()
-            })
-            testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-                XCTAssertNil(error)
-                XCTAssertTrue(addressBook.authorizationStatus == .authorized)
-            })
-        } else {
-            XCTAssertTrue(addressBook.authorizationStatus == .authorized)
-        }
-        testBlock()
-    }
-
     /**
      Reusable implementation of `AccountDelegate` that just signals expectations.
      */
