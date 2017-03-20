@@ -50,9 +50,10 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
     }
 
     public static func retrieveNextMessage(
-        context: NSManagedObjectContext) -> (PEPMessage, NSManagedObjectID)? {
+        context: NSManagedObjectContext) -> (PEPMessage, Bool, NSManagedObjectID)? {
         var pepMessage: PEPMessage?
         var objID: NSManagedObjectID?
+        var protected = true
         context.performAndWait {
             let p = NSPredicate(
                 format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
@@ -63,11 +64,12 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
                     Record.saveAndWait(context: context)
                 }
                 pepMessage = m.pEpMessage()
+                protected = m.pEpProtected
                 objID = m.objectID
             }
         }
         if let o = objID, let p = pepMessage {
-            return (p, o)
+            return (p, protected, o)
         }
         return nil
     }
@@ -105,16 +107,21 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         markLastSentMessageAsSent(context: context)
 
         lastSentMessageObjectID = nil
-        if let (msg, objID) = EncryptAndSendOperation.retrieveNextMessage(context: context) {
+        if let (msg, protected, objID) = EncryptAndSendOperation.retrieveNextMessage(
+            context: context) {
             lastSentMessageObjectID = objID
-            let (status, encMsg) = session.encrypt(pEpMessageDict: msg)
-            let (encMsg2, error) = PEPUtil.check(
-                comp: comp, status: status, encryptedMessage: encMsg)
-            if let err = error {
-                Log.error(component: comp, error: err)
-                send(pEpMessage: encMsg as? PEPMessage)
+            if protected {
+                let (status, encMsg) = session.encrypt(pEpMessageDict: msg)
+                let (encMsg2, error) = PEPUtil.check(
+                    comp: comp, status: status, encryptedMessage: encMsg)
+                if let err = error {
+                    Log.error(component: comp, error: err)
+                    send(pEpMessage: encMsg as? PEPMessage)
+                } else {
+                    send(pEpMessage: encMsg2 as? PEPMessage)
+                }
             } else {
-                send(pEpMessage: encMsg2 as? PEPMessage)
+                send(pEpMessage: msg)
             }
         } else {
             markAsFinished()

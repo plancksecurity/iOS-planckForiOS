@@ -290,6 +290,8 @@ class ComposeTableViewController: UITableViewController {
             return nil
         }
 
+        message.pEpProtected = pEpProtection
+
         return message
     }
 
