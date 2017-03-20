@@ -14,34 +14,34 @@ import pEpForiOS
 import MessageModel
 
 class SimpleOperationsTest: XCTestCase {
-    var connectionManager: ConnectionManager!
+    let connectionManager = ConnectionManager()
     var cdAccount: CdAccount!
     var persistentSetup: PersistentSetup!
+
     var imapConnectInfo: EmailConnectInfo!
     var smtpConnectInfo: EmailConnectInfo!
     var imapSyncData: ImapSyncData!
 
     override func setUp() {
         super.setUp()
-        /*
-         The idea is to delete all messages on server befor every test.
-         My time went out, I had to leave, so I left it in non-working state.
+        persistentSetup = PersistentSetup()
 
-         What I (want to) do in flagAllMessagesDeletedOnServer() is to:
-         - get all mails from all folders from server
-         - flag all mails deleted
-         - sync flags to server for all mails from all folders
-         - delete local store incl. sqlite file(s)
+        let cdAccount = TestData().createWorkingCdAccount()
+        cdAccount.identity?.isMySelf = true
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+        self.cdAccount = cdAccount
 
-         Even I assert they are flagged deleted afterwards, all mails are still shown in Thunderbird.
-         */
-        //flagAllMessagesDeletedOnServer()
-        setAllProperties()
+        imapConnectInfo = cdAccount.imapConnectInfo
+        smtpConnectInfo = cdAccount.smtpConnectInfo
+        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+
+        XCTAssertNotNil(imapConnectInfo)
+        XCTAssertNotNil(smtpConnectInfo)
     }
 
     override func tearDown() {
-        setAllPropertiesNil()
-        super.tearDown()
+        persistentSetup = nil
     }
 
     func testComp() {
@@ -2348,146 +2348,12 @@ class SimpleOperationsTest: XCTestCase {
 
     //MARK: - HELPER
 
-    //flags all messages deleted on server and wipes out the local storage
-    func flagAllMessagesDeletedOnServer() {
-        setAllProperties()
-
-        // fetch all folders and messages from server
-        fetchFoldersAndWait()
-        fetchMessagesForAllFoldersAndWait()
-
-        //flag all messages deleted ...
-        var msgs = CdMessage.all() as? [CdMessage] ?? []
-        for m in msgs {
-            m.imap?.flagDeleted = true
-            m.imap?.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-            print("####\nparent: \t \(m.parent?.name), m.imap?.flagDeleted: \(m.imap?.flagDeleted)")
-        }
-        Record.saveAndWait()
-
-        // ... and sync the changes to server
-        let folders = CdFolder.all()  as? [CdFolder] ?? []
-        let numOpsToDo = folders.count
-        var numOpsDone = 0
-        let opQueue = OperationQueue()
-
-        let expFolderSynced = expectation(description: "folders synced")
-
-        var lastOperation:Operation?
-        for folder in folders {
-            guard let opSyncFlags = SyncFlagsToServerOperation(imapSyncData: self.imapSyncData, folder: folder) else {
-                XCTFail()
-                return
-            }
-            if lastOperation != nil {
-                opSyncFlags.addDependency(lastOperation!)
-            }
-
-            opSyncFlags.completionBlock = {
-                XCTAssertFalse(opSyncFlags.hasErrors())
-
-                numOpsDone += 1
-                if numOpsDone == numOpsToDo {
-                    expFolderSynced.fulfill()
-                }
-            }
-
-            lastOperation = opSyncFlags
-            opQueue.addOperation(opSyncFlags)
-        }
-
-        waitForExpectations(timeout: 600) { error in
-            XCTAssertNil(error)
-        }
-
-        // assure it worked out (all messages are flagged as deleted)
-        setAllPropertiesNil()
-        setAllProperties()
-
-        fetchMessagesForAllFoldersAndWait()
-        msgs = CdMessage.all() as? [CdMessage] ?? []
-        for m in msgs {
-            guard let imap = m.imap else {
-                XCTFail()
-                fatalError()
-            }
-           XCTAssertTrue(imap.flagDeleted, "All messages are deleted")
-        }
-
-        // back to virgine state
-        setAllPropertiesNil()
-    }
-
-    func fetchFoldersAndWait() {
-        let expFoldersFetched = expectation(description: "expFoldersFetched")
-
-        let bgQueue = OperationQueue()
-        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
-
-        let opCreateSpecialFolders = CreateSpecialFoldersOperation(imapSyncData: imapSyncData)
-        opCreateSpecialFolders.addDependency(opLogin)
-
-        let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData)
-        opFetchFolders.completionBlock = {
-            expFoldersFetched.fulfill()
-        }
-        opFetchFolders.addDependency(opCreateSpecialFolders)
-
-        bgQueue.addOperation(opLogin)
-        bgQueue.addOperation(opCreateSpecialFolders)
-        bgQueue.addOperation(opFetchFolders)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
-    }
-
-    private func setAllProperties() {
-        persistentSetup = PersistentSetup()
-        cdAccount = TestData().createWorkingCdAccount()
-        cdAccount.identity?.isMySelf = true
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-        imapConnectInfo = cdAccount.imapConnectInfo
-        smtpConnectInfo = cdAccount.smtpConnectInfo
-        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-        XCTAssertNotNil(imapConnectInfo)
-        XCTAssertNotNil(smtpConnectInfo)
-        XCTAssertNotNil(imapSyncData)
-    }
-
-    private func setAllPropertiesNil() {
-        connectionManager = nil
-        cdAccount = nil
-        imapConnectInfo = nil
-        smtpConnectInfo = nil
-        imapSyncData = nil
-        persistentSetup = nil //whipes CoreData, including persistant store
-
-    }
-
     func fetchMessages() {
-        fetchMessagesAndWait(forFolderNamed: ImapSync.defaultImapInboxName)
-    }
-
-    func fetchMessagesForAllFoldersAndWait() {
-        let folders = CdFolder.all()  as? [CdFolder] ?? []
-
-        for folder in folders {
-            guard let folderName = folder.name else {
-                XCTFail("unnamed folder?!")
-                continue
-            }
-            fetchMessagesAndWait(forFolderNamed: folderName)
-        }
-    }
-
-    func fetchMessagesAndWait(forFolderNamed folderName: String) {
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
         let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
         let op = FetchMessagesOperation(imapSyncData: imapSyncData,
-                                        folderName: folderName)
+                                        folderName: ImapSync.defaultImapInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
             expMailsPrefetched.fulfill()

@@ -20,6 +20,10 @@ class PepAdapterTests: XCTestCase {
         super.setUp()
         pEpSession = PEPSession()
     }
+    
+    override func tearDown() {
+        super.tearDown()
+    }
 
     func testPepSession() {
         XCTAssertNotNil(pEpSession)
