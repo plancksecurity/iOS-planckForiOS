@@ -13,7 +13,7 @@ class FolderTableViewController: UITableViewController {
 
     var appConfig: AppConfig?
 
-    var folderVM = [FolderViewModel]()
+    var folderVM = FolderViewModel()
 
     var folderToShow :Folder?
 
@@ -36,11 +36,6 @@ class FolderTableViewController: UITableViewController {
     func initialConfig() {
         self.tableView.sectionHeaderHeight = 45
         self.tableView.rowHeight = 45
-        let accounts = Account.all()
-        for account in accounts {
-            let vm = FolderViewModel(account: account)
-            folderVM.append(vm)
-        }
     }
 
     // MARK: - Table view data source
