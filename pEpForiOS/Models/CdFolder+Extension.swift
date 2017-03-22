@@ -118,7 +118,7 @@ public extension CdFolder {
      */
     public func allMessagesPredicate() -> NSPredicate {
         let p1 = allMessagesIncludingDeletedPredicate()
-        let p2 = NSPredicate(format: "imap.flagDeleted = false")
+        let p2 = NSPredicate(format: "imap.localFlags.flagDeleted = false")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
     }
 
