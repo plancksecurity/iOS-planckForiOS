@@ -631,8 +631,6 @@ class SimpleOperationsTest: XCTestCase {
 
         XCTAssertGreaterThan(messages.count, 0, "there are messages")
 
-        XCTAssertGreaterThan(messages.count, 0, "there are messages")
-
         for m in messages {
             XCTAssertNotNil(m.messageID)
             XCTAssertGreaterThan(m.uid, 0)
@@ -648,16 +646,16 @@ class SimpleOperationsTest: XCTestCase {
             localFlags.flagAnswered = true
             localFlags.flagDraft = true
             localFlags.flagFlagged = true
-            // the client must never change flagRecent according to RFC, so we set it in state of flagsServer
             localFlags.flagRecent = false
             localFlags.flagSeen = true
             localFlags.flagDeleted = true
 
             // ...but no flags are set on server, so all flags have to be added
             let serverFlags = imap.serverFlags ?? CdImapFlags.create()
-            imap.serverFlags = localFlags
+            imap.serverFlags = serverFlags
             serverFlags.update(rawValue16: ImapFlagsBits.imapNoFlagsSet())
 
+            XCTAssertNotEqual(m.imap?.localFlags?.flagAnswered, m.imap?.serverFlags?.flagAnswered)
         }
 
         Record.saveAndWait()
