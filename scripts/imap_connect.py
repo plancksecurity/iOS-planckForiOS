@@ -2,6 +2,7 @@ import imaplib
 import configparser
 import os
 import pprint
+import re
 
 verboseLogging = False
 
@@ -33,11 +34,28 @@ def dump_folder(c, folderName):
     messages = c.fetch('1:*', '(UID INTERNALDATE FLAGS)')
     pprint.pprint(messages)
 
+def rm_folders(c):
+    typ, data = c.list()
+    pprint.pprint(data)
+    p1 = re.compile('"([^"]*)"')
+    #p2 = re.compile('<[a-zA-Z].*>')
+    p2 = re.compile('INBOX.Folder')
+    for line in data:
+        m = p1.findall(str(line))
+        if m != None:
+            mailbox = m[1]
+            if p2.match(mailbox):
+                print("will delete |" + mailbox + "|")
+                quoted = '"' + mailbox + '"'
+                r = c.delete(quoted)
+                pprint.pprint(r)
+
 if __name__ == '__main__':
     c = open_connection()
     try:
         print(c)
         dump_folder(c, 'INBOX')
         dump_folder(c, 'INBOX.Trash')
+        rm_folders(c)
     finally:
         c.logout()
