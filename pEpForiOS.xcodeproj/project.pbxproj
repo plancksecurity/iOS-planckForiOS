@@ -59,7 +59,6 @@
 		431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B04791DE5772000E40CD3 /* CdMessage+pEp.swift */; };
 		431B04801DE5774800E40CD3 /* CdMessage+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B047F1DE5774800E40CD3 /* CdMessage+Pantomime.swift */; };
 		431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */; };
-		431B04A01DE5AC5E00E40CD3 /* AddressBookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B049F1DE5AC5E00E40CD3 /* AddressBookTests.swift */; };
 		431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B0B991D6734DF0082D0DB /* AccountsTableViewController.swift */; };
 		431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
@@ -140,7 +139,6 @@
 		43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */; };
 		43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */; };
 		43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */; };
-		43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C046BC1CF48D6300BD0D9D /* AddressBook.swift */; };
 		43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C046BE1CF48EA500BD0D9D /* AddressBook.framework */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
@@ -283,7 +281,6 @@
 		431B04791DE5772000E40CD3 /* CdMessage+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+pEp.swift"; sourceTree = "<group>"; };
 		431B047F1DE5774800E40CD3 /* CdMessage+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+Pantomime.swift"; sourceTree = "<group>"; };
 		431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Extension.swift"; sourceTree = "<group>"; };
-		431B049F1DE5AC5E00E40CD3 /* AddressBookTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookTests.swift; sourceTree = "<group>"; };
 		431B0B991D6734DF0082D0DB /* AccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
@@ -383,7 +380,6 @@
 		43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewWidthsAligner.swift; sourceTree = "<group>"; };
 		43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+Extension.swift"; sourceTree = "<group>"; };
 		43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptAndSendOperation.swift; sourceTree = "<group>"; };
-		43C046BC1CF48D6300BD0D9D /* AddressBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBook.swift; sourceTree = "<group>"; };
 		43C046BE1CF48EA500BD0D9D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
@@ -693,7 +689,6 @@
 				437432061CFC49A4000F8D35 /* Util */,
 				43B2C3151D2280ED00A08557 /* Resources */,
 				4918EBF91E783C70006207FC /* Models */,
-				431B049F1DE5AC5E00E40CD3 /* AddressBookTests.swift */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				4336229D1DC76B8100133B3D /* MessageModelTests.swift */,
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
@@ -737,7 +732,6 @@
 				222B354D1DF95BD2007A1F82 /* Extensions */,
 				B740B7571E4B1B80002585E1 /* MimeTypes */,
 				8B81BB8F1E03F73100D38C82 /* SegueHandlerType.swift */,
-				43C046BC1CF48D6300BD0D9D /* AddressBook.swift */,
 				43980EF91CBD415700A7FC3C /* AppConfig.swift */,
 				43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */,
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
@@ -1223,7 +1217,6 @@
 				B7208EB01E437C1C00B08B22 /* LogViewController.swift in Sources */,
 				493B6D071E705A0600364D60 /* SystemUtils.swift in Sources */,
 				43800D931D112A0800821E34 /* TFHpple.m in Sources */,
-				43C046BD1CF48D6300BD0D9D /* AddressBook.swift in Sources */,
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
 				43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */,
 				B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */,
@@ -1319,7 +1312,6 @@
 				4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */,
 				432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */,
 				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
-				431B04A01DE5AC5E00E40CD3 /* AddressBookTests.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */,
