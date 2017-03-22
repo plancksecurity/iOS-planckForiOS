@@ -38,13 +38,13 @@ def rm_folders(c):
     typ, data = c.list()
     pprint.pprint(data)
     p1 = re.compile('"([^"]*)"')
-    #p2 = re.compile('<[a-zA-Z].*>')
     p2 = re.compile('INBOX.Folder')
+    p3 = re.compile('<[a-zA-Z].*>')
     for line in data:
         m = p1.findall(str(line))
         if m != None:
             mailbox = m[1]
-            if p2.match(mailbox):
+            if p2.match(mailbox) or p3.match(mailbox):
                 print("will delete |" + mailbox + "|")
                 quoted = '"' + mailbox + '"'
                 r = c.delete(quoted)
