@@ -90,12 +90,13 @@ extension CdMessage {
             pFolder = NSPredicate(format: "parent = %@", f)
         }
         
-        let pFlags = NSPredicate(format: "(imap.flagAnswered != imap.flagFromServerAnswered) OR " +
-            "(imap.flagDraft != imap.flagFromServerDraft) OR " +
-            "(imap.flagFlagged != imap.flagFromServerFlagged) OR " +
-            "(imap.flagRecent != imap.flagFromServerRecent) OR " +
-            "(imap.flagSeen != imap.flagFromServerSeen) OR " +
-            "(imap.flagDeleted != imap.flagFromServerDeleted)")
+        let pFlags = NSPredicate(format:
+            "(imap.localFlags.flagAnswered != imap.localFlags.flagAnswered) OR " +
+            "(imap.localFlags.flagDraft != imap.localFlags.flagDraft) OR " +
+            "(imap.localFlags.flagFlagged != imap.localFlags.flagFlagged) OR " +
+            "(imap.localFlags.flagRecent != imap.localFlags.flagRecent) OR " +
+            "(imap.localFlags.flagSeen != imap.localFlags.flagSeen) OR " +
+            "(imap.localFlags.flagDeleted != imap.localFlags.flagDeleted)")
 
         let pUid = NSPredicate(format: "uid != 0")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [pUid, pFolder, pFlags])
