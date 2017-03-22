@@ -89,7 +89,7 @@ extension CdMessage {
             return [AnyHashable: Any]()
         }
 
-        if let currentFlags = imap.serverFlags?.rawFlagsAsShort() {
+        if let currentFlags = imap.localFlags?.rawFlagsAsShort() {
             dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: currentFlags)
         }
 
@@ -114,7 +114,7 @@ extension CdMessage {
             return nil
         }
 
-        let flags:ImapFlagsBits!
+        let flags: ImapFlagsBits!
 
         switch mode {
         case .add:
