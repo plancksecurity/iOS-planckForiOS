@@ -167,7 +167,7 @@ class SimpleOperationsTest: XCTestCase {
         Record.saveAndWait()
 
         let changedMessages = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: folder, context: Record.Context.default) ?? []
+            folder: folder, context: Record.Context.default)
         XCTAssertEqual(changedMessages.count, allMessages.count)
 
         let expMailsSynced = expectation(description: "expMailsSynced")
