@@ -36,11 +36,11 @@ class AddressBookTests: XCTestCase {
         XCTAssertTrue(ab.splitContactNameInTuple("uiae   xvlc") == ("uiae", nil, "xvlc"))
     }
 
-    func insertContactWithPicture(givenName: String, lastName: String, email: String) {
+    func insertContactWithPicture(givenName: String, lastName: String, email: String) -> String? {
         guard let imageData = TestUtil.loadDataWithFileName(
             "PorpoiseGalaxy_HubbleFraile_960.jpg") else {
                 XCTAssertTrue(false)
-                return
+                return nil
         }
 
         let contact = CNMutableContact()
@@ -59,9 +59,11 @@ class AddressBookTests: XCTestCase {
         saveRequest.add(contact, toContainerWithIdentifier:nil)
         do {
             try store.execute(saveRequest)
+            return contact.identifier
         } catch {
             XCTFail()
         }
+        return nil
     }
 
     func testAddressBookTransfer() {
@@ -71,8 +73,11 @@ class AddressBookTests: XCTestCase {
             return
         }
 
-        insertContactWithPicture(givenName: "John", lastName: "Appleseed",
-                                 email: "john@example.com")
+        guard let contactID = insertContactWithPicture(
+            givenName: "My", lastName: "Name", email: "myname@example.com") else {
+                XCTFail()
+                return
+        }
 
         let expAddressbookSynced = expectation(description: "expAddressbookSynced")
 

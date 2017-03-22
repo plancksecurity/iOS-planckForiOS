@@ -62,7 +62,6 @@ open class AddressBook {
 
         if contact.imageDataAvailable, let thumbnailData = contact.thumbnailImageData {
             let img = UIImage(data: thumbnailData)
-            print("have image \(img)")
         }
 
         for e in contact.emailAddresses {
