@@ -130,12 +130,16 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
             if mode == .remove {
                 currentlyProcessedMessage = nil
             }
-            imapSyncData.sync?.imapStore.send(IMAP_UID_STORE,
-                                              info: cmd!.pantomimeDict,
-                                              string: cmd!.command)
-        } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer(){
+            if let info = cmd?.pantomimeDict, let string = cmd?.command {
+                imapSyncData.sync?.imapStore.send(IMAP_UID_STORE,
+                                                  info: info,
+                                                  string: string)
+            } else {
+                Log.shared.errorAndCrash(component: comp, errorString: "No IMAP store command")
+            }
+        } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer() {
             updateFlags(to: .remove)
-        } else  {
+        } else {
             syncNextMessage()
         }
     }
