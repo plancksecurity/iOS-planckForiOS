@@ -15,7 +15,7 @@ protocol LabelPresentable {
 }
  
 
-public protocol SectionWithText {
+/*public protocol SectionWithText {
 
     var title: String { get }
 
@@ -25,9 +25,9 @@ public protocol SectionWithText {
     var collapsed: Bool { get set }
 
     func onCollapse(collapsed: Bool)
-}
+}*/
 
-extension SectionWithText {
+/*extension SectionWithText {
     //defaults
     var titleColor: UIColor {
         return UIColor.lightGray
@@ -36,7 +36,7 @@ extension SectionWithText {
     var unreadMessagesColor: UIColor {
         return UIColor.darkGray
     }
-}
+}*/
 
 public protocol CellWithIconTextNumberArrow {
     var icon: UIImage { get set }

@@ -9,23 +9,22 @@
 import Foundation
 import MessageModel
 
-public class FolderSectionViewModel: SectionWithText {
+public class FolderSectionViewModel {
 
-    public var unreadMessages: String
     public var arrow : String
     public var collapsed: Bool
 
+    //image, type, user, name
     private var account: Account
     private var items: [FolderCellViewModel]
     private var help :[FolderCellViewModel]
 
-
     public init(account acc: Account) {
         self.account = acc
+        //acc.user.
         self.collapsed = false
         items = [FolderCellViewModel]()
         help = [FolderCellViewModel]()
-        unreadMessages = "0"
         arrow = ">"
         collapsed = false
         generateCells()
@@ -45,8 +44,26 @@ public class FolderSectionViewModel: SectionWithText {
         }
     }
 
-    public var title: String {
+    public var image: UIImage {
+        guard let img = account.user.thumbnailImage() else {
+            return UIImage(named: "pep-logo")!
+        }
+        return img
+    }
+
+    public var type: String {
+        return "Email"
+    }
+
+    public var userAddress: String {
         return account.user.address
+    }
+
+    public var userName: String {
+        guard let un = account.user.userName else {
+            return ""
+        }
+        return un
     }
 
     public func onCollapse(collapsed: Bool) {

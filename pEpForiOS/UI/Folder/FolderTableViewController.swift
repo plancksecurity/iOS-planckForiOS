@@ -48,10 +48,10 @@ class FolderTableViewController: UITableViewController {
         return folderVM[section].count
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    /*override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return folderVM[section].title
         //reimplement to a custom view and copy the view of mail app
-    }
+    }*/
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
