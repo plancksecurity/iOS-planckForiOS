@@ -736,7 +736,7 @@ class SimpleOperationsTest: XCTestCase {
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: Record.Context.default)
-        XCTAssertNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced.count, 0)
 
         guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
@@ -1267,8 +1267,7 @@ class SimpleOperationsTest: XCTestCase {
             localFlags.flagAnswered = false
             localFlags.flagDraft = false
             localFlags.flagFlagged = false
-            // the client must never change flagRecent according to RFC,
-            // so we set it in state of flagsServer
+            // \Recent should be ignored
             localFlags.flagRecent = true
             localFlags.flagSeen = false
             localFlags.flagDeleted = false
@@ -1283,7 +1282,7 @@ class SimpleOperationsTest: XCTestCase {
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: Record.Context.default)
-        XCTAssertEqual(messagesToBeSynced.count, messages.count)
+        XCTAssertEqual(messagesToBeSynced.count, 0)
 
         guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
@@ -1304,8 +1303,7 @@ class SimpleOperationsTest: XCTestCase {
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, 0)
-        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
-                       "all messages have been synced")
+        XCTAssertEqual(op.numberOfMessagesSynced, 0, "no message has been synced")
     }
 
     func testSyncFlagsToServerOperationRemoveFlags_noChanges() {
@@ -1359,7 +1357,7 @@ class SimpleOperationsTest: XCTestCase {
         // nothing changed, so no sync should take place
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox, context: Record.Context.default)
-        XCTAssertNil(messagesToBeSynced)
+        XCTAssertEqual(messagesToBeSynced.count, 0)
 
         guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
