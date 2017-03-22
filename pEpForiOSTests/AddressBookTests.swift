@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Contacts
 
 import pEpForiOS
 import MessageModel
@@ -35,7 +36,44 @@ class AddressBookTests: XCTestCase {
         XCTAssertTrue(ab.splitContactNameInTuple("uiae   xvlc") == ("uiae", nil, "xvlc"))
     }
 
+    func insertContactWithPicture(givenName: String, lastName: String, email: String) {
+        guard let imageData = TestUtil.loadDataWithFileName(
+            "PorpoiseGalaxy_HubbleFraile_960.jpg") else {
+                XCTAssertTrue(false)
+                return
+        }
+
+        let contact = CNMutableContact()
+
+        contact.imageData = imageData
+
+        contact.givenName = givenName
+        contact.familyName = lastName
+
+        let homeEmail = CNLabeledValue(label:CNLabelHome, value:email as NSString)
+        contact.emailAddresses = [homeEmail]
+
+        // Saving the newly created contact
+        let store = CNContactStore()
+        let saveRequest = CNSaveRequest()
+        saveRequest.add(contact, toContainerWithIdentifier:nil)
+        do {
+            try store.execute(saveRequest)
+        } catch {
+            XCTFail()
+        }
+    }
+
     func testAddressBookTransfer() {
+        let ab = AddressBook()
+        guard ab.isAuthorized() else {
+            XCTFail()
+            return
+        }
+
+        insertContactWithPicture(givenName: "John", lastName: "Appleseed",
+                                 email: "john@example.com")
+
         let expAddressbookSynced = expectation(description: "expAddressbookSynced")
 
         DispatchQueue.global(qos: .userInitiated).async {
@@ -46,9 +84,13 @@ class AddressBookTests: XCTestCase {
             XCTAssertNil(error)
         })
 
-        let ab = AddressBook()
-        if ab.isAuthorized() {
-            XCTAssertGreaterThan((CdIdentity.all() ?? []).count, 0)
+        let cdIdentities = CdIdentity.all() as? [CdIdentity] ?? []
+        XCTAssertGreaterThan(cdIdentities.count, 0)
+
+        for cdId in cdIdentities {
+            XCTAssertNotNil(cdId.address)
+            XCTAssertNotNil(cdId.userName)
+            XCTAssertNotNil(cdId.userID)
         }
     }
 }

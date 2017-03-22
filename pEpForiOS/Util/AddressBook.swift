@@ -7,6 +7,7 @@
 //
 
 import Contacts
+import UIKit
 
 import MessageModel
 
@@ -58,9 +59,16 @@ open class AddressBook {
     func save(contact: CNContact) {
         let name = CNContactFormatter.string(from: contact, style: .fullName)
         let userID = contact.identifier
+
+        if contact.imageDataAvailable, let thumbnailData = contact.thumbnailImageData {
+            let img = UIImage(data: thumbnailData)
+            print("have image \(img)")
+        }
+
         for e in contact.emailAddresses {
             let ident = Identity.create(address: e.value as String, userID: userID)
             ident.userName = name
+
             ident.save()
         }
     }
@@ -103,7 +111,7 @@ open class AddressBook {
                 stop[0] = true
             })
             return true
-        } catch let _ as NSError {
+        } catch {
             return false
         }
     }
