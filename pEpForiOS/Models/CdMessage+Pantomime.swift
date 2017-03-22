@@ -342,6 +342,12 @@ extension CdMessage {
             Log.info(component: #function, content: "Message with flag deleted")
         }
 
+        if theImap.localFlags == nil {
+            let localFlags = CdImapFlags.create()
+            localFlags.update(cwFlags: flags)
+            theImap.localFlags = localFlags
+        }
+
         return true
     }
 

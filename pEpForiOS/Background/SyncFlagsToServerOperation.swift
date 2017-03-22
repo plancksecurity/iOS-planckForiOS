@@ -67,12 +67,12 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     public static func messagesToBeSynced(
-        folder: CdFolder, context: NSManagedObjectContext) -> [CdMessage]? {
+        folder: CdFolder, context: NSManagedObjectContext) -> [CdMessage] {
         let pFlagsChanged = CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
         return CdMessage.all(
             predicate: pFlagsChanged,
             orderedBy: [NSSortDescriptor(key: "received", ascending: true)], in: context)
-            as? [CdMessage]
+            as? [CdMessage] ?? []
     }
 
     func nextMessageToBeSynced(context: NSManagedObjectContext) -> CdMessage? {
@@ -83,7 +83,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         }
         let messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: folder,
                                                                                context: context)
-        return messagesToBeSynced?.first
+        return messagesToBeSynced.first
     }
 
     func syncNextMessage() {

@@ -35,6 +35,7 @@
 		4301B3161E28D259007D626C /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4301B3151E28D259007D626C /* AppendMailsOperation.swift */; };
 		430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */; };
 		430A2EEC1E81357A00878837 /* CdImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EEB1E81357A00878837 /* CdImapFlags+Pantomime.swift */; };
+		430A2EEE1E815FF100878837 /* CdImapFlags+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EED1E815FF100878837 /* CdImapFlags+Extension.swift */; };
 		430A6E541DFB08CE006273A5 /* UITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A6E531DFB08CE006273A5 /* UITestData.swift */; };
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
@@ -259,6 +260,7 @@
 		4301B3151E28D259007D626C /* AppendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendMailsOperation.swift; sourceTree = "<group>"; };
 		430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+Extension.swift"; sourceTree = "<group>"; };
 		430A2EEB1E81357A00878837 /* CdImapFlags+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFlags+Pantomime.swift"; sourceTree = "<group>"; };
+		430A2EED1E815FF100878837 /* CdImapFlags+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFlags+Extension.swift"; sourceTree = "<group>"; };
 		430A6E531DFB08CE006273A5 /* UITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestData.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = pEpTrustWords.bundle; path = ../pEpTrustWords.bundle; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
@@ -851,6 +853,7 @@
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				43CE63D01DE8866C00FAC505 /* Message+pEp.swift */,
 				B7F199FF1E5DE9FB0079A513 /* Folder+Extensions.swift */,
+				430A2EED1E815FF100878837 /* CdImapFlags+Extension.swift */,
 				430A2EEB1E81357A00878837 /* CdImapFlags+Pantomime.swift */,
 			);
 			path = Models;
@@ -1255,6 +1258,7 @@
 				434F84451CEB018A0055B7A9 /* NSData+Extensions.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				4333A2A31E5C62860025D8A5 /* AttachmentCounter.swift in Sources */,
+				430A2EEE1E815FF100878837 /* CdImapFlags+Extension.swift in Sources */,
 				222B356D1DF96C30007A1F82 /* ComposeCell.swift in Sources */,
 				222B35721DF96CC8007A1F82 /* ComposeFieldModel.swift in Sources */,
 				436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */,

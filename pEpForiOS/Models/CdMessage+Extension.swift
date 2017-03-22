@@ -85,21 +85,24 @@ extension CdMessage {
     }
 
     public static func messagesWithChangedFlagsPredicate(folder: CdFolder? = nil) -> NSPredicate {
-        var pFolder = NSPredicate(value: true)
+        var predicates = [NSPredicate]()
+
         if let f = folder {
-            pFolder = NSPredicate(format: "parent = %@", f)
+            predicates.append(NSPredicate(format: "parent = %@", f))
         }
-        
+
         let pFlags = NSPredicate(format:
-            "(imap.localFlags.flagAnswered != imap.localFlags.flagAnswered) OR " +
-            "(imap.localFlags.flagDraft != imap.localFlags.flagDraft) OR " +
-            "(imap.localFlags.flagFlagged != imap.localFlags.flagFlagged) OR " +
-            "(imap.localFlags.flagRecent != imap.localFlags.flagRecent) OR " +
-            "(imap.localFlags.flagSeen != imap.localFlags.flagSeen) OR " +
-            "(imap.localFlags.flagDeleted != imap.localFlags.flagDeleted)")
+            "(imap.localFlags.flagAnswered != imap.serverFlags.flagAnswered) OR " +
+            "(imap.localFlags.flagDraft != imap.serverFlags.flagDraft) OR " +
+            "(imap.localFlags.flagFlagged != imap.serverFlags.flagFlagged) OR " +
+            "(imap.localFlags.flagRecent != imap.serverFlags.flagRecent) OR " +
+            "(imap.localFlags.flagSeen != imap.serverFlags.flagSeen) OR " +
+            "(imap.localFlags.flagDeleted != imap.serverFlags.flagDeleted)")
+        predicates.append(pFlags)
 
         let pUid = NSPredicate(format: "uid != 0")
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [pUid, pFolder, pFlags])
+        predicates.append(pUid)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 
     public static func countBy(predicate: NSPredicate) -> Int {
