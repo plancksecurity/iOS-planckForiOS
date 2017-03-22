@@ -14,37 +14,37 @@ import MessageModel
 class ImapFlagsTests: XCTestCase {
 
     func loopAllFlags(
-        cdFields: CdImapFields, cwFlags: CWFlags, value: Bool) {
+        cdFlags: CdImapFlags, cwFlags: CWFlags, value: Bool) {
         var imapFlags = Message.ImapFlags()
 
-        imapFlags.answered = cdFields.flagAnswered
-        imapFlags.draft = cdFields.flagDraft
-        imapFlags.flagged = cdFields.flagFlagged
-        imapFlags.recent = cdFields.flagRecent
-        imapFlags.seen = cdFields.flagSeen
-        imapFlags.deleted = cdFields.flagDeleted
+        imapFlags.answered = cdFlags.flagAnswered
+        imapFlags.draft = cdFlags.flagDraft
+        imapFlags.flagged = cdFlags.flagFlagged
+        imapFlags.recent = cdFlags.flagRecent
+        imapFlags.seen = cdFlags.flagSeen
+        imapFlags.deleted = cdFlags.flagDeleted
 
         for pflag in [
             PantomimeFlag.answered, PantomimeFlag.draft, PantomimeFlag.flagged,
             PantomimeFlag.recent, PantomimeFlag.seen, PantomimeFlag.deleted] {
                 switch pflag {
                 case .answered:
-                    cdFields.flagAnswered = value
+                    cdFlags.flagAnswered = value
                     imapFlags.answered = value
                 case .draft:
-                    cdFields.flagDraft = value
+                    cdFlags.flagDraft = value
                     imapFlags.draft = value
                 case .flagged:
-                    cdFields.flagFlagged = value
+                    cdFlags.flagFlagged = value
                     imapFlags.flagged = value
                 case .recent:
-                    cdFields.flagRecent = value
+                    cdFlags.flagRecent = value
                     imapFlags.recent = value
                 case .seen:
-                    cdFields.flagSeen = value
+                    cdFlags.flagSeen = value
                     imapFlags.seen = value
                 case .deleted:
-                    cdFields.flagDeleted = value
+                    cdFlags.flagDeleted = value
                     imapFlags.deleted = value
                 }
                 if value {
@@ -52,7 +52,7 @@ class ImapFlagsTests: XCTestCase {
                 } else {
                     cwFlags.remove(pflag)
                 }
-                XCTAssertEqual(cwFlags.rawFlagsAsShort(), cdFields.rawFlagsAsShort())
+                XCTAssertEqual(cwFlags.rawFlagsAsShort(), cdFlags.rawFlagsAsShort())
                 XCTAssertEqual(cwFlags.rawFlagsAsShort(), imapFlags.rawFlagsAsShort())
         }
     }
@@ -61,12 +61,12 @@ class ImapFlagsTests: XCTestCase {
         let ps = PersistentSetup()
         ps.dummyToAvoidCompilerWarning()
 
-        let cdFields = CdImapFields.create()
+        let cdFlags = CdImapFlags.create()
         let cwFlags = CWFlags()
 
-        XCTAssertEqual(cwFlags.rawFlagsAsShort(), cdFields.rawFlagsAsShort())
+        XCTAssertEqual(cwFlags.rawFlagsAsShort(), cdFlags.rawFlagsAsShort())
 
-        loopAllFlags(cdFields: cdFields, cwFlags: cwFlags, value: true)
-        loopAllFlags(cdFields: cdFields, cwFlags: cwFlags, value: false)
+        loopAllFlags(cdFlags: cdFlags, cwFlags: cwFlags, value: true)
+        loopAllFlags(cdFlags: cdFlags, cwFlags: cwFlags, value: false)
     }
 }

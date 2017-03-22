@@ -147,14 +147,21 @@ class SimpleOperationsTest: XCTestCase {
             return
         }
 
-        let flagsSeenBefore = allMessages.map { $0.imap?.flagSeen }
+        let flagsSeenBefore = allMessages.map { $0.imap?.serverFlags?.flagSeen }
         // Change all flags locally
         for m in allMessages {
             guard let imap = m.imap else {
                 XCTFail()
                 continue
             }
-            imap.flagSeen = !imap.flagSeen
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+            if let serverFlags = imap.serverFlags {
+                localFlags.update(cdImapFlags: serverFlags)
+                localFlags.flagSeen = !localFlags.flagSeen
+            } else {
+                XCTFail()
+            }
         }
 
         Record.saveAndWait()
@@ -186,7 +193,7 @@ class SimpleOperationsTest: XCTestCase {
         // Hence, all messages are still the same.
         for (i, m) in allMessages.enumerated() {
             m.refresh(mergeChanges: true, in: Record.Context.default)
-            XCTAssertFalse(m.imap?.flagSeen == flagsSeenBefore[i])
+            XCTAssertFalse(m.imap?.localFlags?.flagSeen == flagsSeenBefore[i])
         }
     }
 
@@ -552,7 +559,9 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 break
             }
-            imap.flagFlagged = !imap.flagFlagged
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+            localFlags.flagFlagged = !localFlags.flagFlagged
         }
 
         Record.saveAndWait()
@@ -609,16 +618,24 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 break
             }
+
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
             // all flags set locally ...
-            imap.flagAnswered = true
-            imap.flagDraft = true
-            imap.flagFlagged = true
+            localFlags.flagAnswered = true
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = true
             // the client must never change flagRecent according to RFC, so we set it in state of flagsServer
-            imap.flagRecent = false
-            imap.flagSeen = true
-            imap.flagDeleted = true
+            localFlags.flagRecent = false
+            localFlags.flagSeen = true
+            localFlags.flagDeleted = true
+
             // ...but no flags are set on server, so all flags have to be added
-            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = localFlags
+            serverFlags.update(rawValue16: ImapFlagsBits.imapNoFlagsSet())
+
         }
 
         Record.saveAndWait()
@@ -674,17 +691,24 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 break
             }
+
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
             // all flags set locally ...
-            imap.flagAnswered = true
-            imap.flagDraft = true
-            imap.flagFlagged = true
+            localFlags.flagAnswered = true
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = true
             // the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer
-            imap.flagRecent = true
-            imap.flagSeen = true
-            imap.flagDeleted = true
+            localFlags.flagRecent = true
+            localFlags.flagSeen = true
+            localFlags.flagDeleted = true
+
             // ...and all flags are set on server, so nothing should be updated
-            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            serverFlags.update(rawValue16: ImapFlagsBits.imapAllFlagsSet())
         }
 
         Record.saveAndWait()
@@ -740,23 +764,30 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 break
             }
+
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
             // all flags set locally ...
-            imap.flagAnswered = true
-            imap.flagDraft = true
-            imap.flagFlagged = true
+            localFlags.flagAnswered = true
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = true
             // the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer
-            imap.flagRecent = false
-            imap.flagSeen = true
-            imap.flagDeleted = true
+            localFlags.flagRecent = false
+            localFlags.flagSeen = true
+            localFlags.flagDeleted = true
 
-            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-            imap.flagsFromServer.imapSetFlagBit(.answered)
-            imap.flagsFromServer.imapSetFlagBit(.draft)
-            imap.flagsFromServer.imapSetFlagBit(.flagged)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+
+            var flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
+            flagsFromServer.imapSetFlagBit(.answered)
+            flagsFromServer.imapSetFlagBit(.draft)
+            flagsFromServer.imapSetFlagBit(.flagged)
             // flagSeen differs ...
-            imap.flagsFromServer.imapSetFlagBit(.deleted)
-
+            flagsFromServer.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: flagsFromServer)
         }
 
         Record.saveAndWait()
@@ -816,19 +847,28 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 break
             }
+
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
             // one flag that is not set on server has been set by the client,
             // so it has to be added.
-            imap.flagAnswered = true
-            imap.flagDraft = false
-            imap.flagFlagged = false
+            localFlags.flagAnswered = true
+            localFlags.flagDraft = false
+            localFlags.flagFlagged = false
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = false
-            imap.flagSeen = false
-            imap.flagDeleted = true
+            localFlags.flagRecent = false
+            localFlags.flagSeen = false
+            localFlags.flagDeleted = true
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-            imap.flagsFromServer.imapSetFlagBit(.deleted)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -887,19 +927,28 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 break
             }
+
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
             // one flag that is not set on server has been set by the client,
             // so it has to be added.
-            imap.flagAnswered = false
-            imap.flagDraft = true
-            imap.flagFlagged = false
+            localFlags.flagAnswered = false
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = false
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = false
-            imap.flagSeen = false
-            imap.flagDeleted = true
+            localFlags.flagRecent = false
+            localFlags.flagSeen = false
+            localFlags.flagDeleted = true
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-            imap.flagsFromServer.imapSetFlagBit(.deleted)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -958,19 +1007,28 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 break
             }
+
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
             // one flag that is not set on server has been set by the client,
             // so it has to be added.
-            imap.flagAnswered = false
-            imap.flagDraft = false
-            imap.flagFlagged = true
+            localFlags.flagAnswered = false
+            localFlags.flagDraft = false
+            localFlags.flagFlagged = true
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = false
-            imap.flagSeen = false
-            imap.flagDeleted = true
+            localFlags.flagRecent = false
+            localFlags.flagSeen = false
+            localFlags.flagDeleted = true
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-            imap.flagsFromServer.imapSetFlagBit(.deleted)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -1031,17 +1089,25 @@ class SimpleOperationsTest: XCTestCase {
             }
             // one flag that is not set on server has been set by the client,
             // so it has to be added.
-            imap.flagAnswered = false
-            imap.flagDraft = false
-            imap.flagFlagged = false
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = false
+            localFlags.flagDraft = false
+            localFlags.flagFlagged = false
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = false
-            imap.flagSeen = true
-            imap.flagDeleted = true
+            localFlags.flagRecent = false
+            localFlags.flagSeen = true
+            localFlags.flagDeleted = true
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-            imap.flagsFromServer.imapSetFlagBit(.deleted)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -1102,17 +1168,24 @@ class SimpleOperationsTest: XCTestCase {
             }
             // one flag that is not set on server has been set by the client,
             // so it has to be added.
-            imap.flagAnswered = true
-            imap.flagDraft = false
-            imap.flagFlagged = false
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = true
+            localFlags.flagDraft = false
+            localFlags.flagFlagged = false
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = false
-            imap.flagSeen = false
-            imap.flagDeleted = true
+            localFlags.flagRecent = false
+            localFlags.flagSeen = false
+            localFlags.flagDeleted = true
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-            imap.flagsFromServer.imapSetFlagBit(.answered)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.answered)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -1172,16 +1245,22 @@ class SimpleOperationsTest: XCTestCase {
                 break
             }
             // no flag set locally ...
-            imap.flagAnswered = false
-            imap.flagDraft = false
-            imap.flagFlagged = false
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = false
+            localFlags.flagDraft = false
+            localFlags.flagFlagged = false
             // the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer
-            imap.flagRecent = true
-            imap.flagSeen = false
-            imap.flagDeleted = false
+            localFlags.flagRecent = true
+            localFlags.flagSeen = false
+            localFlags.flagDeleted = false
+
             // ... but all flags set on server, so all flags have to be removed
-            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            serverFlags.update(rawValue16: ImapFlagsBits.imapNoFlagsSet())
         }
 
         Record.saveAndWait()
@@ -1239,19 +1318,25 @@ class SimpleOperationsTest: XCTestCase {
                 break
             }
             // flagsCurrent == flagsFromServer, so no syncing should take place
-            imap.flagAnswered = false
-            imap.flagDraft = true
-            imap.flagFlagged = false
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = false
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = false
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = false
-            imap.flagSeen = true
-            imap.flagDeleted = false
-            // server flags
-            imap.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-            imap.flagsFromServer.imapSetFlagBit(.draft)
-            imap.flagsFromServer.imapSetFlagBit(.seen)
+            localFlags.flagRecent = false
+            localFlags.flagSeen = true
+            localFlags.flagDeleted = false
 
+            // server flags
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.draft)
+            theBits.imapSetFlagBit(.seen)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -1311,17 +1396,24 @@ class SimpleOperationsTest: XCTestCase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            imap.flagAnswered = false
-            imap.flagDraft = true
-            imap.flagFlagged = true
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = false
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = true
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = true
-            imap.flagSeen = true
-            imap.flagDeleted = false
+            localFlags.flagRecent = true
+            localFlags.flagSeen = true
+            localFlags.flagDeleted = false
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
-            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -1382,17 +1474,24 @@ class SimpleOperationsTest: XCTestCase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            imap.flagAnswered = true
-            imap.flagDraft = false
-            imap.flagFlagged = true
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = true
+            localFlags.flagDraft = false
+            localFlags.flagFlagged = true
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = true
-            imap.flagSeen = true
-            imap.flagDeleted = false
+            localFlags.flagRecent = true
+            localFlags.flagSeen = true
+            localFlags.flagDeleted = false
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
-            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -1453,17 +1552,24 @@ class SimpleOperationsTest: XCTestCase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            imap.flagAnswered = true
-            imap.flagDraft = true
-            imap.flagFlagged = false
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = true
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = false
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = true
-            imap.flagSeen = true
-            imap.flagDeleted = false
+            localFlags.flagRecent = true
+            localFlags.flagSeen = true
+            localFlags.flagDeleted = false
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
-            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -1524,17 +1630,24 @@ class SimpleOperationsTest: XCTestCase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            imap.flagAnswered = true
-            imap.flagDraft = true
-            imap.flagFlagged = true
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = true
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = true
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = true
-            imap.flagSeen = false
-            imap.flagDeleted = false
+            localFlags.flagRecent = true
+            localFlags.flagSeen = false
+            localFlags.flagDeleted = false
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
-            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -1595,17 +1708,24 @@ class SimpleOperationsTest: XCTestCase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            imap.flagAnswered = false
-            imap.flagDraft = true
-            imap.flagFlagged = true
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = false
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = true
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = true
-            imap.flagSeen = true
-            imap.flagDeleted = false
+            localFlags.flagRecent = true
+            localFlags.flagSeen = true
+            localFlags.flagDeleted = false
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
-            imap.flagsFromServer.imapUnSetFlagBit(.answered)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.answered)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -1671,17 +1791,24 @@ class SimpleOperationsTest: XCTestCase {
             }
             // one flag that is set on server has been unset by the client,
             // so it has to be removed.
-            imap.flagAnswered = true
-            imap.flagDraft = true
-            imap.flagFlagged = true
+            let localFlags = imap.localFlags ?? CdImapFlags.create()
+            imap.localFlags = localFlags
+
+            localFlags.flagAnswered = true
+            localFlags.flagDraft = true
+            localFlags.flagFlagged = true
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            imap.flagRecent = true
-            imap.flagSeen = false
-            imap.flagDeleted = false
+            localFlags.flagRecent = true
+            localFlags.flagSeen = false
+            localFlags.flagDeleted = false
+
             // set the flag on server side
-            imap.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
-            imap.flagsFromServer.imapUnSetFlagBit(.deleted)
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+            imap.serverFlags = serverFlags
+            var theBits = ImapFlagsBits.imapNoFlagsSet()
+            theBits.imapSetFlagBit(.deleted)
+            serverFlags.update(rawValue16: theBits)
         }
 
         Record.saveAndWait()
@@ -2206,7 +2333,9 @@ class SimpleOperationsTest: XCTestCase {
             message.sendStatus = Int16(SendStatus.none.rawValue)
             message.addTo(cdIdentity: to)
             let imapFields = CdImapFields.create()
-            imapFields.flagDeleted = true
+            let imapFlags = CdImapFlags.create()
+            imapFields.localFlags = imapFlags
+            imapFlags.flagDeleted = true
             imapFields.trashedStatus = TrashedStatus.shouldBeTrashed.rawValue
             message.imap = imapFields
             originalMessages.append(message)
@@ -2296,7 +2425,7 @@ class SimpleOperationsTest: XCTestCase {
                 XCTFail()
                 continue
             }
-            XCTAssertTrue(imap.flagDeleted)
+            XCTAssertTrue(imap.localFlags?.flagDeleted ?? false)
             XCTAssertEqual(imap.trashedStatus, TrashedStatus.trashed.rawValue)
             // Make sure the email now exists in the trash folder as well
             let trashedP = NSPredicate(format: "parent = %@", trashFolder)

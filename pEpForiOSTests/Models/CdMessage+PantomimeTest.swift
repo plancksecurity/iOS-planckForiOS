@@ -25,9 +25,12 @@ class CdMessage_PantomimeTest: XCTestCase {
         let m = CdMessage.create()
         m.imap = CdImapFields.create()
 
+        let localFlags = CdImapFlags.create()
+        m.imap?.localFlags = localFlags
+
         m.uid = 1024
-        m.imap?.flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
-        m.imap?.flagsFromServer.imapUnSetFlagBit(.seen) // seen not set on server ...
+        var flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
+        flagsFromServer.imapUnSetFlagBit(.seen) // seen not set on server ...
         setAllCurrentImapFlags(of: m, to: true)
 
         // ... so it should not be removed
@@ -36,24 +39,24 @@ class CdMessage_PantomimeTest: XCTestCase {
         XCTAssertNil(m.storeCommandForUpdateFlags(to: .remove)?.0)
 
         // remove flags locally (while offline) and assure it's handled correctly
-        m.imap?.flagAnswered = false
+        localFlags.flagAnswered = false
 
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .remove)!.0,
                        "UID STORE 1024 -FLAGS.SILENT (\\Answered)")
 
-        m.imap?.flagDraft = false
+        localFlags.flagDraft = false
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .remove)!.0,
                        "UID STORE 1024 -FLAGS.SILENT (\\Answered \\Draft)")
 
-        m.imap?.flagFlagged = false
+        localFlags.flagFlagged = false
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .remove)!.0,
                        "UID STORE 1024 -FLAGS.SILENT (\\Answered \\Draft \\Flagged)")
 
-        m.imap?.flagSeen = false
+        localFlags.flagSeen = false
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .remove)!.0,
                        "UID STORE 1024 -FLAGS.SILENT (\\Answered \\Draft \\Flagged)")
 
-        m.imap?.flagDeleted = false
+        localFlags.flagDeleted = false
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .remove)!.0,
                        "UID STORE 1024 -FLAGS.SILENT " + "(\\Answered \\Draft \\Flagged \\Deleted)")
     }
@@ -62,31 +65,34 @@ class CdMessage_PantomimeTest: XCTestCase {
         let m = CdMessage.create()
         m.imap = CdImapFields.create()
 
+        let localFlags = CdImapFlags.create()
+        m.imap?.localFlags = localFlags
+
         m.uid = 1024
-        m.imap?.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
+        let flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
         setAllCurrentImapFlags(of: m, to: false)
 
         // nothing has changed
         XCTAssertNil(m.storeCommandForUpdateFlags(to: .add)?.0)
 
         // add flags locally (while offline) and assure it's handled correctly
-        m.imap?.flagAnswered = true
+        localFlags.flagAnswered = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0,
                        "UID STORE 1024 +FLAGS.SILENT (\\Answered)")
 
-        m.imap?.flagDraft = true
+        localFlags.flagDraft = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0,
                        "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Draft)")
 
-        m.imap?.flagFlagged = true
+        localFlags.flagFlagged = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0,
                        "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Draft \\Flagged)")
 
-        m.imap?.flagSeen = true
+        localFlags.flagSeen = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0,
                        "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Draft \\Flagged \\Seen)")
 
-        m.imap?.flagDeleted = true
+        localFlags.flagDeleted = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0, "UID STORE 1024 +FLAGS.SILENT " +
             "(\\Answered \\Draft \\Flagged \\Seen \\Deleted)")
     }
@@ -95,9 +101,12 @@ class CdMessage_PantomimeTest: XCTestCase {
         let m = CdMessage.create()
         m.imap = CdImapFields.create()
 
+        let localFlags = CdImapFlags.create()
+        m.imap?.localFlags = localFlags
+
         m.uid = 1024
-        m.imap?.flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-        m.imap?.flagsFromServer.imapSetFlagBit(.seen) // flagSeen is set on server ...
+        var flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
+        flagsFromServer.imapSetFlagBit(.seen) // flagSeen is set on server ...
         setAllCurrentImapFlags(of: m, to: false)
 
         // ... so //Seen must not be added
@@ -106,23 +115,23 @@ class CdMessage_PantomimeTest: XCTestCase {
         XCTAssertNil(m.storeCommandForUpdateFlags(to: .add)?.0)
 
         // add flags locally (while offline) and assure it's handled correctly
-        m.imap?.flagAnswered = true
+        localFlags.flagAnswered = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0,
                        "UID STORE 1024 +FLAGS.SILENT (\\Answered)")
 
-        m.imap?.flagDraft = true
+        localFlags.flagDraft = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0,
                        "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Draft)")
 
-        m.imap?.flagFlagged = true
+        localFlags.flagFlagged = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0,
                        "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Draft \\Flagged)")
 
-        m.imap?.flagSeen = true
+        localFlags.flagSeen = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0,
                        "UID STORE 1024 +FLAGS.SILENT (\\Answered \\Draft \\Flagged)")
 
-        m.imap?.flagDeleted = true
+        localFlags.flagDeleted = true
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .add)!.0, "UID STORE 1024 +FLAGS.SILENT " +
             "(\\Answered \\Draft \\Flagged \\Deleted)")
     }
@@ -159,11 +168,16 @@ class CdMessage_PantomimeTest: XCTestCase {
             return
         }
 
-        imap.flagAnswered = isEnabled
-        imap.flagDeleted = isEnabled
-        imap.flagSeen = isEnabled
-        imap.flagRecent = isEnabled
-        imap.flagFlagged = isEnabled
-        imap.flagDraft = isEnabled
+        guard let flags = imap.localFlags else {
+            XCTFail()
+            return
+        }
+
+        flags.flagAnswered = isEnabled
+        flags.flagDeleted = isEnabled
+        flags.flagSeen = isEnabled
+        flags.flagRecent = isEnabled
+        flags.flagFlagged = isEnabled
+        flags.flagDraft = isEnabled
     }
 }

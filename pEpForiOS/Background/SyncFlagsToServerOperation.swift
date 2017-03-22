@@ -277,32 +277,16 @@ extension SyncFlagsToServerOperation: ImapSyncDelegate {
         }
 
         for cw in cwMessages {
-            if let all = CdMessage.all(
-                attributes: ["uid": cw.uid(), "parent": folder], in: context)
-                as? [CdMessage] {
-                for m in all {
-                    Log.shared.info(component: "\(#function)[\(#line)]",
-                        content: "##### \nBefore syncing flags:\nUID: \(m.uid) \n" +
-                            "flagsCurrent:\t\(m.imap?.flagsCurrent)" +
-                            "\(m.imap?.flagsCurrent.debugString())\n" +
-                            "flagsFromServer: \t\(m.imap?.flagsFromServer) " +
-                            "\(m.imap?.flagsFromServer.debugString())\n" +
-                        "parent?.objectID: \(m.parent?.objectID)")
-                }
-            }
-
             if let msg = CdMessage.first(
                 attributes: ["uid": cw.uid(), "parent": folder], in: context) {
-                let flags = cw.flags()
+                let cwFlags = cw.flags()
                 let imap = msg.imap ?? CdImapFields.create(context: context)
                 msg.imap = imap
-                imap.flagsFromServer = flags.rawFlagsAsShort() as Int16
-                print("##### \nAfter syncing flags:\nUID: \(msg.uid) \n" +
-                    "flagsCurrent:\t\(msg.imap?.flagsCurrent) " +
-                    "\(msg.imap?.flagsCurrent.debugString())\n" +
-                    "flagsFromServer: \t\(msg.imap?.flagsFromServer)" +
-                    "\(msg.imap?.flagsFromServer.debugString())\n" +
-                    "parent?.objectID: \(msg.parent?.objectID)")
+
+                let cdFlags = imap.serverFlags ?? CdImapFlags.create(context: context)
+                imap.serverFlags = cdFlags
+
+                cdFlags.update(cwFlags: cwFlags)
             } else {
                 self.errorOperation(NSLocalizedString(
                     "UID STORE: Response for message that can't be found",

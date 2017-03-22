@@ -28,26 +28,29 @@ class MessagePantomimeTests: XCTestCase {
         let m = CdMessage.create()
         m.imap = CdImapFields.create()
 
-        m.imap?.flagFlagged = true
+        let cdFlags = CdImapFlags.create()
+        m.imap?.localFlags = cdFlags
+
+        cdFlags.flagFlagged = true
 
         for f: PantomimeFlag in [.answered, .deleted, .draft, .recent, .seen] {
             XCTAssertFalse(m.pantomimeFlags().contain(f))
         }
         XCTAssertTrue(m.pantomimeFlags().contain(.flagged))
 
-        m.imap?.flagAnswered = true
+        cdFlags.flagAnswered = true
         XCTAssertTrue(m.pantomimeFlags().contain(.answered))
 
-        m.imap?.flagDeleted = true
+        cdFlags.flagDeleted = true
         XCTAssertTrue(m.pantomimeFlags().contain(.deleted))
 
-        m.imap?.flagRecent = true
+        cdFlags.flagRecent = true
         XCTAssertTrue(m.pantomimeFlags().contain(.recent))
 
-        m.imap?.flagDraft = true
+        cdFlags.flagDraft = true
         XCTAssertTrue(m.pantomimeFlags().contain(.draft))
 
-        m.imap?.flagSeen = true
+        cdFlags.flagSeen = true
         XCTAssertTrue(m.pantomimeFlags().contain(.seen))
     }
 

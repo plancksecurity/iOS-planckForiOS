@@ -40,8 +40,8 @@ extension CdMessage {
      - Returns: `flags` as `CWFlags`
      */
     public func pantomimeFlags() -> CWFlags {
-        if let theImap = imap {
-            return CdMessage.pantomimeFlagsFromNumber(theImap.flagsCurrent)
+        if let theFlags = imap?.localFlags {
+            return theFlags.pantomimeFlags() ?? CWFlags()
         } else {
             return CWFlags()
         }
@@ -51,7 +51,11 @@ extension CdMessage {
      - Returns: `flagsFromServer` as `CWFlags`
      */
     public func pantomimeflagsFromServer() -> CWFlags {
-        return CdMessage.pantomimeFlagsFromNumber(imap!.flagsFromServer)
+        if let theFlags = imap?.serverFlags {
+            return theFlags.pantomimeFlags() ?? CWFlags()
+        } else {
+            return CWFlags()
+        }
     }
 
     /**
@@ -85,8 +89,9 @@ extension CdMessage {
             return [AnyHashable: Any]()
         }
 
-        let currentFlags = imap.flagsCurrent
-        dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: currentFlags)
+        if let currentFlags = imap.serverFlags?.rawFlagsAsShort() {
+            dict[PantomimeFlagsKey] = CdMessage.pantomimeFlags(flagsInt16: currentFlags)
+        }
 
         return dict
     }
@@ -143,7 +148,7 @@ extension CdMessage {
             return ImapFlagsBits.imapNoFlagsSet()
         }
 
-        guard let flagsCurrent = imap?.flagsCurrent else {
+        guard let flagsCurrent = imap?.localFlags?.rawFlagsAsShort() else {
             return ImapFlagsBits.imapNoFlagsSet()
         }
 
@@ -180,7 +185,7 @@ extension CdMessage {
             return ImapFlagsBits.imapNoFlagsSet()
         }
 
-        guard let flagsCurrent = imap?.flagsCurrent else {
+        guard let flagsCurrent = imap?.localFlags?.rawFlagsAsShort() else {
             return ImapFlagsBits.imapNoFlagsSet()
         }
 
@@ -213,12 +218,12 @@ extension CdMessage {
     ///
     /// - Returns: flags that differ
     private func flagsDiff() -> Int16 {
-        guard let flagsCurrent = imap?.flagsCurrent else {
+        guard let flagsCurrent = imap?.localFlags?.rawFlagsAsShort() else {
             return ImapFlagsBits.imapNoFlagsSet()
         }
 
         var flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
-        if let flags = imap?.flagsFromServer {
+        if let flags = imap?.serverFlags?.rawFlagsAsShort() {
             flagsFromServer = flags
         }
 
@@ -285,7 +290,7 @@ extension CdMessage {
         msg.setFolder(folder)
 
         // Avoid roundtrips to the server, just set the flags directly.
-        if let flags = imap?.flagsCurrent {
+        if let flags = imap?.localFlags?.rawFlagsAsShort() {
             msg.flags().replace(with: CWFlags.init(int: Int(flags)))
         }
 
@@ -322,23 +327,20 @@ extension CdMessage {
         // Since we frequently sync the flags, don't modify anything
         // if the version from the server has already been known,
         // since this could overwrite changes just made by the user.
-        if flags.rawFlagsAsShort() == imap?.flagsFromServer {
+        if flags.rawFlagsAsShort() == imap?.serverFlags?.rawFlagsAsShort() {
             return false
         }
 
         let theImap = imap ?? CdImapFields.create()
         imap = theImap
 
-        theImap.flagsFromServer = Int16(flags.rawFlagsAsShort())
-        theImap.flagSeen = flags.contain(.seen)
-        theImap.flagAnswered = flags.contain(.answered)
-        theImap.flagFlagged = flags.contain(.flagged)
-        theImap.flagDeleted = flags.contain(.deleted)
+        let theFlags = theImap.serverFlags ?? CdImapFlags.create()
+        theImap.serverFlags = theFlags
+
+        theFlags.update(cwFlags: flags)
         if flags.contain(.deleted) {
             Log.info(component: #function, content: "Message with flag deleted")
         }
-        theImap.flagDraft = flags.contain(.draft)
-        theImap.flagRecent = flags.contain(.recent)
 
         return true
     }

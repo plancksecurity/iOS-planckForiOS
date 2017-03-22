@@ -506,7 +506,7 @@ open class NetworkServiceWorker {
     }
 
     func messageFetched(cdMessage: CdMessage) {
-        if cdMessage.imap?.flagDeleted ?? true == false {
+        if cdMessage.imap?.serverFlags?.flagDeleted ?? true == false {
             serviceConfig.sendLayerDelegate?.didFetch(cdMessage: cdMessage)
         }
     }

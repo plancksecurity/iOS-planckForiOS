@@ -34,6 +34,7 @@
 		43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43001F791D91860A00306BF0 /* FetchTableViewController.swift */; };
 		4301B3161E28D259007D626C /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4301B3151E28D259007D626C /* AppendMailsOperation.swift */; };
 		430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */; };
+		430A2EEC1E81357A00878837 /* CdImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EEB1E81357A00878837 /* CdImapFlags+Pantomime.swift */; };
 		430A6E541DFB08CE006273A5 /* UITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A6E531DFB08CE006273A5 /* UITestData.swift */; };
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
@@ -257,6 +258,7 @@
 		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
 		4301B3151E28D259007D626C /* AppendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendMailsOperation.swift; sourceTree = "<group>"; };
 		430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+Extension.swift"; sourceTree = "<group>"; };
+		430A2EEB1E81357A00878837 /* CdImapFlags+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFlags+Pantomime.swift"; sourceTree = "<group>"; };
 		430A6E531DFB08CE006273A5 /* UITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestData.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = pEpTrustWords.bundle; path = ../pEpTrustWords.bundle; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
@@ -849,6 +851,7 @@
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				43CE63D01DE8866C00FAC505 /* Message+pEp.swift */,
 				B7F199FF1E5DE9FB0079A513 /* Folder+Extensions.swift */,
+				430A2EEB1E81357A00878837 /* CdImapFlags+Pantomime.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1265,6 +1268,7 @@
 				B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */,
 				4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
+				430A2EEC1E81357A00878837 /* CdImapFlags+Pantomime.swift in Sources */,
 				43122B171DF5B48B00610253 /* ConnectInfo.swift in Sources */,
 				436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */,
 				43800D941D112A0800821E34 /* TFHppleElement.m in Sources */,
