@@ -28,9 +28,14 @@ class CdMessage_PantomimeTest: XCTestCase {
         let localFlags = CdImapFlags.create()
         m.imap?.localFlags = localFlags
 
+        let serverFlags = CdImapFlags.create()
+        m.imap?.serverFlags = serverFlags
+
         m.uid = 1024
         var flagsFromServer = ImapFlagsBits.imapAllFlagsSet()
         flagsFromServer.imapUnSetFlagBit(.seen) // seen not set on server ...
+        serverFlags.update(rawValue16: flagsFromServer)
+
         setAllCurrentImapFlags(of: m, to: true)
 
         // ... so it should not be removed
@@ -69,7 +74,6 @@ class CdMessage_PantomimeTest: XCTestCase {
         m.imap?.localFlags = localFlags
 
         m.uid = 1024
-        let flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
         setAllCurrentImapFlags(of: m, to: false)
 
         // nothing has changed
@@ -97,16 +101,20 @@ class CdMessage_PantomimeTest: XCTestCase {
             "(\\Answered \\Draft \\Flagged \\Seen \\Deleted)")
     }
 
-    func testStoreCommandForFlagsToAdd_someSeverFlagsSet() {
+    func testStoreCommandForFlagsToAdd_someServerFlagsSet() {
         let m = CdMessage.create()
         m.imap = CdImapFields.create()
 
         let localFlags = CdImapFlags.create()
         m.imap?.localFlags = localFlags
 
+        let serverFlags = CdImapFlags.create()
+        m.imap?.serverFlags = serverFlags
+
         m.uid = 1024
         var flagsFromServer = ImapFlagsBits.imapNoFlagsSet()
         flagsFromServer.imapSetFlagBit(.seen) // flagSeen is set on server ...
+        serverFlags.update(rawValue16: flagsFromServer)
         setAllCurrentImapFlags(of: m, to: false)
 
         // ... so //Seen must not be added
