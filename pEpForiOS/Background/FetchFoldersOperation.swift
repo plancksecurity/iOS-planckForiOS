@@ -16,6 +16,8 @@ import MessageModel
 public typealias MessageFetchedBlock = (_ message: CdMessage) -> ()
 
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {
+    public var folderNameToIgnore: String?
+
     let accountID: NSManagedObjectID
     open let backgroundQueue: OperationQueue?
     let name: String?
@@ -29,10 +31,14 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
         self.messageFetchedBlock = messageFetchedBlock
     }
 
-    open func folder(withName name: String) -> CWFolder {
-        return PersistentImapFolder(
-            name: name, accountID: accountID, backgroundQueue: backgroundQueue!,
-            logName: name, messageFetchedBlock: messageFetchedBlock) as CWFolder
+    open func folder(withName: String) -> CWFolder {
+        if folderNameToIgnore != nil && withName == folderNameToIgnore {
+            return CWFolder(name: withName)
+        } else {
+            return PersistentImapFolder(
+                name: withName, accountID: accountID, backgroundQueue: backgroundQueue!,
+                logName: name, messageFetchedBlock: messageFetchedBlock) as CWFolder
+        }
     }
 
     deinit {

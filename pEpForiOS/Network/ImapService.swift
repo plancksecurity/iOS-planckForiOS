@@ -86,12 +86,15 @@ open class ImapSync: Service {
 
     static open let defaultImapInboxName = "INBOX"
 
+    let nonExistantMailboxName = MessageID.generate()
+
     weak open var delegate: ImapSyncDelegate?
     open var maxPrefetchCount: UInt = 20
 
     open var folderBuilder: CWFolderBuilding? {
         set {
             imapStore.folderBuilder = newValue
+            imapStore.folderBuilder?.folderNameToIgnore = nonExistantMailboxName
         }
         get {
             return imapStore.folderBuilder
@@ -147,6 +150,17 @@ open class ImapSync: Service {
             }
             return false
         }
+    }
+
+    /**
+     Unselects the current mailbox by selecting a mailbox that doesn't exist
+     on the server.
+     */
+    @discardableResult open func unselectCurrentMailBox() -> Bool {
+        if imapState.currentFolderName == nil {
+            return false
+        }
+        return openMailBox(name: nonExistantMailboxName)
     }
 
     func openFolder() throws -> CWIMAPFolder {

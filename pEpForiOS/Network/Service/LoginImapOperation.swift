@@ -11,8 +11,6 @@ import UIKit
 import MessageModel
 
 open class LoginImapOperation: ImapSyncOperation {
-    let nonExistantMailboxName = MessageID.generate()
-
     open override func main() {
         var service = imapSyncData.sync ?? ImapSync(connectInfo: imapSyncData.connectInfo)
         if service.imapState.hasError {
@@ -24,13 +22,12 @@ open class LoginImapOperation: ImapSyncOperation {
             service.delegate = self
             service.start()
         } else {
-            if let mailboxName = service.imapState.currentFolderName,
-                mailboxName != nonExistantMailboxName {
+            if service.imapState.currentFolderName != nil {
                 // Try to select a (probably) non-existant mailbox,
                 // in order to close any other mailbox,
                 // without causing a silent expunge caused by CLOSE.
                 service.delegate = self
-                service.openMailBox(name: nonExistantMailboxName)
+                service.unselectCurrentMailBox()
             } else {
                 markAsFinished()
             }
