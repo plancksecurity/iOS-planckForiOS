@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         loadCoreDataStack()
 
-        deleteAllMessages(pEpReInitialized: pEpReInitialized)
+        deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         kickOffMySelf()
 
@@ -149,20 +149,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return false
     }
 
-    func deleteAllMessages(pEpReInitialized: Bool) {
-        // delete *all* messages, they could contain keys no longer valid
+    /**
+     If pEp has been reinitialized, delete all folders and messsages.
+     */
+    func deleteAllFolders(pEpReInitialized: Bool) {
         if pEpReInitialized {
             // NSBatchDeleteRequest doesn't work so well here because of the need
             // to nullify the relations. This is used only for internal testing, so the
-            // performance should suffice.
+            // performance is neglible.
+            let folders = CdFolder.all() as? [CdFolder] ?? []
+            for f in folders {
+                f.delete()
+            }
+
             let msgs = CdMessage.all() as? [CdMessage] ?? []
             for m in msgs {
                 m.delete()
             }
-            if !msgs.isEmpty {
-                CdHeaderField.deleteOrphans()
-                Record.saveAndWait()
-            }
+
+            CdHeaderField.deleteOrphans()
+            Record.saveAndWait()
         }
     }
 }
