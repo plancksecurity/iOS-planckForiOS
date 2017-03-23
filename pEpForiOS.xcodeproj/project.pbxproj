@@ -67,6 +67,7 @@
 		4323FE861E83D6FF006785E1 /* ImapFolderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4323FE851E83D6FF006785E1 /* ImapFolderBuilder.swift */; };
 		4323FE891E83E517006785E1 /* IdentityImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4323FE881E83E517006785E1 /* IdentityImageProvider.swift */; };
 		4323FE8B1E83E5E6006785E1 /* IdentityImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4323FE8A1E83E5E6006785E1 /* IdentityImageOperation.swift */; };
+		4323FE901E840E65006785E1 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4323FE8F1E840E65006785E1 /* UIColor+Extension.swift */; };
 		43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */; };
 		432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */; };
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
@@ -291,6 +292,7 @@
 		4323FE851E83D6FF006785E1 /* ImapFolderBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapFolderBuilder.swift; sourceTree = "<group>"; };
 		4323FE881E83E517006785E1 /* IdentityImageProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityImageProvider.swift; sourceTree = "<group>"; };
 		4323FE8A1E83E5E6006785E1 /* IdentityImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityImageOperation.swift; sourceTree = "<group>"; };
+		4323FE8F1E840E65006785E1 /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperation.swift; sourceTree = "<group>"; };
 		432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePantomimeTests.swift; sourceTree = "<group>"; };
 		432F7D601D2102F10094F097 /* PEPSessionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionTest.swift; sourceTree = "<group>"; };
@@ -765,6 +767,7 @@
 				436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */,
 				8B69E3981E30F80E0022959E /* Appearance.swift */,
 				493B6D061E705A0600364D60 /* SystemUtils.swift */,
+				4323FE8F1E840E65006785E1 /* UIColor+Extension.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1294,6 +1297,7 @@
 				430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */,
 				431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */,
 				4340F5F91D363BE6006A5C82 /* ContactCell.swift in Sources */,
+				4323FE901E840E65006785E1 /* UIColor+Extension.swift in Sources */,
 				43F7BEB01DC8DFC5009048D6 /* OperationQueue+Extension.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				439A6C771E535827004CBAA6 /* PrivacyStatusTableViewController.swift in Sources */,
