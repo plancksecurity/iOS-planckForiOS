@@ -30,6 +30,9 @@ class EmailListViewCell: UITableViewCell {
     
     let dateFormatter = UIHelper.dateFormatterEmailList()
 
+    var identityForImage: Identity?
+    var config: EmailListConfig?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.none
@@ -58,6 +61,8 @@ class EmailListViewCell: UITableViewCell {
     }
 
     func configureCell(config: EmailListConfig?, indexPath: IndexPath) -> Message? {
+        self.config = config
+
         if let message = messageAt(indexPath: indexPath, config: config) {
             UIHelper.putString(message.from?.userName, toLabel: self.senderLabel)
             UIHelper.putString(message.shortMessage, toLabel: self.subjectLabel)
@@ -85,9 +90,21 @@ class EmailListViewCell: UITableViewCell {
             updateFlags(message: message)
             updatePepRating(message: message)
 
+            identityForImage = message.from
+            if let ident = identityForImage, let imgProvider = config?.imageProvider {
+                imgProvider.image(forIdentity: ident) { img in
+                }
+            }
+
             return message
         }
         return nil
+    }
+
+    override func prepareForReuse() {
+        if let ident = identityForImage {
+            config?.imageProvider.cancel(identity: ident)
+        }
     }
     
     /**

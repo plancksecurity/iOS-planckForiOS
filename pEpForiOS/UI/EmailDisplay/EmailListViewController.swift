@@ -16,6 +16,8 @@ struct EmailListConfig {
 
     /** The folder to display, if it exists */
     var folder: Folder?
+
+    let imageProvider = IdentityImageProvider()
 }
 
 class EmailListViewController: UITableViewController, FilterUpdateProtocol {
