@@ -1,5 +1,5 @@
 //
-//  StringExtensions.swift
+//  String+Extensions.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 13/07/16.
@@ -7,7 +7,6 @@
 //
 
 public extension String {
-
     static let internalRecipientDelimiter = ","
     static let externalRecipientDelimiter = ", "
     static let returnKey = "\n"
