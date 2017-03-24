@@ -75,27 +75,6 @@ extension String {
     }
 }
 
-/**
- - Returns: A font with a size that will make drawing `text` just barely fit into `size`.
- */
-func maximize(text: String, inSize size: CGSize,
-              font: UIFont = UIFont.preferredFont(forTextStyle: .title1)) -> UIFont {
-    let nsString = text as NSString
-    var fontSize: CGFloat = 12.0
-    var lastFont = font
-
-    while true {
-        let currentFont = font.withSize(fontSize)
-        let textAttributes: [String : Any] = [NSFontAttributeName: currentFont]
-        let stringSize = nsString.size(attributes: textAttributes)
-        if stringSize.width > size.width || stringSize.height > size.height {
-            return lastFont
-        }
-        lastFont = currentFont
-        fontSize += 0.5
-    }
-}
-
 func drawCircle(ctx: CGContext, size: CGSize, color: UIColor) {
     let bgColor = color.cgColor
     ctx.setFillColor(bgColor)
@@ -114,23 +93,17 @@ func center(size: CGSize, inRect: CGRect) -> CGRect {
     return CGRect(origin: o, size: size)
 }
 
-func drawInitialText(name: String, size: CGSize, padding: CGSize, ctx: CGContext) {
+func drawInitialText(name: String, size: CGSize, font: UIFont, ctx: CGContext) {
     let textColor = UIColor.white
     let text = name.initials()
-
-    var textSize = size
-    textSize.width -= padding.width
-    textSize.height -= padding.height
-
-    let font = maximize(text: text, inSize: textSize)
     text.draw(ctx: ctx, centeredIn: size, color: textColor, font: font)
 }
 
 func identityImageFromName(name: String, size: CGSize = CGSize(width: 64, height: 64),
-                           padding: CGSize = CGSize(width: 10, height: 10)) -> UIImage? {
+                           font: UIFont = UIFont.systemFont(ofSize: 24)) -> UIImage? {
     return UIImage.generate(size: size) { ctx in
         drawCircle(ctx: ctx, size: size, color: UIColor(hex: "#c8c7cc"))
-        drawInitialText(name: name, size: size, padding: padding, ctx: ctx)
+        drawInitialText(name: name, size: size, font: font, ctx: ctx)
     }
 }
 
