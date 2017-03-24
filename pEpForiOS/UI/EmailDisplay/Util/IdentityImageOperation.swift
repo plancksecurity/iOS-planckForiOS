@@ -41,13 +41,8 @@ class IdentityImageOperation: Operation {
             if let userName = identity.userName {
                 initials = userName.initials()
             }
-            image = identityImageFromName(name: initials)
+            image = identityImageFromName(initials: initials)
         }
-    }
-
-    fileprivate func drawInitialText(name: String, size: CGSize, font: UIFont, ctx: CGContext) {
-        let text = name.initials()
-        text.draw(ctx: ctx, centeredIn: size, color: textColor, font: font)
     }
 
     fileprivate func drawCircle(ctx: CGContext, size: CGSize, color: UIColor) {
@@ -59,12 +54,12 @@ class IdentityImageOperation: Operation {
     }
 
     fileprivate func identityImageFromName(
-        name: String,
+        initials: String,
         size: CGSize = CGSize(width: 64, height: 64),
         font: UIFont = UIFont.systemFont(ofSize: 24)) -> UIImage? {
         return UIImage.generate(size: size) { ctx in
             drawCircle(ctx: ctx, size: size, color: imageBackgroundColor)
-            drawInitialText(name: name, size: size, font: font, ctx: ctx)
+            initials.draw(ctx: ctx, centeredIn: size, color: textColor, font: font)
         }
     }
 }
