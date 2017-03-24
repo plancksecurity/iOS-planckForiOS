@@ -55,8 +55,12 @@ class IdentityImageProvider {
     }
 
     fileprivate func internalCancel(identity: Identity) {
-        if let (op, _) = runningOperations.removeValue(forKey: identity) {
-            op.cancel()
+        if let (op, funs) = runningOperations[identity] {
+            if funs.count == 1 {
+                // only cancel if only one cell requested it
+                runningOperations.removeValue(forKey: identity)
+                op.cancel()
+            }
         }
     }
 
