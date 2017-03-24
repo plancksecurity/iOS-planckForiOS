@@ -9,6 +9,16 @@
 import MessageModel
 
 class IdentityImageOperation: Operation {
+    /**
+     The background color for the contact initials image.
+     */
+    let imageBackgroundColor = UIColor(hex: "#c8c7cc")
+
+    /**
+     The text color for the contact initials image.
+     */
+    let textColor = UIColor.white
+
     let identity: Identity
     var image: UIImage?
 
@@ -27,8 +37,34 @@ class IdentityImageOperation: Operation {
             }
         }
         if shouldCreateImage {
-            // background color: #c8c7cc
-            // text color: #ffffff
+            var initials = "?"
+            if let userName = identity.userName {
+                initials = userName.initials()
+            }
+            image = identityImageFromName(name: initials)
+        }
+    }
+
+    fileprivate func drawInitialText(name: String, size: CGSize, font: UIFont, ctx: CGContext) {
+        let text = name.initials()
+        text.draw(ctx: ctx, centeredIn: size, color: textColor, font: font)
+    }
+
+    fileprivate func drawCircle(ctx: CGContext, size: CGSize, color: UIColor) {
+        let bgColor = color.cgColor
+        ctx.setFillColor(bgColor)
+        ctx.setStrokeColor(bgColor)
+        let r = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+        ctx.fillEllipse(in: r)
+    }
+
+    fileprivate func identityImageFromName(
+        name: String,
+        size: CGSize = CGSize(width: 64, height: 64),
+        font: UIFont = UIFont.systemFont(ofSize: 24)) -> UIImage? {
+        return UIImage.generate(size: size) { ctx in
+            drawCircle(ctx: ctx, size: size, color: imageBackgroundColor)
+            drawInitialText(name: name, size: size, font: font, ctx: ctx)
         }
     }
 }

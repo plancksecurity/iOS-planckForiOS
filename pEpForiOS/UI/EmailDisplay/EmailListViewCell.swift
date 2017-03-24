@@ -93,6 +93,7 @@ class EmailListViewCell: UITableViewCell {
             identityForImage = message.from
             if let ident = identityForImage, let imgProvider = config?.imageProvider {
                 imgProvider.image(forIdentity: ident) { img in
+                    print("have img: \(img)")
                 }
             }
 

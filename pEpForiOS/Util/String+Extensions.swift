@@ -387,3 +387,62 @@ class Regex {
         return matches.count > 0
     }
 }
+
+// MARK: - Extensions for drawing initials from users
+
+extension String {
+    /**
+     - Returns: The first part of a String, with a maximum length of `ofLength`.
+     */
+    func prefix(ofLength: Int) -> String {
+        if self.characters.count >= ofLength {
+            let start = self.startIndex
+            return self.substring(to: self.index(start, offsetBy: ofLength))
+        } else {
+            return self
+        }
+    }
+
+    /**
+     - Returns: The initials of the String interpreted as a name,
+     that is ideally the first letters of the given name and the last name.
+     If that is not possible, improvisations are used.
+     */
+    func initials() -> String {
+        let words = self.characters.split(separator: " ").map(String.init).map() {
+            return $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        if words.count == 0 {
+            return "?"
+        }
+        if words.count == 1 {
+            return self.prefix(ofLength: 2)
+        }
+        let word1 = words[0]
+        let word2 = words[words.count - 1]
+        return word1.prefix(ofLength: 1) + word2.prefix(ofLength: 1)
+    }
+
+    /**
+     Draws `text` in the context `ctx` in the given `color`, centered in a rectangle with
+     size `size`.
+     */
+    func draw(ctx: CGContext, centeredIn size: CGSize, color: UIColor, font: UIFont) {
+        func center(size: CGSize, inRect: CGRect) -> CGRect {
+            let xStart = inRect.size.width / 2 - size.width / 2
+            let yStart = inRect.size.height / 2 - size.height / 2
+            let o = CGPoint(x: xStart, y: yStart)
+            return CGRect(origin: o, size: size)
+        }
+
+        let wholeRect = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+        let nsString = self as NSString
+        let textAttributes: [String : Any] = [
+            NSStrokeColorAttributeName: color,
+            NSForegroundColorAttributeName: color,
+            NSFontAttributeName: font]
+        let stringSize = nsString.size(attributes: textAttributes)
+        let textRect = center(size: stringSize, inRect: wholeRect)
+        nsString.draw(in: textRect, withAttributes: textAttributes)
+    }
+}
