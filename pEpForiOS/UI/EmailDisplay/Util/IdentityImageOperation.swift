@@ -15,4 +15,20 @@ class IdentityImageOperation: Operation {
     init(identity: Identity) {
         self.identity = identity
     }
+
+    override func main() {
+        var shouldCreateImage = true
+        if let theID = identity.userID {
+            let ab = AddressBook()
+            if let contact = ab.contactBy(userID: theID),
+                let imgData = contact.thumbnailImageData {
+                shouldCreateImage = false
+                image = UIImage(data: imgData)
+            }
+        }
+        if shouldCreateImage {
+            // background color: #c8c7cc
+            // text color: #ffffff
+        }
+    }
 }
