@@ -37,6 +37,9 @@ class EmailListViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.none
+
+        self.contactImageView.layer.cornerRadius = contactImageView.bounds.size.width / 2
+        self.contactImageView.layer.masksToBounds = true
     }
 
     func updateFlags(message: Message) {
@@ -63,6 +66,7 @@ class EmailListViewCell: UITableViewCell {
 
     func configureCell(config: EmailListConfig?, indexPath: IndexPath) -> Message? {
         self.config = config
+
         self.config?.imageProvider.imageSize = contactImageView.bounds.size
 
         if let message = messageAt(indexPath: indexPath, config: config) {
