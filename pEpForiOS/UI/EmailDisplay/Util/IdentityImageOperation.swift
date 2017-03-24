@@ -22,8 +22,11 @@ class IdentityImageOperation: Operation {
     let identity: Identity
     var image: UIImage?
 
-    init(identity: Identity) {
+    let imageSize: CGSize
+
+    init(identity: Identity, imageSize: CGSize) {
         self.identity = identity
+        self.imageSize = imageSize
     }
 
     override func main() {
@@ -41,7 +44,7 @@ class IdentityImageOperation: Operation {
             if let userName = identity.userName {
                 initials = userName.initials()
             }
-            image = identityImageFromName(initials: initials)
+            image = identityImageFromName(initials: initials, size: imageSize)
         }
     }
 
@@ -55,8 +58,7 @@ class IdentityImageOperation: Operation {
 
     fileprivate func identityImageFromName(
         initials: String,
-        size: CGSize = CGSize(width: 64, height: 64),
-        font: UIFont = UIFont.systemFont(ofSize: 24)) -> UIImage? {
+        size: CGSize, font: UIFont = UIFont.systemFont(ofSize: 24)) -> UIImage? {
         return UIImage.generate(size: size) { ctx in
             drawCircle(ctx: ctx, size: size, color: imageBackgroundColor)
             initials.draw(ctx: ctx, centeredIn: size, color: textColor, font: font)

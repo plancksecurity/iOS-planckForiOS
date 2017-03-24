@@ -27,7 +27,8 @@ class EmailListViewCell: UITableViewCell {
 
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
-    
+    @IBOutlet weak var contactImageView: UIImageView!
+
     let dateFormatter = UIHelper.dateFormatterEmailList()
 
     var identityForImage: Identity?
@@ -62,6 +63,7 @@ class EmailListViewCell: UITableViewCell {
 
     func configureCell(config: EmailListConfig?, indexPath: IndexPath) -> Message? {
         self.config = config
+        self.config?.imageProvider.imageSize = contactImageView.bounds.size
 
         if let message = messageAt(indexPath: indexPath, config: config) {
             UIHelper.putString(message.from?.userName, toLabel: self.senderLabel)
@@ -93,7 +95,9 @@ class EmailListViewCell: UITableViewCell {
             identityForImage = message.from
             if let ident = identityForImage, let imgProvider = config?.imageProvider {
                 imgProvider.image(forIdentity: ident) { img in
-                    // TODO: Put into UI
+                    if message.from == self.identityForImage {
+                        self.contactImageView.image = img
+                    }
                 }
             }
 
