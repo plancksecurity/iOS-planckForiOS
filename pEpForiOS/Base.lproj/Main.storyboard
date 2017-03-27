@@ -32,7 +32,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BvI-Zi-zU6">
-                                            <rect key="frame" x="64" y="52.5" width="61.5" height="17"/>
+                                            <rect key="frame" x="64" y="54" width="62" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -44,7 +44,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-55-oem">
-                                            <rect key="frame" x="64" y="27" width="50" height="19"/>
+                                            <rect key="frame" x="64" y="27" width="50" height="20"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -150,7 +150,11 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Inbox" id="bgm-ua-A0f">
-                        <barButtonItem key="leftBarButtonItem" title="Folders" id="QCE-EG-qmM"/>
+                        <barButtonItem key="leftBarButtonItem" title="Folders" id="QCE-EG-qmM">
+                            <connections>
+                                <action selector="folderButtonPressed:" destination="kcA-RK-9Xg" id="WPO-fq-4t6"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Accounts" id="1rc-mQ-T0F">
                             <connections>
                                 <segue destination="C7k-Jh-fNo" kind="presentation" identifier="" id="ryT-n1-8hT"/>
@@ -1868,7 +1872,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="156"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fUP-bg-t0G">
-                                                            <rect key="frame" x="0.0" y="0.0" width="187.5" height="156"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="188" height="156"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact-icon" translatesAutoresizingMaskIntoConstraints="NO" id="APS-zq-VWj">
                                                                     <rect key="frame" x="61" y="10" width="65" height="65"/>
@@ -1878,13 +1882,13 @@
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Myself" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z0V-0b-LLx">
-                                                                    <rect key="frame" x="0.0" y="80" width="187.5" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="80" width="188" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lksdjsdlkj;sdlkj;sdalkfjk" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dii-kS-R66">
-                                                                    <rect key="frame" x="20" y="103" width="147.5" height="36"/>
+                                                                    <rect key="frame" x="20" y="103" width="148" height="36"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -1903,23 +1907,23 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gph-tE-tcn">
-                                                            <rect key="frame" x="187.5" y="0.0" width="187.5" height="156"/>
+                                                            <rect key="frame" x="188" y="0.0" width="187" height="156"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact-icon" translatesAutoresizingMaskIntoConstraints="NO" id="tl0-Lm-Zaz">
-                                                                    <rect key="frame" x="61.5" y="10" width="65" height="65"/>
+                                                                    <rect key="frame" x="61" y="10" width="65" height="65"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="65" id="1uq-Vm-aRr"/>
                                                                         <constraint firstAttribute="height" constant="65" id="KDz-pJ-lyw"/>
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Partner" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mib-gb-Ctp">
-                                                                    <rect key="frame" x="0.0" y="80" width="187.5" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="80" width="187" height="18"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="sfdakljhfdsa" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGo-7p-j8J">
-                                                                    <rect key="frame" x="20" y="103" width="147.5" height="37"/>
+                                                                    <rect key="frame" x="20" y="103" width="147" height="37"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -2141,7 +2145,7 @@ APPLEPIE RESEARCH</string>
                                                     <rect key="frame" x="15" y="15" width="345" height="45"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IIV-5W-Waa">
-                                                            <rect key="frame" x="0.0" y="0.0" width="168.5" height="45"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="169" height="45"/>
                                                             <color key="backgroundColor" red="0.01176470588" green="0.66666666669999997" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="nEg-kT-Xah"/>
@@ -2155,7 +2159,7 @@ APPLEPIE RESEARCH</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ASC-Uk-nLV">
-                                                            <rect key="frame" x="176.5" y="0.0" width="168.5" height="45"/>
+                                                            <rect key="frame" x="177" y="0.0" width="168" height="45"/>
                                                             <color key="backgroundColor" red="0.81568627449999997" green="0.0078431372550000003" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="yqe-z9-MNv"/>
@@ -2389,7 +2393,7 @@ APPLEPIE RESEARCH</string>
                                                     <rect key="frame" x="15" y="15" width="345" height="45"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jlL-Pj-IrG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="168.5" height="45"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="169" height="45"/>
                                                             <color key="backgroundColor" red="0.01176470588" green="0.66666666669999997" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="zdp-d1-BLQ"/>
@@ -2403,7 +2407,7 @@ APPLEPIE RESEARCH</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3hp-vI-TZk">
-                                                            <rect key="frame" x="176.5" y="0.0" width="168.5" height="45"/>
+                                                            <rect key="frame" x="177" y="0.0" width="168" height="45"/>
                                                             <color key="backgroundColor" red="0.81568627449999997" green="0.0078431372550000003" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="45" id="abn-PG-cH5"/>

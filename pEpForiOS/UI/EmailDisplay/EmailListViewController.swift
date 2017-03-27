@@ -60,6 +60,15 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         MessageModelConfig.messageFolderDelegate = self
     }
 
+
+    @IBAction func folderButtonPressed(_ sender: Any) {
+        var folderStoryboard: UIStoryboard!
+        folderStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
+        let viewController : UIViewController = folderStoryboard.instantiateViewController(withIdentifier: "Folders") as! FolderTableViewController
+        self.navigationController?.pushViewController(viewController , animated: true)
+        //self.window!.rootViewController = viewcontroller
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         MessageModelConfig.messageFolderDelegate = nil

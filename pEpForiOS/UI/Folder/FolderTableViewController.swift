@@ -9,7 +9,7 @@
 import UIKit
 import MessageModel
 
-class FolderTableViewController: UITableViewController {
+class FolderTableViewController: UITableViewController, TableCollapsableDelegate {
 
     var appConfig: AppConfig?
 
@@ -28,6 +28,16 @@ class FolderTableViewController: UITableViewController {
 
     }
 
+    func toggleSection(section: Int) {
+
+        folderVM[section].collapsed = !folderVM[section].collapsed
+        tableView.beginUpdates()
+        for i in 0 ..< folderVM[section].count {
+            tableView.reloadRows(at: [NSIndexPath(row: i, section: section) as IndexPath], with: .automatic)
+        }
+        tableView.endUpdates()
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -46,6 +56,23 @@ class FolderTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return folderVM[section].count
+    }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return folderVM[indexPath.section].collapsed ? 0 : 44.0
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "Section") as? AccountSection {
+            cell.configure(section: folderVM[section], table: self, sectionNum: section)
+            cell.actionView.addGestureRecognizer(UITapGestureRecognizer(target: cell, action: #selector( AccountSection.tapHeader(gestureRecognizer:))))
+
+            return cell
+        }
+        return nil
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 80.0
     }
 
     /*override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
