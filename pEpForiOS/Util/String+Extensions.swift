@@ -404,14 +404,22 @@ extension String {
     }
 
     /**
+     - Returns: A list of words contained in that String. Might parse parentheses
+     in the future, at the moment just separates by space.
+     */
+    func tokens() -> [String] {
+        return self.characters.split(separator: " ").map(String.init).map() {
+            return $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
+
+    /**
      - Returns: The initials of the String interpreted as a name,
      that is ideally the first letters of the given name and the last name.
      If that is not possible, improvisations are used.
      */
     func initials() -> String {
-        let words = self.characters.split(separator: " ").map(String.init).map() {
-            return $0.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
+        let words = tokens()
         if words.count == 0 {
             return "?"
         }
@@ -420,7 +428,7 @@ extension String {
         }
         let word1 = words[0]
         let word2 = words[words.count - 1]
-        return word1.prefix(ofLength: 1) + word2.prefix(ofLength: 1)
+        return word1.prefix(ofLength: 1).capitalized + word2.prefix(ofLength: 1).capitalized
     }
 
     /**
