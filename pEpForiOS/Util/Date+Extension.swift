@@ -24,7 +24,7 @@ extension Date {
         return false
     }
 
-    func smartDate() -> String {
+    func smartString() -> String {
         if isToday() {
             let formatter = DateFormatter()
             formatter.dateStyle = .none
@@ -40,6 +40,13 @@ extension Date {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .none
+        return formatter.string(from: self)
+    }
+
+    func fullString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
         return formatter.string(from: self)
     }
 }

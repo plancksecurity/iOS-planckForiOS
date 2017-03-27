@@ -45,17 +45,6 @@ class UIHelper {
         return l
     }
 
-    static func dateFormatterEmailList() -> DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter
-    }
-
-    static func dateFormatterEmailDetails() -> DateFormatter {
-        return dateFormatterEmailList()
-    }
-
     /**
      Put a String into a label. If the String is empty, hide the label.
      */

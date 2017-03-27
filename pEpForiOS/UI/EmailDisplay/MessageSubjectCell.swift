@@ -9,15 +9,12 @@ import UIKit
 import MessageModel
 
 open class MessageSubjectCell: MessageCell {
-    
-    let dateFormatter = UIHelper.dateFormatterEmailDetails()
-    
     public override func updateCell(_ model: ComposeFieldModel, _ message: Message) {
         fieldModel = model
         titleLabel?.text = message.shortMessage
         
         if let originationDate = message.received {
-            UIHelper.putString(dateFormatter.string(from: originationDate as Date), toLabel: valueLabel)
+            UIHelper.putString((originationDate as Date).fullString(), toLabel: valueLabel)
         } else {
             UIHelper.putString(nil, toLabel: valueLabel)
         }

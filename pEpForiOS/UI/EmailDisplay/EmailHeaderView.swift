@@ -52,8 +52,6 @@ class EmailHeaderView: UIView {
 
     var message: Message!
 
-    let dateFormatter = UIHelper.dateFormatterEmailDetails()
-
     /**
      Layout the message header contents.
 
