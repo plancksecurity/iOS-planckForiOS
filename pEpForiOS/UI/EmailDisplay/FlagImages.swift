@@ -125,16 +125,9 @@ open class FlagImages {
 
 extension FlagImages {
     public func flagsImage(message: Message) -> UIImage? {
-        let seen = message.imapFlags?.seen ?? false
         let flagged = message.imapFlags?.flagged ?? false
-
-        if !seen && flagged {
-            // show the overlay of the two states
-            return flaggedAndNotSeenImage
-        } else if flagged {
+        if flagged {
             return flaggedImage
-        } else if !seen {
-            return notSeenImage
         } else {
             return nil
         }

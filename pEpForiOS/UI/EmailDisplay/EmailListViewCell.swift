@@ -18,12 +18,9 @@ class EmailListViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
 
     /**
-     This is not just the image for the "seen" flag, it is used for all.
+     Used for \Flagged, contrary to the name.
      */
-    @IBOutlet weak var isReadMessageImage: UIImageView!
-
-    /** Not used */
-    @IBOutlet weak var disclousureImage: UIImageView!
+    @IBOutlet weak var flaggedImageView: UIImageView!
 
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
@@ -44,16 +41,28 @@ class EmailListViewCell: UITableViewCell {
         let seen = haveSeen(message: message)
         let flagged = isFlagged(message: message)
 
-        self.isReadMessageImage.backgroundColor = nil
-        if seen && !flagged {
-            // show nothing
-            self.isReadMessageImage.isHidden = true
-            self.isReadMessageImage.image = nil
+        self.flaggedImageView.backgroundColor = nil
+        if flagged {
+            let fi = FlagImages.create(imageSize: flaggedImageView.frame.size)
+            self.flaggedImageView.isHidden = false
+            self.flaggedImageView.image = fi.flagsImage(message: message)
         } else {
-            let fi = FlagImages.create(imageSize: isReadMessageImage.frame.size)
-            self.isReadMessageImage.isHidden = false
-            self.isReadMessageImage.image = fi.flagsImage(message: message)
+            // show nothing
+            self.flaggedImageView.isHidden = true
+            self.flaggedImageView.image = nil
         }
+
+        if let font = senderLabel.font {
+            let font = seen ? UIFont.systemFont(ofSize: font.pointSize):
+                UIFont.boldSystemFont(ofSize: font.pointSize)
+            setLabels(font: font)
+        }
+    }
+
+    func setLabels(font: UIFont) {
+        senderLabel.font = font
+        subjectLabel.font = font
+        summaryLabel.font = font
     }
 
     func updatePepRating(message: Message) {
