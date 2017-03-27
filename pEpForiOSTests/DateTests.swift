@@ -29,9 +29,8 @@ class DateTests: XCTestCase {
     }
 
     func matchesWhole(re: NSRegularExpression?, string: String?) -> Bool {
-        if let r = re, let s = string {
-            let range = r.rangeOfFirstMatch(in: s, options: [], range: s.wholeRange())
-            return NSEqualRanges(range, s.wholeRange())
+        if let r = re {
+            return r.matchesWhole(string: string)
         }
         return false
     }
