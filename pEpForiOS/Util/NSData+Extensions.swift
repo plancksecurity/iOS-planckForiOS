@@ -20,5 +20,4 @@ extension Data {
             return String.init(data: self, encoding: String.Encoding.utf8)
         }
     }
-
 }
