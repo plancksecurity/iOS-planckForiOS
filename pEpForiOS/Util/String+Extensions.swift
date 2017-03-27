@@ -432,10 +432,10 @@ extension String {
     }
 
     /**
-     Draws `text` in the context `ctx` in the given `color`, centered in a rectangle with
+     Draws `text` in the current context in the given `color`, centered in a rectangle with
      size `size`.
      */
-    func draw(ctx: CGContext, centeredIn size: CGSize, color: UIColor, font: UIFont) {
+    func draw(centeredIn size: CGSize, color: UIColor, font: UIFont) {
         func center(size: CGSize, inRect: CGRect) -> CGRect {
             let xStart = inRect.size.width / 2 - size.width / 2
             let yStart = inRect.size.height / 2 - size.height / 2

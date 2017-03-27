@@ -61,7 +61,7 @@ class IdentityImageOperation: Operation {
         size: CGSize, font: UIFont = UIFont.systemFont(ofSize: 24)) -> UIImage? {
         return UIImage.generate(size: size) { ctx in
             drawCircle(ctx: ctx, size: size, color: imageBackgroundColor)
-            initials.draw(ctx: ctx, centeredIn: size, color: textColor, font: font)
+            initials.draw(centeredIn: size, color: textColor, font: font)
         }
     }
 }
