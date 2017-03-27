@@ -63,6 +63,7 @@ class EmailListViewCell: UITableViewCell {
         senderLabel.font = font
         subjectLabel.font = font
         summaryLabel.font = font
+        dateLabel.font = font
     }
 
     func updatePepRating(message: Message) {
