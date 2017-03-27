@@ -93,6 +93,7 @@ class EmailListViewCell: UITableViewCell {
             updateFlags(message: message)
             updatePepRating(message: message)
 
+            contactImageView.image = UIImage.init(named: "empty-avatar")
             identityForImage = message.from
             if let ident = identityForImage, let imgProvider = config?.imageProvider {
                 imgProvider.image(forIdentity: ident) { img in

@@ -71,7 +71,7 @@
                                                 <constraint firstAttribute="height" constant="14" id="f4y-vH-ugI"/>
                                             </constraints>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YqR-ga-Tf9" userLabel="Contact Image">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="YqR-ga-Tf9" userLabel="Contact Image">
                                             <rect key="frame" x="8" y="5" width="48" height="48"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="48" id="4hr-E4-mi8"/>
@@ -2479,6 +2479,7 @@ APPLEPIE RESEARCH</string>
         <image name="button-trustwords-icon" width="21" height="21"/>
         <image name="chevron-icon" width="8" height="13"/>
         <image name="contact-icon" width="46" height="46"/>
+        <image name="empty-avatar" width="150" height="150"/>
         <image name="flag-tab-button-icon" width="19" height="22"/>
         <image name="trust-line-icon" width="113" height="20"/>
         <image name="unread-icon" width="22" height="22"/>
