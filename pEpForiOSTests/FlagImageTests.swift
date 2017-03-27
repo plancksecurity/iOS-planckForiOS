@@ -30,9 +30,9 @@ class FlagImageTests: XCTestCase {
         XCTAssertEqual(fi.flagsImage(message: msg), fi.flaggedImage)
 
         msg.imapFlags?.seen = false
-        XCTAssertEqual(fi.flagsImage(message: msg), fi.flaggedAndNotSeenImage)
+        XCTAssertEqual(fi.flagsImage(message: msg), fi.flaggedImage)
 
         msg.imapFlags?.flagged = false
-        XCTAssertEqual(fi.flagsImage(message: msg), fi.notSeenImage)
+        XCTAssertNil(fi.flagsImage(message: msg))
     }
 }
