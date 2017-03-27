@@ -29,8 +29,6 @@ class EmailListViewCell: UITableViewCell {
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
 
-    let dateFormatter = UIHelper.dateFormatterEmailList()
-
     var identityForImage: Identity?
     var config: EmailListConfig?
 
@@ -86,8 +84,7 @@ class EmailListViewCell: UITableViewCell {
             }
             
             if let originationDate = message.sent {
-                UIHelper.putString(dateFormatter.string(from: originationDate as Date),
-                                   toLabel: self.dateLabel)
+                UIHelper.putString(originationDate.smartDate(), toLabel: self.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: self.dateLabel)
             }
