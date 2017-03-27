@@ -9,22 +9,22 @@
 import Foundation
 
 extension Date {
-    func isToday() -> Bool {
+    public func isToday() -> Bool {
         let cal = Calendar.current
         return cal.isDateInToday(self)
     }
 
-    func isRecent() -> Bool {
+    public func isRecent() -> Bool {
         let cal = Calendar.current
         let now = Date()
         let comps = cal.dateComponents([.day], from: self, to: now)
         if let days = comps.day {
-            return days <= 7
+            return days < 7
         }
         return false
     }
 
-    func smartString() -> String {
+    public func smartString() -> String {
         if isToday() {
             let formatter = DateFormatter()
             formatter.dateStyle = .none
@@ -43,7 +43,7 @@ extension Date {
         return formatter.string(from: self)
     }
 
-    func fullString() -> String {
+    public func fullString() -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
