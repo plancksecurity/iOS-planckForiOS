@@ -118,12 +118,6 @@ class EmailListViewCell: UITableViewCell {
         return nil
     }
 
-    override func prepareForReuse() {
-        if let ident = identityForImage {
-            config?.imageProvider.cancel(identity: ident)
-        }
-    }
-    
     /**
      The message at the given position.
      */

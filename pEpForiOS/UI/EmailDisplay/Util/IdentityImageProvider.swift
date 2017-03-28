@@ -49,8 +49,8 @@ class IdentityImageProvider {
                     }
                 }
             }
-            backgroundQueue.addOperation(op)
             runningOperations[identity] = (op, [callback])
+            backgroundQueue.addOperation(op)
         }
     }
 
