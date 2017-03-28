@@ -1919,7 +1919,7 @@ class SimpleOperationsTest: XCTestCase {
         let cdAccounts = CdAccount.all() as? [CdAccount]
         if let accs = cdAccounts {
             for acc in accs {
-                print("\(String(describing: acc.identity?.address)) \(acc.identity?.userName)")
+                print("\(String(describing: acc.identity?.address)) \(String(describing: acc.identity?.userName))")
             }
         }
     }
