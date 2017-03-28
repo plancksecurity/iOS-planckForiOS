@@ -96,7 +96,7 @@ class TestUtil {
      Print some essential properties of a bundle to the console.
      */
     static func dumpBundle(_ bundle: Bundle) {
-        print("bundle \(bundle.bundleIdentifier) \(bundle.bundlePath)")
+        print("bundle \(String(describing: bundle.bundleIdentifier)) \(bundle.bundlePath)")
     }
 
     /**

@@ -88,7 +88,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNotNil(m.imap)
             XCTAssertNotNil(m.shortMessage)
             if m.sent == nil {
-                Log.warn(component: #function, content: "nil sent \(m.shortMessage) \(m.uuid)")
+                Log.warn(component: #function, content: "nil sent \(String(describing: m.shortMessage)) \(String(describing: m.uuid))")
             }
             XCTAssertNotNil(m.sent)
             XCTAssertNotNil(m.received)
@@ -1919,7 +1919,7 @@ class SimpleOperationsTest: XCTestCase {
         let cdAccounts = CdAccount.all() as? [CdAccount]
         if let accs = cdAccounts {
             for acc in accs {
-                print("\(acc.identity?.address) \(acc.identity?.userName)")
+                print("\(String(describing: acc.identity?.address)) \(acc.identity?.userName)")
             }
         }
     }

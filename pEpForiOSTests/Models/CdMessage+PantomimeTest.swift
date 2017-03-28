@@ -9,7 +9,7 @@
 import XCTest
 
 import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class CdMessage_PantomimeTest: XCTestCase {
     var persistentSetup: PersistentSetup!
