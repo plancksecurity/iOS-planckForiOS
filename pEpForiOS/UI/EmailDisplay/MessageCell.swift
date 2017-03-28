@@ -11,10 +11,8 @@ import MessageModel
 public protocol MessageCellDelegate: class {}
 
 public protocol MessageContentCellDelegate: MessageCellDelegate {
-    
     func cellDidUpdateHeight(_ with: CGFloat)
 }
-
 
 open class MessageCell: UITableViewCell {
     
