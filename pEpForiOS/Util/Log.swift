@@ -143,7 +143,7 @@ extension Log: MessageModelLogging {
     ///   - error: error to log
     public func errorAndCrash(component: String, error: NSError) {
         Log.error(component: component, error: error)
-        crash()
+        SystemUtils.crash()
     }
 
     /// Logs component and error.
@@ -156,7 +156,7 @@ extension Log: MessageModelLogging {
     ///   - error: error to log
     public func errorAndCrash(component: String, errorString: String, error: NSError) {
         Log.error(component: component, errorString: errorString, error: error)
-        crash()
+        SystemUtils.crash()
     }
 
     /// Logs component and error.
@@ -168,6 +168,6 @@ extension Log: MessageModelLogging {
     ///   - errorString: error information to log
     public func errorAndCrash(component: String, errorString: String) {
         Log.error(component: component, errorString: errorString)
-       crash()
+        SystemUtils.crash()
     }
 }
