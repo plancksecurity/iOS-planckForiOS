@@ -37,6 +37,6 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
     }
 
     deinit {
-        Log.info(component: "ImapFolderBuilder: \(name)", content: "ImapFolderBuilder.deinit")
+        Log.info(component: "ImapFolderBuilder: \(String(describing: name))", content: "ImapFolderBuilder.deinit")
     }
 }

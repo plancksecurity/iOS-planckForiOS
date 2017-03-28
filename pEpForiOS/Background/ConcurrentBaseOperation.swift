@@ -93,7 +93,7 @@ open class ConcurrentBaseOperation: BaseOperation {
         }
         if keyPath == operationCountKeyPath {
             let opCount = (newValue as? NSNumber)?.intValue
-            Log.verbose(component: comp, content: "opCount \(opCount)")
+            Log.verbose(component: comp, content: "opCount \(String(describing: opCount))")
             if let c = opCount, c == 0 {
                 markAsFinished()
             }

@@ -202,7 +202,7 @@ extension SmtpSend: CWServiceClient {
                 }
                 Log.warn(
                     component: #function,
-                    content: "Don't have \(missingToken) for \(connectInfo.networkAddress) (\(connectInfo.emailProtocol))")
+                    content: "Don't have \(missingToken) for \(connectInfo.networkAddress) (\(String(describing: connectInfo.emailProtocol)))")
             }
         }
     }

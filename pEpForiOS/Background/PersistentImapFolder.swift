@@ -75,7 +75,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     deinit {
-        Log.info(component: "PersistentImapFolder: \(logName)", content: "PersistentImapFolder")
+        Log.info(component: "PersistentImapFolder: \(String(describing: logName))", content: "PersistentImapFolder")
     }
 
     func folderObject() -> CdFolder {
@@ -101,7 +101,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             if self.folder.uidValidity != Int32(theUIDValidity) {
                 Log.warn(
                     component: self.comp,
-                    content: "UIValidity changed, deleting all messages. Folder \(self.folder.name)")
+                    content: "UIValidity changed, deleting all messages. Folder \(String(describing: self.folder.name))")
                 self.folder.messages = []
             }
             self.folder.uidValidity = Int32(theUIDValidity)

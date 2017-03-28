@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Appearance.pep()
 
-        Log.warn(component: comp, content: "Library url: \(applicationDirectory())")
+        Log.warn(component: comp, content: "Library url: \(String(describing: applicationDirectory()))")
 
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them

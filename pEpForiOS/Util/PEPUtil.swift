@@ -788,7 +788,7 @@ open class PEPUtil {
 
     public static func systemLanguage() -> String {
         let language = Bundle.main.preferredLocalizations.first
-        print("LANG: \(language)")
+        print("LANG: \(String(describing: language))")
         return language!
     }
 }

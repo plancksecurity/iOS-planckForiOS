@@ -41,7 +41,7 @@ open class NetworkServiceWorker {
             }
             if keyPath == operationCountKeyPath {
                 let opCount = (newValue as? NSNumber)?.intValue
-                Log.verbose(component: #function, content: "operationCount \(opCount)")
+                Log.verbose(component: #function, content: "operationCount \(String(describing: opCount))")
                 dumpOperations()
             } else {
                 super.observeValue(forKeyPath: keyPath, of: object, change: change,
@@ -561,7 +561,7 @@ open class NetworkServiceWorker {
                     if let me = self, let theOl = ol,
                         let service = me.serviceConfig.networkService {
                         Log.info(component: theComp,
-                                 content: "didSync \(me.serviceConfig.networkServiceDelegate)")
+                                 content: "didSync \(String(describing: me.serviceConfig.networkServiceDelegate))")
                         me.serviceConfig.networkServiceDelegate?.didSync(
                             service: service, accountInfo: theOl.accountInfo,
                             errorProtocol: theOl.errorContainer)

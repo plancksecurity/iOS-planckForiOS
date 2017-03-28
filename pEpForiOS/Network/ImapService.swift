@@ -238,7 +238,7 @@ extension ImapSync: CWServiceClient {
             as? CWFolder) {
             Log.info(component: comp, content: "prefetched folder: \(folder.name())")
         } else {
-            Log.info(component: comp, content: "folderPrefetchCompleted: \(notification)")
+            Log.info(component: comp, content: "folderPrefetchCompleted: \(String(describing: notification))")
         }
         if let bq = folderBuilder?.backgroundQueue {
             // Wait until all newly synced messages are stored
@@ -253,7 +253,7 @@ extension ImapSync: CWServiceClient {
             as? CWFolder) {
             Log.info(component: comp, content: "synced folder: \(folder.name())")
         } else {
-            Log.info(component: comp, content: "folderSyncCompleted: \(notification)")
+            Log.info(component: comp, content: "folderSyncCompleted: \(String(describing: notification))")
         }
         if let bq = folderBuilder?.backgroundQueue {
             // Wait until all newly synced messages are stored
@@ -364,7 +364,7 @@ extension ImapSync: PantomimeFolderDelegate {
             Log.info(component: comp, content: "folderOpenCompleted: \(folder.name())")
             imapState.currentFolderName = folder.name()
         } else {
-            Log.info(component: comp, content: "folderOpenCompleted: \(notification)")
+            Log.info(component: comp, content: "folderOpenCompleted: \(String(describing: notification))")
             imapState.currentFolderName = nil
         }
         delegate?.folderOpenCompleted(self, notification: notification)
@@ -375,7 +375,7 @@ extension ImapSync: PantomimeFolderDelegate {
             as? CWFolder) {
             Log.info(component: comp, content: "folderOpenFailed: \(folder.name())")
         } else {
-            Log.info(component: comp, content: "folderOpenFailed: \(notification)")
+            Log.info(component: comp, content: "folderOpenFailed: \(String(describing: notification))")
         }
         delegate?.folderOpenFailed(self, notification: notification)
     }

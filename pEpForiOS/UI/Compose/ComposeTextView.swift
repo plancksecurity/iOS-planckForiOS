@@ -18,7 +18,7 @@ open class ComposeTextView: UITextView {
     
     public final var fieldHeight: CGFloat {
         get {
-            let size = sizeThatFits(CGSize(width: frame.size.width, height: CGFloat(FLT_MAX)))
+            let size = sizeThatFits(CGSize(width: frame.size.width, height: CGFloat(Float.greatestFiniteMagnitude)))
             return size.height + textBottomMargin
         }
     }

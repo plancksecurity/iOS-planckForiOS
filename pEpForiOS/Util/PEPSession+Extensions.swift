@@ -60,7 +60,7 @@ open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
     open let recipientType: RecipientType
 
     open var description: String {
-        return "\(recipient[kPepAddress]) (\(recipientType))"
+        return "\(String(describing: recipient[kPepAddress])) (\(recipientType))"
     }
 
     public init(recipient: PEPIdentity, recipientType: RecipientType) {

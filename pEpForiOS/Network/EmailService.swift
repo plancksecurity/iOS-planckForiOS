@@ -97,6 +97,6 @@ open class Service: IEmailService {
             }
             notificationCopy?.userInfo = dictCopy
         }
-        Log.info(component: comp, content: "\(methodName): \(notificationCopy)")
+        Log.info(component: comp, content: "\(methodName): \(String(describing: notificationCopy))")
     }
 }

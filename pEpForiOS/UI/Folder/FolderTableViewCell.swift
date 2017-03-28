@@ -28,7 +28,8 @@ class FolderTableViewCell: UITableViewCell {
         self.labelName.text = viewModel.title
         self.labelUnreadNumber.text = "\(viewModel.number)"
         self.CollapsedArrow.image = viewModel.arrow
-        self.CollapsedArrow.transform = self.CollapsedArrow.transform.rotated(by: CGFloat(M_PI_4))
+        self.CollapsedArrow.transform = self.CollapsedArrow.transform.rotated(
+            by: CGFloat(Double.pi / 4))
         self.indentationLevel = viewModel.level
         self.indentationWidth = CGFloat(10.0)
         self.shouldIndentWhileEditing = true

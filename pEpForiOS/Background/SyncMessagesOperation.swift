@@ -111,7 +111,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
         for msg in messages {
             if !existingUIDs.contains(NSNumber(value: msg.uid)) {
                 Log.info(component: comp,
-                         content: "removing message UID \(msg.uid) messageID \(msg.uuid)")
+                         content: "removing message UID \(msg.uid) messageID \(String(describing: msg.uuid))")
                 msg.deleteAndInformDelegate(context: context)
             }
         }
