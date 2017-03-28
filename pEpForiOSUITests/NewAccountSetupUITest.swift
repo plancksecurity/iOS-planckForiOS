@@ -24,7 +24,7 @@ class NewAccountSetupUITest: XCTestCase {
      Use if you want to wait forever. May be useful for debugging.
      */
     func waitForever() {
-        expectation(description: "Never happens")
+        let _ = expectation(description: "Never happens")
         waitForExpectations(timeout: 3000, handler: nil)
     }
 
