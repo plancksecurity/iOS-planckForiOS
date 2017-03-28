@@ -188,11 +188,9 @@ extension EmailViewController {
         if indexPath.row == (tableData?.numberOfRows())! - 1 {
             let availableSpace = tableView.bounds.size.height - otherCellsHeight + 94.0
             if computedHeight > 0 {
-                if availableSpace < computedHeight {
-                    return computedHeight
-                }
+                return max(availableSpace, computedHeight)
             }
-            return (availableSpace > row.height) ? availableSpace : row.height
+            return max(availableSpace, row.height)
         }
         
         return UITableViewAutomaticDimension
