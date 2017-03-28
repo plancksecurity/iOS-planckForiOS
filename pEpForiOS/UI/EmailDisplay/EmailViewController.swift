@@ -120,7 +120,7 @@ class EmailViewController: UITableViewController {
     }
     
     @IBAction func archiveButtonTapped(_ sender: UIBarButtonItem) {
-        //TODO: stubed method
+        //TODO: stubbed method
     }
     
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
@@ -203,12 +203,11 @@ extension EmailViewController {
     override func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewCell() }
-        
+
         let cell = tableView.dequeueReusableCell(
             withIdentifier: row.identifier, for: indexPath) as! MessageCell
         cell.updateCell(row, message)
         cell.delegate = self
-        
         return cell
     }
 }
