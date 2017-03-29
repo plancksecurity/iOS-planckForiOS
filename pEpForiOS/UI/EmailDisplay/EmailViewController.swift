@@ -174,8 +174,8 @@ class EmailViewController: UITableViewController {
 // MARK: TableView Delegate & Datasource
 
 extension EmailViewController {
-    override func tableView(
-        _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView,
+                            heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let row = tableData?.getRow(at: indexPath.row) else {
             return UITableViewAutomaticDimension
         }
@@ -185,7 +185,8 @@ extension EmailViewController {
         }
         
         otherCellsHeight += row.height
-        if indexPath.row == (tableData?.numberOfRows())! - 1 {
+        let maxRow = (tableData?.numberOfRows() ?? 0) - 1
+        if indexPath.row == maxRow {
             let availableSpace = tableView.bounds.size.height - otherCellsHeight + 94.0
             if computedHeight > 0 {
                 return max(availableSpace, computedHeight)
