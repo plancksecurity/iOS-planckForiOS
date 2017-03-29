@@ -13,7 +13,7 @@ open class MessageSubjectCell: MessageCell {
         fieldModel = model
         titleLabel?.text = message.shortMessage
         
-        if let originationDate = message.received {
+        if let originationDate = message.sent {
             UIHelper.putString((originationDate as Date).fullString(), toLabel: valueLabel)
         } else {
             UIHelper.putString(nil, toLabel: valueLabel)
