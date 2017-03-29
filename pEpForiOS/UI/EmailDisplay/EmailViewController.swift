@@ -19,6 +19,7 @@ class EmailViewController: UITableViewController {
     var page = 0
     var otherCellsHeight: CGFloat = 0.0
     var ratingReEvaluator: RatingReEvaluator?
+    var lastHeights = [IndexPath: CGFloat]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,7 @@ class EmailViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        lastHeights.removeAll()
         checkMessageReEvaluation()
         showPepRating()
         message.markAsSeen()
@@ -175,10 +177,10 @@ class EmailViewController: UITableViewController {
 extension EmailViewController {
     override func tableView(_ tableView: UITableView,
                             heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let cell = tableView.cellForRow(at: indexPath) as? MessageCell else {
-            return UITableViewAutomaticDimension
+        if let height = lastHeights[indexPath] {
+            return height
         }
-        return cell.height
+        return UITableViewAutomaticDimension
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -187,12 +189,15 @@ extension EmailViewController {
     
     override func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewCell() }
-
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: row.identifier, for: indexPath) as! MessageCell
+        guard
+            let row = tableData?.getRow(at: indexPath.row),
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: row.identifier,
+                for: indexPath) as? MessageCell else {
+                    return UITableViewCell()
+        }
         cell.updateCell(row, message)
-
+        lastHeights[indexPath] = cell.height
         cell.delegate = self
         return cell
     }
