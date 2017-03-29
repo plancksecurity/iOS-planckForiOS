@@ -7,4 +7,17 @@
 
 import UIKit
 
-open class MailinglistCell: MessageCell {}
+import MessageModel
+
+open class MailinglistCell: MessageCell {
+    public override var height: CGFloat {
+        didSet {
+            if height != 0 {
+                Log.warn(component: #function, content: "new height: \(height)")
+            }
+        }
+    }
+    public override func updateCell(_ model: ComposeFieldModel, _ message: Message) {
+        height = 0
+    }
+}

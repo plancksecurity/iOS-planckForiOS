@@ -30,10 +30,8 @@ open class MessageContentCell: MessageCell, UIWebViewDelegate {
     }
     
     public func webViewDidFinishLoad(_ webView: UIWebView) {
-        let height = webView.scrollView.contentSize.height
-        
-        guard let delegate = delegate as? MessageContentCellDelegate else { return }
-        delegate.cellDidUpdateHeight(height)
+        height = webView.scrollView.contentSize.height
+        (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: height)
     }
     
     fileprivate final func loadWebViewContent() {

@@ -11,11 +11,10 @@ import MessageModel
 public protocol MessageCellDelegate: class {}
 
 public protocol MessageContentCellDelegate: MessageCellDelegate {
-    func cellDidUpdateHeight(_ with: CGFloat)
+    func didUpdate(cell: MessageCell, height: CGFloat)
 }
 
 open class MessageCell: UITableViewCell {
-    
     @IBOutlet weak public var titleLabel: UILabel?
     @IBOutlet weak public var valueLabel: UILabel?
     
@@ -24,6 +23,7 @@ open class MessageCell: UITableViewCell {
     public var fieldModel: ComposeFieldModel?
     public var message: Message?
     public var isExpanded = false
+    public var height: CGFloat = UITableViewAutomaticDimension
     
     override open func awakeFromNib() {
         super.awakeFromNib()
@@ -31,8 +31,8 @@ open class MessageCell: UITableViewCell {
     }
     
     public func updateCell(_ model: ComposeFieldModel, _ message: Message) {
+        height = UITableViewAutomaticDimension // reset height to default
         fieldModel = model
-        
         if titleLabel != nil {
             titleLabel?.text = fieldModel?.title
         }

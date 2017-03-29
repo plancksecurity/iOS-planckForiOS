@@ -18,7 +18,6 @@ class EmailViewController: UITableViewController {
     var datasource = [Message]()
     var page = 0
     var otherCellsHeight: CGFloat = 0.0
-    var computedHeight: CGFloat = 0.0
     var ratingReEvaluator: RatingReEvaluator?
 
     override func viewDidLoad() {
@@ -176,25 +175,10 @@ class EmailViewController: UITableViewController {
 extension EmailViewController {
     override func tableView(_ tableView: UITableView,
                             heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let row = tableData?.getRow(at: indexPath.row) else {
+        guard let cell = tableView.cellForRow(at: indexPath) as? MessageCell else {
             return UITableViewAutomaticDimension
         }
-        
-        if row.display == .conditional {
-            return 0
-        }
-        
-        otherCellsHeight += row.height
-        let maxRow = (tableData?.numberOfRows() ?? 0) - 1
-        if indexPath.row == maxRow {
-            let availableSpace = tableView.bounds.size.height - otherCellsHeight + 94.0
-            if computedHeight > 0 {
-                return max(availableSpace, computedHeight)
-            }
-            return max(availableSpace, row.height)
-        }
-        
-        return UITableViewAutomaticDimension
+        return cell.height
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -216,8 +200,7 @@ extension EmailViewController {
 // MARK: - MessageContentCellDelegate
 
 extension EmailViewController: MessageContentCellDelegate {
-    func cellDidUpdateHeight(_ with: CGFloat) {
-        computedHeight = with
+    func didUpdate(cell: MessageCell, height: CGFloat) {
         tableView.updateSize(true)
     }
 }
