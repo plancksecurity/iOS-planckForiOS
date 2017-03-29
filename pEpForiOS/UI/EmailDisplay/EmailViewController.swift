@@ -192,6 +192,7 @@ extension EmailViewController {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: row.identifier, for: indexPath) as! MessageCell
         cell.updateCell(row, message)
+
         cell.delegate = self
         return cell
     }
