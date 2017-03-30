@@ -24,17 +24,23 @@ open class MessageCell: UITableViewCell {
     public var message: Message?
     public var isExpanded = false
     public var height: CGFloat = UITableViewAutomaticDimension
+
+    /**
+     The current `IndexPath`.
+     */
+    public var indexPath: IndexPath?
     
     override open func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
     }
     
-    public func updateCell(_ model: ComposeFieldModel, _ message: Message) {
+    public func updateCell(model: ComposeFieldModel, message: Message, indexPath: IndexPath) {
         height = UITableViewAutomaticDimension // reset height to default
         fieldModel = model
         if titleLabel != nil {
             titleLabel?.text = fieldModel?.title
         }
+        self.indexPath = indexPath
     }
 }

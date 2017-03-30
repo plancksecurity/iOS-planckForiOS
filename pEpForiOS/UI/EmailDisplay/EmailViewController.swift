@@ -196,7 +196,7 @@ extension EmailViewController {
                 for: indexPath) as? MessageCell else {
                     return UITableViewCell()
         }
-        cell.updateCell(row, message)
+        cell.updateCell(model: row, message: message, indexPath: indexPath)
         lastHeights[indexPath] = cell.height
         cell.delegate = self
         return cell
@@ -207,6 +207,11 @@ extension EmailViewController {
 
 extension EmailViewController: MessageContentCellDelegate {
     func didUpdate(cell: MessageCell, height: CGFloat) {
+        if let ip = cell.indexPath {
+            lastHeights[ip] = height
+        } else {
+            lastHeights.removeAll()
+        }
         tableView.updateSize(true)
     }
 }

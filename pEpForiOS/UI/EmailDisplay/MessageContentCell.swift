@@ -10,28 +10,57 @@ import UIKit
 import WebKit
 import MessageModel
 
-open class MessageContentCell: MessageCell, UIWebViewDelegate {
-    
-    @IBOutlet weak var webView: UIWebView!
+open class MessageContentCell: MessageCell {
+    let contentSizeKeyPath = "contentSize"
+
+    let webContentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+
+    var webView: WKWebView!
     
     open var messageBody: String?
-    
+
     open override func awakeFromNib() {
         super.awakeFromNib()
-        
+
+        let webConfiguration = WKWebViewConfiguration()
+        let webFrame = rectMinusInsets(rect: contentView.bounds, insets: webContentInsets)
+        webView = WKWebView(frame: webFrame,
+                            configuration: webConfiguration)
+        webView.scrollView.addObserver(self, forKeyPath: contentSizeKeyPath,
+                                       options: [.new, .old], context: nil)
+
+        contentView.addSubview(webView)
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
     }
-    
-    public override func updateCell(_ model: ComposeFieldModel, _ message: Message) {
-        fieldModel = model
-        messageBody = message.longMessage
-        loadWebViewContent()
+
+    deinit {
+        webView.scrollView.removeObserver(self, forKeyPath: contentSizeKeyPath)
+    }
+
+    func rectMinusInsets(rect: CGRect, insets: UIEdgeInsets) -> CGRect {
+        return CGRect(x: rect.origin.x + insets.left, y: rect.origin.y + insets.top,
+                      width: rect.size.width - insets.left - insets.right,
+                      height: rect.size.height - insets.top - insets.bottom)
+    }
+
+    open override func layoutSubviews() {
+        let contentHeight = webView.scrollView.contentSize.height
+        let totalCellHeight = contentHeight + webContentInsets.top + webContentInsets.bottom
+
+        var webFrame = webView.frame
+        webFrame.size.height = contentHeight
+        webView.frame = webFrame
+
+        height = totalCellHeight
+        (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: height)
     }
     
-    public func webViewDidFinishLoad(_ webView: UIWebView) {
-        height = webView.scrollView.contentSize.height
-        (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: height)
+    public override func updateCell(model: ComposeFieldModel, message: Message,
+                                    indexPath: IndexPath) {
+        super.updateCell(model: model, message: message, indexPath: indexPath)
+        messageBody = message.longMessage
+        loadWebViewContent()
     }
     
     fileprivate final func loadWebViewContent() {
@@ -57,6 +86,21 @@ open class MessageContentCell: MessageCell, UIWebViewDelegate {
                     + "</html>"
                 
                 webView.loadHTMLString(html, baseURL: url)
+            }
+        }
+    }
+
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?,
+                                    change: [NSKeyValueChangeKey : Any]?,
+                                    context: UnsafeMutableRawPointer?) {
+        if keyPath == contentSizeKeyPath,
+            let view = object as? UIScrollView,
+            view == webView.scrollView {
+            if let newValue = change?[NSKeyValueChangeKey.newKey] as? CGSize,
+                let oldValue = change?[NSKeyValueChangeKey.oldKey] as? CGSize {
+                if !__CGSizeEqualToSize(oldValue, newValue) {
+                    setNeedsLayout()
+                }
             }
         }
     }

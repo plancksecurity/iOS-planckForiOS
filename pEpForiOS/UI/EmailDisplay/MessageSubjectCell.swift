@@ -9,8 +9,9 @@ import UIKit
 import MessageModel
 
 open class MessageSubjectCell: MessageCell {
-    public override func updateCell(_ model: ComposeFieldModel, _ message: Message) {
-        fieldModel = model
+    public override func updateCell(model: ComposeFieldModel, message: Message,
+                                    indexPath: IndexPath) {
+        super.updateCell(model: model, message: message, indexPath: indexPath)
         titleLabel?.text = message.shortMessage
         
         if let originationDate = message.sent {
