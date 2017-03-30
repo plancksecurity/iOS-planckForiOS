@@ -46,7 +46,6 @@ class EmailViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        lastHeights.removeAll()
         checkMessageReEvaluation()
         showPepRating()
         message.markAsSeen()
@@ -55,6 +54,7 @@ class EmailViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setNoColor()
+        lastHeights.removeAll()
     }
 
     func checkMessageReEvaluation() {

@@ -26,7 +26,7 @@ open class MessageCell: UITableViewCell {
     public var height: CGFloat = UITableViewAutomaticDimension
 
     /**
-     The current `IndexPath`.
+     The current `IndexPath`, as last indicated via a call to `updateCell`.
      */
     public var indexPath: IndexPath?
     
