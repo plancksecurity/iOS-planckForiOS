@@ -29,7 +29,7 @@ open class MimeTypeUtil {
         }
     }
     
-    open func getMimeType(fileExtension:String) -> String {
+    open func getMimeType(fileExtension: String) -> String {
         if let data = json {
             if let ex = data["mimeType"] as? [String : String] {
                 for (key,value) in ex {
@@ -40,5 +40,16 @@ open class MimeTypeUtil {
             }
         }
         return MimeTypeUtil.defaultMimeType
+    }
+
+    /**
+     Is the given mimetype suitable for creating an `UIImage`?
+     */
+    open func isImage(mimeType: String) -> Bool {
+        let lcMT = mimeType.lowercased()
+        if lcMT == getMimeType(fileExtension: "png") || lcMT == getMimeType(fileExtension: "jpg") {
+            return true
+        }
+        return false
     }
 }
