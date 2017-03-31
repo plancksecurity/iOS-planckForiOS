@@ -98,7 +98,7 @@ open class MessageContentCell: MessageCell {
             view == webView.scrollView {
             if let newValue = change?[NSKeyValueChangeKey.newKey] as? CGSize,
                 let oldValue = change?[NSKeyValueChangeKey.oldKey] as? CGSize {
-                if !__CGSizeEqualToSize(oldValue, newValue) {
+                if !oldValue.equalTo(newValue) {
                     setNeedsLayout()
                 }
             }
