@@ -121,7 +121,8 @@ open class NetworkServiceWorker {
      */
     func processAllInternal(repeatProcess: Bool = true) {
         if !cancelled {
-            let connectInfos = gatherConnectInfos()
+            let connectInfos = ServiceUtil.gatherConnectInfos(context: context,
+                                                              accounts: fetchAccounts())
             let operationLines = buildOperationLines(
                 accountConnectInfos: connectInfos)
             processOperationLinesInternal(operationLines: operationLines,
@@ -134,23 +135,6 @@ open class NetworkServiceWorker {
         let sortDescriptors = [NSSortDescriptor(key: "needsVerification", ascending: false)]
         return CdAccount.all(
             predicate: p, orderedBy: sortDescriptors, in: context) as? [CdAccount] ?? []
-    }
-
-    func gatherConnectInfos() -> [AccountConnectInfo] {
-        var connectInfos = [AccountConnectInfo]()
-        context.performAndWait {
-            let accounts = self.fetchAccounts()
-            for acc in accounts {
-                let smtpCI = acc.smtpConnectInfo
-                let imapCI = acc.imapConnectInfo
-                if (smtpCI != nil || imapCI != nil) {
-                    connectInfos.append(AccountConnectInfo(
-                        needsVerification: acc.needsVerification,
-                        accountID: acc.objectID, imapConnectInfo: imapCI, smtpConnectInfo: smtpCI))
-                }
-            }
-        }
-        return connectInfos
     }
 
     func checkVerified(accountInfo: AccountConnectInfo,
@@ -392,7 +376,8 @@ open class NetworkServiceWorker {
         operations.append(contentsOf: smtpOperations)
 
         if let imapCI = accountInfo.imapConnectInfo {
-            let imapSyncData = cachedImapSync(connectInfo: imapCI)
+            let imapSyncData = ServiceUtil.cachedImapSync(
+                imapConnectionDataCache: imapConnectionDataCache, connectInfo: imapCI)
 
             // login IMAP
             let opImapLogin = LoginImapOperation(
@@ -494,15 +479,6 @@ open class NetworkServiceWorker {
 
         return OperationLine(accountInfo: accountInfo, operations: operations,
                              finalOperation: opAllFinished, errorContainer: errorContainer)
-    }
-
-    func cachedImapSync(connectInfo: EmailConnectInfo) -> ImapSyncData {
-        if let syncData = imapConnectionDataCache[connectInfo] {
-            return syncData
-        }
-        let imapSyncData = ImapSyncData(connectInfo: connectInfo)
-        imapConnectionDataCache[connectInfo] = imapSyncData
-        return imapSyncData
     }
 
     func messageFetched(cdMessage: CdMessage) {

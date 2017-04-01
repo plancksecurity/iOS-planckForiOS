@@ -49,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.application = application
+        application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
         let pEpReInitialized = deleteManagementDBIfRequired()
 
@@ -125,6 +126,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Try to cleanly shutdown
         appConfig?.tearDownSession()
+    }
+
+    func application(_ application: UIApplication, performFetchWithCompletionHandler
+        completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        networkService?.quickSync() { status in
+            switch status {
+            case .failed:
+                completionHandler(.failed)
+            case .fetchedData:
+                completionHandler(.newData)
+            case .noData:
+                completionHandler(.noData)
+            }
+        }
     }
 
     func loadCoreDataStack() {

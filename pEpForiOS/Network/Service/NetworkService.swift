@@ -78,6 +78,11 @@ public class NetworkService {
         }
     }
 
+    /**
+     The connection cache from the last service worker, in case we go to the background.
+     */
+    var lastConnectionDataCache: [EmailConnectInfo: ImapSyncData]?
+
     public init(sleepTimeInSeconds: Double = 10.0,
                 parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
                 mySelfer: KickOffMySelfProtocol? = nil) {
@@ -105,8 +110,16 @@ public class NetworkService {
         if let config = currentWorker?.serviceConfig {
             serviceConfig = config
         }
+        lastConnectionDataCache = currentWorker?.imapConnectionDataCache
         currentWorker?.cancel(networkService: self)
         currentWorker = nil
+    }
+
+    public func quickSync(completionHandler: @escaping (QuickSyncResult) -> ()) {
+        let connectionCache = currentWorker?.imapConnectionDataCache ?? lastConnectionDataCache
+        cancel()
+        let quickSync = QuickSyncService(imapConnectionDataCache: connectionCache)
+        quickSync.sync(completionBlock: completionHandler)
     }
 
     public var timeIntervalForInterestingFolders: TimeInterval {
