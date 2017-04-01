@@ -429,14 +429,14 @@ open class NetworkServiceWorker {
             operations.append(opFetchFolders)
             opFetchFolders.addDependency(opImapLogin)
             opImapFinished.addDependency(opFetchFolders)
-            
+
             let opSpecialFolder = CreateSpecialFoldersOperation(
                 parentName: serviceConfig.parentName, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
             operations.append(opSpecialFolder)
             opSpecialFolder.addDependency(opFetchFolders)
             opImapFinished.addDependency(opSpecialFolder)
-            
+
             // 3.c Client-to-server synchronization (IMAP)
             let (lastSendOp, sendOperations) = buildSendOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
