@@ -190,7 +190,8 @@ extension EmailViewController {
         return UITableViewAutomaticDimension
     }
 
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView,
+                            heightForFooterInSection section: Int) -> CGFloat {
         if section == 0 {
             if attachmentsViewHelper.hasAttachments {
             }
