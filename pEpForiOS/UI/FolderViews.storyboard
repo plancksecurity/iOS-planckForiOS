@@ -17,6 +17,38 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="y1Q-G4-Yvh">
+                            <rect key="frame" x="0.0" y="72" width="375" height="80"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NEj-lZ-p6O">
+                                    <rect key="frame" x="10" y="10" width="60" height="60"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="60" id="I3Z-sT-Qz4"/>
+                                    </constraints>
+                                    <state key="normal" image="button-add"/>
+                                    <connections>
+                                        <action selector="addAccount:" destination="6ra-tc-Aiv" eventType="touchUpInside" id="kwV-sP-A4A"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iQ7-gl-OPN">
+                                    <rect key="frame" x="80" y="25" width="86" height="30"/>
+                                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <state key="normal" title="add account"/>
+                                    <connections>
+                                        <action selector="addAccount:" destination="6ra-tc-Aiv" eventType="touchUpInside" id="mlU-r2-M9G"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="iQ7-gl-OPN" firstAttribute="centerY" secondItem="y1Q-G4-Yvh" secondAttribute="centerY" id="VZc-GM-gUP"/>
+                                <constraint firstItem="NEj-lZ-p6O" firstAttribute="top" secondItem="y1Q-G4-Yvh" secondAttribute="top" constant="10" id="Vuj-Gl-B6Q"/>
+                                <constraint firstAttribute="bottom" secondItem="NEj-lZ-p6O" secondAttribute="bottom" constant="10" id="YfC-Fp-K6p"/>
+                                <constraint firstItem="iQ7-gl-OPN" firstAttribute="leading" secondItem="NEj-lZ-p6O" secondAttribute="trailing" constant="10" id="oYf-Br-zxe"/>
+                                <constraint firstItem="NEj-lZ-p6O" firstAttribute="leading" secondItem="y1Q-G4-Yvh" secondAttribute="leading" constant="10" id="xtQ-yY-YhQ"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Default" id="Gav-RT-MrD">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -35,35 +67,11 @@
                     <navigationItem key="navigationItem" id="hj4-Y7-EQ3"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="glK-ur-Al6">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZUZ-vM-yTv">
-                            <rect key="frame" x="10" y="10" width="220" height="108"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Rj-fh-tIJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="80" height="108"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="80" id="cfl-K1-03e"/>
-                                    </constraints>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rhv-Qb-G3Y">
-                                    <rect key="frame" x="90" y="0.0" width="130" height="108"/>
-                                </imageView>
-                            </subviews>
-                        </stackView>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="ZUZ-vM-yTv" firstAttribute="leading" secondItem="glK-ur-Al6" secondAttribute="leading" constant="10" id="Kzk-bp-uiD"/>
-                        <constraint firstAttribute="trailing" secondItem="ZUZ-vM-yTv" secondAttribute="trailing" constant="10" id="bhf-6l-aCW"/>
-                        <constraint firstAttribute="bottom" secondItem="ZUZ-vM-yTv" secondAttribute="bottom" constant="10" id="hqt-3o-0Bi"/>
-                        <constraint firstItem="ZUZ-vM-yTv" firstAttribute="top" secondItem="glK-ur-Al6" secondAttribute="top" constant="10" id="oqp-sX-06J"/>
-                    </constraints>
-                </view>
             </objects>
-            <point key="canvasLocation" x="7993" y="-1164"/>
+            <point key="canvasLocation" x="7992.8000000000002" y="-1164.4677661169417"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="button-add" width="22" height="22"/>
+    </resources>
 </document>
