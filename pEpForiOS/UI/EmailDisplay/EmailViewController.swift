@@ -12,7 +12,13 @@ import MessageModel
 
 class EmailViewController: UITableViewController {
     var appConfig: AppConfig!
-    var message: Message!
+
+    var message: Message! {
+        didSet {
+            attachmentsViewHelper.message = message
+        }
+    }
+
     var partnerIdentity: Identity?
     var tableData: ComposeDataSource?
     var datasource = [Message]()
@@ -20,6 +26,7 @@ class EmailViewController: UITableViewController {
     var otherCellsHeight: CGFloat = 0.0
     var ratingReEvaluator: RatingReEvaluator?
     var lastHeights = [IndexPath: CGFloat]()
+    var attachmentsViewHelper = AttachmentsViewHelper()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -172,7 +179,7 @@ class EmailViewController: UITableViewController {
     }
 }
 
-// MARK: TableView Delegate & Datasource
+// MARK: UITableViewDelegate
 
 extension EmailViewController {
     override func tableView(_ tableView: UITableView,
@@ -182,11 +189,33 @@ extension EmailViewController {
         }
         return UITableViewAutomaticDimension
     }
-    
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0 {
+            if attachmentsViewHelper.hasAttachments {
+            }
+        }
+        return 0
+    }
+
+    override func tableView(_ tableView: UITableView,
+                            viewForFooterInSection section: Int) -> UIView? {
+        if section == 0 {
+            if attachmentsViewHelper.hasAttachments {
+                return nil
+            }
+        }
+        return nil
+    }
+}
+
+// MARK: UITableViewDataSource
+
+extension EmailViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableData?.numberOfRows() ?? 0
     }
-    
+
     override func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard
