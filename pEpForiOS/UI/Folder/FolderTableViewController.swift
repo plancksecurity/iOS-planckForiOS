@@ -9,7 +9,7 @@
 import UIKit
 import MessageModel
 
-class FolderTableViewController: UITableViewController, TableCollapsableDelegate {
+class FolderTableViewController: UITableViewController {
 
     var appConfig: AppConfig?
 
@@ -28,16 +28,6 @@ class FolderTableViewController: UITableViewController, TableCollapsableDelegate
 
     }
 
-    func toggleSection(section: Int) {
-
-        folderVM[section].collapsed = !folderVM[section].collapsed
-        tableView.beginUpdates()
-        for i in 0 ..< folderVM[section].count {
-            tableView.reloadRows(at: [NSIndexPath(row: i, section: section) as IndexPath], with: .automatic)
-        }
-        tableView.endUpdates()
-        
-    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -62,13 +52,13 @@ class FolderTableViewController: UITableViewController, TableCollapsableDelegate
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "Section") as? AccountSection {
-            cell.configure(section: folderVM[section], table: self, sectionNum: section)
-            cell.actionView.addGestureRecognizer(UITapGestureRecognizer(target: cell, action: #selector( AccountSection.tapHeader(gestureRecognizer:))))
-
-            return cell
-        }
-        return nil
+            let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleTableViewHeader ?? CollapsibleTableViewHeader(reuseIdentifier: "header")
+            header.configure(viewModel: folderVM[section], section: section)
+            header.delegate = self
+            return header
+    }
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -85,7 +75,8 @@ class FolderTableViewController: UITableViewController, TableCollapsableDelegate
         let fcvm = folderVM[indexPath.section][indexPath.item]
         cell.detailTextLabel?.text = "\(fcvm.number)"
         cell.textLabel?.text = fcvm.title
-        cell.imageView?.image = fcvm.icon
+        cell.accessoryType = .disclosureIndicator
+        //cell.imageView?.image = fcvm.icon
         return cell
     }
 
@@ -152,5 +143,18 @@ class FolderTableViewController: UITableViewController, TableCollapsableDelegate
         // Pass the selected object to the new view controller.
     }
     */
+
+}
+
+extension FolderTableViewController: CollapsibleTableViewHeaderDelegate {
+
+    func toggleSection(header: CollapsibleTableViewHeader, section: Int) {
+        folderVM[section].collapsed = !folderVM[section].collapsed
+        tableView.beginUpdates()
+        for i in 0 ..< folderVM[section].count {
+            tableView.reloadRows(at: [NSIndexPath(row: i, section: section) as IndexPath], with: .automatic)
+        }
+        tableView.endUpdates()
+    }
 
 }

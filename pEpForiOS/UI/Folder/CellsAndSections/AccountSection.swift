@@ -26,8 +26,7 @@ public class AccountSection: UITableViewCell {
         //vm = section
         self.section = sectionNum
         //profileImage.image = section.image
-
-                //self.addGestureRecognizer(UITapGestureRecognizer( target: self, action: #selector( self.tapHeader(_:))))
+        //self.addGestureRecognizer(UITapGestureRecognizer( target: self, action: #selector( self.tapHeader(_:))))
         accountType.text = section.type
         accountName.text = section.userName
         userAddress.text = section.userAddress
@@ -37,7 +36,7 @@ public class AccountSection: UITableViewCell {
         /*guard let cell = gestureRecognizer.view as? AccountSection else {
             return
         }*/
-            delegate?.toggleSection(section: section!)
+        delegate?.toggleSection(section: section!)
     }
 
     public override func awakeFromNib() {

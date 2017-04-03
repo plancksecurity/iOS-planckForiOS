@@ -206,6 +206,8 @@
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
 		B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */; };
 		B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */; };
+		B7D1EEC81E8BEC8D00F190E3 /* sectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D1EEC71E8BEC8D00F190E3 /* sectionTest.swift */; };
+		B7D1EECA1E8BED2500F190E3 /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D1EEC91E8BED2500F190E3 /* extensions.swift */; };
 		B7F19A001E5DE9FB0079A513 /* Folder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F199FF1E5DE9FB0079A513 /* Folder+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -452,6 +454,8 @@
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
 		B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Filter/ViewModel/FilterViewModel.swift; sourceTree = "<group>"; };
 		B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterCellViewModel.swift; path = Filter/ViewModel/FilterCellViewModel.swift; sourceTree = "<group>"; };
+		B7D1EEC71E8BEC8D00F190E3 /* sectionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = sectionTest.swift; path = Folder/sectionTest.swift; sourceTree = "<group>"; };
+		B7D1EEC91E8BED2500F190E3 /* extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		B7F199FF1E5DE9FB0079A513 /* Folder+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Folder+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -980,6 +984,8 @@
 			children = (
 				B726CF771E5DB1F6005C19EF /* AccountSection.swift */,
 				B722EC821E5CA66900A2B9D5 /* FolderTableViewCell.swift */,
+				B7D1EEC71E8BEC8D00F190E3 /* sectionTest.swift */,
+				B7D1EEC91E8BED2500F190E3 /* extensions.swift */,
 			);
 			name = CellsAndSections;
 			sourceTree = "<group>";
@@ -1332,6 +1338,7 @@
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
 				439A6C771E535827004CBAA6 /* PrivacyStatusTableViewController.swift in Sources */,
+				B7D1EECA1E8BED2500F190E3 /* extensions.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
 				43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */,
@@ -1343,6 +1350,7 @@
 				4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */,
 				B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
+				B7D1EEC81E8BEC8D00F190E3 /* sectionTest.swift in Sources */,
 				8B77BD691E0C1D930060F11F /* AccountSettingsTableViewController.swift in Sources */,
 				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
 				B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */,
