@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 import MessageModel
 
-class EmailViewController: UITableViewController {
+class EmailViewController: UITableViewController, AttachmentsViewHelperDelegate {
     var appConfig: AppConfig!
 
     var message: Message! {
         didSet {
-            attachmentsViewHelper.message = message
+            attachmentsViewHelper?.message = message
         }
     }
 
@@ -26,11 +26,16 @@ class EmailViewController: UITableViewController {
     var otherCellsHeight: CGFloat = 0.0
     var ratingReEvaluator: RatingReEvaluator?
     var lastHeights = [IndexPath: CGFloat]()
-    var attachmentsViewHelper = AttachmentsViewHelper()
+    var attachmentsViewHelper: AttachmentsViewHelper?
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        attachmentsViewHelper = AttachmentsViewHelper(delegate: self)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         loadDatasource("MessageData")
         
         tableView.estimatedRowHeight = 72.0
@@ -193,7 +198,8 @@ extension EmailViewController {
     override func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
         if section == 0 {
-            if attachmentsViewHelper.hasAttachments {
+            if let _ = attachmentsViewHelper?.resultView {
+                return 0
             }
         }
         return 0
@@ -202,8 +208,8 @@ extension EmailViewController {
     override func tableView(_ tableView: UITableView,
                             viewForFooterInSection section: Int) -> UIView? {
         if section == 0 {
-            if attachmentsViewHelper.hasAttachments {
-                return nil
+            if let view = attachmentsViewHelper?.resultView {
+                return view
             }
         }
         return nil
@@ -230,6 +236,16 @@ extension EmailViewController {
         lastHeights[indexPath] = cell.height
         cell.delegate = self
         return cell
+    }
+}
+
+// MARK: - AttachmentsViewHelperDelegate
+
+extension EmailViewController {
+    func didCreate(attachmentsView: UIView?, message: Message) {
+        GCD.onMain {
+            self.tableView.reloadData()
+        }
     }
 }
 

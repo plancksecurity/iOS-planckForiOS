@@ -10,8 +10,13 @@ import Foundation
 
 import MessageModel
 
+protocol AttachmentsViewHelperDelegate: class {
+    func didCreate(attachmentsView: UIView?, message: Message)
+}
+
 class AttachmentsViewHelper {
-    let mimeTypes = MimeTypeUtil()
+    weak var delegate: AttachmentsViewHelperDelegate?
+
     var message: Message? {
         didSet {
             if let m = message {
@@ -19,18 +24,34 @@ class AttachmentsViewHelper {
             }
         }
     }
-    var imageAttachments = [Attachment]()
+    var attachmentsCount = 0
     var hasAttachments: Bool {
-        return !imageAttachments.isEmpty
+        return attachmentsCount > 0
+    }
+
+    var resultView: UIView?
+
+    let mimeTypes = MimeTypeUtil()
+    var buildOp: AttachmentsViewOperation?
+    let operationQueue = OperationQueue()
+
+    init(delegate: AttachmentsViewHelperDelegate) {
+        self.delegate = delegate
     }
 
     func updateQuickMetaData(message: Message) {
-        imageAttachments.removeAll()
+        operationQueue.cancelAllOperations()
+        resultView = nil
 
-        for att in message.attachments {
-            if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false) && att.data != nil {
-                imageAttachments.append(att)
+        let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message)
+        buildOp = theBuildOp
+        attachmentsCount = theBuildOp.attachmentsCount
+        theBuildOp.completionBlock = { [weak self] in
+            if theBuildOp.message == message {
+                self?.resultView = theBuildOp.resultView
+                self?.delegate?.didCreate(attachmentsView: theBuildOp.resultView, message: message)
             }
         }
+        operationQueue.addOperation(theBuildOp)
     }
 }
