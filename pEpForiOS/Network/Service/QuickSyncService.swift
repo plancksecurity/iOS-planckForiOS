@@ -76,9 +76,6 @@ open class QuickSyncService {
             let loginOp = LoginImapOperation(
                 parentName: #function, errorContainer: theErrorContainer,
                 imapSyncData: imapSyncData)
-            loginOp.completionBlock = {
-
-            }
             backgroundQueue.addOperation(loginOp)
         }
         backgroundQueue.waitUntilAllOperationsAreFinished()

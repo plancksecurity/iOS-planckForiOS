@@ -56,6 +56,7 @@ public class NetworkService {
 
     var serviceConfig: ServiceConfig
     public private(set) var currentWorker: NetworkServiceWorker?
+    var quickSync: QuickSyncService?
 
     public weak var networkServiceDelegate: NetworkServiceDelegate? {
         get {
@@ -118,8 +119,8 @@ public class NetworkService {
     public func quickSync(completionHandler: @escaping (QuickSyncResult) -> ()) {
         let connectionCache = currentWorker?.imapConnectionDataCache ?? lastConnectionDataCache
         cancel()
-        let quickSync = QuickSyncService(imapConnectionDataCache: connectionCache)
-        quickSync.sync(completionBlock: completionHandler)
+        quickSync = QuickSyncService(imapConnectionDataCache: connectionCache)
+        quickSync?.sync(completionBlock: completionHandler)
     }
 
     public var timeIntervalForInterestingFolders: TimeInterval {
