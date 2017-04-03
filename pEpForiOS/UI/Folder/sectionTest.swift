@@ -17,6 +17,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
 
     var delegate: CollapsibleTableViewHeaderDelegate?
     var section: Int = 0
+    var collapsed: Bool = true
 
     let topStackView = UIStackView()
     let labelStackView = UIStackView()
@@ -97,6 +98,8 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         //profileImage.layer.masksToBounds = true
         self.arrowImageView.image = UIImage(named:"chevron-icon")
         self.section = section
+        collapsed = viewModel.collapsed
+        arrowImageView.transform = arrowImageView.transform.rotated(by: CGFloat.pi/2)
     }
 
     func autolayout() {
@@ -134,8 +137,14 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         guard let cell = gestureRecognizer.view as? CollapsibleTableViewHeader else {
             return
         }
-
+        if collapsed {
+            arrowImageView.transform = arrowImageView.transform.rotated(by: CGFloat.pi/2)
+        } else {
+            arrowImageView.transform = arrowImageView.transform.rotated(by: -(CGFloat.pi/2))
+        }
+        collapsed = !collapsed
         delegate?.toggleSection(header: self, section: cell.section)
+
     }
 
     func setCollapsed(collapsed: Bool) {

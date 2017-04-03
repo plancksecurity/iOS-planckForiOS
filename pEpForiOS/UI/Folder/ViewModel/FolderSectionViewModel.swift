@@ -11,7 +11,6 @@ import MessageModel
 
 public class FolderSectionViewModel {
 
-    public var arrow : String
     public var collapsed: Bool
 
     //image, type, user, name
@@ -22,11 +21,9 @@ public class FolderSectionViewModel {
     public init(account acc: Account) {
         self.account = acc
         //acc.user.
-        self.collapsed = false
         items = [FolderCellViewModel]()
         help = [FolderCellViewModel]()
-        arrow = ">"
-        collapsed = false
+        collapsed = true
         generateCells()
     }
 
