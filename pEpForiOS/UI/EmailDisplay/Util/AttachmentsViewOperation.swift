@@ -15,9 +15,6 @@ class AttachmentsViewOperation: Operation {
     let message: Message
     let cellWidth: CGFloat?
 
-    let spacing: CGFloat = 10
-    let margin: CGFloat = 10
-
     /**
      The resulting attachments view will appear here.
      */
@@ -58,13 +55,11 @@ class AttachmentsViewOperation: Operation {
         }
 
         // The frame needed to place all attachment images
-        let maxWidth = guessCellWidth() - 2 * margin
         let theFrame = CGRect(origin: CGPoint.zero,
-                              size: CGSize(width: maxWidth, height: 0.0))
+                              size: CGSize(width: guessCellWidth(), height: 0.0))
 
         let view = ImageView(frame: theFrame)
         view.attachedViews = attachmentViews
-        view.spacing = spacing
         view.frame = theFrame
         view.layoutIfNeeded()
 

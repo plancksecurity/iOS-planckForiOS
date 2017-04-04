@@ -18,7 +18,6 @@ class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
         super.updateCell(model: model, message: message, indexPath: indexPath)
         titleLabel?.text = "Attachments"
         attachmentsViewHelper.delegate = self
-        attachmentsViewHelper.cellWidth = bounds.size.width
         attachmentsViewHelper.message = message
     }
 
