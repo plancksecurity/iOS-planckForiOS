@@ -18,6 +18,7 @@ open class MessageContentCell: MessageCell {
     var webView: WKWebView!
     
     open var messageBody: String?
+    var oldContentHeight: CGFloat = 0
 
     open override func awakeFromNib() {
         super.awakeFromNib()
@@ -53,7 +54,10 @@ open class MessageContentCell: MessageCell {
         webView.frame = webFrame
 
         height = totalCellHeight
-        (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: height)
+        if height != oldContentHeight {
+            (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: height)
+        }
+        oldContentHeight = height
     }
     
     public override func updateCell(model: ComposeFieldModel, message: Message,
