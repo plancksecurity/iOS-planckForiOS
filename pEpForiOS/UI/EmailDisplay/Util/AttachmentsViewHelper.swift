@@ -45,6 +45,23 @@ class AttachmentsViewHelper {
         self.init(delegate: nil)
     }
 
+    func guessCellWidth() -> CGFloat {
+        return cellWidth ?? UIScreen.main.bounds.width
+    }
+
+    func opFinished(theBuildOp: AttachmentsViewOperation) {
+        // The frame needed to place all attachment images
+        let theFrame = CGRect(origin: CGPoint.zero,
+                              size: CGSize(width: guessCellWidth(), height: 0.0))
+        let view = ImageView(frame: theFrame)
+        view.attachedViews = theBuildOp.attachmentViews
+        view.frame = theFrame
+        view.layoutIfNeeded()
+
+        resultView = view
+        delegate?.didCreate(attachmentsView: view, message: theBuildOp.message)
+    }
+
     func updateQuickMetaData(message: Message) {
         operationQueue.cancelAllOperations()
         resultView = nil
@@ -55,8 +72,11 @@ class AttachmentsViewHelper {
         attachmentsCount = theBuildOp.attachmentsCount
         theBuildOp.completionBlock = { [weak self] in
             if theBuildOp.message == message {
-                self?.resultView = theBuildOp.resultView
-                self?.delegate?.didCreate(attachmentsView: theBuildOp.resultView, message: message)
+                if let mySelf = self {
+                    GCD.onMain {
+                        mySelf.opFinished(theBuildOp: theBuildOp)
+                    }
+                }
             }
         }
         operationQueue.addOperation(theBuildOp)

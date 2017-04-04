@@ -18,8 +18,12 @@ class AttachmentsViewOperation: Operation {
     /**
      The resulting attachments view will appear here.
      */
-    var resultView: UIView?
-    var attachmentsCount: Int = 0
+    var attachmentViews = [UIView]()
+
+    /**
+     The number of attachments.
+     */
+    var attachmentsCount = 0
 
     init(mimeTypes: MimeTypeUtil?, message: Message, cellWidth: CGFloat?) {
         self.mimeTypes = mimeTypes
@@ -37,13 +41,7 @@ class AttachmentsViewOperation: Operation {
         }
     }
 
-    func guessCellWidth() -> CGFloat {
-        return cellWidth ?? UIScreen.main.bounds.width
-    }
-
     override func main() {
-        var attachmentViews = [UIView]()
-
         let attachments = eligibleAttachments()
         for att in attachments {
             if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
@@ -53,16 +51,5 @@ class AttachmentsViewOperation: Operation {
                 attachmentViews.append(view)
             }
         }
-
-        // The frame needed to place all attachment images
-        let theFrame = CGRect(origin: CGPoint.zero,
-                              size: CGSize(width: guessCellWidth(), height: 0.0))
-
-        let view = ImageView(frame: theFrame)
-        view.attachedViews = attachmentViews
-        view.frame = theFrame
-        view.layoutIfNeeded()
-
-        resultView = view
     }
 }
