@@ -13,7 +13,6 @@ import MessageModel
 class AttachmentsViewOperation: Operation {
     let mimeTypes: MimeTypeUtil?
     let message: Message
-    let cellWidth: CGFloat?
 
     /**
      The resulting attachments view will appear here.
@@ -25,10 +24,9 @@ class AttachmentsViewOperation: Operation {
      */
     var attachmentsCount = 0
 
-    init(mimeTypes: MimeTypeUtil?, message: Message, cellWidth: CGFloat?) {
+    init(mimeTypes: MimeTypeUtil?, message: Message) {
         self.mimeTypes = mimeTypes
         self.message = message
-        self.cellWidth = cellWidth
 
         super.init()
 

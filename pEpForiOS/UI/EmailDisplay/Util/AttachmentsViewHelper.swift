@@ -66,8 +66,7 @@ class AttachmentsViewHelper {
         operationQueue.cancelAllOperations()
         resultView = nil
 
-        let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message,
-                                                  cellWidth: cellWidth)
+        let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message)
         buildOp = theBuildOp
         attachmentsCount = theBuildOp.attachmentsCount
         theBuildOp.completionBlock = { [weak self] in
