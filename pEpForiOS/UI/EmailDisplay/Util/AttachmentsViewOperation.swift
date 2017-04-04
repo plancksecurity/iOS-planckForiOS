@@ -63,7 +63,6 @@ class AttachmentsViewOperation: Operation {
                               size: CGSize(width: maxWidth, height: 0.0))
 
         let view = ImageView(frame: theFrame)
-        view.backgroundColor = .blue
         view.attachedViews = attachmentViews
         view.spacing = spacing
         view.frame = theFrame
