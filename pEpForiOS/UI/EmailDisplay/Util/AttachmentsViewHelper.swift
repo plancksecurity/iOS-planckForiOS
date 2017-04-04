@@ -35,8 +35,12 @@ class AttachmentsViewHelper {
     var buildOp: AttachmentsViewOperation?
     let operationQueue = OperationQueue()
 
-    init(delegate: AttachmentsViewHelperDelegate) {
+    init(delegate: AttachmentsViewHelperDelegate?) {
         self.delegate = delegate
+    }
+
+    convenience init() {
+        self.init(delegate: nil)
     }
 
     func updateQuickMetaData(message: Message) {

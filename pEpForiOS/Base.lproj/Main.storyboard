@@ -331,7 +331,7 @@
                                             </connections>
                                         </textView>
                                         <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8S-M4-JdW">
-                                            <rect key="frame" x="-9" y="40" width="376" height="140"/>
+                                            <rect key="frame" x="-9" y="40" width="375" height="140"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="prY-xp-1rI" id="VoP-0P-HiT"/>
@@ -976,7 +976,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="03J-Ut-4Ls" id="dVc-Gs-baq">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -1657,20 +1657,18 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6pa-eP-VnA">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RjU-nt-W1E" customClass="ImageView" customModule="pEpForiOS" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                        </stackView>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="6pa-eP-VnA" firstAttribute="top" secondItem="W8L-Sa-ksv" secondAttribute="top" id="87G-C0-YTq"/>
-                                        <constraint firstAttribute="trailing" secondItem="6pa-eP-VnA" secondAttribute="trailing" id="kp7-Ha-XXc"/>
-                                        <constraint firstAttribute="bottom" secondItem="6pa-eP-VnA" secondAttribute="bottom" id="qSk-IV-bAF"/>
-                                        <constraint firstItem="6pa-eP-VnA" firstAttribute="leading" secondItem="W8L-Sa-ksv" secondAttribute="leading" id="rhJ-Cn-1qT"/>
+                                        <constraint firstItem="RjU-nt-W1E" firstAttribute="top" secondItem="W8L-Sa-ksv" secondAttribute="top" id="4Nk-bV-G9F"/>
+                                        <constraint firstAttribute="trailing" secondItem="RjU-nt-W1E" secondAttribute="trailing" id="CTq-hZ-Qhm"/>
+                                        <constraint firstItem="RjU-nt-W1E" firstAttribute="leading" secondItem="W8L-Sa-ksv" secondAttribute="leading" id="mfx-tK-iTi"/>
+                                        <constraint firstAttribute="bottom" secondItem="RjU-nt-W1E" secondAttribute="bottom" id="uSO-iN-PdH"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="stackView" destination="6pa-eP-VnA" id="r63-OV-ku9"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

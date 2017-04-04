@@ -10,14 +10,10 @@ import Foundation
 import UIKit
 import MessageModel
 
-class EmailViewController: UITableViewController, AttachmentsViewHelperDelegate {
+class EmailViewController: UITableViewController {
     var appConfig: AppConfig!
 
-    var message: Message! {
-        didSet {
-            attachmentsViewHelper?.message = message
-        }
-    }
+    var message: Message!
 
     var partnerIdentity: Identity?
     var tableData: ComposeDataSource?
@@ -26,11 +22,9 @@ class EmailViewController: UITableViewController, AttachmentsViewHelperDelegate 
     var otherCellsHeight: CGFloat = 0.0
     var ratingReEvaluator: RatingReEvaluator?
     var lastHeights = [IndexPath: CGFloat]()
-    var attachmentsViewHelper: AttachmentsViewHelper?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        attachmentsViewHelper = AttachmentsViewHelper(delegate: self)
     }
 
     override func viewDidLoad() {
@@ -194,26 +188,6 @@ extension EmailViewController {
         }
         return UITableViewAutomaticDimension
     }
-
-    override func tableView(_ tableView: UITableView,
-                            heightForFooterInSection section: Int) -> CGFloat {
-        if section == 0 {
-            if let view = attachmentsViewHelper?.resultView {
-                return view.frame.size.height
-            }
-        }
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView,
-                            viewForFooterInSection section: Int) -> UIView? {
-        if section == 0 {
-            if let view = attachmentsViewHelper?.resultView {
-                return view
-            }
-        }
-        return nil
-    }
 }
 
 // MARK: UITableViewDataSource
@@ -236,16 +210,6 @@ extension EmailViewController {
         lastHeights[indexPath] = cell.height
         cell.delegate = self
         return cell
-    }
-}
-
-// MARK: - AttachmentsViewHelperDelegate
-
-extension EmailViewController {
-    func didCreate(attachmentsView: UIView?, message: Message) {
-        GCD.onMain {
-            self.tableView.reloadData()
-        }
     }
 }
 

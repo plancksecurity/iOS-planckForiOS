@@ -62,6 +62,20 @@
 			<key>height</key>
 			<string>200.0</string>
 		</dict>
+		<dict>
+			<key>identifier</key>
+			<string>attachmentsCell</string>
+			<key>type</key>
+			<string>content</string>
+			<key>title</key>
+			<string></string>
+			<key>value</key>
+			<string></string>
+			<key>visible</key>
+			<string>always</string>
+			<key>height</key>
+			<string>200.0</string>
+		</dict>
 	</array>
 </dict>
 </plist>

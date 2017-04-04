@@ -62,6 +62,7 @@
 		431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B0B991D6734DF0082D0DB /* AccountsTableViewController.swift */; };
 		431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */; };
 		431D60DB1E93BB2D001266D7 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DA1E93BB2D001266D7 /* ImageView.swift */; };
+		431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
 		432142641E8FD66900FBE987 /* QuickSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432142631E8FD66900FBE987 /* QuickSyncService.swift */; };
 		432142661E8FD6A400FBE987 /* ServiceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432142651E8FD6A400FBE987 /* ServiceUtil.swift */; };
@@ -297,6 +298,7 @@
 		431B0B991D6734DF0082D0DB /* AccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		431D60DA1E93BB2D001266D7 /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAttachmentsCell.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		432142631E8FD66900FBE987 /* QuickSyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickSyncService.swift; sourceTree = "<group>"; };
 		432142651E8FD6A400FBE987 /* ServiceUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceUtil.swift; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 				220DCE311E0AB5CC002FE716 /* MessageContentCell.swift */,
 				220DCE321E0AB5CC002FE716 /* MessageSenderCell.swift */,
 				220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */,
+				431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1287,6 +1290,7 @@
 				4323FE921E851D4E006785E1 /* UIImage+Extension.swift in Sources */,
 				4323FE891E83E517006785E1 /* IdentityImageProvider.swift in Sources */,
 				43549A8E1E48B54100210D86 /* TrashMailsOperation.swift in Sources */,
+				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,
 				222B358A1DF99C48007A1F82 /* Actionsheet+Extension.swift in Sources */,
 				43A0E73E1D16C99900159F41 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				8B81BB901E03F73100D38C82 /* SegueHandlerType.swift in Sources */,
