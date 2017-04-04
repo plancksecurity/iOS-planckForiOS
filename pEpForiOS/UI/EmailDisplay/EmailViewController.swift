@@ -198,7 +198,7 @@ extension EmailViewController {
     override func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
         if section == 0 {
-            if let _ = attachmentsViewHelper?.resultView {
+            if let _ = attachmentsViewHelper?.resultView as? UIStackView {
                 return 0
             }
         }
