@@ -13,6 +13,7 @@ import MessageModel
 class AttachmentsViewOperation: Operation {
     let mimeTypes: MimeTypeUtil?
     let message: Message
+    let cellWidth: CGFloat?
 
     let spacing: CGFloat = 10
     let margin: CGFloat = 10
@@ -23,9 +24,10 @@ class AttachmentsViewOperation: Operation {
     var resultView: UIView?
     var attachmentsCount: Int = 0
 
-    init(mimeTypes: MimeTypeUtil?, message: Message) {
+    init(mimeTypes: MimeTypeUtil?, message: Message, cellWidth: CGFloat?) {
         self.mimeTypes = mimeTypes
         self.message = message
+        self.cellWidth = cellWidth
 
         super.init()
 
@@ -38,8 +40,8 @@ class AttachmentsViewOperation: Operation {
         }
     }
 
-    func guessScreenWidth() -> CGFloat {
-        return UIScreen.main.bounds.width
+    func guessCellWidth() -> CGFloat {
+        return cellWidth ?? UIScreen.main.bounds.width
     }
 
     override func main() {
@@ -56,7 +58,7 @@ class AttachmentsViewOperation: Operation {
         }
 
         // The frame needed to place all attachment images
-        let maxWidth = guessScreenWidth() - 2 * margin
+        let maxWidth = guessCellWidth() - 2 * margin
         let theFrame = CGRect(origin: CGPoint.zero,
                               size: CGSize(width: maxWidth, height: 0.0))
 

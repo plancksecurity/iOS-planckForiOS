@@ -17,6 +17,8 @@ protocol AttachmentsViewHelperDelegate: class {
 class AttachmentsViewHelper {
     weak var delegate: AttachmentsViewHelperDelegate?
 
+    var cellWidth: CGFloat?
+
     var message: Message? {
         didSet {
             if let m = message {
@@ -47,7 +49,8 @@ class AttachmentsViewHelper {
         operationQueue.cancelAllOperations()
         resultView = nil
 
-        let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message)
+        let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message,
+                                                  cellWidth: cellWidth)
         buildOp = theBuildOp
         attachmentsCount = theBuildOp.attachmentsCount
         theBuildOp.completionBlock = { [weak self] in
