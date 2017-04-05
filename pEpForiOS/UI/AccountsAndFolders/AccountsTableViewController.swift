@@ -36,7 +36,10 @@ class AccountsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       title = "Accounts.title".localized
+        title = "Accounts.title".localized
+        tableView.estimatedRowHeight = 44.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -111,6 +114,7 @@ class AccountsTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
             cell.textLabel?.text = "Logging".localized
             cell.accessoryType = .disclosureIndicator
+            cell.textLabel?.numberOfLines = 0
             return cell
 
         }
