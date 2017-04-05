@@ -13,51 +13,58 @@ import MessageModel
 open class MessageContentCell: MessageCell {
     let contentSizeKeyPath = "contentSize"
 
-    let webContentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-
     var webView: WKWebView!
     
     open var messageBody: String?
     var oldContentHeight: CGFloat = 0
 
+    var contentSizeConstraints = [NSLayoutConstraint]()
+
     open override func awakeFromNib() {
         super.awakeFromNib()
 
         let webConfiguration = WKWebViewConfiguration()
-        let webFrame = rectMinusInsets(rect: contentView.bounds, insets: webContentInsets)
-        webView = WKWebView(frame: webFrame,
-                            configuration: webConfiguration)
+        webView = WKWebView(frame: CGRect.zero, configuration: webConfiguration)
         webView.scrollView.addObserver(self, forKeyPath: contentSizeKeyPath,
                                        options: [.new, .old], context: nil)
 
         contentView.addSubview(webView)
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
+
+        setupConstraints()
     }
 
     deinit {
         webView.scrollView.removeObserver(self, forKeyPath: contentSizeKeyPath)
     }
 
-    func rectMinusInsets(rect: CGRect, insets: UIEdgeInsets) -> CGRect {
-        return CGRect(x: rect.origin.x + insets.left, y: rect.origin.y + insets.top,
-                      width: rect.size.width - insets.left - insets.right,
-                      height: rect.size.height - insets.top - insets.bottom)
-    }
+    func setupConstraints() {
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
 
-    open override func layoutSubviews() {
-        let contentHeight = webView.scrollView.contentSize.height
-        let totalCellHeight = contentHeight + webContentInsets.top + webContentInsets.bottom
-
-        webView.frame.size.height = contentHeight
-
-        height = totalCellHeight
-        if height != oldContentHeight {
-            (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: height)
+        if let margins = contentView.superview?.layoutMarginsGuide {
+            contentView.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 0)
+            contentView.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: 0)
+            contentView.topAnchor.constraint(equalTo: margins.topAnchor, constant: 0)
+            contentView.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: 0)
         }
-        oldContentHeight = height
+
+        let margin: CGFloat = 8
+        addConstraint(NSLayoutConstraint(
+            item: webView, attribute: .top, relatedBy: .equal, toItem: contentView,
+            attribute: .top, multiplier: 1.0, constant: margin))
+        addConstraint(NSLayoutConstraint(
+            item: webView, attribute: .left, relatedBy: .equal, toItem: contentView,
+            attribute: .left, multiplier: 1.0, constant: margin))
+        addConstraint(NSLayoutConstraint(
+            item: webView, attribute: .right, relatedBy: .equal, toItem: contentView,
+            attribute: .right, multiplier: 1.0, constant: -margin))
+        addConstraint(NSLayoutConstraint(
+            item: webView, attribute: .bottom, relatedBy: .equal, toItem: contentView,
+            attribute: .bottom, multiplier: 1.0, constant: -margin))
     }
-    
+
     public override func updateCell(model: ComposeFieldModel, message: Message,
                                     indexPath: IndexPath) {
         super.updateCell(model: model, message: message, indexPath: indexPath)
@@ -94,6 +101,28 @@ open class MessageContentCell: MessageCell {
         }
     }
 
+    func updateWebViewSizeConstraints(contentSize: CGSize) {
+        contentView.removeConstraints(contentSizeConstraints)
+        contentSizeConstraints.removeAll()
+        contentSizeConstraints.append(NSLayoutConstraint(
+            item: webView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
+            multiplier: 1.0, constant: contentSize.width))
+        contentSizeConstraints.append(NSLayoutConstraint(
+            item: webView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height,
+            multiplier: 1.0, constant: contentSize.height))
+        contentView.addConstraints(contentSizeConstraints)
+        contentView.setNeedsLayout()
+
+        for v in [contentView, webView] {
+            if v.hasAmbiguousLayout {
+                for axis in [UILayoutConstraintAxis.horizontal, .vertical] {
+                    let cs = v.constraintsAffectingLayout(for: axis)
+                    print("\(axis): \(cs)")
+                }
+            }
+        }
+    }
+
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?,
                                     change: [NSKeyValueChangeKey : Any]?,
                                     context: UnsafeMutableRawPointer?) {
@@ -103,7 +132,7 @@ open class MessageContentCell: MessageCell {
             if let newValue = change?[NSKeyValueChangeKey.newKey] as? CGSize,
                 let oldValue = change?[NSKeyValueChangeKey.oldKey] as? CGSize {
                 if !oldValue.equalTo(newValue) {
-                    setNeedsLayout()
+                    updateWebViewSizeConstraints(contentSize: newValue)
                 }
             }
         }
