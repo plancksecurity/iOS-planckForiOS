@@ -21,7 +21,6 @@ class EmailViewController: UITableViewController {
     var page = 0
     var otherCellsHeight: CGFloat = 0.0
     var ratingReEvaluator: RatingReEvaluator?
-    var lastHeights = [IndexPath: CGFloat]()
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -61,7 +60,6 @@ class EmailViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setNoColor()
-        lastHeights.removeAll()
     }
 
     func checkMessageReEvaluation() {
@@ -179,18 +177,6 @@ class EmailViewController: UITableViewController {
     }
 }
 
-// MARK: UITableViewDelegate
-
-extension EmailViewController {
-    override func tableView(_ tableView: UITableView,
-                            heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if let height = lastHeights[indexPath] {
-            return height
-        }
-        return UITableViewAutomaticDimension
-    }
-}
-
 // MARK: UITableViewDataSource
 
 extension EmailViewController {
@@ -208,7 +194,6 @@ extension EmailViewController {
                     return UITableViewCell()
         }
         cell.updateCell(model: row, message: message, indexPath: indexPath)
-        lastHeights[indexPath] = cell.height
         cell.delegate = self
         return cell
     }
@@ -217,14 +202,7 @@ extension EmailViewController {
 // MARK: - MessageContentCellDelegate
 
 extension EmailViewController: MessageContentCellDelegate {
-    func didUpdate(cell: MessageCell, height: CGFloat) {
-        if let ip = cell.indexPath {
-            lastHeights[ip] = height
-        } else {
-            lastHeights.removeAll()
-        }
-        tableView.updateSize(true)
-    }
+    func didUpdate(cell: MessageCell, height: CGFloat) {}
 }
 
 // MARK: - SegueHandlerType
