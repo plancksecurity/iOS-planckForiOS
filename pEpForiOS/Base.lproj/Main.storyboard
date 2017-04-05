@@ -1574,19 +1574,19 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
-                                            <rect key="frame" x="18" y="28" width="339" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnw-Tp-mga">
-                                            <rect key="frame" x="18" y="8" width="341" height="16"/>
+                                            <rect key="frame" x="16" y="8" width="343" height="32.5"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="separator_pixel_grey" translatesAutoresizingMaskIntoConstraints="NO" id="Gbh-o3-H58">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: Recipients" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfx-AS-hpP">
+                                            <rect key="frame" x="16" y="44.5" width="343" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="separator_pixel_grey" translatesAutoresizingMaskIntoConstraints="NO" id="Gbh-o3-H58">
                                             <rect key="frame" x="10" y="70.5" width="355" height="1"/>
                                         </imageView>
                                     </subviews>
@@ -1595,10 +1595,10 @@
                                         <constraint firstItem="Mfx-AS-hpP" firstAttribute="leading" secondItem="hnw-Tp-mga" secondAttribute="leading" id="6iY-Wa-jvo"/>
                                         <constraint firstAttribute="topMargin" secondItem="hnw-Tp-mga" secondAttribute="top" id="BpX-2f-9Cg"/>
                                         <constraint firstItem="Mfx-AS-hpP" firstAttribute="trailing" secondItem="hnw-Tp-mga" secondAttribute="trailing" id="bRK-0S-gkk"/>
+                                        <constraint firstItem="Gbh-o3-H58" firstAttribute="top" secondItem="Mfx-AS-hpP" secondAttribute="bottom" constant="8" id="e9k-0K-Fjg"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="hnw-Tp-mga" secondAttribute="trailing" constant="8" id="oUv-TY-bIw"/>
                                         <constraint firstAttribute="bottom" secondItem="Gbh-o3-H58" secondAttribute="bottom" id="peO-tq-6Wq"/>
                                         <constraint firstAttribute="trailing" secondItem="Gbh-o3-H58" secondAttribute="trailing" constant="10" id="qWx-e1-BE2"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="hnw-Tp-mga" secondAttribute="bottom" constant="40" id="snq-aA-mrq"/>
                                         <constraint firstItem="Gbh-o3-H58" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leading" constant="10" id="wko-Wm-rMg"/>
                                         <constraint firstItem="hnw-Tp-mga" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leadingMargin" constant="8" id="yzu-p3-Qxp"/>
                                     </constraints>
