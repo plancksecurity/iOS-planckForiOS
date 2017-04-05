@@ -73,6 +73,7 @@ class ComposeTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tableData?.filterRows(message: nil)
         setEmailDisplayColors()
     }
 
@@ -520,7 +521,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func textdidChange(at indexPath: IndexPath, textView: ComposeTextView) {
-        let fModel = tableData?.rows.filter{ $0.type == textView.fieldModel?.type }
+        let fModel = tableData?.getVisibleRows().filter{ $0.type == textView.fieldModel?.type }
         fModel?.first?.value = textView.attributedText
         let suggestContacts = fModel?.first?.contactSuggestion ?? false
 

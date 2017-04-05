@@ -9,16 +9,32 @@
 import Foundation
 import UIKit
 
+import MessageModel
+
 class ComposeDataSource: NSObject {
-    
-    var rows = [ComposeFieldModel]()
+    var originalRows = [ComposeFieldModel]()
+    var filteredRows = [ComposeFieldModel]()
     var ccEnabled = false
     
     init(with dataArray: [[String: Any]]) {
         for item in dataArray {
             let row = ComposeFieldModel(with: item)
-            rows.append(row)
+            originalRows.append(row)
         }
+    }
+
+    /**
+     Caller decides which rows are actually visible.
+     */
+    public func filterRows(filter: (ComposeFieldModel) -> Bool) {
+        filteredRows = originalRows.filter() { return filter($0) }
+    }
+
+    /**
+     Decide on the rows that should be visible, based on the message.
+     */
+    public func filterRows(message: Message?) {
+        filterRows(filter: { return $0.type != .mailingList})
     }
     
     func numberOfRows() -> Int {
@@ -27,16 +43,7 @@ class ComposeDataSource: NSObject {
     }
     
     func getVisibleRows() -> [ComposeFieldModel] {
-        var visibleRows = [ComposeFieldModel]()
-        for row in rows {
-            switch row.display {
-            case .always, .conditional:
-                visibleRows.append(row)
-            default:
-                break
-            }
-        }
-        return visibleRows
+        return filteredRows
     }
     
     func getRow(at index: Int) -> ComposeFieldModel {

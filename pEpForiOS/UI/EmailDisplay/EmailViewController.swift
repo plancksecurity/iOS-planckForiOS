@@ -52,6 +52,7 @@ class EmailViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tableData?.filterRows(message: message)
         checkMessageReEvaluation()
         showPepRating()
         message.markAsSeen()

@@ -11,7 +11,7 @@ import UIKit
 open class ComposeFieldModel {
     
     enum FieldType: String {
-        case to, cc, bcc, from, subject, content, none
+        case to, cc, bcc, from, subject, content, mailingList, none
     }
     
     enum FieldDisplayType: String {

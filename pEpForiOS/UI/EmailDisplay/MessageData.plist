@@ -10,7 +10,7 @@
 			<key>value</key>
 			<string></string>
 			<key>type</key>
-			<string>content</string>
+			<string>mailingList</string>
 			<key>title</key>
 			<string>Message.Mailinglist</string>
 			<key>visible</key>
