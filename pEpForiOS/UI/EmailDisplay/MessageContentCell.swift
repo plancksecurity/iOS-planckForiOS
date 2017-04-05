@@ -49,9 +49,7 @@ open class MessageContentCell: MessageCell {
         let contentHeight = webView.scrollView.contentSize.height
         let totalCellHeight = contentHeight + webContentInsets.top + webContentInsets.bottom
 
-        var webFrame = webView.frame
-        webFrame.size.height = contentHeight
-        webView.frame = webFrame
+        webView.frame.size.height = contentHeight
 
         height = totalCellHeight
         if height != oldContentHeight {
@@ -64,6 +62,8 @@ open class MessageContentCell: MessageCell {
                                     indexPath: IndexPath) {
         super.updateCell(model: model, message: message, indexPath: indexPath)
         messageBody = message.longMessage
+        webView.frame.origin = CGPoint.zero
+        webView.frame.size = frame.size
         loadWebViewContent()
     }
     

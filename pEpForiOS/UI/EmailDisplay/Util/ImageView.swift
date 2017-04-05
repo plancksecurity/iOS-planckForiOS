@@ -30,6 +30,8 @@ class ImageView: UIView {
 
     var fixedWidthConstraint: NSLayoutConstraint?
 
+    var lastConstraints = [NSLayoutConstraint]()
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -39,21 +41,35 @@ class ImageView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func setupConstraints(fixedWidth: CGFloat) {
-        guard attachedViews.count > 0 else {
-            return
-        }
-
+    public func change(width: CGFloat) {
         if let oldC = fixedWidthConstraint {
             removeConstraint(oldC)
         }
 
         let newC = NSLayoutConstraint(
             item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
-            multiplier: 1.0, constant: fixedWidth)
+            multiplier: 1.0, constant: width)
         addConstraint(newC)
         fixedWidthConstraint = newC
+    }
 
+    func setupConstraints(fixedWidth: CGFloat) {
+        // remove any existing subview
+        let subs = subviews
+        for sub in subs {
+            sub.removeFromSuperview()
+        }
+
+        // rm all previously set up constraints
+        removeConstraints(lastConstraints)
+
+        guard attachedViews.count > 0 else {
+            return
+        }
+
+        change(width: fixedWidth)
+
+        print("attachedViews.count \(attachedViews.count)")
         for v in attachedViews {
             v.translatesAutoresizingMaskIntoConstraints = false
             addSubview(v)
@@ -100,5 +116,8 @@ class ImageView: UIView {
             }
             lastView = v
         }
+
+        // store so they can be removed later
+        lastConstraints = constraints
     }
 }

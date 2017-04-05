@@ -12,6 +12,26 @@ import MessageModel
 
 class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
     var attachmentsViewHelper = AttachmentsViewHelper()
+    var lastAttachmentsView: UIView?
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(deviceRotationChanged(notification:)),
+            name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(
+            self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    }
+
+    func deviceRotationChanged(notification: Notification) {
+        if let v = lastAttachmentsView as? ImageView {
+            v.change(width: frame.size.width)
+        }
+    }
 
     public override func updateCell(model: ComposeFieldModel, message: Message,
                                     indexPath: IndexPath) {
@@ -22,6 +42,8 @@ class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
     }
 
     func update(attachmentsView: UIView?, message: Message) {
+        lastAttachmentsView = attachmentsView
+
         if let v = attachmentsView {
             let subViews = contentView.subviews
             for sub in subViews {
@@ -43,4 +65,3 @@ extension MessageAttachmentsCell {
         }
     }
 }
-
