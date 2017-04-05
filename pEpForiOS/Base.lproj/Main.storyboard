@@ -1592,15 +1592,15 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Mfx-AS-hpP" firstAttribute="top" secondItem="hnw-Tp-mga" secondAttribute="bottom" constant="4" id="0eV-GZ-phc"/>
+                                        <constraint firstItem="Mfx-AS-hpP" firstAttribute="leading" secondItem="hnw-Tp-mga" secondAttribute="leading" id="6iY-Wa-jvo"/>
                                         <constraint firstAttribute="topMargin" secondItem="hnw-Tp-mga" secondAttribute="top" id="BpX-2f-9Cg"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Mfx-AS-hpP" secondAttribute="trailing" constant="10" id="UPA-Mw-lNd"/>
+                                        <constraint firstItem="Mfx-AS-hpP" firstAttribute="trailing" secondItem="hnw-Tp-mga" secondAttribute="trailing" id="bRK-0S-gkk"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="hnw-Tp-mga" secondAttribute="trailing" constant="8" id="oUv-TY-bIw"/>
                                         <constraint firstAttribute="bottom" secondItem="Gbh-o3-H58" secondAttribute="bottom" id="peO-tq-6Wq"/>
                                         <constraint firstAttribute="trailing" secondItem="Gbh-o3-H58" secondAttribute="trailing" constant="10" id="qWx-e1-BE2"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="hnw-Tp-mga" secondAttribute="bottom" constant="40" id="snq-aA-mrq"/>
-                                        <constraint firstItem="Mfx-AS-hpP" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leadingMargin" constant="10" id="wAa-F4-F07"/>
                                         <constraint firstItem="Gbh-o3-H58" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leading" constant="10" id="wko-Wm-rMg"/>
-                                        <constraint firstItem="hnw-Tp-mga" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leadingMargin" constant="10" id="yzu-p3-Qxp"/>
+                                        <constraint firstItem="hnw-Tp-mga" firstAttribute="leading" secondItem="dlZ-8o-1iE" secondAttribute="leadingMargin" constant="8" id="yzu-p3-Qxp"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -1629,10 +1629,11 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="xrz-WN-2Dg" firstAttribute="leading" secondItem="0wZ-Iy-bZj" secondAttribute="leadingMargin" constant="10" id="BSe-CV-7gi"/>
-                                        <constraint firstItem="Swb-L2-8yp" firstAttribute="leading" secondItem="0wZ-Iy-bZj" secondAttribute="leadingMargin" constant="10" id="CiL-Vt-XKw"/>
+                                        <constraint firstItem="Swb-L2-8yp" firstAttribute="trailing" secondItem="xrz-WN-2Dg" secondAttribute="trailing" id="16O-86-sIh"/>
+                                        <constraint firstItem="xrz-WN-2Dg" firstAttribute="leading" secondItem="0wZ-Iy-bZj" secondAttribute="leadingMargin" constant="8" id="BSe-CV-7gi"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="xrz-WN-2Dg" secondAttribute="bottom" constant="30" id="PwY-pD-hXj"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="xrz-WN-2Dg" secondAttribute="trailing" id="Xkh-hJ-63Q"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="xrz-WN-2Dg" secondAttribute="trailing" constant="8" id="Xkh-hJ-63Q"/>
+                                        <constraint firstItem="Swb-L2-8yp" firstAttribute="leading" secondItem="xrz-WN-2Dg" secondAttribute="leading" id="osb-VP-QxT"/>
                                         <constraint firstItem="Swb-L2-8yp" firstAttribute="top" secondItem="xrz-WN-2Dg" secondAttribute="bottom" constant="4" id="uf5-XW-uD5"/>
                                         <constraint firstAttribute="topMargin" secondItem="xrz-WN-2Dg" secondAttribute="top" id="wfg-Nu-Ws1"/>
                                     </constraints>
