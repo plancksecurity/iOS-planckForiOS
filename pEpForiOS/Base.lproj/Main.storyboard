@@ -1648,7 +1648,24 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="emX-Ao-r5Q" id="Tft-DN-iZy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KMw-Ye-VBO">
+                                            <rect key="frame" x="16" y="8" width="343" height="184"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="KMw-Ye-VBO" secondAttribute="trailing" constant="8" id="8zC-Fp-pWR"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="KMw-Ye-VBO" secondAttribute="bottom" id="9Et-xi-ntN"/>
+                                        <constraint firstItem="KMw-Ye-VBO" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="topMargin" id="Bcr-bl-Hga"/>
+                                        <constraint firstItem="KMw-Ye-VBO" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leadingMargin" constant="8" id="dLJ-GE-YqU"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="contentLabel" destination="KMw-Ye-VBO" id="veW-kW-JgW"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="wEk-G8-zwU" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="466" width="375" height="44"/>
