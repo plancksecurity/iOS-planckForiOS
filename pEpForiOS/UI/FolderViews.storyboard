@@ -26,6 +26,7 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="60" id="I3Z-sT-Qz4"/>
                                     </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <state key="normal" image="button-add"/>
                                     <connections>
                                         <action selector="addAccount:" destination="6ra-tc-Aiv" eventType="touchUpInside" id="kwV-sP-A4A"/>
@@ -33,6 +34,7 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iQ7-gl-OPN">
                                     <rect key="frame" x="80" y="25" width="86" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <state key="normal" title="add account"/>
                                     <connections>
@@ -54,7 +56,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gav-RT-MrD" id="GDF-rs-ueo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

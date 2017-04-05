@@ -19,8 +19,11 @@ class FolderTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        initialConfig()
-
+        //initialConfig()
+        tableView.estimatedRowHeight = 44.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedSectionHeaderHeight = 80.0
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -33,11 +36,6 @@ class FolderTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func initialConfig() {
-        self.tableView.sectionHeaderHeight = 45
-        self.tableView.rowHeight = 45
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -47,9 +45,6 @@ class FolderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return folderVM[section].count
     }
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return folderVM[indexPath.section].collapsed ? 0 : 44.0
-    }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
             let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleTableViewHeader ?? CollapsibleTableViewHeader(reuseIdentifier: "header")
@@ -57,13 +52,14 @@ class FolderTableViewController: UITableViewController {
             header.delegate = self
             return header
     }
+    
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
     }
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    /*verride func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 80.0
-    }
+    }*/
 
     /*override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return folderVM[section].title
@@ -99,9 +95,6 @@ class FolderTableViewController: UITableViewController {
 
     @IBAction func addAccount(_ sender: Any) {
     }
-
-
-    
 
     /*
     // Override to support conditional editing of the table view.

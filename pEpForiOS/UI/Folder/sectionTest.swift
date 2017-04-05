@@ -33,7 +33,11 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
 
-        profileImage.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        //profileImage.widthAnchor.constraint(equalToConstant: profileImage.frame.height).isActive = true
+        //profileImage.setContentHuggingPriority(UILayoutPriority(profileImage.frame.height), for: UILayoutConstraintAxis.horizontal)
+        //profileImage.setContentCompressionResistancePriority(UILayoutPriority(profileImage.frame.height), for: UILayoutConstraintAxis.horizontal)
+
+        profileImage.addConstraint(NSLayoutConstraint.init(item: profileImage, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: profileImage, attribute: NSLayoutAttribute.width, multiplier: 1, constant: 0))
 
         arrowImageView.heightAnchor.constraint(equalToConstant: 10).isActive = true
         rightStackView.widthAnchor.constraint(equalToConstant: 10).isActive = true
@@ -42,18 +46,19 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         rightStackView.addArrangedSubview(arrowImageView)
         arrowLabel.translatesAutoresizingMaskIntoConstraints = false
         rightStackView.addArrangedSubview(arrowLabel)
-        //rightStackView.layoutMargins = UIEdgeInsets(top: 10.0, left: 0.0, bottom: 0.0, right: 10.0)
-        //rightStackView.isLayoutMarginsRelativeArrangement = true
         rightStackView.axis = .vertical
         rightStackView.alignment = .fill
         rightStackView.distribution = .fill
         rightStackView.translatesAutoresizingMaskIntoConstraints = false
 
         accountType.translatesAutoresizingMaskIntoConstraints = false
+        accountType.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
         labelStackView.addArrangedSubview(accountType)
         accountName.translatesAutoresizingMaskIntoConstraints = false
+        accountName.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
         labelStackView.addArrangedSubview(accountName)
         userAddress.translatesAutoresizingMaskIntoConstraints = false
+        userAddress.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
         labelStackView.addArrangedSubview(userAddress)
         labelStackView.layoutMargins = UIEdgeInsets(top: 0.0, left: 5.0, bottom: 0.0, right: 5.0)
         labelStackView.isLayoutMarginsRelativeArrangement = true
@@ -118,15 +123,13 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
             views: ["stackView" : topStackView ]
         ))
 
+
+
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        if profileImage.bounds.size.width > profileImage.bounds.size.height {
-            profileImage.layer.cornerRadius = profileImage.bounds.size.width / 2
-        } else {
-            profileImage.layer.cornerRadius = profileImage.bounds.size.height / 2
-        }
+        profileImage.layer.cornerRadius = profileImage.bounds.size.height / 2
         profileImage.layer.masksToBounds = true
     }
 
@@ -137,7 +140,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         guard let cell = gestureRecognizer.view as? CollapsibleTableViewHeader else {
             return
         }
-        if collapsed {
+        if !collapsed {
             arrowImageView.transform = arrowImageView.transform.rotated(by: CGFloat.pi/2)
         } else {
             arrowImageView.transform = arrowImageView.transform.rotated(by: -(CGFloat.pi/2))
