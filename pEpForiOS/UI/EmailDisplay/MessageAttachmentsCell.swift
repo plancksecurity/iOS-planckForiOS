@@ -13,14 +13,21 @@ import MessageModel
 class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
     @IBOutlet weak var attachmentsImageView: ImageView!
     var attachmentsViewHelper = AttachmentsViewHelper()
+    var lastMessage: Message?
 
     public override func updateCell(model: ComposeFieldModel, message: Message,
                                     indexPath: IndexPath) {
         super.updateCell(model: model, message: message, indexPath: indexPath)
-        titleLabel?.text = "Attachments"
         attachmentsViewHelper.attachmentsImageView = attachmentsImageView
         attachmentsViewHelper.delegate = self
+
+        if let m = lastMessage, m == message {
+            // Avoid processing the same message over and over again, unless
+            // the attachment count changes, which is considered by `==`.
+            return
+        }
         attachmentsViewHelper.message = message
+        lastMessage = message
     }
 }
 
