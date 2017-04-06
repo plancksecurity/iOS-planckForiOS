@@ -202,7 +202,9 @@ extension EmailViewController {
 // MARK: - MessageContentCellDelegate
 
 extension EmailViewController: MessageContentCellDelegate {
-    func didUpdate(cell: MessageCell, height: CGFloat) {}
+    func didUpdate(cell: MessageCell, height: CGFloat) {
+        tableView.updateSize()
+    }
 }
 
 // MARK: - SegueHandlerType

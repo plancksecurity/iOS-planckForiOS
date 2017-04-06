@@ -10,7 +10,7 @@ import Foundation
 
 import MessageModel
 
-class MessageAttachmentsCell: MessageCell {
+class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
     @IBOutlet weak var attachmentsImageView: ImageView!
     var attachmentsViewHelper = AttachmentsViewHelper()
 
@@ -19,6 +19,15 @@ class MessageAttachmentsCell: MessageCell {
         super.updateCell(model: model, message: message, indexPath: indexPath)
         titleLabel?.text = "Attachments"
         attachmentsViewHelper.attachmentsImageView = attachmentsImageView
+        attachmentsViewHelper.delegate = self
         attachmentsViewHelper.message = message
+    }
+}
+
+// MARK: - AttachmentsViewHelperDelegate
+
+extension MessageAttachmentsCell {
+    func didCreate(attachmentsView: UIView?, message: Message) {
+        (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: 0)
     }
 }
