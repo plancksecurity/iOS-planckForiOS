@@ -45,7 +45,6 @@ class AttachmentsViewOperation: Operation {
             if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
                 let imgData = att.data, let img = UIImage(data: imgData) {
                 let view = UIImageView(image: img)
-                view.contentMode = .scaleAspectFill
                 attachmentViews.append(view)
             }
         }

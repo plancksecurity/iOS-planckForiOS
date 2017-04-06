@@ -16,6 +16,7 @@ protocol AttachmentsViewHelperDelegate: class {
 
 class AttachmentsViewHelper {
     weak var delegate: AttachmentsViewHelperDelegate?
+    var attachmentsImageView: ImageView?
 
     var cellWidth: CGFloat?
 
@@ -50,16 +51,10 @@ class AttachmentsViewHelper {
     }
 
     func opFinished(theBuildOp: AttachmentsViewOperation) {
-        // The frame needed to place all attachment images
-        let theFrame = CGRect(origin: CGPoint.zero,
-                              size: CGSize(width: guessCellWidth(), height: 0.0))
-        let view = ImageView(frame: theFrame)
-        view.attachedViews = theBuildOp.attachmentViews
-        view.frame = theFrame
-        view.layoutIfNeeded()
-
-        resultView = view
-        delegate?.didCreate(attachmentsView: view, message: theBuildOp.message)
+        if let imageView = attachmentsImageView {
+            imageView.attachedViews = theBuildOp.attachmentViews
+            delegate?.didCreate(attachmentsView: imageView, message: theBuildOp.message)
+        }
     }
 
     func updateQuickMetaData(message: Message) {

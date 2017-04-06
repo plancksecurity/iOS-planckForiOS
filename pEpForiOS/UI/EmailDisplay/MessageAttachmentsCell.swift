@@ -11,6 +11,7 @@ import Foundation
 import MessageModel
 
 class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
+    @IBOutlet weak var attachmentsImageView: ImageView!
     var attachmentsViewHelper = AttachmentsViewHelper()
     var lastAttachmentsView: UIView?
 
@@ -38,12 +39,14 @@ class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
         super.updateCell(model: model, message: message, indexPath: indexPath)
         titleLabel?.text = "Attachments"
         attachmentsViewHelper.delegate = self
+        attachmentsViewHelper.attachmentsImageView = attachmentsImageView
         attachmentsViewHelper.message = message
     }
 
     func update(attachmentsView: UIView?, message: Message) {
         lastAttachmentsView = attachmentsView
 
+        /*
         if let v = attachmentsView {
             let subViews = contentView.subviews
             for sub in subViews {
@@ -53,6 +56,7 @@ class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
             (delegate as? MessageContentCellDelegate)?.didUpdate(
                 cell: self, height: v.frame.size.height)
         }
+         */
     }
 }
 

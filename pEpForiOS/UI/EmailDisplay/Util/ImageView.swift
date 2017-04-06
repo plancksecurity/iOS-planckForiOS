@@ -32,15 +32,6 @@ class ImageView: UIView {
 
     var lastConstraints = [NSLayoutConstraint]()
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        translatesAutoresizingMaskIntoConstraints = false
-    }
-
     public func change(width: CGFloat) {
         if let oldC = fixedWidthConstraint {
             removeConstraint(oldC)
@@ -67,7 +58,7 @@ class ImageView: UIView {
             return
         }
 
-        change(width: fixedWidth)
+        //change(width: fixedWidth)
 
         print("attachedViews.count \(attachedViews.count)")
         for v in attachedViews {
