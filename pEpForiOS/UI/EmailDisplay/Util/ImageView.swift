@@ -9,12 +9,14 @@
 import Foundation
 
 /**
- Simple view to show a list of images with a constrained width.
+ Simple view to show a list of image views with a constrained width.
+ The `UIView`s could be anything that has in intrinsic content size,
+ but this is used right now for `UIImageView`s.
  */
 class ImageView: UIView {
     var attachedViews = [UIView]() {
         didSet {
-            setupConstraints(fixedWidth: frame.size.width)
+            setupConstraints()
         }
     }
 
@@ -28,23 +30,9 @@ class ImageView: UIView {
      */
     var margin: CGFloat = 10
 
-    var fixedWidthConstraint: NSLayoutConstraint?
-
     var lastConstraints = [NSLayoutConstraint]()
 
-    public func change(width: CGFloat) {
-        if let oldC = fixedWidthConstraint {
-            removeConstraint(oldC)
-        }
-
-        let newC = NSLayoutConstraint(
-            item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width,
-            multiplier: 1.0, constant: width)
-        addConstraint(newC)
-        fixedWidthConstraint = newC
-    }
-
-    func setupConstraints(fixedWidth: CGFloat) {
+    func setupConstraints() {
         // remove any existing subview
         let subs = subviews
         for sub in subs {
@@ -58,9 +46,6 @@ class ImageView: UIView {
             return
         }
 
-        //change(width: fixedWidth)
-
-        print("attachedViews.count \(attachedViews.count)")
         for v in attachedViews {
             v.translatesAutoresizingMaskIntoConstraints = false
             addSubview(v)

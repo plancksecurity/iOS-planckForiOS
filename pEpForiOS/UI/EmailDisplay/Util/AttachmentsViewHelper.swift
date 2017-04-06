@@ -11,14 +11,15 @@ import Foundation
 import MessageModel
 
 protocol AttachmentsViewHelperDelegate: class {
+    /**
+     You can rely on this method always be called on the UI thread.
+     */
     func didCreate(attachmentsView: UIView?, message: Message)
 }
 
 class AttachmentsViewHelper {
     weak var delegate: AttachmentsViewHelperDelegate?
     var attachmentsImageView: ImageView?
-
-    var cellWidth: CGFloat?
 
     var message: Message? {
         didSet {
@@ -27,12 +28,6 @@ class AttachmentsViewHelper {
             }
         }
     }
-    var attachmentsCount = 0
-    var hasAttachments: Bool {
-        return attachmentsCount > 0
-    }
-
-    var resultView: UIView?
 
     let mimeTypes = MimeTypeUtil()
     var buildOp: AttachmentsViewOperation?
@@ -46,10 +41,6 @@ class AttachmentsViewHelper {
         self.init(delegate: nil)
     }
 
-    func guessCellWidth() -> CGFloat {
-        return cellWidth ?? UIScreen.main.bounds.width
-    }
-
     func opFinished(theBuildOp: AttachmentsViewOperation) {
         if let imageView = attachmentsImageView {
             imageView.attachedViews = theBuildOp.attachmentViews
@@ -59,11 +50,9 @@ class AttachmentsViewHelper {
 
     func updateQuickMetaData(message: Message) {
         operationQueue.cancelAllOperations()
-        resultView = nil
 
         let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message)
         buildOp = theBuildOp
-        attachmentsCount = theBuildOp.attachmentsCount
         theBuildOp.completionBlock = { [weak self] in
             if theBuildOp.message == message {
                 if let mySelf = self {
