@@ -56,7 +56,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gav-RT-MrD" id="GDF-rs-ueo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -69,6 +69,40 @@
                     <navigationItem key="navigationItem" id="hj4-Y7-EQ3"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="U8X-Yn-aWf">
+                    <rect key="frame" x="0.0" y="0.0" width="379" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TLt-1K-F5i">
+                            <rect key="frame" x="10" y="44" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="3un-aK-5gv"/>
+                                <constraint firstAttribute="width" constant="40" id="D0d-dc-BD3"/>
+                            </constraints>
+                        </imageView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="XHJ-LW-m03">
+                            <rect key="frame" x="60" y="0.0" width="289" height="128"/>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3Z7-cf-OTU">
+                            <rect key="frame" x="359" y="0.0" width="20" height="128"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="oqa-cK-1bj"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="TLt-1K-F5i" firstAttribute="leading" secondItem="U8X-Yn-aWf" secondAttribute="leading" constant="10" id="7Hf-F7-iF4"/>
+                        <constraint firstItem="3Z7-cf-OTU" firstAttribute="leading" secondItem="XHJ-LW-m03" secondAttribute="trailing" constant="10" id="JkI-Zy-jhB"/>
+                        <constraint firstAttribute="bottom" secondItem="XHJ-LW-m03" secondAttribute="bottom" id="RSE-Lz-5gY"/>
+                        <constraint firstItem="3Z7-cf-OTU" firstAttribute="top" secondItem="U8X-Yn-aWf" secondAttribute="top" id="YKF-mY-6Nf"/>
+                        <constraint firstAttribute="trailing" secondItem="3Z7-cf-OTU" secondAttribute="trailing" id="cxM-T4-C0l"/>
+                        <constraint firstItem="TLt-1K-F5i" firstAttribute="centerY" secondItem="U8X-Yn-aWf" secondAttribute="centerY" id="en6-ka-A7Q"/>
+                        <constraint firstAttribute="bottom" secondItem="3Z7-cf-OTU" secondAttribute="bottom" id="nVC-8c-ff8"/>
+                        <constraint firstItem="XHJ-LW-m03" firstAttribute="leading" secondItem="TLt-1K-F5i" secondAttribute="trailing" constant="10" id="vNx-FT-MTr"/>
+                        <constraint firstItem="XHJ-LW-m03" firstAttribute="top" secondItem="U8X-Yn-aWf" secondAttribute="top" id="yAe-LR-WVx"/>
+                    </constraints>
+                </view>
             </objects>
             <point key="canvasLocation" x="7992.8000000000002" y="-1164.4677661169417"/>
         </scene>

@@ -20,11 +20,11 @@ public class FolderSectionViewModel {
 
     public init(account acc: Account) {
         self.account = acc
-        //acc.user.
         items = [FolderCellViewModel]()
         help = [FolderCellViewModel]()
-        collapsed = true
+        collapsed = false
         generateCells()
+        collapse()
     }
 
     private func generateCells() {
@@ -63,13 +63,12 @@ public class FolderSectionViewModel {
         return un
     }
 
-    public func onCollapse(collapsed: Bool) {
-
-        if self.collapsed {
+    public func collapse() {
+        self.collapsed = !self.collapsed
+        if !collapsed {
             items = help
             help = [FolderCellViewModel]()
         } else {
-            self.collapsed = true
             help = items
             items = [FolderCellViewModel]()
         }

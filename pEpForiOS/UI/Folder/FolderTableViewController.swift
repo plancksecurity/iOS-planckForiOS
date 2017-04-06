@@ -11,6 +11,7 @@ import MessageModel
 
 class FolderTableViewController: UITableViewController {
 
+    var sectionsmap = [Bool]()
     var appConfig: AppConfig?
 
     var folderVM = FolderViewModel()
@@ -24,6 +25,7 @@ class FolderTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        //tableView.register(CollapsibleTableViewHeader.self, forHeaderFooterViewReuseIdentifier: "header")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -47,24 +49,44 @@ class FolderTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-            let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleTableViewHeader ?? CollapsibleTableViewHeader(reuseIdentifier: "header")
-            header.configure(viewModel: folderVM[section], section: section)
-            header.delegate = self
-            return header
+        if sectionsmap.count > section {
+            return nil
+        }
+        let header :CollapsibleTableViewHeader?
+        if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleTableViewHeader{
+            header = head
+        } else {
+            header = CollapsibleTableViewHeader(reuseIdentifier: "header")
+        }
+        sectionsmap.append(true)
+        header!.configure(viewModel: folderVM[section], section: section)
+        header!.delegate = self
+        return header
+        /*let label = UILabel()
+        label.textAlignment = .left
+        label.text = "I'm a test label"
+        label.tag = section
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(FolderTableViewController.tapFunction))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tap)
+        sectionsmap.append(true)
+
+        return label*/
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
     }
 
     /*verride func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 80.0
-    }*/
+     return 80.0
+     }*/
 
     /*override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return folderVM[section].title
-        //reimplement to a custom view and copy the view of mail app
-    }*/
+     return folderVM[section].title
+     //reimplement to a custom view and copy the view of mail app
+     }*/
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
@@ -72,11 +94,11 @@ class FolderTableViewController: UITableViewController {
         cell.detailTextLabel?.text = "\(fcvm.number)"
         cell.textLabel?.text = fcvm.title
         cell.accessoryType = .disclosureIndicator
-        //cell.imageView?.image = fcvm.icon
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
+    override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath)
+        -> Int {
         return folderVM[indexPath.section][indexPath.item].level
     }
 
@@ -87,7 +109,7 @@ class FolderTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let controller = segue.destination as? EmailListViewController
-        , let folder = folderToShow {
+            , let folder = folderToShow {
             let config = EmailListConfig(appConfig: appConfig, folder: folder)
             controller.config = config
         }
@@ -96,62 +118,94 @@ class FolderTableViewController: UITableViewController {
     @IBAction func addAccount(_ sender: Any) {
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
+    func tapFunction(sender:UITapGestureRecognizer) {
+        let section = sender.view!.tag
+        let oldcount = folderVM[section].count
+        folderVM[section].collapse()
+        var newcount = folderVM[section].count
+        if oldcount > newcount {
+            newcount = oldcount
+        }
+        let indexPaths = (0..<newcount).map { i in return IndexPath(item: i, section: section)  }
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
+        //hidden[section] = !hidden[section]
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+        tableView?.beginUpdates()
+        if folderVM[section].collapsed {
+            tableView?.deleteRows(at: indexPaths, with: .automatic)
+        } else {
+            tableView?.insertRows(at: indexPaths, with: .automatic)
+        }
+        tableView?.endUpdates()
     }
-    */
 
     /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
+     // Override to support conditional editing of the table view.
+     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
 
     /*
-    // MARK: - Navigation
+     // Override to support editing the table view.
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     if editingStyle == .delete {
+     // Delete the row from the data source
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     } else if editingStyle == .insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }
+     }
+     */
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    /*
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+
+     }
+     */
+
+    /*
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
+
+    /*
+     // MARK: - Navigation
+
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
 
 }
 
 extension FolderTableViewController: CollapsibleTableViewHeaderDelegate {
 
     func toggleSection(header: CollapsibleTableViewHeader, section: Int) {
-        folderVM[section].collapsed = !folderVM[section].collapsed
-        tableView.beginUpdates()
-        for i in 0 ..< folderVM[section].count {
-            tableView.reloadRows(at: [NSIndexPath(row: i, section: section) as IndexPath], with: .automatic)
+        let oldcount = folderVM[section].count
+        folderVM[section].collapse()
+        var newcount = folderVM[section].count
+        if oldcount > newcount {
+            newcount = oldcount
         }
+        var indexpath = [IndexPath]()
+        for i in 0 ..< newcount {
+            indexpath.append(NSIndexPath(row: i, section: section) as IndexPath)
+        }
+        tableView.beginUpdates()
+            if folderVM[section].collapsed {
+                tableView.deleteRows(at: indexpath, with: UITableViewRowAnimation.automatic)
+            } else {
+                tableView.insertRows(at: indexpath, with: UITableViewRowAnimation.automatic)
+            }
         tableView.endUpdates()
     }
-
+    
 }

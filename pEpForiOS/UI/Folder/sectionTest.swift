@@ -14,7 +14,6 @@ protocol CollapsibleTableViewHeaderDelegate {
 }
 
 class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
-
     var delegate: CollapsibleTableViewHeaderDelegate?
     var section: Int = 0
     var collapsed: Bool = true
@@ -28,16 +27,15 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     let rightStackView = UIStackView()
     let arrowImageView = UIImageView()
     let arrowLabel = UILabel()
-    let clicableView = UIView()
+    //let clicableView = UIView()
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
 
-        //profileImage.widthAnchor.constraint(equalToConstant: profileImage.frame.height).isActive = true
-        //profileImage.setContentHuggingPriority(UILayoutPriority(profileImage.frame.height), for: UILayoutConstraintAxis.horizontal)
-        //profileImage.setContentCompressionResistancePriority(UILayoutPriority(profileImage.frame.height), for: UILayoutConstraintAxis.horizontal)
-
-        profileImage.addConstraint(NSLayoutConstraint.init(item: profileImage, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: profileImage, attribute: NSLayoutAttribute.width, multiplier: 1, constant: 0))
+        profileImage.widthAnchor.constraint(equalToConstant: 44.0).isActive = true
+        profileImage.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
+        profileImage.translatesAutoresizingMaskIntoConstraints = false
+        //profileImage.addConstraint(NSLayoutConstraint.init(item: profileImage, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: profileImage, attribute: NSLayoutAttribute.width, multiplier: 1, constant: 0))
 
         arrowImageView.heightAnchor.constraint(equalToConstant: 10).isActive = true
         rightStackView.widthAnchor.constraint(equalToConstant: 10).isActive = true
@@ -69,24 +67,24 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
 
 
-        topStackView.addArrangedSubview(profileImage)
-        topStackView.addArrangedSubview(labelStackView)
-        topStackView.addArrangedSubview(rightStackView)
-        topStackView.axis = .horizontal
-        topStackView.alignment = .fill
-        rightStackView.distribution = .fill
-        topStackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(topStackView)
+        //topStackView.addArrangedSubview(profileImage)
+        //topStackView.addArrangedSubview(labelStackView)
+        //topStackView.addArrangedSubview(rightStackView)
+        //topStackView.axis = .horizontal
+        //topStackView.alignment = .fill
+        //topStackView.distribution = .fill
+        //topStackView.translatesAutoresizingMaskIntoConstraints = false
+        //contentView.addSubview(topStackView)
+        contentView.addSubview(profileImage)
+        contentView.addSubview(rightStackView)
+        contentView.addSubview(labelStackView)
 
         contentView.backgroundColor = UIColor.white
-        clicableView.backgroundColor = UIColor.clear
+        //clicableView.backgroundColor = UIColor.clear
 
-        contentView.addSubview(clicableView)
+        //contentView.addSubview(clicableView)
         autolayout()
-        
-        //
-        // Call tapHeader when tapping on this header
-        //
+
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CollapsibleTableViewHeader.tapHeader(gestureRecognizer:))))
     }
 
@@ -99,8 +97,6 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         self.accountType.text = viewModel.type
         self.userAddress.text = viewModel.userAddress
         self.profileImage.image = UIImage(named: "swipe-trash")
-        profileImage.layer.cornerRadius = profileImage.bounds.size.width / 2
-        //profileImage.layer.masksToBounds = true
         self.arrowImageView.image = UIImage(named:"chevron-icon")
         self.section = section
         collapsed = viewModel.collapsed
@@ -110,17 +106,25 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     func autolayout() {
 
         contentView.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-10-[stackView]-15-|",
+            withVisualFormat: "H:|-10-[profileImage]-5-[labelstackview]-[rightstackview]-15-|",
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil,
-            views: ["stackView" : topStackView ]
+            views: ["profileImage" : profileImage, "labelstackview" : labelStackView, "rightstackview" : rightStackView ]
+        ))
+        profileImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+
+        contentView.addConstraints(NSLayoutConstraint.constraints(
+            withVisualFormat: "V:|-10-[stackView]-10-|",
+            options: NSLayoutFormatOptions(rawValue: 0),
+            metrics: nil,
+            views: ["stackView" : labelStackView ]
         ))
 
         contentView.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "V:|-10-[stackView]-10-|",
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil,
-            views: ["stackView" : topStackView ]
+            views: ["stackView" : rightStackView ]
         ))
 
 
