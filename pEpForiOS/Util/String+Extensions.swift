@@ -331,6 +331,25 @@ public extension String {
         }
         return result
     }
+
+    public func splitFileExtension() -> (String, String?) {
+        do {
+            let regex = try NSRegularExpression(
+                pattern: "^([^.]+)\\.([^.]+)$", options: [])
+            if let match = regex.firstMatch(
+                in: self, options: [],
+                range: wholeRange()) {
+                let r1 = match.rangeAt(1)
+                let name = (self as NSString).substring(with: r1)
+                let r2 = match.rangeAt(2)
+                let ext = (self as NSString).substring(with: r2)
+                return (name, ext)
+            }
+        } catch let err as NSError {
+            Log.error(component: #function, error: err)
+        }
+        return (self, nil)
+    }
 }
 
 public extension NSAttributedString {

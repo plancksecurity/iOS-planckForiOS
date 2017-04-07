@@ -50,15 +50,13 @@ class ImageView: UIView {
         }
 
         // distance to the top
-        addConstraint(NSLayoutConstraint(
-            item: attachedViews[0], attribute: .top, relatedBy: .greaterThanOrEqual,
-            toItem: self, attribute: .top, multiplier: 1.0, constant: spacing))
+        topAnchor.constraint(
+            equalTo: attachedViews[0].topAnchor, constant: spacing).isActive = true
 
         // distance to the bottom
-        addConstraint(NSLayoutConstraint(
-            item: attachedViews[attachedViews.count - 1], attribute: .bottom,
-            relatedBy: .lessThanOrEqual, toItem: self,
-            attribute: .bottom, multiplier: 1.0, constant: -spacing))
+        bottomAnchor.constraint(
+            equalTo: attachedViews[attachedViews.count - 1].bottomAnchor,
+            constant: -spacing).isActive = true
 
         var lastView: UIView?
         for v in attachedViews {
@@ -66,27 +64,36 @@ class ImageView: UIView {
             if let imgView = v as? UIImageView {
                 let size = imgView.bounds.size
                 let factor = size.height / size.width
-                addConstraint(NSLayoutConstraint(
-                    item: imgView, attribute: .height, relatedBy: .equal, toItem: imgView,
-                    attribute: .width, multiplier: factor, constant: 0.0))
+                imgView.heightAnchor.constraint(
+                    equalTo: imgView.widthAnchor, multiplier: factor).isActive = true
+
+                // distance left
+                v.leftAnchor.constraint(
+                    greaterThanOrEqualTo: self.leftAnchor, constant: margin).isActive = true
+
+                // distance right
+                v.rightAnchor.constraint(
+                    lessThanOrEqualTo: self.rightAnchor, constant: -margin).isActive = true
+            } else {
+                print("general attachment: \(v)")
+
+                let guide = readableContentGuide
+
+                // distance left
+                v.leadingAnchor.constraint(
+                    greaterThanOrEqualTo: guide.leadingAnchor).isActive = true
+
+                // distance right
+                v.trailingAnchor.constraint(
+                    lessThanOrEqualTo: guide.trailingAnchor).isActive = true
             }
             // center
-            addConstraint(NSLayoutConstraint(
-                item: v, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX,
-                multiplier: 1.0, constant: 0.0))
-            // distance left
-            addConstraint(NSLayoutConstraint(
-                item: v, attribute: .leading, relatedBy: .greaterThanOrEqual, toItem: self,
-                attribute: .leading, multiplier: 1.0, constant: margin))
-            // distance right
-            addConstraint(NSLayoutConstraint(
-                item: v, attribute: .trailing, relatedBy: .lessThanOrEqual, toItem: self,
-                attribute: .trailing, multiplier: 1.0, constant: margin))
+            v.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+
             // space between
             if let theLast = lastView {
-                addConstraint(NSLayoutConstraint(
-                    item: theLast, attribute: .bottom, relatedBy: .lessThanOrEqual,
-                    toItem: v, attribute: .top, multiplier: 1.0, constant: -margin))
+                theLast.bottomAnchor.constraint(
+                    equalTo: v.topAnchor, constant: -spacing).isActive = true
             }
             lastView = v
         }

@@ -48,6 +48,8 @@ class AttachmentsViewOperation: Operation {
                 attachmentViews.append(view)
             } else {
                 print("non-image attachment: \(att)")
+                let view = AttachmentSummaryView(attachment: att)
+                attachmentViews.append(view)
             }
         }
     }
