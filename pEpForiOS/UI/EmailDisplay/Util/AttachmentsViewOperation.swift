@@ -35,7 +35,7 @@ class AttachmentsViewOperation: Operation {
 
     func eligibleAttachments() -> [Attachment] {
         return message.attachments.filter() { att in
-            return (mimeTypes?.isImage(mimeType: att.mimeType) ?? false) && att.data != nil
+            return att.data != nil && att.mimeType.lowercased() != "application/pgp-keys"
         }
     }
 
@@ -46,6 +46,8 @@ class AttachmentsViewOperation: Operation {
                 let imgData = att.data, let img = UIImage(data: imgData) {
                 let view = UIImageView(image: img)
                 attachmentViews.append(view)
+            } else {
+                print("non-image attachment: \(att)")
             }
         }
     }

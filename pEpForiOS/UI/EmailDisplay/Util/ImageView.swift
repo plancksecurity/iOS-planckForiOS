@@ -9,9 +9,7 @@
 import Foundation
 
 /**
- Simple view to show a list of image views with a constrained width.
- The `UIView`s could be anything that has in intrinsic content size,
- but this is used right now for `UIImageView`s.
+ Container for a list of views that have some intrinsic content size.
  */
 class ImageView: UIView {
     var attachedViews = [UIView]() {
