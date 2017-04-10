@@ -30,17 +30,11 @@ class AttachmentsViewOperation: Operation {
 
         super.init()
 
-        attachmentsCount = eligibleAttachments().count
-    }
-
-    func eligibleAttachments() -> [Attachment] {
-        return message.attachments.filter() { att in
-            return att.data != nil && att.mimeType.lowercased() != "application/pgp-keys"
-        }
+        attachmentsCount = message.viewableAttachments().count
     }
 
     override func main() {
-        let attachments = eligibleAttachments()
+        let attachments = message.viewableAttachments()
         for att in attachments {
             if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
                 let imgData = att.data, let img = UIImage(data: imgData) {

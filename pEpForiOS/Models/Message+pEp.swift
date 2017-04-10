@@ -26,4 +26,19 @@ extension Message {
             return $0 != myselfIdentity && $0.canHandshakeOn(session: session)
         }
     }
+
+    /**
+     - Returns: An array of attachments that can be viewed.
+     */
+    func viewableAttachments() -> [Attachment] {
+        return attachments.filter() { att in
+            if att.data == nil || att.mimeType.lowercased() == "application/pgp-keys" {
+                return false
+            }
+            if att.mimeType.lowercased() == "image/gif" {
+                return false
+            }
+            return true
+        }
+    }
 }
