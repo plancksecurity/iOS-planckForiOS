@@ -60,35 +60,26 @@ class ImageView: UIView {
 
         var lastView: UIView?
         for v in attachedViews {
-            // aspect ratio for UIImageView
             if let imgView = v as? UIImageView {
+                // aspect ratio for UIImageView
                 let size = imgView.bounds.size
                 let factor = size.height / size.width
                 imgView.heightAnchor.constraint(
                     equalTo: imgView.widthAnchor, multiplier: factor).isActive = true
-
-                // distance left
-                v.leftAnchor.constraint(
-                    greaterThanOrEqualTo: self.leftAnchor, constant: margin).isActive = true
-
-                // distance right
-                v.rightAnchor.constraint(
-                    lessThanOrEqualTo: self.rightAnchor, constant: -margin).isActive = true
-            } else {
-                print("general attachment: \(v)")
-
-                let guide = readableContentGuide
-
-                // distance left
-                v.leadingAnchor.constraint(
-                    greaterThanOrEqualTo: guide.leadingAnchor).isActive = true
-
-                // distance right
-                v.trailingAnchor.constraint(
-                    lessThanOrEqualTo: guide.trailingAnchor).isActive = true
             }
+
             // center
             v.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+
+            let guide = readableContentGuide
+
+            // distance left
+            v.leadingAnchor.constraint(
+                greaterThanOrEqualTo: guide.leadingAnchor).isActive = true
+
+            // distance right
+            v.trailingAnchor.constraint(
+                lessThanOrEqualTo: guide.trailingAnchor).isActive = true
 
             // space between
             if let theLast = lastView {

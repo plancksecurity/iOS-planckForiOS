@@ -45,10 +45,15 @@ class AttachmentSummaryView: UIView {
     init(attachment: Attachment) {
         self.attachment = attachment
         super.init(frame: CGRect.zero)
-        backgroundColor = UIColor.pEpGreen
-        setupViewsAndInternalConstraints()
-        layer.cornerRadius = 5
+
+        layer.borderColor = UIColor.pEpGreen.cgColor
+        layer.borderWidth = 1.5
+        layer.cornerRadius = 30
         layer.masksToBounds = true
+    }
+
+    override func didMoveToSuperview() {
+        setupViewsAndInternalConstraints()
     }
 
     func setupViewsAndInternalConstraints() {
@@ -65,10 +70,10 @@ class AttachmentSummaryView: UIView {
         let guide = readableContentGuide
         labelFilename.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
         labelFilename.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
-        labelFilename.leadingAnchor.constraint(greaterThanOrEqualTo: guide.leadingAnchor,
-                                               constant: marginHorizontal)
-        labelFilename.trailingAnchor.constraint(lessThanOrEqualTo: guide.trailingAnchor,
-                                                constant: -marginHorizontal)
+
+        labelFilename.widthAnchor.constraint(
+            lessThanOrEqualTo: guide.widthAnchor, multiplier: 1,
+            constant: 2 * -marginHorizontal).isActive = true
 
         if let labelExt = labelExtension {
             addSubview(labelExt)
@@ -77,10 +82,9 @@ class AttachmentSummaryView: UIView {
             labelExt.topAnchor.constraint(
                 equalTo: labelFilename.bottomAnchor, constant: spaceVertical).isActive = true
 
-            labelExt.leadingAnchor.constraint(greaterThanOrEqualTo: guide.leadingAnchor,
-                                              constant: marginHorizontal)
-            labelExt.trailingAnchor.constraint(lessThanOrEqualTo: guide.trailingAnchor,
-                                               constant: -marginHorizontal)
+            labelExt.widthAnchor.constraint(
+                lessThanOrEqualTo: guide.widthAnchor, multiplier: 1,
+                constant: 2 * -marginHorizontal).isActive = true
 
             labelExt.bottomAnchor.constraint(
                 equalTo: guide.bottomAnchor, constant: -marginVertical).isActive = true
@@ -112,7 +116,8 @@ class AttachmentSummaryView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
         label.allowsDefaultTighteningForTruncation = true
-        label.lineBreakMode = .byCharWrapping
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .center
         return label
     }
 }
