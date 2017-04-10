@@ -17,6 +17,7 @@ public class FolderSectionViewModel {
     private var account: Account
     private var items: [FolderCellViewModel]
     private var help :[FolderCellViewModel]
+    let imageProvider = IdentityImageProvider()
 
     public init(account acc: Account) {
         self.account = acc
@@ -38,6 +39,21 @@ public class FolderSectionViewModel {
             items.append(FolderCellViewModel(folder: subFolder, level: level))
             childFolder(root: subFolder, level: level + 1)
         }
+    }
+/*
+     contactImageView.image = UIImage.init(named: "empty-avatar")
+     identityForImage = message.from
+     if let ident = identityForImage, let imgProvider = config?.imageProvider {
+        imgProvider.image(forIdentity: ident) { img in
+            if message.from == self.identityForImage {
+                self.contactImageView.image = img
+            }
+        }
+     }
+ */
+
+    func getImage(callback: @escaping ImageReadyFunc) {
+        imageProvider.image(forIdentity: account.user, callback: callback)
     }
 
     public var image: UIImage {

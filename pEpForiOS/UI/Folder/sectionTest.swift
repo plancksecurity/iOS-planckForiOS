@@ -25,19 +25,15 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     let rightStackView = UIStackView()
     let arrowImageView = UIImageView()
     let arrowLabel = UILabel()
-    //let clicableView = UIView()
-
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
 
-        profileImage.widthAnchor.constraint(equalToConstant: 44.0).isActive = true
-        profileImage.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
+        profileImage.widthAnchor.constraint(equalToConstant: 48.0).isActive = true
+        profileImage.heightAnchor.constraint(equalToConstant: 48.0).isActive = true
         profileImage.translatesAutoresizingMaskIntoConstraints = false
-        //profileImage.addConstraint(NSLayoutConstraint.init(item: profileImage, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: profileImage, attribute: NSLayoutAttribute.width, multiplier: 1, constant: 0))
-
         arrowImageView.heightAnchor.constraint(equalToConstant: 10).isActive = true
         rightStackView.widthAnchor.constraint(equalToConstant: 10).isActive = true
-
         arrowImageView.translatesAutoresizingMaskIntoConstraints = false
         rightStackView.addArrangedSubview(arrowImageView)
         arrowLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +42,6 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         rightStackView.alignment = .fill
         rightStackView.distribution = .fill
         rightStackView.translatesAutoresizingMaskIntoConstraints = false
-
         accountType.translatesAutoresizingMaskIntoConstraints = false
         accountType.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
         labelStackView.addArrangedSubview(accountType)
@@ -80,10 +75,12 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         self.accountName.text = viewModel.userName
         self.accountType.text = viewModel.type
         self.userAddress.text = viewModel.userAddress
-        self.profileImage.image = UIImage(named: "swipe-trash")
+        viewModel.getImage { (imageProfile) in
+            self.profileImage.image = imageProfile
+        }
         self.arrowImageView.image = UIImage(named:"chevron-icon")
+        self.arrowImageView.transform = arrowImageView.transform.rotated(by: CGFloat.pi/2)
         self.section = section
-        arrowImageView.transform = arrowImageView.transform.rotated(by: CGFloat.pi/2)
     }
 
     func autolayout() {
@@ -92,8 +89,11 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
             withVisualFormat: "H:|-10-[profileImage]-5-[labelstackview]-[rightstackview]-15-|",
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil,
-            views: ["profileImage" : profileImage, "labelstackview" : labelStackView, "rightstackview" : rightStackView ]
+            views: ["profileImage" : profileImage,
+                    "labelstackview" : labelStackView,
+                    "rightstackview" : rightStackView ]
         ))
+
         profileImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
 
         contentView.addConstraints(NSLayoutConstraint.constraints(
@@ -109,9 +109,6 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
             metrics: nil,
             views: ["stackView" : rightStackView ]
         ))
-
-
-
     }
 
     override func layoutSubviews() {
@@ -119,8 +116,4 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         profileImage.layer.cornerRadius = profileImage.bounds.size.height / 2
         profileImage.layer.masksToBounds = true
     }
-
-    //
-    // Trigger toggle section when tapping on the header
-    //
 }
