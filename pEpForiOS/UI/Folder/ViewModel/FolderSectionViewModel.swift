@@ -24,7 +24,6 @@ public class FolderSectionViewModel {
         help = [FolderCellViewModel]()
         collapsed = false
         generateCells()
-        collapse()
     }
 
     private func generateCells() {

@@ -14,9 +14,7 @@ protocol CollapsibleTableViewHeaderDelegate {
 }
 
 class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
-    var delegate: CollapsibleTableViewHeaderDelegate?
     var section: Int = 0
-    var collapsed: Bool = true
 
     let topStackView = UIStackView()
     let labelStackView = UIStackView()
@@ -66,26 +64,12 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         labelStackView.spacing = 5.0
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
 
-
-        //topStackView.addArrangedSubview(profileImage)
-        //topStackView.addArrangedSubview(labelStackView)
-        //topStackView.addArrangedSubview(rightStackView)
-        //topStackView.axis = .horizontal
-        //topStackView.alignment = .fill
-        //topStackView.distribution = .fill
-        //topStackView.translatesAutoresizingMaskIntoConstraints = false
-        //contentView.addSubview(topStackView)
         contentView.addSubview(profileImage)
         contentView.addSubview(rightStackView)
         contentView.addSubview(labelStackView)
 
         contentView.backgroundColor = UIColor.white
-        //clicableView.backgroundColor = UIColor.clear
-
-        //contentView.addSubview(clicableView)
         autolayout()
-
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CollapsibleTableViewHeader.tapHeader(gestureRecognizer:))))
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -99,7 +83,6 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         self.profileImage.image = UIImage(named: "swipe-trash")
         self.arrowImageView.image = UIImage(named:"chevron-icon")
         self.section = section
-        collapsed = viewModel.collapsed
         arrowImageView.transform = arrowImageView.transform.rotated(by: CGFloat.pi/2)
     }
 
@@ -140,25 +123,4 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     //
     // Trigger toggle section when tapping on the header
     //
-    func tapHeader(gestureRecognizer: UITapGestureRecognizer) {
-        guard let cell = gestureRecognizer.view as? CollapsibleTableViewHeader else {
-            return
-        }
-        if !collapsed {
-            arrowImageView.transform = arrowImageView.transform.rotated(by: CGFloat.pi/2)
-        } else {
-            arrowImageView.transform = arrowImageView.transform.rotated(by: -(CGFloat.pi/2))
-        }
-        collapsed = !collapsed
-        delegate?.toggleSection(header: self, section: cell.section)
-
-    }
-
-    func setCollapsed(collapsed: Bool) {
-        //
-        // Animate the arrow rotation (see Extensions.swf)
-        //
-        //arrowLabel.rotate(toValue: collapsed ? 0.0 : CGFloat(M_PI_2))
-    }
-
 }

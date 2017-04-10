@@ -10,8 +10,6 @@ import UIKit
 import MessageModel
 
 class FolderTableViewController: UITableViewController {
-
-    var sectionsmap = [Bool]()
     var appConfig: AppConfig?
 
     var folderVM = FolderViewModel()
@@ -49,30 +47,14 @@ class FolderTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if sectionsmap.count > section {
-            return nil
-        }
         let header :CollapsibleTableViewHeader?
         if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleTableViewHeader{
             header = head
         } else {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
-        sectionsmap.append(true)
         header!.configure(viewModel: folderVM[section], section: section)
-        header!.delegate = self
         return header
-        /*let label = UILabel()
-        label.textAlignment = .left
-        label.text = "I'm a test label"
-        label.tag = section
-
-        let tap = UITapGestureRecognizer(target: self, action: #selector(FolderTableViewController.tapFunction))
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(tap)
-        sectionsmap.append(true)
-
-        return label*/
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -116,27 +98,6 @@ class FolderTableViewController: UITableViewController {
     }
 
     @IBAction func addAccount(_ sender: Any) {
-    }
-
-    func tapFunction(sender:UITapGestureRecognizer) {
-        let section = sender.view!.tag
-        let oldcount = folderVM[section].count
-        folderVM[section].collapse()
-        var newcount = folderVM[section].count
-        if oldcount > newcount {
-            newcount = oldcount
-        }
-        let indexPaths = (0..<newcount).map { i in return IndexPath(item: i, section: section)  }
-
-        //hidden[section] = !hidden[section]
-
-        tableView?.beginUpdates()
-        if folderVM[section].collapsed {
-            tableView?.deleteRows(at: indexPaths, with: .automatic)
-        } else {
-            tableView?.insertRows(at: indexPaths, with: .automatic)
-        }
-        tableView?.endUpdates()
     }
 
     /*
@@ -184,28 +145,4 @@ class FolderTableViewController: UITableViewController {
      }
      */
 
-}
-
-extension FolderTableViewController: CollapsibleTableViewHeaderDelegate {
-
-    func toggleSection(header: CollapsibleTableViewHeader, section: Int) {
-        let oldcount = folderVM[section].count
-        folderVM[section].collapse()
-        var newcount = folderVM[section].count
-        if oldcount > newcount {
-            newcount = oldcount
-        }
-        var indexpath = [IndexPath]()
-        for i in 0 ..< newcount {
-            indexpath.append(NSIndexPath(row: i, section: section) as IndexPath)
-        }
-        tableView.beginUpdates()
-            if folderVM[section].collapsed {
-                tableView.deleteRows(at: indexpath, with: UITableViewRowAnimation.automatic)
-            } else {
-                tableView.insertRows(at: indexpath, with: UITableViewRowAnimation.automatic)
-            }
-        tableView.endUpdates()
-    }
-    
 }

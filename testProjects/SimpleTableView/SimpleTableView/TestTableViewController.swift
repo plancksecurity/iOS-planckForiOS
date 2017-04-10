@@ -65,8 +65,6 @@ class TestTableViewController: UITableViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(TestTableViewController.tapFunction))
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(tap)
-        //sectionsmap.append(true)
-
         return label
     }
 
@@ -79,10 +77,10 @@ class TestTableViewController: UITableViewController {
         tableView?.beginUpdates()
         if collapsed[section] {
             rowsinsections[section] = 0
-            tableView?.deleteRows(at: indexPaths, with: .automatic)
+            tableView?.deleteRows(at: indexPaths, with: .none)
         } else {
             rowsinsections[section] = 5
-            tableView?.insertRows(at: indexPaths, with: .automatic)
+            tableView?.insertRows(at: indexPaths, with: .none)
         }
         tableView?.endUpdates()
     }
