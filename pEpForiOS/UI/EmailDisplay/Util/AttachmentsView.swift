@@ -1,5 +1,5 @@
 //
-//  ImageView.swift
+//  AttachmentsView.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 04.04.17.
@@ -11,7 +11,7 @@ import UIKit
 /**
  Container for a list of views that have some intrinsic content size.
  */
-class ImageView: UIView {
+class AttachmentsView: UIView {
     var attachmentViewContainers = [AttachmentViewContainer]() {
         didSet {
             setupConstraints()

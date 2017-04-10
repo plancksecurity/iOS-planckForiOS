@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 
 class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
-    @IBOutlet weak var attachmentsImageView: ImageView!
+    @IBOutlet weak var attachmentsImageView: AttachmentsView!
     var attachmentsViewHelper = AttachmentsViewHelper()
     var lastMessage: Message?
 

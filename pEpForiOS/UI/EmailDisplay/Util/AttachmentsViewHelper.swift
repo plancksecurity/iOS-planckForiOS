@@ -19,7 +19,7 @@ protocol AttachmentsViewHelperDelegate: class {
 
 class AttachmentsViewHelper {
     weak var delegate: AttachmentsViewHelperDelegate?
-    var attachmentsImageView: ImageView?
+    var attachmentsImageView: AttachmentsView?
 
     var message: Message? {
         didSet {
