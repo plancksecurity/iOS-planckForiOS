@@ -43,7 +43,7 @@ class AttachmentsViewHelper {
 
     func opFinished(theBuildOp: AttachmentsViewOperation) {
         if let imageView = attachmentsImageView {
-            imageView.attachedViews = theBuildOp.attachmentViews
+            imageView.attachmentViewContainers = theBuildOp.attachmentViewContainers
             delegate?.didCreate(attachmentsView: imageView, message: theBuildOp.message)
         }
     }

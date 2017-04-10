@@ -17,7 +17,7 @@ class AttachmentsViewOperation: Operation {
     /**
      The resulting attachments view will appear here.
      */
-    var attachmentViews = [UIView]()
+    var attachmentViewContainers = [AttachmentViewContainer]()
 
     /**
      The number of attachments.
@@ -39,10 +39,10 @@ class AttachmentsViewOperation: Operation {
             if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
                 let imgData = att.data, let img = UIImage(data: imgData) {
                 let view = UIImageView(image: img)
-                attachmentViews.append(view)
+                attachmentViewContainers.append(AttachmentViewContainer(view: view, attachment: att))
             } else {
                 let view = AttachmentSummaryView(attachment: att)
-                attachmentViews.append(view)
+                attachmentViewContainers.append(AttachmentViewContainer(view: view, attachment: att))
             }
         }
     }

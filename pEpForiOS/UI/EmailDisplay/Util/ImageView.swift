@@ -12,7 +12,7 @@ import Foundation
  Container for a list of views that have some intrinsic content size.
  */
 class ImageView: UIView {
-    var attachedViews = [UIView]() {
+    var attachmentViewContainers = [AttachmentViewContainer]() {
         didSet {
             setupConstraints()
         }
@@ -40,27 +40,27 @@ class ImageView: UIView {
         // rm all previously set up constraints
         removeConstraints(lastConstraints)
 
-        guard attachedViews.count > 0 else {
+        guard attachmentViewContainers.count > 0 else {
             return
         }
 
-        for v in attachedViews {
-            v.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(v)
+        for ac in attachmentViewContainers {
+            ac.view.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(ac.view)
         }
 
         // distance to the top
         topAnchor.constraint(
-            equalTo: attachedViews[0].topAnchor, constant: spacing).isActive = true
+            equalTo: attachmentViewContainers[0].view.topAnchor, constant: spacing).isActive = true
 
         // distance to the bottom
         bottomAnchor.constraint(
-            equalTo: attachedViews[attachedViews.count - 1].bottomAnchor,
+            equalTo: attachmentViewContainers[attachmentViewContainers.count - 1].view.bottomAnchor,
             constant: -spacing).isActive = true
 
         var lastView: UIView?
-        for v in attachedViews {
-            if let imgView = v as? UIImageView {
+        for ac in attachmentViewContainers {
+            if let imgView = ac.view as? UIImageView {
                 // aspect ratio for UIImageView
                 let size = imgView.bounds.size
                 let factor = size.height / size.width
@@ -69,24 +69,24 @@ class ImageView: UIView {
             }
 
             // center
-            v.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+            ac.view.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
 
             let guide = readableContentGuide
 
             // distance left
-            v.leadingAnchor.constraint(
+            ac.view.leadingAnchor.constraint(
                 greaterThanOrEqualTo: guide.leadingAnchor).isActive = true
 
             // distance right
-            v.trailingAnchor.constraint(
+            ac.view.trailingAnchor.constraint(
                 lessThanOrEqualTo: guide.trailingAnchor).isActive = true
 
             // space between
             if let theLast = lastView {
                 theLast.bottomAnchor.constraint(
-                    equalTo: v.topAnchor, constant: -spacing).isActive = true
+                    equalTo: ac.view.topAnchor, constant: -spacing).isActive = true
             }
-            lastView = v
+            lastView = ac.view
         }
 
         // store so they can be removed later
