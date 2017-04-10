@@ -6,7 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /**
  Container for a list of views that have some intrinsic content size.

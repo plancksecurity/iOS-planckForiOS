@@ -31,7 +31,6 @@
 		22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		22DA56D91DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		22DA56DA1DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
-		43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43001F791D91860A00306BF0 /* FetchTableViewController.swift */; };
 		4301B3161E28D259007D626C /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4301B3151E28D259007D626C /* AppendMailsOperation.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */; };
@@ -134,9 +133,6 @@
 		439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
 		439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
 		439D407A1CC79423009A4E7C /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439D40791CC79423009A4E7C /* GCD.swift */; };
-		43A0E73C1D16C99900159F41 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7341D16C99900159F41 /* ALView+PureLayout.m */; };
-		43A0E73D1D16C99900159F41 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7361D16C99900159F41 /* NSArray+PureLayout.m */; };
-		43A0E73E1D16C99900159F41 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 43A0E7381D16C99900159F41 /* NSLayoutConstraint+PureLayout.m */; };
 		43A26FBA1E0408FB00AF0B84 /* ErrorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A26FB91E0408FB00AF0B84 /* ErrorProtocol.swift */; };
 		43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */; };
 		43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */; };
@@ -270,7 +266,6 @@
 		222B35BB1E00049C007A1F82 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
 		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
-		43001F791D91860A00306BF0 /* FetchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTableViewController.swift; sourceTree = "<group>"; };
 		4301B3151E28D259007D626C /* AppendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendMailsOperation.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+Extension.swift"; sourceTree = "<group>"; };
@@ -385,15 +380,6 @@
 		439D40711CC78958009A4E7C /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		439D40731CC7897B009A4E7C /* libiconv.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.tbd; path = usr/lib/libiconv.2.tbd; sourceTree = SDKROOT; };
 		439D40791CC79423009A4E7C /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
-		43A0E7331D16C99900159F41 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
-		43A0E7341D16C99900159F41 /* ALView+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALView+PureLayout.m"; sourceTree = "<group>"; };
-		43A0E7351D16C99900159F41 /* NSArray+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PureLayout.h"; sourceTree = "<group>"; };
-		43A0E7361D16C99900159F41 /* NSArray+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PureLayout.m"; sourceTree = "<group>"; };
-		43A0E7371D16C99900159F41 /* NSLayoutConstraint+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+PureLayout.h"; sourceTree = "<group>"; };
-		43A0E7381D16C99900159F41 /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
-		43A0E7391D16C99900159F41 /* PureLayout+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PureLayout+Internal.h"; sourceTree = "<group>"; };
-		43A0E73A1D16C99900159F41 /* PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayout.h; sourceTree = "<group>"; };
-		43A0E73B1D16C99900159F41 /* PureLayoutDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayoutDefines.h; sourceTree = "<group>"; };
 		43A26FB91E0408FB00AF0B84 /* ErrorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorProtocol.swift; sourceTree = "<group>"; };
 		43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncOperation.swift; sourceTree = "<group>"; };
 		43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UnencryptedHTMLMail.txt; sourceTree = "<group>"; };
@@ -545,14 +531,6 @@
 				4340F5F81D363BE6006A5C82 /* ContactCell.swift */,
 			);
 			name = Cells;
-			sourceTree = "<group>";
-		};
-		43001F761D9185E600306BF0 /* TableViews */ = {
-			isa = PBXGroup;
-			children = (
-				43001F791D91860A00306BF0 /* FetchTableViewController.swift */,
-			);
-			path = TableViews;
 			sourceTree = "<group>";
 		};
 		431144A61CC0CB0A0007639D /* Background */ = {
@@ -715,7 +693,6 @@
 			isa = PBXGroup;
 			children = (
 				43800D8C1D112A0800821E34 /* HTMLParser */,
-				43A0E7321D16C99900159F41 /* PureLayout */,
 				431144A61CC0CB0A0007639D /* Background */,
 				43E58EB21CBF8301008AA7A7 /* Models */,
 				43ED53611CC77F95006AB156 /* UI */,
@@ -843,22 +820,6 @@
 			name = Raw;
 			sourceTree = "<group>";
 		};
-		43A0E7321D16C99900159F41 /* PureLayout */ = {
-			isa = PBXGroup;
-			children = (
-				43A0E7331D16C99900159F41 /* ALView+PureLayout.h */,
-				43A0E7341D16C99900159F41 /* ALView+PureLayout.m */,
-				43A0E7351D16C99900159F41 /* NSArray+PureLayout.h */,
-				43A0E7361D16C99900159F41 /* NSArray+PureLayout.m */,
-				43A0E7371D16C99900159F41 /* NSLayoutConstraint+PureLayout.h */,
-				43A0E7381D16C99900159F41 /* NSLayoutConstraint+PureLayout.m */,
-				43A0E7391D16C99900159F41 /* PureLayout+Internal.h */,
-				43A0E73A1D16C99900159F41 /* PureLayout.h */,
-				43A0E73B1D16C99900159F41 /* PureLayoutDefines.h */,
-			);
-			path = PureLayout;
-			sourceTree = "<group>";
-		};
 		43A6E0491E5726C8005BEE69 /* Background */ = {
 			isa = PBXGroup;
 			children = (
@@ -922,7 +883,6 @@
 				B7208EAE1E437BF800B08B22 /* Settings */,
 				439A6C6C1E535827004CBAA6 /* Handshake */,
 				43ED53621CC77F95006AB156 /* EmailDisplay */,
-				43001F761D9185E600306BF0 /* TableViews */,
 				431B0B961D6734BF0082D0DB /* AccountsSettings */,
 				431AE5D11D2EC0A700F609D3 /* Compose */,
 				43ED53651CC77F95006AB156 /* ImapSetup */,
@@ -1311,7 +1271,6 @@
 				43549A8E1E48B54100210D86 /* TrashMailsOperation.swift in Sources */,
 				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,
 				222B358A1DF99C48007A1F82 /* Actionsheet+Extension.swift in Sources */,
-				43A0E73E1D16C99900159F41 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				8B81BB901E03F73100D38C82 /* SegueHandlerType.swift in Sources */,
 				4301B3161E28D259007D626C /* AppendMailsOperation.swift in Sources */,
 				43122B1A1DF5B48B00610253 /* ImapService.swift in Sources */,
@@ -1339,7 +1298,6 @@
 				4323FE8B1E83E5E6006785E1 /* IdentityImageOperation.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */,
-				43A0E73D1D16C99900159F41 /* NSArray+PureLayout.m in Sources */,
 				B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */,
 				4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
@@ -1359,7 +1317,6 @@
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
 				431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */,
-				43A0E73C1D16C99900159F41 /* ALView+PureLayout.m in Sources */,
 				43463AAE1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift in Sources */,
 				430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */,
 				431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */,
@@ -1373,7 +1330,6 @@
 				B7D1EECA1E8BED2500F190E3 /* extensions.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
-				43001F7A1D91860A00306BF0 /* FetchTableViewController.swift in Sources */,
 				43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,

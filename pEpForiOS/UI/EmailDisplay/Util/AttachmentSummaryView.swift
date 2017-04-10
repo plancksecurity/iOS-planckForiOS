@@ -112,7 +112,7 @@ class AttachmentSummaryView: UIView {
     }
 
     func createLabel() -> UILabel {
-        let label = UILabel(forAutoLayout: ())
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
         label.allowsDefaultTighteningForTruncation = true

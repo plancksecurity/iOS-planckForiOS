@@ -44,6 +44,5 @@
 #pragma mark -- Misc
 
 #import "TFHpple.h"
-#import "PureLayout.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */

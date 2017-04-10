@@ -6,10 +6,9 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public class AccountSection: UITableViewCell {
-
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var accountType: UILabel!
     @IBOutlet weak var accountName: UILabel!

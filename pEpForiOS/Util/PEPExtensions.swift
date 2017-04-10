@@ -6,6 +6,8 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
+import UIKit
+
 extension PEP_color {
     func statusIcon(enabled: Bool = true) -> UIImage? {
         switch self {
