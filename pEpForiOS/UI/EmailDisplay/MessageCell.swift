@@ -6,12 +6,17 @@
 //
 
 import UIKit
+
 import MessageModel
 
 public protocol MessageCellDelegate: class {}
 
 public protocol MessageContentCellDelegate: MessageCellDelegate {
     func didUpdate(cell: MessageCell, height: CGFloat)
+}
+
+protocol MessageAttachmentDelegate {
+    func didTap(cell: MessageCell, attachment: Attachment)
 }
 
 open class MessageCell: UITableViewCell {

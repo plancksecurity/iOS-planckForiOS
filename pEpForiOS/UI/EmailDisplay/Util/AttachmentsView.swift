@@ -12,6 +12,8 @@ import UIKit
  Container for a list of views that have some intrinsic content size.
  */
 class AttachmentsView: UIView {
+    weak var delegate: AttachmentsViewDelegate?
+
     var attachmentViewContainers = [AttachmentViewContainer]() {
         didSet {
             setupConstraints()
@@ -106,7 +108,7 @@ class AttachmentsView: UIView {
     func attachmentTapped(sender: UITapGestureRecognizer) {
         if sender.state == .ended {
             if let ac = gestureRecognizersToAttachments[sender] {
-                print("Tapped attachment \(ac.attachment)")
+                delegate?.didTap(attachment: ac.attachment)
             }
         }
     }

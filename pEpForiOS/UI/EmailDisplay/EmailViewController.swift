@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+
 import MessageModel
 
 class EmailViewController: UITableViewController {
@@ -277,10 +278,20 @@ extension EmailViewController: SegueHandlerType {
     }
 }
 
+// MARK: - RatingReEvaluatorDelegate
+
 extension EmailViewController: RatingReEvaluatorDelegate {
     func ratingChanged(message: Message) {
         GCD.onMain {
             self.showPepRating()
         }
+    }
+}
+
+// MARK: - MessageAttachmentDelegate
+
+extension EmailViewController: MessageAttachmentDelegate {
+    func didTap(cell: MessageCell, attachment: Attachment) {
+        print("Should open attachment \(attachment)")
     }
 }

@@ -10,16 +10,21 @@ import Foundation
 
 import MessageModel
 
-class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
+class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate, AttachmentsViewDelegate {
     @IBOutlet weak var attachmentsImageView: AttachmentsView!
+
     var attachmentsViewHelper = AttachmentsViewHelper()
     var lastMessage: Message?
+
+    override func awakeFromNib() {
+        attachmentsViewHelper.attachmentsImageView = attachmentsImageView
+        attachmentsViewHelper.delegate = self
+        attachmentsImageView.delegate = self
+    }
 
     public override func updateCell(model: ComposeFieldModel, message: Message,
                                     indexPath: IndexPath) {
         super.updateCell(model: model, message: message, indexPath: indexPath)
-        attachmentsViewHelper.attachmentsImageView = attachmentsImageView
-        attachmentsViewHelper.delegate = self
 
         if let m = lastMessage, m == message {
             // Avoid processing the same message over and over again, unless
@@ -28,6 +33,14 @@ class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate {
         }
         attachmentsViewHelper.message = message
         lastMessage = message
+    }
+}
+
+// MARK: - AttachmentsViewDelegate
+
+extension MessageAttachmentsCell {
+    func didTap(attachment: Attachment) {
+        (delegate as? MessageAttachmentDelegate)?.didTap(cell: self, attachment: attachment)
     }
 }
 
