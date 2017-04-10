@@ -15,6 +15,7 @@ class AttachmentsView: UIView {
     var attachmentViewContainers = [AttachmentViewContainer]() {
         didSet {
             setupConstraints()
+            setUpActions()
         }
     }
 
@@ -29,6 +30,8 @@ class AttachmentsView: UIView {
     var margin: CGFloat = 10
 
     var lastConstraints = [NSLayoutConstraint]()
+
+    var gestureRecognizersToAttachments = [UITapGestureRecognizer:AttachmentViewContainer]()
 
     func setupConstraints() {
         // remove any existing subview
@@ -91,5 +94,33 @@ class AttachmentsView: UIView {
 
         // store so they can be removed later
         lastConstraints = constraints
+    }
+
+    func setUpActions() {
+        gestureRecognizersToAttachments.removeAll()
+        for ac in attachmentViewContainers {
+            setUpAction(attachmentViewContainer: ac)
+        }
+    }
+
+    func attachmentTapped(sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            if let ac = gestureRecognizersToAttachments[sender] {
+                print("Tapped attachment \(ac.attachment)")
+            }
+        }
+    }
+
+    func setUpAction(attachmentViewContainer: AttachmentViewContainer) {
+        // remove existing gesture recognizers
+        let theSelector = #selector(attachmentTapped(sender:))
+        for gr in attachmentViewContainer.view.gestureRecognizers ?? [] {
+            gr.removeTarget(self, action: theSelector)
+        }
+
+        attachmentViewContainer.view.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: theSelector)
+        attachmentViewContainer.view.addGestureRecognizer(tapGesture)
+        gestureRecognizersToAttachments[tapGesture] = attachmentViewContainer
     }
 }
