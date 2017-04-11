@@ -11,5 +11,5 @@ import Foundation
 import MessageModel
 
 protocol AttachmentsViewDelegate: class {
-    func didTap(attachment: Attachment, view: UIView?)
+    func didTap(attachment: Attachment, location: CGPoint, inView: UIView?)
 }

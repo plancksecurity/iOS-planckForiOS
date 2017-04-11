@@ -293,23 +293,26 @@ extension EmailViewController: RatingReEvaluatorDelegate {
 // MARK: - MessageAttachmentDelegate
 
 extension EmailViewController: MessageAttachmentDelegate {
-    func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, view: UIView?) {
+    func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,
+                          inView: UIView?) {
         let ic = UIDocumentInteractionController(url: url)
-        let theView = view ?? cell
-        let rect = theView.bounds.centerRect(maxWidth: 32)
+        let theView = inView ?? cell
+        let dim: CGFloat = 40
+        let rect = CGRect.rectAround(center: location, width: dim, height: dim)
         ic.presentOptionsMenu(from: rect, in: theView, animated: true)
     }
 
-    func didTap(cell: MessageCell, attachment: Attachment, view: UIView?) {
-        let busyState = view?.displayAsBusy()
+    func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
+        let busyState = inView?.displayAsBusy()
         let attachmentOp = AttachmentToLocalURLOperation(attachment: attachment)
         attachmentOp.completionBlock = { [weak self] in
             if let url = attachmentOp.fileURL {
                 GCD.onMain {
                     if let bState = busyState {
-                        view?.stopDisplayingAsBusy(viewBusyState: bState)
+                        inView?.stopDisplayingAsBusy(viewBusyState: bState)
                     }
-                    self?.didCreateLocally(attachment: attachment, url: url, cell: cell, view: view)
+                    self?.didCreateLocally(attachment: attachment, url: url, cell: cell,
+                                           location: location, inView: inView)
                 }
             }
         }
