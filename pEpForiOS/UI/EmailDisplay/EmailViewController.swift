@@ -24,6 +24,7 @@ class EmailViewController: UITableViewController {
     var ratingReEvaluator: RatingReEvaluator?
 
     lazy var backgroundQueue = OperationQueue()
+    lazy var documentInteractionController = UIDocumentInteractionController()
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -295,11 +296,11 @@ extension EmailViewController: RatingReEvaluatorDelegate {
 extension EmailViewController: MessageAttachmentDelegate {
     func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,
                           inView: UIView?) {
-        let ic = UIDocumentInteractionController(url: url)
+        documentInteractionController.url = url
         let theView = inView ?? cell
         let dim: CGFloat = 40
         let rect = CGRect.rectAround(center: location, width: dim, height: dim)
-        ic.presentOptionsMenu(from: rect, in: theView, animated: true)
+        documentInteractionController.presentOptionsMenu(from: rect, in: theView, animated: true)
     }
 
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
