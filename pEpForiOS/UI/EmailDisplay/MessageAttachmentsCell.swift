@@ -20,6 +20,7 @@ class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate, Attach
         attachmentsViewHelper.attachmentsImageView = attachmentsImageView
         attachmentsViewHelper.delegate = self
         attachmentsImageView.delegate = self
+        selectionStyle = .none
     }
 
     public override func updateCell(model: ComposeFieldModel, message: Message,

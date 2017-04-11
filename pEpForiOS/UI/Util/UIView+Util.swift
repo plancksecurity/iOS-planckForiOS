@@ -12,7 +12,7 @@ import UIKit
  A piece of data for tracking the "busyness" of a view.
  */
 struct ViewBusyState {
-    let activityView: UIActivityIndicatorView
+    let views: [UIView]
 }
 
 extension UIView {
@@ -30,20 +30,32 @@ extension UIView {
      Marks the view as busy, e.g. by adding some spinning animation view.
      */
     func displayAsBusy() -> ViewBusyState {
+        let darkView = UIView()
+        darkView.translatesAutoresizingMaskIntoConstraints = false
+        darkView.backgroundColor = .black
+        darkView.alpha = 0.5
+        addSubview(darkView)
+        darkView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        darkView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        darkView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        darkView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
+
         let activityView = UIActivityIndicatorView()
         activityView.activityIndicatorViewStyle = .whiteLarge
         activityView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(activityView)
+        darkView.addSubview(activityView)
         activityView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         activityView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         activityView.startAnimating()
-        return ViewBusyState(activityView: activityView)
+        return ViewBusyState(views: [darkView])
     }
 
     /**
      Marks the given view as not busy anymore.
      */
     func stopDisplayingAsBusy(viewBusyState: ViewBusyState) {
-        viewBusyState.activityView.removeFromSuperview()
+        for v in viewBusyState.views {
+            v.removeFromSuperview()
+        }
     }
 }
