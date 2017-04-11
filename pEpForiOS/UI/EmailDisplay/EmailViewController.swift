@@ -296,7 +296,7 @@ extension EmailViewController: MessageAttachmentDelegate {
     func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, view: UIView?) {
         let ic = UIDocumentInteractionController(url: url)
         let theView = view ?? cell
-        let rect = theView.bounds
+        let rect = theView.bounds.centerRect(maxWidth: 32)
         ic.presentOptionsMenu(from: rect, in: theView, animated: true)
     }
 
