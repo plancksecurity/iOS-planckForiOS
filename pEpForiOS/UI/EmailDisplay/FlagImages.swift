@@ -64,8 +64,8 @@ open class FlagImages {
                     if let cg = theImg.cgImage {
                         var rect = CGRect(
                             x: 0.0, y: 0.0, width: theImg.size.width, height: theImg.size.height)
-                        rect.origin.x = (size.width - theImg.size.width) / 2
-                        rect.origin.y = (size.height - theImg.size.height) / 2
+                        rect.origin.x = round((size.width - theImg.size.width) / 2)
+                        rect.origin.y = round((size.height - theImg.size.height) / 2)
                         ctx.draw(cg, in: rect)
                     }
                 }

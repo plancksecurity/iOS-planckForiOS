@@ -33,7 +33,7 @@ class EmailListViewCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.none
 
-        self.contactImageView.layer.cornerRadius = contactImageView.bounds.size.width / 2
+        self.contactImageView.layer.cornerRadius = round(contactImageView.bounds.size.width / 2)
         self.contactImageView.layer.masksToBounds = true
     }
 

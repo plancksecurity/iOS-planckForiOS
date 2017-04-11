@@ -10,7 +10,7 @@ import UIKit
 
 extension CGRect {
     static func rectAround(center: CGPoint, width: CGFloat, height: CGFloat) -> CGRect {
-        let origin = CGPoint(x: center.x - width / 2, y: center.y - height / 2)
+        let origin = CGPoint(x: round(center.x - width / 2), y: round(center.y - height / 2))
         return CGRect(origin: origin, size: CGSize(width: width, height: height))
     }
 
@@ -22,8 +22,9 @@ extension CGRect {
         let r = standardized
         var theWidth = maxWidth
         theWidth = min(theWidth, min(r.width, r.height))
-        let center = CGPoint(x: r.origin.x + r.width / 2, y: r.origin.y + r.height / 2)
-        let orig = CGPoint(x: center.x - theWidth / 2, y: center.y - theWidth / 2)
+        let center = CGPoint(x: r.origin.x + round(r.width / 2),
+                             y: r.origin.y + round(r.height / 2))
+        let orig = CGPoint(x: center.x - round(theWidth / 2), y: center.y - round(theWidth / 2))
         return CGRect(origin: orig, size: CGSize(width: theWidth, height: theWidth))
     }
 }

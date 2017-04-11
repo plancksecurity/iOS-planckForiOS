@@ -72,11 +72,11 @@ extension UIImage {
         var imageSize = size
         let iconWidth = imageSize.width
         var imagePosX: CGFloat = 0.0
-        var textPosX = (iconWidth - textSize.width) / 2
+        var textPosX = round((iconWidth - textSize.width) / 2)
         
         if textSize.width > imageSize.width {
             imageSize.width = textSize.width
-            imagePosX = (textSize.width - iconWidth) / 2
+            imagePosX = round((textSize.width - iconWidth) / 2)
             textPosX = 0.0
         }
         
@@ -116,7 +116,8 @@ open class ComposeHelper {
         let textPosX = imageSize.width + textMargin
         let imageWidth = imageSize.width + textFrame.width + (textMargin * 2)
 
-        textFrame.origin = CGPoint(x: textPosX, y: ((imageSize.height - textFrame.size.height) / 2))
+        textFrame.origin = CGPoint(x: textPosX,
+                                   y: round((imageSize.height - textFrame.size.height) / 2))
         imageSize.width = imageWidth
         imageSize.height += 2.0
 

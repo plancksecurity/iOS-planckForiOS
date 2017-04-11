@@ -458,8 +458,8 @@ extension String {
      */
     func draw(centeredIn size: CGSize, color: UIColor, font: UIFont) {
         func center(size: CGSize, inRect: CGRect) -> CGRect {
-            let xStart = inRect.size.width / 2 - size.width / 2
-            let yStart = inRect.size.height / 2 - size.height / 2
+            let xStart = round(inRect.size.width / 2 - size.width / 2)
+            let yStart = round(inRect.size.height / 2 - size.height / 2)
             let o = CGPoint(x: xStart, y: yStart)
             return CGRect(origin: o, size: size)
         }

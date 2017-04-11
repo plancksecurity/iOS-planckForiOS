@@ -113,7 +113,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        profileImage.layer.cornerRadius = profileImage.bounds.size.height / 2
+        profileImage.layer.cornerRadius = round(profileImage.bounds.size.height / 2)
         profileImage.layer.masksToBounds = true
     }
 }
