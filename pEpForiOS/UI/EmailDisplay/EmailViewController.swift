@@ -23,6 +23,8 @@ class EmailViewController: UITableViewController {
     var otherCellsHeight: CGFloat = 0.0
     var ratingReEvaluator: RatingReEvaluator?
 
+    lazy var backgroundQueue = OperationQueue()
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -291,7 +293,23 @@ extension EmailViewController: RatingReEvaluatorDelegate {
 // MARK: - MessageAttachmentDelegate
 
 extension EmailViewController: MessageAttachmentDelegate {
+    func didCreateLocally(attachment: Attachment, url: URL, view: UIView?) {
+        print(#function)
+    }
+
     func didTap(cell: MessageCell, attachment: Attachment, view: UIView?) {
-        print("Should open attachment \(attachment)")
+        let busyState = view?.displayAsBusy()
+        let attachmentOp = AttachmentToLocalURLOperation(attachment: attachment)
+        attachmentOp.completionBlock = { [weak self] in
+            if let url = attachmentOp.fileURL {
+                GCD.onMain {
+                    if let bState = busyState {
+                        view?.stopDisplayingAsBusy(viewBusyState: bState)
+                    }
+                    self?.didCreateLocally(attachment: attachment, url: url, view: view)
+                }
+            }
+        }
+        backgroundQueue.addOperation(attachmentOp)
     }
 }
