@@ -293,8 +293,11 @@ extension EmailViewController: RatingReEvaluatorDelegate {
 // MARK: - MessageAttachmentDelegate
 
 extension EmailViewController: MessageAttachmentDelegate {
-    func didCreateLocally(attachment: Attachment, url: URL, view: UIView?) {
-        print(#function)
+    func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, view: UIView?) {
+        let ic = UIDocumentInteractionController(url: url)
+        let theView = view ?? cell
+        let rect = theView.bounds
+        ic.presentOptionsMenu(from: rect, in: theView, animated: true)
     }
 
     func didTap(cell: MessageCell, attachment: Attachment, view: UIView?) {
@@ -306,7 +309,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                     if let bState = busyState {
                         view?.stopDisplayingAsBusy(viewBusyState: bState)
                     }
-                    self?.didCreateLocally(attachment: attachment, url: url, view: view)
+                    self?.didCreateLocally(attachment: attachment, url: url, cell: cell, view: view)
                 }
             }
         }
