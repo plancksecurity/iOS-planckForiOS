@@ -16,7 +16,7 @@ public protocol MessageContentCellDelegate: MessageCellDelegate {
 }
 
 protocol MessageAttachmentDelegate {
-    func didTap(cell: MessageCell, attachment: Attachment)
+    func didTap(cell: MessageCell, attachment: Attachment, view: UIView?)
 }
 
 open class MessageCell: UITableViewCell {

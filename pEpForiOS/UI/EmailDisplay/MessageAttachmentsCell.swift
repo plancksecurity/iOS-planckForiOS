@@ -39,8 +39,9 @@ class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate, Attach
 // MARK: - AttachmentsViewDelegate
 
 extension MessageAttachmentsCell {
-    func didTap(attachment: Attachment) {
-        (delegate as? MessageAttachmentDelegate)?.didTap(cell: self, attachment: attachment)
+    func didTap(attachment: Attachment, view: UIView?) {
+        (delegate as? MessageAttachmentDelegate)?.didTap(cell: self, attachment: attachment,
+                                                         view: view)
     }
 }
 

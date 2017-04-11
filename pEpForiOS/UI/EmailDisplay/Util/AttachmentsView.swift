@@ -108,7 +108,7 @@ class AttachmentsView: UIView {
     func attachmentTapped(sender: UITapGestureRecognizer) {
         if sender.state == .ended {
             if let ac = gestureRecognizersToAttachments[sender] {
-                delegate?.didTap(attachment: ac.attachment)
+                delegate?.didTap(attachment: ac.attachment, view: sender.view)
             }
         }
     }

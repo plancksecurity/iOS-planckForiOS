@@ -291,7 +291,7 @@ extension EmailViewController: RatingReEvaluatorDelegate {
 // MARK: - MessageAttachmentDelegate
 
 extension EmailViewController: MessageAttachmentDelegate {
-    func didTap(cell: MessageCell, attachment: Attachment) {
+    func didTap(cell: MessageCell, attachment: Attachment, view: UIView?) {
         print("Should open attachment \(attachment)")
     }
 }
