@@ -66,11 +66,7 @@ class AttachmentsView: UIView {
         var lastView: UIView?
         for ac in attachmentViewContainers {
             if let imgView = ac.view as? UIImageView {
-                // aspect ratio for UIImageView
-                let size = imgView.bounds.size
-                let factor = size.height / size.width
-                imgView.heightAnchor.constraint(
-                    equalTo: imgView.widthAnchor, multiplier: factor).isActive = true
+                imgView.activateAspectRatioConstraint()
             }
 
             // center

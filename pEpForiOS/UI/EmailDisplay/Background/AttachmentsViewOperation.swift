@@ -34,14 +34,17 @@ class AttachmentsViewOperation: Operation {
     }
 
     override func main() {
+        let dic = UIDocumentInteractionController()
         let attachments = message.viewableAttachments()
         for att in attachments {
             if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
                 let imgData = att.data, let img = UIImage(data: imgData) {
                 let view = UIImageView(image: img)
-                attachmentViewContainers.append(AttachmentViewContainer(view: view, attachment: att))
+                attachmentViewContainers.append(AttachmentViewContainer(view: view,
+                                                                        attachment: att))
             } else {
-                let view = AttachmentSummaryView(attachment: att)
+                dic.name = att.fileName
+                let view = AttachmentSummaryView(attachment: att, iconImage: dic.icons.first)
                 attachmentViewContainers.append(AttachmentViewContainer(view: view, attachment: att))
             }
         }

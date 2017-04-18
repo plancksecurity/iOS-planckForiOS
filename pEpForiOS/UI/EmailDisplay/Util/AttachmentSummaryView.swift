@@ -27,6 +27,7 @@ class AttachmentSummaryView: UIView {
     let marginHorizontal: CGFloat = 8
 
     let attachment: Attachment
+    let iconImage: UIImage?
 
     /**
      The view on top that one.
@@ -42,8 +43,9 @@ class AttachmentSummaryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(attachment: Attachment) {
+    init(attachment: Attachment, iconImage: UIImage?) {
         self.attachment = attachment
+        self.iconImage = iconImage
         super.init(frame: CGRect.zero)
 
         layer.borderColor = UIColor.pEpGreen.cgColor
@@ -53,7 +55,9 @@ class AttachmentSummaryView: UIView {
     }
 
     override func didMoveToSuperview() {
-        setupViewsAndInternalConstraints()
+        if superview != nil {
+            setupViewsAndInternalConstraints()
+        }
     }
 
     func setupViewsAndInternalConstraints() {
@@ -75,12 +79,29 @@ class AttachmentSummaryView: UIView {
             lessThanOrEqualTo: guide.widthAnchor, multiplier: 1,
             constant: 2 * -marginHorizontal).isActive = true
 
+        var lastVerticalView: UIView = labelFilename
+
+        if let icon = iconImage {
+            let imgView = UIImageView(image: icon)
+            imgView.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(imgView)
+
+            imgView.topAnchor.constraint(
+                equalTo: lastVerticalView.bottomAnchor, constant: spaceVertical).isActive = true
+            imgView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            imgView.widthAnchor.constraint(
+                lessThanOrEqualTo: guide.widthAnchor, multiplier: 1,
+                constant: 2 * -marginHorizontal).isActive = true
+            imgView.activateAspectRatioConstraint()
+            lastVerticalView = imgView
+        }
+
         if let labelExt = labelExtension {
             addSubview(labelExt)
             labelExt.centerXAnchor.constraint(equalTo: guide.centerXAnchor).isActive = true
 
             labelExt.topAnchor.constraint(
-                equalTo: labelFilename.bottomAnchor, constant: spaceVertical).isActive = true
+                equalTo: lastVerticalView.bottomAnchor, constant: spaceVertical).isActive = true
 
             labelExt.widthAnchor.constraint(
                 lessThanOrEqualTo: guide.widthAnchor, multiplier: 1,
@@ -89,7 +110,7 @@ class AttachmentSummaryView: UIView {
             labelExt.bottomAnchor.constraint(
                 equalTo: guide.bottomAnchor, constant: -marginVertical).isActive = true
         } else {
-            labelFilename.bottomAnchor.constraint(
+            lastVerticalView.bottomAnchor.constraint(
                 equalTo: guide.bottomAnchor, constant: -marginVertical).isActive = true
         }
     }
