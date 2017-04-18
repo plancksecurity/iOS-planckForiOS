@@ -294,6 +294,13 @@ extension EmailViewController: RatingReEvaluatorDelegate {
 // MARK: - MessageAttachmentDelegate
 
 extension EmailViewController: MessageAttachmentDelegate {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        if UI_USER_INTERFACE_IDIOM() == .pad {
+            documentInteractionController.dismissMenu(animated: false)
+        }
+    }
+
     func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,
                           inView: UIView?) {
         documentInteractionController.url = url
