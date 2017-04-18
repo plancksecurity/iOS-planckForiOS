@@ -34,6 +34,14 @@ class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate, Attach
         }
         attachmentsViewHelper.message = message
         lastMessage = message
+
+        // Work around auto-layout problems
+        if !message.viewableAttachments().isEmpty {
+            let cZeroHeight = contentView.heightAnchor.constraint(equalToConstant: 0)
+            let cMinimumHeight = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+            cZeroHeight.isActive = false
+            cMinimumHeight.isActive = true
+        }
     }
 }
 
