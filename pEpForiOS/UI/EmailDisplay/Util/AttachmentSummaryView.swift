@@ -107,12 +107,10 @@ class AttachmentSummaryView: UIView {
                 lessThanOrEqualTo: guide.widthAnchor, multiplier: 1,
                 constant: 2 * -marginHorizontal).isActive = true
 
-            labelExt.bottomAnchor.constraint(
-                equalTo: guide.bottomAnchor, constant: -marginVertical).isActive = true
-        } else {
-            lastVerticalView.bottomAnchor.constraint(
-                equalTo: guide.bottomAnchor, constant: -marginVertical).isActive = true
+            lastVerticalView = labelExt
         }
+        lastVerticalView.bottomAnchor.constraint(
+            equalTo: guide.bottomAnchor, constant: -marginVertical).isActive = true
     }
 
     func createLabels() -> (UILabel, UILabel?) {
