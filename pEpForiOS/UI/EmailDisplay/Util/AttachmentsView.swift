@@ -59,9 +59,11 @@ class AttachmentsView: UIView {
             equalTo: attachmentViewContainers[0].view.topAnchor, constant: spacing).isActive = true
 
         // distance to the bottom
-        bottomAnchor.constraint(
+        let cBottom = bottomAnchor.constraint(
             equalTo: attachmentViewContainers[attachmentViewContainers.count - 1].view.bottomAnchor,
-            constant: -spacing).isActive = true
+            constant: spacing)
+        cBottom.priority = UILayoutPriorityDefaultLow
+        cBottom.isActive = true
 
         var lastView: UIView?
         for ac in attachmentViewContainers {

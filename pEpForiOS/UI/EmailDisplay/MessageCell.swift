@@ -41,7 +41,6 @@ open class MessageCell: UITableViewCell {
     }
     
     public func updateCell(model: ComposeFieldModel, message: Message, indexPath: IndexPath) {
-        height = UITableViewAutomaticDimension // reset height to default
         fieldModel = model
         if titleLabel != nil {
             titleLabel?.text = fieldModel?.title
