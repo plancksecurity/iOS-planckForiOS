@@ -6,6 +6,7 @@ Pods/.*
 \.git/
 \.gitkeep
 scripts/config.ini$
+.*~.storyboard$
 
 glob
 pEpForiOSTests/Util/TestData.swift
