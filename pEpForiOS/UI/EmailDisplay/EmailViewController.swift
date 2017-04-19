@@ -263,17 +263,23 @@ extension EmailViewController: SegueHandlerType {
             destination.page = page
             break
         case .seguePrivacyStatus:
+            // TODO wire new Trustwords
+            /*
             let destination = segue.destination as? PrivacyStatusTableViewController
             destination?.message = message
             destination?.appConfig = appConfig
             destination?.ratingReEvaluator = ratingReEvaluator
+             */
             break
         case .segueTrustwords:
+            // TODO wire new Trustwords
+            /*
             let destination = segue.destination as? TrustwordsTableViewController
             destination?.message = message
             destination?.appConfig = appConfig
             destination?.myselfIdentity = PEPUtil.ownIdentity(message: message)
             destination?.partnerIdentity = partnerIdentity
+             */
             break
         case .noSegue:
             break

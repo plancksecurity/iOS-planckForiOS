@@ -127,12 +127,6 @@
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
-		439A6C741E535827004CBAA6 /* HandshakeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439A6C6E1E535827004CBAA6 /* HandshakeTableViewCell.swift */; };
-		439A6C751E535827004CBAA6 /* PrivacyInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439A6C6F1E535827004CBAA6 /* PrivacyInfoTableViewCell.swift */; };
-		439A6C761E535827004CBAA6 /* FingerprintTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439A6C701E535827004CBAA6 /* FingerprintTableViewController.swift */; };
-		439A6C771E535827004CBAA6 /* PrivacyStatusTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439A6C711E535827004CBAA6 /* PrivacyStatusTableViewController.swift */; };
-		439A6C781E535827004CBAA6 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439A6C721E535827004CBAA6 /* RoundedButton.swift */; };
-		439A6C791E535827004CBAA6 /* TrustwordsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439A6C731E535827004CBAA6 /* TrustwordsTableViewController.swift */; };
 		439D40701CC78930009A4E7C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
 		439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
 		439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
@@ -379,12 +373,6 @@
 		43980EDF1CBD24B000A7FC3C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		43980EF91CBD415700A7FC3C /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
-		439A6C6E1E535827004CBAA6 /* HandshakeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeTableViewCell.swift; sourceTree = "<group>"; };
-		439A6C6F1E535827004CBAA6 /* PrivacyInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyInfoTableViewCell.swift; sourceTree = "<group>"; };
-		439A6C701E535827004CBAA6 /* FingerprintTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FingerprintTableViewController.swift; sourceTree = "<group>"; };
-		439A6C711E535827004CBAA6 /* PrivacyStatusTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyStatusTableViewController.swift; sourceTree = "<group>"; };
-		439A6C721E535827004CBAA6 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
-		439A6C731E535827004CBAA6 /* TrustwordsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustwordsTableViewController.swift; sourceTree = "<group>"; };
 		439D406F1CC78930009A4E7C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		439D40711CC78958009A4E7C /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		439D40731CC7897B009A4E7C /* libiconv.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.tbd; path = usr/lib/libiconv.2.tbd; sourceTree = SDKROOT; };
@@ -810,27 +798,6 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
-		439A6C6C1E535827004CBAA6 /* Handshake */ = {
-			isa = PBXGroup;
-			children = (
-				439A6C6D1E535827004CBAA6 /* Cells */,
-				439A6C701E535827004CBAA6 /* FingerprintTableViewController.swift */,
-				439A6C711E535827004CBAA6 /* PrivacyStatusTableViewController.swift */,
-				439A6C721E535827004CBAA6 /* RoundedButton.swift */,
-				439A6C731E535827004CBAA6 /* TrustwordsTableViewController.swift */,
-			);
-			path = Handshake;
-			sourceTree = "<group>";
-		};
-		439A6C6D1E535827004CBAA6 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				439A6C6E1E535827004CBAA6 /* HandshakeTableViewCell.swift */,
-				439A6C6F1E535827004CBAA6 /* PrivacyInfoTableViewCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		439D40781CC78A2D009A4E7C /* Raw */ = {
 			isa = PBXGroup;
 			children = (
@@ -903,7 +870,6 @@
 				43A6E0491E5726C8005BEE69 /* Background */,
 				B71EBBB41E55E43100150177 /* Folder */,
 				B7208EAE1E437BF800B08B22 /* Settings */,
-				439A6C6C1E535827004CBAA6 /* Handshake */,
 				43ED53621CC77F95006AB156 /* EmailDisplay */,
 				431B0B961D6734BF0082D0DB /* AccountsSettings */,
 				431AE5D11D2EC0A700F609D3 /* Compose */,
@@ -1234,7 +1200,6 @@
 				431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */,
 				431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */,
 				B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */,
-				439A6C781E535827004CBAA6 /* RoundedButton.swift in Sources */,
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
 				4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */,
 				433019E61E01A71300788B89 /* PeriodicTask.swift in Sources */,
@@ -1265,7 +1230,6 @@
 				431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */,
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
-				439A6C761E535827004CBAA6 /* FingerprintTableViewController.swift in Sources */,
 				B726CF781E5DB1F6005C19EF /* AccountSection.swift in Sources */,
 				43A26FBA1E0408FB00AF0B84 /* ErrorProtocol.swift in Sources */,
 				4339477B1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift in Sources */,
@@ -1315,10 +1279,8 @@
 				222B356D1DF96C30007A1F82 /* ComposeCell.swift in Sources */,
 				222B35721DF96CC8007A1F82 /* ComposeFieldModel.swift in Sources */,
 				436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */,
-				439A6C751E535827004CBAA6 /* PrivacyInfoTableViewCell.swift in Sources */,
 				431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */,
 				438281851E89348800087343 /* NSRegularExpression+Extension.swift in Sources */,
-				439A6C741E535827004CBAA6 /* HandshakeTableViewCell.swift in Sources */,
 				431B04801DE5774800E40CD3 /* CdMessage+Pantomime.swift in Sources */,
 				4323FE8B1E83E5E6006785E1 /* IdentityImageOperation.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
@@ -1335,7 +1297,6 @@
 				431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */,
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
-				439A6C791E535827004CBAA6 /* TrustwordsTableViewController.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,
@@ -1354,7 +1315,6 @@
 				437DB2701EA5FC8F00AC6FC2 /* UIImageView+Extension.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
-				439A6C771E535827004CBAA6 /* PrivacyStatusTableViewController.swift in Sources */,
 				B7D1EECA1E8BED2500F190E3 /* extensions.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
