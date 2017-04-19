@@ -17,13 +17,13 @@ class PrivacyInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var infoTextLabel: UILabel!
     
     func showExplanation(message: Message) {
-        infoTitleLabel.text = PEPUtil.pEpTitle(pEpRating: message.pEpRating())
-        infoTextLabel.text = PEPUtil.pEpExplanation(pEpRating: message.pEpRating())
+        infoTitleLabel.text = PEPStatusStrings.pEpTitle(pEpRating: message.pEpRating())
+        infoTextLabel.text = PEPStatusStrings.pEpExplanation(pEpRating: message.pEpRating())
     }
     
     func showSuggestion(message: Message) {
         infoTitleLabel.text = "Suggestion".localized
-        infoTextLabel.text = PEPUtil.pEpSuggestion(pEpRating: message.pEpRating())
+        infoTextLabel.text = PEPStatusStrings.pEpSuggestion(pEpRating: message.pEpRating())
     }
     
 }
