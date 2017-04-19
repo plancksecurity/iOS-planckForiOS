@@ -331,7 +331,7 @@
                                             </connections>
                                         </textView>
                                         <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8S-M4-JdW">
-                                            <rect key="frame" x="-9" y="40" width="374" height="140"/>
+                                            <rect key="frame" x="-9" y="40" width="373" height="140"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="prY-xp-1rI" id="VoP-0P-HiT"/>
@@ -1728,7 +1728,11 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Pba-MT-N93"/>
-                        <barButtonItem title="p≡p" id="1oP-DI-wuJ"/>
+                        <barButtonItem title="p≡p" id="1oP-DI-wuJ">
+                            <connections>
+                                <segue destination="Dbs-KG-RkX" kind="show" identifier="segueHandshake" id="kXf-w2-2nI"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3"/>
                     <connections>
@@ -1739,7 +1743,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6720.8000000000002" y="180.35982008995504"/>
+            <point key="canvasLocation" x="6772" y="339"/>
         </scene>
         <!--Fingerprint Table View Controller-->
         <scene sceneID="BlL-i8-qNY">
@@ -2002,6 +2006,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AOU-GF-dia" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="8766" y="1182"/>
+        </scene>
+        <!--Handshake-->
+        <scene sceneID="vNc-oF-Keh">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Handshake" id="Dbs-KG-RkX" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vev-AJ-nPB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7551" y="339"/>
         </scene>
     </scenes>
     <resources>

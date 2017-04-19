@@ -139,23 +139,6 @@ class EmailViewController: UITableViewController {
         _ = navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func showRatingPressed(_ sender: UIBarButtonItem) {
-        let filtered = message.identitiesEligibleForHandshake(session: appConfig.session)
-
-        partnerIdentity = nil
-        if filtered.count == 1, let partnerID = filtered.first {
-            partnerIdentity = partnerID
-            if partnerID.canResetTrust(session: appConfig.session) {
-                // reset trust
-                performSegue(withIdentifier: .seguePrivacyStatus, sender: self)
-            } else {
-                performSegue(withIdentifier: .segueTrustwords, sender: self)
-            }
-        } else if filtered.count > 1 || filtered.count == 0 {
-            performSegue(withIdentifier: .seguePrivacyStatus, sender: self)
-        }
-    }
-
     /**
      For the unwind segue from the trustwords controller, when the user choses "trusted".
      */
@@ -220,8 +203,7 @@ extension EmailViewController: SegueHandlerType {
         case segueForward
         case seguePrevious
         case segueNext
-        case segueTrustwords
-        case seguePrivacyStatus
+        case segueHandshake
         case noSegue
     }
     
@@ -262,23 +244,13 @@ extension EmailViewController: SegueHandlerType {
             destination.appConfig = appConfig
             destination.page = page
             break
-        case .seguePrivacyStatus:
+        case .segueHandshake:
             // TODO wire new Trustwords
             /*
             let destination = segue.destination as? PrivacyStatusTableViewController
             destination?.message = message
             destination?.appConfig = appConfig
             destination?.ratingReEvaluator = ratingReEvaluator
-             */
-            break
-        case .segueTrustwords:
-            // TODO wire new Trustwords
-            /*
-            let destination = segue.destination as? TrustwordsTableViewController
-            destination?.message = message
-            destination?.appConfig = appConfig
-            destination?.myselfIdentity = PEPUtil.ownIdentity(message: message)
-            destination?.partnerIdentity = partnerIdentity
              */
             break
         case .noSegue:
