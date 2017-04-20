@@ -150,6 +150,7 @@
 		43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */; };
 		43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */; };
 		43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C046BE1CF48EA500BD0D9D /* AddressBook.framework */; };
+		43C322051EA89EED005073FB /* HandshakePartnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C322041EA89EED005073FB /* HandshakePartnerTableViewCell.swift */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
 		43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */; };
@@ -398,6 +399,7 @@
 		43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+Extension.swift"; sourceTree = "<group>"; };
 		43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptAndSendOperation.swift; sourceTree = "<group>"; };
 		43C046BE1CF48EA500BD0D9D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		43C322041EA89EED005073FB /* HandshakePartnerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCell.swift; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
 		43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
@@ -682,6 +684,7 @@
 		438D5A6F1EA77CFC001A37E1 /* Handshake */ = {
 			isa = PBXGroup;
 			children = (
+				43C322041EA89EED005073FB /* HandshakePartnerTableViewCell.swift */,
 				438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */,
 			);
 			path = Handshake;
@@ -1327,6 +1330,7 @@
 				4340F5F91D363BE6006A5C82 /* ContactCell.swift in Sources */,
 				4323FE901E840E65006785E1 /* UIColor+Extension.swift in Sources */,
 				432142661E8FD6A400FBE987 /* ServiceUtil.swift in Sources */,
+				43C322051EA89EED005073FB /* HandshakePartnerTableViewCell.swift in Sources */,
 				43F7BEB01DC8DFC5009048D6 /* OperationQueue+Extension.swift in Sources */,
 				437DB2701EA5FC8F00AC6FC2 /* UIImageView+Extension.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,

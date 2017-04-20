@@ -245,13 +245,10 @@ extension EmailViewController: SegueHandlerType {
             destination.page = page
             break
         case .segueHandshake:
-            // TODO wire new Trustwords
-            /*
-            let destination = segue.destination as? PrivacyStatusTableViewController
+            let destination = segue.destination as? HandshakeViewController
             destination?.message = message
             destination?.appConfig = appConfig
             destination?.ratingReEvaluator = ratingReEvaluator
-             */
             break
         case .noSegue:
             break

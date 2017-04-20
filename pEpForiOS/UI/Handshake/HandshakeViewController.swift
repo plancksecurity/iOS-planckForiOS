@@ -8,44 +8,43 @@
 
 import UIKit
 
+import MessageModel
+
 class HandshakeViewController: UITableViewController {
+    var appConfig: AppConfig?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    var message: Message? {
+        didSet {
+            partners = message?.identitiesEligibleForHandshake() ?? []
+        }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    var ratingReEvaluator: RatingReEvaluator?
+    var partners = [Identity]()
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return partners.count
     }
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(
+            withIdentifier: "handshakePartnerCells",
+            for: indexPath) as? HandshakePartnerTableViewCell {
+            if let m = message {
+                cell.updateCell(message: m, indexPath: indexPath)
+            }
+            return cell
+        }
 
-        // Configure the cell...
-
-        return cell
+        return UITableViewCell()
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
