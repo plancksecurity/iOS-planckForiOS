@@ -7,14 +7,11 @@
 //
 
 import UIKit
-import MessageModel
 
 class FolderTableViewController: UITableViewController {
     var appConfig: AppConfig?
 
     var folderVM = FolderViewModel()
-
-    var folderToShow :Folder?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,15 +58,6 @@ class FolderTableViewController: UITableViewController {
         return 0.0
     }
 
-    /*verride func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-     return 80.0
-     }*/
-
-    /*override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-     return folderVM[section].title
-     //reimplement to a custom view and copy the view of mail app
-     }*/
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
         let fcvm = folderVM[indexPath.section][indexPath.item]
@@ -84,16 +72,13 @@ class FolderTableViewController: UITableViewController {
         return folderVM[indexPath.section][indexPath.item].level
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        folderToShow = folderVM[indexPath.section][indexPath.item].folder
-        performSegue(withIdentifier: "ShowFolder", sender: nil)
-    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let controller = segue.destination as? EmailListViewController
-            , let folder = folderToShow {
-            let config = EmailListConfig(appConfig: appConfig, folder: folder)
-            controller.config = config
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        if let vc = sb.instantiateViewController(withIdentifier: "EmailListViewController") as? EmailListViewController {
+            let config = EmailListConfig(appConfig: appConfig, folder: folderVM[indexPath.section][indexPath.row].getFolder())
+            vc.config = config
+            self.navigationController?.pushViewController(vc, animated: false)
         }
     }
 

@@ -24,7 +24,7 @@ public class FolderCellViewModel {
         return UIImage(named: "arrow_down_icon")!
     }
 
-    var folder:Folder
+    var folder: Folder
     var level : Int
 
     public init(folder: Folder, level: Int) {
@@ -32,33 +32,14 @@ public class FolderCellViewModel {
         self.level = level
     }
 
-    private var name:String {
-        /*var n = ""
-        if let parent = self.folder.parent {
-            n = self.folder.name.replacingOccurrences(of: parent.name, with: "")
-        }
-        var ret = ""
-        for _ in 0...level {
-            ret = ret + "   "
-        }
-        if n != "" {
-            ret += n
-        } else {
-            ret += self.folder.name
-        }
-        return ret*/
-        return self.folder.realName
+
+    func getFolder() -> Folder {
+        return folder
     }
 
-    /*var name:String {
-        if let parent = self.folder.parent {
-            if let range = self.folder.name.range(of: parent.name) {
-                return self.folder.name.substring(from: range.upperBound)
-                //return self.folder.name.replacingOccurrences(of: self.folder.parent?.name, with: "")
-            }
-        }
-        retur                   n self.folder.name
-    }*/
+    private var name:String {
+        return self.folder.realName
+    }
 
     var leftPadding: Int {
         return level

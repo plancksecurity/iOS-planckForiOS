@@ -12,8 +12,6 @@ import MessageModel
 public class FolderSectionViewModel {
 
     public var collapsed: Bool
-
-    //image, type, user, name
     private var account: Account
     private var items: [FolderCellViewModel]
     private var help :[FolderCellViewModel]
@@ -40,17 +38,6 @@ public class FolderSectionViewModel {
             childFolder(root: subFolder, level: level + 1)
         }
     }
-/*
-     contactImageView.image = UIImage.init(named: "empty-avatar")
-     identityForImage = message.from
-     if let ident = identityForImage, let imgProvider = config?.imageProvider {
-        imgProvider.image(forIdentity: ident) { img in
-            if message.from == self.identityForImage {
-                self.contactImageView.image = img
-            }
-        }
-     }
- */
 
     func getImage(callback: @escaping ImageReadyFunc) {
         imageProvider.image(forIdentity: account.user, callback: callback)
@@ -87,7 +74,6 @@ public class FolderSectionViewModel {
             help = items
             items = [FolderCellViewModel]()
         }
-
     }
 
     subscript(index: Int) -> FolderCellViewModel {
@@ -95,6 +81,7 @@ public class FolderSectionViewModel {
             return self.items[index]
         }
     }
+
     var count : Int {
         return self.items.count
     }
