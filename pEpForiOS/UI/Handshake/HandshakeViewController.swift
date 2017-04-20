@@ -22,6 +22,11 @@ class HandshakeViewController: UITableViewController {
     var ratingReEvaluator: RatingReEvaluator?
     var partners = [Identity]()
 
+    override func awakeFromNib() {
+        tableView.estimatedRowHeight = 72.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
