@@ -21,6 +21,7 @@ class HandshakeViewController: UITableViewController {
 
     var ratingReEvaluator: RatingReEvaluator?
     var partners = [Identity]()
+    let imageProvider = IdentityImageProvider()
 
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 72.0
@@ -43,7 +44,9 @@ class HandshakeViewController: UITableViewController {
             withIdentifier: "handshakePartnerCell",
             for: indexPath) as? HandshakePartnerTableViewCell {
             if let m = message {
-                cell.updateCell(message: m, indexPath: indexPath)
+                let theId = partners[indexPath.row]
+                cell.updateCell(indexPath: indexPath, message: m, partner: theId,
+                                session: appConfig?.session, imageProvider: imageProvider)
             }
             return cell
         }

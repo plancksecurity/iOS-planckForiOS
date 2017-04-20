@@ -56,4 +56,9 @@ extension PEP_rating {
     func uiColor() -> UIColor? {
         return PEPUtil.pEpColor(pEpRating: self).uiColor()
     }
+
+    func statusIcon() -> UIImage? {
+        let color = pepColor()
+        return color.statusIcon()
+    }
 }

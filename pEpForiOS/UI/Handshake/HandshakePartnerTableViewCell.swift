@@ -28,7 +28,18 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         setNeedsLayout()
     }
 
-    func updateCell(message: Message, indexPath: IndexPath) {
+    func updateCell(indexPath: IndexPath, message: Message, partner: Identity,
+                    session: PEPSession?, imageProvider: IdentityImageProvider) {
+        partnerNameLabel.text = partner.userName ?? partner.address
 
+        let theSession = session ?? PEPSession()
+        let rating = partner.pEpRating(session: theSession)
+        pEpStatusImageView.image = rating.statusIcon()
+
+        imageProvider.image(forIdentity: partner) { [weak self] img in
+            GCD.onMain() {
+                self?.partnerImageView.image = img
+            }
+        }
     }
 }
