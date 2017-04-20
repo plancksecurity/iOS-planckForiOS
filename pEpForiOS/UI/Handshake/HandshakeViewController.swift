@@ -25,7 +25,7 @@ class HandshakeViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -35,7 +35,7 @@ class HandshakeViewController: UITableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(
-            withIdentifier: "handshakePartnerCells",
+            withIdentifier: "handshakePartnerCell",
             for: indexPath) as? HandshakePartnerTableViewCell {
             if let m = message {
                 cell.updateCell(message: m, indexPath: indexPath)
