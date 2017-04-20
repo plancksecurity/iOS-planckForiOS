@@ -151,6 +151,7 @@
 		43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */; };
 		43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C046BE1CF48EA500BD0D9D /* AddressBook.framework */; };
 		43C322051EA89EED005073FB /* HandshakePartnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C322041EA89EED005073FB /* HandshakePartnerTableViewCell.swift */; };
+		43C322071EA8E7AD005073FB /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C322061EA8E7AD005073FB /* UIButton+Extension.swift */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
 		43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */; };
@@ -400,6 +401,7 @@
 		43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptAndSendOperation.swift; sourceTree = "<group>"; };
 		43C046BE1CF48EA500BD0D9D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		43C322041EA89EED005073FB /* HandshakePartnerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCell.swift; sourceTree = "<group>"; };
+		43C322061EA8E7AD005073FB /* UIButton+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
 		43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
@@ -835,6 +837,7 @@
 			isa = PBXGroup;
 			children = (
 				43AA82521E9B925C00ABD5A8 /* UIView+Util.swift */,
+				43C322061EA8E7AD005073FB /* UIButton+Extension.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1295,6 +1298,7 @@
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				432142641E8FD66900FBE987 /* QuickSyncService.swift in Sources */,
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
+				43C322071EA8E7AD005073FB /* UIButton+Extension.swift in Sources */,
 				43122B191DF5B48B00610253 /* EmailService.swift in Sources */,
 				B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */,
 				222B357E1DF97675007A1F82 /* SuggestTableView.swift in Sources */,

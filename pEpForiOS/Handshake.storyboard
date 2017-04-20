@@ -26,7 +26,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="288"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9sp-4d-rJe" userLabel="headerView">
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="9sp-4d-rJe" userLabel="headerView">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="178"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="rG1-9L-QdA" userLabel="partnerImageView">
@@ -42,19 +42,19 @@
                                                         <constraint firstAttribute="width" constant="24" id="GNL-nL-hic"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="partnerNameLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="partnerNameLabel">
                                                     <rect key="frame" x="92" y="41.5" width="263" height="21"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Privacy Status: Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT" userLabel="privacyStatusTitle">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Privacy Status: Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT" userLabel="privacyStatusTitle">
                                                     <rect key="frame" x="92" y="70" width="179.5" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb" userLabel="privacyStatusDescription">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb" userLabel="privacyStatusDescription">
                                                     <rect key="frame" x="92" y="96" width="263" height="21"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -86,10 +86,10 @@
                                                 <constraint firstItem="Y4f-BW-EI0" firstAttribute="leading" secondItem="eaF-0u-kGb" secondAttribute="leading" id="wWX-bC-Qro"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9bw-BE-9Ag" userLabel="trustWordsView">
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="9bw-BE-9Ag" userLabel="trustWordsView">
                                             <rect key="frame" x="8" y="178" width="359" height="101.5"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="trustWordsLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="trustWordsLabel">
                                                     <rect key="frame" x="20" y="20" width="319" height="21"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
@@ -114,6 +114,7 @@
                                                 <constraint firstItem="dbO-2K-SpB" firstAttribute="width" secondItem="Jgi-7k-Ymf" secondAttribute="width" id="FZ1-3b-Qs6"/>
                                                 <constraint firstItem="dbO-2K-SpB" firstAttribute="leading" secondItem="Jgi-7k-Ymf" secondAttribute="trailing" constant="8" symbolic="YES" id="MUn-fO-Eej"/>
                                                 <constraint firstAttribute="trailing" secondItem="dbO-2K-SpB" secondAttribute="trailing" constant="20" symbolic="YES" id="UHr-YV-k6p"/>
+                                                <constraint firstItem="dbO-2K-SpB" firstAttribute="height" secondItem="Jgi-7k-Ymf" secondAttribute="height" id="WjJ-tF-o5y"/>
                                                 <constraint firstItem="Jgi-7k-Ymf" firstAttribute="top" secondItem="lHS-sc-yWR" secondAttribute="bottom" constant="8" symbolic="YES" id="eyh-Wl-hwH"/>
                                                 <constraint firstItem="lHS-sc-yWR" firstAttribute="leading" secondItem="9bw-BE-9Ag" secondAttribute="leading" constant="20" symbolic="YES" id="nEO-Om-YdP"/>
                                                 <constraint firstAttribute="trailing" secondItem="lHS-sc-yWR" secondAttribute="trailing" constant="20" symbolic="YES" id="ojc-DL-CPA"/>
@@ -124,6 +125,7 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="9sp-4d-rJe" secondAttribute="trailing" id="FNz-2a-i5g"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="9bw-BE-9Ag" secondAttribute="bottom" id="H2C-pO-wDk"/>
+                                        <constraint firstItem="Jgi-7k-Ymf" firstAttribute="height" secondItem="Y4f-BW-EI0" secondAttribute="height" id="MNP-WL-Bsc"/>
                                         <constraint firstItem="9bw-BE-9Ag" firstAttribute="leading" secondItem="sNy-KY-p78" secondAttribute="leadingMargin" id="NdT-7i-D6O"/>
                                         <constraint firstItem="9sp-4d-rJe" firstAttribute="top" secondItem="sNy-KY-p78" secondAttribute="top" id="U4R-7q-qE1"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="9bw-BE-9Ag" secondAttribute="trailing" id="XEA-xb-c80"/>
@@ -131,6 +133,17 @@
                                         <constraint firstItem="9sp-4d-rJe" firstAttribute="leading" secondItem="sNy-KY-p78" secondAttribute="leading" id="qni-u7-I0d"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="confirmButton" destination="Jgi-7k-Ymf" id="HLm-tc-MV5"/>
+                                    <outlet property="pEpStatusImageView" destination="hZH-e1-puE" id="YT2-Mj-hro"/>
+                                    <outlet property="partnerImageView" destination="rG1-9L-QdA" id="Czw-W0-5iJ"/>
+                                    <outlet property="partnerNameLabel" destination="hFh-wv-YAc" id="ZDB-k9-YM8"/>
+                                    <outlet property="privacyStatusDescription" destination="eaF-0u-kGb" id="VWh-tP-wgG"/>
+                                    <outlet property="privacyStatusTitle" destination="5RJ-Gx-qBT" id="0qJ-kY-o93"/>
+                                    <outlet property="stopTrustingButton" destination="Y4f-BW-EI0" id="wsp-Us-mJf"/>
+                                    <outlet property="trustWordsLabel" destination="lHS-sc-yWR" id="9rC-fg-eDL"/>
+                                    <outlet property="wrongButton" destination="dbO-2K-SpB" id="Noy-9E-GaM"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
