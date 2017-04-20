@@ -78,7 +78,7 @@ class FolderTableViewController: UITableViewController {
         if let vc = sb.instantiateViewController(withIdentifier: "EmailListViewController") as? EmailListViewController {
             let config = EmailListConfig(appConfig: appConfig, folder: folderVM[indexPath.section][indexPath.row].getFolder())
             vc.config = config
-            self.navigationController?.pushViewController(vc, animated: false)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
