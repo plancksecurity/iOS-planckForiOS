@@ -15,12 +15,14 @@ class FolderTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //initialConfig()
+        initialConfig()
+    }
+
+    func initialConfig() {
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        //tableView.register(CollapsibleTableViewHeader.self, forHeaderFooterViewReuseIdentifier: "header")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -45,7 +47,8 @@ class FolderTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header :CollapsibleTableViewHeader?
-        if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleTableViewHeader{
+        if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
+            as? CollapsibleTableViewHeader{
             header = head
         } else {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
@@ -75,14 +78,18 @@ class FolderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
 
         let sb = UIStoryboard(name: "Main", bundle: nil)
-        if let vc = sb.instantiateViewController(withIdentifier: "EmailListViewController") as? EmailListViewController {
-            let config = EmailListConfig(appConfig: appConfig, folder: folderVM[indexPath.section][indexPath.row].getFolder())
+        if let vc = sb.instantiateViewController(withIdentifier: "EmailListViewController")
+            as? EmailListViewController {
+            let config = EmailListConfig(appConfig: appConfig,
+                                         folder: folderVM[indexPath.section][indexPath.row]
+                                            .getFolder())
             vc.config = config
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
     @IBAction func addAccount(_ sender: Any) {
+        //add account action tbi
     }
 
     /*
@@ -95,7 +102,8 @@ class FolderTableViewController: UITableViewController {
 
     /*
      // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,
+     forRowAt indexPath: IndexPath) {
      if editingStyle == .delete {
      // Delete the row from the data source
      tableView.deleteRows(at: [indexPath], with: .fade)

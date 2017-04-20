@@ -58,11 +58,9 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         labelStackView.distribution = .fillEqually
         labelStackView.spacing = 5.0
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
-
         contentView.addSubview(profileImage)
         contentView.addSubview(rightStackView)
         contentView.addSubview(labelStackView)
-
         contentView.backgroundColor = UIColor.white
         autolayout()
     }
