@@ -152,7 +152,7 @@
                     <navigationItem key="navigationItem" title="Inbox" id="bgm-ua-A0f">
                         <barButtonItem key="leftBarButtonItem" title="Folders" id="QCE-EG-qmM">
                             <connections>
-                                <action selector="folderButtonPressed:" destination="kcA-RK-9Xg" id="WPO-fq-4t6"/>
+                                <segue destination="zK6-Pe-MeR" kind="show" id="Jql-JI-Dwo"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Accounts" id="1rc-mQ-T0F">
@@ -1477,6 +1477,14 @@
             </objects>
             <point key="canvasLocation" x="5991" y="-1163"/>
         </scene>
+        <!--FolderViews-->
+        <scene sceneID="9j8-vu-u1w">
+            <objects>
+                <viewControllerPlaceholder storyboardName="FolderViews" id="zK6-Pe-MeR" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fCg-fB-8wj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6753" y="-999"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="lah-4i-EpU">
             <objects>
@@ -2028,8 +2036,8 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Na7-CM-lbe"/>
-        <segue reference="70T-Gu-VTr"/>
         <segue reference="ohe-5h-dsJ"/>
+        <segue reference="Na7-CM-lbe"/>
+        <segue reference="xmi-xn-p8T"/>
     </inferredMetricsTieBreakers>
 </document>

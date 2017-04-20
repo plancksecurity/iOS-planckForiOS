@@ -452,7 +452,7 @@
 		B729BEC51E7C35E200793110 /* FilterUpdateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterUpdateProtocol.swift; path = Filter/ViewModel/FilterUpdateProtocol.swift; sourceTree = "<group>"; };
 		B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypeUtil.swift; sourceTree = "<group>"; };
-		B783C1511E82BBE20093128C /* FolderViews.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FolderViews.storyboard; sourceTree = "<group>"; };
+		B783C1511E82BBE20093128C /* FolderViews.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = FolderViews.storyboard; path = UI/FolderViews.storyboard; sourceTree = "<group>"; };
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
 		B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Filter/ViewModel/FilterViewModel.swift; sourceTree = "<group>"; };
 		B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterCellViewModel.swift; path = Filter/ViewModel/FilterCellViewModel.swift; sourceTree = "<group>"; };
@@ -715,6 +715,7 @@
 		43980E251CBD0BC900A7FC3C /* pEpForiOS */ = {
 			isa = PBXGroup;
 			children = (
+				B706C0EF1EA8C378006B2F6C /* Storyboardfiles */,
 				43800D8C1D112A0800821E34 /* HTMLParser */,
 				431144A61CC0CB0A0007639D /* Background */,
 				43E58EB21CBF8301008AA7A7 /* Models */,
@@ -725,9 +726,6 @@
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				431394C01E4B11CF00D92F33 /* AppSettings.swift */,
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
-				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
-				438D5A721EA77E45001A37E1 /* Handshake.storyboard */,
-				43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */,
 				43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
 				433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */,
@@ -941,6 +939,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B706C0EF1EA8C378006B2F6C /* Storyboardfiles */ = {
+			isa = PBXGroup;
+			children = (
+				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
+				438D5A721EA77E45001A37E1 /* Handshake.storyboard */,
+				43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */,
+				B783C1511E82BBE20093128C /* FolderViews.storyboard */,
+			);
+			name = Storyboardfiles;
+			sourceTree = "<group>";
+		};
 		B71EBBB41E55E43100150177 /* Folder */ = {
 			isa = PBXGroup;
 			children = (
@@ -994,7 +1003,6 @@
 		B783C14D1E82A5230093128C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B783C1511E82BBE20093128C /* FolderViews.storyboard */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1547,7 +1555,7 @@
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = SBPJ2E4G5X;
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1570,7 +1578,7 @@
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = SBPJ2E4G5X;
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
