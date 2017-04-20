@@ -14,7 +14,6 @@ class IdentityImageProvider {
     fileprivate var runningOperations = [Identity: (IdentityImageOperation, [ImageReadyFunc])]()
     fileprivate let dispatchQueue = DispatchQueue(label: "IdentityImageProvider Queue")
     fileprivate let backgroundQueue = OperationQueue()
-    var imageSize = CGSize(width: 48, height: 48)
 
     /**
      Request an image.
@@ -41,7 +40,8 @@ class IdentityImageProvider {
             newFuns.append(callback)
             runningOperations[identity] = (op, newFuns)
         } else {
-            let op = IdentityImageOperation(identity: identity, imageSize: imageSize)
+            let op = IdentityImageOperation(identity: identity,
+                                            imageSize: UIImage.defaultAvatarSize)
             op.completionBlock = { [weak self, weak identity] in
                 self?.dispatchQueue.async {
                     if let theSelf = self, let theIdentity = identity {

@@ -75,8 +75,6 @@ class EmailListViewCell: UITableViewCell {
     func configureCell(config: EmailListConfig?, indexPath: IndexPath) -> Message? {
         self.config = config
 
-        self.config?.imageProvider.imageSize = contactImageView.bounds.size
-
         if let message = messageAt(indexPath: indexPath, config: config) {
             UIHelper.putString(message.from?.userName, toLabel: self.senderLabel)
             UIHelper.putString(message.shortMessage, toLabel: self.subjectLabel)
