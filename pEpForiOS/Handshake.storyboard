@@ -36,10 +36,10 @@
                                                         <constraint firstAttribute="width" secondItem="rG1-9L-QdA" secondAttribute="height" multiplier="1:1" id="pDW-C2-utk"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pep-status-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="hZH-e1-puE" userLabel="pEpStatusImageView">
-                                                    <rect key="frame" x="44" y="44" width="24" height="24"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hZH-e1-puE" userLabel="pEpStatusImageView">
+                                                    <rect key="frame" x="48" y="48" width="20" height="20"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="24" id="GNL-nL-hic"/>
+                                                        <constraint firstAttribute="width" constant="20" id="GNL-nL-hic"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="partnerNameLabel">
@@ -161,6 +161,5 @@
     </scenes>
     <resources>
         <image name="empty-avatar" width="150" height="150"/>
-        <image name="pep-status-yellow" width="20" height="20"/>
     </resources>
 </document>
