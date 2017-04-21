@@ -104,8 +104,8 @@ class EmailListViewCell: UITableViewCell {
             contactImageView.image = UIImage.init(named: "empty-avatar")
             identityForImage = message.from
             if let ident = identityForImage, let imgProvider = config?.imageProvider {
-                imgProvider.image(forIdentity: ident) { img in
-                    if message.from == self.identityForImage {
+                imgProvider.image(forIdentity: ident) { img, ident in
+                    if ident == self.identityForImage {
                         self.contactImageView.image = img
                     }
                 }

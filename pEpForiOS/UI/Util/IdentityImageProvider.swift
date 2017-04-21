@@ -8,7 +8,7 @@
 
 import MessageModel
 
-typealias ImageReadyFunc = (UIImage) -> Void
+typealias ImageReadyFunc = (UIImage, Identity) -> Void
 
 class IdentityImageProvider {
     fileprivate var runningOperations = [Identity: (IdentityImageOperation, [ImageReadyFunc])]()
@@ -68,7 +68,7 @@ class IdentityImageProvider {
         if let (op, funs) = runningOperations.removeValue(forKey: identity), let img = op.image {
             for f in funs {
                 GCD.onMain {
-                    f(img)
+                    f(img, identity)
                 }
             }
         }

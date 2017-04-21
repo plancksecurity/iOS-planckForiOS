@@ -36,9 +36,11 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         let rating = partner.pEpRating(session: theSession)
         pEpStatusImageView.image = rating.statusIcon()
 
-        imageProvider.image(forIdentity: partner) { [weak self] img in
+        imageProvider.image(forIdentity: partner) { [weak self] img, ident in
             GCD.onMain() {
-                self?.partnerImageView.image = img
+                if partner == ident {
+                    self?.partnerImageView.image = img
+                }
             }
         }
     }
