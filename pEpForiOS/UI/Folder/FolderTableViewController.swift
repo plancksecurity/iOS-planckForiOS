@@ -24,7 +24,8 @@ class FolderTableViewController: UITableViewController {
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         self.navigationController?.hidesBottomBarWhenPushed = true
-        var item = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(settingsTapped))
+        let item = UIBarButtonItem(title: "Settings", style: .plain, target: self,
+                                   action: #selector(settingsTapped))
         navigationItem.rightBarButtonItem = item
     }
 
