@@ -23,6 +23,17 @@ class FolderTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        self.navigationController?.hidesBottomBarWhenPushed = true
+        var item = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(settingsTapped))
+        navigationItem.rightBarButtonItem = item
+    }
+
+    func settingsTapped() {
+        performSegue(withIdentifier: "SettingsSegue", sender: self)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.hidesBottomBarWhenPushed = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
