@@ -139,8 +139,11 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
             // Hide the stop/start trust button for states other than
             // .mistrusted an .secureAndTrusted.
+            let showStopTrustButton = uiState.identityState == .mistrusted ||
+                uiState.identityState == .secureAndTrusted
             theAdditionalConstraints.stopTrustingHeightZero.isActive =
-                (uiState.identityState != .mistrusted && uiState.identityState != .secureAndTrusted)
+                !showStopTrustButton
+            stopTrustingButton.isHidden = !showStopTrustButton
         }
     }
 }
