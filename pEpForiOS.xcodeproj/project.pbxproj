@@ -94,6 +94,7 @@
 		43549A8E1E48B54100210D86 /* TrashMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */; };
 		4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
+		4362398C1EADD61B00BD2EB9 /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */; };
 		436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C23271E02948400071430 /* BackgroundTaskProtocol.swift */; };
 		436C232D1E02A2D900071430 /* KickOffMySelfProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C232C1E02A2D900071430 /* KickOffMySelfProtocol.swift */; };
 		436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */; };
@@ -333,6 +334,7 @@
 		43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashMailsOperation.swift; sourceTree = "<group>"; };
 		4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncMessagesOperation.swift; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
+		4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
 		436C23271E02948400071430 /* BackgroundTaskProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundTaskProtocol.swift; sourceTree = "<group>"; };
 		436C232C1E02A2D900071430 /* KickOffMySelfProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KickOffMySelfProtocol.swift; sourceTree = "<group>"; };
 		436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LimitedOperationQueue.swift; sourceTree = "<group>"; };
@@ -839,6 +841,7 @@
 				43C322081EA90192005073FB /* PEP+UI.swift */,
 				43AA82521E9B925C00ABD5A8 /* UIView+Util.swift */,
 				43C322061EA8E7AD005073FB /* UIButton+Extension.swift */,
+				4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1272,6 +1275,7 @@
 				43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */,
 				B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
+				4362398C1EADD61B00BD2EB9 /* CGSize+Extension.swift in Sources */,
 				43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */,
 				43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */,
 				435B42411D211E5900119048 /* MiscUtil.swift in Sources */,

@@ -41,7 +41,7 @@ class IdentityImageProvider {
             runningOperations[identity] = (op, newFuns)
         } else {
             let op = IdentityImageOperation(identity: identity,
-                                            imageSize: UIImage.defaultAvatarSize)
+                                            imageSize: CGSize.defaultAvatarSize)
             op.completionBlock = { [weak self, weak identity] in
                 self?.dispatchQueue.async {
                     if let theSelf = self, let theIdentity = identity {
