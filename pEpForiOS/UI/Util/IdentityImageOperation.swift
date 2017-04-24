@@ -20,31 +20,45 @@ class IdentityImageOperation: Operation {
     let textColor = UIColor.white
 
     let identity: Identity
+    let identityImageCache: NSCache<Identity, UIImage>
+
+    /**
+     The resulting image.
+     */
     var image: UIImage?
 
     let imageSize: CGSize
 
-    init(identity: Identity, imageSize: CGSize) {
+    init(identity: Identity, imageSize: CGSize,
+         identityImageCache: NSCache<Identity, UIImage>) {
         self.identity = identity
         self.imageSize = imageSize
+        self.identityImageCache = identityImageCache
     }
 
     override func main() {
-        var shouldCreateImage = true
+        if let img = identityImageCache.object(forKey: identity) {
+            image = img
+            return
+        }
+
         if let theID = identity.userID {
             let ab = AddressBook()
             if let contact = ab.contactBy(userID: theID),
                 let imgData = contact.thumbnailImageData {
-                shouldCreateImage = false
                 image = UIImage(data: imgData)
             }
         }
-        if shouldCreateImage {
+        if image == nil {
             var initials = "?"
             if let userName = identity.userName {
                 initials = userName.initials()
             }
             image = identityImageFromName(initials: initials, size: imageSize)
+        }
+
+        if let img = image {
+            identityImageCache.setObject(img, forKey: identity)
         }
     }
 

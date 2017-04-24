@@ -14,6 +14,7 @@ class IdentityImageProvider {
     fileprivate var runningOperations = [Identity: (IdentityImageOperation, [ImageReadyFunc])]()
     fileprivate let dispatchQueue = DispatchQueue(label: "IdentityImageProvider Queue")
     fileprivate let backgroundQueue = OperationQueue()
+    fileprivate let identityImageCache = NSCache<Identity, UIImage>()
 
     /**
      Request an image.
@@ -35,13 +36,18 @@ class IdentityImageProvider {
 
     fileprivate func internalImage(forIdentity identity: Identity,
                                    callback: @escaping ImageReadyFunc) {
+        if let img = identityImageCache.object(forKey: identity) {
+            callback(img, identity)
+            return
+        }
         if let (op, funs) = runningOperations[identity] {
             var newFuns = funs
             newFuns.append(callback)
             runningOperations[identity] = (op, newFuns)
         } else {
             let op = IdentityImageOperation(identity: identity,
-                                            imageSize: CGSize.defaultAvatarSize)
+                                            imageSize: CGSize.defaultAvatarSize,
+                                            identityImageCache: identityImageCache)
             op.completionBlock = { [weak self, weak identity] in
                 self?.dispatchQueue.async {
                     if let theSelf = self, let theIdentity = identity {
