@@ -81,6 +81,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var privacyStatusTitle: UILabel!
     @IBOutlet weak var privacyStatusDescription: UILabel!
     @IBOutlet weak var trustWordsLabel: UILabel!
+    @IBOutlet weak var headerView: UIView!
 
     var uiState = UIState(expandedState: .notExpanded, identityState: .mistrusted)
 
@@ -140,15 +141,14 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     func updateAdditionConstraints() {
         if let theAdditionalConstraints = additionalConstraints {
-            theAdditionalConstraints.explanationHeightZero.isActive =
-                uiState.expandedState == .notExpanded
-
             // Hide the stop/start trust button for states other than
             // .mistrusted an .secureAndTrusted.
             theAdditionalConstraints.stopTrustingHeightZero.isActive =
                 !uiState.identityState.showStopStartTrustButton
             stopTrustingButton.isHidden =
                 !uiState.identityState.showStopStartTrustButton
+
+            updateExpansionConstraints()
         }
     }
 
@@ -175,5 +175,22 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         let pEpStatus = String.pEpRatingTranslation(pEpRating: rating)
         privacyStatusTitle.text = pEpStatus.title
         privacyStatusDescription.text = pEpStatus.explanation
+    }
+
+    func updateExpansionConstraints() {
+        if let theAdditionalConstraints = additionalConstraints {
+            theAdditionalConstraints.explanationHeightZero.isActive =
+                uiState.expandedState == .notExpanded
+        }
+    }
+
+    func didChangeSelection() {
+        if uiState.expandedState == .expanded {
+            uiState.expandedState = .notExpanded
+        } else {
+            uiState.expandedState = .expanded
+        }
+        updateExpansionConstraints()
+        setNeedsLayout()
     }
 }

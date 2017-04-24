@@ -134,6 +134,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="confirmButton" destination="Jgi-7k-Ymf" id="HLm-tc-MV5"/>
+                                    <outlet property="headerView" destination="9sp-4d-rJe" id="msg-ga-zdE"/>
                                     <outlet property="pEpStatusImageView" destination="hZH-e1-puE" id="YT2-Mj-hro"/>
                                     <outlet property="partnerImageView" destination="rG1-9L-QdA" id="Czw-W0-5iJ"/>
                                     <outlet property="partnerNameLabel" destination="hFh-wv-YAc" id="ZDB-k9-YM8"/>
