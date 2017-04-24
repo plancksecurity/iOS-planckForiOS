@@ -65,6 +65,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     struct Constraints {
         var explanationHeightZero: NSLayoutConstraint
+        var stopTrustingHeightZero: NSLayoutConstraint
     }
 
     @IBOutlet weak var stopTrustingButton: UIButton!
@@ -118,7 +119,11 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         if additionalConstraints == nil {
             let explanationHeightZero = privacyStatusDescription.heightAnchor.constraint(
                 equalToConstant: 0)
-            additionalConstraints = Constraints(explanationHeightZero: explanationHeightZero)
+            let stopTrustingHeightZero = stopTrustingButton.heightAnchor.constraint(
+                equalToConstant: 0)
+            additionalConstraints = Constraints(
+                explanationHeightZero: explanationHeightZero,
+                stopTrustingHeightZero: stopTrustingHeightZero)
         }
     }
 
@@ -131,6 +136,11 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         if let theAdditionalConstraints = additionalConstraints {
             theAdditionalConstraints.explanationHeightZero.isActive =
                 uiState.expandedState == .notExpanded
+
+            // Hide the stop/start trust button for states other than
+            // .mistrusted an .secureAndTrusted.
+            theAdditionalConstraints.stopTrustingHeightZero.isActive =
+                (uiState.identityState != .mistrusted && uiState.identityState != .secureAndTrusted)
         }
     }
 }
