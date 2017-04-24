@@ -36,6 +36,11 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
      */
     var partnerIdentity: Identity?
 
+    @IBOutlet weak var enableFilterButton: UIBarButtonItem!
+    @IBOutlet weak var textFilterButton: UIBarButtonItem!
+
+    private var filterEnabled = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -95,9 +100,6 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
     }
 
 
-    private var filterEnabled = false
-    @IBOutlet weak var enableFilterButton: UIBarButtonItem!
-    @IBOutlet weak var textFilterButton: UIBarButtonItem!
     @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {
         if filterEnabled {
             filterEnabled = false
