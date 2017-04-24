@@ -12,22 +12,6 @@ import MessageModel
 let defaultCellHeight: CGFloat = 64.0
 let defaultFilenameLength = 20
 
-extension UITableView {
-    
-    public final func updateSize(_ animated: Bool = false) {
-        // UIView.setAnimationsEnabled(animated)
-        beginUpdates()
-        endUpdates()
-        // UIView.setAnimationsEnabled(animated)
-    }
-
-    public final func scrollToTopOf(_ cell: UITableViewCell) {
-        var center = contentOffset
-        center.y = cell.frame.origin.y - defaultCellHeight
-        contentOffset = center
-    }
-}
-
 extension String {
     static let textAttachmentCharacter: UInt32 = 65532
 
