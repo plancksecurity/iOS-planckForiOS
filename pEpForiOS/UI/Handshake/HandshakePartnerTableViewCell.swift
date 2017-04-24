@@ -118,7 +118,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
         setNeedsUpdateConstraints()
         updateStopTrustingButtonTitle()
-        updatePrivacyStatus(partner: partner, session: theSession)
+        updatePrivacyStatus(rating: rating)
     }
 
     func setupAdditionalConstraints() {
@@ -171,8 +171,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func updatePrivacyStatus(partner: Identity, session: PEPSession) {
-        let pEpStatus = String.pEpRatingTranslation(pEpRating: partner.pEpRating(session: session))
+    func updatePrivacyStatus(rating: PEP_rating) {
+        let pEpStatus = String.pEpRatingTranslation(pEpRating: rating)
         privacyStatusTitle.text = pEpStatus.title
         privacyStatusDescription.text = pEpStatus.explanation
     }
