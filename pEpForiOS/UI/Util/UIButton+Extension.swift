@@ -17,4 +17,12 @@ extension UIButton {
         self.backgroundColor = backgroundColor
         setTitleColor(textColor, for: .normal)
     }
+
+    func convertToLoginButton(placeHolder: String) {
+        self.backgroundColor = UIColor.clear
+        self.tintColor = UIColor.white
+        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderWidth = 1.0
+        self.setTitle(placeHolder, for: .normal)
+    }
 }

@@ -78,7 +78,7 @@ class AccountsTableViewController: UITableViewController {
         case 0:
             return accounts.count
         case 1:
-            return 1
+            return 2
         default:
             return 0
         }
@@ -110,6 +110,13 @@ class AccountsTableViewController: UITableViewController {
             return cell
 
         } else if indexPath.section == 1 {
+            if indexPath.row == 1{
+                let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
+                cell.textLabel?.text = "New Login".localized
+                cell.accessoryType = .disclosureIndicator
+                cell.textLabel?.numberOfLines = 0
+                return cell
+            }
 
             let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
             cell.textLabel?.text = "Logging".localized
@@ -130,7 +137,11 @@ class AccountsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         if indexPath.section == 1 {
-            performSegue(withIdentifier: .segueShowLog, sender: self)
+            if indexPath.row == 1 {
+
+            } else {
+                performSegue(withIdentifier: .segueShowLog, sender: self)
+            }
         } else {
             selectedAccount = accounts[indexPath.row]
             performSegue(withIdentifier: .segueEditAccount, sender: self)

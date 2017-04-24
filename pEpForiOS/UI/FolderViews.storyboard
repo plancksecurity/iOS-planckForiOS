@@ -57,7 +57,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gav-RT-MrD" id="GDF-rs-ueo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -83,10 +83,10 @@
             </objects>
             <point key="canvasLocation" x="9633" y="-1187"/>
         </scene>
-        <!--AccountCreation-->
+        <!--UINavigationController-Efv-29-FEv-->
         <scene sceneID="rdR-gU-SsC">
             <objects>
-                <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="AccountCreation" referencedIdentifier="UINavigationController-Efv-29-FEv" id="uKb-Ku-Cng" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7bq-Lz-J44" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="9674" y="-1142"/>

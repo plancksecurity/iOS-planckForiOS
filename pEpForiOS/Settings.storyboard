@@ -115,6 +115,7 @@
                     <connections>
                         <segue destination="Eri-pJ-T3J" kind="show" identifier="segueEditAccount" id="WKY-VX-I5i"/>
                         <segue destination="01V-rr-Nt1" kind="show" identifier="segueShowLog" id="uAI-I4-HaK"/>
+                        <segue destination="oeK-xs-7Ae" kind="show" id="c3k-5n-9Tw"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -505,6 +506,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLV-3R-1jF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4966" y="-377"/>
+        </scene>
+        <!--AccountCreation-->
+        <scene sceneID="t1R-eh-AAS">
+            <objects>
+                <viewControllerPlaceholder storyboardName="AccountCreation" id="oeK-xs-7Ae" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oQ0-VR-JUv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4990" y="-66"/>
         </scene>
     </scenes>
 </document>
