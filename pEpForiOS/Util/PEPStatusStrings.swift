@@ -8,14 +8,14 @@
 
 import Foundation
 
-class PEPStatusStrings {
-    struct PEPStatusText {
-        let rating: PEP_rating
-        let title: String
-        let explanation: String
-        let suggestion: String
-    }
+public struct PEPStatusText {
+    let rating: PEP_rating
+    let title: String
+    let explanation: String
+    let suggestion: String
+}
 
+extension String {
     /**
      All privacy status strings, i18n ready.
      */
@@ -148,7 +148,7 @@ class PEPStatusStrings {
                                   comment: "Privacy status suggestion")),
          PEP_rating_undefined: undefinedPEPMessageRating()]
 
-    open static func undefinedPEPMessageRating() -> PEPStatusText {
+    public static func undefinedPEPMessageRating() -> PEPStatusText {
         return PEPStatusText(
             rating: PEP_rating_undefined,
             title: NSLocalizedString("Unknown",
@@ -160,7 +160,7 @@ class PEPStatusStrings {
                                           comment: "Privacy status suggestion"))
     }
 
-    open static func pEpRatingTranslation(pEpRating: PEP_rating?) -> PEPStatusText {
+    public static func pEpRatingTranslation(pEpRating: PEP_rating?) -> PEPStatusText {
         let defResult = undefinedPEPMessageRating()
         if let rating = pEpRating {
             return pEpRatingTranslations[rating] ??
@@ -170,15 +170,15 @@ class PEPStatusStrings {
         }
     }
 
-    open static func pEpTitle(pEpRating: PEP_rating?) -> String {
+    public static func pEpTitle(pEpRating: PEP_rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).title
     }
 
-    open static func pEpExplanation(pEpRating: PEP_rating?) -> String {
+    public static func pEpExplanation(pEpRating: PEP_rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).explanation
     }
 
-    open static func pEpSuggestion(pEpRating: PEP_rating?) -> String {
+    public static func pEpSuggestion(pEpRating: PEP_rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).suggestion
     }
 }
