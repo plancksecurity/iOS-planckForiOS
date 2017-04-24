@@ -51,6 +51,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                 return .illegal
             }
         }
+
+        var showStopStartTrustButton: Bool {
+            return self == .mistrusted || self == .secureAndTrusted
+        }
     }
 
     enum ExpandedState {
@@ -113,6 +117,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
 
         setNeedsUpdateConstraints()
+        updateStopTrustingButtonTitle()
     }
 
     func setupAdditionalConstraints() {
@@ -139,11 +144,29 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
             // Hide the stop/start trust button for states other than
             // .mistrusted an .secureAndTrusted.
-            let showStopTrustButton = uiState.identityState == .mistrusted ||
-                uiState.identityState == .secureAndTrusted
             theAdditionalConstraints.stopTrustingHeightZero.isActive =
-                !showStopTrustButton
-            stopTrustingButton.isHidden = !showStopTrustButton
+                !uiState.identityState.showStopStartTrustButton
+            stopTrustingButton.isHidden =
+                !uiState.identityState.showStopStartTrustButton
+        }
+    }
+
+    func updateStopTrustingButtonTitle() {
+        if !uiState.identityState.showStopStartTrustButton {
+            return
+        }
+
+        let titleMistrusted = NSLocalizedString(
+            "Start Trusting",
+            comment: "Stop/trust button in handshake overview")
+        let titleTrusted = NSLocalizedString(
+            "Stop Trusting",
+            comment: "Stop/trust button in handshake overview")
+
+        if uiState.identityState == .mistrusted {
+            stopTrustingButton.setTitle(titleMistrusted, for: .normal)
+        } else {
+            stopTrustingButton.setTitle(titleTrusted, for: .normal)
         }
     }
 }
