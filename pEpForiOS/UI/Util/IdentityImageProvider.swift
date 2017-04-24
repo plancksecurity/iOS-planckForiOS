@@ -11,7 +11,6 @@ import MessageModel
 typealias ImageReadyFunc = (UIImage, Identity) -> Void
 
 class IdentityImageProvider {
-    fileprivate var runningOperations = [Identity: (IdentityImageOperation, [ImageReadyFunc])]()
     fileprivate let dispatchQueue = DispatchQueue(label: "IdentityImageProvider Queue")
     fileprivate let backgroundQueue = OperationQueue()
     fileprivate let identityImageCache = NSCache<Identity, UIImage>()
@@ -25,58 +24,29 @@ class IdentityImageProvider {
         }
     }
 
-    /**
-     Cancel an image request.
-     */
-    open func cancel(identity: Identity) {
-        dispatchQueue.async {
-            self.internalCancel(identity: identity)
-        }
-    }
-
     fileprivate func internalImage(forIdentity identity: Identity,
                                    callback: @escaping ImageReadyFunc) {
         if let img = identityImageCache.object(forKey: identity) {
             callback(img, identity)
             return
         }
-        if let (op, funs) = runningOperations[identity] {
-            var newFuns = funs
-            newFuns.append(callback)
-            runningOperations[identity] = (op, newFuns)
-        } else {
-            let op = IdentityImageOperation(identity: identity,
-                                            imageSize: CGSize.defaultAvatarSize,
-                                            identityImageCache: identityImageCache)
-            op.completionBlock = { [weak self, weak identity] in
-                self?.dispatchQueue.async {
-                    if let theSelf = self, let theIdentity = identity {
-                        theSelf.finished(identity: theIdentity)
-                    }
+        let op = IdentityImageOperation(identity: identity,
+                                        imageSize: CGSize.defaultAvatarSize,
+                                        identityImageCache: identityImageCache)
+        op.completionBlock = { [weak self, weak identity] in
+            self?.dispatchQueue.async {
+                if let theSelf = self, let theIdentity = identity, let img = op.image {
+                    theSelf.finished(identity: theIdentity, image: img, callback: callback)
                 }
             }
-            runningOperations[identity] = (op, [callback])
-            backgroundQueue.addOperation(op)
         }
+        backgroundQueue.addOperation(op)
     }
 
-    fileprivate func internalCancel(identity: Identity) {
-        if let (op, funs) = runningOperations[identity] {
-            if funs.count == 1 {
-                // only cancel if only one cell requested it
-                runningOperations.removeValue(forKey: identity)
-                op.cancel()
-            }
-        }
-    }
-
-    fileprivate func finished(identity: Identity) {
-        if let (op, funs) = runningOperations.removeValue(forKey: identity), let img = op.image {
-            for f in funs {
-                GCD.onMain {
-                    f(img, identity)
-                }
-            }
+    fileprivate func finished(identity: Identity, image: UIImage,
+                              callback: @escaping ImageReadyFunc) {
+        GCD.onMain {
+            callback(image, identity)
         }
     }
 }
