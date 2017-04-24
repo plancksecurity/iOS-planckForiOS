@@ -125,7 +125,6 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="9sp-4d-rJe" secondAttribute="trailing" id="FNz-2a-i5g"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="9bw-BE-9Ag" secondAttribute="bottom" id="H2C-pO-wDk"/>
-                                        <constraint firstItem="Jgi-7k-Ymf" firstAttribute="height" secondItem="Y4f-BW-EI0" secondAttribute="height" id="MNP-WL-Bsc"/>
                                         <constraint firstItem="9bw-BE-9Ag" firstAttribute="leading" secondItem="sNy-KY-p78" secondAttribute="leadingMargin" id="NdT-7i-D6O"/>
                                         <constraint firstItem="9sp-4d-rJe" firstAttribute="top" secondItem="sNy-KY-p78" secondAttribute="top" id="U4R-7q-qE1"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="9bw-BE-9Ag" secondAttribute="trailing" id="XEA-xb-c80"/>
