@@ -75,15 +75,13 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-
-        if config == nil {
-            config = EmailListConfig(appConfig: appDelegate.appConfig, folder: Folder.unifiedInbox())
-        } else if config?.folder != nil {
-
-        }
         if Account.all().isEmpty {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
+        if config == nil {
+            config = EmailListConfig(appConfig: appDelegate.appConfig, folder: Folder.unifiedInbox())
+        }
+        self.title = config?.folder?.realName
     }
 
     func addSearchBar() {
