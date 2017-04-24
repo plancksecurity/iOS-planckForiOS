@@ -184,13 +184,16 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func didChangeSelection() {
+    func didChangeSelection(tableView: UITableView) {
         if uiState.expandedState == .expanded {
             uiState.expandedState = .notExpanded
         } else {
             uiState.expandedState = .expanded
         }
         updateExpansionConstraints()
-        setNeedsLayout()
+        UIView.animate(withDuration: 0.3) {
+            self.contentView.layoutIfNeeded()
+        }
+        tableView.updateSize()
     }
 }
