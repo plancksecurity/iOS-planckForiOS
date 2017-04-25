@@ -65,6 +65,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     struct UIState {
         var expandedState: ExpandedState
         var identityState: IdentityState
+        var trustwordsLanguage: String
+        var trustwordsFull: Bool
     }
 
     struct Constraints {
@@ -83,7 +85,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var trustWordsLabel: UILabel!
     @IBOutlet weak var headerView: UIView!
 
-    var uiState = UIState(expandedState: .notExpanded, identityState: .mistrusted)
+    var uiState = UIState(expandedState: .notExpanded, identityState: .mistrusted,
+                          trustwordsLanguage: "en", trustwordsFull: true)
 
     /**
      The additional constraints we have to deal with.
@@ -98,8 +101,9 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         setNeedsLayout()
     }
 
-    func updateCell(indexPath: IndexPath, message: Message, partner: Identity,
-                    session: PEPSession?, imageProvider: IdentityImageProvider) {
+    func updateCell(indexPath: IndexPath, message: Message, selfIdentity: Identity,
+                    partner: Identity, session: PEPSession?,
+                    imageProvider: IdentityImageProvider) {
         uiState.identityState = IdentityState.from(identity: partner)
         uiState.expandedState = .notExpanded
 
@@ -120,6 +124,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         setNeedsUpdateConstraints()
         updateStopTrustingButtonTitle()
         updatePrivacyStatus(rating: rating)
+        updateTrustwords(session: session, selfIdentity: selfIdentity, partner: partner)
     }
 
     func setupAdditionalConstraints() {
@@ -195,5 +200,18 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             self.contentView.layoutIfNeeded()
         }
         tableView.updateSize()
+    }
+
+    func updateTrustwords(session: PEPSession?, selfIdentity: Identity, partner: Identity) {
+        let theSession = session ?? PEPSession()
+        let pEpSelf = selfIdentity.pEpIdentity().mutableDictionary()
+        let pEpPartner = partner.pEpIdentity().mutableDictionary()
+        theSession.updateIdentity(pEpSelf)
+        theSession.updateIdentity(pEpPartner)
+        let trustwords = theSession.getTrustwordsIdentity1(pEpSelf.pEpIdentity(),
+                                                           identity2: pEpPartner.pEpIdentity(),
+                                                           language: uiState.trustwordsLanguage,
+                                                           full: uiState.trustwordsFull)
+        trustWordsLabel.text = trustwords
     }
 }

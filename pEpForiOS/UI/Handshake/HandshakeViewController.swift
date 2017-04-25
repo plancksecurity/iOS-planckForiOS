@@ -44,9 +44,19 @@ class HandshakeViewController: UITableViewController {
             withIdentifier: "handshakePartnerCell",
             for: indexPath) as? HandshakePartnerTableViewCell {
             if let m = message {
-                let theId = partners[indexPath.row]
-                cell.updateCell(indexPath: indexPath, message: m, partner: theId,
-                                session: appConfig?.session, imageProvider: imageProvider)
+                if let selfId = message?.parent?.account?.user {
+                    let theId = partners[indexPath.row]
+                    cell.updateCell(indexPath: indexPath,
+                                    message: m,
+                                    selfIdentity: selfId,
+                                    partner: theId,
+                                    session: appConfig?.session,
+                                    imageProvider: imageProvider)
+                } else {
+                    Log.error(
+                        component: #function,
+                        errorString: "Could not deduce account from message: \(m)")
+                }
             }
             return cell
         }

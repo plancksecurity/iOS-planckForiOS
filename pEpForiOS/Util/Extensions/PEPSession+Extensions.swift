@@ -17,6 +17,12 @@ public typealias PEPMessage = [String: AnyObject]
  */
 public typealias PEPIdentity = [String: AnyObject]
 
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: AnyObject {
+    public func mutableDictionary() -> NSMutableDictionary {
+        return NSMutableDictionary(dictionary: self)
+    }
+}
+
 public func ==(lhs: PEPIdentity, rhs: PEPIdentity) -> Bool {
     let a = NSDictionary.init(dictionary: lhs)
     let b = NSDictionary.init(dictionary: rhs)
