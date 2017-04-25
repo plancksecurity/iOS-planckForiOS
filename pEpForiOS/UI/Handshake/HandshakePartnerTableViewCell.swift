@@ -204,10 +204,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     func updateTrustwords(session: PEPSession?, selfIdentity: Identity, partner: Identity) {
         let theSession = session ?? PEPSession()
-        let pEpSelf = selfIdentity.pEpIdentity().mutableDictionary()
-        let pEpPartner = partner.pEpIdentity().mutableDictionary()
-        theSession.updateIdentity(pEpSelf)
-        theSession.updateIdentity(pEpPartner)
+        let pEpSelf = selfIdentity.pEpIdentity().mutableDictionary().update(session: theSession)
+        let pEpPartner = partner.pEpIdentity().mutableDictionary().update(session: theSession)
         let trustwords = theSession.getTrustwordsIdentity1(pEpSelf.pEpIdentity(),
                                                            identity2: pEpPartner.pEpIdentity(),
                                                            language: uiState.trustwordsLanguage,
