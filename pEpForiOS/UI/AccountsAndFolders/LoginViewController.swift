@@ -11,6 +11,7 @@ import UIKit
 class LoginViewController: UIViewController {
 
 
+    var loginViewModel = LoginViewModel()
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var password: UITextField!
 
@@ -30,6 +31,8 @@ class LoginViewController: UIViewController {
         self.password.convertToLoginTextField(placeHolder: NSLocalizedString("Password", comment: "password"))
         self.loginButton.convertToLoginButton(placeHolder: NSLocalizedString("Sign In", comment: "Login"))
 
+        self.navigationController?.navigationBar.isHidden = loginViewModel.handleFirstLogin()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,5 +44,6 @@ class LoginViewController: UIViewController {
 
     }
 
+    @IBOutlet weak var cancleButton: UIBarButtonItem!
 
 }

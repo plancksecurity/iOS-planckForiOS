@@ -594,8 +594,11 @@
                             <constraint firstItem="SBi-ih-ZhG" firstAttribute="centerY" secondItem="Wh4-W5-ha9" secondAttribute="centerY" id="rY6-D9-fFO"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="pFO-TV-vvj"/>
+                    <navigationItem key="navigationItem" id="pFO-TV-vvj">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="Ogd-KZ-RTh"/>
+                    </navigationItem>
                     <connections>
+                        <outlet property="cancleButton" destination="Ogd-KZ-RTh" id="Z5u-OO-M0N"/>
                         <outlet property="emailAddress" destination="IhV-HS-dzI" id="8bU-6L-LcY"/>
                         <outlet property="loginButton" destination="Nk5-Ai-Avh" id="OWd-bJ-hhh"/>
                         <outlet property="password" destination="SBi-ih-ZhG" id="7Zq-hf-ZTF"/>
