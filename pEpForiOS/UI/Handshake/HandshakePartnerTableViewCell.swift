@@ -32,25 +32,25 @@ class HandshakePartnerTableViewCell: UITableViewCell {
      */
     var additionalConstraints: Constraints?
 
-    var uiState: HandshakePartnerTableViewCellUIState? {
+    var viewModel: HandshakePartnerTableViewCellViewModel? {
         didSet {
             updateView()
-            uiState?.partnerImage.observe() { [weak self] img in
+            viewModel?.partnerImage.observe() { [weak self] img in
                 self?.partnerImageView.image = img
             }
         }
     }
 
-    var rating: PEP_rating { return uiState?.rating ?? PEP_rating_undefined }
+    var rating: PEP_rating { return viewModel?.rating ?? PEP_rating_undefined }
     var showStopStartTrustButton: Bool {
-        return uiState?.identityState.showStopStartTrustButton ?? false
+        return viewModel?.identityState.showStopStartTrustButton ?? false
     }
-    var expandedState: HandshakePartnerTableViewCellUIState.ExpandedState {
+    var expandedState: HandshakePartnerTableViewCellViewModel.ExpandedState {
         get {
-            return uiState?.expandedState ?? .notExpanded
+            return viewModel?.expandedState ?? .notExpanded
         }
         set {
-            uiState?.expandedState = newValue
+            viewModel?.expandedState = newValue
         }
     }
 
@@ -77,8 +77,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     func updateView() {
         updateStopTrustingButtonTitle()
         updatePrivacyStatus(rating: rating)
-        trustWordsLabel.text = uiState?.trustwords
-        partnerImageView.image = uiState?.partnerImage.value
+        trustWordsLabel.text = viewModel?.trustwords
+        partnerImageView.image = viewModel?.partnerImage.value
         updateAdditionalConstraints()
     }
 
@@ -105,7 +105,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             "Stop Trusting",
             comment: "Stop/trust button in handshake overview")
 
-        if uiState?.identityState == .mistrusted {
+        if viewModel?.identityState == .mistrusted {
             stopTrustingButton.setTitle(titleMistrusted, for: .normal)
         } else {
             stopTrustingButton.setTitle(titleTrusted, for: .normal)

@@ -1,5 +1,5 @@
 //
-//  HandshakePartnerTableViewCellUIState.swift
+//  HandshakePartnerTableViewCellViewModel.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 26.04.17.
@@ -10,7 +10,7 @@ import Foundation
 
 import MessageModel
 
-class HandshakePartnerTableViewCellUIState {
+class HandshakePartnerTableViewCellViewModel {
     /**
      The UI relevant state of the displayed identity.
      Independent of the state of the Identity, you can expand the cell.

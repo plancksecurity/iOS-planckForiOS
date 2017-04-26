@@ -46,12 +46,12 @@ class HandshakeViewController: UITableViewController {
             if let m = message {
                 if let selfId = message?.parent?.account?.user {
                     let theId = partners[indexPath.row]
-                    let uiState = HandshakePartnerTableViewCellUIState(
+                    let viewModel = HandshakePartnerTableViewCellViewModel(
                         selfIdentity: selfId,
                         partner: theId,
                         session: appConfig?.session,
                         imageProvider: imageProvider)
-                    cell.uiState = uiState
+                    cell.viewModel = viewModel
                 } else {
                     Log.error(
                         component: #function,
