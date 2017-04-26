@@ -11,64 +11,6 @@ import UIKit
 import MessageModel
 
 class HandshakePartnerTableViewCell: UITableViewCell {
-    /**
-     The UI relevant state of the displayed identity.
-     Independent of the state of the Identity, you can expand the cell.
-     The expanded version will show the explanation.
-     */
-    enum IdentityState {
-        case illegal
-
-        /**
-         The identity is mistrusted (red), which means that no trustwords whatsoever
-         should be shown. You might be able to expand, which means you see the explanation.
-         pEpForIOS-Handshake-Mistrusted.png
-         pEpForIOS-Handshake-Mistrusted-ExpandedText.png
-         */
-        case mistrusted
-
-        /**
-         The identity is already secure (yellow, so to speak).
-         Again, you can expand the cell, which will show you the explanation.
-         */
-        case secure
-
-        /**
-         The identity is already trusted (green).
-         */
-        case secureAndTrusted
-
-        static func from(identity: Identity) -> IdentityState {
-            let color = identity.pEpColor()
-            switch color {
-            case PEP_color_red:
-                return .mistrusted
-            case PEP_color_yellow:
-                return .secure
-            case PEP_color_green:
-                return .secureAndTrusted
-            default:
-                return .illegal
-            }
-        }
-
-        var showStopStartTrustButton: Bool {
-            return self == .mistrusted || self == .secureAndTrusted
-        }
-    }
-
-    enum ExpandedState {
-        case notExpanded
-        case expanded
-    }
-
-    struct UIState {
-        var expandedState: ExpandedState
-        var identityState: IdentityState
-        var trustwordsLanguage: String
-        var trustwordsFull: Bool
-    }
-
     struct Constraints {
         var explanationHeightZero: NSLayoutConstraint
         var stopTrustingHeightZero: NSLayoutConstraint
@@ -85,13 +27,20 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var trustWordsLabel: UILabel!
     @IBOutlet weak var headerView: UIView!
 
-    var uiState = UIState(expandedState: .notExpanded, identityState: .mistrusted,
-                          trustwordsLanguage: "en", trustwordsFull: true)
-
     /**
      The additional constraints we have to deal with.
      */
     var additionalConstraints: Constraints?
+
+    var controller: HandshakePartnerCellController? {
+        didSet {
+            updateView()
+        }
+    }
+
+    var uiState: HandshakePartnerCellController.UIState {
+        return controller?.uiState ?? HandshakePartnerCellController.UIState.empty()
+    }
 
     override func awakeFromNib() {
         stopTrustingButton.pEpIfyForTrust(backgroundColor: UIColor.pEpYellow, textColor: .black)
@@ -99,32 +48,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         setupAdditionalConstraints()
         setNeedsLayout()
-    }
-
-    func updateCell(indexPath: IndexPath, message: Message, selfIdentity: Identity,
-                    partner: Identity, session: PEPSession?,
-                    imageProvider: IdentityImageProvider) {
-        uiState.identityState = IdentityState.from(identity: partner)
-        uiState.expandedState = .notExpanded
-
-        partnerNameLabel.text = partner.userName ?? partner.address
-
-        let theSession = session ?? PEPSession()
-        let rating = partner.pEpRating(session: theSession)
-        pEpStatusImageView.image = rating.statusIcon()
-
-        imageProvider.image(forIdentity: partner) { [weak self] img, ident in
-            GCD.onMain() {
-                if partner == ident {
-                    self?.partnerImageView.image = img
-                }
-            }
-        }
-
-        setNeedsUpdateConstraints()
-        updateStopTrustingButtonTitle()
-        updatePrivacyStatus(rating: rating)
-        updateTrustwords(session: session, selfIdentity: selfIdentity, partner: partner)
     }
 
     func setupAdditionalConstraints() {
@@ -139,12 +62,15 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    override func updateConstraints() {
-        updateAdditionConstraints()
-        super.updateConstraints()
+    func updateView() {
+        updateStopTrustingButtonTitle()
+        updatePrivacyStatus(rating: uiState.rating)
+        trustWordsLabel.text = uiState.trustwords
+        partnerImageView.image = uiState.partnerImage
+        updateAdditionalConstraints()
     }
 
-    func updateAdditionConstraints() {
+    func updateAdditionalConstraints() {
         if let theAdditionalConstraints = additionalConstraints {
             // Hide the stop/start trust button for states other than
             // .mistrusted an .secureAndTrusted.
@@ -180,6 +106,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         let pEpStatus = String.pEpRatingTranslation(pEpRating: rating)
         privacyStatusTitle.text = pEpStatus.title
         privacyStatusDescription.text = pEpStatus.explanation
+        pEpStatusImageView.image = rating.statusIcon()
     }
 
     func updateExpansionConstraints() {
@@ -200,16 +127,5 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             self.contentView.layoutIfNeeded()
         }
         tableView.updateSize()
-    }
-
-    func updateTrustwords(session: PEPSession?, selfIdentity: Identity, partner: Identity) {
-        let theSession = session ?? PEPSession()
-        let pEpSelf = selfIdentity.pEpIdentity().mutableDictionary().update(session: theSession)
-        let pEpPartner = partner.pEpIdentity().mutableDictionary().update(session: theSession)
-        let trustwords = theSession.getTrustwordsIdentity1(pEpSelf.pEpIdentity(),
-                                                           identity2: pEpPartner.pEpIdentity(),
-                                                           language: uiState.trustwordsLanguage,
-                                                           full: uiState.trustwordsFull)
-        trustWordsLabel.text = trustwords
     }
 }

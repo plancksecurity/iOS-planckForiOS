@@ -89,6 +89,7 @@
 		4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4348EF0C1E27ABA100F441A9 /* LoginSmtpOperation.swift */; };
 		4348EF151E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 4348EF141E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */; };
 		434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */; };
+		434F40901EB09285002FBF0D /* HandshakePartnerCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F408F1EB09285002FBF0D /* HandshakePartnerCellController.swift */; };
 		4352FA1F1DC79E9B0081161A /* ShortCircuitSendLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA1E1DC79E9B0081161A /* ShortCircuitSendLayer.swift */; };
 		43549A8E1E48B54100210D86 /* TrashMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */; };
 		4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */; };
@@ -331,6 +332,7 @@
 		4348EF0C1E27ABA100F441A9 /* LoginSmtpOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSmtpOperation.swift; sourceTree = "<group>"; };
 		4348EF141E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc"; sourceTree = "<group>"; };
 		434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+Extension.swift"; sourceTree = "<group>"; };
+		434F408F1EB09285002FBF0D /* HandshakePartnerCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerCellController.swift; sourceTree = "<group>"; };
 		4352FA1E1DC79E9B0081161A /* ShortCircuitSendLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortCircuitSendLayer.swift; sourceTree = "<group>"; };
 		43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashMailsOperation.swift; sourceTree = "<group>"; };
 		4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncMessagesOperation.swift; sourceTree = "<group>"; };
@@ -690,6 +692,7 @@
 		438D5A6F1EA77CFC001A37E1 /* Handshake */ = {
 			isa = PBXGroup;
 			children = (
+				434F408F1EB09285002FBF0D /* HandshakePartnerCellController.swift */,
 				43C322041EA89EED005073FB /* HandshakePartnerTableViewCell.swift */,
 				438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */,
 			);
@@ -1308,6 +1311,7 @@
 				4362399D1EAE0CE800BD2EB9 /* OperationQueue+Extension.swift in Sources */,
 				43122B191DF5B48B00610253 /* EmailService.swift in Sources */,
 				B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */,
+				434F40901EB09285002FBF0D /* HandshakePartnerCellController.swift in Sources */,
 				222B357E1DF97675007A1F82 /* SuggestTableView.swift in Sources */,
 				431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */,
 				432198ED1DF6B66800318A74 /* SharedObjects.swift in Sources */,
