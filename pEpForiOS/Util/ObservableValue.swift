@@ -11,7 +11,7 @@ import Foundation
 class ObservableValue<T> {
     var value: T? {
         didSet {
-            reapAndInvokeObservers()
+            invokeObservers()
         }
     }
 
@@ -20,22 +20,16 @@ class ObservableValue<T> {
     }
 
     public func observe(fn: @escaping ObservableFunc<T>) {
-        let wr = ObservableFuncWrapper(fn: fn)
-        observers.append(Weak(value: wr))
+        observers.append(ObservableFuncWrapper(fn: fn))
     }
 
-    private func reapAndInvokeObservers() {
-        var newObservers = [Weak<ObservableFuncWrapper<T>>]()
+    private func invokeObservers() {
         for ob in observers {
-            if let wr = ob.value {
-                newObservers.append(ob)
-                wr.fn(value)
-            }
+            ob.fn(value)
         }
-        observers = newObservers
     }
 
-    private var observers = [Weak<ObservableFuncWrapper<T>>]()
+    private var observers = [ObservableFuncWrapper<T>]()
 }
 
 typealias ObservableFunc<T> = (_ newValue: T?) -> Void

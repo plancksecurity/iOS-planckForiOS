@@ -35,8 +35,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     var uiState: HandshakePartnerTableViewCellUIState? {
         didSet {
             updateView()
-            uiState?.partnerImage.observe() { img in
-                self.partnerImageView.image = img
+            uiState?.partnerImage.observe() { [weak self] img in
+                self?.partnerImageView.image = img
             }
         }
     }
