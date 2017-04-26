@@ -44,6 +44,13 @@ class LoginViewController: UIViewController {
 
     }
 
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+
+        let _ =  navigationController?.popViewController(animated: true)
+
+    }
+
+
     @IBOutlet weak var cancleButton: UIBarButtonItem!
 
 }

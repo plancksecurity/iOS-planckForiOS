@@ -595,7 +595,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pFO-TV-vvj">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="Ogd-KZ-RTh"/>
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="Ogd-KZ-RTh">
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="q7B-Vn-elT" id="Zkq-cA-ajU"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="cancleButton" destination="Ogd-KZ-RTh" id="Z5u-OO-M0N"/>

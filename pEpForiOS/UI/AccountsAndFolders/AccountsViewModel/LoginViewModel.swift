@@ -12,6 +12,6 @@ import MessageModel
 public class LoginViewModel {
 
     func handleFirstLogin() -> Bool {
-        return !(Account.all().isEmpty)
+        return Account.all().isEmpty
     }
 }
