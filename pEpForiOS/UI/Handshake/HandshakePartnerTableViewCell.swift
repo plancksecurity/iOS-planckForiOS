@@ -35,6 +35,9 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     var uiState: HandshakePartnerTableViewCellUIState? {
         didSet {
             updateView()
+            uiState?.partnerImage.observe() { img in
+                self.partnerImageView.image = img
+            }
         }
     }
 
@@ -75,7 +78,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updateStopTrustingButtonTitle()
         updatePrivacyStatus(rating: rating)
         trustWordsLabel.text = uiState?.trustwords
-        partnerImageView.image = uiState?.partnerImage
+        partnerImageView.image = uiState?.partnerImage.value
         updateAdditionalConstraints()
     }
 

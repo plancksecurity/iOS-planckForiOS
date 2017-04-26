@@ -69,7 +69,7 @@ class HandshakePartnerTableViewCellUIState {
 
     let partnerIdentity: Identity
 
-    var partnerImage: UIImage?
+    var partnerImage: ObservableValue<UIImage> = ObservableValue(value: nil)
     var rating: PEP_rating = PEP_rating_undefined
     var trustwords: String?
 
@@ -83,7 +83,7 @@ class HandshakePartnerTableViewCellUIState {
 
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
             if partner == ident {
-                self?.partnerImage = img
+                self?.partnerImage.value = img
             }
         }
 
