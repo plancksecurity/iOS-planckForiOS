@@ -64,6 +64,9 @@
                                                     <rect key="frame" x="76" y="125" width="109" height="33"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Stop Trusting"/>
+                                                    <connections>
+                                                        <action selector="startStopTrustingAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="cUg-ze-Yx9"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.94867008924484253" green="0.94938892126083374" blue="0.94878143072128296" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -99,11 +102,17 @@
                                                     <rect key="frame" x="20" y="48.5" width="155.5" height="33"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Confirm Trustwords"/>
+                                                    <connections>
+                                                        <action selector="confirmAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="0Ra-lN-sx4"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="wrongButton">
                                                     <rect key="frame" x="183.5" y="49" width="155.5" height="33"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Wrong Trustwords"/>
+                                                    <connections>
+                                                        <action selector="wrongAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="UGm-r5-suP"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

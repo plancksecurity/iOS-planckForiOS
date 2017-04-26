@@ -136,4 +136,15 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             self.contentView.layoutIfNeeded()
         }
     }
+
+    // MARK: - Actions
+
+    @IBAction func startStopTrustingAction(_ sender: UIButton) {
+    }
+
+    @IBAction func confirmAction(_ sender: UIButton) {
+    }
+
+    @IBAction func wrongAction(_ sender: UIButton) {
+    }
 }
