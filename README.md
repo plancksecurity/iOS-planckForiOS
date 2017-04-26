@@ -65,7 +65,7 @@ mkdir ~/src
 cd ~/src
 
 git clone https://github.com/fdik/libetpan
-git clone http://cacert.pep-security.lu/gitlab/ios/OpenSSL-for-iPhone.git
+git clone https://cacert.pep-security.lu/gitlab/ios/OpenSSL-for-iPhone.git
 
 hg clone https://cacert.pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://cacert.pep.foundation/dev/repos/netpgp-et
