@@ -43,6 +43,11 @@ sudo port select python python27
 
 ### Other dependecies
 
+#### Note
+
+If you have not installed the CA Cert certificates, replace `cacert` in hostnames
+with `letsencrypt`.
+
 #### pEpEngine: [yml2](https://fdik.org/yml/toolchain)
 
 Clone into your home directory:
@@ -60,6 +65,7 @@ mkdir ~/src
 cd ~/src
 
 git clone https://github.com/fdik/libetpan
+git clone http://cacert.pep-security.lu/gitlab/ios/OpenSSL-for-iPhone.git
 
 hg clone https://cacert.pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://cacert.pep.foundation/dev/repos/netpgp-et
@@ -71,7 +77,7 @@ hg clone https://cacert.pep.foundation/dev/repos/libAccountSettings/
 hg clone https://cacert.pep-security.ch/dev/repos/pEp_for_iOS/
 ```
 
-Note that netpgp includes a static openssl, and pEpEngine a static libcurl. For
+Note that pEpEngine includes a static libcurl. For
 rebuilding see the respective scripts. But you should not have to do that for iOS.
 
 ### UI Tests
