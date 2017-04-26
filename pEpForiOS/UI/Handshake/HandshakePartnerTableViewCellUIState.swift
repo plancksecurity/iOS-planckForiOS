@@ -1,5 +1,5 @@
 //
-//  HandshakePartnerCellController.swift
+//  HandshakePartnerTableViewCellUIState.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 26.04.17.
@@ -10,7 +10,7 @@ import Foundation
 
 import MessageModel
 
-class HandshakePartnerCellController {
+class HandshakePartnerTableViewCellUIState {
     /**
      The UI relevant state of the displayed identity.
      Independent of the state of the Identity, you can expand the cell.
@@ -62,61 +62,40 @@ class HandshakePartnerCellController {
         case expanded
     }
 
-    class UIState {
-        var expandedState: ExpandedState
-        var identityState: IdentityState
-        var trustwordsLanguage: String
-        var trustwordsFull: Bool
+    var expandedState: ExpandedState
+    var identityState: IdentityState
+    var trustwordsLanguage: String
+    var trustwordsFull: Bool
 
-        let partnerIdentity: Identity
+    let partnerIdentity: Identity
 
-        var partnerImage: UIImage?
-        var rating: PEP_rating = PEP_rating_undefined
-        var trustwords: String?
-
-        init(expandedState: ExpandedState, identityState: IdentityState,
-            trustwordsLanguage: String, trustwordsFull: Bool,
-            partnerIdentity: Identity) {
-            self.expandedState = expandedState
-            self.identityState = identityState
-            self.trustwordsLanguage = trustwordsLanguage
-            self.trustwordsFull = trustwordsFull
-            self.partnerIdentity = partnerIdentity
-        }
-
-        static func empty() -> UIState {
-            let ident = Identity.create(address: "")
-            return UIState(expandedState: .notExpanded, identityState: .mistrusted,
-                           trustwordsLanguage: "en", trustwordsFull: true,
-                           partnerIdentity: ident)
-        }
-    }
-
-    var uiState: UIState
+    var partnerImage: UIImage?
+    var rating: PEP_rating = PEP_rating_undefined
+    var trustwords: String?
 
     init(selfIdentity: Identity, partner: Identity, session: PEPSession?,
          imageProvider: IdentityImageProvider) {
-        uiState = UIState(expandedState: .notExpanded,
-                          identityState: IdentityState.from(identity: partner),
-                          trustwordsLanguage: "en",
-                          trustwordsFull: true,
-                          partnerIdentity: partner)
+        self.expandedState = .notExpanded
+        self.identityState = IdentityState.from(identity: partner)
+        self.trustwordsLanguage = "en"
+        self.trustwordsFull = true
+        self.partnerIdentity = partner
 
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
             if partner == ident {
-                self?.uiState.partnerImage = img
+                self?.partnerImage = img
             }
         }
 
         let theSession = session ?? PEPSession()
-        uiState.rating = partner.pEpRating(session: theSession)
+        self.rating = partner.pEpRating(session: theSession)
 
         let pEpSelf = selfIdentity.pEpIdentity().mutableDictionary().update(session: theSession)
         let pEpPartner = partner.pEpIdentity().mutableDictionary().update(session: theSession)
-        uiState.trustwords = theSession.getTrustwordsIdentity1(
+        self.trustwords = theSession.getTrustwordsIdentity1(
             pEpSelf.pEpIdentity(),
             identity2: pEpPartner.pEpIdentity(),
-            language: uiState.trustwordsLanguage,
-            full: uiState.trustwordsFull)
+            language: trustwordsLanguage,
+            full: trustwordsFull)
     }
 }

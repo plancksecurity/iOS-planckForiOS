@@ -32,14 +32,23 @@ class HandshakePartnerTableViewCell: UITableViewCell {
      */
     var additionalConstraints: Constraints?
 
-    var controller: HandshakePartnerCellController? {
+    var uiState: HandshakePartnerTableViewCellUIState? {
         didSet {
             updateView()
         }
     }
 
-    var uiState: HandshakePartnerCellController.UIState {
-        return controller?.uiState ?? HandshakePartnerCellController.UIState.empty()
+    var rating: PEP_rating { return uiState?.rating ?? PEP_rating_undefined }
+    var showStopStartTrustButton: Bool {
+        return uiState?.identityState.showStopStartTrustButton ?? false
+    }
+    var expandedState: HandshakePartnerTableViewCellUIState.ExpandedState {
+        get {
+            return uiState?.expandedState ?? .notExpanded
+        }
+        set {
+            uiState?.expandedState = newValue
+        }
     }
 
     override func awakeFromNib() {
@@ -64,9 +73,9 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     func updateView() {
         updateStopTrustingButtonTitle()
-        updatePrivacyStatus(rating: uiState.rating)
-        trustWordsLabel.text = uiState.trustwords
-        partnerImageView.image = uiState.partnerImage
+        updatePrivacyStatus(rating: rating)
+        trustWordsLabel.text = uiState?.trustwords
+        partnerImageView.image = uiState?.partnerImage
         updateAdditionalConstraints()
     }
 
@@ -74,17 +83,15 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         if let theAdditionalConstraints = additionalConstraints {
             // Hide the stop/start trust button for states other than
             // .mistrusted an .secureAndTrusted.
-            theAdditionalConstraints.stopTrustingHeightZero.isActive =
-                !uiState.identityState.showStopStartTrustButton
-            stopTrustingButton.isHidden =
-                !uiState.identityState.showStopStartTrustButton
+            theAdditionalConstraints.stopTrustingHeightZero.isActive = !showStopStartTrustButton
+            stopTrustingButton.isHidden = !showStopStartTrustButton
 
             updateExpansionConstraints()
         }
     }
 
     func updateStopTrustingButtonTitle() {
-        if !uiState.identityState.showStopStartTrustButton {
+        if !showStopStartTrustButton {
             return
         }
 
@@ -95,7 +102,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             "Stop Trusting",
             comment: "Stop/trust button in handshake overview")
 
-        if uiState.identityState == .mistrusted {
+        if uiState?.identityState == .mistrusted {
             stopTrustingButton.setTitle(titleMistrusted, for: .normal)
         } else {
             stopTrustingButton.setTitle(titleTrusted, for: .normal)
@@ -111,16 +118,15 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     func updateExpansionConstraints() {
         if let theAdditionalConstraints = additionalConstraints {
-            theAdditionalConstraints.explanationHeightZero.isActive =
-                uiState.expandedState == .notExpanded
+            theAdditionalConstraints.explanationHeightZero.isActive = expandedState == .notExpanded
         }
     }
 
     func didChangeSelection(tableView: UITableView) {
-        if uiState.expandedState == .expanded {
-            uiState.expandedState = .notExpanded
+        if expandedState == .expanded {
+            expandedState = .notExpanded
         } else {
-            uiState.expandedState = .expanded
+            expandedState = .expanded
         }
         updateExpansionConstraints()
         UIView.animate(withDuration: 0.3) {
