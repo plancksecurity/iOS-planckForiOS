@@ -122,7 +122,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func didChangeSelection(tableView: UITableView) {
+    func didChangeSelection() {
         if expandedState == .expanded {
             expandedState = .notExpanded
         } else {
@@ -132,6 +132,5 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         UIView.animate(withDuration: 0.3) {
             self.contentView.layoutIfNeeded()
         }
-        tableView.updateSize()
     }
 }

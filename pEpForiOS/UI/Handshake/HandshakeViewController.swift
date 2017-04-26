@@ -68,7 +68,7 @@ class HandshakeViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? HandshakePartnerTableViewCell {
-            cell.didChangeSelection(tableView: tableView)
+            cell.didChangeSelection()
             tableView.updateSize()
         }
     }
