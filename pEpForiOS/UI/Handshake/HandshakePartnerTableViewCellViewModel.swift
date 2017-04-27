@@ -38,8 +38,8 @@ class HandshakePartnerTableViewCellViewModel {
          */
         case secureAndTrusted
 
-        static func from(identity: Identity) -> IdentityState {
-            let color = identity.pEpColor()
+        static func from(identity: Identity, session: PEPSession = PEPSession()) -> IdentityState {
+            let color = identity.pEpColor(session: session)
             switch color {
             case PEP_color_red:
                 return .mistrusted
@@ -69,17 +69,24 @@ class HandshakePartnerTableViewCellViewModel {
 
     let partnerIdentity: Identity
 
-    var partnerImage: ObservableValue<UIImage> = ObservableValue(value: nil)
+    var partnerImage = ObservableValue<UIImage>()
     var rating: PEP_rating = PEP_rating_undefined
     var trustwords: String?
+
+    /**
+     pEp session usable on the main thread.
+     */
+    let session: PEPSession
 
     init(selfIdentity: Identity, partner: Identity, session: PEPSession?,
          imageProvider: IdentityImageProvider) {
         self.expandedState = .notExpanded
-        self.identityState = IdentityState.from(identity: partner)
         self.trustwordsLanguage = "en"
         self.trustwordsFull = true
         self.partnerIdentity = partner
+        let theSession = session ?? PEPSession()
+        self.session = theSession
+        self.identityState = IdentityState.from(identity: partner, session: theSession)
 
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
             if partner == ident {
@@ -87,7 +94,6 @@ class HandshakePartnerTableViewCellViewModel {
             }
         }
 
-        let theSession = session ?? PEPSession()
         self.rating = partner.pEpRating(session: theSession)
 
         let pEpSelf = selfIdentity.pEpIdentity().mutableDictionary().update(session: theSession)
@@ -97,5 +103,31 @@ class HandshakePartnerTableViewCellViewModel {
             identity2: pEpPartner.pEpIdentity(),
             language: trustwordsLanguage,
             full: trustwordsFull)
+    }
+
+    func invokeTrustAction(action: (NSMutableDictionary) -> ()) {
+        let thePartner = partnerIdentity.pEpIdentity().mutableDictionary().update(
+            session: session)
+        action(thePartner)
+        identityState = IdentityState.from(identity: partnerIdentity, session: session)
+        rating = partnerIdentity.pEpRating(session: session)
+    }
+
+    public func confirmTrust() {
+        invokeTrustAction() { thePartner in
+            session.trustPersonalKey(thePartner)
+        }
+    }
+
+    public func denyTrust() {
+        invokeTrustAction() { thePartner in
+            session.keyMistrusted(thePartner)
+        }
+    }
+
+    public func startStopTrusting() {
+        invokeTrustAction() { thePartner in
+            session.keyResetTrust(thePartner)
+        }
     }
 }

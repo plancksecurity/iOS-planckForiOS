@@ -140,11 +140,17 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     // MARK: - Actions
 
     @IBAction func startStopTrustingAction(_ sender: UIButton) {
+        viewModel?.startStopTrusting()
+        updateView()
     }
 
     @IBAction func confirmAction(_ sender: UIButton) {
+        viewModel?.confirmTrust()
+        updateView()
     }
 
     @IBAction func wrongAction(_ sender: UIButton) {
+        viewModel?.denyTrust()
+        updateView()
     }
 }
