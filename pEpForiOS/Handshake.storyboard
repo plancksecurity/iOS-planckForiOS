@@ -151,6 +151,7 @@
                                     <outlet property="privacyStatusTitle" destination="5RJ-Gx-qBT" id="0qJ-kY-o93"/>
                                     <outlet property="stopTrustingButton" destination="Y4f-BW-EI0" id="wsp-Us-mJf"/>
                                     <outlet property="trustWordsLabel" destination="lHS-sc-yWR" id="9rC-fg-eDL"/>
+                                    <outlet property="trustWordsView" destination="9bw-BE-9Ag" id="QOb-hb-sG4"/>
                                     <outlet property="wrongButton" destination="dbO-2K-SpB" id="Noy-9E-GaM"/>
                                 </connections>
                             </tableViewCell>

@@ -55,6 +55,10 @@ class HandshakePartnerTableViewCellViewModel {
         var showStopStartTrustButton: Bool {
             return self == .mistrusted || self == .secureAndTrusted
         }
+
+        var showTrustwords: Bool {
+            return self == .secure
+        }
     }
 
     enum ExpandedState {

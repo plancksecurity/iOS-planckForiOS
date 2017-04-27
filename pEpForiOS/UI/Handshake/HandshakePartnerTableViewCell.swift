@@ -12,8 +12,20 @@ import MessageModel
 
 class HandshakePartnerTableViewCell: UITableViewCell {
     struct Constraints {
-        var explanationHeightZero: NSLayoutConstraint
-        var stopTrustingHeightZero: NSLayoutConstraint
+        /** For expanding the explanation */
+        let explanationHeightZero: NSLayoutConstraint
+
+        /** For hiding the start/stop trust button */
+        let stopTrustingHeightZero: NSLayoutConstraint
+
+        /** For hiding trust/mistrust buttons */
+        let confirmTrustHeightZero: NSLayoutConstraint
+
+        /** For hiding trustwords label */
+        let trustWordsLabelHeightZero: NSLayoutConstraint
+
+        /** For hiding the whole view dealing with trustwords */
+        let trustWordsViewHeightZero: NSLayoutConstraint
     }
 
     @IBOutlet weak var stopTrustingButton: UIButton!
@@ -26,6 +38,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var privacyStatusDescription: UILabel!
     @IBOutlet weak var trustWordsLabel: UILabel!
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var trustWordsView: UIView!
 
     /**
      The additional constraints we have to deal with.
@@ -42,9 +55,15 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     var rating: PEP_rating { return viewModel?.rating ?? PEP_rating_undefined }
+
     var showStopStartTrustButton: Bool {
         return viewModel?.identityState.showStopStartTrustButton ?? false
     }
+
+    var showTrustwords: Bool {
+        return viewModel?.identityState.showTrustwords ?? false
+    }
+
     var expandedState: HandshakePartnerTableViewCellViewModel.ExpandedState {
         get {
             return viewModel?.expandedState ?? .notExpanded
@@ -68,9 +87,19 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                 equalToConstant: 0)
             let stopTrustingHeightZero = stopTrustingButton.heightAnchor.constraint(
                 equalToConstant: 0)
+
+            let confirmTrustHeightZero = confirmButton.heightAnchor.constraint(equalToConstant: 0)
+            let trustWordsLabelHeightZero = trustWordsLabel.heightAnchor.constraint(
+                equalToConstant: 0)
+            let trustWordsViewHeightZero = trustWordsView.heightAnchor.constraint(
+                equalToConstant: 0)
+
             additionalConstraints = Constraints(
                 explanationHeightZero: explanationHeightZero,
-                stopTrustingHeightZero: stopTrustingHeightZero)
+                stopTrustingHeightZero: stopTrustingHeightZero,
+                confirmTrustHeightZero: confirmTrustHeightZero,
+                trustWordsLabelHeightZero: trustWordsLabelHeightZero,
+                trustWordsViewHeightZero: trustWordsViewHeightZero)
         }
     }
 
@@ -89,7 +118,21 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             theAdditionalConstraints.stopTrustingHeightZero.isActive = !showStopStartTrustButton
             stopTrustingButton.isHidden = !showStopStartTrustButton
 
-            updateExpansionConstraints()
+            updateExplanationExpansionConstraints()
+            updateTrustwordsExpansionConstraints()
+        }
+    }
+
+    func updateExplanationExpansionConstraints() {
+        if let theAdditionalConstraints = additionalConstraints {
+            theAdditionalConstraints.explanationHeightZero.isActive = expandedState == .notExpanded
+        }
+    }
+
+    func updateTrustwordsExpansionConstraints() {
+        if let theAdditionalConstraints = additionalConstraints {
+            theAdditionalConstraints.confirmTrustHeightZero.isActive = !showTrustwords
+            theAdditionalConstraints.trustWordsLabelHeightZero.isActive = !showTrustwords
         }
     }
 
@@ -119,19 +162,13 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         pEpStatusImageView.image = rating.statusIcon()
     }
 
-    func updateExpansionConstraints() {
-        if let theAdditionalConstraints = additionalConstraints {
-            theAdditionalConstraints.explanationHeightZero.isActive = expandedState == .notExpanded
-        }
-    }
-
     func didChangeSelection() {
         if expandedState == .expanded {
             expandedState = .notExpanded
         } else {
             expandedState = .expanded
         }
-        updateExpansionConstraints()
+        updateExplanationExpansionConstraints()
         UIView.animate(withDuration: 0.3) {
             self.contentView.layoutIfNeeded()
         }
