@@ -66,12 +66,36 @@ class HandshakePartnerTableViewCellViewModel {
         case expanded
     }
 
+    /**
+     The background changes depending on the position in the list, alternating between
+     light and dark.
+     */
+    var backgroundColorDark = true
+
+    /**
+     Do we show the trustwords for this identity?
+     */
+    var showTrustwords: Bool {
+        return identityState.showTrustwords
+    }
+
     var expandedState: ExpandedState
     var identityState: IdentityState
     var trustwordsLanguage: String
     var trustwordsFull: Bool
 
+    /**
+     The own identity that is concerned with the trust.
+     */
+    let ownIdentity: Identity
+
+    /**
+     The partner identity that we want to trust (or not).
+     */
     let partnerIdentity: Identity
+    var partnerName: String? {
+        return partnerIdentity.userName ?? partnerIdentity.address
+    }
 
     var partnerImage = ObservableValue<UIImage>()
     var rating: PEP_rating = PEP_rating_undefined
@@ -82,11 +106,12 @@ class HandshakePartnerTableViewCellViewModel {
      */
     let session: PEPSession
 
-    init(selfIdentity: Identity, partner: Identity, session: PEPSession?,
+    init(ownIdentity: Identity, partner: Identity, session: PEPSession?,
          imageProvider: IdentityImageProvider) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
         self.trustwordsFull = true
+        self.ownIdentity = ownIdentity
         self.partnerIdentity = partner
         let theSession = session ?? PEPSession()
         self.session = theSession
@@ -100,7 +125,7 @@ class HandshakePartnerTableViewCellViewModel {
 
         self.rating = partner.pEpRating(session: theSession)
 
-        let pEpSelf = selfIdentity.pEpIdentity().mutableDictionary().update(session: theSession)
+        let pEpSelf = ownIdentity.pEpIdentity().mutableDictionary().update(session: theSession)
         let pEpPartner = partner.pEpIdentity().mutableDictionary().update(session: theSession)
         self.trustwords = theSession.getTrustwordsIdentity1(
             pEpSelf.pEpIdentity(),

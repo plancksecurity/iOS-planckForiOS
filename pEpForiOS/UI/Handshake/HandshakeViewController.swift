@@ -13,19 +13,28 @@ import MessageModel
 class HandshakeViewController: UITableViewController {
     var appConfig: AppConfig?
 
+    var session: PEPSession {
+        return appConfig?.session ?? PEPSession()
+    }
+
     var message: Message? {
         didSet {
-            partners = message?.identitiesEligibleForHandshake() ?? []
+            partners = message?.identitiesEligibleForHandshake(session: session) ?? []
         }
     }
 
     var ratingReEvaluator: RatingReEvaluator?
     var partners = [Identity]()
     let imageProvider = IdentityImageProvider()
+    let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
 
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
+    }
+
+    override func didReceiveMemoryWarning() {
+        identityViewModelCache.removeAllObjects()
     }
 
     // MARK: - Table view data source
@@ -38,6 +47,40 @@ class HandshakeViewController: UITableViewController {
         return partners.count
     }
 
+    /**
+     Returns: A cached view model for the given `partnerIdentity` or a newly created one.
+     */
+    func createViewModel(partnerIdentity: Identity,
+                         selfIdentity: Identity) -> HandshakePartnerTableViewCellViewModel {
+        return identityViewModelCache.object(forKey: partnerIdentity) ??
+            HandshakePartnerTableViewCellViewModel(
+                ownIdentity: selfIdentity,
+                partner: partnerIdentity,
+                session: session,
+                imageProvider: imageProvider)
+    }
+
+    /**
+     Adjusts the background color of the given view model depending on its position in the list,
+     and the color of the previous one.
+     */
+    func adjustBackgroundColor(viewModel: HandshakePartnerTableViewCellViewModel,
+                               indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            viewModel.backgroundColorDark = true
+        } else {
+            let prevRow = indexPath.row - 1
+            let partnerId = partners[prevRow]
+            let prevViewModel = createViewModel(partnerIdentity: partnerId,
+                                                selfIdentity: viewModel.ownIdentity)
+            if prevViewModel.showTrustwords {
+                viewModel.backgroundColorDark = true
+            } else {
+                viewModel.backgroundColorDark = !prevViewModel.backgroundColorDark
+            }
+        }
+    }
+
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(
@@ -47,12 +90,10 @@ class HandshakeViewController: UITableViewController {
             if let m = message {
                 if let selfId = message?.parent?.account?.user {
                     let theId = partners[indexPath.row]
-                    let viewModel = HandshakePartnerTableViewCellViewModel(
-                        selfIdentity: selfId,
-                        partner: theId,
-                        session: appConfig?.session,
-                        imageProvider: imageProvider)
+                    let viewModel = createViewModel(partnerIdentity: theId, selfIdentity: selfId)
+                    adjustBackgroundColor(viewModel: viewModel, indexPath: indexPath)
                     cell.viewModel = viewModel
+                    cell.indexPath = indexPath
                 } else {
                     Log.error(
                         component: #function,
@@ -78,24 +119,39 @@ class HandshakeViewController: UITableViewController {
 // MARK: - HandshakePartnerTableViewCellDelegate
 
 extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
-    func invokeTrustAction(cell: HandshakePartnerTableViewCell, action: () -> ()) {
+    func invokeTrustAction(cell: HandshakePartnerTableViewCell, indexPath: IndexPath,
+                           action: () -> ()) {
         action()
         cell.updateView()
         tableView.updateSize()
+
+        // reload cells after that one, to ensure the alternating colors are upheld
+        var paths = [IndexPath]()
+        let i1 = indexPath.row + 1
+        let i2 = partners.count
+        if i1 < i2 {
+            for i in i1..<i2 {
+                paths.append(IndexPath(row: i, section: indexPath.section))
+            }
+        }
+        tableView.reloadRows(at: paths, with: .automatic)
     }
 
     func startStopTrusting(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                           indexPath: IndexPath,
                            viewModel: HandshakePartnerTableViewCellViewModel?) {
-        invokeTrustAction(cell: cell) { viewModel?.startStopTrusting() }
+        invokeTrustAction(cell: cell, indexPath: indexPath) { viewModel?.startStopTrusting() }
     }
 
     func confirmTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                      indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?) {
-        invokeTrustAction(cell: cell) { viewModel?.confirmTrust() }
+        invokeTrustAction(cell: cell, indexPath: indexPath) { viewModel?.confirmTrust() }
     }
 
     func denyTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                   indexPath: IndexPath,
                    viewModel: HandshakePartnerTableViewCellViewModel?) {
-        invokeTrustAction(cell: cell) { viewModel?.denyTrust() }
+        invokeTrustAction(cell: cell, indexPath: indexPath) { viewModel?.denyTrust() }
     }
 }

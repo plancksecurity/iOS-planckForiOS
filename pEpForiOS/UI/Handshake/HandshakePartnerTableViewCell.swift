@@ -15,10 +15,13 @@ import MessageModel
  */
 protocol HandshakePartnerTableViewCellDelegate: class {
     func startStopTrusting(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                           indexPath: IndexPath,
                            viewModel: HandshakePartnerTableViewCellViewModel?)
     func confirmTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
+                      indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?)
     func denyTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
+                   indexPath: IndexPath,
                    viewModel: HandshakePartnerTableViewCellViewModel?)
 }
 
@@ -58,6 +61,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     weak var delegate: HandshakePartnerTableViewCellDelegate?
 
+    var indexPath: IndexPath = IndexPath()
+
     /**
      The additional constraints we have to deal with.
      */
@@ -79,7 +84,11 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     var showTrustwords: Bool {
-        return viewModel?.identityState.showTrustwords ?? false
+        return viewModel?.showTrustwords ?? false
+    }
+
+    var backgroundColorDark: Bool {
+        return viewModel?.backgroundColorDark ?? false
     }
 
     var expandedState: HandshakePartnerTableViewCellViewModel.ExpandedState {
@@ -122,8 +131,12 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateView() {
-        partnerNameLabel.text = viewModel?.partnerIdentity.userName ??
-            viewModel?.partnerIdentity.address
+        if backgroundColorDark {
+            headerView.backgroundColor = UIColor.pEpLightBackground
+        } else {
+            headerView.backgroundColor = UIColor.white
+        }
+        partnerNameLabel.text = viewModel?.partnerName
         updateStopTrustingButtonTitle()
         updatePrivacyStatus(rating: rating)
         trustWordsLabel.text = viewModel?.trustwords
@@ -197,14 +210,17 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     // MARK: - Actions
 
     @IBAction func startStopTrustingAction(_ sender: UIButton) {
-        delegate?.startStopTrusting(sender: sender, cell: self, viewModel: viewModel)
+        delegate?.startStopTrusting(sender: sender, cell: self, indexPath: indexPath,
+                                    viewModel: viewModel)
     }
 
     @IBAction func confirmAction(_ sender: UIButton) {
-        delegate?.confirmTrust(sender: sender, cell: self, viewModel: viewModel)
+        delegate?.confirmTrust(sender: sender, cell: self, indexPath: indexPath,
+                               viewModel: viewModel)
     }
 
     @IBAction func wrongAction(_ sender: UIButton) {
-        delegate?.denyTrust(sender: sender, cell: self, viewModel: viewModel)
+        delegate?.denyTrust(sender: sender, cell: self, indexPath: indexPath,
+                            viewModel: viewModel)
     }
 }
