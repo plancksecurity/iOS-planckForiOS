@@ -43,6 +43,7 @@ class HandshakeViewController: UITableViewController {
         if let cell = tableView.dequeueReusableCell(
             withIdentifier: "handshakePartnerCell",
             for: indexPath) as? HandshakePartnerTableViewCell {
+            cell.delegate = self
             if let m = message {
                 if let selfId = message?.parent?.account?.user {
                     let theId = partners[indexPath.row]
@@ -71,5 +72,30 @@ class HandshakeViewController: UITableViewController {
             cell.didChangeSelection()
             tableView.updateSize()
         }
+    }
+}
+
+// MARK: - HandshakePartnerTableViewCellDelegate
+
+extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
+    func invokeTrustAction(cell: HandshakePartnerTableViewCell, action: () -> ()) {
+        action()
+        cell.updateView()
+        tableView.updateSize()
+    }
+
+    func startStopTrusting(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                           viewModel: HandshakePartnerTableViewCellViewModel?) {
+        invokeTrustAction(cell: cell) { viewModel?.startStopTrusting() }
+    }
+
+    func confirmTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                      viewModel: HandshakePartnerTableViewCellViewModel?) {
+        invokeTrustAction(cell: cell) { viewModel?.confirmTrust() }
+    }
+
+    func denyTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                   viewModel: HandshakePartnerTableViewCellViewModel?) {
+        invokeTrustAction(cell: cell) { viewModel?.denyTrust() }
     }
 }

@@ -10,6 +10,18 @@ import UIKit
 
 import MessageModel
 
+/**
+ That delegate is in control to handle the actual trust changes.
+ */
+protocol HandshakePartnerTableViewCellDelegate: class {
+    func startStopTrusting(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                           viewModel: HandshakePartnerTableViewCellViewModel?)
+    func confirmTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
+                      viewModel: HandshakePartnerTableViewCellViewModel?)
+    func denyTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
+                   viewModel: HandshakePartnerTableViewCellViewModel?)
+}
+
 class HandshakePartnerTableViewCell: UITableViewCell {
     /**
      Programmatically created constraints for expanding elements of thes cell,
@@ -43,6 +55,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var trustWordsLabel: UILabel!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var trustWordsView: UIView!
+
+    weak var delegate: HandshakePartnerTableViewCellDelegate?
 
     /**
      The additional constraints we have to deal with.
@@ -181,17 +195,14 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     // MARK: - Actions
 
     @IBAction func startStopTrustingAction(_ sender: UIButton) {
-        viewModel?.startStopTrusting()
-        updateView()
+        delegate?.startStopTrusting(sender: sender, cell: self, viewModel: viewModel)
     }
 
     @IBAction func confirmAction(_ sender: UIButton) {
-        viewModel?.confirmTrust()
-        updateView()
+        delegate?.confirmTrust(sender: sender, cell: self, viewModel: viewModel)
     }
 
     @IBAction func wrongAction(_ sender: UIButton) {
-        viewModel?.denyTrust()
-        updateView()
+        delegate?.denyTrust(sender: sender, cell: self, viewModel: viewModel)
     }
 }
