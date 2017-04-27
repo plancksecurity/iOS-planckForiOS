@@ -145,27 +145,30 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateAdditionalConstraints() {
-        if let theAdditionalConstraints = additionalConstraints {
+        updateStartStopTrustingButtonConstraints()
+        updateExplanationExpansionConstraints()
+        updateTrustwordsExpansionConstraints()
+    }
+
+    func updateStartStopTrustingButtonConstraints() {
+        if let constraints = additionalConstraints {
             // Hide the stop/start trust button for states other than
             // .mistrusted an .secureAndTrusted.
-            theAdditionalConstraints.startStopTrustingHeightZero.isActive = !showStopStartTrustButton
+            constraints.startStopTrustingHeightZero.isActive = !showStopStartTrustButton
             startStopTrustingButton.isHidden = !showStopStartTrustButton
-
-            updateExplanationExpansionConstraints()
-            updateTrustwordsExpansionConstraints()
         }
     }
 
     func updateExplanationExpansionConstraints() {
-        if let theAdditionalConstraints = additionalConstraints {
-            theAdditionalConstraints.explanationHeightZero.isActive = expandedState == .notExpanded
+        if let constraints = additionalConstraints {
+            constraints.explanationHeightZero.isActive = expandedState == .notExpanded
         }
     }
 
     func updateTrustwordsExpansionConstraints() {
-        if let theAdditionalConstraints = additionalConstraints {
-            theAdditionalConstraints.confirmTrustHeightZero.isActive = !showTrustwords
-            theAdditionalConstraints.trustWordsLabelHeightZero.isActive = !showTrustwords
+        if let constraints = additionalConstraints {
+            constraints.confirmTrustHeightZero.isActive = !showTrustwords
+            constraints.trustWordsLabelHeightZero.isActive = !showTrustwords
         }
     }
 
