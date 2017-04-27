@@ -59,12 +59,12 @@
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4f-BW-EI0" userLabel="stopTrustButton">
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4f-BW-EI0" userLabel="startStopTrustingButton">
                                                     <rect key="frame" x="76" y="117.5" width="109" height="33"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Stop Trusting"/>
                                                     <connections>
-                                                        <action selector="startStopTrustingAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="cUg-ze-Yx9"/>
+                                                        <action selector="startStopTrustingAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="XzM-B3-yD3"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -148,7 +148,7 @@
                                     <outlet property="partnerNameLabel" destination="hFh-wv-YAc" id="ZDB-k9-YM8"/>
                                     <outlet property="privacyStatusDescription" destination="eaF-0u-kGb" id="VWh-tP-wgG"/>
                                     <outlet property="privacyStatusTitle" destination="5RJ-Gx-qBT" id="0qJ-kY-o93"/>
-                                    <outlet property="stopTrustingButton" destination="Y4f-BW-EI0" id="wsp-Us-mJf"/>
+                                    <outlet property="startStopTrustingButton" destination="Y4f-BW-EI0" id="MXW-Ms-cMz"/>
                                     <outlet property="trustWordsLabel" destination="lHS-sc-yWR" id="9rC-fg-eDL"/>
                                     <outlet property="trustWordsView" destination="9bw-BE-9Ag" id="QOb-hb-sG4"/>
                                     <outlet property="wrongButton" destination="dbO-2K-SpB" id="Noy-9E-GaM"/>
