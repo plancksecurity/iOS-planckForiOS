@@ -45,6 +45,9 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
         /** For hiding the whole view dealing with trustwords */
         let trustWordsViewHeightZero: NSLayoutConstraint
+
+        let privacyStatusTitleBottom: NSLayoutConstraint
+        let privacyStatusDescriptionBottom: NSLayoutConstraint
     }
 
     @IBOutlet weak var startStopTrustingButton: UIButton!
@@ -121,12 +124,20 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             let trustWordsViewHeightZero = trustWordsView.heightAnchor.constraint(
                 equalToConstant: 0)
 
+            let defaultYMargin: CGFloat = 8
+            let privacyStatusTitleBottom = privacyStatusTitle.bottomAnchor.constraint(
+                equalTo: headerView.bottomAnchor, constant: -defaultYMargin)
+            let privacyStatusDescriptionBottom = privacyStatusDescription.bottomAnchor.constraint(
+                equalTo: headerView.bottomAnchor, constant: -defaultYMargin)
+
             additionalConstraints = Constraints(
                 explanationHeightZero: explanationHeightZero,
                 startStopTrustingHeightZero: startStopTrustingHeightZero,
                 confirmTrustHeightZero: confirmTrustHeightZero,
                 trustWordsLabelHeightZero: trustWordsLabelHeightZero,
-                trustWordsViewHeightZero: trustWordsViewHeightZero)
+                trustWordsViewHeightZero: trustWordsViewHeightZero,
+                privacyStatusTitleBottom: privacyStatusTitleBottom,
+                privacyStatusDescriptionBottom: privacyStatusDescriptionBottom)
         }
     }
 
@@ -162,6 +173,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     func updateExplanationExpansionConstraints() {
         if let constraints = additionalConstraints {
             constraints.explanationHeightZero.isActive = expandedState == .notExpanded
+            constraints.privacyStatusTitleBottom.isActive =
+                !showStopStartTrustButton && expandedState == .notExpanded
+            constraints.privacyStatusDescriptionBottom.isActive =
+                !showStopStartTrustButton && expandedState == .expanded
         }
     }
 
