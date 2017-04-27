@@ -19,6 +19,10 @@ class ObservableValue<T> {
         self.value = value
     }
 
+    convenience init() {
+        self.init(value: nil)
+    }
+
     public func observe(fn: @escaping ObservableFunc<T>) {
         observers.append(ObservableFuncWrapper(fn: fn))
     }
