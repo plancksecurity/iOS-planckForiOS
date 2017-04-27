@@ -30,14 +30,16 @@ extension UIColor {
     /**
      Example use: In trustwords table view cells.
      */
-    open class var lightBackground: UIColor {
+    open class var pEpLightBackground: UIColor {
         get {
             return UIColor(redInt: 242, greenInt: 242, blueInt: 242)
         }
     }
 
     convenience init(redInt: Int, greenInt: Int, blueInt: Int, alpha: CGFloat = 1.0) {
-        self.init(red: 1/CGFloat(redInt), green: 1/CGFloat(greenInt), blue: 1/CGFloat(blueInt),
+        self.init(red: CGFloat(redInt) / 255.0,
+                  green: CGFloat(greenInt) / 255.0,
+                  blue: CGFloat(blueInt) / 255.0,
                   alpha: alpha)
     }
 
