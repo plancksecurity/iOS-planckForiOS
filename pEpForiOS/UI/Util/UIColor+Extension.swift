@@ -27,6 +27,20 @@ extension UIColor {
         }
     }
 
+    /**
+     Example use: In trustwords table view cells.
+     */
+    open class var lightBackground: UIColor {
+        get {
+            return UIColor(redInt: 242, greenInt: 242, blueInt: 242)
+        }
+    }
+
+    convenience init(redInt: Int, greenInt: Int, blueInt: Int, alpha: CGFloat = 1.0) {
+        self.init(red: 1/CGFloat(redInt), green: 1/CGFloat(greenInt), blue: 1/CGFloat(blueInt),
+                  alpha: alpha)
+    }
+
     convenience init(hex: String) {
         var hexstr = hex
         if hexstr.hasPrefix("#") {
@@ -43,7 +57,7 @@ extension UIColor {
         self.init(red: r, green: g, blue: b, alpha: 1.0)
     }
 
-    convenience init(hex:Int, alpha:CGFloat = 1.0) {
+    convenience init(hex: Int, alpha: CGFloat = 1.0) {
         self.init(
             red:   CGFloat((hex & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((hex & 0x00FF00) >> 8)  / 255.0,
