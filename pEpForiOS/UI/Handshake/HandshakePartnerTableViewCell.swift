@@ -122,6 +122,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateView() {
+        partnerNameLabel.text = viewModel?.partnerIdentity.userName ??
+            viewModel?.partnerIdentity.address
         updateStopTrustingButtonTitle()
         updatePrivacyStatus(rating: rating)
         trustWordsLabel.text = viewModel?.trustwords
