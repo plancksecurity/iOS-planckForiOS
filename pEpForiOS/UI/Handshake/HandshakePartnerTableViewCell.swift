@@ -169,6 +169,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         if let constraints = additionalConstraints {
             constraints.confirmTrustHeightZero.isActive = !showTrustwords
             constraints.trustWordsLabelHeightZero.isActive = !showTrustwords
+            constraints.trustWordsViewHeightZero.isActive = !showTrustwords
         }
     }
 
