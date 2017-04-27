@@ -11,6 +11,10 @@ import UIKit
 import MessageModel
 
 class HandshakePartnerTableViewCell: UITableViewCell {
+    /**
+     Programmatically created constraints for expanding elements of thes cell,
+     depending on state changes.
+     */
     struct Constraints {
         /** For expanding the explanation */
         let explanationHeightZero: NSLayoutConstraint
