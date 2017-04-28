@@ -80,11 +80,22 @@ class HandshakePartnerTableViewCellViewModel {
 
         let pEpSelf = ownIdentity.updatedIdentityDictionary(session: theSession)
         let pEpPartner = partner.updatedIdentityDictionary(session: theSession)
-        self.trustwords = theSession.getTrustwordsIdentity1(
-            pEpSelf.pEpIdentity(),
-            identity2: pEpPartner.pEpIdentity(),
-            language: trustwordsLanguage,
-            full: trustwordsFull)
+
+        if pEpPartner.isPGP,
+            let fprSelf = pEpSelf.object(forKey: kPepFingerprint) as? String,
+            let fprPartner = pEpPartner.object(forKey: kPepFingerprint) as? String {
+            let fprPrettySelf = fprSelf.prettyFingerPrint()
+            let fprPrettyPartner = fprPartner.prettyFingerPrint()
+            self.trustwords =
+                "\(partner.userName ?? partner.address):\n\(fprPrettyPartner)\n\n" +
+                "\(ownIdentity.userName ?? ownIdentity.address):\n\(fprPrettySelf)"
+        } else {
+            self.trustwords = theSession.getTrustwordsIdentity1(
+                pEpSelf.pEpIdentity(),
+                identity2: pEpPartner.pEpIdentity(),
+                language: trustwordsLanguage,
+                full: trustwordsFull)
+        }
     }
 
     func invokeTrustAction(action: (NSMutableDictionary) -> ()) {
