@@ -13,7 +13,4 @@
    <FileRef
       location = "group:../MailModel/MessageModel/MessageModel.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:../libAccountSettings/attic/xcode/ServerConfig.xcodeproj">
-   </FileRef>
 </Workspace>
