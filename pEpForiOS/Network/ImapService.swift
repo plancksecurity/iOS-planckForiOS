@@ -279,9 +279,20 @@ extension ImapSync: CWServiceClient {
     @objc public func serviceInitialized(_ notification: Notification?) {
         dumpMethodName("serviceInitialized", notification: notification)
 
-        imapStore.authenticate(connectInfo.loginName!,
-                               password: connectInfo.loginPassword!,
-                               mechanism: bestAuthMethod().rawValue)
+        if let loginName = connectInfo.loginName,
+            let loginPassword = connectInfo.loginPassword {
+            imapStore.authenticate(loginName,
+                                   password: loginPassword,
+                                   mechanism: bestAuthMethod().rawValue)
+        } else {
+            if connectInfo.loginPassword == nil {
+                Log.error(component: comp, errorString: "Want to login, but don't have a password")
+            }
+            if connectInfo.loginName == nil {
+                Log.error(component: comp, errorString: "Want to login, but don't have a login")
+            }
+            delegate?.authenticationFailed(self, notification: notification)
+        }
     }
 
     @objc public func serviceReconnected(_ theNotification: Notification?) {
