@@ -51,6 +51,8 @@ class EmailViewController: UITableViewController {
                 #endif
         }
         appConfig = config
+
+        self.title = NSLocalizedString("Message", comment: "Message view title")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -160,7 +162,7 @@ class EmailViewController: UITableViewController {
     }
 
     func decryptAgain() {
-        ratingReEvaluator?.decryptAgain()
+        ratingReEvaluator?.reevaluateRating()
     }
 }
 

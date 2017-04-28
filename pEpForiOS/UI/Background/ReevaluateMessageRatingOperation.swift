@@ -22,12 +22,8 @@ class ReevaluateMessageRatingOperation: Operation {
     }
 
     open override func main() {
-        // TODO: This is a hack. Has to be replaced by whatever the outcome
-        // of ENGINE-179 will be. Leads to errors, but at least you have something
-        // to see in the UI.
-        if let from = message.from {
-            message.pEpRatingInt = Int(from.pEpRating().rawValue)
-            message.save()
-        }
+        // Implementation blocked by ENGINE-179.
+        // For now, just wait a couple of seconds, then do nothing.
+        sleep(2)
     }
 }

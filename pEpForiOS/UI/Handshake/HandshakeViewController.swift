@@ -12,6 +12,7 @@ import MessageModel
 
 class HandshakeViewController: UITableViewController {
     var appConfig: AppConfig?
+    var ratingReEvaluator: RatingReEvaluator?
 
     var session: PEPSession {
         return appConfig?.session ?? PEPSession()
@@ -23,7 +24,6 @@ class HandshakeViewController: UITableViewController {
         }
     }
 
-    var ratingReEvaluator: RatingReEvaluator?
     var partners = [Identity]()
     let imageProvider = IdentityImageProvider()
     let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
@@ -124,6 +124,8 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         action()
         cell.updateView()
         tableView.updateSize()
+
+        ratingReEvaluator?.reevaluateRating()
 
         // reload cells after that one, to ensure the alternating colors are upheld
         var paths = [IndexPath]()

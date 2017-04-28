@@ -23,7 +23,7 @@ class RatingReEvaluator {
         self.message = message
     }
 
-    func decryptAgain() {
+    func reevaluateRating() {
         let op = ReevaluateMessageRatingOperation(message: message)
         op.completionBlock = {
             self.delegate?.ratingChanged(message: self.message)
