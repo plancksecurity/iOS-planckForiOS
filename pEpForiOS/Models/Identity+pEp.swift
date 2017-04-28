@@ -60,4 +60,12 @@ extension Identity {
             button.tintColor = buttonDefault.tintColor
         }
     }
+
+    /**
+     Returns: A NSMutableDictionary that has been updated and thus should contain
+     the fingerprint.
+     */
+    public func updatedIdentityDictionary(session: PEPSession) -> NSMutableDictionary {
+        return pEpIdentity().mutableDictionary().update(session: session)
+    }
 }

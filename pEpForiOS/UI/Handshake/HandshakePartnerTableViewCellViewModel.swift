@@ -125,8 +125,8 @@ class HandshakePartnerTableViewCellViewModel {
 
         self.rating = partner.pEpRating(session: theSession)
 
-        let pEpSelf = ownIdentity.pEpIdentity().mutableDictionary().update(session: theSession)
-        let pEpPartner = partner.pEpIdentity().mutableDictionary().update(session: theSession)
+        let pEpSelf = ownIdentity.updatedIdentityDictionary(session: theSession)
+        let pEpPartner = partner.updatedIdentityDictionary(session: theSession)
         self.trustwords = theSession.getTrustwordsIdentity1(
             pEpSelf.pEpIdentity(),
             identity2: pEpPartner.pEpIdentity(),
@@ -135,8 +135,7 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     func invokeTrustAction(action: (NSMutableDictionary) -> ()) {
-        let thePartner = partnerIdentity.pEpIdentity().mutableDictionary().update(
-            session: session)
+        let thePartner = partnerIdentity.updatedIdentityDictionary(session: session)
         action(thePartner)
         identityState = IdentityState.from(identity: partnerIdentity, session: session)
         rating = partnerIdentity.pEpRating(session: session)
