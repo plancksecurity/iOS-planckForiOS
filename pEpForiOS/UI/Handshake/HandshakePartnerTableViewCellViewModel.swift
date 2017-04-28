@@ -11,56 +11,6 @@ import Foundation
 import MessageModel
 
 class HandshakePartnerTableViewCellViewModel {
-    /**
-     The UI relevant state of the displayed identity.
-     Independent of the state of the Identity, you can expand the cell.
-     The expanded version will show the explanation.
-     */
-    enum IdentityState {
-        case illegal
-
-        /**
-         The identity is mistrusted (red), which means that no trustwords whatsoever
-         should be shown. You might be able to expand, which means you see the explanation.
-         pEpForIOS-Handshake-Mistrusted.png
-         pEpForIOS-Handshake-Mistrusted-ExpandedText.png
-         */
-        case mistrusted
-
-        /**
-         The identity is already secure (yellow, so to speak).
-         Again, you can expand the cell, which will show you the explanation.
-         */
-        case secure
-
-        /**
-         The identity is already trusted (green).
-         */
-        case secureAndTrusted
-
-        static func from(identity: Identity, session: PEPSession = PEPSession()) -> IdentityState {
-            let color = identity.pEpColor(session: session)
-            switch color {
-            case PEP_color_red:
-                return .mistrusted
-            case PEP_color_yellow:
-                return .secure
-            case PEP_color_green:
-                return .secureAndTrusted
-            default:
-                return .illegal
-            }
-        }
-
-        var showStopStartTrustButton: Bool {
-            return self == .mistrusted || self == .secureAndTrusted
-        }
-
-        var showTrustwords: Bool {
-            return self == .secure
-        }
-    }
-
     enum ExpandedState {
         case notExpanded
         case expanded
@@ -72,15 +22,18 @@ class HandshakePartnerTableViewCellViewModel {
      */
     var backgroundColorDark = true
 
-    /**
-     Do we show the trustwords for this identity?
-     */
+    /** Do we show the trustwords for this identity? */
     var showTrustwords: Bool {
-        return identityState.showTrustwords
+        return identityColor == PEP_color_yellow
+    }
+
+    /** Show the button for start/stop trusting? */
+    var showStopStartTrustButton: Bool {
+        return identityColor == PEP_color_red || identityColor == PEP_color_green
     }
 
     var expandedState: ExpandedState
-    var identityState: IdentityState
+    var identityColor: PEP_color
     var trustwordsLanguage: String
     var trustwordsFull: Bool
 
@@ -115,7 +68,7 @@ class HandshakePartnerTableViewCellViewModel {
         self.partnerIdentity = partner
         let theSession = session ?? PEPSession()
         self.session = theSession
-        self.identityState = IdentityState.from(identity: partner, session: theSession)
+        self.identityColor = partner.pEpColor(session: theSession)
 
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
             if partner == ident {
@@ -137,7 +90,7 @@ class HandshakePartnerTableViewCellViewModel {
     func invokeTrustAction(action: (NSMutableDictionary) -> ()) {
         let thePartner = partnerIdentity.updatedIdentityDictionary(session: session)
         action(thePartner)
-        identityState = IdentityState.from(identity: partnerIdentity, session: session)
+        identityColor = partnerIdentity.pEpColor(session: session)
         rating = partnerIdentity.pEpRating(session: session)
     }
 

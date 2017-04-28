@@ -83,7 +83,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     var rating: PEP_rating { return viewModel?.rating ?? PEP_rating_undefined }
 
     var showStopStartTrustButton: Bool {
-        return viewModel?.identityState.showStopStartTrustButton ?? false
+        return viewModel?.showStopStartTrustButton ?? false
     }
 
     var showTrustwords: Bool {
@@ -200,7 +200,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             "Stop Trusting",
             comment: "Stop/trust button in handshake overview")
 
-        if viewModel?.identityState == .mistrusted {
+        if viewModel?.identityColor == PEP_color_red {
             startStopTrustingButton.setTitle(titleMistrusted, for: .normal)
         } else {
             startStopTrustingButton.setTitle(titleTrusted, for: .normal)

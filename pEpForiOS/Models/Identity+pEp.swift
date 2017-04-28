@@ -9,7 +9,6 @@
 import MessageModel
 
 extension Identity {
-
     open static func from(pEpIdentity: PEPIdentity) -> Identity? {
         if let address = pEpIdentity[kPepAddress] as? String {
             let id = Identity.create(address: address, userID: pEpIdentity[kPepUserID] as? String,
