@@ -9,6 +9,24 @@
 import Foundation
 
 extension NSMutableDictionary {
+    var commType: PEP_comm_type? {
+        if let val = object(forKey: kPepCommType) as? NSNumber {
+            return PEP_comm_type(val.uint32Value)
+        }
+        return nil
+    }
+
+    var isPGP: Bool {
+        let ct = commType ?? PEP_ct_unknown
+        switch ct {
+        case PEP_ct_OpenPGP_weak_unconfirmed, PEP_ct_OpenPGP_unconfirmed,
+             PEP_ct_OpenPGP_weak, PEP_ct_OpenPGP:
+            return true
+        default:
+            return false
+        }
+    }
+
     /**
      Assumes that this dictionary contains a pEp identity and calls
      `updateIdentity` on the given session.
