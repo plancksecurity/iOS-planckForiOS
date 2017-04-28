@@ -52,12 +52,17 @@ class HandshakeViewController: UITableViewController {
      */
     func createViewModel(partnerIdentity: Identity,
                          selfIdentity: Identity) -> HandshakePartnerTableViewCellViewModel {
-        return identityViewModelCache.object(forKey: partnerIdentity) ??
-            HandshakePartnerTableViewCellViewModel(
+        if let vm = identityViewModelCache.object(forKey: partnerIdentity) {
+            return vm
+        } else {
+            let vm = HandshakePartnerTableViewCellViewModel(
                 ownIdentity: selfIdentity,
                 partner: partnerIdentity,
                 session: session,
                 imageProvider: imageProvider)
+            identityViewModelCache.setObject(vm, forKey: partnerIdentity)
+            return vm
+        }
     }
 
     /**
