@@ -80,7 +80,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    var rating: PEP_rating { return viewModel?.rating ?? PEP_rating_undefined }
+    var identityColor: PEP_color { return viewModel?.identityColor ?? PEP_color_no_color }
 
     var showStopStartTrustButton: Bool {
         return viewModel?.showStopStartTrustButton ?? false
@@ -149,7 +149,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
         partnerNameLabel.text = viewModel?.partnerName
         updateStopTrustingButtonTitle()
-        updatePrivacyStatus(rating: rating)
+        updatePrivacyStatus(color: identityColor)
         trustWordsLabel.text = viewModel?.trustwords
         partnerImageView.image = viewModel?.partnerImage.value
         updateAdditionalConstraints()
@@ -207,11 +207,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func updatePrivacyStatus(rating: PEP_rating) {
-        let pEpStatus = String.pEpRatingTranslation(pEpRating: rating)
-        privacyStatusTitle.text = pEpStatus.title
-        privacyStatusDescription.text = pEpStatus.explanation
-        pEpStatusImageView.image = rating.statusIcon()
+    func updatePrivacyStatus(color: PEP_color) {
+        privacyStatusTitle.text = color.privacyStatusTitle
+        privacyStatusDescription.text = color.privacyStatusDescription
+        pEpStatusImageView.image = color.statusIcon()
     }
 
     func didChangeSelection() {
