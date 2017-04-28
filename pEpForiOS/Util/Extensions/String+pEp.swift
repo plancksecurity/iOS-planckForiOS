@@ -181,4 +181,33 @@ extension String {
     public static func pEpSuggestion(pEpRating: PEP_rating?) -> String {
         return pEpRatingTranslation(pEpRating: pEpRating).suggestion
     }
+
+    /**
+     Returns: Interprets itself as a fingerprint and formats it as such.
+     */
+    public func prettyFingerPrint() -> String {
+        let upper = uppercased()
+        var totalCount = 0
+        var packCount = 0
+        var currentPack = ""
+        var result = ""
+        for ch in upper.characters {
+            if totalCount != 0 && totalCount % 4 == 0 {
+                if packCount == 5 {
+                    result += "  "
+                } else if packCount > 0 {
+                    result += " "
+                }
+                result += currentPack
+                packCount += 1
+                currentPack = ""
+            }
+            currentPack.append(ch)
+            totalCount += 1
+        }
+        if !currentPack.isEmpty {
+            result += " \(currentPack)"
+        }
+        return result
+    }
 }
