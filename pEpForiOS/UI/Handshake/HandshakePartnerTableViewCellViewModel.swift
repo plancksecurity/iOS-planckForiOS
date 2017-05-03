@@ -59,6 +59,8 @@ class HandshakePartnerTableViewCellViewModel {
      */
     let session: PEPSession
 
+    var isPartnerPGPUser = false
+
     init(ownIdentity: Identity, partner: Identity, session: PEPSession?,
          imageProvider: IdentityImageProvider) {
         self.expandedState = .notExpanded
@@ -81,7 +83,8 @@ class HandshakePartnerTableViewCellViewModel {
         let pEpSelf = ownIdentity.updatedIdentityDictionary(session: theSession)
         let pEpPartner = partner.updatedIdentityDictionary(session: theSession)
 
-        if pEpPartner.isPGP,
+        isPartnerPGPUser = pEpPartner.isPGP
+        if isPartnerPGPUser,
             let fprSelf = pEpSelf.object(forKey: kPepFingerprint) as? String,
             let fprPartner = pEpPartner.object(forKey: kPepFingerprint) as? String {
             let fprPrettySelf = fprSelf.prettyFingerPrint()

@@ -61,6 +61,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var trustWordsLabel: UILabel!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var trustWordsView: UIView!
+    @IBOutlet weak var languageSelectorImageView: UIImageView!
 
     weak var delegate: HandshakePartnerTableViewCellDelegate?
 
@@ -101,6 +102,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         set {
             viewModel?.expandedState = newValue
         }
+    }
+
+    var isPartnerPGPUser: Bool {
+        return viewModel?.isPartnerPGPUser ?? false
     }
 
     override func awakeFromNib() {
@@ -152,6 +157,13 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updatePrivacyStatus(color: identityColor)
         trustWordsLabel.text = viewModel?.trustwords
         partnerImageView.image = viewModel?.partnerImage.value
+
+        if isPartnerPGPUser {
+            languageSelectorImageView.image = UIImage(named: "grid-globe")
+        } else {
+            languageSelectorImageView.image = nil
+        }
+
         updateAdditionalConstraints()
     }
 

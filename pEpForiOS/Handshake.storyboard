@@ -42,7 +42,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="partnerNameLabel">
-                                                    <rect key="frame" x="76" y="33.5" width="279" height="21"/>
+                                                    <rect key="frame" x="76" y="33.5" width="227" height="21"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -67,18 +67,27 @@
                                                         <action selector="startStopTrustingAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="XzM-B3-yD3"/>
                                                     </connections>
                                                 </button>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yXG-vT-v6v">
+                                                    <rect key="frame" x="311" y="22" width="44" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="44" id="A0c-dq-F2y"/>
+                                                        <constraint firstAttribute="height" constant="44" id="EUd-8S-gzT"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" red="0.94867008924484253" green="0.94938892126083374" blue="0.94878143072128296" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="yXG-vT-v6v" secondAttribute="trailing" constant="20" symbolic="YES" id="1Bi-7Z-wqE"/>
                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="top" secondItem="9sp-4d-rJe" secondAttribute="top" constant="20" symbolic="YES" id="2JJ-Dt-d39"/>
                                                 <constraint firstAttribute="trailing" secondItem="eaF-0u-kGb" secondAttribute="trailing" constant="20" symbolic="YES" id="44G-LK-kdf"/>
                                                 <constraint firstItem="hZH-e1-puE" firstAttribute="bottom" secondItem="rG1-9L-QdA" secondAttribute="bottom" id="8jC-h4-X86"/>
                                                 <constraint firstAttribute="bottom" secondItem="Y4f-BW-EI0" secondAttribute="bottom" priority="999" constant="20" symbolic="YES" id="9JQ-G2-xmU"/>
+                                                <constraint firstItem="yXG-vT-v6v" firstAttribute="centerY" secondItem="hFh-wv-YAc" secondAttribute="centerY" id="DSz-2Z-CE8"/>
                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="leading" secondItem="9sp-4d-rJe" secondAttribute="leading" constant="20" symbolic="YES" id="DVg-hd-uGF"/>
-                                                <constraint firstAttribute="trailing" secondItem="hFh-wv-YAc" secondAttribute="trailing" constant="20" symbolic="YES" id="G9M-QL-fs8"/>
                                                 <constraint firstItem="5RJ-Gx-qBT" firstAttribute="leading" secondItem="hFh-wv-YAc" secondAttribute="leading" id="HtP-sE-ieg"/>
                                                 <constraint firstItem="hFh-wv-YAc" firstAttribute="leading" secondItem="rG1-9L-QdA" secondAttribute="trailing" constant="8" symbolic="YES" id="OSJ-kn-VC6"/>
                                                 <constraint firstItem="Y4f-BW-EI0" firstAttribute="top" secondItem="eaF-0u-kGb" secondAttribute="bottom" constant="8" symbolic="YES" id="TEP-9Q-Wuz"/>
+                                                <constraint firstItem="yXG-vT-v6v" firstAttribute="leading" secondItem="hFh-wv-YAc" secondAttribute="trailing" constant="8" symbolic="YES" id="TTS-KA-cIe"/>
                                                 <constraint firstItem="5RJ-Gx-qBT" firstAttribute="top" secondItem="hFh-wv-YAc" secondAttribute="bottom" constant="8" symbolic="YES" id="bsR-QC-Q3E"/>
                                                 <constraint firstItem="eaF-0u-kGb" firstAttribute="top" secondItem="5RJ-Gx-qBT" secondAttribute="bottom" priority="999" constant="8" symbolic="YES" id="cTE-aL-uah"/>
                                                 <constraint firstItem="hZH-e1-puE" firstAttribute="trailing" secondItem="rG1-9L-QdA" secondAttribute="trailing" id="dj3-k8-xCJ"/>
@@ -143,6 +152,7 @@
                                 <connections>
                                     <outlet property="confirmButton" destination="Jgi-7k-Ymf" id="HLm-tc-MV5"/>
                                     <outlet property="headerView" destination="9sp-4d-rJe" id="msg-ga-zdE"/>
+                                    <outlet property="languageSelectorImageView" destination="yXG-vT-v6v" id="MzY-mh-9Wi"/>
                                     <outlet property="pEpStatusImageView" destination="hZH-e1-puE" id="YT2-Mj-hro"/>
                                     <outlet property="partnerImageView" destination="rG1-9L-QdA" id="Czw-W0-5iJ"/>
                                     <outlet property="partnerNameLabel" destination="hFh-wv-YAc" id="ZDB-k9-YM8"/>
