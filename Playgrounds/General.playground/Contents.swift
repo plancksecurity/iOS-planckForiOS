@@ -6,6 +6,13 @@ let regex = try NSRegularExpression(pattern: "<img src=\"file:///Attachment(_\\d
 
 let longMessage = "<span class=\"s1\"><img src=\"file:///Attachment.png\" alt=\"Attachment.png\"></span><span class=\"s1\"><img src=\"file:///Attachment_1.png\" alt=\"Attachment_1.png\"></span>"
 
+class ForPrinting {
+    let s = "this is me"
+}
+let obj = ForPrinting()
+let ptr = unsafeBitCast(obj, to: UnsafeRawPointer.self)
+print(ptr)
+
 let matches = regex.matches(in: longMessage, range: NSMakeRange(0, (longMessage as NSString).length))
 matches.count
 

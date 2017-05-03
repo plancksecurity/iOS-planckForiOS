@@ -3,17 +3,22 @@
    version = "3.0">
    <TimelineItems>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "#CharacterRangeLen=7&amp;CharacterRangeLoc=589&amp;EndingColumnNumber=16&amp;EndingLineNumber=15&amp;StartingColumnNumber=9&amp;StartingLineNumber=14&amp;Timestamp=509466495.096932"
+         documentLocation = "#CharacterRangeLen=7&amp;CharacterRangeLoc=728&amp;EndingColumnNumber=16&amp;EndingLineNumber=22&amp;StartingColumnNumber=9&amp;StartingLineNumber=21&amp;Timestamp=515489368.248001"
          selectedRepresentationIndex = "0"
          shouldTrackSuperviewWidth = "NO">
       </LoggerValueHistoryTimelineItem>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "#CharacterRangeLen=57&amp;CharacterRangeLoc=739&amp;EndingColumnNumber=24&amp;EndingLineNumber=15&amp;StartingColumnNumber=5&amp;StartingLineNumber=15&amp;Timestamp=509466527.469754"
+         documentLocation = "#CharacterRangeLen=57&amp;CharacterRangeLoc=878&amp;EndingColumnNumber=24&amp;EndingLineNumber=22&amp;StartingColumnNumber=5&amp;StartingLineNumber=22&amp;Timestamp=515489368.248143"
          selectedRepresentationIndex = "0"
          shouldTrackSuperviewWidth = "NO">
       </LoggerValueHistoryTimelineItem>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "#CharacterRangeLen=1&amp;CharacterRangeLoc=583&amp;EndingColumnNumber=12&amp;EndingLineNumber=13&amp;StartingColumnNumber=5&amp;StartingLineNumber=13&amp;Timestamp=509466489.942584"
+         documentLocation = "#CharacterRangeLen=1&amp;CharacterRangeLoc=722&amp;EndingColumnNumber=12&amp;EndingLineNumber=20&amp;StartingColumnNumber=5&amp;StartingLineNumber=20&amp;Timestamp=515489368.24825"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
+      </LoggerValueHistoryTimelineItem>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "file:///Users/dirk/projects/pEp/pEp_for_iOS/Playgrounds/General.playground#CharacterRangeLen=57&amp;CharacterRangeLoc=470&amp;EndingLineNumber=13&amp;StartingLineNumber=12&amp;Timestamp=515489368.248354"
          selectedRepresentationIndex = "0"
          shouldTrackSuperviewWidth = "NO">
       </LoggerValueHistoryTimelineItem>
