@@ -27,9 +27,6 @@
 		222B35861DF97A44007A1F82 /* ComposeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35821DF97A44007A1F82 /* ComposeDataSource.swift */; };
 		222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35BB1E00049C007A1F82 /* AccountCell.swift */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
-		22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
-		22DA56D91DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
-		22DA56DA1DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */; };
 		4301B3161E28D259007D626C /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4301B3151E28D259007D626C /* AppendMailsOperation.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */; };
@@ -270,7 +267,6 @@
 		222B35821DF97A44007A1F82 /* ComposeDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeDataSource.swift; sourceTree = "<group>"; };
 		222B35BB1E00049C007A1F82 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
-		22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = pEpSettings.bundle; sourceTree = "<group>"; };
 		4301B3151E28D259007D626C /* AppendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendMailsOperation.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+Extension.swift"; sourceTree = "<group>"; };
@@ -740,7 +736,6 @@
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
 				433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */,
 				430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */,
-				22DA56D71DC3747B00BD1EC4 /* pEpSettings.bundle */,
 				222B35611DF96478007A1F82 /* Localizable.strings */,
 			);
 			path = pEpForiOS;
@@ -1160,7 +1155,6 @@
 				222B355D1DF96478007A1F82 /* Localizable.strings in Resources */,
 				220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */,
 				222B35831DF97A44007A1F82 /* ComposeData.plist in Resources */,
-				22DA56D81DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */,
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
 				B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */,
 				B783C1521E82BBE20093128C /* FolderViews.storyboard in Resources */,
@@ -1180,7 +1174,6 @@
 				4348EF151E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
 				43A5DE3C1D631F57001153AF /* 1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.asc in Resources */,
 				431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
-				22DA56D91DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */,
 				43A5DE3E1D631F74001153AF /* EncryptedHTMLMail_to_1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.txt in Resources */,
 				430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				438D25401D4B9EDB00BFF7AA /* PGPMimeMail.txt in Resources */,
@@ -1195,7 +1188,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22DA56DA1DC3747B00BD1EC4 /* pEpSettings.bundle in Resources */,
 				222B355F1DF96478007A1F82 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
