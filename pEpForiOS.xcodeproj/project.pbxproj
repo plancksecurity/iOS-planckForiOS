@@ -193,8 +193,6 @@
 		495560881E71517F0016579E /* libpEpiOSAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560871E71517F0016579E /* libpEpiOSAdapter.a */; };
 		49D521541E73E1C20097987B /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; };
 		49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		49D521571E73E1C70097987B /* ServerConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D521561E73E1C70097987B /* ServerConfig.framework */; };
-		49D521581E73E1C70097987B /* ServerConfig.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49D521561E73E1C70097987B /* ServerConfig.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */; };
 		5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */; };
@@ -247,7 +245,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */,
-				49D521581E73E1C70097987B /* ServerConfig.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,7 +478,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				495560881E71517F0016579E /* libpEpiOSAdapter.a in Frameworks */,
-				49D521571E73E1C70097987B /* ServerConfig.framework in Frameworks */,
 				495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
 				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
