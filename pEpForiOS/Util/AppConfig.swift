@@ -15,7 +15,9 @@ class AppConfig: NSObject {
 
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
     let connectionManager = ConnectionManager()
+
     private var theSession: PEPSession?
+
     var session: PEPSession {
         get {
             if theSession == nil {

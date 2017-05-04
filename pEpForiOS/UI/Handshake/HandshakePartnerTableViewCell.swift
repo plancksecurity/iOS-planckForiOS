@@ -17,12 +17,18 @@ protocol HandshakePartnerTableViewCellDelegate: class {
     func startStopTrusting(sender: UIButton, cell: HandshakePartnerTableViewCell,
                            indexPath: IndexPath,
                            viewModel: HandshakePartnerTableViewCellViewModel?)
+
     func confirmTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?)
+
     func denyTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
                    indexPath: IndexPath,
                    viewModel: HandshakePartnerTableViewCellViewModel?)
+
+    func pickLanguage(sender: UIView,  cell: HandshakePartnerTableViewCell,
+                      indexPath: IndexPath,
+                      viewModel: HandshakePartnerTableViewCellViewModel?)
 }
 
 class HandshakePartnerTableViewCell: UITableViewCell {
@@ -160,8 +166,20 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
         if isPartnerPGPUser {
             languageSelectorImageView.image = UIImage(named: "grid-globe")
+            languageSelectorImageView.isUserInteractionEnabled = true
+
+            let grs = languageSelectorImageView.gestureRecognizers ?? []
+            for gr in grs {
+                languageSelectorImageView.removeGestureRecognizer(gr)
+            }
+
+            let languageSelectorRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(languageSelectorAction(_:)))
+            languageSelectorImageView.addGestureRecognizer(languageSelectorRecognizer)
         } else {
             languageSelectorImageView.image = nil
+            languageSelectorImageView.isUserInteractionEnabled = false
         }
 
         updateAdditionalConstraints()
@@ -234,6 +252,18 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updateExplanationExpansionConstraints()
         UIView.animate(withDuration: 0.3) {
             self.contentView.layoutIfNeeded()
+        }
+    }
+
+    // MARK: - Gestures
+
+    func languageSelectorAction(_ gestureRecognizer: UIGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            delegate?.pickLanguage(
+                sender: gestureRecognizer.view ?? languageSelectorImageView,
+                cell: self,
+                indexPath: indexPath,
+                viewModel: viewModel)
         }
     }
 

@@ -39,6 +39,7 @@
 
 #import "pEpiOSAdapter/PEPiOSAdapter.h"
 #import "pEpiOSAdapter/PEPSession.h"
+#import "pEpiOSAdapter/PEPLanguage.h"
 #import "message_api.h"
 
 #pragma mark -- Misc

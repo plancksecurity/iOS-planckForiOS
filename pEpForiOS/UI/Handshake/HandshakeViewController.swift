@@ -12,6 +12,7 @@ import MessageModel
 
 class HandshakeViewController: UITableViewController {
     var appConfig: AppConfig?
+
     var ratingReEvaluator: RatingReEvaluator?
 
     var session: PEPSession {
@@ -160,5 +161,12 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                    indexPath: IndexPath,
                    viewModel: HandshakePartnerTableViewCellViewModel?) {
         invokeTrustAction(cell: cell, indexPath: indexPath) { viewModel?.denyTrust() }
+    }
+
+    func pickLanguage(sender: UIView, cell: HandshakePartnerTableViewCell,
+                      indexPath: IndexPath, viewModel: HandshakePartnerTableViewCellViewModel?) {
+        let theSession = appConfig?.session ?? PEPSession()
+        let languages = theSession.languageList()
+        print("languages \(languages)")
     }
 }
