@@ -1037,6 +1037,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEp" */;
 			buildPhases = (
+				4304FCF11EBB60340086DADA /* ShellScript */,
 				43980E1F1CBD0BC900A7FC3C /* Sources */,
 				43980E201CBD0BC900A7FC3C /* Frameworks */,
 				43980E211CBD0BC900A7FC3C /* Resources */,
@@ -1195,6 +1196,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4304FCF11EBB60340086DADA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp \"${SRCROOT}/../pEpEngine/db/system.db\" \"${SRCROOT}/pEpTrustWords.bundle\"\n";
+		};
 		4961BA0D1E7BEA4200920DF8 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
