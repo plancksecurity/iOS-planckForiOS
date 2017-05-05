@@ -165,8 +165,22 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
 
     func pickLanguage(sender: UIView, cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath, viewModel: HandshakePartnerTableViewCellViewModel?) {
-        let theSession = appConfig?.session ?? PEPSession()
-        let languages = theSession.languageList()
-        print("languages \(languages)")
+        self.performSegue(withIdentifier: .showLanguagesSegue, sender: cell)
+    }
+}
+
+extension HandshakeViewController: SegueHandlerType {
+    enum SegueIdentifier: String {
+        case showLanguagesSegue
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .showLanguagesSegue:
+            let theSession = appConfig?.session ?? PEPSession()
+            let destination = segue.destination as? LanguageListViewController
+            destination?.languages = theSession.languageList()
+            break
+        }
     }
 }
