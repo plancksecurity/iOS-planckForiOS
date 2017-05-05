@@ -9,6 +9,9 @@
 import UIKit
 
 extension UITableView {
+    /**
+     This magic code should trigger a height refresh for table cells.
+     */
     public final func updateSize() {
         beginUpdates()
         endUpdates()

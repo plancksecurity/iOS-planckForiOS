@@ -180,7 +180,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
             cell.viewModel?.trustwordsLanguage = lang.code
             cell.viewModel?.updateTrustwords(session: appConfig?.session ?? PEPSession())
             cell.updateTrustwords()
-            // TODO: Update cell size?
+            tableView.updateSize()
         }
     }
 }

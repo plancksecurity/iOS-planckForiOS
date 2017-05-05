@@ -87,15 +87,13 @@ class HandshakePartnerTableViewCellViewModel {
         pEpSelf = ownIdentity.updatedIdentityDictionary(session: theSession)
         pEpPartner = partner.updatedIdentityDictionary(session: theSession)
 
+        isPartnerPGPUser = pEpPartner.isPGP
+
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
             if partner == ident {
                 self?.partnerImage.value = img
             }
         }
-
-        // TODO: Correct that
-        //isPartnerPGPUser = pEpPartner.isPGP
-        isPartnerPGPUser = false
 
         updateTrustwords(session: theSession)
     }
