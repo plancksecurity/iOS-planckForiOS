@@ -61,6 +61,16 @@ class HandshakePartnerTableViewCellViewModel {
 
     var isPartnerPGPUser = false
 
+    /**
+     Cache the updated own identity.
+     */
+    let pEpSelf: NSMutableDictionary
+
+    /**
+     Cache the updated partner identity.
+     */
+    let pEpPartner: NSMutableDictionary
+
     init(ownIdentity: Identity, partner: Identity, session: PEPSession?,
          imageProvider: IdentityImageProvider) {
         self.expandedState = .notExpanded
@@ -72,28 +82,35 @@ class HandshakePartnerTableViewCellViewModel {
         self.session = theSession
         self.identityColor = partner.pEpColor(session: theSession)
 
+        self.rating = partner.pEpRating(session: theSession)
+
+        pEpSelf = ownIdentity.updatedIdentityDictionary(session: theSession)
+        pEpPartner = partner.updatedIdentityDictionary(session: theSession)
+
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
             if partner == ident {
                 self?.partnerImage.value = img
             }
         }
 
-        self.rating = partner.pEpRating(session: theSession)
+        // TODO: Correct that
+        //isPartnerPGPUser = pEpPartner.isPGP
+        isPartnerPGPUser = false
 
-        let pEpSelf = ownIdentity.updatedIdentityDictionary(session: theSession)
-        let pEpPartner = partner.updatedIdentityDictionary(session: theSession)
+        updateTrustwords(session: theSession)
+    }
 
-        isPartnerPGPUser = pEpPartner.isPGP
+    func updateTrustwords(session: PEPSession) {
         if isPartnerPGPUser,
             let fprSelf = pEpSelf.object(forKey: kPepFingerprint) as? String,
             let fprPartner = pEpPartner.object(forKey: kPepFingerprint) as? String {
             let fprPrettySelf = fprSelf.prettyFingerPrint()
             let fprPrettyPartner = fprPartner.prettyFingerPrint()
             self.trustwords =
-                "\(partner.userName ?? partner.address):\n\(fprPrettyPartner)\n\n" +
-                "\(ownIdentity.userName ?? ownIdentity.address):\n\(fprPrettySelf)"
+                "\(partnerIdentity.userName ?? partnerIdentity.address):\n\(fprPrettyPartner)\n\n" +
+            "\(ownIdentity.userName ?? ownIdentity.address):\n\(fprPrettySelf)"
         } else {
-            self.trustwords = theSession.getTrustwordsIdentity1(
+            self.trustwords = session.getTrustwordsIdentity1(
                 pEpSelf.pEpIdentity(),
                 identity2: pEpPartner.pEpIdentity(),
                 language: trustwordsLanguage,

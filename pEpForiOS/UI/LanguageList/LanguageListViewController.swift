@@ -12,9 +12,10 @@ class LanguageListViewController: UITableViewController {
     let defaultCellReuseIdentifier = "LanguageListCell"
 
     var languages = [PEPLanguage]()
+    var chosenLanguage: PEPLanguage?
 
     override func awakeFromNib() {
-        tableView.estimatedRowHeight = 72.0
+        tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
     }
 
@@ -30,19 +31,34 @@ class LanguageListViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: defaultCellReuseIdentifier) ??
-            UITableViewCell(style: .subtitle, reuseIdentifier: defaultCellReuseIdentifier)
+        let cell = tableView.dequeueReusableCell(withIdentifier: defaultCellReuseIdentifier,
+                                                 for: indexPath)
+        guard let theCell = cell as? LanguageListTableViewCell else {
+            return cell
+        }
 
         let lang = languages[indexPath.row]
-        cell.textLabel?.text = lang.sentence
-        cell.detailTextLabel?.text = lang.name
+        theCell.sentenceLabel.text = lang.sentence
+        theCell.languageLabel.text = lang.name
 
         return cell
     }
+}
 
-    // MARK: - Table view delegate
+extension LanguageListViewController: SegueHandlerType {
+    enum SegueIdentifier: String {
+        case selectedLanguageSegue
+    }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let lang = languages[indexPath.row]
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .selectedLanguageSegue:
+            if let indexPath = tableView.indexPathForSelectedRow {
+                chosenLanguage = languages[indexPath.row]
+            } else {
+                chosenLanguage = nil
+            }
+            break
+        }
     }
 }

@@ -115,7 +115,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     override func awakeFromNib() {
-        startStopTrustingButton.pEpIfyForTrust(backgroundColor: UIColor.pEpYellow, textColor: .black)
+        startStopTrustingButton.pEpIfyForTrust(backgroundColor: UIColor.pEpYellow,
+                                               textColor: .black)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         setupAdditionalConstraints()
@@ -161,12 +162,14 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         partnerNameLabel.text = viewModel?.partnerName
         updateStopTrustingButtonTitle()
         updatePrivacyStatus(color: identityColor)
-        trustWordsLabel.text = viewModel?.trustwords
+        updateTrustwords()
         partnerImageView.image = viewModel?.partnerImage.value
 
+        languageSelectorImageView.isUserInteractionEnabled = !isPartnerPGPUser
         if isPartnerPGPUser {
+            languageSelectorImageView.image = nil
+        } else {
             languageSelectorImageView.image = UIImage(named: "grid-globe")
-            languageSelectorImageView.isUserInteractionEnabled = true
 
             let grs = languageSelectorImageView.gestureRecognizers ?? []
             for gr in grs {
@@ -177,12 +180,13 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                 target: self,
                 action: #selector(languageSelectorAction(_:)))
             languageSelectorImageView.addGestureRecognizer(languageSelectorRecognizer)
-        } else {
-            languageSelectorImageView.image = nil
-            languageSelectorImageView.isUserInteractionEnabled = false
         }
 
         updateAdditionalConstraints()
+    }
+
+    func updateTrustwords() {
+        trustWordsLabel.text = viewModel?.trustwords
     }
 
     func updateAdditionalConstraints() {

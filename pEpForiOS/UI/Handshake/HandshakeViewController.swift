@@ -29,6 +29,8 @@ class HandshakeViewController: UITableViewController {
     let imageProvider = IdentityImageProvider()
     let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
 
+    var indexPathRequestingLanguage: IndexPath?
+
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -165,7 +167,21 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
 
     func pickLanguage(sender: UIView, cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath, viewModel: HandshakePartnerTableViewCellViewModel?) {
+        indexPathRequestingLanguage = indexPath
         self.performSegue(withIdentifier: .showLanguagesSegue, sender: cell)
+    }
+
+    @IBAction func languageSelectedAction(unwindSegue: UIStoryboardSegue) {
+        if let sourceVC = unwindSegue.source as? LanguageListViewController,
+            let lang = sourceVC.chosenLanguage,
+            let indexPath = indexPathRequestingLanguage,
+            let cell = tableView.cellForRow(at: indexPath)
+                as? HandshakePartnerTableViewCell {
+            cell.viewModel?.trustwordsLanguage = lang.code
+            cell.viewModel?.updateTrustwords(session: appConfig?.session ?? PEPSession())
+            cell.updateTrustwords()
+            // TODO: Update cell size?
+        }
     }
 }
 

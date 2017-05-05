@@ -6,6 +6,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -189,13 +190,41 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Fe9-fE-Uxz">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LanguageListCell" rowHeight="80" id="dSX-lN-Kww" customClass="LanguageListTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fe9-fE-Uxz" id="KfE-qZ-6VA">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dSX-lN-Kww" id="k3Y-i6-hhG">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o5v-C8-2iy" userLabel="sentenceLabel">
+                                            <rect key="frame" x="8" y="8" width="359" height="21"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KmG-tH-SGP" userLabel="languageLabel">
+                                            <rect key="frame" x="8" y="37" width="359" height="34.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="KmG-tH-SGP" secondAttribute="bottom" id="TQI-ya-6dZ"/>
+                                        <constraint firstItem="o5v-C8-2iy" firstAttribute="leading" secondItem="k3Y-i6-hhG" secondAttribute="leadingMargin" id="bEX-KV-0KK"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="o5v-C8-2iy" secondAttribute="trailing" id="djz-Ge-fvf"/>
+                                        <constraint firstItem="KmG-tH-SGP" firstAttribute="top" secondItem="o5v-C8-2iy" secondAttribute="bottom" constant="8" symbolic="YES" id="efc-da-u4v"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="KmG-tH-SGP" secondAttribute="trailing" id="kv5-cl-MPY"/>
+                                        <constraint firstItem="o5v-C8-2iy" firstAttribute="top" secondItem="k3Y-i6-hhG" secondAttribute="topMargin" id="r64-yx-EDY"/>
+                                        <constraint firstItem="KmG-tH-SGP" firstAttribute="leading" secondItem="o5v-C8-2iy" secondAttribute="leading" id="xmP-Iz-8c3"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="languageLabel" destination="KmG-tH-SGP" id="xmE-bW-WXC"/>
+                                    <outlet property="sentenceLabel" destination="o5v-C8-2iy" id="qtq-rV-Krd"/>
+                                    <segue destination="KPI-q6-aJ8" kind="unwind" identifier="selectedLanguageSegue" unwindAction="languageSelectedActionWithUnwindSegue:" id="1bS-2P-cfd"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -205,8 +234,9 @@
                     </tableView>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qXl-4i-ytm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="KPI-q6-aJ8" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="8356" y="339"/>
+            <point key="canvasLocation" x="8356" y="338.68065967016497"/>
         </scene>
     </scenes>
     <resources>
