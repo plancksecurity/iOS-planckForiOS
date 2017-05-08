@@ -14,4 +14,8 @@ public class LoginViewModel {
     func handleFirstLogin() -> Bool {
         return Account.all().isEmpty
     }
+
+    func login(account: String, password: String) {
+
+    }
 }
