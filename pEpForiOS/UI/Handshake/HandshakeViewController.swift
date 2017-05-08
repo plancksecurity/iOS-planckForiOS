@@ -193,14 +193,10 @@ extension HandshakeViewController: SegueHandlerType {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .showLanguagesSegue:
-            if let navVC = segue.destination as? UINavigationController {
-                if let destination = navVC.viewControllers.first as? LanguageListViewController {
-                    prepare(destination: destination)
-                }
-            } else {
-                if let destination = segue.destination as? LanguageListViewController {
-                    prepare(destination: destination)
-                }
+            let navVC = segue.destination as? UINavigationController
+            if let destination = navVC?.viewControllers.first as? LanguageListViewController ??
+                segue.destination as? LanguageListViewController {
+                prepare(destination: destination)
             }
             break
         }
