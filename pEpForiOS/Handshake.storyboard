@@ -174,7 +174,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <segue destination="vyv-kT-FSV" kind="presentation" identifier="showLanguagesSegue" id="ZbR-d7-Kex"/>
+                        <segue destination="ycz-bZ-1Ap" kind="presentation" identifier="showLanguagesSegue" id="ZbR-d7-Kex"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bd2-r6-Ksy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -232,9 +232,28 @@
                             <outlet property="delegate" destination="vyv-kT-FSV" id="Xh7-8X-pM3"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="EAK-jv-4HL"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qXl-4i-ytm" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="KPI-q6-aJ8" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="9295.2000000000007" y="338.68065967016497"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="G0l-hT-NVW">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="ycz-bZ-1Ap" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="S57-lS-p75">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="vyv-kT-FSV" kind="relationship" relationship="rootViewController" id="HXl-8R-EeW"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5l2-Lz-xoQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="8356" y="338.68065967016497"/>
         </scene>
