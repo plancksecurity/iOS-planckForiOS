@@ -136,7 +136,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             let trustWordsViewHeightZero = trustWordsView.heightAnchor.constraint(
                 equalToConstant: 0)
 
-            let defaultYMargin: CGFloat = 8
+            let defaultYMargin: CGFloat = 16
             let privacyStatusTitleBottom = privacyStatusTitle.bottomAnchor.constraint(
                 equalTo: headerView.bottomAnchor, constant: -defaultYMargin)
             let privacyStatusDescriptionBottom = privacyStatusDescription.bottomAnchor.constraint(
