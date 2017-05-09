@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:pEpForiOS.xcodeproj">
    </FileRef>
    <FileRef
