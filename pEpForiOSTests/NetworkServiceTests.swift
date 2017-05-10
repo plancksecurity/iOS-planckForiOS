@@ -145,7 +145,7 @@ class NetworkServiceTests: XCTestCase {
         }
     }
 
-    func testSyncOutgoing() {
+    func testSyncOutgoing(useCorrectAccount: Bool) {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
@@ -165,7 +165,8 @@ class NetworkServiceTests: XCTestCase {
         networkService.networkServiceDelegate = del
         networkService.sendLayerDelegate = sendLayerDelegate
 
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = useCorrectAccount ? TestData().createWorkingCdAccount() :
+            TestData().createTimeOutCdAccount()
         TestUtil.skipValidation()
         Record.saveAndWait()
 
@@ -279,6 +280,14 @@ class NetworkServiceTests: XCTestCase {
 
         TestUtil.checkForUniqueness(uuids: outgoingMessageIDs)
         cancelNetworkService(networkService: networkService)
+    }
+
+    func testSyncOutgoing() {
+        testSyncOutgoing(useCorrectAccount: true)
+    }
+
+    func testSyncOutgoingWithWrongAccount() {
+        testSyncOutgoing(useCorrectAccount: false)
     }
 
     func cancelNetworkService(networkService: NetworkService) {

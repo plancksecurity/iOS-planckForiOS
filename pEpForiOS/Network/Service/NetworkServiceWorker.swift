@@ -204,7 +204,8 @@ open class NetworkServiceWorker {
             var operations = [Operation]()
             operations.append(loginOp)
 
-            let sendOp = EncryptAndSendOperation(smtpSendData: smtpSendData)
+            let sendOp = EncryptAndSendOperation(smtpSendData: smtpSendData,
+                                                 errorContainer: errorContainer)
             opSmtpFinished.addDependency(sendOp)
             sendOp.addDependency(loginOp)
             operations.append(sendOp)

@@ -190,15 +190,22 @@ class TestDataBase {
     }
 
     /**
-     - Returns: A `Account` with servers that should yield a quick timeout.
+     - Returns: An `AccountSettings` object with servers that should yield a quick timeout.
      */
-    func createTimeoutAccount() -> Account {
+    func createTimeOutAccount() -> AccountSettings {
         populateAccounts()
         var account = testAccounts[0]
         account.imapServerAddress = "localhost"
         account.smtpServerAddress = "localhost"
         account.smtpServerPort = 2323
         account.imapServerPort = 2323
-        return account.account()
+        return account
+    }
+
+    /**
+     - Returns: A `CdAccount` around `createTimeoutAccount`.
+     */
+    func createTimeOutCdAccount() -> CdAccount {
+        return createTimeOutAccount().cdAccount()
     }
 }

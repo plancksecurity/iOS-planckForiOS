@@ -29,8 +29,9 @@ extension CdAccount {
                 let servers = theCred.servers {
                 for theServer in servers {
                     if let server = theServer as? CdServer {
-                        if Int(server.serverType) == Server.ServerType.imap.rawValue ||
-                            Int(server.serverType) == Server.ServerType.smtp.rawValue {
+                        let st = Int(server.serverType)
+                        if st == Server.ServerType.imap.rawValue ||
+                            st == Server.ServerType.smtp.rawValue {
                             let password = theCred.password
                             if let emailConnectInfo = emailConnectInfo(
                                 account: self, server: server, credentials: theCred,
