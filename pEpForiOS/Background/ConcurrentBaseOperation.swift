@@ -55,6 +55,7 @@ open class ConcurrentBaseOperation: BaseOperation {
 
     open override func start() {
         if !shouldRun() {
+            markAsFinished()
             return
         }
         Log.verbose(component: comp, content: "calling main()")
