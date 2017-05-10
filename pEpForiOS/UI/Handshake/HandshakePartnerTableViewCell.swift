@@ -182,6 +182,9 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             languageSelectorImageView.addGestureRecognizer(languageSelectorRecognizer)
         }
 
+        updateStopTrustingButtonTitle()
+        updateConfirmDistrustButtonsTitle()
+
         updateAdditionalConstraints()
     }
 
@@ -238,6 +241,28 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             startStopTrustingButton.setTitle(titleMistrusted, for: .normal)
         } else {
             startStopTrustingButton.setTitle(titleTrusted, for: .normal)
+        }
+    }
+
+    func updateConfirmDistrustButtonsTitle() {
+        if isPartnerPGPUser {
+            confirmButton.setTitle(
+                NSLocalizedString("Confirm Fingerprint",
+                                  comment: "Confirm correct fingerprint (PGP)"),
+                for: .normal)
+            wrongButton.setTitle(
+                NSLocalizedString("Wrong Fingerprint",
+                                  comment: "Incorrect fingerprint (PGP)"),
+                for: .normal)
+        } else {
+            confirmButton.setTitle(
+                NSLocalizedString("Confirm Trustwords",
+                                  comment: "Confirm correct trustwords"),
+                for: .normal)
+            wrongButton.setTitle(
+                NSLocalizedString("Wrong Trustwords",
+                                  comment: "Incorrect trustwords"),
+                for: .normal)
         }
     }
 
