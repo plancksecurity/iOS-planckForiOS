@@ -45,5 +45,6 @@
 #pragma mark -- Misc
 
 #import "TFHpple.h"
+#import "account_settings.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */

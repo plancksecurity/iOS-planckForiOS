@@ -13,4 +13,7 @@
    <FileRef
       location = "group:../MailModel/MessageModel/MessageModel.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+   </FileRef>
 </Workspace>

@@ -144,6 +144,7 @@
 		43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA82521E9B925C00ABD5A8 /* UIView+Util.swift */; };
 		43AA825B1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA825A1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift */; };
 		43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA825C1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift */; };
+		43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */; };
 		43B2660D1D252C93009D57E8 /* ConcurrentBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */; };
 		43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */; };
 		43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */; };
@@ -401,6 +402,7 @@
 		43AA82521E9B925C00ABD5A8 /* UIView+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Util.swift"; sourceTree = "<group>"; };
 		43AA825A1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewContainer.swift; sourceTree = "<group>"; };
 		43AA825C1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewDelegate.swift; sourceTree = "<group>"; };
+		43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAccountSettingsAdapter.a; path = "../../../Library/Developer/Xcode/DerivedData/pEpForiOS-hgrtosyrynxrmfdxochylcgjfvka/Build/Products/Debug-iphonesimulator/libAccountSettingsAdapter.a"; sourceTree = "<group>"; };
 		43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentBaseOperation.swift; sourceTree = "<group>"; };
 		43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc; sourceTree = "<group>"; };
 		43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewWidthsAligner.swift; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */,
 				495560881E71517F0016579E /* libpEpiOSAdapter.a in Frameworks */,
 				495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
@@ -967,6 +970,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */,
 				49D521561E73E1C70097987B /* ServerConfig.framework */,
 				49D521531E73E1C20097987B /* MessageModel.framework */,
 				495560871E71517F0016579E /* libpEpiOSAdapter.a */,
@@ -1550,9 +1554,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
+					"$(SRCROOT)/../libAccountSettings/include",
 					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/attic/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../libAccountSettings/attic/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1600,9 +1603,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
+					"$(SRCROOT)/../libAccountSettings/include",
 					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRCROOT)/../libAccountSettings/attic/xcode/ServerConfig/objc",
-					"$(SRCROOT)/../libAccountSettings/attic/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
