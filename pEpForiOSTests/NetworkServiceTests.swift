@@ -34,15 +34,19 @@ class NetworkServiceTests: XCTestCase {
             return expSingleAccountSynced?.debugDescription ?? "unknown"
         }
 
-        init(expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil) {
+        let failOnError: Bool
+
+        init(expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil,
+             failOnError: Bool = false) {
             self.expSingleAccountSynced = expAccountsSynced
             self.expCanceled = expCanceled
+            self.failOnError = failOnError
         }
 
         func didSync(service: NetworkService, accountInfo: AccountConnectInfo,
                      errorProtocol: ServiceErrorProtocol) {
             Log.info(component: #function, content: "\(self)")
-            if errorProtocol.hasErrors() {
+            if errorProtocol.hasErrors() && failOnError {
                 Log.error(component: #function, error: errorProtocol.error)
                 XCTFail()
             }
@@ -145,7 +149,7 @@ class NetworkServiceTests: XCTestCase {
         }
     }
 
-    func testSyncOutgoing(useCorrectAccount: Bool) {
+    func testSyncOutgoing(useCorrectSmtpAccount: Bool) {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
@@ -160,13 +164,14 @@ class NetworkServiceTests: XCTestCase {
 
         // A temp variable is necassary, since the networkServiceDelegate is weak
         var del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced1"))
+            expAccountsSynced: expectation(description: "expSingleAccountSynced1"),
+            failOnError: useCorrectSmtpAccount)
 
         networkService.networkServiceDelegate = del
         networkService.sendLayerDelegate = sendLayerDelegate
 
-        let cdAccount = useCorrectAccount ? TestData().createWorkingCdAccount() :
-            TestData().createTimeOutCdAccount()
+        let cdAccount = useCorrectSmtpAccount ? TestData().createWorkingCdAccount() :
+            TestData().createSmtpTimeOutCdAccount()
         TestUtil.skipValidation()
         Record.saveAndWait()
 
@@ -228,8 +233,10 @@ class NetworkServiceTests: XCTestCase {
 
         // Check that the sent mails have been deleted
         Record.refreshRegisteredObjects(mergeChanges: true)
-        for m in outgoingMails {
-            XCTAssertTrue(m.isDeleted)
+        if useCorrectSmtpAccount {
+            for m in outgoingMails {
+                XCTAssertTrue(m.isDeleted)
+            }
         }
 
         // Make sure the sent folder will still *not* be synced in the next step
@@ -283,11 +290,11 @@ class NetworkServiceTests: XCTestCase {
     }
 
     func testSyncOutgoing() {
-        testSyncOutgoing(useCorrectAccount: true)
+        testSyncOutgoing(useCorrectSmtpAccount: true)
     }
 
     func testSyncOutgoingWithWrongAccount() {
-        testSyncOutgoing(useCorrectAccount: false)
+        testSyncOutgoing(useCorrectSmtpAccount: false)
     }
 
     func cancelNetworkService(networkService: NetworkService) {

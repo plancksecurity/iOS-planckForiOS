@@ -366,13 +366,13 @@ open class NetworkServiceWorker {
         var operations: [Operation] = []
 
         let fixAttachmentsOp = FixAttachmentsOperation(
-            parentName: serviceConfig.parentName, errorContainer: errorContainer)
+            parentName: serviceConfig.parentName, errorContainer: ErrorContainer())
         operations.append(fixAttachmentsOp)
         opAllFinished.addDependency(fixAttachmentsOp)
 
         // 3.a Items not associated with any mailbox (e.g., SMTP send)
         let (lastSmtpOp, smtpOperations) = buildSmtpOperations(
-            accountInfo: accountInfo, errorContainer: errorContainer,
+            accountInfo: accountInfo, errorContainer: ErrorContainer(),
             opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
         operations.append(contentsOf: smtpOperations)
 
@@ -456,11 +456,7 @@ open class NetworkServiceWorker {
             }
 
             let opDecrypt = DecryptMessagesOperation(
-                parentName: #function, errorContainer: errorContainer)
-
-            // Decrypting messages can always run, no need to bail out early
-            // if errors occurred earlier
-            opDecrypt.bailOutEarlyOnError = false
+                parentName: #function, errorContainer: ErrorContainer())
 
             opDecrypt.addDependency(lastImapOp)
             opImapFinished.addDependency(opDecrypt)

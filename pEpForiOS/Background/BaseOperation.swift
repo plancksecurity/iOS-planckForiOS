@@ -12,11 +12,6 @@
 open class BaseOperation: Operation, ServiceErrorProtocol {
     open var comp = "BaseOperation"
 
-    /**
-     Don't even start if an error already has occurred, e.g. through another Operation.
-     */
-    var bailOutEarlyOnError = true
-
     let errorContainer: ServiceErrorProtocol
 
     open var error: NSError? {
@@ -63,7 +58,7 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
     }
 
     public func shouldRun() -> Bool {
-        if isCancelled || (bailOutEarlyOnError && hasErrors()) {
+        if isCancelled || hasErrors() {
             return false
         }
         return true
