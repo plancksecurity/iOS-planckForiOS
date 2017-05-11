@@ -29,6 +29,10 @@ protocol HandshakePartnerTableViewCellDelegate: class {
     func pickLanguage(sender: UIView,  cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?)
+
+    func toggleTrustwordsLength(sender: UIView,  cell: HandshakePartnerTableViewCell,
+                                indexPath: IndexPath,
+                                viewModel: HandshakePartnerTableViewCellViewModel?)
 }
 
 class HandshakePartnerTableViewCell: UITableViewCell {
@@ -166,26 +170,40 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         partnerImageView.image = viewModel?.partnerImage.value
 
         languageSelectorImageView.isUserInteractionEnabled = !isPartnerPGPUser
+        trustWordsLabel.isUserInteractionEnabled = !isPartnerPGPUser
+
         if isPartnerPGPUser {
             languageSelectorImageView.image = nil
         } else {
             languageSelectorImageView.image = UIImage(named: "grid-globe")
 
-            let grs = languageSelectorImageView.gestureRecognizers ?? []
-            for gr in grs {
-                languageSelectorImageView.removeGestureRecognizer(gr)
-            }
-
-            let languageSelectorRecognizer = UITapGestureRecognizer(
+            install(gestureRecognizer: UITapGestureRecognizer(
                 target: self,
-                action: #selector(languageSelectorAction(_:)))
-            languageSelectorImageView.addGestureRecognizer(languageSelectorRecognizer)
+                action: #selector(languageSelectorAction(_:))),
+                    view: languageSelectorImageView)
+
+            install(gestureRecognizer: UITapGestureRecognizer(
+                target: self,
+                action: #selector(toggleTrustwordsLengthAction(_:))),
+                    view: trustWordsLabel)
         }
 
         updateStopTrustingButtonTitle()
         updateConfirmDistrustButtonsTitle()
 
         updateAdditionalConstraints()
+    }
+
+    /**
+     Installs a gesture recognizer on a view, removing all previously existing ones.
+     */
+    func install(gestureRecognizer: UIGestureRecognizer, view: UIView) {
+        // rm all exsting
+        let existingGRs = view.gestureRecognizers ?? []
+        for gr in existingGRs {
+            view.removeGestureRecognizer(gr)
+        }
+        view.addGestureRecognizer(gestureRecognizer)
     }
 
     func updateTrustwords() {
@@ -290,6 +308,16 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         if gestureRecognizer.state == .ended {
             delegate?.pickLanguage(
                 sender: gestureRecognizer.view ?? languageSelectorImageView,
+                cell: self,
+                indexPath: indexPath,
+                viewModel: viewModel)
+        }
+    }
+
+    func toggleTrustwordsLengthAction(_ gestureRecognizer: UIGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            delegate?.toggleTrustwordsLength(
+                sender: gestureRecognizer.view ?? trustWordsLabel,
                 cell: self,
                 indexPath: indexPath,
                 viewModel: viewModel)

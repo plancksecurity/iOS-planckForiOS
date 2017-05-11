@@ -171,6 +171,14 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         self.performSegue(withIdentifier: .showLanguagesSegue, sender: cell)
     }
 
+    func toggleTrustwordsLength(sender: UIView, cell: HandshakePartnerTableViewCell,
+                                indexPath: IndexPath,
+                                viewModel: HandshakePartnerTableViewCellViewModel?) {
+        viewModel?.toggleTrustwordsLength()
+        cell.updateTrustwords()
+        tableView.updateSize()
+    }
+
     @IBAction func languageSelectedAction(unwindSegue: UIStoryboardSegue) {
         if let sourceVC = unwindSegue.source as? LanguageListViewController,
             let lang = sourceVC.chosenLanguage,

@@ -116,6 +116,11 @@ class HandshakePartnerTableViewCellViewModel {
         }
     }
 
+    func toggleTrustwordsLength() {
+        trustwordsFull = !trustwordsFull
+        updateTrustwords(session: session)
+    }
+
     func invokeTrustAction(action: (NSMutableDictionary) -> ()) {
         let thePartner = partnerIdentity.updatedIdentityDictionary(session: session)
         action(thePartner)
