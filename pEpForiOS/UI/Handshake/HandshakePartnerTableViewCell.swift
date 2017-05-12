@@ -118,13 +118,28 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         return viewModel?.isPartnerPGPUser ?? false
     }
 
+    let boundsWidthKeyPath = "bounds"
+
     override func awakeFromNib() {
         startStopTrustingButton.pEpIfyForTrust(backgroundColor: UIColor.pEpYellow,
                                                textColor: .black)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         setupAdditionalConstraints()
+
+        confirmButton.addObserver(self, forKeyPath: boundsWidthKeyPath,
+                                  options: [.old, .new],
+                                  context: nil)
+        wrongButton.addObserver(self, forKeyPath: boundsWidthKeyPath,
+                                options: [.old, .new],
+                                context: nil)
+
         setNeedsLayout()
+    }
+
+    deinit {
+        confirmButton.removeObserver(self, forKeyPath: boundsWidthKeyPath)
+        wrongButton.removeObserver(self, forKeyPath: boundsWidthKeyPath)
     }
 
     func setupAdditionalConstraints() {
@@ -267,24 +282,35 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func updateConfirmDistrustButtonsTitle() {
-        if isPartnerPGPUser {
-            confirmButton.setTitle(
-                NSLocalizedString("Confirm Fingerprint",
-                                  comment: "Confirm correct fingerprint (PGP)"),
-                for: .normal)
-            wrongButton.setTitle(
-                NSLocalizedString("Wrong Fingerprint",
-                                  comment: "Incorrect fingerprint (PGP)"),
-                for: .normal)
+    func updateConfirmDistrustButtonsTitle(useLongTrustButtonTitle: Bool = true) {
+        if useLongTrustButtonTitle {
+            if isPartnerPGPUser {
+                confirmButton.setTitle(
+                    NSLocalizedString("Confirm Fingerprint",
+                                      comment: "Confirm correct fingerprint (PGP, long version)"),
+                    for: .normal)
+                wrongButton.setTitle(
+                    NSLocalizedString("Wrong Fingerprint",
+                                      comment: "Incorrect fingerprint (PGP, long version)"),
+                    for: .normal)
+            } else {
+                confirmButton.setTitle(
+                    NSLocalizedString("Confirm Trustwords",
+                                      comment: "Confirm correct trustwords (pEp, long version)"),
+                    for: .normal)
+                wrongButton.setTitle(
+                    NSLocalizedString("Wrong Trustwords",
+                                      comment: "Incorrect trustwords (pEp, long version)"),
+                    for: .normal)
+            }
         } else {
             confirmButton.setTitle(
-                NSLocalizedString("Confirm Trustwords",
-                                  comment: "Confirm correct trustwords"),
+                NSLocalizedString("Confirm",
+                                  comment: "Confirm correct trustwords (PGP, pEp, short version)"),
                 for: .normal)
             wrongButton.setTitle(
-                NSLocalizedString("Wrong Trustwords",
-                                  comment: "Incorrect trustwords"),
+                NSLocalizedString("Wrong",
+                                  comment: "Incorrect trustwords (PGP, pEp, short version)"),
                 for: .normal)
         }
     }
@@ -327,6 +353,32 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                 indexPath: indexPath,
                 viewModel: viewModel)
         }
+    }
+
+    // MARK: - Wrap trust buttons around
+
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?,
+                                    change: [NSKeyValueChangeKey : Any]?,
+                                    context: UnsafeMutableRawPointer?) {
+        if keyPath == boundsWidthKeyPath {
+            if let oldRect = change?[NSKeyValueChangeKey.oldKey] as? CGRect,
+                let newRect = change?[NSKeyValueChangeKey.newKey] as? CGRect,
+                newRect.size.width != oldRect.size.width {
+                checkTrustButtonsLayout()
+            }
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change,
+                               context: context)
+        }
+    }
+
+    func checkTrustButtonsLayout() {
+        let intr1 = confirmButton.intrinsicContentSize
+        let intr2 = wrongButton.intrinsicContentSize
+        let frame1 = confirmButton.bounds.size
+        let frame2 = wrongButton.bounds.size
+        let useShortTrustButtonTitles = intr1.width > frame1.width || intr2.width > frame2.width
+        updateConfirmDistrustButtonsTitle(useLongTrustButtonTitle: !useShortTrustButtonTitles)
     }
 
     // MARK: - Actions
