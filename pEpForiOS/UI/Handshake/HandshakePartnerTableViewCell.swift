@@ -118,6 +118,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         return viewModel?.isPartnerPGPUser ?? false
     }
 
+    var trustwordsFull: Bool {
+        return viewModel?.trustwordsFull ?? false
+    }
+
     let boundsWidthKeyPath = "bounds"
 
     override func awakeFromNib() {
@@ -222,12 +226,13 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateTrustwords() {
-        let showElipsis = !(viewModel?.trustwordsFull ?? false)
-        var contents = viewModel?.trustwords ?? ""
-        if showElipsis {
-            contents += " …"
+        let showElipsis = !isPartnerPGPUser && !trustwordsFull
+        if showElipsis,
+            let trustwords = viewModel?.trustwords {
+            trustWordsLabel.text = trustwords + " …"
+        } else {
+            trustWordsLabel.text = viewModel?.trustwords
         }
-        trustWordsLabel.text = contents
     }
 
     func updateAdditionalConstraints() {
