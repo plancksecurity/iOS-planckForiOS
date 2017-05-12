@@ -302,22 +302,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    // MARK: - Wrap trust buttons around
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        let intr1 = confirmButton.intrinsicContentSize
-        let intr2 = wrongButton.intrinsicContentSize
-        let frame1 = confirmButton.bounds.size
-        let frame2 = wrongButton.bounds.size
-        let shouldCorrect = intr1.width > frame1.width || intr2.width > frame2.width
-        if shouldCorrect {
-            print("no fit")
-        } else {
-            print("everything fitting")
-        }
-    }
-
     // MARK: - Gestures
 
     func languageSelectorAction(_ gestureRecognizer: UIGestureRecognizer) {
