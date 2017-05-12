@@ -207,7 +207,12 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateTrustwords() {
-        trustWordsLabel.text = viewModel?.trustwords
+        let showElipsis = !(viewModel?.trustwordsFull ?? false)
+        var contents = viewModel?.trustwords ?? ""
+        if showElipsis {
+            contents += " …"
+        }
+        trustWordsLabel.text = contents
     }
 
     func updateAdditionalConstraints() {

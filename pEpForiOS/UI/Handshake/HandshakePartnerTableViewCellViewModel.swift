@@ -35,7 +35,7 @@ class HandshakePartnerTableViewCellViewModel {
     var expandedState: ExpandedState
     var identityColor: PEP_color
     var trustwordsLanguage: String
-    var trustwordsFull: Bool
+    var trustwordsFull = false
 
     /**
      The own identity that is concerned with the trust.
@@ -75,7 +75,6 @@ class HandshakePartnerTableViewCellViewModel {
          imageProvider: IdentityImageProvider) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
-        self.trustwordsFull = true
         self.ownIdentity = ownIdentity
         self.partnerIdentity = partner
         let theSession = session ?? PEPSession()
