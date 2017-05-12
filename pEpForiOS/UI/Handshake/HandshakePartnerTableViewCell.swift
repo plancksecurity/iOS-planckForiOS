@@ -130,14 +130,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         setupAdditionalConstraints()
-
-        confirmButton.addObserver(self, forKeyPath: boundsWidthKeyPath,
-                                  options: [.old, .new],
-                                  context: nil)
-        wrongButton.addObserver(self, forKeyPath: boundsWidthKeyPath,
-                                options: [.old, .new],
-                                context: nil)
-
         setNeedsLayout()
     }
 
@@ -362,28 +354,21 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     // MARK: - Wrap trust buttons around
 
-    override open func observeValue(forKeyPath keyPath: String?, of object: Any?,
-                                    change: [NSKeyValueChangeKey : Any]?,
-                                    context: UnsafeMutableRawPointer?) {
-        if keyPath == boundsWidthKeyPath {
-            if let oldRect = change?[NSKeyValueChangeKey.oldKey] as? CGRect,
-                let newRect = change?[NSKeyValueChangeKey.newKey] as? CGRect,
-                newRect.size.width != oldRect.size.width {
-                checkTrustButtonsLayout()
-            }
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change,
-                               context: context)
-        }
-    }
-
-    func checkTrustButtonsLayout() {
+    func currentButtonTitlesFit() -> Bool {
         let intr1 = confirmButton.intrinsicContentSize
         let intr2 = wrongButton.intrinsicContentSize
         let frame1 = confirmButton.bounds.size
         let frame2 = wrongButton.bounds.size
-        let useShortTrustButtonTitles = intr1.width > frame1.width || intr2.width > frame2.width
-        updateConfirmDistrustButtonsTitle(useLongTrustButtonTitle: !useShortTrustButtonTitles)
+        return intr1.width < frame1.width && intr2.width < frame2.width
+    }
+
+    override func layoutSubviews() {
+        updateConfirmDistrustButtonsTitle(useLongTrustButtonTitle: true)
+        super.layoutSubviews()
+        if !currentButtonTitlesFit() {
+            updateConfirmDistrustButtonsTitle(useLongTrustButtonTitle: false)
+            super.layoutSubviews()
+        }
     }
 
     // MARK: - Actions
