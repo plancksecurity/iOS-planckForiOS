@@ -27,4 +27,13 @@ extension UIButton {
         self.layer.borderWidth = 1.0
         self.setTitle(placeHolder, for: .normal)
     }
+
+    /**
+     Does the content fit the button bounds?
+     */
+    func contentFitsWidth() -> Bool {
+        let iSize = intrinsicContentSize
+        let actSize = bounds.size
+        return iSize.width < actSize.width
+    }
 }
