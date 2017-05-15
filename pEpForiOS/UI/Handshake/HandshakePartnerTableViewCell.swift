@@ -125,7 +125,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     let boundsWidthKeyPath = "bounds"
 
     var buttonsFitWidth = [(Tuple<UIButton, CGFloat>): Bool]()
-    var buttonUsingLongTitle = [UIButton: Bool]()
+    var buttonsUsingLongTitle = [UIButton: Bool]()
 
 
     override func awakeFromNib() {
@@ -345,7 +345,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                 }
             }
         }
-        buttonUsingLongTitle[button] = useLongTitle
+        buttonsUsingLongTitle[button] = useLongTitle
     }
 
     func updateConfirmDistrustButtonsTitle(useLongTitles: Bool = true) {
@@ -415,7 +415,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             let button = object as? UIButton {
             let newWidth = newRect.size.width
 
-            let usingLongTitle = buttonUsingLongTitle[button] ?? false
+            let usingLongTitle = buttonsUsingLongTitle[button] ?? false
             let shortTitleMightFit = buttonsFitWidth[Tuple(values: (button, newWidth))] ?? true
 
             if usingLongTitle && !button.contentFitsWidth() {
