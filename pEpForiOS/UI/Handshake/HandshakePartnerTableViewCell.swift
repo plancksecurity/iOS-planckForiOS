@@ -214,7 +214,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
 
         updateStopTrustingButtonTitle()
-        updateConfirmDistrustButtonsTitle()
+
+        let useLong = (buttonsUsingLongTitle[confirmButton] ?? true) ||
+            (buttonsUsingLongTitle[wrongButton] ?? true)
+        updateConfirmDistrustButtonsTitle(useLongTitles: useLong)
 
         updateAdditionalConstraints()
     }
