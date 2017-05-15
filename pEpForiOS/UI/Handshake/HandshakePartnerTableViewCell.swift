@@ -399,27 +399,33 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                                     change: [NSKeyValueChangeKey : Any]?,
                                     context: UnsafeMutableRawPointer?) {
         if keyPath == boundsWidthKeyPath {
-            if let oldRect = change?[NSKeyValueChangeKey.oldKey] as? CGRect,
-                let newRect = change?[NSKeyValueChangeKey.newKey] as? CGRect,
-                newRect.size.width != oldRect.size.width,
-                let button = object as? UIButton {
-                let newWidth = newRect.size.width
-
-                let usingLongTitle = buttonUsingLongTitle[button] ?? false
-                let shortTitleMightFit = buttonsFitWidth[Tuple(values: (button, newWidth))] ?? true
-
-                if usingLongTitle && !button.contentFitsWidth() {
-                    // not enought room, switching to the short title might help
-                    updateTitle(button: button, useLongTitle: false)
-                    buttonsFitWidth[Tuple(values: (button, newWidth))] = false
-                } else if !usingLongTitle && button.contentFitsWidth() && shortTitleMightFit {
-                    // have room, might use it for the long title
-                    updateTitle(button: button, useLongTitle: true)
-                }
-            }
+            handleButtonSizeChanged(object: object, change: change, context: context)
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change,
                                context: context)
+        }
+    }
+
+    func handleButtonSizeChanged(object: Any?,
+                                 change: [NSKeyValueChangeKey : Any]?,
+                                 context: UnsafeMutableRawPointer?) {
+        if let oldRect = change?[NSKeyValueChangeKey.oldKey] as? CGRect,
+            let newRect = change?[NSKeyValueChangeKey.newKey] as? CGRect,
+            newRect.size.width != oldRect.size.width,
+            let button = object as? UIButton {
+            let newWidth = newRect.size.width
+
+            let usingLongTitle = buttonUsingLongTitle[button] ?? false
+            let shortTitleMightFit = buttonsFitWidth[Tuple(values: (button, newWidth))] ?? true
+
+            if usingLongTitle && !button.contentFitsWidth() {
+                // not enought room, switching to the short title might help
+                updateTitle(button: button, useLongTitle: false)
+                buttonsFitWidth[Tuple(values: (button, newWidth))] = false
+            } else if !usingLongTitle && button.contentFitsWidth() && shortTitleMightFit {
+                // have room, might use it for the long title
+                updateTitle(button: button, useLongTitle: true)
+            }
         }
     }
 
