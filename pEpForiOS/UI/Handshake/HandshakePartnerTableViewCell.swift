@@ -124,12 +124,26 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     let boundsWidthKeyPath = "bounds"
 
+    var buttonsFitWidth = [(Tuple<UIButton, CGFloat>): Bool]()
+    var buttonUsingLongTitle = [UIButton: Bool]()
+
+
     override func awakeFromNib() {
+        updateConfirmDistrustButtonsTitle(useLongTitles: true)
+
         startStopTrustingButton.pEpIfyForTrust(backgroundColor: UIColor.pEpYellow,
                                                textColor: .black)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         setupAdditionalConstraints()
+
+        confirmButton.addObserver(self, forKeyPath: boundsWidthKeyPath,
+                                  options: [.old, .new],
+                                  context: nil)
+        wrongButton.addObserver(self, forKeyPath: boundsWidthKeyPath,
+                                options: [.old, .new],
+                                context: nil)
+
         setNeedsLayout()
     }
 
@@ -279,37 +293,64 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func updateConfirmDistrustButtonsTitle(useLongTrustButtonTitle: Bool = true) {
-        if useLongTrustButtonTitle {
+    func updateTitle(button: UIButton, useLongTitle: Bool) {
+        let confirmPGPLong =
+            NSLocalizedString("Confirm Fingerprint",
+                              comment: "Confirm correct fingerprint (PGP, long version)")
+        let mistrustPGPLong =
+            NSLocalizedString("Wrong Fingerprint",
+                              comment: "Incorrect fingerprint (PGP, long version)")
+        let confirmLong =
+            NSLocalizedString("Confirm Trustwords",
+                              comment: "Confirm correct trustwords (pEp, long version)")
+        let mistrustLong =
+            NSLocalizedString("Wrong Trustwords",
+                              comment: "Incorrect trustwords (pEp, long version)")
+
+        let confirmShort =
+            NSLocalizedString("Confirm",
+                              comment: "Confirm correct trustwords (PGP, pEp, short version)")
+        let mistrustShort =
+            NSLocalizedString("Wrong",
+                              comment: "Incorrect trustwords (PGP, pEp, short version)")
+        let confirmPGPShort = confirmShort
+        let mistrustPGPShort = mistrustShort
+
+        if button == confirmButton {
             if isPartnerPGPUser {
-                confirmButton.setTitle(
-                    NSLocalizedString("Confirm Fingerprint",
-                                      comment: "Confirm correct fingerprint (PGP, long version)"),
-                    for: .normal)
-                wrongButton.setTitle(
-                    NSLocalizedString("Wrong Fingerprint",
-                                      comment: "Incorrect fingerprint (PGP, long version)"),
-                    for: .normal)
+                if useLongTitle {
+                    button.setTitle(confirmPGPLong, for: .normal)
+                } else {
+                    button.setTitle(confirmPGPShort, for: .normal)
+                }
             } else {
-                confirmButton.setTitle(
-                    NSLocalizedString("Confirm Trustwords",
-                                      comment: "Confirm correct trustwords (pEp, long version)"),
-                    for: .normal)
-                wrongButton.setTitle(
-                    NSLocalizedString("Wrong Trustwords",
-                                      comment: "Incorrect trustwords (pEp, long version)"),
-                    for: .normal)
+                if useLongTitle {
+                    button.setTitle(confirmLong, for: .normal)
+                } else {
+                    button.setTitle(confirmShort, for: .normal)
+                }
             }
-        } else {
-            confirmButton.setTitle(
-                NSLocalizedString("Confirm",
-                                  comment: "Confirm correct trustwords (PGP, pEp, short version)"),
-                for: .normal)
-            wrongButton.setTitle(
-                NSLocalizedString("Wrong",
-                                  comment: "Incorrect trustwords (PGP, pEp, short version)"),
-                for: .normal)
+        } else if button == wrongButton {
+            if isPartnerPGPUser {
+                if useLongTitle {
+                    button.setTitle(mistrustPGPLong, for: .normal)
+                } else {
+                    button.setTitle(mistrustPGPShort, for: .normal)
+                }
+            } else {
+                if useLongTitle {
+                    button.setTitle(mistrustLong, for: .normal)
+                } else {
+                    button.setTitle(mistrustShort, for: .normal)
+                }
+            }
         }
+        buttonUsingLongTitle[button] = useLongTitle
+    }
+
+    func updateConfirmDistrustButtonsTitle(useLongTitles: Bool = true) {
+        updateTitle(button: confirmButton, useLongTitle: useLongTitles)
+        updateTitle(button: wrongButton, useLongTitle: useLongTitles)
     }
 
     func updatePrivacyStatus(color: PEP_color) {
@@ -354,20 +395,31 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     // MARK: - Wrap trust buttons around
 
-    func currentButtonTitlesFit() -> Bool {
-        let intr1 = confirmButton.intrinsicContentSize
-        let intr2 = wrongButton.intrinsicContentSize
-        let frame1 = confirmButton.bounds.size
-        let frame2 = wrongButton.bounds.size
-        return intr1.width < frame1.width && intr2.width < frame2.width
-    }
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?,
+                                    change: [NSKeyValueChangeKey : Any]?,
+                                    context: UnsafeMutableRawPointer?) {
+        if keyPath == boundsWidthKeyPath {
+            if let oldRect = change?[NSKeyValueChangeKey.oldKey] as? CGRect,
+                let newRect = change?[NSKeyValueChangeKey.newKey] as? CGRect,
+                newRect.size.width != oldRect.size.width,
+                let button = object as? UIButton {
+                let newWidth = newRect.size.width
 
-    override func layoutSubviews() {
-        updateConfirmDistrustButtonsTitle(useLongTrustButtonTitle: true)
-        super.layoutSubviews()
-        if !currentButtonTitlesFit() {
-            updateConfirmDistrustButtonsTitle(useLongTrustButtonTitle: false)
-            super.layoutSubviews()
+                let usingLongTitle = buttonUsingLongTitle[button] ?? false
+                let shortTitleMightFit = buttonsFitWidth[Tuple(values: (button, newWidth))] ?? true
+
+                if usingLongTitle && !button.contentFitsWidth() {
+                    // not enought room, switching to the short title might help
+                    updateTitle(button: button, useLongTitle: false)
+                    buttonsFitWidth[Tuple(values: (button, newWidth))] = false
+                } else if !usingLongTitle && button.contentFitsWidth() && shortTitleMightFit {
+                    // have room, might use it for the long title
+                    updateTitle(button: button, useLongTitle: true)
+                }
+            }
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change,
+                               context: context)
         }
     }
 
