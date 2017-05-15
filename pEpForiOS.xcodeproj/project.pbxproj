@@ -1562,8 +1562,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
-					"$(SRCROOT)/../libAccountSettings/include",
+					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
 					"$(SDKROOT)/usr/include/libxml2",
+					"$(SRCROOT)/../libAccountSettings/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1611,8 +1612,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
-					"$(SRCROOT)/../libAccountSettings/include",
+					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
 					"$(SDKROOT)/usr/include/libxml2",
+					"$(SRCROOT)/../libAccountSettings/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

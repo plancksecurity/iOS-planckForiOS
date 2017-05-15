@@ -42,9 +42,14 @@
 #import "pEpiOSAdapter/PEPLanguage.h"
 #import "message_api.h"
 
+#pragma mark -- pEp AccountSettings Headers
+
+#import "ASAccountSettings.h"
+#import "AccountSettingsServer.h"
+#import "AccountSettingsProvider.h"
+
 #pragma mark -- Misc
 
 #import "TFHpple.h"
-#import "account_settings.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */
