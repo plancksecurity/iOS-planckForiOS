@@ -132,7 +132,8 @@ class TestDataBase {
     }
 
     /**
-     Add actual account test data here (override in `TestDataImpl`).
+     - Note: Add actual account test data here (override in `TestDataImpl`, which
+     should never be checked in).
      */
     func populateAccounts() {
         // An example account
