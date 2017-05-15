@@ -137,8 +137,6 @@
 		43A26FBA1E0408FB00AF0B84 /* ErrorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A26FB91E0408FB00AF0B84 /* ErrorProtocol.swift */; };
 		43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */; };
 		43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */; };
-		43A5DE3C1D631F57001153AF /* 1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43A5DE3B1D631F57001153AF /* 1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.asc */; };
-		43A5DE3E1D631F74001153AF /* EncryptedHTMLMail_to_1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43A5DE3D1D631F74001153AF /* EncryptedHTMLMail_to_1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.txt */; };
 		43A6E04B1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E04A1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift */; };
 		43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E0571E57400E005BEE69 /* RatingReEvaluator.swift */; };
 		43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA82521E9B925C00ABD5A8 /* UIView+Util.swift */; };
@@ -397,8 +395,6 @@
 		43A26FB91E0408FB00AF0B84 /* ErrorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorProtocol.swift; sourceTree = "<group>"; };
 		43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncOperation.swift; sourceTree = "<group>"; };
 		43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UnencryptedHTMLMail.txt; sourceTree = "<group>"; };
-		43A5DE3B1D631F57001153AF /* 1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.asc; sourceTree = "<group>"; };
-		43A5DE3D1D631F74001153AF /* EncryptedHTMLMail_to_1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EncryptedHTMLMail_to_1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.txt; sourceTree = "<group>"; };
 		43A6E04A1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReevaluateMessageRatingOperation.swift; sourceTree = "<group>"; };
 		43A6E0571E57400E005BEE69 /* RatingReEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingReEvaluator.swift; sourceTree = "<group>"; };
 		43AA82521E9B925C00ABD5A8 /* UIView+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Util.swift"; sourceTree = "<group>"; };
@@ -898,10 +894,8 @@
 				431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */,
 				4348EF141E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */,
 				43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */,
-				43A5DE3B1D631F57001153AF /* 1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.asc */,
 				438D253F1D4B9EDB00BFF7AA /* PGPMimeMail.txt */,
 				43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */,
-				43A5DE3D1D631F74001153AF /* EncryptedHTMLMail_to_1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.txt */,
 				43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */,
 			);
 			path = Resources;
@@ -1222,9 +1216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4348EF151E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
-				43A5DE3C1D631F57001153AF /* 1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.asc in Resources */,
 				431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
-				43A5DE3E1D631F74001153AF /* EncryptedHTMLMail_to_1776_713B_CBD8_8630_4FE2__7F13_60DA_23E2_1288_21FE.txt in Resources */,
 				430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				438D25401D4B9EDB00BFF7AA /* PGPMimeMail.txt in Resources */,
 				43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */,
