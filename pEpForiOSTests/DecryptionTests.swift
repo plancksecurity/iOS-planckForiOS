@@ -129,5 +129,11 @@ class DecryptionTests: XCTestCase {
 
         Record.Context.default.refreshAllObjects()
         XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
+
+        for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
+            let p = NSPredicate(format: "message = %@ and name = %@", cdMsg, header)
+            let headerField = CdHeaderField.first(predicate: p)
+            XCTAssertNotNil(headerField)
+        }
     }
 }
