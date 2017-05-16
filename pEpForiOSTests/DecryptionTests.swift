@@ -138,7 +138,8 @@ class DecryptionTests: XCTestCase {
         Record.Context.default.refreshAllObjects()
         XCTAssertEqual(
             Int32(cdMsg.pEpRating),
-            shouldEncrypt ? PEP_rating_reliable.rawValue : Int32(PEPUtil.pEpRatingNone))
+            shouldEncrypt ? PEP_rating_trusted_and_anonymized.rawValue:
+                Int32(PEPUtil.pEpRatingNone))
 
         for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
             let p = NSPredicate(format: "message = %@ and name = %@", cdMsg, header)
