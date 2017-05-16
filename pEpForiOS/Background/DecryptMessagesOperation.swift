@@ -84,6 +84,10 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
         }
     }
 
+    /**
+     Updates the given key list for the message, puts rating into optional fields
+     and notifies delegates.
+     */
     func updateMessage(cdMessage: CdMessage, keys: [String]) {
         cdMessage.updateKeyList(keys: keys)
         Record.saveAndWait()
