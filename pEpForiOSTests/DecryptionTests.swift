@@ -93,11 +93,7 @@ class DecryptionTests: XCTestCase {
             return
         }
 
-        let pantMail = PEPUtil.pantomime(pEpMessage: encryptedDict)
-        let cwFolder = CWIMAPFolder(name: inboxName)
-        cwFolder.setSelected(true)
-        pantMail.setFolder(cwFolder)
-        pantMail.setInitialized(true)
+        let pantMail = PEPUtil.pantomime(pEpMessage: encryptedDict, mailboxName: inboxName)
         guard
             let cdMsg = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantMail, account: cdOwnAccount,

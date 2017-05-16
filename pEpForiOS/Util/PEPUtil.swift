@@ -335,7 +335,8 @@ open class PEPUtil {
      Converts a given `PEPMessage` into the equivalent `CWIMAPMessage`.
      See https://tools.ietf.org/html/rfc2822 for a better understanding of some fields.
      */
-    open static func pantomime(pEpMessage: PEPMessage) -> CWIMAPMessage {
+    open static func pantomime(pEpMessage: PEPMessage,
+                               mailboxName: String? = nil) -> CWIMAPMessage {
         if let rawMessageData = pEpMessage[kPepRawMessage] as? Data {
             let message = CWIMAPMessage(data: rawMessageData)
             return message
@@ -440,6 +441,13 @@ open class PEPUtil {
                 message.setContent(body.content())
                 message.setContentType(body.contentType())
             }
+        }
+
+        if let mName = mailboxName {
+            let cwFolder = CWIMAPFolder(name: mName)
+            cwFolder.setSelected(true)
+            message.setFolder(cwFolder)
+            message.setInitialized(true)
         }
 
         return message
