@@ -9,16 +9,6 @@
 import Foundation
 import MessageModel
 
-enum Status {
-    case OK //all success
-    case FAILED //error on account settings libaray
-    case ERROR  // all other errors
-}
-struct Result {
-    var satus: Status
-    var error: NSError?
-}
-
 public class LoginViewModel {
 
     var loginAccount : Account?
@@ -28,7 +18,7 @@ public class LoginViewModel {
         return Account.all().isEmpty
     }
 
-    func login(account: String, password: String, callback: (Result, Account?) -> Void) {
+    func login(account: String, password: String, callback: (NSError?) -> Void) {
 
         let user = ModelUserInfoTable()
         accountSettings = ASAccountSettings.init(accountName: account, provider: password, flags: AS_FLAG_USE_ANY, credentials: nil)
@@ -52,16 +42,12 @@ public class LoginViewModel {
             default:
                 break
             }
-
             if verifyAccount(model: user) {
-                let res = Result(satus: .OK, error: nil)
-                callback(res, loginAccount)
+                callback(nil)
             }
-            let res = Result(satus: .ERROR, error: NSError(domain: "Unable to find the server", code: 0, userInfo: nil))
-            callback(res, nil)
         } else {
-            let res = Result(satus: .FAILED, error: NSError(domain: "Unable to find the server", code: 0, userInfo: nil))
-            callback(res, nil)
+            let err = NSError(domain: "Unable to find the server", code: 0, userInfo: nil)
+            callback(err)
         }
     }
 

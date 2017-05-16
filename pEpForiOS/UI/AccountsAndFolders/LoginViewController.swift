@@ -15,13 +15,18 @@ class LoginViewController: UIViewController {
     var loginViewModel = LoginViewModel()
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var userName: UITextField!
+    @IBOutlet weak var errorMessage: UILabel!
 
+
+    @IBOutlet weak var manualConfigButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configureView()
+        MessageModelConfig.accountDelegate = self
         // Do any additional setup after loading the view.
 
     }
@@ -31,7 +36,12 @@ class LoginViewController: UIViewController {
         self.emailAddress.convertToLoginTextField(placeHolder: NSLocalizedString("Email", comment: "Email"))
         self.password.convertToLoginTextField(placeHolder: NSLocalizedString("Password", comment: "password"))
         self.loginButton.convertToLoginButton(placeHolder: NSLocalizedString("Sign In", comment: "Login"))
-
+        self.userName.convertToLoginTextField(placeHolder: NSLocalizedString("Username", comment: "username"))
+        self.userName.isHidden = true
+        self.manualConfigButton.convertToLoginButton(placeHolder: NSLocalizedString("Manual configuration", comment: "manual"))
+        self.manualConfigButton.isHidden = true
+        self.errorMessage.convertToLoginErrorLabel(placeHolder: "")
+        self.errorMessage.isHidden = true
         self.navigationController?.navigationBar.isHidden = loginViewModel.handleFirstLogin()
 
     }
@@ -42,35 +52,20 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func login(_ sender: Any) {
-        if let email = emailAddress.text, let pass = password.text {
-            loginViewModel.login(account: email, password: pass) { (res, acc) in
-                switch res.satus {
-                case .ERROR:
-                    //jump to auto config
-                    break
-                case .FAILED:
-                    //don't know
-                    break
-                case .OK:
-                    MessageModelConfig.accountDelegate = self
-                    break
+        if let email = emailAddress.text, email != "", let pass = password.text, pass != "" {
+            loginViewModel.login(account: email, password: pass) { (err) in
+                if let error = err {
+                    handleLoginError(error: error, autoSegue: true)
                 }
             }
         }
     }
 
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        navigationController?.dismiss(animated: true, completion: nil)
-    }
-
-
-    @IBOutlet weak var cancleButton: UIBarButtonItem!
-
-    func showErrorMessage (_ message: String) {
+    public func handleLoginError(error: NSError, autoSegue: Bool) {
         let alertView = UIAlertController(
             title: NSLocalizedString("Error",
                                      comment: "the text in the title for the error message AlerView in account settings"),
-            message:message, preferredStyle: .alert)
+            message:error.localizedDescription, preferredStyle: .alert)
         alertView.view.tintColor = .pEpGreen
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString(
@@ -83,9 +78,25 @@ class LoginViewController: UIViewController {
             title: NSLocalizedString(
                 "Ok",
                 comment: "confirmation button text for error message AlertView in account settings"),
-            style: .default, handler: nil))
+            style: .default, handler: {action in
+                if autoSegue {
+
+                }
+                self.userName.isHidden = false
+                self.manualConfigButton.isHidden = false
+                self.errorMessage.isHidden = false
+                self.errorMessage.text = error.localizedDescription
+        }))
         present(alertView, animated: true, completion: nil)
+
     }
+
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+
+    @IBOutlet weak var cancleButton: UIBarButtonItem!
 
 }
 
@@ -93,11 +104,8 @@ extension LoginViewController: AccountDelegate {
 
     public func didVerify(account: Account, error: NSError?) {
         GCD.onMain() {
-            //self.status.activityIndicatorViewEnable = false
-            //self.updateView()
-
             if let err = error {
-                self.showErrorMessage(err.localizedDescription)
+                self.handleLoginError(error: err, autoSegue: false)
             } else {
                 // unwind back to INBOX on success
                 self.dismiss(animated: true, completion: nil)
