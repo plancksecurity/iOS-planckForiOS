@@ -70,23 +70,29 @@ class DecryptionTests: XCTestCase {
         return pEpId
     }
 
-    func testBasicDecryption() {
+    func testBasicDecryption(shouldEncrypt: Bool) {
         var pEpMsg = PEPMessage()
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
         pEpMsg[kPepLongMessage] = "Some text." as NSString
         pEpMsg[kPepOutgoing] = true as AnyObject
 
-        let (status, encryptedDictOpt) = session.encrypt(pEpMessageDict: pEpMsg)
-        XCTAssertEqual(status, PEP_STATUS_OK)
+        var encryptedDict = PEPMessage()
 
-        guard
-            let encryptedDict = encryptedDictOpt as? PEPMessage,
-            let attachments = encryptedDict[kPepAttachments] as? NSArray else {
-                XCTFail()
-                return
+        if shouldEncrypt {
+            let (status, encryptedDictOpt) = session.encrypt(pEpMessageDict: pEpMsg)
+            XCTAssertEqual(status, PEP_STATUS_OK)
+
+            guard
+                let theEncryptedDict = encryptedDictOpt as? PEPMessage,
+                let theAttachments = theEncryptedDict[kPepAttachments] as? NSArray else {
+                    XCTFail()
+                    return
+            }
+            XCTAssertEqual(theAttachments.count, 2)
+
+            encryptedDict = theEncryptedDict
         }
-        XCTAssertEqual(attachments.count, 2)
 
         guard let inboxName = cdInbox.name else {
             XCTFail()
@@ -108,7 +114,9 @@ class DecryptionTests: XCTestCase {
         XCTAssertTrue(cdMsg.bodyFetched)
         XCTAssertFalse(cdMsg.imap?.localFlags?.flagDeleted ?? true)
         XCTAssertEqual(cdMsg.pEpRating, PEPUtil.pEpRatingNone)
-        XCTAssertTrue(cdMsg.isProbablyPGPMime())
+        if shouldEncrypt {
+            XCTAssertTrue(cdMsg.isProbablyPGPMime())
+        }
 
         Record.saveAndWait()
 
@@ -128,12 +136,26 @@ class DecryptionTests: XCTestCase {
         XCTAssertEqual(decryptOp.numberOfMessagesDecrypted, 1)
 
         Record.Context.default.refreshAllObjects()
-        XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
+        XCTAssertEqual(
+            Int32(cdMsg.pEpRating),
+            shouldEncrypt ? PEP_rating_reliable.rawValue : Int32(PEPUtil.pEpRatingNone))
 
         for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
             let p = NSPredicate(format: "message = %@ and name = %@", cdMsg, header)
             let headerField = CdHeaderField.first(predicate: p)
-            XCTAssertNotNil(headerField)
+            if shouldEncrypt {
+                XCTAssertNotNil(headerField)
+            } else {
+                XCTAssertNil(headerField)
+            }
         }
+    }
+
+    func testBasicDecryptionOfEncryptedMail() {
+        testBasicDecryption(shouldEncrypt: true)
+    }
+
+    func testBasicDecryptionOfUnEncryptedMail() {
+        testBasicDecryption(shouldEncrypt: false)
     }
 }
