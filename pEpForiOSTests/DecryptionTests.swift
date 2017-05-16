@@ -94,7 +94,10 @@ class DecryptionTests: XCTestCase {
         }
 
         let pantMail = PEPUtil.pantomime(pEpMessage: encryptedDict)
-        pantMail.setFolder(CWFolder(name: inboxName))
+        let cwFolder = CWIMAPFolder(name: inboxName)
+        cwFolder.setSelected(true)
+        pantMail.setFolder(cwFolder)
+        pantMail.setInitialized(true)
         guard
             let cdMsg = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantMail, account: cdOwnAccount,
@@ -109,6 +112,7 @@ class DecryptionTests: XCTestCase {
         XCTAssertTrue(cdMsg.bodyFetched)
         XCTAssertFalse(cdMsg.imap?.localFlags?.flagDeleted ?? true)
         XCTAssertEqual(cdMsg.pEpRating, PEPUtil.pEpRatingNone)
+        XCTAssertTrue(cdMsg.isProbablyPGPMime())
 
         Record.saveAndWait()
 
@@ -126,5 +130,8 @@ class DecryptionTests: XCTestCase {
         })
 
         XCTAssertEqual(decryptOp.numberOfMessagesDecrypted, 1)
+
+        Record.Context.default.refreshAllObjects()
+        XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
     }
 }
