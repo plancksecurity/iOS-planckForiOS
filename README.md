@@ -70,8 +70,8 @@ git clone https://cacert.pep-security.lu/gitlab/ios/OpenSSL-for-iPhone.git
 hg clone https://cacert.pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://cacert.pep.foundation/dev/repos/netpgp-et
 hg clone https://cacert.pep.foundation/dev/repos/pEpEngine
-hg clone https://cacert.pep.foundation/dev/repos/pEpiOSAdapter
-hg clone https://cacert.pep.foundation/dev/repos/MailModel/
+hg clone https://cacert.pep.foundation/dev/repos/pEpObjCAdapter
+hg clone https://cacert.pep.foundation/dev/repos/MessageModel/
 hg clone https://cacert.pep.foundation/dev/repos/libAccountSettings/
 
 hg clone https://cacert.pep-security.ch/dev/repos/pEp_for_iOS/
