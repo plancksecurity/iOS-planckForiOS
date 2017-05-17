@@ -41,7 +41,7 @@ class PepAdapterTests: XCTestCase {
         let identity: NSMutableDictionary = [kPepUsername: "hernani",
                                              kPepAddress: "hernani@pep.foundation",
                                              kPepUserID: "2342"]
-        PEPiOSAdapter.startKeyserverLookup()
+        PEPObjCAdapter.startKeyserverLookup()
         sleep(4)
         
         pEpSession.updateIdentity(identity)
@@ -56,7 +56,7 @@ class PepAdapterTests: XCTestCase {
         
         XCTAssertNotNil(identity[kPepFingerprint], "A fingerprint, there is!")
         
-        PEPiOSAdapter.stopKeyserverLookup()
+        PEPObjCAdapter.stopKeyserverLookup()
     }
     
     /**

@@ -37,7 +37,7 @@
 
 #pragma mark -- pEp Headers
 
-#import "pEpiOSAdapter/PEPiOSAdapter.h"
+#import "pEpiOSAdapter/PEPObjCAdapter.h"
 #import "pEpiOSAdapter/PEPSession.h"
 #import "pEpiOSAdapter/PEPLanguage.h"
 #import "message_api.h"
