@@ -8,10 +8,10 @@
       location = "group:../MessageModel/MessageModel/MessageModel.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../pantomime-iOS/Pantomime.xcodeproj">
+      location = "group:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/dirk/projects/pEp/pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
+      location = "group:../pantomime-iOS/Pantomime.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
