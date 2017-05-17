@@ -11,7 +11,7 @@
       location = "group:../pantomime-iOS/Pantomime.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../pEpObjCAdapter/pEpiOSAdapter.xcodeproj">
+      location = "group:/Users/dirk/projects/pEp/pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
