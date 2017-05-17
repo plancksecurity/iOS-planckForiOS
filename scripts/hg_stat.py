@@ -11,7 +11,7 @@ import os
 from subprocess import call
 
 base = '../'
-dirs = ['pEp_for_iOS', 'MailModel', 'pEpiOSAdapter', 'pantomime-iOS',
+dirs = ['pEp_for_iOS', 'MessageModel', 'pEpObjCAdapter', 'pantomime-iOS',
         'pEpEngine', 'netpgp-et', 'libAccountSettings', 'OpenSSL-for-iPhone']
 
 if __name__ == '__main__':
