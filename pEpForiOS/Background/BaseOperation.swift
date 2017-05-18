@@ -50,11 +50,11 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
             comp = "\(comp): \(n)"
         }
         self.name = comp
-        Log.info(component: comp, content: "init()")
+        Log.info(component: comp, content: "\(#function) finished")
     }
 
     deinit {
-        Log.info(component: comp, content: "deinit()")
+        Log.info(component: comp, content: "\(#function)")
     }
 
     public func shouldRun() -> Bool {

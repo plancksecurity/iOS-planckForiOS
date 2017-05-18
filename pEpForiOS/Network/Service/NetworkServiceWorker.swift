@@ -78,7 +78,7 @@ open class NetworkServiceWorker {
      Start endlessly synchronizing in the background.
      */
     public func start() {
-        Log.info(component: #function, content: "\(String(describing: self)) starting")
+        Log.info(component: #function, content: "\(String(describing: self))")
         self.process()
     }
 
@@ -312,7 +312,7 @@ open class NetworkServiceWorker {
                 let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
                 firstUID <= lastUID {
                 let syncMessagesOp = SyncMessagesOperation(
-                    parentName: debugDescription, errorContainer: errorContainer,
+                    parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
                     firstUID: firstUID, lastUID: lastUID)
                 syncMessagesOp.completionBlock = { _ in
@@ -324,7 +324,7 @@ open class NetworkServiceWorker {
                 theLastImapOp = syncMessagesOp
 
                 if let syncFlagsOp = SyncFlagsToServerOperation(
-                    parentName: debugDescription, errorContainer: errorContainer,
+                    parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData, folderID: folderID) {
                     syncFlagsOp.addDependency(theLastImapOp)
                     operations.append(syncFlagsOp)
@@ -366,7 +366,7 @@ open class NetworkServiceWorker {
         var operations: [Operation] = []
 
         let fixAttachmentsOp = FixAttachmentsOperation(
-            parentName: debugDescription, errorContainer: ErrorContainer())
+            parentName: description, errorContainer: ErrorContainer())
         operations.append(fixAttachmentsOp)
         opAllFinished.addDependency(fixAttachmentsOp)
 
@@ -382,7 +382,7 @@ open class NetworkServiceWorker {
 
             // login IMAP
             let opImapLogin = LoginImapOperation(
-                parentName: debugDescription, errorContainer: errorContainer,
+                parentName: description, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
             opImapLogin.completionBlock = { [weak self, weak opImapLogin] in
                 self?.workerQueue.async {
@@ -402,7 +402,7 @@ open class NetworkServiceWorker {
 
             // 3.b Fetch current list of interesting mailboxes
             let opFetchFolders = FetchFoldersOperation(
-                parentName: debugDescription, errorContainer: errorContainer,
+                parentName: description, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
             opFetchFolders.completionBlock = { [weak self] in
                 if let me = self {
@@ -417,7 +417,7 @@ open class NetworkServiceWorker {
             opImapFinished.addDependency(opFetchFolders)
 
             let opSpecialFolder = CreateSpecialFoldersOperation(
-                parentName: debugDescription, errorContainer: errorContainer,
+                parentName: description, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
             operations.append(opSpecialFolder)
             opSpecialFolder.addDependency(opFetchFolders)
@@ -442,7 +442,7 @@ open class NetworkServiceWorker {
             var lastImapOp: Operation = lastTrashOp ?? opFetchFolders
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
-                    parentName: debugDescription, errorContainer: errorContainer,
+                    parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData, folderName: fi.name) {
                         [weak self] message in self?.messageFetched(cdMessage: message)
                 }
@@ -456,7 +456,7 @@ open class NetworkServiceWorker {
             }
 
             let opDecrypt = DecryptMessagesOperation(
-                parentName: debugDescription, errorContainer: ErrorContainer())
+                parentName: description, errorContainer: ErrorContainer())
 
             opDecrypt.addDependency(lastImapOp)
             opImapFinished.addDependency(opDecrypt)
@@ -556,16 +556,10 @@ open class NetworkServiceWorker {
     }
 }
 
-extension NetworkServiceWorker: CustomDebugStringConvertible {
-    public var debugDescription: String {
+extension NetworkServiceWorker: CustomStringConvertible {
+    public var description: String {
         let parentDescription = serviceConfig.parentName ?? "UnknownParent"
         let ref = unsafeBitCast(self, to: UnsafeRawPointer.self)
         return "NetworkServiceWorker \(ref) (\(parentDescription))"
-    }
-}
-
-extension NetworkServiceWorker: CustomStringConvertible {
-    public var description: String {
-        return debugDescription
     }
 }

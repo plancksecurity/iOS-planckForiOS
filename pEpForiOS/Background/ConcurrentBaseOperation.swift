@@ -57,7 +57,7 @@ open class ConcurrentBaseOperation: BaseOperation {
         if !shouldRun() {
             return
         }
-        Log.verbose(component: comp, content: "calling main()")
+        Log.verbose(component: comp, content: "\(#function)")
         // Just call main directly, relying on it to schedule a task in the background.
         main()
     }
@@ -68,7 +68,7 @@ open class ConcurrentBaseOperation: BaseOperation {
      Although this method has 'wait' in the name, it certainly does not block.
      */
     func waitForFinished() {
-        Log.verbose(component: comp, content: "waitForFinished \(backgroundQueue.operationCount)")
+        Log.verbose(component: comp, content: "\(#function) \(backgroundQueue.operationCount)")
         if backgroundQueue.operationCount == 0 {
             markAsFinished()
         } else {
@@ -118,12 +118,14 @@ open class ConcurrentBaseOperation: BaseOperation {
      to signal the end of this operation.
      */
     func markAsFinished() {
-        Log.verbose(component: comp, content: "markAsFinished()")
-        willChangeValue(forKey: "isFinished")
-        willChangeValue(forKey: "isExecuting")
+        let isFinishedKeyPath = "isFinished"
+        let isExecutingKeyPath = "isExecuting"
+        Log.verbose(component: comp, content: #function)
+        willChangeValue(forKey: isFinishedKeyPath)
+        willChangeValue(forKey: isExecutingKeyPath)
         myFinished = true
-        didChangeValue(forKey: "isExecuting")
-        didChangeValue(forKey: "isFinished")
+        didChangeValue(forKey: isExecutingKeyPath)
+        didChangeValue(forKey: isFinishedKeyPath)
     }
 
     public override func shouldRun() -> Bool {
