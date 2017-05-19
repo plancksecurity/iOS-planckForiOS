@@ -396,34 +396,32 @@ extension EmailListViewController: SegueHandlerType {
         if let folder = config?.folder,
             let message = messageFolder as? Message,
             folder.contains(message: message, deletedMessagesAreContained: true) {
-            if let msg = messageFolder as? Message {
-                if msg.isOriginal {
-                    // new message has arrived
-                    if let index = folder.indexOf(message: msg) {
-                        let ip = IndexPath(row: index, section: 0)
-                        Log.info(
-                            component: #function,
-                            content: "insert message at \(index), \(folder.messageCount()) messages")
-                        tableView.insertRows(at: [ip], with: .automatic)
-                    } else {
-                        tableView.reloadData()
-                    }
-                } else if msg.isGhost {
-                    if let cell = cellFor(message: msg), let ip = tableView.indexPath(for: cell) {
-                        Log.info(
-                            component: #function,
-                            content: "delete message at \(index), \(folder.messageCount()) messages")
-                        tableView.deleteRows(at: [ip], with: .automatic)
-                    } else {
-                        tableView.reloadData()
-                    }
+            if message.isOriginal {
+                // new message has arrived
+                if let index = folder.indexOf(message: message) {
+                    let ip = IndexPath(row: index, section: 0)
+                    Log.info(
+                        component: #function,
+                        content: "insert message at \(index), \(folder.messageCount()) messages")
+                    tableView.insertRows(at: [ip], with: .automatic)
                 } else {
-                    // other flags than delete must have been changed
-                    if let cell = cellFor(message: msg) {
-                        cell.updateFlags(message: message)
-                    } else {
-                        tableView.reloadData()
-                    }
+                    tableView.reloadData()
+                }
+            } else if message.isGhost {
+                if let cell = cellFor(message: message), let ip = tableView.indexPath(for: cell) {
+                    Log.info(
+                        component: #function,
+                        content: "delete message at \(index), \(folder.messageCount()) messages")
+                    tableView.deleteRows(at: [ip], with: .automatic)
+                } else {
+                    tableView.reloadData()
+                }
+            } else {
+                // other flags than delete must have been changed
+                if let cell = cellFor(message: message) {
+                    cell.updateFlags(message: message)
+                } else {
+                    tableView.reloadData()
                 }
             }
         }

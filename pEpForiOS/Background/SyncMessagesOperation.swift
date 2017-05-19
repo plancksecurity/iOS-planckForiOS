@@ -73,7 +73,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
     }
 
     func process(context: NSManagedObjectContext) {
-        let folderBuilder = ImapFolderBuilder.init(
+        let folderBuilder = ImapFolderBuilder(
             accountID: self.imapSyncData.connectInfo.accountObjectID,
             backgroundQueue: self.backgroundQueue)
         self.imapSyncData.sync?.delegate = self
