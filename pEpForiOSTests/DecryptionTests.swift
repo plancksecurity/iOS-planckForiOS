@@ -71,10 +71,12 @@ class DecryptionTests: XCTestCase {
     }
 
     func testBasicDecryption(shouldEncrypt: Bool) {
+        let msgLongMessage = "This is a message!"
+        let msgShortMessage = "Subject1"
         var pEpMsg = PEPMessage()
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
-        pEpMsg[kPepLongMessage] = "Some text." as NSString
+        pEpMsg[kPepLongMessage] = "Subject: \(msgShortMessage)\n\(msgLongMessage)" as NSString
         pEpMsg[kPepOutgoing] = true as AnyObject
 
         var encryptedDict = PEPMessage()
@@ -140,6 +142,10 @@ class DecryptionTests: XCTestCase {
             Int32(cdMsg.pEpRating),
             shouldEncrypt ? PEP_rating_trusted_and_anonymized.rawValue:
                 Int32(PEPUtil.pEpRatingNone))
+        if shouldEncrypt {
+            XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
+            XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
+        }
 
         for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
             let p = NSPredicate(format: "message = %@ and name = %@", cdMsg, header)
