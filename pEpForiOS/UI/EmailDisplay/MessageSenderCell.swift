@@ -16,7 +16,8 @@ open class MessageSenderCell: MessageCell {
         super.updateCell(model: model, message: message, indexPath: indexPath)
         titleLabel?.text = message.from?.displayString
         
-        let attributed = NSMutableAttributedString(string: "Message.To".localized)
+        let attributed = NSMutableAttributedString(
+            string: NSLocalizedString("To:", comment: "Compose field title"))
         let attributes = [
             NSFontAttributeName: UIFont.systemFont(ofSize: 15.0),
             NSForegroundColorAttributeName: UIColor.lightGray

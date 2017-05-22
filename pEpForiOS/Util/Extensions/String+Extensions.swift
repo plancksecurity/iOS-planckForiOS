@@ -14,10 +14,6 @@ public extension String {
     static let returnKey = "\n"
     static let comp = "String.Extensions"
     
-    public var localized: String {
-        return NSLocalizedString(self, comment: "")
-    }
-    
     public var trim: String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }

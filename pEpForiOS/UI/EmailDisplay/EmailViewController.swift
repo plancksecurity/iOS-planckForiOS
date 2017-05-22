@@ -98,25 +98,29 @@ class EmailViewController: UITableViewController {
         }
 
         let alertActionReply = UIAlertAction(
-        title: "Reply".localized, style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
+            title: NSLocalizedString("Reply", comment: "Message actions"),
+            style: .default) { (action) in
+                self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionReply)
 
         let alertActionReplyAll = UIAlertAction(
-        title: "Reply.All".localized, style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
+            title: NSLocalizedString("Reply All", comment: "Message actions"),
+            style: .default) { (action) in
+                self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionReplyAll)
 
         let alertActionForward = UIAlertAction(
-        title: "Forward".localized, style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueForward , sender: self)
+            title: NSLocalizedString("Forward", comment: "Message actions"),
+            style: .default) { (action) in
+                self.performSegue(withIdentifier: .segueForward , sender: self)
         }
         alertViewWithoutTitle.addAction(alertActionForward)
 
         let cancelAction = UIAlertAction(
-        title: "Cancel".localized, style: .cancel) { (action) in }
+            title: NSLocalizedString("Cancel", comment: "Message actions"),
+            style: .cancel) { (action) in }
         alertViewWithoutTitle.addAction(cancelAction)
 
         present(alertViewWithoutTitle, animated: true, completion: nil)

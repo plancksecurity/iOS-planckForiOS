@@ -201,9 +201,9 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
             self.tableView.reloadRows(at: [indexPath], with: .none)
         }
 
-        var title = "\n\nFlag".localized
+        var title = "\n\n" + NSLocalizedString("Flag", comment: "Message action (on swipe)")
         if message.imapFlags?.flagged ?? true {
-            title = "\n\nUnFlag".localized
+            title = "\n\n" + NSLocalizedString("Unflag", comment: "Message action (on swipe)")
         }
 
         return createRowAction(
@@ -223,7 +223,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
 
         return createRowAction(
             cell: cell, image: UIImage(named: "swipe-trash"), action: action,
-            title: "\n\nDelete".localized)
+            title: "\n\n" + NSLocalizedString("Delete", comment: "Message action (on swipe)"))
     }
 
     func createMarkAsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
@@ -237,10 +237,10 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         }
 
         var title = NSLocalizedString(
-            "Unread", comment: "Unread button title in swipe action on EmailListViewController")
+            "Unread", comment: "Message action (on swipe)")
         if !cell.haveSeen(message: message) {
             title = NSLocalizedString(
-                "Read", comment: "Read button title in swipe action on EmailListViewController")
+                "Read", comment: "Message action (on swipe)")
         }
 
         let isReadAction = createRowAction(cell: cell, image: nil, action: action,
@@ -257,7 +257,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
 
         return createRowAction(
             cell: cell, image: UIImage(named: "swipe-more"), action: action,
-            title: "\n\nMore".localized)
+            title: "\n\n" + NSLocalizedString("More", comment: "Message action (on swipe)"))
     }
 
     // MARK: - Action Sheet

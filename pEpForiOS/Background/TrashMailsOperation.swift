@@ -59,9 +59,12 @@ open class TrashMailsOperation: AppendMailsOperation {
                     obj.imap = imap
                     Record.save(context: self.context)
                 } else {
-                    self.handleError(Constants.errorInvalidParameter(self.comp),
-                                     message:
-                        "Cannot find message just stored in the sent folder".localized)
+                    self.handleError(
+                        Constants.errorInvalidParameter(self.comp),
+                        message:
+                        NSLocalizedString(
+                            "Cannot find message just stored in the sent folder",
+                            comment: "Background operation error message"))
                     return
                 }
             }

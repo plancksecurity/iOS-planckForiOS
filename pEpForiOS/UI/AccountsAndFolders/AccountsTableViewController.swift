@@ -112,14 +112,14 @@ class AccountsTableViewController: UITableViewController {
         } else if indexPath.section == 1 {
             if indexPath.row == 1{
                 let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
-                cell.textLabel?.text = "New Login".localized
+                cell.textLabel?.text = NSLocalizedString("New Login", comment: "")
                 cell.accessoryType = .disclosureIndicator
                 cell.textLabel?.numberOfLines = 0
                 return cell
             }
 
             let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
-            cell.textLabel?.text = "Logging".localized
+            cell.textLabel?.text = NSLocalizedString("Logging", comment: "")
             cell.accessoryType = .disclosureIndicator
             cell.textLabel?.numberOfLines = 0
             return cell
