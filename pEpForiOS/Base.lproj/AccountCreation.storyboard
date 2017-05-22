@@ -594,6 +594,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iE8-BW-gfg">
                                 <rect key="frame" x="36" y="540" width="303" height="30"/>
                                 <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="Efv-29-FEv" kind="show" id="P0G-jr-2d7"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2Tp-k9-QlL">
                                 <rect key="frame" x="46" y="550" width="110" height="200"/>
@@ -647,7 +650,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F8v-X1-RNK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8120.8000000000002" y="377.36131934032989"/>
+            <point key="canvasLocation" x="8033" y="359"/>
         </scene>
         <!--Main-->
         <scene sceneID="Ib2-kl-E5M">
