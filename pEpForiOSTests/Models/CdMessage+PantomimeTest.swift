@@ -168,7 +168,48 @@ class CdMessage_PantomimeTest: XCTestCase {
         }
     }
 
+    func testUpdateFromServer() {
+        let (m, _, localFlags, serverFlags) = createCdMessageForFlags()
+
+        guard let cwFlags = CWFlags(flags: .seen) else {
+            XCTFail()
+            return
+        }
+
+        localFlags.flagFlagged = true
+        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
+        XCTAssertTrue(localFlags.flagFlagged)
+        XCTAssertFalse(localFlags.flagSeen)
+        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+
+        localFlags.flagFlagged = false
+        serverFlags.flagSeen = false
+        XCTAssertTrue(m.updateFromServer(cwFlags: cwFlags))
+        XCTAssertTrue(localFlags.flagSeen)
+        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+    }
+
     //MARK: - HELPER
+
+    func createCdMessageForFlags() -> (CdMessage, CdImapFields, CdImapFlags, CdImapFlags) {
+        let m = CdMessage.create()
+        let imap = CdImapFields.create()
+        let serverFlags = CdImapFlags.create()
+        let localFlags = CdImapFlags.create()
+        m.imap = imap
+        imap.localFlags = localFlags
+        imap.serverFlags = serverFlags
+
+        XCTAssertEqual(localFlags.rawFlagsAsShort(), serverFlags.rawFlagsAsShort())
+        XCTAssertFalse(localFlags.flagAnswered)
+        XCTAssertFalse(localFlags.flagSeen)
+        XCTAssertFalse(localFlags.flagDraft)
+        XCTAssertFalse(localFlags.flagRecent)
+        XCTAssertFalse(localFlags.flagDeleted)
+        XCTAssertFalse(localFlags.flagFlagged)
+
+        return (m, imap, localFlags, serverFlags)
+    }
 
     func setAllCurrentImapFlags(of message: CdMessage, to isEnabled: Bool) {
         guard let imap = message.imap else {

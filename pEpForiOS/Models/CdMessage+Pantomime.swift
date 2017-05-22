@@ -321,34 +321,40 @@ extension CdMessage {
     }
 
     /**
-     - Returns: true if the flags were updated.
+     Will overwrite the IMAP server flags with the given flags.
+     If there were no local changes, the local flags will then be set to the same value.
+     If there were local changes, then the local flags will not change.
+     - Returns: true if the local flags were updated.
      */
-    public func updateFromServer(flags: CWFlags) -> Bool {
+    public func updateFromServer(cwFlags: CWFlags) -> Bool {
         // Since we frequently sync the flags, don't modify anything
         // if the version from the server has already been known,
         // since this could overwrite changes just made by the user.
-        if flags.rawFlagsAsShort() == imap?.serverFlags?.rawFlagsAsShort() {
+        if cwFlags.rawFlagsAsShort() == imap?.serverFlags?.rawFlagsAsShort() {
             return false
         }
 
         let theImap = imap ?? CdImapFields.create()
         imap = theImap
 
-        let theFlags = theImap.serverFlags ?? CdImapFlags.create()
-        theImap.serverFlags = theFlags
+        let haveLocalChanges =
+            theImap.localFlags?.rawFlagsAsShort() != theImap.serverFlags?.rawFlagsAsShort()
 
-        theFlags.update(cwFlags: flags)
-        if flags.contain(.deleted) {
+        let serverFlags = theImap.serverFlags ?? CdImapFlags.create()
+        theImap.serverFlags = serverFlags
+
+        serverFlags.update(cwFlags: cwFlags)
+        if cwFlags.contain(.deleted) {
             Log.info(component: #function, content: "Message with flag deleted")
         }
 
-        if theImap.localFlags == nil {
-            let localFlags = CdImapFlags.create()
-            localFlags.update(cwFlags: flags)
+        if !haveLocalChanges {
+            let localFlags = theImap.localFlags ?? CdImapFlags.create()
+            localFlags.update(cwFlags: cwFlags)
             theImap.localFlags = localFlags
+            return true
         }
-
-        return true
+        return false
     }
 
     /**
@@ -370,7 +376,7 @@ extension CdMessage {
         // Bail out quickly if there is only a flag change needed
         if messageUpdate.isFlagsOnly() {
             if let mail = existing(pantomimeMessage: message) {
-                if mail.updateFromServer(flags: message.flags()) {
+                if mail.updateFromServer(cwFlags: message.flags()) {
                     Record.saveAndWait()
                     if mail.pEpRating != pEpRatingNone {
                         mail.serialNumber = mail.serialNumber + 1
@@ -402,7 +408,7 @@ extension CdMessage {
         imap.messageNumber = Int32(message.messageNumber())
         imap.mimeBoundary = (message.boundary() as NSData?)?.asciiString()
 
-        let _ = mail.updateFromServer(flags: message.flags())
+        let _ = mail.updateFromServer(cwFlags: message.flags())
 
         return mail
     }
