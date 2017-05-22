@@ -554,7 +554,9 @@ open class PEPUtil {
 extension String {
 
     public static var pepSignature: String {
-        return "pEp.Mail.Signature".localized
+        return "\n\n" +
+            NSLocalizedString("Sent with p≡p",
+                              comment: "pEp mail signature. Newlines will be added by app") + "\n"
     }
 }
 

@@ -44,7 +44,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "EmailList.title".localized
+        title = NSLocalizedString("Inbox", comment: "General name for (unified) inbox")
         UIHelper.emailListTableHeight(self.tableView)
         addSearchBar()
     }

@@ -36,7 +36,7 @@ class AccountsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Accounts.title".localized
+        title = NSLocalizedString("Accounts", comment: "Accounts view title")
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         
@@ -92,9 +92,9 @@ class AccountsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "Accounts.title".localized
+            return NSLocalizedString("Accounts", comment: "Table header")
         case 1:
-            return "Settings".localized
+            return NSLocalizedString("Settings", comment: "Table header")
         default:
             return ""
         }

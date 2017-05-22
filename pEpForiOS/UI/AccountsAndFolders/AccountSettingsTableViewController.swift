@@ -69,11 +69,11 @@ class AccountSettingsTableViewController: UITableViewController {
         _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "AccountsSettings.Account".localized
+            return NSLocalizedString("Account", comment: "Account settings")
         case 1:
-            return "AccountsSettings.IMAP".localized
+            return NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP")
         case 2:
-            return "AccountsSettings.SMTP".localized
+            return NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")
         default:
             return""
         }

@@ -428,13 +428,19 @@ class ComposeTableViewController: UITableViewController {
                 popoverPresentationController.sourceView = view
             }
 
-            alertCtrl.addAction(alertCtrl.action("MailComp.Action.Cancel", .cancel, {}))
+            alertCtrl.addAction(
+                alertCtrl.action(NSLocalizedString("Cancel", comment: "compose email cancel"),
+                                 .cancel, {}))
 
-            alertCtrl.addAction(alertCtrl.action("MailComp.Action.Delete", .destructive, {
+            alertCtrl.addAction(
+                alertCtrl.action(NSLocalizedString("Delete", comment: "compose email delete"),
+                                 .destructive, {
                 self.dismiss()
             }))
 
-            alertCtrl.addAction(alertCtrl.action("MailComp.Action.Save", .default, {
+            alertCtrl.addAction(
+                alertCtrl.action(NSLocalizedString("Save", comment: "compose email save"),
+                                 .default, {
                 if let msg = self.populateMessageForSending(),
                     let acc = msg.parent?.account, let f = Folder.by(account:acc, folderType: .drafts) {
                     msg.parent = f
@@ -571,9 +577,11 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
         self.edited = true
         currentCell = indexPath
         let media = UIMenuItem(
-            title: "MenuCtrl.Cameraroll".localized, action: #selector(addMediaToCell))
+            title: NSLocalizedString("Insert Photo/Video", comment: "Insert attachment"),
+            action: #selector(addMediaToCell))
         let attachment = UIMenuItem(
-            title: "MenuCtrl.Attachment".localized, action: #selector(addAttachment))
+            title: NSLocalizedString("Insert Attachment", comment: "Insert attachment"),
+            action: #selector(addAttachment))
         menuController.menuItems = [media, attachment]
     }
 

@@ -11,8 +11,6 @@
 			<string></string>
 			<key>type</key>
 			<string>mailingList</string>
-			<key>title</key>
-			<string>Message.Mailinglist</string>
 			<key>visible</key>
 			<string>conditional</string>
 			<key>height</key>
@@ -25,8 +23,6 @@
 			<string>senderCell</string>
 			<key>type</key>
 			<string>content</string>
-			<key>title</key>
-			<string>Message.From</string>
 			<key>value</key>
 			<string></string>
 			<key>visible</key>
@@ -39,8 +35,6 @@
 			<string>senderSubjectCell</string>
 			<key>type</key>
 			<string>content</string>
-			<key>title</key>
-			<string>Message.Subject</string>
 			<key>value</key>
 			<string></string>
 			<key>visible</key>
@@ -53,8 +47,6 @@
 			<string>senderBodyCell</string>
 			<key>type</key>
 			<string>content</string>
-			<key>title</key>
-			<string></string>
 			<key>value</key>
 			<string></string>
 			<key>visible</key>
@@ -67,8 +59,6 @@
 			<string>attachmentsCell</string>
 			<key>type</key>
 			<string>content</string>
-			<key>title</key>
-			<string></string>
 			<key>value</key>
 			<string></string>
 			<key>visible</key>
