@@ -30,11 +30,13 @@ public class LoginViewModel {
             user.serverIMAP = acSettings.incoming.hostname
             user.portSMTP = UInt16(acSettings.outgoing.port)
             user.serverSMTP = acSettings.outgoing.hostname
-            if username != nil {
+            /*if username != nil {
                 user.username = username
             } else {
                 user.username = acSettings.incoming.username
-            }
+            }*/
+            //fast fix remove me
+            user.username = account
             if verifyAccount(model: user) {
                 callback(nil)
             }
