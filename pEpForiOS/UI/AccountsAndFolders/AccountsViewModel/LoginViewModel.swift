@@ -18,29 +18,22 @@ public class LoginViewModel {
         return Account.all().isEmpty
     }
 
-    func login(account: String, password: String, callback: (NSError?) -> Void) {
+    func login(account: String, password: String, username: String? = nil,  callback: (NSError?) -> Void) {
 
         let user = ModelUserInfoTable()
-        accountSettings = ASAccountSettings.init(accountName: account, provider: password, flags: AS_FLAG_USE_ANY, credentials: nil)
+        accountSettings = ASAccountSettings.init(accountName: account, provider: password,
+                                                 flags: AS_FLAG_USE_ANY, credentials: nil)
         if accountSettings?.status == AS_OK, let acSettings = accountSettings {
-
-            
             user.email = account
             user.password = password
             user.portIMAP = UInt16(acSettings.incoming.port)
             user.serverIMAP = acSettings.incoming.hostname
             user.portSMTP = UInt16(acSettings.outgoing.port)
             user.serverSMTP = acSettings.outgoing.hostname
-
-            switch acSettings.incoming.username {
-            case AS_USERNAME_EMAIL_ADDRESS:
-                user.username = account
-            case AS_USERNAME_EMAIL_LOCALPART:
-                user.username = account
-            case AS_USERNAME_EMAIL_LOCALPART_DOMAIN:
-                user.username = account
-            default:
-                break
+            if username != nil {
+                user.username = username
+            } else {
+                user.username = acSettings.incoming.username
             }
             if verifyAccount(model: user) {
                 callback(nil)
@@ -50,6 +43,7 @@ public class LoginViewModel {
             callback(err)
         }
     }
+
 
     func verifyAccount(model: ModelUserInfoTable) -> Bool {
 
