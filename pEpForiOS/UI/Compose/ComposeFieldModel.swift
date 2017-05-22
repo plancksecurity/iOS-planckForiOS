@@ -12,6 +12,30 @@ open class ComposeFieldModel {
     
     enum FieldType: String {
         case to, cc, bcc, from, subject, content, mailingList, none
+
+        func translatedTitle(expanded: Bool = false) -> String {
+            switch self {
+            case .to:
+                return NSLocalizedString("To:", comment: "Compose field title")
+            case .cc:
+                return NSLocalizedString("CC:", comment: "Compose field title")
+            case .bcc:
+                return NSLocalizedString("BCC:", comment: "Compose field title")
+            case .from:
+                if expanded {
+                    return NSLocalizedString("From:", comment: "Compose field title")
+                } else {
+                    return NSLocalizedString("Cc/Bcc, From:", comment: "Compose field title")
+                }
+            case .subject:
+                return NSLocalizedString("Subject:", comment: "Compose field title")
+            case .mailingList:
+                return NSLocalizedString("This message is from a mailing list.",
+                                         comment: "Compose field title")
+            default:
+                return ""
+            }
+        }
     }
     
     enum FieldDisplayType: String {
@@ -30,8 +54,8 @@ open class ComposeFieldModel {
     
     init(with data: [String: Any]) {
         type = FieldType(rawValue: (data["type"] as? String)!) ?? .none
-        title = (data["title"] as! String).localized
-        expandedTitle = (data["titleExpanded"] as? String)?.localized
+        title = type.translatedTitle()
+        expandedTitle = type.translatedTitle(expanded: true)
         display = FieldDisplayType(rawValue: data["visible"] as! String)!
         height = CGFloat((data["height"] as! NSString).floatValue)
         identifier = data["identifier"] as! String

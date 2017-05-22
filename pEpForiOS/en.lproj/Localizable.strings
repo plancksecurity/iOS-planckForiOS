@@ -8,15 +8,15 @@
 
 // pEp Global
 
-"pEp.Mail.Signature" = "\r\rSent with p≡p\r";
+//"pEp.Mail.Signature" = "\r\rSent with p≡p\r";
 
 // Mailcomposer UI
 
-"MailComp.To" = "To:";
-"MailComp.Cc" = "Cc:";
-"MailComp.Bcc" = "Bcc:";
-"MailComp.From" = "Cc/Bcc, From:";
-"MailComp.From.Expanded" = "From:";
+//"MailComp.To" = "To:";
+//"MailComp.Cc" = "Cc:";
+//"MailComp.Bcc" = "Bcc:";
+//"MailComp.From" = "Cc/Bcc, From:";
+//"MailComp.From.Expanded" = "From:";
 "MailComp.Subject" = "Subject:";
 "MailComp.Video" = "Video.";
 
@@ -30,7 +30,7 @@
 // Messages
 
 "Messages.All" = "All";
-"Message.Mailinglist" = "This message is from a mailing list.";
+//"Message.Mailinglist" = "This message is from a mailing list.";
 "Message.Unsubscribe" = "Unsubscribe";
 "Message.From" = "From: ";
 "Message.Subject" = "Subject: ";
