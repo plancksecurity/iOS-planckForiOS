@@ -343,18 +343,46 @@ extension CdMessage {
         let serverFlags = theImap.serverFlags ?? CdImapFlags.create()
         theImap.serverFlags = serverFlags
 
+        let localFlags = theImap.localFlags ?? CdImapFlags.create()
+        theImap.localFlags = localFlags
+
+        var changedLocalFlags = false
+        if haveLocalChanges {
+            changedLocalFlags =  mergeOnConflict(localFlags: localFlags, serverFlags: serverFlags,
+                                                 newServerFlags: cwFlags)
+        } else {
+            localFlags.update(cwFlags: cwFlags)
+            changedLocalFlags = true
+        }
+
         serverFlags.update(cwFlags: cwFlags)
         if cwFlags.contain(.deleted) {
             Log.info(component: #function, content: "Message with flag deleted")
         }
 
-        if !haveLocalChanges {
-            let localFlags = theImap.localFlags ?? CdImapFlags.create()
-            localFlags.update(cwFlags: cwFlags)
-            theImap.localFlags = localFlags
-            return true
+        return changedLocalFlags
+    }
+
+    /**
+     Tries to merge IMAP flags, basically taking into
+     account which flags where changed locally if it makes any difference.
+     */
+    func mergeOnConflict(localFlags: CdImapFlags, serverFlags: CdImapFlags,
+                         newServerFlags: CWFlags) -> Bool {
+        localFlags.flagAnswered = localFlags.flagAnswered || serverFlags.flagAnswered ||
+            newServerFlags.contain(.answered)
+        localFlags.flagDraft = localFlags.flagDraft || serverFlags.flagDraft ||
+            newServerFlags.contain(.draft)
+        if localFlags.flagFlagged == serverFlags.flagFlagged {
+            localFlags.flagFlagged = newServerFlags.contain(.flagged)
         }
-        return false
+        localFlags.flagRecent = newServerFlags.contain(.recent)
+        if localFlags.flagSeen == serverFlags.flagSeen {
+            localFlags.flagSeen = newServerFlags.contain(.seen)
+        }
+        localFlags.flagDeleted = localFlags.flagDeleted || serverFlags.flagDeleted ||
+            newServerFlags.contain(.deleted)
+        return localFlags.rawFlagsAsShort() != newServerFlags.rawFlagsAsShort()
     }
 
     /**

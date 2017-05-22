@@ -19,7 +19,7 @@ class CdMessage_PantomimeTest: XCTestCase {
         persistentSetup = PersistentSetup()
     }
 
-    //MARK: - StoreCommandForFlagsToRemoved / Add
+    // MARK: - StoreCommandForFlagsToRemoved / Add
 
     func testStoreCommandForFlagsToRemove_someServerFlagsSet() {
         let m = CdMessage.create()
@@ -170,26 +170,48 @@ class CdMessage_PantomimeTest: XCTestCase {
 
     func testUpdateFromServer() {
         let (m, _, localFlags, serverFlags) = createCdMessageForFlags()
+        let cwFlags = CWFlags()
 
-        guard let cwFlags = CWFlags(flags: .seen) else {
-            XCTFail()
-            return
-        }
-
+        // Server adds .seen, user just flagged -> both
         localFlags.flagFlagged = true
-        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
+        cwFlags.add(.seen)
+        XCTAssertTrue(cwFlags.contain(.seen))
+        XCTAssertTrue(m.updateFromServer(cwFlags: cwFlags))
         XCTAssertTrue(localFlags.flagFlagged)
-        XCTAssertFalse(localFlags.flagSeen)
+        XCTAssertTrue(localFlags.flagSeen)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
 
-        localFlags.flagFlagged = false
-        serverFlags.flagSeen = false
+        // No user action, server adds .seen -> .seen locally
+        localFlags.reset()
+        serverFlags.reset()
         XCTAssertTrue(m.updateFromServer(cwFlags: cwFlags))
         XCTAssertTrue(localFlags.flagSeen)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+
+        // Conflict: User just unflagged, that should win over the data from the server
+        localFlags.reset()
+        serverFlags.reset()
+        cwFlags.removeAll()
+        cwFlags.add(.flagged)
+        serverFlags.flagFlagged = true
+        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
+        XCTAssertFalse(localFlags.flagFlagged)
+        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
+
+        // Conflict: User has unset .recent, but that comes as set from the server.
+        localFlags.reset()
+        serverFlags.reset()
+        cwFlags.removeAll()
+        cwFlags.add(.recent)
+        cwFlags.add(.flagged)
+        serverFlags.flagRecent = true
+        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
+        XCTAssertTrue(localFlags.flagRecent)
+        XCTAssertTrue(localFlags.flagFlagged)
+        XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
     }
 
-    //MARK: - HELPER
+    // MARK: - HELPER
 
     func createCdMessageForFlags() -> (CdMessage, CdImapFields, CdImapFlags, CdImapFlags) {
         let m = CdMessage.create()
