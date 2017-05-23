@@ -62,6 +62,11 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         initialConfig()
         updateModel()
 
+        // Mark this folder as having been looked at by the user
+        if let fol = config?.folder {
+            fol.updateLastLookAt()
+        }
+
         MessageModelConfig.messageFolderDelegate = self
     }
 
@@ -79,7 +84,8 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
         if config == nil {
-            config = EmailListConfig(appConfig: appDelegate.appConfig, folder: Folder.unifiedInbox())
+            config = EmailListConfig(appConfig: appDelegate.appConfig,
+                                     folder: Folder.unifiedInbox())
         }
         self.title = config?.folder?.realName
     }
