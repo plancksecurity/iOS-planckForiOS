@@ -9,13 +9,34 @@
 import Foundation
 import MessageModel
 
-public class LoginViewModel {
+public class LoginViewModel {   
 
+    private var items: [LoginCellViewModel] = []
     var loginAccount : Account?
     var accountSettings: ASAccountSettings?
+    var extendedLogin = false
 
-    func handleFirstLogin() -> Bool {
-        return Account.all().isEmpty
+    func isThereAnAccount() -> Bool {
+        return !Account.all().isEmpty
+    }
+
+    public init () {
+        items = [LoginCellViewModel]()
+        generateBasicLogin()
+    }
+
+    func generateBasicLogin() {
+        if !extendedLogin {
+            // generamos el login de email pass login
+        } else {
+            generateExtendedLogin()
+        }
+    }
+
+    func generateExtendedLogin() {
+        if extendedLogin {
+
+        }
     }
 
     func login(account: String, password: String, username: String? = nil,  callback: (NSError?) -> Void) {
@@ -30,12 +51,17 @@ public class LoginViewModel {
             user.serverIMAP = acSettings.incoming.hostname
             user.portSMTP = UInt16(acSettings.outgoing.port)
             user.serverSMTP = acSettings.outgoing.hostname
-            /*if username != nil {
+            //fast fix remove me
+            if username != nil {
                 user.username = username
             } else {
-                user.username = acSettings.incoming.username
-            }*/
-            //fast fix remove me
+                //FIXME
+                if acSettings.incoming.username != "" {
+                    user.username = acSettings.incoming.username
+                } else {
+                    user.username = account
+                }
+            }
             user.username = account
             if verifyAccount(model: user) {
                 callback(nil)
@@ -45,7 +71,6 @@ public class LoginViewModel {
             callback(err)
         }
     }
-
 
     func verifyAccount(model: ModelUserInfoTable) -> Bool {
 
@@ -75,5 +100,15 @@ public class LoginViewModel {
         }
         return false
 
+    }
+
+    subscript(index: Int) -> LoginCellViewModel {
+        get {
+            return self.items[index]
+        }
+    }
+
+    var count: Int {
+        return self.items.count
     }
 }
