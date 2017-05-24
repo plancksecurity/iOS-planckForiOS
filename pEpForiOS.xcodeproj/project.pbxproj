@@ -604,7 +604,6 @@
 		43122B111DF5B48B00610253 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				431E58F41ED57F4D00EFA77F /* AccountVerificationService */,
 				43122B3A1DF5B75000610253 /* Service */,
 				43122B121DF5B48B00610253 /* ConnectInfo.swift */,
 				43122B131DF5B48B00610253 /* EmailConnectInfo.swift */,
@@ -618,6 +617,7 @@
 		43122B3A1DF5B75000610253 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				431E58F41ED57F4D00EFA77F /* AccountVerificationService */,
 				432142651E8FD6A400FBE987 /* ServiceUtil.swift */,
 				43122B3B1DF5B75000610253 /* NetworkService.swift */,
 				4381D0FE1E51A124002743C3 /* NetworkServiceWorker.swift */,
@@ -671,8 +671,7 @@
 				431E58F51ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift */,
 				431E58F91ED591E900EFA77F /* AccountVerificationService.swift */,
 			);
-			name = AccountVerificationService;
-			path = Service/AccountVerificationService;
+			path = AccountVerificationService;
 			sourceTree = "<group>";
 		};
 		4323FE871E83E502006785E1 /* Util */ = {
