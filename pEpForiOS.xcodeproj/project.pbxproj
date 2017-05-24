@@ -666,7 +666,8 @@
 			children = (
 				431E58F51ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift */,
 			);
-			path = AccountVerificationService;
+			name = AccountVerificationService;
+			path = Service/AccountVerificationService;
 			sourceTree = "<group>";
 		};
 		4323FE871E83E502006785E1 /* Util */ = {
