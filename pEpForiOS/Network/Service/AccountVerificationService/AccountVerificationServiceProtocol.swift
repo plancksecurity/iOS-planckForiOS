@@ -6,19 +6,33 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
-
 import MessageModel
 
 enum AccountVerificationError: Error {
     case networkError
     case loginErrorIMAP
     case loginErrorSMTP
+    case notImplemented
 }
 
 enum AccountVerificationResult {
     case ok
     case error(AccountVerificationError)
+}
+
+extension AccountVerificationResult: Equatable {
+    public static func ==(lhs: AccountVerificationResult, rhs: AccountVerificationResult) -> Bool {
+        switch (lhs, rhs) {
+        case (.ok, .ok):
+            return true
+        case (.error(let e1), .error(let e2)):
+            return e1 == e2
+        case (.ok, _):
+            return false
+        case (.error, _):
+            return false
+        }
+    }
 }
 
 enum AccountVerificationState {
