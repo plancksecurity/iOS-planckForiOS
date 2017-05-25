@@ -38,9 +38,7 @@ public protocol ImapSyncDelegate: class {
     func folderCreateFailed(_ sync: ImapSync, notification: Notification?)
     func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?)
     func folderDeleteFailed(_ sync: ImapSync, notification: Notification?)
-
-    /** General error indicator */
-    func actionFailed(_ sync: ImapSync, error: NSError)
+    func badResponse(_ sync: ImapSync, response: String?)
 }
 
 /**
@@ -73,8 +71,7 @@ open class DefaultImapSyncDelegate: ImapSyncDelegate {
     open func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {}
     open func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {}
     open func folderDeleteFailed(_ sync: ImapSync, notification: Notification?) {}
-
-    open func actionFailed(_ sync: ImapSync, error: NSError) {}
+    open func badResponse(_ sync: ImapSync, response: String?) {}
 }
 
 public enum ImapError: Int {
@@ -318,23 +315,15 @@ extension ImapSync: CWServiceClient {
     @objc public func actionFailed(_ notification: Notification?) {
         dumpMethodName("actionFailed", notification: notification)
 
-        let unknownError = Constants.errorImapUnknown(comp)
-
-        guard let userInfo = (notification as NSNotification?)?.userInfo else {
-            delegate?.actionFailed(self, error: unknownError)
-            return
+        guard
+            let userInfo = (notification as NSNotification?)?.userInfo,
+            let errorInfoDict = userInfo[PantomimeErrorInfo] as? NSDictionary,
+            let responseString = errorInfoDict[PantomimeBadResponseInfoKey] as? String
+            else {
+                delegate?.badResponse(self, response: nil)
+                return
         }
-        guard let errorInfoDict = userInfo[PantomimeErrorInfo] as? NSDictionary else {
-            delegate?.actionFailed(self, error: unknownError)
-            return
-        }
-        guard let message = errorInfoDict[PantomimeBadResponseInfoKey] as? String else {
-            delegate?.actionFailed(self, error: unknownError)
-            return
-        }
-
-        delegate?.actionFailed(self, error: Constants.errorImapBadResponse(
-            comp, response: message))
+        delegate?.badResponse(self, response: responseString)
     }
 
     @objc public func messageStoreCompleted(_ notification: Notification?) {

@@ -16,5 +16,5 @@ enum ImapSyncError: Error {
     case connectionLost(FunctionName)
     case connectionTerminated(FunctionName)
     case connectionTimedOut(FunctionName)
-    case actionFailed(Error)
+    case badResponse(String?)
 }

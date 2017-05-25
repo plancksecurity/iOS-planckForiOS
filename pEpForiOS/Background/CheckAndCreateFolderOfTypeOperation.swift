@@ -215,8 +215,8 @@ extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
-    public func actionFailed(_ sync: ImapSync, error: NSError) {
-        addIMAPError(error)
+    public func badResponse(_ sync: ImapSync, response: String?) {
+        addIMAPError(ImapSyncError.badResponse(response))
         markAsFinished()
     }
 }

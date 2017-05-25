@@ -245,8 +245,8 @@ extension SyncMessagesOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
-    public func actionFailed(_ sync: ImapSync, error: NSError) {
-        addError(error)
+    public func badResponse(_ sync: ImapSync, response: String?) {
+        addError(ImapSyncError.badResponse(response))
         markAsFinished()
     }
 }
