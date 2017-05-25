@@ -10,8 +10,9 @@ import MessageModel
 
 enum AccountVerificationError: Error {
     case networkError
-    case loginErrorIMAP
-    case loginErrorSMTP
+    case noConnectData
+    case authenticationError
+    case unknownError
     case notImplemented
 }
 

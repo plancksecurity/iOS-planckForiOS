@@ -141,8 +141,9 @@ open class NetworkServiceWorker {
                        operations: [BaseOperation]) {
         if accountInfo.needsVerification {
             context.performAndWait {
-                guard let account = self.context.object(with: accountInfo.accountID) as? CdAccount else {
-                    return
+                guard let account = self.context.object(with: accountInfo.accountID)
+                    as? CdAccount else {
+                        return
                 }
                 var accountVerified = true
                 let allCreds = account.credentials?.array as? [CdServerCredentials] ?? []
