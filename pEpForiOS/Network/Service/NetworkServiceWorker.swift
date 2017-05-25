@@ -159,7 +159,7 @@ open class NetworkServiceWorker {
                     self.serviceConfig.sendLayerDelegate?.didVerify(cdAccount: account, error: nil)
                     self.serviceConfig.mySelfer?.startMySelf()
                 } else {
-                    var error: NSError?
+                    var error: Error?
                     for op in operations {
                         if let err = op.error {
                             error = err

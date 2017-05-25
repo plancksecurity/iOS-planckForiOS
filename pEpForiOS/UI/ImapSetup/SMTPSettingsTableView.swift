@@ -192,7 +192,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
 }
 
 extension SMTPSettingsTableView: AccountDelegate {
-    public func didVerify(account: Account, error: NSError?) {
+    public func didVerify(account: Account, error: Error?) {
         GCD.onMain() {
             self.status.activityIndicatorViewEnable = false
             self.updateView()

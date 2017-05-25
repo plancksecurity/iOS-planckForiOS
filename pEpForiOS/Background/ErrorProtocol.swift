@@ -12,17 +12,17 @@ import Foundation
  For exchanging errors between `BaseOperation`s.
  */
 public protocol ServiceErrorProtocol {
-    var error: NSError? { get }
-    func addError(_ error: NSError)
+    var error: Error? { get }
+    func addError(_ error: Error)
     func hasErrors() -> Bool
 }
 
 open class ErrorContainer: ServiceErrorProtocol {
-    public var error: NSError?
+    public var error: Error?
 
     public init() {}
 
-    public func addError(_ error: NSError) {
+    public func addError(_ error: Error) {
         if self.error == nil {
             self.error = error
         }

@@ -61,7 +61,7 @@ class LoginViewController: UIViewController {
         }
     }
 
-    public func handleLoginError(error: NSError, autoSegue: Bool) {
+    public func handleLoginError(error: Error, autoSegue: Bool) {
         let alertView = UIAlertController(
             title: NSLocalizedString("Error",
                                      comment: "the text in the title for the error message AlerView in account settings"),
@@ -104,7 +104,7 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: AccountDelegate {
 
-    public func didVerify(account: Account, error: NSError?) {
+    public func didVerify(account: Account, error: Error?) {
         GCD.onMain() {
             if let err = error {
                 self.handleLoginError(error: err, autoSegue: false)

@@ -224,9 +224,9 @@ class TestUtil {
      */
     class TestAccountDelegate: AccountDelegate {
         var expVerifyCalled: XCTestExpectation?
-        var error: NSError?
+        var error: Error?
 
-        func didVerify(account: Account, error: NSError?) {
+        func didVerify(account: Account, error: Error?) {
             self.error = error
             expVerifyCalled?.fulfill()
         }

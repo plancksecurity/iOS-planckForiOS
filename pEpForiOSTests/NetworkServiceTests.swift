@@ -128,7 +128,7 @@ class NetworkServiceTests: XCTestCase {
             self.expAccountVerified = expAccountVerified
         }
 
-        func didVerify(cdAccount: CdAccount, error: NSError?) {
+        func didVerify(cdAccount: CdAccount, error: Error?) {
             XCTAssertNil(error)
             expAccountVerified?.fulfill()
         }
@@ -476,7 +476,7 @@ class NetworkServiceTests: XCTestCase {
             self.expAccountVerified = expAccountVerified
         }
 
-        func didVerify(account: Account, error: NSError?) {
+        func didVerify(account: Account, error: Error?) {
             XCTAssertNil(error)
             expAccountVerified?.fulfill()
             self.account = account

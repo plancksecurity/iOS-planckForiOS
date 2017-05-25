@@ -79,13 +79,13 @@ import MessageModel
         Log.shared.saveLog(entity: component, description: content, comment: "warn")
     }
 
-    static open func error(component: String, error: NSError?) {
+    static open func error(component: String, error: Error?) {
         if let err = error {
             Log.shared.saveLog(entity: component, description: " \(err)", comment: "error")
         }
     }
 
-    static open func error(component: String, errorString: String, error: NSError) {
+    static open func error(component: String, errorString: String, error: Error) {
         Log.shared.saveLog(
             entity: component, description: errorString + " \(error)", comment: "error")
     }
@@ -122,11 +122,11 @@ extension Log: MessageModelLogging {
         Log.warn(component: component, content: content)
     }
 
-    public func error(component: String, error: NSError) {
+    public func error(component: String, error: Error) {
         Log.error(component: component, error: error)
     }
 
-    public func error(component: String, errorString: String, error: NSError) {
+    public func error(component: String, errorString: String, error: Error) {
         Log.error(component: component, errorString: errorString, error: error)
     }
 
@@ -141,7 +141,7 @@ extension Log: MessageModelLogging {
     /// - Parameters:
     ///   - component: caller information to log
     ///   - error: error to log
-    public func errorAndCrash(component: String, error: NSError) {
+    public func errorAndCrash(component: String, error: Error) {
         Log.error(component: component, error: error)
         SystemUtils.crash()
     }
@@ -154,7 +154,7 @@ extension Log: MessageModelLogging {
     ///   - component: caller information to log
     ///   - errorString: error information to log
     ///   - error: error to log
-    public func errorAndCrash(component: String, errorString: String, error: NSError) {
+    public func errorAndCrash(component: String, errorString: String, error: Error) {
         Log.error(component: component, errorString: errorString, error: error)
         SystemUtils.crash()
     }

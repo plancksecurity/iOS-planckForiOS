@@ -46,11 +46,11 @@ class OperationLine {
 }
 
 extension OperationLine: ServiceErrorProtocol {
-    var error: NSError? {
+    var error: Error? {
         return errorContainer.error
     }
 
-    func addError(_ error: NSError) {
+    func addError(_ error: Error) {
         errorContainer.addError(error)
     }
 

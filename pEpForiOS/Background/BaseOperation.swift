@@ -14,11 +14,11 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
 
     let errorContainer: ServiceErrorProtocol
 
-    open var error: NSError? {
+    open var error: Error? {
         return errorContainer.error
     }
 
-    open func addError(_ error: NSError) {
+    open func addError(_ error: Error) {
         errorContainer.addError(error)
     }
 
