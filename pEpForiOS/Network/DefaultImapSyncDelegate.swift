@@ -33,17 +33,17 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
     }
 
     public func connectionLost(_ sync: ImapSync, notification: Notification?) {
-        imapSyncOperation?.addIMAPError(ImapSyncError.illegalState(#function))
+        imapSyncOperation?.addIMAPError(ImapSyncError.connectionLost(#function))
         imapSyncOperation?.markAsFinished()
     }
 
     public func connectionTerminated(_ sync: ImapSync, notification: Notification?) {
-        imapSyncOperation?.addIMAPError(ImapSyncError.illegalState(#function))
+        imapSyncOperation?.addIMAPError(ImapSyncError.connectionTerminated(#function))
         imapSyncOperation?.markAsFinished()
     }
 
     public func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
-        imapSyncOperation?.addIMAPError(ImapSyncError.illegalState(#function))
+        imapSyncOperation?.addIMAPError(ImapSyncError.connectionTimedOut(#function))
         imapSyncOperation?.markAsFinished()
     }
 

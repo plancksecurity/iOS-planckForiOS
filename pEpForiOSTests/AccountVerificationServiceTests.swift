@@ -62,9 +62,13 @@ class AccountVerificationServiceTests: XCTestCase {
     }
 
     func testFailures() {
-        testVerification(account: TestData().createImapTimeOutAccount(),
-                         expectedResult: AccountVerificationResult.error(.networkError))
-        testVerification(account: TestData().createSmtpTimeOutAccount(),
-                         expectedResult: AccountVerificationResult.error(.networkError))
+        testVerification(
+            account: TestData().createImapTimeOutAccount(),
+            expectedResult: AccountVerificationResult.imapError(
+                .connectionTimedOut("connectionTimedOut(_:notification:)")))
+        testVerification(
+            account: TestData().createSmtpTimeOutAccount(),
+            expectedResult: AccountVerificationResult.smtpError(
+                .connectionTimedOut("connectionTimedOut(_:theNotification:)")))
     }
 }

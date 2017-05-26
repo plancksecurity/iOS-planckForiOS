@@ -42,24 +42,24 @@ extension LoginSmtpOperation: SmtpSendDelegate {
     }
 
     public func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        addError(Constants.errorAuthenticationFailed(comp))
+        addError(SmtpSendError.authenticationFailed(#function))
         markAsFinished()
     }
 
     public func connectionEstablished(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     public func connectionLost(_ smtp: SmtpSend, theNotification: Notification?) {
-        addError(Constants.errorConnectionLost(comp))
+        addError(SmtpSendError.connectionLost(#function))
         markAsFinished()
     }
 
     public func connectionTerminated(_ smtp: SmtpSend, theNotification: Notification?) {
-        addError(Constants.errorConnectionTerminated(comp))
+        addError(SmtpSendError.connectionTerminated(#function))
         markAsFinished()
     }
 
     public func connectionTimedOut(_ smtp: SmtpSend, theNotification: Notification?) {
-        addError(Constants.errorTimeout(comp))
+        addError(SmtpSendError.connectionTimedOut(#function))
         markAsFinished()
     }
 

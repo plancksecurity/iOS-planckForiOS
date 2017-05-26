@@ -1,12 +1,12 @@
 //
-//  ImapSyncError.swift
+//  SmtpSendError.swift
 //  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 25.05.17.
+//  Created by Dirk Zimmermann on 26.05.17.
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-enum ImapSyncError: Error {
+enum SmtpSendError: Error {
     /**
      Received an unexpected callback.
      */
@@ -16,11 +16,10 @@ enum ImapSyncError: Error {
     case connectionLost(FunctionName)
     case connectionTerminated(FunctionName)
     case connectionTimedOut(FunctionName)
-    case badResponse(String?)
 }
 
-extension ImapSyncError: Equatable {
-    public static func ==(lhs: ImapSyncError, rhs: ImapSyncError) -> Bool {
+extension SmtpSendError: Equatable {
+    public static func ==(lhs: SmtpSendError, rhs: SmtpSendError) -> Bool {
         switch (lhs, rhs) {
         case (.illegalState(let fn1), .illegalState(let fn2)):
             return fn1 == fn2
@@ -32,8 +31,6 @@ extension ImapSyncError: Equatable {
             return fn1 == fn2
         case (.connectionTimedOut(let fn1), .connectionTimedOut(let fn2)):
             return fn1 == fn2
-        case (.badResponse(let s1), .badResponse(let s2)):
-            return s1 == s2
         case (.illegalState, _):
             return false
         case (.authenticationFailed, _):
@@ -43,8 +40,6 @@ extension ImapSyncError: Equatable {
         case (.connectionTerminated, _):
             return false
         case (.connectionTimedOut, _):
-            return false
-        case (.badResponse, _):
             return false
         }
     }

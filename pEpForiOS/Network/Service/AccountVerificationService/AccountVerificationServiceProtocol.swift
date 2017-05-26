@@ -8,16 +8,12 @@
 
 import MessageModel
 
-enum AccountVerificationError: Error {
-    case networkError
-    case noConnectData
-    case authenticationError
-    case uncategorizedError
-}
-
 enum AccountVerificationResult {
     case ok
-    case error(AccountVerificationError)
+    case noImapConnectData
+    case noSmtpConnectData
+    case imapError(ImapSyncError)
+    case smtpError(SmtpSendError)
 }
 
 extension AccountVerificationResult: Equatable {
@@ -25,11 +21,23 @@ extension AccountVerificationResult: Equatable {
         switch (lhs, rhs) {
         case (.ok, .ok):
             return true
-        case (.error(let e1), .error(let e2)):
+        case (.noImapConnectData, .noImapConnectData):
+            return true
+        case (.noSmtpConnectData, .noSmtpConnectData):
+            return true
+        case (.imapError(let e1), .imapError(let e2)):
+            return e1 == e2
+        case (.smtpError(let e1), .smtpError(let e2)):
             return e1 == e2
         case (.ok, _):
             return false
-        case (.error, _):
+        case (.imapError, _):
+            return false
+        case (.smtpError, _):
+            return false
+        case (.noImapConnectData, _):
+            return false
+        case (.noSmtpConnectData, _):
             return false
         }
     }

@@ -40,18 +40,12 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
             runningOperations[account] = nil
             let errorOps = ops.filter() { return $0.hasErrors() }
             if let op = errorOps.first, let err = op.error {
-                switch err {
-                case ImapSyncError.authenticationFailed:
+                if let imapErr = err as? ImapSyncError {
                     delegate?.verified(account: account, service: self,
-                                       result: .error(.authenticationError))
-                case ImapSyncError.connectionLost,
-                     ImapSyncError.connectionTerminated,
-                     ImapSyncError.connectionTimedOut:
+                                       result: .imapError(imapErr))
+                } else if let smtpErr = err as? SmtpSendError {
                     delegate?.verified(account: account, service: self,
-                                       result: .error(.networkError))
-                default:
-                    delegate?.verified(account: account, service: self,
-                                       result: .error(.uncategorizedError))
+                                       result: .smtpError(smtpErr))
                 }
             } else {
                 delegate?.verified(account: account, service: self, result: .ok)
@@ -65,11 +59,11 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
         }
         let cdAccount = CdAccount.create(account: account)
         guard let imapConnectInfo = cdAccount.imapConnectInfo else {
-            delegate?.verified(account: account, service: self, result: .error(.noConnectData))
+            delegate?.verified(account: account, service: self, result: .noImapConnectData)
             return
         }
         guard let smtpConnectInfo = cdAccount.smtpConnectInfo else {
-            delegate?.verified(account: account, service: self, result: .error(.noConnectData))
+            delegate?.verified(account: account, service: self, result: .noSmtpConnectData)
             return
         }
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
