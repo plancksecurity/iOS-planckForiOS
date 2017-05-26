@@ -9,9 +9,12 @@
 import Foundation
 import MessageModel
 
+public enum LoginCellType {
+    case Text, Button
+}
+
 public class LoginViewModel {   
 
-    private var items: [LoginCellViewModel] = []
     var loginAccount : Account?
     var accountSettings: ASAccountSettings?
     var extendedLogin = false
@@ -20,24 +23,6 @@ public class LoginViewModel {
         return !Account.all().isEmpty
     }
 
-    public init () {
-        items = [LoginCellViewModel]()
-        generateBasicLogin()
-    }
-
-    func generateBasicLogin() {
-        if !extendedLogin {
-            // generamos el login de email pass login
-        } else {
-            generateExtendedLogin()
-        }
-    }
-
-    func generateExtendedLogin() {
-        if extendedLogin {
-
-        }
-    }
 
     func login(account: String, password: String, username: String? = nil,  callback: (NSError?) -> Void) {
 
@@ -100,15 +85,5 @@ public class LoginViewModel {
         }
         return false
 
-    }
-
-    subscript(index: Int) -> LoginCellViewModel {
-        get {
-            return self.items[index]
-        }
-    }
-
-    var count: Int {
-        return self.items.count
     }
 }

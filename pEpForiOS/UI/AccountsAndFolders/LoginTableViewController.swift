@@ -7,24 +7,61 @@
 //
 
 import UIKit
+import MessageModel
 
-class LoginTableViewController: UITableViewController {
+class LoginTableViewController: UITableViewController, UITextFieldDelegate {
 
     let loginViewModel = LoginViewModel()
+    var extendedLogin = false
 
+
+    @IBOutlet weak var username: UITextField!
+    @IBOutlet weak var emailAddress: UITextField!
+    @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var manualConfigButton: UIButton!
+    @IBOutlet weak var loginButton: UIButton!
+
+    @IBOutlet weak var usernameTableViewCell: UITableViewCell!
+    @IBOutlet weak var emailTableViewCell: UITableViewCell!
+    @IBOutlet weak var passwordTableViewCell: UITableViewCell!
+    @IBOutlet weak var loginTableViewCell: UITableViewCell!
+    @IBOutlet weak var manualConfigTableViewCell: UITableViewCell!
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureView()
+        MessageModelConfig.accountDelegate = self
+    }
 
-        self.navigationController?.navigationBar.isHidden = false
+    func configureView(){
+        tableView.estimatedRowHeight = 44.0
+        tableView.rowHeight = UITableViewAutomaticDimension
         self.view.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
-        self.tableView.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
+        self.emailAddress.delegate = self
+        self.password.delegate = self
+        self.username.delegate = self
+        self.emailAddress.convertToLoginTextField(placeHolder: NSLocalizedString("Email", comment: "Email"))
+        self.password.convertToLoginTextField(placeHolder: NSLocalizedString("Password", comment: "password"))
+        self.loginButton.convertToLoginButton(placeHolder: NSLocalizedString("Sign In", comment: "Login"))
+        self.username.convertToLoginTextField(placeHolder: NSLocalizedString("Username", comment: "username"))
+        self.username.isHidden = true
+        self.manualConfigButton.convertToLoginButton(placeHolder: NSLocalizedString(
+            "Manual configuration", comment: "manual"))
+        self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
+        self.view.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
+        self.tableView.contentInset = UIEdgeInsets(top: 30,left: 0,bottom: 0,right: 0)
         self.tableView.tableFooterView = UIView()
-        self.tableView.backgroundColor  = UIColor.clear
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.tableView.backgroundColor  = UIColor.pEpGreen
+        usernameTableViewCell.backgroundColor = UIColor.clear
+        emailTableViewCell.backgroundColor = UIColor.clear
+        passwordTableViewCell.backgroundColor = UIColor.clear
+        loginTableViewCell.backgroundColor = UIColor.clear
+        manualConfigTableViewCell.backgroundColor = UIColor.clear
+        manualConfigButton.isHidden = true
+        username.isHidden = true
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginTableViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,71 +69,87 @@ class LoginTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+    @IBAction func logIn(_ sender: Any) {
+        if let email = emailAddress.text, email != "", let pass = password.text, pass != "" {
+            if extendedLogin {
+                if let username = username.text, username != "" {
+                    loginViewModel.login(account: email, password: pass, username: username) { (err) in
+                        if let error = err {
+                            handleLoginError(error: error, autoSegue: true)
+                        }
+                    }
+                } else {
+                    //noAllDataFilled()
+                }
+            } else {
+                loginViewModel.login(account: email, password: pass) { (err) in
+                    if let error = err {
+                        handleLoginError(error: error, autoSegue: true)
+                    }
+                }
+            }
+        } else {
+            //noAllDataFilled()
+        }
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 1
+    public func handleLoginError(error: NSError, autoSegue: Bool) {
+        let alertView = UIAlertController(
+            title: NSLocalizedString(
+                "Error",comment: "the text in the title for the error message AlerView in account settings"),
+            message:error.localizedDescription, preferredStyle: .alert)
+        alertView.view.tintColor = .pEpGreen
+        alertView.addAction(UIAlertAction(
+            title: NSLocalizedString(
+                "View log",
+                comment: "Button for viewing the log on error"),
+            style: .default, handler: { action in
+                //self.viewLog()
+        }))
+        alertView.addAction(UIAlertAction(
+            title: NSLocalizedString(
+                "Ok",
+                comment: "confirmation button text for error message AlertView in account settings"),
+            style: .default, handler: {action in
+                if autoSegue {
+
+                }
+                self.username.isHidden = false
+                self.manualConfigButton.isHidden = false
+                self.extendedLogin = true
+        }))
+        present(alertView, animated: true, completion: nil)
     }
 
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == self.username {
+            self.emailAddress.becomeFirstResponder()
+        } else if textField == self.emailAddress {
+            self.password.becomeFirstResponder()
+        } else if textField == self.password {
+            self.view.endEditing(true)
+            self.logIn(self.password)
+        }
         return true
     }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
-    */
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+}
 
+extension LoginTableViewController: AccountDelegate {
+
+    public func didVerify(account: Account, error: Error?) {
+        GCD.onMain() {
+            if let err = error {
+                self.handleLoginError(error: err as NSError, autoSegue: false)
+            } else {
+                // unwind back to INBOX on success
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }

@@ -12,6 +12,7 @@ extension UITextField {
     func convertToLoginTextField(placeHolder: String) {
         self.backgroundColor = UIColor.clear
         self.tintColor = UIColor.white
+        self.textColor = UIColor.white
         self.layer.borderColor = UIColor.white.cgColor
         self.layer.borderWidth = 1.0
         self.attributedPlaceholder = NSAttributedString(string:placeHolder, attributes: [NSForegroundColorAttributeName: UIColor.white])
