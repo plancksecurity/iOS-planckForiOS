@@ -39,8 +39,20 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
         if runningOps.isEmpty {
             runningOperations[account] = nil
             let errorOps = ops.filter() { return $0.hasErrors() }
-            if let _ = errorOps.first {
-                delegate?.verified(account: account, service: self, result: .error(.unknownError))
+            if let op = errorOps.first, let err = op.error {
+                switch err {
+                case ImapSyncError.authenticationFailed:
+                    delegate?.verified(account: account, service: self,
+                                       result: .error(.authenticationError))
+                case ImapSyncError.connectionLost,
+                     ImapSyncError.connectionTerminated,
+                     ImapSyncError.connectionTimedOut:
+                    delegate?.verified(account: account, service: self,
+                                       result: .error(.networkError))
+                default:
+                    delegate?.verified(account: account, service: self,
+                                       result: .error(.uncategorizedError))
+                }
             } else {
                 delegate?.verified(account: account, service: self, result: .ok)
             }
@@ -73,6 +85,7 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
             self?.removeFromRunning(account: account)
         }
         runningOperations[account] = [imapVerifyOp, smtpVerifyOp]
-        delegate?.verified(account: account, service: self, result: .error(.notImplemented))
+        backgroundQueue.addOperation(imapVerifyOp)
+        backgroundQueue.addOperation(smtpVerifyOp)
     }
 }

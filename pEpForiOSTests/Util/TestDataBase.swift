@@ -193,18 +193,44 @@ class TestDataBase {
     /**
      - Returns: An `AccountSettings` object with an SMTP server that should yield a quick timeout.
      */
-    func createSmtpTimeOutAccount() -> AccountSettings {
+    func createSmtpTimeOutAccountSettings() -> AccountSettings {
         populateAccounts()
-        var account = testAccounts[0]
-        account.smtpServerAddress = "localhost"
-        account.smtpServerPort = 2323
-        return account
+        var accountSettings = testAccounts[0]
+        accountSettings.smtpServerAddress = "localhost"
+        accountSettings.smtpServerPort = 2323
+        return accountSettings
     }
 
     /**
-     - Returns: A `CdAccount` around `createSmtpTimeOutAccount`.
+     - Returns: An `AccountSettings` object with an IMAP server that should yield a quick timeout.
+     */
+    func createImapTimeOutAccountSettings() -> AccountSettings {
+        populateAccounts()
+        var accountSettings = testAccounts[0]
+        accountSettings.imapServerAddress = "localhost"
+        accountSettings.imapServerPort = 2323
+        return accountSettings
+    }
+
+    /**
+     - Returns: A `CdAccount` around `createSmtpTimeOutAccountSettings`.
      */
     func createSmtpTimeOutCdAccount() -> CdAccount {
-        return createSmtpTimeOutAccount().cdAccount()
+        return createSmtpTimeOutAccountSettings().cdAccount()
     }
+
+    /**
+     - Returns: An `Account` around `createSmtpTimeOutAccountSettings`.
+     */
+    func createSmtpTimeOutAccount() -> Account {
+        return createSmtpTimeOutAccountSettings().account()
+    }
+
+    /**
+     - Returns: An `Account` around `createImapTimeOutAccountSettings`.
+     */
+    func createImapTimeOutAccount() -> Account {
+        return createImapTimeOutAccountSettings().account()
+    }
+
 }

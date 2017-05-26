@@ -12,8 +12,7 @@ enum AccountVerificationError: Error {
     case networkError
     case noConnectData
     case authenticationError
-    case unknownError
-    case notImplemented
+    case uncategorizedError
 }
 
 enum AccountVerificationResult {

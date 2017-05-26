@@ -39,8 +39,7 @@ class AccountVerificationServiceTests: XCTestCase {
         persistentSetup = nil
     }
 
-    func testBasicVerification() {
-        let account = TestData().createWorkingAccount()
+    func testVerification(account: Account) {
         let expVerified = expectation(description: "account verified")
         let delegate = AccountVerificationDelegate(expVerified: expVerified)
         let service = AccountVerificationService()
@@ -55,5 +54,10 @@ class AccountVerificationServiceTests: XCTestCase {
             }
             XCTAssertEqual(result, AccountVerificationResult.ok)
         })
+    }
+
+    func testSuccess() {
+        let account = TestData().createWorkingAccount()
+        testVerification(account: account)
     }
 }
