@@ -41,39 +41,6 @@ public protocol ImapSyncDelegate: class {
     func badResponse(_ sync: ImapSync, response: String?)
 }
 
-/**
- Default implementation of a delegate that does nothing.
- */
-open class DefaultImapSyncDelegate: ImapSyncDelegate {
-    public init() {
-    }
-
-    open func authenticationCompleted(_ sync: ImapSync, notification: Notification?)  {}
-    open func authenticationFailed(_ sync: ImapSync, notification: Notification?)  {}
-    open func connectionLost(_ sync: ImapSync, notification: Notification?)  {}
-    open func connectionTerminated(_ sync: ImapSync, notification: Notification?)  {}
-    open func connectionTimedOut(_ sync: ImapSync, notification: Notification?)  {}
-    open func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
-    open func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)  {}
-    open func folderSyncFailed(_ sync: ImapSync, notification: Notification?)  {}
-    open func messageChanged(_ sync: ImapSync, notification: Notification?)  {}
-    open func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?)  {}
-    open func folderOpenCompleted(_ sync: ImapSync, notification: Notification?)  {}
-    open func folderOpenFailed(_ sync: ImapSync, notification: Notification?)  {}
-    open func folderStatusCompleted(_ sync: ImapSync, notification: Notification?) {}
-    open func folderListCompleted(_ sync: ImapSync, notification: Notification?) {}
-    open func folderNameParsed(_ sync: ImapSync, notification: Notification?) {}
-    open func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {}
-    open func folderAppendFailed(_ sync: ImapSync, notification: Notification?) {}
-    open func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {}
-    open func messageStoreFailed(_ sync: ImapSync, notification: Notification?) {}
-    open func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {}
-    open func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {}
-    open func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {}
-    open func folderDeleteFailed(_ sync: ImapSync, notification: Notification?) {}
-    open func badResponse(_ sync: ImapSync, response: String?) {}
-}
-
 public enum ImapError: Int {
     case folderNotOpen = 1000
 }
