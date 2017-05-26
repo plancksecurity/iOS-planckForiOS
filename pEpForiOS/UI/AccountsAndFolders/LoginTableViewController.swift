@@ -45,7 +45,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         self.password.convertToLoginTextField(placeHolder: NSLocalizedString("Password", comment: "password"))
         self.loginButton.convertToLoginButton(placeHolder: NSLocalizedString("Sign In", comment: "Login"))
         self.username.convertToLoginTextField(placeHolder: NSLocalizedString("Username", comment: "username"))
-        self.username.isHidden = true
         self.manualConfigButton.convertToLoginButton(placeHolder: NSLocalizedString(
             "Manual configuration", comment: "manual"))
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
@@ -60,13 +59,13 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         manualConfigTableViewCell.backgroundColor = UIColor.clear
         manualConfigButton.isHidden = true
         username.isHidden = true
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginTableViewController.dismissKeyboard))
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(LoginTableViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     @IBAction func logIn(_ sender: Any) {
@@ -127,7 +126,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         } else if textField == self.emailAddress {
             self.password.becomeFirstResponder()
         } else if textField == self.password {
-            self.view.endEditing(true)
+            dismissKeyboard()
             self.logIn(self.password)
         }
         return true
