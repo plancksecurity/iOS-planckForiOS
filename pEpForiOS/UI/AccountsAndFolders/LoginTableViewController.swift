@@ -79,6 +79,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                     }
                 } else {
                     //noAllDataFilled()
+                    handleLoginError(error: Constants.errorInvalidParameter("login Screen"), autoSegue: false)
                 }
             } else {
                 loginViewModel.login(account: email, password: pass) { (err) in
@@ -89,6 +90,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
             }
         } else {
             //noAllDataFilled()
+            handleLoginError(error: Constants.errorInvalidParameter("login Screen"), autoSegue: false)
         }
     }
 
