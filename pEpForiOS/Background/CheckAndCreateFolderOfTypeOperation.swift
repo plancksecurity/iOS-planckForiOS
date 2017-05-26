@@ -26,6 +26,8 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 
     var account: CdAccount?
 
+    var syncDelegate: CheckAndCreateFolderOfTypeSyncDelegate?
+
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount, folderType: FolderType) {
         self.folderType = folderType
@@ -59,7 +61,8 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 
         let folder = CdFolder.by(folderType: self.folderType, account: account)
         if folder == nil {
-            self.imapSyncData.sync?.delegate = self
+            syncDelegate = CheckAndCreateFolderOfTypeSyncDelegate(imapSyncOperation: self)
+            self.imapSyncData.sync?.delegate = syncDelegate
             if !self.isCancelled {
                 self.imapSyncData.sync?.createFolderWithName(self.folderName)
             }
@@ -69,154 +72,58 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
     }
 }
 
-extension CheckAndCreateFolderOfTypeOperation: ImapSyncDelegate {
-    public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
-        markAsFinished()
-    }
-
-    public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorAuthenticationFailed(comp))
-        markAsFinished()
-    }
-
-    public func connectionLost(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorConnectionLost(comp))
-        markAsFinished()
-    }
-
-    public func connectionTerminated(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorConnectionTerminated(comp))
-        markAsFinished()
-    }
-
-    public func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorConnectionTimeout(comp))
-        markAsFinished()
-    }
-
-    public func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderPrefetchCompleted"))
-        markAsFinished()
-    }
-
-    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderSyncCompleted"))
-        markAsFinished()
-    }
-
-    public func folderSyncFailed(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderSyncFailed"))
-        markAsFinished()
-    }
-
-    public func messageChanged(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "messageChanged"))
-        markAsFinished()
-    }
-
-    public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
-        markAsFinished()
-    }
-
-    public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderOpenCompleted"))
-        markAsFinished()
-    }
-
-    public func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderOpenFailed"))
-        markAsFinished()
-    }
-
-    public func folderStatusCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderStatusCompleted"))
-        markAsFinished()
-    }
-
-    public func folderListCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderListCompleted"))
-        markAsFinished()
-    }
-
-    public func folderNameParsed(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderNameParsed"))
-        markAsFinished()
-    }
-
-    public func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderAppendCompleted"))
-        markAsFinished()
-    }
-
-    public func folderAppendFailed(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderAppendFailed"))
-        markAsFinished()
-    }
-
-    public func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "messageStoreCompleted"))
-        markAsFinished()
-    }
-
-    public func messageStoreFailed(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "messageStoreFailed"))
-        markAsFinished()
-    }
-
-    public func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
-        privateMOC.perform() {
-            self.completed(context: self.privateMOC)
+class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
+    public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
+        guard let op = imapSyncOperation as? CheckAndCreateFolderOfTypeOperation else {
+            return
+        }
+        op.privateMOC.perform() {
+            self.completed(context: op.privateMOC)
         }
     }
 
     func completed(context: NSManagedObjectContext) {
-        if let ac = account {
-            let server = context.object(with: imapSyncData.connectInfo.serverObjectID) as? CdServer
-            if CdFolder.insertOrUpdate(folderName: folderName,
+        guard let op = imapSyncOperation as? CheckAndCreateFolderOfTypeOperation else {
+            return
+        }
+        if let ac = op.account {
+            let server = context.object(with: op.imapSyncData.connectInfo.serverObjectID)
+                as? CdServer
+            if CdFolder.insertOrUpdate(folderName: op.folderName,
                                        folderSeparator: server?.imapFolderSeparator,
                                        account: ac) == nil {
-                self.addError(Constants.errorFolderCreateFailed(comp, name: folderName))
+                op.addError(Constants.errorFolderCreateFailed(#function, name: op.folderName))
             } else {
                 Record.saveAndWait(context: context)
             }
         }
-        markAsFinished()
+        op.markAsFinished()
     }
 
-    public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
-        privateMOC.perform() {
-            self.tryAgain(context: self.privateMOC, sync: sync)
+    public override func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
+        guard let op = imapSyncOperation as? CheckAndCreateFolderOfTypeOperation else {
+            return
+        }
+        op.privateMOC.perform() {
+            self.tryAgain(context: op.privateMOC, sync: sync)
         }
     }
 
     func tryAgain(context: NSManagedObjectContext, sync: ImapSync) {
-        if !isCancelled {
-            let server = context.object(with: imapSyncData.connectInfo.serverObjectID) as? CdServer
-            if numberOfFailures == 0, let fs = server?.imapFolderSeparator {
-                folderName = "INBOX\(fs)\(folderName)"
-                sync.createFolderWithName(folderName)
-                numberOfFailures += 1
+        guard let op = imapSyncOperation as? CheckAndCreateFolderOfTypeOperation else {
+            return
+        }
+        if !op.isCancelled {
+            let server = context.object(with: op.imapSyncData.connectInfo.serverObjectID)
+                as? CdServer
+            if op.numberOfFailures == 0, let fs = server?.imapFolderSeparator {
+                op.folderName = "INBOX\(fs)\(op.folderName)"
+                sync.createFolderWithName(op.folderName)
+                op.numberOfFailures += 1
                 return
             }
-            addError(Constants.errorFolderCreateFailed(comp, name: folderName))
-            markAsFinished()
+            op.addError(Constants.errorFolderCreateFailed(#function, name: op.folderName))
+            op.markAsFinished()
         }
-    }
-
-    public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderDeleteCompleted"))
-        markAsFinished()
-    }
-
-    public func folderDeleteFailed(_ sync: ImapSync, notification: Notification?) {
-        addIMAPError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
-        markAsFinished()
-    }
-
-    public func badResponse(_ sync: ImapSync, response: String?) {
-        addIMAPError(ImapSyncError.badResponse(response))
-        markAsFinished()
     }
 }
