@@ -39,7 +39,7 @@ class AccountVerificationServiceTests: XCTestCase {
         persistentSetup = nil
     }
 
-    func testVerification(account: Account) {
+    func testVerification(account: Account, expectedResult: AccountVerificationResult) {
         let expVerified = expectation(description: "account verified")
         let delegate = AccountVerificationDelegate(expVerified: expVerified)
         let service = AccountVerificationService()
@@ -52,12 +52,19 @@ class AccountVerificationServiceTests: XCTestCase {
                 XCTFail()
                 return
             }
-            XCTAssertEqual(result, AccountVerificationResult.ok)
+            XCTAssertEqual(result, expectedResult)
         })
     }
 
     func testSuccess() {
-        let account = TestData().createWorkingAccount()
-        testVerification(account: account)
+        testVerification(account: TestData().createWorkingAccount(),
+                         expectedResult: AccountVerificationResult.ok)
+    }
+
+    func testFailures() {
+        testVerification(account: TestData().createImapTimeOutAccount(),
+                         expectedResult: AccountVerificationResult.error(.networkError))
+        testVerification(account: TestData().createSmtpTimeOutAccount(),
+                         expectedResult: AccountVerificationResult.error(.networkError))
     }
 }
