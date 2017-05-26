@@ -103,7 +103,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                 "View log",
                 comment: "Button for viewing the log on error"),
             style: .default, handler: { action in
-                //self.viewLog()
+                self.viewLog()
         }))
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString(
@@ -136,6 +136,18 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
 
+    func viewLog() {
+        performSegue(withIdentifier: .viewLogSegue, sender: self)
+    }
+
+}
+
+extension LoginTableViewController: SegueHandlerType {
+
+    public enum SegueIdentifier: String {
+        case noSegue
+        case viewLogSegue
+    }
 }
 
 extension LoginTableViewController: AccountDelegate {
@@ -150,5 +162,4 @@ extension LoginTableViewController: AccountDelegate {
             }
         }
     }
-    
 }
