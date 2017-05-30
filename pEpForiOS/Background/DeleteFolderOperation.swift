@@ -14,7 +14,7 @@ open class DeleteFolderOperation: ImapSyncOperation {
     var folderName: String
     let accountID: NSManagedObjectID
     var account: CdAccount!
-    var syncDelegate: DefaultImapSyncDelegate?
+    var syncDelegate: DeleteFolderSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount,
@@ -41,7 +41,7 @@ open class DeleteFolderOperation: ImapSyncOperation {
                 self.markAsFinished()
                 return
             }
-            self.syncDelegate = DefaultImapSyncDelegate(imapSyncOperation: self)
+            self.syncDelegate = DeleteFolderSyncDelegate(imapSyncOperation: self)
             self.imapSyncData.sync?.delegate = self.syncDelegate
             self.imapSyncData.sync?.deleteFolderWithName(self.folderName)
         }
