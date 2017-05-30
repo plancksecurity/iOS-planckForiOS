@@ -17,6 +17,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
     let lastUID: UInt
     let firstUID: UInt
     var lastSeenUID: UInt?
+    var syncDelegate: SyncMessagesSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, folderID: NSManagedObjectID,
@@ -76,7 +77,8 @@ open class SyncMessagesOperation: ImapSyncOperation {
         let folderBuilder = ImapFolderBuilder(
             accountID: self.imapSyncData.connectInfo.accountObjectID,
             backgroundQueue: self.backgroundQueue)
-        self.imapSyncData.sync?.delegate = self
+        syncDelegate = SyncMessagesSyncDelegate(imapSyncOperation: self)
+        self.imapSyncData.sync?.delegate = syncDelegate
         self.imapSyncData.sync?.folderBuilder = folderBuilder
 
         if let sync = self.imapSyncData.sync {
@@ -116,46 +118,10 @@ open class SyncMessagesOperation: ImapSyncOperation {
             }
         }
     }
-}
 
-extension SyncMessagesOperation: ImapSyncDelegate {
+    // MARK: - ImapSyncDelegate (internal)
 
-    public func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
-        markAsFinished()
-    }
-
-    public func receivedFolderNames(_ sync: ImapSync, folderNames: [String]?) {
-        addError(Constants.errorIllegalState(comp, stateName: "receivedFolderNames"))
-        markAsFinished()
-    }
-
-    public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorAuthenticationFailed(comp))
-        markAsFinished()
-    }
-
-    public func connectionLost(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorConnectionLost(comp))
-        markAsFinished()
-    }
-
-    public func connectionTerminated(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorConnectionTerminated(comp))
-        markAsFinished()
-    }
-
-    public func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorTimeout(comp))
-        markAsFinished()
-    }
-
-    public func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
-        markAsFinished()
-    }
-
-    public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+    func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
         // delete locally whatever was not mentioned in our big sync
         if let folder = sync.imapState.currentFolder {
             let existingUIDs = folder.existingUIDs()
@@ -167,86 +133,25 @@ extension SyncMessagesOperation: ImapSyncDelegate {
         markAsFinished()
     }
 
-    public func folderSyncFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorFolderSyncFailed(comp, folderName: folderToOpen))
-        markAsFinished()
+    func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+        syncMessages(sync)
+    }
+}
+
+// MARK: - ImapSyncDelegate (actual delegate)
+
+class SyncMessagesSyncDelegate: DefaultImapSyncDelegate {
+    public override func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        (imapSyncOperation as? SyncMessagesOperation)?.folderSyncCompleted(
+            sync, notification: notification)
     }
 
-    public func messageChanged(_ sync: ImapSync, notification: Notification?) {
+    public override func messageChanged(_ sync: ImapSync, notification: Notification?) {
         // The update of the flags is already handled by `PersistentFolder`.
     }
 
-    public func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "messagePrefetchCompleted"))
-        markAsFinished()
-    }
-
-    public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        syncMessages(sync)
-    }
-
-    public func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderOpenFailed"))
-        markAsFinished()
-    }
-
-    public func folderStatusCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderStatusCompleted"))
-        markAsFinished()
-    }
-
-    public func folderListCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderListCompleted"))
-        markAsFinished()
-    }
-
-    public func folderNameParsed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderNameParsed"))
-        markAsFinished()
-    }
-
-    public func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderAppendCompleted"))
-        markAsFinished()
-    }
-
-    public func folderAppendFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderAppendFailed"))
-        markAsFinished()
-    }
-
-    public func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "messageStoreCompleted"))
-        markAsFinished()
-    }
-
-    public func messageStoreFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "messageStoreFailed"))
-        markAsFinished()
-    }
-
-    public func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderCreateCompleted"))
-        markAsFinished()
-    }
-
-    public func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderCreateFailed"))
-        markAsFinished()
-    }
-
-    public func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteCompleted"))
-        markAsFinished()
-    }
-
-    public func folderDeleteFailed(_ sync: ImapSync, notification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "folderDeleteFailed"))
-        markAsFinished()
-    }
-
-    public func badResponse(_ sync: ImapSync, response: String?) {
-        addError(ImapSyncError.badResponse(response))
-        markAsFinished()
+    public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+        (imapSyncOperation as? SyncMessagesOperation)?.folderOpenCompleted(
+            sync, notification: notification)
     }
 }
