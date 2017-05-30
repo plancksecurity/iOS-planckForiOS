@@ -39,6 +39,7 @@ public protocol ImapSyncDelegate: class {
     func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?)
     func folderDeleteFailed(_ sync: ImapSync, notification: Notification?)
     func badResponse(_ sync: ImapSync, response: String?)
+    func actionFailed(_ sync: ImapSync, response: String?)
 }
 
 public enum ImapError: Int {

@@ -17,6 +17,7 @@ enum ImapSyncError: Error {
     case connectionTerminated(FunctionName)
     case connectionTimedOut(FunctionName)
     case badResponse(String?)
+    case actionFailed
 }
 
 extension ImapSyncError: Equatable {
@@ -34,6 +35,8 @@ extension ImapSyncError: Equatable {
             return fn1 == fn2
         case (.badResponse(let s1), .badResponse(let s2)):
             return s1 == s2
+        case (.actionFailed, .actionFailed):
+            return true
         case (.illegalState, _):
             return false
         case (.authenticationFailed, _):
@@ -45,6 +48,8 @@ extension ImapSyncError: Equatable {
         case (.connectionTimedOut, _):
             return false
         case (.badResponse, _):
+            return false
+        case (.actionFailed, _):
             return false
         }
     }

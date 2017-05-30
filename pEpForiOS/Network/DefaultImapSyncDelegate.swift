@@ -141,4 +141,9 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
         imapSyncOperation?.addIMAPError(ImapSyncError.illegalState(#function))
         imapSyncOperation?.markAsFinished()
     }
+
+    public func actionFailed(_ sync: ImapSync, response: String?) {
+        imapSyncOperation?.addIMAPError(ImapSyncError.actionFailed)
+        imapSyncOperation?.markAsFinished()
+    }
 }
