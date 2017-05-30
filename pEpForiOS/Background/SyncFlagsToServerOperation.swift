@@ -153,6 +153,8 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         Log.error(component: comp, errorString: logMessage)
     }
 
+    // MARK: - ImapSyncDelegate (internal)
+
     func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
         // flags to add have been synced, but we might need to sync flags to remove also before
         // processing the next message.
@@ -218,7 +220,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 }
 
-// MARK: - ImapSyncDelegate
+// MARK: - ImapSyncDelegate (actual delegate)
 
 class SyncFlagsToServerSyncDelegate: DefaultImapSyncDelegate {
     override func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
