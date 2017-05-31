@@ -9,11 +9,51 @@
 import Foundation
 import MessageModel
 
-public enum LoginCellType {
+enum AccountSettingsError: Error {
+    case timeOut
+    case notFound
+    case illegalValue
+    case noSettings
+
+    init?(status: AS_STATUS) {
+        switch status {
+        case AS_TIMEOUT:
+            self = .timeOut
+        case AS_NOT_FOUND:
+            self = .notFound
+        case AS_ILLEGAL_VALUE:
+            self = .illegalValue
+        default:
+            return nil
+        }
+    }
+}
+
+extension AccountSettingsError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .timeOut:
+            return NSLocalizedString("Account detection timed out",
+                                     comment: "Error description detecting account settings")
+        case .notFound:
+            return NSLocalizedString("Could not find servers",
+                                     comment: "Error description detecting account settings")
+        case .illegalValue, .noSettings:
+            return NSLocalizedString("Could not find servers",
+                                     comment: "Error description detecting account settings")
+        }
+    }
+}
+
+enum AccountVerificationError: Error {
+    case insufficientInput
+}
+
+enum LoginCellType {
     case Text, Button
 }
 
-public class LoginViewModel {   
+class LoginViewModel {
     var loginAccount : Account?
     var accountSettings: ASAccountSettings?
     var extendedLogin = false
@@ -23,43 +63,53 @@ public class LoginViewModel {
     }
 
     func login(account: String, password: String, username: String? = nil,
-               callback: (NSError?) -> Void) {
+               callback: (Error?) -> Void) {
         let user = ModelUserInfoTable()
-        accountSettings = ASAccountSettings.init(accountName: account, provider: password,
-                                                 flags: AS_FLAG_USE_ANY, credentials: nil)
-        if accountSettings?.status == AS_OK, let acSettings = accountSettings {
-            user.email = account
-            user.password = password
-            user.portIMAP = UInt16(acSettings.incoming.port)
-            user.serverIMAP = acSettings.incoming.hostname
-            user.portSMTP = UInt16(acSettings.outgoing.port)
-            user.serverSMTP = acSettings.outgoing.hostname
-            //fast fix remove me
-            if username != nil {
-                user.username = username
-            } else {
-                //FIXME
-                if acSettings.incoming.username != "" {
-                    user.username = acSettings.incoming.username
-                } else {
-                    user.username = account
-                }
-            }
-            user.username = account
-            if verifyAccount(model: user) {
-                callback(nil)
-            }
-        } else {
-            let err = NSError(domain: "Unable to find the server", code: 0, userInfo: nil)
+        accountSettings = ASAccountSettings(accountName: account, provider: password,
+                                            flags: AS_FLAG_USE_ANY, credentials: nil)
+        guard let acSettings = accountSettings else {
+            let err = AccountSettingsError.noSettings
+            Log.shared.error(component: #function, error: err)
             callback(err)
+            return
+        }
+        if let err = AccountSettingsError(status: acSettings.status) {
+            Log.shared.error(component: #function, error: err)
+            callback(err)
+            return
+        }
+        user.email = account
+        user.password = password
+        user.portIMAP = UInt16(acSettings.incoming.port)
+        user.serverIMAP = acSettings.incoming.hostname
+        user.portSMTP = UInt16(acSettings.outgoing.port)
+        user.serverSMTP = acSettings.outgoing.hostname
+        //fast fix remove me
+        if username != nil {
+            user.username = username
+        } else {
+            //FIXME
+            if acSettings.incoming.username != "" {
+                user.username = acSettings.incoming.username
+            } else {
+                user.username = account
+            }
+        }
+        user.username = account
+
+        if let err = verifyAccount(model: user) {
+            Log.shared.error(component: #function, error: err)
+            callback(AccountSettingsError.illegalValue)
+        } else {
+            callback(nil)
         }
     }
 
-    func verifyAccount(model: ModelUserInfoTable) -> Bool {
+    func verifyAccount(model: ModelUserInfoTable) -> AccountVerificationError? {
         guard let addres = model.email, let email = model.email,
             let username = model.username, let serverIMAP = model.serverIMAP,
                 let serverSMTP = model.serverSMTP else {
-            return false
+            return .insufficientInput
         }
         let identity = Identity.create(address: addres, userName: email)
         identity.isMySelf = true
@@ -74,12 +124,10 @@ public class LoginViewModel {
         let credentials = ServerCredentials.create(userName: username, password: model.password,
                                                    servers: [imapServer, smtpServer])
         credentials.needsVerification = true
-        loginAccount = Account.create(identity: identity, credentials: [credentials])
-        if let account = loginAccount {
-            account.needsVerification = true
-            account.save()
-            return true
-        }
-        return false
+        let account = Account.create(identity: identity, credentials: [credentials])
+        loginAccount = account
+        account.needsVerification = true
+        account.save()
+        return nil
     }
 }
