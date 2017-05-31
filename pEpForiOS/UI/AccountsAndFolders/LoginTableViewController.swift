@@ -182,7 +182,6 @@ extension LoginTableViewController: SegueHandlerType {
 }
 
 extension LoginTableViewController: AccountDelegate {
-
     public func didVerify(account: Account, error: Error?) {
         GCD.onMain() {
             if let err = error {

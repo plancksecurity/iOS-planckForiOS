@@ -46,7 +46,7 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
-    func newAccountSetup(_ account: Account) {
+    func manualNewAccountSetup(_ account: Account) {
         let tablesQuery = XCUIApplication().tables
 
         var tf = tablesQuery.cells.textFields["nameOfTheUser"]
@@ -90,23 +90,43 @@ class NewAccountSetupUITest: XCTestCase {
         nextButton.tap()
     }
 
+    func newAccountSetup(account: Account) {
+        let tablesQuery = XCUIApplication().tables
+        var tfEmail = tablesQuery.cells.textFields["email"]
+
+        tfEmail.tap()
+        tfEmail.typeText(account.email)
+
+        tfEmail = tablesQuery.cells.secureTextFields["password"]
+        tfEmail.tap()
+        tfEmail.typeText(account.password)
+
+        XCUIApplication().tables.cells.buttons["Sign In"].tap()
+    }
+
+    func testNewAccountSetup() {
+        let account = UITestData.workingAccount1
+        newAccountSetup(account: account)
+        waitForever()
+    }
+
     func testInsertNewWorkingAccount() {
         let account = UITestData.workingAccount1
-        newAccountSetup(account)
+        manualNewAccountSetup(account)
         waitForever()
     }
 
     func testNewAccountThatShouldFail() {
         var account = UITestData.workingAccount1
         account.password = "CLEArlyWRong"
-        newAccountSetup(account)
+        manualNewAccountSetup(account)
         // TODO: Verify error message
         waitForever()
     }
 
     func testInsertNewYahooAccount() {
         let account = UITestData.workingYahooAccount
-        newAccountSetup(account)
+        manualNewAccountSetup(account)
         waitForever()
     }
 
@@ -117,7 +137,7 @@ class NewAccountSetupUITest: XCTestCase {
         app.navigationBars["Accounts"].buttons["Add"].tap()
 
         let account = UITestData.workingAccount3
-        newAccountSetup(account)
+        manualNewAccountSetup(account)
 
         waitForever()
     }
@@ -126,13 +146,13 @@ class NewAccountSetupUITest: XCTestCase {
         let app = XCUIApplication()
 
         var account = UITestData.workingAccount1
-        newAccountSetup(account)
+        manualNewAccountSetup(account)
 
         app.navigationBars["Inbox"].buttons["Accounts"].tap()
         app.navigationBars["Accounts"].buttons["Add"].tap()
 
         account = UITestData.workingAccount2
-        newAccountSetup(account)
+        manualNewAccountSetup(account)
 
         waitForever()
     }
@@ -141,19 +161,19 @@ class NewAccountSetupUITest: XCTestCase {
         let app = XCUIApplication()
 
         var account = UITestData.workingAccount1
-        newAccountSetup(account)
+        manualNewAccountSetup(account)
 
         app.navigationBars["Inbox"].buttons["Accounts"].tap()
         app.navigationBars["Accounts"].buttons["Add"].tap()
 
         account = UITestData.workingAccount2
-        newAccountSetup(account)
+        manualNewAccountSetup(account)
 
         app.navigationBars["Inbox"].buttons["Accounts"].tap()
         app.navigationBars["Accounts"].buttons["Add"].tap()
 
         account = UITestData.workingAccount3
-        newAccountSetup(account)
+        manualNewAccountSetup(account)
         
         waitForever()
     }
