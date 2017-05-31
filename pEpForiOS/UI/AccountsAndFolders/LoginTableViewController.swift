@@ -96,7 +96,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
 
-    public func handleLoginError(error: NSError, autoSegue: Bool) {
+    public func handleLoginError(error: Error, autoSegue: Bool) {
         let alertView = UIAlertController(
             title: NSLocalizedString(
                 "Error",
