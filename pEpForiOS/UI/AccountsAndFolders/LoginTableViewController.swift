@@ -9,6 +9,28 @@
 import UIKit
 import MessageModel
 
+enum LoginTableViewControllerError: Error {
+    case missingEmail
+    case missingPassword
+    case missingUserName
+}
+
+extension LoginTableViewControllerError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .missingEmail:
+            return NSLocalizedString("Email needed",
+                                     comment: "Automated account setup error description")
+        case .missingPassword:
+            return NSLocalizedString("Password needed",
+                                     comment: "Automated account setup error description")
+        case .missingUserName:
+            return NSLocalizedString("User name needed",
+                                     comment: "Automated account setup error description")
+        }
+    }
+}
+
 class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     let loginViewModel = LoginViewModel()
     var extendedLogin = false
@@ -70,29 +92,34 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     @IBAction func logIn(_ sender: Any) {
-        if let email = emailAddress.text, email != "", let pass = password.text, pass != "" {
-            if extendedLogin {
-                if let username = username.text, username != "" {
-                    loginViewModel.login(
-                    account: email, password: pass, username: username) { (err) in
-                        if let error = err {
-                            handleLoginError(error: error, autoSegue: true)
-                        }
-                    }
-                } else {
-                    handleLoginError(error: Constants.errorInvalidParameter("login Screen"),
-                                     autoSegue: false)
-                }
-            } else {
-                loginViewModel.login(account: email, password: pass) { (err) in
+        guard let email = emailAddress.text, email != "" else {
+            handleLoginError(error: LoginTableViewControllerError.missingEmail, autoSegue: false)
+            return
+        }
+        guard let pass = password.text, pass != "" else {
+            handleLoginError(error: LoginTableViewControllerError.missingPassword,
+                             autoSegue: false)
+            return
+        }
+        if extendedLogin {
+            if let username = username.text, username != "" {
+                loginViewModel.login(
+                account: email, password: pass, username: username) { (err) in
                     if let error = err {
                         handleLoginError(error: error, autoSegue: true)
                     }
                 }
+            } else {
+                handleLoginError(
+                    error: LoginTableViewControllerError.missingUserName,
+                    autoSegue: false)
             }
         } else {
-            handleLoginError(error: Constants.errorInvalidParameter("login Screen"),
-                             autoSegue: false)
+            loginViewModel.login(account: email, password: pass) { (err) in
+                if let error = err {
+                    handleLoginError(error: error, autoSegue: true)
+                }
+            }
         }
     }
 
