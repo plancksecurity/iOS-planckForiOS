@@ -10,10 +10,8 @@ import UIKit
 import MessageModel
 
 class LoginTableViewController: UITableViewController, UITextFieldDelegate {
-
     let loginViewModel = LoginViewModel()
     var extendedLogin = false
-
 
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var emailAddress: UITextField!
@@ -27,7 +25,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var loginTableViewCell: UITableViewCell!
     @IBOutlet weak var manualConfigTableViewCell: UITableViewCell!
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -41,12 +38,16 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         self.emailAddress.delegate = self
         self.password.delegate = self
         self.username.delegate = self
-        self.emailAddress.convertToLoginTextField(placeHolder: NSLocalizedString("Email", comment: "Email"))
-        self.password.convertToLoginTextField(placeHolder: NSLocalizedString("Password", comment: "password"))
-        self.loginButton.convertToLoginButton(placeHolder: NSLocalizedString("Sign In", comment: "Login"))
-        self.username.convertToLoginTextField(placeHolder: NSLocalizedString("Username", comment: "username"))
-        self.manualConfigButton.convertToLoginButton(placeHolder: NSLocalizedString(
-            "Manual configuration", comment: "manual"))
+        self.emailAddress.convertToLoginTextField(
+            placeHolder: NSLocalizedString("Email", comment: "Email"))
+        self.password.convertToLoginTextField(
+            placeHolder: NSLocalizedString("Password", comment: "password"))
+        self.loginButton.convertToLoginButton(
+            placeHolder: NSLocalizedString("Sign In", comment: "Login"))
+        self.username.convertToLoginTextField(
+            placeHolder: NSLocalizedString("Username", comment: "username"))
+        self.manualConfigButton.convertToLoginButton(
+            placeHolder: NSLocalizedString("Manual configuration", comment: "manual"))
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
         self.view.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
         self.tableView.contentInset = UIEdgeInsets(top: 30,left: 0,bottom: 0,right: 0)
@@ -72,14 +73,15 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         if let email = emailAddress.text, email != "", let pass = password.text, pass != "" {
             if extendedLogin {
                 if let username = username.text, username != "" {
-                    loginViewModel.login(account: email, password: pass, username: username) { (err) in
+                    loginViewModel.login(
+                    account: email, password: pass, username: username) { (err) in
                         if let error = err {
                             handleLoginError(error: error, autoSegue: true)
                         }
                     }
                 } else {
-                    //noAllDataFilled()
-                    handleLoginError(error: Constants.errorInvalidParameter("login Screen"), autoSegue: false)
+                    handleLoginError(error: Constants.errorInvalidParameter("login Screen"),
+                                     autoSegue: false)
                 }
             } else {
                 loginViewModel.login(account: email, password: pass) { (err) in
@@ -89,15 +91,16 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                 }
             }
         } else {
-            //noAllDataFilled()
-            handleLoginError(error: Constants.errorInvalidParameter("login Screen"), autoSegue: false)
+            handleLoginError(error: Constants.errorInvalidParameter("login Screen"),
+                             autoSegue: false)
         }
     }
 
     public func handleLoginError(error: NSError, autoSegue: Bool) {
         let alertView = UIAlertController(
             title: NSLocalizedString(
-                "Error",comment: "the text in the title for the error message AlerView in account settings"),
+                "Error",
+                comment: "UIAlertController error title"),
             message:error.localizedDescription, preferredStyle: .alert)
         alertView.view.tintColor = .pEpGreen
         alertView.addAction(UIAlertAction(
@@ -110,7 +113,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString(
                 "Ok",
-                comment: "confirmation button text for error message AlertView in account settings"),
+                comment: "UIAlertAction ok after error"),
             style: .default, handler: {action in
                 if autoSegue {
 
@@ -141,11 +144,9 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     func viewLog() {
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
-
 }
 
 extension LoginTableViewController: SegueHandlerType {
-
     public enum SegueIdentifier: String {
         case noSegue
         case viewLogSegue
