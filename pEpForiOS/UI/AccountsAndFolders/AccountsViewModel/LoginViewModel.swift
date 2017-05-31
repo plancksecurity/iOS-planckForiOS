@@ -13,7 +13,6 @@ enum AccountSettingsError: Error {
     case timeOut
     case notFound
     case illegalValue
-    case noSettings
 
     init?(status: AS_STATUS) {
         switch status {
@@ -38,7 +37,7 @@ extension AccountSettingsError: LocalizedError {
         case .notFound:
             return NSLocalizedString("Could not find servers",
                                      comment: "Error description detecting account settings")
-        case .illegalValue, .noSettings:
+        case .illegalValue:
             return NSLocalizedString("Could not find servers",
                                      comment: "Error description detecting account settings")
         }
@@ -65,14 +64,9 @@ class LoginViewModel {
     func login(account: String, password: String, username: String? = nil,
                callback: (Error?) -> Void) {
         let user = ModelUserInfoTable()
-        accountSettings = ASAccountSettings(accountName: account, provider: password,
-                                            flags: AS_FLAG_USE_ANY, credentials: nil)
-        guard let acSettings = accountSettings else {
-            let err = AccountSettingsError.noSettings
-            Log.shared.error(component: #function, error: err)
-            callback(err)
-            return
-        }
+        let acSettings = ASAccountSettings(accountName: account, provider: password,
+                                           flags: AS_FLAG_USE_ANY, credentials: nil)
+        accountSettings = acSettings
         if let err = AccountSettingsError(status: acSettings.status) {
             Log.shared.error(component: #function, error: err)
             callback(err)
