@@ -14,7 +14,6 @@ public enum LoginCellType {
 }
 
 public class LoginViewModel {   
-
     var loginAccount : Account?
     var accountSettings: ASAccountSettings?
     var extendedLogin = false
@@ -23,9 +22,8 @@ public class LoginViewModel {
         return !Account.all().isEmpty
     }
 
-
-    func login(account: String, password: String, username: String? = nil,  callback: (NSError?) -> Void) {
-
+    func login(account: String, password: String, username: String? = nil,
+               callback: (NSError?) -> Void) {
         let user = ModelUserInfoTable()
         accountSettings = ASAccountSettings.init(accountName: account, provider: password,
                                                  flags: AS_FLAG_USE_ANY, credentials: nil)
@@ -58,7 +56,6 @@ public class LoginViewModel {
     }
 
     func verifyAccount(model: ModelUserInfoTable) -> Bool {
-
         guard let addres = model.email, let email = model.email,
             let username = model.username, let serverIMAP = model.serverIMAP,
                 let serverSMTP = model.serverSMTP else {
@@ -84,6 +81,5 @@ public class LoginViewModel {
             return true
         }
         return false
-
     }
 }
