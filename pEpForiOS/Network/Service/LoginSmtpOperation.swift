@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import MessageModel
+
 open class LoginSmtpOperation: ConcurrentBaseOperation {
     var service: SmtpSend!
     var smtpSendData: SmtpSendData
@@ -38,7 +40,8 @@ extension LoginSmtpOperation: SmtpSendDelegate {
 
     public func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
         smtpSendData.smtp = smtp
-        markAsFinished()
+        smtpSendData.connectInfo.unsetNeedsVerificationAndFinish(
+            context: Record.Context.background, operation: self)
     }
 
     public func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {

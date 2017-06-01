@@ -47,28 +47,7 @@ class LoginImapSyncDelegate: DefaultImapSyncDelegate {
         op.imapSyncData.sync = sync
 
         let context = Record.Context.background
-        context.performAndWait {
-            if op.isCancelled {
-                op.markAsFinished()
-                return
-            }
-            guard let creds = context.object(
-                with: op.imapSyncData.connectInfo.credentialsObjectID)
-                as? CdServerCredentials else {
-                    op.addError(Constants.errorCannotFindServerCredentials(component: #function))
-                    return
-            }
-
-            if !op.isCancelled {
-                if creds.needsVerification == true {
-                    creds.needsVerification = false
-                }
-
-                Record.saveAndWait(context: context)
-            }
-        }
-
-        op.markAsFinished()
+        op.imapSyncData.connectInfo.unsetNeedsVerificationAndFinish(context: context, operation: op)
     }
 
     public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {

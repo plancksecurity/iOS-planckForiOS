@@ -111,6 +111,10 @@ public enum EmailProtocol: String {
     }
 }
 
+enum EmailConnectInfoError: Error {
+    case cannotFindServerCredentials
+}
+
 /**
  Holds additional connection info (like server, port etc.) for IMAP and SMTP.
  */
@@ -146,5 +150,32 @@ public class EmailConnectInfo: ConnectInfo {
                    networkPort: networkPort,
                    networkAddressType: networkAddressType,
                    networkTransportType: networkTransportType)
+    }
+
+    func unsetNeedsVerificationAndFinish(context: NSManagedObjectContext,
+                                         operation: ConcurrentBaseOperation) {
+        context.perform {
+            self.unsetNeedsVerificationAndFinishInternal(context: context, operation: operation)
+        }
+    }
+
+    func unsetNeedsVerificationAndFinishInternal(context: NSManagedObjectContext,
+                                                 operation: ConcurrentBaseOperation) {
+        defer {
+            operation.markAsFinished()
+        }
+
+        guard let creds = context.object(
+            with: self.credentialsObjectID)
+            as? CdServerCredentials else {
+                operation.addError(EmailConnectInfoError.cannotFindServerCredentials)
+                return
+        }
+
+        if creds.needsVerification == true {
+            creds.needsVerification = false
+        }
+
+        Record.saveAndWait(context: context)
     }
 }
