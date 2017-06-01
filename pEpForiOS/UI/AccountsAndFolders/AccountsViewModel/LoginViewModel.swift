@@ -28,6 +28,11 @@ enum AccountSettingsError: Error {
     }
 }
 
+protocol accountVerificationResultDelegate: class {
+    func Result(result: AccountVerificationResult)
+}
+
+
 extension AccountSettingsError: LocalizedError {
     var errorDescription: String? {
         switch self {
@@ -57,7 +62,7 @@ class LoginViewModel {
     var accountSettings: ASAccountSettings?
     var extendedLogin = false
     let accountVerificationService = AccountVerificationService()
-    weak var delegate: AccountVerificationServiceDelegate?
+    weak var delegate: accountVerificationResultDelegate?
 
     func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
@@ -134,6 +139,7 @@ class LoginViewModel {
 extension LoginViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
-        delegate?.verified(account: account, service: service, result: result)
+        account.delete()
+        delegate?.Result(result: result)
     }
 }

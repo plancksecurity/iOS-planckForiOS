@@ -107,18 +107,18 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
 
         loginViewModel.delegate = self
         if extendedLogin {
-            if let username = username.text, username != "" {
+            guard let username = username.text, username != "" else {
+                handleLoginError(
+                    error: LoginTableViewControllerError.missingUserName,
+                    autoSegue: false)
+                return
+            }
                 loginViewModel.login(
                 account: email, password: pass, username: username) { (err) in
                     if let error = err {
                         handleLoginError(error: error, autoSegue: true)
                     }
                 }
-            } else {
-                handleLoginError(
-                    error: LoginTableViewControllerError.missingUserName,
-                    autoSegue: false)
-            }
         } else {
             loginViewModel.login(account: email, password: pass) { (err) in
                 if let error = err {
@@ -189,6 +189,25 @@ extension LoginTableViewController: SegueHandlerType {
 extension LoginTableViewController: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
+        GCD.onMain() {
+            switch result {
+            case .ok:
+                // unwind back to INBOX on success
+                self.dismiss(animated: true, completion: nil)
+            case .imapError(let err):
+                self.handleLoginError(error: err, autoSegue: false)
+            case .smtpError(let err):
+                self.handleLoginError(error: err, autoSegue: false)
+            case .noImapConnectData, .noSmtpConnectData:
+                self.handleLoginError(error: LoginTableViewControllerError.noConnectData,
+                                      autoSegue: false)
+            }
+        }
+    }
+}
+
+extension LoginTableViewController: accountVerificationResultDelegate {
+    func Result(result: AccountVerificationResult) {
         GCD.onMain() {
             switch result {
             case .ok:
