@@ -53,8 +53,6 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        MessageModelConfig.accountDelegate = self
         updateView()
     }
     
@@ -191,17 +189,21 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
     }
 }
 
-extension SMTPSettingsTableView: AccountDelegate {
-    public func didVerify(account: Account, error: Error?) {
+extension SMTPSettingsTableView: AccountVerificationServiceDelegate {
+    func verified(account: Account, service: AccountVerificationServiceProtocol,
+                  result: AccountVerificationResult) {
         GCD.onMain() {
-            self.status.activityIndicatorViewEnable = false
-            self.updateView()
-
-            if let err = error {
-                self.showErrorMessage(err.localizedDescription)
-            } else {
+            switch result {
+            case .ok:
                 // unwind back to INBOX on success
                 self.dismiss(animated: true, completion: nil)
+            case .imapError(let err):
+                self.showErrorMessage(err.localizedDescription)
+            case .smtpError(let err):
+                self.showErrorMessage(err.localizedDescription)
+            case .noImapConnectData, .noSmtpConnectData:
+                self.showErrorMessage(
+                    LoginTableViewControllerError.noConnectData.localizedDescription)
             }
         }
     }

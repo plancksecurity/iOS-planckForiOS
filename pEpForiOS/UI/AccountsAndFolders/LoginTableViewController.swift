@@ -13,6 +13,7 @@ enum LoginTableViewControllerError: Error {
     case missingEmail
     case missingPassword
     case missingUserName
+    case noConnectData
 }
 
 extension LoginTableViewControllerError: LocalizedError {
@@ -26,6 +27,9 @@ extension LoginTableViewControllerError: LocalizedError {
                                      comment: "Automated account setup error description")
         case .missingUserName:
             return NSLocalizedString("User name needed",
+                                     comment: "Automated account setup error description")
+        case .noConnectData:
+            return NSLocalizedString("Internal error",
                                      comment: "Automated account setup error description")
         }
     }
@@ -50,7 +54,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        MessageModelConfig.accountDelegate = self
     }
 
     func configureView(){
@@ -101,6 +104,8 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                              autoSegue: false)
             return
         }
+
+        loginViewModel.delegate = self
         if extendedLogin {
             if let username = username.text, username != "" {
                 loginViewModel.login(
@@ -181,14 +186,21 @@ extension LoginTableViewController: SegueHandlerType {
     }
 }
 
-extension LoginTableViewController: AccountDelegate {
-    public func didVerify(account: Account, error: Error?) {
+extension LoginTableViewController: AccountVerificationServiceDelegate {
+    func verified(account: Account, service: AccountVerificationServiceProtocol,
+                  result: AccountVerificationResult) {
         GCD.onMain() {
-            if let err = error {
-                self.handleLoginError(error: err as NSError, autoSegue: false)
-            } else {
+            switch result {
+            case .ok:
                 // unwind back to INBOX on success
                 self.dismiss(animated: true, completion: nil)
+            case .imapError(let err):
+                self.handleLoginError(error: err, autoSegue: false)
+            case .smtpError(let err):
+                self.handleLoginError(error: err, autoSegue: false)
+            case .noImapConnectData, .noSmtpConnectData:
+                self.handleLoginError(error: LoginTableViewControllerError.noConnectData,
+                                      autoSegue: false)
             }
         }
     }

@@ -131,56 +131,9 @@ open class NetworkServiceWorker {
     }
 
     func fetchAccounts() -> [CdAccount] {
-        let p = NSPredicate(value: true)
-        let sortDescriptors = [NSSortDescriptor(key: "needsVerification", ascending: false)]
+        let p = NSPredicate(format: "needsVerification = false")
         return CdAccount.all(
-            predicate: p, orderedBy: sortDescriptors, in: context) as? [CdAccount] ?? []
-    }
-
-    func checkVerified(accountInfo: AccountConnectInfo,
-                       operations: [BaseOperation]) {
-        if accountInfo.needsVerification {
-            context.performAndWait {
-                guard let account = self.context.object(with: accountInfo.accountID)
-                    as? CdAccount else {
-                        return
-                }
-                var accountVerified = true
-                let allCreds = account.credentials?.array as? [CdServerCredentials] ?? []
-                for theCreds in allCreds {
-                    if theCreds.needsVerification == true {
-                        accountVerified = false
-                        break
-                    }
-                }
-                if accountVerified {
-                    account.needsVerification = false
-                    Record.saveAndWait(context: self.context)
-                    self.serviceConfig.sendLayerDelegate?.didVerify(cdAccount: account, error: nil)
-                    self.serviceConfig.mySelfer?.startMySelf()
-                } else {
-                    var error: Error?
-                    for op in operations {
-                        if let err = op.error {
-                            error = err
-                            break
-                        }
-                    }
-                    if let err = error {
-                        self.serviceConfig.sendLayerDelegate?.didVerify(cdAccount: account, error: err)
-                    } else {
-                        self.serviceConfig.sendLayerDelegate?.didVerify(
-                            cdAccount: account,
-                            error: Constants.errorIllegalState(
-                                #function,
-                                stateName: NSLocalizedString(
-                                    "Failed Verification",
-                                    comment:
-                                    "error messages when verification failed without error")))
-                    }
-                }
-            }
-        }
+            predicate: p, orderedBy: nil, in: context) as? [CdAccount] ?? []
     }
 
     func buildSmtpOperations(
@@ -372,7 +325,7 @@ open class NetworkServiceWorker {
         opAllFinished.addDependency(fixAttachmentsOp)
 
         // 3.a Items not associated with any mailbox (e.g., SMTP send)
-        let (lastSmtpOp, smtpOperations) = buildSmtpOperations(
+        let (_, smtpOperations) = buildSmtpOperations(
             accountInfo: accountInfo, errorContainer: ErrorContainer(),
             opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
         operations.append(contentsOf: smtpOperations)
@@ -385,18 +338,6 @@ open class NetworkServiceWorker {
             let opImapLogin = LoginImapOperation(
                 parentName: description, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
-            opImapLogin.completionBlock = { [weak self, weak opImapLogin] in
-                self?.workerQueue.async {
-                    if let me = self, let theOpImapLogin = opImapLogin {
-                        var ops: [BaseOperation] = [theOpImapLogin]
-                        if let op = lastSmtpOp {
-                            ops.append(op)
-                        }
-                        me.checkVerified(accountInfo: accountInfo, operations: ops)
-                        Log.info(component: #function, content: "opImapLogin finished")
-                    }
-                }
-            }
             opImapLogin.addDependency(opSmtpFinished)
             opImapFinished.addDependency(opImapLogin)
             operations.append(opImapLogin)

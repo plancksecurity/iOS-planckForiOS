@@ -57,5 +57,8 @@ protocol AccountVerificationServiceProtocol {
     weak var delegate: AccountVerificationServiceDelegate? { get set }
     var accountVerificationState: AccountVerificationState { get }
 
+    /*
+     - Note: The account (and dependent objects) must have been saved.
+     */
     func verify(account: Account)
 }

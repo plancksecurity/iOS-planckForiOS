@@ -56,6 +56,8 @@ class LoginViewModel {
     var loginAccount : Account?
     var accountSettings: ASAccountSettings?
     var extendedLogin = false
+    let accountVerificationService = AccountVerificationService()
+    weak var delegate: AccountVerificationServiceDelegate?
 
     func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
@@ -91,15 +93,14 @@ class LoginViewModel {
         }
         user.username = account
 
-        if let err = verifyAccount(model: user) {
+        if let err = verifyAccount(model: user, callback: callback) {
             Log.shared.error(component: #function, error: err)
             callback(AccountSettingsError.illegalValue)
-        } else {
-            callback(nil)
         }
     }
 
-    func verifyAccount(model: ModelUserInfoTable) -> AccountVerificationError? {
+    func verifyAccount(model: ModelUserInfoTable,
+                       callback: (Error?) -> Void) -> AccountVerificationError? {
         guard let addres = model.email, let email = model.email,
             let username = model.username, let serverIMAP = model.serverIMAP,
                 let serverSMTP = model.serverSMTP else {
@@ -122,6 +123,17 @@ class LoginViewModel {
         loginAccount = account
         account.needsVerification = true
         account.save()
+
+        accountVerificationService.delegate = self
+        accountVerificationService.verify(account: account)
+
         return nil
+    }
+}
+
+extension LoginViewModel: AccountVerificationServiceDelegate {
+    func verified(account: Account, service: AccountVerificationServiceProtocol,
+                  result: AccountVerificationResult) {
+        delegate?.verified(account: account, service: service, result: result)
     }
 }
