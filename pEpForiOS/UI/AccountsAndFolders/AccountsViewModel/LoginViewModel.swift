@@ -39,10 +39,7 @@ extension AccountSettingsError: LocalizedError {
         case .timeOut:
             return NSLocalizedString("Account detection timed out",
                                      comment: "Error description detecting account settings")
-        case .notFound:
-            return NSLocalizedString("Could not find servers",
-                                     comment: "Error description detecting account settings")
-        case .illegalValue:
+        case .notFound, .illegalValue:
             return NSLocalizedString("Could not find servers",
                                      comment: "Error description detecting account settings")
         }
@@ -51,6 +48,7 @@ extension AccountSettingsError: LocalizedError {
 
 enum AccountVerificationError: Error {
     case insufficientInput
+    case noMessageSyncService
 }
 
 enum LoginCellType {
@@ -61,8 +59,12 @@ class LoginViewModel {
     var loginAccount : Account?
     var accountSettings: ASAccountSettings?
     var extendedLogin = false
-    let accountVerificationService = AccountVerificationService()
+    var messageSyncService: MessageSyncServiceProtocol?
     weak var delegate: accountVerificationResultDelegate?
+
+    init(messageSyncService: MessageSyncService? = nil) {
+        self.messageSyncService = messageSyncService
+    }
 
     func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
@@ -111,6 +113,9 @@ class LoginViewModel {
                 let serverSMTP = model.serverSMTP else {
             return .insufficientInput
         }
+        guard let ms = messageSyncService else {
+            return .noMessageSyncService
+        }
         let identity = Identity.create(address: addres, userName: email)
         identity.isMySelf = true
         let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
@@ -129,8 +134,7 @@ class LoginViewModel {
         account.needsVerification = true
         account.save()
 
-        accountVerificationService.delegate = self
-        accountVerificationService.verify(account: account)
+        ms.requestVerification(account: account, delegate: self)
 
         return nil
     }

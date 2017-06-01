@@ -36,7 +36,13 @@ extension LoginTableViewControllerError: LocalizedError {
 }
 
 class LoginTableViewController: UITableViewController, UITextFieldDelegate {
-    let loginViewModel = LoginViewModel()
+    var appConfig: AppConfig? {
+        didSet {
+            loginViewModel.messageSyncService = appConfig?.messageSyncService
+        }
+    }
+
+    var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
     @IBOutlet weak var username: UITextField!

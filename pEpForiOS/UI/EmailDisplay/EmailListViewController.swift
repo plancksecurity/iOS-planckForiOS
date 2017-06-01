@@ -80,12 +80,12 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-        if Account.all().isEmpty {
-            performSegue(withIdentifier:.segueAddNewAccount, sender: self)
-        }
         if config == nil {
             config = EmailListConfig(appConfig: appDelegate.appConfig,
                                      folder: Folder.unifiedInbox())
+        }
+        if Account.all().isEmpty {
+            performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
         self.title = config?.folder?.realName
     }
@@ -392,7 +392,12 @@ extension EmailListViewController: SegueHandlerType {
                 destiny.filterEnabled = self.config?.folder?.filter as! Filter?
             }
             break
-        case .segueAddNewAccount, .segueEditAccounts, .segueCompose, .noSegue:
+        case .segueAddNewAccount:
+            if let navVC = segue.destination as? UINavigationController,
+                let vc = navVC.topViewController as? LoginTableViewController {
+                vc.appConfig = config?.appConfig
+            }
+        case .segueEditAccounts, .segueCompose, .noSegue:
             break
         }
 
