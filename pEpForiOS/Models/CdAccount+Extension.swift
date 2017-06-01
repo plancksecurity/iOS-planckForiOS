@@ -104,4 +104,18 @@ extension CdAccount {
         return CdFolder.first(attributes: ["account": self, "name": name])
     }
 
+    /**
+     Check all credentials for their `needsVerification` status. If none need it anymore,
+     the whole account gets updated too.
+     */
+    open func checkVerificationStatus() {
+        let creds = credentials?.array as? [CdServerCredentials] ?? []
+        var verificationStillNeeded = false
+        for theCred in creds {
+            if theCred.needsVerification {
+                verificationStillNeeded = true
+            }
+        }
+        needsVerification = verificationStillNeeded
+    }
 }

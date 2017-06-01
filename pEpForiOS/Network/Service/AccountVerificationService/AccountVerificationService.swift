@@ -49,7 +49,6 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
                 }
             } else {
                 account.needsVerification = false
-                account.save()
                 delegate?.verified(account: account, service: self, result: .ok)
             }
         }
