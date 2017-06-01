@@ -21,6 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /** The SMTP/IMAP backend */
     var networkService: NetworkService?
 
+    /**
+     UI triggerable actions for syncing messages.
+     */
+    var messageSyncService: MessageSyncService?
+
     var application: UIApplication!
 
     let mySelfQueue = LimitedOperationQueue()
@@ -55,14 +60,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Open the first session from the main thread and keep it open
         let firstSession = PEPSession()
-        appConfig = AppConfig(session: firstSession)
+
+        let theMessageSyncService = MessageSyncService(backgrounder: self, mySelfer: self)
+        messageSyncService = theMessageSyncService
+        appConfig = AppConfig(session: firstSession, messageSyncService: theMessageSyncService)
 
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
 
         Appearance.pep()
 
-        Log.warn(component: comp, content: "Library url: \(String(describing: applicationDirectory()))")
+        Log.warn(component: comp,
+                 content: "Library url: \(String(describing: applicationDirectory()))")
 
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them

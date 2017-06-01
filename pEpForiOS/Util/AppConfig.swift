@@ -12,9 +12,9 @@ import MessageModel
  Some cross cutting concerns, like core data access, networking, etc.
  */
 class AppConfig: NSObject {
-
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
     let connectionManager = ConnectionManager()
+    let messageSyncService: MessageSyncServiceProtocol
 
     private var theSession: PEPSession?
 
@@ -35,8 +35,9 @@ class AppConfig: NSObject {
      */
     var currentAccount: Account? = nil
 
-    init(session: PEPSession) {
+    init(session: PEPSession, messageSyncService: MessageSyncServiceProtocol) {
         self.theSession = session
+        self.messageSyncService = messageSyncService
     }
 
     public func tearDownSession() {
