@@ -220,19 +220,6 @@ class TestUtil {
     }
 
     /**
-     Reusable implementation of `AccountDelegate` that just signals expectations.
-     */
-    class TestAccountDelegate: AccountDelegate {
-        var expVerifyCalled: XCTestExpectation?
-        var error: Error?
-
-        func didVerify(account: Account, error: Error?) {
-            self.error = error
-            expVerifyCalled?.fulfill()
-        }
-    }
-
-    /**
      Validates all servers and their credentials without actually validating them.
      */
     static func skipValidation() {

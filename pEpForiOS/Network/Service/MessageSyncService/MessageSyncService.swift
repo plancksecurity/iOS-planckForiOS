@@ -15,6 +15,8 @@ class MessageSyncService: MessageSyncServiceProtocol {
     let backgrounder: BackgroundTaskProtocol?
     let mySelfer: KickOffMySelfProtocol?
 
+    var accountVerifications = [Account: AccountVerificationService]()
+
     init(sleepTimeInSeconds: Double = 10.0,
          parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
          mySelfer: KickOffMySelfProtocol? = nil) {
@@ -24,7 +26,10 @@ class MessageSyncService: MessageSyncServiceProtocol {
     }
 
     func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-        Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
+        let service = AccountVerificationService()
+        service.delegate = delegate
+        service.verify(account: account)
+        accountVerifications[account] = service
     }
 
     func requestSend(message: Message) {
@@ -33,5 +38,16 @@ class MessageSyncService: MessageSyncServiceProtocol {
 
     func requestMessageSync(folder: Folder) {
         Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
+    }
+}
+
+extension MessageSyncService: AccountVerificationServiceDelegate {
+    func verified(account: Account, service: AccountVerificationServiceProtocol,
+                  result: AccountVerificationResult) {
+        guard let service = accountVerifications[account] else {
+            Log.shared.errorComponent(#function, message: "no service")
+            return
+        }
+        service.delegate?.verified(account: account, service: service, result: result)
     }
 }

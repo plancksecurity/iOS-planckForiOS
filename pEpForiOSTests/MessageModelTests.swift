@@ -25,29 +25,6 @@ class MessageModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func testAccountSaveAndVerify() {
-        let sendLayer = ShortCircuitSendLayer()
-        CdAccount.sendLayer = sendLayer
-
-        // setup AccountDelegate
-        let accountDelegate = TestUtil.TestAccountDelegate()
-        accountDelegate.expVerifyCalled = expectation(description: "expVerifyCalled")
-        MessageModelConfig.accountDelegate = accountDelegate
-
-        let account = TestData().createWorkingAccount()
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertNil(accountDelegate.error)
-        })
-
-        guard let ident = Identity.by(address: account.user.address) else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(ident.isMySelf)
-    }
-
     func testSaveMessageForSending() {
         let testData = TestData()
         let account = testData.createWorkingAccount()
@@ -71,6 +48,5 @@ class MessageModelTests: XCTestCase {
         } else {
             XCTFail()
         }
-
     }
 }

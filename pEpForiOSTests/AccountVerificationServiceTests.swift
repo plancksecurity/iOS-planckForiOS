@@ -11,7 +11,7 @@ import XCTest
 @testable import MessageModel
 @testable import pEpForiOS
 
-class AccountVerificationDelegate: AccountVerificationServiceDelegate {
+class AccountVerificationTestDelegate: AccountVerificationServiceDelegate {
     let expVerified: XCTestExpectation?
     var verificationResult: AccountVerificationResult?
     var verifiedAccount: Account?
@@ -39,12 +39,20 @@ class AccountVerificationServiceTests: XCTestCase {
         persistentSetup = nil
     }
 
-    func testVerification(account: Account, expectedResult: AccountVerificationResult) {
+    func testVerification(account: Account, expectedResult: AccountVerificationResult,
+                          testDirectly: Bool) {
         let expVerified = expectation(description: "account verified")
-        let delegate = AccountVerificationDelegate(expVerified: expVerified)
-        let service = AccountVerificationService()
-        service.delegate = delegate
-        service.verify(account: account)
+        let delegate = AccountVerificationTestDelegate(expVerified: expVerified)
+
+        let asService = AccountVerificationService()
+        let msService = MessageSyncService()
+
+        if testDirectly {
+            asService.delegate = delegate
+            asService.verify(account: account)
+        } else {
+            msService.requestVerification(account: account, delegate: delegate)
+        }
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
@@ -56,19 +64,41 @@ class AccountVerificationServiceTests: XCTestCase {
         })
     }
 
-    func testSuccess() {
+    func testDirectlySuccess() {
         testVerification(account: TestData().createWorkingAccount(),
-                         expectedResult: AccountVerificationResult.ok)
+                         expectedResult: AccountVerificationResult.ok,
+                         testDirectly: true)
     }
 
-    func testFailures() {
+    func testDirectlyFailures() {
         testVerification(
             account: TestData().createImapTimeOutAccount(),
             expectedResult: AccountVerificationResult.imapError(
-                .connectionTimedOut("connectionTimedOut(_:notification:)")))
+                .connectionTimedOut("connectionTimedOut(_:notification:)")),
+            testDirectly: true)
         testVerification(
             account: TestData().createSmtpTimeOutAccount(),
             expectedResult: AccountVerificationResult.smtpError(
-                .connectionTimedOut("connectionTimedOut(_:theNotification:)")))
+                .connectionTimedOut("connectionTimedOut(_:theNotification:)")),
+            testDirectly: true)
+    }
+
+    func testMessageSyncServiceSuccess() {
+        testVerification(account: TestData().createWorkingAccount(),
+                         expectedResult: AccountVerificationResult.ok,
+                         testDirectly: false)
+    }
+
+    func testMessageSyncServiceFailures() {
+        testVerification(
+            account: TestData().createImapTimeOutAccount(),
+            expectedResult: AccountVerificationResult.imapError(
+                .connectionTimedOut("connectionTimedOut(_:notification:)")),
+            testDirectly: false)
+        testVerification(
+            account: TestData().createSmtpTimeOutAccount(),
+            expectedResult: AccountVerificationResult.smtpError(
+                .connectionTimedOut("connectionTimedOut(_:theNotification:)")),
+            testDirectly: false)
     }
 }
