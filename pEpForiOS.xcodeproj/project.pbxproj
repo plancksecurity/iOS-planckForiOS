@@ -78,6 +78,7 @@
 		432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */; };
 		432A5E261EB344C3007CB670 /* PEP_color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A5E251EB344C3007CB670 /* PEP_color+Extension.swift */; };
 		432AC3061ECB0C44007DC418 /* CWIMAPMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432AC3051ECB0C44007DC418 /* CWIMAPMessage+pEp.swift */; };
+		432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432DA7431EE01E3300B30BAA /* MessageSyncServiceProtocol.swift */; };
 		432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432F7D601D2102F10094F097 /* PEPSessionTest.swift */; };
 		433019E61E01A71300788B89 /* PeriodicTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433019E51E01A71300788B89 /* PeriodicTask.swift */; };
 		43313DF41DEC7AE600C111C8 /* CreateFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43313DF31DEC7AE600C111C8 /* CreateFoldersOperation.swift */; };
@@ -332,6 +333,7 @@
 		432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePantomimeTests.swift; sourceTree = "<group>"; };
 		432A5E251EB344C3007CB670 /* PEP_color+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEP_color+Extension.swift"; sourceTree = "<group>"; };
 		432AC3051ECB0C44007DC418 /* CWIMAPMessage+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CWIMAPMessage+pEp.swift"; sourceTree = "<group>"; };
+		432DA7431EE01E3300B30BAA /* MessageSyncServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSyncServiceProtocol.swift; sourceTree = "<group>"; };
 		432F7D601D2102F10094F097 /* PEPSessionTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionTest.swift; sourceTree = "<group>"; };
 		433019E51E01A71300788B89 /* PeriodicTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodicTask.swift; sourceTree = "<group>"; };
 		43313DF31DEC7AE600C111C8 /* CreateFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFoldersOperation.swift; sourceTree = "<group>"; };
@@ -628,6 +630,7 @@
 		43122B3A1DF5B75000610253 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				432DA7421EE01E1000B30BAA /* MessageSyncService */,
 				431E58F41ED57F4D00EFA77F /* AccountVerificationService */,
 				432142651E8FD6A400FBE987 /* ServiceUtil.swift */,
 				43122B3B1DF5B75000610253 /* NetworkService.swift */,
@@ -696,6 +699,14 @@
 				43AA825C1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		432DA7421EE01E1000B30BAA /* MessageSyncService */ = {
+			isa = PBXGroup;
+			children = (
+				432DA7431EE01E3300B30BAA /* MessageSyncServiceProtocol.swift */,
+			);
+			path = MessageSyncService;
 			sourceTree = "<group>";
 		};
 		4362398D1EAE08F400BD2EB9 /* Extensions */ = {
@@ -1427,6 +1438,7 @@
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
+				432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
