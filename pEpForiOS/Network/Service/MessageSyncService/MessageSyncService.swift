@@ -14,8 +14,11 @@ class MessageSyncService: MessageSyncServiceProtocol {
     let sleepTimeInSeconds: Double
     let backgrounder: BackgroundTaskProtocol?
     let mySelfer: KickOffMySelfProtocol?
+    let verificationQueue = DispatchQueue(
+        label: "AccountVerificationService.verificationQueue", qos: .utility, target: nil)
 
-    var accountVerifications = [Account: AccountVerificationService]()
+    var accountVerifications = [Account:
+        (AccountVerificationService, AccountVerificationServiceDelegate)]()
 
     init(sleepTimeInSeconds: Double = 10.0,
          parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
@@ -26,10 +29,17 @@ class MessageSyncService: MessageSyncServiceProtocol {
     }
 
     func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
+        verificationQueue.async {
+            self.requestVerificationInternal(account: account, delegate: delegate)
+        }
+    }
+
+    func requestVerificationInternal(account: Account,
+                                     delegate: AccountVerificationServiceDelegate) {
         let service = AccountVerificationService()
-        service.delegate = delegate
+        service.delegate = self
+        accountVerifications[account] = (service, delegate)
         service.verify(account: account)
-        accountVerifications[account] = service
     }
 
     func requestSend(message: Message) {
@@ -42,12 +52,20 @@ class MessageSyncService: MessageSyncServiceProtocol {
 }
 
 extension MessageSyncService: AccountVerificationServiceDelegate {
-    func verified(account: Account, service: AccountVerificationServiceProtocol,
-                  result: AccountVerificationResult) {
-        guard let service = accountVerifications[account] else {
+    func verifiedInternal(account: Account, service: AccountVerificationServiceProtocol,
+                          result: AccountVerificationResult) {
+        guard let (service, delegate) = accountVerifications[account] else {
             Log.shared.errorComponent(#function, message: "no service")
             return
         }
-        service.delegate?.verified(account: account, service: service, result: result)
+        delegate.verified(account: account, service: service, result: result)
+        accountVerifications[account] = nil
+    }
+
+    func verified(account: Account, service: AccountVerificationServiceProtocol,
+                  result: AccountVerificationResult) {
+        verificationQueue.async {
+            self.verifiedInternal(account: account, service: service, result: result)
+        }
     }
 }
