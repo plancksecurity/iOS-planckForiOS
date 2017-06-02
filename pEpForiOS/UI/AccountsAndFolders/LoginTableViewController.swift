@@ -45,21 +45,29 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
-    @IBOutlet weak var username: UITextField!
-    @IBOutlet weak var emailAddress: UITextField!
-    @IBOutlet weak var password: UITextField!
-    @IBOutlet weak var manualConfigButton: UIButton!
-    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet var username: UITextField!
+    @IBOutlet var emailAddress: UITextField!
+    @IBOutlet var password: UITextField!
+    @IBOutlet var manualConfigButton: UIButton!
+    @IBOutlet var loginButton: UIButton!
 
-    @IBOutlet weak var usernameTableViewCell: UITableViewCell!
-    @IBOutlet weak var emailTableViewCell: UITableViewCell!
-    @IBOutlet weak var passwordTableViewCell: UITableViewCell!
-    @IBOutlet weak var loginTableViewCell: UITableViewCell!
-    @IBOutlet weak var manualConfigTableViewCell: UITableViewCell!
+    @IBOutlet var usernameTableViewCell: UITableViewCell!
+    @IBOutlet var emailTableViewCell: UITableViewCell!
+    @IBOutlet var passwordTableViewCell: UITableViewCell!
+    @IBOutlet var loginTableViewCell: UITableViewCell!
+    @IBOutlet var manualConfigTableViewCell: UITableViewCell!
+    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
+
+
+    let status = ViewStatus()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        updateView()
     }
 
     func configureView(){
@@ -80,9 +88,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         self.manualConfigButton.convertToLoginButton(
             placeHolder: NSLocalizedString("Manual configuration", comment: "manual"))
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
-        self.view.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
         self.tableView.contentInset = UIEdgeInsets(top: 30,left: 0,bottom: 0,right: 0)
-        self.tableView.tableFooterView = UIView()
         self.tableView.backgroundColor  = UIColor.pEpGreen
         usernameTableViewCell.backgroundColor = UIColor.clear
         emailTableViewCell.backgroundColor = UIColor.clear
@@ -94,13 +100,27 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginTableViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
+        //activityIndicatorView.center = view.center
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
+    func updateView() {
+        if status.activityIndicatorViewEnable {
+            activityIndicatorView.startAnimating()
+        } else {
+            activityIndicatorView.stopAnimating()
+        }
+        navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
+        loginButton.isEnabled = !(status.activityIndicatorViewEnable)
+        manualConfigButton.isEnabled = !(status.activityIndicatorViewEnable)
+    }
+
     @IBAction func logIn(_ sender: Any) {
+        self.status.activityIndicatorViewEnable = true
+        updateView()
         guard let email = emailAddress.text, email != "" else {
             handleLoginError(error: LoginTableViewControllerError.missingEmail, autoSegue: false)
             return
@@ -154,6 +174,8 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                 "Ok",
                 comment: "UIAlertAction ok after error"),
             style: .default, handler: {action in
+                self.status.activityIndicatorViewEnable = false
+                self.updateView()
                 if autoSegue {
 
                 }

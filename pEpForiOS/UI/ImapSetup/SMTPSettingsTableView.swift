@@ -17,7 +17,7 @@ open class ViewStatus {
 open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
 
-    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var transportSecurity: UIButton!
