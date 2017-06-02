@@ -25,8 +25,6 @@ if __name__ == '__main__':
         if os.path.exists(git_dir):
             call(['git', 'status'])
         if os.path.exists(hg_dir):
-            call(['hg', 'status'])
-            call(['hg', 'out'])
-            call(['hg', 'in'])
+            call(['hg', 'summary', '--remote'])
         os.chdir(current_dir)
 
