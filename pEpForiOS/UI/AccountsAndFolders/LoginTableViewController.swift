@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MessageModel
 
 enum LoginTableViewControllerError: Error {
     case missingEmail
@@ -100,7 +99,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginTableViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
-        //activityIndicatorView.center = view.center
     }
 
     override func didReceiveMemoryWarning() {
@@ -122,39 +120,37 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         self.status.activityIndicatorViewEnable = true
         updateView()
         guard let email = emailAddress.text, email != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingEmail, autoSegue: false)
+            handleLoginError(error: LoginTableViewControllerError.missingEmail)
             return
         }
         guard let pass = password.text, pass != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingPassword,
-                             autoSegue: false)
+            handleLoginError(error: LoginTableViewControllerError.missingPassword)
             return
         }
 
         loginViewModel.delegate = self
         if extendedLogin {
-            guard let username = username.text, username != "" else {
+            guard let username = username.text else {
                 handleLoginError(
-                    error: LoginTableViewControllerError.missingUserName,
-                    autoSegue: false)
+                    error: LoginTableViewControllerError.missingUserName)
                 return
             }
                 loginViewModel.login(
                 account: email, password: pass, username: username) { (err) in
                     if let error = err {
-                        handleLoginError(error: error, autoSegue: true)
+                        handleLoginError(error: error)
                     }
                 }
         } else {
             loginViewModel.login(account: email, password: pass) { (err) in
                 if let error = err {
-                    handleLoginError(error: error, autoSegue: true)
+                    handleLoginError(error: error)
                 }
             }
         }
     }
 
-    public func handleLoginError(error: Error, autoSegue: Bool) {
+    public func handleLoginError(error: Error) {
         Log.shared.error(component: #function, error: error)
         let alertView = UIAlertController(
             title: NSLocalizedString(
@@ -176,9 +172,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
             style: .default, handler: {action in
                 self.status.activityIndicatorViewEnable = false
                 self.updateView()
-                if autoSegue {
-
-                }
                 self.username.isHidden = false
                 self.manualConfigButton.isHidden = false
                 self.extendedLogin = true
@@ -214,26 +207,6 @@ extension LoginTableViewController: SegueHandlerType {
     }
 }
 
-extension LoginTableViewController: AccountVerificationServiceDelegate {
-    func verified(account: Account, service: AccountVerificationServiceProtocol,
-                  result: AccountVerificationResult) {
-        GCD.onMain() {
-            switch result {
-            case .ok:
-                // unwind back to INBOX on success
-                self.dismiss(animated: true, completion: nil)
-            case .imapError(let err):
-                self.handleLoginError(error: err, autoSegue: false)
-            case .smtpError(let err):
-                self.handleLoginError(error: err, autoSegue: false)
-            case .noImapConnectData, .noSmtpConnectData:
-                self.handleLoginError(error: LoginTableViewControllerError.noConnectData,
-                                      autoSegue: false)
-            }
-        }
-    }
-}
-
 extension LoginTableViewController: accountVerificationResultDelegate {
     func Result(result: AccountVerificationResult) {
         GCD.onMain() {
@@ -242,12 +215,11 @@ extension LoginTableViewController: accountVerificationResultDelegate {
                 // unwind back to INBOX on success
                 self.dismiss(animated: true, completion: nil)
             case .imapError(let err):
-                self.handleLoginError(error: err, autoSegue: false)
+                self.handleLoginError(error: err)
             case .smtpError(let err):
-                self.handleLoginError(error: err, autoSegue: false)
+                self.handleLoginError(error: err)
             case .noImapConnectData, .noSmtpConnectData:
-                self.handleLoginError(error: LoginTableViewControllerError.noConnectData,
-                                      autoSegue: false)
+                self.handleLoginError(error: LoginTableViewControllerError.noConnectData)
             }
         }
     }

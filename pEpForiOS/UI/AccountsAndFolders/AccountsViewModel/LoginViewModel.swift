@@ -32,7 +32,6 @@ protocol accountVerificationResultDelegate: class {
     func Result(result: AccountVerificationResult)
 }
 
-
 extension AccountSettingsError: LocalizedError {
     var errorDescription: String? {
         switch self {
@@ -88,7 +87,7 @@ class LoginViewModel {
         user.portSMTP = UInt16(acSettings.outgoing.port)
         user.serverSMTP = acSettings.outgoing.hostname
         //fast fix remove me
-        if username != nil {
+        if username != nil && username != "" {
             user.username = username
         } else {
             //FIXME
@@ -98,8 +97,6 @@ class LoginViewModel {
                 user.username = account
             }
         }
-        user.username = account
-
         if let err = verifyAccount(model: user, callback: callback) {
             Log.shared.error(component: #function, error: err)
             callback(AccountSettingsError.illegalValue)
