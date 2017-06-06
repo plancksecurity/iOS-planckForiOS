@@ -11,7 +11,7 @@ import CoreData
 import MessageModel
 
 /**
- Fetches messages from the server.
+ Fetches new messages from the server.
  This operation is not intended to be put in a queue (though this should work too).
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.

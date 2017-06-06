@@ -11,6 +11,9 @@ import CoreData
 
 import MessageModel
 
+/**
+ Syncs existing messages with the servers, e.g., detecting deleted ones.
+ */
 open class SyncMessagesOperation: ImapSyncOperation {
     let folderID: NSManagedObjectID
     let folderToOpen: String

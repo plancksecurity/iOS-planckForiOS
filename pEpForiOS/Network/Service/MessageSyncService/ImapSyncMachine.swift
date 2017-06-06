@@ -8,6 +8,14 @@
 
 import Foundation
 
+import MessageModel
+
+public protocol ImapSyncMachineDelegate: class {
+    func didFetchFolders(machine: ImapSyncMachine)
+    func didFetchMessages(machine: ImapSyncMachine)
+    func didSyncMessages(machine: ImapSyncMachine)
+}
+
 open class ImapSyncMachine {
     enum Input {
         case none
@@ -34,6 +42,7 @@ open class ImapSyncMachine {
 
     public enum MachineError: Error {
         case invalidStateTransition
+        case internalSyncMessagesProblem
     }
 
     private let imapSyncData: ImapSyncData
@@ -44,6 +53,8 @@ open class ImapSyncMachine {
     private let managementQueue = DispatchQueue(
         label: "ImapSyncMachine.managementQueue", qos: .utility, target: nil)
     let backgroundQueue = OperationQueue()
+
+    weak var delegate: ImapSyncMachineDelegate?
 
     init(emailConnectInfo: EmailConnectInfo) {
         self.imapSyncData = ImapSyncData(connectInfo: emailConnectInfo)
@@ -75,38 +86,26 @@ open class ImapSyncMachine {
 
     private func entering(state: State) {
         managementQueue.async { [weak self] in
+            guard let theSelf = self else {
+                return
+            }
             switch state {
             case .fetchFolders:
-                self?.fetchFolders()
+                theSelf.fetchFolders()
             case .fetchNewMessages:
-                self?.fetchNewMessages()
+                theSelf.delegate?.didFetchFolders(machine: theSelf)
+                theSelf.fetchNewMessages()
+            case .syncOldMessages:
+                theSelf.syncMessages()
+                theSelf.delegate?.didFetchMessages(machine: theSelf)
+            case .idle:
+                theSelf.delegate?.didSyncMessages(machine: theSelf)
             case .error:
                 break
             default:
-                self?.entering(state: .error(MachineError.invalidStateTransition))
+                theSelf.entering(state: .error(MachineError.invalidStateTransition))
             }
-            self?.currentState = state
-        }
-    }
-
-    private func fetchNewMessages() {
-        let errorContainer = ErrorContainer()
-        let fetchMessagesOp = FetchMessagesOperation(
-            parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData,
-            folderName: ImapSync.defaultImapInboxName, messageFetchedBlock: nil)
-        fetchMessagesOp.completionBlock = { [weak self] in
-            self?.handleError(errorContainer: errorContainer, newState: .syncOldMessages)
-        }
-        backgroundQueue.addOperation(fetchMessagesOp)
-    }
-
-    private func handleError(errorContainer: ErrorContainer, newState: State) {
-        managementQueue.async {
-            if let err = errorContainer.error {
-                self.transition(newState: .error(err))
-            } else {
-                self.transition(newState: newState)
-            }
+            theSelf.currentState = state
         }
     }
 
@@ -122,5 +121,49 @@ open class ImapSyncMachine {
             self?.handleError(errorContainer: errorContainer, newState: .fetchNewMessages)
         }
         backgroundQueue.addOperations([loginOp, fetchFoldersOp], waitUntilFinished: false)
+    }
+
+    private func fetchNewMessages() {
+        let errorContainer = ErrorContainer()
+        let fetchMessagesOp = FetchMessagesOperation(
+            parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData,
+            folderName: ImapSync.defaultImapInboxName, messageFetchedBlock: nil)
+        fetchMessagesOp.completionBlock = { [weak self] in
+            self?.handleError(errorContainer: errorContainer, newState: .syncOldMessages)
+        }
+        backgroundQueue.addOperation(fetchMessagesOp)
+    }
+
+    private func syncMessages() {
+        let context = Record.Context.background
+        context.perform {
+            let errorContainer = ErrorContainer()
+            guard
+                let cdAccount = context.object(
+                    with: self.imapSyncData.connectInfo.accountObjectID) as? CdAccount,
+                let cdFolder = CdFolder.by(folderType: .inbox, account: cdAccount),
+                let syncMessagesOp = SyncMessagesOperation(
+                    parentName: #function, errorContainer: errorContainer,
+                    imapSyncData: self.imapSyncData,
+                    folder: cdFolder, firstUID: cdFolder.firstUID(), lastUID: cdFolder.lastUID())
+                else {
+                    self.transition(newState: .error(MachineError.internalSyncMessagesProblem))
+                    return
+            }
+            syncMessagesOp.completionBlock = { [weak self] in
+                self?.handleError(errorContainer: errorContainer, newState: .idle)
+            }
+            self.backgroundQueue.addOperation(syncMessagesOp)
+        }
+    }
+
+    private func handleError(errorContainer: ErrorContainer, newState: State) {
+        managementQueue.async {
+            if let err = errorContainer.error {
+                self.transition(newState: .error(err))
+            } else {
+                self.transition(newState: newState)
+            }
+        }
     }
 }
