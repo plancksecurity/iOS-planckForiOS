@@ -101,6 +101,15 @@ class FolderTableViewController: UITableViewController {
         }
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "newAccount" {
+            if let navVC = segue.destination as? UINavigationController,
+                let vc = navVC.topViewController as? LoginTableViewController {
+                vc.appConfig = self.appConfig
+            }
+        }
+    }
+
     @IBAction func addAccount(_ sender: Any) {
         //add account action tbi
     }

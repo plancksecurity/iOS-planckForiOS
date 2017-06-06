@@ -349,6 +349,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueReplyAll
         case segueForward
         case segueFilter
+        case segueFolderViews
         case noSegue
     }
 
@@ -396,6 +397,10 @@ extension EmailListViewController: SegueHandlerType {
             if let navVC = segue.destination as? UINavigationController,
                 let vc = navVC.topViewController as? LoginTableViewController {
                 vc.appConfig = config?.appConfig
+            }
+        case .segueFolderViews:
+            if let vC = segue.destination as? FolderTableViewController {
+                vC.appConfig = config?.appConfig
             }
         case .segueEditAccounts, .segueCompose, .noSegue:
             break

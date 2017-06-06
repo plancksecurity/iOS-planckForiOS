@@ -30,7 +30,7 @@
                                     <state key="normal" image="button-add"/>
                                     <connections>
                                         <action selector="addAccount:" destination="6ra-tc-Aiv" eventType="touchUpInside" id="kwV-sP-A4A"/>
-                                        <segue destination="uKb-Ku-Cng" kind="show" id="aKb-z0-Qyn"/>
+                                        <segue destination="uKb-Ku-Cng" kind="show" identifier="newAccount" id="aKb-z0-Qyn"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iQ7-gl-OPN">
@@ -83,10 +83,10 @@
             </objects>
             <point key="canvasLocation" x="9633" y="-1187"/>
         </scene>
-        <!--UINavigationController-Efv-29-FEv-->
+        <!--AccountCreation-->
         <scene sceneID="rdR-gU-SsC">
             <objects>
-                <viewControllerPlaceholder storyboardName="AccountCreation" referencedIdentifier="UINavigationController-Efv-29-FEv" id="uKb-Ku-Cng" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7bq-Lz-J44" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="9674" y="-1142"/>

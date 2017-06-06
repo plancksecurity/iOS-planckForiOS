@@ -67,6 +67,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         updateView()
+
     }
 
     func configureView(){

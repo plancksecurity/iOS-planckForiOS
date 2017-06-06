@@ -153,7 +153,7 @@
                     <navigationItem key="navigationItem" title="Inbox" id="bgm-ua-A0f">
                         <barButtonItem key="rightBarButtonItem" title="Folders" id="QCE-EG-qmM">
                             <connections>
-                                <segue destination="zK6-Pe-MeR" kind="show" id="cCK-Ah-mG1"/>
+                                <segue destination="zK6-Pe-MeR" kind="show" identifier="segueFolderViews" id="cCK-Ah-mG1"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
