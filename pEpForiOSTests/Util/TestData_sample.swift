@@ -11,23 +11,22 @@ import UIKit
 import MessageModel
 
 class TestData: TestDataBase {
-    func populateAccounts() {
-        // An example account
-        testAccounts.append(AccountSettings(
-            accountName: "A second account",
-            idAddress: "email2@example.com",
-            idUserName: "User Name 2",
+    override func populateAccounts() {
+        append(accountSettings: AccountSettings(
+            accountName: "Whatever",
+            idAddress: "someone@example.com",
+            idUserName: "User Name",
 
-            imapServerAddress: "mail.example.com",
+            imapServerAddress: "imap.example.com",
             imapServerType: Server.ServerType.imap,
             imapServerTransport: Server.Transport.tls,
             imapServerPort: 993,
 
-            smtpServerAddress: "mail.example.com",
+            smtpServerAddress: "smtp.example.com",
             smtpServerType: Server.ServerType.smtp,
-            smtpServerTransport: Server.Transport.tls,
+            smtpServerTransport: Server.Transport.startTls,
             smtpServerPort: 587,
 
-            password: "someFurtherPassword"))
+            password: "some secret password"))
     }
 }
