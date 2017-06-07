@@ -70,8 +70,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     func configureView(){
-        tableView.estimatedRowHeight = 44.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        UIHelper.variableCellHeightsTableView(self.tableView)
         self.view.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
         self.emailAddress.delegate = self
         self.password.delegate = self
@@ -199,13 +198,13 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
 
-
 }
 
 extension LoginTableViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case noSegue
         case viewLogSegue
+        case BackToEmailList
     }
 }
 
@@ -215,7 +214,7 @@ extension LoginTableViewController: accountVerificationResultDelegate {
             switch result {
             case .ok:
                 // unwind back to INBOX on success
-                self.performSegue(withIdentifier: "BackToEmailList", sender: self)
+                self.performSegue(withIdentifier: .BackToEmailList, sender: self)
             case .imapError(let err):
                 self.handleLoginError(error: err)
             case .smtpError(let err):

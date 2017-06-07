@@ -86,7 +86,6 @@ class LoginViewModel {
         user.serverIMAP = acSettings.incoming.hostname
         user.portSMTP = UInt16(acSettings.outgoing.port)
         user.serverSMTP = acSettings.outgoing.hostname
-        //fast fix remove me
         if username != nil && username != "" {
             user.username = username
         } else {
