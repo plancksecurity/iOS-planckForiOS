@@ -26,7 +26,8 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
         return errorContainer.hasErrors()
     }
 
-    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+    public init(parentName: String? = nil,
+                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.errorContainer = errorContainer
 
         super.init()

@@ -64,12 +64,16 @@ class ImapSyncMachineTests: XCTestCase {
     func testSimple() {
         let cdAccount = TestData().createWorkingCdAccount()
         Record.saveAndWait()
-        guard let ci = cdAccount.imapConnectInfo else {
-            XCTFail()
-            return
+        guard
+            let imapConnectInfo = cdAccount.imapConnectInfo,
+            let smtpConnectInfo = cdAccount.smtpConnectInfo
+            else {
+                XCTFail()
+                return
         }
 
-        let machine = ImapSyncMachine(emailConnectInfo: ci)
+        let machine = ImapSyncMachine(
+            imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo)
         let observer = ImapSyncMachineObserver(
             cdAccount: cdAccount,
             expFoldersFetched: expectation(description: "expFoldersFetched"),

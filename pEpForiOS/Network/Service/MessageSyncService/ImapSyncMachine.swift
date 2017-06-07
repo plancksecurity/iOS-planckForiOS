@@ -10,6 +10,35 @@ import Foundation
 
 import MessageModel
 
+extension ImapSyncMachine.State: Equatable {
+    public static func ==(lhs: ImapSyncMachine.State, rhs: ImapSyncMachine.State) -> Bool {
+        switch (lhs, rhs) {
+        case (.none, .none):
+            return true
+        case (.fetchFolders, .fetchFolders):
+            return true
+        case (.fetchNewMessages, .fetchNewMessages):
+            return true
+        case (.syncOldMessages, .syncOldMessages):
+            return true
+        case (.idle, .idle):
+            return true
+        case (.sendSMTP, .sendSMTP):
+            return true
+        case (.sendIMAP, .sendIMAP):
+            return true
+        case (.saveDrafts, .saveDrafts):
+            return true
+        case (.error, .error):
+            return true
+        case (.none, _), (.fetchFolders, _), (.fetchNewMessages, _),
+             (.syncOldMessages, _), (.idle, _), (.sendSMTP, _), (.sendIMAP, _),
+             (.saveDrafts, _), (.error, _):
+            return false
+        }
+    }
+}
+
 public protocol ImapSyncMachineDelegate: class {
     func didFetchFolders(machine: ImapSyncMachine)
     func didFetchMessages(machine: ImapSyncMachine)
@@ -22,6 +51,7 @@ open class ImapSyncMachine {
         case idle
         case smtpRequested
         case imapSyncRequested
+        case saveDraftsRequested
     }
     
     enum State {
@@ -37,15 +67,28 @@ open class ImapSyncMachine {
         /** IMAP actions relating to sending mails, like append to the sent folder */
         case sendIMAP
 
+        case saveDrafts
+
         case error(Error)
+
+        var isError: Bool {
+            switch self {
+            case .error:
+                return true
+            default:
+                return false
+            }
+        }
     }
 
     public enum MachineError: Error {
         case invalidStateTransition
         case internalSyncMessagesProblem
+        case noStateChange
     }
 
     private let imapSyncData: ImapSyncData
+    private let smtpSendData: SmtpSendData
 
     private(set) var currentState = State.none
     private(set) var currentInput = Input.none
@@ -56,8 +99,9 @@ open class ImapSyncMachine {
 
     weak var delegate: ImapSyncMachineDelegate?
 
-    init(emailConnectInfo: EmailConnectInfo) {
-        self.imapSyncData = ImapSyncData(connectInfo: emailConnectInfo)
+    init(imapConnectInfo: EmailConnectInfo, smtpConnectInfo: EmailConnectInfo) {
+        self.imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+        self.smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
     }
 
     func set(input: Input) {
@@ -89,17 +133,39 @@ open class ImapSyncMachine {
             guard let theSelf = self else {
                 return
             }
+            if theSelf.currentState.isError {
+                return
+            }
+            if theSelf.currentState == state {
+                theSelf.entering(state: .error(MachineError.invalidStateTransition))
+            }
+
+            if !state.isError {
+                // handle delegate
+                switch theSelf.currentState {
+                case .fetchFolders:
+                    theSelf.delegate?.didFetchFolders(machine: theSelf)
+                case .fetchNewMessages:
+                    theSelf.delegate?.didFetchMessages(machine: theSelf)
+                case .syncOldMessages:
+                    theSelf.delegate?.didSyncMessages(machine: theSelf)
+                default:
+                    break
+                }
+            }
+
             switch state {
             case .fetchFolders:
                 theSelf.fetchFolders()
             case .fetchNewMessages:
-                theSelf.delegate?.didFetchFolders(machine: theSelf)
                 theSelf.fetchNewMessages()
             case .syncOldMessages:
                 theSelf.syncMessages()
-                theSelf.delegate?.didFetchMessages(machine: theSelf)
             case .idle:
-                theSelf.delegate?.didSyncMessages(machine: theSelf)
+                theSelf.keepOnIdlingOrNo()
+                break
+            case .sendSMTP:
+                theSelf.sendSmtp()
             case .error:
                 break
             default:
@@ -107,6 +173,43 @@ open class ImapSyncMachine {
             }
             theSelf.currentState = state
         }
+    }
+
+    private func keepOnIdlingOrNo() {
+        switch currentInput {
+        case .imapSyncRequested:
+            transition(newState: .fetchNewMessages)
+        case .smtpRequested:
+            transition(newState: .sendSMTP)
+        case .saveDraftsRequested:
+            transition(newState: .saveDrafts)
+        default:
+            // keep on idling
+            break
+        }
+    }
+
+    private func sendSmtp() {
+        let errorContainer = ErrorContainer()
+        let loginSmtpOp = LoginSmtpOperation(
+            parentName: #function, smtpSendData: smtpSendData, errorContainer: errorContainer)
+        let sendOp = EncryptAndSendOperation(
+            parentName: #function, smtpSendData: smtpSendData, errorContainer: errorContainer)
+        sendOp.addDependency(loginSmtpOp)
+        sendOp.completionBlock = { [weak self] in
+            self?.handleError(errorContainer: errorContainer, newState: .sendIMAP)
+        }
+        backgroundQueue.addOperations([loginSmtpOp, sendOp], waitUntilFinished: false)
+    }
+
+    private func sendImap() {
+        let errorContainer = ErrorContainer()
+        let sendImapOp = AppendMailsOperation(
+            parentName: #function, imapSyncData: imapSyncData, errorContainer: errorContainer)
+        sendImapOp.completionBlock = { [weak self] in
+            self?.handleError(errorContainer: errorContainer, newState: .fetchNewMessages)
+        }
+        backgroundQueue.addOperation(sendImapOp)
     }
 
     private func fetchFolders() {

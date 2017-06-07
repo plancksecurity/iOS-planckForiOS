@@ -21,9 +21,10 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
     /** The object ID of the last sent message, so we can change the sendStatus on success */
     var lastSentMessageObjectID: NSManagedObjectID?
 
-    public init(smtpSendData: SmtpSendData, errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+    public init(parentName: String? = nil, smtpSendData: SmtpSendData,
+                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.smtpSendData = smtpSendData
-        super.init(errorContainer: errorContainer)
+        super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
     func checkSmtpSend() -> Bool {
