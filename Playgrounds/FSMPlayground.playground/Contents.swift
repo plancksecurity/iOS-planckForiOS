@@ -5,14 +5,9 @@ import Foundation
 class StateMachine<T: Hashable, U: Hashable> {
     typealias DidEnterStateBlock = () -> ()
 
-    class TransitionIndex: Hashable {
+    struct TransitionIndex: Hashable {
         let source: T
         let input: U
-
-        init(source: T, input: U) {
-            self.source = source
-            self.input = input
-        }
 
         var hashValue: Int {
             return 31 &* source.hashValue &* input.hashValue
@@ -25,10 +20,10 @@ class StateMachine<T: Hashable, U: Hashable> {
 
     var currentState: T
     var stateEventTable = [TransitionIndex: T]()
-    var stateExecutionBlocks = [T: DidEnterStateBlock]()
+    var afterEnteringBlocks = [T: DidEnterStateBlock]()
 
-    init(currentState: T) {
-        self.currentState = currentState
+    init(startState: T) {
+        self.currentState = startState
     }
 
     func add(transitionIndex: TransitionIndex, target: T) {
@@ -41,7 +36,7 @@ class StateMachine<T: Hashable, U: Hashable> {
     }
 
     func executeAfterEntering(state: T, block: @escaping DidEnterStateBlock) {
-        stateExecutionBlocks[state] = block
+        afterEnteringBlocks[state] = block
     }
 
     func start() {
@@ -49,7 +44,7 @@ class StateMachine<T: Hashable, U: Hashable> {
     }
 
     func executeActionForCurrentState() {
-        if let action = stateExecutionBlocks[currentState] {
+        if let action = afterEnteringBlocks[currentState] {
             action()
         }
     }
@@ -86,7 +81,7 @@ enum InboxSyncInput {
     case idle
     case sendMails
     case saveDrafts
-    case repeatSync
+    case repeatFetch
     case sendSmtp
 }
 
@@ -110,7 +105,7 @@ func waitForState(machine: StateMachine<InboxSyncState, InboxSyncInput>, state: 
     print("  > reached state: \(machine.currentState)")
 }
 
-let machine: StateMachine<InboxSyncState, InboxSyncInput> = StateMachine(currentState: InboxSyncState.fetchingFolders)
+let machine: StateMachine<InboxSyncState, InboxSyncInput> = StateMachine(startState: InboxSyncState.fetchingFolders)
 
 machine.when(inState: .fetchingFolders, onInput: .fetchingFoldersDone, transitTo: .fetchingMessages)
 machine.when(inState: .fetchingMessages, onInput: .fetchingMessagesDone, transitTo: .syncingMessages)
@@ -118,7 +113,7 @@ machine.when(inState: .syncingMessages, onInput: .syncingMessagesDone, transitTo
 machine.when(inState: .sendingSmtp, onInput: .sendingSmtpDone, transitTo: .sendingImap)
 machine.when(inState: .sendingImap, onInput: .sendingImapDone, transitTo: .idling)
 machine.when(inState: .savingDrafts, onInput: .savingDraftsDone, transitTo: .idling)
-machine.when(inState: .idling, onInput: .repeatSync, transitTo: .syncingMessages)
+machine.when(inState: .idling, onInput: .repeatFetch, transitTo: .fetchingMessages)
 machine.when(inState: .idling, onInput: .sendSmtp, transitTo: .sendingSmtp)
 machine.when(inState: .idling, onInput: .saveDrafts, transitTo: .savingDrafts)
 
@@ -137,8 +132,8 @@ print("* starting machine ...")
 machine.start()
 
 waitForState(machine: machine, state: .idling)
-print("* requesting another sync ...")
-machine.accept(input: .repeatSync)
+print("* requesting another fetch/sync cycle ...")
+machine.accept(input: .repeatFetch)
 waitForState(machine: machine, state: .idling)
 print("* requesting SMTP ...")
 machine.accept(input: .sendSmtp)
