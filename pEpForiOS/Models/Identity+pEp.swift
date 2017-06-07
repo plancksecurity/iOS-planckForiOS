@@ -14,7 +14,6 @@ extension Identity {
             let id = Identity.create(address: address, userID: pEpIdentity[kPepUserID] as? String,
                                      userName: pEpIdentity[kPepUsername] as? String)
             id.isMySelf = (pEpIdentity[kPepIsMe] as? NSNumber)?.boolValue ?? false
-            id.commType = (pEpIdentity[kPepCommType] as? NSNumber)?.intValue
             return id
         }
         return nil
