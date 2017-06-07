@@ -103,9 +103,9 @@ class FolderTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newAccount" {
-            if let navVC = segue.destination as? UINavigationController,
-                let vc = navVC.topViewController as? LoginTableViewController {
+            if let vc = segue.destination as? LoginTableViewController {
                 vc.appConfig = self.appConfig
+                vc.hidesBottomBarWhenPushed = true
             }
         }
     }

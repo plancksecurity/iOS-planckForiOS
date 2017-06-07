@@ -67,7 +67,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         updateView()
-
     }
 
     func configureView(){
@@ -199,6 +198,8 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     func viewLog() {
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
+
+
 }
 
 extension LoginTableViewController: SegueHandlerType {
@@ -214,7 +215,7 @@ extension LoginTableViewController: accountVerificationResultDelegate {
             switch result {
             case .ok:
                 // unwind back to INBOX on success
-                self.dismiss(animated: true, completion: nil)
+                self.performSegue(withIdentifier: "BackToEmailList", sender: self)
             case .imapError(let err):
                 self.handleLoginError(error: err)
             case .smtpError(let err):

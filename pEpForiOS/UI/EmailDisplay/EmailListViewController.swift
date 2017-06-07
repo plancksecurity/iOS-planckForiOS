@@ -394,19 +394,25 @@ extension EmailListViewController: SegueHandlerType {
             }
             break
         case .segueAddNewAccount:
-            if let navVC = segue.destination as? UINavigationController,
-                let vc = navVC.topViewController as? LoginTableViewController {
+            if let vc = segue.destination as? LoginTableViewController {
                 vc.appConfig = config?.appConfig
+                vc.hidesBottomBarWhenPushed = true
             }
         case .segueFolderViews:
             if let vC = segue.destination as? FolderTableViewController {
                 vC.appConfig = config?.appConfig
+                vC.hidesBottomBarWhenPushed = true
             }
         case .segueEditAccounts, .segueCompose, .noSegue:
             break
         }
 
     }
+    
+    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
+
+    }
+
 
     func didChangeInternal(messageFolder: MessageFolder) {
         if let folder = config?.folder,
