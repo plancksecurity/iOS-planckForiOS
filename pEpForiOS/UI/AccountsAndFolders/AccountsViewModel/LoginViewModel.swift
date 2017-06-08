@@ -105,15 +105,15 @@ class LoginViewModel {
 
     func verifyAccount(model: ModelUserInfoTable,
                        callback: (Error?) -> Void) -> AccountVerificationError? {
-        guard let addres = model.email, let email = model.email,
-            let username = model.username, let serverIMAP = model.serverIMAP,
+        guard let addres = model.email, let name = model.name,
+            let loginUser = model.username, let serverIMAP = model.serverIMAP,
                 let serverSMTP = model.serverSMTP else {
             return .insufficientInput
         }
         guard let ms = messageSyncService else {
             return .noMessageSyncService
         }
-        let identity = Identity.create(address: addres, userName: email)
+        let identity = Identity.create(address: addres, userName: name)
         identity.isMySelf = true
         let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
                                        address: serverIMAP,
@@ -123,7 +123,7 @@ class LoginViewModel {
                                        address: serverSMTP,
                                        transport: model.transportSMTP.toServerTransport())
         smtpServer.needsVerification = true
-        let credentials = ServerCredentials.create(userName: username, password: model.password,
+        let credentials = ServerCredentials.create(userName: loginUser, password: model.password,
                                                    servers: [imapServer, smtpServer])
         credentials.needsVerification = true
         let account = Account.create(identity: identity, credentials: [credentials])
