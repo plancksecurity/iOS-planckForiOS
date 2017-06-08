@@ -116,6 +116,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     @IBAction func logIn(_ sender: Any) {
+        dismissKeyboard()
         self.status.activityIndicatorViewEnable = true
         updateView()
         guard let email = emailAddress.text, email != "" else {
@@ -184,7 +185,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         } else if textField == self.emailAddress {
             self.password.becomeFirstResponder()
         } else if textField == self.password {
-            dismissKeyboard()
             self.logIn(self.password)
         }
         return true
