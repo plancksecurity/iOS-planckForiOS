@@ -11,7 +11,6 @@ import UIKit
 enum LoginTableViewControllerError: Error {
     case missingEmail
     case missingPassword
-    case missingUserName
     case noConnectData
 }
 
@@ -23,9 +22,6 @@ extension LoginTableViewControllerError: LocalizedError {
                                      comment: "Automated account setup error description")
         case .missingPassword:
             return NSLocalizedString("Password needed",
-                                     comment: "Automated account setup error description")
-        case .missingUserName:
-            return NSLocalizedString("User name needed",
                                      comment: "Automated account setup error description")
         case .noConnectData:
             return NSLocalizedString("Internal error",
@@ -44,13 +40,15 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
-    @IBOutlet var username: UITextField!
+    @IBOutlet var loginName: UITextField!
     @IBOutlet var emailAddress: UITextField!
     @IBOutlet var password: UITextField!
     @IBOutlet var manualConfigButton: UIButton!
     @IBOutlet var loginButton: UIButton!
+    @IBOutlet var user: UITextField!
 
-    @IBOutlet var usernameTableViewCell: UITableViewCell!
+    @IBOutlet var loginNameTableViewCell: UITableViewCell!
+    @IBOutlet var UserTableViewCell: UITableViewCell!
     @IBOutlet var emailTableViewCell: UITableViewCell!
     @IBOutlet var passwordTableViewCell: UITableViewCell!
     @IBOutlet var loginTableViewCell: UITableViewCell!
@@ -71,30 +69,34 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
 
     func configureView(){
         UIHelper.variableCellHeightsTableView(self.tableView)
-        self.view.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
-        self.emailAddress.delegate = self
-        self.password.delegate = self
-        self.username.delegate = self
         self.emailAddress.convertToLoginTextField(
-            placeHolder: NSLocalizedString("Email", comment: "Email"))
+            placeHolder: NSLocalizedString("Email", comment: "Email"), delegate: self)
         self.password.convertToLoginTextField(
-            placeHolder: NSLocalizedString("Password", comment: "password"))
+            placeHolder: NSLocalizedString("Password", comment: "password"), delegate: self)
         self.loginButton.convertToLoginButton(
             placeHolder: NSLocalizedString("Sign In", comment: "Login"))
-        self.username.convertToLoginTextField(
-            placeHolder: NSLocalizedString("Username", comment: "username"))
+        self.loginName.convertToLoginTextField(
+            placeHolder: NSLocalizedString("Log In Name", comment: "LoginName"), delegate: self)
         self.manualConfigButton.convertToLoginButton(
             placeHolder: NSLocalizedString("Manual configuration", comment: "manual"))
+        self.user.convertToLoginTextField(
+            placeHolder: NSLocalizedString("Name", comment: "username"), delegate: self)
+
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
+        //color and spacing configurations
+        self.view.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
         self.tableView.contentInset = UIEdgeInsets(top: 30,left: 0,bottom: 0,right: 0)
         self.tableView.backgroundColor  = UIColor.pEpGreen
-        usernameTableViewCell.backgroundColor = UIColor.clear
+        //clear cell color
+        UserTableViewCell.backgroundColor = UIColor.clear
         emailTableViewCell.backgroundColor = UIColor.clear
         passwordTableViewCell.backgroundColor = UIColor.clear
         loginTableViewCell.backgroundColor = UIColor.clear
         manualConfigTableViewCell.backgroundColor = UIColor.clear
+        loginNameTableViewCell.backgroundColor = UIColor.clear
+        //hide extended login fields
         manualConfigButton.isHidden = true
-        username.isHidden = true
+        loginName.isHidden = true
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginTableViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -127,25 +129,13 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
             handleLoginError(error: LoginTableViewControllerError.missingPassword)
             return
         }
-
+        let internalLoginName = loginName.text
+        let username = user.text
         loginViewModel.delegate = self
-        if extendedLogin {
-            guard let username = username.text else {
-                handleLoginError(
-                    error: LoginTableViewControllerError.missingUserName)
-                return
-            }
-                loginViewModel.login(
-                account: email, password: pass, username: username) { (err) in
-                    if let error = err {
-                        handleLoginError(error: error)
-                    }
-                }
-        } else {
-            loginViewModel.login(account: email, password: pass) { (err) in
-                if let error = err {
-                    handleLoginError(error: error)
-                }
+        loginViewModel.login(account: email, password: pass, login: internalLoginName,
+                             username: username) { (err) in
+            if let error = err {
+                handleLoginError(error: error)
             }
         }
     }
@@ -172,7 +162,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
             style: .default, handler: {action in
                 self.status.activityIndicatorViewEnable = false
                 self.updateView()
-                self.username.isHidden = false
+                self.loginName.isHidden = false
                 self.manualConfigButton.isHidden = false
                 self.extendedLogin = true
         }))
@@ -180,7 +170,9 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == self.username {
+        if textField == self.loginName {
+            self.user.becomeFirstResponder()
+        } else if textField == self.user {
             self.emailAddress.becomeFirstResponder()
         } else if textField == self.emailAddress {
             self.password.becomeFirstResponder()

@@ -69,8 +69,8 @@ class LoginViewModel {
         return !Account.all().isEmpty
     }
 
-    func login(account: String, password: String, username: String? = nil,
-               callback: (Error?) -> Void) {
+    func login(account: String, password: String, login: String? = nil,
+               username: String? = nil, callback: (Error?) -> Void) {
         let user = ModelUserInfoTable()
         let acSettings = ASAccountSettings(accountName: account, provider: password,
                                            flags: AS_FLAG_USE_ANY, credentials: nil)
@@ -86,8 +86,8 @@ class LoginViewModel {
         user.serverIMAP = acSettings.incoming.hostname
         user.portSMTP = UInt16(acSettings.outgoing.port)
         user.serverSMTP = acSettings.outgoing.hostname
-        if username != nil && username != "" {
-            user.username = username
+        if login != nil && login != "" {
+            user.username = login
         } else {
             //FIXME
             if acSettings.incoming.username != "" {
@@ -96,6 +96,7 @@ class LoginViewModel {
                 user.username = account
             }
         }
+        user.name = username
         if let err = verifyAccount(model: user, callback: callback) {
             Log.shared.error(component: #function, error: err)
             callback(AccountSettingsError.illegalValue)
