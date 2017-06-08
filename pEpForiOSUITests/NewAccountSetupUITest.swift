@@ -105,7 +105,7 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func testNewAccountSetup() {
-        let account = UITestData.workingAccount1
+        let apeiosccount = UITestData.workingAccount1
         newAccountSetup(account: account)
         waitForever()
     }

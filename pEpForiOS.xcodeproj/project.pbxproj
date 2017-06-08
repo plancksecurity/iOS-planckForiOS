@@ -217,6 +217,9 @@
 		B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */; };
 		B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */; };
 		B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */; };
+		B72528331EE948B800815118 /* AccountsSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72528321EE948B800815118 /* AccountsSettingsViewModel.swift */; };
+		B72528351EE953BC00815118 /* AccountsSettingsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72528341EE953BC00815118 /* AccountsSettingsCellViewModel.swift */; };
+		B72528371EE9562200815118 /* AccountsSettingsSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72528361EE9562200815118 /* AccountsSettingsSectionViewModel.swift */; };
 		B729BEC61E7C35E200793110 /* FilterUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729BEC51E7C35E200793110 /* FilterUpdateProtocol.swift */; };
 		B7365CDE1EAF45F30036ECC7 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7365CDD1EAF45F30036ECC7 /* UITextField+Extension.swift */; };
 		B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */; };
@@ -486,6 +489,9 @@
 		B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderCellViewModel.swift; path = Folder/ViewModel/FolderCellViewModel.swift; sourceTree = "<group>"; };
 		B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderSectionViewModel.swift; path = Folder/ViewModel/FolderSectionViewModel.swift; sourceTree = "<group>"; };
 		B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderUiProtocols.swift; sourceTree = "<group>"; };
+		B72528321EE948B800815118 /* AccountsSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsSettingsViewModel.swift; sourceTree = "<group>"; };
+		B72528341EE953BC00815118 /* AccountsSettingsCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsSettingsCellViewModel.swift; sourceTree = "<group>"; };
+		B72528361EE9562200815118 /* AccountsSettingsSectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsSettingsSectionViewModel.swift; sourceTree = "<group>"; };
 		B729BEC51E7C35E200793110 /* FilterUpdateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterUpdateProtocol.swift; path = Filter/ViewModel/FilterUpdateProtocol.swift; sourceTree = "<group>"; };
 		B7365CDD1EAF45F30036ECC7 /* UITextField+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
@@ -1101,6 +1107,9 @@
 			isa = PBXGroup;
 			children = (
 				B74F81011EB0E20000519FCC /* LoginViewModel.swift */,
+				B72528321EE948B800815118 /* AccountsSettingsViewModel.swift */,
+				B72528341EE953BC00815118 /* AccountsSettingsCellViewModel.swift */,
+				B72528361EE9562200815118 /* AccountsSettingsSectionViewModel.swift */,
 			);
 			name = AccountsViewModel;
 			sourceTree = "<group>";
@@ -1368,7 +1377,9 @@
 				43F848491EAA09AE00DBE460 /* Weak.swift in Sources */,
 				431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */,
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
+				B72528331EE948B800815118 /* AccountsSettingsViewModel.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
+				B72528371EE9562200815118 /* AccountsSettingsSectionViewModel.swift in Sources */,
 				432DA7461EE027EB00B30BAA /* MessageSyncService.swift in Sources */,
 				43A26FBA1E0408FB00AF0B84 /* ErrorProtocol.swift in Sources */,
 				43C3220C1EA915C6005073FB /* CGRect+Util.swift in Sources */,
@@ -1400,6 +1411,7 @@
 				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,
 				8B81BB901E03F73100D38C82 /* SegueHandlerType.swift in Sources */,
 				4301B3161E28D259007D626C /* AppendMailsOperation.swift in Sources */,
+				B72528351EE953BC00815118 /* AccountsSettingsCellViewModel.swift in Sources */,
 				43122B1A1DF5B48B00610253 /* ImapService.swift in Sources */,
 				222B35651DF96A9C007A1F82 /* ComposeCellProtocols.swift in Sources */,
 				43A6E04B1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift in Sources */,
