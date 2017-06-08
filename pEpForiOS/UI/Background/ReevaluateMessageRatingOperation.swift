@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 import MessageModel
 
@@ -14,7 +15,11 @@ import MessageModel
  Reevaluate the rating for messages whose trust status has changed (that is,
  an identity involved in the message has changed the trust status).
  */
-class ReevaluateMessageRatingOperation: Operation {
+class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
+    enum ReevaluationError: Error {
+        case noMessageFound
+    }
+
     let message: Message
 
     init(message: Message) {
@@ -22,8 +27,23 @@ class ReevaluateMessageRatingOperation: Operation {
     }
 
     open override func main() {
-        // Implementation blocked by ENGINE-179.
-        // For now, just wait a couple of seconds, then do nothing.
-        sleep(2)
+        let context = Record.Context.background
+        context.perform {
+            self.reevalute(context: context)
+            self.markAsFinished()
+        }
+    }
+
+    func reevalute(context: NSManagedObjectContext) {
+        guard let cdMsg = CdMessage.search(message: message) else {
+            addError(ReevaluationError.noMessageFound)
+            return
+        }
+        let session = PEPSession()
+        let pepMessage = cdMsg.pEpMessage()
+        let newRating = session.reEvaluateMessageRating(pepMessage)
+        cdMsg.pEpRating = Int16(newRating.rawValue)
+        Record.save(context: context)
+        message.pEpRatingInt = Int(newRating.rawValue)
     }
 }

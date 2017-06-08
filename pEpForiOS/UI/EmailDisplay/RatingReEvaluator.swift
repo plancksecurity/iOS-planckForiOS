@@ -15,7 +15,7 @@ public protocol RatingReEvaluatorDelegate: class {
 }
 
 class RatingReEvaluator {
-    var message: Message
+    let message: Message
     lazy var queue = LimitedOperationQueue()
     weak var delegate: RatingReEvaluatorDelegate?
 
@@ -26,7 +26,9 @@ class RatingReEvaluator {
     func reevaluateRating() {
         let op = ReevaluateMessageRatingOperation(message: message)
         op.completionBlock = {
-            self.delegate?.ratingChanged(message: self.message)
+            if !op.hasErrors() {
+                self.delegate?.ratingChanged(message: self.message)
+            }
         }
         queue.addOperation(op)
     }
