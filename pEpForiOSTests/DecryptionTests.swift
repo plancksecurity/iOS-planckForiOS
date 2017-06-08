@@ -70,6 +70,15 @@ class DecryptionTests: XCTestCase {
         return pEpId
     }
 
+    func valueOf(header: String, inOptionalFields: [[String]]?) -> String? {
+        for xs in inOptionalFields ?? [] {
+            if xs.count > 1 && xs[0] == header {
+                return xs[1]
+            }
+        }
+        return nil
+    }
+
     func testBasicDecryption(shouldEncrypt: Bool) {
         let msgLongMessage = "This is a message!"
         let msgShortMessage = "Subject1"
@@ -147,13 +156,25 @@ class DecryptionTests: XCTestCase {
             XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
         }
 
+        let pepDict = cdMsg.pEpMessage()
+        let optFields = pepDict[kPepOptFields] as? [[String]]
+        if shouldEncrypt {
+            XCTAssertNotNil(pepDict[kPepOptFields])
+            XCTAssertNotNil(optFields)
+        }
         for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
             let p = NSPredicate(format: "message = %@ and name = %@", cdMsg, header)
             let headerField = CdHeaderField.first(predicate: p)
             if shouldEncrypt {
+                // check header in core data
                 XCTAssertNotNil(headerField)
+                // check header in dictionary derived from core data
+                XCTAssertNotNil(valueOf(header: header, inOptionalFields: optFields))
             } else {
+                // check header in core data
                 XCTAssertNil(headerField)
+                // check header in dictionary derived from core data
+                XCTAssertNil(valueOf(header: header, inOptionalFields: optFields))
             }
         }
     }
