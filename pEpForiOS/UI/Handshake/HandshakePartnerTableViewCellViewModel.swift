@@ -69,7 +69,7 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      Cache the updated partner identity.
      */
-    let pEpPartner: NSMutableDictionary
+    var pEpPartner: NSMutableDictionary
 
     init(ownIdentity: Identity, partner: Identity, session: PEPSession?,
          imageProvider: IdentityImageProvider) {
@@ -121,10 +121,13 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     func invokeTrustAction(action: (NSMutableDictionary) -> ()) {
-        let thePartner = partnerIdentity.updatedIdentityDictionary(session: session)
-        action(thePartner)
+        pEpPartner = partnerIdentity.updatedIdentityDictionary(session: session)
+        action(pEpPartner)
+        pEpPartner = partnerIdentity.updatedIdentityDictionary(session: session)
+        isPartnerPGPUser = pEpPartner.isPGP
         identityColor = partnerIdentity.pEpColor(session: session)
         rating = partnerIdentity.pEpRating(session: session)
+        updateTrustwords(session: session)
     }
 
     public func confirmTrust() {

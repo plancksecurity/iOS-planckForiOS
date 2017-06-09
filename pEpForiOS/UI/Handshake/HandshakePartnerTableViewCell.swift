@@ -199,7 +199,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
         if isPartnerPGPUser {
             languageSelectorImageView.image = nil
-        } else {
+        } else if showTrustwords {
             languageSelectorImageView.image = UIImage(named: "grid-globe")
 
             install(gestureRecognizer: UITapGestureRecognizer(
