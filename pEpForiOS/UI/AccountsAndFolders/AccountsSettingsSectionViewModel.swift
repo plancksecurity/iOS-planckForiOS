@@ -50,7 +50,13 @@ public class AccountsSettingsSectionViewModel {
         return cell >= 0 && cell <= cells.count
     }
 
-    subscript(cell: Int) -> AccountsSettingsCellViewModel? {
+    var count: Int {
+        get {
+            return cells.count
+        }
+    }
+
+    subscript(cell: Int) -> AccountsSettingsCellViewModel {
         get {
             assert(cellIsValid(cell: cell), "Cell out of range")
             return cells[cell]

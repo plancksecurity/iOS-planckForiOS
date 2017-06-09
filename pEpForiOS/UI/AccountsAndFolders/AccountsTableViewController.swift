@@ -11,35 +11,26 @@ import MessageModel
 class AccountsTableViewController: UITableViewController {
     let comp = "AccountsTableViewController"
 
+    let viewModel = AccountsSettingsViewModel()
+
     /** Our vanilla table view cell */
     let accountsCellIdentifier = "accountsCell"
 
-    /** Two sections, one for the folders, one for the accounts */
-    let numberOfSections = 2
-
-    /** The index of the section where important folders are listed */
-    let folderSection = 0
-
     var appConfig: AppConfig!
-    var accounts = [Account]()
 
     /** For email list configuration */
-    var emailListConfig: EmailListConfig?
+    //var emailListConfig: EmailListConfig?
 
     struct UIState {
         var isSynching = false
     }
 
     var state = UIState.init()
-    var selectedAccount: Account? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         title = NSLocalizedString("Accounts", comment: "Accounts view title")
-        tableView.estimatedRowHeight = 44.0
-        tableView.rowHeight = UITableViewAutomaticDimension
-        
+        UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -62,7 +53,7 @@ class AccountsTableViewController: UITableViewController {
     }
 
     func updateModel() {
-        accounts = Account.all()
+        //reload data in view model
         tableView.reloadData()
     }
 
@@ -74,60 +65,21 @@ class AccountsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return accounts.count
-        case 1:
-            return 2
-        default:
-            return 0
-        }
-            //return accounts.count
+        return  viewModel[section].count
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return numberOfSections
+        return viewModel.count
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return NSLocalizedString("Accounts", comment: "Table header")
-        case 1:
-            return NSLocalizedString("Settings", comment: "Table header")
-        default:
-            return ""
-        }
+        return viewModel[section].title
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if indexPath.section == 0 {
-
-            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
-            cell.textLabel?.text = accounts[indexPath.row].user.address
-            cell.accessoryType = .disclosureIndicator
-            return cell
-
-        } else if indexPath.section == 1 {
-            if indexPath.row == 1{
-                let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
-                cell.textLabel?.text = NSLocalizedString("New Login", comment: "")
-                cell.accessoryType = .disclosureIndicator
-                cell.textLabel?.numberOfLines = 0
-                return cell
-            }
-
-            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
-            cell.textLabel?.text = NSLocalizedString("Logging", comment: "")
-            cell.accessoryType = .disclosureIndicator
-            cell.textLabel?.numberOfLines = 0
-            return cell
-
-        }
-
         let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
-        cell.textLabel?.text = accounts[indexPath.row].user.address
+        cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -143,10 +95,9 @@ class AccountsTableViewController: UITableViewController {
                 performSegue(withIdentifier: .segueShowLog, sender: self)
             }
         } else {
-            selectedAccount = accounts[indexPath.row]
+            //selectedAccount = accounts[indexPath.row]
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         }
-
 
     }
     
@@ -179,7 +130,7 @@ extension AccountsTableViewController: SegueHandlerType {
             else {
                 return
             }
-            destination.account = selectedAccount
+            //destination.account = selectedAccount
             break
         default:()
         }

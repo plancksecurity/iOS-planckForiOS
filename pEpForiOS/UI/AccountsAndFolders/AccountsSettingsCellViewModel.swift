@@ -33,9 +33,9 @@ public class AccountsSettingsCellViewModel {
             } else if let type = self.type {
                 switch type {
                 case .showLog:
-                    break
+                    return NSLocalizedString("Logging", comment: "")
                 case .organizedByThread:
-                    break
+                    return NSLocalizedString("Enable Threading", comment: "")
                 }
             }
             return nil

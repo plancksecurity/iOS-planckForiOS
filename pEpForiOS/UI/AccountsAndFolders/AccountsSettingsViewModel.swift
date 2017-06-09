@@ -26,7 +26,13 @@ class AccountsSettingsViewModel {
         return section >= 0 && section <= sections.count
     }
 
-    subscript(section: Int) -> AccountsSettingsSectionViewModel? {
+    var count: Int {
+        get {
+            return sections.count
+        }
+    }
+
+    subscript(section: Int) -> AccountsSettingsSectionViewModel {
         get {
             assert(sectionIsValid(section: section), "Section out of range")
             return sections[section]
