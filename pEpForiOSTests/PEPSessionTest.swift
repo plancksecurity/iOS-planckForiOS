@@ -133,7 +133,7 @@ class PEPSessionTest: XCTestCase {
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
 
-        guard let data = TestUtil.loadDataWithFileName("MessageHeapBufferOverflow.txt") else {
+        guard let data = TestUtil.loadData(fileName: "MessageHeapBufferOverflow.txt") else {
             XCTAssertTrue(false)
             return
         }
@@ -164,7 +164,7 @@ class PEPSessionTest: XCTestCase {
         folder.uuid = MessageID.generate()
         Record.saveAndWait()
 
-        guard let data = TestUtil.loadDataWithFileName("MessageHeapBufferOverflow.txt") else {
+        guard let data = TestUtil.loadData(fileName: "MessageHeapBufferOverflow.txt") else {
             XCTAssertTrue(false)
             return
         }

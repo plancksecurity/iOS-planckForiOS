@@ -1950,7 +1950,7 @@ class SimpleOperationsTest: XCTestCase {
         folder.account = cdAccount
 
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = TestUtil.loadDataWithFileName(imageFileName) else {
+        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
             XCTAssertTrue(false)
             return
         }

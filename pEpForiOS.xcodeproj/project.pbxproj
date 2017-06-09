@@ -115,6 +115,12 @@
 		4362399C1EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436239981EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift */; };
 		4362399D1EAE0CE800BD2EB9 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436239991EAE0CE800BD2EB9 /* OperationQueue+Extension.swift */; };
 		4362399F1EAE2F0A00BD2EB9 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4362399E1EAE2F0A00BD2EB9 /* UITableView+Extension.swift */; };
+		436795F81EE98B9A00B03E23 /* CommunicationTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436795F71EE98B9A00B03E23 /* CommunicationTypeTests.swift */; };
+		436795FB1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795F91EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc */; };
+		436795FC1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FA1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc */; };
+		436795FF1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FD1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc */; };
+		436796001EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FE1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc */; };
+		436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */; };
 		436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C23271E02948400071430 /* BackgroundTaskProtocol.swift */; };
 		436C232D1E02A2D900071430 /* KickOffMySelfProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C232C1E02A2D900071430 /* KickOffMySelfProtocol.swift */; };
 		436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */; };
@@ -376,6 +382,12 @@
 		436239981EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		436239991EAE0CE800BD2EB9 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		4362399E1EAE2F0A00BD2EB9 /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		436795F71EE98B9A00B03E23 /* CommunicationTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunicationTypeTests.swift; sourceTree = "<group>"; };
+		436795F91EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test002@peptest.ch_sec.asc"; sourceTree = "<group>"; };
+		436795FA1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test002@peptest.ch.asc"; sourceTree = "<group>"; };
+		436795FD1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test001@peptest.ch_sec.asc"; sourceTree = "<group>"; };
+		436795FE1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test001@peptest.ch.asc"; sourceTree = "<group>"; };
+		436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CommunicationTypeTests_Message_test001_to_test002.txt; sourceTree = "<group>"; };
 		436C23271E02948400071430 /* BackgroundTaskProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundTaskProtocol.swift; sourceTree = "<group>"; };
 		436C232C1E02A2D900071430 /* KickOffMySelfProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KickOffMySelfProtocol.swift; sourceTree = "<group>"; };
 		436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LimitedOperationQueue.swift; sourceTree = "<group>"; };
@@ -841,6 +853,7 @@
 				43FAA0D31EC9CBC0005BFC4B /* DecryptionTests.swift */,
 				431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */,
 				4347A9221EE6B0B100C18233 /* ImapSyncMachineTests.swift */,
+				436795F71EE98B9A00B03E23 /* CommunicationTypeTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -947,6 +960,11 @@
 		43B2C3151D2280ED00A08557 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */,
+				436795FD1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc */,
+				436795FE1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc */,
+				436795F91EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc */,
+				436795FA1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc */,
 				431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */,
 				4348EF141E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */,
 				43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */,
@@ -1276,11 +1294,16 @@
 			files = (
 				4348EF151E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
 				431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
+				436795FB1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc in Resources */,
 				430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
+				436796001EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc in Resources */,
+				436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */,
 				438D25401D4B9EDB00BFF7AA /* PGPMimeMail.txt in Resources */,
 				43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */,
 				43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */,
+				436795FF1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc in Resources */,
 				43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */,
+				436795FC1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1517,6 +1540,7 @@
 				43FAA0D41EC9CBC0005BFC4B /* DecryptionTests.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
+				436795F81EE98B9A00B03E23 /* CommunicationTypeTests.swift in Sources */,
 				43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */,
 				4347A9231EE6B0B100C18233 /* ImapSyncMachineTests.swift in Sources */,
 				493B6D221E7078A100364D60 /* TestData.swift in Sources */,

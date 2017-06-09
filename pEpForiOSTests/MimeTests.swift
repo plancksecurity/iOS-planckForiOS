@@ -9,9 +9,8 @@
 import XCTest
 
 class MimeTests: XCTestCase {
-
     func testPGPMimePantomime() {
-        guard let data = TestUtil.loadDataWithFileName("PGPMimeMail.txt") else {
+        guard let data = TestUtil.loadData(fileName: "PGPMimeMail.txt") else {
             XCTAssertTrue(false)
             return
         }

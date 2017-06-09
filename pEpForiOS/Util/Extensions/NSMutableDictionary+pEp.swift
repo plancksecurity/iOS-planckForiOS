@@ -9,14 +9,14 @@
 import Foundation
 
 extension NSMutableDictionary {
-    var commType: PEP_comm_type? {
+    public var commType: PEP_comm_type? {
         if let val = object(forKey: kPepCommType) as? NSNumber {
             return PEP_comm_type(val.uint32Value)
         }
         return nil
     }
 
-    var isPGP: Bool {
+    public var isPGP: Bool {
         let ct = commType ?? PEP_ct_unknown
         switch ct {
         case PEP_ct_OpenPGP_weak_unconfirmed, PEP_ct_OpenPGP_unconfirmed,

@@ -99,45 +99,8 @@ class TestUtil {
         print("bundle \(String(describing: bundle.bundleIdentifier)) \(bundle.bundlePath)")
     }
 
-    /**
-     Import a key with the given file name from our own test bundle.
-     - Parameter session: The pEp session to import the key into.
-     - Parameter fileName: The file name of the key (complete with extension)
-     */
-    static func importKeyByFileName(_ session: PEPSession, fileName: String) {
-        let testBundle = Bundle.init(for: PEPSessionTest.self)
-        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
-            XCTAssertTrue(false, "Could not find key with file name \(fileName)")
-            return
-        }
-        guard let data = try? Data.init(contentsOf: URL(fileURLWithPath: keyPath)) else {
-            XCTAssertTrue(false, "Could not load key with file name \(fileName)")
-            return
-        }
-        guard let content = NSString.init(data: data, encoding: String.Encoding.ascii.rawValue)
-            else {
-                XCTAssertTrue(false, "Could not convert key with file name \(fileName) into data")
-                return
-        }
-        session.importKey(content as String)
-    }
-
     static func loadData(fileName: String) -> Data? {
         let testBundle = Bundle.init(for: PEPSessionTest.self)
-        guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
-            XCTAssertTrue(false, "Could not find key with file name \(fileName)")
-            return nil
-        }
-        guard let data = try? Data.init(contentsOf: URL(fileURLWithPath: keyPath)) else {
-            XCTAssertTrue(false, "Could not load key with file name \(fileName)")
-            return nil
-        }
-        return data
-    }
-
-    static func loadDataWithFileName(_ fileName: String) -> Data? {
-        let testBundle = Bundle.init(for: PEPSessionTest.self)
-
         guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
             XCTAssertTrue(false, "Could not find file named \(fileName)")
             return nil
@@ -147,6 +110,30 @@ class TestUtil {
             return nil
         }
         return data
+    }
+
+    static func loadString(fileName: String) -> String? {
+        if let data = loadData(fileName: fileName) {
+            guard let content = NSString(data: data, encoding: String.Encoding.ascii.rawValue)
+                else {
+                    XCTAssertTrue(
+                        false, "Could not convert key with file name \(fileName) into data")
+                    return nil
+            }
+            return content as String
+        }
+        return nil
+    }
+
+    /**
+     Import a key with the given file name from our own test bundle.
+     - Parameter session: The pEp session to import the key into.
+     - Parameter fileName: The file name of the key (complete with extension)
+     */
+    static func importKeyByFileName(_ session: PEPSession, fileName: String) {
+        if let content = loadString(fileName: fileName) {
+            session.importKey(content as String)
+        }
     }
 
     static func setupSomeIdentities(_ session: PEPSession)
