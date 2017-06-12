@@ -87,6 +87,7 @@ class AccountsTableViewController: UITableViewController {
             switchView.setOn(false, animated: false)
             switchView.addTarget(self, action: #selector(switchChanged(sender:)), for: UIControlEvents.valueChanged)
             cell.accessoryView = switchView
+            cell.selectionStyle = .none
             return cell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
