@@ -41,4 +41,8 @@ public class AccountsSettingsCellViewModel {
             return nil
         }
     }
+
+    public func delete() {
+        self.account?.delete()
+    }
 }

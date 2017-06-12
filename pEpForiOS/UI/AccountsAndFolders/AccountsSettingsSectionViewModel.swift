@@ -46,6 +46,11 @@ public class AccountsSettingsSectionViewModel {
         self.cells.append(AccountsSettingsCellViewModel(type: .organizedByThread))
     }
 
+    func delete(cell: Int) {
+        cells[cell].delete()
+        cells.remove(at: cell)
+    }
+
     func cellIsValid(cell: Int) -> Bool {
         return cell >= 0 && cell <= cells.count
     }

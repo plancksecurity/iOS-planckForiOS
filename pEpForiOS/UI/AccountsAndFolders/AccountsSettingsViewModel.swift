@@ -26,6 +26,12 @@ class AccountsSettingsViewModel {
         return section >= 0 && section <= sections.count
     }
 
+    func delete(section: Int, cell: Int) {
+        if section == 0 {
+            sections[section].delete(cell: cell)
+        }
+    }
+
     var count: Int {
         get {
             return sections.count

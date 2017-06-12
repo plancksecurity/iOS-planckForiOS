@@ -90,11 +90,61 @@ class AccountsTableViewController: UITableViewController {
             cell.selectionStyle = .none
             return cell
         }
+
         let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
         cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
         cell.accessoryType = .disclosureIndicator
         return cell
     }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == 0 ? true : false
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Deleted")
+
+            viewModel.delete(section: indexPath.section, cell: indexPath.row)
+            self.tableView.beginUpdates()
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.tableView.endUpdates()
+        }
+    }
+
+    /*override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if indexPath.section == 0 {
+            if let cell = tableView.cellForRow(at: indexPath) {
+                let deleteAction = createDeleteAction(indexPath: indexPath, cell: cell)
+                return [deleteAction]
+            }
+        }
+        return nil
+    }
+
+    func createDeleteAction(indexPath: IndexPath, cell: UITableViewCell) -> UITableViewRowAction {
+        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+            viewModel[indexPath.section][indexPath.row].delete()
+        }
+
+        return createRowAction(
+            cell: cell, image: UIImage(named: "swipe-trash"), action: action,
+            title: "\n\n" + NSLocalizedString("Delete", comment: "Account action (on Swipe)"))
+    }
+
+    func createRowAction(cell: UITableViewCell,
+                         image: UIImage?, action: @escaping (UITableViewRowAction, IndexPath) -> Void,
+                         title: String) -> UITableViewRowAction {
+        let rowAction = UITableViewRowAction(
+            style: .normal, title: title, handler: action)
+
+        if let theImage = image {
+            let iconColor = UIColor(patternImage: theImage)
+            rowAction.backgroundColor = iconColor
+        }
+
+        return rowAction
+    }*/
 
     func switchChanged(sender: UISwitch) {
         NSLog( "The switch is %@", sender.isOn ? "ON" : "OFF" );
