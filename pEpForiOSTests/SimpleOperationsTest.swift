@@ -2271,7 +2271,16 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertFalse(op.hasErrors())
         })
 
-        XCTAssertNotNil(identity?.fingerPrint())
+        guard let theIdent = identity else {
+            XCTFail()
+            return
+        }
+        XCTAssertNotNil(theIdent.fingerPrint())
+
+        let session = PEPSession.init()
+        let identDict = theIdent.updatedIdentityDictionary(session: session)
+        XCTAssertNotNil(identDict[kPepFingerprint])
+        XCTAssertNotNil(identDict[kPepUserID])
     }
 
     func testTrashMessages() {
