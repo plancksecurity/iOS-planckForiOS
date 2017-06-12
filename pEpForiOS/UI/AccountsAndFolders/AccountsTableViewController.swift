@@ -18,6 +18,7 @@ class AccountsTableViewController: UITableViewController {
 
     var appConfig: AppConfig!
 
+    var ipath : IndexPath?
     /** For email list configuration */
     //var emailListConfig: EmailListConfig?
 
@@ -110,6 +111,7 @@ class AccountsTableViewController: UITableViewController {
             }
         } else {
             //selectedAccount = accounts[indexPath.row]
+            self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         }
 
@@ -144,7 +146,9 @@ extension AccountsTableViewController: SegueHandlerType {
             else {
                 return
             }
-            //destination.account = selectedAccount
+            if let path = ipath {
+                destination.account = viewModel[path.section][path.row].account
+            }
             break
         default:()
         }
