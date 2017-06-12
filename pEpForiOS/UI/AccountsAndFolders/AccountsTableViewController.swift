@@ -78,10 +78,24 @@ class AccountsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
+        if indexPath.section == 1 && indexPath.row == 1 {
+
+            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
+            cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
+            let switchView = UISwitch(frame: CGRect.zero)
+            switchView.setOn(false, animated: false)
+            switchView.addTarget(self, action: #selector(switchChanged(sender:)), for: UIControlEvents.valueChanged)
+            cell.accessoryView = switchView
+            return cell
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
         cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
         cell.accessoryType = .disclosureIndicator
         return cell
+    }
+
+    func switchChanged(sender: UISwitch) {
+        NSLog( "The switch is %@", sender.isOn ? "ON" : "OFF" );
     }
 
     // MARK: - Table view delegate
