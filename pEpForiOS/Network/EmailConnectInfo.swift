@@ -177,8 +177,7 @@ public class EmailConnectInfo: ConnectInfo {
             if let cdAccount = creds.account {
                 cdAccount.checkVerificationStatus()
             }
+            Record.saveAndWait(context: context)
         }
-
-        Record.saveAndWait(context: context)
     }
 }
