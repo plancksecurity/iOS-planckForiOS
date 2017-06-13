@@ -66,7 +66,7 @@
 		431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E58F51ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift */; };
 		431E58FA1ED591E900EFA77F /* AccountVerificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E58F91ED591E900EFA77F /* AccountVerificationService.swift */; };
 		431E58FC1ED5926B00EFA77F /* AccountVerificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */; };
-		431E65611EEAE37E00B8BBFC /* CoreDataMergePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E65601EEAE37E00B8BBFC /* CoreDataMergePolicy.swift */; };
+		431E65611EEAE37E00B8BBFC /* CoreDataMergeDebugPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E65601EEAE37E00B8BBFC /* CoreDataMergeDebugPolicy.swift */; };
 		431E65631EEAE65200B8BBFC /* HandshakeUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
 		43209B541ECC5A9B007E7E2E /* libpEpObjCAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43209B531ECC5A9B007E7E2E /* libpEpObjCAdapter.a */; };
@@ -334,7 +334,7 @@
 		431E58F51ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationServiceProtocol.swift; sourceTree = "<group>"; };
 		431E58F91ED591E900EFA77F /* AccountVerificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationService.swift; sourceTree = "<group>"; };
 		431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationServiceTests.swift; sourceTree = "<group>"; };
-		431E65601EEAE37E00B8BBFC /* CoreDataMergePolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataMergePolicy.swift; sourceTree = "<group>"; };
+		431E65601EEAE37E00B8BBFC /* CoreDataMergeDebugPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataMergeDebugPolicy.swift; sourceTree = "<group>"; };
 		431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeUITest.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		43209B531ECC5A9B007E7E2E /* libpEpObjCAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpObjCAdapter.a; path = "../pEpObjCAdapter/build/Debug-iphoneos/libpEpObjCAdapter.a"; sourceTree = "<group>"; };
@@ -910,7 +910,7 @@
 				43F848481EAA09AE00DBE460 /* Weak.swift */,
 				434F40931EB0B173002FBF0D /* ObservableValue.swift */,
 				43FAA0D11EC9972B005BFC4B /* Tuple.swift */,
-				431E65601EEAE37E00B8BBFC /* CoreDataMergePolicy.swift */,
+				431E65601EEAE37E00B8BBFC /* CoreDataMergeDebugPolicy.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1443,7 +1443,7 @@
 				B72528351EE953BC00815118 /* AccountsSettingsCellViewModel.swift in Sources */,
 				43122B1A1DF5B48B00610253 /* ImapService.swift in Sources */,
 				222B35651DF96A9C007A1F82 /* ComposeCellProtocols.swift in Sources */,
-				431E65611EEAE37E00B8BBFC /* CoreDataMergePolicy.swift in Sources */,
+				431E65611EEAE37E00B8BBFC /* CoreDataMergeDebugPolicy.swift in Sources */,
 				43A6E04B1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				432142641E8FD66900FBE987 /* QuickSyncService.swift in Sources */,
