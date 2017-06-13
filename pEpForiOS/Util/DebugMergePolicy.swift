@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class CoreDataMergeDebugPolicy: NSMergePolicy {
+class DebugMergePolicy: NSMergePolicy {
     override func resolve(mergeConflicts list: [Any]) throws {
         if let mcList = list as? [NSMergeConflict] {
             try resolve(optimisticLockingConflicts: mcList)
