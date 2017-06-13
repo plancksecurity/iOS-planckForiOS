@@ -72,9 +72,9 @@ open class StorePrefetchedMailOperation: BaseOperation {
             Record.saveAndWait(context: context)
             if messageUpdate.rfc822 {
                 messageFetchedBlock?(msg)
-            } else {
-                self.addError(OperationError.cannotStoreMessage)
             }
+        } else {
+            self.addError(OperationError.cannotStoreMessage)
         }
     }
 
