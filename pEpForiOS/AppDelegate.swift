@@ -155,7 +155,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let objectModel = MessageModelData.MessageModelData()
         do {
             try Record.loadCoreDataStack(managedObjectModel: objectModel)
-            Record.set(mergePolicy: CoreDataMergeDebugPolicy(merge: .errorMergePolicyType))
         } catch {
             Log.error(component: comp, errorString: "Error while Loading DataStack")
         }
