@@ -269,17 +269,17 @@ class SimpleOperationsTest: XCTestCase {
         message.setMessageID("001@whatever.test")
 
         let expStored = expectation(description: "expStored")
-        let op = StorePrefetchedMailOperation(
+        let storeOp = StorePrefetchedMailOperation(
             accountID: imapConnectInfo.accountObjectID, message: message,
             messageUpdate: CWMessageUpdate())
-        op.completionBlock = {
+        storeOp.completionBlock = {
             expStored.fulfill()
         }
         let backgroundQueue = OperationQueue.init()
-        backgroundQueue.addOperation(op)
+        backgroundQueue.addOperation(storeOp)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors())
+            XCTAssertFalse(storeOp.hasErrors())
         })
 
         XCTAssertEqual(CdMessage.all()?.count, 1)
