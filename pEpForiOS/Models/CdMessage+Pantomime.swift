@@ -321,9 +321,12 @@ extension CdMessage {
     }
 
     /**
-     Will overwrite the IMAP server flags with the given flags.
-     If there were no local changes, the local flags will then be set to the same value.
-     If there were local changes, then the local flags will not change.
+     Stores server flags that have changed.
+     * If the server flags have already been known, nothing is done.
+     * Otherwise, the new server flags are stored.
+       * If there were no local flag changes (in respect to the previous server flags version),
+         the local flags will then be set to the same value.
+       * If there were local changes, then the local flags will not change.
      - Returns: true if the local flags were updated.
      */
     public func updateFromServer(cwFlags: CWFlags) -> Bool {

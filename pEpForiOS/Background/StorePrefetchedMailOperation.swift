@@ -14,6 +14,12 @@ import MessageModel
  This can be used in a queue, or directly called with ```start()```.
  */
 open class StorePrefetchedMailOperation: BaseOperation {
+    enum OperationError: Error, LocalizedError {
+        case cannotFindAccount
+        case cannotStoreMessage
+        case messageForFlagUpdateNotFound
+    }
+
     let message: CWIMAPMessage
     let accountID: NSManagedObjectID
     let messageFetchedBlock: MessageFetchedBlock?
@@ -44,19 +50,31 @@ open class StorePrefetchedMailOperation: BaseOperation {
     func storeMessage(context: NSManagedObjectContext) {
         guard let account = context.object(with: accountID)
             as? CdAccount else {
-                addError(Constants.errorCannotFindAccount(component: comp))
+                addError(OperationError.cannotFindAccount)
                 return
         }
-        if let msg = insert(pantomimeMessage: message, account: account) {
+        if messageUpdate.isFlagsOnly() {
+            guard
+                let messageID = message.messageID(),
+                let folderName = message.folder()?.name(),
+                let cdMsg = CdMessage.by(uuid: messageID, folderName: folderName) else {
+                    addError(OperationError.messageForFlagUpdateNotFound)
+                    return
+            }
+            let shouldSave = cdMsg.updateFromServer(cwFlags: message.flags())
+            if shouldSave {
+                Record.saveAndWait(context: context)
+            }
+        } else if let msg = insert(pantomimeMessage: message, account: account) {
             if msg.received == nil {
                 msg.received = NSDate()
             }
             Record.saveAndWait(context: context)
             if messageUpdate.rfc822 {
                 messageFetchedBlock?(msg)
+            } else {
+                self.addError(OperationError.cannotStoreMessage)
             }
-        } else {
-            self.addError(Constants.errorCannotStoreMessage(self.comp))
         }
     }
 
