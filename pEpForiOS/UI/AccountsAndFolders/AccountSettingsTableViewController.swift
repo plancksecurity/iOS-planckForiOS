@@ -23,6 +23,8 @@ class AccountSettingsTableViewController: UITableViewController {
     @IBOutlet weak var smtpServerTextfield: UITextField!
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
+
+    var viewModel: AccountSettingsViewModel? = nil
     
     var account: Account? = nil
     
