@@ -11,12 +11,14 @@ import XCTest
 import pEpForiOS
 import MessageModel
 
-class CommunicationTypeTests: XCTestCase {
+class MessageReevalutionTests: XCTestCase {
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderAccount: CdAccount!
     var pEpSenderIdentity: PEPIdentity!
     var cdInbox: CdFolder!
+    var senderIdentity: Identity!
+    var cdDecryptedMessage: CdMessage!
 
     var persistentSetup: PersistentSetup!
     var session = PEPSession()
@@ -61,6 +63,7 @@ class CommunicationTypeTests: XCTestCase {
             session, fileName: "CommunicationTypeTests_test002@peptest.ch.asc")
 
         self.backgroundQueue = OperationQueue()
+        decryptTheMessage()
     }
 
     override func tearDown() {
@@ -70,7 +73,7 @@ class CommunicationTypeTests: XCTestCase {
         super.tearDown()
     }
 
-    func testCommunicationTypes() {
+    func decryptTheMessage() {
         guard
             let msgTxt = TestUtil.loadData(
                 fileName: "CommunicationTypeTests_Message_test001_to_test002.txt")
@@ -105,6 +108,7 @@ class CommunicationTypeTests: XCTestCase {
 
         XCTAssertEqual(decryptOperation.numberOfMessagesDecrypted, 1)
         Record.Context.main.refreshAllObjects()
+        cdDecryptedMessage = cdMessage
         XCTAssertEqual(cdMessage.pEpRating, Int16(PEP_rating_reliable.rawValue))
         XCTAssertEqual(cdMessage.shortMessage, "oh yeah, subject")
         XCTAssertTrue(cdMessage.longMessage?.startsWith("Some text body!") ?? false)
@@ -119,13 +123,17 @@ class CommunicationTypeTests: XCTestCase {
         }
         XCTAssertTrue(recipientIdentity.isMySelf)
 
-        guard let senderIdentity = cdMessage.from?.identity() else {
+        guard let theSenderIdentity = cdMessage.from?.identity() else {
             XCTFail()
             return
         }
-        XCTAssertEqual(senderIdentity.address, cdSenderAccount.identity?.address)
-        XCTAssertFalse(senderIdentity.isMySelf)
+        XCTAssertEqual(theSenderIdentity.address, cdSenderAccount.identity?.address)
+        XCTAssertFalse(theSenderIdentity.isMySelf)
 
+        senderIdentity = theSenderIdentity
+    }
+
+    func testCommunicationTypes() {
         let senderDict = senderIdentity.updatedIdentityDictionary(session: session)
 
         XCTAssertTrue(senderDict.isPGP)
