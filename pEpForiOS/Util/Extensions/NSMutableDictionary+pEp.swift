@@ -27,6 +27,11 @@ extension NSMutableDictionary {
         }
     }
 
+    public var isConfirmed: Bool {
+        let ct = commType ?? PEP_ct_unknown
+        return (ct.rawValue & PEP_ct_confirmed.rawValue) > 0
+    }
+
     /**
      Assumes that this dictionary contains a pEp identity and calls
      `updateIdentity` on the given session.
