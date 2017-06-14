@@ -64,6 +64,8 @@ extension Identity {
      the fingerprint.
      */
     public func updatedIdentityDictionary(session: PEPSession) -> NSMutableDictionary {
-        return pEpIdentity().mutableDictionary().update(session: session)
+        let md = pEpIdentity().mutableDictionary()
+        md.update(session: session)
+        return md
     }
 }

@@ -36,8 +36,7 @@ extension NSMutableDictionary {
      Assumes that this dictionary contains a pEp identity and calls
      `updateIdentity` on the given session.
      */
-    public func update(session: PEPSession) -> NSMutableDictionary {
+    public func update(session: PEPSession) {
         session.updateIdentity(self)
-        return self
     }
 }
