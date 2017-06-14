@@ -21,27 +21,29 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
     }
 
     let message: Message
+    let session: PEPSession?
 
-    init(message: Message) {
+    init(message: Message, session: PEPSession? = nil) {
         self.message = message
+        self.session = session
     }
 
     open override func main() {
-        let context = Record.Context.background
-        context.perform {
-            self.reevalute(context: context)
+        let theContext = Record.Context.background
+        theContext.perform {
+            self.reevaluate(context: theContext)
             self.markAsFinished()
         }
     }
 
-    func reevalute(context: NSManagedObjectContext) {
+    func reevaluate(context: NSManagedObjectContext) {
         guard let cdMsg = CdMessage.search(message: message) else {
             addError(ReevaluationError.noMessageFound)
             return
         }
-        let session = PEPSession()
+        let theSession = session ?? PEPSession()
         let pepMessage = cdMsg.pEpMessage()
-        let newRating = session.reEvaluateMessageRating(pepMessage)
+        let newRating = theSession.reEvaluateMessageRating(pepMessage)
         cdMsg.pEpRating = Int16(newRating.rawValue)
         Record.saveAndWait(context: context)
         message.pEpRatingInt = Int(newRating.rawValue)

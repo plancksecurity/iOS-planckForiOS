@@ -150,52 +150,76 @@ class MessageReevalutionTests: XCTestCase {
         XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_reliable)
     }
 
-    func reevaluateMessage(expectedRating: PEP_rating, infoMessage: String) {
+    func reevaluateMessage(expectedRating: PEP_rating, inBackground: Bool = true,
+                           infoMessage: String) {
         guard let message = cdDecryptedMessage.message() else {
             XCTFail()
             return
         }
-        let expReevaluated = expectation(description: "expReevaluated")
-        let reevalOp = ReevaluateMessageRatingOperation(message: message)
-        reevalOp.completionBlock = {
-            expReevaluated.fulfill()
-        }
-        backgroundQueue.addOperation(reevalOp)
-        waitForExpectations(timeout: TestUtil.waitTimeForever, handler: { error in
-            XCTAssertNil(error)
-        })
+        if inBackground {
+            let expReevaluated = expectation(description: "expReevaluated")
+            let reevalOp = ReevaluateMessageRatingOperation(message: message)
+            reevalOp.completionBlock = {
+                expReevaluated.fulfill()
+            }
+            backgroundQueue.addOperation(reevalOp)
+            waitForExpectations(timeout: TestUtil.waitTimeForever, handler: { error in
+                XCTAssertNil(error)
+            })
 
-        Record.Context.default.refreshAllObjects()
-        XCTAssertEqual(cdDecryptedMessage.pEpRating, Int16(expectedRating.rawValue), infoMessage)
+            Record.Context.default.refreshAllObjects()
+            XCTAssertEqual(cdDecryptedMessage.pEpRating, Int16(expectedRating.rawValue),
+                           infoMessage)
+        } else {
+            let reevalOp = ReevaluateMessageRatingOperation(message: message, session: session)
+            reevalOp.reevaluate(context: Record.Context.default)
+        }
     }
 
     func testTrustMistrust() {
+        let runReevaluationInBackground = false
         let senderDict = senderIdentity.updatedIdentityDictionary(session: session)
+
         session.keyResetTrust(senderDict)
-        reevaluateMessage(expectedRating: PEP_rating_reliable, infoMessage: "in the beginning")
+        XCTAssertFalse(senderDict.isConfirmed)
+        reevaluateMessage(
+            expectedRating: PEP_rating_reliable,
+            inBackground: runReevaluationInBackground,
+            infoMessage: "in the beginning")
 
         for _ in 0..<1 {
+            session.trustPersonalKey(senderDict)
+            XCTAssertTrue(senderDict.isConfirmed)
+            XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_trusted)
+            reevaluateMessage(
+                expectedRating: PEP_rating_trusted,
+                inBackground: runReevaluationInBackground,
+                infoMessage: "after trust")
+
             session.keyMistrusted(senderDict)
             XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_mistrust)
-            reevaluateMessage(expectedRating: PEP_rating_mistrust, infoMessage: "after mistrust")
-            let _ = senderDict.update(session: session)
+            reevaluateMessage(
+                expectedRating: PEP_rating_mistrust,
+                inBackground: runReevaluationInBackground,
+                infoMessage: "after mistrust")
+            senderDict.update(session: session)
             XCTAssertFalse(senderDict.isConfirmed)
 
             session.keyResetTrust(senderDict)
+            XCTAssertFalse(senderDict.isConfirmed)
             XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_reliable)
-            reevaluateMessage(expectedRating: PEP_rating_reliable, infoMessage: "after reset trust")
-
-            session.trustPersonalKey(senderDict)
-            XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_trusted)
-            reevaluateMessage(expectedRating: PEP_rating_trusted, infoMessage: "after trust")
-            let _ = senderDict.update(session: session)
-            XCTAssertTrue(senderDict.isConfirmed)
+            reevaluateMessage(
+                expectedRating: PEP_rating_reliable,
+                inBackground: runReevaluationInBackground,
+                infoMessage: "after reset trust")
 
             session.keyResetTrust(senderDict)
-            XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_reliable)
-            reevaluateMessage(expectedRating: PEP_rating_reliable, infoMessage: "after reset trust")
-            let _ = senderDict.update(session: session)
             XCTAssertFalse(senderDict.isConfirmed)
+            XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_reliable)
+            reevaluateMessage(
+                expectedRating: PEP_rating_reliable,
+                inBackground: runReevaluationInBackground,
+                infoMessage: "after reset trust")
         }
     }
 }
