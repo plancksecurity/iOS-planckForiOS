@@ -75,5 +75,21 @@ class AccountSettingsTableViewController: UITableViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
+
+        var imap: (address: String?, port: String?, transport: String?)
+        imap.address = imapServerTextfield.text
+        imap.port = imapPortTextfield.text
+        imap.transport = imapSecurityTextfield.text
+
+        var smtp: (address: String?, port: String?, transport: String?)
+        smtp.address = smtpServerTextfield.text
+        smtp.port = smtpPortTextfield.text
+        smtp.transport = smtpSecurityTextfield.text
+
+        if let name = nameTextfield.text, name != "", let loginName = usernameTextfield.text, loginName != "" {
+            viewModel?.update(loginName: loginName, name: name, password: passwordTextfield.text)
+            navigationController?.popViewController(animated: true)
+        }
+        
     }
 }

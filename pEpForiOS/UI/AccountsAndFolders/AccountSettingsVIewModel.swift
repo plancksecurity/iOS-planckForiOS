@@ -78,6 +78,26 @@ public class AccountSettingsViewModel {
         }
     }
 
+    //fixme need to rethought the server update things
+    func update(loginName: String, name: String, password: String? = nil,
+                imap: (address: String?, port: String?, transport: String?),
+                smtp: (address: String?, port: String?, transport: String?)) {
+        //lala
+    }
+
+    //fixme temporal function without server
+    func update(loginName: String, name: String, password: String? = nil) {
+        self.account?.user.userName = name
+        //self.account?.user.userName = loginName
+        self.account?.serverCredentials.forEach({ (servercredentials) in
+            servercredentials.userName = loginName
+            servercredentials.password = password
+            servercredentials.save()
+        })
+        self.account?.user.save()
+        self.account?.save()
+    }
+
     func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section <= headers.count
     }
