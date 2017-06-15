@@ -2,10 +2,77 @@
 
 import Foundation
 
-class StateMachine<T: Hashable, U: Hashable> {
+/**
+ T is the set of all states.
+ U is the set of all inputs.
+ Both T und U typically are of type `enum`.
+ */
+protocol StateMachineProtocol {
     typealias DidEnterStateBlock = () -> ()
 
-    struct TransitionIndex: Hashable {
+    associatedtype T: Hashable
+    associatedtype U: Hashable
+
+    var currentState: T { get }
+
+    /**
+     Define a transition from one state to the next.
+     */
+    func when(inState: T, onInput: U, transitTo: T)
+
+    /**
+     Define an action that gets executed *after* the state has been entered.
+     */
+    func executeAfterEntering(state: T, block: @escaping DidEnterStateBlock)
+
+    func start()
+
+    func accept(input: U) -> Bool
+}
+
+class StateMachine<T: Hashable, U: Hashable>: StateMachineProtocol {
+    var currentState: T
+
+    init(startState: T) {
+        self.currentState = startState
+    }
+
+    func when(inState: T, onInput: U, transitTo: T) {
+        managementQueue.async {
+            let ti = TransitionIndex(source: inState, input: onInput)
+            self.add(transitionIndex: ti, target: transitTo)
+        }
+    }
+
+    func executeAfterEntering(state: T, block: @escaping StateMachineProtocol.DidEnterStateBlock) {
+        managementQueue.async {
+            self.afterEnteringBlocks[state] = block
+        }
+    }
+
+    func start() {
+        managementQueue.async {
+            self.executeActionForCurrentState()
+        }
+    }
+
+    func accept(input: U) -> Bool {
+        var result = false
+        managementQueue.sync {
+            let ti = TransitionIndex(source: currentState, input: input)
+            if let newState = stateEventTable[ti] {
+                currentState = newState
+                executeActionForCurrentState()
+                result = true
+            }
+            result = false
+        }
+        return result
+    }
+
+    // MARK - Private
+
+    private struct TransitionIndex: Hashable {
         let source: T
         let input: U
 
@@ -18,45 +85,21 @@ class StateMachine<T: Hashable, U: Hashable> {
         }
     }
 
-    var currentState: T
-    var stateEventTable = [TransitionIndex: T]()
-    var afterEnteringBlocks = [T: DidEnterStateBlock]()
+    private var stateEventTable = [TransitionIndex: T]()
+    private var afterEnteringBlocks: [T: StateMachineProtocol.DidEnterStateBlock] = [:]
+    private let managementQueue = DispatchQueue(
+        label: "StateMachine.managemendQueue", qos: .utility, target: nil)
 
-    init(startState: T) {
-        self.currentState = startState
+    private func add(transitionIndex: TransitionIndex, target: T) {
+        managementQueue.async {
+            self.stateEventTable[transitionIndex] = target
+        }
     }
 
-    func add(transitionIndex: TransitionIndex, target: T) {
-        stateEventTable[transitionIndex] = target
-    }
-
-    func when(inState: T, onInput: U, transitTo: T) {
-        let ti = TransitionIndex(source: inState, input: onInput)
-        add(transitionIndex: ti, target: transitTo)
-    }
-
-    func executeAfterEntering(state: T, block: @escaping DidEnterStateBlock) {
-        afterEnteringBlocks[state] = block
-    }
-
-    func start() {
-        executeActionForCurrentState()
-    }
-
-    func executeActionForCurrentState() {
+    private func executeActionForCurrentState() {
         if let action = afterEnteringBlocks[currentState] {
             action()
         }
-    }
-
-    func accept(input: U) -> Bool {
-        let ti = TransitionIndex(source: currentState, input: input)
-        if let newState = stateEventTable[ti] {
-            currentState = newState
-            executeActionForCurrentState()
-            return true
-        }
-        return false
     }
 }
 
