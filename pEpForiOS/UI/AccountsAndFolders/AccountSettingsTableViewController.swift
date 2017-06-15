@@ -42,9 +42,9 @@ class AccountSettingsTableViewController: UITableViewController {
         self.imapSecurityTextfield.text = imap?.transport
 
         let smtp = viewModel?.smtpServer
-        self.imapServerTextfield.text = smtp?.address
-        self.imapPortTextfield.text = smtp?.port
-        self.imapSecurityTextfield.text = smtp?.transport
+        self.smtpServerTextfield.text = smtp?.address
+        self.smtpPortTextfield.text = smtp?.port
+        self.smtpSecurityTextfield.text = smtp?.transport
     }
     // MARK: - UItableViewDataSource
 
