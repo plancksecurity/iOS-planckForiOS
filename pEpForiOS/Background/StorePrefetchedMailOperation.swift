@@ -61,9 +61,8 @@ open class StorePrefetchedMailOperation: BaseOperation {
                     addError(OperationError.messageForFlagUpdateNotFound)
                     return
             }
-            let shouldSave = cdMsg.updateFromServer(cwFlags: message.flags())
-            if shouldSave {
-                Record.saveAndWait(context: context)
+            context.updateAndSave(object: cdMsg) {
+                let _ = cdMsg.updateFromServer(cwFlags: message.flags())
             }
         } else if let msg = insert(pantomimeMessage: message, account: account) {
             if msg.received == nil {

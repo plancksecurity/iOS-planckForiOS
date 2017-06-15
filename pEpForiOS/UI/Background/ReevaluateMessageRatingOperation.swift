@@ -44,8 +44,11 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
         let theSession = session ?? PEPSession()
         let pepMessage = cdMsg.pEpMessage()
         let newRating = theSession.reEvaluateMessageRating(pepMessage)
-        context.refresh(cdMsg, mergeChanges: false)
-        cdMsg.pEpRating = Int16(newRating.rawValue)
+
+        context.updateAndSave(object: cdMsg) {
+            cdMsg.pEpRating = Int16(newRating.rawValue)
+        }
+
         Record.saveAndWait(context: context)
         message.pEpRatingInt = Int(newRating.rawValue)
     }

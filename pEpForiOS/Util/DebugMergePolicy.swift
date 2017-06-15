@@ -38,7 +38,7 @@ class DebugMergePolicy: NSMergePolicy {
                     logString += "\n* \(c.keyPath):\n\(String(describing: c.o1))\n->\n\(String(describing: c.o2))"
                 }
                 print(logString)
-                Log.shared.errorAndCrash(component: #function, errorString: logString)
+                Log.shared.error(component: #function, errorString: logString)
             }
         }
     }
