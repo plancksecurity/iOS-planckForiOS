@@ -162,7 +162,10 @@ extension AccountsTableViewController: SegueHandlerType {
                 return
             }
             if let path = ipath {
-                destination.account = viewModel[path.section][path.row].account
+                if let acc = viewModel[path.section][path.row].account {
+                    var vm = AccountSettingsViewModel(account: acc)
+                    destination.viewModel = vm
+                }
             }
             break
         default:()

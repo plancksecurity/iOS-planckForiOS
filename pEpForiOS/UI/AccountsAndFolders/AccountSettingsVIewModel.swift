@@ -12,9 +12,23 @@ import MessageModel
 public class AccountSettingsViewModel {
 
     private var account: Account?
+    private var headers: [String]
 
     public init(account: Account) {
+        headers = [String]()
+        headers.append(NSLocalizedString("Account", comment: "Account settings"))
+        headers.append(NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"))
+        headers.append(NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP"))
         self.account = account
+    }
+
+    var accountHasBeenPopulated: Bool {
+        get {
+            if let acc = account {
+                return acc.hasBeenPopulated
+            }
+            return false
+        }
     }
 
     var email: String {
@@ -44,21 +58,40 @@ public class AccountSettingsViewModel {
         }
     }
 
-    var smtpServer: (address: String?, port: String?) {
+    var smtpServer: (address: String?, port: String?, transport: String?) {
+        //fixme only support one server
         get {
             if let server = account?.smtpServers.first {
-                return (server.address, "\(server.port)")
+                return (server.address, "\(server.port)", server.transport?.asString())
             }
-            return (nil,nil)
+            return (nil,nil,nil)
         }
     }
 
-    var imapServer: (address: String?, port: String?) {
+    var imapServer: (address: String?, port: String?, transport: String?) {
+        //fixme only support one servers
         get {
             if let server = account?.imapServers.first {
-                return (server.address, "\(server.port)")
+                return (server.address, "\(server.port)", server.transport?.asString())
             }
-            return (nil,nil)
+            return (nil,nil,nil)
+        }
+    }
+
+    func sectionIsValid(section: Int) -> Bool {
+        return section >= 0 && section <= headers.count
+    }
+
+    var count: Int {
+        get {
+            return headers.count
+        }
+    }
+
+    subscript(section: Int) -> String {
+        get {
+            assert(sectionIsValid(section: section), "Section out of range")
+            return headers[section]
         }
     }
 

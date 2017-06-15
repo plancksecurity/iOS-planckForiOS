@@ -26,59 +26,41 @@ class AccountSettingsTableViewController: UITableViewController {
 
     var viewModel: AccountSettingsViewModel? = nil
     
-    var account: Account? = nil
-    
-    override func viewDidLoad() {
+     override func viewDidLoad() {
         super.viewDidLoad()
-        populeteAccount()
-        populateIMAP()
-        populateSMTP()
+        configureView()
     }
-    
-    func populeteAccount() {
-        nameTextfield.text = account?.user.displayString
-        emailTextfield.text = account?.user.address
-        usernameTextfield.text = account?.user.userName
+
+    func configureView() {
+        self.nameTextfield.text = viewModel?.name
+        self.emailTextfield.text = viewModel?.email
+        self.usernameTextfield.text = viewModel?.loginName
+
+        let imap = viewModel?.imapServer
+        self.imapServerTextfield.text = imap?.address
+        self.imapPortTextfield.text = imap?.port
+        self.imapSecurityTextfield.text = imap?.transport
+
+        let smtp = viewModel?.smtpServer
+        self.imapServerTextfield.text = smtp?.address
+        self.imapPortTextfield.text = smtp?.port
+        self.imapSecurityTextfield.text = smtp?.transport
     }
-    
-    func  populateIMAP() {
-        if let serverCredentials = account?.serverCredentials[safe: 0],
-            let server = serverCredentials.servers[safe: 0] {
-            imapServerTextfield.text = server.address
-            imapPortTextfield.text = "\(server.port)"
-        }
-        
-    }
-    
-    func populateSMTP() {
-        if let serverCredentials = account?.serverCredentials[safe: 0],
-            let server = serverCredentials.servers[safe: 0] {
-            smtpServerTextfield.text = server.address
-            smtpPortTextfield.text = "\(server.port)"
-        }
-    }
-    
     // MARK: - UItableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if (account?.hasBeenPopulated)! {
-            return 1
+        if let vm = viewModel {
+            if vm.accountHasBeenPopulated {
+                return 1
+            }
+            return 3
         }
-        return 3
+        return 0
     }
     
     override func tableView(
         _ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return NSLocalizedString("Account", comment: "Account settings")
-        case 1:
-            return NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP")
-        case 2:
-            return NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")
-        default:
-            return""
-        }
+        return viewModel?[section]
     }
     
     override func tableView(
