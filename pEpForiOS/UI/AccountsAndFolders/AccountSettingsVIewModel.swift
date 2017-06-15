@@ -22,15 +22,6 @@ public class AccountSettingsViewModel {
         self.account = account
     }
 
-    var accountHasBeenPopulated: Bool {
-        get {
-            if let acc = account {
-                return acc.hasBeenPopulated
-            }
-            return false
-        }
-    }
-
     var email: String {
         get {
             if let acc = account {
@@ -42,7 +33,7 @@ public class AccountSettingsViewModel {
 
     var loginName: String {
         get {
-            if let loginName = account?.user.userName {
+            if let loginName = account?.serverCredentials.array.first?.userName {
                 return loginName
             }
             return ""
@@ -51,7 +42,7 @@ public class AccountSettingsViewModel {
 
     var name: String {
         get {
-            if let name = account?.user.displayString {
+            if let name = account?.user.userName {
                 return name
             }
             return ""
@@ -88,7 +79,6 @@ public class AccountSettingsViewModel {
     //fixme temporal function without server
     func update(loginName: String, name: String, password: String? = nil) {
         self.account?.user.userName = name
-        //self.account?.user.userName = loginName
         self.account?.serverCredentials.forEach({ (servercredentials) in
             servercredentials.userName = loginName
             servercredentials.password = password

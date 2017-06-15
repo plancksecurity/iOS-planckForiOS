@@ -49,13 +49,7 @@ class AccountSettingsTableViewController: UITableViewController {
     // MARK: - UItableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let vm = viewModel {
-            if vm.accountHasBeenPopulated {
-                return 1
-            }
-            return 3
-        }
-        return 0
+        return 3
     }
     
     override func tableView(
