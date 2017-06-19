@@ -49,7 +49,11 @@ class AccountSettingsTableViewController: UITableViewController {
     // MARK: - UItableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        var value = 0
+        if let vm = viewModel {
+            value = vm.count
+        }
+        return value
     }
     
     override func tableView(
@@ -67,7 +71,7 @@ class AccountSettingsTableViewController: UITableViewController {
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
       let _ =  navigationController?.popViewController(animated: true)
     }
-    
+
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
 
         var imap: (address: String?, port: String?, transport: String?)
