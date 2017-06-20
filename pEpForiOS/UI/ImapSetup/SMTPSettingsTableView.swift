@@ -25,7 +25,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
     @IBOutlet weak var serverTitle: UILabel!
     @IBOutlet weak var portTitle: UILabel!
 
-    var appConfig: AppConfig!
+    var appConfig: AppConfig?
     var model: ModelUserInfoTable!
     var fields = [UITextField]()
     var responder = 0
@@ -148,17 +148,28 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         self.status.activityIndicatorViewEnable =  true
         updateView()
 
-        let identity = Identity.create(address: model.email!, userName: model.name!)
+        guard
+            let theEmail = model.email,
+            let imapServerAddress = model.serverIMAP,
+            let smtpServerAddress = model.serverSMTP,
+            let ms = appConfig?.messageSyncService else {
+                Log.shared.errorComponent(
+                    comp,
+                    message: "Need email and other data for verification, and verification service must be set up")
+                return
+        }
+
+        let identity = Identity.create(address: theEmail, userName: model.name)
         identity.isMySelf = true
-        let userName = (model.username ?? model.email)!
+        let userName = model.username ?? theEmail
 
         let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
-                                       address: model.serverIMAP!,
+                                       address: imapServerAddress,
                                        transport: model.transportIMAP.toServerTransport())
         imapServer.needsVerification = true
 
         let smtpServer = Server.create(serverType: .smtp, port: model.portSMTP,
-                                       address: model.serverSMTP!,
+                                       address: smtpServerAddress,
                                        transport: model.transportSMTP.toServerTransport())
         smtpServer.needsVerification = true
         let credentials = ServerCredentials.create(userName: userName, password: model.password,
@@ -167,6 +178,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         let account = Account.create(identity: identity, credentials: [credentials])
         account.needsVerification = true
         account.save()
+        ms.requestVerification(account: account, delegate: self)
     }
 
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {

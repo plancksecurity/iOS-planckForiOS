@@ -222,8 +222,8 @@ extension LoginTableViewController: SegueHandlerType {
     }
 }
 
-extension LoginTableViewController: accountVerificationResultDelegate {
-    func Result(result: AccountVerificationResult) {
+extension LoginTableViewController: AccountVerificationResultDelegate {
+    func didVerify(result: AccountVerificationResult) {
         GCD.onMain() {
             switch result {
             case .ok:

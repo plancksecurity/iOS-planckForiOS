@@ -28,8 +28,8 @@ enum AccountSettingsError: Error {
     }
 }
 
-protocol accountVerificationResultDelegate: class {
-    func Result(result: AccountVerificationResult)
+protocol AccountVerificationResultDelegate: class {
+    func didVerify(result: AccountVerificationResult)
 }
 
 extension AccountSettingsError: LocalizedError {
@@ -59,7 +59,7 @@ class LoginViewModel {
     var accountSettings: ASAccountSettings?
     var extendedLogin = false
     var messageSyncService: MessageSyncServiceProtocol?
-    weak var delegate: accountVerificationResultDelegate?
+    weak var delegate: AccountVerificationResultDelegate?
 
     init(messageSyncService: MessageSyncService? = nil) {
         self.messageSyncService = messageSyncService
@@ -141,6 +141,6 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         account.delete()
-        delegate?.Result(result: result)
+        delegate?.didVerify(result: result)
     }
 }
