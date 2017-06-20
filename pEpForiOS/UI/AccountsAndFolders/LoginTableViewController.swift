@@ -201,7 +201,7 @@ extension LoginTableViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case noSegue
         case viewLogSegue
-        case BackToEmailList
+        case backToEmailList
         case manualConfigSegue
     }
 
@@ -228,7 +228,7 @@ extension LoginTableViewController: AccountVerificationResultDelegate {
             switch result {
             case .ok:
                 // unwind back to INBOX on success
-                self.performSegue(withIdentifier: .BackToEmailList, sender: self)
+                self.performSegue(withIdentifier: .backToEmailList, sender: self)
             case .imapError(let err):
                 self.handleLoginError(error: err)
             case .smtpError(let err):

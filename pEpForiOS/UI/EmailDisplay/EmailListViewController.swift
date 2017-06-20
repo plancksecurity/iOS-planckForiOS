@@ -410,9 +410,7 @@ extension EmailListViewController: SegueHandlerType {
     }
     
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
-
     }
-
 
     func didChangeInternal(messageFolder: MessageFolder) {
         if let folder = config?.folder,

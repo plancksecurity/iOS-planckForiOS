@@ -208,7 +208,7 @@ extension SMTPSettingsTableView: AccountVerificationServiceDelegate {
             switch result {
             case .ok:
                 // unwind back to INBOX on success
-                self.dismiss(animated: true, completion: nil)
+                self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
             case .imapError(let err):
                 self.showErrorMessage(err.localizedDescription)
             case .smtpError(let err):
@@ -222,9 +222,9 @@ extension SMTPSettingsTableView: AccountVerificationServiceDelegate {
 }
 
 extension SMTPSettingsTableView: SegueHandlerType {
-    
    public enum SegueIdentifier: String {
     case noSegue
     case viewLogSegue
+    case backToEmailListSegue
     }
 }
