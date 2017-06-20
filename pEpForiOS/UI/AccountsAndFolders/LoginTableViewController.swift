@@ -189,7 +189,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     func viewLog() {
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
-
 }
 
 extension LoginTableViewController: SegueHandlerType {
@@ -197,6 +196,22 @@ extension LoginTableViewController: SegueHandlerType {
         case noSegue
         case viewLogSegue
         case BackToEmailList
+        case manualConfigSegue
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .manualConfigSegue:
+            if
+                let navVC = segue.destination as? UINavigationController,
+                let vc = navVC.topViewController as? UserInfoTableView {
+                vc.model.email = emailAddress.text
+                vc.model.password = password.text
+                vc.model.name = user.text
+            }
+        default:
+            break
+        }
     }
 }
 

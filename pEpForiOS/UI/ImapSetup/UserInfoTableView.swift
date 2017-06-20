@@ -10,28 +10,7 @@ import UIKit
 
 import MessageModel
 
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func >= <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l >= r
-  default:
-    return !(lhs < rhs)
-  }
-}
-
 open class ModelUserInfoTable {
-
     open var email: String?
 
     /**
@@ -66,7 +45,7 @@ open class ModelUserInfoTable {
     }
 
     open var isValidName: Bool {
-        return name?.characters.count >= 3
+        return (name?.characters.count ?? 0) >= 3
     }
 
     open var isValidUser: Bool {
@@ -83,7 +62,6 @@ open class ModelUserInfoTable {
 }
 
 open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
-    
     let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!
@@ -144,13 +122,22 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
         }
 
         navigationItem.hidesBackButton = Account.all().isEmpty
+        updateViewFromInitialModel()
         updateView()
     }
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         firstResponder(!model.isValidName)
+    }
+
+    /**
+     Puts the model into the view, in case it was set by the invoking view controller.
+     */
+    func updateViewFromInitialModel() {
+        emailValue.text = model.email
+        nameValue.text = model.name
+        passwordValue.text = model.password
     }
 
     func updateView() {
@@ -202,13 +189,11 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         navigationController?.dismiss(animated: true, completion: nil)
     }
-    
 }
 
 // MARK: - Navigation
 
 extension UserInfoTableView: SegueHandlerType {
-    
     public enum SegueIdentifier: String {
         case IMAPSettings
         case noSegue
@@ -222,7 +207,8 @@ extension UserInfoTableView: SegueHandlerType {
                 destination.model = model
             }
             break
-        default:()
+        default:
+            break
         }
     }
 }
