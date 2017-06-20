@@ -86,4 +86,24 @@ class ImapSyncMachineTests: XCTestCase {
             XCTAssertNil(error)
         }
     }
+
+    func noTestInboxSync() {
+        let cdAccount = TestData().createWorkingCdAccount()
+        Record.saveAndWait()
+        guard
+            let imapConnectInfo = cdAccount.imapConnectInfo,
+            let smtpConnectInfo = cdAccount.smtpConnectInfo
+            else {
+                XCTFail()
+                return
+        }
+        let _ = expectation(description: "")
+        let inboxSync = InboxSync(
+            parentName: #function,
+            imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo)
+        inboxSync.start()
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+            XCTAssertNil(error)
+        }
+    }
 }
