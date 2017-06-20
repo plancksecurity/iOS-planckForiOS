@@ -46,19 +46,25 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
+    func typeTextIfEmpty(textField: XCUIElement,  text: String) {
+        if (textField.value as? String ?? "") == "" {
+            textField.typeText(text)
+        }
+    }
+
     func manualNewAccountSetup(_ account: Account) {
         let tablesQuery = XCUIApplication().tables
 
         var tf = tablesQuery.cells.textFields["nameOfTheUser"]
-        tf.typeText(account.nameOfTheUser)
+        typeTextIfEmpty(textField: tf, text: account.nameOfTheUser)
 
         tf = tablesQuery.cells.textFields["email"]
         tf.tap()
-        tf.typeText(account.email)
+        typeTextIfEmpty(textField: tf, text: account.email)
 
         tf = tablesQuery.cells.secureTextFields["password"]
         tf.tap()
-        tf.typeText(account.password)
+        typeTextIfEmpty(textField: tf, text: account.password)
 
         XCUIApplication().navigationBars.buttons["Next"].tap()
 
