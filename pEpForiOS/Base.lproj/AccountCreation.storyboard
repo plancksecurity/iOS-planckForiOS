@@ -27,7 +27,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUQ-RI-kfE">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUQ-RI-kfE">
                                                     <rect key="frame" x="8" y="14" width="45" height="21"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="nameOfTheUser" label="Name of the user">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -52,7 +52,7 @@
                                                 <constraint firstItem="hUQ-RI-kfE" firstAttribute="leading" secondItem="wqB-dm-pDx" secondAttribute="leadingMargin" id="5tf-wp-lhQ"/>
                                                 <constraint firstItem="g9y-3s-qnK" firstAttribute="baseline" secondItem="hUQ-RI-kfE" secondAttribute="baseline" id="cY2-M7-E8B"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="g9y-3s-qnK" secondAttribute="trailing" id="cgC-vh-cxn"/>
-                                                <constraint firstItem="g9y-3s-qnK" firstAttribute="leading" relation="lessThanOrEqual" secondItem="hUQ-RI-kfE" secondAttribute="trailing" constant="10" id="zIR-uP-2Wp"/>
+                                                <constraint firstItem="g9y-3s-qnK" firstAttribute="leading" secondItem="hUQ-RI-kfE" secondAttribute="trailing" priority="999" constant="10" id="zIR-uP-2Wp"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -63,7 +63,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCr-eb-mdn">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCr-eb-mdn">
                                                     <rect key="frame" x="8" y="14" width="41" height="21"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -86,7 +86,7 @@
                                             <constraints>
                                                 <constraint firstItem="SCr-eb-mdn" firstAttribute="top" secondItem="ALh-ce-psL" secondAttribute="topMargin" constant="6" id="7oo-fv-Fut"/>
                                                 <constraint firstItem="TPZ-TM-PaG" firstAttribute="baseline" secondItem="SCr-eb-mdn" secondAttribute="baseline" id="OXW-0w-Syl"/>
-                                                <constraint firstItem="TPZ-TM-PaG" firstAttribute="leading" relation="lessThanOrEqual" secondItem="SCr-eb-mdn" secondAttribute="trailing" constant="10" id="UZ7-pP-5CD"/>
+                                                <constraint firstItem="TPZ-TM-PaG" firstAttribute="leading" secondItem="SCr-eb-mdn" secondAttribute="trailing" priority="999" constant="10" id="UZ7-pP-5CD"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="TPZ-TM-PaG" secondAttribute="trailing" id="cRo-h3-2DH"/>
                                                 <constraint firstItem="SCr-eb-mdn" firstAttribute="leading" secondItem="ALh-ce-psL" secondAttribute="leadingMargin" id="wRE-u5-OCu"/>
                                             </constraints>
@@ -99,7 +99,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ti-b6-5l8">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ti-b6-5l8">
                                                     <rect key="frame" x="8" y="14" width="79" height="21"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -124,7 +124,7 @@
                                                 <constraint firstItem="3ti-b6-5l8" firstAttribute="top" secondItem="iw0-fF-fSh" secondAttribute="topMargin" constant="6" id="58Z-hm-Lhj"/>
                                                 <constraint firstItem="5Mt-BZ-h4K" firstAttribute="baseline" secondItem="3ti-b6-5l8" secondAttribute="baseline" id="NSM-ok-Lsw"/>
                                                 <constraint firstItem="3ti-b6-5l8" firstAttribute="leading" secondItem="iw0-fF-fSh" secondAttribute="leadingMargin" id="TLQ-Tb-W7Q"/>
-                                                <constraint firstItem="5Mt-BZ-h4K" firstAttribute="leading" relation="lessThanOrEqual" secondItem="3ti-b6-5l8" secondAttribute="trailing" constant="10" id="izf-9H-jvH"/>
+                                                <constraint firstItem="5Mt-BZ-h4K" firstAttribute="leading" secondItem="3ti-b6-5l8" secondAttribute="trailing" priority="999" constant="10" id="izf-9H-jvH"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -138,7 +138,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbE-mW-hjW">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbE-mW-hjW">
                                                     <rect key="frame" x="8" y="13" width="74" height="21"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -160,7 +160,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="91l-1l-FuW" secondAttribute="trailing" id="0jr-L3-Ptd"/>
-                                                <constraint firstItem="91l-1l-FuW" firstAttribute="leading" relation="lessThanOrEqual" secondItem="xbE-mW-hjW" secondAttribute="trailing" constant="10" id="MOT-VB-szA"/>
+                                                <constraint firstItem="91l-1l-FuW" firstAttribute="leading" secondItem="xbE-mW-hjW" secondAttribute="trailing" priority="999" constant="10" id="MOT-VB-szA"/>
                                                 <constraint firstItem="91l-1l-FuW" firstAttribute="baseline" secondItem="xbE-mW-hjW" secondAttribute="baseline" id="Rjh-Fk-eAE"/>
                                                 <constraint firstItem="xbE-mW-hjW" firstAttribute="top" secondItem="Tc7-0e-d7T" secondAttribute="topMargin" constant="5" id="m6x-ee-t5e"/>
                                                 <constraint firstItem="xbE-mW-hjW" firstAttribute="leading" secondItem="Tc7-0e-d7T" secondAttribute="leadingMargin" id="nRc-Zi-1V4"/>
