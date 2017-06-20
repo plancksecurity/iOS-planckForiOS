@@ -29,31 +29,45 @@ struct Account {
 }
 
 struct UITestData {
-    static let workingAccount1 = Account.init(
-        nameOfTheUser: "Name",
-        email: "email1@example.com",
-        imapServerName: "localhost", smtpServerName: "localhost",
-        password: "secret", imapPort: 993, smtpPort: 587,
+    static let workingAccount1 = Account(
+        nameOfTheUser: "Test Account 1",
+        email: "testaccount1@example.com",
+        imapServerName: "imap.example.com", smtpServerName: "smtp.example.com",
+        password: "pEpdichauf", imapPort: 993, smtpPort: 587,
         imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
 
-    static let workingAccount2 = Account.init(
-        nameOfTheUser: "Name",
-        email: "email2@example.com",
-        imapServerName: "localhost", smtpServerName: "localhost",
-        password: "secret", imapPort: 993, smtpPort: 587,
+    static let workingAccount2 = Account(
+        nameOfTheUser: "Test Account 2",
+        email: "testaccount1@example.com",
+        imapServerName: "imap.example.com", smtpServerName: "smtp.example.com",
+        password: "pEpdichauf", imapPort: 993, smtpPort: 587,
         imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
 
-    static let workingAccount3 = Account.init(
-        nameOfTheUser: "Name",
-        email: "email3@example.com",
-        imapServerName: "localhost", smtpServerName: "localhost",
-        password: "secret", imapPort: 993, smtpPort: 587,
+    static let workingAccount3 = Account(
+        nameOfTheUser: "Test Account 3",
+        email: "testaccount1@example.com",
+        imapServerName: "imap.example.com", smtpServerName: "smtp.example.com",
+        password: "pEpdichauf", imapPort: 993, smtpPort: 587,
         imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
 
-    static let workingYahooAccount = Account.init(
-        nameOfTheUser: "WhatEverYouWant",
-        email: "this_is_me@yahoo.com",
-        imapServerName: "imap.mail.yahoo.com", smtpServerName: "smtp.mail.yahoo.com",
-        password: "cannotRevealThis", imapPort: 993, smtpPort: 587,
+    static let workingAccount4 = Account(
+        nameOfTheUser: "Test Account 4",
+        email: "testaccount1@example.com",
+        imapServerName: "imap.example.com", smtpServerName: "smtp.example.com",
+        password: "pEpdichauf", imapPort: 993, smtpPort: 587,
+        imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
+
+    static let workingYahooAccount = Account(
+        nameOfTheUser: "Test Account Yahoo",
+        email: "testaccount1@example.com",
+        imapServerName: "imap.example.com", smtpServerName: "smtp.example.com",
+        password: "pEpdichauf", imapPort: 993, smtpPort: 587,
+        imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
+
+    static let manualAccount = Account(
+        nameOfTheUser: "Test Account Manually",
+        email: "testaccount1@example.com",
+        imapServerName: "imap.example.com", smtpServerName: "smtp.example.com",
+        password: "pEpdichauf", imapPort: 993, smtpPort: 587,
         imapTransportSecurityString: "TLS", smtpTransportSecurityString: "StartTLS")
 }

@@ -110,6 +110,14 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
+    func testNewAccountSetupManually() {
+        let account = UITestData.manualAccount
+        newAccountSetup(account: account)
+        XCUIApplication().buttons["Manual configuration"].tap()
+        manualNewAccountSetup(account)
+        waitForever()
+    }
+
     func testInsertNewWorkingAccount() {
         let account = UITestData.workingAccount1
         manualNewAccountSetup(account)
