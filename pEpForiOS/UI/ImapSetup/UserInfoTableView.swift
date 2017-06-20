@@ -114,13 +114,6 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        if appConfig == nil {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                appConfig = appDelegate.appConfig
-            }
-        }
-
         navigationItem.hidesBackButton = Account.all().isEmpty
         updateViewFromInitialModel()
         updateView()

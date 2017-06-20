@@ -64,6 +64,12 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        if appConfig == nil {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                appConfig = appDelegate.appConfig
+            }
+        }
+
         updateView()
     }
 
@@ -205,6 +211,7 @@ extension LoginTableViewController: SegueHandlerType {
             if
                 let navVC = segue.destination as? UINavigationController,
                 let vc = navVC.topViewController as? UserInfoTableView {
+                vc.appConfig = appConfig
                 vc.model.email = emailAddress.text
                 vc.model.password = password.text
                 vc.model.name = user.text
