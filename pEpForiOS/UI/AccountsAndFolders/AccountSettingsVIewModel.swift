@@ -11,8 +11,26 @@ import MessageModel
 
 public class AccountSettingsViewModel {
 
+    public struct securityViewModel {
+
+        var options = Server.Transport.toArray()
+        var size : Int {
+            get {
+                return options.count
+            }
+        }
+
+        subscript(option: Int) -> String {
+            get {
+                return options[option].asString()
+            }
+        }
+    }
+
     private var account: Account?
     private var headers: [String]
+
+    public let svm = securityViewModel()
 
     public init(account: Account) {
         headers = [String]()
@@ -74,6 +92,27 @@ public class AccountSettingsViewModel {
                 imap: (address: String?, port: String?, transport: String?),
                 smtp: (address: String?, port: String?, transport: String?)) {
         //lala
+        self.account?.user.userName = name
+        self.account?.serverCredentials.forEach({ (sc) in
+            sc.userName = loginName
+            sc.password = password
+            sc.servers.forEach({ (s) in
+                if s.serverType == Server.ServerType.imap {
+                    //s.address = imap.address
+                    //s.port = Int16(imap.port)
+                    s.transport = Server.Transport(fromString: imap.transport)
+                    s.save()
+                } else if s.serverType == Server.ServerType.smtp {
+                    //s.address = smtp.address
+                    //s.port = Int16(smtp.port)
+                    s.transport = Server.Transport(fromString: smtp.transport)
+                    s.save()
+                }
+            })
+            sc.save()
+        })
+        self.account?.user.save()
+        self.account?.save()
     }
 
     //fixme temporal function without server
@@ -104,5 +143,4 @@ public class AccountSettingsViewModel {
             return headers[section]
         }
     }
-
 }

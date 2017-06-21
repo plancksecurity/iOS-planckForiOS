@@ -9,7 +9,7 @@
 import UIKit
 import MessageModel
 
-class AccountSettingsTableViewController: UITableViewController {
+class AccountSettingsTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
@@ -24,7 +24,14 @@ class AccountSettingsTableViewController: UITableViewController {
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
 
+    var imap: (address: String?, port: String?, transport: String?)
+    var smtp: (address: String?, port: String?, transport: String?)
+
+    var securityPicker: UIPickerView?
+
     var viewModel: AccountSettingsViewModel? = nil
+
+    var current: UITextField?
     
      override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,15 +43,26 @@ class AccountSettingsTableViewController: UITableViewController {
         self.emailTextfield.text = viewModel?.email
         self.usernameTextfield.text = viewModel?.loginName
 
+        securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
+        securityPicker?.delegate = self
+        securityPicker?.dataSource = self
+        securityPicker?.showsSelectionIndicator = true
+
         let imap = viewModel?.imapServer
         self.imapServerTextfield.text = imap?.address
         self.imapPortTextfield.text = imap?.port
         self.imapSecurityTextfield.text = imap?.transport
+        self.imapSecurityTextfield.inputView = securityPicker
+        self.imapSecurityTextfield.delegate = self
+        self.imapSecurityTextfield.tag = 1
 
         let smtp = viewModel?.smtpServer
         self.smtpServerTextfield.text = smtp?.address
         self.smtpPortTextfield.text = smtp?.port
         self.smtpSecurityTextfield.text = smtp?.transport
+        self.smtpSecurityTextfield.inputView = securityPicker
+        self.smtpSecurityTextfield.delegate = self
+        self.smtpSecurityTextfield.tag = 2
     }
     // MARK: - UItableViewDataSource
 
@@ -74,20 +92,46 @@ class AccountSettingsTableViewController: UITableViewController {
 
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
 
-        var imap: (address: String?, port: String?, transport: String?)
         imap.address = imapServerTextfield.text
         imap.port = imapPortTextfield.text
         imap.transport = imapSecurityTextfield.text
 
-        var smtp: (address: String?, port: String?, transport: String?)
+
         smtp.address = smtpServerTextfield.text
         smtp.port = smtpPortTextfield.text
         smtp.transport = smtpSecurityTextfield.text
 
         if let name = nameTextfield.text, name != "", let loginName = usernameTextfield.text, loginName != "" {
-            viewModel?.update(loginName: loginName, name: name, password: passwordTextfield.text)
+            viewModel?.update(loginName: loginName, name: name, password: passwordTextfield.text, imap: imap, smtp: smtp)
             navigationController?.popViewController(animated: true)
         }
-        
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        current = textField
+    }
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if let vm = viewModel {
+            return vm.svm.size
+        }
+        return 0
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if let vm = viewModel {
+            return vm.svm[row]
+        }
+        return nil
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if let c = current, let vm = viewModel {
+            c.text = vm.svm[row]
+        }
     }
 }
