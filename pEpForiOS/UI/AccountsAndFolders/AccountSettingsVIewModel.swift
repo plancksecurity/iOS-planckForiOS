@@ -111,7 +111,6 @@ public class AccountSettingsViewModel {
             })
             sc.save()
         })
-        self.account?.user.save()
         self.account?.save()
     }
 
