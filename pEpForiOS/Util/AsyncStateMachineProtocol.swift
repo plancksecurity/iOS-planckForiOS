@@ -47,4 +47,9 @@ public protocol AsyncStateMachineProtocol {
      Handle the event `event` when sent in the state `state` with `handler`.
      */
     func handle(state:S, event: E, handler: @escaping EventHandler<E, S, M>)
+
+    /**
+     Executes a block on the management queue.
+     */
+    func async(block: @escaping () -> ())
 }

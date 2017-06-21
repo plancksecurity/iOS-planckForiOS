@@ -11,7 +11,7 @@ import Foundation
 public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachineProtocol {
     enum StateMachineError: Error {
         /** Incoming event does not match a handler */
-        case invalidStateEventCombination
+        case invalidStateEventCombination(S, E)
     }
 
     private (set) public var state: S
@@ -37,7 +37,7 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
             guard
                 let stateDict1 = theSelf.handlers[theSelf.state],
                 let handler = stateDict1[event] else {
-                    onError(StateMachineError.invalidStateEventCombination)
+                    onError(StateMachineError.invalidStateEventCombination(theSelf.state, event))
                     return
             }
             theSelf.model = handler(event, theSelf.state, theSelf.model)
@@ -51,10 +51,12 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
             }
 
             var dictEvents = theSelf.handlers[state] ?? [:]
-            if theSelf.handlers[state] == nil {
-                theSelf.handlers[state] = dictEvents
-            }
             dictEvents[event] = handler
+            theSelf.handlers[state] = dictEvents
         }
+    }
+
+    public func async(block: @escaping () -> ()) {
+        managementQueue.async(execute: block)
     }
 }
