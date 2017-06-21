@@ -24,9 +24,6 @@ class AccountSettingsTableViewController: UITableViewController, UIPickerViewDel
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
 
-    var imap: (address: String?, port: String?, transport: String?)
-    var smtp: (address: String?, port: String?, transport: String?)
-
     var securityPicker: UIPickerView?
 
     var viewModel: AccountSettingsViewModel? = nil
@@ -91,15 +88,21 @@ class AccountSettingsTableViewController: UITableViewController, UIPickerViewDel
     }
 
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
+        
+        guard let addi = imapServerTextfield.text, addi != "",
+            let porti = imapPortTextfield.text, porti != "",
+            let transi = imapSecurityTextfield.text, transi != "" else {
+            return
+        }
 
-        imap.address = imapServerTextfield.text
-        imap.port = imapPortTextfield.text
-        imap.transport = imapSecurityTextfield.text
+        let imap: (address: String, port: String, transport: String) = (addi, porti, transi)
 
-
-        smtp.address = smtpServerTextfield.text
-        smtp.port = smtpPortTextfield.text
-        smtp.transport = smtpSecurityTextfield.text
+        guard let adds = smtpServerTextfield.text, adds != "",
+            let ports = smtpPortTextfield.text, ports != "",
+            let transs = smtpSecurityTextfield.text, transs != "" else {
+            return
+        }
+        let smtp: (address: String, port: String, transport: String) = (adds, ports, transs)
 
         if let name = nameTextfield.text, name != "", let loginName = usernameTextfield.text, loginName != "" {
             viewModel?.update(loginName: loginName, name: name, password: passwordTextfield.text, imap: imap, smtp: smtp)

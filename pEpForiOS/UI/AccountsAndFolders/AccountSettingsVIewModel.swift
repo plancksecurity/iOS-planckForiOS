@@ -89,26 +89,28 @@ public class AccountSettingsViewModel {
 
     //fixme need to rethought the server update things
     func update(loginName: String, name: String, password: String? = nil,
-                imap: (address: String?, port: String?, transport: String?),
-                smtp: (address: String?, port: String?, transport: String?)) {
+                imap: (address: String, port: String, transport: String),
+                smtp: (address: String, port: String, transport: String)) {
         //lala
         self.account?.user.userName = name
         self.account?.serverCredentials.forEach({ (sc) in
             sc.userName = loginName
             sc.password = password
-            sc.servers.forEach({ (s) in
-                if s.serverType == Server.ServerType.imap {
-                    //s.address = imap.address
-                    //s.port = Int16(imap.port)
-                    s.transport = Server.Transport(fromString: imap.transport)
-                    s.save()
-                } else if s.serverType == Server.ServerType.smtp {
-                    //s.address = smtp.address
-                    //s.port = Int16(smtp.port)
-                    s.transport = Server.Transport(fromString: smtp.transport)
-                    s.save()
-                }
-            })
+            var servers = [Server]()
+            //fixme remove the !
+            servers.append(
+                Server.create(serverType: Server.ServerType.imap,
+                              port: UInt16(imap.port)!,
+                              address: imap.address,
+                              transport: Server.Transport(fromString: imap.transport)))
+
+            servers.append(
+                Server.create(serverType: Server.ServerType.smtp,
+                              port: UInt16(smtp.port)!,
+                              address: smtp.address,
+                              transport: Server.Transport(fromString: smtp.transport)))
+
+            sc.servers = MutableOrderedSet(array: servers)
             sc.save()
         })
         self.account?.save()
