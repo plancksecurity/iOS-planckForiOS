@@ -267,7 +267,7 @@ open class NetworkServiceWorker {
                 firstUID <= lastUID {
                 let syncMessagesOp = SyncMessagesOperation(
                     parentName: description, errorContainer: errorContainer,
-                    imapSyncData: imapSyncData, folderID: folderID, folderName: fi.name,
+                    imapSyncData: imapSyncData, folderName: fi.name,
                     firstUID: firstUID, lastUID: lastUID)
                 syncMessagesOp.completionBlock = { _ in
                     Log.info(component: #function, content: "syncMessagesOp finished")

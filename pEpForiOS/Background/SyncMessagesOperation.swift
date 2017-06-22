@@ -15,7 +15,7 @@ import MessageModel
  Syncs existing messages with the servers, e.g., detecting deleted ones.
  */
 open class SyncMessagesOperation: ImapSyncOperation {
-    let folderID: NSManagedObjectID
+    var folderID: NSManagedObjectID?
     let folderToOpen: String
     let lastUID: UInt
     let firstUID: UInt
@@ -23,9 +23,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
     var syncDelegate: SyncMessagesSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                imapSyncData: ImapSyncData, folderID: NSManagedObjectID,
-                folderName: String, firstUID: UInt, lastUID: UInt) {
-        self.folderID = folderID
+                imapSyncData: ImapSyncData, folderName: String, firstUID: UInt, lastUID: UInt) {
         self.folderToOpen = folderName
         self.lastUID = lastUID
         self.firstUID = firstUID
@@ -41,8 +39,9 @@ open class SyncMessagesOperation: ImapSyncOperation {
             return nil
         }
         self.init(parentName: parentName, errorContainer: errorContainer,
-                  imapSyncData: imapSyncData, folderID: folder.objectID, folderName: folderName,
+                  imapSyncData: imapSyncData, folderName: folderName,
                   firstUID: firstUID, lastUID: lastUID)
+        folderID = folder.objectID
     }
 
     public override func shouldRun() -> Bool {
@@ -50,12 +49,11 @@ open class SyncMessagesOperation: ImapSyncOperation {
             return false
         }
         if firstUID == 0 || lastUID == 0 {
-            handleError(Constants.errorInvalidParameter(comp), message: "Cannot sync UIDs of 0")
+            handleError(OperationError.illegalParameter, message: "Cannot sync UIDs of 0")
             return false
         }
         if firstUID > lastUID {
-            handleError(Constants.errorInvalidParameter(comp),
-                        message: "firstUID should be <= lastUID?")
+            handleError(OperationError.illegalParameter, message: "firstUID should be <= lastUID?")
             return false
         }
         return true
@@ -102,10 +100,10 @@ open class SyncMessagesOperation: ImapSyncOperation {
     }
 
     func deleteDeletedMails(context: NSManagedObjectContext, existingUIDs: Set<AnyHashable>) {
-        guard let folder = context.object(with: folderID)
-            as? CdFolder else {
-                handleError(Constants.errorCannotFindAccount(component: comp),
-                            message: "No folder given")
+        guard
+            let theFolderID = folderID,
+            let folder = context.object(with: theFolderID) as? CdFolder else {
+                handleError(CoreDataError.couldNotFindFolder)
                 return
         }
         let p1 = NSPredicate(format: "uid >= %d and uid <= %d", firstUID, lastUID)

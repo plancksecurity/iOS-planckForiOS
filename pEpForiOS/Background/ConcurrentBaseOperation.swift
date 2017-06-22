@@ -140,13 +140,17 @@ open class ConcurrentBaseOperation: BaseOperation {
      Indicates an error setting up the operation. For now, this is handled
      the same as any other error, but that might change.
      */
-    func handleEntryError(_ error: NSError, message: String) {
+    func handleEntryError(_ error: Error, message: String? = nil) {
         handleError(error, message: message)
     }
 
-    func handleError(_ error: NSError, message: String) {
+    func handleError(_ error: Error, message: String? = nil) {
         addError(error)
-        Log.error(component: comp, errorString: message, error: error)
+        if let theMessage = message {
+            Log.shared.error(component: comp, errorString: theMessage, error: error)
+        } else {
+            Log.shared.error(component: comp, error: error)
+        }
         markAsFinished()
     }
 }
