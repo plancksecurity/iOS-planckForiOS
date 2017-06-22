@@ -1,0 +1,82 @@
+//
+//  FolderInfoOperation.swift
+//  pEpForiOS
+//
+//  Created by Dirk Zimmermann on 22.06.17.
+//  Copyright © 2017 p≡p Security S.A. All rights reserved.
+//
+
+import Foundation
+import CoreData
+
+import MessageModel
+
+/**
+ Meta data about a folder that is needed to sync existing messages.
+ */
+protocol FolderUIDProtocol {
+    var firstUID: UInt { get }
+    var lastUID: UInt { get }
+}
+
+/**
+ Determins the folder's first and last UIDs, as they are right now.
+ */
+class FolderInfoOperation: ConcurrentBaseOperation {
+    struct FolderInfo: FolderUIDProtocol {
+        var firstUID: UInt = 0
+        var lastUID: UInt = 0
+    }
+
+    let accountObjectID: NSManagedObjectID
+    let folderName: String
+    var folderInfo = FolderInfo()
+
+    public init(parentName: String? = nil,
+                errorContainer: ServiceErrorProtocol = ErrorContainer(),
+                connectInfo: ConnectInfo,
+                folderName: String) {
+        self.accountObjectID = connectInfo.accountObjectID
+        self.folderName = folderName
+        super.init(parentName: parentName, errorContainer: errorContainer)
+    }
+
+    override func main() {
+        let context = Record.Context.background
+        context.perform {
+            self.process(context: context)
+        }
+    }
+
+    func process(context: NSManagedObjectContext) {
+        guard
+            let cdAccount = context.object(with: accountObjectID) as? CdAccount else {
+                handleError(CoreDataError.couldNotFindAccount)
+                return
+        }
+        var theCdFolder: CdFolder?
+        if folderName.lowercased() == ImapSync.defaultImapInboxName {
+            theCdFolder = CdFolder.by(folderType: .inbox, account: cdAccount)
+        } else {
+            theCdFolder = CdFolder.by(name: folderName, account: cdAccount)
+        }
+        guard
+            let cdFolder = theCdFolder else {
+                handleError(CoreDataError.couldNotFindFolder)
+                return
+        }
+        folderInfo.firstUID = cdFolder.firstUID()
+        folderInfo.lastUID = cdFolder.lastUID()
+        markAsFinished()
+    }
+}
+
+extension FolderInfoOperation: FolderUIDProtocol {
+    var firstUID: UInt {
+        return folderInfo.firstUID
+    }
+
+    var lastUID: UInt {
+        return folderInfo.lastUID
+    }
+}
