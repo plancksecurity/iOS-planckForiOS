@@ -76,6 +76,7 @@ public class InboxSync {
     let pollDelayInSeconds: Double = 15
 
     var backgroundQueue = OperationQueue()
+    let folderName: String = ImapSync.defaultImapInboxName
 
     public init(parentName: String? = nil, imapConnectInfo: EmailConnectInfo,
          smtpConnectInfo: EmailConnectInfo) {
@@ -146,7 +147,7 @@ public class InboxSync {
 
     func triggerFetchNewMessagesOperation(model: Model) -> Model {
         return install(
-            operation: FetchMessagesOperation(imapSyncData: imapSyncData),
+            operation: FetchMessagesOperation(imapSyncData: imapSyncData, folderName: folderName),
             model: model, successEvent: .imapNewMessagesFetched, errorEvent: .imapError)
     }
 
