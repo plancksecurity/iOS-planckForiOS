@@ -51,7 +51,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        self.navigationController?.setToolbarHidden(false, animated: true)
         if MiscUtil.isUnitTest() {
             return
         }
@@ -68,6 +68,8 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         }
 
         MessageModelConfig.messageFolderDelegate = self
+
+        
     }
 
 
@@ -391,6 +393,7 @@ extension EmailListViewController: SegueHandlerType {
                 destiny.filterDelegate = self
                 destiny.inFolder = false
                 destiny.filterEnabled = self.config?.folder?.filter as! Filter?
+                destiny.hidesBottomBarWhenPushed = true
             }
             break
         case .segueAddNewAccount:

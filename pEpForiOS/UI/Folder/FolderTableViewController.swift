@@ -17,14 +17,13 @@ class FolderTableViewController: UITableViewController {
         super.viewDidLoad()
         initialConfig()
     }
-
+    
     func initialConfig() {
         self.title = NSLocalizedString("Folders", comment: "FolderView")
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        self.navigationController?.hidesBottomBarWhenPushed = true
         let item = UIBarButtonItem(title: "Settings", style: .plain, target: self,
                                    action: #selector(settingsTapped))
         navigationItem.rightBarButtonItem = item
@@ -35,11 +34,11 @@ class FolderTableViewController: UITableViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.hidesBottomBarWhenPushed = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.setToolbarHidden(true, animated: true)
 
     }
 
@@ -97,6 +96,7 @@ class FolderTableViewController: UITableViewController {
                                          folder: folderVM[indexPath.section][indexPath.row]
                                             .getFolder())
             vc.config = config
+            vc.hidesBottomBarWhenPushed = false
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
