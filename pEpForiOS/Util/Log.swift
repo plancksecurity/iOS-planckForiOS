@@ -26,16 +26,14 @@ import MessageModel
     }
 
     private func saveLog(entity: String, description: String, comment: String) {
+        #if DEBUG_LOGGING
+            // If running in the debugger, dump to the console right away
+            print("\(entity): \(description)")
+        #endif
         queue.async {
             if self.logEnabled {
-                #if DEBUG_LOGGING
-                    print("\(entity): \(description)")
-                    self.session.logTitle(
-                        self.title, entity: entity, description: description, comment: comment)
-                #else
-                    self.session.logTitle(
-                        self.title, entity: entity, description: description, comment: comment)
-                #endif
+                self.session.logTitle(
+                    self.title, entity: entity, description: description, comment: comment)
             }
         }
     }

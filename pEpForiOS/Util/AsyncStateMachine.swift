@@ -40,7 +40,7 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
                     onError(StateMachineError.invalidStateEventCombination(theSelf.state, event))
                     return
             }
-            theSelf.model = handler(event, theSelf.state, theSelf.model)
+            (theSelf.state, theSelf.model) = handler(event, theSelf.state, theSelf.model)
         }
     }
 
@@ -51,6 +51,10 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
             }
 
             var dictEvents = theSelf.handlers[state] ?? [:]
+            if dictEvents[event] != nil {
+                Log.shared.error(
+                    component: #function, errorString: "Already handled: \(state)/\(event)")
+            }
             dictEvents[event] = handler
             theSelf.handlers[state] = dictEvents
         }

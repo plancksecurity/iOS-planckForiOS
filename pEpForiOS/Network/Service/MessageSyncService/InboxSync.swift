@@ -16,8 +16,8 @@ public class InboxSync {
         case initial
         case imapLogin
         case imapFetchFolders
-        case imapSyncNewMessages
-        case imapSyncOldMessages
+        case imapFetchNewMessages
+        case imapSyncExistingMessages
         case imapIdle
         case imapWaitAndRepeat
         case imapDraft
@@ -34,8 +34,12 @@ public class InboxSync {
     public enum Event {
         case start
         case imapLoggedIn
+        case imapFoldersFetched
+        case imapNewMessagesFetched
+        case imapExistingMessagesSynced
         case fatalImapError
         case fatalSmtpError
+        case imapError
         case requestSync
         case requestSmtp
         case requestDraft
@@ -137,17 +141,42 @@ public class InboxSync {
     func triggerImapFolderFetchOperation(model: Model) -> Model {
         return install(
             operation: FetchFoldersOperation(parentName: parentName, imapSyncData: imapSyncData),
-            model: model, successEvent: .imapLoggedIn, errorEvent: .fatalImapError)
+            model: model, successEvent: .imapFoldersFetched, errorEvent: .fatalImapError)
+    }
+
+    func triggerFetchNewMessagesOperation(model: Model) -> Model {
+        return install(
+            operation: FetchMessagesOperation(imapSyncData: imapSyncData),
+            model: model, successEvent: .imapNewMessagesFetched, errorEvent: .imapError)
+    }
+
+    func triggerSyncExistingMessagesOperation(model: Model) -> Model {
+        // success: .imapExistingMessagesSynced
+        // error: .imapError
+        var theModel = model
+        theModel.operation = nil
+        return theModel
     }
 
     func setupHandlers() {
         stateMachine.handle(state: .initial, event: .start) {
             [weak self] theEvent, theState, theModel in
-            return self?.triggerImapLoginOperation(model: theModel) ?? theModel
+            return (.imapLogin, self?.triggerImapLoginOperation(model: theModel) ?? theModel)
         }
         stateMachine.handle(state: .imapLogin, event: .imapLoggedIn) {
             [weak self] theEvent, theState, theModel in
-            return self?.triggerImapFolderFetchOperation(model: theModel) ?? theModel
+            return (.imapFetchFolders,
+                    self?.triggerImapFolderFetchOperation(model: theModel) ?? theModel)
+        }
+        stateMachine.handle(state: .imapFetchFolders, event: .imapFoldersFetched) {
+            [weak self] theEvent, theState, theModel in
+            return (.imapFetchNewMessages,
+                    self?.triggerFetchNewMessagesOperation(model: theModel) ?? theModel)
+        }
+        stateMachine.handle(state: .imapFetchNewMessages, event: .imapNewMessagesFetched) {
+            [weak self] theEvent, theState, theModel in
+            return (.imapSyncExistingMessages,
+                    self?.triggerSyncExistingMessagesOperation(model: theModel) ?? theModel)
         }
     }
 }
