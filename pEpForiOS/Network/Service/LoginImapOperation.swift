@@ -12,6 +12,7 @@ import MessageModel
 
 open class LoginImapOperation: ImapSyncOperation {
     var syncDelegate: LoginImapSyncDelegate?
+    var capabilities: Set<String>?
 
     open override func main() {
         var service = imapSyncData.sync ?? ImapSync(connectInfo: imapSyncData.connectInfo)
@@ -46,6 +47,7 @@ class LoginImapSyncDelegate: DefaultImapSyncDelegate {
         }
         op.imapSyncData.sync = sync
 
+        op.capabilities = sync.capabilities
         let context = Record.Context.background
         op.imapSyncData.connectInfo.unsetNeedsVerificationAndFinish(context: context, operation: op)
     }

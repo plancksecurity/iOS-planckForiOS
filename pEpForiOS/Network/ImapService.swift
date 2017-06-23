@@ -55,6 +55,9 @@ open class ImapSync: Service {
 
     weak open var delegate: ImapSyncDelegate?
     open var maxPrefetchCount: UInt = 20
+    var capabilities: Set<String> {
+        return service.capabilities()
+    }
 
     open var folderBuilder: CWFolderBuilding? {
         set {
