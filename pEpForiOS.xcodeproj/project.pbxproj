@@ -249,6 +249,7 @@
 		B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */; };
 		B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74940021ECB3BEB001A710B /* UILabel+Extension.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
+		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
 		B78309CA1EAA0AC90051A2E0 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C91EAA0AC90051A2E0 /* Settings.storyboard */; };
 		B783C1521E82BBE20093128C /* FolderViews.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B783C1511E82BBE20093128C /* FolderViews.storyboard */; };
@@ -544,6 +545,7 @@
 		B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypeUtil.swift; sourceTree = "<group>"; };
 		B74940021ECB3BEB001A710B /* UILabel+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = AccountsViewModel/LoginViewModel.swift; sourceTree = "<group>"; };
+		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
 		B78309C91EAA0AC90051A2E0 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		B783C1511E82BBE20093128C /* FolderViews.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = FolderViews.storyboard; path = UI/FolderViews.storyboard; sourceTree = "<group>"; };
@@ -1077,6 +1079,7 @@
 				43ED53641CC77F95006AB156 /* EmailListViewController.swift */,
 				431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */,
 				43A6E0571E57400E005BEE69 /* RatingReEvaluator.swift */,
+				B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */,
 			);
 			path = EmailDisplay;
 			sourceTree = "<group>";
@@ -1584,6 +1587,7 @@
 				4308412A1EF3FDEA00698229 /* InboxSync.swift in Sources */,
 				433C51D31E66CCA900272E19 /* CreateSpecialFoldersOperation.swift in Sources */,
 				4323FE861E83D6FF006785E1 /* ImapFolderBuilder.swift in Sources */,
+				B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */,
 				4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */,
 				B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */,
 				43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */,
