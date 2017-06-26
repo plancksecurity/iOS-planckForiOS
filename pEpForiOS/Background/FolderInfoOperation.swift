@@ -17,6 +17,20 @@ import MessageModel
 protocol FolderUIDInfoProtocol {
     var firstUID: UInt { get }
     var lastUID: UInt { get }
+
+    var valid: Bool { get }
+    var empty: Bool { get }
+}
+
+extension FolderUIDInfoProtocol {
+    var valid: Bool {
+        return firstUID > 0 && lastUID > 0 && lastUID >= firstUID
+    }
+
+    var empty: Bool {
+        let hasElements = Int(lastUID) - Int(firstUID) > 0
+        return !hasElements
+    }
 }
 
 struct FolderUIDInfo: FolderUIDInfoProtocol {
