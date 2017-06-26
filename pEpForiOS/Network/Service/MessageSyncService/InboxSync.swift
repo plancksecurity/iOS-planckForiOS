@@ -53,13 +53,14 @@ public class InboxSync {
          */
         case shouldReSync
 
+        case requestSync
+        case requestSmtp
+        case requestDraft
+
         case fatalImapError
         case fatalSmtpError
         case imapError
         case coreDataError
-        case requestSync
-        case requestSmtp
-        case requestDraft
     }
 
     public struct Model {
@@ -95,17 +96,18 @@ public class InboxSync {
     let parentName: String
     let imapSyncData: ImapSyncData
     let smtpSendData: SmtpSendData
-    let pollDelayInSeconds: Double = 15
+    let pollDelayInSeconds: Double
 
     var backgroundQueue = OperationQueue()
     let folderName: String = ImapSync.defaultImapInboxName
 
     public init(parentName: String? = nil, imapConnectInfo: EmailConnectInfo,
-         smtpConnectInfo: EmailConnectInfo) {
+         smtpConnectInfo: EmailConnectInfo, pollDelayInSeconds: Double = 2) {
         self.parentName = parentName ?? #function
         self.imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         self.smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
         stateMachine = AsyncStateMachine(state: .initial, model: Model())
+        self.pollDelayInSeconds = pollDelayInSeconds
         setupTransitions()
         setupEnterStateHandlers()
     }
