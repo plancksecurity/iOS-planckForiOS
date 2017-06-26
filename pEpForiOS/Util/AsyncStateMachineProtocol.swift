@@ -39,7 +39,7 @@ public protocol AsyncStateMachineProtocol {
     /**
      A handler like this is called when an event comes in, and there is no transition defined.
      */
-    typealias EventHandler = (_ state: S, _ model: M, _ event: E) -> M
+    typealias EventHandler = (_ state: S, _ model: M, _ event: E) -> (S, M)
 
     var state: S { get }
     var model: M { get set }
@@ -60,6 +60,8 @@ public protocol AsyncStateMachineProtocol {
      handler for a given state.
      */
     func handleEntering(state: S, handler: @escaping StateEnterHandler) throws
+
+    func handle(event: E, handler: @escaping EventHandler)
 
     /**
      Executes a block on the management queue.

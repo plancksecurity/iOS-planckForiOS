@@ -18,10 +18,11 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
     public var model: M
 
     public typealias MyStateHandler = (_ state: S, _ model: M) -> M
-    public typealias MyEventHandler = (_ state: S, _ model: M, _ event: E) -> M
+    public typealias MyEventHandler = (_ state: S, _ model: M, _ event: E) -> (S, M)
 
     var transitions = Dictionary<Tuple<S, E>, S>()
     var stateEnterHandlers = Dictionary<S, MyStateHandler>()
+    var eventHandlers = Dictionary<E, MyEventHandler>()
 
     private let managementQueue = DispatchQueue(
         label: "AsyncStateMachine.managementQueue", qos: .utility, target: nil)
@@ -43,7 +44,11 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
             }
             let tuple = Tuple(values: (theSelf.state, event))
             guard let targetState = theSelf.transitions[tuple] else {
-                onError(StateMachineError.unhandledStateEvent(theSelf.state, event))
+                if let eh = theSelf.eventHandlers[event] {
+                    (theSelf.state, theSelf.model) = eh(theSelf.state, theSelf.model, event)
+                } else {
+                    onError(StateMachineError.unhandledStateEvent(theSelf.state, event))
+                }
                 return
             }
             theSelf.state = targetState
@@ -62,6 +67,15 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
                 return
             }
             theSelf.stateEnterHandlers[state] = handler
+        }
+    }
+
+    public func handle(event: E, handler: @escaping MyEventHandler) {
+        managementQueue.async { [weak self] in
+            guard let theSelf = self else {
+                return
+            }
+            theSelf.eventHandlers[event] = handler
         }
     }
 

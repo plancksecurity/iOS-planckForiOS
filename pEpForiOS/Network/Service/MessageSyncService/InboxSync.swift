@@ -108,8 +108,9 @@ public class InboxSync {
     func internalStateErrorHandler() -> StateMachineType.ErrorHandler {
         return { [weak self] error in
             if
-                let sm = self?.stateMachine,
-                let currentError = sm.model.imapError ?? sm.model.smtpError  {
+                let theSelf = self,
+                let currentError = theSelf.stateMachine.model.imapError ??
+                    theSelf.stateMachine.model.smtpError  {
                 Log.shared.error(
                     component: #function, errorString: "\(currentError)", error: error)
             } else {
@@ -250,6 +251,16 @@ public class InboxSync {
         return model
     }
 
+    func handleError(state: State, model: Model, event: Event) -> (State, Model) {
+        if let error = model.imapError {
+            Log.shared.error(component: #function, errorString: "\(state)", error: error)
+            // TODO: Inform delegate
+            stateMachine.send(event: .start, onError: internalStateErrorHandler())
+            return (.initial, Model())
+        }
+        return (state, model)
+    }
+
     func setupTransitions() {
         stateMachine.addTransition(srcState: .initial,
                                    event: .start,
@@ -313,6 +324,10 @@ public class InboxSync {
         }
         stateMachine.handleEntering(state: .imapWaitingAndRepeat) { [weak self] state, model in
             return self?.triggerWaitingOperation(model: model) ?? model
+        }
+
+        stateMachine.handle(event: .fatalImapError) { [weak self] state, model, event in
+            return self?.handleError(state: state, model: model, event: event) ?? (state, model)
         }
     }
 }
