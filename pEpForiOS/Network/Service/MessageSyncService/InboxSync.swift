@@ -220,6 +220,38 @@ public class InboxSync {
             model: model, successEvent: .shouldReSync, errorEvent: .imapError)
     }
 
+    func handleSyncExistingMessages(state: State, model: Model) -> Model {
+        let uidRangeLogInfo =
+        "firstUID: \(model.folderInfo.firstUID), lastUID: \(model.folderInfo.lastUID)"
+        if model.folderInfo.valid {
+            if !model.folderInfo.empty {
+                return triggerSyncExistingMessagesOperation(model: model)
+            } else {
+                Log.shared.errorComponent(
+                    #function,
+                    message: "Sync message: Empty UID range: \(uidRangeLogInfo)")
+            }
+        } else {
+            Log.shared.errorComponent(
+                #function,
+                message: "Sync message: Invalid UIDs: \(uidRangeLogInfo)")
+        }
+        stateMachine.send(event: .imapExistingMessageSyncSkipped,
+                          onError: InboxSync.internalStateErrorHandler())
+        return model
+    }
+
+    func handleDeterminingIdleStatus(state: State, model: Model) -> Model {
+        if model.supportsIdle {
+            stateMachine.send(event: .doesSupportIdle,
+                              onError: InboxSync.internalStateErrorHandler())
+        } else {
+            stateMachine.send(event: .doesNotSupportIdle,
+                              onError: InboxSync.internalStateErrorHandler())
+        }
+        return model
+    }
+
     func setupTransitions() {
         stateMachine.addTransition(srcState: .initial, event: .start, targetState: .imapLoggingIn)
         stateMachine.addTransition(srcState: .imapLoggingIn, event: .imapLoggedIn,
@@ -270,34 +302,10 @@ public class InboxSync {
             return self?.triggerFetchNewMessagesOperation(model: model) ?? model
         }
         stateMachine.onEntering(state: .imapSyncingExistingMessages) { [weak self] state, model in
-            let uidRangeLogInfo =
-            "firstUID: \(model.folderInfo.firstUID), lastUID: \(model.folderInfo.lastUID)"
-            if model.folderInfo.valid {
-                if !model.folderInfo.empty {
-                    return self?.triggerSyncExistingMessagesOperation(model: model) ?? model
-                } else {
-                    Log.shared.errorComponent(
-                        #function,
-                        message: "Sync message: Empty UID range: \(uidRangeLogInfo)")
-                }
-            } else {
-                Log.shared.errorComponent(
-                    #function,
-                    message: "Sync message: Invalid UIDs: \(uidRangeLogInfo)")
-            }
-            self?.stateMachine.send(event: .imapExistingMessageSyncSkipped,
-                                    onError: InboxSync.internalStateErrorHandler())
-            return model
+            return self?.handleSyncExistingMessages(state: state, model: model) ?? model
         }
         stateMachine.onEntering(state: .determiningIdleCapability) { [weak self] state, model in
-            if model.supportsIdle {
-                self?.stateMachine.send(event: .doesSupportIdle,
-                                        onError: InboxSync.internalStateErrorHandler())
-            } else {
-                self?.stateMachine.send(event: .doesNotSupportIdle,
-                                        onError: InboxSync.internalStateErrorHandler())
-            }
-            return model
+            return self?.handleDeterminingIdleStatus(state: state, model: model) ?? model
         }
         stateMachine.onEntering(state: .imapWaitingAndRepeat) { [weak self] state, model in
             return self?.triggerWaitingOperation(model: model) ?? model
