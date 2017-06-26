@@ -164,11 +164,21 @@ public class InboxSync {
         return add(operation: operation, toModel: model)
     }
 
+    func updateCapibilities(capabilities: Set<String>?) {
+        if let caps = capabilities {
+            self.stateMachine.model.supportsIdle = caps.contains("IDLE")
+        }
+    }
+
     func triggerImapLoginOperation(model: Model) -> Model {
         let op = LoginImapOperation(parentName: parentName, imapSyncData: imapSyncData)
         return install(
             operation: op,
-            model: model, successEvent: .imapLoggedIn, errorEvent: .fatalImapError)
+            model: model, successEvent: .imapLoggedIn, errorEvent: .fatalImapError) { [weak self] in
+                self?.stateMachine.async {
+                    self?.updateCapibilities(capabilities: op.capabilities)
+                }
+        }
     }
 
     func triggerImapFolderFetchOperation(model: Model) -> Model {
