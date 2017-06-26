@@ -22,7 +22,6 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
 
     var transitions = Dictionary<Tuple<S, E>, S>()
     var stateEnterHandlers = Dictionary<S, MyStateHandler>()
-    var eventHandlers = Dictionary<E, MyEventHandler>()
 
     private let managementQueue = DispatchQueue(
         label: "AsyncStateMachine.managementQueue", qos: .utility, target: nil)
@@ -44,11 +43,7 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
             }
             let tuple = Tuple(values: (theSelf.state, event))
             guard let targetState = theSelf.transitions[tuple] else {
-                if let eventHandler = theSelf.eventHandlers[event] {
-                    theSelf.model = eventHandler(theSelf.state, theSelf.model, event)
-                } else {
-                    onError(StateMachineError.unhandledStateEvent(theSelf.state, event))
-                }
+                onError(StateMachineError.unhandledStateEvent(theSelf.state, event))
                 return
             }
             theSelf.state = targetState
@@ -67,12 +62,6 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
                 return
             }
             theSelf.stateEnterHandlers[state] = handler
-        }
-    }
-
-    public func handle(event: E, handler: @escaping MyEventHandler) {
-        managementQueue.async { [weak self] in
-            self?.eventHandlers[event] = handler
         }
     }
 

@@ -59,8 +59,6 @@ public class InboxSync {
 
         case fatalImapError
         case fatalSmtpError
-        case imapError
-        case coreDataError
     }
 
     public struct Model {
@@ -68,19 +66,10 @@ public class InboxSync {
         var operation: BaseOperation? = nil
 
         /** In case of a fatal IMAP error, this is set */
-        var fatalImapError: Error? = nil
-
-        /** In case of an IMAP error, that might be remedied by repetion, this is set */
         var imapError: Error? = nil
 
         /** In case of a fatal SMTP error, this is set */
-        var fatalSmtpError: Error? = nil
-
-        /** Minor error, will retry again */
-        var minorImapError: Error? = nil
-
-        /** Minor error, will retry again */
-        var minorSmtpError: Error? = nil
+        var smtpError: Error? = nil
 
         /** Set if there is a request from the outside */
         var message: Event? = nil
@@ -113,12 +102,19 @@ public class InboxSync {
     }
 
     public func start() {
-        stateMachine.send(event: .start, onError: InboxSync.internalStateErrorHandler())
+        stateMachine.send(event: .start, onError: internalStateErrorHandler())
     }
 
-    static func internalStateErrorHandler() -> StateMachineType.ErrorHandler {
-        return { error in
-            Log.shared.error(component: #function, error: error)
+    func internalStateErrorHandler() -> StateMachineType.ErrorHandler {
+        return { [weak self] error in
+            if
+                let sm = self?.stateMachine,
+                let currentError = sm.model.imapError ?? sm.model.smtpError  {
+                Log.shared.error(
+                    component: #function, errorString: "\(currentError)", error: error)
+            } else {
+                Log.shared.error(component: #function, error: error)
+            }
         }
     }
 
@@ -127,24 +123,24 @@ public class InboxSync {
         successHandler: (() -> ())? = nil) -> (() -> ()) {
         return { [weak self] in
             self?.stateMachine.async {
-                if let error = operation.error {
-                    switch errorEvent {
-                    case .fatalImapError:
-                        self?.stateMachine.model.fatalImapError = error
-                    case .fatalSmtpError:
-                        self?.stateMachine.model.fatalSmtpError = error
-                    case .imapError:
-                        self?.stateMachine.model.imapError = error
-                    default: ()
+                if let theSelf = self {
+                    if let error = operation.error {
+                        switch errorEvent {
+                        case .fatalImapError:
+                            theSelf.stateMachine.model.imapError = error
+                        case .fatalSmtpError:
+                            theSelf.stateMachine.model.smtpError = error
+                        default: ()
+                        }
+                        theSelf.stateMachine.send(event: errorEvent,
+                                                  onError: theSelf.internalStateErrorHandler())
+                    } else {
+                        if let block = successHandler {
+                            block()
+                        }
+                        theSelf.stateMachine.send(
+                            event: successEvent, onError: theSelf.internalStateErrorHandler())
                     }
-                    self?.stateMachine.send(event: errorEvent,
-                                            onError: InboxSync.internalStateErrorHandler())
-                } else {
-                    if let block = successHandler {
-                        block()
-                    }
-                    self?.stateMachine.send(
-                        event: successEvent, onError: InboxSync.internalStateErrorHandler())
                 }
             }
         }
@@ -195,7 +191,7 @@ public class InboxSync {
             folderName: folderName)
         return install(
             operation: op,
-            model: model, successEvent: .folderUIDsDetermined, errorEvent: .coreDataError) {
+            model: model, successEvent: .folderUIDsDetermined, errorEvent: .fatalImapError) {
                 [weak self] in
                 self?.stateMachine.model.folderInfo = op.folderInfo
         }
@@ -205,7 +201,7 @@ public class InboxSync {
         return install(
             operation: FetchMessagesOperation(
                 parentName: parentName, imapSyncData: imapSyncData, folderName: folderName),
-            model: model, successEvent: .imapNewMessagesFetched, errorEvent: .imapError)
+            model: model, successEvent: .imapNewMessagesFetched, errorEvent: .fatalImapError)
     }
 
     func triggerSyncExistingMessagesOperation(model: Model) -> Model {
@@ -213,13 +209,13 @@ public class InboxSync {
             operation: SyncMessagesOperation(
                 parentName: parentName, imapSyncData: imapSyncData, folderName: folderName,
                 firstUID: model.folderInfo.firstUID, lastUID: model.folderInfo.lastUID),
-            model: model, successEvent: .imapExistingMessagesSynced, errorEvent: .imapError)
+            model: model, successEvent: .imapExistingMessagesSynced, errorEvent: .fatalImapError)
     }
 
     func triggerWaitingOperation(model: Model) -> Model {
         return install(
             operation: DelayOperation(parentName: parentName, delayInSeconds: pollDelayInSeconds),
-            model: model, successEvent: .shouldReSync, errorEvent: .imapError)
+            model: model, successEvent: .shouldReSync, errorEvent: .fatalImapError)
     }
 
     func handleSyncExistingMessages(state: State, model: Model) -> Model {
@@ -239,28 +235,19 @@ public class InboxSync {
                 message: "Sync message: Invalid UIDs: \(uidRangeLogInfo)")
         }
         stateMachine.send(event: .imapExistingMessageSyncSkipped,
-                          onError: InboxSync.internalStateErrorHandler())
+                          onError: internalStateErrorHandler())
         return model
     }
 
     func handleDeterminingIdleStatus(state: State, model: Model) -> Model {
         if model.supportsIdle {
             stateMachine.send(event: .doesSupportIdle,
-                              onError: InboxSync.internalStateErrorHandler())
+                              onError: internalStateErrorHandler())
         } else {
             stateMachine.send(event: .doesNotSupportIdle,
-                              onError: InboxSync.internalStateErrorHandler())
+                              onError: internalStateErrorHandler())
         }
         return model
-    }
-
-    func handleImapError(state: State, model: Model, event: Event) -> Model {
-        Log.shared.warn(component: #function,
-                        content: "handling \(event) on \(state)")
-        var newModel = model
-        newModel.imapError = nil
-        stateMachine.send(event: .requestSync, onError: InboxSync.internalStateErrorHandler())
-        return newModel
     }
 
     func setupTransitions() {
@@ -326,10 +313,6 @@ public class InboxSync {
         }
         stateMachine.handleEntering(state: .imapWaitingAndRepeat) { [weak self] state, model in
             return self?.triggerWaitingOperation(model: model) ?? model
-        }
-
-        stateMachine.handle(event: .imapError) { [weak self] state, model, event in
-            return self?.handleImapError(state: state, model: model, event: event) ?? model
         }
     }
 }

@@ -62,11 +62,6 @@ public protocol AsyncStateMachineProtocol {
     func handleEntering(state: S, handler: @escaping StateEnterHandler) throws
 
     /**
-     Installs a handler for an incoming event that has no defined transition.
-     */
-    func handle(event: E, handler: @escaping EventHandler)
-
-    /**
      Executes a block on the management queue.
      */
     func async(block: @escaping () -> ())
