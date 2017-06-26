@@ -22,6 +22,7 @@ public class InboxSync {
         case determiningFolderUIDs
         case imapFetchingNewMessages
         case imapSyncingExistingMessages
+        case determiningIdleCapability
         case imapIdling
         case imapWaitingAndRepeat
         case imapSendingDrafts
@@ -40,6 +41,8 @@ public class InboxSync {
         case imapLoggedIn
         case imapFoldersFetched
         case folderUIDsDetermined
+        case doesSupportIdle
+        case doesNotSupportIdle
         case imapNewMessagesFetched
         case imapExistingMessagesSynced
         case imapExistingMessageSyncSkipped
@@ -103,7 +106,8 @@ public class InboxSync {
         self.imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         self.smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
         stateMachine = AsyncStateMachine(state: .initial, model: Model())
-        setupHandlers()
+        setupTransitions()
+        setupEnterStateHandlers()
     }
 
     public func start() {
@@ -161,8 +165,9 @@ public class InboxSync {
     }
 
     func triggerImapLoginOperation(model: Model) -> Model {
+        let op = LoginImapOperation(parentName: parentName, imapSyncData: imapSyncData)
         return install(
-            operation: LoginImapOperation(parentName: parentName, imapSyncData: imapSyncData),
+            operation: op,
             model: model, successEvent: .imapLoggedIn, errorEvent: .fatalImapError)
     }
 
@@ -205,59 +210,57 @@ public class InboxSync {
             model: model, successEvent: .shouldReSync, errorEvent: .imapError)
     }
 
-    func setupHandlers() {
-        stateMachine.handle(state: .initial, event: .start) {
-            [weak self] theEvent, theState, theModel in
-            return (.imapLoggingIn, self?.triggerImapLoginOperation(model: theModel) ?? theModel)
-        }
-        stateMachine.handle(state: .imapLoggingIn, event: .imapLoggedIn) {
-            [weak self] theEvent, theState, theModel in
-            return (.imapFetchingFolders,
-                    self?.triggerImapFolderFetchOperation(model: theModel) ?? theModel)
-        }
-        stateMachine.handle(state: .imapFetchingFolders, event: .imapFoldersFetched) {
-            [weak self] theEvent, theState, theModel in
-            return (.determiningFolderUIDs,
-                    self?.triggerFolderInfoOperation(model: theModel) ?? theModel)
-        }
-        stateMachine.handle(state: .determiningFolderUIDs, event: .folderUIDsDetermined) {
-            [weak self] theEvent, theState, theModel in
-            return (.imapFetchingNewMessages,
-                    self?.triggerFetchNewMessagesOperation(model: theModel) ?? theModel)
-        }
-        stateMachine.handle(state: .imapFetchingNewMessages, event: .imapNewMessagesFetched) {
-            [weak self] theEvent, theState, theModel in
-            var newModel = theModel
-            if theModel.folderInfo.firstUID != 0 && theModel.folderInfo.lastUID != 0 {
-                newModel = self?.triggerSyncExistingMessagesOperation(model: theModel) ?? theModel
-            } else {
-                newModel.operation = nil
-            }
-            self?.stateMachine.send(event: .imapExistingMessageSyncSkipped,
-                                    onError: InboxSync.internalStateErrorHandler())
-            return (.imapSyncingExistingMessages, newModel)
-        }
+    func setupTransitions() {
+        stateMachine.addTransition(srcState: .initial, event: .start, targetState: .imapLoggingIn)
+        stateMachine.addTransition(srcState: .imapLoggingIn, event: .imapLoggedIn,
+                                   targetState: .imapFetchingFolders)
+        stateMachine.addTransition(srcState: .imapFetchingFolders, event: .imapFoldersFetched,
+                                   targetState: .determiningFolderUIDs)
+        stateMachine.addTransition(srcState: .determiningFolderUIDs, event: .folderUIDsDetermined,
+                                   targetState: .imapFetchingNewMessages)
+        stateMachine.addTransition(srcState: .imapFetchingNewMessages,
+                                   event: .imapNewMessagesFetched,
+                                   targetState: .imapSyncingExistingMessages)
+        stateMachine.addTransition(srcState: .imapSyncingExistingMessages,
+                                   event: .imapExistingMessagesSynced,
+                                   targetState: .imapFetchingNewMessages)
+        stateMachine.addTransition(srcState: .imapFetchingNewMessages,
+                                   event: .imapNewMessagesFetched,
+                                   targetState: .imapSyncingExistingMessages)
 
-        let blockEnterIdlingOrWait: SyncEventHandler = {
-            [weak self] theEvent, theState, theModel in
-            if theModel.supportsIdle {
-                // TODO: implement IDLE
-                return (.imapIdling, theModel)
-            } else {
-                return (.imapWaitingAndRepeat,
-                        self?.triggerWaitingOperation(model: theModel) ?? theModel)
-            }
-        }
-        stateMachine.handle(
-            state: .imapSyncingExistingMessages, event: .imapExistingMessagesSynced,
-            handler: blockEnterIdlingOrWait)
-        stateMachine.handle(
-            state: .imapSyncingExistingMessages, event: .imapExistingMessageSyncSkipped,
-            handler: blockEnterIdlingOrWait)
+        stateMachine.addTransition(srcState: .imapSyncingExistingMessages,
+                                   event: .imapExistingMessageSyncSkipped,
+                                   targetState: .determiningIdleCapability)
+        stateMachine.addTransition(srcState: .imapSyncingExistingMessages,
+                                   event: .imapExistingMessagesSynced,
+                                   targetState: .determiningIdleCapability)
 
-        let blockDoReSync: SyncEventHandler = {
-            [weak self] theEvent, theState, theModel in
-            return (.determiningFolderUIDs, theModel)
+        stateMachine.addTransition(srcState: .determiningIdleCapability,
+                                   event: .doesSupportIdle,
+                                   targetState: .imapIdling)
+        stateMachine.addTransition(srcState: .determiningIdleCapability,
+                                   event: .doesNotSupportIdle,
+                                   targetState: .imapWaitingAndRepeat)
+    }
+
+    func setupEnterStateHandlers() {
+        stateMachine.onEntering(state: .imapLoggingIn) { [weak self] state, model in
+            return self?.triggerImapLoginOperation(model: model) ?? model
+        }
+        stateMachine.onEntering(state: .imapFetchingFolders) { [weak self] state, model in
+            return self?.triggerImapFolderFetchOperation(model: model) ?? model
+        }
+        stateMachine.onEntering(state: .determiningFolderUIDs) { [weak self] state, model in
+            return self?.triggerFolderInfoOperation(model: model) ?? model
+        }
+        stateMachine.onEntering(state: .imapFetchingNewMessages) { [weak self] state, model in
+            return self?.triggerFetchNewMessagesOperation(model: model) ?? model
+        }
+        stateMachine.onEntering(state: .imapSyncingExistingMessages) { [weak self] state, model in
+            return self?.triggerSyncExistingMessagesOperation(model: model) ?? model
+        }
+        stateMachine.onEntering(state: .determiningIdleCapability) { [weak self] state, model in
+            return self?.triggerSyncExistingMessagesOperation(model: model) ?? model
         }
     }
 }

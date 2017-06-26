@@ -10,16 +10,17 @@ import Foundation
 
 public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachineProtocol {
     enum StateMachineError: Error {
-        /** Incoming event does not match a handler */
+        /** The current state does not support the event */
         case invalidStateEventCombination(S, E)
     }
 
     private (set) public var state: S
     public var model: M
 
-    typealias MyEventHandler = EventHandler<E, S, M>
+    typealias MyEventHandler = StateEnterHandler<S, M>
 
-    var handlers = [S: [E: MyEventHandler]]()
+    var transitions = Dictionary<Tuple<S, E>, S>()
+    var stateEnterHandlers = Dictionary<S, StateEnterHandler<S, M>>()
 
     private let managementQueue = DispatchQueue(
         label: "AsyncStateMachine.managementQueue", qos: .utility, target: nil)
@@ -29,34 +30,37 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
         self.model = model
     }
 
+    public func addTransition(srcState: S, event: E, targetState: S) {
+        let tuple = Tuple(values: (srcState, event))
+        transitions[tuple] = targetState
+    }
+
     public func send(event: E, onError: @escaping ErrorHandler) {
         managementQueue.async { [weak self] in
             guard let theSelf = self else {
                 return
             }
-            guard
-                let stateDict1 = theSelf.handlers[theSelf.state],
-                let handler = stateDict1[event] else {
-                    onError(StateMachineError.invalidStateEventCombination(theSelf.state, event))
-                    return
+            let tuple = Tuple(values: (theSelf.state, event))
+            guard let targetState = theSelf.transitions[tuple] else {
+                onError(StateMachineError.invalidStateEventCombination(theSelf.state, event))
+                return
             }
-            (theSelf.state, theSelf.model) = handler(event, theSelf.state, theSelf.model)
+            theSelf.state = targetState
+            if let handler = theSelf.stateEnterHandlers[targetState] {
+                theSelf.model = handler(theSelf.state, theSelf.model)
+            } else {
+                Log.shared.warn(component: #function,
+                                content: "Entered state \(targetState), but no handler")
+            }
         }
     }
 
-    public func handle(state: S, event: E, handler: @escaping EventHandler<E, S, M>) {
+    public func onEntering(state: S, handler: @escaping StateEnterHandler<S, M>) {
         managementQueue.async { [weak self] in
             guard let theSelf = self else {
                 return
             }
-
-            var dictEvents = theSelf.handlers[state] ?? [:]
-            if dictEvents[event] != nil {
-                Log.shared.error(
-                    component: #function, errorString: "Already handled: \(state)/\(event)")
-            }
-            dictEvents[event] = handler
-            theSelf.handlers[state] = dictEvents
+            theSelf.stateEnterHandlers[state] = handler
         }
     }
 
