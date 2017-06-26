@@ -254,13 +254,23 @@ public class InboxSync {
         return model
     }
 
+    func handleImapError(state: State, model: Model, event: Event) {
+        Log.shared.warn(component: #function,
+                        content: "handling \(event): \(String(describing: model.imapError))")
+    }
+
     func setupTransitions() {
-        stateMachine.addTransition(srcState: .initial, event: .start, targetState: .imapLoggingIn)
-        stateMachine.addTransition(srcState: .imapLoggingIn, event: .imapLoggedIn,
+        stateMachine.addTransition(srcState: .initial,
+                                   event: .start,
+                                   targetState: .imapLoggingIn)
+        stateMachine.addTransition(srcState: .imapLoggingIn,
+                                   event: .imapLoggedIn,
                                    targetState: .imapFetchingFolders)
-        stateMachine.addTransition(srcState: .imapFetchingFolders, event: .imapFoldersFetched,
+        stateMachine.addTransition(srcState: .imapFetchingFolders,
+                                   event: .imapFoldersFetched,
                                    targetState: .determiningFolderUIDs)
-        stateMachine.addTransition(srcState: .determiningFolderUIDs, event: .folderUIDsDetermined,
+        stateMachine.addTransition(srcState: .determiningFolderUIDs,
+                                   event: .folderUIDsDetermined,
                                    targetState: .imapFetchingNewMessages)
         stateMachine.addTransition(srcState: .imapFetchingNewMessages,
                                    event: .imapNewMessagesFetched,
@@ -291,26 +301,31 @@ public class InboxSync {
     }
 
     func setupEnterStateHandlers() {
-        stateMachine.onEntering(state: .imapLoggingIn) { [weak self] state, model in
+        stateMachine.handleEntering(state: .imapLoggingIn) { [weak self] state, model in
             return self?.triggerImapLoginOperation(model: model) ?? model
         }
-        stateMachine.onEntering(state: .imapFetchingFolders) { [weak self] state, model in
+        stateMachine.handleEntering(state: .imapFetchingFolders) { [weak self] state, model in
             return self?.triggerImapFolderFetchOperation(model: model) ?? model
         }
-        stateMachine.onEntering(state: .determiningFolderUIDs) { [weak self] state, model in
+        stateMachine.handleEntering(state: .determiningFolderUIDs) { [weak self] state, model in
             return self?.triggerFolderInfoOperation(model: model) ?? model
         }
-        stateMachine.onEntering(state: .imapFetchingNewMessages) { [weak self] state, model in
+        stateMachine.handleEntering(state: .imapFetchingNewMessages) { [weak self] state, model in
             return self?.triggerFetchNewMessagesOperation(model: model) ?? model
         }
-        stateMachine.onEntering(state: .imapSyncingExistingMessages) { [weak self] state, model in
+        stateMachine.handleEntering(state: .imapSyncingExistingMessages) {
+            [weak self] state, model in
             return self?.handleSyncExistingMessages(state: state, model: model) ?? model
         }
-        stateMachine.onEntering(state: .determiningIdleCapability) { [weak self] state, model in
+        stateMachine.handleEntering(state: .determiningIdleCapability) { [weak self] state, model in
             return self?.handleDeterminingIdleStatus(state: state, model: model) ?? model
         }
-        stateMachine.onEntering(state: .imapWaitingAndRepeat) { [weak self] state, model in
+        stateMachine.handleEntering(state: .imapWaitingAndRepeat) { [weak self] state, model in
             return self?.triggerWaitingOperation(model: model) ?? model
+        }
+
+        stateMachine.handle(event: .imapError) { [weak self] state, model, event in
+            self?.handleImapError(state: state, model: model, event: event)
         }
     }
 }

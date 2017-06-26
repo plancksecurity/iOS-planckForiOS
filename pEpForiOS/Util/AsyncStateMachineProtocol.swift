@@ -34,8 +34,12 @@ public protocol AsyncStateMachineProtocol {
      This handler is called when a state is reached.
      It's expected to return a modified model M.
      */
-    typealias StateEnterHandler<S, M> =
-        (_ state: S, _ model: M) -> M
+    typealias StateEnterHandler = (_ state: S, _ model: M) -> M
+
+    /**
+     A handler like this is called when an event comes in, and there is no transition defined.
+     */
+    typealias EventHandler = (_ state: S, _ model: M, _ event: E) -> ()
 
     var state: S { get }
     var model: M { get set }
@@ -55,7 +59,12 @@ public protocol AsyncStateMachineProtocol {
      Might throw an exception if the handlers are ambigious, e.g. there is already a
      handler for a given state.
      */
-    func onEntering(state: S, handler: @escaping StateEnterHandler<S, M>) throws
+    func handleEntering(state: S, handler: @escaping StateEnterHandler) throws
+
+    /**
+     Installs a handler for an incoming event that has no defined transition.
+     */
+    func handle(event: E, handler: @escaping EventHandler)
 
     /**
      Executes a block on the management queue.

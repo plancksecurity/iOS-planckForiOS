@@ -10,17 +10,19 @@ import Foundation
 
 public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachineProtocol {
     enum StateMachineError: Error {
-        /** The current state does not support the event */
-        case invalidStateEventCombination(S, E)
+        /** The state/event combination is not handled */
+        case unhandledStateEvent(S, E)
     }
 
     private (set) public var state: S
     public var model: M
 
-    typealias MyEventHandler = StateEnterHandler<S, M>
+    public typealias MyStateHandler = (_ state: S, _ model: M) -> M
+    public typealias MyEventHandler = (_ state: S, _ model: M, _ event: E) -> ()
 
     var transitions = Dictionary<Tuple<S, E>, S>()
-    var stateEnterHandlers = Dictionary<S, StateEnterHandler<S, M>>()
+    var stateEnterHandlers = Dictionary<S, MyStateHandler>()
+    var eventHandlers = Dictionary<E, MyEventHandler>()
 
     private let managementQueue = DispatchQueue(
         label: "AsyncStateMachine.managementQueue", qos: .utility, target: nil)
@@ -42,7 +44,11 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
             }
             let tuple = Tuple(values: (theSelf.state, event))
             guard let targetState = theSelf.transitions[tuple] else {
-                onError(StateMachineError.invalidStateEventCombination(theSelf.state, event))
+                if let eventHandler = theSelf.eventHandlers[event] {
+                    eventHandler(theSelf.state, theSelf.model, event)
+                } else {
+                    onError(StateMachineError.unhandledStateEvent(theSelf.state, event))
+                }
                 return
             }
             theSelf.state = targetState
@@ -55,12 +61,18 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
         }
     }
 
-    public func onEntering(state: S, handler: @escaping StateEnterHandler<S, M>) {
+    public func handleEntering(state: S, handler: @escaping MyStateHandler) {
         managementQueue.async { [weak self] in
             guard let theSelf = self else {
                 return
             }
             theSelf.stateEnterHandlers[state] = handler
+        }
+    }
+
+    public func handle(event: E, handler: @escaping MyEventHandler) {
+        managementQueue.async { [weak self] in
+            self?.eventHandlers[event] = handler
         }
     }
 
