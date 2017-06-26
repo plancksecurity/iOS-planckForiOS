@@ -254,9 +254,13 @@ public class InboxSync {
         return model
     }
 
-    func handleImapError(state: State, model: Model, event: Event) {
+    func handleImapError(state: State, model: Model, event: Event) -> Model {
         Log.shared.warn(component: #function,
-                        content: "handling \(event): \(String(describing: model.imapError))")
+                        content: "handling \(event) on \(state)")
+        var newModel = model
+        newModel.imapError = nil
+        stateMachine.send(event: .requestSync, onError: InboxSync.internalStateErrorHandler())
+        return newModel
     }
 
     func setupTransitions() {
@@ -325,7 +329,7 @@ public class InboxSync {
         }
 
         stateMachine.handle(event: .imapError) { [weak self] state, model, event in
-            self?.handleImapError(state: state, model: model, event: event)
+            return self?.handleImapError(state: state, model: model, event: event) ?? model
         }
     }
 }

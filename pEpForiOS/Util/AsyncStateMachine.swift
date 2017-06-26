@@ -18,7 +18,7 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
     public var model: M
 
     public typealias MyStateHandler = (_ state: S, _ model: M) -> M
-    public typealias MyEventHandler = (_ state: S, _ model: M, _ event: E) -> ()
+    public typealias MyEventHandler = (_ state: S, _ model: M, _ event: E) -> M
 
     var transitions = Dictionary<Tuple<S, E>, S>()
     var stateEnterHandlers = Dictionary<S, MyStateHandler>()
@@ -45,7 +45,7 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
             let tuple = Tuple(values: (theSelf.state, event))
             guard let targetState = theSelf.transitions[tuple] else {
                 if let eventHandler = theSelf.eventHandlers[event] {
-                    eventHandler(theSelf.state, theSelf.model, event)
+                    theSelf.model = eventHandler(theSelf.state, theSelf.model, event)
                 } else {
                     onError(StateMachineError.unhandledStateEvent(theSelf.state, event))
                 }

@@ -39,7 +39,7 @@ public protocol AsyncStateMachineProtocol {
     /**
      A handler like this is called when an event comes in, and there is no transition defined.
      */
-    typealias EventHandler = (_ state: S, _ model: M, _ event: E) -> ()
+    typealias EventHandler = (_ state: S, _ model: M, _ event: E) -> M
 
     var state: S { get }
     var model: M { get set }
