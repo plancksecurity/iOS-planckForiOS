@@ -13,8 +13,10 @@ class DelayOperation: ConcurrentBaseOperation {
         label: "InboxSync.managementQueue", qos: .utility, target: nil)
     let delayInSeconds: Double
 
-    init(delayMilliseconds: Double) {
-        self.delayInSeconds = delayMilliseconds
+    init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+         delayInSeconds: Double) {
+        self.delayInSeconds = delayInSeconds
+        super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
     override func main() {
@@ -22,5 +24,9 @@ class DelayOperation: ConcurrentBaseOperation {
         deadline: DispatchTime.now() + delayInSeconds) {
             self.markAsFinished()
         }
+    }
+
+    override func cancel() {
+        self.markAsFinished()
     }
 }

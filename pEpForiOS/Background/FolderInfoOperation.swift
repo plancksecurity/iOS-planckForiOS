@@ -14,23 +14,23 @@ import MessageModel
 /**
  Meta data about a folder that is needed to sync existing messages.
  */
-protocol FolderUIDProtocol {
+protocol FolderUIDInfoProtocol {
     var firstUID: UInt { get }
     var lastUID: UInt { get }
+}
+
+struct FolderUIDInfo: FolderUIDInfoProtocol {
+    var firstUID: UInt = 0
+    var lastUID: UInt = 0
 }
 
 /**
  Determins the folder's first and last UIDs, as they are right now.
  */
 class FolderInfoOperation: ConcurrentBaseOperation {
-    struct FolderInfo: FolderUIDProtocol {
-        var firstUID: UInt = 0
-        var lastUID: UInt = 0
-    }
-
     let accountObjectID: NSManagedObjectID
     let folderName: String
-    var folderInfo = FolderInfo()
+    var folderInfo = FolderUIDInfo()
 
     public init(parentName: String? = nil,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(),
@@ -55,7 +55,7 @@ class FolderInfoOperation: ConcurrentBaseOperation {
                 return
         }
         var theCdFolder: CdFolder?
-        if folderName.lowercased() == ImapSync.defaultImapInboxName {
+        if folderName.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
             theCdFolder = CdFolder.by(folderType: .inbox, account: cdAccount)
         } else {
             theCdFolder = CdFolder.by(name: folderName, account: cdAccount)
@@ -71,7 +71,7 @@ class FolderInfoOperation: ConcurrentBaseOperation {
     }
 }
 
-extension FolderInfoOperation: FolderUIDProtocol {
+extension FolderInfoOperation: FolderUIDInfoProtocol {
     var firstUID: UInt {
         return folderInfo.firstUID
     }
