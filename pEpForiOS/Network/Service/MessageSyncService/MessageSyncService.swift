@@ -104,6 +104,10 @@ class MessageSyncService: MessageSyncServiceProtocol {
         Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
     }
 
+    func requestDraft(message: Message) {
+        Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
+    }
+
     func requestMessageSync(folder: Folder) {
         Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
     }
