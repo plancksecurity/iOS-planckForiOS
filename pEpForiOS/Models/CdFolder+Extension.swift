@@ -27,7 +27,12 @@ public extension CdFolder {
                               in: context)
     }
 
-    public static func by(name: String, account: CdAccount) -> CdFolder? {
+    public static func by(
+        name: String, account: CdAccount,
+        context: NSManagedObjectContext = Record.Context.default) -> CdFolder? {
+        if name.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
+            return CdFolder.by(folderType: .inbox, account: account, context: context)
+        }
         return CdFolder.first(attributes: ["name": name, "account": account])
     }
 

@@ -74,6 +74,21 @@ open class SyncMessagesOperation: ImapSyncOperation {
     }
 
     func process(context: NSManagedObjectContext) {
+        guard
+            let cdAccount = context.object(
+                with: imapSyncData.connectInfo.accountObjectID) as? CdAccount
+            else {
+                handleError(CoreDataError.couldNotFindAccount)
+                return
+        }
+        guard
+            let cdFolder = CdFolder.by(name: folderToOpen, account: cdAccount)
+            else {
+                handleError(CoreDataError.couldNotFindFolder)
+                return
+        }
+        folderID = cdFolder.objectID
+
         let folderBuilder = ImapFolderBuilder(
             accountID: self.imapSyncData.connectInfo.accountObjectID,
             backgroundQueue: self.backgroundQueue)

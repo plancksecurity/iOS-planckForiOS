@@ -12,9 +12,6 @@ import CoreData
 import MessageModel
 
 public class InboxSync {
-    typealias SyncEventHandler =
-        (InboxSync.Event, InboxSync.State, InboxSync.Model) -> (InboxSync.State, InboxSync.Model)
-
     public enum State {
         case initial
         case imapLoggingIn
