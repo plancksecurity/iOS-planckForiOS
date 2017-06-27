@@ -258,12 +258,14 @@ public class InboxSync {
         return model
     }
 
-    func handleImapError(state: State, model: Model, event: Event) -> (State, Model) {
+    func handleImapError(state: State, model: Model, event: Event) -> Model {
         if let error = model.imapError {
             Log.shared.error(component: #function, errorString: "state: \(state)", error: error)
             // TODO: Inform delegate
         }
-        return (.imapError, Model())
+        var newModel = model
+        newModel.imapError = nil
+        return newModel
     }
 
     func setupTransitions() {
@@ -315,6 +317,11 @@ public class InboxSync {
         stateMachine.addTransition(srcState: .imapError,
                                    event: .shouldReSync,
                                    targetState: .determiningFolderUIDs)
+
+        stateMachine.addTransition(event: .imapError, targetState: .imapError) {
+            [weak self] state, model, event in
+            return self?.handleImapError(state: state, model: model, event: event) ?? model
+        }
     }
 
     func setupEnterStateHandlers() {
@@ -345,10 +352,6 @@ public class InboxSync {
         }
         stateMachine.handleEntering(state: .imapLoginError) { [weak self] state, model in
             return self?.triggerWaitingOperation(model: model, successEvent: .start) ?? model
-        }
-
-        stateMachine.handle(event: .imapError) { [weak self] state, model, event in
-            return self?.handleImapError(state: state, model: model, event: event) ?? (state, model)
         }
     }
 }

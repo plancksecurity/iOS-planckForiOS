@@ -39,7 +39,7 @@ public protocol AsyncStateMachineProtocol {
     /**
      A handler like this is called when an event comes in, and there is no transition defined.
      */
-    typealias EventHandler = (_ state: S, _ model: M, _ event: E) -> (S, M)
+    typealias EventHandler = (_ state: S, _ model: M, _ event: E) -> M
 
     var state: S { get }
     var model: M { get set }
@@ -48,6 +48,12 @@ public protocol AsyncStateMachineProtocol {
      Marks the given State -> Event as a legal combination, and sets the target state.
      */
     func addTransition(srcState: S, event: E, targetState: S)
+
+    /**
+     Adds a wildcard transition, that can be activated from any state. Those handlers
+     are only considered if there is no "normal" transition defined.
+     */
+    func addTransition(event: E, targetState: S, handler: @escaping EventHandler)
 
     /**
      Sends `event` to the state machine. If the state/event combination is invalid,
@@ -60,8 +66,6 @@ public protocol AsyncStateMachineProtocol {
      handler for a given state.
      */
     func handleEntering(state: S, handler: @escaping StateEnterHandler) throws
-
-    func handle(event: E, handler: @escaping EventHandler)
 
     /**
      Executes a block on the management queue.
