@@ -25,7 +25,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         var isSynching: Bool = false
     }
 
-    var viewModel = EmailListViewModel()
+    //var viewModel = EmailListViewModel()
     var config: EmailListConfig?
     var state = UIState()
     let searchController = UISearchController(searchResultsController: nil)
