@@ -39,26 +39,35 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
 
     public func send(event: E, onError: @escaping ErrorHandler) {
         managementQueue.async { [weak self] in
-            guard let theSelf = self else {
-                return
-            }
-            let tuple = Tuple(values: (theSelf.state, event))
-            guard let targetState = theSelf.transitions[tuple] else {
-                if let eh = theSelf.eventHandlers[event] {
-                    (theSelf.state, theSelf.model) = eh(theSelf.state, theSelf.model, event)
-                } else {
-                    onError(StateMachineError.unhandledStateEvent(theSelf.state, event))
-                }
-                return
-            }
-            theSelf.state = targetState
-            if let handler = theSelf.stateEnterHandlers[targetState] {
-                theSelf.model = handler(theSelf.state, theSelf.model)
+            self?.sendInternal(event: event, onError: onError)
+        }
+    }
+
+    func sendInternal(event: E, onError: @escaping ErrorHandler) {
+        let tuple = Tuple(values: (state, event))
+        if let targetState = transitions[tuple] {
+            model = handleTransition(
+                targetState: targetState, model: model)
+        } else {
+            if let eh = eventHandlers[event] {
+                (state, model) = eh(state, model, event)
+                model = handleTransition(
+                    targetState: state, model: model)
             } else {
-                Log.shared.warn(component: #function,
-                                content: "Entered state \(targetState), but no handler")
+                onError(StateMachineError.unhandledStateEvent(state, event))
             }
         }
+    }
+
+    func handleTransition(targetState: S, model: M) -> M {
+        state = targetState
+        if let handler = stateEnterHandlers[targetState] {
+            return handler(targetState, model)
+        } else {
+            Log.shared.warn(component: #function,
+                            content: "Entered state \(targetState), but no handler")
+        }
+        return model
     }
 
     public func handleEntering(state: S, handler: @escaping MyStateHandler) {
