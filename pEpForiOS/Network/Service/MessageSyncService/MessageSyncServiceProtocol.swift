@@ -19,10 +19,15 @@ import MessageModel
 protocol MessageSyncServiceProtocol {
     /**
      Request account verification, receiving news via the delegate.
-     Backend will probably start syncing the inbox as soon as the verification
+     Backend might start syncing the inbox as soon as the verification
      was successful.
      */
     func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate)
+
+    /**
+     Requests the given message to be drafted.
+     */
+    func requestDraft(message: Message)
 
     /**
      Notify the backend that the user just finished creating a message for sending,
