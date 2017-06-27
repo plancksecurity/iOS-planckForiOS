@@ -25,6 +25,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         var isSynching: Bool = false
     }
 
+    var viewModel = EmailListViewModel()
     var config: EmailListConfig?
     var state = UIState()
     let searchController = UISearchController(searchResultsController: nil)
@@ -158,6 +159,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
+        //mantener el configure cell para tal de no generar un vm para celdas
         if let message = cell.configureCell(config: config, indexPath: indexPath) {
             associate(message: message, toCell: cell)
         }
@@ -310,7 +312,6 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
 
     func createForwardAction(cell: EmailListViewCell) -> UIAlertAction {
         return UIAlertAction(title: "Forward", style: .default) { (action) in
-            //self.performSegue(withIdentifier: self.segueCompose, sender: cell)
             self.performSegue(withIdentifier: .segueForward, sender: cell)
         }
     }
@@ -322,18 +323,31 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
 
     // MARK: - Content Search
 
-    func filterContentForSearchText(searchText: String) {
-
+    func filterContentForSearchText(searchText: String? = nil, clear: Bool) {
+        if clear {
+            updateFilter(filter: Filter.unified())
+        } else {
+            if let text = searchText, text != "" {
+                let f = Filter.search(subject: text)
+                if filterEnabled {
+                    f.and(filter: Filter.unread())
+                    updateFilter(filter: f)
+                }
+                if config != nil {
+                    updateFilter(filter: f)
+                }
+            }
+        }
     }
-
 }
 
 extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
     public func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchText: searchController.searchBar.text!)
+        filterContentForSearchText(searchText: searchController.searchBar.text!, clear: false)
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
+        filterContentForSearchText(clear: true)
     }
 }
 

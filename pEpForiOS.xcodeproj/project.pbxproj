@@ -1046,6 +1046,7 @@
 		43ED53621CC77F95006AB156 /* EmailDisplay */ = {
 			isa = PBXGroup;
 			children = (
+				B74D08BF1F013F15003D092C /* ViewModel */,
 				430D73601E9CBD0600EA6FA9 /* Background */,
 				4323FE871E83E502006785E1 /* Util */,
 				220DCE281E0AB4DE002FE716 /* Cells */,
@@ -1148,6 +1149,14 @@
 				B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */,
 			);
 			name = MimeTypes;
+			sourceTree = "<group>";
+		};
+		B74D08BF1F013F15003D092C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */,
+			);
+			name = ViewModel;
 			sourceTree = "<group>";
 		};
 		B74F81031EB0E20700519FCC /* AccountsViewModel */ = {

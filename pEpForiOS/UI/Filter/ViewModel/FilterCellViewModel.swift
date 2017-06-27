@@ -61,7 +61,7 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("For me", comment: "title unread filter cell")
-            //filter = Filter.toAddress(address: <#T##String#>)
+            //filter = Filter.toAddress(address: String)
             //enabled = filter?.ofType(type: .unread) ?? false
 
         case .forMeCc:
@@ -72,7 +72,7 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("For me in copy", comment: "title unread filter cell")
-            //filter = Filter.toAddress(address: <#T##String#>)
+            //filter = Filter.toAddress(address: String)
             //enabled = filter?.ofType(type: .unread) ?? false
 
         case .attachment:
@@ -80,6 +80,11 @@ public class FilterCellViewModel {
             self.title = NSLocalizedString("Attachments", comment: "title attachments filter cell")
             filter = Filter.attachment()
             enabled = filter?.ofType(type: .attachment) ?? false
+
+        case .search:
+            self.icon = FlagImages.create(imageSize: squareSize).notSeenImage
+            self.title = ""
+
         }
     }
 
