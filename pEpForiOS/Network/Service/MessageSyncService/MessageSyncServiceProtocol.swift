@@ -10,6 +10,13 @@ import Foundation
 
 import MessageModel
 
+protocol MessageSyncServiceErrorDelegate: class {
+    /**
+     An error occurred, and should usually displayed.
+     */
+    func show(error: Error)
+}
+
 /**
  Message sync related actions that can be requested by the UI.
  The purpose is to make network-related actions seem as fast as possible,
@@ -17,6 +24,8 @@ import MessageModel
  have full control over the scheduling.
  */
 protocol MessageSyncServiceProtocol {
+    weak var errorDelegate: MessageSyncServiceErrorDelegate? { get set }
+
     /**
      Request account verification, receiving news via the delegate.
      Backend might start syncing the inbox as soon as the verification

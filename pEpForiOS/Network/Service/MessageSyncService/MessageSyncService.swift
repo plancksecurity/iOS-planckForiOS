@@ -69,6 +69,8 @@ import MessageModel
  The INBOX should be handled by IDLE.
  */
 class MessageSyncService: MessageSyncServiceProtocol {
+    var errorDelegate: MessageSyncServiceErrorDelegate?
+
     let sleepTimeInSeconds: Double
     let backgrounder: BackgroundTaskProtocol?
     let mySelfer: KickOffMySelfProtocol?
