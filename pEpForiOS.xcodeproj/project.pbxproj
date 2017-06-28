@@ -71,6 +71,7 @@
 		431E58FC1ED5926B00EFA77F /* AccountVerificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */; };
 		431E65631EEAE65200B8BBFC /* HandshakeUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */; };
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
+		431FEEB11F03B04300FE37FF /* MockBackgrounder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431FEEB01F03B04300FE37FF /* MockBackgrounder.swift */; };
 		43209B541ECC5A9B007E7E2E /* libpEpObjCAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43209B531ECC5A9B007E7E2E /* libpEpObjCAdapter.a */; };
 		432142641E8FD66900FBE987 /* QuickSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432142631E8FD66900FBE987 /* QuickSyncService.swift */; };
 		432142661E8FD6A400FBE987 /* ServiceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432142651E8FD6A400FBE987 /* ServiceUtil.swift */; };
@@ -349,6 +350,7 @@
 		431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationServiceTests.swift; sourceTree = "<group>"; };
 		431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeUITest.swift; sourceTree = "<group>"; };
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
+		431FEEB01F03B04300FE37FF /* MockBackgrounder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBackgrounder.swift; sourceTree = "<group>"; };
 		43209B531ECC5A9B007E7E2E /* libpEpObjCAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpObjCAdapter.a; path = "../pEpObjCAdapter/build/Debug-iphoneos/libpEpObjCAdapter.a"; sourceTree = "<group>"; };
 		432142631E8FD66900FBE987 /* QuickSyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickSyncService.swift; sourceTree = "<group>"; };
 		432142651E8FD6A400FBE987 /* ServiceUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceUtil.swift; sourceTree = "<group>"; };
@@ -789,6 +791,7 @@
 				493B6D211E7078A100364D60 /* TestData.swift */,
 				433C519F1E64236500272E19 /* TestDataBase.swift */,
 				4374320A1CFC49B1000F8D35 /* TestUtil.swift */,
+				431FEEB01F03B04300FE37FF /* MockBackgrounder.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1160,7 +1163,6 @@
 		B74D08BF1F013F15003D092C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -1598,6 +1600,7 @@
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				436795F81EE98B9A00B03E23 /* MessageReevalutionTests.swift in Sources */,
 				43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */,
+				431FEEB11F03B04300FE37FF /* MockBackgrounder.swift in Sources */,
 				4347A9231EE6B0B100C18233 /* ImapSyncMachineTests.swift in Sources */,
 				493B6D221E7078A100364D60 /* TestData.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,

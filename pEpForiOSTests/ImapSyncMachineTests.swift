@@ -122,7 +122,10 @@ class ImapSyncMachineTests: XCTestCase {
 
         TestUtil.createOutgoingMails(cdAccount: theCdAccount)
 
-        let smtpService = SmtpSendService(parentName: #function)
+        let expectationBackgrounded = expectation(description: "expectationBackgrounded")
+        let backgrounder = MockBackgrounder(expBackgrounded: expectationBackgrounded)
+
+        let smtpService = SmtpSendService(parentName: #function, backgrounder: backgrounder)
         let expectationSmtpExecuted = expectation(description: "expectationSmtpExecuted")
         smtpService.execute(
         smtpSendData: smtpSendData, imapSyncData: imapSyncData) { error in

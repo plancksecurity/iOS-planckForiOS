@@ -421,45 +421,14 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNil(CdMessage.all())
     }
 
-    class Backgrounder: BackgroundTaskProtocol {
-        let expBackgrounded: XCTestExpectation?
-        let taskName: String?
-        var currentTaskID = 1
-        var taskIDs = [BackgroundTaskID: String]()
-
-        init(taskName: String? = nil, expBackgrounded: XCTestExpectation? = nil) {
-            self.expBackgrounded = expBackgrounded
-            self.taskName = taskName
-        }
-
-        func beginBackgroundTask(taskName: String?,
-                                 expirationHandler: (() -> Void)?) -> BackgroundTaskID {
-            let taskID = currentTaskID
-            taskIDs[taskID] = taskName
-            currentTaskID += 1
-            return taskID
-        }
-
-        func endBackgroundTask(_ taskID: BackgroundTaskID?) {
-            if let theID = taskID, let theTaskName = taskIDs[theID] {
-                if theTaskName == taskName {
-                    expBackgrounded?.fulfill()
-                }
-            } else {
-                XCTFail()
-            }
-        }
-    }
-
     class MySelfObserver: KickOffMySelfProtocol {
         let expMySelfed: XCTestExpectation?
         let queue = LimitedOperationQueue()
-        let backgrounder: Backgrounder
+        let backgrounder: MockBackgrounder
 
         init(expMySelfed: XCTestExpectation?, expBackgrounded: XCTestExpectation?) {
             self.expMySelfed = expMySelfed
-            backgrounder = Backgrounder(
-                taskName: MySelfOperation.taskNameSubOperation, expBackgrounded: expBackgrounded)
+            backgrounder = MockBackgrounder(expBackgrounded: expBackgrounded)
         }
 
         func startMySelf() {
