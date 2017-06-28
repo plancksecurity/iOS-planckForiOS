@@ -168,10 +168,12 @@ class TestDataBase {
      */
     func createDisfunctionalCdAccount() -> CdAccount {
         populateAccounts()
-        var account = testAccounts[0]
-        account.smtpServerPort = 2323
-        account.imapServerPort = 2323
-        return account.cdAccount()
+        var accountSettings = testAccounts[0]
+        accountSettings.smtpServerAddress = "localhost"
+        accountSettings.smtpServerPort = 2323
+        accountSettings.imapServerPort = 2323
+        accountSettings.imapServerAddress = "localhost"
+        return accountSettings.cdAccount()
     }
 
     /**
