@@ -23,7 +23,7 @@ public enum NetworkTransportType: String {
 /**
  Holds basic info to connect to peers (perhaps servers).
  */
-public class ConnectInfo {
+public class ConnectInfo: Hashable {
     public let accountObjectID: NSManagedObjectID
     public let serverObjectID: NSManagedObjectID
     public let credentialsObjectID: NSManagedObjectID
@@ -54,9 +54,12 @@ public class ConnectInfo {
         self.networkAddressType = networkAddressType
         self.networkTransportType = networkTransportType
     }
-}
 
-extension ConnectInfo: Hashable {
+    // MARK: Hashable
+
+    /**
+     If this was in an extension, the subclasses could not override it. Therefore, it's here.
+     */
     public var hashValue: Int {
         return 31 &*
             accountObjectID.hashValue &+

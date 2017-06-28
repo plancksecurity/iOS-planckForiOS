@@ -180,4 +180,21 @@ public class EmailConnectInfo: ConnectInfo {
             Record.saveAndWait(context: context)
         }
     }
+
+    override public var hashValue: Int {
+        return super.hashValue &+ (emailProtocol?.hashValue ?? 0)
+            &+ (connectionTransport?.hashValue ?? 0)
+            &+ (authMethod?.hashValue ?? 0)
+            &+ trusted.hashValue
+    }
 }
+
+public func ==(l: EmailConnectInfo, r: EmailConnectInfo) -> Bool {
+    let sl = l as ConnectInfo
+    let sr = r as ConnectInfo
+    return sl == sr &&
+        l.connectionTransport == r.connectionTransport &&
+        l.authMethod == r.authMethod &&
+        l.trusted == r.trusted
+}
+
