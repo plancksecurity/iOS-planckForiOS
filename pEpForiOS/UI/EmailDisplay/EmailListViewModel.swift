@@ -11,11 +11,13 @@ import MessageModel
 
 public class EmailListViewModel {
 
+
     var folderToShow: Folder?
     let cellsInUse = NSCache<NSString, EmailListViewCell>()
 
-    public init() {
+    init(config: EmailListConfig?) {
         MessageModelConfig.messageFolderDelegate = self
+        folderToShow = config?.folder
     }
 
     var count : Int {

@@ -25,8 +25,8 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         var isSynching: Bool = false
     }
 
-    //var viewModel = EmailListViewModel()
     var config: EmailListConfig?
+    var viewModel: EmailListViewModel?
     var state = UIState()
     let searchController = UISearchController(searchResultsController: nil)
     let cellsInUse = NSCache<NSString, EmailListViewCell>()
@@ -68,8 +68,8 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
             fol.updateLastLookAt()
         }
 
+        viewModel = EmailListViewModel(config: config)
         MessageModelConfig.messageFolderDelegate = self
-
         
     }
 
@@ -87,6 +87,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
             config = EmailListConfig(appConfig: appDelegate.appConfig,
                                      folder: Folder.unifiedInbox())
         }
+
         if Account.all().isEmpty {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
@@ -142,15 +143,15 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
     // MARK: - UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let _ = config?.folder {
+        if let _ = viewModel?.folderToShow {
             return 1
         }
         return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let fol = config?.folder  {
-            return fol.messageCount()
+        if let vm = viewModel {
+            return vm.count
         }
         return 0
     }
@@ -161,7 +162,8 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
             withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
         //mantener el configure cell para tal de no generar un vm para celdas
         if let message = cell.configureCell(config: config, indexPath: indexPath) {
-            associate(message: message, toCell: cell)
+            viewModel?.associate(cell: cell, position: indexPath.row)
+            //associate(message: message, toCell: cell)
         }
         return cell
     }
