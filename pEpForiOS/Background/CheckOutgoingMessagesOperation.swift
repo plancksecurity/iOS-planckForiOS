@@ -1,5 +1,5 @@
 //
-//  CheckMessagesToBeSent.swift
+//  CheckOutgoingMessagesOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 27.06.17.
@@ -11,7 +11,7 @@ import CoreData
 
 import MessageModel
 
-class CheckMessagesToBeSent: ConcurrentBaseOperation {
+class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
     var hasMessagesReadyToBeSent = false
 
     public override init(parentName: String? = nil,

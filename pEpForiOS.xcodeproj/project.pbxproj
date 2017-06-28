@@ -64,7 +64,7 @@
 		431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */; };
 		431D60DB1E93BB2D001266D7 /* AttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */; };
 		431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */; };
-		431E2B071F02550C000035FA /* CheckMessagesToBeSent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E2B061F02550C000035FA /* CheckMessagesToBeSent.swift */; };
+		431E2B071F02550C000035FA /* CheckOutgoingMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */; };
 		431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E58F51ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift */; };
 		431E58FA1ED591E900EFA77F /* AccountVerificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E58F91ED591E900EFA77F /* AccountVerificationService.swift */; };
 		431E58FC1ED5926B00EFA77F /* AccountVerificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */; };
@@ -341,7 +341,7 @@
 		431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsView.swift; sourceTree = "<group>"; };
 		431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAttachmentsCell.swift; sourceTree = "<group>"; };
-		431E2B061F02550C000035FA /* CheckMessagesToBeSent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckMessagesToBeSent.swift; sourceTree = "<group>"; };
+		431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckOutgoingMessagesOperation.swift; sourceTree = "<group>"; };
 		431E58F51ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationServiceProtocol.swift; sourceTree = "<group>"; };
 		431E58F91ED591E900EFA77F /* AccountVerificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationService.swift; sourceTree = "<group>"; };
 		431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationServiceTests.swift; sourceTree = "<group>"; };
@@ -654,7 +654,7 @@
 				43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */,
 				4333A2A41E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift */,
 				4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */,
-				431E2B061F02550C000035FA /* CheckMessagesToBeSent.swift */,
+				431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -1484,7 +1484,7 @@
 				43122B1A1DF5B48B00610253 /* ImapService.swift in Sources */,
 				222B35651DF96A9C007A1F82 /* ComposeCellProtocols.swift in Sources */,
 				43A6E04B1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift in Sources */,
-				431E2B071F02550C000035FA /* CheckMessagesToBeSent.swift in Sources */,
+				431E2B071F02550C000035FA /* CheckOutgoingMessagesOperation.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				432142641E8FD66900FBE987 /* QuickSyncService.swift in Sources */,
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,

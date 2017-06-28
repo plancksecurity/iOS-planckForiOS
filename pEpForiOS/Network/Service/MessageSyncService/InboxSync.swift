@@ -14,6 +14,7 @@ import MessageModel
 public class InboxSync {
     public enum State {
         case initial
+        case checkingOutgoingMessages
         case imapLoggingIn
         case imapFetchingFolders
         case determiningFolderUIDs
@@ -29,6 +30,7 @@ public class InboxSync {
         case imapLoginError
         case imapError
         case smtpError
+        case internalError
     }
 
     /**
@@ -36,6 +38,7 @@ public class InboxSync {
      */
     public enum Event {
         case start
+        case outgoingCheckCompleted
         case imapLoggedIn
         case imapFoldersFetched
         case folderUIDsDetermined
@@ -58,11 +61,15 @@ public class InboxSync {
         case imapLoginError
         case smtpError
         case imapError
+        case internalError
     }
 
     public struct Model {
         /** The currently executed operation */
         var operation: BaseOperation? = nil
+
+        /** Some operation not directly involved with IMAP or SMTP had an error */
+        var internalError: Error? = nil
 
         /** There was an error logging in */
         var imapLoginError: Error? = nil
@@ -79,6 +86,9 @@ public class InboxSync {
         var supportsIdle = false
 
         var folderInfo: FolderUIDInfoProtocol = FolderUIDInfo()
+
+        /** Any messages in the to be sent queue? */
+        var hasMessagesReadyToBeSent = false
     }
 
     typealias StateMachineType = AsyncStateMachine<State, Event, Model>
@@ -220,7 +230,17 @@ public class InboxSync {
     func triggerWaitingOperation(model: Model, successEvent: Event) -> Model {
         return install(
             operation: DelayOperation(parentName: parentName, delayInSeconds: pollDelayInSeconds),
-            model: model, successEvent: .shouldReSync, errorEvent: .imapError)
+            model: model, successEvent: successEvent, errorEvent: .imapError)
+    }
+
+    func triggerCheckOutgoingMessagesOperation(model: Model) -> Model {
+        let op = CheckOutgoingMessagesOperation(parentName: parentName)
+        return install(
+            operation: op,
+            model: model, successEvent: .outgoingCheckCompleted, errorEvent: .internalError) {
+                [weak self] in
+                self?.stateMachine.model.hasMessagesReadyToBeSent = op.hasMessagesReadyToBeSent
+        }
     }
 
     func handleSyncExistingMessages(state: State, model: Model) -> Model {
@@ -265,9 +285,22 @@ public class InboxSync {
         return newModel
     }
 
+    func handleInternalError(state: State, model: Model, event: Event) -> Model {
+        if let error = model.internalError {
+            Log.shared.error(component: #function, errorString: "state: \(state)", error: error)
+            // TODO: Inform delegate
+        }
+        var newModel = model
+        newModel.internalError = nil
+        return newModel
+    }
+
     func setupTransitions() {
         stateMachine.addTransition(srcState: .initial,
                                    event: .start,
+                                   targetState: .checkingOutgoingMessages)
+        stateMachine.addTransition(srcState: .checkingOutgoingMessages,
+                                   event: .outgoingCheckCompleted,
                                    targetState: .imapLoggingIn)
         stateMachine.addTransition(srcState: .imapLoggingIn,
                                    event: .imapLoggedIn,
@@ -319,9 +352,19 @@ public class InboxSync {
             [weak self] state, model, event in
             return self?.handleImapError(state: state, model: model, event: event) ?? model
         }
+        stateMachine.addTransition(event: .internalError, targetState: .internalError) {
+            [weak self] state, model, event in
+            return self?.handleInternalError(state: state, model: model, event: event) ?? model
+        }
+        stateMachine.addTransition(srcState: .internalError,
+                                   event: .start,
+                                   targetState: .checkingOutgoingMessages)
     }
 
     func setupEnterStateHandlers() {
+        stateMachine.handleEntering(state: .checkingOutgoingMessages) { [weak self] state, model in
+            return self?.triggerCheckOutgoingMessagesOperation(model: model) ?? model
+        }
         stateMachine.handleEntering(state: .imapLoggingIn) { [weak self] state, model in
             return self?.triggerImapLoginOperation(model: model) ?? model
         }
@@ -343,6 +386,9 @@ public class InboxSync {
         }
         stateMachine.handleEntering(state: .imapWaitingAndRepeat) { [weak self] state, model in
             return self?.triggerWaitingOperation(model: model, successEvent: .shouldReSync) ?? model
+        }
+        stateMachine.handleEntering(state: .internalError) { [weak self] state, model in
+            return self?.triggerWaitingOperation(model: model, successEvent: .start) ?? model
         }
         stateMachine.handleEntering(state: .imapError) { [weak self] state, model in
             return self?.triggerWaitingOperation(model: model, successEvent: .shouldReSync) ?? model
