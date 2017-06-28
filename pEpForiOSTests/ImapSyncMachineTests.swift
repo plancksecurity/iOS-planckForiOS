@@ -87,7 +87,7 @@ class ImapSyncMachineTests: XCTestCase {
         }
     }
 
-    func notestInboxSync() {
+    func testInboxSync() {
         let cdAccount = TestData().createWorkingCdAccount()
         Record.saveAndWait()
         guard

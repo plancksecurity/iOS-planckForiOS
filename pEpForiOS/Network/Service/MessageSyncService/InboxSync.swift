@@ -15,6 +15,7 @@ public class InboxSync {
     public enum State {
         case initial
         case checkingOutgoingMessages
+
         case imapLoggingIn
         case imapFetchingFolders
         case determiningFolderUIDs
@@ -24,9 +25,11 @@ public class InboxSync {
         case imapIdling
         case imapWaitingAndRepeat
         case imapSendingDrafts
+
         case smtpLoggingIn
         case smtpSending
         case smtpImapAppending
+
         case imapLoginError
         case imapError
         case smtpError
@@ -38,7 +41,8 @@ public class InboxSync {
      */
     public enum Event {
         case start
-        case outgoingCheckCompleted
+        case haveOutgoingMessages
+        case dontHaveOutgoingMessages
         case imapLoggedIn
         case imapFoldersFetched
         case folderUIDsDetermined
@@ -53,6 +57,9 @@ public class InboxSync {
          indicated new messages.
          */
         case shouldReSync
+
+        case smtpLoggedIn
+        case smtpSent
 
         case requestSync
         case requestSmtp
@@ -235,11 +242,52 @@ public class InboxSync {
 
     func triggerCheckOutgoingMessagesOperation(model: Model) -> Model {
         let op = CheckOutgoingMessagesOperation(parentName: parentName)
+        op.completionBlock = { [weak self] in
+            self?.stateMachine.async {
+                self?.handleOutgoingMessageResult(op: op)
+            }
+        }
+        backgroundQueue.addOperation(op)
+        var newModel = model
+        newModel.operation = op
+        return newModel
+    }
+
+    func triggerSmtpLoginOperation(model: Model, successEvent: Event) -> Model {
         return install(
-            operation: op,
-            model: model, successEvent: .outgoingCheckCompleted, errorEvent: .internalError) {
-                [weak self] in
-                self?.stateMachine.model.hasMessagesReadyToBeSent = op.hasMessagesReadyToBeSent
+            operation: LoginSmtpOperation(
+                parentName: parentName, smtpSendData: smtpSendData),
+            model: model, successEvent: successEvent, errorEvent: .smtpError)
+    }
+
+    func triggerSmtpSendOperation(model: Model, successEvent: Event) -> Model {
+        return install(
+            operation: EncryptAndSendOperation(
+                parentName: parentName, smtpSendData: smtpSendData),
+            model: model, successEvent: successEvent, errorEvent: .smtpError)
+    }
+
+    func triggerSmtpImapAppendOperation(model: Model, successEvent: Event) -> Model {
+        return install(
+            operation: AppendMailsOperation(
+                parentName: parentName, imapSyncData: imapSyncData),
+            model: model, successEvent: successEvent, errorEvent: .smtpError)
+    }
+
+    func handleOutgoingMessageResult(op: CheckOutgoingMessagesOperation) {
+        if let err = op.error {
+            stateMachine.model.internalError = err
+            stateMachine.send(event: .internalError, onError: internalStateErrorHandler())
+        } else {
+            if op.hasMessagesReadyToBeSent {
+                stateMachine.model.hasMessagesReadyToBeSent = true
+                stateMachine.send(
+                    event: .haveOutgoingMessages, onError: internalStateErrorHandler())
+            } else {
+                stateMachine.model.hasMessagesReadyToBeSent = false
+                stateMachine.send(
+                    event: .dontHaveOutgoingMessages, onError: internalStateErrorHandler())
+            }
         }
     }
 
@@ -300,17 +348,22 @@ public class InboxSync {
                                    event: .start,
                                    targetState: .checkingOutgoingMessages)
         stateMachine.addTransition(srcState: .checkingOutgoingMessages,
-                                   event: .outgoingCheckCompleted,
+                                   event: .dontHaveOutgoingMessages,
                                    targetState: .imapLoggingIn)
+        stateMachine.addTransition(srcState: .checkingOutgoingMessages,
+                                   event: .haveOutgoingMessages,
+                                   targetState: .smtpLoggingIn)
         stateMachine.addTransition(srcState: .imapLoggingIn,
                                    event: .imapLoggedIn,
                                    targetState: .imapFetchingFolders)
+
         stateMachine.addTransition(srcState: .imapLoggingIn,
                                    event: .imapLoginError,
                                    targetState: .imapLoginError)
         stateMachine.addTransition(srcState: .imapLoginError,
                                    event: .start,
                                    targetState: .imapLoggingIn)
+
         stateMachine.addTransition(srcState: .imapFetchingFolders,
                                    event: .imapFoldersFetched,
                                    targetState: .determiningFolderUIDs)
@@ -344,6 +397,10 @@ public class InboxSync {
                                    event: .shouldReSync,
                                    targetState: .determiningFolderUIDs)
 
+        stateMachine.addTransition(srcState: .smtpLoggingIn,
+                                   event: .smtpLoggedIn,
+                                   targetState: .smtpSending)
+
         stateMachine.addTransition(srcState: .imapError,
                                    event: .shouldReSync,
                                    targetState: .determiningFolderUIDs)
@@ -359,6 +416,9 @@ public class InboxSync {
         stateMachine.addTransition(srcState: .internalError,
                                    event: .start,
                                    targetState: .checkingOutgoingMessages)
+        stateMachine.addTransition(srcState: .smtpSending,
+                                   event: .smtpSent,
+                                   targetState: .smtpImapAppending)
     }
 
     func setupEnterStateHandlers() {
@@ -395,6 +455,15 @@ public class InboxSync {
         }
         stateMachine.handleEntering(state: .imapLoginError) { [weak self] state, model in
             return self?.triggerWaitingOperation(model: model, successEvent: .start) ?? model
+        }
+
+        stateMachine.handleEntering(state: .smtpLoggingIn) { [weak self] state, model in
+            return self?.triggerSmtpLoginOperation(
+                model: model, successEvent: .smtpLoggedIn) ?? model
+        }
+        stateMachine.handleEntering(state: .smtpSending) { [weak self] state, model in
+            return self?.triggerSmtpSendOperation(
+                model: model, successEvent: .smtpSent) ?? model
         }
     }
 }
