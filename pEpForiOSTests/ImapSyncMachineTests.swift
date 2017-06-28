@@ -52,11 +52,9 @@ class ImapSyncMachineTests: XCTestCase {
     }
 
     var persistentSetup: PersistentSetup!
+
     var cdAccount: CdAccount!
-    var imapConnectInfo: EmailConnectInfo!
-    var smtpConnectInfo: EmailConnectInfo!
-    var imapSyncData: ImapSyncData!
-    var smtpSendData: SmtpSendData!
+    var cdAccountDisfunctional: CdAccount!
 
     override func setUp() {
         super.setUp()
@@ -68,13 +66,11 @@ class ImapSyncMachineTests: XCTestCase {
         Record.saveAndWait()
         self.cdAccount = cdAccount
 
-        imapConnectInfo = cdAccount.imapConnectInfo
-        smtpConnectInfo = cdAccount.smtpConnectInfo
-        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-        smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
-
-        XCTAssertNotNil(imapConnectInfo)
-        XCTAssertNotNil(smtpConnectInfo)
+        let cdDisfunctionalAccount = TestData().createDisfunctionalCdAccount()
+        cdDisfunctionalAccount.identity?.isMySelf = true
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+        self.cdAccountDisfunctional = cdDisfunctionalAccount
     }
 
     override func tearDown() {
@@ -107,17 +103,46 @@ class ImapSyncMachineTests: XCTestCase {
         }
     }
 
-    func testOutgoing() {
-        TestUtil.createOutgoingMails(cdAccount: cdAccount)
+    func syncData(cdAccount: CdAccount) -> (ImapSyncData, SmtpSendData)? {
+        guard
+            let imapCI = cdAccount.imapConnectInfo,
+            let smtpCI = cdAccount.smtpConnectInfo else {
+                XCTFail()
+                return nil
+        }
+        return (ImapSyncData(connectInfo: imapCI), SmtpSendData(connectInfo: smtpCI))
+    }
+
+    func runSmtpSendService(
+        cdAccount theCdAccount: CdAccount, verifyError: @escaping (_ error: Error?) -> ()) {
+        guard let (imapSyncData, smtpSendData) = syncData(cdAccount: theCdAccount) else {
+            XCTFail()
+            return
+        }
+
+        TestUtil.createOutgoingMails(cdAccount: theCdAccount)
+
         let smtpService = SmtpSendService(parentName: #function)
         let expectationSmtpExecuted = expectation(description: "expectationSmtpExecuted")
         smtpService.execute(
         smtpSendData: smtpSendData, imapSyncData: imapSyncData) { error in
-            XCTAssertNil(error)
+            verifyError(error)
             expectationSmtpExecuted.fulfill()
         }
         waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
+        }
+    }
+
+    func testSmtpSendServiceOk() {
+        runSmtpSendService(cdAccount: cdAccount) { error in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testSmtpSendServiceError() {
+        runSmtpSendService(cdAccount: cdAccountDisfunctional) { error in
+            XCTAssertNotNil(error)
         }
     }
 
