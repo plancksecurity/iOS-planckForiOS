@@ -52,9 +52,29 @@ class ImapSyncMachineTests: XCTestCase {
     }
 
     var persistentSetup: PersistentSetup!
+    var cdAccount: CdAccount!
+    var imapConnectInfo: EmailConnectInfo!
+    var smtpConnectInfo: EmailConnectInfo!
+    var imapSyncData: ImapSyncData!
+    var smtpSendData: SmtpSendData!
 
     override func setUp() {
+        super.setUp()
         persistentSetup = PersistentSetup()
+
+        let cdAccount = TestData().createWorkingCdAccount()
+        cdAccount.identity?.isMySelf = true
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+        self.cdAccount = cdAccount
+
+        imapConnectInfo = cdAccount.imapConnectInfo
+        smtpConnectInfo = cdAccount.smtpConnectInfo
+        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+        smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
+
+        XCTAssertNotNil(imapConnectInfo)
+        XCTAssertNotNil(smtpConnectInfo)
     }
 
     override func tearDown() {
@@ -87,7 +107,21 @@ class ImapSyncMachineTests: XCTestCase {
         }
     }
 
-    func testInboxSync() {
+    func testOutgoing() {
+        TestUtil.createOutgoingMails(cdAccount: cdAccount)
+        let smtpService = SmtpSendService(parentName: #function)
+        let expectationSmtpExecuted = expectation(description: "expectationSmtpExecuted")
+        smtpService.execute(
+        smtpSendData: smtpSendData, imapSyncData: imapSyncData) { error in
+            XCTAssertNil(error)
+            expectationSmtpExecuted.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+    }
+
+    func notestInboxSync() {
         let cdAccount = TestData().createWorkingCdAccount()
         Record.saveAndWait()
         guard

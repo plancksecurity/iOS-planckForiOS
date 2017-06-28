@@ -55,20 +55,20 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         var pepMessage: PEPMessage?
         var objID: NSManagedObjectID?
         var protected = true
-        context.performAndWait {
-            let p = NSPredicate(
-                format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
-                FolderType.sent.rawValue, SendStatus.none.rawValue)
-            if let m = CdMessage.first(predicate: p) {
-                if m.sent == nil {
-                    m.sent = NSDate()
-                    Record.saveAndWait(context: context)
-                }
-                pepMessage = m.pEpMessage()
-                protected = m.pEpProtected
-                objID = m.objectID
+
+        let p = NSPredicate(
+            format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
+            FolderType.sent.rawValue, SendStatus.none.rawValue)
+        if let m = CdMessage.first(predicate: p) {
+            if m.sent == nil {
+                m.sent = NSDate()
+                Record.saveAndWait(context: context)
             }
+            pepMessage = m.pEpMessage()
+            protected = m.pEpProtected
+            objID = m.objectID
         }
+
         if let o = objID, let p = pepMessage {
             return (p, protected, o)
         }
@@ -105,6 +105,12 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     func handleNextMessage() {
         let context = Record.Context.background
+        context.perform { [weak self] in
+            self?.handleNextMessageInternal(context: context)
+        }
+    }
+
+    func handleNextMessageInternal(context: NSManagedObjectContext) {
         markLastSentMessageAsSent(context: context)
 
         lastSentMessageObjectID = nil

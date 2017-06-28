@@ -1927,69 +1927,7 @@ class SimpleOperationsTest: XCTestCase {
     //MARK: - EncryptAndSendOperation
 
     func testEncryptAndSendOperation() {
-        let session = PEPSession()
-        TestUtil.importKeyByFileName(
-            session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
-
-        let from = CdIdentity.create()
-        from.userName = cdAccount.identity?.userName ?? "Unit 004"
-        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
-
-        let toWithKey = CdIdentity.create()
-        toWithKey.userName = "Unit 001"
-        toWithKey.address = "unittest.ios.1@peptest.ch"
-
-        let toWithoutKey = CdIdentity.create()
-        toWithoutKey.userName = "Unit 002"
-        toWithoutKey.address = "unittest.ios.2@peptest.ch"
-
-        let folder = CdFolder.create()
-        folder.uuid = MessageID.generate()
-        folder.name = "Sent"
-        folder.folderType = FolderType.sent.rawValue
-        folder.account = cdAccount
-
-        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
-            XCTAssertTrue(false)
-            return
-        }
-
-        // Build emails
-        let numMails = 3
-        for i in 1...numMails {
-            let message = CdMessage.create()
-            message.from = from
-            message.parent = folder
-            message.shortMessage = "Some subject \(i)"
-            message.longMessage = "Long message \(i)"
-            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sent = Date() as NSDate
-            message.addTo(cdIdentity: toWithKey)
-
-            // add attachment
-            if i == numMails || i == numMails - 1 {
-                let attachment = Attachment.create(
-                    data: imageData, mimeType: "image/jpeg", fileName: imageFileName)
-                let cdAttachment = CdAttachment.create(attachment: attachment)
-                message.addAttachment(cdAttachment)
-            }
-            if i == numMails {
-                // prevent encryption
-                message.bcc = NSOrderedSet(object: toWithoutKey)
-            }
-        }
-        Record.saveAndWait()
-
-        if let msgs = CdMessage.all() as? [CdMessage] {
-            for m in msgs {
-                XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
-                XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
-            }
-        } else {
-            XCTFail()
-        }
+        TestUtil.createOutgoingMails(cdAccount: cdAccount)
 
         let expMailsSent = expectation(description: "expMailsSent")
 
