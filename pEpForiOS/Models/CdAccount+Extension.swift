@@ -18,26 +18,24 @@ extension CdAccount {
         return nil
     }
 
-    open var emailConnectInfos: [EmailConnectInfo: CdServerCredentials] {
-        var result = [EmailConnectInfo: CdServerCredentials]()
+    private func emailConnectInfos() -> [(EmailConnectInfo, CdServerCredentials)] {
+        var result = [(emailConnectInfo: EmailConnectInfo,
+                       cdServerCredentials: CdServerCredentials)]()
 
-        guard let creds = credentials else {
+        guard let creds = credentials?.array as? [CdServerCredentials] else {
             return result
         }
         for cred in creds {
-            if let theCred = cred as? CdServerCredentials,
-                let servers = theCred.servers {
-                for theServer in servers {
-                    if let server = theServer as? CdServer {
-                        let st = Int(server.serverType)
-                        if st == Server.ServerType.imap.rawValue ||
-                            st == Server.ServerType.smtp.rawValue {
-                            let password = theCred.password
-                            if let emailConnectInfo = emailConnectInfo(
-                                account: self, server: server, credentials: theCred,
-                                password: password) {
-                                result[emailConnectInfo] = theCred
-                            }
+            if let servers = cred.servers?.sortedArray(using: []) as? [CdServer] {
+                for server in servers {
+                    let st = Int(server.serverType)
+                    if st == Server.ServerType.imap.rawValue ||
+                        st == Server.ServerType.smtp.rawValue {
+                        let password = cred.password
+                        if let emailConnectInfo = emailConnectInfo(
+                            account: self, server: server, credentials: cred,
+                            password: password) {
+                            result.append((emailConnectInfo, cred))
                         }
                     }
                 }
@@ -50,26 +48,14 @@ extension CdAccount {
      - Returns: The first found IMAP connect info. Used by some tests.
      */
     open var imapConnectInfo: EmailConnectInfo? {
-        let cis = emailConnectInfos
-        for k in cis.keys {
-            if k.emailProtocol == .imap {
-                return k
-            }
-        }
-        return nil
+        return emailConnectInfos().filter { return $0.0.emailProtocol == .imap }.first?.0
     }
 
     /**
      - Returns: The first found SMTP connect info. Used by some tests.
      */
     open var smtpConnectInfo: EmailConnectInfo? {
-        let cis = emailConnectInfos
-        for k in cis.keys {
-            if k.emailProtocol == .smtp {
-                return k
-            }
-        }
-        return nil
+        return emailConnectInfos().filter { return $0.0.emailProtocol == .smtp }.first?.0
     }
 
     func emailConnectInfo(account: CdAccount, server: CdServer,
