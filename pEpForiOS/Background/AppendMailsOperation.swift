@@ -27,6 +27,9 @@ open class AppendMailsOperation: ImapSyncOperation {
 
     var targetFolderName: String?
 
+    /** On finish, the messageIDs of the messages that have been sent successfully */
+    private (set) var successfullySentMessageIDs = [String]()
+
     public init(parentName: String? = nil, imapSyncData: ImapSyncData,
                 errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         super.init(parentName: parentName, errorContainer: errorContainer,
@@ -69,13 +72,19 @@ open class AppendMailsOperation: ImapSyncOperation {
 
     func markLastMessageAsFinished() {
         if let msgID = lastHandledMessageObjectID {
-            context.performAndWait {
-                if let obj = self.context.object(with: msgID) as? CdMessage {
-                    self.context.delete(obj)
-                    Record.save(context: self.context)
+            context.performAndWait { [weak self] in
+                guard let theSelf = self else {
+                    return
+                }
+                if let obj = theSelf.context.object(with: msgID) as? CdMessage {
+                    if let msgID = obj.messageID {
+                        theSelf.successfullySentMessageIDs.append(msgID)
+                    }
+                    theSelf.context.delete(obj)
+                    Record.save(context: theSelf.context)
                 } else {
-                    self.handleError(
-                        Constants.errorInvalidParameter(self.comp),
+                    theSelf.handleError(
+                        Constants.errorInvalidParameter(theSelf.comp),
                         message:
                         NSLocalizedString("Cannot find message just stored in the sent folder",
                                           comment: "Background operation error message"))

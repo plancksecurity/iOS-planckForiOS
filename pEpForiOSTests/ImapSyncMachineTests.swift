@@ -120,7 +120,7 @@ class ImapSyncMachineTests: XCTestCase {
             return
         }
 
-        TestUtil.createOutgoingMails(cdAccount: theCdAccount)
+        let numberOfMailsToSend = TestUtil.createOutgoingMails(cdAccount: theCdAccount)
 
         let expectationBackgrounded = expectation(description: "expectationBackgrounded")
         let backgrounder = MockBackgrounder(expBackgrounded: expectationBackgrounded)
@@ -129,6 +129,11 @@ class ImapSyncMachineTests: XCTestCase {
         let expectationSmtpExecuted = expectation(description: "expectationSmtpExecuted")
         smtpService.execute(
         smtpSendData: smtpSendData, imapSyncData: imapSyncData) { error in
+            if error == nil {
+                XCTAssertEqual(smtpService.successfullySentMessageIDs.count, numberOfMailsToSend)
+            } else {
+                XCTAssertLessThan(smtpService.successfullySentMessageIDs.count, numberOfMailsToSend)
+            }
             verifyError(error)
             expectationSmtpExecuted.fulfill()
         }

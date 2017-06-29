@@ -258,7 +258,7 @@ class TestUtil {
         }
     }
 
-    static func createOutgoingMails(cdAccount: CdAccount) {
+    static func createOutgoingMails(cdAccount: CdAccount) -> Int {
         let session = PEPSession()
         TestUtil.importKeyByFileName(
             session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
@@ -284,7 +284,7 @@ class TestUtil {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
             XCTAssertTrue(false)
-            return
+            return 0
         }
 
         // Build emails
@@ -322,5 +322,7 @@ class TestUtil {
         } else {
             XCTFail()
         }
+
+        return numMails
     }    
 }

@@ -13,6 +13,9 @@ import MessageModel
 class SmtpSendService {
     public var error: Error?
 
+    /** On finish, the messageIDs of the messages that have been sent successfully */
+    private (set) public var successfullySentMessageIDs = [String]()
+
     private let backgroundQueue = OperationQueue()
 
     private let parentName: String?
@@ -58,6 +61,7 @@ class SmtpSendService {
             parentName: parentName, imapSyncData: imapSyncData, errorContainer: self)
         appendOp.addDependency(imapLoginOp)
         appendOp.completionBlock = { [weak self] in
+            self?.successfullySentMessageIDs = appendOp.successfullySentMessageIDs
             handler?(self?.error)
             self?.backgrounder?.endBackgroundTask(bgID)
         }
