@@ -77,52 +77,6 @@ class MessageSyncService: MessageSyncServiceProtocol {
     var errorDelegate: MessageSyncServiceErrorDelegate?
     var sentDelegate: MessageSyncServiceSentDelegate?
 
-    private class ImapModel {
-        enum State {
-            case initial
-            case sending
-
-            case idling // the real IMAP IDLE command
-            case waitingForNextSync
-
-            case error
-        }
-
-        var state: State = .initial
-        var imapSyncData: ImapSyncData
-        var smtpSendData: SmtpSendData
-        var sendRequested: Bool = false
-        var messagesEnqueuedForSend = [Message]()
-
-        var readyForSend: Bool {
-            switch state {
-            case .initial, .idling, .waitingForNextSync, .error:
-                return true
-            case .sending:
-                return false
-            }
-        }
-
-        init(imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
-            self.imapSyncData = imapSyncData
-            self.smtpSendData = smtpSendData
-        }
-    }
-
-    private struct ServerConnection: Hashable, Equatable {
-        let imapConnectInfo: EmailConnectInfo
-        let smtpConnectInfo: EmailConnectInfo
-
-        var hashValue: Int {
-            return imapConnectInfo.hashValue &+ smtpConnectInfo.hashValue
-        }
-
-        static func ==(lhs: ServerConnection, rhs: ServerConnection) -> Bool {
-            return lhs.imapConnectInfo == rhs.imapConnectInfo &&
-                lhs.smtpConnectInfo == rhs.smtpConnectInfo
-        }
-    }
-
     let sleepTimeInSeconds: Double
     let parentName: String?
     let backgrounder: BackgroundTaskProtocol?
@@ -130,7 +84,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
     let managementQueue = DispatchQueue(
         label: "managementQueue", qos: .utility, target: nil)
 
-    private var imapConnections = [ServerConnection: ImapModel]()
+    private var imapConnections = [ImapSmtpConnection: ImapSmtpSyncService]()
 
     var accountVerifications = [Account:
         (AccountVerificationService, AccountVerificationServiceDelegate)]()
@@ -188,39 +142,14 @@ class MessageSyncService: MessageSyncServiceProtocol {
 
     private func handleSendRequest(imapConnectInfo: EmailConnectInfo,
                            smtpConnectInfo: EmailConnectInfo, message: Message) {
-        let key = ServerConnection(
+        let key = ImapSmtpConnection(
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo)
         let model = imapConnections[key] ??
-            ImapModel(
+            ImapSmtpSyncService(
                 imapSyncData: ImapSyncData(connectInfo: imapConnectInfo),
                 smtpSendData: SmtpSendData(connectInfo: smtpConnectInfo))
         imapConnections[key] = model
-        model.messagesEnqueuedForSend.append(message)
-        handleSendRequest(model: model)
-    }
-
-    private func handleSendRequest(model: ImapModel) {
-        if model.readyForSend {
-            let sendService = SmtpSendService(parentName: parentName, backgrounder: backgrounder)
-            sendService.execute(smtpSendData: model.smtpSendData, imapSyncData: model.imapSyncData)
-            { [weak self] error in
-                self?.managementQueue.async {
-                    self?.handleSendRequestFinished(model: model,
-                                                    service: sendService, error: error)
-                }
-            }
-        } else {
-            model.sendRequested = true
-        }
-    }
-
-    private func handleSendRequestFinished(model: ImapModel,
-                                           service: SmtpSendService, error: Error?) {
-        if let err = error {
-            model.state = .error
-            indicate(error: err)
-        } else {
-        }
+        model.enqueueForSending(message: message)
     }
 
     private func connectInfos(

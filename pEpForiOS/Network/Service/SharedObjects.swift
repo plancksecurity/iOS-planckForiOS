@@ -77,6 +77,10 @@ open class ImapSyncData: ImapConnectionManagerProtocol {
         }
         return nil
     }
+
+    public func reset() {
+        sync = nil
+    }
 }
 
 open class SmtpSendData {
@@ -85,5 +89,9 @@ open class SmtpSendData {
 
     public init(connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
+    }
+
+    public func reset() {
+        smtp = nil
     }
 }
