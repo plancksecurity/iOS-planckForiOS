@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 import MessageModel
 
@@ -69,13 +70,67 @@ import MessageModel
  The INBOX should be handled by IDLE.
  */
 class MessageSyncService: MessageSyncServiceProtocol {
+    public enum InternalError: Error {
+        case noAccount
+    }
+
     var errorDelegate: MessageSyncServiceErrorDelegate?
+    var sentDelegate: MessageSyncServiceSentDelegate?
+
+    private class ImapModel {
+        enum State {
+            case initial
+            case sending
+
+            case idling // the real IMAP IDLE command
+            case waitingForNextSync
+
+            case error
+        }
+
+        var state: State = .initial
+        var imapSyncData: ImapSyncData
+        var smtpSendData: SmtpSendData
+        var sendRequested: Bool = false
+        var messagesEnqueuedForSend = [Message]()
+
+        var readyForSend: Bool {
+            switch state {
+            case .initial, .idling, .waitingForNextSync, .error:
+                return true
+            case .sending:
+                return false
+            }
+        }
+
+        init(imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
+            self.imapSyncData = imapSyncData
+            self.smtpSendData = smtpSendData
+        }
+    }
+
+    private struct ServerConnection: Hashable, Equatable {
+        let imapConnectInfo: EmailConnectInfo
+        let smtpConnectInfo: EmailConnectInfo
+
+        var hashValue: Int {
+            return imapConnectInfo.hashValue &+ smtpConnectInfo.hashValue
+        }
+
+        static func ==(lhs: ServerConnection, rhs: ServerConnection) -> Bool {
+            return lhs.imapConnectInfo == rhs.imapConnectInfo &&
+                lhs.smtpConnectInfo == rhs.smtpConnectInfo
+        }
+    }
 
     let sleepTimeInSeconds: Double
+    let parentName: String?
     let backgrounder: BackgroundTaskProtocol?
     let mySelfer: KickOffMySelfProtocol?
-    let verificationQueue = DispatchQueue(
-        label: "AccountVerificationService.verificationQueue", qos: .utility, target: nil)
+    let managementQueue = DispatchQueue(
+        label: "managementQueue", qos: .utility, target: nil)
+
+    private var imapConnections = [ServerConnection: ImapModel]()
 
     var accountVerifications = [Account:
         (AccountVerificationService, AccountVerificationServiceDelegate)]()
@@ -84,18 +139,19 @@ class MessageSyncService: MessageSyncServiceProtocol {
          parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
          mySelfer: KickOffMySelfProtocol? = nil) {
         self.sleepTimeInSeconds = sleepTimeInSeconds
+        self.parentName = parentName
         self.backgrounder = backgrounder
         self.mySelfer = mySelfer
     }
 
     func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-        verificationQueue.async {
+        managementQueue.async {
             self.requestVerificationInternal(account: account, delegate: delegate)
         }
     }
 
-    func requestVerificationInternal(account: Account,
-                                     delegate: AccountVerificationServiceDelegate) {
+    private func requestVerificationInternal(account: Account,
+                                             delegate: AccountVerificationServiceDelegate) {
         let service = AccountVerificationService()
         service.delegate = self
         accountVerifications[account] = (service, delegate)
@@ -104,6 +160,16 @@ class MessageSyncService: MessageSyncServiceProtocol {
 
     func requestSend(message: Message) {
         Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
+        let context = Record.Context.background
+        context.perform { [weak self] in
+            if let (imapCI, smtpCI) = self?.connectInfos(account: message.parent?.account,
+                                                        context: context) {
+                self?.handleSendRequest(imapConnectInfo: imapCI,
+                                        smtpConnectInfo: smtpCI, message: message)
+            } else {
+                self?.indicate(error: InternalError.noAccount)
+            }
+        }
     }
 
     func requestDraft(message: Message) {
@@ -113,11 +179,65 @@ class MessageSyncService: MessageSyncServiceProtocol {
     func requestMessageSync(folder: Folder) {
         Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
     }
+
+    private func indicate(error: Error) {
+        managementQueue.async { [weak self] in
+            self?.errorDelegate?.show(error: error)
+        }
+    }
+
+    private func handleSendRequest(imapConnectInfo: EmailConnectInfo,
+                           smtpConnectInfo: EmailConnectInfo, message: Message) {
+        let key = ServerConnection(
+            imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo)
+        let model = imapConnections[key] ??
+            ImapModel(
+                imapSyncData: ImapSyncData(connectInfo: imapConnectInfo),
+                smtpSendData: SmtpSendData(connectInfo: smtpConnectInfo))
+        imapConnections[key] = model
+        model.messagesEnqueuedForSend.append(message)
+        handleSendRequest(model: model)
+    }
+
+    private func handleSendRequest(model: ImapModel) {
+        if model.readyForSend {
+            let sendService = SmtpSendService(parentName: parentName, backgrounder: backgrounder)
+            sendService.execute(smtpSendData: model.smtpSendData, imapSyncData: model.imapSyncData)
+            { [weak self] error in
+                self?.managementQueue.async {
+                    self?.handleSendRequestFinished(model: model,
+                                                    service: sendService, error: error)
+                }
+            }
+        } else {
+            model.sendRequested = true
+        }
+    }
+
+    private func handleSendRequestFinished(model: ImapModel,
+                                           service: SmtpSendService, error: Error?) {
+        if let err = error {
+            model.state = .error
+            indicate(error: err)
+        } else {
+        }
+    }
+
+    private func connectInfos(
+        account: Account?,
+        context: NSManagedObjectContext) -> (EmailConnectInfo, EmailConnectInfo)? {
+        if let theAccount = account,
+            let cdAccount = CdAccount.search(account: theAccount, context: context),
+            let imapCI = cdAccount.imapConnectInfo, let smtpCI = cdAccount.smtpConnectInfo {
+            return (imapCI, smtpCI)
+        }
+        return nil
+    }
 }
 
 extension MessageSyncService: AccountVerificationServiceDelegate {
-    func verifiedInternal(account: Account, service: AccountVerificationServiceProtocol,
-                          result: AccountVerificationResult) {
+    private func verifiedInternal(account: Account, service: AccountVerificationServiceProtocol,
+                                  result: AccountVerificationResult) {
         guard let (service, delegate) = accountVerifications[account] else {
             Log.shared.errorComponent(#function, message: "no service")
             return
@@ -128,7 +248,7 @@ extension MessageSyncService: AccountVerificationServiceDelegate {
 
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
-        verificationQueue.async {
+        managementQueue.async {
             self.verifiedInternal(account: account, service: service, result: result)
         }
     }

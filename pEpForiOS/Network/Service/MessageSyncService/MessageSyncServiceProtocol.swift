@@ -10,6 +10,13 @@ import Foundation
 
 import MessageModel
 
+protocol MessageSyncServiceSentDelegate: class {
+    /**
+     The indicated message has been sent.
+     */
+    func didSend(message: Message)
+}
+
 protocol MessageSyncServiceErrorDelegate: class {
     /**
      An error occurred, and should usually displayed.
@@ -25,6 +32,7 @@ protocol MessageSyncServiceErrorDelegate: class {
  */
 protocol MessageSyncServiceProtocol {
     weak var errorDelegate: MessageSyncServiceErrorDelegate? { get set }
+    weak var sentDelegate: MessageSyncServiceSentDelegate? { get set }
 
     /**
      Request account verification, receiving news via the delegate.
