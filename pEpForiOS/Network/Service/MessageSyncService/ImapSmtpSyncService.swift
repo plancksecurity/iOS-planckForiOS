@@ -10,7 +10,14 @@ import Foundation
 
 import MessageModel
 
+protocol ImapSmtpSyncServiceDelegate: class {
+    func messagesSent(service: ImapSmtpSyncService, messages: [Message])
+    func handle(service: ImapSmtpSyncService, error: Error)
+}
+
 class ImapSmtpSyncService {
+    weak var delegate: ImapSmtpSyncServiceDelegate?
+
     let parentName: String?
     let backgrounder: BackgroundTaskProtocol?
 
@@ -80,10 +87,10 @@ class ImapSmtpSyncService {
         }
 
         if !messagesWithSuccess.isEmpty {
-            // TODO inform delegate about successfully sending messages
+            delegate?.messagesSent(service: self, messages: messagesWithSuccess)
         }
-        if let _ = error {
-            // TODO inform delegate about send error
+        if let err = error {
+            delegate?.handle(service: self, error: err)
         }
 
         checkNextStep()

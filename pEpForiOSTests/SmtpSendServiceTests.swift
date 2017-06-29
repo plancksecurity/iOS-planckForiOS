@@ -61,9 +61,11 @@ class SmtpSendServiceTests: XCTestCase {
         smtpService.execute(
         smtpSendData: smtpSendData, imapSyncData: imapSyncData) { error in
             if error == nil {
-                XCTAssertEqual(smtpService.successfullySentMessageIDs.count, numberOfMailsToSend)
+                XCTAssertEqual(smtpService.successfullySentMessageIDs.count,
+                               numberOfMailsToSend.count)
             } else {
-                XCTAssertLessThan(smtpService.successfullySentMessageIDs.count, numberOfMailsToSend)
+                XCTAssertLessThan(smtpService.successfullySentMessageIDs.count,
+                                  numberOfMailsToSend.count)
             }
             verifyError(error)
             expectationSmtpExecuted.fulfill()

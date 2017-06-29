@@ -113,7 +113,6 @@ class MessageSyncService: MessageSyncServiceProtocol {
     }
 
     func requestSend(message: Message) {
-        Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
         let context = Record.Context.background
         context.perform { [weak self] in
             if let (imapCI, smtpCI) = self?.connectInfos(account: message.parent?.account,
@@ -146,8 +145,11 @@ class MessageSyncService: MessageSyncServiceProtocol {
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo)
         let model = imapConnections[key] ??
             ImapSmtpSyncService(
+                parentName: parentName,
+                backgrounder: backgrounder,
                 imapSyncData: ImapSyncData(connectInfo: imapConnectInfo),
                 smtpSendData: SmtpSendData(connectInfo: smtpConnectInfo))
+        model.delegate = self
         imapConnections[key] = model
         model.enqueueForSending(message: message)
     }
@@ -180,5 +182,17 @@ extension MessageSyncService: AccountVerificationServiceDelegate {
         managementQueue.async {
             self.verifiedInternal(account: account, service: service, result: result)
         }
+    }
+}
+
+extension MessageSyncService: ImapSmtpSyncServiceDelegate {
+    func messagesSent(service: ImapSmtpSyncService, messages: [Message]) {
+        for msg in messages {
+            sentDelegate?.didSend(message: msg)
+        }
+    }
+
+    func handle(service: ImapSmtpSyncService, error: Error) {
+        errorDelegate?.show(error: error)
     }
 }

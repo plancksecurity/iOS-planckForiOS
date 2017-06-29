@@ -258,7 +258,7 @@ class TestUtil {
         }
     }
 
-    static func createOutgoingMails(cdAccount: CdAccount) -> Int {
+    static func createOutgoingMails(cdAccount: CdAccount) -> [CdMessage] {
         let session = PEPSession()
         TestUtil.importKeyByFileName(
             session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
@@ -284,10 +284,11 @@ class TestUtil {
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
             XCTAssertTrue(false)
-            return 0
+            return []
         }
 
         // Build emails
+        var messagesInTheQueue = [CdMessage]()
         let numMails = 3
         for i in 1...numMails {
             let message = CdMessage.create()
@@ -310,6 +311,8 @@ class TestUtil {
                 // prevent encryption
                 message.bcc = NSOrderedSet(object: toWithoutKey)
             }
+
+            messagesInTheQueue.append(message)
         }
         Record.saveAndWait()
 
@@ -323,7 +326,7 @@ class TestUtil {
             XCTFail()
         }
 
-        return numMails
+        return messagesInTheQueue
     }    
 
     static func syncData(cdAccount: CdAccount) -> (ImapSyncData, SmtpSendData)? {
