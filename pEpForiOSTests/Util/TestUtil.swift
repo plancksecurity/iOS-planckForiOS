@@ -325,4 +325,14 @@ class TestUtil {
 
         return numMails
     }    
+
+    static func syncData(cdAccount: CdAccount) -> (ImapSyncData, SmtpSendData)? {
+        guard
+            let imapCI = cdAccount.imapConnectInfo,
+            let smtpCI = cdAccount.smtpConnectInfo else {
+                XCTFail()
+                return nil
+        }
+        return (ImapSyncData(connectInfo: imapCI), SmtpSendData(connectInfo: smtpCI))
+    }
 }

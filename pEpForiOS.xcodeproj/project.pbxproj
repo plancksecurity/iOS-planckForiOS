@@ -216,6 +216,8 @@
 		43FAA0D41EC9CBC0005BFC4B /* DecryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FAA0D31EC9CBC0005BFC4B /* DecryptionTests.swift */; };
 		43FC24211F04F3F400C32110 /* ImapSmtpSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24201F04F3F400C32110 /* ImapSmtpSyncService.swift */; };
 		43FC24231F04F43000C32110 /* ImapSmtpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24221F04F43000C32110 /* ImapSmtpConnection.swift */; };
+		43FC24251F04FC6E00C32110 /* MessageSyncServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24241F04FC6E00C32110 /* MessageSyncServiceTests.swift */; };
+		43FC24271F04FDDF00C32110 /* SmtpSendServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */; };
 		490FF81C1E79BFCE00BC15F9 /* ObserverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF81B1E79BFCE00BC15F9 /* ObserverDelegate.swift */; };
 		4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */; };
 		493B6D221E7078A100364D60 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B6D211E7078A100364D60 /* TestData.swift */; };
@@ -509,6 +511,8 @@
 		43FAA0D31EC9CBC0005BFC4B /* DecryptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptionTests.swift; sourceTree = "<group>"; };
 		43FC24201F04F3F400C32110 /* ImapSmtpSyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSmtpSyncService.swift; sourceTree = "<group>"; };
 		43FC24221F04F43000C32110 /* ImapSmtpConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSmtpConnection.swift; sourceTree = "<group>"; };
+		43FC24241F04FC6E00C32110 /* MessageSyncServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSyncServiceTests.swift; sourceTree = "<group>"; };
+		43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSendServiceTests.swift; sourceTree = "<group>"; };
 		490FF81B1E79BFCE00BC15F9 /* ObserverDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverDelegate.swift; sourceTree = "<group>"; };
 		4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		493B6D211E7078A100364D60 /* TestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
@@ -894,6 +898,8 @@
 				431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */,
 				4347A9221EE6B0B100C18233 /* ImapSyncMachineTests.swift */,
 				436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */,
+				43FC24241F04FC6E00C32110 /* MessageSyncServiceTests.swift */,
+				43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -1617,9 +1623,11 @@
 				490FF81C1E79BFCE00BC15F9 /* ObserverDelegate.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
 				43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */,
+				43FC24251F04FC6E00C32110 /* MessageSyncServiceTests.swift in Sources */,
 				433C51A01E64236500272E19 /* TestDataBase.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
+				43FC24271F04FDDF00C32110 /* SmtpSendServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
