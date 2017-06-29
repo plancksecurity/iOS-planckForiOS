@@ -29,7 +29,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
     var viewModel: EmailListViewModel?
     var state = UIState()
     let searchController = UISearchController(searchResultsController: nil)
-    let cellsInUse = NSCache<NSString, EmailListViewCell>()
+    //let cellsInUse = NSCache<NSString, EmailListViewCell>()
 
     /**
      After trustwords have been invoked, this will be the partner identity that
@@ -40,7 +40,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var textFilterButton: UIBarButtonItem!
 
-    private var filterEnabled = false
+    //private var filterEnabled = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,7 +57,11 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
             return
         }
 
-        self.textFilterButton.isEnabled = filterEnabled
+        if let vm = viewModel {
+            self.textFilterButton.isEnabled = vm.filterEnabled
+        } else {
+            self.textFilterButton.isEnabled = false
+        }
 
         setDefaultColors()
         initialConfig()
@@ -109,20 +113,23 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
 
 
     @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {
-        if filterEnabled {
-            filterEnabled = false
-            textFilterButton.title = ""
-            enableFilterButton.image = UIImage(named: "unread-icon")
-            updateFilter(filter: Filter.unified())
-        } else {
-            filterEnabled = true
-            textFilterButton.title = "Filter by: unread"
-            enableFilterButton.image = UIImage(named: "unread-icon-active")
-            if config != nil {
-                updateFilter(filter: Filter.unread())
+        if let vm = viewModel {
+            if vm.filterEnabled {
+                vm.filterEnabled = false
+                textFilterButton.title = ""
+                enableFilterButton.image = UIImage(named: "unread-icon")
+                updateFilter(filter: Filter.unified())
+            } else {
+                vm.filterEnabled = true
+                textFilterButton.title = "Filter by: unread"
+                enableFilterButton.image = UIImage(named: "unread-icon-active")
+                if config != nil {
+                    updateFilter(filter: Filter.unread())
+                }
             }
+            self.textFilterButton.isEnabled = vm.filterEnabled
         }
-        self.textFilterButton.isEnabled = filterEnabled
+
 
     }
 
@@ -331,7 +338,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         } else {
             if let text = searchText, text != "" {
                 let f = Filter.search(subject: text)
-                if filterEnabled {
+                if let vm = viewModel, vm.filterEnabled {
                     f.and(filter: Filter.unread())
                     updateFilter(filter: f)
                 }
@@ -447,7 +454,7 @@ extension EmailListViewController: SegueHandlerType {
                     tableView.reloadData()
                 }
             } else if message.isGhost {
-                if let cell = cellFor(message: message), let ip = tableView.indexPath(for: cell) {
+                if let vm = viewModel, let cell = vm.cellFor(message: message), let ip = tableView.indexPath(for: cell) {
                     Log.info(
                         component: #function,
                         content: "delete message at \(index), \(folder.messageCount()) messages")
@@ -457,7 +464,7 @@ extension EmailListViewController: SegueHandlerType {
                 }
             } else {
                 // other flags than delete must have been changed
-                if let cell = cellFor(message: message) {
+                if let vm = viewModel, let cell = vm.cellFor(message: message) {
                     cell.updateFlags(message: message)
                 } else {
                     tableView.reloadData()
@@ -466,20 +473,6 @@ extension EmailListViewController: SegueHandlerType {
         }
     }
 
-    // MARK: - Message -> Cell association
-
-    func keyFor(message: Message) -> NSString {
-        let parentName = message.parent?.name ?? "unknown"
-        return "\(message.uuid) \(parentName) \(message.uuid)" as NSString
-    }
-
-    func associate(message: Message, toCell: EmailListViewCell) {
-        cellsInUse.setObject(toCell, forKey: keyFor(message: message))
-    }
-
-    func cellFor(message: Message) -> EmailListViewCell? {
-        return cellsInUse.object(forKey: keyFor(message: message))
-    }
 }
 
 // MARK: - MessageFolderDelegate

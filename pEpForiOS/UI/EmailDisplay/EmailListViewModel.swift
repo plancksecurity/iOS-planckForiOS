@@ -15,8 +15,10 @@ public class EmailListViewModel {
     var folderToShow: Folder?
     let cellsInUse = NSCache<NSString, EmailListViewCell>()
 
+    var filterEnabled = false
+
     init(config: EmailListConfig?) {
-        MessageModelConfig.messageFolderDelegate = self
+        //MessageModelConfig.messageFolderDelegate = self
         folderToShow = config?.folder
     }
 
@@ -36,19 +38,22 @@ public class EmailListViewModel {
         }
     }
 
+    // MARK: - Message -> Cell association
+
     func associate(cell: EmailListViewCell, position: Int) {
         if let message = self[position] {
             cellsInUse.setObject(cell, forKey: keyFor(message: message))
         }
+    }
 
+    func cellFor(message: Message) -> EmailListViewCell? {
+        return cellsInUse.object(forKey: keyFor(message: message))
     }
 
     func keyFor(message: Message) -> NSString {
         let parentName = message.parent?.name ?? "unknown"
         return "\(message.uuid) \(parentName) \(message.uuid)" as NSString
     }
-
-    
 
 }
 
