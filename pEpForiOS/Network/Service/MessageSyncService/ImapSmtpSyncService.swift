@@ -23,7 +23,9 @@ class ImapSmtpSyncService {
 
     enum State {
         case initial
+
         case sending
+        case haveSent
 
         /** Using the real IMAP IDLE command */
         case idling
@@ -42,7 +44,7 @@ class ImapSmtpSyncService {
 
     var readyForSend: Bool {
         switch state {
-        case .initial, .idling, .waitingForNextSync, .error:
+        case .initial, .idling, .waitingForNextSync, .error, .haveSent:
             return true
         case .sending:
             return false
@@ -65,6 +67,7 @@ class ImapSmtpSyncService {
 
     func sendMessages()  {
         if readyForSend {
+            state = .sending
             let sendService = SmtpSendService(parentName: parentName, backgrounder: backgrounder)
             sendService.execute(smtpSendData: smtpSendData, imapSyncData: imapSyncData)
             { [weak self] error in
@@ -93,6 +96,7 @@ class ImapSmtpSyncService {
             delegate?.handle(service: self, error: err)
         }
 
+        state = .haveSent
         checkNextStep()
     }
 
@@ -104,5 +108,8 @@ class ImapSmtpSyncService {
     }
 
     func checkNextStep() {
+        if sendRequested && readyForSend {
+            sendMessages()
+        }
     }
 }

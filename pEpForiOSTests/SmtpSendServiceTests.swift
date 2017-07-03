@@ -53,8 +53,10 @@ class SmtpSendServiceTests: XCTestCase {
 
         let numberOfMailsToSend = TestUtil.createOutgoingMails(cdAccount: theCdAccount)
 
-        let expectationBackgrounded = expectation(description: "expectationBackgrounded")
-        let backgrounder = MockBackgrounder(expBackgrounded: expectationBackgrounded)
+        let expBackgroundTaskFinishedAtLeastOnce = expectation(
+            description: "expectationBackgrounded")
+        let backgrounder = MockBackgrounder(
+            expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinishedAtLeastOnce)
 
         let smtpService = SmtpSendService(parentName: #function, backgrounder: backgrounder)
         let expectationSmtpExecuted = expectation(description: "expectationSmtpExecuted")

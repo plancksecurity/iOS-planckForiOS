@@ -426,9 +426,11 @@ class NetworkServiceTests: XCTestCase {
         let queue = LimitedOperationQueue()
         let backgrounder: MockBackgrounder
 
-        init(expMySelfed: XCTestExpectation?, expBackgrounded: XCTestExpectation?) {
+        init(expMySelfed: XCTestExpectation?,
+             expBackgroundTaskFinishedAtLeastOnce: XCTestExpectation?) {
             self.expMySelfed = expMySelfed
-            backgrounder = MockBackgrounder(expBackgrounded: expBackgrounded)
+            backgrounder = MockBackgrounder(
+                expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinishedAtLeastOnce)
         }
 
         func startMySelf() {

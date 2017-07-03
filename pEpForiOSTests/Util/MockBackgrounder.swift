@@ -12,16 +12,23 @@ import Foundation
 @testable import pEpForiOS
 
 class MockBackgrounder: BackgroundTaskProtocol {
-    let expBackgrounded: XCTestExpectation?
+    let expBackgroundTaskFinishedAtLeastOnce: XCTestExpectation?
     var currentTaskID = 1
     var taskIDs = Set<BackgroundTaskID>()
+    var totalNumberOfBackgroundTasksStarted = 0
+    var totalNumberOfBackgroundTasksFinished = 0
 
-    init(expBackgrounded: XCTestExpectation? = nil) {
-        self.expBackgrounded = expBackgrounded
+    var numberOfBackgroundTasksOutstanding: Int {
+        return taskIDs.count
+    }
+
+    init(expBackgroundTaskFinishedAtLeastOnce: XCTestExpectation? = nil) {
+        self.expBackgroundTaskFinishedAtLeastOnce = expBackgroundTaskFinishedAtLeastOnce
     }
 
     func beginBackgroundTask(taskName: String?,
                              expirationHandler: (() -> Void)?) -> BackgroundTaskID {
+        totalNumberOfBackgroundTasksStarted += 1
         let taskID = currentTaskID
         taskIDs.insert(taskID)
         currentTaskID += 1
@@ -30,7 +37,9 @@ class MockBackgrounder: BackgroundTaskProtocol {
 
     func endBackgroundTask(_ taskID: BackgroundTaskID?) {
         if let theID = taskID, taskIDs.contains(theID) {
-            expBackgrounded?.fulfill()
+            totalNumberOfBackgroundTasksFinished += 1
+            taskIDs.remove(theID)
+            expBackgroundTaskFinishedAtLeastOnce?.fulfill()
         } else {
             XCTFail()
         }
