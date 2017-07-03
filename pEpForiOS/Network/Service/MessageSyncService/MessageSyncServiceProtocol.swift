@@ -57,4 +57,9 @@ protocol MessageSyncServiceProtocol {
      Backend may sync the inbox even if the UI never requested it.
      */
     func requestMessageSync(folder: Folder)
+
+    /**
+     Starts syncing folders, INBOX etc.
+     */
+    func start(account: Account)
 }

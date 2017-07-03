@@ -117,7 +117,7 @@ class MessageSyncServiceTests: XCTestCase {
             ms.requestSend(message: msg)
         }
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 

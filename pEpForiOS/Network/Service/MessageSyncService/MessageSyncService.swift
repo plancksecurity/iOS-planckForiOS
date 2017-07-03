@@ -72,6 +72,7 @@ import MessageModel
 class MessageSyncService: MessageSyncServiceProtocol {
     public enum InternalError: Error {
         case noAccount
+        case noConnectInfos
     }
 
     var errorDelegate: MessageSyncServiceErrorDelegate?
@@ -98,30 +99,20 @@ class MessageSyncService: MessageSyncServiceProtocol {
         self.mySelfer = mySelfer
     }
 
+    func start(account: Account) {
+        Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
+    }
+
     func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
         managementQueue.async {
             self.requestVerificationInternal(account: account, delegate: delegate)
         }
     }
 
-    private func requestVerificationInternal(account: Account,
-                                             delegate: AccountVerificationServiceDelegate) {
-        let service = AccountVerificationService()
-        service.delegate = self
-        accountVerifications[account] = (service, delegate)
-        service.verify(account: account)
-    }
-
     func requestSend(message: Message) {
-        let context = Record.Context.background
-        context.perform { [weak self] in
-            if let (imapCI, smtpCI) = self?.connectInfos(account: message.parent?.account,
-                                                        context: context) {
-                self?.handleSendRequest(imapConnectInfo: imapCI,
-                                        smtpConnectInfo: smtpCI, message: message)
-            } else {
-                self?.indicate(error: InternalError.noAccount)
-            }
+        connectInfos(account: message.parent?.account) { [weak self] (imapCI, smtpCI) in
+            self?.handleSendRequest(imapConnectInfo: imapCI,
+                                    smtpConnectInfo: smtpCI, message: message)
         }
     }
 
@@ -137,6 +128,14 @@ class MessageSyncService: MessageSyncServiceProtocol {
         managementQueue.async { [weak self] in
             self?.errorDelegate?.show(error: error)
         }
+    }
+
+    private func requestVerificationInternal(account: Account,
+                                             delegate: AccountVerificationServiceDelegate) {
+        let service = AccountVerificationService()
+        service.delegate = self
+        accountVerifications[account] = (service, delegate)
+        service.verify(account: account)
     }
 
     private func handleSendRequest(imapConnectInfo: EmailConnectInfo,
@@ -163,6 +162,22 @@ class MessageSyncService: MessageSyncServiceProtocol {
             return (imapCI, smtpCI)
         }
         return nil
+    }
+
+    func connectInfos(account: Account?,
+                      handler: @escaping (EmailConnectInfo, EmailConnectInfo) -> ()) {
+        guard let theAccount = account else {
+            indicate(error: InternalError.noAccount)
+            return
+        }
+        let context = Record.Context.background
+        context.perform { [weak self] in
+            if let (iCI, sCI) = self?.connectInfos(account: theAccount, context: context) {
+                handler((iCI, sCI))
+            } else {
+                self?.indicate(error: InternalError.noConnectInfos)
+            }
+        }
     }
 }
 
