@@ -183,6 +183,8 @@
 		43C322101EA91764005073FB /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3220E1EA91764005073FB /* UIImage+Extension.swift */; };
 		43C322111EA91764005073FB /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3220F1EA91764005073FB /* UIImageView+Extension.swift */; };
 		43C579E91F0A1FEC00A8EDF0 /* AtomicImapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C579E81F0A1FEC00A8EDF0 /* AtomicImapService.swift */; };
+		43C579EB1F0A382400A8EDF0 /* FetchFoldersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C579EA1F0A382400A8EDF0 /* FetchFoldersService.swift */; };
+		43C579ED1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C579EC1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
 		43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */; };
@@ -480,6 +482,8 @@
 		43C3220E1EA91764005073FB /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		43C3220F1EA91764005073FB /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		43C579E81F0A1FEC00A8EDF0 /* AtomicImapService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomicImapService.swift; sourceTree = "<group>"; };
+		43C579EA1F0A382400A8EDF0 /* FetchFoldersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersService.swift; sourceTree = "<group>"; };
+		43C579EC1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersServiceTests.swift; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
 		43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
@@ -774,6 +778,7 @@
 				43FC24221F04F43000C32110 /* ImapSmtpConnection.swift */,
 				43C579E81F0A1FEC00A8EDF0 /* AtomicImapService.swift */,
 				431E2B081F0281DF000035FA /* SmtpSendService.swift */,
+				43C579EA1F0A382400A8EDF0 /* FetchFoldersService.swift */,
 				4347A9181EE699D500C18233 /* ImapSyncMachine.swift */,
 				430841291EF3FDEA00698229 /* InboxSync.swift */,
 				434F513D1EF7FE8700FEB837 /* DelayOperation.swift */,
@@ -905,6 +910,7 @@
 				436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */,
 				43FC24241F04FC6E00C32110 /* MessageSyncServiceTests.swift */,
 				43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */,
+				43C579EC1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -1581,6 +1587,7 @@
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
+				43C579EB1F0A382400A8EDF0 /* FetchFoldersService.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
 				431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */,
@@ -1627,6 +1634,7 @@
 				493B6D221E7078A100364D60 /* TestData.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
+				43C579ED1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
 				490FF81C1E79BFCE00BC15F9 /* ObserverDelegate.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
