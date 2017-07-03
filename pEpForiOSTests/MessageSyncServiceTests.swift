@@ -79,12 +79,13 @@ class MessageSyncServiceTests: XCTestCase {
 
     func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
                                    numberOfMessagesToSend: Int,
-                                   expectedNumberOfBackgroundTasks: Int) {
+                                   expectedNumberOfExpectedBackgroundTasks: Int) {
         let outgoingCdMsgs = TestUtil.createOutgoingMails(cdAccount: theCdAccount)
 
         let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
         expBackgroundTaskFinished.assertForOverFulfill = false
-        expBackgroundTaskFinished.expectedFulfillmentCount = UInt(expectedNumberOfBackgroundTasks)
+        expBackgroundTaskFinished.expectedFulfillmentCount =
+            UInt(expectedNumberOfExpectedBackgroundTasks)
         let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinished)
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: #function, backgrounder: mbg, mySelfer: nil)
@@ -116,7 +117,7 @@ class MessageSyncServiceTests: XCTestCase {
             ms.requestSend(message: msg)
         }
 
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
 
@@ -129,18 +130,18 @@ class MessageSyncServiceTests: XCTestCase {
         }
 
         XCTAssertEqual(mbg.numberOfBackgroundTasksOutstanding, 0)
-        XCTAssertEqual(mbg.totalNumberOfBackgroundTasksFinished, expectedNumberOfBackgroundTasks)
+        XCTAssertEqual(mbg.totalNumberOfBackgroundTasksFinished, expectedNumberOfExpectedBackgroundTasks)
         XCTAssertEqual(mbg.totalNumberOfBackgroundTasksStarted,
                        mbg.totalNumberOfBackgroundTasksFinished)
     }
 
     func testBasicSend() {
         runMessageSyncServiceSend(cdAccount: cdAccount, numberOfMessagesToSend: 1,
-                                  expectedNumberOfBackgroundTasks: 1)
+                                  expectedNumberOfExpectedBackgroundTasks: 1)
     }
 
     func testSendSeveral() {
         runMessageSyncServiceSend(cdAccount: cdAccount, numberOfMessagesToSend: 2,
-                                  expectedNumberOfBackgroundTasks: 2)
+                                  expectedNumberOfExpectedBackgroundTasks: 2)
     }
 }

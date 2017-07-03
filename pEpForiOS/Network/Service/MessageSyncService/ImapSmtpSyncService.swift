@@ -67,6 +67,7 @@ class ImapSmtpSyncService {
 
     func sendMessages()  {
         if readyForSend {
+            sendRequested = false
             state = .sending
             let sendService = SmtpSendService(parentName: parentName, backgrounder: backgrounder)
             sendService.execute(smtpSendData: smtpSendData, imapSyncData: imapSyncData)
