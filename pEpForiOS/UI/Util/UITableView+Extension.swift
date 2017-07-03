@@ -23,3 +23,7 @@ extension UITableView {
         contentOffset = center
     }
 }
+
+protocol tableViewUpdate {
+        func updateView()
+}

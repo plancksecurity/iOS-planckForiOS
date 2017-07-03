@@ -9,17 +9,19 @@
 import Foundation
 import MessageModel
 
-public class EmailListViewModel {
+public class EmailListViewModel : FilterUpdateProtocol{
 
 
     var folderToShow: Folder?
     let cellsInUse = NSCache<NSString, EmailListViewCell>()
+    var delegate : tableViewUpdate?
 
     var filterEnabled = false
 
-    init(config: EmailListConfig?) {
+    init(config: EmailListConfig?, delegate: tableViewUpdate) {
         //MessageModelConfig.messageFolderDelegate = self
         folderToShow = config?.folder
+        self.delegate = delegate
     }
 
     var count : Int {
@@ -54,6 +56,34 @@ public class EmailListViewModel {
         let parentName = message.parent?.name ?? "unknown"
         return "\(message.uuid) \(parentName) \(message.uuid)" as NSString
     }
+
+    // MARK: - Content Search
+
+    func filterContentForSearchText(searchText: String? = nil, clear: Bool) {
+        if clear {
+            if filterEnabled {
+                folderToShow?.filter = Filter.removeSearchFilter(filter: folderToShow?.filter as! Filter)
+            } else {
+                updateFilter(filter: Filter.unified())
+            }
+        } else {
+            if let text = searchText, text != "" {
+                let f = Filter.search(subject: text)
+                if filterEnabled {
+                    f.and(filter: Filter.unread())
+                    updateFilter(filter: f)
+                } else {
+                    updateFilter(filter: f)
+                }
+            }
+        }
+    }
+
+    public func updateFilter(filter: Filter) {
+        folderToShow?.updateFilter(filter: filter)
+        self.delegate?.updateView()
+    }
+
 
 }
 

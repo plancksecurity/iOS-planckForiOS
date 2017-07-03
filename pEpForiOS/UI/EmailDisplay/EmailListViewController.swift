@@ -20,7 +20,7 @@ struct EmailListConfig {
     let imageProvider = IdentityImageProvider()
 }
 
-class EmailListViewController: UITableViewController, FilterUpdateProtocol {
+class EmailListViewController: UITableViewController {
     struct UIState {
         var isSynching: Bool = false
     }
@@ -72,7 +72,7 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
             fol.updateLastLookAt()
         }
 
-        viewModel = EmailListViewModel(config: config)
+        viewModel = EmailListViewModel(config: config, delegate: self)
         MessageModelConfig.messageFolderDelegate = self
         
     }
@@ -118,24 +118,19 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
                 vm.filterEnabled = false
                 textFilterButton.title = ""
                 enableFilterButton.image = UIImage(named: "unread-icon")
-                updateFilter(filter: Filter.unified())
+                vm.updateFilter(filter: Filter.unified())
             } else {
                 vm.filterEnabled = true
                 textFilterButton.title = "Filter by: unread"
                 enableFilterButton.image = UIImage(named: "unread-icon-active")
                 if config != nil {
-                    updateFilter(filter: Filter.unread())
+                    vm.updateFilter(filter: Filter.unread())
                 }
             }
             self.textFilterButton.isEnabled = vm.filterEnabled
         }
 
 
-    }
-
-    func updateFilter(filter: Filter) {
-        config?.folder?.updateFilter(filter: filter)
-        self.tableView.reloadData()
     }
 
     // MARK: - UI State
@@ -330,33 +325,19 @@ class EmailListViewController: UITableViewController, FilterUpdateProtocol {
         }
     }
 
-    // MARK: - Content Search
-
-    func filterContentForSearchText(searchText: String? = nil, clear: Bool) {
-        if clear {
-            updateFilter(filter: Filter.unified())
-        } else {
-            if let text = searchText, text != "" {
-                let f = Filter.search(subject: text)
-                if let vm = viewModel, vm.filterEnabled {
-                    f.and(filter: Filter.unread())
-                    updateFilter(filter: f)
-                }
-                if config != nil {
-                    updateFilter(filter: f)
-                }
-            }
-        }
-    }
 }
 
 extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
     public func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchText: searchController.searchBar.text!, clear: false)
+        if let vm = viewModel {
+            vm.filterContentForSearchText(searchText: searchController.searchBar.text!, clear: false)
+        }
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
-        filterContentForSearchText(clear: true)
+        if let vm = viewModel {
+            vm.filterContentForSearchText(clear: true)
+        }
     }
 }
 
@@ -413,7 +394,7 @@ extension EmailListViewController: SegueHandlerType {
             break
         case .segueFilter:
             if let destiny = segue.destination as? FilterTableViewController {
-                destiny.filterDelegate = self
+                destiny.filterDelegate = self.viewModel
                 destiny.inFolder = false
                 destiny.filterEnabled = self.config?.folder?.filter as! Filter?
                 destiny.hidesBottomBarWhenPushed = true
@@ -482,5 +463,11 @@ extension EmailListViewController: MessageFolderDelegate {
         GCD.onMainWait {
             self.didChangeInternal(messageFolder: messageFolder)
         }
+    }
+}
+
+extension EmailListViewController: tableViewUpdate {
+    func updateView() {
+        self.tableView.reloadData()
     }
 }
