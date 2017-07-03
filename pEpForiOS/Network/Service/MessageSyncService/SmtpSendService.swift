@@ -10,21 +10,9 @@ import Foundation
 
 import MessageModel
 
-class SmtpSendService {
-    public var error: Error?
-
+class SmtpSendService: AtomicImapService {
     /** On finish, the messageIDs of the messages that have been sent successfully */
     private (set) public var successfullySentMessageIDs = [String]()
-
-    private let backgroundQueue = OperationQueue()
-
-    private let parentName: String?
-    private let backgrounder: BackgroundTaskProtocol?
-
-    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol?) {
-        self.parentName = parentName
-        self.backgrounder = backgrounder
-    }
 
     func execute(
         smtpSendData: SmtpSendData,
@@ -68,17 +56,5 @@ class SmtpSendService {
 
         backgroundQueue.addOperations(
             [smtpLoginOp, sendOp, imapLoginOp, appendOp], waitUntilFinished: false)
-    }
-}
-
-extension SmtpSendService: ServiceErrorProtocol {
-    public func addError(_ error: Error) {
-        if self.error == nil {
-            self.error = error
-        }
-    }
-
-    public func hasErrors() -> Bool {
-        return error != nil
     }
 }
