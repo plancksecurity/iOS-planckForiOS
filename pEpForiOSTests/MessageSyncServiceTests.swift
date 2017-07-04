@@ -30,7 +30,7 @@ class MessageSyncServiceTests: XCTestCase {
             if let expError = expErrorOccurred {
                 expError.fulfill()
             } else {
-                XCTFail()
+                XCTFail("Send error: \(error)")
             }
         }
     }
@@ -78,7 +78,8 @@ class MessageSyncServiceTests: XCTestCase {
 
     func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
                                    numberOfMessagesToSend: Int,
-                                   expectedNumberOfExpectedBackgroundTasks: Int) {
+                                   expectedNumberOfExpectedBackgroundTasks: Int,
+                                   requestMessageSend: Bool) {
         let outgoingCdMsgs = TestUtil.createOutgoingMails(cdAccount: theCdAccount)
 
         let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
@@ -138,7 +139,8 @@ class MessageSyncServiceTests: XCTestCase {
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
             numberOfMessagesToSend: 1,
-            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks)
+            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks,
+            requestMessageSend: true)
     }
 
     func testSendSeveral() {
@@ -146,6 +148,16 @@ class MessageSyncServiceTests: XCTestCase {
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
             numberOfMessagesToSend: 2,
-            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks)
+            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks,
+            requestMessageSend: true)
+    }
+
+    func testSendWithoutRequest() {
+        let expectedNumberOfExpectedBackgroundTasks = 2 // 1 fetching folders, 1 sending
+        runMessageSyncServiceSend(
+            cdAccount: cdAccount,
+            numberOfMessagesToSend: 2,
+            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks,
+            requestMessageSend: false)
     }
 }

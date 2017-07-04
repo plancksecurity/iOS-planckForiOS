@@ -135,7 +135,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
         }
     }
 
-    private func lookOrCreateImapSmtpService(
+    private func lookUpOrCreateImapSmtpService(
         imapConnectInfo: EmailConnectInfo,
         smtpConnectInfo: EmailConnectInfo) -> ImapSmtpSyncService {
         let key = ImapSmtpConnection(
@@ -153,7 +153,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
 
     private func startInternal(imapConnectInfo: EmailConnectInfo,
                                smtpConnectInfo: EmailConnectInfo) {
-        lookOrCreateImapSmtpService(
+        lookUpOrCreateImapSmtpService(
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo).start()
     }
     
@@ -167,7 +167,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
 
     private func handleSendRequest(imapConnectInfo: EmailConnectInfo,
                            smtpConnectInfo: EmailConnectInfo, message: Message) {
-        lookOrCreateImapSmtpService(
+        lookUpOrCreateImapSmtpService(
             imapConnectInfo: imapConnectInfo,
             smtpConnectInfo: smtpConnectInfo).enqueueForSending(message: message)
     }

@@ -24,8 +24,9 @@ class ImapSmtpSyncService {
     enum State {
         case initial
 
-        case fetchingFolders
-        case haveFetchedFolders
+        case fetchingInitialFolders
+        case haveFetchedInitialFolders
+
         case sending
         case haveSent
 
@@ -46,9 +47,9 @@ class ImapSmtpSyncService {
 
     var readyForSend: Bool {
         switch state {
-        case .haveFetchedFolders, .idling, .waitingForNextSync, .error, .haveSent:
+        case .haveFetchedInitialFolders, .idling, .waitingForNextSync, .error, .haveSent:
             return true
-        case .fetchingFolders, .initial, .sending:
+        case .fetchingInitialFolders, .initial, .sending:
             return false
         }
     }
@@ -63,7 +64,7 @@ class ImapSmtpSyncService {
 
     public func start() {
         if state == .initial {
-            state = .fetchingFolders
+            state = .fetchingInitialFolders
             let fetchFoldersService = FetchFoldersService(
                 parentName: parentName, backgrounder: backgrounder)
             fetchFoldersService.execute(imapSyncData: imapSyncData) { [weak self] error in
@@ -105,7 +106,7 @@ class ImapSmtpSyncService {
     func handleFetchFoldersFinished(service: FetchFoldersService, error: Error?) {
         handleError(error: error)
         if error == nil {
-            state = .haveFetchedFolders
+            state = .haveFetchedInitialFolders
         }
         checkNextStep()
     }
@@ -137,7 +138,7 @@ class ImapSmtpSyncService {
     }
 
     func checkNextStep() {
-        if sendRequested && readyForSend {
+        if state == .haveFetchedInitialFolders || (sendRequested && readyForSend) {
             sendMessages()
         }
     }
