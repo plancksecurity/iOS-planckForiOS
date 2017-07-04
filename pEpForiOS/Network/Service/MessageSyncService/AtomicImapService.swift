@@ -19,7 +19,7 @@ class AtomicImapService {
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil) {
         self.parentName = parentName
         self.backgrounder = backgrounder
-    }   
+    }
 }
 
 extension AtomicImapService: ServiceErrorProtocol {
