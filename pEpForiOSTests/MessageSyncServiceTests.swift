@@ -80,7 +80,7 @@ class MessageSyncServiceTests: XCTestCase {
                                    numberOfMessagesToSend: Int,
                                    expectedNumberOfExpectedBackgroundTasks: Int,
                                    requestMessageSend: Bool) {
-        let outgoingCdMsgs = TestUtil.createOutgoingMails(cdAccount: theCdAccount)
+        let outgoingCdMsgs = TestUtil.createOutgoingMails(cdAccount: theCdAccount, testCase: self)
 
         let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
         expBackgroundTaskFinished.expectedFulfillmentCount =

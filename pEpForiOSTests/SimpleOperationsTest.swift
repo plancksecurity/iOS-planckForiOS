@@ -1927,7 +1927,7 @@ class SimpleOperationsTest: XCTestCase {
     //MARK: - EncryptAndSendOperation
 
     func testEncryptAndSendOperation() {
-        TestUtil.createOutgoingMails(cdAccount: cdAccount)
+        let _ = TestUtil.createOutgoingMails(cdAccount: cdAccount, testCase: self)
 
         let expMailsSent = expectation(description: "expMailsSent")
 

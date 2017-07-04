@@ -9,8 +9,8 @@
 import Foundation
 import XCTest
 
-import pEpForiOS
-import MessageModel
+@testable import pEpForiOS
+@testable import MessageModel
 
 class TestUtil {
     /**
@@ -258,7 +258,33 @@ class TestUtil {
         }
     }
 
-    static func createOutgoingMails(cdAccount: CdAccount) -> [CdMessage] {
+    static func createOutgoingMails(cdAccount: CdAccount, testCase: XCTestCase) -> [CdMessage] {
+        let existingSentFolder = CdFolder.by(folderType: .sent, account: cdAccount)
+
+        if existingSentFolder == nil {
+            let expectationFoldersFetched = testCase.expectation(
+                description: "expectationFoldersFetched")
+            guard let imapCI = cdAccount.imapConnectInfo else {
+                XCTFail()
+                return []
+            }
+            let imapSyncData = ImapSyncData(connectInfo: imapCI)
+            let fs = FetchFoldersService(parentName: #function)
+            fs.execute(imapSyncData: imapSyncData) { error in
+                XCTAssertNil(error)
+                expectationFoldersFetched.fulfill()
+            }
+        }
+
+        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+
+        guard let folder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+            XCTFail()
+            return []
+        }
+
         let session = PEPSession()
         TestUtil.importKeyByFileName(
             session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
@@ -274,12 +300,6 @@ class TestUtil {
         let toWithoutKey = CdIdentity.create()
         toWithoutKey.userName = "Unit 002"
         toWithoutKey.address = "unittest.ios.2@peptest.ch"
-
-        let folder = CdFolder.create()
-        folder.uuid = MessageID.generate()
-        folder.name = "Sent"
-        folder.folderType = FolderType.sent.rawValue
-        folder.account = cdAccount
 
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = TestUtil.loadData(fileName: imageFileName) else {

@@ -16,7 +16,7 @@ class AtomicImapService {
     let parentName: String?
     let backgrounder: BackgroundTaskProtocol?
     
-    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol?) {
+    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil) {
         self.parentName = parentName
         self.backgrounder = backgrounder
     }   

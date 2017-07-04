@@ -51,7 +51,8 @@ class SmtpSendServiceTests: XCTestCase {
             return
         }
 
-        let numberOfMailsToSend = TestUtil.createOutgoingMails(cdAccount: theCdAccount)
+        let outgoingMailsToSend = TestUtil.createOutgoingMails(
+            cdAccount: theCdAccount, testCase: self)
 
         let expBackgroundTaskFinishedAtLeastOnce = expectation(
             description: "expectationBackgrounded")
@@ -64,10 +65,10 @@ class SmtpSendServiceTests: XCTestCase {
         smtpSendData: smtpSendData, imapSyncData: imapSyncData) { error in
             if error == nil {
                 XCTAssertEqual(smtpService.successfullySentMessageIDs.count,
-                               numberOfMailsToSend.count)
+                               outgoingMailsToSend.count)
             } else {
                 XCTAssertLessThan(smtpService.successfullySentMessageIDs.count,
-                                  numberOfMailsToSend.count)
+                                  outgoingMailsToSend.count)
             }
             verifyError(error)
             expectationSmtpExecuted.fulfill()
