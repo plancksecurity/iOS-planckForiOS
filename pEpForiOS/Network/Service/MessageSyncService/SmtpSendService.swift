@@ -18,7 +18,7 @@ class SmtpSendService: AtomicImapService {
         smtpSendData: SmtpSendData,
         imapSyncData: ImapSyncData,
         handler: ((_ error: Error?) -> ())? = nil) {
-        let bgID = backgrounder?.beginBackgroundTask()
+        let bgID = backgrounder?.beginBackgroundTask(taskName: "SmtpSendService")
         let context = Record.Context.background
         context.perform { [weak self] in
             if let _ = EncryptAndSendOperation.retrieveNextMessage(context: context) {

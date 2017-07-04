@@ -100,7 +100,12 @@ class MessageSyncService: MessageSyncServiceProtocol {
     }
 
     func start(account: Account) {
-        Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
+        connectInfos(account: account) { [weak self] (ici, sci) in
+            self?.managementQueue.async {
+                self?.startInternal(imapConnectInfo: ici,
+                                    smtpConnectInfo: sci)
+            }
+        }
     }
 
     func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
@@ -130,16 +135,9 @@ class MessageSyncService: MessageSyncServiceProtocol {
         }
     }
 
-    private func requestVerificationInternal(account: Account,
-                                             delegate: AccountVerificationServiceDelegate) {
-        let service = AccountVerificationService()
-        service.delegate = self
-        accountVerifications[account] = (service, delegate)
-        service.verify(account: account)
-    }
-
-    private func handleSendRequest(imapConnectInfo: EmailConnectInfo,
-                           smtpConnectInfo: EmailConnectInfo, message: Message) {
+    private func lookOrCreateImapSmtpService(
+        imapConnectInfo: EmailConnectInfo,
+        smtpConnectInfo: EmailConnectInfo) -> ImapSmtpSyncService {
         let key = ImapSmtpConnection(
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo)
         let model = imapConnections[key] ??
@@ -150,7 +148,28 @@ class MessageSyncService: MessageSyncServiceProtocol {
                 smtpSendData: SmtpSendData(connectInfo: smtpConnectInfo))
         model.delegate = self
         imapConnections[key] = model
-        model.enqueueForSending(message: message)
+        return model
+    }
+
+    private func startInternal(imapConnectInfo: EmailConnectInfo,
+                               smtpConnectInfo: EmailConnectInfo) {
+        lookOrCreateImapSmtpService(
+            imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo).start()
+    }
+    
+    private func requestVerificationInternal(account: Account,
+                                             delegate: AccountVerificationServiceDelegate) {
+        let service = AccountVerificationService()
+        service.delegate = self
+        accountVerifications[account] = (service, delegate)
+        service.verify(account: account)
+    }
+
+    private func handleSendRequest(imapConnectInfo: EmailConnectInfo,
+                           smtpConnectInfo: EmailConnectInfo, message: Message) {
+        lookOrCreateImapSmtpService(
+            imapConnectInfo: imapConnectInfo,
+            smtpConnectInfo: smtpConnectInfo).enqueueForSending(message: message)
     }
 
     private func connectInfos(
@@ -164,8 +183,8 @@ class MessageSyncService: MessageSyncServiceProtocol {
         return nil
     }
 
-    func connectInfos(account: Account?,
-                      handler: @escaping (EmailConnectInfo, EmailConnectInfo) -> ()) {
+    private func connectInfos(account: Account?,
+                              handler: @escaping (EmailConnectInfo, EmailConnectInfo) -> ()) {
         guard let theAccount = account else {
             indicate(error: InternalError.noAccount)
             return

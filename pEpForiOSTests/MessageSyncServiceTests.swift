@@ -37,14 +37,12 @@ class MessageSyncServiceTests: XCTestCase {
 
     class TestSentDelegate: MessageSyncServiceSentDelegate {
         let expAllSent: XCTestExpectation
-        let expectedMessageCount: Int
 
         var sentMessageIDs = Set<String>()
         var currentMessageCount = 0
 
-        init(expAllSent: XCTestExpectation, expectedMessageCount: Int) {
+        init(expAllSent: XCTestExpectation) {
             self.expAllSent = expAllSent
-            self.expectedMessageCount = expectedMessageCount
         }
 
         func didSend(message: Message) {
@@ -53,15 +51,16 @@ class MessageSyncServiceTests: XCTestCase {
             } else {
                 sentMessageIDs.insert(message.messageID)
                 currentMessageCount += 1
-                if currentMessageCount == expectedMessageCount {
-                    expAllSent.fulfill()
-                }
+                expAllSent.fulfill()
             }
         }
     }
 
     override func setUp() {
         super.setUp()
+
+        continueAfterFailure = false
+
         persistentSetup = PersistentSetup()
 
         let cdAccount = TestData().createWorkingCdAccount()
@@ -83,7 +82,6 @@ class MessageSyncServiceTests: XCTestCase {
         let outgoingCdMsgs = TestUtil.createOutgoingMails(cdAccount: theCdAccount)
 
         let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
-        expBackgroundTaskFinished.assertForOverFulfill = false
         expBackgroundTaskFinished.expectedFulfillmentCount =
             UInt(expectedNumberOfExpectedBackgroundTasks)
         let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinished)
@@ -109,8 +107,8 @@ class MessageSyncServiceTests: XCTestCase {
         ms.errorDelegate = errorDelegate
 
         let expAllSent = expectation(description: "expAllSent")
-        let sentDelegate = TestSentDelegate(expAllSent: expAllSent,
-                                            expectedMessageCount: numberOfMessagesToSend)
+        expAllSent.expectedFulfillmentCount = UInt(numberOfMessagesToSend)
+        let sentDelegate = TestSentDelegate(expAllSent: expAllSent)
         ms.sentDelegate = sentDelegate
 
         for msg in msgsToSend {
@@ -136,12 +134,18 @@ class MessageSyncServiceTests: XCTestCase {
     }
 
     func testBasicSend() {
-        runMessageSyncServiceSend(cdAccount: cdAccount, numberOfMessagesToSend: 1,
-                                  expectedNumberOfExpectedBackgroundTasks: 1)
+        let expectedNumberOfExpectedBackgroundTasks = 2 // 1 fetching folders, 1 sending
+        runMessageSyncServiceSend(
+            cdAccount: cdAccount,
+            numberOfMessagesToSend: 1,
+            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks)
     }
 
     func testSendSeveral() {
-        runMessageSyncServiceSend(cdAccount: cdAccount, numberOfMessagesToSend: 2,
-                                  expectedNumberOfExpectedBackgroundTasks: 2)
+        let expectedNumberOfExpectedBackgroundTasks = 2 // 1 fetching folders, 1 sending
+        runMessageSyncServiceSend(
+            cdAccount: cdAccount,
+            numberOfMessagesToSend: 2,
+            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks)
     }
 }

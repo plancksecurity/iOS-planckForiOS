@@ -24,6 +24,8 @@ class ImapSmtpSyncService {
     enum State {
         case initial
 
+        case fetchingFolders
+        case haveFetchedFolders
         case sending
         case haveSent
 
@@ -44,9 +46,9 @@ class ImapSmtpSyncService {
 
     var readyForSend: Bool {
         switch state {
-        case .initial, .idling, .waitingForNextSync, .error, .haveSent:
+        case .haveFetchedFolders, .idling, .waitingForNextSync, .error, .haveSent:
             return true
-        case .sending:
+        case .fetchingFolders, .initial, .sending:
             return false
         }
     }
@@ -57,6 +59,17 @@ class ImapSmtpSyncService {
         self.backgrounder = backgrounder
         self.imapSyncData = imapSyncData
         self.smtpSendData = smtpSendData
+    }
+
+    public func start() {
+        if state == .initial {
+            state = .fetchingFolders
+            let fetchFoldersService = FetchFoldersService(
+                parentName: parentName, backgrounder: backgrounder)
+            fetchFoldersService.execute(imapSyncData: imapSyncData) { [weak self] error in
+                self?.handleFetchFoldersFinished(service: fetchFoldersService, error: error)
+            }
+        }
     }
 
     public func enqueueForSending(message: Message) {
@@ -76,11 +89,29 @@ class ImapSmtpSyncService {
             }
         } else {
             sendRequested = true
+            if state == .initial {
+                start()
+            }
         }
     }
 
-    func handleSendRequestFinished(service: SmtpSendService, error: Error?) {
+    func handleError(error: Error?) {
         resetConnectionsOn(error: error)
+        if let err = error {
+            delegate?.handle(service: self, error: err)
+        }
+    }
+
+    func handleFetchFoldersFinished(service: FetchFoldersService, error: Error?) {
+        handleError(error: error)
+        if error == nil {
+            state = .haveFetchedFolders
+        }
+        checkNextStep()
+    }
+
+    func handleSendRequestFinished(service: SmtpSendService, error: Error?) {
+        handleError(error: error)
 
         var messagesWithSuccess = [Message]()
         for mID in service.successfullySentMessageIDs {
@@ -92,9 +123,6 @@ class ImapSmtpSyncService {
 
         if !messagesWithSuccess.isEmpty {
             delegate?.messagesSent(service: self, messages: messagesWithSuccess)
-        }
-        if let err = error {
-            delegate?.handle(service: self, error: err)
         }
 
         state = .haveSent

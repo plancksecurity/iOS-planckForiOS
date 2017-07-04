@@ -17,6 +17,7 @@ class MockBackgrounder: BackgroundTaskProtocol {
     var taskIDs = Set<BackgroundTaskID>()
     var totalNumberOfBackgroundTasksStarted = 0
     var totalNumberOfBackgroundTasksFinished = 0
+    var taskNames = [Int: String]()
 
     var numberOfBackgroundTasksOutstanding: Int {
         return taskIDs.count
@@ -30,6 +31,8 @@ class MockBackgrounder: BackgroundTaskProtocol {
                              expirationHandler: (() -> Void)?) -> BackgroundTaskID {
         totalNumberOfBackgroundTasksStarted += 1
         let taskID = currentTaskID
+        print("\(#function): \(taskID) task \(taskName ?? "unknown")")
+        taskNames[taskID] = taskName
         taskIDs.insert(taskID)
         currentTaskID += 1
         return taskID
@@ -37,6 +40,8 @@ class MockBackgrounder: BackgroundTaskProtocol {
 
     func endBackgroundTask(_ taskID: BackgroundTaskID?) {
         if let theID = taskID, taskIDs.contains(theID) {
+            let taskName = taskNames[theID]
+            print("\(#function): \(theID) task \(taskName ?? "unknown")")
             totalNumberOfBackgroundTasksFinished += 1
             taskIDs.remove(theID)
             expBackgroundTaskFinishedAtLeastOnce?.fulfill()
