@@ -34,7 +34,7 @@ class EmailViewController: UITableViewController {
         super.viewDidLoad()
 
         loadDatasource("MessageData")
-        
+
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()
@@ -54,6 +54,18 @@ class EmailViewController: UITableViewController {
 
         self.title = NSLocalizedString("Message", comment: "Message view title")
     }
+
+
+    @IBAction func next(_ sender: Any) {
+
+
+    }
+    
+    @IBAction func previous(_ sender: Any) {
+
+
+    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

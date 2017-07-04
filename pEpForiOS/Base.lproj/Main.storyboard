@@ -7,6 +7,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -714,7 +715,20 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3"/>
+                    <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3">
+                        <rightBarButtonItems>
+                            <barButtonItem image="arrow-lft-active" id="NsK-Ye-A0p">
+                                <connections>
+                                    <action selector="previous:" destination="3bx-34-vLD" id="nIJ-v6-9HL"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="arrow-rgt-active" id="nCS-Wg-ZJI">
+                                <connections>
+                                    <action selector="next:" destination="3bx-34-vLD" id="dke-KM-1xj"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
@@ -1005,6 +1019,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow-lft-active" width="10" height="18"/>
+        <image name="arrow-rgt-active" width="10" height="18"/>
         <image name="attachment-list-icon" width="14" height="15"/>
         <image name="button-add" width="22" height="22"/>
         <image name="button-trustwords-icon" width="21" height="21"/>
@@ -1016,6 +1032,6 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xmi-xn-p8T"/>
+        <segue reference="Usl-iS-7fo"/>
     </inferredMetricsTieBreakers>
 </document>
