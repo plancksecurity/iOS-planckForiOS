@@ -191,4 +191,9 @@ class AppendMailsSyncDelegate: DefaultImapSyncDelegate {
     public override func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
         (imapSyncOperation as? AppendMailsOperation)?.handleNextMessage()
     }
+
+    public override func folderAppendFailed(_ sync: ImapSync, notification: Notification?) {
+        (imapSyncOperation as? AppendMailsOperation)?.addIMAPError(ImapSyncError.folderAppendFailed)
+        (imapSyncOperation as? AppendMailsOperation)?.markAsFinished()
+    }
 }

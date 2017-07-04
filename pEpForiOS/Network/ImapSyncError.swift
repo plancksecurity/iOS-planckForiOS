@@ -16,6 +16,7 @@ enum ImapSyncError: Error {
     case connectionLost(FunctionName)
     case connectionTerminated(FunctionName)
     case connectionTimedOut(FunctionName)
+    case folderAppendFailed
     case badResponse(String?)
     case actionFailed
 }
@@ -33,6 +34,8 @@ extension ImapSyncError: Equatable {
             return fn1 == fn2
         case (.connectionTimedOut(let fn1), .connectionTimedOut(let fn2)):
             return fn1 == fn2
+        case (.folderAppendFailed, .folderAppendFailed):
+            return true
         case (.badResponse(let s1), .badResponse(let s2)):
             return s1 == s2
         case (.actionFailed, .actionFailed):
@@ -46,6 +49,8 @@ extension ImapSyncError: Equatable {
         case (.connectionTerminated, _):
             return false
         case (.connectionTimedOut, _):
+            return false
+        case (.folderAppendFailed, _):
             return false
         case (.badResponse, _):
             return false
