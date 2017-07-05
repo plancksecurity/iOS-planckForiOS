@@ -73,6 +73,7 @@
 		431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */; };
 		431FEEB11F03B04300FE37FF /* MockBackgrounder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431FEEB01F03B04300FE37FF /* MockBackgrounder.swift */; };
 		43200D9D1F0CBC4000FFDE56 /* FetchMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43200D9C1F0CBC4000FFDE56 /* FetchMessagesService.swift */; };
+		43200D9F1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43200D9E1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift */; };
 		43209B541ECC5A9B007E7E2E /* libpEpObjCAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43209B531ECC5A9B007E7E2E /* libpEpObjCAdapter.a */; };
 		432142641E8FD66900FBE987 /* QuickSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432142631E8FD66900FBE987 /* QuickSyncService.swift */; };
 		432142661E8FD6A400FBE987 /* ServiceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432142651E8FD6A400FBE987 /* ServiceUtil.swift */; };
@@ -361,6 +362,7 @@
 		431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		431FEEB01F03B04300FE37FF /* MockBackgrounder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBackgrounder.swift; sourceTree = "<group>"; };
 		43200D9C1F0CBC4000FFDE56 /* FetchMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesService.swift; sourceTree = "<group>"; };
+		43200D9E1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesServiceTests.swift; sourceTree = "<group>"; };
 		43209B531ECC5A9B007E7E2E /* libpEpObjCAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpObjCAdapter.a; path = "../pEpObjCAdapter/build/Debug-iphoneos/libpEpObjCAdapter.a"; sourceTree = "<group>"; };
 		432142631E8FD66900FBE987 /* QuickSyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickSyncService.swift; sourceTree = "<group>"; };
 		432142651E8FD6A400FBE987 /* ServiceUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceUtil.swift; sourceTree = "<group>"; };
@@ -914,6 +916,7 @@
 				43FC24241F04FC6E00C32110 /* MessageSyncServiceTests.swift */,
 				43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */,
 				43C579EC1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift */,
+				43200D9E1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -1647,6 +1650,7 @@
 				433C51A01E64236500272E19 /* TestDataBase.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
+				43200D9F1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift in Sources */,
 				43FC24271F04FDDF00C32110 /* SmtpSendServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

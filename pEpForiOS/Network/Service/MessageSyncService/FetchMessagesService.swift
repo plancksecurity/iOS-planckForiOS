@@ -19,6 +19,7 @@ class FetchMessagesService: AtomicImapService {
 
     func execute(imapSyncData: ImapSyncData, folderName: String = ImapSync.defaultImapInboxName,
                  handler: ((_ error: Error?) -> ())? = nil) {
+        let bgID = backgrounder?.beginBackgroundTask(taskName: "FetchMessagesService")
         let loginOp = LoginImapOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
         let fetchOp = FetchMessagesOperation(
@@ -30,6 +31,7 @@ class FetchMessagesService: AtomicImapService {
         }
         fetchOp.addDependency(loginOp)
         fetchOp.completionBlock = { [weak self] in
+            self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }
         backgroundQueue.addOperations([loginOp, fetchOp], waitUntilFinished: false)
