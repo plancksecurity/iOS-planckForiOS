@@ -11,9 +11,7 @@ import Foundation
 import MessageModel
 
 class FetchFoldersService: AtomicImapService {
-    func execute(
-        imapSyncData: ImapSyncData,
-        handler: ((_ error: Error?) -> ())? = nil) {
+    func execute(imapSyncData: ImapSyncData, handler: ((_ error: Error?) -> ())? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "FetchFoldersService")
         let imapLoginOp = LoginImapOperation(parentName: parentName, errorContainer: self,
                                              imapSyncData: imapSyncData)
