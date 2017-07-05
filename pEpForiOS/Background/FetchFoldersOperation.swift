@@ -31,7 +31,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    var syncDelegate: FetchFoldersSyncDelegate?
+    weak var syncDelegate: FetchFoldersSyncDelegate?
 
     weak var delegate: FetchFoldersOperationOperationDelegate?
 

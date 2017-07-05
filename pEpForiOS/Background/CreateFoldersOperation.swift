@@ -18,7 +18,7 @@ open class CreateFoldersOperation: ImapSyncOperation {
     let accountID: NSManagedObjectID
     var account: CdAccount!
     var folderNamesToCreate = [String]()
-    var syncDelegate: CreateFoldersSyncDelegate?
+    weak var syncDelegate: CreateFoldersSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount) {

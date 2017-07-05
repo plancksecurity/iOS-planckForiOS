@@ -16,7 +16,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     fileprivate var currentlyProcessedMessage: CdMessage?
     open var numberOfMessagesSynced = 0
 
-    var syncDelegate: SyncFlagsToServerSyncDelegate?
+    weak var syncDelegate: SyncFlagsToServerSyncDelegate?
 
     public init?(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                  imapSyncData: ImapSyncData, folder: CdFolder) {

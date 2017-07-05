@@ -19,7 +19,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
     let folderToOpen: String
     let lastUID: UInt
     let firstUID: UInt
-    var syncDelegate: SyncMessagesSyncDelegate?
+    weak var syncDelegate: SyncMessagesSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, folderName: String, firstUID: UInt, lastUID: UInt) {

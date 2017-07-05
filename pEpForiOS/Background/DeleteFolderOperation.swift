@@ -14,7 +14,7 @@ open class DeleteFolderOperation: ImapSyncOperation {
     var folderName: String
     let accountID: NSManagedObjectID
     var account: CdAccount!
-    var syncDelegate: DeleteFolderSyncDelegate?
+    weak var syncDelegate: DeleteFolderSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount,

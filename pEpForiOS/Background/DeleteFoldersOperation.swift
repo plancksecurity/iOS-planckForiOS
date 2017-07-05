@@ -15,7 +15,7 @@ open class DeleteFoldersOperation: ImapSyncOperation {
     var account: CdAccount!
     var folderNamesToDelete = [String]()
     var currentFolderName: String?
-    var syncDelegate: DeleteFoldersSyncDelegate?
+    weak var syncDelegate: DeleteFoldersSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount) {

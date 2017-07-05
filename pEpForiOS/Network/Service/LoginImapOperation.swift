@@ -11,7 +11,7 @@ import UIKit
 import MessageModel
 
 open class LoginImapOperation: ImapSyncOperation {
-    var syncDelegate: LoginImapSyncDelegate?
+    weak var syncDelegate: LoginImapSyncDelegate?
     var capabilities: Set<String>?
 
     open override func main() {
