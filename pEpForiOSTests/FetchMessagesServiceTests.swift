@@ -42,18 +42,21 @@ class FetchMessagesServiceTests: XCTestCase {
         self.cdAccountDisfunctional = cdDisfunctionalAccount
     }
 
-    func runFetchTest(shouldSucceed: Bool, folderName: String = ImapSync.defaultImapInboxName) {
+    func runFetchTest(
+        useDisfunctionalAccount: Bool,
+        folderName: String = ImapSync.defaultImapInboxName,
+        expectError: Bool) {
         let expectationServiceRan = expectation(description: "expectationServiceRan")
         let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
         let service = FetchMessagesService(parentName: #function, backgrounder: mbg)
         let testDelegate = TestDelegate()
         service.delegate = testDelegate
 
-        guard let theCdAccount = shouldSucceed ? cdAccount : cdAccountDisfunctional else {
-            XCTFail()
-            return
+        if useDisfunctionalAccount {
+            TestUtil.makeServersUnreachable(cdAccount: cdAccount)
         }
-        guard let (imapSyncData, _) = TestUtil.syncData(cdAccount: theCdAccount) else {
+
+        guard let (imapSyncData, _) = TestUtil.syncData(cdAccount: cdAccount) else {
             XCTFail()
             return
         }
@@ -62,10 +65,10 @@ class FetchMessagesServiceTests: XCTestCase {
         service.execute(imapSyncData: imapSyncData, folderName: folderName) { error in
             expServiceBlockInvoked.fulfill()
 
-            if shouldSucceed {
-                XCTAssertNil(error)
-            } else {
+            if useDisfunctionalAccount || expectError {
                 XCTAssertNotNil(error)
+            } else {
+                XCTAssertNil(error)
             }
         }
 
@@ -73,14 +76,22 @@ class FetchMessagesServiceTests: XCTestCase {
             XCTAssertNil(error)
         }
 
-        if shouldSucceed {
-            XCTAssertGreaterThan(testDelegate.fetchedMessages.count, 0)
-        } else {
+        if useDisfunctionalAccount || expectError {
             XCTAssertEqual(testDelegate.fetchedMessages.count, 0)
+        } else {
+            XCTAssertGreaterThan(testDelegate.fetchedMessages.count, 0)
         }
     }
 
     func testBasicFetchOK() {
-        runFetchTest(shouldSucceed: true, folderName: "inBOX")
+        runFetchTest(useDisfunctionalAccount: false, folderName: "inBOX", expectError: false)
+    }
+
+    func testBasicFetchAccountError() {
+        runFetchTest(useDisfunctionalAccount: true, folderName: "inBOX", expectError: false)
+    }
+
+    func testBasicFetchError() {
+        runFetchTest(useDisfunctionalAccount: false, folderName: "inBOXeZZZZ", expectError: true)
     }
 }
