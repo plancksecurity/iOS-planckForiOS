@@ -102,7 +102,7 @@ class MessageReevalutionTests: XCTestCase {
         }
         backgroundQueue.addOperation(decryptOperation)
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 
@@ -163,7 +163,7 @@ class MessageReevalutionTests: XCTestCase {
                 expReevaluated.fulfill()
             }
             backgroundQueue.addOperation(reevalOp)
-            waitForExpectations(timeout: TestUtil.waitTimeForever, handler: { error in
+            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
             })
 
