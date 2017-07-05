@@ -15,10 +15,12 @@ public extension CdFolder {
 
     /**
      If the folder has been deleted, undelete it.
+     -Returns: True if the folder was actually flagged for deletion.
      */
-    public static func reactivate(folder: CdFolder) -> CdFolder {
+    public static func reactivate(folder: CdFolder) -> Bool {
+        let hasBeenDeleted = folder.shouldDelete
         folder.shouldDelete = false
-        return folder
+        return hasBeenDeleted
     }
 
     public static func by(folderType: FolderType, account: CdAccount,
@@ -36,20 +38,25 @@ public extension CdFolder {
         return CdFolder.first(attributes: ["name": name, "account": account])
     }
 
+    /**
+     - Returns: An optional tuple consisting of a `CdFolder`, and a flag indicating
+     that this folder is new. The Inbox will never be returned as new.
+     */
     public static func insertOrUpdate(folderName: String, folderSeparator: String?,
-                                      account: CdAccount) -> CdFolder? {
+                                      account: CdAccount) -> (CdFolder, Bool)? {
         // Treat Inbox specially, since its name is case insensitive.
         // For all other folders, it's undefined if they have to be handled
         // case insensitive or not, so no special handling for those.
         if folderName.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
             if let folder = by(folderType: .inbox, account: account) {
-                return reactivate(folder: folder)
+                let _ = reactivate(folder: folder)
+                return (folder, false)
             }
         }
 
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
-            return reactivate(folder: folder)
+            return (folder, reactivate(folder: folder))
         }
 
         if let separator = folderSeparator {
@@ -72,11 +79,15 @@ public extension CdFolder {
                 }
                 parentFolder = folder
             }
-            return parentFolder
+            if let createdFolder = parentFolder {
+                return (createdFolder, true)
+            } else {
+                return nil
+            }
         } else {
             // Just create the folder as-is, can't check for hierarchy
             let folder = insert(folderName: folderName, account: account)
-            return folder
+            return (folder, true)
         }
     }
 
@@ -85,11 +96,14 @@ public extension CdFolder {
 
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
-            return reactivate(folder: folder)
+            let _ = reactivate(folder: folder)
+            return folder
         }
 
-        let folder = CdFolder.create(attributes: ["name": folderName, "account": account,
-                                            "uuid": MessageID.generate()])
+        let folder = CdFolder.create()
+        folder.name = folderName
+        folder.account = account
+        folder.uuid = MessageID.generate()
 
         if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
             folder.folderType = FolderType.inbox.rawValue

@@ -10,6 +10,13 @@ import Foundation
 
 import MessageModel
 
+protocol MessageSyncServiceFolderDelegate {
+    /**
+     The folders were fetched for the indicated account.
+     */
+    func didFetchFolders(forAccount: Account)
+}
+
 protocol MessageSyncServiceSentDelegate: class {
     /**
      The indicated message has been sent.

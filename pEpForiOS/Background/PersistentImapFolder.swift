@@ -87,7 +87,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                               errorString: "Given objectID is not an account")
                     return
             }
-            if let fo = CdFolder.insertOrUpdate(
+            if let (fo, _) = CdFolder.insertOrUpdate(
                 folderName: self.name(), folderSeparator: nil, account: account) {
                 Record.saveAndWait()
                 folder = fo

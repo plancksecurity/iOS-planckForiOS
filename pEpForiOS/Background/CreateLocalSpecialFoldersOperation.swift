@@ -33,7 +33,7 @@ open class CreateLocalSpecialFoldersOperation: BaseOperation {
         }
         for kind in FolderType.allValuesToCreate {
             let folderName = kind.folderName()
-            if let folder = CdFolder.insertOrUpdate(
+            if let (folder, _) = CdFolder.insertOrUpdate(
                 folderName: folderName, folderSeparator: nil, account: account) {
                 folder.folderType = Int16(kind.rawValue)
             } else  {
