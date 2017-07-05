@@ -11,11 +11,6 @@ import CoreData
 import MessageModel
 
 /**
- Calling this block indicates that a message has been fetched and stored.
- */
-public typealias MessageFetchedBlock = (_ message: CdMessage) -> ()
-
-/**
  This operation is not intended to be put in a queue.
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
@@ -32,8 +27,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
     var syncDelegate: FetchFoldersSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false,
-                messageFetchedBlock: MessageFetchedBlock? = nil) {
+                imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
 
         super.init(parentName: parentName, errorContainer: errorContainer,
@@ -41,7 +35,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
 
         folderBuilder = ImapFolderBuilder(
             accountID: imapSyncData.connectInfo.accountObjectID,
-            backgroundQueue: backgroundQueue, messageFetchedBlock: messageFetchedBlock)
+            backgroundQueue: backgroundQueue, messageFetchedBlock: nil)
     }
 
     open override func main() {

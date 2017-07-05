@@ -218,7 +218,7 @@ open class ImapSyncMachine {
             parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData)
         let fetchFoldersOp = FetchFoldersOperation(
             parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData,
-            onlyUpdateIfNecessary: false, messageFetchedBlock: nil)
+            onlyUpdateIfNecessary: false)
         fetchFoldersOp.addDependency(loginOp)
         fetchFoldersOp.completionBlock = { [weak self] in
             self?.handleError(errorContainer: errorContainer, newState: .fetchNewMessages)

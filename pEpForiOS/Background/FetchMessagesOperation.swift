@@ -11,6 +11,11 @@ import CoreData
 import MessageModel
 
 /**
+ Calling this block indicates that a message has been fetched and stored.
+ */
+public typealias MessageFetchedBlock = (_ message: CdMessage) -> ()
+
+/**
  Fetches new messages from the server.
  This operation is not intended to be put in a queue (though this should work too).
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.

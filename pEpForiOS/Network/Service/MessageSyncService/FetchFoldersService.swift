@@ -17,7 +17,7 @@ class FetchFoldersService: AtomicImapService {
                                              imapSyncData: imapSyncData)
         let fetchFoldersOp = FetchFoldersOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData,
-            onlyUpdateIfNecessary: false, messageFetchedBlock: nil)
+            onlyUpdateIfNecessary: false)
         fetchFoldersOp.addDependency(imapLoginOp)
         fetchFoldersOp.completionBlock = { [weak self] in
             self?.backgrounder?.endBackgroundTask(bgID)
