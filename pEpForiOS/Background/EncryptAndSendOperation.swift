@@ -51,14 +51,15 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
     }
 
     public static func retrieveNextMessage(
-        context: NSManagedObjectContext) -> (PEPMessage, Bool, NSManagedObjectID)? {
+        context: NSManagedObjectContext,
+        cdAccount: CdAccount) -> (PEPMessage, Bool, NSManagedObjectID)? {
         var pepMessage: PEPMessage?
         var objID: NSManagedObjectID?
         var protected = true
 
         let p = NSPredicate(
-            format: "uid = 0 and parent.folderType = %d and sendStatus = %d",
-            FolderType.sent.rawValue, SendStatus.none.rawValue)
+            format: "uid = 0 and parent.folderType = %d and sendStatus = %d and parent.account = %@",
+            FolderType.sent.rawValue, SendStatus.none.rawValue, cdAccount)
         if let m = CdMessage.first(predicate: p) {
             if m.sent == nil {
                 m.sent = NSDate()
@@ -113,9 +114,15 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
     func handleNextMessageInternal(context: NSManagedObjectContext) {
         markLastSentMessageAsSent(context: context)
 
+        guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
+            as? CdAccount else {
+                handleError(CoreDataError.couldNotFindAccount)
+                return
+        }
+
         lastSentMessageObjectID = nil
         if let (msg, protected, objID) = EncryptAndSendOperation.retrieveNextMessage(
-            context: context) {
+            context: context, cdAccount: cdAccount) {
             lastSentMessageObjectID = objID
             if protected {
                 let (status, encMsg) = session.encrypt(pEpMessageDict: msg)

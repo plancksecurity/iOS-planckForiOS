@@ -13,9 +13,12 @@ import MessageModel
 
 class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
     var hasMessagesReadyToBeSent = false
+    let connectInfo: ConnectInfo
 
-    public override init(parentName: String? = nil,
-                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+    public init(parentName: String? = nil,
+                errorContainer: ServiceErrorProtocol = ErrorContainer(),
+                connectInfo: ConnectInfo) {
+        self.connectInfo = connectInfo
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
@@ -27,7 +30,14 @@ class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
     }
 
     func process(context: NSManagedObjectContext) {
-        if let _ = EncryptAndSendOperation.retrieveNextMessage(context: context) {
+        guard let cdAccount = context.object(with: connectInfo.accountObjectID)
+            as? CdAccount else {
+                handleError(CoreDataError.couldNotFindAccount)
+                return
+        }
+
+        if let _ = EncryptAndSendOperation.retrieveNextMessage(
+            context: context, cdAccount: cdAccount) {
             hasMessagesReadyToBeSent = true
         } else {
             hasMessagesReadyToBeSent = false

@@ -27,7 +27,8 @@ class MessageModelTests: XCTestCase {
 
     func testSaveMessageForSending() {
         let testData = TestData()
-        let account = testData.createWorkingAccount()
+        let cdAccount = testData.createWorkingCdAccount()
+        let account = cdAccount.account()
         account.save()
         let sentFolder = Folder.create(name: "Sent", account: account, folderType: .sent)
         sentFolder.save()
@@ -44,7 +45,7 @@ class MessageModelTests: XCTestCase {
         XCTAssertEqual(msg.uuid, cdMsg.uuid)
 
         if let (_, _, _) = EncryptAndSendOperation.retrieveNextMessage(
-            context: Record.Context.default) {
+            context: Record.Context.default, cdAccount: cdAccount) {
         } else {
             XCTFail()
         }

@@ -241,7 +241,8 @@ public class InboxSync {
     }
 
     func triggerCheckOutgoingMessagesOperation(model: Model) -> Model {
-        let op = CheckOutgoingMessagesOperation(parentName: parentName)
+        let op = CheckOutgoingMessagesOperation(parentName: parentName,
+                                                connectInfo: smtpSendData.connectInfo)
         op.completionBlock = { [weak self] in
             self?.stateMachine.async {
                 self?.handleOutgoingMessageResult(op: op)

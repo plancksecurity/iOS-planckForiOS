@@ -21,7 +21,14 @@ class SmtpSendService: AtomicImapService {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "SmtpSendService")
         let context = Record.Context.background
         context.perform { [weak self] in
-            if let _ = EncryptAndSendOperation.retrieveNextMessage(context: context) {
+            guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
+                as? CdAccount else {
+                    handler?(CoreDataError.couldNotFindAccount)
+                    self?.backgrounder?.endBackgroundTask(bgID)
+                    return
+            }
+            if let _ = EncryptAndSendOperation.retrieveNextMessage(
+                context: context, cdAccount: cdAccount) {
                 self?.haveMailsToEncrypt(
                     smtpSendData: smtpSendData, imapSyncData: imapSyncData,
                     bgID: bgID, handler: handler)
