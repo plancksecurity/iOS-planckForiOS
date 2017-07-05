@@ -10,6 +10,13 @@ import CoreData
 
 import MessageModel
 
+protocol FetchFoldersOperationOperationDelegate: class {
+    /**
+     Called if the folder was unknown before, and therefore newly created.
+     */
+    func didCreate(cdFolder: CdFolder)
+}
+
 /**
  This operation is not intended to be put in a queue.
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
@@ -25,6 +32,8 @@ open class FetchFoldersOperation: ImapSyncOperation {
     let onlyUpdateIfNecessary: Bool
 
     var syncDelegate: FetchFoldersSyncDelegate?
+
+    weak var delegate: FetchFoldersOperationOperationDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
@@ -116,8 +125,15 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
         let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey] as? String
         let folderInfo = StoreFolderOperation.FolderInfo(
             name: folderName, separator: folderSeparator)
-        let op = StoreFolderOperation(connectInfo: syncOp.imapSyncData.connectInfo,
-                                      folderInfo: folderInfo)
-        syncOp.backgroundQueue.addOperation(op)
+        let storeFolderOp = StoreFolderOperation(connectInfo: syncOp.imapSyncData.connectInfo,
+                                                 folderInfo: folderInfo)
+        storeFolderOp.delegate = imapSyncOperation as? FetchFoldersOperation
+        syncOp.backgroundQueue.addOperation(storeFolderOp)
+    }
+}
+
+extension FetchFoldersOperation: StoreFolderOperationDelegate {
+    func didCreate(cdFolder: CdFolder) {
+        delegate?.didCreate(cdFolder: cdFolder)
     }
 }

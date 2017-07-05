@@ -10,7 +10,16 @@ import Foundation
 
 import MessageModel
 
+protocol FetchFoldersServiceDelegate: class {
+    /**
+     Called if the fetched folder was unknown before, and therefore newly created.
+     */
+    func didCreate(folder: Folder)
+}
+
 class FetchFoldersService: AtomicImapService {
+    weak var delegate: FetchFoldersServiceDelegate?
+
     func execute(imapSyncData: ImapSyncData, handler: ((_ error: Error?) -> ())? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "FetchFoldersService")
         let imapLoginOp = LoginImapOperation(parentName: parentName, errorContainer: self,
@@ -18,11 +27,18 @@ class FetchFoldersService: AtomicImapService {
         let fetchFoldersOp = FetchFoldersOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData,
             onlyUpdateIfNecessary: false)
+        fetchFoldersOp.delegate = self
         fetchFoldersOp.addDependency(imapLoginOp)
         fetchFoldersOp.completionBlock = { [weak self] in
             self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }
         backgroundQueue.addOperations([imapLoginOp, fetchFoldersOp], waitUntilFinished: false)
+    }
+}
+
+extension FetchFoldersService: FetchFoldersOperationOperationDelegate {
+    func didCreate(cdFolder: CdFolder) {
+        delegate?.didCreate(folder: cdFolder.folder())
     }
 }

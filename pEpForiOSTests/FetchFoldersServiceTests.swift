@@ -12,6 +12,14 @@ import XCTest
 @testable import pEpForiOS
 
 class FetchFoldersServiceTests: XCTestCase {
+    class FetchFoldersServiceTestDelegate: FetchFoldersServiceDelegate {
+        var createdFoldersCount = 0
+
+        func didCreate(folder: Folder) {
+            createdFoldersCount += 1
+        }
+    }
+
     var persistentSetup: PersistentSetup!
 
     var cdAccount: CdAccount!
@@ -40,6 +48,8 @@ class FetchFoldersServiceTests: XCTestCase {
         let expectationFoldersFetched = expectation(description: "expectationFoldersFetched")
         let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationFoldersFetched)
         let fetchService = FetchFoldersService(parentName: #function, backgrounder: mbg)
+        let fetchDelegate = FetchFoldersServiceTestDelegate()
+        fetchService.delegate = fetchDelegate
 
         guard let theCdAccount = shouldSucceed ? cdAccount : cdAccountDisfunctional else {
             XCTFail()
@@ -64,8 +74,10 @@ class FetchFoldersServiceTests: XCTestCase {
 
         let foldersCount2 = (CdFolder.all() ?? []).count
         if shouldSucceed {
+            XCTAssertGreaterThan(fetchDelegate.createdFoldersCount, 0)
             XCTAssertGreaterThan(foldersCount2, foldersCount1)
         } else {
+            XCTAssertEqual(fetchDelegate.createdFoldersCount, 0)
             XCTAssertEqual(foldersCount1, foldersCount1)
         }
     }

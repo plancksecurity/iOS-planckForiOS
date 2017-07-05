@@ -10,6 +10,13 @@ import CoreData
 
 import MessageModel
 
+protocol StoreFolderOperationDelegate: class {
+    /**
+     Called if the folder was unknown before, and therefore newly created.
+     */
+    func didCreate(cdFolder: CdFolder)
+}
+
 open class StoreFolderOperation: ConcurrentBaseOperation {
     public struct FolderInfo {
         let name: String
@@ -18,6 +25,8 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
     
     let folderInfo: FolderInfo
     let connectInfo: EmailConnectInfo
+
+    weak var delegate: StoreFolderOperationDelegate?
 
     init(connectInfo: EmailConnectInfo, folderInfo: FolderInfo) {
         self.folderInfo = folderInfo
@@ -46,11 +55,13 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
             server.imapFolderSeparator = folderInfo.separator
         }
 
-        let folder = CdFolder.insertOrUpdate(
+        if let (cdFolder, newlyCreated) = CdFolder.insertOrUpdate(
             folderName: folderInfo.name, folderSeparator: folderInfo.separator,
-            account: account)
-
-        if folder == nil {
+            account: account) {
+            if newlyCreated {
+                delegate?.didCreate(cdFolder: cdFolder)
+            }
+        } else {
             self.addError(Constants.errorCouldNotStoreFolder(comp, name: folderInfo.name))
         }
 
