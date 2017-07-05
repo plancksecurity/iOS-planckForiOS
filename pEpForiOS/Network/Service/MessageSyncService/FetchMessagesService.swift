@@ -10,8 +10,12 @@ import Foundation
 
 import MessageModel
 
+protocol FetchMessagesServiceDelegate: class {
+    func didFetch(message: Message)
+}
+
 class FetchMessagesService: AtomicImapService {
-    var fetchedMessageIDs = [MessageID]()
+    weak var delegate: FetchMessagesServiceDelegate?
 
     func execute(imapSyncData: ImapSyncData, folderName: String = ImapSync.defaultImapInboxName,
                  handler: ((_ error: Error?) -> ())? = nil) {
@@ -19,10 +23,9 @@ class FetchMessagesService: AtomicImapService {
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
         let fetchOp = FetchMessagesOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData,
-            folderName: folderName) { [weak self] message in
-                // TODO
-                if let mID = message.messageID {
-                    self?.fetchedMessageIDs.append(mID)
+            folderName: folderName) { [weak self] cdMessage in
+                if let del = self?.delegate, let msg = cdMessage.message() {
+                    del.didFetch(message: msg)
                 }
         }
         fetchOp.addDependency(loginOp)
