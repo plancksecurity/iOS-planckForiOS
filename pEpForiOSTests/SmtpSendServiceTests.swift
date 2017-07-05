@@ -82,7 +82,7 @@ class SmtpSendServiceTests: XCTestCase {
             verifyError(error)
             expectationSmtpExecuted.fulfill()
         }
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
     }
