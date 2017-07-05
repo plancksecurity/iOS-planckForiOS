@@ -8,8 +8,8 @@
 
 import Foundation
 
-class AtomicImapService {
-    public var error: Error?
+class AtomicImapService: ServiceErrorProtocol {
+    private(set) public var error: Error?
 
     let backgroundQueue = OperationQueue()
 
@@ -20,9 +20,9 @@ class AtomicImapService {
         self.parentName = parentName
         self.backgrounder = backgrounder
     }
-}
 
-extension AtomicImapService: ServiceErrorProtocol {
+    // MARK - ServiceErrorProtocol
+
     public func addError(_ error: Error) {
         if self.error == nil {
             self.error = error

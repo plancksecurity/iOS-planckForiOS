@@ -44,15 +44,24 @@ class SmtpSendServiceTests: XCTestCase {
         return (ImapSyncData(connectInfo: imapCI), SmtpSendData(connectInfo: smtpCI))
     }
 
-    func runSmtpSendService(
-        cdAccount theCdAccount: CdAccount, verifyError: @escaping (_ error: Error?) -> ()) {
-        guard let (imapSyncData, smtpSendData) = TestUtil.syncData(cdAccount: theCdAccount) else {
+    func runSmtpSendService(shouldSucceed: Bool, verifyError: @escaping (_ error: Error?) -> ()) {
+        guard let theCdAccount = cdAccount else {
             XCTFail()
             return
         }
 
         let outgoingMailsToSend = TestUtil.createOutgoingMails(
             cdAccount: theCdAccount, testCase: self)
+        XCTAssertGreaterThan(outgoingMailsToSend.count, 0)
+
+        if !shouldSucceed {
+            TestUtil.makeServersUnreachable(cdAccount: theCdAccount)
+        }
+
+        guard let (imapSyncData, smtpSendData) = TestUtil.syncData(cdAccount: theCdAccount) else {
+            XCTFail()
+            return
+        }
 
         let expBackgroundTaskFinishedAtLeastOnce = expectation(
             description: "expectationBackgrounded")
@@ -73,19 +82,19 @@ class SmtpSendServiceTests: XCTestCase {
             verifyError(error)
             expectationSmtpExecuted.fulfill()
         }
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
     }
 
     func testSmtpSendServiceOk() {
-        runSmtpSendService(cdAccount: cdAccount) { error in
+        runSmtpSendService(shouldSucceed: true) { error in
             XCTAssertNil(error)
         }
     }
 
     func testSmtpSendServiceError() {
-        runSmtpSendService(cdAccount: cdAccountDisfunctional) { error in
+        runSmtpSendService(shouldSucceed: false) { error in
             XCTAssertNotNil(error)
         }
     }

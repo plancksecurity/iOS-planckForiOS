@@ -358,4 +358,23 @@ class TestUtil {
         }
         return (ImapSyncData(connectInfo: imapCI), SmtpSendData(connectInfo: smtpCI))
     }
+
+    /**
+     Makes the servers for this account unreachable, for tests that expects failure.
+     */
+    static func makeServersUnreachable(cdAccount: CdAccount) {
+        let cdServers = cdAccount.cdServers() { server in
+            return Int(server.serverType) == Server.ServerType.imap.rawValue ||
+                Int(server.serverType) == Server.ServerType.smtp.rawValue
+        }
+        for cdServer in cdServers {
+            cdServer.address = "localhost"
+            cdServer.port = 2525
+        }
+        if let context = cdAccount.managedObjectContext {
+            Record.saveAndWait(context: context)
+        } else {
+            Record.saveAndWait()
+        }
+    }
 }

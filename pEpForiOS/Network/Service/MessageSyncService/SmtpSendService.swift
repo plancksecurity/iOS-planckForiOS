@@ -12,7 +12,7 @@ import MessageModel
 
 class SmtpSendService: AtomicImapService {
     /** On finish, the messageIDs of the messages that have been sent successfully */
-    private (set) public var successfullySentMessageIDs = [String]()
+    private(set) public var successfullySentMessageIDs = [String]()
 
     func execute(
         smtpSendData: SmtpSendData,

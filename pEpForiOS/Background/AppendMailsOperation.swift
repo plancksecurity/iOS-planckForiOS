@@ -28,7 +28,7 @@ open class AppendMailsOperation: ImapSyncOperation {
     var targetFolderName: String?
 
     /** On finish, the messageIDs of the messages that have been sent successfully */
-    private (set) var successfullySentMessageIDs = [String]()
+    private(set) var successfullySentMessageIDs = [String]()
 
     public init(parentName: String? = nil, imapSyncData: ImapSyncData,
                 errorContainer: ServiceErrorProtocol = ErrorContainer()) {

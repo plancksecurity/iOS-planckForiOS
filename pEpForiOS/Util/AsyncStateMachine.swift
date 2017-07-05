@@ -14,7 +14,7 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
         case unhandledStateEvent(S, E)
     }
 
-    private (set) public var state: S
+    private(set) public var state: S
     public var model: M
 
     public typealias MyStateHandler = (_ state: S, _ model: M) -> M
