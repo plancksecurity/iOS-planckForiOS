@@ -508,7 +508,7 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
-    //MARK: - SyncFlagsToServerOperation
+    // MARK: - SyncFlagsToServerOperation
 
     func testSyncFlagsToServerOperationEmpty() {
         fetchMessages()
@@ -1924,7 +1924,7 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
-    //MARK: - EncryptAndSendOperation
+    // MARK: - EncryptAndSendOperation
 
     func testEncryptAndSendOperation() {
         let _ = TestUtil.createOutgoingMails(cdAccount: cdAccount, testCase: self)
@@ -2430,7 +2430,7 @@ class SimpleOperationsTest: XCTestCase {
         }
     }
 
-    //MARK: - HELPER
+    // MARK: - HELPER
 
     func fetchMessages() {
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
