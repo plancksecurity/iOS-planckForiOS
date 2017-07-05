@@ -15,7 +15,7 @@ open class DeleteFoldersOperation: ImapSyncOperation {
     var account: CdAccount!
     var folderNamesToDelete = [String]()
     var currentFolderName: String?
-    weak var syncDelegate: DeleteFoldersSyncDelegate?
+    var syncDelegate: DeleteFoldersSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount) {
@@ -79,6 +79,11 @@ open class DeleteFoldersOperation: ImapSyncOperation {
             }
         }
         markAsFinished()
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 }
 

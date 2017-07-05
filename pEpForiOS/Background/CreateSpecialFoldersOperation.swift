@@ -36,7 +36,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
     var foldersToCreate = [FolderToCreate]()
     public var numberOfFoldersCreated = 0
     var folderSeparator: String?
-    weak var syncDelegate: CreateSpecialFoldersSyncDelegate?
+    var syncDelegate: CreateSpecialFoldersSyncDelegate?
 
     open override func main() {
         if !shouldRun() {
@@ -128,6 +128,11 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
             addIMAPError(potentialError)
             markAsFinished()
         }
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 }
 

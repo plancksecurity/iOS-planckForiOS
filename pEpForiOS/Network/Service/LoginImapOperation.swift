@@ -11,7 +11,7 @@ import UIKit
 import MessageModel
 
 open class LoginImapOperation: ImapSyncOperation {
-    weak var syncDelegate: LoginImapSyncDelegate?
+    var syncDelegate: LoginImapSyncDelegate?
     var capabilities: Set<String>?
 
     open override func main() {
@@ -37,6 +37,11 @@ open class LoginImapOperation: ImapSyncOperation {
                 markAsFinished()
             }
         }
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 }
 

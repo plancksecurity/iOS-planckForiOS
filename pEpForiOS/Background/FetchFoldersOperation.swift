@@ -31,7 +31,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    weak var syncDelegate: FetchFoldersSyncDelegate?
+    var syncDelegate: FetchFoldersSyncDelegate?
 
     weak var delegate: FetchFoldersOperationOperationDelegate?
 
@@ -100,6 +100,11 @@ open class FetchFoldersOperation: ImapSyncOperation {
         if let _ = sync?.folderNames {
             waitForFinished()
         }
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 }
 

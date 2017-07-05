@@ -20,7 +20,7 @@ open class AppendMailsOperation: ImapSyncOperation {
     lazy var session = PEPSession()
     lazy var context = Record.Context.background
 
-    weak var syncDelegate: AppendMailsSyncDelegate?
+    var syncDelegate: AppendMailsSyncDelegate?
 
     /** The object ID of the last handled message, so we can modify/delete it on success */
     var lastHandledMessageObjectID: NSManagedObjectID?
@@ -184,6 +184,11 @@ open class AppendMailsOperation: ImapSyncOperation {
         } else {
             markAsFinished()
         }
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 }
 

@@ -19,7 +19,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
     let folderToOpen: String
     let lastUID: UInt
     let firstUID: UInt
-    weak var syncDelegate: SyncMessagesSyncDelegate?
+    var syncDelegate: SyncMessagesSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, folderName: String, firstUID: UInt, lastUID: UInt) {
@@ -150,6 +150,11 @@ open class SyncMessagesOperation: ImapSyncOperation {
 
     func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         syncMessages(sync)
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 }
 

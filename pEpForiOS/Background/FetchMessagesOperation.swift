@@ -24,7 +24,7 @@ public typealias MessageFetchedBlock = (_ message: CdMessage) -> ()
 open class FetchMessagesOperation: ImapSyncOperation {
     var folderToOpen: String
     let messageFetchedBlock: MessageFetchedBlock?
-    weak var syncDelegate: FetchMessagesSyncDelegate?
+    var syncDelegate: FetchMessagesSyncDelegate?
 
     public init(
         parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
@@ -101,6 +101,11 @@ open class FetchMessagesOperation: ImapSyncOperation {
             sync.cancel()
         }
         super.cancel()
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 }
 

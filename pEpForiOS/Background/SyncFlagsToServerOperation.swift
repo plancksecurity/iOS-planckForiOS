@@ -16,7 +16,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     fileprivate var currentlyProcessedMessage: CdMessage?
     open var numberOfMessagesSynced = 0
 
-    weak var syncDelegate: SyncFlagsToServerSyncDelegate?
+    var syncDelegate: SyncFlagsToServerSyncDelegate?
 
     public init?(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                  imapSyncData: ImapSyncData, folder: CdFolder) {
@@ -217,6 +217,11 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         }
         Record.saveAndWait(context: context)
         self.numberOfMessagesSynced += 1
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 }
 

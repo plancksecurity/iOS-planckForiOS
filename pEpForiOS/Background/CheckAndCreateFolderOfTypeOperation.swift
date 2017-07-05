@@ -26,7 +26,7 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 
     var account: CdAccount?
 
-    weak var syncDelegate: CheckAndCreateFolderOfTypeSyncDelegate?
+    var syncDelegate: CheckAndCreateFolderOfTypeSyncDelegate?
 
     public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount, folderType: FolderType) {
@@ -69,6 +69,11 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
         } else {
             self.markAsFinished()
         }
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 }
 
