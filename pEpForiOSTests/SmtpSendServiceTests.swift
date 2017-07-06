@@ -44,7 +44,7 @@ class SmtpSendServiceTests: XCTestCase {
         return (ImapSyncData(connectInfo: imapCI), SmtpSendData(connectInfo: smtpCI))
     }
 
-    func runSmtpSendService(shouldSucceed: Bool, verifyError: @escaping (_ error: Error?) -> ()) {
+    func runSmtpSendService(shouldSucceed: Bool, verifyError: @escaping ServiceFinishedHandler) {
         guard let theCdAccount = cdAccount else {
             XCTFail()
             return

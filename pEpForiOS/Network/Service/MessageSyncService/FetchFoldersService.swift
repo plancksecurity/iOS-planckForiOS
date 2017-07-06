@@ -20,7 +20,7 @@ protocol FetchFoldersServiceDelegate: class {
 class FetchFoldersService: AtomicImapService {
     weak var delegate: FetchFoldersServiceDelegate?
 
-    func execute(imapSyncData: ImapSyncData, handler: ((_ error: Error?) -> ())? = nil) {
+    func execute(imapSyncData: ImapSyncData, handler: ServiceFinishedHandler? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "FetchFoldersService")
         let imapLoginOp = LoginImapOperation(parentName: parentName, errorContainer: self,
                                              imapSyncData: imapSyncData)

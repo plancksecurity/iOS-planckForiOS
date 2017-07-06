@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias ServiceFinishedHandler = (_ error: Error?) -> ()
+
 class AtomicImapService: ServiceErrorProtocol {
     private(set) public var error: Error?
 
@@ -19,6 +21,11 @@ class AtomicImapService: ServiceErrorProtocol {
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil) {
         self.parentName = parentName
         self.backgrounder = backgrounder
+    }
+
+    func handle(error: Error, taskID: BackgroundTaskID?, handler: ServiceFinishedHandler?) {
+        backgrounder?.endBackgroundTask(taskID)
+        handler?(error)
     }
 
     // MARK - ServiceErrorProtocol

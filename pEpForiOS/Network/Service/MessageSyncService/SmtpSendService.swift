@@ -17,7 +17,7 @@ class SmtpSendService: AtomicImapService {
     func execute(
         smtpSendData: SmtpSendData,
         imapSyncData: ImapSyncData,
-        handler: ((_ error: Error?) -> ())? = nil) {
+        handler: ServiceFinishedHandler? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "SmtpSendService")
         let context = Record.Context.background
         context.perform { [weak self] in
@@ -42,7 +42,7 @@ class SmtpSendService: AtomicImapService {
     func haveMailsToEncrypt(smtpSendData: SmtpSendData,
                             imapSyncData: ImapSyncData,
                             bgID: BackgroundTaskID?,
-                            handler: ((_ error: Error?) -> ())? = nil) {
+                            handler: ServiceFinishedHandler? = nil) {
         let smtpLoginOp = LoginSmtpOperation(
             parentName: parentName, smtpSendData: smtpSendData, errorContainer: self)
         let sendOp = EncryptAndSendOperation(

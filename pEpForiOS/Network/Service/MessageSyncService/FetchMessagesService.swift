@@ -18,7 +18,7 @@ class FetchMessagesService: AtomicImapService {
     weak var delegate: FetchMessagesServiceDelegate?
 
     func execute(imapSyncData: ImapSyncData, folderName: String = ImapSync.defaultImapInboxName,
-                 handler: ((_ error: Error?) -> ())? = nil) {
+                 handler: ServiceFinishedHandler? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "FetchMessagesService")
         let loginOp = LoginImapOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
