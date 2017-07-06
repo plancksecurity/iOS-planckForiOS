@@ -33,13 +33,13 @@ open class SyncMessagesOperation: ImapSyncOperation {
     public convenience init?(parentName: String? = nil,
                              errorContainer: ServiceErrorProtocol = ErrorContainer(),
                              imapSyncData: ImapSyncData,
-                             folder: CdFolder, firstUID: UInt, lastUID: UInt) {
+                             folder: CdFolder) {
         guard let folderName = folder.name else {
             return nil
         }
         self.init(parentName: parentName, errorContainer: errorContainer,
                   imapSyncData: imapSyncData, folderName: folderName,
-                  firstUID: firstUID, lastUID: lastUID)
+                  firstUID: folder.firstUID(), lastUID: folder.lastUID())
         folderID = folder.objectID
     }
 

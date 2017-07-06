@@ -248,7 +248,7 @@ open class ImapSyncMachine {
                 let syncMessagesOp = SyncMessagesOperation(
                     parentName: #function, errorContainer: errorContainer,
                     imapSyncData: self.imapSyncData,
-                    folder: cdFolder, firstUID: cdFolder.firstUID(), lastUID: cdFolder.lastUID())
+                    folder: cdFolder)
                 else {
                     self.transition(newState: .error(MachineError.internalSyncMessagesProblem))
                     return

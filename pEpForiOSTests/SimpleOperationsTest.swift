@@ -173,8 +173,7 @@ class SimpleOperationsTest: XCTestCase {
         let expMailsSynced = expectation(description: "expMailsSynced")
 
         guard let op = SyncMessagesOperation(
-            imapSyncData: imapSyncData, folder: folder, firstUID: folder.firstUID(),
-            lastUID: folder.lastUID()) else {
+            imapSyncData: imapSyncData, folder: folder) else {
                 XCTFail()
                 return
         }
@@ -208,7 +207,7 @@ class SimpleOperationsTest: XCTestCase {
         let expMailsSynced = expectation(description: "expMailsSynced")
 
         guard let op = SyncMessagesOperation(
-            imapSyncData: imapSyncData, folder: folder, firstUID: 10, lastUID: 1) else {
+            imapSyncData: imapSyncData, folder: folder) else {
                 XCTFail()
                 return
         }
