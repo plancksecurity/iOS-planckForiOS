@@ -377,4 +377,53 @@ class TestUtil {
             Record.saveAndWait()
         }
     }
+
+    class FetchMessagesServiceTestDelegate: FetchMessagesServiceDelegate {
+        var fetchedMessages = [Message]()
+
+        func didFetch(message: Message) {
+            fetchedMessages.append(message)
+        }
+    }
+
+    static func runFetchTest(testCase: XCTestCase, cdAccount: CdAccount,
+                             useDisfunctionalAccount: Bool,
+                             folderName: String = ImapSync.defaultImapInboxName,
+                             expectError: Bool) {
+        let expectationServiceRan = testCase.expectation(description: "expectationServiceRan")
+        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
+        let service = FetchMessagesService(parentName: #function, backgrounder: mbg)
+        let testDelegate = FetchMessagesServiceTestDelegate()
+        service.delegate = testDelegate
+
+        if useDisfunctionalAccount {
+            TestUtil.makeServersUnreachable(cdAccount: cdAccount)
+        }
+
+        guard let (imapSyncData, _) = TestUtil.syncData(cdAccount: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        let expServiceBlockInvoked = testCase.expectation(description: "expServiceBlockInvoked")
+        service.execute(imapSyncData: imapSyncData, folderName: folderName) { error in
+            expServiceBlockInvoked.fulfill()
+
+            if useDisfunctionalAccount || expectError {
+                XCTAssertNotNil(error)
+            } else {
+                XCTAssertNil(error)
+            }
+        }
+
+        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+
+        if useDisfunctionalAccount || expectError {
+            XCTAssertEqual(testDelegate.fetchedMessages.count, 0)
+        } else {
+            XCTAssertGreaterThan(testDelegate.fetchedMessages.count, 0)
+        }
+    }
 }
