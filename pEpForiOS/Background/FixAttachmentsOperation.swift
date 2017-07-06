@@ -16,56 +16,91 @@ import MessageModel
  Downloads attachment content with nil data, also fixes nil sizes.
  */
 open class FixAttachmentsOperation: ConcurrentBaseOperation {
+    let pInvalidLength = NSPredicate(format: "length = 0")
+    let pInvalidData = NSPredicate(format: "data = nil")
+
     var openFetchCount = 0
 
     override open func main() {
         privateMOC.perform {
-            self.doTheWork()
+            self.fixAttachments(context: self.privateMOC)
         }
     }
 
-    func doTheWork() {
-        let p1 = NSPredicate(format: "length = 0")
-        guard let cdAttachments1 = CdAttachment.all(predicate: p1, orderedBy: nil, in: privateMOC)
-            as? [CdAttachment] else {
-                markAsFinished()
-                return
-        }
-        for cdAttach in cdAttachments1 {
-            if let theData = cdAttach.data {
-                cdAttach.length = Int64(theData.length)
-                Record.saveAndWait(context: privateMOC)
+    func fixZeroSizeAttachments(context: NSManagedObjectContext) -> Int {
+        var changedAttachmentsCount = 0
+
+        if let cdAttachments1 = CdAttachment.all(predicate: pInvalidLength, orderedBy: nil, in: context)
+            as? [CdAttachment] {
+            for cdAttach in cdAttachments1 {
+                if let theData = cdAttach.data {
+                    changedAttachmentsCount += 1
+                    cdAttach.length = Int64(theData.length)
+                }
             }
         }
 
-        let p2 = NSPredicate(format: "data = nil")
-        guard let cdAttachments2 = CdAttachment.all(predicate: p2, orderedBy: nil, in: privateMOC)
+        return changedAttachmentsCount
+    }
+
+    func fixNilDataAttachments(context: NSManagedObjectContext, handler: @escaping (Int) -> ()) {
+        guard let cdAttachments2 = CdAttachment.all(predicate: pInvalidData, orderedBy: nil, in: context)
             as? [CdAttachment] else {
-                markAsFinished()
+                handler(0)
                 return
         }
-        openFetchCount = cdAttachments2.count
-        for cdAttach in cdAttachments2 {
-            if let urlString = cdAttach.url, let theURL = URL(string: urlString) {
-                FixAttachmentsOperation.retrieveData(fromURL: theURL) { data in
-                    if let theData = data {
-                        self.privateMOC.performAndWait {
-                            cdAttach.data = theData as NSData
-                            Record.saveAndWait(context: self.privateMOC)
-                            self.openFetchCount -= 1
-                            if self.openFetchCount == 0 {
-                                self.markAsFinished()
+        let totalCount = cdAttachments2.count
+        if totalCount == 0 {
+            handler(0)
+        } else {
+            openFetchCount = totalCount
+            for cdAttach in cdAttachments2 {
+                if let urlString = cdAttach.url, let theURL = URL(string: urlString) {
+                    FixAttachmentsOperation.retrieveData(fromURL: theURL) { data in
+                        if let theData = data {
+                            context.perform {
+                                cdAttach.data = theData as NSData
+                                Record.saveAndWait(context: context)
+                                self.openFetchCount -= 1
+                                if self.openFetchCount == 0 {
+                                    handler(totalCount)
+                                }
                             }
                         }
                     }
+                } else {
+                    Log.error(component: comp, errorString: "CdAttachment with invalid URL")
+                    openFetchCount -= 1
                 }
-            } else {
-                Log.error(component: comp, errorString: "CdAttachment with invalid URL")
-                openFetchCount -= 1
             }
         }
-        if openFetchCount == 0 {
-            markAsFinished()
+    }
+
+    /**
+     Might be useful for debugging. Not actively called anymore.
+     */
+    func checkValidity(context: NSManagedObjectContext) {
+        let p = NSCompoundPredicate(orPredicateWithSubpredicates: [pInvalidLength, pInvalidData])
+        let cdInvalidAttachments = CdAttachment.all(predicate: p, orderedBy: nil, in: context)
+            as? [CdAttachment] ?? []
+        if cdInvalidAttachments.count > 0 {
+            Log.shared.error(
+                component: #function,
+                errorString: "Still \(cdInvalidAttachments.count) invalid attachments")
+        }
+    }
+
+    func fixAttachments(context: NSManagedObjectContext) {
+        fixNilDataAttachments(context: context) { countFixedData in
+            context.perform { [weak self] in
+                let countFixedSize = self?.fixZeroSizeAttachments(context: context) ?? 0
+                Log.info(component: #function,
+                         content: "Loaded \(countFixedData), fixed size for \(countFixedSize)")
+                if countFixedData + countFixedSize > 0 {
+                    context.saveAndLogErrors()
+                }
+                self?.markAsFinished()
+            }
         }
     }
 

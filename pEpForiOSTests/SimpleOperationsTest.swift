@@ -2392,7 +2392,7 @@ class SimpleOperationsTest: XCTestCase {
     //fails on first run when the an account was setup on
     func testFixAttachmentsOperation() {
         let cdFolder = CdFolder.create()
-        cdFolder.name = "Whatever"
+        cdFolder.name = "AttachmentTestFolder"
         cdFolder.uuid = "1"
         cdFolder.folderType = FolderType.inbox.rawValue
         cdFolder.account = cdAccount
@@ -2400,7 +2400,7 @@ class SimpleOperationsTest: XCTestCase {
         let cdMsg = CdMessage.create(messageID: "2", uid: 1, parent: cdFolder)
 
         let cdAttachWithoutSize = CdAttachment.create()
-        cdAttachWithoutSize.data = "Some bytes".data(using: .utf8) as NSData?
+        cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8) as NSData?
         cdAttachWithoutSize.message = cdMsg
         cdAttachWithoutSize.length = 0
 
@@ -2418,6 +2418,8 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertFalse(fixAttachmentsOp.hasErrors())
         })
+
+        Record.Context.default.refreshAllObjects()
 
         guard let allAttachments = CdAttachment.all() as? [CdAttachment] else {
             XCTFail()
