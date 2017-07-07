@@ -35,7 +35,7 @@ extension FetchFoldersService: FetchFoldersOperationOperationDelegate {
     }
 }
 
-extension FetchFoldersService: ServiceProtocol {
+extension FetchFoldersService: ServiceExecutionProtocol {
     func execute(handler: ServiceFinishedHandler? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "FetchFoldersService")
         let imapLoginOp = LoginImapOperation(parentName: parentName, errorContainer: self,

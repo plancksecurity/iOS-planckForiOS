@@ -51,7 +51,7 @@ class SmtpSendService: AtomicImapService {
     }
 }
 
-extension SmtpSendService: ServiceProtocol {
+extension SmtpSendService: ServiceExecutionProtocol {
     func execute(handler: ServiceFinishedHandler? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "SmtpSendService")
         let context = Record.Context.background
