@@ -390,12 +390,6 @@ class TestUtil {
                              useDisfunctionalAccount: Bool,
                              folderName: String = ImapSync.defaultImapInboxName,
                              expectError: Bool) {
-        let expectationServiceRan = testCase.expectation(description: "expectationServiceRan")
-        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
-        let service = FetchMessagesService(parentName: #function, backgrounder: mbg)
-        let testDelegate = FetchMessagesServiceTestDelegate()
-        service.delegate = testDelegate
-
         if useDisfunctionalAccount {
             TestUtil.makeServersUnreachable(cdAccount: cdAccount)
         }
@@ -405,8 +399,16 @@ class TestUtil {
             return
         }
 
+        let expectationServiceRan = testCase.expectation(description: "expectationServiceRan")
+        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
+
+        let service = FetchMessagesService(parentName: #function, backgrounder: mbg,
+                                           imapSyncData: imapSyncData, folderName: folderName)
+        let testDelegate = FetchMessagesServiceTestDelegate()
+        service.delegate = testDelegate
+
         let expServiceBlockInvoked = testCase.expectation(description: "expServiceBlockInvoked")
-        service.execute(imapSyncData: imapSyncData, folderName: folderName) { error in
+        service.execute() { error in
             expServiceBlockInvoked.fulfill()
 
             if expectError {

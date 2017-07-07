@@ -12,19 +12,19 @@ import CoreData
 import MessageModel
 
 class SyncExistingMessagesService: AtomicImapService {
-    func execute(imapSyncData: ImapSyncData, folderName: String = ImapSync.defaultImapInboxName,
-                 handler: ServiceFinishedHandler? = nil) {
-        let bgID = backgrounder?.beginBackgroundTask(taskName: "SyncExistingMessagesService")
-        let context = Record.Context.background
-        context.perform { [weak self] in
-            self?.executeInternal(context: context, taskID: bgID, imapSyncData: imapSyncData,
-                                  folderName: folderName, handler: handler)
-        }
+    let imapSyncData: ImapSyncData
+    let folderName: String
+
+    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+         imapSyncData: ImapSyncData,
+         folderName: String = ImapSync.defaultImapInboxName) {
+        self.imapSyncData = imapSyncData
+        self.folderName = folderName
+        super.init(parentName: parentName, backgrounder: backgrounder)
     }
 
     func executeInternal(
-        context: NSManagedObjectContext,
-        taskID: BackgroundTaskID?, imapSyncData: ImapSyncData, folderName: String,
+        context: NSManagedObjectContext, taskID: BackgroundTaskID?,
         handler: ServiceFinishedHandler?) {
         guard let cdAccount = context.object(with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
@@ -54,5 +54,15 @@ class SyncExistingMessagesService: AtomicImapService {
         }
 
         backgroundQueue.addOperations([loginOp, syncOp], waitUntilFinished: false)
+    }
+}
+
+extension SyncExistingMessagesService: ServiceExecutionProtocol {
+    func execute(handler: ServiceFinishedHandler? = nil) {
+        let bgID = backgrounder?.beginBackgroundTask(taskName: "SyncExistingMessagesService")
+        let context = Record.Context.background
+        context.perform { [weak self] in
+            self?.executeInternal(context: context, taskID: bgID, handler: handler)
+        }
     }
 }

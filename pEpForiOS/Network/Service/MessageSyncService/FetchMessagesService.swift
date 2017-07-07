@@ -17,8 +17,20 @@ protocol FetchMessagesServiceDelegate: class {
 class FetchMessagesService: AtomicImapService {
     weak var delegate: FetchMessagesServiceDelegate?
 
-    func execute(imapSyncData: ImapSyncData, folderName: String = ImapSync.defaultImapInboxName,
-                 handler: ServiceFinishedHandler? = nil) {
+    let imapSyncData: ImapSyncData
+    let folderName: String
+
+    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+                  imapSyncData: ImapSyncData,
+                  folderName: String = ImapSync.defaultImapInboxName) {
+        self.imapSyncData = imapSyncData
+        self.folderName = folderName
+        super.init(parentName: parentName, backgrounder: backgrounder)
+    }
+}
+
+extension FetchMessagesService: ServiceExecutionProtocol {
+    func execute(handler: ServiceFinishedHandler? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "FetchMessagesService")
         let loginOp = LoginImapOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)

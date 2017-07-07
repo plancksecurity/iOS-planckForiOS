@@ -35,10 +35,6 @@ class SyncExistingMessagesServiceTests: XCTestCase {
                               folderName:  ImapSync.defaultImapInboxName,
                               expectError: false)
 
-        let expectationBackgrounded = expectation(description: "expectationBackgrounded")
-        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationBackgrounded)
-        let service = SyncExistingMessagesService(parentName: #function, backgrounder: mbg)
-
         if useDisfunctionalAccount {
             TestUtil.makeServersUnreachable(cdAccount: cdAccount)
         }
@@ -48,7 +44,13 @@ class SyncExistingMessagesServiceTests: XCTestCase {
             return
         }
 
-        service.execute(imapSyncData: imapSyncData, folderName: folderName) { error in
+        let expectationBackgrounded = expectation(description: "expectationBackgrounded")
+        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationBackgrounded)
+        let service = SyncExistingMessagesService(
+            parentName: #function, backgrounder: mbg, imapSyncData: imapSyncData,
+            folderName: folderName)
+
+        service.execute() { error in
             if expectError {
                 XCTAssertNotNil(error)
             } else {
