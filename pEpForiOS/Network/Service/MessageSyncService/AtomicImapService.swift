@@ -10,9 +10,11 @@ import Foundation
 
 typealias ServiceFinishedHandler = (_ error: Error?) -> ()
 
-class AtomicImapService: ServiceErrorProtocol {
-    private(set) public var error: Error?
+protocol ServiceProtocol: ServiceErrorProtocol {
+    func execute(handler: ServiceFinishedHandler?)
+}
 
+class AtomicImapService: ServiceErrorProtocol {
     let backgroundQueue = OperationQueue()
 
     let parentName: String?
@@ -29,6 +31,8 @@ class AtomicImapService: ServiceErrorProtocol {
     }
 
     // MARK - ServiceErrorProtocol
+
+    private(set) public var error: Error?
 
     public func addError(_ error: Error) {
         if self.error == nil {
