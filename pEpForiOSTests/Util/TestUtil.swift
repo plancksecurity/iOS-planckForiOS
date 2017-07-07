@@ -269,8 +269,8 @@ class TestUtil {
                 return []
             }
             let imapSyncData = ImapSyncData(connectInfo: imapCI)
-            let fs = FetchFoldersService(parentName: #function)
-            fs.execute(imapSyncData: imapSyncData) { error in
+            let fs = FetchFoldersService(parentName: #function, imapSyncData: imapSyncData)
+            fs.execute() { error in
                 XCTAssertNil(error)
                 expectationFoldersFetched.fulfill()
             }

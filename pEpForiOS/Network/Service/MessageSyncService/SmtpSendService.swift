@@ -10,20 +10,48 @@ import Foundation
 
 import MessageModel
 
-class SmtpSendService: AtomicImapService, ServiceProtocol {
+class SmtpSendService: AtomicImapService {
     /** On finish, the messageIDs of the messages that have been sent successfully */
     private(set) public var successfullySentMessageIDs = [String]()
 
     let imapSyncData: ImapSyncData
     let smtpSendData: SmtpSendData
 
-    init(parentName: String?, backgrounder: BackgroundTaskProtocol?,
+    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
         self.imapSyncData = imapSyncData
         self.smtpSendData = smtpSendData
         super.init(parentName: parentName, backgrounder: backgrounder)
     }
 
+    func haveMailsToEncrypt(smtpSendData: SmtpSendData,
+                            imapSyncData: ImapSyncData,
+                            bgID: BackgroundTaskID?,
+                            handler: ServiceFinishedHandler? = nil) {
+        let smtpLoginOp = LoginSmtpOperation(
+            parentName: parentName, smtpSendData: smtpSendData, errorContainer: self)
+        let sendOp = EncryptAndSendOperation(
+            parentName: parentName, smtpSendData: smtpSendData, errorContainer: self)
+        sendOp.addDependency(smtpLoginOp)
+
+        let imapLoginOp = LoginImapOperation(
+            parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
+        imapLoginOp.addDependency(sendOp)
+        let appendOp = AppendMailsOperation(
+            parentName: parentName, imapSyncData: imapSyncData, errorContainer: self)
+        appendOp.addDependency(imapLoginOp)
+        appendOp.completionBlock = { [weak self] in
+            self?.successfullySentMessageIDs = appendOp.successfullySentMessageIDs
+            handler?(self?.error)
+            self?.backgrounder?.endBackgroundTask(bgID)
+        }
+
+        backgroundQueue.addOperations(
+            [smtpLoginOp, sendOp, imapLoginOp, appendOp], waitUntilFinished: false)
+    }
+}
+
+extension SmtpSendService: ServiceProtocol {
     func execute(handler: ServiceFinishedHandler? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "SmtpSendService")
         let context = Record.Context.background
@@ -52,31 +80,5 @@ class SmtpSendService: AtomicImapService, ServiceProtocol {
                 self?.backgrounder?.endBackgroundTask(bgID)
             }
         }
-    }
-
-    func haveMailsToEncrypt(smtpSendData: SmtpSendData,
-                            imapSyncData: ImapSyncData,
-                            bgID: BackgroundTaskID?,
-                            handler: ServiceFinishedHandler? = nil) {
-        let smtpLoginOp = LoginSmtpOperation(
-            parentName: parentName, smtpSendData: smtpSendData, errorContainer: self)
-        let sendOp = EncryptAndSendOperation(
-            parentName: parentName, smtpSendData: smtpSendData, errorContainer: self)
-        sendOp.addDependency(smtpLoginOp)
-
-        let imapLoginOp = LoginImapOperation(
-            parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
-        imapLoginOp.addDependency(sendOp)
-        let appendOp = AppendMailsOperation(
-            parentName: parentName, imapSyncData: imapSyncData, errorContainer: self)
-        appendOp.addDependency(imapLoginOp)
-        appendOp.completionBlock = { [weak self] in
-            self?.successfullySentMessageIDs = appendOp.successfullySentMessageIDs
-            handler?(self?.error)
-            self?.backgrounder?.endBackgroundTask(bgID)
-        }
-
-        backgroundQueue.addOperations(
-            [smtpLoginOp, sendOp, imapLoginOp, appendOp], waitUntilFinished: false)
     }
 }

@@ -47,9 +47,6 @@ class FetchFoldersServiceTests: XCTestCase {
         XCTAssertEqual(foldersCount1, 0)
         let expectationServiceRan = expectation(description: "expectationServiceRan")
         let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
-        let fetchService = FetchFoldersService(parentName: #function, backgrounder: mbg)
-        let fetchDelegate = FetchFoldersServiceTestDelegate()
-        fetchService.delegate = fetchDelegate
 
         guard let theCdAccount = shouldSucceed ? cdAccount : cdAccountDisfunctional else {
             XCTFail()
@@ -60,7 +57,12 @@ class FetchFoldersServiceTests: XCTestCase {
             return
         }
 
-        fetchService.execute(imapSyncData: imapSyncData) { error in
+        let fetchService = FetchFoldersService(
+            parentName: #function, backgrounder: mbg, imapSyncData: imapSyncData)
+        let fetchDelegate = FetchFoldersServiceTestDelegate()
+        fetchService.delegate = fetchDelegate
+
+        fetchService.execute() { error in
             if shouldSucceed {
                 XCTAssertNil(error)
             } else {

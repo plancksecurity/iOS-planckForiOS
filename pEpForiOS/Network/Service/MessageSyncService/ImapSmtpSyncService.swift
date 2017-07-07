@@ -66,8 +66,8 @@ class ImapSmtpSyncService {
         if state == .initial {
             state = .fetchingInitialFolders
             let fetchFoldersService = FetchFoldersService(
-                parentName: parentName, backgrounder: backgrounder)
-            fetchFoldersService.execute(imapSyncData: imapSyncData) { [weak self] error in
+                parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
+            fetchFoldersService.execute() { [weak self] error in
                 self?.handleFetchFoldersFinished(service: fetchFoldersService, error: error)
             }
         }
