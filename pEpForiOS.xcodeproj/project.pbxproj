@@ -40,6 +40,8 @@
 		430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73661E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift */; };
 		430E0BE71EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */; };
 		430E5F201EBC87A700E5D5D3 /* LanguageListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430E5F1F1EBC87A700E5D5D3 /* LanguageListTableViewCell.swift */; };
+		430EA5FA1F0FAD7700F816D4 /* ServiceChainExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EA5F91F0FAD7700F816D4 /* ServiceChainExecutor.swift */; };
+		430EA5FC1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EA5FB1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift */; };
 		431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B41CC0FCA40007639D /* StoreFolderOperation.swift */; };
 		431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B61CC11D6A0007639D /* BaseOperation.swift */; };
 		431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */; };
@@ -330,6 +332,8 @@
 		430D73661E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentToLocalURLOperation.swift; sourceTree = "<group>"; };
 		430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableDictionary+pEp.swift"; sourceTree = "<group>"; };
 		430E5F1F1EBC87A700E5D5D3 /* LanguageListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListTableViewCell.swift; sourceTree = "<group>"; };
+		430EA5F91F0FAD7700F816D4 /* ServiceChainExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceChainExecutor.swift; sourceTree = "<group>"; };
+		430EA5FB1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceChainExecutorTests.swift; sourceTree = "<group>"; };
 		431144B41CC0FCA40007639D /* StoreFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreFolderOperation.swift; sourceTree = "<group>"; };
 		431144B61CC11D6A0007639D /* BaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseOperation.swift; sourceTree = "<group>"; };
 		431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorePrefetchedMailOperation.swift; sourceTree = "<group>"; };
@@ -792,6 +796,7 @@
 				4347A9181EE699D500C18233 /* ImapSyncMachine.swift */,
 				430841291EF3FDEA00698229 /* InboxSync.swift */,
 				434F513D1EF7FE8700FEB837 /* DelayOperation.swift */,
+				430EA5F91F0FAD7700F816D4 /* ServiceChainExecutor.swift */,
 			);
 			path = MessageSyncService;
 			sourceTree = "<group>";
@@ -923,6 +928,7 @@
 				43C579EC1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift */,
 				43200D9E1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift */,
 				432A3E431F0E793A00834749 /* SyncExistingMessagesServiceTests.swift */,
+				430EA5FB1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -1583,6 +1589,7 @@
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
+				430EA5FA1F0FAD7700F816D4 /* ServiceChainExecutor.swift in Sources */,
 				432AC3061ECB0C44007DC418 /* CWIMAPMessage+pEp.swift in Sources */,
 				431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */,
 				430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */,
@@ -1641,6 +1648,7 @@
 				43FAA0D41EC9CBC0005BFC4B /* DecryptionTests.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
+				430EA5FC1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift in Sources */,
 				436795F81EE98B9A00B03E23 /* MessageReevalutionTests.swift in Sources */,
 				43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */,
 				431FEEB11F03B04300FE37FF /* MockBackgrounder.swift in Sources */,

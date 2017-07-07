@@ -58,7 +58,7 @@ class SyncExistingMessagesServiceTests: XCTestCase {
             }
         }
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
     }

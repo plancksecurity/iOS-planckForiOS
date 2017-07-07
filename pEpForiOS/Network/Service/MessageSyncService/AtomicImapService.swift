@@ -10,7 +10,7 @@ import Foundation
 
 typealias ServiceFinishedHandler = (_ error: Error?) -> ()
 
-protocol ServiceExecutionProtocol: ServiceErrorProtocol {
+protocol ServiceExecutionProtocol {
     func execute(handler: ServiceFinishedHandler?)
 }
 
