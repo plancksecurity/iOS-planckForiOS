@@ -409,7 +409,7 @@ class TestUtil {
         service.execute(imapSyncData: imapSyncData, folderName: folderName) { error in
             expServiceBlockInvoked.fulfill()
 
-            if useDisfunctionalAccount || expectError {
+            if expectError {
                 XCTAssertNotNil(error)
             } else {
                 XCTAssertNil(error)
@@ -420,7 +420,7 @@ class TestUtil {
             XCTAssertNil(error)
         }
 
-        if useDisfunctionalAccount || expectError {
+        if expectError {
             XCTAssertEqual(testDelegate.fetchedMessages.count, 0)
         } else {
             XCTAssertGreaterThan(testDelegate.fetchedMessages.count, 0)

@@ -40,8 +40,9 @@ class SyncExistingMessagesService: AtomicImapService {
         let loginOp = LoginImapOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
 
-        guard let syncOp = SyncMessagesOperation(imapSyncData: imapSyncData, folder: cdFolder)
-            else {
+        guard let syncOp = SyncMessagesOperation(
+            parentName: parentName, errorContainer: self, imapSyncData: imapSyncData,
+            folder: cdFolder) else {
                 handle(error: OperationError.illegalParameter, taskID: taskID, handler: handler)
                 return
         }

@@ -34,7 +34,7 @@ class FetchMessagesServiceTests: XCTestCase {
 
     func testBasicFetchAccountError() {
         TestUtil.runFetchTest(testCase: self, cdAccount: cdAccount, useDisfunctionalAccount: true,
-                              folderName: "inBOX", expectError: false)
+                              folderName: "inBOX", expectError: true)
     }
 
     func testBasicFetchError() {
