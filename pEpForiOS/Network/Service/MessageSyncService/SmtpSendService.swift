@@ -10,17 +10,32 @@ import Foundation
 
 import MessageModel
 
-class SmtpSendService: AtomicImapService {
+class SmtpSendService: AtomicImapService, ServiceProtocol {
     /** On finish, the messageIDs of the messages that have been sent successfully */
     private(set) public var successfullySentMessageIDs = [String]()
 
-    func execute(
-        smtpSendData: SmtpSendData,
-        imapSyncData: ImapSyncData,
-        handler: ServiceFinishedHandler? = nil) {
+    let imapSyncData: ImapSyncData
+    let smtpSendData: SmtpSendData
+
+    init(parentName: String?, backgrounder: BackgroundTaskProtocol?,
+         imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
+        self.imapSyncData = imapSyncData
+        self.smtpSendData = smtpSendData
+        super.init(parentName: parentName, backgrounder: backgrounder)
+    }
+
+    func execute(handler: ServiceFinishedHandler? = nil) {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "SmtpSendService")
         let context = Record.Context.background
         context.perform { [weak self] in
+            guard
+                let imapSyncData = self?.imapSyncData,
+                let smtpSendData = self?.smtpSendData else {
+                    self?.handle(
+                        error: OperationError.illegalParameter, taskID: bgID, handler: handler)
+                    return
+            }
+
             guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
                 as? CdAccount else {
                     handler?(CoreDataError.couldNotFindAccount)

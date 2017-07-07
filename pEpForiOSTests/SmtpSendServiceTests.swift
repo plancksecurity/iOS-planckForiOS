@@ -68,10 +68,11 @@ class SmtpSendServiceTests: XCTestCase {
         let backgrounder = MockBackgrounder(
             expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinishedAtLeastOnce)
 
-        let smtpService = SmtpSendService(parentName: #function, backgrounder: backgrounder)
+        let smtpService = SmtpSendService(
+            parentName: #function, backgrounder: backgrounder,
+            imapSyncData: imapSyncData, smtpSendData: smtpSendData)
         let expectationSmtpExecuted = expectation(description: "expectationSmtpExecuted")
-        smtpService.execute(
-        smtpSendData: smtpSendData, imapSyncData: imapSyncData) { error in
+        smtpService.execute() { error in
             if error == nil {
                 XCTAssertEqual(smtpService.successfullySentMessageIDs.count,
                                outgoingMailsToSend.count)

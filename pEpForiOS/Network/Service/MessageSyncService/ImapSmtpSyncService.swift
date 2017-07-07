@@ -83,9 +83,10 @@ class ImapSmtpSyncService {
         if readyForSend {
             sendRequested = false
             state = .sending
-            let sendService = SmtpSendService(parentName: parentName, backgrounder: backgrounder)
-            sendService.execute(smtpSendData: smtpSendData, imapSyncData: imapSyncData)
-            { [weak self] error in
+            let sendService = SmtpSendService(
+                parentName: parentName, backgrounder: backgrounder,
+                imapSyncData: imapSyncData, smtpSendData: smtpSendData)
+            sendService.execute() { [weak self] error in
                 self?.handleSendRequestFinished(service: sendService, error: error)
             }
         } else {
