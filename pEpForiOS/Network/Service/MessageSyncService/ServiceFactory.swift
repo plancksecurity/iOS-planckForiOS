@@ -8,16 +8,20 @@
 
 import Foundation
 
+import MessageModel
+
 class ServiceFactory {
     func initialSync(
         parentName: String?, backgrounder: BackgroundTaskProtocol?,
-        imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) -> ServiceExecutionProtocol {
+        imapSyncData: ImapSyncData, smtpSendData: SmtpSendData,
+        smtpSendServiceDelegate: SmtpSendServiceDelegate?) -> ServiceExecutionProtocol {
+        let fetchFoldersService = FetchFoldersService(
+            parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
+
         let smtpService = SmtpSendService(
             parentName: #function, backgrounder: backgrounder,
             imapSyncData: imapSyncData, smtpSendData: smtpSendData)
-
-        let fetchFoldersService = FetchFoldersService(
-            parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
+        smtpService.delegate = smtpSendServiceDelegate
 
         let fetchMessagesService = FetchMessagesService(
             parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
@@ -26,7 +30,7 @@ class ServiceFactory {
             parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
 
         let chainedService = ServiceChainExecutor()
-        chainedService.add(services: [smtpService, fetchFoldersService,
+        chainedService.add(services: [fetchFoldersService, smtpService,
                                       fetchMessagesService, syncMessagesService])
 
         return chainedService

@@ -54,9 +54,11 @@ class ServiceChainExecutorTests: XCTestCase {
         let backgrounder = MockBackgrounder(
             expBackgroundTaskFinishedAtLeastOnce: expBackgroundAllTasksBackgrounded)
 
+        let smtpSentDelegate = TestSmtpSendServiceDelegate()
         let smtpService = SmtpSendService(
             parentName: #function, backgrounder: backgrounder,
             imapSyncData: imapSyncData, smtpSendData: smtpSendData)
+        smtpService.delegate = smtpSentDelegate
 
         let fetchFoldersService = FetchFoldersService(
             parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
@@ -71,13 +73,14 @@ class ServiceChainExecutorTests: XCTestCase {
         chainedService.add(services: [smtpService, fetchFoldersService,
                                       fetchMessagesService, syncMessagesService])
 
-        let expectationAllServicesExecuted = expectation(description: "expectationAllServicesExecuted")
+        let expectationAllServicesExecuted = expectation(
+            description: "expectationAllServicesExecuted")
         chainedService.execute() { error in
             if error == nil {
-                XCTAssertEqual(smtpService.successfullySentMessageIDs.count,
+                XCTAssertEqual(smtpSentDelegate.successfullySentMessageIDs.count,
                                outgoingMailsToSend.count)
             } else {
-                XCTAssertLessThan(smtpService.successfullySentMessageIDs.count,
+                XCTAssertLessThan(smtpSentDelegate.successfullySentMessageIDs.count,
                                   outgoingMailsToSend.count)
             }
 

@@ -54,9 +54,15 @@ open class ImapSync: Service {
     let nonExistantMailboxName = MessageID.generate()
 
     weak open var delegate: ImapSyncDelegate?
+
     open var maxPrefetchCount: UInt = 20
+
     var capabilities: Set<String> {
         return service.capabilities()
+    }
+
+    var supportsIdle: Bool {
+        return capabilities.contains("idle")
     }
 
     open var folderBuilder: CWFolderBuilding? {

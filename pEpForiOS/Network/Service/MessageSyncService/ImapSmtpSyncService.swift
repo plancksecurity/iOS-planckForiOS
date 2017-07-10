@@ -21,11 +21,14 @@ class ImapSmtpSyncService {
     let parentName: String?
     let backgrounder: BackgroundTaskProtocol?
 
+    let serviceFactory = ServiceFactory()
+    var currentlyRunningService: ServiceExecutionProtocol?
+
+    var lastSuccessfullySentMessageIDs = [MessageID]()
+
     enum State {
         case initial
-
-        case fetchingInitialFolders
-        case haveFetchedInitialFolders
+        case initialSync
 
         case sending
         case haveSent
@@ -47,9 +50,9 @@ class ImapSmtpSyncService {
 
     var readyForSend: Bool {
         switch state {
-        case .haveFetchedInitialFolders, .idling, .waitingForNextSync, .error, .haveSent:
+        case .idling, .waitingForNextSync, .error, .haveSent:
             return true
-        case .fetchingInitialFolders, .initial, .sending:
+        case .initial, .initialSync, .sending:
             return false
         }
     }
@@ -64,11 +67,14 @@ class ImapSmtpSyncService {
 
     public func start() {
         if state == .initial {
-            state = .fetchingInitialFolders
-            let fetchFoldersService = FetchFoldersService(
-                parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
-            fetchFoldersService.execute() { [weak self] error in
-                self?.handleFetchFoldersFinished(service: fetchFoldersService, error: error)
+            state = .initialSync
+            let service = serviceFactory.initialSync(
+                parentName: parentName, backgrounder: backgrounder,
+                imapSyncData: imapSyncData, smtpSendData: smtpSendData,
+                smtpSendServiceDelegate: self)
+            currentlyRunningService = service
+            service.execute() { [weak self] error in
+                self?.handleInitialSyncFinished(error: error)
             }
         }
     }
@@ -86,13 +92,15 @@ class ImapSmtpSyncService {
             let sendService = SmtpSendService(
                 parentName: parentName, backgrounder: backgrounder,
                 imapSyncData: imapSyncData, smtpSendData: smtpSendData)
+            currentlyRunningService = sendService
             sendService.execute() { [weak self] error in
-                self?.handleSendRequestFinished(service: sendService, error: error)
+                self?.handleSendRequestFinished(error: error)
             }
         } else {
-            sendRequested = true
             if state == .initial {
                 start()
+            } else {
+                sendRequested = true
             }
         }
     }
@@ -104,33 +112,41 @@ class ImapSmtpSyncService {
         }
     }
 
-    func handleFetchFoldersFinished(service: FetchFoldersService, error: Error?) {
+    func handleInitialSyncFinished(error: Error?) {
         handleError(error: error)
+        notifyAboutSentMessages()
         if error == nil {
-            state = .haveFetchedInitialFolders
+            if imapSyncData.supportsIdle {
+                state = .idling
+            } else {
+                state = .waitingForNextSync
+            }
         }
         checkNextStep()
     }
 
-    func handleSendRequestFinished(service: SmtpSendService, error: Error?) {
+    func handleSendRequestFinished(error: Error?) {
         handleError(error: error)
+        notifyAboutSentMessages()
+        state = .haveSent
+        checkNextStep()
+    }
 
+    func notifyAboutSentMessages() {
         var messagesWithSuccess = [Message]()
-        for mID in service.successfullySentMessageIDs {
+        for mID in lastSuccessfullySentMessageIDs {
             if let msg = messagesEnqueuedForSend[mID] {
                 messagesWithSuccess.append(msg)
                 messagesEnqueuedForSend[mID] = nil
             }
         }
+        lastSuccessfullySentMessageIDs.removeAll()
 
         if !messagesWithSuccess.isEmpty {
             delegate?.messagesSent(service: self, messages: messagesWithSuccess)
         }
-
-        state = .haveSent
-        checkNextStep()
     }
-
+    
     func resetConnectionsOn(error: Error?) {
         if let _ = error {
             imapSyncData.reset()
@@ -139,8 +155,14 @@ class ImapSmtpSyncService {
     }
 
     func checkNextStep() {
-        if state == .haveFetchedInitialFolders || (sendRequested && readyForSend) {
+        if sendRequested && readyForSend {
             sendMessages()
         }
+    }
+}
+
+extension ImapSmtpSyncService: SmtpSendServiceDelegate {
+    func sent(messageIDs: [MessageID]) {
+        lastSuccessfullySentMessageIDs.append(contentsOf: messageIDs)
     }
 }

@@ -10,9 +10,12 @@ import Foundation
 
 import MessageModel
 
+protocol SmtpSendServiceDelegate: class {
+    func sent(messageIDs: [MessageID])
+}
+
 class SmtpSendService: AtomicImapService {
-    /** On finish, the messageIDs of the messages that have been sent successfully */
-    private(set) public var successfullySentMessageIDs = [String]()
+    weak var delegate: SmtpSendServiceDelegate?
 
     let imapSyncData: ImapSyncData
     let smtpSendData: SmtpSendData
@@ -41,7 +44,7 @@ class SmtpSendService: AtomicImapService {
             parentName: parentName, imapSyncData: imapSyncData, errorContainer: self)
         appendOp.addDependency(imapLoginOp)
         appendOp.completionBlock = { [weak self] in
-            self?.successfullySentMessageIDs = appendOp.successfullySentMessageIDs
+            self?.delegate?.sent(messageIDs: appendOp.successfullySentMessageIDs)
             handler?(self?.error)
             self?.backgrounder?.endBackgroundTask(bgID)
         }

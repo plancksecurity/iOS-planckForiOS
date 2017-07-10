@@ -77,9 +77,9 @@ class MessageSyncServiceTests: XCTestCase {
     }
 
     func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
-                                   numberOfMessagesToSend: Int,
-                                   expectedNumberOfExpectedBackgroundTasks: Int,
-                                   requestMessageSend: Bool) {
+                                   numberOfOutgoingMessagesToCreate: Int,
+                                   numberOfOutgoingMessagesToSend: Int,
+                                   expectedNumberOfExpectedBackgroundTasks: Int) {
         let outgoingCdMsgs = TestUtil.createOutgoingMails(cdAccount: theCdAccount, testCase: self)
 
         let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
@@ -89,12 +89,12 @@ class MessageSyncServiceTests: XCTestCase {
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: #function, backgrounder: mbg, mySelfer: nil)
 
-        if outgoingCdMsgs.count < numberOfMessagesToSend {
+        if outgoingCdMsgs.count < numberOfOutgoingMessagesToCreate {
             XCTFail()
             return
         }
 
-        let cdMsgsToSend = outgoingCdMsgs.dropLast(outgoingCdMsgs.count - numberOfMessagesToSend)
+        let cdMsgsToSend = outgoingCdMsgs.dropLast(outgoingCdMsgs.count - numberOfOutgoingMessagesToCreate)
         var msgsToSend = [Message]()
         for cdMsg in cdMsgsToSend {
             guard let msg = cdMsg.message() else {
@@ -108,12 +108,13 @@ class MessageSyncServiceTests: XCTestCase {
         ms.errorDelegate = errorDelegate
 
         let expAllSent = expectation(description: "expAllSent")
-        expAllSent.expectedFulfillmentCount = UInt(numberOfMessagesToSend)
+        expAllSent.expectedFulfillmentCount = UInt(numberOfOutgoingMessagesToCreate)
         let sentDelegate = TestSentDelegate(expAllSent: expAllSent)
         ms.sentDelegate = sentDelegate
 
-        for msg in msgsToSend {
-            ms.requestSend(message: msg)
+        ms.start(account: cdAccount.account())
+        for i in 0..<numberOfOutgoingMessagesToSend {
+            ms.requestSend(message: msgsToSend[i])
         }
 
         waitForExpectations(timeout: TestUtil.waitTime) { error in
@@ -121,8 +122,8 @@ class MessageSyncServiceTests: XCTestCase {
         }
 
         XCTAssertNil(errorDelegate.error)
-        XCTAssertEqual(sentDelegate.currentMessageCount, numberOfMessagesToSend)
-        XCTAssertEqual(sentDelegate.sentMessageIDs.count, numberOfMessagesToSend)
+        XCTAssertEqual(sentDelegate.currentMessageCount, numberOfOutgoingMessagesToCreate)
+        XCTAssertEqual(sentDelegate.sentMessageIDs.count, numberOfOutgoingMessagesToCreate)
 
         for msg in msgsToSend {
             XCTAssertTrue(sentDelegate.sentMessageIDs.contains(msg.messageID))
@@ -135,29 +136,28 @@ class MessageSyncServiceTests: XCTestCase {
     }
 
     func testBasicSend() {
-        let expectedNumberOfExpectedBackgroundTasks = 2 // 1 fetching folders, 1 sending
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
-            numberOfMessagesToSend: 1,
-            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks,
-            requestMessageSend: true)
+            numberOfOutgoingMessagesToCreate: 1,
+            numberOfOutgoingMessagesToSend: 1,
+            expectedNumberOfExpectedBackgroundTasks: 5)
     }
 
     func testSendSeveral() {
-        let expectedNumberOfExpectedBackgroundTasks = 2 // 1 fetching folders, 1 sending
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
-            numberOfMessagesToSend: 2,
-            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks,
-            requestMessageSend: true)
+            numberOfOutgoingMessagesToCreate: 2,
+            numberOfOutgoingMessagesToSend: 2,
+            expectedNumberOfExpectedBackgroundTasks: 5)
     }
 
+    /*
     func testSendWithoutRequest() {
-        let expectedNumberOfExpectedBackgroundTasks = 2 // 1 fetching folders, 1 sending
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
-            numberOfMessagesToSend: 2,
-            expectedNumberOfExpectedBackgroundTasks: expectedNumberOfExpectedBackgroundTasks,
-            requestMessageSend: false)
+            numberOfOutgoingMessagesToCreate: 2,
+            numberOfOutgoingMessagesToSend: 1,
+            expectedNumberOfExpectedBackgroundTasks: 5)
     }
+     */
 }

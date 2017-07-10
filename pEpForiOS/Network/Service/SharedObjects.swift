@@ -67,6 +67,10 @@ open class ImapSyncData: ImapConnectionManagerProtocol {
 
     public var sync: ImapSync?
 
+    var supportsIdle: Bool {
+        return sync?.supportsIdle ?? false
+    }
+
     public init(connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
     }

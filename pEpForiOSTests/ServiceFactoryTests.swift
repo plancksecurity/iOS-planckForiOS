@@ -59,9 +59,11 @@ class ServiceFactoryTests: XCTestCase {
             expBackgroundTaskFinishedAtLeastOnce: expBackgroundAllTasksBackgrounded)
 
         let serviceFactory = ServiceFactory()
+        let smtpSentDelegate = TestSmtpSendServiceDelegate()
         let service = serviceFactory.initialSync(
             parentName: #function, backgrounder: backgrounder,
-            imapSyncData: imapSyncData, smtpSendData: smtpSendData)
+            imapSyncData: imapSyncData, smtpSendData: smtpSendData,
+            smtpSendServiceDelegate: smtpSentDelegate)
 
         let expectationAllServicesExecuted = expectation(
             description: "expectationAllServicesExecuted")

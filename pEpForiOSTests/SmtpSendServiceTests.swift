@@ -11,6 +11,14 @@ import XCTest
 @testable import MessageModel
 @testable import pEpForiOS
 
+class TestSmtpSendServiceDelegate: SmtpSendServiceDelegate {
+    var successfullySentMessageIDs = [MessageID]()
+
+    func sent(messageIDs: [MessageID]) {
+        successfullySentMessageIDs = messageIDs
+    }
+}
+
 class SmtpSendServiceTests: XCTestCase {
     var persistentSetup: PersistentSetup!
 
@@ -68,16 +76,18 @@ class SmtpSendServiceTests: XCTestCase {
         let backgrounder = MockBackgrounder(
             expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinishedAtLeastOnce)
 
+        let smtpSentDelegate = TestSmtpSendServiceDelegate()
         let smtpService = SmtpSendService(
             parentName: #function, backgrounder: backgrounder,
             imapSyncData: imapSyncData, smtpSendData: smtpSendData)
+        smtpService.delegate = smtpSentDelegate
         let expectationSmtpExecuted = expectation(description: "expectationSmtpExecuted")
         smtpService.execute() { error in
             if error == nil {
-                XCTAssertEqual(smtpService.successfullySentMessageIDs.count,
+                XCTAssertEqual(smtpSentDelegate.successfullySentMessageIDs.count,
                                outgoingMailsToSend.count)
             } else {
-                XCTAssertLessThan(smtpService.successfullySentMessageIDs.count,
+                XCTAssertLessThan(smtpSentDelegate.successfullySentMessageIDs.count,
                                   outgoingMailsToSend.count)
             }
             verifyError(error)
