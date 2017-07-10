@@ -50,6 +50,18 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         handleNextMessage()
     }
 
+    public static func predicateOutgoingMails(cdAccount: CdAccount) -> NSPredicate {
+        return NSPredicate(
+            format: "uid = 0 and parent.folderType = %d and sendStatus = %d and parent.account = %@",
+            FolderType.sent.rawValue, SendStatus.none.rawValue, cdAccount)
+    }
+
+    public static func outgoingMails(
+        context: NSManagedObjectContext, cdAccount: CdAccount) -> [CdMessage] {
+        let p = predicateOutgoingMails(cdAccount: cdAccount)
+        return CdMessage.all(predicate: p, in: context) as? [CdMessage] ?? []
+    }
+
     public static func retrieveNextMessage(
         context: NSManagedObjectContext,
         cdAccount: CdAccount) -> (PEPMessage, Bool, NSManagedObjectID)? {
@@ -57,9 +69,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         var objID: NSManagedObjectID?
         var protected = true
 
-        let p = NSPredicate(
-            format: "uid = 0 and parent.folderType = %d and sendStatus = %d and parent.account = %@",
-            FolderType.sent.rawValue, SendStatus.none.rawValue, cdAccount)
+        let p = predicateOutgoingMails(cdAccount: cdAccount)
         if let m = CdMessage.first(predicate: p) {
             if m.sent == nil {
                 m.sent = NSDate()

@@ -197,6 +197,8 @@
 		43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */; };
 		43CE63CF1DE8845E00FAC505 /* CdAttachment+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CE1DE8845E00FAC505 /* CdAttachment+pEp.swift */; };
 		43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63D01DE8866C00FAC505 /* Message+pEp.swift */; };
+		43D2C2681F13847700C97235 /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2C2671F13847700C97235 /* ServiceFactory.swift */; };
+		43D2C26A1F1385CF00C97235 /* ServiceFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2C2691F1385CF00C97235 /* ServiceFactoryTests.swift */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DB81331E2A56BE00A20902 /* AppendDraftMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DB81321E2A56BE00A20902 /* AppendDraftMailsOperation.swift */; };
@@ -502,6 +504,8 @@
 		43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
 		43CE63CE1DE8845E00FAC505 /* CdAttachment+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+pEp.swift"; sourceTree = "<group>"; };
 		43CE63D01DE8866C00FAC505 /* Message+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+pEp.swift"; sourceTree = "<group>"; };
+		43D2C2671F13847700C97235 /* ServiceFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceFactory.swift; sourceTree = "<group>"; };
+		43D2C2691F1385CF00C97235 /* ServiceFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceFactoryTests.swift; sourceTree = "<group>"; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DB81321E2A56BE00A20902 /* AppendDraftMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendDraftMailsOperation.swift; sourceTree = "<group>"; };
@@ -797,6 +801,7 @@
 				430841291EF3FDEA00698229 /* InboxSync.swift */,
 				434F513D1EF7FE8700FEB837 /* DelayOperation.swift */,
 				430EA5F91F0FAD7700F816D4 /* ServiceChainExecutor.swift */,
+				43D2C2671F13847700C97235 /* ServiceFactory.swift */,
 			);
 			path = MessageSyncService;
 			sourceTree = "<group>";
@@ -929,6 +934,7 @@
 				43200D9E1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift */,
 				432A3E431F0E793A00834749 /* SyncExistingMessagesServiceTests.swift */,
 				430EA5FB1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift */,
+				43D2C2691F1385CF00C97235 /* ServiceFactoryTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -1444,6 +1450,7 @@
 				43EE99481E438E320060EACE /* FlagImages.swift in Sources */,
 				220DCE341E0AB5CC002FE716 /* MailinglistCell.swift in Sources */,
 				436239941EAE08F400BD2EB9 /* String+Extensions.swift in Sources */,
+				43D2C2681F13847700C97235 /* ServiceFactory.swift in Sources */,
 				436239921EAE08F400BD2EB9 /* NSData+Extensions.swift in Sources */,
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
@@ -1666,6 +1673,7 @@
 				433C51A01E64236500272E19 /* TestDataBase.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
+				43D2C26A1F1385CF00C97235 /* ServiceFactoryTests.swift in Sources */,
 				43200D9F1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift in Sources */,
 				43FC24271F04FDDF00C32110 /* SmtpSendServiceTests.swift in Sources */,
 			);

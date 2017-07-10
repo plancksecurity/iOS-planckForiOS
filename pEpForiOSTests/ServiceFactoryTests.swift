@@ -1,8 +1,8 @@
 //
-//  ServiceChainExecutorTests.swift
+//  ServiceFactoryTests.swift
 //  pEpForiOS
 //
-//  Created by Dirk Zimmermann on 07.07.17.
+//  Created by Dirk Zimmermann on 10.07.17.
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
@@ -11,7 +11,7 @@ import XCTest
 @testable import MessageModel
 @testable import pEpForiOS
 
-class ServiceChainExecutorTests: XCTestCase {
+class ServiceFactoryTests: XCTestCase {
     var persistentSetup: PersistentSetup!
 
     var cdAccount: CdAccount!
@@ -38,6 +38,10 @@ class ServiceChainExecutorTests: XCTestCase {
             cdAccount: theCdAccount, testCase: self)
         XCTAssertGreaterThan(outgoingMailsToSend.count, 0)
 
+        let cdMessagesBefore = EncryptAndSendOperation.outgoingMails(
+            context: Record.Context.default, cdAccount: cdAccount)
+        XCTAssertEqual(cdMessagesBefore.count, outgoingMailsToSend.count)
+
         if useDisfunctionalAccount {
             TestUtil.makeServersUnreachable(cdAccount: theCdAccount)
         }
@@ -47,40 +51,32 @@ class ServiceChainExecutorTests: XCTestCase {
             return
         }
 
-        let expBackgroundAllTasksBackgrounded: XCTestExpectation? = expectError ? nil : expectation(
-            description: "expBackgroundAllTasksBackgrounded")
+        let expBackgroundAllTasksBackgrounded: XCTestExpectation? =
+            expectError ? nil : expectation(description: "expBackgroundAllTasksBackgrounded")
         expBackgroundAllTasksBackgrounded?.assertForOverFulfill = true
         expBackgroundAllTasksBackgrounded?.expectedFulfillmentCount = 4
         let backgrounder = MockBackgrounder(
             expBackgroundTaskFinishedAtLeastOnce: expBackgroundAllTasksBackgrounded)
 
-        let smtpService = SmtpSendService(
+        let serviceFactory = ServiceFactory()
+        let service = serviceFactory.initialSync(
             parentName: #function, backgrounder: backgrounder,
             imapSyncData: imapSyncData, smtpSendData: smtpSendData)
 
-        let fetchFoldersService = FetchFoldersService(
-            parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
+        let expectationAllServicesExecuted = expectation(
+            description: "expectationAllServicesExecuted")
+        service.execute() { error in
+            let context = Record.Context.default
+            context.performAndWait {
+                let cdMessagesAfter = EncryptAndSendOperation.outgoingMails(
+                    context: Record.Context.default, cdAccount: self.cdAccount)
 
-        let fetchMessagesService = FetchMessagesService(
-            parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
-
-        let syncMessagesService = SyncExistingMessagesService(
-            parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
-
-        let chainedService = ServiceChainExecutor()
-        chainedService.add(services: [smtpService, fetchFoldersService,
-                                      fetchMessagesService, syncMessagesService])
-
-        let expectationAllServicesExecuted = expectation(description: "expectationAllServicesExecuted")
-        chainedService.execute() { error in
-            if error == nil {
-                XCTAssertEqual(smtpService.successfullySentMessageIDs.count,
-                               outgoingMailsToSend.count)
-            } else {
-                XCTAssertLessThan(smtpService.successfullySentMessageIDs.count,
-                                  outgoingMailsToSend.count)
+                if error == nil {
+                    XCTAssertEqual(cdMessagesAfter.count, 0)
+                } else {
+                    XCTAssertEqual(cdMessagesAfter.count, outgoingMailsToSend.count)
+                }
             }
-
             if expectError {
                 XCTAssertNotNil(error)
             } else {
@@ -94,11 +90,11 @@ class ServiceChainExecutorTests: XCTestCase {
         }
     }
 
-    func testBasicOK() {
+    func testInitialSyncOK() {
         runServices(useDisfunctionalAccount: false, expectError: false)
     }
-
-    func testBasicError() {
+    
+    func testInitialSyncError() {
         runServices(useDisfunctionalAccount: true, expectError: true)
     }
 }
