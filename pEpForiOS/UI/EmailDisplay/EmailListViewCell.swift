@@ -67,7 +67,7 @@ class EmailListViewCell: UITableViewCell {
     }
 
     func updatePepRating(message: Message) {
-        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
+        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: nil))
         ratingImage.image = color.statusIcon()
         ratingImage.backgroundColor = nil
     }

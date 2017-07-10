@@ -13,8 +13,32 @@ extension Message {
         return PEPUtil.pEp(message: self)
     }
 
-    public func pEpRating() -> PEP_rating? {
+    /*public func pEpRating() -> PEP_rating? {
         return PEPUtil.pEpRatingFromInt(pEpRatingInt)
+    }*/
+
+    public func pEpRating(session: PEPSession?) -> PEP_rating? {
+        if belongToSentFolder() {
+            return Message.calculateOutgoingColorFromMessage(message: self)
+        } else {
+            return PEPUtil.pEpRatingFromInt(pEpRatingInt)
+        }
+    }
+
+    func belongToSentFolder() -> Bool {
+        if self.parent?.folderType  == FolderType.sent {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    static func calculateOutgoingColorFromMessage(message: Message) -> PEP_rating? {
+        if let from = message.from {
+            return PEPUtil.outgoingMessageColor(from: from, to: message.to,
+                                                      cc: message.cc, bcc: message.bcc)
+        }
+        return nil
     }
 
     /**
