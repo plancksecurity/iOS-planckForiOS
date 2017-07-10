@@ -163,10 +163,8 @@ class EmailListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
         //mantener el configure cell para tal de no generar un vm para celdas
-        if let message = cell.configureCell(config: config, indexPath: indexPath) {
-            viewModel?.associate(cell: cell, position: indexPath.row)
-            //associate(message: message, toCell: cell)
-        }
+        let _ = cell.configureCell(config: config, indexPath: indexPath)
+        viewModel?.associate(cell: cell, position: indexPath.row)
         return cell
     }
 
@@ -379,6 +377,8 @@ extension EmailListViewController: SegueHandlerType {
                 let email = cell.messageAt(indexPath: indexPath, config: config) {
                 vc.appConfig = config?.appConfig
                 vc.message = email
+                vc.folderShow = viewModel?.folderToShow
+                vc.messageId = indexPath.row
             }
             break
         case .segueForward:
