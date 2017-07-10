@@ -18,13 +18,16 @@ class EmailViewController: UITableViewController {
 
     var partnerIdentity: Identity?
     var tableData: ComposeDataSource?
-    var datasource = [Message]()
-    var page = 0
+    var folderShow : Folder?
+    var messageId = 0
     var otherCellsHeight: CGFloat = 0.0
     var ratingReEvaluator: RatingReEvaluator?
 
     lazy var backgroundQueue = OperationQueue()
     lazy var documentInteractionController = UIDocumentInteractionController()
+
+    @IBOutlet var previousMessage: UIBarButtonItem!
+    @IBOutlet var nextMessage: UIBarButtonItem!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -57,27 +60,46 @@ class EmailViewController: UITableViewController {
 
 
     @IBAction func next(_ sender: Any) {
-
-
+        messageId += 1
+        message = folderShow?.messageAt(index: messageId)
+        self.tableView.reloadData()
+        configureView()
+        
     }
     
     @IBAction func previous(_ sender: Any) {
-
-
+        messageId -= 1
+        message = folderShow?.messageAt(index: messageId)
+        self.tableView.reloadData()
+        configureView()
     }
 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableData?.filterRows(message: message)
-        checkMessageReEvaluation()
-        showPepRating()
-        message.markAsSeen()
+        configureView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setNoColor()
+    }
+
+    func configureView() {
+        tableData?.filterRows(message: message)
+        checkMessageReEvaluation()
+        showPepRating()
+        message.markAsSeen()
+        if messageId <= 0 {
+            self.previousMessage.isEnabled = false
+        } else {
+            self.previousMessage.isEnabled = true
+        }
+        if let total = folderShow?.messageCount(), messageId >= total - 1 {
+            self.nextMessage.isEnabled = false
+        } else {
+            self.nextMessage.isEnabled = true
+        }
     }
 
     func checkMessageReEvaluation() {
@@ -88,7 +110,7 @@ class EmailViewController: UITableViewController {
     }
 
     func showPepRating() {
-        let _ = showPepRating(pEpRating: message.pEpRating())
+        let _ = showPepRating(pEpRating: message.pEpRating(session: nil))
     }
     
     fileprivate final func loadDatasource(_ file: String) {
@@ -219,8 +241,6 @@ extension EmailViewController: SegueHandlerType {
         case segueReplyFrom
         case segueReplyAllForm
         case segueForward
-        case seguePrevious
-        case segueNext
         case segueHandshake
         case noSegue
     }
@@ -248,19 +268,6 @@ extension EmailViewController: SegueHandlerType {
             destination?.composeMode = .forward
             destination?.appConfig = appConfig
             destination?.originalMessage = message
-            break
-        case .seguePrevious:
-            let destination = segue.destination as! EmailViewController
-            if page > 0 { page -= 1 }
-            destination.message = message
-            destination.appConfig = appConfig
-            break
-        case .segueNext:
-            let destination = segue.destination as! EmailViewController
-            if page < datasource.count  { page += 1 }
-            destination.message = message
-            destination.appConfig = appConfig
-            destination.page = page
             break
         case .segueHandshake:
             let destination = segue.destination as? HandshakeViewController
