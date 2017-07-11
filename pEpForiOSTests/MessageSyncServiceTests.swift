@@ -71,6 +71,21 @@ class MessageSyncServiceTests: XCTestCase {
         }
     }
 
+    class TestAccountVerificationDelegate: AccountVerificationServiceDelegate {
+        let expAccountVerified: XCTestExpectation
+        var verificationResult: AccountVerificationResult?
+
+        init(expAccountVerified: XCTestExpectation) {
+            self.expAccountVerified = expAccountVerified
+        }
+
+        func verified(account: Account, service: AccountVerificationServiceProtocol,
+                      result: AccountVerificationResult) {
+            self.verificationResult = result
+            expAccountVerified.fulfill()
+        }
+    }
+
     override func setUp() {
         super.setUp()
 
@@ -84,10 +99,10 @@ class MessageSyncServiceTests: XCTestCase {
         self.cdAccount = cdAccount
     }
 
-    func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
-                                   numberOfOutgoingMessagesToCreate: Int,
-                                   numberOfOutgoingMessagesToSend: Int,
-                                   expectedNumberOfExpectedBackgroundTasks: Int) {
+    func runMessageSyncWithSend(ms: MessageSyncService,
+                                cdAccount theCdAccount: CdAccount,
+                                numberOfOutgoingMessagesToCreate: Int,
+                                numberOfOutgoingMessagesToSend: Int) {
         let outgoingCdMsgs = TestUtil.createOutgoingMails(
             cdAccount: theCdAccount, testCase: self,
             numberOfMails: numberOfOutgoingMessagesToCreate)
@@ -96,13 +111,6 @@ class MessageSyncServiceTests: XCTestCase {
             XCTFail()
             return
         }
-
-        let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
-        expBackgroundTaskFinished.expectedFulfillmentCount =
-            UInt(expectedNumberOfExpectedBackgroundTasks)
-        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinished)
-        let ms = MessageSyncService(
-            sleepTimeInSeconds: 2, parentName: #function, backgrounder: mbg, mySelfer: nil)
 
         let cdMsgsToSend = outgoingCdMsgs.prefix(numberOfOutgoingMessagesToSend)
         XCTAssertEqual(cdMsgsToSend.count, numberOfOutgoingMessagesToSend)
@@ -122,7 +130,12 @@ class MessageSyncServiceTests: XCTestCase {
         let sentDelegate = TestSentDelegate(expMessagesSent: expMessagesSent)
         ms.sentDelegate = sentDelegate
 
+        let expMessagesSynced = expectation(description: "expMessagesSynced")
+        let syncDelegate = TestSyncDelegate(expMessagesSynced: expMessagesSynced)
+        ms.syncDelegate = syncDelegate
+
         ms.start(account: cdAccount.account())
+
         for i in 0..<numberOfOutgoingMessagesToSend {
             ms.requestSend(message: msgsToSend[i])
         }
@@ -138,6 +151,24 @@ class MessageSyncServiceTests: XCTestCase {
         for msg in msgsToSend {
             XCTAssertTrue(sentDelegate.messageIDsSent.contains(msg.messageID))
         }
+    }
+
+    func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
+                                   numberOfOutgoingMessagesToCreate: Int,
+                                   numberOfOutgoingMessagesToSend: Int,
+                                   expectedNumberOfExpectedBackgroundTasks: Int) {
+
+        let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
+        expBackgroundTaskFinished.expectedFulfillmentCount =
+            UInt(expectedNumberOfExpectedBackgroundTasks)
+        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinished)
+        let ms = MessageSyncService(
+            sleepTimeInSeconds: 2, parentName: #function, backgrounder: mbg, mySelfer: nil)
+
+        runMessageSyncWithSend(
+            ms: ms, cdAccount: cdAccount,
+            numberOfOutgoingMessagesToCreate: numberOfOutgoingMessagesToCreate,
+            numberOfOutgoingMessagesToSend: numberOfOutgoingMessagesToSend)
 
         XCTAssertEqual(mbg.numberOfBackgroundTasksOutstanding, 0)
         XCTAssertEqual(mbg.totalNumberOfBackgroundTasksFinished,
@@ -192,5 +223,32 @@ class MessageSyncServiceTests: XCTestCase {
         }
 
         XCTAssertNotNil(errorDelegate.error)
+    }
+
+    func testTypicalNewAccountSetup() {
+        let ms = MessageSyncService(
+            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+
+        // Verification
+        let expVerified = expectation(description: "expVerified")
+        let verificationDelegate = TestAccountVerificationDelegate(expAccountVerified: expVerified)
+        ms.requestVerification(account: cdAccount.account(), delegate: verificationDelegate)
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+        guard let result = verificationDelegate.verificationResult else {
+            XCTFail()
+            return
+        }
+        switch result {
+        case .ok:
+            break
+        default:
+            XCTFail("Unexpected verification result: \(result)")
+        }
+
+        runMessageSyncWithSend(
+            ms: ms, cdAccount: cdAccount, numberOfOutgoingMessagesToCreate: 3,
+            numberOfOutgoingMessagesToSend: 3)
     }
 }

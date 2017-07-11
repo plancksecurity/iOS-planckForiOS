@@ -260,6 +260,8 @@ class TestUtil {
 
     static func createOutgoingMails(cdAccount: CdAccount, testCase: XCTestCase,
                                     numberOfMails: Int) -> [CdMessage] {
+        testCase.continueAfterFailure = false
+
         if numberOfMails < 3 {
             XCTFail("need at least 3 outgoing mails to generate")
             return []
@@ -280,10 +282,8 @@ class TestUtil {
                 XCTAssertNil(error)
                 expectationFoldersFetched.fulfill()
             }
-        }
 
-        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
+            testCase.wait(for: [expectationFoldersFetched], timeout: waitTime)
         }
 
         guard let folder = CdFolder.by(folderType: .sent, account: cdAccount) else {
