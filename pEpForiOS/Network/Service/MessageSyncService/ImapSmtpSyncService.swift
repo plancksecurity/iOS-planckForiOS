@@ -23,6 +23,8 @@ protocol ImapSmtpSyncServiceDelegate: class {
                       allMessageIDs: [MessageID])
 
     func handle(service: ImapSmtpSyncService, error: Error)
+
+    func didSync(service: ImapSmtpSyncService)
 }
 
 class ImapSmtpSyncService {
@@ -52,9 +54,10 @@ class ImapSmtpSyncService {
         case error
     }
 
+    private(set) var imapSyncData: ImapSyncData
+    private(set) var smtpSendData: SmtpSendData
+
     private var state: State = .initial
-    private var imapSyncData: ImapSyncData
-    private var smtpSendData: SmtpSendData
     private var sendRequested: Bool = false
     private var messagesEnqueuedForSend = [MessageID: Message]()
 
@@ -63,6 +66,15 @@ class ImapSmtpSyncService {
         case .idling, .waitingForNextSync, .error, .haveSent:
             return true
         case .initial, .initialSync, .sending:
+            return false
+        }
+    }
+
+    var isIdling: Bool {
+        switch state {
+        case .idling, .waitingForNextSync:
+            return true
+        case .initial, .initialSync, .sending, .error, .haveSent:
             return false
         }
     }
@@ -133,6 +145,7 @@ class ImapSmtpSyncService {
                 state = .waitingForNextSync
             }
         }
+        delegate?.didSync(service: self)
         checkNextStep()
     }
 
@@ -169,6 +182,7 @@ class ImapSmtpSyncService {
     func checkNextStep() {
         if sendRequested && readyForSend {
             sendMessages()
+            return
         }
     }
 }

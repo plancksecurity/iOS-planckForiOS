@@ -77,6 +77,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
 
     var errorDelegate: MessageSyncServiceErrorDelegate?
     var sentDelegate: MessageSyncServiceSentDelegate?
+    var syncDelegate: MessageSyncServiceSyncDelegate?
 
     let sleepTimeInSeconds: Double
     let parentName: String?
@@ -230,5 +231,18 @@ extension MessageSyncService: ImapSmtpSyncServiceDelegate {
 
     func handle(service: ImapSmtpSyncService, error: Error) {
         errorDelegate?.show(error: error)
+    }
+
+    func didSync(service: ImapSmtpSyncService) {
+        guard let theDelegate = syncDelegate else {
+            return
+        }
+        let context = Record.Context.background
+        context.perform {
+            if let cdAccount = context.object(
+                with: service.imapSyncData.connectInfo.accountObjectID) as? CdAccount {
+                theDelegate.didSync(account: cdAccount.account())
+            }
+        }
     }
 }

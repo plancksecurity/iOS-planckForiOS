@@ -36,6 +36,13 @@ protocol MessageSyncServiceErrorDelegate: class {
     func show(error: Error)
 }
 
+protocol MessageSyncServiceSyncDelegate: class {
+    /**
+     Called when the given account just got synced, and the service will enter idling.
+     */
+    func didSync(account: Account)
+}
+
 /**
  Message sync related actions that can be requested by the UI.
  The purpose is to make network-related actions seem as fast as possible,
@@ -45,6 +52,7 @@ protocol MessageSyncServiceErrorDelegate: class {
 protocol MessageSyncServiceProtocol {
     weak var errorDelegate: MessageSyncServiceErrorDelegate? { get set }
     weak var sentDelegate: MessageSyncServiceSentDelegate? { get set }
+    weak var syncDelegate: MessageSyncServiceSyncDelegate? { get set }
 
     /**
      Request account verification, receiving news via the delegate.

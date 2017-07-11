@@ -59,6 +59,18 @@ class MessageSyncServiceTests: XCTestCase {
         }
     }
 
+    class TestSyncDelegate: MessageSyncServiceSyncDelegate {
+        let expMessagesSynced: XCTestExpectation
+
+        init(expMessagesSynced: XCTestExpectation) {
+            self.expMessagesSynced = expMessagesSynced
+        }
+
+        func didSync(account: Account) {
+            expMessagesSynced.fulfill()
+        }
+    }
+
     override func setUp() {
         super.setUp()
 
@@ -68,21 +80,24 @@ class MessageSyncServiceTests: XCTestCase {
 
         let cdAccount = TestData().createWorkingCdAccount()
         cdAccount.identity?.isMySelf = true
-        TestUtil.skipValidation()
         Record.saveAndWait()
         self.cdAccount = cdAccount
+    }
 
-        let cdDisfunctionalAccount = TestData().createDisfunctionalCdAccount()
-        cdDisfunctionalAccount.identity?.isMySelf = true
+    func skipValidation() {
         TestUtil.skipValidation()
         Record.saveAndWait()
-        self.cdAccountDisfunctional = cdDisfunctionalAccount
+        Record.Context.default.refreshAllObjects()
     }
 
     func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
                                    numberOfOutgoingMessagesToCreate: Int,
                                    numberOfOutgoingMessagesToSend: Int,
-                                   expectedNumberOfExpectedBackgroundTasks: Int) {
+                                   expectedNumberOfExpectedBackgroundTasks: Int,
+                                   shouldSkipValidation: Bool) {
+        if shouldSkipValidation {
+            skipValidation()
+        }
         let outgoingCdMsgs = TestUtil.createOutgoingMails(
             cdAccount: theCdAccount, testCase: self,
             numberOfMails: numberOfOutgoingMessagesToCreate)
@@ -122,7 +137,7 @@ class MessageSyncServiceTests: XCTestCase {
             ms.requestSend(message: msgsToSend[i])
         }
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 
@@ -146,7 +161,8 @@ class MessageSyncServiceTests: XCTestCase {
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSend: 0,
-            expectedNumberOfExpectedBackgroundTasks: 4)
+            expectedNumberOfExpectedBackgroundTasks: 4,
+            shouldSkipValidation: true)
     }
 
     func testSendSeveral() {
@@ -154,6 +170,21 @@ class MessageSyncServiceTests: XCTestCase {
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSend: 2,
-            expectedNumberOfExpectedBackgroundTasks: 5)
+            expectedNumberOfExpectedBackgroundTasks: 5,
+            shouldSkipValidation: true)
+    }
+
+    func testSyncWithUnverifiedAccount() {
+        let expMessagesSynced = expectation(description: "expMessagesSynced")
+        let syncDelegate = TestSyncDelegate(expMessagesSynced: expMessagesSynced)
+
+        let ms = MessageSyncService(
+            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        ms.syncDelegate = syncDelegate
+        ms.start(account: cdAccount.account())
+
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
     }
 }
