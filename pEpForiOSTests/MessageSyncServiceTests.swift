@@ -175,4 +175,22 @@ class MessageSyncServiceTests: XCTestCase {
             XCTAssertNil(error)
         }
     }
+
+    func testSyncWithErroneousAccount() {
+        let expErrorOccurred = expectation(description: "expErrorOccurred")
+        let errorDelegate = TestErrorDelegate(expErrorOccurred: expErrorOccurred)
+
+        TestUtil.makeServersUnreachable(cdAccount: cdAccount)
+
+        let ms = MessageSyncService(
+            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        ms.errorDelegate = errorDelegate
+        ms.start(account: cdAccount.account())
+
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+
+        XCTAssertNotNil(errorDelegate.error)
+    }
 }
