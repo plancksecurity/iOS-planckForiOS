@@ -84,20 +84,10 @@ class MessageSyncServiceTests: XCTestCase {
         self.cdAccount = cdAccount
     }
 
-    func skipValidation() {
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-        Record.Context.default.refreshAllObjects()
-    }
-
     func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
                                    numberOfOutgoingMessagesToCreate: Int,
                                    numberOfOutgoingMessagesToSend: Int,
-                                   expectedNumberOfExpectedBackgroundTasks: Int,
-                                   shouldSkipValidation: Bool) {
-        if shouldSkipValidation {
-            skipValidation()
-        }
+                                   expectedNumberOfExpectedBackgroundTasks: Int) {
         let outgoingCdMsgs = TestUtil.createOutgoingMails(
             cdAccount: theCdAccount, testCase: self,
             numberOfMails: numberOfOutgoingMessagesToCreate)
@@ -161,8 +151,7 @@ class MessageSyncServiceTests: XCTestCase {
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSend: 0,
-            expectedNumberOfExpectedBackgroundTasks: 4,
-            shouldSkipValidation: true)
+            expectedNumberOfExpectedBackgroundTasks: 4)
     }
 
     func testSendSeveral() {
@@ -170,8 +159,7 @@ class MessageSyncServiceTests: XCTestCase {
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSend: 2,
-            expectedNumberOfExpectedBackgroundTasks: 5,
-            shouldSkipValidation: true)
+            expectedNumberOfExpectedBackgroundTasks: 5)
     }
 
     func testSyncWithUnverifiedAccount() {
