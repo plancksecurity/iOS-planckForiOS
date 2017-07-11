@@ -19,9 +19,14 @@ protocol MessageSyncServiceFolderDelegate {
 
 protocol MessageSyncServiceSentDelegate: class {
     /**
-     The indicated message has been sent.
+     The indicated message has been sent, as requested.
      */
     func didSend(message: Message)
+
+    /**
+     The indicated message IDs have been sent, regardless whether requested or not.
+     */
+    func didSend(messageIDs: [MessageID])
 }
 
 protocol MessageSyncServiceErrorDelegate: class {

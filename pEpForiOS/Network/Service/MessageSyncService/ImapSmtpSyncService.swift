@@ -11,7 +11,17 @@ import Foundation
 import MessageModel
 
 protocol ImapSmtpSyncServiceDelegate: class {
-    func messagesSent(service: ImapSmtpSyncService, messages: [Message])
+    /**
+     Will be invoked once messages have been sent.
+     - parameter service: The service that has sent the messages
+     - parameter messages: The requested messages that have been sent
+     - parameter allMessageIDs: The message IDs of *all* the messages that have been sent,
+     requested or not.
+     */
+    func messagesSent(service: ImapSmtpSyncService,
+                      messages: [Message],
+                      allMessageIDs: [MessageID])
+
     func handle(service: ImapSmtpSyncService, error: Error)
 }
 
@@ -68,6 +78,7 @@ class ImapSmtpSyncService {
     public func start() {
         if state == .initial {
             state = .initialSync
+            sendRequested = false
             let service = serviceFactory.initialSync(
                 parentName: parentName, backgrounder: backgrounder,
                 imapSyncData: imapSyncData, smtpSendData: smtpSendData,
@@ -140,11 +151,12 @@ class ImapSmtpSyncService {
                 messagesEnqueuedForSend[mID] = nil
             }
         }
-        lastSuccessfullySentMessageIDs.removeAll()
 
-        if !messagesWithSuccess.isEmpty {
-            delegate?.messagesSent(service: self, messages: messagesWithSuccess)
+        if !messagesWithSuccess.isEmpty || !lastSuccessfullySentMessageIDs.isEmpty {
+            delegate?.messagesSent(service: self, messages: messagesWithSuccess,
+                                   allMessageIDs: lastSuccessfullySentMessageIDs)
         }
+        lastSuccessfullySentMessageIDs.removeAll()
     }
     
     func resetConnectionsOn(error: Error?) {

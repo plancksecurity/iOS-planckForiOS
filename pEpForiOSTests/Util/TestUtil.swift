@@ -258,7 +258,13 @@ class TestUtil {
         }
     }
 
-    static func createOutgoingMails(cdAccount: CdAccount, testCase: XCTestCase) -> [CdMessage] {
+    static func createOutgoingMails(cdAccount: CdAccount, testCase: XCTestCase,
+                                    numberOfMails: Int) -> [CdMessage] {
+        if numberOfMails < 3 {
+            XCTFail("need at least 3 outgoing mails to generate")
+            return []
+        }
+
         let existingSentFolder = CdFolder.by(folderType: .sent, account: cdAccount)
 
         if existingSentFolder == nil {
@@ -309,8 +315,7 @@ class TestUtil {
 
         // Build emails
         var messagesInTheQueue = [CdMessage]()
-        let numMails = 3
-        for i in 1...numMails {
+        for i in 1...numberOfMails {
             let message = CdMessage.create()
             message.from = from
             message.parent = folder
@@ -320,15 +325,15 @@ class TestUtil {
             message.sent = Date() as NSDate
             message.addTo(cdIdentity: toWithKey)
 
-            // add attachment
-            if i == numMails || i == numMails - 1 {
+            // add attachment to last and previous-to-last mail
+            if i == numberOfMails || i == numberOfMails - 1 {
                 let attachment = Attachment.create(
                     data: imageData, mimeType: "image/jpeg", fileName: imageFileName)
                 let cdAttachment = CdAttachment.create(attachment: attachment)
                 message.addAttachment(cdAttachment)
             }
-            if i == numMails {
-                // prevent encryption
+            // prevent encryption for last mail
+            if i == numberOfMails {
                 message.bcc = NSOrderedSet(object: toWithoutKey)
             }
 

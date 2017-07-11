@@ -36,23 +36,26 @@ class MessageSyncServiceTests: XCTestCase {
     }
 
     class TestSentDelegate: MessageSyncServiceSentDelegate {
-        let expAllSent: XCTestExpectation
+        let expMessagesSent: XCTestExpectation
 
-        var sentMessageIDs = Set<String>()
-        var currentMessageCount = 0
+        var requestedMessagesSent = Set<Message>()
+        var messageIDsSent = Set<MessageID>()
 
-        init(expAllSent: XCTestExpectation) {
-            self.expAllSent = expAllSent
+        init(expMessagesSent: XCTestExpectation) {
+            self.expMessagesSent = expMessagesSent
         }
 
         func didSend(message: Message) {
-            if sentMessageIDs.contains(message.messageID) {
+            if requestedMessagesSent.contains(message) {
                 XCTFail("message sent double")
             } else {
-                sentMessageIDs.insert(message.messageID)
-                currentMessageCount += 1
-                expAllSent.fulfill()
+                requestedMessagesSent.insert(message)
             }
+        }
+
+        func didSend(messageIDs: [MessageID]) {
+            messageIDsSent = messageIDsSent.union(messageIDs)
+            expMessagesSent.fulfill()
         }
     }
 
@@ -80,7 +83,14 @@ class MessageSyncServiceTests: XCTestCase {
                                    numberOfOutgoingMessagesToCreate: Int,
                                    numberOfOutgoingMessagesToSend: Int,
                                    expectedNumberOfExpectedBackgroundTasks: Int) {
-        let outgoingCdMsgs = TestUtil.createOutgoingMails(cdAccount: theCdAccount, testCase: self)
+        let outgoingCdMsgs = TestUtil.createOutgoingMails(
+            cdAccount: theCdAccount, testCase: self,
+            numberOfMails: numberOfOutgoingMessagesToCreate)
+
+        if outgoingCdMsgs.count < numberOfOutgoingMessagesToCreate {
+            XCTFail()
+            return
+        }
 
         let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
         expBackgroundTaskFinished.expectedFulfillmentCount =
@@ -89,12 +99,8 @@ class MessageSyncServiceTests: XCTestCase {
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: #function, backgrounder: mbg, mySelfer: nil)
 
-        if outgoingCdMsgs.count < numberOfOutgoingMessagesToCreate {
-            XCTFail()
-            return
-        }
-
-        let cdMsgsToSend = outgoingCdMsgs.dropLast(outgoingCdMsgs.count - numberOfOutgoingMessagesToCreate)
+        let cdMsgsToSend = outgoingCdMsgs.prefix(numberOfOutgoingMessagesToSend)
+        XCTAssertEqual(cdMsgsToSend.count, numberOfOutgoingMessagesToSend)
         var msgsToSend = [Message]()
         for cdMsg in cdMsgsToSend {
             guard let msg = cdMsg.message() else {
@@ -107,9 +113,8 @@ class MessageSyncServiceTests: XCTestCase {
         let errorDelegate = TestErrorDelegate()
         ms.errorDelegate = errorDelegate
 
-        let expAllSent = expectation(description: "expAllSent")
-        expAllSent.expectedFulfillmentCount = UInt(numberOfOutgoingMessagesToCreate)
-        let sentDelegate = TestSentDelegate(expAllSent: expAllSent)
+        let expMessagesSent = expectation(description: "expMessagesSent")
+        let sentDelegate = TestSentDelegate(expMessagesSent: expMessagesSent)
         ms.sentDelegate = sentDelegate
 
         ms.start(account: cdAccount.account())
@@ -117,47 +122,38 @@ class MessageSyncServiceTests: XCTestCase {
             ms.requestSend(message: msgsToSend[i])
         }
 
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
 
         XCTAssertNil(errorDelegate.error)
-        XCTAssertEqual(sentDelegate.currentMessageCount, numberOfOutgoingMessagesToCreate)
-        XCTAssertEqual(sentDelegate.sentMessageIDs.count, numberOfOutgoingMessagesToCreate)
+        XCTAssertEqual(sentDelegate.requestedMessagesSent.count, numberOfOutgoingMessagesToSend)
+        XCTAssertEqual(sentDelegate.messageIDsSent.count, numberOfOutgoingMessagesToCreate)
 
         for msg in msgsToSend {
-            XCTAssertTrue(sentDelegate.sentMessageIDs.contains(msg.messageID))
+            XCTAssertTrue(sentDelegate.messageIDsSent.contains(msg.messageID))
         }
 
         XCTAssertEqual(mbg.numberOfBackgroundTasksOutstanding, 0)
-        XCTAssertEqual(mbg.totalNumberOfBackgroundTasksFinished, expectedNumberOfExpectedBackgroundTasks)
+        XCTAssertEqual(mbg.totalNumberOfBackgroundTasksFinished,
+                       expectedNumberOfExpectedBackgroundTasks)
         XCTAssertEqual(mbg.totalNumberOfBackgroundTasksStarted,
                        mbg.totalNumberOfBackgroundTasksFinished)
     }
 
-    func testBasicSend() {
+    func testBasicPassiveSend() {
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
-            numberOfOutgoingMessagesToCreate: 1,
-            numberOfOutgoingMessagesToSend: 1,
-            expectedNumberOfExpectedBackgroundTasks: 5)
+            numberOfOutgoingMessagesToCreate: 3,
+            numberOfOutgoingMessagesToSend: 0,
+            expectedNumberOfExpectedBackgroundTasks: 4)
     }
 
     func testSendSeveral() {
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
-            numberOfOutgoingMessagesToCreate: 2,
+            numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSend: 2,
             expectedNumberOfExpectedBackgroundTasks: 5)
     }
-
-    /*
-    func testSendWithoutRequest() {
-        runMessageSyncServiceSend(
-            cdAccount: cdAccount,
-            numberOfOutgoingMessagesToCreate: 2,
-            numberOfOutgoingMessagesToSend: 1,
-            expectedNumberOfExpectedBackgroundTasks: 5)
-    }
-     */
 }

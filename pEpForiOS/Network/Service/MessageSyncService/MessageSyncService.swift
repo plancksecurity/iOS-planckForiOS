@@ -220,10 +220,12 @@ extension MessageSyncService: AccountVerificationServiceDelegate {
 }
 
 extension MessageSyncService: ImapSmtpSyncServiceDelegate {
-    func messagesSent(service: ImapSmtpSyncService, messages: [Message]) {
+    func messagesSent(service: ImapSmtpSyncService, messages: [Message],
+                      allMessageIDs: [MessageID]) {
         for msg in messages {
             sentDelegate?.didSend(message: msg)
         }
+        sentDelegate?.didSend(messageIDs: allMessageIDs)
     }
 
     func handle(service: ImapSmtpSyncService, error: Error) {

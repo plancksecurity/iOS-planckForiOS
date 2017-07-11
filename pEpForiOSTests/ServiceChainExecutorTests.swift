@@ -35,7 +35,7 @@ class ServiceChainExecutorTests: XCTestCase {
         }
 
         let outgoingMailsToSend = TestUtil.createOutgoingMails(
-            cdAccount: theCdAccount, testCase: self)
+            cdAccount: theCdAccount, testCase: self, numberOfMails: 3)
         XCTAssertGreaterThan(outgoingMailsToSend.count, 0)
 
         if useDisfunctionalAccount {
