@@ -178,6 +178,17 @@ class MessageSyncServiceTests: XCTestCase {
         if numberOfOutgoingMessagesToSendLater <= 0 {
             return
         }
+
+        let outgoingCdMsgs2 = TestUtil.createOutgoingMails(
+            cdAccount: theCdAccount, testCase: self,
+            numberOfMails: numberOfOutgoingMessagesToSendLater)
+        if outgoingCdMsgs2.count < numberOfOutgoingMessagesToSendLater {
+            XCTFail()
+            return
+        }
+        let outgoingMessages = outgoingCdMsgs2.flatMap() { return $0.message() }
+        send(messageSyncService: ms, messages: outgoingMessages,
+             numberOfTotalOutgoingMessages: outgoingMessages.count)
     }
 
     func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
