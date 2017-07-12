@@ -45,7 +45,6 @@ class ImapSmtpSyncService {
         case initialSync
 
         case sending
-        case haveSent
 
         /** Using the real IMAP IDLE command */
         case idling
@@ -65,7 +64,7 @@ class ImapSmtpSyncService {
 
     var readyForSend: Bool {
         switch state {
-        case .idling, .waitingForNextSync, .error, .haveSent:
+        case .idling, .waitingForNextSync, .error:
             return true
         case .initial, .initialSync, .sending:
             return false
@@ -76,7 +75,7 @@ class ImapSmtpSyncService {
         switch state {
         case .idling, .waitingForNextSync:
             return true
-        case .initial, .initialSync, .sending, .error, .haveSent:
+        case .initial, .initialSync, .sending, .error:
             return false
         }
     }
@@ -130,10 +129,21 @@ class ImapSmtpSyncService {
         }
     }
 
+    func jumpIntoCorrectIdleState() {
+        if state != .error {
+            if imapSyncData.supportsIdle {
+                state = .idling
+            } else {
+                state = .waitingForNextSync
+            }
+        }
+    }
+
     func handleError(error: Error?) {
         resetConnectionsOn(error: error)
         if let err = error {
             delegate?.handle(service: self, error: err)
+            state = .error
         }
     }
 
@@ -141,20 +151,16 @@ class ImapSmtpSyncService {
         handleError(error: error)
         notifyAboutSentMessages()
         if error == nil {
-            if imapSyncData.supportsIdle {
-                state = .idling
-            } else {
-                state = .waitingForNextSync
-            }
+            delegate?.didSync(service: self)
+            jumpIntoCorrectIdleState()
         }
-        delegate?.didSync(service: self)
         checkNextStep()
     }
 
     func handleSendRequestFinished(error: Error?) {
         handleError(error: error)
         notifyAboutSentMessages()
-        state = .haveSent
+        jumpIntoCorrectIdleState()
         checkNextStep()
     }
 
@@ -186,8 +192,9 @@ class ImapSmtpSyncService {
             sendMessages()
             return
         }
-        if state == .idling || state == .waitingForNextSync {
+        if isIdling {
             delegate?.startIdling(service: self)
+            return
         }
     }
 }
