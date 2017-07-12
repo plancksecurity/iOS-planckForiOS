@@ -46,6 +46,8 @@ class ImapSmtpSyncService {
 
         case sending
 
+        case readyForIdling
+
         /** Using the real IMAP IDLE command */
         case idling
 
@@ -64,7 +66,7 @@ class ImapSmtpSyncService {
 
     var readyForSend: Bool {
         switch state {
-        case .idling, .waitingForNextSync, .error:
+        case .idling, .waitingForNextSync, .error, .readyForIdling:
             return true
         case .initial, .initialSync, .sending:
             return false
@@ -75,7 +77,7 @@ class ImapSmtpSyncService {
         switch state {
         case .idling, .waitingForNextSync:
             return true
-        case .initial, .initialSync, .sending, .error:
+        case .initial, .initialSync, .sending, .error, .readyForIdling:
             return false
         }
     }
@@ -131,11 +133,7 @@ class ImapSmtpSyncService {
 
     func jumpIntoCorrectIdleState() {
         if state != .error {
-            if imapSyncData.supportsIdle {
-                state = .idling
-            } else {
-                state = .waitingForNextSync
-            }
+            state = .readyForIdling
         }
     }
 
@@ -192,8 +190,13 @@ class ImapSmtpSyncService {
             sendMessages()
             return
         }
-        if isIdling {
+        if state == .readyForIdling {
             delegate?.startIdling(service: self)
+            if imapSyncData.supportsIdle {
+                state = .idling
+            } else {
+                state = .waitingForNextSync
+            }
             return
         }
     }
