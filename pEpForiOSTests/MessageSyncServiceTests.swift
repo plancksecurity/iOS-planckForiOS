@@ -102,7 +102,7 @@ class MessageSyncServiceTests: XCTestCase {
     func runMessageSyncWithSend(ms: MessageSyncService,
                                 cdAccount theCdAccount: CdAccount,
                                 numberOfOutgoingMessagesToCreate: Int,
-                                numberOfOutgoingMessagesToSend: Int) {
+                                numberOfOutgoingMessagesToSendImmediately: Int) {
         let outgoingCdMsgs = TestUtil.createOutgoingMails(
             cdAccount: theCdAccount, testCase: self,
             numberOfMails: numberOfOutgoingMessagesToCreate)
@@ -112,8 +112,8 @@ class MessageSyncServiceTests: XCTestCase {
             return
         }
 
-        let cdMsgsToSend = outgoingCdMsgs.prefix(numberOfOutgoingMessagesToSend)
-        XCTAssertEqual(cdMsgsToSend.count, numberOfOutgoingMessagesToSend)
+        let cdMsgsToSend = outgoingCdMsgs.prefix(numberOfOutgoingMessagesToSendImmediately)
+        XCTAssertEqual(cdMsgsToSend.count, numberOfOutgoingMessagesToSendImmediately)
         var msgsToSend = [Message]()
         for cdMsg in cdMsgsToSend {
             guard let msg = cdMsg.message() else {
@@ -136,7 +136,7 @@ class MessageSyncServiceTests: XCTestCase {
 
         ms.start(account: cdAccount.account())
 
-        for i in 0..<numberOfOutgoingMessagesToSend {
+        for i in 0..<numberOfOutgoingMessagesToSendImmediately {
             ms.requestSend(message: msgsToSend[i])
         }
 
@@ -145,7 +145,7 @@ class MessageSyncServiceTests: XCTestCase {
         }
 
         XCTAssertNil(errorDelegate.error)
-        XCTAssertEqual(sentDelegate.requestedMessagesSent.count, numberOfOutgoingMessagesToSend)
+        XCTAssertEqual(sentDelegate.requestedMessagesSent.count, numberOfOutgoingMessagesToSendImmediately)
         XCTAssertEqual(sentDelegate.messageIDsSent.count, numberOfOutgoingMessagesToCreate)
 
         for msg in msgsToSend {
@@ -155,7 +155,7 @@ class MessageSyncServiceTests: XCTestCase {
 
     func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
                                    numberOfOutgoingMessagesToCreate: Int,
-                                   numberOfOutgoingMessagesToSend: Int,
+                                   numberOfOutgoingMessagesToSendImmediately: Int,
                                    expectedNumberOfExpectedBackgroundTasks: Int) {
 
         let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
@@ -168,7 +168,7 @@ class MessageSyncServiceTests: XCTestCase {
         runMessageSyncWithSend(
             ms: ms, cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: numberOfOutgoingMessagesToCreate,
-            numberOfOutgoingMessagesToSend: numberOfOutgoingMessagesToSend)
+            numberOfOutgoingMessagesToSendImmediately: numberOfOutgoingMessagesToSendImmediately)
 
         XCTAssertEqual(mbg.numberOfBackgroundTasksOutstanding, 0)
         XCTAssertEqual(mbg.totalNumberOfBackgroundTasksFinished,
@@ -181,7 +181,7 @@ class MessageSyncServiceTests: XCTestCase {
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
-            numberOfOutgoingMessagesToSend: 0,
+            numberOfOutgoingMessagesToSendImmediately: 0,
             expectedNumberOfExpectedBackgroundTasks: 4)
     }
 
@@ -189,7 +189,7 @@ class MessageSyncServiceTests: XCTestCase {
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
-            numberOfOutgoingMessagesToSend: 2,
+            numberOfOutgoingMessagesToSendImmediately: 2,
             expectedNumberOfExpectedBackgroundTasks: 5)
     }
 
@@ -249,6 +249,6 @@ class MessageSyncServiceTests: XCTestCase {
 
         runMessageSyncWithSend(
             ms: ms, cdAccount: cdAccount, numberOfOutgoingMessagesToCreate: 3,
-            numberOfOutgoingMessagesToSend: 3)
+            numberOfOutgoingMessagesToSendImmediately: 3)
     }
 }

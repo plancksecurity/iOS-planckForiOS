@@ -25,6 +25,8 @@ protocol ImapSmtpSyncServiceDelegate: class {
     func handle(service: ImapSmtpSyncService, error: Error)
 
     func didSync(service: ImapSmtpSyncService)
+
+    func startIdling(service: ImapSmtpSyncService)
 }
 
 class ImapSmtpSyncService {
@@ -183,6 +185,9 @@ class ImapSmtpSyncService {
         if sendRequested && readyForSend {
             sendMessages()
             return
+        }
+        if state == .idling || state == .waitingForNextSync {
+            delegate?.startIdling(service: self)
         }
     }
 }

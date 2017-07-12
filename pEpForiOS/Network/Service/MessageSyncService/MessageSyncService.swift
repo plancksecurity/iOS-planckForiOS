@@ -75,9 +75,10 @@ class MessageSyncService: MessageSyncServiceProtocol {
         case noConnectInfos
     }
 
-    var errorDelegate: MessageSyncServiceErrorDelegate?
-    var sentDelegate: MessageSyncServiceSentDelegate?
-    var syncDelegate: MessageSyncServiceSyncDelegate?
+    weak var errorDelegate: MessageSyncServiceErrorDelegate?
+    weak var sentDelegate: MessageSyncServiceSentDelegate?
+    weak var syncDelegate: MessageSyncServiceSyncDelegate?
+    weak var stateDelegate: MessageSyncServiceStateDelegate?
 
     let sleepTimeInSeconds: Double
     let parentName: String?
@@ -234,15 +235,20 @@ extension MessageSyncService: ImapSmtpSyncServiceDelegate {
     }
 
     func didSync(service: ImapSmtpSyncService) {
-        guard let theDelegate = syncDelegate else {
+        if syncDelegate == nil {
             return
         }
-        let context = Record.Context.background
-        context.perform {
-            if let cdAccount = context.object(
-                with: service.imapSyncData.connectInfo.accountObjectID) as? CdAccount {
-                theDelegate.didSync(account: cdAccount.account())
-            }
+        service.imapSyncData.connectInfo.handleAccount() { [weak self] account in
+            self?.syncDelegate?.didSync(account: account)
+        }
+    }
+
+    func startIdling(service: ImapSmtpSyncService) {
+        if stateDelegate == nil {
+            return
+        }
+        service.imapSyncData.connectInfo.handleAccount() { [weak self] account in
+            self?.stateDelegate?.startIdling(account: account)
         }
     }
 }

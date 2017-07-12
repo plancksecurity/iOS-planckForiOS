@@ -43,6 +43,13 @@ protocol MessageSyncServiceSyncDelegate: class {
     func didSync(account: Account)
 }
 
+protocol MessageSyncServiceStateDelegate: class {
+    /**
+     Called when the state reaches the idling phase.
+     */
+    func startIdling(account: Account)
+}
+
 /**
  Message sync related actions that can be requested by the UI.
  The purpose is to make network-related actions seem as fast as possible,
@@ -53,6 +60,7 @@ protocol MessageSyncServiceProtocol {
     weak var errorDelegate: MessageSyncServiceErrorDelegate? { get set }
     weak var sentDelegate: MessageSyncServiceSentDelegate? { get set }
     weak var syncDelegate: MessageSyncServiceSyncDelegate? { get set }
+    weak var stateDelegate: MessageSyncServiceStateDelegate? { get set }
 
     /**
      Request account verification, receiving news via the delegate.
