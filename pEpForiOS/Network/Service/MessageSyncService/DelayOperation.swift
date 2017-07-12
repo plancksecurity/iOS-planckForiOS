@@ -10,7 +10,7 @@ import Foundation
 
 class DelayOperation: ConcurrentBaseOperation {
     private let managementQueue = DispatchQueue(
-        label: "InboxSync.managementQueue", qos: .utility, target: nil)
+        label: "DelayOperation.managementQueue", qos: .utility, target: nil)
     let delayInSeconds: Double
 
     init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
