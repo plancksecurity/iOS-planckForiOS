@@ -5,14 +5,8 @@
 //  Created by Dirk Zimmermann on 05/04/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
-import MessageModel
 
-public struct ImapState {
-    var authenticationCompleted = false
-    var currentFolderName: String?
-    var currentFolder: CWIMAPFolder?
-    var hasError = false
-}
+import MessageModel
 
 public protocol ImapSyncDelegate: class {
     func authenticationCompleted(_ sync: ImapSync, notification: Notification?)
@@ -42,11 +36,14 @@ public protocol ImapSyncDelegate: class {
     func actionFailed(_ sync: ImapSync, response: String?)
 }
 
-public enum ImapError: Int {
-    case folderNotOpen = 1000
-}
-
 open class ImapSync: Service {
+    public struct ImapState {
+        var authenticationCompleted = false
+        var currentFolderName: String?
+        var currentFolder: CWIMAPFolder?
+        var hasError = false
+    }
+
     open override var comp: String { get { return "ImapSync" } }
 
     static open let defaultImapInboxName = "INBOX"
