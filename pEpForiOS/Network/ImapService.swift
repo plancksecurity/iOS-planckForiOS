@@ -59,7 +59,7 @@ open class ImapSync: Service {
     }
 
     var supportsIdle: Bool {
-        return capabilities.contains("idle")
+        return capabilities.contains("IDLE") || capabilities.contains("idle")
     }
 
     open var folderBuilder: CWFolderBuilding? {
