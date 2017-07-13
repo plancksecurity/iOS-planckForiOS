@@ -262,8 +262,12 @@ class TestUtil {
                                     numberOfMails: Int) -> [CdMessage] {
         testCase.continueAfterFailure = false
 
+        if numberOfMails == 0 {
+            return []
+        }
+
         if numberOfMails < 3 {
-            XCTFail("need at least 3 outgoing mails to generate")
+            XCTFail("need 0 or at least 3 outgoing mails to generate")
             return []
         }
 
