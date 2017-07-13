@@ -78,7 +78,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
 
         if foldersToCreate.count > 0 {
             Record.saveAndWait(context: privateMOC)
-            syncDelegate = CreateSpecialFoldersSyncDelegate(imapSyncOperation: self)
+            syncDelegate = CreateSpecialFoldersSyncDelegate(errorHandler: self)
             imapSyncData.sync?.delegate = syncDelegate
             createNextFolder()
         } else {
@@ -138,7 +138,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
 
 class CreateSpecialFoldersSyncDelegate: DefaultImapSyncDelegate {
     public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
-        guard let op = imapSyncOperation as? CreateSpecialFoldersOperation else {
+        guard let op = errorHandler as? CreateSpecialFoldersOperation else {
             return
         }
         op.numberOfFoldersCreated += 1
@@ -146,7 +146,7 @@ class CreateSpecialFoldersSyncDelegate: DefaultImapSyncDelegate {
     }
 
     public override func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
-        guard let op = imapSyncOperation as? CreateSpecialFoldersOperation else {
+        guard let op = errorHandler as? CreateSpecialFoldersOperation else {
             return
         }
         op.createFolderAgain(potentialError: ImapSyncError.illegalState(#function))

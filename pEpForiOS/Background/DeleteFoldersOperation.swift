@@ -56,7 +56,7 @@ open class DeleteFoldersOperation: ImapSyncOperation {
         }
 
         if let sync = imapSyncData.sync {
-            syncDelegate = DeleteFoldersSyncDelegate(imapSyncOperation: self)
+            syncDelegate = DeleteFoldersSyncDelegate(errorHandler: self)
             sync.delegate = syncDelegate
             deleteNextRemoteFolder(sync: sync)
         }
@@ -89,6 +89,6 @@ open class DeleteFoldersOperation: ImapSyncOperation {
 
 class DeleteFoldersSyncDelegate: DefaultImapSyncDelegate {
     public override func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? DeleteFoldersOperation)?.deleteNextRemoteFolder(sync: sync)
+        (errorHandler as? DeleteFoldersOperation)?.deleteNextRemoteFolder(sync: sync)
     }
 }

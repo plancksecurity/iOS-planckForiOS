@@ -55,7 +55,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     func startSync(context: NSManagedObjectContext) {
-        syncDelegate = SyncFlagsToServerSyncDelegate(imapSyncOperation: self)
+        syncDelegate = SyncFlagsToServerSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
         // Immediately check for work. If there is none, bail out
         if let _ = nextMessageToBeSynced(context: context) {
@@ -229,7 +229,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
 
 class SyncFlagsToServerSyncDelegate: DefaultImapSyncDelegate {
     override func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? SyncFlagsToServerOperation)?.messageStoreCompleted(
+        (errorHandler as? SyncFlagsToServerOperation)?.messageStoreCompleted(
             sync, notification: notification)
     }
 }

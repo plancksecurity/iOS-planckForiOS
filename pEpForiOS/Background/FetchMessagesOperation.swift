@@ -75,7 +75,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
             }
         }
 
-        syncDelegate = FetchMessagesSyncDelegate(imapSyncOperation: self)
+        syncDelegate = FetchMessagesSyncDelegate(errorHandler: self)
         self.imapSyncData.sync?.delegate = syncDelegate
         self.imapSyncData.sync?.folderBuilder = folderBuilder
 
@@ -111,7 +111,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
 
 class FetchMessagesSyncDelegate: DefaultImapSyncDelegate {
     public override func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? FetchMessagesOperation)?.waitForFinished()
+        (errorHandler as? FetchMessagesOperation)?.waitForFinished()
     }
 
     public override func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
@@ -119,6 +119,6 @@ class FetchMessagesSyncDelegate: DefaultImapSyncDelegate {
     }
 
     public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? FetchMessagesOperation)?.fetchMessages(sync)
+        (errorHandler as? FetchMessagesOperation)?.fetchMessages(sync)
     }
 }

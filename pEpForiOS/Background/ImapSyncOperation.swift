@@ -31,3 +31,10 @@ open class ImapSyncOperation: ConcurrentBaseOperation {
         imapSyncData.sync?.imapState.hasError = true
     }
 }
+
+extension ImapSyncOperation: ImapSyncDelegateErrorHandlerProtocol {
+    func handle(error: Error) {
+        addIMAPError(error)
+        markAsFinished()
+    }
+}

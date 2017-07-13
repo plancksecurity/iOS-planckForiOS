@@ -45,7 +45,7 @@ open class AppendMailsOperation: ImapSyncOperation {
             return
         }
 
-        syncDelegate = AppendMailsSyncDelegate(imapSyncOperation: self)
+        syncDelegate = AppendMailsSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
 
         handleNextMessage()
@@ -194,11 +194,11 @@ open class AppendMailsOperation: ImapSyncOperation {
 
 class AppendMailsSyncDelegate: DefaultImapSyncDelegate {
     public override func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? AppendMailsOperation)?.handleNextMessage()
+        (errorHandler as? AppendMailsOperation)?.handleNextMessage()
     }
 
     public override func folderAppendFailed(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? AppendMailsOperation)?.addIMAPError(ImapSyncError.folderAppendFailed)
-        (imapSyncOperation as? AppendMailsOperation)?.markAsFinished()
+        (errorHandler as? AppendMailsOperation)?.addIMAPError(ImapSyncError.folderAppendFailed)
+        (errorHandler as? AppendMailsOperation)?.markAsFinished()
     }
 }

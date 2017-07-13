@@ -90,7 +90,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
     }
 
     func startSync() {
-        syncDelegate = FetchFoldersSyncDelegate(imapSyncOperation: self)
+        syncDelegate = FetchFoldersSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
         imapSyncData.sync?.folderBuilder = folderBuilder
         readFolderNamesFromImapSync(imapSyncData.sync)
@@ -110,7 +110,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
 
 class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
     public override func folderListCompleted(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? FetchFoldersOperation)?.readFolderNamesFromImapSync(sync)
+        (errorHandler as? FetchFoldersOperation)?.readFolderNamesFromImapSync(sync)
     }
 
     public override func folderNameParsed(_ sync: ImapSync, notification: Notification?) {
@@ -123,7 +123,7 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
         guard let folderName = folderInfoDict[PantomimeFolderNameKey] as? String else {
             return
         }
-        guard let syncOp = imapSyncOperation as? FetchFoldersOperation else {
+        guard let syncOp = errorHandler as? FetchFoldersOperation else {
             return
         }
 
@@ -132,7 +132,7 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
             name: folderName, separator: folderSeparator)
         let storeFolderOp = StoreFolderOperation(connectInfo: syncOp.imapSyncData.connectInfo,
                                                  folderInfo: folderInfo)
-        storeFolderOp.delegate = imapSyncOperation as? FetchFoldersOperation
+        storeFolderOp.delegate = errorHandler as? FetchFoldersOperation
         syncOp.backgroundQueue.addOperation(storeFolderOp)
     }
 }

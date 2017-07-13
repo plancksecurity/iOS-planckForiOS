@@ -92,7 +92,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
         let folderBuilder = ImapFolderBuilder(
             accountID: self.imapSyncData.connectInfo.accountObjectID,
             backgroundQueue: self.backgroundQueue)
-        syncDelegate = SyncMessagesSyncDelegate(imapSyncOperation: self)
+        syncDelegate = SyncMessagesSyncDelegate(errorHandler: self)
         self.imapSyncData.sync?.delegate = syncDelegate
         self.imapSyncData.sync?.folderBuilder = folderBuilder
 
@@ -162,7 +162,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
 
 class SyncMessagesSyncDelegate: DefaultImapSyncDelegate {
     public override func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? SyncMessagesOperation)?.folderSyncCompleted(
+        (errorHandler as? SyncMessagesOperation)?.folderSyncCompleted(
             sync, notification: notification)
     }
 
@@ -171,7 +171,7 @@ class SyncMessagesSyncDelegate: DefaultImapSyncDelegate {
     }
 
     public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? SyncMessagesOperation)?.folderOpenCompleted(
+        (errorHandler as? SyncMessagesOperation)?.folderOpenCompleted(
             sync, notification: notification)
     }
 }

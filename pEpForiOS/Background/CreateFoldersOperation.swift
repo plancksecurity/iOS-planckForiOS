@@ -60,7 +60,7 @@ open class CreateFoldersOperation: ImapSyncOperation {
         }
 
         if folderNamesToCreate.count > 0 {
-            syncDelegate = CreateFoldersSyncDelegate(imapSyncOperation: self)
+            syncDelegate = CreateFoldersSyncDelegate(errorHandler: self)
             imapSyncData.sync?.delegate = syncDelegate
             createNextFolder()
         } else {
@@ -85,6 +85,6 @@ open class CreateFoldersOperation: ImapSyncOperation {
 
 class CreateFoldersSyncDelegate: DefaultImapSyncDelegate {
     public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
-        (imapSyncOperation as? CreateFoldersOperation)?.createNextFolder()
+        (errorHandler as? CreateFoldersOperation)?.createNextFolder()
     }
 }

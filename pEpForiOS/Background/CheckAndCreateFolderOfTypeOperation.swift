@@ -61,7 +61,7 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 
         let folder = CdFolder.by(folderType: self.folderType, account: account)
         if folder == nil {
-            syncDelegate = CheckAndCreateFolderOfTypeSyncDelegate(imapSyncOperation: self)
+            syncDelegate = CheckAndCreateFolderOfTypeSyncDelegate(errorHandler: self)
             self.imapSyncData.sync?.delegate = syncDelegate
             if !self.isCancelled {
                 self.imapSyncData.sync?.createFolderWithName(self.folderName)
@@ -79,7 +79,7 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 
 class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
     public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
-        guard let op = imapSyncOperation as? CheckAndCreateFolderOfTypeOperation else {
+        guard let op = errorHandler as? CheckAndCreateFolderOfTypeOperation else {
             return
         }
         op.privateMOC.perform() {
@@ -88,7 +88,7 @@ class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
     }
 
     func completed(context: NSManagedObjectContext) {
-        guard let op = imapSyncOperation as? CheckAndCreateFolderOfTypeOperation else {
+        guard let op = errorHandler as? CheckAndCreateFolderOfTypeOperation else {
             return
         }
         if let ac = op.account {
@@ -106,7 +106,7 @@ class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
     }
 
     public override func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
-        guard let op = imapSyncOperation as? CheckAndCreateFolderOfTypeOperation else {
+        guard let op = errorHandler as? CheckAndCreateFolderOfTypeOperation else {
             return
         }
         op.privateMOC.perform() {
@@ -115,7 +115,7 @@ class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
     }
 
     func tryAgain(context: NSManagedObjectContext, sync: ImapSync) {
-        guard let op = imapSyncOperation as? CheckAndCreateFolderOfTypeOperation else {
+        guard let op = errorHandler as? CheckAndCreateFolderOfTypeOperation else {
             return
         }
         if !op.isCancelled {

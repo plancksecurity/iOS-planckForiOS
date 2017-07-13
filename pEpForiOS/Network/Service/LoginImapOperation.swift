@@ -21,7 +21,7 @@ open class LoginImapOperation: ImapSyncOperation {
         }
         imapSyncData.sync = service
 
-        syncDelegate = LoginImapSyncDelegate(imapSyncOperation: self)
+        syncDelegate = LoginImapSyncDelegate(errorHandler: self)
         if !service.imapState.authenticationCompleted {
             service.delegate = syncDelegate
             service.start()
@@ -47,7 +47,7 @@ open class LoginImapOperation: ImapSyncOperation {
 
 class LoginImapSyncDelegate: DefaultImapSyncDelegate {
     public override func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
-        guard let op = imapSyncOperation as? LoginImapOperation else {
+        guard let op = errorHandler as? LoginImapOperation else {
             return
         }
         op.imapSyncData.sync = sync
@@ -60,12 +60,12 @@ class LoginImapSyncDelegate: DefaultImapSyncDelegate {
     public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         // Should not generate an error, since we may try to select an non-existant
         // mailbox as alternative to CLOSE.
-        imapSyncOperation?.markAsFinished()
+        (errorHandler as? ImapSyncOperation)?.markAsFinished()
     }
 
     public override func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
         // Should not generate an error, since we may try to select an non-existant
         // mailbox as alternative to CLOSE.
-        imapSyncOperation?.markAsFinished()
+        (errorHandler as? ImapSyncOperation)?.markAsFinished()
     }
 }
