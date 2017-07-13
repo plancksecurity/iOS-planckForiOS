@@ -88,9 +88,9 @@ open class ImapSync: Service {
     }
 
     override func createService() -> CWService {
-        return CWIMAPStore.init(name: connectInfo.networkAddress,
-                                port: UInt32(connectInfo.networkPort),
-                                transport: connectInfo.connectionTransport!)
+        return CWIMAPStore(name: connectInfo.networkAddress,
+                           port: UInt32(connectInfo.networkPort),
+                           transport: connectInfo.connectionTransport!)
     }
 
     override open func start() {
@@ -166,6 +166,17 @@ open class ImapSync: Service {
 
     open func deleteFolderWithName(_ folderName: String) {
         imapStore.deleteFolder(withName: folderName)
+    }
+
+    /**
+     Sends the IDLE command to the server, and enters thas state.
+     */
+    open func sendIdle() {
+        if imapState.hasError || !imapState.authenticationCompleted ||
+            imapState.currentFolder == nil {
+            return
+        }
+        imapStore.send(IMAP_IDLE, info: nil, string: "IDLE")
     }
 }
 
