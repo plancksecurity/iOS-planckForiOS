@@ -139,7 +139,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         var msg: CdMessage?
         privateMOC.performAndWait({
             let p = NSPredicate(
-                format: "folder = %@ messageNumber = %d", self.folder, theIndex)
+                format: "folder = %@ and messageNumber = %d", self.folder, theIndex)
             msg = CdMessage.first(predicate: p)
         })
         return msg?.pantomimeQuick(folder: self)
