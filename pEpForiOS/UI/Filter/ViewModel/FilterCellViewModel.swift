@@ -24,8 +24,6 @@ public class FilterCellViewModel {
         if let acc = account {
             self.title = acc.user.address
         }
-        //enabled = _filter.ofType(.)
-        //filter = _filter
     }
 
     init(type: FilterType, filter _filter: Filter? = nil) {
@@ -61,8 +59,6 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("For me", comment: "title unread filter cell")
-            //filter = Filter.toAddress(address: String)
-            //enabled = filter?.ofType(type: .unread) ?? false
 
         case .forMeCc:
             guard let image = FlagImages.create(imageSize: squareSize).toMeCcImage else {
@@ -72,8 +68,6 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("For me in copy", comment: "title unread filter cell")
-            //filter = Filter.toAddress(address: String)
-            //enabled = filter?.ofType(type: .unread) ?? false
 
         case .attachment:
             self.icon = UIImage(named: "attachment-list-icon")!
@@ -85,6 +79,13 @@ public class FilterCellViewModel {
             self.icon = FlagImages.create(imageSize: squareSize).notSeenImage
             self.title = ""
 
+        case .unified:
+            self.icon = FlagImages.create(imageSize: squareSize).notSeenImage
+            self.title = ""
+
+        case .account:
+            self.icon = FlagImages.create(imageSize: squareSize).notSeenImage
+            self.title = ""
         }
     }
 
