@@ -34,6 +34,7 @@ public protocol ImapSyncDelegate: class {
     func folderDeleteFailed(_ sync: ImapSync, notification: Notification?)
     func badResponse(_ sync: ImapSync, response: String?)
     func actionFailed(_ sync: ImapSync, response: String?)
+    func idleNewMessages(_ sync: ImapSync, notification: Notification?)
 }
 
 open class ImapSync: Service {
@@ -177,6 +178,10 @@ open class ImapSync: Service {
             return
         }
         imapStore.send(IMAP_IDLE, info: nil, string: "IDLE")
+    }
+
+    open func exitIdle() {
+        imapStore.exitIDLE()
     }
 }
 
@@ -339,6 +344,11 @@ extension ImapSync: CWServiceClient {
     @objc public func folderDeleteFailed(_ notification: Notification?) {
         dumpMethodName("folderDeleteFailed", notification: notification)
         delegate?.folderDeleteFailed(self, notification: notification)
+    }
+
+    @objc public func idleNewMessages(_ notification: Notification?) {
+        dumpMethodName("idleNewMessages", notification: notification)
+        delegate?.idleNewMessages(self, notification: notification)
     }
 }
 

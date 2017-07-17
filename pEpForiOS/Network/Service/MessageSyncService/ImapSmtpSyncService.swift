@@ -54,6 +54,8 @@ class ImapSmtpSyncService {
         /** In case the server does not support IDLE */
         case waitingForNextSync
 
+        case reSyncing
+
         case error
     }
 
@@ -62,13 +64,14 @@ class ImapSmtpSyncService {
 
     private var state: State = .initial
     private var sendRequested: Bool = false
+    private var reSyncNecessary: Bool = false
     private var messagesEnqueuedForSend = [MessageID: Message]()
 
     var readyForSend: Bool {
         switch state {
         case .idling, .waitingForNextSync, .error, .readyForIdling:
             return true
-        case .initial, .initialSync, .sending:
+        case .initial, .initialSync, .sending, .reSyncing:
             return false
         }
     }
@@ -77,7 +80,7 @@ class ImapSmtpSyncService {
         switch state {
         case .idling, .waitingForNextSync:
             return true
-        case .initial, .initialSync, .sending, .error, .readyForIdling:
+        case .initial, .initialSync, .sending, .error, .readyForIdling, .reSyncing:
             return false
         }
     }
@@ -155,6 +158,15 @@ class ImapSmtpSyncService {
         checkNextStep()
     }
 
+    func handleReSyncFinished(error: Error?) {
+        handleError(error: error)
+        if error == nil {
+            delegate?.didSync(service: self)
+            jumpIntoCorrectIdleState()
+        }
+        checkNextStep()
+    }
+
     func handleSendRequestFinished(error: Error?) {
         handleError(error: error)
         notifyAboutSentMessages()
@@ -185,7 +197,26 @@ class ImapSmtpSyncService {
         }
     }
 
+    func reSync() {
+        let service = serviceFactory.reSync(
+            parentName: parentName, backgrounder: backgrounder,
+            imapSyncData: imapSyncData)
+        currentlyRunningService = service
+        service.execute() { [weak self] error in
+            self?.handleReSyncFinished(error: error)
+        }
+    }
+
+    func exitIdle() {
+        imapSyncData.sync?.exitIdle()
+    }
+
     func checkNextStep() {
+        if reSyncNecessary && isIdling {
+            exitIdle()
+            reSync()
+            return
+        }
         if sendRequested && readyForSend {
             sendMessages()
             return
@@ -194,6 +225,23 @@ class ImapSmtpSyncService {
             delegate?.startIdling(service: self)
             if imapSyncData.supportsIdle {
                 state = .idling
+                let imapIdleService = ImapIdleService(
+                    parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
+                imapIdleService.execute() { [weak self] error in
+                    self?.handleError(error: error)
+                    if error == nil {
+                        switch imapIdleService.idleResult {
+                        case .newMessages:
+                            self?.reSyncNecessary = true
+                            self?.checkNextStep()
+                            break
+                        case .error:
+                            break
+                        case .nothing:
+                            break
+                        }
+                    }
+                }
             } else {
                 state = .waitingForNextSync
             }

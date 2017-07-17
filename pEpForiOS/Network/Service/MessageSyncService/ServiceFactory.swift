@@ -35,4 +35,19 @@ class ServiceFactory {
 
         return chainedService
     }
+
+    func reSync(
+        parentName: String?, backgrounder: BackgroundTaskProtocol?,
+        imapSyncData: ImapSyncData) -> ServiceExecutionProtocol {
+        let fetchMessagesService = FetchMessagesService(
+            parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
+
+        let syncMessagesService = SyncExistingMessagesService(
+            parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
+
+        let chainedService = ServiceChainExecutor()
+        chainedService.add(services: [fetchMessagesService, syncMessagesService])
+
+        return chainedService
+    }
 }

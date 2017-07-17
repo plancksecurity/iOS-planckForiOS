@@ -124,4 +124,8 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
     public func actionFailed(_ sync: ImapSync, response: String?) {
         errorHandler?.handle(error: ImapSyncError.actionFailed)
     }
+
+    func idleNewMessages(_ sync: ImapSync, notification: Notification?) {
+        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
+    }
 }
