@@ -18,6 +18,8 @@ public class EmailListViewModel : FilterUpdateProtocol{
 
     var filterEnabled = false
 
+    var enabledFilters : Filter?
+
     init(config: EmailListConfig?, delegate: tableViewUpdate) {
         //MessageModelConfig.messageFolderDelegate = self
         folderToShow = config?.folder
@@ -62,7 +64,9 @@ public class EmailListViewModel : FilterUpdateProtocol{
     func filterContentForSearchText(searchText: String? = nil, clear: Bool) {
         if clear {
             if filterEnabled {
-                folderToShow?.filter = Filter.removeSearchFilter(filter: folderToShow?.filter as! Filter)
+                if let f = folderToShow?.filter {
+                    folderToShow?.filter = Filter.removeSearchFilter(filter: f)
+                }
             } else {
                 updateFilter(filter: Filter.unified())
             }
@@ -80,7 +84,16 @@ public class EmailListViewModel : FilterUpdateProtocol{
     }
 
     public func updateFilter(filter: Filter) {
-        folderToShow?.updateFilter(filter: filter)
+        enabledFilters = folderToShow?.updateFilter(filter: filter)
+        self.delegate?.updateView()
+    }
+
+    public func resetFilters() {
+        if let f = folderToShow, f.isUnified {
+            let _ = folderToShow?.updateFilter(filter: Filter.unified())
+        } else {
+            let _ = folderToShow?.updateFilter(filter: Filter.empty())
+        }
         self.delegate?.updateView()
     }
 

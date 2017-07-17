@@ -118,7 +118,9 @@ class EmailListViewController: UITableViewController {
                 vm.filterEnabled = false
                 textFilterButton.title = ""
                 enableFilterButton.image = UIImage(named: "unread-icon")
-                vm.updateFilter(filter: Filter.unified())
+                if config != nil {
+                    vm.resetFilters()
+                }
             } else {
                 vm.filterEnabled = true
                 textFilterButton.title = "Filter by: unread"
