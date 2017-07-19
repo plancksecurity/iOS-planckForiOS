@@ -245,6 +245,8 @@ class MessageSyncServiceTests: XCTestCase {
             XCTAssertEqual(backgrounder.totalNumberOfBackgroundTasksStarted,
                            backgrounder.totalNumberOfBackgroundTasksFinished)
         }
+
+        ms.cancel(account: cdAccount.account())
     }
 
     func testBasicPassiveSend() {
@@ -279,6 +281,8 @@ class MessageSyncServiceTests: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
+
+        ms.cancel(account: cdAccount.account())
     }
 
     func testSyncWithErroneousAccount() {
@@ -297,6 +301,8 @@ class MessageSyncServiceTests: XCTestCase {
         }
 
         XCTAssertNotNil(errorDelegate.error)
+
+        ms.cancel(account: cdAccount.account())
     }
 
     func testTypicalNewAccountSetup() {
@@ -326,6 +332,8 @@ class MessageSyncServiceTests: XCTestCase {
             numberOfOutgoingMessagesToSendImmediately: 3,
             numberOfOutgoingMessagesToSendLater: 0,
             expectedNumberOfSyncs: 1)
+
+        ms.cancel(account: cdAccount.account())
     }
 
     func notestIdle() {

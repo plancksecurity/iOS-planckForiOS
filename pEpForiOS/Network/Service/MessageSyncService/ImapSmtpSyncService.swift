@@ -114,6 +114,11 @@ class ImapSmtpSyncService {
         sendMessages()
     }
 
+    public func cancel() {
+        imapSyncData.sync?.close()
+        smtpSendData.smtp?.close()
+    }
+
     func sendMessages()  {
         if readyForSend {
             sendRequested = false
