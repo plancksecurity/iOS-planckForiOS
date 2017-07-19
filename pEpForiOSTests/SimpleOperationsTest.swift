@@ -201,18 +201,17 @@ class SimpleOperationsTest: XCTestCase {
     func testSyncMessagesFailedOperation() {
         testFetchFoldersOperation()
 
-        guard let folder = CdFolder.by(folderType: .inbox, account: cdAccount) else {
-            XCTFail()
-            return
+        guard
+            let folder = CdFolder.by(folderType: .inbox, account: cdAccount),
+            let folderName = folder.name else {
+                XCTFail()
+                return
         }
 
         let expMailsSynced = expectation(description: "expMailsSynced")
 
-        guard let op = SyncMessagesOperation(
-            imapSyncData: imapSyncData, folder: folder) else {
-                XCTFail()
-                return
-        }
+        let op = SyncMessagesOperation(
+            imapSyncData: imapSyncData, folderName: folderName, firstUID: 10, lastUID: 5)
         op.completionBlock = {
             expMailsSynced.fulfill()
         }

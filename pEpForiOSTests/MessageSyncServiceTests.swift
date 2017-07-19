@@ -215,7 +215,8 @@ class MessageSyncServiceTests: XCTestCase {
              numberOfTotalOutgoingMessages: outgoingMessages.count, expectedNumberOfSyncs: 1)
     }
 
-    func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
+    func runMessageSyncServiceSend(parentName: String,
+                                   cdAccount theCdAccount: CdAccount,
                                    numberOfOutgoingMessagesToCreate: Int,
                                    numberOfOutgoingMessagesToSendImmediately: Int,
                                    numberOfOutgoingMessagesToSendLater: Int,
@@ -229,7 +230,7 @@ class MessageSyncServiceTests: XCTestCase {
             mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinished)
         }
         let ms = MessageSyncService(
-            sleepTimeInSeconds: 2, parentName: #function, backgrounder: mbg, mySelfer: nil)
+            sleepTimeInSeconds: 2, parentName: parentName, backgrounder: mbg, mySelfer: nil)
 
         runMessageSyncWithSend(
             ms: ms, cdAccount: cdAccount,
@@ -251,6 +252,7 @@ class MessageSyncServiceTests: XCTestCase {
 
     func testBasicPassiveSend() {
         runMessageSyncServiceSend(
+            parentName: #function,
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSendImmediately: 0,
@@ -261,6 +263,7 @@ class MessageSyncServiceTests: XCTestCase {
 
     func testSendSeveral() {
         runMessageSyncServiceSend(
+            parentName: #function,
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSendImmediately: 2,
@@ -341,6 +344,7 @@ class MessageSyncServiceTests: XCTestCase {
         MessageModelConfig.messageFolderDelegate = messageFolderDelegate
 
         runMessageSyncServiceSend(
+            parentName: #function,
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 0,
             numberOfOutgoingMessagesToSendImmediately: 0,

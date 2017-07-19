@@ -48,6 +48,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
             return false
         }
         if firstUID == 0 || lastUID == 0 {
+            markAsFinished()
             return false
         }
         if firstUID > lastUID {
