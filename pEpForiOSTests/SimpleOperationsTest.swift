@@ -55,7 +55,7 @@ class SimpleOperationsTest: XCTestCase {
     func testFetchMessagesOperation() {
         XCTAssertNil(CdMessage.all())
 
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         XCTAssertGreaterThan(
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 0)
@@ -137,7 +137,7 @@ class SimpleOperationsTest: XCTestCase {
      local flags, to avoid getting rid of user-initiated changes.
      */
     func testSyncMessagesOperation() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let folder = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -512,7 +512,7 @@ class SimpleOperationsTest: XCTestCase {
     // MARK: - SyncFlagsToServerOperation
 
     func testSyncFlagsToServerOperationEmpty() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -537,7 +537,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperation() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -617,7 +617,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationAddFlags_changeAllFlags() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -688,7 +688,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationAddFlags_allFlagsAlreadySetOnServer() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -761,7 +761,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationAddFlags_someFlagsAlreadySetOnServer() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -844,7 +844,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationAddFlags_addFlagAnswered() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -923,7 +923,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationAddFlags_addFlagDraft() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1002,7 +1002,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationAddFlags_addFlagFlagged() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1081,7 +1081,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationAddFlags_addFlagSeen() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1159,7 +1159,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationAddFlags_addFlagDeleted() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1236,7 +1236,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationRemoveFlags_allFlagsAlreadySetOnServer() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1306,7 +1306,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationRemoveFlags_noChanges() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1383,7 +1383,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationRemoveFlags_removeFlagAnswered() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1460,7 +1460,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationRemoveFlags_removeFlagDraft() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1537,7 +1537,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationRemoveFlags_removeFlagFlagged() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1614,7 +1614,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationRemoveFlags_removeFlagSeen() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1691,7 +1691,7 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testSyncFlagsToServerOperationRemoveFlags_removeFlagDeleted() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -1773,7 +1773,7 @@ class SimpleOperationsTest: XCTestCase {
      while the others will cancel early and not do anything.
      */
     func testSyncFlagsToServerOperationMulti() {
-        fetchMessages()
+        fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
             XCTFail()
@@ -2437,11 +2437,11 @@ class SimpleOperationsTest: XCTestCase {
 
     // MARK: - HELPER
 
-    func fetchMessages() {
+    func fetchMessages(parentName: String) {
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
 
-        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
-        let op = FetchMessagesOperation(imapSyncData: imapSyncData,
+        let opLogin = LoginImapOperation(parentName: parentName, imapSyncData: imapSyncData)
+        let op = FetchMessagesOperation(parentName: parentName, imapSyncData: imapSyncData,
                                         folderName: ImapSync.defaultImapInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
