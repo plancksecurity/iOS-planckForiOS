@@ -41,6 +41,8 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     override func tearDown() {
+        imapSyncData?.sync?.close()
+
         persistentSetup = nil
         super.tearDown()
     }
@@ -1964,6 +1966,8 @@ class SimpleOperationsTest: XCTestCase {
         } else {
             XCTFail()
         }
+
+        smtpSendData.smtp?.close()
     }
 
     func testAppendSentMailsOperation() {
