@@ -48,7 +48,6 @@ open class SyncMessagesOperation: ImapSyncOperation {
             return false
         }
         if firstUID == 0 || lastUID == 0 {
-            handleError(OperationError.illegalParameter, message: "Cannot sync UIDs of 0")
             return false
         }
         if firstUID > lastUID {
