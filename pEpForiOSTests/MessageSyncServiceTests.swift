@@ -98,6 +98,21 @@ class MessageSyncServiceTests: XCTestCase {
         }
     }
 
+    class MessageFolderTestDelegate: MessageFolderDelegate {
+        let expMessagesDeleted: XCTestExpectation?
+        var deletedMessages = Set<MessageFolder>()
+
+        init(expMessagesDeleted: XCTestExpectation?) {
+            self.expMessagesDeleted = expMessagesDeleted
+        }
+
+        func didChange(messageFolder: MessageFolder) {
+            if messageFolder.isGhost {
+                deletedMessages.insert(messageFolder)
+            }
+        }
+    }
+
     override func setUp() {
         super.setUp()
 
@@ -314,6 +329,9 @@ class MessageSyncServiceTests: XCTestCase {
     }
 
     func notestIdle() {
+        let messageFolderDelegate = MessageFolderTestDelegate(expMessagesDeleted: nil)
+        MessageModelConfig.messageFolderDelegate = messageFolderDelegate
+
         runMessageSyncServiceSend(
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 0,
@@ -321,5 +339,7 @@ class MessageSyncServiceTests: XCTestCase {
             numberOfOutgoingMessagesToSendLater: 0,
             expectedNumberOfExpectedBackgroundTasks: -1,
             expectedNumberOfSyncs: 2)
+
+        print("Deleted messages: \(messageFolderDelegate.deletedMessages.count)")
     }
 }

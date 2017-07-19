@@ -54,4 +54,9 @@ class ImapIdleSyncDelegate: DefaultImapSyncDelegate {
     override func idleNewMessages(_ sync: ImapSync, notification: Notification?) {
         (errorHandler as? ImapIdleService)?.handleNewMessages()
     }
+
+    public override func messageChanged(_ sync: ImapSync, notification: Notification?) {
+        // Will be called when the status of existing messages changes.
+        // Can be ignored since the storing is already handled by PersistentImapFolder.
+    }
 }
