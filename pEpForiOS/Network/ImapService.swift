@@ -88,6 +88,18 @@ open class ImapSync: Service {
         }
     }
 
+    func isAlreadySelected(folderName: String) -> Bool {
+        if let currentFolderName = imapState.currentFolder?.name() {
+            if currentFolderName.isInboxFolderName() && folderName.isInboxFolderName() {
+                return true
+            }
+            if currentFolderName == folderName {
+                return true
+            }
+        }
+        return false
+    }
+
     override func createService() -> CWService {
         return CWIMAPStore(name: connectInfo.networkAddress,
                            port: UInt32(connectInfo.networkPort),
@@ -391,5 +403,14 @@ extension ImapSync: PantomimeFolderDelegate {
     @objc public func folderAppendFailed(_ notification: Notification?) {
         dumpMethodName("folderAppendFailed", notification: notification)
         delegate?.folderAppendFailed(self, notification: notification)
+    }
+}
+
+extension String {
+    func isInboxFolderName() -> Bool {
+        if lowercased() == ImapSync.defaultImapInboxName.lowercased() {
+            return true
+        }
+        return false
     }
 }
