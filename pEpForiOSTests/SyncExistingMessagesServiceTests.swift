@@ -27,10 +27,10 @@ class SyncExistingMessagesServiceTests: XCTestCase {
         self.cdAccount = cdAccount
     }
 
-    func runSyncTest(folderName: String = ImapSync.defaultImapInboxName,
+    func runSyncTest(parentName: String, folderName: String = ImapSync.defaultImapInboxName,
                      useDisfunctionalAccount: Bool, expectError: Bool) {
         // the fetch should actually always work
-        TestUtil.runFetchTest(testCase: self, cdAccount: cdAccount,
+        TestUtil.runFetchTest(parentName: parentName, testCase: self, cdAccount: cdAccount,
                               useDisfunctionalAccount: false,
                               folderName:  ImapSync.defaultImapInboxName,
                               expectError: false)
@@ -64,15 +64,17 @@ class SyncExistingMessagesServiceTests: XCTestCase {
     }
 
     func testAfterFetchingOK() {
-        runSyncTest(folderName: "INbox", useDisfunctionalAccount: false, expectError: false)
+        runSyncTest(parentName: #function, folderName: "INbox", useDisfunctionalAccount: false,
+                    expectError: false)
     }
 
     func testAfterFetchingError() {
-        runSyncTest(folderName: "inbox", useDisfunctionalAccount: true, expectError: true)
+        runSyncTest(parentName: #function, folderName: "inbox", useDisfunctionalAccount: true,
+                    expectError: true)
     }
 
     func testWrongFolder() {
-        runSyncTest(folderName: "wrongDoesNotExist",
+        runSyncTest(parentName: #function, folderName: "wrongDoesNotExist",
                     useDisfunctionalAccount: false, expectError: true)
     }
 }

@@ -28,17 +28,23 @@ class FetchMessagesServiceTests: XCTestCase {
     }
 
     func testBasicFetchOK() {
-        TestUtil.runFetchTest(testCase: self, cdAccount: cdAccount, useDisfunctionalAccount: false,
-                              folderName: "inBOX", expectError: false)
+        TestUtil.runFetchTest(
+            parentName: #function, testCase: self, cdAccount: cdAccount,
+            useDisfunctionalAccount: false,
+            folderName: "inBOX", expectError: false)
     }
 
     func testBasicFetchAccountError() {
-        TestUtil.runFetchTest(testCase: self, cdAccount: cdAccount, useDisfunctionalAccount: true,
-                              folderName: "inBOX", expectError: true)
+        TestUtil.runFetchTest(
+            parentName: #function, testCase: self, cdAccount: cdAccount,
+            useDisfunctionalAccount: true,
+            folderName: "inBOX", expectError: true)
     }
 
     func testBasicFetchError() {
-        TestUtil.runFetchTest(testCase: self, cdAccount: cdAccount, useDisfunctionalAccount: false,
-                              folderName: "inBOXeZZZZ", expectError: true)
+        TestUtil.runFetchTest(
+            parentName: #function, testCase: self, cdAccount: cdAccount,
+            useDisfunctionalAccount: false,
+            folderName: "inBOXeZZZZ", expectError: true)
     }
 }

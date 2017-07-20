@@ -104,6 +104,11 @@ open class ImapSync: Service {
         super.cancel()
     }
 
+    open override func close() {
+        imapState.currentFolder = nil
+        super.close()
+    }
+
     /**
      Opens the given mailbox (by name). If already open, do nothing.
      - Returns: true if the mailbox had to opened, false if it already was open.

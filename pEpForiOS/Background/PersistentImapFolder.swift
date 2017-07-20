@@ -198,17 +198,20 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
                       messageUpdate: CWMessageUpdate) {
-        Log.warn(component: comp, content: "Writing message \(message), \(messageUpdate)")
-
         let opStore = StorePrefetchedMailOperation(
             accountID: accountID, message: message, messageUpdate: messageUpdate, name: logName,
             messageFetchedBlock: messageFetchedBlock)
+        let opID = unsafeBitCast(opStore, to: UnsafeRawPointer.self)
+        Log.warn(component: comp, content: "Writing message \(message), \(messageUpdate) for \(opID)")
         backgroundQueue.addOperation(opStore)
+
 
         // While it would be desirable to store messages asynchronously,
         // it's not the correct semantics pantomime, and therefore the layers above, expect.
         // It might correctly work in-app, but can mess up the unit tests since they might signal
         // "finish" before all messages have been stored.
         opStore.waitForFinished()
+
+        Log.warn(component: comp, content: "Wrote message \(message) for \(opID)")
     }
 }
