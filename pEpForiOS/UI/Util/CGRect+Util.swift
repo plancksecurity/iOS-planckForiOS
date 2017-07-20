@@ -22,9 +22,20 @@ extension CGRect {
         let r = standardized
         var theWidth = maxWidth
         theWidth = min(theWidth, min(r.width, r.height))
-        let center = CGPoint(x: r.origin.x + round(r.width / 2),
-                             y: r.origin.y + round(r.height / 2))
-        let orig = CGPoint(x: center.x - round(theWidth / 2), y: center.y - round(theWidth / 2))
+
+        let widthR = round(r.width / 2)
+        let centerX = r.origin.x + widthR
+
+        let heightR = round(r.height / 2)
+        let centerY = r.origin.y + heightR
+
+        let center = CGPoint(x: centerX, y: centerY)
+
+        let width2 = round(theWidth / 2)
+        let origX = center.x - width2
+        let origY = center.y - width2
+        let orig = CGPoint(x: origX, y: origY)
+
         return CGRect(origin: orig, size: CGSize(width: theWidth, height: theWidth))
     }
 }

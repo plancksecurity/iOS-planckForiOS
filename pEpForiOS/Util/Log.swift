@@ -85,7 +85,7 @@ import MessageModel
 
     static open func error(component: String, errorString: String, error: Error) {
         Log.shared.saveLog(
-            entity: component, description: errorString + " \(error)", comment: "error")
+            entity: component, description: "\(errorString) \(error)", comment: "error")
     }
 
     static open func error(component: String, errorString: String) {

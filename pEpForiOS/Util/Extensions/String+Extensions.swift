@@ -143,11 +143,12 @@ public extension String {
      - Returns: The part of a recipient list that connot be edited anymore.
      */
     public func finishedRecipientPart() -> String {
-        let comps = self.components(separatedBy: String.internalRecipientDelimiter)
+        var comps = self.components(separatedBy: String.internalRecipientDelimiter)
         if comps.count == 1 {
             return ""
         } else {
-            let ar = comps[0..<comps.count-1].map({$0.trimmedWhiteSpace()})
+            comps = Array(comps.dropLast())
+            let ar = comps.map({$0.trimmedWhiteSpace()})
             return ar.joined(separator: String.externalRecipientDelimiter)
         }
     }
@@ -445,7 +446,7 @@ extension String {
         }
         let word1 = words[0]
         let word2 = words[words.count - 1]
-        return word1.prefix(ofLength: 1).capitalized + word2.prefix(ofLength: 1).capitalized
+        return "\(word1.prefix(ofLength: 1).capitalized)\(word2.prefix(ofLength: 1).capitalized)"
     }
 
     /**

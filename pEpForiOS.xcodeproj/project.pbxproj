@@ -1247,12 +1247,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEp" */;
 			buildPhases = (
-				4304FCF11EBB60340086DADA /* ShellScript */,
+				151573B31F20913C0049BB0B /* Log Start Time script */,
+				4304FCF11EBB60340086DADA /* Copy Trustwords Script */,
 				43980E1F1CBD0BC900A7FC3C /* Sources */,
 				43980E201CBD0BC900A7FC3C /* Frameworks */,
 				43980E211CBD0BC900A7FC3C /* Resources */,
 				4377D92F1DB7EB03003432BB /* CopyFiles */,
-				4961BA0D1E7BEA4200920DF8 /* ShellScript */,
+				4961BA0D1E7BEA4200920DF8 /* Warnings for TODO++ Script */,
+				151573B41F2091910049BB0B /* Log Time Finished Script */,
 			);
 			buildRules = (
 			);
@@ -1406,26 +1408,56 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4304FCF11EBB60340086DADA /* ShellScript */ = {
+		151573B31F20913C0049BB0B /* Log Start Time script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Log Start Time script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"BUILD_TIME START pEp_for_iOS: \"`date \"+%Y_%m_%d--%H:%M:%S\"`";
+		};
+		151573B41F2091910049BB0B /* Log Time Finished Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Log Time Finished Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"BUILD_TIME STOP pEp_for_iOS: \"`date \"+%Y_%m_%d--%H:%M:%S\"`";
+		};
+		4304FCF11EBB60340086DADA /* Copy Trustwords Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Trustwords Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cp \"${SRCROOT}/../pEpEngine/db/system.db\" \"${SRCROOT}/pEpTrustWords.bundle\"\n";
 		};
-		4961BA0D1E7BEA4200920DF8 /* ShellScript */ = {
+		4961BA0D1E7BEA4200920DF8 /* Warnings for TODO++ Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Warnings for TODO++ Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1776,8 +1808,9 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
+				OTHER_SWIFT_FLAGS = "-Onone";
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1827,6 +1860,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
+				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1845,14 +1879,15 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG";
+				ONLY_ACTIVE_ARCH = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpAlpha";
 				PRODUCT_MODULE_NAME = pEpForiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)//pEpForiOS/pEpForiOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -1868,7 +1903,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpAlpha";
 				PRODUCT_MODULE_NAME = pEpForiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1886,6 +1921,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "pEpForiOSTests/pEpForiOSTests-Bridging-Header.h";
@@ -1902,6 +1938,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "pEpForiOSTests/pEpForiOSTests-Bridging-Header.h";
@@ -1917,6 +1954,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = pEpForiOSUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1933,6 +1971,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = pEpForiOSUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
