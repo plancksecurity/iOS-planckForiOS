@@ -53,7 +53,6 @@ class FilterTableViewController: UITableViewController {
             sections.append(FilterViewModel(type: .accouts, filter: filterEnabled))
         }
         sections.append(FilterViewModel(type: .include, filter: filterEnabled))
-        sections.append(FilterViewModel(type: .to, filter: filterEnabled))
         sections.append(FilterViewModel(type: .other, filter: filterEnabled))
     }
 

@@ -51,24 +51,6 @@ public class FilterCellViewModel {
             filter = Filter.flagged()
             enabled = filter?.ofType(type: .flagged) ?? false
 
-        case .forMe:
-            guard let image = FlagImages.create(imageSize: squareSize).toMeImage else {
-                self.icon = UIImage(named: "folders-icon-inbox")!
-                title = ""
-                return
-            }
-            icon = image
-            title = NSLocalizedString("For me", comment: "title unread filter cell")
-
-        case .forMeCc:
-            guard let image = FlagImages.create(imageSize: squareSize).toMeCcImage else {
-                self.icon = UIImage(named: "folders-icon-inbox")!
-                title = ""
-                return
-            }
-            icon = image
-            title = NSLocalizedString("For me in copy", comment: "title unread filter cell")
-
         case .attachment:
             self.icon = UIImage(named: "attachment-list-icon")!
             self.title = NSLocalizedString("Attachments", comment: "title attachments filter cell")
