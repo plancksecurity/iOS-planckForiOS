@@ -127,7 +127,7 @@ open class ImapSync: Service {
      */
     @discardableResult open func openMailBox(name: String) -> Bool {
         if let currentFolderName = imapState.currentFolderName,
-            currentFolderName == name {
+            currentFolderName.isSameAs(otherFolderName: name) {
             imapState.currentFolder = imapStore.folder(forName: name) as? CWIMAPFolder
             return false
         } else {
@@ -412,5 +412,12 @@ extension String {
             return true
         }
         return false
+    }
+
+    func isSameAs(otherFolderName: String) -> Bool {
+        if isInboxFolderName() && otherFolderName.isInboxFolderName() {
+            return true
+        }
+        return self == otherFolderName
     }
 }

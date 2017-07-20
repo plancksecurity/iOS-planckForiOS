@@ -232,4 +232,8 @@ class SyncFlagsToServerSyncDelegate: DefaultImapSyncDelegate {
         (errorHandler as? SyncFlagsToServerOperation)?.messageStoreCompleted(
             sync, notification: notification)
     }
+
+    public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+        (errorHandler as? SyncFlagsToServerOperation)?.syncNextMessage()
+    }
 }

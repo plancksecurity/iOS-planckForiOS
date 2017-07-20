@@ -26,16 +26,8 @@ open class LoginImapOperation: ImapSyncOperation {
             service.delegate = syncDelegate
             service.start()
         } else {
-            if service.imapState.currentFolderName != nil {
-                // Try to select a (probably) non-existant mailbox,
-                // in order to close any other mailbox,
-                // without causing a silent expunge caused by CLOSE.
-                service.delegate = syncDelegate
-                service.unselectCurrentMailBox()
-            } else {
-                syncDelegate = nil
-                markAsFinished()
-            }
+            syncDelegate = nil
+            markAsFinished()
         }
     }
 
