@@ -14,24 +14,29 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
     public var folderNameToIgnore: String?
 
     let accountID: NSManagedObjectID
-    open let backgroundQueue: OperationQueue?
+    let guaranteedBackgroundQueue: OperationQueue
     let name: String?
     let messageFetchedBlock: MessageFetchedBlock?
+
+    open var backgroundQueue: OperationQueue? {
+        return guaranteedBackgroundQueue
+    }
 
     public init(accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
                 name: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
-        self.backgroundQueue = backgroundQueue
+        self.guaranteedBackgroundQueue = backgroundQueue
         self.name = name
         self.messageFetchedBlock = messageFetchedBlock
     }
 
     open func folder(withName: String) -> CWFolder {
         if folderNameToIgnore != nil && withName == folderNameToIgnore {
+            Log.warn(component: #function, content: "")
             return CWFolder(name: withName)
         } else {
             return PersistentImapFolder(
-                name: withName, accountID: accountID, backgroundQueue: backgroundQueue!,
+                name: withName, accountID: accountID, backgroundQueue: guaranteedBackgroundQueue,
                 logName: name, messageFetchedBlock: messageFetchedBlock) as CWFolder
         }
     }
