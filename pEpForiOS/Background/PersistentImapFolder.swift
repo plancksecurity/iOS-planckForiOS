@@ -75,7 +75,8 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     deinit {
-        Log.info(component: "PersistentImapFolder: \(String(describing: logName))", content: "PersistentImapFolder")
+        let logID = logName ?? "<unknown>"
+        Log.info(component: #function, content: logID)
     }
 
     func folderObject() -> CdFolder {
@@ -202,6 +203,12 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         let opStore = StorePrefetchedMailOperation(
             accountID: accountID, message: message, messageUpdate: messageUpdate, name: logName,
             messageFetchedBlock: messageFetchedBlock)
-        opStore.start()
+        backgroundQueue.addOperation(opStore)
+
+        // While it would be desirable to store messages asynchronously,
+        // it's not the correct semantics pantomime, and therefore the layers above, expect.
+        // It might correctly work in-app, but can mess up the unit tests since they might signal
+        // "finish" before all messages have been stored.
+        opStore.waitForFinished()
     }
 }

@@ -140,6 +140,17 @@ class MessageSyncService: MessageSyncServiceProtocol {
         }
     }
 
+    /**
+     Cancel all accounts.
+     */
+    func cancel() {
+        self.managementQueue.async {
+            for (_, v) in self.imapConnections {
+                v.cancel()
+            }
+        }
+    }
+
     private func indicate(error: Error) {
         managementQueue.async { [weak self] in
             self?.errorDelegate?.show(error: error)
