@@ -39,8 +39,9 @@ class FetchMessagesServiceTests: XCTestCase {
 
         persistentSetup = nil
 
-        let expNotFullfilled = expectation(description: "expNotFullfilled")
-        wait(for: [expNotFullfilled], timeout: TestUtil.waitTimeForever)
+        // If there are still stray operations for storing messages,
+        // the test will fail in the next couple of seconds.
+        sleep(UInt32(TestUtil.waitTimeCoupleOfSeconds))
     }
 
     func testBasicFetchOK() {

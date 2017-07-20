@@ -237,10 +237,6 @@ extension ImapSync: CWServiceClient {
         } else {
             Log.info(component: comp, content: "folderPrefetchCompleted: \(String(describing: notification))")
         }
-        if let bq = folderBuilder?.backgroundQueue {
-            // Wait until all newly synced messages are stored
-            bq.waitUntilAllOperationsAreFinished()
-        }
         delegate?.folderPrefetchCompleted(self, notification: notification)
     }
 
@@ -252,19 +248,11 @@ extension ImapSync: CWServiceClient {
         } else {
             Log.info(component: comp, content: "folderSyncCompleted: \(String(describing: notification))")
         }
-        if let bq = folderBuilder?.backgroundQueue {
-            // Wait until all newly synced messages are stored
-            bq.waitUntilAllOperationsAreFinished()
-        }
         delegate?.folderSyncCompleted(self, notification: notification)
     }
 
     @objc public func folderSyncFailed(_ notification: Notification?) {
         dumpMethodName("folderSyncFailed", notification: notification)
-        if let bq = folderBuilder?.backgroundQueue {
-            // Wait until all newly synced messages are stored
-            bq.waitUntilAllOperationsAreFinished()
-        }
         delegate?.folderSyncFailed(self, notification: notification)
     }
 

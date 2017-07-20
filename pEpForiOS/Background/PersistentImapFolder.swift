@@ -210,7 +210,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         // it's not the correct semantics pantomime, and therefore the layers above, expect.
         // It might correctly work in-app, but can mess up the unit tests since they might signal
         // "finish" before all messages have been stored.
-        opStore.waitForFinished()
+        opStore.waitUntilFinished()
 
         Log.warn(component: comp, content: "Wrote message \(message) for \(opID)")
     }

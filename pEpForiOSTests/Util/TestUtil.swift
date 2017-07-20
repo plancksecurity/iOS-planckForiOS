@@ -28,6 +28,11 @@ class TestUtil {
      */
     static let waitTimeForever: TimeInterval = 20000
 
+    /**
+     The time to wait for something "leuisurely".
+     */
+    static let waitTimeCoupleOfSeconds: TimeInterval = 2
+
     static let connectonShutDownWaitTime: TimeInterval = 1
     static let numberOfTriesConnectonShutDown = 5
 
