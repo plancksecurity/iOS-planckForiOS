@@ -38,8 +38,8 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("Unread", comment: "title unread filter cell")
-            filter = Filter.unread()
             enabled = filter?.ofType(type: .unread) ?? false
+            filter = Filter.unread()
 
         case .flagged:
             guard let image = FlagImages.create(imageSize: circleSize).flaggedImage else {
@@ -48,24 +48,16 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("Flagged", comment: "title unread filter cell")
-            filter = Filter.flagged()
             enabled = filter?.ofType(type: .flagged) ?? false
+            filter = Filter.flagged()
 
         case .attachment:
             self.icon = UIImage(named: "attachment-list-icon")!
             self.title = NSLocalizedString("Attachments", comment: "title attachments filter cell")
-            filter = Filter.attachment()
             enabled = filter?.ofType(type: .attachment) ?? false
+            filter = Filter.attachment()
 
-        case .search:
-            self.icon = FlagImages.create(imageSize: squareSize).notSeenImage
-            self.title = ""
-
-        case .unified:
-            self.icon = FlagImages.create(imageSize: squareSize).notSeenImage
-            self.title = ""
-
-        case .account:
+        default:
             self.icon = FlagImages.create(imageSize: squareSize).notSeenImage
             self.title = ""
         }

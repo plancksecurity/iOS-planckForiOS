@@ -24,11 +24,6 @@ class FilterTableViewController: UITableViewController {
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     func back(sender: UIBarButtonItem) {
@@ -49,6 +44,7 @@ class FilterTableViewController: UITableViewController {
     }
 
     func initViewModel() {
+
         if !inFolder {
             sections.append(FilterViewModel(type: .accouts, filter: filterEnabled))
         }
