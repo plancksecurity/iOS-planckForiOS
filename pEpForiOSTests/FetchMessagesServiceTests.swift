@@ -27,6 +27,22 @@ class FetchMessagesServiceTests: XCTestCase {
         self.cdAccount = cdAccount
     }
 
+    override func tearDown() {
+        persistentSetup = nil
+    }
+
+    func testFetchFinishesStrictly() {
+        TestUtil.runFetchTest(
+            parentName: #function, testCase: self, cdAccount: cdAccount,
+            useDisfunctionalAccount: false,
+            folderName: "inBOX", expectError: false)
+
+        persistentSetup = nil
+
+        let expNotFullfilled = expectation(description: "expNotFullfilled")
+        wait(for: [expNotFullfilled], timeout: TestUtil.waitTimeForever)
+    }
+
     func testBasicFetchOK() {
         TestUtil.runFetchTest(
             parentName: #function, testCase: self, cdAccount: cdAccount,
