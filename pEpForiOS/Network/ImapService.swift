@@ -99,6 +99,11 @@ open class ImapSync: Service {
         super.start()
     }
 
+    open override func cancel() {
+        imapStore.folderBuilder = nil
+        super.cancel()
+    }
+
     /**
      Opens the given mailbox (by name). If already open, do nothing.
      - Returns: true if the mailbox had to opened, false if it already was open.

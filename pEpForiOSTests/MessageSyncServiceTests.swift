@@ -98,6 +98,21 @@ class MessageSyncServiceTests: XCTestCase {
         }
     }
 
+    class MessageFolderTestDelegate: MessageFolderDelegate {
+        let expMessagesDeleted: XCTestExpectation?
+        var deletedMessages = Set<MessageFolder>()
+
+        init(expMessagesDeleted: XCTestExpectation?) {
+            self.expMessagesDeleted = expMessagesDeleted
+        }
+
+        func didChange(messageFolder: MessageFolder) {
+            if messageFolder.isGhost {
+                deletedMessages.insert(messageFolder)
+            }
+        }
+    }
+
     override func setUp() {
         super.setUp()
 
@@ -200,7 +215,8 @@ class MessageSyncServiceTests: XCTestCase {
              numberOfTotalOutgoingMessages: outgoingMessages.count, expectedNumberOfSyncs: 1)
     }
 
-    func runMessageSyncServiceSend(cdAccount theCdAccount: CdAccount,
+    func runMessageSyncServiceSend(parentName: String,
+                                   cdAccount theCdAccount: CdAccount,
                                    numberOfOutgoingMessagesToCreate: Int,
                                    numberOfOutgoingMessagesToSendImmediately: Int,
                                    numberOfOutgoingMessagesToSendLater: Int,
@@ -214,7 +230,7 @@ class MessageSyncServiceTests: XCTestCase {
             mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinished)
         }
         let ms = MessageSyncService(
-            sleepTimeInSeconds: 2, parentName: #function, backgrounder: mbg, mySelfer: nil)
+            sleepTimeInSeconds: 2, parentName: parentName, backgrounder: mbg, mySelfer: nil)
 
         runMessageSyncWithSend(
             ms: ms, cdAccount: cdAccount,
@@ -230,10 +246,13 @@ class MessageSyncServiceTests: XCTestCase {
             XCTAssertEqual(backgrounder.totalNumberOfBackgroundTasksStarted,
                            backgrounder.totalNumberOfBackgroundTasksFinished)
         }
+
+        ms.cancel(account: cdAccount.account())
     }
 
     func testBasicPassiveSend() {
         runMessageSyncServiceSend(
+            parentName: #function,
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSendImmediately: 0,
@@ -244,6 +263,7 @@ class MessageSyncServiceTests: XCTestCase {
 
     func testSendSeveral() {
         runMessageSyncServiceSend(
+            parentName: #function,
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSendImmediately: 2,
@@ -264,6 +284,8 @@ class MessageSyncServiceTests: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
+
+        ms.cancel(account: cdAccount.account())
     }
 
     func testSyncWithErroneousAccount() {
@@ -282,6 +304,8 @@ class MessageSyncServiceTests: XCTestCase {
         }
 
         XCTAssertNotNil(errorDelegate.error)
+
+        ms.cancel(account: cdAccount.account())
     }
 
     func testTypicalNewAccountSetup() {
@@ -311,15 +335,23 @@ class MessageSyncServiceTests: XCTestCase {
             numberOfOutgoingMessagesToSendImmediately: 3,
             numberOfOutgoingMessagesToSendLater: 0,
             expectedNumberOfSyncs: 1)
+
+        ms.cancel(account: cdAccount.account())
     }
 
     func notestIdle() {
+        let messageFolderDelegate = MessageFolderTestDelegate(expMessagesDeleted: nil)
+        MessageModelConfig.messageFolderDelegate = messageFolderDelegate
+
         runMessageSyncServiceSend(
+            parentName: #function,
             cdAccount: cdAccount,
             numberOfOutgoingMessagesToCreate: 0,
             numberOfOutgoingMessagesToSendImmediately: 0,
             numberOfOutgoingMessagesToSendLater: 0,
             expectedNumberOfExpectedBackgroundTasks: -1,
             expectedNumberOfSyncs: 2)
+
+        print("Deleted messages: \(messageFolderDelegate.deletedMessages.count)")
     }
 }

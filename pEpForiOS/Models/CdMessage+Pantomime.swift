@@ -361,6 +361,9 @@ extension CdMessage {
         serverFlags.update(cwFlags: cwFlags)
         if cwFlags.contain(.deleted) {
             Log.info(component: #function, content: "Message with flag deleted")
+            if let msg = self.message() {
+                MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+            }
         }
 
         return changedLocalFlags
@@ -368,7 +371,7 @@ extension CdMessage {
 
     /**
      Tries to merge IMAP flags, basically taking into
-     account which flags where changed locally if it makes any difference.
+     account which flags were changed locally if it makes any difference.
      */
     func mergeOnConflict(localFlags: CdImapFlags, serverFlags: CdImapFlags,
                          newServerFlags: CWFlags) -> Bool {

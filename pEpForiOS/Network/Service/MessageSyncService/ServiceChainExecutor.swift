@@ -30,6 +30,7 @@ extension ServiceChainExecutor: ServiceExecutionProtocol {
     func execute(services: [ServiceExecutionProtocol], handler: ServiceFinishedHandler?) {
         if let service = services.first {
             let restOfServices = services.dropFirst()
+            Log.shared.info(component: #function, content: "executing \(service)")
             service.execute() { [weak self] error in
                 if let err = error {
                     Log.shared.error(

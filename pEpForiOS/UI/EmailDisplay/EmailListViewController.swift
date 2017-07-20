@@ -71,8 +71,9 @@ class EmailListViewController: UITableViewController {
         if let fol = config?.folder {
             fol.updateLastLookAt()
         }
-
-        viewModel = EmailListViewModel(config: config, delegate: self)
+        if viewModel == nil {
+            viewModel = EmailListViewModel(config: config, delegate: self)
+        }
         MessageModelConfig.messageFolderDelegate = self
         
     }

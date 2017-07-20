@@ -112,9 +112,14 @@ class NetworkServiceTests: XCTestCase {
                 if msg.isOriginal {
                     add(message: msg)
                 } else {
-                    XCTAssertNotNil(messagesByID[msg.messageID])
-                    add(message: msg)
-                    changedMessagesByID[msg.messageID] = msg
+                    if msg.isGhost && messagesByID[msg.messageID] == nil {
+                        // this message has been deleted from the start, ignore
+                    } else {
+                        // messages has been changed during the test
+                        XCTAssertNotNil(messagesByID[msg.messageID])
+                        add(message: msg)
+                        changedMessagesByID[msg.messageID] = msg
+                    }
                 }
             }
         }

@@ -131,6 +131,15 @@ class MessageSyncService: MessageSyncServiceProtocol {
         Log.shared.errorAndCrash(component: #function, errorString: "not implemented")
     }
 
+    func cancel(account: Account) {
+        connectInfos(account: account) { [weak self] (ici, sci) in
+            self?.managementQueue.async {
+                self?.cancelInternal(imapConnectInfo: ici,
+                                     smtpConnectInfo: sci)
+            }
+        }
+    }
+
     private func indicate(error: Error) {
         managementQueue.async { [weak self] in
             self?.errorDelegate?.show(error: error)
@@ -159,6 +168,12 @@ class MessageSyncService: MessageSyncServiceProtocol {
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo).start()
     }
     
+    private func cancelInternal(imapConnectInfo: EmailConnectInfo,
+                                smtpConnectInfo: EmailConnectInfo) {
+        lookUpOrCreateImapSmtpService(
+            imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo).cancel()
+    }
+
     private func requestVerificationInternal(account: Account,
                                              delegate: AccountVerificationServiceDelegate) {
         let service = AccountVerificationService()

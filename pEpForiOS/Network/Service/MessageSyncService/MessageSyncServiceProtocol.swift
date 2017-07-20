@@ -90,4 +90,9 @@ protocol MessageSyncServiceProtocol {
      Starts syncing folders, INBOX etc.
      */
     func start(account: Account)
+
+    /**
+     Cancels syncing the given account.
+     */
+    func cancel(account: Account)
 }
