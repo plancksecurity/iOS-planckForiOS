@@ -124,7 +124,6 @@ class DecryptionTests: XCTestCase {
 
         XCTAssertTrue(cdMsg.bodyFetched)
         XCTAssertFalse(cdMsg.imap?.localFlags?.flagDeleted ?? true)
-        XCTAssertFalse(cdMsg.imap?.expunged ?? true)
         XCTAssertEqual(cdMsg.pEpRating, PEPUtil.pEpRatingNone)
         if shouldEncrypt {
             XCTAssertTrue(cdMsg.isProbablyPGPMime())

@@ -421,9 +421,7 @@ open class NetworkServiceWorker {
     }
 
     func messageFetched(cdMessage: CdMessage) {
-        let flagNotDeleted = cdMessage.imap?.serverFlags?.flagDeleted ?? false
-        let notExpunged = cdMessage.imap?.expunged ?? false
-        if (flagNotDeleted && notExpunged) == false {
+        if cdMessage.imap?.serverFlags?.flagDeleted ?? true == false {
             serviceConfig.sendLayerDelegate?.didFetch(cdMessage: cdMessage)
         }
     }

@@ -66,15 +66,9 @@ extension CdMessage {
         return create(attributes: dict)
     }
 
-    static func undeletedPredicate() -> NSPredicate {
-        let pNotDeleted = NSPredicate.init(format: "imap.localFlags.flagDeleted = false")
-        let pNotExpunged = NSPredicate.init(format: "imap.expunged = false")
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [pNotDeleted, pNotExpunged])
-    }
-
     static func existingMessagesPredicate() -> NSPredicate {
         let pBody = NSPredicate.init(format: "bodyFetched = true")
-        let pNotDeleted = undeletedPredicate()
+        let pNotDeleted = NSPredicate.init(format: "imap.localFlags.flagDeleted = false")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [pBody, pNotDeleted])
     }
 
