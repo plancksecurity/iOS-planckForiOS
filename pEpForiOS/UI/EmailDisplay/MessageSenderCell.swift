@@ -24,7 +24,7 @@ open class MessageSenderCell: MessageCell {
         ]
         
         message.allRecipients.forEach { (recepient) in
-            let recepient = NSAttributedString(string: recepient.address + ", ", attributes: attributes)
+            let recepient = NSAttributedString(string: "\(recepient.address), ", attributes: attributes)
             attributed.append(recepient)
         }
         valueLabel?.attributedText = attributed

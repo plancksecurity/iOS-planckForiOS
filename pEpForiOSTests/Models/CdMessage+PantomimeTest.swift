@@ -63,7 +63,7 @@ class CdMessage_PantomimeTest: XCTestCase {
 
         localFlags.flagDeleted = false
         XCTAssertEqual(m.storeCommandForUpdateFlags(to: .remove)!.0,
-                       "UID STORE 1024 -FLAGS.SILENT " + "(\\Answered \\Draft \\Flagged \\Deleted)")
+                       "UID STORE 1024 -FLAGS.SILENT (\\Answered \\Draft \\Flagged \\Deleted)")
     }
 
     func testStoreCommandForFlagsToAdd_noServerFlagsSet() {

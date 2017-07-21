@@ -71,7 +71,7 @@ extension MessageBodyCell {
             let nameurl = URL(fileURLWithPath: attachment.fileName)
             let fileext = nameurl.pathExtension
             let name = nameurl.deletingPathExtension().lastPathComponent
-            validAttachment.fileName = name + "_" + String(amount) + "." + fileext
+            validAttachment.fileName = "\(name)_\(String(amount)).\(fileext)"
         }
         add(validAttachment)
     }

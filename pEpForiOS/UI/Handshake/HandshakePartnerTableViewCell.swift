@@ -238,7 +238,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         let showElipsis = !isPartnerPGPUser && !trustwordsFull
         if showElipsis,
             let trustwords = viewModel?.trustwords {
-            trustWordsLabel.text = trustwords + " …"
+            trustWordsLabel.text = "\(trustwords) …"
         } else {
             trustWordsLabel.text = viewModel?.trustwords
         }
