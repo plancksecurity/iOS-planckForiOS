@@ -18,16 +18,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     let accountID: NSManagedObjectID
 
-    /** The underlying core data object */
-    var folder: CdFolder!
+    /** The underlying core data object. Only use from the internal context. */
+    var folder: CdFolder
 
     let backgroundQueue: OperationQueue
 
     let logName: String?
 
-    var privateMOC: NSManagedObjectContext {
-        return Record.Context.background
-    }
+    let privateMOC: NSManagedObjectContext
 
     override var nextUID: UInt {
         get {
@@ -40,7 +38,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         set {
             privateMOC.performAndWait({
                 self.folder.uidNext = NSNumber(value: newValue).int64Value
-                Record.saveAndWait()
+                self.privateMOC.saveAndLogErrors()
             })
         }
     }
@@ -56,44 +54,57 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         set {
             privateMOC.performAndWait({
                 self.folder.existsCount = NSNumber(value: newValue).int64Value
-                Record.saveAndWait()
+                self.privateMOC.saveAndLogErrors()
             })
         }
     }
 
     let messageFetchedBlock: MessageFetchedBlock?
 
-    init(name: String, accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
-         logName: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
+    init?(name: String, accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
+          logName: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
         self.logName = logName
         self.messageFetchedBlock = messageFetchedBlock
+        let context = Record.Context.background
+        self.privateMOC = context
+
+        if let f = PersistentImapFolder.folderObject(
+            context: context, name: name, accountID: accountID) {
+            self.folder = f
+        } else {
+            return nil
+        }
+
         super.init(name: name)
+
         self.setCacheManager(self)
-        self.folder = folderObject()
     }
 
     deinit {
-        Log.info(component: "PersistentImapFolder: \(String(describing: logName))", content: "PersistentImapFolder")
+        let logID = logName ?? "<unknown>"
+        Log.info(component: #function, content: logID)
     }
 
-    func folderObject() -> CdFolder {
+    static func folderObject(context: NSManagedObjectContext,
+                             name: String,
+                             accountID: NSManagedObjectID) -> CdFolder? {
         var folder: CdFolder? = nil
-        privateMOC.performAndWait({
-            guard let account = self.privateMOC.object(with: self.accountID)
+        context.performAndWait() {
+            guard let account = context.object(with: accountID)
                 as? CdAccount else {
-                    Log.error(component: self.comp,
+                    Log.error(component: #function,
                               errorString: "Given objectID is not an account")
                     return
             }
             if let (fo, _) = CdFolder.insertOrUpdate(
-                folderName: self.name(), folderSeparator: nil, account: account) {
-                Record.saveAndWait()
+                folderName: name, folderSeparator: nil, account: account) {
+                context.saveAndLogErrors()
                 folder = fo
             }
-        })
-        return folder!
+        }
+        return folder
     }
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
@@ -105,7 +116,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                 self.folder.messages = []
             }
             self.folder.uidValidity = Int32(theUIDValidity)
-            Record.saveAndWait()
+            self.privateMOC.saveAndLogErrors()
         }
     }
 
@@ -139,7 +150,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         var msg: CdMessage?
         privateMOC.performAndWait({
             let p = NSPredicate(
-                format: "folder = %@ and messageNumber = %d", self.folder, theIndex)
+                format: "parent = %@ and imap.messageNumber = %d", self.folder, theIndex)
             msg = CdMessage.first(predicate: p)
         })
         return msg?.pantomimeQuick(folder: self)
@@ -151,6 +162,17 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             count = self.folder.allMessages().count
         })
         return UInt(count)
+    }
+
+    override func lastMSN() -> UInt {
+        var msn: UInt = 0
+        privateMOC.performAndWait() {
+            let lastUID = self.folder.lastUID()
+            if let cwMsg = self.cwMessage(withUID: lastUID, context: self.privateMOC) {
+                msn = cwMsg.messageNumber()
+            }
+        }
+        return msn
     }
 
     override func firstUID() -> UInt {
@@ -176,32 +198,74 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return true
     }
 
+    func cdMessage(withUID theUID: UInt, context: NSManagedObjectContext) -> CdMessage? {
+        let pUid = NSPredicate.init(format: "uid = %d", theUID)
+        let pFolder = NSPredicate.init(format: "parent = %@", self.folder)
+        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolder])
+
+        return CdMessage.first(predicate: p)
+    }
+
+    func cwMessage(withUID theUID: UInt, context: NSManagedObjectContext) -> CWIMAPMessage? {
+        if
+            let cdMsg = cdMessage(withUID: theUID, context: context),
+            let cwFolder = folder.cwFolder() {
+            return cdMsg.pantomimeQuick(folder: cwFolder)
+        } else {
+            return nil
+        }
+    }
+
     func message(withUID theUID: UInt) -> CWIMAPMessage? {
         var result: CWIMAPMessage?
-        privateMOC.performAndWait({
-            let pUid = NSPredicate.init(format: "uid = %d", theUID)
-            let pFolder = NSPredicate.init(format: "parent = %@", self.folder)
-            let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolder])
-
-            if let msg = CdMessage.first(predicate: p) {
-                result = msg.pantomimeQuick(folder: self)
-            } else {
-                result = nil
-            }
-        })
+        privateMOC.performAndWait {
+            result = self.cwMessage(withUID: theUID, context: self.privateMOC)
+        }
         return result
     }
 
+    override func remove(_ cwMessage: CWMessage) {
+        if let cwImapMessage = cwMessage as? CWIMAPMessage {
+            let uid = cwImapMessage.uid()
+            removeMessage(withUID: uid)
+        } else {
+            Log.shared.warn(component: #function,
+                            content: "Should remove/expunge message that is not a CWIMAPMessage")
+        }
+    }
+
     func removeMessage(withUID: UInt) {
+        privateMOC.performAndWait {
+            if let cdMsg = self.cdMessage(withUID: withUID, context: self.privateMOC) {
+                let uid = cdMsg.uid
+                let cdFolder = cdMsg.parent
+                cdMsg.deleteAndInformDelegate(context: self.privateMOC)
+                if let theCdFolder = cdFolder {
+                    
+                }
+            } else {
+                Log.shared.warn(component: #function,
+                                content: "Could not find message by UID for expunging.")
+            }
+        }
     }
 
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
                       messageUpdate: CWMessageUpdate) {
-        Log.warn(component: comp, content: "Writing message \(message), \(messageUpdate)")
-
         let opStore = StorePrefetchedMailOperation(
             accountID: accountID, message: message, messageUpdate: messageUpdate, name: logName,
             messageFetchedBlock: messageFetchedBlock)
-        opStore.start()
+        let opID = unsafeBitCast(opStore, to: UnsafeRawPointer.self)
+        Log.warn(component: comp, content: "Writing message \(message), \(messageUpdate) for \(opID)")
+        backgroundQueue.addOperation(opStore)
+
+
+        // While it would be desirable to store messages asynchronously,
+        // it's not the correct semantics pantomime, and therefore the layers above, expect.
+        // It might correctly work in-app, but can mess up the unit tests since they might signal
+        // "finish" before all messages have been stored.
+        opStore.waitUntilFinished()
+
+        Log.warn(component: comp, content: "Wrote message \(message) for \(opID)")
     }
 }

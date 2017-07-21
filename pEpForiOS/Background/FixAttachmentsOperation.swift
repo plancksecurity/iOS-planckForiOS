@@ -60,7 +60,7 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
                         if let theData = data {
                             context.perform {
                                 cdAttach.data = theData as NSData
-                                Record.saveAndWait(context: context)
+                                context.saveAndLogErrors()
                                 self.openFetchCount -= 1
                                 if self.openFetchCount == 0 {
                                     handler(totalCount)

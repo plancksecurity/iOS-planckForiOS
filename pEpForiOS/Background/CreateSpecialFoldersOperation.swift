@@ -77,7 +77,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
         }
 
         if foldersToCreate.count > 0 {
-            Record.saveAndWait(context: privateMOC)
+            privateMOC.saveAndLogErrors()
             syncDelegate = CreateSpecialFoldersSyncDelegate(errorHandler: self)
             imapSyncData.sync?.delegate = syncDelegate
             createNextFolder()
@@ -112,7 +112,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
         cdFolder.name = folderToCreate.folderName
         cdFolder.account = folderToCreate.cdAccount
         cdFolder.folderType = folderToCreate.folderType.rawValue
-        Record.saveAndWait(context: context)
+        context.saveAndLogErrors()
     }
 
     func createFolderAgain(potentialError: Error) {

@@ -337,8 +337,7 @@ extension CdMessage {
             return false
         }
 
-        let theImap = imap ?? CdImapFields.create()
-        imap = theImap
+        let theImap = imapFields()
 
         let haveLocalChanges =
             theImap.localFlags?.rawFlagsAsShort() != theImap.serverFlags?.rawFlagsAsShort()
@@ -436,8 +435,7 @@ extension CdMessage {
         mail.uuid = message.messageID()
         mail.uid = Int32(message.uid())
 
-        let imap = mail.imap ?? CdImapFields.create()
-        mail.imap = imap
+        let imap = mail.imapFields()
 
         imap.messageNumber = Int32(message.messageNumber())
         imap.mimeBoundary = (message.boundary() as NSData?)?.asciiString()
@@ -523,8 +521,7 @@ extension CdMessage {
 
         mail.dumpReferences()
 
-        let imap = mail.imap ?? CdImapFields.create()
-        mail.imap = imap
+        let imap = mail.imapFields()
 
         imap.contentType = pantomimeMessage.contentType()
 

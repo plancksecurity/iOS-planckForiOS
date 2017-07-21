@@ -28,6 +28,11 @@ class TestUtil {
      */
     static let waitTimeForever: TimeInterval = 20000
 
+    /**
+     The time to wait for something "leuisurely".
+     */
+    static let waitTimeCoupleOfSeconds: TimeInterval = 2
+
     static let connectonShutDownWaitTime: TimeInterval = 1
     static let numberOfTriesConnectonShutDown = 5
 
@@ -381,7 +386,7 @@ class TestUtil {
             cdServer.port = 2525
         }
         if let context = cdAccount.managedObjectContext {
-            Record.saveAndWait(context: context)
+            context.saveAndLogErrors()
         } else {
             Record.saveAndWait()
         }
@@ -395,7 +400,7 @@ class TestUtil {
         }
     }
 
-    static func runFetchTest(testCase: XCTestCase, cdAccount: CdAccount,
+    static func runFetchTest(parentName: String, testCase: XCTestCase, cdAccount: CdAccount,
                              useDisfunctionalAccount: Bool,
                              folderName: String = ImapSync.defaultImapInboxName,
                              expectError: Bool) {
@@ -411,7 +416,7 @@ class TestUtil {
         let expectationServiceRan = testCase.expectation(description: "expectationServiceRan")
         let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
 
-        let service = FetchMessagesService(parentName: #function, backgrounder: mbg,
+        let service = FetchMessagesService(parentName: parentName, backgrounder: mbg,
                                            imapSyncData: imapSyncData, folderName: folderName)
         let testDelegate = FetchMessagesServiceTestDelegate()
         service.delegate = testDelegate
@@ -436,5 +441,7 @@ class TestUtil {
         } else {
             XCTAssertGreaterThan(testDelegate.fetchedMessages.count, 0)
         }
+
+        imapSyncData.sync?.close()
     }
 }

@@ -399,7 +399,7 @@ extension EmailListViewController: SegueHandlerType {
             if let destiny = segue.destination as? FilterTableViewController {
                 destiny.filterDelegate = self.viewModel
                 destiny.inFolder = false
-                destiny.filterEnabled = self.config?.folder?.filter as! Filter?
+                destiny.filterEnabled = self.viewModel?.folderToShow?.filter
                 destiny.hidesBottomBarWhenPushed = true
             }
             break

@@ -81,7 +81,7 @@ open class AppendMailsOperation: ImapSyncOperation {
                         theSelf.successfullySentMessageIDs.append(msgID)
                     }
                     theSelf.context.delete(obj)
-                    Record.save(context: theSelf.context)
+                    theSelf.context.saveAndLogErrors()
                 } else {
                     theSelf.handleError(
                         Constants.errorInvalidParameter(theSelf.comp),

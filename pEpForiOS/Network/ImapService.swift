@@ -88,6 +88,18 @@ open class ImapSync: Service {
         }
     }
 
+    func isAlreadySelected(folderName: String) -> Bool {
+        if let currentFolderName = imapState.currentFolder?.name() {
+            if currentFolderName.isInboxFolderName() && folderName.isInboxFolderName() {
+                return true
+            }
+            if currentFolderName == folderName {
+                return true
+            }
+        }
+        return false
+    }
+
     override func createService() -> CWService {
         return CWIMAPStore(name: connectInfo.networkAddress,
                            port: UInt32(connectInfo.networkPort),
@@ -104,13 +116,18 @@ open class ImapSync: Service {
         super.cancel()
     }
 
+    open override func close() {
+        imapState.currentFolder = nil
+        super.close()
+    }
+
     /**
      Opens the given mailbox (by name). If already open, do nothing.
      - Returns: true if the mailbox had to opened, false if it already was open.
      */
     @discardableResult open func openMailBox(name: String) -> Bool {
         if let currentFolderName = imapState.currentFolderName,
-            currentFolderName == name {
+            currentFolderName.isSameAs(otherFolderName: name) {
             imapState.currentFolder = imapStore.folder(forName: name) as? CWIMAPFolder
             return false
         } else {
@@ -232,10 +249,6 @@ extension ImapSync: CWServiceClient {
         } else {
             Log.info(component: comp, content: "folderPrefetchCompleted: \(String(describing: notification))")
         }
-        if let bq = folderBuilder?.backgroundQueue {
-            // Wait until all newly synced messages are stored
-            bq.waitUntilAllOperationsAreFinished()
-        }
         delegate?.folderPrefetchCompleted(self, notification: notification)
     }
 
@@ -247,19 +260,11 @@ extension ImapSync: CWServiceClient {
         } else {
             Log.info(component: comp, content: "folderSyncCompleted: \(String(describing: notification))")
         }
-        if let bq = folderBuilder?.backgroundQueue {
-            // Wait until all newly synced messages are stored
-            bq.waitUntilAllOperationsAreFinished()
-        }
         delegate?.folderSyncCompleted(self, notification: notification)
     }
 
     @objc public func folderSyncFailed(_ notification: Notification?) {
         dumpMethodName("folderSyncFailed", notification: notification)
-        if let bq = folderBuilder?.backgroundQueue {
-            // Wait until all newly synced messages are stored
-            bq.waitUntilAllOperationsAreFinished()
-        }
         delegate?.folderSyncFailed(self, notification: notification)
     }
 
@@ -398,5 +403,21 @@ extension ImapSync: PantomimeFolderDelegate {
     @objc public func folderAppendFailed(_ notification: Notification?) {
         dumpMethodName("folderAppendFailed", notification: notification)
         delegate?.folderAppendFailed(self, notification: notification)
+    }
+}
+
+extension String {
+    func isInboxFolderName() -> Bool {
+        if lowercased() == ImapSync.defaultImapInboxName.lowercased() {
+            return true
+        }
+        return false
+    }
+
+    func isSameAs(otherFolderName: String) -> Bool {
+        if isInboxFolderName() && otherFolderName.isInboxFolderName() {
+            return true
+        }
+        return self == otherFolderName
     }
 }

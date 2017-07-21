@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 
 public enum FilterSectionType {
-    case accouts, include, to, other
+    case accouts, include, other
 }
 public class FilterViewModel {
 
@@ -26,9 +26,6 @@ public class FilterViewModel {
             break
         case .include:
             self.title = NSLocalizedString("INCLUDE:", comment: "title for the include section")
-            break
-        case .to:
-            self.title = NSLocalizedString("ADDRESSED TO:", comment: "title for the to section")
             break
         case .other:
             self.title = ""
@@ -49,10 +46,6 @@ public class FilterViewModel {
         case .include:
             items.append(FilterCellViewModel(type: .unread, filter: filter))
             items.append(FilterCellViewModel(type: .flagged, filter: filter))
-            break
-        case .to:
-            items.append(FilterCellViewModel(type: .forMe, filter: filter))
-            items.append(FilterCellViewModel(type: .forMeCc, filter: filter))
             break
         case .other:
             items.append(FilterCellViewModel(type: .attachment, filter: filter))

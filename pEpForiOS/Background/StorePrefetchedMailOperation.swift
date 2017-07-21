@@ -13,7 +13,7 @@ import MessageModel
 /**
  This can be used in a queue, or directly called with ```start()```.
  */
-open class StorePrefetchedMailOperation: BaseOperation {
+open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     enum OperationError: Error, LocalizedError {
         case cannotFindAccount
         case cannotStoreMessage
@@ -37,15 +37,37 @@ open class StorePrefetchedMailOperation: BaseOperation {
     }
 
     override open func main() {
+        let selfInfo = "\(unsafeBitCast(self, to: UnsafeRawPointer.self))"
+        let theComp = comp
+        let canceled = "\(self.isCancelled ? "" : "not") canceled"
+
+        Log.shared.info(
+            component: theComp,
+            content: "\(selfInfo) \(canceled)")
+
         if !isCancelled {
             let privateMOC = Record.Context.default
-            privateMOC.performAndWait() { [weak self] in
+            privateMOC.perform() { [weak self] in
                 if let theSelf = self {
                     if !theSelf.isCancelled {
                         theSelf.storeMessage(context: privateMOC)
+                        Log.shared.info(
+                            component: theComp,
+                            content: "\(selfInfo) stored: \(canceled)")
+                    } else {
+                        Log.shared.info(
+                            component: theComp,
+                            content: "\(selfInfo) not stored: \(canceled)")
                     }
+                    theSelf.markAsFinished()
+                } else {
+                    Log.shared.info(
+                        component: theComp,
+                        content: "\(selfInfo) no self anymore, could not store")
                 }
             }
+        } else {
+            markAsFinished()
         }
     }
 
@@ -70,7 +92,7 @@ open class StorePrefetchedMailOperation: BaseOperation {
             if msg.received == nil {
                 msg.received = NSDate()
             }
-            Record.saveAndWait(context: context)
+            context.saveAndLogErrors()
             if messageUpdate.rfc822 {
                 messageFetchedBlock?(msg)
             }

@@ -43,6 +43,9 @@ extension FetchMessagesService: ServiceExecutionProtocol {
         }
         fetchOp.addDependency(loginOp)
         fetchOp.completionBlock = { [weak self] in
+            if fetchOp.backgroundQueue.operationCount > 0 {
+                Log.shared.warn(component: #function, content: "Still storing messages!")
+            }
             self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }

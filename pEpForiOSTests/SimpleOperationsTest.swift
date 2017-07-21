@@ -2225,13 +2225,12 @@ class SimpleOperationsTest: XCTestCase {
     }
 
     func testTrashMessages() {
-        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let errorContainer = ErrorContainer()
 
         let imapLogin = LoginImapOperation(
             errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
-            XCTAssertNotNil(imapSyncData.sync)
+            XCTAssertNotNil(self.imapSyncData.sync)
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")

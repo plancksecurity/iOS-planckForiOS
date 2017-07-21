@@ -201,8 +201,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
             if let msg = CdMessage.first(
                 attributes: ["uid": cw.uid(), "parent": folder], in: context) {
                 let cwFlags = cw.flags()
-                let imap = msg.imap ?? CdImapFields.create(context: context)
-                msg.imap = imap
+                let imap = msg.imapFields(context: context)
 
                 let cdFlags = imap.serverFlags ?? CdImapFlags.create(context: context)
                 imap.serverFlags = cdFlags
@@ -215,7 +214,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                     "messageStoreCompleted message not found, UID: \(cw.uid())")
             }
         }
-        Record.saveAndWait(context: context)
+        context.saveAndLogErrors()
         self.numberOfMessagesSynced += 1
     }
 
@@ -231,5 +230,9 @@ class SyncFlagsToServerSyncDelegate: DefaultImapSyncDelegate {
     override func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
         (errorHandler as? SyncFlagsToServerOperation)?.messageStoreCompleted(
             sync, notification: notification)
+    }
+
+    public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+        (errorHandler as? SyncFlagsToServerOperation)?.syncNextMessage()
     }
 }

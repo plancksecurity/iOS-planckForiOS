@@ -16,6 +16,7 @@ class MessageSyncServiceTests: XCTestCase {
 
     var cdAccount: CdAccount!
     var cdAccountDisfunctional: CdAccount!
+    var messageSyncService: MessageSyncService?
 
     class TestErrorDelegate: MessageSyncServiceErrorDelegate {
         var expErrorOccurred: XCTestExpectation?
@@ -126,6 +127,11 @@ class MessageSyncServiceTests: XCTestCase {
         self.cdAccount = cdAccount
     }
 
+    override func tearDown() {
+        messageSyncService?.cancel()
+        messageSyncService = nil
+    }
+
     func send(messageSyncService ms: MessageSyncService, messages: [Message],
               numberOfTotalOutgoingMessages: Int, expectedNumberOfSyncs: Int) {
         let errorDelegate = TestErrorDelegate()
@@ -231,6 +237,7 @@ class MessageSyncServiceTests: XCTestCase {
         }
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: parentName, backgrounder: mbg, mySelfer: nil)
+        messageSyncService = ms
 
         runMessageSyncWithSend(
             ms: ms, cdAccount: cdAccount,
@@ -278,6 +285,7 @@ class MessageSyncServiceTests: XCTestCase {
 
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        messageSyncService = ms
         ms.syncDelegate = syncDelegate
         ms.start(account: cdAccount.account())
 
@@ -296,6 +304,7 @@ class MessageSyncServiceTests: XCTestCase {
 
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        messageSyncService = ms
         ms.errorDelegate = errorDelegate
         ms.start(account: cdAccount.account())
 
@@ -311,6 +320,7 @@ class MessageSyncServiceTests: XCTestCase {
     func testTypicalNewAccountSetup() {
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        messageSyncService = ms
 
         // Verification
         let expVerified = expectation(description: "expVerified")

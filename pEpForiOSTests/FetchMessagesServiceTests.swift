@@ -27,18 +27,41 @@ class FetchMessagesServiceTests: XCTestCase {
         self.cdAccount = cdAccount
     }
 
+    override func tearDown() {
+        persistentSetup = nil
+    }
+
+    func testFetchFinishesStrictly() {
+        TestUtil.runFetchTest(
+            parentName: #function, testCase: self, cdAccount: cdAccount,
+            useDisfunctionalAccount: false,
+            folderName: "inBOX", expectError: false)
+
+        persistentSetup = nil
+
+        // If there are still stray operations for storing messages,
+        // the test will fail in the next couple of seconds.
+        sleep(UInt32(TestUtil.waitTimeCoupleOfSeconds))
+    }
+
     func testBasicFetchOK() {
-        TestUtil.runFetchTest(testCase: self, cdAccount: cdAccount, useDisfunctionalAccount: false,
-                              folderName: "inBOX", expectError: false)
+        TestUtil.runFetchTest(
+            parentName: #function, testCase: self, cdAccount: cdAccount,
+            useDisfunctionalAccount: false,
+            folderName: "inBOX", expectError: false)
     }
 
     func testBasicFetchAccountError() {
-        TestUtil.runFetchTest(testCase: self, cdAccount: cdAccount, useDisfunctionalAccount: true,
-                              folderName: "inBOX", expectError: true)
+        TestUtil.runFetchTest(
+            parentName: #function, testCase: self, cdAccount: cdAccount,
+            useDisfunctionalAccount: true,
+            folderName: "inBOX", expectError: true)
     }
 
     func testBasicFetchError() {
-        TestUtil.runFetchTest(testCase: self, cdAccount: cdAccount, useDisfunctionalAccount: false,
-                              folderName: "inBOXeZZZZ", expectError: true)
+        TestUtil.runFetchTest(
+            parentName: #function, testCase: self, cdAccount: cdAccount,
+            useDisfunctionalAccount: false,
+            folderName: "inBOXeZZZZ", expectError: true)
     }
 }
