@@ -214,7 +214,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                     "messageStoreCompleted message not found, UID: \(cw.uid())")
             }
         }
-        Record.saveAndWait(context: context)
+        context.saveAndLogErrors()
         self.numberOfMessagesSynced += 1
     }
 

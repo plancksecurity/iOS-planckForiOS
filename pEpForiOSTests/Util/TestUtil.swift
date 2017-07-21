@@ -386,7 +386,7 @@ class TestUtil {
             cdServer.port = 2525
         }
         if let context = cdAccount.managedObjectContext {
-            Record.saveAndWait(context: context)
+            context.saveAndLogErrors()
         } else {
             Record.saveAndWait()
         }

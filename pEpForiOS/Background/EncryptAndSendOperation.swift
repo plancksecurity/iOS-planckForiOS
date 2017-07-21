@@ -73,7 +73,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         if let m = CdMessage.first(predicate: p) {
             if m.sent == nil {
                 m.sent = NSDate()
-                Record.saveAndWait(context: context)
+                context.saveAndLogErrors()
             }
             pepMessage = m.pEpMessage()
             protected = m.pEpProtected
@@ -103,9 +103,10 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
             context.performAndWait {
                 if let msg = context.object(with: objID) as? CdMessage {
                     msg.sendStatus = Int16(SendStatus.smtpDone.rawValue)
-                    Log.info(component: #function,
-                             content: "Setting \(String(describing: msg.messageID)): \(msg.sendStatus)")
-                    Record.saveAndWait(context: context)
+                    Log.info(
+                        component: #function,
+                        content: "Setting \(String(describing: msg.messageID)): \(msg.sendStatus)")
+                    context.saveAndLogErrors()
                 } else {
                     Log.error(
                         component: self.comp, errorString: "Could not access sent message by ID")

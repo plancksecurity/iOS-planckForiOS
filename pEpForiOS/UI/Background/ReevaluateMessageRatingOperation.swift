@@ -49,7 +49,7 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
             cdMsg.pEpRating = Int16(newRating.rawValue)
         }
 
-        Record.saveAndWait(context: context)
+        context.saveAndLogErrors()
         message.pEpRatingInt = Int(newRating.rawValue)
     }
 }

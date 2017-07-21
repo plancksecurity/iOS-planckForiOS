@@ -92,7 +92,7 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
             if msg.received == nil {
                 msg.received = NSDate()
             }
-            Record.saveAndWait(context: context)
+            context.saveAndLogErrors()
             if messageUpdate.rfc822 {
                 messageFetchedBlock?(msg)
             }

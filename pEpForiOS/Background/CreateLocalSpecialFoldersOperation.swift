@@ -41,6 +41,6 @@ open class CreateLocalSpecialFoldersOperation: BaseOperation {
                                                                  name: folderName))
             }
         }
-        Record.saveAndWait(context: context)
+        context.saveAndLogErrors()
     }
 }
