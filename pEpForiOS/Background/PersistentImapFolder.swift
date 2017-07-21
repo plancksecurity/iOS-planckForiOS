@@ -38,7 +38,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         set {
             privateMOC.performAndWait({
                 self.folder.uidNext = NSNumber(value: newValue).int64Value
-                Record.saveAndWait()
+                self.privateMOC.saveAndLogErrors()
             })
         }
     }
@@ -54,7 +54,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         set {
             privateMOC.performAndWait({
                 self.folder.existsCount = NSNumber(value: newValue).int64Value
-                Record.saveAndWait()
+                self.privateMOC.saveAndLogErrors()
             })
         }
     }
@@ -100,7 +100,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             }
             if let (fo, _) = CdFolder.insertOrUpdate(
                 folderName: name, folderSeparator: nil, account: account) {
-                Record.saveAndWait()
+                context.saveAndLogErrors()
                 folder = fo
             }
         }
@@ -116,7 +116,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                 self.folder.messages = []
             }
             self.folder.uidValidity = Int32(theUIDValidity)
-            Record.saveAndWait()
+            self.privateMOC.saveAndLogErrors()
         }
     }
 
@@ -150,7 +150,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         var msg: CdMessage?
         privateMOC.performAndWait({
             let p = NSPredicate(
-                format: "parent = %@ and messageNumber = %d", self.folder, theIndex)
+                format: "parent = %@ and imap.messageNumber = %d", self.folder, theIndex)
             msg = CdMessage.first(predicate: p)
         })
         return msg?.pantomimeQuick(folder: self)
@@ -168,7 +168,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         var msn: UInt = 0
         privateMOC.performAndWait() {
             let lastUID = self.folder.lastUID()
-            if let cwMsg = self.message(withUID: lastUID, context: self.privateMOC) {
+            if let cwMsg = self.cwMessage(withUID: lastUID, context: self.privateMOC) {
                 msn = cwMsg.messageNumber()
             }
         }
@@ -198,13 +198,19 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return true
     }
 
-    func message(withUID theUID: UInt, context: NSManagedObjectContext) -> CWIMAPMessage? {
+    func cdMessage(withUID theUID: UInt, context: NSManagedObjectContext) -> CdMessage? {
         let pUid = NSPredicate.init(format: "uid = %d", theUID)
         let pFolder = NSPredicate.init(format: "parent = %@", self.folder)
         let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolder])
 
-        if let msg = CdMessage.first(predicate: p), let cwFolder = folder.cwFolder() {
-            return msg.pantomimeQuick(folder: cwFolder)
+        return CdMessage.first(predicate: p)
+    }
+
+    func cwMessage(withUID theUID: UInt, context: NSManagedObjectContext) -> CWIMAPMessage? {
+        if
+            let cdMsg = cdMessage(withUID: theUID, context: context),
+            let cwFolder = folder.cwFolder() {
+            return cdMsg.pantomimeQuick(folder: cwFolder)
         } else {
             return nil
         }
@@ -213,12 +219,35 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     func message(withUID theUID: UInt) -> CWIMAPMessage? {
         var result: CWIMAPMessage?
         privateMOC.performAndWait {
-            result = self.message(withUID: theUID, context: self.privateMOC)
+            result = self.cwMessage(withUID: theUID, context: self.privateMOC)
         }
         return result
     }
 
+    override func remove(_ cwMessage: CWMessage) {
+        if let cwImapMessage = cwMessage as? CWIMAPMessage {
+            let uid = cwImapMessage.uid()
+            removeMessage(withUID: uid)
+        } else {
+            Log.shared.warn(component: #function,
+                            content: "Should remove/expunge message that is not a CWIMAPMessage")
+        }
+    }
+
     func removeMessage(withUID: UInt) {
+        privateMOC.performAndWait {
+            if let cdMsg = self.cdMessage(withUID: withUID, context: self.privateMOC) {
+                let uid = cdMsg.uid
+                let cdFolder = cdMsg.parent
+                cdMsg.deleteAndInformDelegate(context: self.privateMOC)
+                if let theCdFolder = cdFolder {
+                    
+                }
+            } else {
+                Log.shared.warn(component: #function,
+                                content: "Could not find message by UID for expunging.")
+            }
+        }
     }
 
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
