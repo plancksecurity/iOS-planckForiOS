@@ -201,8 +201,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
             if let msg = CdMessage.first(
                 attributes: ["uid": cw.uid(), "parent": folder], in: context) {
                 let cwFlags = cw.flags()
-                let imap = msg.imap ?? CdImapFields.create(context: context)
-                msg.imap = imap
+                let imap = msg.imapFields(context: context)
 
                 let cdFlags = imap.serverFlags ?? CdImapFlags.create(context: context)
                 imap.serverFlags = cdFlags
