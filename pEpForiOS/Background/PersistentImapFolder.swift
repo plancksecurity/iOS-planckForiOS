@@ -18,16 +18,14 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     let accountID: NSManagedObjectID
 
-    /** The underlying core data object */
-    var folder: CdFolder!
+    /** The underlying core data object. Only use from the internal context. */
+    var folder: CdFolder
 
     let backgroundQueue: OperationQueue
 
     let logName: String?
 
-    var privateMOC: NSManagedObjectContext {
-        return Record.Context.background
-    }
+    let privateMOC: NSManagedObjectContext
 
     override var nextUID: UInt {
         get {
@@ -63,15 +61,25 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     let messageFetchedBlock: MessageFetchedBlock?
 
-    init(name: String, accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
-         logName: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
+    init?(name: String, accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
+          logName: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
         self.logName = logName
         self.messageFetchedBlock = messageFetchedBlock
+        let context = Record.Context.background
+        self.privateMOC = context
+
+        if let f = PersistentImapFolder.folderObject(
+            context: context, name: name, accountID: accountID) {
+            self.folder = f
+        } else {
+            return nil
+        }
+
         super.init(name: name)
+
         self.setCacheManager(self)
-        self.folder = folderObject()
     }
 
     deinit {
@@ -79,22 +87,24 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         Log.info(component: #function, content: logID)
     }
 
-    func folderObject() -> CdFolder {
+    static func folderObject(context: NSManagedObjectContext,
+                             name: String,
+                             accountID: NSManagedObjectID) -> CdFolder? {
         var folder: CdFolder? = nil
-        privateMOC.performAndWait({
-            guard let account = self.privateMOC.object(with: self.accountID)
+        context.performAndWait() {
+            guard let account = context.object(with: accountID)
                 as? CdAccount else {
-                    Log.error(component: self.comp,
+                    Log.error(component: #function,
                               errorString: "Given objectID is not an account")
                     return
             }
             if let (fo, _) = CdFolder.insertOrUpdate(
-                folderName: self.name(), folderSeparator: nil, account: account) {
+                folderName: name, folderSeparator: nil, account: account) {
                 Record.saveAndWait()
                 folder = fo
             }
-        })
-        return folder!
+        }
+        return folder
     }
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
@@ -154,6 +164,17 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return UInt(count)
     }
 
+    override func lastMSN() -> UInt {
+        var msn: UInt = 0
+        privateMOC.performAndWait() {
+            let lastUID = self.folder.lastUID()
+            if let cwMsg = self.message(withUID: lastUID, context: self.privateMOC) {
+                msn = cwMsg.messageNumber()
+            }
+        }
+        return msn
+    }
+
     override func firstUID() -> UInt {
         var uid: UInt = 0
         privateMOC.performAndWait({
@@ -177,19 +198,23 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return true
     }
 
+    func message(withUID theUID: UInt, context: NSManagedObjectContext) -> CWIMAPMessage? {
+        let pUid = NSPredicate.init(format: "uid = %d", theUID)
+        let pFolder = NSPredicate.init(format: "parent = %@", self.folder)
+        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolder])
+
+        if let msg = CdMessage.first(predicate: p), let cwFolder = folder.cwFolder() {
+            return msg.pantomimeQuick(folder: cwFolder)
+        } else {
+            return nil
+        }
+    }
+
     func message(withUID theUID: UInt) -> CWIMAPMessage? {
         var result: CWIMAPMessage?
-        privateMOC.performAndWait({
-            let pUid = NSPredicate.init(format: "uid = %d", theUID)
-            let pFolder = NSPredicate.init(format: "parent = %@", self.folder)
-            let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolder])
-
-            if let msg = CdMessage.first(predicate: p) {
-                result = msg.pantomimeQuick(folder: self)
-            } else {
-                result = nil
-            }
-        })
+        privateMOC.performAndWait {
+            result = self.message(withUID: theUID, context: self.privateMOC)
+        }
         return result
     }
 

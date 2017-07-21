@@ -35,9 +35,13 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
             Log.warn(component: #function, content: "")
             return CWFolder(name: withName)
         } else {
-            return PersistentImapFolder(
+            if let theFolder = PersistentImapFolder(
                 name: withName, accountID: accountID, backgroundQueue: guaranteedBackgroundQueue,
-                logName: name, messageFetchedBlock: messageFetchedBlock) as CWFolder
+                logName: name, messageFetchedBlock: messageFetchedBlock) {
+                return theFolder
+            } else {
+                return CWFolder(name: withName)
+            }
         }
     }
 
