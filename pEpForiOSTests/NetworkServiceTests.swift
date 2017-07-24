@@ -155,146 +155,6 @@ class NetworkServiceTests: XCTestCase {
         }
     }
 
-    func testSyncOutgoing(useCorrectSmtpAccount: Bool) {
-        XCTAssertNil(CdAccount.all())
-        XCTAssertNil(CdFolder.all())
-        XCTAssertNil(CdMessage.all())
-
-        let modelDelegate = MessageModelObserver()
-        MessageModelConfig.messageFolderDelegate = modelDelegate
-
-        let sendLayerDelegate = SendLayerObserver()
-
-        let networkService = NetworkService(parentName: #function)
-        networkService.sleepTimeInSeconds = 2
-
-        // A temp variable is necassary, since the networkServiceDelegate is weak
-        var del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced1"),
-            failOnError: useCorrectSmtpAccount)
-
-        networkService.networkServiceDelegate = del
-        networkService.sendLayerDelegate = sendLayerDelegate
-
-        let cdAccount = useCorrectSmtpAccount ? TestData().createWorkingCdAccount() :
-            TestData().createSmtpTimeOutCdAccount()
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-
-        networkService.start()
-
-        // Wait for first sync, mainly to have folders
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
-
-        let from = CdIdentity.create()
-        from.userName = cdAccount.identity?.userName ?? "Unit 004"
-        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
-
-        let to = CdIdentity.create()
-        to.userName = "Unit 001"
-        to.address = "unittest.ios.1@peptest.ch"
-
-        guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual((sentFolder.messages ?? NSSet()).count, 0)
-
-        // Build outgoing emails
-        var outgoingMails = [CdMessage]()
-        var outgoingMessageIDs = [String]()
-        let numMails = 5
-        for i in 1...numMails {
-            let message = CdMessage.create()
-            message.from = from
-            message.parent = sentFolder
-            message.shortMessage = "Some subject \(i)"
-            message.longMessage = "Long message \(i)"
-            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.addTo(cdIdentity: to)
-            let messageID = MessageID.generate()
-            message.uuid = messageID
-            outgoingMails.append(message)
-            outgoingMessageIDs.append(messageID)
-        }
-        Record.saveAndWait()
-
-        // Verify outgoing mails
-        for m in outgoingMails {
-            XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
-            XCTAssertEqual(m.uid, Int32(0))
-            XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
-        }
-
-        del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced2"))
-        networkService.networkServiceDelegate = del
-
-        // Wait for next sync, to verify outgoing mails
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
-
-        // Check that the sent mails have been deleted
-        Record.refreshRegisteredObjects(mergeChanges: true)
-        if useCorrectSmtpAccount {
-            for m in outgoingMails {
-                XCTAssertTrue(m.isDeleted)
-            }
-        }
-
-        // Make sure the sent folder will still *not* be synced in the next step
-        sentFolder.lastLookedAt = Date(
-            timeIntervalSinceNow: -(networkService.timeIntervalForInterestingFolders + 1))
-            as NSDate?
-        Record.saveAndWait()
-
-        // Will the sent folder be synced on next sync?
-        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
-        var fis = networkService.currentWorker?.determineInterestingFolders(
-            accountInfo: accountInfo) ?? []
-        XCTAssertEqual(fis.count, 1) // still only inbox
-
-        var haveSentFolder = false
-        for f in fis {
-            if f.folderType == .sent {
-                haveSentFolder = true
-            }
-        }
-        XCTAssertFalse(haveSentFolder)
-
-        // Make sure the sent folder will be synced in the next step
-        sentFolder.lastLookedAt = Date() as NSDate?
-        Record.saveAndWait()
-
-        // Will the sent folder be synced on next sync?
-        fis = networkService.currentWorker?.determineInterestingFolders(
-            accountInfo: accountInfo) ?? []
-        XCTAssertGreaterThan(fis.count, 1)
-
-        for f in fis {
-            if f.folderType == .sent {
-                haveSentFolder = true
-            }
-        }
-        XCTAssertTrue(haveSentFolder)
-
-        del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced3"))
-        networkService.networkServiceDelegate = del
-
-        // Wait for next sync
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            Log.info(component: "didSync", content: "expSingleAccountSynced3 timeout?")
-            XCTAssertNil(error)
-        })
-
-        TestUtil.checkForUniqueness(uuids: outgoingMessageIDs)
-        cancelNetworkService(networkService: networkService)
-    }
-
     func testSyncOutgoing() {
         testSyncOutgoing(useCorrectSmtpAccount: true)
     }
@@ -445,5 +305,147 @@ class NetworkServiceTests: XCTestCase {
             }
             queue.addOperation(op)
         }
+    }
+
+    //MARK: HELPER
+
+    func testSyncOutgoing(useCorrectSmtpAccount: Bool) {
+        XCTAssertNil(CdAccount.all())
+        XCTAssertNil(CdFolder.all())
+        XCTAssertNil(CdMessage.all())
+
+        let modelDelegate = MessageModelObserver()
+        MessageModelConfig.messageFolderDelegate = modelDelegate
+
+        let sendLayerDelegate = SendLayerObserver()
+
+        let networkService = NetworkService(parentName: #function)
+        networkService.sleepTimeInSeconds = 2
+
+        // A temp variable is necassary, since the networkServiceDelegate is weak
+        var del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced1"),
+            failOnError: useCorrectSmtpAccount)
+
+        networkService.networkServiceDelegate = del
+        networkService.sendLayerDelegate = sendLayerDelegate
+
+        let cdAccount = useCorrectSmtpAccount ? TestData().createWorkingCdAccount() :
+            TestData().createSmtpTimeOutCdAccount()
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+
+        networkService.start()
+
+        // Wait for first sync, mainly to have folders
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        let from = CdIdentity.create()
+        from.userName = cdAccount.identity?.userName ?? "Unit 004"
+        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+
+        let to = CdIdentity.create()
+        to.userName = "Unit 001"
+        to.address = "unittest.ios.1@peptest.ch"
+
+        guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual((sentFolder.messages ?? NSSet()).count, 0)
+
+        // Build outgoing emails
+        var outgoingMails = [CdMessage]()
+        var outgoingMessageIDs = [String]()
+        let numMails = 5
+        for i in 1...numMails {
+            let message = CdMessage.create()
+            message.from = from
+            message.parent = sentFolder
+            message.shortMessage = "Some subject \(i)"
+            message.longMessage = "Long message \(i)"
+            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
+            message.addTo(cdIdentity: to)
+            let messageID = MessageID.generate()
+            message.uuid = messageID
+            outgoingMails.append(message)
+            outgoingMessageIDs.append(messageID)
+        }
+        Record.saveAndWait()
+
+        // Verify outgoing mails
+        for m in outgoingMails {
+            XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
+            XCTAssertEqual(m.uid, Int32(0))
+            XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+        }
+
+        del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced2"))
+        networkService.networkServiceDelegate = del
+
+        // Wait for next sync, to verify outgoing mails
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
+
+        // Check that the sent mails have been deleted
+        Record.refreshRegisteredObjects(mergeChanges: true)
+        if useCorrectSmtpAccount {
+            for m in outgoingMails {
+                XCTAssertTrue(m.isDeleted)
+            }
+        }
+
+        // Make sure the sent folder will still *not* be synced in the next step
+        sentFolder.lastLookedAt = Date(
+            timeIntervalSinceNow: -(networkService.timeIntervalForInterestingFolders + 1))
+            as NSDate?
+        Record.saveAndWait()
+
+        // Will the sent folder be synced on next sync?
+        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
+        var fis = networkService.currentWorker?.determineInterestingFolders(
+            accountInfo: accountInfo) ?? []
+        XCTAssertEqual(fis.count, 1) // still only inbox
+
+        var haveSentFolder = false
+        for f in fis {
+            if f.folderType == .sent {
+                haveSentFolder = true
+            }
+        }
+        XCTAssertFalse(haveSentFolder)
+
+        // Make sure the sent folder will be synced in the next step
+        sentFolder.lastLookedAt = Date() as NSDate?
+        Record.saveAndWait()
+
+        // Will the sent folder be synced on next sync?
+        fis = networkService.currentWorker?.determineInterestingFolders(
+            accountInfo: accountInfo) ?? []
+        XCTAssertGreaterThan(fis.count, 1)
+
+        for f in fis {
+            if f.folderType == .sent {
+                haveSentFolder = true
+            }
+        }
+        XCTAssertTrue(haveSentFolder)
+
+        del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced3"))
+        networkService.networkServiceDelegate = del
+
+        // Wait for next sync
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            Log.info(component: "didSync", content: "expSingleAccountSynced3 timeout?")
+            XCTAssertNil(error)
+        })
+        
+        TestUtil.checkForUniqueness(uuids: outgoingMessageIDs)
+        cancelNetworkService(networkService: networkService)
     }
 }
