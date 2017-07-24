@@ -26,34 +26,28 @@ class SyncExistingMessagesService: AtomicImapService {
     func executeInternal(
         context: NSManagedObjectContext, taskID: BackgroundTaskID?,
         handler: ServiceFinishedHandler?) {
-        guard let cdAccount = context.object(with: imapSyncData.connectInfo.accountObjectID)
-            as? CdAccount else {
-                handle(error: CoreDataError.couldNotFindAccount, taskID: taskID, handler: handler)
-                return
+        do {
+            let cdFolder = try imapSyncData.connectInfo.folderBy(name: folderName, context: context)
+            let loginOp = LoginImapOperation(
+                parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
+
+            guard let syncOp = SyncMessagesOperation(
+                parentName: parentName, errorContainer: self, imapSyncData: imapSyncData,
+                folder: cdFolder) else {
+                    handle(error: OperationError.illegalParameter, taskID: taskID, handler: handler)
+                    return
+            }
+
+            syncOp.addDependency(loginOp)
+            syncOp.completionBlock = {  [weak self] in
+                self?.backgrounder?.endBackgroundTask(taskID)
+                handler?(self?.error)
+            }
+
+            backgroundQueue.addOperations([loginOp, syncOp], waitUntilFinished: false)
+        } catch let err {
+            handle(error: err, taskID: taskID, handler: handler)
         }
-
-        guard let cdFolder = CdFolder.by(name: folderName, account: cdAccount) else {
-            handle(error: CoreDataError.couldNotFindFolder, taskID: taskID, handler: handler)
-            return
-        }
-
-        let loginOp = LoginImapOperation(
-            parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
-
-        guard let syncOp = SyncMessagesOperation(
-            parentName: parentName, errorContainer: self, imapSyncData: imapSyncData,
-            folder: cdFolder) else {
-                handle(error: OperationError.illegalParameter, taskID: taskID, handler: handler)
-                return
-        }
-
-        syncOp.addDependency(loginOp)
-        syncOp.completionBlock = {  [weak self] in
-            self?.backgrounder?.endBackgroundTask(taskID)
-            handler?(self?.error)
-        }
-
-        backgroundQueue.addOperations([loginOp, syncOp], waitUntilFinished: false)
     }
 }
 

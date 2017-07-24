@@ -111,14 +111,14 @@ public enum EmailProtocol: String {
     }
 }
 
-enum EmailConnectInfoError: Error {
-    case cannotFindServerCredentials
-}
-
 /**
  Holds additional connection info (like server, port etc.) for IMAP and SMTP.
  */
 public class EmailConnectInfo: ConnectInfo {
+    enum EmailConnectInfoError: Error {
+        case cannotFindServerCredentials
+    }
+    
     public let emailProtocol: EmailProtocol?
     public let connectionTransport: ConnectionTransport?
     public let authMethod: AuthMethod?

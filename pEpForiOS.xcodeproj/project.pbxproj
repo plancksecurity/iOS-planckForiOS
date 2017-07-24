@@ -202,6 +202,7 @@
 		43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */; };
 		43D755F61F262B37006F933A /* PantomimeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755F51F262B37006F933A /* PantomimeError.swift */; };
 		43D755F81F262FA0006F933A /* SyncFlagsToServerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755F71F262FA0006F933A /* SyncFlagsToServerService.swift */; };
+		43D755FC1F26382B006F933A /* EmailConnectInfo+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DB81331E2A56BE00A20902 /* AppendDraftMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DB81321E2A56BE00A20902 /* AppendDraftMailsOperation.swift */; };
 		43DE44151D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */; };
@@ -511,6 +512,7 @@
 		43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchUidToMsnOperation.swift; sourceTree = "<group>"; };
 		43D755F51F262B37006F933A /* PantomimeError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantomimeError.swift; sourceTree = "<group>"; };
 		43D755F71F262FA0006F933A /* SyncFlagsToServerService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerService.swift; sourceTree = "<group>"; };
+		43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailConnectInfo+Extension.swift"; sourceTree = "<group>"; };
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DB81321E2A56BE00A20902 /* AppendDraftMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendDraftMailsOperation.swift; sourceTree = "<group>"; };
 		43DE44141D1A69D8005E21F3 /* CreateLocalSpecialFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLocalSpecialFoldersOperation.swift; sourceTree = "<group>"; };
@@ -707,6 +709,7 @@
 				43122B3A1DF5B75000610253 /* Service */,
 				43122B121DF5B48B00610253 /* ConnectInfo.swift */,
 				43122B131DF5B48B00610253 /* EmailConnectInfo.swift */,
+				43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */,
 				43122B141DF5B48B00610253 /* EmailService.swift */,
 				43122B151DF5B48B00610253 /* ImapService.swift */,
 				43122B161DF5B48B00610253 /* SmtpService.swift */,
@@ -1537,6 +1540,7 @@
 				43DB81331E2A56BE00A20902 /* AppendDraftMailsOperation.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
 				43F848491EAA09AE00DBE460 /* Weak.swift in Sources */,
+				43D755FC1F26382B006F933A /* EmailConnectInfo+Extension.swift in Sources */,
 				431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */,
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
 				432677161F17796D00F01F5A /* ImapIdleService.swift in Sources */,
