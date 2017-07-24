@@ -66,6 +66,7 @@ class ImapSmtpSyncService {
     private var sendRequested: Bool = false
     private var reSyncNecessary: Bool = false
     private var messagesEnqueuedForSend = [MessageID: Message]()
+    private var messagesEnqueuedForFlagChange = Set<Message>()
 
     var readyForSend: Bool {
         switch state {
@@ -112,6 +113,11 @@ class ImapSmtpSyncService {
         let key = message.messageID
         messagesEnqueuedForSend[key] = message
         sendMessages()
+    }
+
+    public func enqueueForFlagChange(message: Message) {
+        messagesEnqueuedForFlagChange.insert(message)
+        // TODO
     }
 
     public func cancel() {

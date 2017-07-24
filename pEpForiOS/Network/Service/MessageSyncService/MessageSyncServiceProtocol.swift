@@ -81,6 +81,12 @@ protocol MessageSyncServiceProtocol {
     func requestSend(message: Message)
 
     /**
+     Notify the backend that the user changed flags for the given message.
+     The changes should be propagated as fast as possible to the server.
+     */
+    func requestFlagChange(message: Message)
+
+    /**
      Message changes will be delivered via the `MessageFolderDelegate` mechanism.
      Backend may sync the inbox even if the UI never requested it.
      */
