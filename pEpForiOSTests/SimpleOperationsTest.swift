@@ -615,7 +615,7 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
 
-    func testSyncFlagsToServerOperationAddFlags_changeAllFlags() {
+    func testSyncFlagsToServerOperationAddFlags_changeAllFlagsExceptDelete() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -642,13 +642,12 @@ class SimpleOperationsTest: XCTestCase {
             let localFlags = imap.localFlags ?? CdImapFlags.create()
             imap.localFlags = localFlags
 
-            // all flags set locally ...
+            // all flags set locally, except delete
             localFlags.flagAnswered = true
             localFlags.flagDraft = true
             localFlags.flagFlagged = true
             localFlags.flagRecent = false
             localFlags.flagSeen = true
-            localFlags.flagDeleted = true
 
             // ...but no flags are set on server, so all flags have to be added
             let serverFlags = imap.serverFlags ?? CdImapFlags.create()
@@ -1123,83 +1122,6 @@ class SimpleOperationsTest: XCTestCase {
 
             var theBits = ImapFlagsBits.imapNoFlagsSet()
             theBits.imapSetFlagBit(.deleted)
-            serverFlags.update(rawValue16: theBits)
-        }
-
-        Record.saveAndWait()
-
-        // since a flag has be added on all messages, all messages need to be synced
-        var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
-        XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
-
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
-
-        let expEmailsSynced = expectation(description: "expEmailsSynced")
-        op.completionBlock = {
-            expEmailsSynced.fulfill()
-        }
-
-        op.start()
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(op.hasErrors(), "\(op.error!)")
-        })
-
-        messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
-        XCTAssertEqual(messagesToBeSynced.count, 0,
-                       "no messages have to be synced after syncing")
-        XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
-                       "all messages have been processed")
-    }
-
-    func testSyncFlagsToServerOperationAddFlags_addFlagDeleted() {
-        fetchMessages(parentName: #function)
-
-        guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
-            XCTFail()
-            return
-        }
-
-        guard let messages = inbox.messages?.sortedArray(
-            using: [NSSortDescriptor(key: "sent", ascending: true)])
-            as? [CdMessage] else {
-                XCTFail()
-                return
-        }
-
-        XCTAssertGreaterThan(messages.count, 0, "there are messages")
-
-        for m in messages {
-            XCTAssertNotNil(m.messageID)
-            XCTAssertGreaterThan(m.uid, 0)
-            guard let imap = m.imap else {
-                XCTFail()
-                break
-            }
-            // one flag that is not set on server has been set by the client,
-            // so it has to be added.
-            let localFlags = imap.localFlags ?? CdImapFlags.create()
-            imap.localFlags = localFlags
-
-            localFlags.flagAnswered = true
-            localFlags.flagDraft = false
-            localFlags.flagFlagged = false
-            // (the client must never change flagRecent according to RFC,
-            // so we set it in state of flagsServer)
-            localFlags.flagRecent = false
-            localFlags.flagSeen = false
-            localFlags.flagDeleted = true
-
-            // set the flag on server side
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
-            imap.serverFlags = serverFlags
-            var theBits = ImapFlagsBits.imapNoFlagsSet()
-            theBits.imapSetFlagBit(.answered)
             serverFlags.update(rawValue16: theBits)
         }
 
