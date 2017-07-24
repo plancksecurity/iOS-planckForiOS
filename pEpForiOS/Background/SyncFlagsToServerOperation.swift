@@ -14,9 +14,12 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     let folderName: String
 
     fileprivate var currentlyProcessedMessage: CdMessage?
-    open var numberOfMessagesSynced = 0
+    open var numberOfMessagesSynced: Int {
+        return changedMessageIDs.count
+    }
 
     var syncDelegate: SyncFlagsToServerSyncDelegate?
+    var changedMessageIDs = [NSManagedObjectID]()
 
     public init?(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                  imapSyncData: ImapSyncData, folder: CdFolder) {
@@ -191,21 +194,21 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         }
 
         for cw in cwMessages {
-            if let msg = CdMessage.first(
+            if let cdMsg = CdMessage.first(
                 attributes: ["uid": cw.uid(), "parent": folder], in: context) {
                 let cwFlags = cw.flags()
-                let imap = msg.imapFields(context: context)
+                let imap = cdMsg.imapFields(context: context)
 
                 let cdFlags = imap.serverFlags ?? CdImapFlags.create(context: context)
                 imap.serverFlags = cdFlags
 
                 cdFlags.update(cwFlags: cwFlags)
+                changedMessageIDs.append(cdMsg.objectID)
             } else {
                 handle(error: CoreDataError.couldNotFindMessage)
             }
         }
         context.saveAndLogErrors()
-        self.numberOfMessagesSynced += 1
         handler()
     }
 
