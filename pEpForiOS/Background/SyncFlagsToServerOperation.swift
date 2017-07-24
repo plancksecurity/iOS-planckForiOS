@@ -89,16 +89,18 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         return messagesToBeSynced.first
     }
 
-    func syncNextMessage(context: NSManagedObjectContext? = nil) {
-        let theContext = context ?? privateMOC
-        currentlyProcessedMessage = nil
-        theContext.perform() {
-            guard let m = self.nextMessageToBeSynced(context: theContext) else {
+    func syncNextMessage(context: NSManagedObjectContext) {
+        context.perform() {
+            guard let m = self.nextMessageToBeSynced(context: context) else {
                 self.markAsFinished()
                 return
             }
-            self.updateFlags(message: m, context: theContext)
+            self.updateFlags(message: m, context: context)
         }
+    }
+
+    func folderOpenCompleted() {
+        syncNextMessage(context: privateMOC)
     }
 
     fileprivate func currentMessageNeedSyncRemoveFlagsToServer() -> Bool {
@@ -239,6 +241,6 @@ class SyncFlagsToServerSyncDelegate: DefaultImapSyncDelegate {
     }
 
     public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        (errorHandler as? SyncFlagsToServerOperation)?.syncNextMessage()
+        (errorHandler as? SyncFlagsToServerOperation)?.folderOpenCompleted()
     }
 }
