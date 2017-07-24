@@ -238,10 +238,9 @@ class NetworkServiceTests: XCTestCase {
                 XCTFail()
                 continue
             }
-            XCTAssertNotNil(msg.shortMessage)
-            XCTAssertTrue(
-                msg.longMessage != nil || msg.longMessageFormatted != nil ||
-                    msg.attachments.count > 0)
+
+            XCTAssertTrue(msg.isValidMessage())
+
             let pEpRating = Int16(msg.pEpRatingInt ?? -1)
             XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
             if !modelDelegate.contains(messageID: msg.messageID) {
@@ -262,7 +261,7 @@ class NetworkServiceTests: XCTestCase {
             }
         }
         XCTAssertFalse(modelDelegate.hasChangedMessages)
-
+        
         cancelNetworkService(networkService: networkService)
     }
 
