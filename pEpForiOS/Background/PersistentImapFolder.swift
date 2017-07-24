@@ -93,7 +93,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     static func functionName(logName: String?, functionName: String) -> String {
         if let ln = logName {
-            return ln + " -> " + functionName
+            return "\(ln): \(functionName)"
         } else {
             return functionName
         }
@@ -260,11 +260,22 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     func removeMessage(withUID: UInt) {
         privateMOC.performAndWait {
             if let cdMsg = self.cdMessage(withUID: withUID, context: self.privateMOC) {
-                let uid = cdMsg.uid
                 let cdFolder = cdMsg.parent
+                let msn = cdMsg.imap?.messageNumber
                 cdMsg.deleteAndInformDelegate(context: self.privateMOC)
-                if let theCdFolder = cdFolder {
-                    
+                if let theCdFolder = cdFolder, let theMsn = msn {
+                    let p1 = NSPredicate(
+                        format: "parent = %@ and imap.messageNumber > %d",
+                        theCdFolder, theMsn)
+                    let cdMsgs = CdMessage.all(
+                        predicate: p1, in: self.privateMOC) as? [CdMessage] ?? []
+                    for aCdMsg in cdMsgs {
+                        let oldMsn = aCdMsg.imapFields().messageNumber
+                        if oldMsn > 0 {
+                            aCdMsg.imapFields().messageNumber = oldMsn - 1
+                        }
+                    }
+                    self.privateMOC.saveAndLogErrors()
                 }
             } else {
                 Log.shared.warn(component: self.functionName(#function),

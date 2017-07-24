@@ -85,8 +85,15 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
                     addError(OperationError.messageForFlagUpdateNotFound)
                     return
             }
+
+            let oldMSN = cdMsg.imapFields().messageNumber
+            let newMSN = Int32(message.messageNumber())
+
             context.updateAndSave(object: cdMsg) {
                 let _ = cdMsg.updateFromServer(cwFlags: message.flags())
+                if oldMSN != newMSN {
+                    cdMsg.imapFields().messageNumber = newMSN
+                }
             }
         } else if let msg = insert(pantomimeMessage: message, account: account) {
             if msg.received == nil {
