@@ -61,7 +61,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         if let _ = nextMessageToBeSynced(context: context) {
             if !self.isCancelled, let sync = imapSyncData.sync {
                 if !sync.openMailBox(name: folderName) {
-                    syncNextMessage()
+                    syncNextMessage(context: context)
                 }
             }
         } else {
@@ -89,15 +89,15 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         return messagesToBeSynced.first
     }
 
-    func syncNextMessage() {
+    func syncNextMessage(context: NSManagedObjectContext? = nil) {
+        let theContext = context ?? privateMOC
         currentlyProcessedMessage = nil
-        let context = Record.Context.default
-        context.perform() {
-            guard let m = self.nextMessageToBeSynced(context: context) else {
+        theContext.perform() {
+            guard let m = self.nextMessageToBeSynced(context: theContext) else {
                 self.markAsFinished()
                 return
             }
-            self.updateFlags(message: m)
+            self.updateFlags(message: m, context: theContext)
         }
     }
 
@@ -108,15 +108,15 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         return message.storeCommandForUpdateFlags(to: .remove) != nil
     }
 
-    func updateFlags(message: CdMessage) {
+    func updateFlags(message: CdMessage, context: NSManagedObjectContext) {
         currentlyProcessedMessage = message
-        updateFlags(to: .add)
+        updateFlags(to: .add, context: context)
     }
 
-    fileprivate func updateFlags(to mode:UpdateFlagsMode) {
+    fileprivate func updateFlags(to mode:UpdateFlagsMode, context: NSManagedObjectContext) {
         guard let message = currentlyProcessedMessage else {
             Log.shared.errorAndCrash(component:"\(#function)[\(#line)]", errorString: "No message!")
-            syncNextMessage()
+            syncNextMessage(context: context)
             return
         }
 
@@ -141,9 +141,9 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                 Log.shared.errorAndCrash(component: comp, errorString: "No IMAP store command")
             }
         } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer() {
-            updateFlags(to: .remove)
+            updateFlags(to: .remove, context: context)
         } else {
-            syncNextMessage()
+            syncNextMessage(context: context)
         }
     }
 
@@ -159,7 +159,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         // flags to add have been synced, but we might need to sync flags to remove also before
         // processing the next message.
         if currentMessageNeedSyncRemoveFlagsToServer() {
-            updateFlags(to: .remove)
+            updateFlags(to: .remove, context: privateMOC)
             return
         }
         guard let n = notification else {
@@ -168,17 +168,20 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                            logMessage: "messageStoreCompleted with nil notification")
             return
         }
-        privateMOC.performAndWait() {
-            self.storeMessages(context: self.privateMOC, notification: n)
+        let context = privateMOC
+        context.perform() { [weak self] in
+            self?.storeMessages(context: context, notification: n) { [weak self] in
+                    self?.syncNextMessage(context: context)
+            }
         }
-
-        syncNextMessage()
     }
 
-    func storeMessages(context: NSManagedObjectContext, notification n: Notification) {
+    func storeMessages(context: NSManagedObjectContext,
+                       notification n: Notification, handler: () -> ()) {
         guard let folder = context.object(with: folderID) as? CdFolder else {
             addError(Constants.errorCannotFindFolder(component: comp))
             markAsFinished()
+            handler()
             return
         }
 
@@ -187,6 +190,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                 "UID STORE: Response with missing user info",
                 comment: "Technical error"),
                                 logMessage: "messageStoreCompleted notification without user info")
+            handler()
             return
         }
         guard let cwMessages = dict[PantomimeMessagesKey] as? [CWIMAPMessage] else {
@@ -194,6 +198,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                 "UID STORE: Response without messages",
                 comment: "Technical error"),
                                 logMessage: "messageStoreCompleted no messages")
+            handler()
             return
         }
 
@@ -216,6 +221,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         }
         context.saveAndLogErrors()
         self.numberOfMessagesSynced += 1
+        handler()
     }
 
     override func markAsFinished() {
