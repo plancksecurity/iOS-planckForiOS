@@ -11,4 +11,5 @@ import Foundation
 enum CoreDataError: Error {
     case couldNotFindFolder
     case couldNotFindAccount
+    case couldNotFindMessage
 }

@@ -14,9 +14,8 @@ import MessageModel
  A `CWFolder`/`CWIMAPFolder` that is backed by core data. Use on the main thread.
  */
 class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
-    let comp = "PersistentImapFolder"
-
     let accountID: NSManagedObjectID
+    let folderID: NSManagedObjectID
 
     /** The underlying core data object. Only use from the internal context. */
     var folder: CdFolder
@@ -71,8 +70,9 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         self.privateMOC = context
 
         if let f = PersistentImapFolder.folderObject(
-            context: context, name: name, accountID: accountID) {
+            context: context, logName: logName, name: name, accountID: accountID) {
             self.folder = f
+            self.folderID = f.objectID
         } else {
             return nil
         }
@@ -84,17 +84,30 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     deinit {
         let logID = logName ?? "<unknown>"
-        Log.info(component: #function, content: logID)
+        Log.info(component: functionName(#function), content: logID)
+    }
+
+    func functionName(_ name: String) -> String {
+        return PersistentImapFolder.functionName(logName: logName, functionName: name)
+    }
+
+    static func functionName(logName: String?, functionName: String) -> String {
+        if let ln = logName {
+            return ln + " -> " + functionName
+        } else {
+            return functionName
+        }
     }
 
     static func folderObject(context: NSManagedObjectContext,
+                             logName: String?,
                              name: String,
                              accountID: NSManagedObjectID) -> CdFolder? {
         var folder: CdFolder? = nil
         context.performAndWait() {
             guard let account = context.object(with: accountID)
                 as? CdAccount else {
-                    Log.error(component: #function,
+                    Log.error(component: functionName(logName: logName, functionName: #function),
                               errorString: "Given objectID is not an account")
                     return
             }
@@ -111,7 +124,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         privateMOC.performAndWait() {
             if self.folder.uidValidity != Int32(theUIDValidity) {
                 Log.warn(
-                    component: self.comp,
+                    component: self.functionName(#function),
                     content: "UIValidity changed, deleting all messages. Folder \(String(describing: self.folder.name))")
                 self.folder.messages = []
             }
@@ -229,9 +242,19 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             let uid = cwImapMessage.uid()
             removeMessage(withUID: uid)
         } else {
-            Log.shared.warn(component: #function,
+            Log.shared.warn(component: functionName(#function),
                             content: "Should remove/expunge message that is not a CWIMAPMessage")
         }
+    }
+
+    override func matchUID(_ uid: UInt, withMSN msn: UInt) {
+        super.matchUID(uid, withMSN: msn)
+        Log.shared.info(component: functionName(#function),
+                        content: "\(msn): \(uid)")
+        let opMatch = MatchUidToMsnOperation(
+            parentName: functionName(#function),
+            folderID: folderID, uid: uid, msn: msn)
+        backgroundQueue.addOperation(opMatch)
     }
 
     func removeMessage(withUID: UInt) {
@@ -244,7 +267,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                     
                 }
             } else {
-                Log.shared.warn(component: #function,
+                Log.shared.warn(component: self.functionName(#function),
                                 content: "Could not find message by UID for expunging.")
             }
         }
@@ -253,10 +276,11 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
                       messageUpdate: CWMessageUpdate) {
         let opStore = StorePrefetchedMailOperation(
-            accountID: accountID, message: message, messageUpdate: messageUpdate, name: logName,
-            messageFetchedBlock: messageFetchedBlock)
+            accountID: accountID, message: message, messageUpdate: messageUpdate,
+            name: functionName(#function), messageFetchedBlock: messageFetchedBlock)
         let opID = unsafeBitCast(opStore, to: UnsafeRawPointer.self)
-        Log.warn(component: comp, content: "Writing message \(message), \(messageUpdate) for \(opID)")
+        Log.warn(component: functionName(#function),
+                 content: "Writing message \(message), \(messageUpdate) for \(opID)")
         backgroundQueue.addOperation(opStore)
 
 
@@ -266,6 +290,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         // "finish" before all messages have been stored.
         opStore.waitUntilFinished()
 
-        Log.warn(component: comp, content: "Wrote message \(message) for \(opID)")
+        Log.warn(component: functionName(#function),
+                 content: "Wrote message \(message) for \(opID)")
     }
 }
