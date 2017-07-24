@@ -18,7 +18,7 @@ public extension String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    public var isEmail: Bool {
+    public var isEmailAddress: Bool {
         let s = self.components(separatedBy: "@")
 
         //general mail validation

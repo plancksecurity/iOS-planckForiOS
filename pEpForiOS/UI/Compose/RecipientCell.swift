@@ -119,7 +119,7 @@ extension RecipientCell {
         guard let cTextview = textView as? ComposeTextView else { return }
         
         var string = cTextview.attributedText.string.cleanAttachments
-        if string.characters.count >= 3 && string.isEmail {
+        if string.characters.count >= 3 && string.isEmailAddress {
             let identity = Identity.create(address: string)
             identities.append(identity)
             
