@@ -19,15 +19,40 @@ public extension String {
     }
     
     public var isEmail: Bool {
-        let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        let predicate = NSPredicate(format:"SELF MATCHES %@", regex)
-        return predicate.evaluate(with: self)
+        let s = self.components(separatedBy: "@")
+
+        //general mail validation
+        var correctName = false
+        let chars = s[s.endIndex-2].characters
+        if chars.last != " " {
+            correctName = true
+        }
+
+        //domain validation
+        let domainRegex = "^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)+[A-Za-z]{2,6}$"
+        let domainPredicate = NSPredicate(format: "SELF MATCHES %@", domainRegex)
+
+        //ipv4 validation
+        let ipv4Regex = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+        let ipv4Predicate = NSPredicate(format: "SELF MATCHES %@", ipv4Regex)
+
+        //ipv6 validation
+        let ipv6Regex = "(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))"
+        let ipv6Predicate = NSPredicate(format: "SELF MATCHES %@", ipv6Regex)
+
+        //some rules validation
+
+
+        return correctName &&
+            (domainPredicate.evaluate(with:s.last) ||
+                ipv4Predicate.evaluate(with:s.last) ||
+                ipv6Predicate.evaluate(with:s.last))
     }
     
     public func contains(find: String) -> Bool {
         return (self.range(of: find, options: .caseInsensitive) != nil)
     }
-    
+
     public func unquote() -> String {
         do {
             let regex = try NSRegularExpression(
