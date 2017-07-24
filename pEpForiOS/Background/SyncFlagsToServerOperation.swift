@@ -149,12 +149,6 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         }
     }
 
-    func errorOperation(_ localizedMessage: String, logMessage: String) {
-        markAsFinished()
-        addError(Constants.errorOperationFailed(comp, errorMessage: localizedMessage))
-        Log.error(component: comp, errorString: logMessage)
-    }
-
     // MARK: - ImapSyncDelegate (internal)
 
     func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
@@ -165,9 +159,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
             return
         }
         guard let n = notification else {
-            errorOperation(NSLocalizedString(
-                "UID STORE: Response with missing notification object",comment: "Technical error"),
-                           logMessage: "messageStoreCompleted with nil notification")
+            handle(error: PantomimeError.missingNotification)
             return
         }
         let context = privateMOC
@@ -188,18 +180,12 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
         }
 
         guard let dict = (n as NSNotification).userInfo else {
-            self.errorOperation(NSLocalizedString(
-                "UID STORE: Response with missing user info",
-                comment: "Technical error"),
-                                logMessage: "messageStoreCompleted notification without user info")
+            handle(error: PantomimeError.missingUserInfo)
             handler()
             return
         }
         guard let cwMessages = dict[PantomimeMessagesKey] as? [CWIMAPMessage] else {
-            self.errorOperation(NSLocalizedString(
-                "UID STORE: Response without messages",
-                comment: "Technical error"),
-                                logMessage: "messageStoreCompleted no messages")
+            handle(error: PantomimeError.missingMessages)
             handler()
             return
         }
@@ -215,10 +201,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
 
                 cdFlags.update(cwFlags: cwFlags)
             } else {
-                self.errorOperation(NSLocalizedString(
-                    "UID STORE: Response for message that can't be found",
-                    comment: "Technical error"), logMessage:
-                    "messageStoreCompleted message not found, UID: \(cw.uid())")
+                handle(error: CoreDataError.couldNotFindMessage)
             }
         }
         context.saveAndLogErrors()
