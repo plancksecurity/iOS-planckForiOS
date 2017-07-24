@@ -132,27 +132,10 @@ class TestDataBase {
     }
 
     /**
-     - Note: Add actual account test data here (override in `TestDataImpl`, which
-     should never be checked in).
+     - Note: Add test accounts in TestData.swift only!).
      */
     func populateAccounts() {
-        // An example account
-        testAccounts.append(AccountSettings(
-            accountName: "A second account",
-            idAddress: "email2@example.com",
-            idUserName: "User Name 2",
-
-            imapServerAddress: "mail.example.com",
-            imapServerType: Server.ServerType.imap,
-            imapServerTransport: Server.Transport.tls,
-            imapServerPort: 993,
-
-            smtpServerAddress: "mail.example.com",
-            smtpServerType: Server.ServerType.smtp,
-            smtpServerTransport: Server.Transport.tls,
-            smtpServerPort: 587,
-
-            password: "someFurtherPassword"))
+        fatalError("Abstract method. Must be overridden")
     }
 
     /**
