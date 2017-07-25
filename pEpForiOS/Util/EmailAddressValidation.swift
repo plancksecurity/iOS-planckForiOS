@@ -10,19 +10,16 @@ import Foundation
 
 public class EmailAddressValidation {
 
-    init(address: String, separator: String = "@") {
+    public init(address: String, separator: String = "@") {
         self.addressComponents = address.components(separatedBy: separator)
         self.generalValidation()
         self.domainValidation()
         self.ipv4Validation()
         self.ipv6Validation()
+        result = general && ( domain || ipv4 || ipv6 )
     }
 
-    var isValid: Bool {
-        get {
-            return general && ( domain || ipv4 || ipv6 )
-        }
-    }
+    public var result = false
 
     private var general = false
 
