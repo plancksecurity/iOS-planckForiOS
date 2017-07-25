@@ -45,12 +45,15 @@ class AccountVerificationServiceTests: XCTestCase {
                          testDirectly: true)
     }
 
-    func testDirectlyFailures() {
+    func testDirectlyImapFailure() {
         testVerification(
             account: TestData().createImapTimeOutAccount(),
             expectedResult: AccountVerificationResult.imapError(
                 .connectionTimedOut("connectionTimedOut(_:notification:)")),
             testDirectly: true)
+    }
+
+    func testDirectlySmtpFailure() {
         testVerification(
             account: TestData().createSmtpTimeOutAccount(),
             expectedResult: AccountVerificationResult.smtpError(
@@ -64,12 +67,15 @@ class AccountVerificationServiceTests: XCTestCase {
                          testDirectly: false)
     }
 
-    func testMessageSyncServiceFailures() {
+    func testMessageSyncServiceImapFailures() {
         testVerification(
             account: TestData().createImapTimeOutAccount(),
             expectedResult: AccountVerificationResult.imapError(
                 .connectionTimedOut("connectionTimedOut(_:notification:)")),
             testDirectly: false)
+    }
+
+    func testMessageSyncServiceSmtpFailures() {
         testVerification(
             account: TestData().createSmtpTimeOutAccount(),
             expectedResult: AccountVerificationResult.smtpError(
