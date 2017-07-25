@@ -128,4 +128,8 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
     func idleNewMessages(_ sync: ImapSync, notification: Notification?) {
         errorHandler?.handle(error: ImapSyncError.illegalState(#function))
     }
+
+    func idleFinished(_ sync: ImapSync, notification: Notification?) {
+        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
+    }
 }

@@ -120,9 +120,12 @@ class ImapSmtpSyncService {
         messagesEnqueuedForFlagChange.insert(message)
         if isIdling {
             let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
-            let service = serviceFactory.syncFlagsToServer(
+            var service: ServiceExecutionProtocol = serviceFactory.syncFlagsToServer(
                 parentName: parentName, backgrounder: backgrounder,
                 imapSyncData: imapSyncData, folderName: folderName)
+
+            service = decoratedWithIdleExit(service: service)
+
             currentlyRunningService = service
             service.execute() { [weak self] error in
                 self?.handleFlagUploadFinished(error: error)
@@ -133,6 +136,16 @@ class ImapSmtpSyncService {
     public func cancel() {
         imapSyncData.sync?.close()
         smtpSendData.smtp?.close()
+    }
+
+    func decoratedWithIdleExit(service: ServiceExecutionProtocol) -> ServiceExecutionProtocol {
+        if state == .idling {
+            let exitIdleService = ImapIdleExitService(
+                parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
+            return ServiceChainExecutor(services: [exitIdleService, service])
+        } else {
+            return service
+        }
     }
 
     func sendMessages()  {
@@ -230,22 +243,18 @@ class ImapSmtpSyncService {
     }
 
     func reSync() {
-        let service = serviceFactory.reSync(
+        var service = serviceFactory.reSync(
             parentName: parentName, backgrounder: backgrounder,
             imapSyncData: imapSyncData, folderName: currentFolderName)
+        service = decoratedWithIdleExit(service: service)
         currentlyRunningService = service
         service.execute() { [weak self] error in
             self?.handleReSyncFinished(error: error)
         }
     }
 
-    func exitIdle() {
-        imapSyncData.sync?.exitIdle()
-    }
-
     func checkNextStep() {
         if reSyncNecessary && isIdling {
-            exitIdle()
             reSync()
             return
         }

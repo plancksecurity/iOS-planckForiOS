@@ -35,6 +35,7 @@ public protocol ImapSyncDelegate: class {
     func badResponse(_ sync: ImapSync, response: String?)
     func actionFailed(_ sync: ImapSync, response: String?)
     func idleNewMessages(_ sync: ImapSync, notification: Notification?)
+    func idleFinished(_ sync: ImapSync, notification: Notification?)
 }
 
 open class ImapSync: Service {
@@ -359,6 +360,11 @@ extension ImapSync: CWServiceClient {
     @objc public func idleNewMessages(_ notification: Notification?) {
         dumpMethodName("idleNewMessages", notification: notification)
         delegate?.idleNewMessages(self, notification: notification)
+    }
+
+    @objc public func idleFinished(_ notification: Notification?) {
+        dumpMethodName("idleFinished", notification: notification)
+        delegate?.idleFinished(self, notification: notification)
     }
 }
 
