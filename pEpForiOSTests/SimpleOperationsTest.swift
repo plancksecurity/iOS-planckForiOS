@@ -501,7 +501,7 @@ class SimpleOperationsTest: XCTestCase {
         })
         XCTAssertGreaterThanOrEqual(opCreate2.numberOfFoldersCreated, 1)
 
-        for ft in FolderType.neededFolderTypes {
+        for ft in FolderType.requiredTypes {
             XCTAssertNotNil(CdFolder.by(folderType: ft, account: cdAccount))
         }
     }
