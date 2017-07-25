@@ -283,7 +283,7 @@ class MessageSyncServiceTests: XCTestCase {
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSendImmediately: 0,
             numberOfOutgoingMessagesToSendLater: 0,
-            expectedNumberOfExpectedBackgroundTasks: 4,
+            expectedNumberOfExpectedBackgroundTasks: 5,
             expectedNumberOfSyncs: 1)
     }
 
@@ -294,7 +294,7 @@ class MessageSyncServiceTests: XCTestCase {
             numberOfOutgoingMessagesToCreate: 3,
             numberOfOutgoingMessagesToSendImmediately: 2,
             numberOfOutgoingMessagesToSendLater: 0,
-            expectedNumberOfExpectedBackgroundTasks: 5,
+            expectedNumberOfExpectedBackgroundTasks: 6,
             expectedNumberOfSyncs: 1)
     }
 

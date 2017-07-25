@@ -54,7 +54,7 @@ class ServiceFactoryTests: XCTestCase {
         let expBackgroundAllTasksBackgrounded: XCTestExpectation? =
             expectError ? nil : expectation(description: "expBackgroundAllTasksBackgrounded")
         expBackgroundAllTasksBackgrounded?.assertForOverFulfill = true
-        expBackgroundAllTasksBackgrounded?.expectedFulfillmentCount = 4
+        expBackgroundAllTasksBackgrounded?.expectedFulfillmentCount = 5
         let backgrounder = MockBackgrounder(
             expBackgroundTaskFinishedAtLeastOnce: expBackgroundAllTasksBackgrounded)
 
