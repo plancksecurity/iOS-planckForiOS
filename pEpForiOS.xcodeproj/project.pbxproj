@@ -1299,6 +1299,7 @@
 				43980E361CBD0BCA00A7FC3C /* Sources */,
 				43980E371CBD0BCA00A7FC3C /* Frameworks */,
 				43980E381CBD0BCA00A7FC3C /* Resources */,
+				150D6CA01F2752FD00EB95CC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1435,6 +1436,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		150D6CA01F2752FD00EB95CC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "Warnings for TODO++ Script";
+			shellScript = "#mark annotations defined below as warnings\nKEYWORDS=\"TODO|FIXME|BUFF|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 | \\\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | \\\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
+		};
 		151573B31F20913C0049BB0B /* Log Start Time script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1489,7 +1503,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#mark annotations defined below as warnings\nKEYWORDS=\"TODO|FIXME|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 | \\\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | \\\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
+			shellScript = "#mark annotations defined below as warnings\nKEYWORDS=\"TODO|FIXME|BUFF|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 | \\\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | \\\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
