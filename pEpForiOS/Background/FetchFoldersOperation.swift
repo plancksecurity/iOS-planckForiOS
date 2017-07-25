@@ -71,8 +71,8 @@ open class FetchFoldersOperation: ImapSyncOperation {
                 }
 
                 var needSync = false
-                let requiredTypes: [FolderType] = [.inbox, .sent, .drafts, .trash]
-                for ty in requiredTypes {
+
+                for ty in FolderType.requiredTypes {
                     if CdFolder.by(folderType: ty, account: account) == nil {
                         needSync = true
                         break

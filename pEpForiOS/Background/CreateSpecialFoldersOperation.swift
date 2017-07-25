@@ -60,7 +60,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
                 return
         }
 
-        for ft in FolderType.neededFolderTypes {
+        for ft in FolderType.requiredTypes {
             if let cdF = CdFolder.by(folderType: ft, account: theAccount) {
                 if folderSeparator == nil {
                     folderSeparator = cdF.folderSeparatorAsString()
