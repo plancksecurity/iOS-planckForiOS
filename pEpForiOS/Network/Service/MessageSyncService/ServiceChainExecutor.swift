@@ -11,6 +11,14 @@ import Foundation
 class ServiceChainExecutor {
     var services = [ServiceExecutionProtocol]()
 
+    init(services: [ServiceExecutionProtocol]) {
+        self.services = services
+    }
+
+    convenience init() {
+        self.init(services: [])
+    }
+
     func add(service: ServiceExecutionProtocol) {
         services.append(service)
     }
