@@ -33,18 +33,9 @@ class FolderTableViewController: UITableViewController {
         performSegue(withIdentifier: "SettingsSegue", sender: self)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setToolbarHidden(true, animated: true)
-
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source

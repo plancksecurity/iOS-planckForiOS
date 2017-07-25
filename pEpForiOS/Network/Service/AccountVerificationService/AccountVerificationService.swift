@@ -58,7 +58,7 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
         if runningOperations[account] != nil {
             return
         }
-        let cdAccount = CdAccount.create(account: account)
+        let cdAccount = CdAccount.updateOrCreate(account: account)
         guard let imapConnectInfo = cdAccount.imapConnectInfo else {
             delegate?.verified(account: account, service: self, result: .noImapConnectData)
             return
