@@ -67,6 +67,7 @@ class ImapSmtpSyncService {
     private var reSyncNecessary: Bool = false
     private var messagesEnqueuedForSend = [MessageID: Message]()
     private var messagesEnqueuedForFlagChange = Set<Message>()
+    private var currentFolderName: String = ImapSync.defaultImapInboxName
 
     var readyForSend: Bool {
         switch state {
@@ -117,7 +118,16 @@ class ImapSmtpSyncService {
 
     public func enqueueForFlagChange(message: Message) {
         messagesEnqueuedForFlagChange.insert(message)
-        // TODO
+        if isIdling {
+            let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
+            let service = serviceFactory.syncFlagsToServer(
+                parentName: parentName, backgrounder: backgrounder,
+                imapSyncData: imapSyncData, folderName: folderName)
+            currentlyRunningService = service
+            service.execute() { [weak self] error in
+                self?.handleFlagUploadFinished(error: error)
+            }
+        }
     }
 
     public func cancel() {
@@ -185,6 +195,17 @@ class ImapSmtpSyncService {
         checkNextStep()
     }
 
+    func handleFlagUploadFinished(error: Error?) {
+        handleError(error: error)
+        // TODO
+        notifyAboutSentMessages()
+        if error == nil {
+            delegate?.didSync(service: self)
+            jumpIntoCorrectIdleState()
+        }
+        checkNextStep()
+    }
+
     func notifyAboutSentMessages() {
         var messagesWithSuccess = [Message]()
         for mID in lastSuccessfullySentMessageIDs {
@@ -211,7 +232,7 @@ class ImapSmtpSyncService {
     func reSync() {
         let service = serviceFactory.reSync(
             parentName: parentName, backgrounder: backgrounder,
-            imapSyncData: imapSyncData)
+            imapSyncData: imapSyncData, folderName: currentFolderName)
         currentlyRunningService = service
         service.execute() { [weak self] error in
             self?.handleReSyncFinished(error: error)
@@ -233,7 +254,6 @@ class ImapSmtpSyncService {
             return
         }
         if state == .readyForIdling {
-            delegate?.startIdling(service: self)
             if imapSyncData.supportsIdle {
                 state = .idling
                 let imapIdleService = ImapIdleService(
@@ -256,6 +276,7 @@ class ImapSmtpSyncService {
             } else {
                 state = .waitingForNextSync
             }
+            delegate?.startIdling(service: self)
             return
         }
     }

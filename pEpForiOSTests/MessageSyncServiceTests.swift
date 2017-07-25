@@ -161,7 +161,7 @@ class MessageSyncServiceTests: XCTestCase {
             ms.requestSend(message: msg)
         }
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 
@@ -257,6 +257,25 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
+    func runOrContinueUntilIdle(parentName: String,
+                      messageSyncService: MessageSyncService? = nil) -> MessageSyncService {
+        let ms = messageSyncService ?? MessageSyncService(
+            sleepTimeInSeconds: 2, parentName: parentName, backgrounder: nil, mySelfer: nil)
+        let expReachedIdle = expectation(description: "expReachedIdle")
+        expReachedIdle.expectedFulfillmentCount = UInt(1)
+        let stateDelegate = TestStateDelegate(expReachedIdling: expReachedIdle)
+        ms.stateDelegate = stateDelegate
+
+        if messageSyncService == nil {
+            ms.start(account: cdAccount.account())
+        }
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+        ms.stateDelegate = nil
+        return ms
+    }
+
     func testBasicPassiveSend() {
         runMessageSyncServiceSend(
             parentName: #function,
@@ -289,7 +308,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.syncDelegate = syncDelegate
         ms.start(account: cdAccount.account())
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 
@@ -308,7 +327,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.errorDelegate = errorDelegate
         ms.start(account: cdAccount.account())
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 
@@ -326,7 +345,7 @@ class MessageSyncServiceTests: XCTestCase {
         let expVerified = expectation(description: "expVerified")
         let verificationDelegate = TestAccountVerificationDelegate(expAccountVerified: expVerified)
         ms.requestVerification(account: cdAccount.account(), delegate: verificationDelegate)
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
         guard let result = verificationDelegate.verificationResult else {
@@ -347,6 +366,54 @@ class MessageSyncServiceTests: XCTestCase {
             expectedNumberOfSyncs: 1)
 
         ms.cancel(account: cdAccount.account())
+    }
+
+    func testUploadFlags() {
+        let context = Record.Context.default
+        let ms = runOrContinueUntilIdle(parentName: #function)
+
+        guard let cdFolder = CdFolder.by(
+            folderType: .inbox, account: cdAccount, context: context) else {
+                XCTFail()
+                return
+        }
+
+        let cdMessages = cdFolder.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
+        XCTAssertGreaterThan(cdMessages.count, 0)
+
+        for cdM in cdMessages.prefix(3) {
+            guard
+                let cdLocalFlags1 = cdM.imapFields().localFlags,
+                let cdServerFlags1 = cdM.imapFields().serverFlags else {
+                XCTFail()
+                return
+            }
+            let expectedFlagged = cdLocalFlags1.flagFlagged
+            cdLocalFlags1.flagFlagged = !cdLocalFlags1.flagFlagged
+            XCTAssertNotEqual(cdLocalFlags1.flagFlagged, cdServerFlags1.flagFlagged)
+            context.saveAndLogErrors()
+
+            let cdSyncMsgs1 = SyncFlagsToServerOperation.messagesToBeSynced(
+                folder: cdFolder, context: Record.Context.background)
+            XCTAssertEqual(cdSyncMsgs1.count, 1)
+
+            guard let msg = cdM.message() else {
+                XCTFail()
+                return
+            }
+            ms.requestFlagChange(message: msg)
+            let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
+            context.refresh(cdM, mergeChanges: true)
+            guard
+                let cdLocalFlags2 = cdM.imapFields().localFlags,
+                let cdServerFlags2 = cdM.imapFields().serverFlags else {
+                    XCTFail()
+                    return
+            }
+            XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
+            XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
+        }
     }
 
     func notestIdle() {

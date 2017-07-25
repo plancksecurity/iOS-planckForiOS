@@ -29,16 +29,21 @@ class ServiceFactory {
         let syncMessagesService = SyncExistingMessagesService(
             parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
 
+        let uploadFlagsService = SyncFlagsToServerService(
+            parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData,
+            folderName: ImapSync.defaultImapInboxName)
+
         let chainedService = ServiceChainExecutor()
         chainedService.add(services: [fetchFoldersService, smtpService,
-                                      fetchMessagesService, syncMessagesService])
+                                      fetchMessagesService, syncMessagesService,
+                                      uploadFlagsService])
 
         return chainedService
     }
 
     func reSync(
         parentName: String?, backgrounder: BackgroundTaskProtocol?,
-        imapSyncData: ImapSyncData) -> ServiceExecutionProtocol {
+        imapSyncData: ImapSyncData, folderName: String) -> ServiceExecutionProtocol {
         let fetchMessagesService = FetchMessagesService(
             parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
 
@@ -49,5 +54,14 @@ class ServiceFactory {
         chainedService.add(services: [fetchMessagesService, syncMessagesService])
 
         return chainedService
+    }
+
+    func syncFlagsToServer(
+        parentName: String?, backgrounder: BackgroundTaskProtocol?,
+        imapSyncData: ImapSyncData, folderName: String) -> ServiceExecutionProtocol {
+        let uploadFlagsService = SyncFlagsToServerService(
+            parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData,
+            folderName: folderName)
+        return uploadFlagsService
     }
 }
