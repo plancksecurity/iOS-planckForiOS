@@ -64,6 +64,9 @@ public class EmailAddressValidation {
             let ipv6Parts = s.components(separatedBy: ":")
             var result = true
             ipv6Parts.forEach({ (part) in
+                if part == "" {
+                    return
+                }
                 if let value = UInt16(part, radix: 16), value > 0, value < 65535 {
                     return
                 }

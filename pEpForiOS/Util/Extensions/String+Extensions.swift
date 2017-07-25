@@ -18,7 +18,7 @@ public extension String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    public var isEmailAddress: Bool {
+    /*public var isEmailAddress: Bool {
         let s = self.components(separatedBy: "@")
 
         //general mail validation
@@ -47,6 +47,11 @@ public extension String {
             (domainPredicate.evaluate(with:s.last) ||
                 ipv4Predicate.evaluate(with:s.last) ||
                 ipv6Predicate.evaluate(with:s.last))
+    }*/
+
+    public var isEmailAddress: Bool {
+        let eav = EmailAddressValidation(address: self)
+        return eav.isValid
     }
     
     public func contains(find: String) -> Bool {
