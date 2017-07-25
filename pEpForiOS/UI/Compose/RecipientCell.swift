@@ -126,12 +126,15 @@ extension RecipientCell {
             cTextview.insertImage(identity)
             cTextview.removePlainText()
         }
+
+        let text = cTextview.attributedText.string.cleanAttachments
+        delegate?.messageCanBeSend(value: (identities.count > 0 && text.isEmpty))
         
         addButton.isHidden = cTextview.text.isEmpty
+
         delegate?.textDidEndEditing(at: index, textView: cTextview)
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
     }
-
 }

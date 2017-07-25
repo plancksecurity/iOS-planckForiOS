@@ -15,7 +15,7 @@ import MessageModel
 class ComposeTableViewController: UITableViewController {
 
     @IBOutlet weak var dismissButton: UIBarButtonItem!
-    @IBOutlet weak var sendButton: UIBarButtonItem!
+    @IBOutlet var sendButton: UIBarButtonItem!
 
     enum ComposeMode {
         case normal
@@ -557,6 +557,10 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView) {}
+
+    func messageCanBeSend(value: Bool) {
+        self.sendButton.isEnabled = value
+    }
 }
 
 // MARK: - RecipientCellDelegate

@@ -21,6 +21,7 @@ public protocol ComposeCellDelegate: class {
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView)
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView)
     func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel)
+    func messageCanBeSend(value: Bool)
 }
 
 public protocol RecipientCellDelegate: ComposeCellDelegate {
