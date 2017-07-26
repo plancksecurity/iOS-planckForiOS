@@ -9,6 +9,8 @@
 import CoreData
 import MessageModel
 
+
+/// Sends (syncs) local changes of Imap flags to server.
 open class SyncFlagsToServerOperation: ImapSyncOperation {
     var folderID: NSManagedObjectID
     let folderName: String

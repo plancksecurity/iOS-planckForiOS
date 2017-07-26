@@ -326,9 +326,9 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertEqual(CdMessage.all()?.count, numMails)
     }
 
-    func testCreateLocalSpecialFoldersOperation() {
+    func testCreateLocalRequiredFoldersOperation() {
         let expFoldersStored = expectation(description: "expFoldersStored")
-        let op = CreateLocalSpecialFoldersOperation(account: cdAccount)
+        let op = CreateLocalRequiredFoldersOperation(account: cdAccount)
         let queue = OperationQueue()
         op.completionBlock = {
             expFoldersStored.fulfill()
@@ -436,7 +436,7 @@ class SimpleOperationsTest: XCTestCase {
         XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: cdAccount))
     }
 
-    func testCreateSpecialFoldersOperation() {
+    func testCreateRequiredFoldersOperation() {
         let imapLogin = LoginImapOperation(imapSyncData: imapSyncData)
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
@@ -457,7 +457,7 @@ class SimpleOperationsTest: XCTestCase {
         })
 
         let expCreated1 = expectation(description: "expCreated")
-        let opCreate1 = CreateSpecialFoldersOperation(imapSyncData: imapSyncData)
+        let opCreate1 = CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
         opCreate1.completionBlock = {
             expCreated1.fulfill()
         }
@@ -489,7 +489,7 @@ class SimpleOperationsTest: XCTestCase {
         }
 
         let expCreated2 = expectation(description: "expCreated")
-        let opCreate2 = CreateSpecialFoldersOperation(imapSyncData: imapSyncData)
+        let opCreate2 = CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
         opCreate2.completionBlock = {
             expCreated2.fulfill()
         }
@@ -1806,14 +1806,14 @@ class SimpleOperationsTest: XCTestCase {
         (identity: NSMutableDictionary, receiver1: PEPIdentity,
         receiver2: PEPIdentity, receiver3: PEPIdentity,
         receiver4: PEPIdentity)) {
-            let opCreateSpecialFolders = CreateLocalSpecialFoldersOperation(account: cdAccount)
+            let opCreateRequiredFolders = CreateLocalRequiredFoldersOperation(account: cdAccount)
             let expFoldersStored = expectation(description: "expFoldersStored")
-            opCreateSpecialFolders.completionBlock = {
+            opCreateRequiredFolders.completionBlock = {
                 expFoldersStored.fulfill()
             }
 
             let queue = OperationQueue.init()
-            queue.addOperation(opCreateSpecialFolders)
+            queue.addOperation(opCreateRequiredFolders)
             waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
                 XCTAssertNil(error)
             })
