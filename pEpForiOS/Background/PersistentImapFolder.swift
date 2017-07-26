@@ -22,7 +22,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     let backgroundQueue: OperationQueue
 
-    let logName: String?
+    let logName: String
 
     let privateMOC: NSManagedObjectContext
 
@@ -64,7 +64,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
           logName: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
-        self.logName = logName
+        self.logName = logName ?? "<unknown>"
         self.messageFetchedBlock = messageFetchedBlock
         let context = Record.Context.background
         self.privateMOC = context
@@ -80,11 +80,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         super.init(name: name)
 
         self.setCacheManager(self)
-    }
-
-    deinit {
-        let logID = logName ?? "<unknown>"
-        Log.info(component: functionName(#function), content: logID)
     }
 
     func functionName(_ name: String) -> String {
