@@ -1,5 +1,5 @@
 //
-//  CreateLocalSpecialFoldersOperation.swift
+//  CreateLocalRequiredFoldersOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 22/06/16.
@@ -10,7 +10,7 @@ import CoreData
 
 import MessageModel
 
-open class CreateLocalSpecialFoldersOperation: BaseOperation {
+open class CreateLocalRequiredFoldersOperation: BaseOperation {
     let accountObjectID: NSManagedObjectID
 
     public init(account: CdAccount) {

@@ -1,5 +1,5 @@
 //
-//  CreateSpecialFoldersOperation.swift
+//  CreateRequiredFoldersOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 01/03/17.
@@ -15,7 +15,7 @@ import MessageModel
  Checks for needed folders, like "Drafts", and when they don't exist, create them
  both locally and remote.
  */
-open class CreateSpecialFoldersOperation: ImapSyncOperation {
+open class CreateRequiredFoldersOperation: ImapSyncOperation {
     struct FolderToCreate {
         var folderName: String
         let folderType: FolderType
@@ -60,7 +60,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
                 return
         }
 
-        for ft in FolderType.neededFolderTypes {
+        for ft in FolderType.requiredTypes {
             if let cdF = CdFolder.by(folderType: ft, account: theAccount) {
                 if folderSeparator == nil {
                     folderSeparator = cdF.folderSeparatorAsString()
@@ -138,7 +138,7 @@ open class CreateSpecialFoldersOperation: ImapSyncOperation {
 
 class CreateSpecialFoldersSyncDelegate: DefaultImapSyncDelegate {
     public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
-        guard let op = errorHandler as? CreateSpecialFoldersOperation else {
+        guard let op = errorHandler as? CreateRequiredFoldersOperation else {
             return
         }
         op.numberOfFoldersCreated += 1
@@ -146,7 +146,7 @@ class CreateSpecialFoldersSyncDelegate: DefaultImapSyncDelegate {
     }
 
     public override func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
-        guard let op = errorHandler as? CreateSpecialFoldersOperation else {
+        guard let op = errorHandler as? CreateRequiredFoldersOperation else {
             return
         }
         op.createFolderAgain(potentialError: ImapSyncError.illegalState(#function))
