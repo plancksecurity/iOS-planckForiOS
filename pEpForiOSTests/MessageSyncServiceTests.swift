@@ -162,7 +162,7 @@ class MessageSyncServiceTests: XCTestCase {
             ms.requestSend(message: msg)
         }
 
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
 
@@ -270,7 +270,7 @@ class MessageSyncServiceTests: XCTestCase {
         if messageSyncService == nil {
             ms.start(account: cdAccount.account())
         }
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
         ms.stateDelegate = nil
@@ -309,7 +309,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.syncDelegate = syncDelegate
         ms.start(account: cdAccount.account())
 
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
 
@@ -328,7 +328,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.errorDelegate = errorDelegate
         ms.start(account: cdAccount.account())
 
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
 
@@ -346,7 +346,7 @@ class MessageSyncServiceTests: XCTestCase {
         let expVerified = expectation(description: "expVerified")
         let verificationDelegate = TestAccountVerificationDelegate(expAccountVerified: expVerified)
         ms.requestVerification(account: cdAccount.account(), delegate: verificationDelegate)
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
         guard let result = verificationDelegate.verificationResult else {
@@ -415,6 +415,7 @@ class MessageSyncServiceTests: XCTestCase {
             XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
             XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
         }
+        sleep(3)
     }
 
     func notestIdle() {
