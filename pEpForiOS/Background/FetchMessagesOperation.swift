@@ -62,7 +62,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
             with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
                 addError(Constants.errorCannotFindAccount(component: comp))
-                markAsFinished()
+                waitForFinished()
                 return
         }
 
@@ -103,8 +103,15 @@ open class FetchMessagesOperation: ImapSyncOperation {
         super.cancel()
     }
 
-    override func markAsFinished() {
+    open override func waitForFinished() {
         syncDelegate = nil
+        super.waitForFinished()
+    }
+
+    override func markAsFinished() {
+        if backgroundQueue.operationCount > 0 {
+            print("not good")
+        }
         super.markAsFinished()
     }
 }

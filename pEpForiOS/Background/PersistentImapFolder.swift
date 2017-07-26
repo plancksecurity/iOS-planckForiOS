@@ -294,7 +294,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                  content: "Writing message \(message), \(messageUpdate) for \(opID)")
         backgroundQueue.addOperation(opStore)
 
-
         // While it would be desirable to store messages asynchronously,
         // it's not the correct semantics pantomime, and therefore the layers above, expect.
         // It might correctly work in-app, but can mess up the unit tests since they might signal

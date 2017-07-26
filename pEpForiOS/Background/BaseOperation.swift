@@ -47,11 +47,11 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
             Log.error(component: comp, error: error)
         }
 
-        if let n = parentName {
-            comp = "\(comp): \(n)"
+        if let pn = parentName {
+            comp = "\(comp) [\(pn)]"
         }
         self.name = comp
-        Log.info(component: comp, content: "\(#function) finished")
+        Log.info(component: comp, content: "\(#function)")
     }
 
     deinit {

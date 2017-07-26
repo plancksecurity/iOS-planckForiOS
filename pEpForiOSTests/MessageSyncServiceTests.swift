@@ -130,6 +130,7 @@ class MessageSyncServiceTests: XCTestCase {
     override func tearDown() {
         messageSyncService?.cancel()
         messageSyncService = nil
+        persistentSetup = nil
     }
 
     func send(messageSyncService ms: MessageSyncService, messages: [Message],
