@@ -54,6 +54,7 @@ class AttachmentsViewHelper {
         let theBuildOp = AttachmentsViewOperation(mimeTypes: mimeTypes, message: message)
         buildOp = theBuildOp
         theBuildOp.completionBlock = { [weak self] in
+            theBuildOp.completionBlock = nil
             if theBuildOp.message == message {
                 if let mySelf = self {
                     GCD.onMain {

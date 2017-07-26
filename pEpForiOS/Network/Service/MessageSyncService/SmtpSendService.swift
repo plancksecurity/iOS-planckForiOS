@@ -44,6 +44,7 @@ class SmtpSendService: AtomicImapService {
             parentName: parentName, imapSyncData: imapSyncData, errorContainer: self)
         appendOp.addDependency(imapLoginOp)
         appendOp.completionBlock = { [weak self] in
+            appendOp.completionBlock = nil
             self?.delegate?.sent(messageIDs: appendOp.successfullySentMessageIDs)
             handler?(self?.error)
             self?.backgrounder?.endBackgroundTask(bgID)

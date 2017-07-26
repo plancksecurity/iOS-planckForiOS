@@ -40,6 +40,7 @@ class SyncExistingMessagesService: AtomicImapService {
 
             syncOp.addDependency(loginOp)
             syncOp.completionBlock = {  [weak self] in
+                syncOp.completionBlock = nil
                 self?.backgrounder?.endBackgroundTask(taskID)
                 handler?(self?.error)
             }

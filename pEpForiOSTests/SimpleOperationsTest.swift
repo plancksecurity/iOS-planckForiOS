@@ -178,6 +178,7 @@ class SimpleOperationsTest: XCTestCase {
                 return
         }
         op.completionBlock = {
+            op.completionBlock = nil
             expMailsSynced.fulfill()
         }
 
@@ -211,6 +212,7 @@ class SimpleOperationsTest: XCTestCase {
         let op = SyncMessagesOperation(
             imapSyncData: imapSyncData, folderName: folderName, firstUID: 10, lastUID: 5)
         op.completionBlock = {
+            op.completionBlock = nil
             expMailsSynced.fulfill()
         }
 
@@ -227,6 +229,7 @@ class SimpleOperationsTest: XCTestCase {
         let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
         let op = FetchFoldersOperation(imapSyncData: imapSyncData)
         op.completionBlock = {
+            op.completionBlock = nil
             expFoldersFetched.fulfill()
         }
         op.addDependency(opLogin)
@@ -271,6 +274,7 @@ class SimpleOperationsTest: XCTestCase {
             accountID: imapConnectInfo.accountObjectID, message: message,
             messageUpdate: CWMessageUpdate())
         storeOp.completionBlock = {
+            storeOp.completionBlock = nil
             expStored.fulfill()
         }
         let backgroundQueue = OperationQueue.init()
@@ -309,6 +313,7 @@ class SimpleOperationsTest: XCTestCase {
                 accountID: imapConnectInfo.accountObjectID, message: message,
                 messageUpdate: CWMessageUpdate())
             op.completionBlock = {
+                op.completionBlock = nil
                 numberOfCallbacksCalled += 1
                 XCTAssertFalse(op.hasErrors())
                 if numberOfCallbacksCalled == numMails {
@@ -331,6 +336,7 @@ class SimpleOperationsTest: XCTestCase {
         let op = CreateLocalRequiredFoldersOperation(account: cdAccount)
         let queue = OperationQueue()
         op.completionBlock = {
+            op.completionBlock = nil
             expFoldersStored.fulfill()
         }
         queue.addOperation(op)
@@ -362,6 +368,7 @@ class SimpleOperationsTest: XCTestCase {
             imapSyncData: imapSyncData, account: cdAccount, folderType: .drafts)
         opCreate.addDependency(opFetchFolders)
         opCreate.completionBlock = {
+            opCreate.completionBlock = nil
             expCreated.fulfill()
         }
 
@@ -396,6 +403,7 @@ class SimpleOperationsTest: XCTestCase {
         let expCreated = expectation(description: "expCreated")
         let opCreate = CreateFoldersOperation(imapSyncData: imapSyncData, account: cdAccount)
         opCreate.completionBlock = {
+            opCreate.completionBlock = nil
             expCreated.fulfill()
         }
         let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
@@ -419,6 +427,7 @@ class SimpleOperationsTest: XCTestCase {
         let opDelete = DeleteFoldersOperation(
             imapSyncData: imapSyncData, account: cdAccount)
         opDelete.completionBlock = {
+            opDelete.completionBlock = nil
             expDeleted.fulfill()
         }
 
@@ -443,6 +452,7 @@ class SimpleOperationsTest: XCTestCase {
         let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
+            fetchFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
@@ -459,6 +469,7 @@ class SimpleOperationsTest: XCTestCase {
         let expCreated1 = expectation(description: "expCreated")
         let opCreate1 = CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
         opCreate1.completionBlock = {
+            opCreate1.completionBlock = nil
             expCreated1.fulfill()
         }
         backgroundQueue.addOperation(opCreate1)
@@ -475,6 +486,7 @@ class SimpleOperationsTest: XCTestCase {
             let opDelete = DeleteFolderOperation(
                 imapSyncData: imapSyncData, account: cdAccount, folderName: fn)
             opDelete.completionBlock = {
+                opDelete.completionBlock = nil
                 expDeleted.fulfill()
             }
             backgroundQueue.addOperation(opDelete)
@@ -491,6 +503,7 @@ class SimpleOperationsTest: XCTestCase {
         let expCreated2 = expectation(description: "expCreated")
         let opCreate2 = CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
         opCreate2.completionBlock = {
+            opCreate2.completionBlock = nil
             expCreated2.fulfill()
         }
         backgroundQueue.addOperation(opCreate2)
@@ -521,6 +534,7 @@ class SimpleOperationsTest: XCTestCase {
         }
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -598,6 +612,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
         op.start()
@@ -668,6 +683,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -740,6 +756,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -823,6 +840,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -901,6 +919,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -980,6 +999,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1059,6 +1079,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1137,6 +1158,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1209,6 +1231,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1284,6 +1307,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1361,6 +1385,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1438,6 +1463,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1515,6 +1541,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1592,6 +1619,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1669,6 +1697,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
+            op.completionBlock = nil
             expEmailsSynced.fulfill()
         }
 
@@ -1754,6 +1783,7 @@ class SimpleOperationsTest: XCTestCase {
             }
             let expEmailsSynced = expectation(description: "expEmailsSynced\(i)")
             op.completionBlock = {
+                op.completionBlock = nil
                 expEmailsSynced.fulfill()
             }
             ops.append(op)
@@ -1809,6 +1839,7 @@ class SimpleOperationsTest: XCTestCase {
             let opCreateRequiredFolders = CreateLocalRequiredFoldersOperation(account: cdAccount)
             let expFoldersStored = expectation(description: "expFoldersStored")
             opCreateRequiredFolders.completionBlock = {
+                opCreateRequiredFolders.completionBlock = nil
                 expFoldersStored.fulfill()
             }
 
@@ -1857,6 +1888,7 @@ class SimpleOperationsTest: XCTestCase {
         let smtpLogin = LoginSmtpOperation(
             smtpSendData: smtpSendData, errorContainer: errorContainer)
         smtpLogin.completionBlock = {
+            smtpLogin.completionBlock = nil
             XCTAssertNotNil(smtpSendData.smtp)
         }
 
@@ -1866,6 +1898,7 @@ class SimpleOperationsTest: XCTestCase {
             context: Record.Context.default, cdAccount: cdAccount))
         sendOp.addDependency(smtpLogin)
         sendOp.completionBlock = {
+            sendOp.completionBlock = nil
             expMailsSent.fulfill()
         }
 
@@ -1896,6 +1929,7 @@ class SimpleOperationsTest: XCTestCase {
         let imapLogin = LoginImapOperation(
             errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
+            imapLogin.completionBlock = nil
             XCTAssertNotNil(imapSyncData.sync)
         }
 
@@ -1903,6 +1937,7 @@ class SimpleOperationsTest: XCTestCase {
         let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
+            fetchFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
@@ -1957,6 +1992,7 @@ class SimpleOperationsTest: XCTestCase {
         let appendOp = AppendMailsOperation(
             imapSyncData: imapSyncData, errorContainer: errorContainer)
         appendOp.completionBlock = {
+            appendOp.completionBlock = nil
             expSentAppended.fulfill()
         }
 
@@ -1977,6 +2013,7 @@ class SimpleOperationsTest: XCTestCase {
         let imapLogin = LoginImapOperation(
             errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
+            imapLogin.completionBlock = nil
             XCTAssertNotNil(imapSyncData.sync)
         }
 
@@ -1984,6 +2021,7 @@ class SimpleOperationsTest: XCTestCase {
         let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
+            fetchFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
@@ -2037,6 +2075,7 @@ class SimpleOperationsTest: XCTestCase {
         let appendOp = AppendDraftMailsOperation(
             imapSyncData: imapSyncData, errorContainer: errorContainer)
         appendOp.completionBlock = {
+            appendOp.completionBlock = nil
             expDraftsStored.fulfill()
         }
 
@@ -2122,6 +2161,7 @@ class SimpleOperationsTest: XCTestCase {
 
         let op = MySelfOperation()
         op.completionBlock = {
+            op.completionBlock = nil
             expCompleted.fulfill()
         }
 
@@ -2150,6 +2190,7 @@ class SimpleOperationsTest: XCTestCase {
         let imapLogin = LoginImapOperation(
             errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
+            imapLogin.completionBlock = nil
             XCTAssertNotNil(self.imapSyncData.sync)
         }
 
@@ -2157,6 +2198,7 @@ class SimpleOperationsTest: XCTestCase {
         let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
+            fetchFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
@@ -2248,6 +2290,7 @@ class SimpleOperationsTest: XCTestCase {
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: draftsFolder)
         trashMailsOp2.addDependency(trashMailsOp1)
         trashMailsOp2.completionBlock = {
+            trashMailsOp2.completionBlock = nil
             expTrashed.fulfill()
         }
 
@@ -2268,6 +2311,7 @@ class SimpleOperationsTest: XCTestCase {
             parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData,
             folderName: trashFolder.name ?? "", messageFetchedBlock: nil)
         fetchTrashOp.completionBlock = {
+            fetchTrashOp.completionBlock = nil
             expTrashFetched.fulfill()
         }
 
@@ -2330,6 +2374,7 @@ class SimpleOperationsTest: XCTestCase {
         let expAttachmentsFixed = expectation(description: "expAttachmentsFixed")
         let fixAttachmentsOp = FixAttachmentsOperation()
         fixAttachmentsOp.completionBlock = {
+            fixAttachmentsOp.completionBlock = nil
             expAttachmentsFixed.fulfill()
         }
         let queue = OperationQueue()
@@ -2363,6 +2408,7 @@ class SimpleOperationsTest: XCTestCase {
                                         folderName: ImapSync.defaultImapInboxName)
         op.addDependency(opLogin)
         op.completionBlock = {
+            op.completionBlock = nil
             expMailsPrefetched.fulfill()
         }
 

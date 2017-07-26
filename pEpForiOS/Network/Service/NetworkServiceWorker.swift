@@ -145,6 +145,7 @@ open class NetworkServiceWorker {
             let loginOp = LoginSmtpOperation(
                 smtpSendData: smtpSendData, errorContainer: errorContainer)
             loginOp.completionBlock = { [weak self] in
+                loginOp.completionBlock = nil
                 if let me = self {
                     me.workerQueue.async {
                         Log.info(component: #function, content: "opSmtpLogin finished")
@@ -270,6 +271,7 @@ open class NetworkServiceWorker {
                     imapSyncData: imapSyncData, folderName: fi.name,
                     firstUID: firstUID, lastUID: lastUID)
                 syncMessagesOp.completionBlock = { _ in
+                    syncMessagesOp.completionBlock = nil
                     Log.info(component: #function, content: "syncMessagesOp finished")
                 }
                 syncMessagesOp.addDependency(theLastImapOp)
@@ -347,6 +349,7 @@ open class NetworkServiceWorker {
                 parentName: description, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
             opFetchFolders.completionBlock = { [weak self] in
+                opFetchFolders.completionBlock = nil
                 if let me = self {
                     me.workerQueue.async {
                         Log.info(component: #function, content: "opFetchFolders finished")

@@ -28,6 +28,7 @@ open class PeriodicTask {
     func addNewWork() {
         let op = operationProvider()
         op.completionBlock = {
+            op.completionBlock = nil
             self.backgroundQueue.asyncAfter(deadline: DispatchTime.now() + self.checkEverySecond) {
                 self.addNewWork()
             }

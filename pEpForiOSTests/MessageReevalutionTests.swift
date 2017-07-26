@@ -98,6 +98,7 @@ class MessageReevalutionTests: XCTestCase {
         let decryptOperation = DecryptMessagesOperation(
             parentName: #function, errorContainer: errorContainer)
         decryptOperation.completionBlock = {
+            decryptOperation.completionBlock = nil
             expDecrypted.fulfill()
         }
         backgroundQueue.addOperation(decryptOperation)
@@ -160,6 +161,7 @@ class MessageReevalutionTests: XCTestCase {
             let expReevaluated = expectation(description: "expReevaluated")
             let reevalOp = ReevaluateMessageRatingOperation(message: message)
             reevalOp.completionBlock = {
+                reevalOp.completionBlock = nil
                 expReevaluated.fulfill()
             }
             backgroundQueue.addOperation(reevalOp)

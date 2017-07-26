@@ -136,6 +136,7 @@ class DecryptionTests: XCTestCase {
         let decryptOp = DecryptMessagesOperation(parentName: #function,
                                                  errorContainer: errorContainer)
         decryptOp.completionBlock = {
+            decryptOp.completionBlock = nil
             expectationDecryptHasRun.fulfill()
         }
         backgroundQueue.addOperation(decryptOp)
