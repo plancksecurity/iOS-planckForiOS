@@ -22,7 +22,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
 
     let backgroundQueue: OperationQueue
 
-    let logName: String?
+    let logName: String
 
     let privateMOC: NSManagedObjectContext
 
@@ -64,7 +64,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
           logName: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
-        self.logName = logName
+        self.logName = logName ?? "<unknown>"
         self.messageFetchedBlock = messageFetchedBlock
         let context = Record.Context.background
         self.privateMOC = context
@@ -80,11 +80,11 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         super.init(name: name)
 
         self.setCacheManager(self)
+        Log.log(comp: self.logName, mySelf: self, functionName: #function)
     }
 
     deinit {
-        let logID = logName ?? "<unknown>"
-        Log.info(component: functionName(#function), content: logID)
+        Log.log(comp: logName, mySelf: self, functionName: #function)
     }
 
     func functionName(_ name: String) -> String {
@@ -293,7 +293,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         Log.warn(component: functionName(#function),
                  content: "Writing message \(message), \(messageUpdate) for \(opID)")
         backgroundQueue.addOperation(opStore)
-
 
         // While it would be desirable to store messages asynchronously,
         // it's not the correct semantics pantomime, and therefore the layers above, expect.

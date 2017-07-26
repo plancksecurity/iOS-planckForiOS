@@ -30,6 +30,16 @@ open class ImapSyncOperation: ConcurrentBaseOperation {
         addError(error)
         imapSyncData.sync?.imapState.hasError = true
     }
+
+    override func markAsFinished() {
+        imapSyncData.sync?.delegate = nil
+        super.markAsFinished()
+    }
+
+    override open func waitForFinished() {
+        imapSyncData.sync?.delegate = nil
+        super.waitForFinished()
+    }
 }
 
 extension ImapSyncOperation: ImapSyncDelegateErrorHandlerProtocol {

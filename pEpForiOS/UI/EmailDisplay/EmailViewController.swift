@@ -314,6 +314,7 @@ extension EmailViewController: MessageAttachmentDelegate {
         let busyState = inView?.displayAsBusy()
         let attachmentOp = AttachmentToLocalURLOperation(attachment: attachment)
         attachmentOp.completionBlock = { [weak self] in
+            attachmentOp.completionBlock = nil
             if let url = attachmentOp.fileURL {
                 GCD.onMain {
                     if let bState = busyState {

@@ -300,6 +300,7 @@ class NetworkServiceTests: XCTestCase {
         func startMySelf() {
             let op = MySelfOperation(backgrounder: backgrounder)
             op.completionBlock = {
+                op.completionBlock = nil
                 self.expMySelfed?.fulfill()
             }
             queue.addOperation(op)

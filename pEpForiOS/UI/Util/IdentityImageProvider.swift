@@ -34,6 +34,7 @@ class IdentityImageProvider {
                                         imageSize: CGSize.defaultAvatarSize,
                                         identityImageCache: identityImageCache)
         op.completionBlock = { [weak self, weak identity] in
+            op.completionBlock = nil
             self?.dispatchQueue.async {
                 if let theSelf = self, let theIdentity = identity, let img = op.image {
                     theSelf.finished(identity: theIdentity, image: img, callback: callback)

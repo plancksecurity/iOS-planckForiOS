@@ -46,6 +46,7 @@ extension FetchFoldersService: ServiceExecutionProtocol {
         fetchFoldersOp.delegate = self
         fetchFoldersOp.addDependency(imapLoginOp)
         fetchFoldersOp.completionBlock = { [weak self] in
+            fetchFoldersOp.completionBlock = nil
             self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }
