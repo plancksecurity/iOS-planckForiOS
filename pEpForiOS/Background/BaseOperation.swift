@@ -64,4 +64,8 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
         }
         return true
     }
+
+    func logSelf(functionName: String) {
+        Log.log(comp: comp, mySelf: self, functionName: functionName)
+    }
 }

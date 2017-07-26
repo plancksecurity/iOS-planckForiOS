@@ -91,6 +91,11 @@ import MessageModel
     static open func error(component: String, errorString: String) {
         Log.shared.saveLog(entity: component, description: errorString, comment: "error")
     }
+
+    static func log(comp: String, mySelf: Any, functionName: String) {
+        let selfDesc = unsafeBitCast(self, to: UnsafeRawPointer.self)
+        Log.shared.info(component: comp, content: "\(functionName): \(selfDesc)")
+    }
 }
 
 extension Log: CWLogging {
