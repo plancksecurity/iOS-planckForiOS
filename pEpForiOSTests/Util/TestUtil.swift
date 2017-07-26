@@ -40,15 +40,6 @@ class TestUtil {
     static var initialNumberOfServices = 0
 
     /**
-     In case there are other connections open, call this function before relying on
-     `waitForConnectionShutdown` or `waitForServiceCleanup`
-     */
-    static func adjustBaseLevel() {
-        initialNumberOfRunningConnections = CWTCPConnection.numberOfRunningConnections()
-        initialNumberOfServices = Service.refCounter.refCount
-    }
-
-    /**
      Waits and verifies that all connection threads are finished.
      */
     static func waitForConnectionShutdown() {
@@ -61,28 +52,6 @@ class TestUtil {
         // This only works if there are no accounts configured in the app.
         XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(),
                        initialNumberOfRunningConnections)
-    }
-
-    /**
-     Waits and verifies that all service objects (IMAP, SMTP) are finished.
-     */
-    static func waitForServiceCleanup() {
-        for _ in 1...numberOfTriesConnectonShutDown {
-            if Service.refCounter.refCount == initialNumberOfServices {
-                break
-            }
-            Thread.sleep(forTimeInterval: connectonShutDownWaitTime)
-        }
-        // This only works if there are no accounts configured in the app.
-        XCTAssertEqual(Service.refCounter.refCount, initialNumberOfServices)
-    }
-
-    /**
-     Waits and verifies that all service objects are properly shutdown and cleaned up.
-     */
-    static func waitForServiceShutdown() {
-        TestUtil.waitForConnectionShutdown()
-        TestUtil.waitForServiceCleanup()
     }
 
     /**

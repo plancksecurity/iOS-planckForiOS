@@ -89,15 +89,6 @@ open class ImapSync: Service {
         }
     }
 
-    public override init(connectInfo: EmailConnectInfo) {
-        super.init(connectInfo: connectInfo)
-        Log.log(comp: comp, mySelf: self, functionName: #function)
-    }
-
-    deinit {
-        Log.log(comp: comp, mySelf: self, functionName: #function)
-    }
-
     func isAlreadySelected(folderName: String) -> Bool {
         if let currentFolderName = imapState.currentFolder?.name() {
             if currentFolderName.isInboxFolderName() && folderName.isInboxFolderName() {

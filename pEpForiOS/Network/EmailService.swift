@@ -23,16 +23,6 @@ open class Service: IEmailService {
 
     var service: CWService!
 
-    /**
-     For proving memory leaks.
-     */
-    static open var refCounter = ReferenceCounter.init()
-
-    /**
-     Unnecessary data to trigger memory leak indicators.
-     */
-    var memoryLeakData: Data?
-
     public init(connectInfo: EmailConnectInfo) {
         CWLogger.setLogger(Log.shared)
 
@@ -40,12 +30,10 @@ open class Service: IEmailService {
 
         service = self.createService()
         service.setDelegate(self)
-        Service.refCounter.inc()
     }
 
     deinit {
         service.close()
-        Service.refCounter.dec()
     }
 
     func createService() -> CWService {
