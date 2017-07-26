@@ -93,7 +93,7 @@ import MessageModel
     }
 
     static func log(comp: String, mySelf: Any, functionName: String) {
-        let selfDesc = unsafeBitCast(self, to: UnsafeRawPointer.self)
+        let selfDesc = unsafeBitCast(mySelf, to: UnsafeRawPointer.self)
         Log.shared.info(component: comp, content: "\(functionName): \(selfDesc)")
     }
 }
