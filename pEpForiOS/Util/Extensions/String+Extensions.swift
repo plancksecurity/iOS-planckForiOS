@@ -51,7 +51,7 @@ public extension String {
 
     public var isEmailAddress: Bool {
         let eav = EmailAddressValidation(address: self)
-        return eav.isValid
+        return eav.result
     }
     
     public func contains(find: String) -> Bool {
