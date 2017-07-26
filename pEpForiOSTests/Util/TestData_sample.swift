@@ -29,4 +29,29 @@ class TestData: TestDataBase {
 
             password: "some secret password"))
     }
+
+
+    /*
+     You must add a valid Yahoo account here:
+     - replace all XYZs in the below sample
+     - to deactivate OAuth, you have to enable the "allow less secure clients" option in your Yahoo account
+     */
+    func yahooAccount() -> AccountSettings {
+        return AccountSettings(
+            accountName: "yahoo test",
+            idAddress: "XYZ@yahoo.com",
+            idUserName: "XYZ@yahoo.com",
+
+            imapServerAddress: "imap.mail.yahoo.com",
+            imapServerType: Server.ServerType.imap,
+            imapServerTransport: Server.Transport.tls,
+            imapServerPort: 993,
+
+            smtpServerAddress: "smtp.mail.yahoo.com",
+            smtpServerType: Server.ServerType.smtp,
+            smtpServerTransport: Server.Transport.startTls,
+            smtpServerPort: 587,
+
+            password: "XYZ")
+    }
 }

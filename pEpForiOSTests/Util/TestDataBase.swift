@@ -146,6 +146,10 @@ class TestDataBase {
         return testAccounts[number].cdAccount()
     }
 
+    func createWorkingCdAccountYahoo() -> CdAccount {
+        return TestData.yahooAccount().cdAccount()
+    }
+
     /**
      - Returns: A `CdAccount` that should not be able to be verified.
      */

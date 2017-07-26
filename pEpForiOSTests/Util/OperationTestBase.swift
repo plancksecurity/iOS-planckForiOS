@@ -25,19 +25,6 @@ class OperationTestBase: XCTestCase {
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup()
-
-        let cdAccount = TestData().createWorkingCdAccount()
-        cdAccount.identity?.isMySelf = true
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-        self.cdAccount = cdAccount
-
-        imapConnectInfo = cdAccount.imapConnectInfo
-        smtpConnectInfo = cdAccount.smtpConnectInfo
-        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-
-        XCTAssertNotNil(imapConnectInfo)
-        XCTAssertNotNil(smtpConnectInfo)
     }
 
     override func tearDown() {
@@ -46,5 +33,4 @@ class OperationTestBase: XCTestCase {
         persistentSetup = nil
         super.tearDown()
     }
-    
 }

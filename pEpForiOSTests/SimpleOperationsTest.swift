@@ -14,6 +14,21 @@ import MessageModel
 
 class SimpleOperationsTest: OperationTestBase {
 
+    override func setUp() {
+        let cdAccount = TestData().createWorkingCdAccount()
+        cdAccount.identity?.isMySelf = true
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+        self.cdAccount = cdAccount
+
+        imapConnectInfo = cdAccount.imapConnectInfo
+        smtpConnectInfo = cdAccount.smtpConnectInfo
+        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+
+        XCTAssertNotNil(imapConnectInfo)
+        XCTAssertNotNil(smtpConnectInfo)
+    }
+
     func testComp() {
         let f = FetchFoldersOperation(imapSyncData: imapSyncData)
         XCTAssertEqual(f.comp, "FetchFoldersOperation")
