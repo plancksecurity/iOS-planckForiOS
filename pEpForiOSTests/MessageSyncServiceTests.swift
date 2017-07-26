@@ -368,7 +368,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
-    func notestUploadFlags() {
+    func testUploadFlags() {
         let context = Record.Context.default
         let ms = runOrContinueUntilIdle(parentName: #function)
 
@@ -389,8 +389,8 @@ class MessageSyncServiceTests: XCTestCase {
                 XCTFail()
                 return
             }
-            let expectedFlagged = cdLocalFlags1.flagFlagged
             cdLocalFlags1.flagFlagged = !cdLocalFlags1.flagFlagged
+            let expectedFlagged = cdLocalFlags1.flagFlagged
             XCTAssertNotEqual(cdLocalFlags1.flagFlagged, cdServerFlags1.flagFlagged)
             context.saveAndLogErrors()
 
