@@ -28,11 +28,6 @@ open class Service: IEmailService {
      */
     static open var refCounter = ReferenceCounter.init()
 
-    /**
-     Unnecessary data to trigger memory leak indicators.
-     */
-    var memoryLeakData: Data?
-
     public init(connectInfo: EmailConnectInfo) {
         CWLogger.setLogger(Log.shared)
 
