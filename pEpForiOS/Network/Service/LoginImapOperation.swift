@@ -14,13 +14,6 @@ open class LoginImapOperation: ImapSyncOperation {
     var syncDelegate: LoginImapSyncDelegate?
     var capabilities: Set<String>?
 
-    public override init(parentName: String? = nil,
-                         errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                         imapSyncData: ImapSyncData) {
-        super.init(parentName: parentName, errorContainer: errorContainer,
-                   imapSyncData: imapSyncData)
-    }
-
     open override func main() {
         var service = imapSyncData.sync ?? ImapSync(connectInfo: imapSyncData.connectInfo)
         if service.imapState.hasError {
