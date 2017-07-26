@@ -7,45 +7,12 @@
 //
 
 import XCTest
-import CoreData
-import Photos
 
+import CoreData
 import pEpForiOS
 import MessageModel
 
-class SimpleOperationsTest: XCTestCase {
-    let connectionManager = ConnectionManager()
-    var cdAccount: CdAccount!
-    var persistentSetup: PersistentSetup!
-
-    var imapConnectInfo: EmailConnectInfo!
-    var smtpConnectInfo: EmailConnectInfo!
-    var imapSyncData: ImapSyncData!
-
-    override func setUp() {
-        super.setUp()
-        persistentSetup = PersistentSetup()
-
-        let cdAccount = TestData().createWorkingCdAccount()
-        cdAccount.identity?.isMySelf = true
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-        self.cdAccount = cdAccount
-
-        imapConnectInfo = cdAccount.imapConnectInfo
-        smtpConnectInfo = cdAccount.smtpConnectInfo
-        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-
-        XCTAssertNotNil(imapConnectInfo)
-        XCTAssertNotNil(smtpConnectInfo)
-    }
-
-    override func tearDown() {
-        imapSyncData?.sync?.close()
-
-        persistentSetup = nil
-        super.tearDown()
-    }
+class SimpleOperationsTest: OperationTestBase {
 
     func testComp() {
         let f = FetchFoldersOperation(imapSyncData: imapSyncData)
@@ -516,8 +483,8 @@ class SimpleOperationsTest: XCTestCase {
             return
         }
         guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-                XCTFail()
-                return
+            XCTFail()
+            return
         }
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -2046,10 +2013,10 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNil(error)
             XCTAssertFalse(appendOp.hasErrors())
         })
-        
+
         XCTAssertEqual((CdMessage.all() ?? []).count, 0)
     }
-    
+
     /**
      It's important to always provide the correct kPepUserID for a local account ID.
      */
@@ -2309,7 +2276,7 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertNotNil(trashedCdMessage)
         }
     }
-
+    
     //fails on first run when the an account was setup on
     func testFixAttachmentsOperation() {
         let cdFolder = CdFolder.create()
@@ -2317,16 +2284,16 @@ class SimpleOperationsTest: XCTestCase {
         cdFolder.uuid = "1"
         cdFolder.folderType = FolderType.inbox.rawValue
         cdFolder.account = cdAccount
-
+        
         let cdMsg = CdMessage.create(messageID: "2", uid: 1, parent: cdFolder)
-
+        
         let cdAttachWithoutSize = CdAttachment.create()
         cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8) as NSData?
         cdAttachWithoutSize.message = cdMsg
         cdAttachWithoutSize.length = 0
-
+        
         Record.saveAndWait()
-
+        
         let expAttachmentsFixed = expectation(description: "expAttachmentsFixed")
         let fixAttachmentsOp = FixAttachmentsOperation()
         fixAttachmentsOp.completionBlock = {
@@ -2334,14 +2301,14 @@ class SimpleOperationsTest: XCTestCase {
         }
         let queue = OperationQueue()
         queue.addOperation(fixAttachmentsOp)
-
+        
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(fixAttachmentsOp.hasErrors())
         })
-
+        
         Record.Context.default.refreshAllObjects()
-
+        
         guard let allAttachments = CdAttachment.all() as? [CdAttachment] else {
             XCTFail()
             return
@@ -2352,12 +2319,12 @@ class SimpleOperationsTest: XCTestCase {
             XCTAssertGreaterThan(cdAttach.length, 0)
         }
     }
-
+    
     // MARK: - HELPER
-
+    
     func fetchMessages(parentName: String) {
         let expMailsPrefetched = expectation(description: "expMailsPrefetched")
-
+        
         let opLogin = LoginImapOperation(parentName: parentName, imapSyncData: imapSyncData)
         let op = FetchMessagesOperation(parentName: parentName, imapSyncData: imapSyncData,
                                         folderName: ImapSync.defaultImapInboxName)
@@ -2365,11 +2332,11 @@ class SimpleOperationsTest: XCTestCase {
         op.completionBlock = {
             expMailsPrefetched.fulfill()
         }
-
+        
         let bgQueue = OperationQueue()
         bgQueue.addOperation(opLogin)
         bgQueue.addOperation(op)
-
+        
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(op.hasErrors())
