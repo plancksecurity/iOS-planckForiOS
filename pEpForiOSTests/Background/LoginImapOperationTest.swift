@@ -71,14 +71,14 @@ class LoginImapOperationTest: OperationTestBase {
         let imapSyncDataYahoo = ImapSyncData(connectInfo: imapConnectInfoYahoo)
 
         let errorContainer = ErrorContainer()
-        let expLoginSucceeds = expectation(description: "LoginSucceeds")
+        let expLoginOperationReturns = expectation(description: "LoginSucceeds")
 
         let imapLogin = LoginImapOperation(
             errorContainer: errorContainer, imapSyncData: imapSyncDataYahoo)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
             XCTAssertNotNil(imapSyncDataYahoo.sync)
-            expLoginSucceeds.fulfill()
+            expLoginOperationReturns.fulfill()
         }
 
         let queue = OperationQueue()

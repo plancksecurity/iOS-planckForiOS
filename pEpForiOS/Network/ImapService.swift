@@ -209,7 +209,164 @@ open class ImapSync: Service {
 }
 
 extension ImapSync: CWServiceClient {
-    //BUFF: never called for Yahoo
+    //BUFF:
+    //Unimplemented optional delegate methods:
+
+    @objc public func folderListFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderCloseFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderSearchFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderCloseCompleted(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderPrefetchFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderRenameCompleted(_ theNotification: Notification?) {
+
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderSearchCompleted(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+    @objc public func requestCancelled(_ theNotification: Notification?) {
+        //BUFF:
+        print("requestCancelled ######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func commandSent(_ theNotification: Notification?) {
+        //BUFF:
+        print("commandSent ######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderRenameFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func messageExpunged(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func messageFetchCompleted(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func messagesCopyFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func commandCompleted(_ theNotification: Notification?) {
+        //BUFF:
+        print("commandCompleted ######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func messagesCopyCompleted(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func badResponse(_ theNotification: Notification?) {
+        //BUFF:
+        print("badResponse ######UNHANDLED!!######")
+        dumpMethodName("authenticationCompleted", notification: theNotification)
+        delegate?.badResponse(self, response: theNotification?.description)
+        //FFUB:
+    }
+
+    @objc public func folderUnsubscribeFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderUnsubscribeCompleted(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderStatusFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("folderStatusFailed ######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderExpungeFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderExpungeCompleted(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public  func folderSubscribeFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderSubscribeCompleted(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderListSubscribedFailed(_ theNotification: Notification?) {
+        //BUFF:
+        print("folderListSubscribedFailed ######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    @objc public func folderListSubscribedCompleted(_ theNotification: Notification?) {
+        //BUFF:
+        print("######UNHANDLED!!######")
+        //FFUB:
+    }
+
+    //FUBB
+
+    //BUFF: never called for Yahoo PROBLEM?!
     @objc public func authenticationCompleted(_ notification: Notification?) {
         dumpMethodName("authenticationCompleted", notification: notification)
         imapState.authenticationCompleted = true
@@ -299,9 +456,15 @@ extension ImapSync: CWServiceClient {
     }
 
     @objc public func service(_ theService: CWService, sentData theData: Data) {
+        //BUFF:
+        print("service1 ######UNHANDLED!!######")
+        //FFUB:
     }
 
     @objc public func service(_ theService: CWService, receivedData theData: Data) {
+        //BUFF:
+        print("service2 ######UNHANDLED!!######")
+        //FFUB:
     }
 
     @objc public func messageChanged(_ notification: Notification?) {
