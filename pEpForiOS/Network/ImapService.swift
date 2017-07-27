@@ -209,6 +209,7 @@ open class ImapSync: Service {
 }
 
 extension ImapSync: CWServiceClient {
+    //BUFF: never called for Yahoo
     @objc public func authenticationCompleted(_ notification: Notification?) {
         dumpMethodName("authenticationCompleted", notification: notification)
         imapState.authenticationCompleted = true
