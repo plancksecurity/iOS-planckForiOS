@@ -15,6 +15,7 @@ import MessageModel
 class SimpleOperationsTest: OperationTestBase {
 
     override func setUp() {
+        super.setUp()
         let cdAccount = TestData().createWorkingCdAccount()
         cdAccount.identity?.isMySelf = true
         TestUtil.skipValidation()
