@@ -36,11 +36,8 @@ class ImapSmtpSyncService {
     let backgrounder: BackgroundTaskProtocol?
 
     let serviceFactory = ServiceFactory()
-    var currentlyRunningService: ServiceExecutionProtocol? {
-        didSet {
-            print("\(#function) \(String(describing: currentlyRunningService))")
-        }
-    }
+    var currentlyRunningService: ServiceExecutionProtocol?
+    var currentlyRunningIdleService: ImapIdleService?
 
     var lastSuccessfullySentMessageIDs = [MessageID]()
 
@@ -122,8 +119,8 @@ class ImapSmtpSyncService {
                 currentlyRunningService = service
                 service.execute() { [weak self] error in
                     self?.workerQueue.async {
-                        self?.handleInitialSyncFinished(error: error)
                         self?.currentlyRunningService = nil
+                        self?.handleInitialSyncFinished(error: error)
                     }
                 }
             }
@@ -159,8 +156,8 @@ class ImapSmtpSyncService {
                 currentlyRunningService = service
                 service.execute() { [weak self] error in
                     self?.workerQueue.async {
-                        self?.handleFlagUploadFinished(error: error)
                         self?.currentlyRunningService = nil
+                        self?.handleFlagUploadFinished(error: error)
                     }
                 }
             }
@@ -199,8 +196,8 @@ class ImapSmtpSyncService {
             currentlyRunningService = sendService
             sendService.execute() { [weak self] error in
                 self?.workerQueue.async {
-                    self?.handleSendRequestFinished(error: error)
                     self?.currentlyRunningService = nil
+                    self?.handleSendRequestFinished(error: error)
                 }
             }
         } else {
@@ -292,16 +289,16 @@ class ImapSmtpSyncService {
         currentlyRunningService = service
         service.execute() { [weak self] error in
             self?.workerQueue.async {
-                self?.handleReSyncFinished(error: error)
                 self?.currentlyRunningService = nil
+                self?.handleReSyncFinished(error: error)
             }
         }
     }
 
     func cancelIdling() {
         if isIdling {
-            currentlyRunningService?.cancel()
-            currentlyRunningService = nil
+            currentlyRunningIdleService?.cancel()
+            currentlyRunningIdleService = nil
         }
     }
 
@@ -320,8 +317,10 @@ class ImapSmtpSyncService {
                 let imapIdleService = ImapIdleService(
                     parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
                 currentlyRunningService = imapIdleService
+                currentlyRunningIdleService = imapIdleService
                 imapIdleService.execute() { [weak self] error in
                     self?.workerQueue.async {
+                        self?.currentlyRunningService = nil
                         self?.handleError(error: error)
                         if error == nil {
                             switch imapIdleService.idleResult {
@@ -335,7 +334,6 @@ class ImapSmtpSyncService {
                                 break
                             }
                         }
-                        self?.currentlyRunningService = nil
                     }
                 }
             } else {
