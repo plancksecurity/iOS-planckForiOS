@@ -23,7 +23,7 @@ open class Service: IEmailService {
 
     var service: CWService!
 
-    //Used if non of the login methods Pnatomime currently supports is supported by the server.
+    /// Used if non of the login methods Pantomime currently supports is supported by the server.
     private let fallBackAuthMethod = AuthMethod.Plain
 
     public init(connectInfo: EmailConnectInfo) {
