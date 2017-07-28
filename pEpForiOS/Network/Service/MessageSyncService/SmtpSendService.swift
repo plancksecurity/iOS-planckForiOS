@@ -14,17 +14,15 @@ protocol SmtpSendServiceDelegate: class {
     func sent(messageIDs: [MessageID])
 }
 
-class SmtpSendService: AtomicImapService {
+class SmtpSendService: BackgroundOperationImapService {
     weak var delegate: SmtpSendServiceDelegate?
 
-    let imapSyncData: ImapSyncData
     let smtpSendData: SmtpSendData
 
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
-        self.imapSyncData = imapSyncData
         self.smtpSendData = smtpSendData
-        super.init(parentName: parentName, backgrounder: backgrounder)
+        super.init(parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
     }
 
     func haveMailsToEncrypt(smtpSendData: SmtpSendData,
@@ -52,6 +50,11 @@ class SmtpSendService: AtomicImapService {
 
         backgroundQueue.addOperations(
             [smtpLoginOp, sendOp, imapLoginOp, appendOp], waitUntilFinished: false)
+    }
+
+    override func cancel() {
+        super.cancel()
+        smtpSendData.smtp?.delegate = nil
     }
 }
 

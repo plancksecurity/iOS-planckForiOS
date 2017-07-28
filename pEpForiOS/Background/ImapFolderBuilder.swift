@@ -44,9 +44,4 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
             }
         }
     }
-
-    deinit {
-        let logID = name ?? "<unknown>"
-        Log.info(component: #function, content: logID)
-    }
 }

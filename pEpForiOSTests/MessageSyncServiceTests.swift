@@ -162,7 +162,7 @@ class MessageSyncServiceTests: XCTestCase {
             ms.requestSend(message: msg)
         }
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 
@@ -262,6 +262,7 @@ class MessageSyncServiceTests: XCTestCase {
                       messageSyncService: MessageSyncService? = nil) -> MessageSyncService {
         let ms = messageSyncService ?? MessageSyncService(
             sleepTimeInSeconds: 2, parentName: parentName, backgrounder: nil, mySelfer: nil)
+        self.messageSyncService = ms
         let expReachedIdle = expectation(description: "expReachedIdle")
         expReachedIdle.expectedFulfillmentCount = UInt(1)
         let stateDelegate = TestStateDelegate(expReachedIdling: expReachedIdle)
@@ -270,7 +271,7 @@ class MessageSyncServiceTests: XCTestCase {
         if messageSyncService == nil {
             ms.start(account: cdAccount.account())
         }
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
         ms.stateDelegate = nil
@@ -309,7 +310,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.syncDelegate = syncDelegate
         ms.start(account: cdAccount.account())
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 
@@ -328,7 +329,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.errorDelegate = errorDelegate
         ms.start(account: cdAccount.account())
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 
@@ -346,7 +347,7 @@ class MessageSyncServiceTests: XCTestCase {
         let expVerified = expectation(description: "expVerified")
         let verificationDelegate = TestAccountVerificationDelegate(expAccountVerified: expVerified)
         ms.requestVerification(account: cdAccount.account(), delegate: verificationDelegate)
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
         guard let result = verificationDelegate.verificationResult else {
@@ -369,7 +370,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
-    func notestUploadFlags() {
+    func testUploadFlags() {
         let context = Record.Context.default
         let ms = runOrContinueUntilIdle(parentName: #function)
 
@@ -415,7 +416,6 @@ class MessageSyncServiceTests: XCTestCase {
             XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
             XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
         }
-        sleep(3)
     }
 
     func notestIdle() {

@@ -11,6 +11,7 @@ import Foundation
 typealias ServiceFinishedHandler = (_ error: Error?) -> ()
 
 protocol ServiceExecutionProtocol {
+    func cancel()
     func execute(handler: ServiceFinishedHandler?)
 }
 

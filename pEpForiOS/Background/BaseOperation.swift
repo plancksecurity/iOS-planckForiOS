@@ -54,10 +54,6 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
         Log.info(component: comp, content: "\(#function)")
     }
 
-    deinit {
-        Log.info(component: comp, content: "\(#function)")
-    }
-
     public func shouldRun() -> Bool {
         if isCancelled || hasErrors() {
             return false

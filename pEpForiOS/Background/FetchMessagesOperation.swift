@@ -107,13 +107,6 @@ open class FetchMessagesOperation: ImapSyncOperation {
         syncDelegate = nil
         super.waitForFinished()
     }
-
-    override func markAsFinished() {
-        if backgroundQueue.operationCount > 0 {
-            print("not good")
-        }
-        super.markAsFinished()
-    }
 }
 
 class FetchMessagesSyncDelegate: DefaultImapSyncDelegate {

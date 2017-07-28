@@ -35,6 +35,11 @@ class ImapIdleService: AtomicImapService {
 }
 
 extension ImapIdleService: ServiceExecutionProtocol {
+    func cancel() {
+        imapSyncData.sync?.delegate = nil
+        self.handler = nil
+    }
+
     func execute(handler: ServiceFinishedHandler?) {
         self.handler = handler
         imapSyncData.sync?.delegate = syncDelegate
