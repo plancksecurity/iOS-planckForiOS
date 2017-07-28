@@ -14,18 +14,15 @@ protocol FetchMessagesServiceDelegate: class {
     func didFetch(message: Message)
 }
 
-class FetchMessagesService: AtomicImapService {
+class FetchMessagesService: BackgroundOperationImapService {
     weak var delegate: FetchMessagesServiceDelegate?
-
-    let imapSyncData: ImapSyncData
     let folderName: String
 
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
                   imapSyncData: ImapSyncData,
                   folderName: String = ImapSync.defaultImapInboxName) {
-        self.imapSyncData = imapSyncData
         self.folderName = folderName
-        super.init(parentName: parentName, backgrounder: backgrounder)
+        super.init(parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
     }
 }
 
@@ -44,9 +41,11 @@ extension FetchMessagesService: ServiceExecutionProtocol {
         fetchOp.addDependency(loginOp)
         fetchOp.completionBlock = { [weak self] in
             fetchOp.completionBlock = nil
+            self?.executingOperations.removeAll()
             self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }
-        backgroundQueue.addOperations([loginOp, fetchOp], waitUntilFinished: false)
+        executingOperations.append(contentsOf: [loginOp, fetchOp])
+        backgroundQueue.addOperations(executingOperations, waitUntilFinished: false)
     }
 }

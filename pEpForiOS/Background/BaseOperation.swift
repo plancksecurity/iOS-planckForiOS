@@ -52,10 +52,12 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
         }
         self.name = comp
         Log.info(component: comp, content: "\(#function)")
+
+        ReferenceCounter.inc(obj: self)
     }
 
     deinit {
-        Log.info(component: comp, content: "\(#function)")
+        ReferenceCounter.dec(obj: self)
     }
 
     public func shouldRun() -> Bool {

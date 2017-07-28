@@ -71,17 +71,13 @@ open class ImapSyncData: ImapConnectionManagerProtocol {
         return sync?.supportsIdle ?? false
     }
 
-    static let refCounter = ReferenceCounter()
-
     public init(connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
-        ImapSync.refCounter.inc()
-        Log.shared.info(component: #function, content: "ref count \(ImapSync.refCounter.refCount)")
+        ReferenceCounter.inc(obj: self)
     }
 
     deinit {
-        ImapSync.refCounter.dec()
-        Log.shared.info(component: #function, content: "ref count \(ImapSync.refCounter.refCount)")
+        ReferenceCounter.dec(obj: self)
     }
 
     public func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync? {

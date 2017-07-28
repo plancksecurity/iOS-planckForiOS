@@ -131,6 +131,9 @@ class MessageSyncServiceTests: XCTestCase {
         messageSyncService?.cancel()
         messageSyncService = nil
         persistentSetup = nil
+
+        ReferenceCounter.logOutstanding()
+        sleep(3000)
     }
 
     func send(messageSyncService ms: MessageSyncService, messages: [Message],
@@ -415,7 +418,6 @@ class MessageSyncServiceTests: XCTestCase {
             XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
             XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
         }
-        sleep(3)
     }
 
     func notestIdle() {

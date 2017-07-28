@@ -11,16 +11,14 @@ import CoreData
 
 import MessageModel
 
-class SyncExistingMessagesService: AtomicImapService {
-    let imapSyncData: ImapSyncData
+class SyncExistingMessagesService: BackgroundOperationImapService {
     let folderName: String
 
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData,
          folderName: String = ImapSync.defaultImapInboxName) {
-        self.imapSyncData = imapSyncData
         self.folderName = folderName
-        super.init(parentName: parentName, backgrounder: backgrounder)
+        super.init(parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
     }
 
     func executeInternal(
@@ -41,11 +39,13 @@ class SyncExistingMessagesService: AtomicImapService {
             syncOp.addDependency(loginOp)
             syncOp.completionBlock = {  [weak self] in
                 syncOp.completionBlock = nil
+                self?.executingOperations.removeAll()
                 self?.backgrounder?.endBackgroundTask(taskID)
                 handler?(self?.error)
             }
 
-            backgroundQueue.addOperations([loginOp, syncOp], waitUntilFinished: false)
+            executingOperations.append(contentsOf: [loginOp, syncOp])
+            backgroundQueue.addOperations(executingOperations, waitUntilFinished: false)
         } catch let err {
             handle(error: err, taskID: taskID, handler: handler)
         }

@@ -17,16 +17,8 @@ protocol FetchFoldersServiceDelegate: class {
     func didCreate(folder: Folder)
 }
 
-class FetchFoldersService: AtomicImapService {
+class FetchFoldersService: BackgroundOperationImapService {
     weak var delegate: FetchFoldersServiceDelegate?
-
-    let imapSyncData: ImapSyncData
-
-    init(parentName: String?, backgrounder: BackgroundTaskProtocol? = nil,
-         imapSyncData: ImapSyncData) {
-        self.imapSyncData = imapSyncData
-        super.init(parentName: parentName, backgrounder: backgrounder)
-    }
 }
 
 extension FetchFoldersService: FetchFoldersOperationOperationDelegate {
@@ -47,9 +39,11 @@ extension FetchFoldersService: ServiceExecutionProtocol {
         fetchFoldersOp.addDependency(imapLoginOp)
         fetchFoldersOp.completionBlock = { [weak self] in
             fetchFoldersOp.completionBlock = nil
+            self?.executingOperations.removeAll()
             self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }
-        backgroundQueue.addOperations([imapLoginOp, fetchFoldersOp], waitUntilFinished: false)
+        executingOperations.append(contentsOf: [imapLoginOp, fetchFoldersOp])
+        backgroundQueue.addOperations(executingOperations, waitUntilFinished: false)
     }
 }

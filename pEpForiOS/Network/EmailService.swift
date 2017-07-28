@@ -23,11 +23,6 @@ open class Service: IEmailService {
 
     var service: CWService!
 
-    /**
-     For proving memory leaks.
-     */
-    static open var refCounter = ReferenceCounter.init()
-
     public init(connectInfo: EmailConnectInfo) {
         CWLogger.setLogger(Log.shared)
 
@@ -35,12 +30,12 @@ open class Service: IEmailService {
 
         service = self.createService()
         service.setDelegate(self)
-        Log.shared.info(component: comp, content: "refCount \(Service.refCounter.refCount)")
+        ReferenceCounter.inc(obj: self)
     }
 
     deinit {
         service.close()
-        Log.shared.info(component: comp, content: "refCount \(Service.refCounter.refCount)")
+        ReferenceCounter.dec(obj: self)
     }
 
     func createService() -> CWService {

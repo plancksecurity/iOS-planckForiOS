@@ -37,6 +37,12 @@ class ServiceChainExecutor {
 }
 
 extension ServiceChainExecutor: ServiceExecutionProtocol {
+    func cancel() {
+        for service in services {
+            service.cancel()
+        }
+    }
+
     func execute(handler: ServiceFinishedHandler? = nil) {
         if let service = services.first {
             let _ = services.remove(at: 0)

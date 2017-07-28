@@ -125,6 +125,7 @@ class ImapSmtpSyncService {
     public func enqueueForFlagChange(message: Message) {
         messagesEnqueuedForFlagChange.insert(message)
         if isIdling {
+            cancelIdling()
             let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
             var service: ServiceExecutionProtocol = serviceFactory.syncFlagsToServer(
                 parentName: parentName, backgrounder: backgrounder,
@@ -157,6 +158,7 @@ class ImapSmtpSyncService {
 
     func sendMessages()  {
         if readyForSend {
+            cancelIdling()
             sendRequested = false
             state = .sending
             let sendService = SmtpSendService(
@@ -218,10 +220,7 @@ class ImapSmtpSyncService {
 
     func handleFlagUploadFinished(error: Error?) {
         handleError(error: error)
-        // TODO
-        notifyAboutSentMessages()
         if error == nil {
-            delegate?.didSync(service: self)
             jumpIntoCorrectIdleState()
         }
         checkNextStep()
@@ -251,6 +250,7 @@ class ImapSmtpSyncService {
     }
 
     func reSync() {
+        cancelIdling()
         var service = serviceFactory.reSync(
             parentName: parentName, backgrounder: backgrounder,
             imapSyncData: imapSyncData, folderName: currentFolderName)
@@ -259,6 +259,13 @@ class ImapSmtpSyncService {
         service.execute() { [weak self] error in
             self?.handleReSyncFinished(error: error)
             self?.currentlyRunningService = nil
+        }
+    }
+
+    func cancelIdling() {
+        if isIdling {
+            currentlyRunningService?.cancel()
+            currentlyRunningService = nil
         }
     }
 
