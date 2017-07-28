@@ -10,6 +10,7 @@ import Foundation
 
 class ServiceChainExecutor {
     var services = [ServiceExecutionProtocol]()
+    var currentlyExecutingService: ServiceExecutionProtocol?
 
     init(services: [ServiceExecutionProtocol]) {
         self.services = services
@@ -17,6 +18,11 @@ class ServiceChainExecutor {
 
     convenience init() {
         self.init(services: [])
+        ReferenceCounter.inc(obj: self)
+    }
+
+    deinit {
+        ReferenceCounter.dec(obj: self)
     }
 
     func add(service: ServiceExecutionProtocol) {
@@ -32,25 +38,24 @@ class ServiceChainExecutor {
 
 extension ServiceChainExecutor: ServiceExecutionProtocol {
     func execute(handler: ServiceFinishedHandler? = nil) {
-        execute(services: services, handler: handler)
-    }
-
-    func execute(services: [ServiceExecutionProtocol], handler: ServiceFinishedHandler?) {
         if let service = services.first {
-            let restOfServices = services.dropFirst()
+            let _ = services.remove(at: 0)
             Log.shared.info(component: #function, content: "executing \(service)")
+            currentlyExecutingService = service
             service.execute() { [weak self] error in
                 if let err = error {
+                    let desc = String(describing: self?.currentlyExecutingService)
                     Log.shared.error(
                         component: #function,
-                        errorString: "Error for \(service): ",
+                        errorString: "Error for \(desc): ",
                         error: err)
                     handler?(err)
                 } else {
-                    self?.execute(services: Array(restOfServices), handler: handler)
+                    self?.execute(handler: handler)
                 }
             }
         } else {
+            currentlyExecutingService = nil
             handler?(nil)
         }
     }
