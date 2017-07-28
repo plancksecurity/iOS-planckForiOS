@@ -31,23 +31,14 @@ class LoginImapOperationTest: OperationTestBase {
     }
 
     func testLoginWorkingAccount() {
-        //BUFF: change to setup account
-        let account = TestData().createWorkingCdAccount()
-        account.identity?.isMySelf = true
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-
-        let imapConnectInfoYahoo = account.imapConnectInfo!
-        let imapSyncDataYahoo = ImapSyncData(connectInfo: imapConnectInfoYahoo)
-
         let errorContainer = ErrorContainer()
         let expLoginSucceeds = expectation(description: "LoginSucceeds")
 
         let imapLogin = LoginImapOperation(
-            errorContainer: errorContainer, imapSyncData: imapSyncDataYahoo)
+            errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
-            XCTAssertNotNil(imapSyncDataYahoo.sync)
+            XCTAssertNotNil(self.imapSyncData.sync)
             expLoginSucceeds.fulfill()
         }
 
