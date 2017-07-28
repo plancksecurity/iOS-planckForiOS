@@ -87,23 +87,17 @@ class ImapSmtpSyncService {
         }
     }
 
-    static let refCounter = ReferenceCounter()
-
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
         self.parentName = parentName
         self.backgrounder = backgrounder
         self.imapSyncData = imapSyncData
         self.smtpSendData = smtpSendData
-        ImapSmtpSyncService.refCounter.inc()
-        Log.shared.info(component: #function,
-                        content: "ref count \(ImapSmtpSyncService.refCounter.refCount)")
+        ReferenceCounter.inc(obj: self)
     }
 
     deinit {
-        ImapSmtpSyncService.refCounter.dec()
-        Log.shared.info(component: #function,
-                        content: "ref count \(ImapSmtpSyncService.refCounter.refCount)")
+        ReferenceCounter.dec(obj: self)
     }
 
     public func start() {
@@ -117,6 +111,7 @@ class ImapSmtpSyncService {
             currentlyRunningService = service
             service.execute() { [weak self] error in
                 self?.handleInitialSyncFinished(error: error)
+                self?.currentlyRunningService = nil
             }
         }
     }
@@ -140,6 +135,7 @@ class ImapSmtpSyncService {
             currentlyRunningService = service
             service.execute() { [weak self] error in
                 self?.handleFlagUploadFinished(error: error)
+                self?.currentlyRunningService = nil
             }
         }
     }
@@ -169,6 +165,7 @@ class ImapSmtpSyncService {
             currentlyRunningService = sendService
             sendService.execute() { [weak self] error in
                 self?.handleSendRequestFinished(error: error)
+                self?.currentlyRunningService = nil
             }
         } else {
             if state == .initial {
@@ -261,6 +258,7 @@ class ImapSmtpSyncService {
         currentlyRunningService = service
         service.execute() { [weak self] error in
             self?.handleReSyncFinished(error: error)
+            self?.currentlyRunningService = nil
         }
     }
 
@@ -278,6 +276,7 @@ class ImapSmtpSyncService {
                 state = .idling
                 let imapIdleService = ImapIdleService(
                     parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
+                currentlyRunningService = imapIdleService
                 imapIdleService.execute() { [weak self] error in
                     self?.handleError(error: error)
                     if error == nil {
@@ -292,6 +291,7 @@ class ImapSmtpSyncService {
                             break
                         }
                     }
+                    self?.currentlyRunningService = nil
                 }
             } else {
                 state = .waitingForNextSync
