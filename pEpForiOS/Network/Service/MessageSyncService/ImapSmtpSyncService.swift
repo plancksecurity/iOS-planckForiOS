@@ -91,6 +91,9 @@ class ImapSmtpSyncService {
         }
     }
 
+    let workerQueue = DispatchQueue(
+        label: "MessageSyncService", qos: .utility, target: nil)
+
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
         self.parentName = parentName
@@ -105,50 +108,74 @@ class ImapSmtpSyncService {
     }
 
     public func start() {
-        if state == .initial {
-            state = .initialSync
-            sendRequested = false
-            let service = serviceFactory.initialSync(
-                parentName: parentName, backgrounder: backgrounder,
-                imapSyncData: imapSyncData, smtpSendData: smtpSendData,
-                smtpSendServiceDelegate: self)
-            currentlyRunningService = service
-            service.execute() { [weak self] error in
-                self?.handleInitialSyncFinished(error: error)
-                self?.currentlyRunningService = nil
+        workerQueue.async {
+            inner()
+        }
+        func inner() {
+            if state == .initial {
+                state = .initialSync
+                sendRequested = false
+                let service = serviceFactory.initialSync(
+                    parentName: parentName, backgrounder: backgrounder,
+                    imapSyncData: imapSyncData, smtpSendData: smtpSendData,
+                    smtpSendServiceDelegate: self)
+                currentlyRunningService = service
+                service.execute() { [weak self] error in
+                    self?.workerQueue.async {
+                        self?.handleInitialSyncFinished(error: error)
+                        self?.currentlyRunningService = nil
+                    }
+                }
             }
         }
     }
 
     public func enqueueForSending(message: Message) {
-        let key = message.messageID
-        messagesEnqueuedForSend[key] = message
-        sendMessages()
+        workerQueue.async {
+            inner()
+        }
+        func inner() {
+            let key = message.messageID
+            messagesEnqueuedForSend[key] = message
+            sendMessages()
+        }
     }
 
     public func enqueueForFlagChange(message: Message) {
-        messagesEnqueuedForFlagChange.insert(message)
-        if isIdling {
-            cancelIdling()
-            let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
-            var service: ServiceExecutionProtocol = serviceFactory.syncFlagsToServer(
-                parentName: parentName, backgrounder: backgrounder,
-                imapSyncData: imapSyncData, folderName: folderName)
+        workerQueue.async {
+            inner()
+        }
+        func inner() {
+            messagesEnqueuedForFlagChange.insert(message)
+            if isIdling {
+                cancelIdling()
+                let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
+                var service: ServiceExecutionProtocol = serviceFactory.syncFlagsToServer(
+                    parentName: parentName, backgrounder: backgrounder,
+                    imapSyncData: imapSyncData, folderName: folderName)
 
-            service = decoratedWithIdleExit(service: service)
+                service = decoratedWithIdleExit(service: service)
 
-            currentlyRunningService = service
-            service.execute() { [weak self] error in
-                self?.handleFlagUploadFinished(error: error)
-                self?.currentlyRunningService = nil
+                currentlyRunningService = service
+                service.execute() { [weak self] error in
+                    self?.workerQueue.async {
+                        self?.handleFlagUploadFinished(error: error)
+                        self?.currentlyRunningService = nil
+                    }
+                }
             }
         }
     }
 
     public func cancel() {
-        currentlyRunningService?.cancel()
-        imapSyncData.sync?.close()
-        smtpSendData.smtp?.close()
+        workerQueue.async {
+            inner()
+        }
+        func inner() {
+            currentlyRunningService?.cancel()
+            imapSyncData.sync?.close()
+            smtpSendData.smtp?.close()
+        }
     }
 
     func decoratedWithIdleExit(service: ServiceExecutionProtocol) -> ServiceExecutionProtocol {
@@ -171,8 +198,10 @@ class ImapSmtpSyncService {
                 imapSyncData: imapSyncData, smtpSendData: smtpSendData)
             currentlyRunningService = sendService
             sendService.execute() { [weak self] error in
-                self?.handleSendRequestFinished(error: error)
-                self?.currentlyRunningService = nil
+                self?.workerQueue.async {
+                    self?.handleSendRequestFinished(error: error)
+                    self?.currentlyRunningService = nil
+                }
             }
         } else {
             if state == .initial {
@@ -262,8 +291,10 @@ class ImapSmtpSyncService {
         service = decoratedWithIdleExit(service: service)
         currentlyRunningService = service
         service.execute() { [weak self] error in
-            self?.handleReSyncFinished(error: error)
-            self?.currentlyRunningService = nil
+            self?.workerQueue.async {
+                self?.handleReSyncFinished(error: error)
+                self?.currentlyRunningService = nil
+            }
         }
     }
 
@@ -290,20 +321,22 @@ class ImapSmtpSyncService {
                     parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
                 currentlyRunningService = imapIdleService
                 imapIdleService.execute() { [weak self] error in
-                    self?.handleError(error: error)
-                    if error == nil {
-                        switch imapIdleService.idleResult {
-                        case .newMessages:
-                            self?.reSyncNecessary = true
-                            self?.checkNextStep()
-                            break
-                        case .error:
-                            break
-                        case .nothing:
-                            break
+                    self?.workerQueue.async {
+                        self?.handleError(error: error)
+                        if error == nil {
+                            switch imapIdleService.idleResult {
+                            case .newMessages:
+                                self?.reSyncNecessary = true
+                                self?.checkNextStep()
+                                break
+                            case .error:
+                                break
+                            case .nothing:
+                                break
+                            }
                         }
+                        self?.currentlyRunningService = nil
                     }
-                    self?.currentlyRunningService = nil
                 }
             } else {
                 state = .waitingForNextSync
