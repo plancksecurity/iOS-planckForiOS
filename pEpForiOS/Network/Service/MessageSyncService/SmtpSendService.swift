@@ -43,15 +43,13 @@ class SmtpSendService: BackgroundOperationImapService {
         appendOp.addDependency(imapLoginOp)
         appendOp.completionBlock = { [weak self] in
             appendOp.completionBlock = nil
-            self?.executingOperations.removeAll()
             self?.delegate?.sent(messageIDs: appendOp.successfullySentMessageIDs)
             handler?(self?.error)
             self?.backgrounder?.endBackgroundTask(bgID)
         }
 
-        executingOperations.append(contentsOf: [smtpLoginOp, sendOp, imapLoginOp, appendOp])
         backgroundQueue.addOperations(
-            executingOperations, waitUntilFinished: false)
+            [smtpLoginOp, sendOp, imapLoginOp, appendOp], waitUntilFinished: false)
     }
 
     override func cancel() {

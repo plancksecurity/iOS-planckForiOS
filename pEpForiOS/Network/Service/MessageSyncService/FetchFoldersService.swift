@@ -39,11 +39,9 @@ extension FetchFoldersService: ServiceExecutionProtocol {
         fetchFoldersOp.addDependency(imapLoginOp)
         fetchFoldersOp.completionBlock = { [weak self] in
             fetchFoldersOp.completionBlock = nil
-            self?.executingOperations.removeAll()
             self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }
-        executingOperations.append(contentsOf: [imapLoginOp, fetchFoldersOp])
-        backgroundQueue.addOperations(executingOperations, waitUntilFinished: false)
+        backgroundQueue.addOperations([imapLoginOp, fetchFoldersOp], waitUntilFinished: false)
     }
 }

@@ -39,13 +39,11 @@ class SyncFlagsToServerService: BackgroundOperationImapService {
             syncOp.addDependency(loginOp)
             syncOp.completionBlock = {  [weak self] in
                 syncOp.completionBlock = nil
-                self?.executingOperations.removeAll()
                 self?.backgrounder?.endBackgroundTask(taskID)
                 handler?(self?.error)
             }
 
-            executingOperations.append(contentsOf: [loginOp, syncOp])
-            backgroundQueue.addOperations(executingOperations, waitUntilFinished: false)
+            backgroundQueue.addOperations([loginOp, syncOp], waitUntilFinished: false)
         } catch let err {
             handle(error: err, taskID: taskID, handler: handler)
         }

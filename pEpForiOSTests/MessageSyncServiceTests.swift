@@ -265,6 +265,7 @@ class MessageSyncServiceTests: XCTestCase {
                       messageSyncService: MessageSyncService? = nil) -> MessageSyncService {
         let ms = messageSyncService ?? MessageSyncService(
             sleepTimeInSeconds: 2, parentName: parentName, backgrounder: nil, mySelfer: nil)
+        self.messageSyncService = ms
         let expReachedIdle = expectation(description: "expReachedIdle")
         expReachedIdle.expectedFulfillmentCount = UInt(1)
         let stateDelegate = TestStateDelegate(expReachedIdling: expReachedIdle)

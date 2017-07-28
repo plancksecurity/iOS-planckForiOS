@@ -41,11 +41,9 @@ extension FetchMessagesService: ServiceExecutionProtocol {
         fetchOp.addDependency(loginOp)
         fetchOp.completionBlock = { [weak self] in
             fetchOp.completionBlock = nil
-            self?.executingOperations.removeAll()
             self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }
-        executingOperations.append(contentsOf: [loginOp, fetchOp])
-        backgroundQueue.addOperations(executingOperations, waitUntilFinished: false)
+        backgroundQueue.addOperations([loginOp, fetchOp], waitUntilFinished: false)
     }
 }

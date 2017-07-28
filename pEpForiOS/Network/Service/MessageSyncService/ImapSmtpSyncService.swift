@@ -36,7 +36,11 @@ class ImapSmtpSyncService {
     let backgrounder: BackgroundTaskProtocol?
 
     let serviceFactory = ServiceFactory()
-    var currentlyRunningService: ServiceExecutionProtocol?
+    var currentlyRunningService: ServiceExecutionProtocol? {
+        didSet {
+            print("\(#function) \(String(describing: currentlyRunningService))")
+        }
+    }
 
     var lastSuccessfullySentMessageIDs = [MessageID]()
 
@@ -142,6 +146,7 @@ class ImapSmtpSyncService {
     }
 
     public func cancel() {
+        currentlyRunningService?.cancel()
         imapSyncData.sync?.close()
         smtpSendData.smtp?.close()
     }

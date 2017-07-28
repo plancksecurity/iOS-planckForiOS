@@ -9,8 +9,6 @@
 import Foundation
 
 class BackgroundOperationImapService: AtomicImapService {
-    var executingOperations = [Operation]()
-
     let imapSyncData: ImapSyncData
 
     init(parentName: String?, backgrounder: BackgroundTaskProtocol? = nil,
@@ -20,10 +18,6 @@ class BackgroundOperationImapService: AtomicImapService {
     }
 
     func cancel() {
-        for op in executingOperations {
-            op.cancel()
-        }
-        executingOperations.removeAll()
-        imapSyncData.sync?.delegate = nil
+        backgroundQueue.cancelAllOperations()
     }
 }
