@@ -28,9 +28,6 @@ class ImapIdleService: AtomicImapService {
         syncDelegate = ImapIdleSyncDelegate(errorHandler: self)
     }
 
-    deinit {
-    }
-
     func handleNewMessages() {
         idleResult = .newMessages
         handler?(nil)
@@ -40,6 +37,7 @@ class ImapIdleService: AtomicImapService {
 extension ImapIdleService: ServiceExecutionProtocol {
     func cancel() {
         imapSyncData.sync?.delegate = nil
+        self.handler = nil
     }
 
     func execute(handler: ServiceFinishedHandler?) {
