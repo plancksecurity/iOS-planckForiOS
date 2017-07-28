@@ -87,12 +87,23 @@ class ImapSmtpSyncService {
         }
     }
 
+    static let refCounter = ReferenceCounter()
+
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
         self.parentName = parentName
         self.backgrounder = backgrounder
         self.imapSyncData = imapSyncData
         self.smtpSendData = smtpSendData
+        ImapSmtpSyncService.refCounter.inc()
+        Log.shared.info(component: #function,
+                        content: "ref count \(ImapSmtpSyncService.refCounter.refCount)")
+    }
+
+    deinit {
+        ImapSmtpSyncService.refCounter.dec()
+        Log.shared.info(component: #function,
+                        content: "ref count \(ImapSmtpSyncService.refCounter.refCount)")
     }
 
     public func start() {

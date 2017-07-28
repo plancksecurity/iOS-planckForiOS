@@ -369,7 +369,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
-    func notestUploadFlags() {
+    func testUploadFlags() {
         let context = Record.Context.default
         let ms = runOrContinueUntilIdle(parentName: #function)
 
