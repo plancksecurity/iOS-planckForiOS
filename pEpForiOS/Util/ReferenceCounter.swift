@@ -10,19 +10,55 @@
  Primitive class to verify memory leaks.
  */
 open class ReferenceCounter {
-    open fileprivate(set) var refCount: Int = 0
+    struct Entry {
+        let index: UnsafeRawPointer
+        let description: String
+        var count: Int
 
-    public init() {}
+        init(obj: AnyObject) {
+            description = String(describing: obj)
+            index = unsafeBitCast(obj, to: UnsafeRawPointer.self)
+            count = 0
+        }
 
-    public init(refCount: Int) {
-        self.refCount = refCount
+        mutating func inc() {
+            count += 1
+        }
+
+        mutating func dec() {
+            count -= 1
+        }
     }
 
-    open func inc() {
-        refCount = refCount + 1
+    static var table = [UnsafeRawPointer: Entry]()
+
+    static func fromTable(obj: AnyObject) -> Entry {
+        let entry = Entry(obj: obj)
+        let actual = table[entry.index] ?? entry
+        return actual
     }
 
-    open func dec() {
-        refCount = refCount - 1
+    static func toTable(entry: Entry) {
+        table[entry.index] = entry
+    }
+
+    open static func inc(obj: AnyObject) {
+        var entry = fromTable(obj: obj)
+        entry.inc()
+        toTable(entry: entry)
+    }
+
+    open static func dec(obj: AnyObject) {
+        var entry = fromTable(obj: obj)
+        entry.dec()
+        toTable(entry: entry)
+    }
+
+    open static func logOutstanding() {
+        for (_, entry) in table {
+            if entry.count != 0 {
+                Log.shared.warn(component: #function, content: "\(entry)")
+            }
+        }
     }
 }
