@@ -155,6 +155,11 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
 }
 
 extension EncryptAndSendOperation: SmtpSendDelegate {
+    public func badResponse(_ smtp: SmtpSend, response: String?) {
+        let error = Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.badResponse)
+        handleError(error, message: "badResponse")
+    }
+
     public func messageSent(_ smtp: SmtpSend, theNotification: Notification?) {
         handleNextMessage()
     }

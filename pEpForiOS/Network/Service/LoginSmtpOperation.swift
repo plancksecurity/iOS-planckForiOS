@@ -66,6 +66,11 @@ extension LoginSmtpOperation: SmtpSendDelegate {
         markAsFinished()
     }
 
+    public func badResponse(_ smtp: SmtpSend, response: String?) {
+        addError(SmtpSendError.badResponse(#function))
+        markAsFinished()
+    }
+
     public func requestCancelled(_ smtp: SmtpSend, theNotification: Notification?) {}
     public func serviceInitialized(_ smtp: SmtpSend, theNotification: Notification?) {}
     public func serviceReconnected(_ smtp: SmtpSend, theNotification: Notification?) {}
