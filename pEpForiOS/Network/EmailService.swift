@@ -30,12 +30,10 @@ open class Service: IEmailService {
 
         service = self.createService()
         service.setDelegate(self)
-        ReferenceCounter.inc(obj: self)
     }
 
     deinit {
         service.close()
-        ReferenceCounter.dec(obj: self)
     }
 
     func createService() -> CWService {

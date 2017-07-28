@@ -18,11 +18,6 @@ class ServiceChainExecutor {
 
     convenience init() {
         self.init(services: [])
-        ReferenceCounter.inc(obj: self)
-    }
-
-    deinit {
-        ReferenceCounter.dec(obj: self)
     }
 
     func add(service: ServiceExecutionProtocol) {

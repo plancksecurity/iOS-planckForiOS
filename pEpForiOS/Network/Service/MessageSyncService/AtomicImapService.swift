@@ -24,11 +24,6 @@ class AtomicImapService: ServiceErrorProtocol {
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil) {
         self.parentName = parentName
         self.backgrounder = backgrounder
-        ReferenceCounter.inc(obj: self)
-    }
-
-    deinit {
-        ReferenceCounter.dec(obj: self)
     }
 
     func handle(error: Error, taskID: BackgroundTaskID?, handler: ServiceFinishedHandler?) {

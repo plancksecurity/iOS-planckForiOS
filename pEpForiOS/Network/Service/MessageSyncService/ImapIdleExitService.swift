@@ -18,10 +18,6 @@ class ImapIdleExitService: AtomicImapService {
         syncDelegate = ImapIdleExitServiceDelegate(errorHandler: self)
     }
 
-    deinit {
-
-    }
-
     func handleFinishedOk() {
         handler?(nil)
     }

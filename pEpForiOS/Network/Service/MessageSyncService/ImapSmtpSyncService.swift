@@ -97,11 +97,6 @@ class ImapSmtpSyncService {
         self.backgrounder = backgrounder
         self.imapSyncData = imapSyncData
         self.smtpSendData = smtpSendData
-        ReferenceCounter.inc(obj: self)
-    }
-
-    deinit {
-        ReferenceCounter.dec(obj: self)
     }
 
     public func start() {

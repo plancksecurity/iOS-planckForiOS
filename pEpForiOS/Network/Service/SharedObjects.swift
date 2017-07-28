@@ -73,11 +73,6 @@ open class ImapSyncData: ImapConnectionManagerProtocol {
 
     public init(connectInfo: EmailConnectInfo) {
         self.connectInfo = connectInfo
-        ReferenceCounter.inc(obj: self)
-    }
-
-    deinit {
-        ReferenceCounter.dec(obj: self)
     }
 
     public func imapConnection(connectInfo: EmailConnectInfo) -> ImapSync? {
