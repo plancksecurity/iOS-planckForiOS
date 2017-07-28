@@ -209,6 +209,12 @@ open class ImapSync: Service {
 }
 
 extension ImapSync: CWServiceClient {
+    @objc public func badResponse(_ theNotification: Notification?) {
+        dumpMethodName(#function, notification: theNotification)
+        let errorMsg = theNotification?.parseErrorMessageBadResponse()
+        delegate?.badResponse(self, response: errorMsg)
+    }
+
     @objc public func authenticationCompleted(_ notification: Notification?) {
         dumpMethodName("authenticationCompleted", notification: notification)
         imapState.authenticationCompleted = true
@@ -295,12 +301,6 @@ extension ImapSync: CWServiceClient {
 
     @objc public func serviceReconnected(_ theNotification: Notification?) {
         dumpMethodName("serviceReconnected", notification: theNotification)
-    }
-
-    @objc public func service(_ theService: CWService, sentData theData: Data) {
-    }
-
-    @objc public func service(_ theService: CWService, receivedData theData: Data) {
     }
 
     @objc public func messageChanged(_ notification: Notification?) {

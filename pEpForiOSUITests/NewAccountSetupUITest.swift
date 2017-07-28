@@ -191,4 +191,38 @@ class NewAccountSetupUITest: XCTestCase {
         
         waitForever()
     }
+
+    //Mark: DEBUG ONLY HELPER
+    /*
+     Helpers for manual debugging.
+     Keep them commented in commits as a working accound must exist already.
+     */
+
+
+    //Adds Yahoo account
+    //Note: A working accound must exist already.
+    func testAddYahooAccount() {
+        openAddAccountManualConfiguration()
+        let account = UITestData.workingYahooAccount
+        manualNewAccountSetup(account)
+        waitForever()
+    }
+
+    //Opens the "add account" setting in manual configuration mode.
+    //Note: A working accound must exist already.
+    func openAddAccountManualConfiguration() {
+        XCUIDevice.shared().orientation = .faceUp
+        XCUIDevice.shared().orientation = .faceUp
+
+        let app = XCUIApplication()
+        app.navigationBars["Inbox"].buttons["Folders"].tap()
+
+        let tablesQuery2 = app.tables
+        tablesQuery2.buttons["button add"].tap()
+
+        let tablesQuery = tablesQuery2
+        tablesQuery.buttons["Sign In"].tap()
+        app.alerts["Error"].buttons["Ok"].tap()
+        tablesQuery.buttons["Manual configuration"].tap()
+    }
 }

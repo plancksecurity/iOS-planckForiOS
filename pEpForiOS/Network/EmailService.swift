@@ -56,10 +56,16 @@ open class Service: IEmailService {
             let s = Set.init(mechanismsLC)
             if s.contains("cram-md5") {
                 return .CramMD5
+            } else if s.contains("plain") {
+                return .Plain
+            } else if s.contains("login") {
+                return .Login
             }
-            return .Login
+            // non of the auth mechanisms Patomime currently supports is supported by the server.
+            return fallBackAuthMethod
         } else {
-            return .Login
+            // no auth mechanisms have been provides by the server
+            return fallBackAuthMethod
         }
     }
 

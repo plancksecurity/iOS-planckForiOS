@@ -89,6 +89,7 @@ open class Constants {
         case connectionTerminated
         case connectionTimedOut
         case requestCancelled
+        case badResponse
     }
 
     /**

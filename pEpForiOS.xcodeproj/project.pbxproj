@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */; };
 		1507BC311F2640960036B3E9 /* CdMessage+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */; };
 		1507BC331F2641FD0036B3E9 /* Message+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */; };
+		15B483D91F28CD8E000FB2CF /* OperationTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483D81F28CD8E000FB2CF /* OperationTestBase.swift */; };
+		15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */; };
+		15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */; };
 		220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE2C1E0AB544002FE716 /* MessageCell.swift */; };
 		220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 220DCE2D1E0AB544002FE716 /* MessageData.plist */; };
 		220DCE341E0AB5CC002FE716 /* MailinglistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE301E0AB5CC002FE716 /* MailinglistCell.swift */; };
@@ -311,8 +315,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+CWServiceClientNotificationParsing.swift"; sourceTree = "<group>"; };
 		1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+TestUtils.swift"; sourceTree = "<group>"; };
 		1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+TestUtils.swift"; sourceTree = "<group>"; };
+		15B483D81F28CD8E000FB2CF /* OperationTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTestBase.swift; sourceTree = "<group>"; };
+		15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialUseMailboxesTest.swift; sourceTree = "<group>"; };
+		15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperationTest.swift; sourceTree = "<group>"; };
 		220DCE2C1E0AB544002FE716 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		220DCE2D1E0AB544002FE716 /* MessageData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MessageData.plist; sourceTree = "<group>"; };
 		220DCE301E0AB5CC002FE716 /* MailinglistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailinglistCell.swift; sourceTree = "<group>"; };
@@ -631,6 +639,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15B483DF1F290B14000FB2CF /* Background */ = {
+			isa = PBXGroup;
+			children = (
+				15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */,
+			);
+			path = Background;
+			sourceTree = "<group>";
+		};
 		220DCE281E0AB4DE002FE716 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -843,6 +859,7 @@
 				430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */,
 				432A5E251EB344C3007CB670 /* PEP_color+Extension.swift */,
 				432AC3051ECB0C44007DC418 /* CWIMAPMessage+pEp.swift */,
+				1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -857,6 +874,7 @@
 				431FEEB01F03B04300FE37FF /* MockBackgrounder.swift */,
 				1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */,
 				1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */,
+				15B483D81F28CD8E000FB2CF /* OperationTestBase.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -935,6 +953,7 @@
 				437432061CFC49A4000F8D35 /* Util */,
 				43B2C3151D2280ED00A08557 /* Resources */,
 				4918EBF91E783C70006207FC /* Models */,
+				15B483DF1F290B14000FB2CF /* Background */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
 				4336229D1DC76B8100133B3D /* MessageModelTests.swift */,
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
@@ -958,6 +977,7 @@
 				43200D9E1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift */,
 				432A3E431F0E793A00834749 /* SyncExistingMessagesServiceTests.swift */,
 				430EA5FB1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift */,
+				15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */,
 				43D2C2691F1385CF00C97235 /* ServiceFactoryTests.swift */,
 				B70DE6871F2773BF00C0A50A /* EmailValidatiorTest.swift */,
 			);
@@ -1669,6 +1689,7 @@
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */,
+				1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
 				431E2B091F0281DF000035FA /* SmtpSendService.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,
@@ -1744,12 +1765,15 @@
 				493B6D221E7078A100364D60 /* TestData.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
+				15B483D91F28CD8E000FB2CF /* OperationTestBase.swift in Sources */,
 				43C579ED1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift in Sources */,
 				1507BC311F2640960036B3E9 /* CdMessage+TestUtils.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
+				15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */,
 				490FF81C1E79BFCE00BC15F9 /* ObserverDelegate.swift in Sources */,
 				432A3E441F0E793A00834749 /* SyncExistingMessagesServiceTests.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
+				15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */,
 				43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */,
 				43FC24251F04FC6E00C32110 /* MessageSyncServiceTests.swift in Sources */,
 				433C51A01E64236500272E19 /* TestDataBase.swift in Sources */,

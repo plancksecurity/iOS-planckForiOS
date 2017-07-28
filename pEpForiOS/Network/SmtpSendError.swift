@@ -16,6 +16,7 @@ enum SmtpSendError: Error {
     case connectionLost(FunctionName)
     case connectionTerminated(FunctionName)
     case connectionTimedOut(FunctionName)
+    case badResponse(FunctionName)
 }
 
 extension SmtpSendError: Equatable {
@@ -31,6 +32,8 @@ extension SmtpSendError: Equatable {
             return fn1 == fn2
         case (.connectionTimedOut(let fn1), .connectionTimedOut(let fn2)):
             return fn1 == fn2
+        case (.badResponse(let fn1), .badResponse(let fn2)):
+            return fn1 == fn2
         case (.illegalState, _):
             return false
         case (.authenticationFailed, _):
@@ -40,6 +43,8 @@ extension SmtpSendError: Equatable {
         case (.connectionTerminated, _):
             return false
         case (.connectionTimedOut, _):
+            return false
+        case (.badResponse, _):
             return false
         }
     }

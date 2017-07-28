@@ -24,9 +24,11 @@ public protocol SmtpSendDelegate: class {
     func requestCancelled(_ smtp: SmtpSend, theNotification: Notification?)
     func serviceInitialized(_ smtp: SmtpSend, theNotification: Notification?)
     func serviceReconnected(_ smtp: SmtpSend, theNotification: Notification?)
+    func badResponse(_ smtp: SmtpSend, response: String?)
 }
 
 open class SmtpSendDefaultDelegate: SmtpSendDelegate {
+    open func badResponse(_ smtp: SmtpSend, response: String?) {}
     open func messageSent(_ smtp: SmtpSend, theNotification: Notification?) {}
     open func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?) {}
     open func transactionInitiationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
@@ -147,6 +149,12 @@ extension SmtpSend: SMTPClient {
 }
 
 extension SmtpSend: CWServiceClient {
+    @objc public func badResponse(_ theNotification: Notification?) {
+        dumpMethodName(#function, notification: theNotification)
+        let errorMsg = theNotification?.parseErrorMessageBadResponse()
+        delegate?.badResponse(self, response: errorMsg)
+    }
+
     @objc public func authenticationCompleted(_ theNotification: Notification?) {
         dumpMethodName("authenticationCompleted", notification: theNotification)
         delegate?.authenticationCompleted(self, theNotification: theNotification)
