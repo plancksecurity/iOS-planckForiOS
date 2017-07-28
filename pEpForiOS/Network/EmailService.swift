@@ -23,6 +23,9 @@ open class Service: IEmailService {
 
     var service: CWService!
 
+    //Used if non of the login methods Pnatomime currently supports is supported by the server.
+    private let fallBackAuthMethod = AuthMethod.Plain
+
     public init(connectInfo: EmailConnectInfo) {
         CWLogger.setLogger(Log.shared)
 
@@ -53,10 +56,16 @@ open class Service: IEmailService {
             let s = Set.init(mechanismsLC)
             if s.contains("cram-md5") {
                 return .CramMD5
+            } else if s.contains("plain") {
+                return .Plain
+            } else if s.contains("login") {
+                return .Login
             }
-            return .Login
+            // non of the auth mechanisms Patomime currently supports is supported by the server.
+            return fallBackAuthMethod
         } else {
-            return .Login
+            // no auth mechanisms have been provides by the server
+            return fallBackAuthMethod
         }
     }
 
