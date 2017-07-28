@@ -14,24 +14,9 @@ import MessageModel
 
 class LoginImapOperationTest: OperationTestBase {
     
-    override func setUp() {
-        super.setUp()
-        let cdAccount = TestData().createWorkingCdAccount()
-        cdAccount.identity?.isMySelf = true
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-        self.cdAccount = cdAccount
-
-        imapConnectInfo = cdAccount.imapConnectInfo
-        smtpConnectInfo = cdAccount.smtpConnectInfo
-        imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-
-        XCTAssertNotNil(imapConnectInfo)
-        XCTAssertNotNil(smtpConnectInfo)
-    }
     /*
-     //IOS-606 Login fails using Yahoo account
-     To assert the mentioned bug:
+     *IOS-606 Login fails using Yahoo account*
+     To assert the mentioned bug is fixed:
      - the first account in testData.swift has to be an Yahoo account
      - OAuth has to be deactivated for the Yahoo account (enable the "allow less secure clients" option in your Yahoo account)
      */
