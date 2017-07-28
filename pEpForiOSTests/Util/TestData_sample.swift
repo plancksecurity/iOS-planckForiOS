@@ -49,7 +49,7 @@ class TestData: TestDataBase {
 
             smtpServerAddress: "smtp.mail.yahoo.com",
             smtpServerType: Server.ServerType.smtp,
-            smtpServerTransport: Server.Transport.startTls,
+            smtpServerTransport: Server.Transport.tls,
             smtpServerPort: 587,
 
             password: "XYZ")

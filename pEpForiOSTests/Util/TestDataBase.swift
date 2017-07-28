@@ -147,7 +147,7 @@ class TestDataBase {
     }
 
     func createWorkingCdAccountYahoo() -> CdAccount {
-        return TestData.yahooAccount().cdAccount()
+        return TestData().yahooAccount().cdAccount()
     }
 
     /**
