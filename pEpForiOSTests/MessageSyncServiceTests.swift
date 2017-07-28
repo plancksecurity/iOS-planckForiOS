@@ -131,9 +131,7 @@ class MessageSyncServiceTests: XCTestCase {
         messageSyncService?.cancel()
         messageSyncService = nil
         persistentSetup = nil
-
         ReferenceCounter.logOutstanding()
-        sleep(3000)
     }
 
     func send(messageSyncService ms: MessageSyncService, messages: [Message],
