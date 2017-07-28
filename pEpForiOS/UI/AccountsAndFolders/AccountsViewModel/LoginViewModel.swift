@@ -140,7 +140,6 @@ class LoginViewModel {
 extension LoginViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
-        account.delete()
         delegate?.didVerify(result: result)
     }
 }
