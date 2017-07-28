@@ -29,7 +29,12 @@ class LoginImapOperationTest: OperationTestBase {
         XCTAssertNotNil(imapConnectInfo)
         XCTAssertNotNil(smtpConnectInfo)
     }
-
+    /*
+     //IOS-606 Login fails using Yahoo account
+     To assert the mentioned bug:
+     - the first account in testData.swift has to be an Yahoo account
+     - OAuth has to be deactivated for the Yahoo account (enable the "allow less secure clients" option in your Yahoo account)
+     */
     func testLoginWorkingAccount() {
         let errorContainer = ErrorContainer()
         let expLoginSucceeds = expectation(description: "LoginSucceeds")
@@ -49,36 +54,5 @@ class LoginImapOperationTest: OperationTestBase {
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
         })
-    }
-
-    //IOS-606 Login fails using Yahoo account
-    func testLoginWorkingAccountYahoo() {
-        let account = TestData().createWorkingCdAccountYahoo()
-        account.identity?.isMySelf = true
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-
-        let imapConnectInfoYahoo = account.imapConnectInfo!
-        let imapSyncDataYahoo = ImapSyncData(connectInfo: imapConnectInfoYahoo)
-
-        let errorContainer = ErrorContainer()
-        let expLoginOperationReturns = expectation(description: "LoginSucceeds")
-
-        let imapLogin = LoginImapOperation(
-            errorContainer: errorContainer, imapSyncData: imapSyncDataYahoo)
-        imapLogin.completionBlock = {
-            imapLogin.completionBlock = nil
-            XCTAssertNotNil(imapSyncDataYahoo.sync)
-            expLoginOperationReturns.fulfill()
-        }
-
-        let queue = OperationQueue()
-        queue.addOperation(imapLogin)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
-        })
-    }
-    
+    }    
 }
