@@ -28,7 +28,10 @@ protocol ImapSmtpSyncServiceDelegate: class {
 
     func startIdling(service: ImapSmtpSyncService)
 
-    func flagsUpdated(message: Message)
+    /**
+     Flags were uploaded to the server.
+     */
+    func flagsUploaded(message: Message)
 }
 
 class ImapSmtpSyncService {
@@ -315,7 +318,7 @@ class ImapSmtpSyncService {
         }
         if !messagesEnqueuedForFlagChange.isEmpty && readyForSend {
             // TODO
-            print("immediate")
+            fatalError("not yet implemented")
         }
         if state == .readyForIdling {
             if imapSyncData.supportsIdle {
@@ -364,7 +367,8 @@ extension ImapSmtpSyncService: SyncFlagsToServerServiceDelegate {
         }
         func inner() {
             if messagesEnqueuedForFlagChange.contains(message) {
-                delegate?.flagsUpdated(message: message)
+                delegate?.flagsUploaded(message: message)
+                messagesEnqueuedForFlagChange.remove(message)
             }
         }
     }

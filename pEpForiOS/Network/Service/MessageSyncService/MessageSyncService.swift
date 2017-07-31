@@ -297,7 +297,7 @@ extension MessageSyncService: ImapSmtpSyncServiceDelegate {
         }
     }
 
-    func flagsUpdated(message: Message) {
+    func flagsUploaded(message: Message) {
         flagsUploadDelegate?.flagsUploaded(message: message)
     }
 }
