@@ -107,7 +107,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                     return
             }
             if let (fo, _) = CdFolder.insertOrUpdate(
-                folderName: name, folderSeparator: nil, account: account) {
+                folderName: name, folderSeparator: nil, folderType: nil, account: account) { //BUFF: check if nil fits semantic
                 context.saveAndLogErrors()
                 folder = fo
             }

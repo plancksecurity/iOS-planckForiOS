@@ -113,6 +113,7 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
         (errorHandler as? FetchFoldersOperation)?.readFolderNamesFromImapSync(sync)
     }
 
+    //BUFF: Add Special Folder Info in userInfo ++ followers
     public override func folderNameParsed(_ sync: ImapSync, notification: Notification?) {
         guard let userInfo = (notification as NSNotification?)?.userInfo else {
             return
@@ -128,10 +129,19 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
         }
 
         let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey] as? String
-        let folderInfo = StoreFolderOperation.FolderInfo(
-            name: folderName, separator: folderSeparator)
+
+        // Check and handle if the folder is reported as Special-Use Mailbox by the server
+        var folderType: FolderType? = nil
+        if let specialUseMailboxType = folderInfoDict[PantomimeFolderSpecialUseKey] as? Int {
+            folderType = FolderType.from(pantomimeSpecialUseMailboxType: specialUseMailboxType)
+        }
+
+        let folderInfo = StoreFolderOperation.FolderInfo(name: folderName,
+                                                         separator: folderSeparator,
+                                                         folderType: folderType)
         let storeFolderOp = StoreFolderOperation(connectInfo: syncOp.imapSyncData.connectInfo,
                                                  folderInfo: folderInfo)
+
         storeFolderOp.delegate = errorHandler as? FetchFoldersOperation
         syncOp.backgroundQueue.addOperation(storeFolderOp)
     }

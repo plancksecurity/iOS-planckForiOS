@@ -42,7 +42,9 @@ public extension CdFolder {
      - Returns: An optional tuple consisting of a `CdFolder`, and a flag indicating
      that this folder is new. The Inbox will never be returned as new.
      */
-    public static func insertOrUpdate(folderName: String, folderSeparator: String?,
+    public static func insertOrUpdate(folderName: String,
+                                      folderSeparator: String?,
+                                      folderType: FolderType?,
                                       account: CdAccount) -> (CdFolder, Bool)? {
         // Treat Inbox specially, since its name is case insensitive.
         // For all other folders, it's undefined if they have to be handled
@@ -56,6 +58,9 @@ public extension CdFolder {
 
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
+            if let type = folderType {
+                folder.folderType = type.rawValue
+            }
             return (folder, reactivate(folder: folder))
         }
 
@@ -68,7 +73,7 @@ public extension CdFolder {
                 pathsSoFar.append(p)
                 let pathName = (pathsSoFar as NSArray).componentsJoined(
                     by: separator)
-                let folder = insert(folderName: pathName, account: account)
+                let folder = insert(folderName: pathName, folderType: nil, account: account) //BUFF: check type here
                 folder.parent = parentFolder
                 let scalars = separator.unicodeScalars
                 if let first = scalars.first {
@@ -86,16 +91,50 @@ public extension CdFolder {
             }
         } else {
             // Just create the folder as-is, can't check for hierarchy
-            let folder = insert(folderName: folderName, account: account)
+            let folder = insert(folderName: folderName, folderType: folderType, account: account)
             return (folder, true)
         }
     }
 
-    static func insert(folderName: String, account: CdAccount) -> CdFolder {
+
+    /// Set the given folder type. 
+    /// Also searches for existing folder with give type and resets it to FolderType.normal to avoid having 
+    /// two or more folders assigned to one type".
+    ///
+    /// - Parameter folderType: type to set
+    func setFolderType(folderType: FolderType?) {
+        guard let type = folderType else {
+            return
+        }
+
+        if type == .normal {
+            self.folderType = type.rawValue
+            return
+        }
+
+        /*
+         The given type represents a special folder (Drafts, Sent, != Normal).
+         As only one folder must present one special purpose type, we have to assure uniqueness.
+         */
+        if let tmpAccount = self.account,
+            let exsistingFolderForType = CdFolder.by(folderType: type, account: tmpAccount) {
+            // A folder for the given purpose/type already exists. 
+            // Reset the type of the existing one
+            exsistingFolderForType.folderType = FolderType.normal.rawValue
+        }
+        self.folderType = type.rawValue
+    }
+
+    static func insert(folderName: String, folderType: FolderType?, account: CdAccount) -> CdFolder {
         Log.verbose(component: comp, content: "insert \(folderName)")
 
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
+//            if let type = folderType {
+//
+////                folder.folderType = type.rawValue //BUFF: search for .folderType
+//             }
+            folder.setFolderType(folderType: folderType)
             let _ = reactivate(folder: folder)
             return folder
         }
@@ -104,9 +143,17 @@ public extension CdFolder {
         folder.name = folderName
         folder.account = account
         folder.uuid = MessageID.generate()
+        folder.setFolderType(folderType: folderType)
+
+        if folder.folderType != FolderType.normal.rawValue {
+            // The folder has already a non-normal folder type set. 
+            // No need to do heuristics by folder name to find its purpose.
+            return folder
+        }
+
 
         if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
-            folder.folderType = FolderType.inbox.rawValue
+            folder.setFolderType(folderType: FolderType.inbox)
         } else {
             var foundMatch = false
             for ty in FolderType.allValuesToCheckFromServer {
@@ -114,7 +161,7 @@ public extension CdFolder {
                     if folderName.matchesPattern("\(theName)",
                         reOptions: [.caseInsensitive]) {
                         foundMatch = true
-                        folder.folderType = ty.rawValue
+                        folder.setFolderType(folderType: ty)
                         break
                     }
                 }
@@ -123,7 +170,7 @@ public extension CdFolder {
                 }
             }
             if !foundMatch {
-                folder.folderType = FolderType.normal.rawValue
+                folder.setFolderType(folderType: FolderType.normal)
             }
         }
 

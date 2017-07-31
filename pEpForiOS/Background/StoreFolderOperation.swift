@@ -21,6 +21,9 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
     public struct FolderInfo {
         let name: String
         let separator: String?
+        //BUFF: buff added
+        let folderType: FolderType?
+        //FFUB
     }
     
     let folderInfo: FolderInfo
@@ -44,6 +47,7 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
     }
 
     func process(context: NSManagedObjectContext) {
+        //BUFF: need to add folder type when creating
         Log.verbose(component: comp, content: "process \(folderInfo.name)")
         guard let account = context.object(with: connectInfo.accountObjectID)
             as? CdAccount else {
@@ -56,7 +60,9 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
         }
 
         if let (cdFolder, newlyCreated) = CdFolder.insertOrUpdate(
-            folderName: folderInfo.name, folderSeparator: folderInfo.separator,
+            folderName: folderInfo.name,
+            folderSeparator: folderInfo.separator,
+            folderType: folderInfo.folderType, //BUFF: nil? Check what get created
             account: account) {
             if newlyCreated {
                 delegate?.didCreate(cdFolder: cdFolder)

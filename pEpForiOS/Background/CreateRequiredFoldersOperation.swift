@@ -36,7 +36,7 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
     var foldersToCreate = [FolderToCreate]()
     public var numberOfFoldersCreated = 0
     var folderSeparator: String?
-    var syncDelegate: CreateSpecialFoldersSyncDelegate?
+    var syncDelegate: CreateRequiredFoldersSyncDelegate?
 
     open override func main() {
         if !shouldRun() {
@@ -78,7 +78,7 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
 
         if foldersToCreate.count > 0 {
             privateMOC.saveAndLogErrors()
-            syncDelegate = CreateSpecialFoldersSyncDelegate(errorHandler: self)
+            syncDelegate = CreateRequiredFoldersSyncDelegate(errorHandler: self)
             imapSyncData.sync?.delegate = syncDelegate
             createNextFolder()
         } else {
@@ -111,7 +111,7 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
         cdFolder.uuid = MessageID.generate()
         cdFolder.name = folderToCreate.folderName
         cdFolder.account = folderToCreate.cdAccount
-        cdFolder.folderType = folderToCreate.folderType.rawValue
+        cdFolder.setFolderType(folderType: folderToCreate.folderType)
         context.saveAndLogErrors()
     }
 
@@ -136,7 +136,7 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
     }
 }
 
-class CreateSpecialFoldersSyncDelegate: DefaultImapSyncDelegate {
+class CreateRequiredFoldersSyncDelegate: DefaultImapSyncDelegate {
     public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? CreateRequiredFoldersOperation else {
             return

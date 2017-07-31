@@ -33,12 +33,13 @@ open class CreateLocalRequiredFoldersOperation: BaseOperation {
         }
         for kind in FolderType.allValuesToCreate {
             let folderName = kind.folderName()
-            if let (folder, _) = CdFolder.insertOrUpdate(
-                folderName: folderName, folderSeparator: nil, account: account) {
-                folder.folderType = Int16(kind.rawValue)
-            } else  {
-                self.addError(Constants.errorCouldNotStoreFolder(self.comp,
-                                                                 name: folderName))
+            guard let (_, _) = CdFolder.insertOrUpdate(folderName: folderName,
+                                                            folderSeparator: nil,
+                                                            folderType: kind,
+                                                            account: account)
+                else {
+                    self.addError(Constants.errorCouldNotStoreFolder(self.comp, name: folderName))
+                    continue
             }
         }
         context.saveAndLogErrors()
