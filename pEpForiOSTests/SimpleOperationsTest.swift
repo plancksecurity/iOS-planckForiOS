@@ -32,7 +32,8 @@ class SimpleOperationsTest: OperationTestBase {
 
     func testComp() {
         let f = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
-        XCTAssertEqual(f.comp, "FetchFoldersOperation")
+        XCTAssertTrue(f.comp.contains("FetchFoldersOperation"))
+        XCTAssertTrue(f.comp.contains(#function))
     }
 
     func testFetchMessagesOperation() {
