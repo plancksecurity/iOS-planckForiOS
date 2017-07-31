@@ -159,7 +159,7 @@ class MessageReevalutionTests: XCTestCase {
         }
         if inBackground {
             let expReevaluated = expectation(description: "expReevaluated")
-            let reevalOp = ReevaluateMessageRatingOperation(message: message)
+            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message)
             reevalOp.completionBlock = {
                 reevalOp.completionBlock = nil
                 expReevaluated.fulfill()
@@ -173,7 +173,8 @@ class MessageReevalutionTests: XCTestCase {
             XCTAssertEqual(cdDecryptedMessage.pEpRating, Int16(expectedRating.rawValue),
                            infoMessage)
         } else {
-            let reevalOp = ReevaluateMessageRatingOperation(message: message, session: session)
+            let reevalOp = ReevaluateMessageRatingOperation(
+                parentName: #function, message: message, session: session)
             reevalOp.reevaluate(context: Record.Context.default)
         }
     }

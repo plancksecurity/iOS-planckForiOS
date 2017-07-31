@@ -31,7 +31,7 @@ class SimpleOperationsTest: OperationTestBase {
     }
 
     func testComp() {
-        let f = FetchFoldersOperation(imapSyncData: imapSyncData)
+        let f = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
         XCTAssertEqual(f.comp, "FetchFoldersOperation")
     }
 
@@ -156,6 +156,7 @@ class SimpleOperationsTest: OperationTestBase {
         let expMailsSynced = expectation(description: "expMailsSynced")
 
         guard let op = SyncMessagesOperation(
+            parentName: #function,
             imapSyncData: imapSyncData, folder: folder) else {
                 XCTFail()
                 return
@@ -193,6 +194,7 @@ class SimpleOperationsTest: OperationTestBase {
         let expMailsSynced = expectation(description: "expMailsSynced")
 
         let op = SyncMessagesOperation(
+            parentName: #function,
             imapSyncData: imapSyncData, folderName: folderName, firstUID: 10, lastUID: 5)
         op.completionBlock = {
             op.completionBlock = nil
@@ -209,8 +211,8 @@ class SimpleOperationsTest: OperationTestBase {
     func testFetchFoldersOperation() {
         let expFoldersFetched = expectation(description: "expFoldersFetched")
 
-        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
-        let op = FetchFoldersOperation(imapSyncData: imapSyncData)
+        let opLogin = LoginImapOperation(parentName: #function, imapSyncData: imapSyncData)
+        let op = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
         op.completionBlock = {
             op.completionBlock = nil
             expFoldersFetched.fulfill()
@@ -254,6 +256,7 @@ class SimpleOperationsTest: OperationTestBase {
 
         let expStored = expectation(description: "expStored")
         let storeOp = StorePrefetchedMailOperation(
+            parentName: #function,
             accountID: imapConnectInfo.accountObjectID, message: message,
             messageUpdate: CWMessageUpdate())
         storeOp.completionBlock = {
@@ -293,6 +296,7 @@ class SimpleOperationsTest: OperationTestBase {
             message.setUID(UInt(i))
             message.setMessageID("\(i)@whatever.test")
             let op = StorePrefetchedMailOperation(
+                parentName: #function,
                 accountID: imapConnectInfo.accountObjectID, message: message,
                 messageUpdate: CWMessageUpdate())
             op.completionBlock = {
@@ -316,7 +320,8 @@ class SimpleOperationsTest: OperationTestBase {
 
     func testCreateLocalRequiredFoldersOperation() {
         let expFoldersStored = expectation(description: "expFoldersStored")
-        let op = CreateLocalRequiredFoldersOperation(account: cdAccount)
+        let op = CreateLocalRequiredFoldersOperation(
+            parentName: #function, account: cdAccount)
         let queue = OperationQueue()
         op.completionBlock = {
             op.completionBlock = nil
@@ -340,14 +345,17 @@ class SimpleOperationsTest: OperationTestBase {
     func testCreateFolders() {
         let backgroundQueue = OperationQueue.init()
 
-        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+        let opLogin = LoginImapOperation(
+            parentName: #function, imapSyncData: imapSyncData)
 
         // Fetch folders to get the folder separator
-        let opFetchFolders = FetchFoldersOperation(imapSyncData: imapSyncData)
+        let opFetchFolders = FetchFoldersOperation(
+            parentName: #function, imapSyncData: imapSyncData)
         opFetchFolders.addDependency(opLogin)
 
         let expCreated = expectation(description: "expCreated")
         let opCreate = CheckAndCreateFolderOfTypeOperation(
+            parentName: #function,
             imapSyncData: imapSyncData, account: cdAccount, folderType: .drafts)
         opCreate.addDependency(opFetchFolders)
         opCreate.completionBlock = {
@@ -384,12 +392,14 @@ class SimpleOperationsTest: OperationTestBase {
         Record.saveAndWait()
 
         let expCreated = expectation(description: "expCreated")
-        let opCreate = CreateFoldersOperation(imapSyncData: imapSyncData, account: cdAccount)
+        let opCreate = CreateFoldersOperation(
+            parentName: #function, imapSyncData: imapSyncData, account: cdAccount)
         opCreate.completionBlock = {
             opCreate.completionBlock = nil
             expCreated.fulfill()
         }
-        let opLogin = LoginImapOperation(imapSyncData: imapSyncData)
+        let opLogin = LoginImapOperation(
+            parentName: #function, imapSyncData: imapSyncData)
         opCreate.addDependency(opLogin)
 
         let backgroundQueue = OperationQueue()
@@ -408,6 +418,7 @@ class SimpleOperationsTest: OperationTestBase {
 
         let expDeleted = expectation(description: "expDeleted")
         let opDelete = DeleteFoldersOperation(
+            parentName: #function,
             imapSyncData: imapSyncData, account: cdAccount)
         opDelete.completionBlock = {
             opDelete.completionBlock = nil
@@ -429,10 +440,12 @@ class SimpleOperationsTest: OperationTestBase {
     }
 
     func testCreateRequiredFoldersOperation() {
-        let imapLogin = LoginImapOperation(imapSyncData: imapSyncData)
+        let imapLogin = LoginImapOperation(
+            parentName: #function, imapSyncData: imapSyncData)
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
+        let fetchFoldersOp = FetchFoldersOperation(
+            parentName: #function, imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil
@@ -450,7 +463,8 @@ class SimpleOperationsTest: OperationTestBase {
         })
 
         let expCreated1 = expectation(description: "expCreated")
-        let opCreate1 = CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
+        let opCreate1 = CreateRequiredFoldersOperation(
+            parentName: #function, imapSyncData: imapSyncData)
         opCreate1.completionBlock = {
             opCreate1.completionBlock = nil
             expCreated1.fulfill()
@@ -467,6 +481,7 @@ class SimpleOperationsTest: OperationTestBase {
             let fn = spamFolder.name {
             let expDeleted = expectation(description: "expFolderDeleted")
             let opDelete = DeleteFolderOperation(
+                parentName: #function,
                 imapSyncData: imapSyncData, account: cdAccount, folderName: fn)
             opDelete.completionBlock = {
                 opDelete.completionBlock = nil
@@ -484,7 +499,8 @@ class SimpleOperationsTest: OperationTestBase {
         }
 
         let expCreated2 = expectation(description: "expCreated")
-        let opCreate2 = CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
+        let opCreate2 = CreateRequiredFoldersOperation(
+            parentName: #function, imapSyncData: imapSyncData)
         opCreate2.completionBlock = {
             opCreate2.completionBlock = nil
             expCreated2.fulfill()
@@ -511,9 +527,10 @@ class SimpleOperationsTest: OperationTestBase {
             XCTFail()
             return
         }
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -588,7 +605,8 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -659,7 +677,8 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -732,9 +751,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -816,9 +836,10 @@ class SimpleOperationsTest: OperationTestBase {
         XCTAssertEqual(messagesToBeSynced.count, messages.count,
                        "all messages should need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -895,9 +916,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -975,9 +997,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1055,9 +1078,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1134,9 +1158,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1207,9 +1232,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1283,9 +1309,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1361,9 +1388,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1439,9 +1467,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1517,9 +1546,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1595,9 +1625,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1673,9 +1704,10 @@ class SimpleOperationsTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
+        guard let op = SyncFlagsToServerOperation(
+            parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
+                XCTFail()
+                return
         }
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
@@ -1760,6 +1792,7 @@ class SimpleOperationsTest: OperationTestBase {
         var ops = [SyncFlagsToServerOperation]()
         for i in 1...numSyncOpsToTrigger {
             guard let op = SyncFlagsToServerOperation(
+                parentName: #function,
                 imapSyncData: imapSyncData, folder: inbox) else {
                     XCTFail()
                     return
@@ -1819,7 +1852,8 @@ class SimpleOperationsTest: OperationTestBase {
         (identity: NSMutableDictionary, receiver1: PEPIdentity,
         receiver2: PEPIdentity, receiver3: PEPIdentity,
         receiver4: PEPIdentity)) {
-            let opCreateRequiredFolders = CreateLocalRequiredFoldersOperation(account: cdAccount)
+            let opCreateRequiredFolders = CreateLocalRequiredFoldersOperation(
+                parentName: #function, account: cdAccount)
             let expFoldersStored = expectation(description: "expFoldersStored")
             opCreateRequiredFolders.completionBlock = {
                 opCreateRequiredFolders.completionBlock = nil
@@ -1869,6 +1903,7 @@ class SimpleOperationsTest: OperationTestBase {
         let errorContainer = ErrorContainer()
 
         let smtpLogin = LoginSmtpOperation(
+            parentName: #function,
             smtpSendData: smtpSendData, errorContainer: errorContainer)
         smtpLogin.completionBlock = {
             smtpLogin.completionBlock = nil
@@ -1876,6 +1911,7 @@ class SimpleOperationsTest: OperationTestBase {
         }
 
         let sendOp = EncryptAndSendOperation(
+            parentName: #function,
             smtpSendData: smtpSendData, errorContainer: errorContainer)
         XCTAssertNotNil(EncryptAndSendOperation.retrieveNextMessage(
             context: Record.Context.default, cdAccount: cdAccount))
@@ -1910,6 +1946,7 @@ class SimpleOperationsTest: OperationTestBase {
         let errorContainer = ErrorContainer()
 
         let imapLogin = LoginImapOperation(
+            parentName: #function,
             errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
@@ -1917,7 +1954,8 @@ class SimpleOperationsTest: OperationTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
+        let fetchFoldersOp = FetchFoldersOperation(
+            parentName: #function, imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil
@@ -1973,6 +2011,7 @@ class SimpleOperationsTest: OperationTestBase {
         let expSentAppended = expectation(description: "expSentAppended")
 
         let appendOp = AppendMailsOperation(
+            parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer)
         appendOp.completionBlock = {
             appendOp.completionBlock = nil
@@ -1994,6 +2033,7 @@ class SimpleOperationsTest: OperationTestBase {
         let errorContainer = ErrorContainer()
 
         let imapLogin = LoginImapOperation(
+            parentName: #function,
             errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
@@ -2001,7 +2041,8 @@ class SimpleOperationsTest: OperationTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
+        let fetchFoldersOp = FetchFoldersOperation(
+            parentName: #function, imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil
@@ -2143,7 +2184,7 @@ class SimpleOperationsTest: OperationTestBase {
         let identity = cdAccount.identity?.identity()
         let expCompleted = expectation(description: "expCompleted")
 
-        let op = MySelfOperation()
+        let op = MySelfOperation(parentName: #function)
         op.completionBlock = {
             op.completionBlock = nil
             expCompleted.fulfill()
@@ -2172,6 +2213,7 @@ class SimpleOperationsTest: OperationTestBase {
         let errorContainer = ErrorContainer()
 
         let imapLogin = LoginImapOperation(
+            parentName: #function,
             errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
@@ -2179,7 +2221,8 @@ class SimpleOperationsTest: OperationTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
+        let fetchFoldersOp = FetchFoldersOperation(
+            parentName: #function, imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil
@@ -2269,8 +2312,10 @@ class SimpleOperationsTest: OperationTestBase {
         let expTrashed = expectation(description: "expTrashed")
 
         let trashMailsOp1 = TrashMailsOperation(
+            parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder)
         let trashMailsOp2 = TrashMailsOperation(
+            parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: draftsFolder)
         trashMailsOp2.addDependency(trashMailsOp1)
         trashMailsOp2.completionBlock = {
@@ -2356,7 +2401,7 @@ class SimpleOperationsTest: OperationTestBase {
         Record.saveAndWait()
         
         let expAttachmentsFixed = expectation(description: "expAttachmentsFixed")
-        let fixAttachmentsOp = FixAttachmentsOperation()
+        let fixAttachmentsOp = FixAttachmentsOperation(parentName: #function)
         fixAttachmentsOp.completionBlock = {
             fixAttachmentsOp.completionBlock = nil
             expAttachmentsFixed.fulfill()

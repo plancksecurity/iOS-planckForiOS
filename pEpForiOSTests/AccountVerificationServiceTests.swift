@@ -91,7 +91,7 @@ class AccountVerificationServiceTests: XCTestCase {
         let delegate = AccountVerificationTestDelegate(expVerified: expVerified)
 
         let asService = AccountVerificationService()
-        let msService = MessageSyncService()
+        let msService = MessageSyncService(parentName: #function)
 
         if testDirectly {
             asService.delegate = delegate
