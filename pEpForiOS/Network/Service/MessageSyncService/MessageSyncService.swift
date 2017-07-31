@@ -85,7 +85,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
     let backgrounder: BackgroundTaskProtocol?
     let mySelfer: KickOffMySelfProtocol?
     let managementQueue = DispatchQueue(
-        label: "managementQueue", qos: .utility, target: nil)
+        label: "MessageSyncService", qos: .utility, target: nil)
 
     private var imapConnections = [ImapSmtpConnection: ImapSmtpSyncService]()
 
