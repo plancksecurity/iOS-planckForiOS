@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import MessageModel
 @testable import pEpForiOS
@@ -378,16 +379,9 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
-    func testUploadFlagsOnIdle() {
-        let context = Record.Context.default
-        let ms = runOrContinueUntilIdle(parentName: #function)
-
-        guard let cdFolder = CdFolder.by(
-            folderType: .inbox, account: cdAccount, context: context) else {
-                XCTFail()
-                return
-        }
-
+    func uploadFlags(context: NSManagedObjectContext,
+                     ms: MessageSyncService,
+                     cdFolder: CdFolder, maxCount: Int) {
         let cdMessages = cdFolder.messages?.sortedArray(
             using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
         XCTAssertGreaterThan(cdMessages.count, 0)
@@ -396,8 +390,8 @@ class MessageSyncServiceTests: XCTestCase {
             guard
                 let cdLocalFlags1 = cdM.imapFields().localFlags,
                 let cdServerFlags1 = cdM.imapFields().serverFlags else {
-                XCTFail()
-                return
+                    XCTFail()
+                    return
             }
             cdLocalFlags1.flagFlagged = !cdLocalFlags1.flagFlagged
             let expectedFlagged = cdLocalFlags1.flagFlagged
@@ -427,6 +421,19 @@ class MessageSyncServiceTests: XCTestCase {
             XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
             XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
         }
+    }
+
+    func testUploadFlagsOnIdle() {
+        let context = Record.Context.default
+        let ms = runOrContinueUntilIdle(parentName: #function)
+
+        guard let cdFolder = CdFolder.by(
+            folderType: .inbox, account: cdAccount, context: context) else {
+                XCTFail()
+                return
+        }
+
+        uploadFlags(context: context, ms: ms, cdFolder: cdFolder, maxCount: 3)
     }
 
     func notestUploadFlagsBeforeIdle() {
