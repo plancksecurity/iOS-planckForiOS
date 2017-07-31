@@ -63,7 +63,7 @@ class ServiceFactoryTests: XCTestCase {
         let service = serviceFactory.initialSync(
             parentName: #function, backgrounder: backgrounder,
             imapSyncData: imapSyncData, smtpSendData: smtpSendData,
-            smtpSendServiceDelegate: smtpSentDelegate)
+            smtpSendServiceDelegate: smtpSentDelegate, syncFlagsToServerServiceDelegate: nil)
 
         let expectationAllServicesExecuted = expectation(
             description: "expectationAllServicesExecuted")

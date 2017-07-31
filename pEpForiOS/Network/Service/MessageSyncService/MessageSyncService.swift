@@ -79,6 +79,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
     weak var sentDelegate: MessageSyncServiceSentDelegate?
     weak var syncDelegate: MessageSyncServiceSyncDelegate?
     weak var stateDelegate: MessageSyncServiceStateDelegate?
+    weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate?
 
     let sleepTimeInSeconds: Double
     let parentName: String?
@@ -294,5 +295,9 @@ extension MessageSyncService: ImapSmtpSyncServiceDelegate {
         service.imapSyncData.connectInfo.handleAccount() { [weak self] account in
             self?.stateDelegate?.startIdling(account: account)
         }
+    }
+
+    func flagsUpdated(message: Message) {
+        flagsUploadDelegate?.flagsUploaded(message: message)
     }
 }

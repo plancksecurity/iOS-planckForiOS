@@ -50,6 +50,13 @@ protocol MessageSyncServiceStateDelegate: class {
     func startIdling(account: Account)
 }
 
+protocol MessageSyncFlagsUploadDelegate: class {
+    /**
+     Called when local flags have been updated on the server.
+     */
+    func flagsUploaded(message: Message)
+}
+
 /**
  Message sync related actions that can be requested by the UI.
  The purpose is to make network-related actions seem as fast as possible,
@@ -61,6 +68,7 @@ protocol MessageSyncServiceProtocol {
     weak var sentDelegate: MessageSyncServiceSentDelegate? { get set }
     weak var syncDelegate: MessageSyncServiceSyncDelegate? { get set }
     weak var stateDelegate: MessageSyncServiceStateDelegate? { get set }
+    weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate? { get set }
 
     /**
      Request account verification, receiving news via the delegate.

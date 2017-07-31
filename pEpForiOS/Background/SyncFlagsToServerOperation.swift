@@ -9,6 +9,9 @@
 import CoreData
 import MessageModel
 
+protocol SyncFlagsToServerOperationDelegate: class {
+    func flagsUploaded(cdMessage: CdMessage)
+}
 
 /// Sends (syncs) local changes of Imap flags to server.
 open class SyncFlagsToServerOperation: ImapSyncOperation {
@@ -22,6 +25,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
 
     var syncDelegate: SyncFlagsToServerSyncDelegate?
     var changedMessageIDs = [NSManagedObjectID]()
+    weak var delegate: SyncFlagsToServerOperationDelegate?
 
     public init?(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                  imapSyncData: ImapSyncData, folder: CdFolder) {
@@ -205,6 +209,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                 imap.serverFlags = cdFlags
 
                 cdFlags.update(cwFlags: cwFlags)
+                delegate?.flagsUploaded(cdMessage: cdMsg)
                 changedMessageIDs.append(cdMsg.objectID)
             } else {
                 handle(error: CoreDataError.couldNotFindMessage)

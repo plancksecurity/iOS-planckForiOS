@@ -27,6 +27,8 @@ protocol ImapSmtpSyncServiceDelegate: class {
     func didSync(service: ImapSmtpSyncService)
 
     func startIdling(service: ImapSmtpSyncService)
+
+    func flagsUpdated(message: Message)
 }
 
 class ImapSmtpSyncService {
@@ -67,7 +69,7 @@ class ImapSmtpSyncService {
     private var sendRequested: Bool = false
     private var reSyncNecessary: Bool = false
     private var messagesEnqueuedForSend = [MessageID: Message]()
-    private var messagesEnqueuedForFlagChange = Set<Message>()
+    fileprivate var messagesEnqueuedForFlagChange = Set<Message>()
     private var currentFolderName: String = ImapSync.defaultImapInboxName
 
     var readyForSend: Bool {
@@ -89,7 +91,7 @@ class ImapSmtpSyncService {
     }
 
     let workerQueue = DispatchQueue(
-        label: "MessageSyncService", qos: .utility, target: nil)
+        label: "ImapSmtpSyncService", qos: .utility, target: nil)
 
     init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
@@ -110,7 +112,8 @@ class ImapSmtpSyncService {
                 let service = serviceFactory.initialSync(
                     parentName: parentName, backgrounder: backgrounder,
                     imapSyncData: imapSyncData, smtpSendData: smtpSendData,
-                    smtpSendServiceDelegate: self)
+                    smtpSendServiceDelegate: self,
+                    syncFlagsToServerServiceDelegate: nil)
                 currentlyRunningService = service
                 service.execute() { [weak self] error in
                     self?.workerQueue.async {
@@ -139,21 +142,25 @@ class ImapSmtpSyncService {
         }
         func inner() {
             messagesEnqueuedForFlagChange.insert(message)
-            if isIdling {
-                cancelIdling()
-                let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
-                var service: ServiceExecutionProtocol = serviceFactory.syncFlagsToServer(
-                    parentName: parentName, backgrounder: backgrounder,
-                    imapSyncData: imapSyncData, folderName: folderName)
+            uploadFlagChanges(message: message)
+        }
+    }
 
-                service = decoratedWithIdleExit(service: service)
+    func uploadFlagChanges(message: Message) {
+        if isIdling {
+            cancelIdling()
+            let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
+            var service: ServiceExecutionProtocol = serviceFactory.syncFlagsToServer(
+                parentName: parentName, backgrounder: backgrounder,
+                imapSyncData: imapSyncData, folderName: folderName, syncFlagsDelegate: self)
 
-                currentlyRunningService = service
-                service.execute() { [weak self] error in
-                    self?.workerQueue.async {
-                        self?.currentlyRunningService = nil
-                        self?.handleFlagUploadFinished(error: error)
-                    }
+            service = decoratedWithIdleExit(service: service)
+
+            currentlyRunningService = service
+            service.execute() { [weak self] error in
+                self?.workerQueue.async {
+                    self?.currentlyRunningService = nil
+                    self?.handleFlagUploadFinished(error: error)
                 }
             }
         }
@@ -306,6 +313,9 @@ class ImapSmtpSyncService {
             sendMessages()
             return
         }
+        if !messagesEnqueuedForFlagChange.isEmpty && readyForSend {
+            // TODO
+        }
         if state == .readyForIdling {
             if imapSyncData.supportsIdle {
                 state = .idling
@@ -343,5 +353,18 @@ class ImapSmtpSyncService {
 extension ImapSmtpSyncService: SmtpSendServiceDelegate {
     func sent(messageIDs: [MessageID]) {
         lastSuccessfullySentMessageIDs.append(contentsOf: messageIDs)
+    }
+}
+
+extension ImapSmtpSyncService: SyncFlagsToServerServiceDelegate {
+    func flagsUploaded(message: Message) {
+        workerQueue.async {
+            inner()
+        }
+        func inner() {
+            if messagesEnqueuedForFlagChange.contains(message) {
+                delegate?.flagsUpdated(message: message)
+            }
+        }
     }
 }

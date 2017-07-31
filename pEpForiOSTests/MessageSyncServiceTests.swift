@@ -99,6 +99,14 @@ class MessageSyncServiceTests: XCTestCase {
         }
     }
 
+    class TestFlagsDelegate: MessageSyncFlagsUploadDelegate {
+        var messagesChanged = Set<Message>()
+
+        func flagsUploaded(message: Message) {
+            messagesChanged.insert(message)
+        }
+    }
+
     class MessageFolderTestDelegate: MessageFolderDelegate {
         let expMessagesDeleted: XCTestExpectation?
         var deletedMessages = Set<MessageFolder>()
@@ -404,8 +412,11 @@ class MessageSyncServiceTests: XCTestCase {
                 XCTFail()
                 return
             }
+            let flagsDelegate = TestFlagsDelegate()
+            ms.flagsUploadDelegate = flagsDelegate
             ms.requestFlagChange(message: msg)
             let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
+            XCTAssertTrue(flagsDelegate.messagesChanged.contains(msg))
             context.refresh(cdM, mergeChanges: true)
             guard
                 let cdLocalFlags2 = cdM.imapFields().localFlags,
