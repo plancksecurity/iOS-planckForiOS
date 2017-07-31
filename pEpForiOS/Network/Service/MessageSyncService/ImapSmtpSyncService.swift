@@ -315,6 +315,7 @@ class ImapSmtpSyncService {
         }
         if !messagesEnqueuedForFlagChange.isEmpty && readyForSend {
             // TODO
+            print("immediate")
         }
         if state == .readyForIdling {
             if imapSyncData.supportsIdle {

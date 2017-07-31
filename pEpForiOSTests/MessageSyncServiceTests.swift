@@ -378,7 +378,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
-    func testUploadFlags() {
+    func testUploadFlagsOnIdle() {
         let context = Record.Context.default
         let ms = runOrContinueUntilIdle(parentName: #function)
 
@@ -427,6 +427,18 @@ class MessageSyncServiceTests: XCTestCase {
             XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
             XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
         }
+    }
+
+    func testUploadFlagsBeforeIdle() {
+        let ms = MessageSyncService(
+            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        self.messageSyncService = ms
+        ms.start(account: cdAccount.account())
+
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+        ms.stateDelegate = nil
     }
 
     func notestIdle() {
