@@ -15,7 +15,7 @@ class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
     var hasMessagesReadyToBeSent = false
     let connectInfo: ConnectInfo
 
-    public init(parentName: String? = nil,
+    public init(parentName: String,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 connectInfo: ConnectInfo) {
         self.connectInfo = connectInfo

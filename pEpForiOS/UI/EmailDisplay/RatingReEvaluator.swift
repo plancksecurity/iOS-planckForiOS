@@ -18,13 +18,15 @@ class RatingReEvaluator {
     let message: Message
     lazy var queue = LimitedOperationQueue()
     weak var delegate: RatingReEvaluatorDelegate?
+    let parentName: String
 
-    init(message: Message) {
+    init(parentName: String, message: Message) {
+        self.parentName = parentName
         self.message = message
     }
 
     func reevaluateRating() {
-        let op = ReevaluateMessageRatingOperation(message: message)
+        let op = ReevaluateMessageRatingOperation(parentName: parentName, message: message)
         op.completionBlock = {
             op.completionBlock = nil
             if !op.hasErrors() {

@@ -18,7 +18,7 @@ import MessageModel
 open class TrashMailsOperation: AppendMailsOperation {
     let folderObjectID: NSManagedObjectID
 
-    public init(parentName: String? = nil, imapSyncData: ImapSyncData,
+    public init(parentName: String, imapSyncData: ImapSyncData,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(), folder: CdFolder) {
         self.folderObjectID = folder.objectID
         super.init(

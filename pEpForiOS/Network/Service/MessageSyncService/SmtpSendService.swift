@@ -19,7 +19,7 @@ class SmtpSendService: BackgroundOperationImapService {
 
     let smtpSendData: SmtpSendData
 
-    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
         self.smtpSendData = smtpSendData
         super.init(parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)

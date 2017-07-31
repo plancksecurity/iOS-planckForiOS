@@ -26,14 +26,15 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     let messageUpdate: CWMessageUpdate
 
     public init(
+        parentName: String,
         accountID: NSManagedObjectID, message: CWIMAPMessage,
-        messageUpdate: CWMessageUpdate, name: String? = nil,
+        messageUpdate: CWMessageUpdate,
         messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.message = message
         self.messageUpdate = messageUpdate
         self.messageFetchedBlock = messageFetchedBlock
-        super.init(parentName: name)
+        super.init(parentName: parentName)
     }
 
     override open func main() {

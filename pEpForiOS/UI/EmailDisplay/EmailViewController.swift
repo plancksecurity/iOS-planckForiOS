@@ -104,7 +104,7 @@ class EmailViewController: UITableViewController {
 
     func checkMessageReEvaluation() {
         if ratingReEvaluator?.message != message {
-            ratingReEvaluator = RatingReEvaluator(message: message)
+            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: message)
             ratingReEvaluator?.delegate = self
         }
     }

@@ -143,6 +143,7 @@ open class NetworkServiceWorker {
             // 3.a Items not associated with any mailbox (e.g., SMTP send)
             let smtpSendData = SmtpSendData(connectInfo: smtpCI)
             let loginOp = LoginSmtpOperation(
+                parentName: serviceConfig.parentName,
                 smtpSendData: smtpSendData, errorContainer: errorContainer)
             loginOp.completionBlock = { [weak self] in
                 loginOp.completionBlock = nil
@@ -159,8 +160,9 @@ open class NetworkServiceWorker {
             var operations = [Operation]()
             operations.append(loginOp)
 
-            let sendOp = EncryptAndSendOperation(smtpSendData: smtpSendData,
-                                                 errorContainer: errorContainer)
+            let sendOp = EncryptAndSendOperation(
+                parentName: serviceConfig.parentName, smtpSendData: smtpSendData,
+                errorContainer: errorContainer)
             opSmtpFinished.addDependency(sendOp)
             sendOp.addDependency(loginOp)
             operations.append(sendOp)
@@ -175,11 +177,13 @@ open class NetworkServiceWorker {
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
         opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
 
-        let opAppend = AppendMailsOperation(imapSyncData: imapSyncData)
+        let opAppend = AppendMailsOperation(
+            parentName: serviceConfig.parentName, imapSyncData: imapSyncData)
         opAppend.addDependency(previousOp)
         opImapFinished.addDependency(opAppend)
 
-        let opDrafts = AppendDraftMailsOperation(imapSyncData: imapSyncData)
+        let opDrafts = AppendDraftMailsOperation(
+            parentName: serviceConfig.parentName, imapSyncData: imapSyncData)
         opDrafts.addDependency(opAppend)
         opImapFinished.addDependency(opDrafts)
 
@@ -193,7 +197,8 @@ open class NetworkServiceWorker {
         var trashOps = [TrashMailsOperation]()
         let folders = TrashMailsOperation.foldersWithTrashedMessages(context: context)
         for cdF in folders {
-            let op = TrashMailsOperation(imapSyncData: imapSyncData, folder: cdF)
+            let op = TrashMailsOperation(
+                parentName: serviceConfig.parentName, imapSyncData: imapSyncData, folder: cdF)
             op.addDependency(lastOp)
             opImapFinished.addDependency(op)
             lastOp = op
@@ -503,7 +508,7 @@ open class NetworkServiceWorker {
 
 extension NetworkServiceWorker: CustomStringConvertible {
     public var description: String {
-        let parentDescription = serviceConfig.parentName ?? "UnknownParent"
+        let parentDescription = serviceConfig.parentName
         let ref = unsafeBitCast(self, to: UnsafeRawPointer.self)
         return "NetworkServiceWorker \(ref) (\(parentDescription))"
     }

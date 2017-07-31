@@ -17,7 +17,7 @@ class MatchUidToMsnOperation: ConcurrentBaseOperation {
     let msn: UInt
 
     init(
-        parentName: String?,
+        parentName: String,
         errorContainer: ServiceErrorProtocol = ErrorContainer(),
         folderID: NSManagedObjectID,
         uid: UInt, msn: UInt) {

@@ -2056,6 +2056,7 @@ class SimpleOperationsTest: OperationTestBase {
         let expDraftsStored = expectation(description: "expDraftsStored")
 
         let appendOp = AppendDraftMailsOperation(
+            parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer)
         appendOp.completionBlock = {
             appendOp.completionBlock = nil

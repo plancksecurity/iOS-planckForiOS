@@ -82,7 +82,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
     weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate?
 
     let sleepTimeInSeconds: Double
-    let parentName: String?
+    let parentName: String
     let backgrounder: BackgroundTaskProtocol?
     let mySelfer: KickOffMySelfProtocol?
     let managementQueue = DispatchQueue(
@@ -94,7 +94,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
         (AccountVerificationService, AccountVerificationServiceDelegate)]()
 
     init(sleepTimeInSeconds: Double = 10.0,
-         parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+         parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          mySelfer: KickOffMySelfProtocol? = nil) {
         self.sleepTimeInSeconds = sleepTimeInSeconds
         self.parentName = parentName

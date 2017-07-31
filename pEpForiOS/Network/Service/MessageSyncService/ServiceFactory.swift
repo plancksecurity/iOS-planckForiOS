@@ -12,7 +12,7 @@ import MessageModel
 
 class ServiceFactory {
     func initialSync(
-        parentName: String?, backgrounder: BackgroundTaskProtocol?,
+        parentName: String, backgrounder: BackgroundTaskProtocol?,
         imapSyncData: ImapSyncData, smtpSendData: SmtpSendData,
         smtpSendServiceDelegate: SmtpSendServiceDelegate?,
         syncFlagsToServerServiceDelegate: SyncFlagsToServerServiceDelegate?) -> ServiceExecutionProtocol {
@@ -44,7 +44,7 @@ class ServiceFactory {
     }
 
     func reSync(
-        parentName: String?, backgrounder: BackgroundTaskProtocol?,
+        parentName: String, backgrounder: BackgroundTaskProtocol?,
         imapSyncData: ImapSyncData, folderName: String) -> ServiceExecutionProtocol {
         let fetchMessagesService = FetchMessagesService(
             parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
@@ -59,7 +59,7 @@ class ServiceFactory {
     }
 
     func syncFlagsToServer(
-        parentName: String?, backgrounder: BackgroundTaskProtocol?,
+        parentName: String, backgrounder: BackgroundTaskProtocol?,
         imapSyncData: ImapSyncData, folderName: String,
         syncFlagsDelegate: SyncFlagsToServerServiceDelegate?) -> ServiceExecutionProtocol {
         let uploadFlagsService = SyncFlagsToServerService(

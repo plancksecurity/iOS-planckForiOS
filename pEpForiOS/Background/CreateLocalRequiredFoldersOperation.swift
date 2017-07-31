@@ -13,9 +13,9 @@ import MessageModel
 open class CreateLocalRequiredFoldersOperation: BaseOperation {
     let accountObjectID: NSManagedObjectID
 
-    public init(account: CdAccount) {
+    public init(parentName: String, account: CdAccount) {
         accountObjectID = account.objectID
-        super.init()
+        super.init(parentName: parentName)
     }
 
     open override func main() {

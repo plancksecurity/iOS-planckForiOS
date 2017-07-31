@@ -13,7 +13,7 @@ class DelayOperation: ConcurrentBaseOperation {
         label: "DelayOperation.managementQueue", qos: .utility, target: nil)
     let delayInSeconds: Double
 
-    init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    init(parentName: String, errorContainer: ServiceErrorProtocol = ErrorContainer(),
          delayInSeconds: Double) {
         self.delayInSeconds = delayInSeconds
         super.init(parentName: parentName, errorContainer: errorContainer)

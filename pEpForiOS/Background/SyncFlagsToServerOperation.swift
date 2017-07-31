@@ -27,7 +27,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     var changedMessageIDs = [NSManagedObjectID]()
     weak var delegate: SyncFlagsToServerOperationDelegate?
 
-    public init?(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    public init?(parentName: String, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                  imapSyncData: ImapSyncData, folder: CdFolder) {
         if let fn = folder.name {
             folderName = fn
@@ -39,7 +39,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    public convenience init?(parentName: String? = nil,
+    public convenience init?(parentName: String,
                              errorContainer: ServiceErrorProtocol = ErrorContainer(),
                              imapSyncData: ImapSyncData, folderID: NSManagedObjectID) {
         guard let folder = Record.Context.default.object(with: folderID) as? CdFolder else {

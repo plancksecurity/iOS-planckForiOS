@@ -23,9 +23,10 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
     let message: Message
     let session: PEPSession?
 
-    init(message: Message, session: PEPSession? = nil) {
+    init(parentName: String, message: Message, session: PEPSession? = nil) {
         self.message = message
         self.session = session
+        super.init(parentName: parentName)
     }
 
     open override func main() {

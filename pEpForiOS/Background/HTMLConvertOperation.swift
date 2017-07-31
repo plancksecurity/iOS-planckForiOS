@@ -14,8 +14,9 @@ import MessageModel
 open class HTMLConvertOperation: BaseOperation {
     let coreDataUtil: CoreDataUtil
 
-    public init(coreDataUtil: CoreDataUtil) {
+    public init(parentName: String, coreDataUtil: CoreDataUtil) {
         self.coreDataUtil = coreDataUtil
+        super.init(parentName: parentName)
     }
 
     open override func main() {
