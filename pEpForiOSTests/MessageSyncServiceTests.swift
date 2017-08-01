@@ -247,7 +247,7 @@ class MessageSyncServiceTests: XCTestCase {
         uploadFlags(context: context, ms: ms, cdFolder: cdFolder, maxCount: 3)
     }
 
-    func testSendOnIdle() {
+    func notestSendOnIdle() {
         let ms = runOrContinueUntilIdle(parentName: #function)
         sendMessages(ms: ms)
         let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
