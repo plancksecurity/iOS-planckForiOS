@@ -106,7 +106,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
         syncDelegate = nil
         super.markAsFinished()
     }
-    //BUFF: check
+
     func folderNameParsed(syncOp: FetchFoldersOperation, folderName: String, folderSeparator: String?,
                           folderType: FolderType?) {
         let folderInfo = StoreFolderOperation.FolderInfo(
@@ -124,7 +124,6 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
         (errorHandler as? FetchFoldersOperation)?.readFolderNamesFromImapSync(sync)
     }
 
-    //BUFF: Add Special Folder Info in userInfo ++ followers
     public override func folderNameParsed(_ sync: ImapSync, notification: Notification?) {
         guard let userInfo = (notification as NSNotification?)?.userInfo else {
             return
