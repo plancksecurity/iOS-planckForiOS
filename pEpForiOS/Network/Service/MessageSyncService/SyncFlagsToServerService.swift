@@ -11,10 +11,15 @@ import CoreData
 
 import MessageModel
 
+protocol SyncFlagsToServerServiceDelegate: class {
+    func flagsUploaded(message: Message)
+}
+
 class SyncFlagsToServerService: BackgroundOperationImapService {
     let folderName: String
+    weak var delegate: SyncFlagsToServerServiceDelegate?
 
-    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData,
          folderName: String = ImapSync.defaultImapInboxName) {
         self.folderName = folderName
@@ -37,6 +42,7 @@ class SyncFlagsToServerService: BackgroundOperationImapService {
             }
 
             syncOp.addDependency(loginOp)
+            syncOp.delegate = self
             syncOp.completionBlock = {  [weak self] in
                 syncOp.completionBlock = nil
                 self?.backgrounder?.endBackgroundTask(taskID)
@@ -56,6 +62,14 @@ extension SyncFlagsToServerService: ServiceExecutionProtocol {
         let context = Record.Context.background
         context.perform { [weak self] in
             self?.executeInternal(context: context, taskID: bgID, handler: handler)
+        }
+    }
+}
+
+extension SyncFlagsToServerService: SyncFlagsToServerOperationDelegate {
+    func flagsUploaded(cdMessage: CdMessage) {
+        if let del = delegate, let msg = cdMessage.message() {
+            del.flagsUploaded(message: msg)
         }
     }
 }

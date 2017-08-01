@@ -26,7 +26,7 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
         return errorContainer.hasErrors()
     }
 
-    public init(parentName: String? = nil,
+    public init(parentName: String,
                 errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.errorContainer = errorContainer
 
@@ -47,9 +47,7 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
             Log.error(component: comp, error: error)
         }
 
-        if let pn = parentName {
-            comp = "\(comp) [\(pn)]"
-        }
+        comp = "\(comp) [\(parentName)]"
         self.name = comp
         Log.info(component: comp, content: "\(#function)")
     }

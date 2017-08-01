@@ -31,10 +31,10 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
 
     weak var delegate: StoreFolderOperationDelegate?
 
-    init(connectInfo: EmailConnectInfo, folderInfo: FolderInfo) {
+    init(parentName: String, connectInfo: EmailConnectInfo, folderInfo: FolderInfo) {
         self.folderInfo = folderInfo
         self.connectInfo = connectInfo
-        super.init()
+        super.init(parentName: parentName)
         Log.verbose(component: comp, content: "init \(folderInfo.name)")
     }
 

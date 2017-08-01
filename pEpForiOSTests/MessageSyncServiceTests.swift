@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreData
 
 @testable import MessageModel
 @testable import pEpForiOS
@@ -99,6 +100,14 @@ class MessageSyncServiceTests: XCTestCase {
         }
     }
 
+    class TestFlagsDelegate: MessageSyncFlagsUploadDelegate {
+        var messagesChanged = Set<Message>()
+
+        func flagsUploaded(message: Message) {
+            messagesChanged.insert(message)
+        }
+    }
+
     class MessageFolderTestDelegate: MessageFolderDelegate {
         let expMessagesDeleted: XCTestExpectation?
         var deletedMessages = Set<MessageFolder>()
@@ -133,6 +142,230 @@ class MessageSyncServiceTests: XCTestCase {
         persistentSetup = nil
     }
 
+    func testBasicPassiveSend() {
+        runMessageSyncServiceSend(
+            parentName: #function,
+            cdAccount: cdAccount,
+            numberOfOutgoingMessagesToCreate: 3,
+            numberOfOutgoingMessagesToSendImmediately: 0,
+            numberOfOutgoingMessagesToSendLater: 0,
+            expectedNumberOfExpectedBackgroundTasks: 5,
+            expectedNumberOfSyncs: 1)
+    }
+
+    func testSendSeveral() {
+        runMessageSyncServiceSend(
+            parentName: #function,
+            cdAccount: cdAccount,
+            numberOfOutgoingMessagesToCreate: 3,
+            numberOfOutgoingMessagesToSendImmediately: 2,
+            numberOfOutgoingMessagesToSendLater: 0,
+            expectedNumberOfExpectedBackgroundTasks: 6,
+            expectedNumberOfSyncs: 1)
+    }
+
+    func testSyncWithUnverifiedAccount() {
+        let expMessagesSynced = expectation(description: "expMessagesSynced")
+        let syncDelegate = TestSyncDelegate(expMessagesSynced: expMessagesSynced)
+
+        let ms = MessageSyncService(
+            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        messageSyncService = ms
+        ms.syncDelegate = syncDelegate
+        ms.start(account: cdAccount.account())
+
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+            XCTAssertNil(error)
+        }
+
+        ms.cancel(account: cdAccount.account())
+    }
+
+    func testSyncWithErroneousAccount() {
+        let expErrorOccurred = expectation(description: "expErrorOccurred")
+        let errorDelegate = TestErrorDelegate(expErrorOccurred: expErrorOccurred)
+
+        TestUtil.makeServersUnreachable(cdAccount: cdAccount)
+
+        let ms = MessageSyncService(
+            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        messageSyncService = ms
+        ms.errorDelegate = errorDelegate
+        ms.start(account: cdAccount.account())
+
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+            XCTAssertNil(error)
+        }
+
+        XCTAssertNotNil(errorDelegate.error)
+
+        ms.cancel(account: cdAccount.account())
+    }
+
+    func testTypicalNewAccountSetup() {
+        let ms = MessageSyncService(
+            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        messageSyncService = ms
+
+        // Verification
+        let expVerified = expectation(description: "expVerified")
+        let verificationDelegate = TestAccountVerificationDelegate(expAccountVerified: expVerified)
+        ms.requestVerification(account: cdAccount.account(), delegate: verificationDelegate)
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
+            XCTAssertNil(error)
+        }
+        guard let result = verificationDelegate.verificationResult else {
+            XCTFail()
+            return
+        }
+        switch result {
+        case .ok:
+            break
+        default:
+            XCTFail("Unexpected verification result: \(result)")
+        }
+
+        runMessageSyncWithSend(
+            ms: ms, cdAccount: cdAccount, numberOfOutgoingMessagesToCreate: 3,
+            numberOfOutgoingMessagesToSendImmediately: 3,
+            numberOfOutgoingMessagesToSendLater: 0,
+            expectedNumberOfSyncs: 1)
+
+        ms.cancel(account: cdAccount.account())
+    }
+
+    func testUploadFlagsOnIdle() {
+        let context = Record.Context.default
+        let ms = runOrContinueUntilIdle(parentName: #function)
+
+        guard let cdFolder = CdFolder.by(
+            folderType: .inbox, account: cdAccount, context: context) else {
+                XCTFail()
+                return
+        }
+
+        uploadFlags(context: context, ms: ms, cdFolder: cdFolder, maxCount: 3)
+    }
+
+    func notestSendOnIdle() {
+        let ms = runOrContinueUntilIdle(parentName: #function)
+        sendMessages(ms: ms)
+        let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
+        ReferenceCounter.logOutstanding()
+    }
+
+    func notestUploadFlagsBeforeIdle() {
+        let ms = runOrContinueUntilIdle(parentName: #function)
+
+        let context = Record.Context.default
+
+        guard let cdFolder = CdFolder.by(
+            folderType: .inbox, account: cdAccount, context: context) else {
+                XCTFail()
+                return
+        }
+
+
+        uploadFlags(context: context, ms: ms, cdFolder: cdFolder, maxCount: 3)
+        ms.stateDelegate = nil
+    }
+
+    func notestIdle() {
+        let messageFolderDelegate = MessageFolderTestDelegate(expMessagesDeleted: nil)
+        MessageModelConfig.messageFolderDelegate = messageFolderDelegate
+
+        runMessageSyncServiceSend(
+            parentName: #function,
+            cdAccount: cdAccount,
+            numberOfOutgoingMessagesToCreate: 0,
+            numberOfOutgoingMessagesToSendImmediately: 0,
+            numberOfOutgoingMessagesToSendLater: 0,
+            expectedNumberOfExpectedBackgroundTasks: -1,
+            expectedNumberOfSyncs: 2)
+
+        print("Deleted messages: \(messageFolderDelegate.deletedMessages.count)")
+    }
+
+    // MARK: - Helpers
+
+    func sendMessages(ms: MessageSyncService) {
+        let numberOfOutgoingMessagesToCreate = 3
+        let numberOfOutgoingMessagesToSendImmediately = numberOfOutgoingMessagesToCreate
+        let outgoingCdMsgs = TestUtil.createOutgoingMails(
+            cdAccount: cdAccount, testCase: self,
+            numberOfMails: numberOfOutgoingMessagesToCreate)
+
+        if outgoingCdMsgs.count < numberOfOutgoingMessagesToCreate {
+            XCTFail()
+            return
+        }
+
+        let cdMsgsToSend = outgoingCdMsgs.prefix(numberOfOutgoingMessagesToSendImmediately)
+        XCTAssertEqual(cdMsgsToSend.count, numberOfOutgoingMessagesToSendImmediately)
+        var msgsToSend = Set<Message>()
+        for cdMsg in cdMsgsToSend {
+            guard let msg = cdMsg.message() else {
+                XCTFail()
+                return
+            }
+            msgsToSend.insert(msg)
+            ms.requestSend(message: msg)
+        }
+    }
+
+    func uploadFlags(
+        context: NSManagedObjectContext, ms: MessageSyncService, cdMessage: CdMessage,
+        flagsDelegate: TestFlagsDelegate = TestFlagsDelegate(), waitForAnswer: Bool) {
+        guard
+            let cdLocalFlags1 = cdMessage.imapFields().localFlags,
+            let cdServerFlags1 = cdMessage.imapFields().serverFlags,
+            let cdFolder = cdMessage.parent else {
+                XCTFail()
+                return
+        }
+        cdLocalFlags1.flagFlagged = !cdLocalFlags1.flagFlagged
+        let expectedFlagged = cdLocalFlags1.flagFlagged
+        XCTAssertNotEqual(cdLocalFlags1.flagFlagged, cdServerFlags1.flagFlagged)
+        context.saveAndLogErrors()
+
+        let cdSyncMsgs1 = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: cdFolder, context: Record.Context.background)
+        XCTAssertEqual(cdSyncMsgs1.count, 1)
+
+        guard let msg = cdMessage.message() else {
+            XCTFail()
+            return
+        }
+        ms.flagsUploadDelegate = flagsDelegate
+        ms.requestFlagChange(message: msg)
+
+        if waitForAnswer {
+            let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
+            XCTAssertTrue(flagsDelegate.messagesChanged.contains(msg))
+            context.refresh(cdMessage, mergeChanges: true)
+            guard
+                let cdLocalFlags2 = cdMessage.imapFields().localFlags,
+                let cdServerFlags2 = cdMessage.imapFields().serverFlags else {
+                    XCTFail()
+                    return
+            }
+            XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
+            XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
+        }
+    }
+
+    func uploadFlags(context: NSManagedObjectContext,
+                     ms: MessageSyncService,
+                     cdFolder: CdFolder, maxCount: Int) {
+        let cdMessages = cdFolder.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
+        XCTAssertGreaterThan(cdMessages.count, 0)
+
+        for cdM in cdMessages.prefix(3) {
+            uploadFlags(context: context, ms: ms, cdMessage: cdM, waitForAnswer: true)
+        }
+    }
+
     func send(messageSyncService ms: MessageSyncService, messages: [Message],
               numberOfTotalOutgoingMessages: Int, expectedNumberOfSyncs: Int) {
         let errorDelegate = TestErrorDelegate()
@@ -162,7 +395,7 @@ class MessageSyncServiceTests: XCTestCase {
             ms.requestSend(message: msg)
         }
 
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
 
@@ -259,7 +492,7 @@ class MessageSyncServiceTests: XCTestCase {
     }
 
     func runOrContinueUntilIdle(parentName: String,
-                      messageSyncService: MessageSyncService? = nil) -> MessageSyncService {
+                                messageSyncService: MessageSyncService? = nil) -> MessageSyncService {
         let ms = messageSyncService ?? MessageSyncService(
             sleepTimeInSeconds: 2, parentName: parentName, backgrounder: nil, mySelfer: nil)
         self.messageSyncService = ms
@@ -271,166 +504,10 @@ class MessageSyncServiceTests: XCTestCase {
         if messageSyncService == nil {
             ms.start(account: cdAccount.account())
         }
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
             XCTAssertNil(error)
         }
         ms.stateDelegate = nil
         return ms
-    }
-
-    func testBasicPassiveSend() {
-        runMessageSyncServiceSend(
-            parentName: #function,
-            cdAccount: cdAccount,
-            numberOfOutgoingMessagesToCreate: 3,
-            numberOfOutgoingMessagesToSendImmediately: 0,
-            numberOfOutgoingMessagesToSendLater: 0,
-            expectedNumberOfExpectedBackgroundTasks: 5,
-            expectedNumberOfSyncs: 1)
-    }
-
-    func testSendSeveral() {
-        runMessageSyncServiceSend(
-            parentName: #function,
-            cdAccount: cdAccount,
-            numberOfOutgoingMessagesToCreate: 3,
-            numberOfOutgoingMessagesToSendImmediately: 2,
-            numberOfOutgoingMessagesToSendLater: 0,
-            expectedNumberOfExpectedBackgroundTasks: 6,
-            expectedNumberOfSyncs: 1)
-    }
-
-    func testSyncWithUnverifiedAccount() {
-        let expMessagesSynced = expectation(description: "expMessagesSynced")
-        let syncDelegate = TestSyncDelegate(expMessagesSynced: expMessagesSynced)
-
-        let ms = MessageSyncService(
-            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
-        messageSyncService = ms
-        ms.syncDelegate = syncDelegate
-        ms.start(account: cdAccount.account())
-
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
-        }
-
-        ms.cancel(account: cdAccount.account())
-    }
-
-    func testSyncWithErroneousAccount() {
-        let expErrorOccurred = expectation(description: "expErrorOccurred")
-        let errorDelegate = TestErrorDelegate(expErrorOccurred: expErrorOccurred)
-
-        TestUtil.makeServersUnreachable(cdAccount: cdAccount)
-
-        let ms = MessageSyncService(
-            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
-        messageSyncService = ms
-        ms.errorDelegate = errorDelegate
-        ms.start(account: cdAccount.account())
-
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
-        }
-
-        XCTAssertNotNil(errorDelegate.error)
-
-        ms.cancel(account: cdAccount.account())
-    }
-
-    func testTypicalNewAccountSetup() {
-        let ms = MessageSyncService(
-            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
-        messageSyncService = ms
-
-        // Verification
-        let expVerified = expectation(description: "expVerified")
-        let verificationDelegate = TestAccountVerificationDelegate(expAccountVerified: expVerified)
-        ms.requestVerification(account: cdAccount.account(), delegate: verificationDelegate)
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
-        }
-        guard let result = verificationDelegate.verificationResult else {
-            XCTFail()
-            return
-        }
-        switch result {
-        case .ok:
-            break
-        default:
-            XCTFail("Unexpected verification result: \(result)")
-        }
-
-        runMessageSyncWithSend(
-            ms: ms, cdAccount: cdAccount, numberOfOutgoingMessagesToCreate: 3,
-            numberOfOutgoingMessagesToSendImmediately: 3,
-            numberOfOutgoingMessagesToSendLater: 0,
-            expectedNumberOfSyncs: 1)
-
-        ms.cancel(account: cdAccount.account())
-    }
-
-    func testUploadFlags() {
-        let context = Record.Context.default
-        let ms = runOrContinueUntilIdle(parentName: #function)
-
-        guard let cdFolder = CdFolder.by(
-            folderType: .inbox, account: cdAccount, context: context) else {
-                XCTFail()
-                return
-        }
-
-        let cdMessages = cdFolder.messages?.sortedArray(
-            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
-        XCTAssertGreaterThan(cdMessages.count, 0)
-
-        for cdM in cdMessages.prefix(3) {
-            guard
-                let cdLocalFlags1 = cdM.imapFields().localFlags,
-                let cdServerFlags1 = cdM.imapFields().serverFlags else {
-                XCTFail()
-                return
-            }
-            cdLocalFlags1.flagFlagged = !cdLocalFlags1.flagFlagged
-            let expectedFlagged = cdLocalFlags1.flagFlagged
-            XCTAssertNotEqual(cdLocalFlags1.flagFlagged, cdServerFlags1.flagFlagged)
-            context.saveAndLogErrors()
-
-            let cdSyncMsgs1 = SyncFlagsToServerOperation.messagesToBeSynced(
-                folder: cdFolder, context: Record.Context.background)
-            XCTAssertEqual(cdSyncMsgs1.count, 1)
-
-            guard let msg = cdM.message() else {
-                XCTFail()
-                return
-            }
-            ms.requestFlagChange(message: msg)
-            let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
-            context.refresh(cdM, mergeChanges: true)
-            guard
-                let cdLocalFlags2 = cdM.imapFields().localFlags,
-                let cdServerFlags2 = cdM.imapFields().serverFlags else {
-                    XCTFail()
-                    return
-            }
-            XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
-            XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
-        }
-    }
-
-    func notestIdle() {
-        let messageFolderDelegate = MessageFolderTestDelegate(expMessagesDeleted: nil)
-        MessageModelConfig.messageFolderDelegate = messageFolderDelegate
-
-        runMessageSyncServiceSend(
-            parentName: #function,
-            cdAccount: cdAccount,
-            numberOfOutgoingMessagesToCreate: 0,
-            numberOfOutgoingMessagesToSendImmediately: 0,
-            numberOfOutgoingMessagesToSendLater: 0,
-            expectedNumberOfExpectedBackgroundTasks: -1,
-            expectedNumberOfSyncs: 2)
-
-        print("Deleted messages: \(messageFolderDelegate.deletedMessages.count)")
     }
 }

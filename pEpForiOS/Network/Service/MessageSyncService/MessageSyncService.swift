@@ -79,13 +79,14 @@ class MessageSyncService: MessageSyncServiceProtocol {
     weak var sentDelegate: MessageSyncServiceSentDelegate?
     weak var syncDelegate: MessageSyncServiceSyncDelegate?
     weak var stateDelegate: MessageSyncServiceStateDelegate?
+    weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate?
 
     let sleepTimeInSeconds: Double
-    let parentName: String?
+    let parentName: String
     let backgrounder: BackgroundTaskProtocol?
     let mySelfer: KickOffMySelfProtocol?
     let managementQueue = DispatchQueue(
-        label: "managementQueue", qos: .utility, target: nil)
+        label: "MessageSyncService", qos: .utility, target: nil)
 
     private var imapConnections = [ImapSmtpConnection: ImapSmtpSyncService]()
 
@@ -93,12 +94,17 @@ class MessageSyncService: MessageSyncServiceProtocol {
         (AccountVerificationService, AccountVerificationServiceDelegate)]()
 
     init(sleepTimeInSeconds: Double = 10.0,
-         parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+         parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          mySelfer: KickOffMySelfProtocol? = nil) {
         self.sleepTimeInSeconds = sleepTimeInSeconds
         self.parentName = parentName
         self.backgrounder = backgrounder
         self.mySelfer = mySelfer
+        ReferenceCounter.inc(obj: self)
+    }
+
+    deinit {
+        ReferenceCounter.dec(obj: self)
     }
 
     func start(account: Account) {
@@ -294,5 +300,9 @@ extension MessageSyncService: ImapSmtpSyncServiceDelegate {
         service.imapSyncData.connectInfo.handleAccount() { [weak self] account in
             self?.stateDelegate?.startIdling(account: account)
         }
+    }
+
+    func flagsUploaded(message: Message) {
+        flagsUploadDelegate?.flagsUploaded(message: message)
     }
 }

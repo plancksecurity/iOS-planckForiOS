@@ -15,16 +15,20 @@ public protocol KickOffMySelfProtocol {
     func startMySelf()
 }
 
-open class DefaultMySelfer: KickOffMySelfProtocol {
+open class DefaultMySelfer {
     let backgrounder: BackgroundTaskProtocol?
     let queue = LimitedOperationQueue()
+    let parentName: String
 
-    public init(backgrounder: BackgroundTaskProtocol?) {
+    public init(parentName: String, backgrounder: BackgroundTaskProtocol?) {
+        self.parentName = parentName
         self.backgrounder = backgrounder
     }
+}
 
+extension DefaultMySelfer: KickOffMySelfProtocol {
     public func startMySelf() {
-        let op = MySelfOperation(backgrounder: backgrounder)
+        let op = MySelfOperation(parentName: parentName, backgrounder: backgrounder)
         queue.addOperation(op)
     }
 }

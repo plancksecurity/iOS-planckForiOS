@@ -264,7 +264,7 @@ class TestUtil {
             testCase.wait(for: [expectationFoldersFetched], timeout: waitTime)
         }
 
-        guard let folder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+        guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
             XCTFail()
             return []
         }
@@ -296,7 +296,7 @@ class TestUtil {
         for i in 1...numberOfMails {
             let message = CdMessage.create()
             message.from = from
-            message.parent = folder
+            message.parent = sentFolder
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
@@ -319,8 +319,10 @@ class TestUtil {
         }
         Record.saveAndWait()
 
-        if let msgs = CdMessage.all() as? [CdMessage] {
-            for m in msgs {
+        if let cdOutgoingMsgs = sentFolder.messages?.sortedArray(
+            using: [NSSortDescriptor.init(key: "uid", ascending: true)]) as? [CdMessage] {
+            XCTAssertEqual(cdOutgoingMsgs.count, numberOfMails)
+            for m in cdOutgoingMsgs {
                 XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
                 XCTAssertEqual(m.uid, Int32(0))
                 XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))

@@ -298,7 +298,7 @@ class NetworkServiceTests: XCTestCase {
         }
 
         func startMySelf() {
-            let op = MySelfOperation(backgrounder: backgrounder)
+            let op = MySelfOperation(parentName: #function, backgrounder: backgrounder)
             op.completionBlock = {
                 op.completionBlock = nil
                 self.expMySelfed?.fulfill()

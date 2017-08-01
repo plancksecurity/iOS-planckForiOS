@@ -19,15 +19,16 @@ class SpecialUseMailboxesTest: OperationTestBase {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let errorContainer = ErrorContainer()
 
-        let imapLogin = LoginImapOperation(
-            errorContainer: errorContainer, imapSyncData: imapSyncData)
+        let imapLogin = LoginImapOperation(parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData)
+            //LoginImapOperation(
+            //errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
             XCTAssertNotNil(imapSyncData.sync)
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(imapSyncData: imapSyncData)
+        let fetchFoldersOp = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil
@@ -41,7 +42,8 @@ class SpecialUseMailboxesTest: OperationTestBase {
         }
 
         let expFoldersCreated = expectation(description: "expFoldersCreated")
-        let createRequiredFoldersOp = CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
+        let createRequiredFoldersOp = CreateRequiredFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
+            //CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
         createRequiredFoldersOp.addDependency(fetchFoldersOp)
         createRequiredFoldersOp.completionBlock = {
             print("####BUF:\n finished CreateRequiredFoldersOperation")

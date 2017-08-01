@@ -18,7 +18,7 @@ class FetchMessagesService: BackgroundOperationImapService {
     weak var delegate: FetchMessagesServiceDelegate?
     let folderName: String
 
-    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
                   imapSyncData: ImapSyncData,
                   folderName: String = ImapSync.defaultImapInboxName) {
         self.folderName = folderName

@@ -35,7 +35,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
 
     weak var delegate: FetchFoldersOperationOperationDelegate?
 
-    public init(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    public init(parentName: String, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
 
@@ -106,6 +106,17 @@ open class FetchFoldersOperation: ImapSyncOperation {
         syncDelegate = nil
         super.markAsFinished()
     }
+    //BUFF: check
+    func folderNameParsed(syncOp: FetchFoldersOperation, folderName: String, folderSeparator: String?,
+                          folderType: FolderType?) {
+        let folderInfo = StoreFolderOperation.FolderInfo(
+            name: folderName, separator: folderSeparator, folderType: folderType)
+        let storeFolderOp = StoreFolderOperation(
+            parentName: comp, connectInfo: syncOp.imapSyncData.connectInfo,
+            folderInfo: folderInfo)
+        storeFolderOp.delegate = self
+        syncOp.backgroundQueue.addOperation(storeFolderOp)
+    }
 }
 
 class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
@@ -136,14 +147,10 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
             folderType = FolderType.from(pantomimeSpecialUseMailboxType: specialUseMailboxType)
         }
 
-        let folderInfo = StoreFolderOperation.FolderInfo(name: folderName,
-                                                         separator: folderSeparator,
-                                                         folderType: folderType)
-        let storeFolderOp = StoreFolderOperation(connectInfo: syncOp.imapSyncData.connectInfo,
-                                                 folderInfo: folderInfo)
-
-        storeFolderOp.delegate = errorHandler as? FetchFoldersOperation
-        syncOp.backgroundQueue.addOperation(storeFolderOp)
+        (errorHandler as? FetchFoldersOperation)?.folderNameParsed(syncOp: syncOp,
+                                                                   folderName: folderName,
+                                                                   folderSeparator: folderSeparator,
+                                                                   folderType:folderType)
     }
 }
 

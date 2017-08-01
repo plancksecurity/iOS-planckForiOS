@@ -16,8 +16,9 @@ open class MessageToAttachmentOperation: BaseOperation {
 
     var attachment: Attachment?
 
-    public init(message: Message) {
+    public init(parentName: String, message: Message) {
         self.message = message
+        super.init(parentName: parentName)
     }
 
     open override func main() {

@@ -80,6 +80,11 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         super.init(name: name)
 
         self.setCacheManager(self)
+        ReferenceCounter.inc(obj: self)
+    }
+
+    deinit {
+        ReferenceCounter.dec(obj: self)
     }
 
     func functionName(_ name: String) -> String {
@@ -282,8 +287,9 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
                       messageUpdate: CWMessageUpdate) {
         let opStore = StorePrefetchedMailOperation(
+            parentName: functionName(#function),
             accountID: accountID, message: message, messageUpdate: messageUpdate,
-            name: functionName(#function), messageFetchedBlock: messageFetchedBlock)
+            messageFetchedBlock: messageFetchedBlock)
         let opID = unsafeBitCast(opStore, to: UnsafeRawPointer.self)
         Log.warn(component: functionName(#function),
                  content: "Writing message \(message), \(messageUpdate) for \(opID)")

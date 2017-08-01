@@ -21,7 +21,7 @@ class ImapIdleService: AtomicImapService {
     var handler: ServiceFinishedHandler?
     var syncDelegate: DefaultImapSyncDelegate?
 
-    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData) {
         self.imapSyncData = imapSyncData
         super.init(parentName: parentName, backgrounder: backgrounder)

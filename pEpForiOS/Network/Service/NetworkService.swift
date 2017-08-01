@@ -39,12 +39,12 @@ public class NetworkService {
         public var sendLayerDelegate: SendLayerDelegate?
         public weak var networkServiceDelegate: NetworkServiceDelegate?
         public var networkService: NetworkService?
-        let parentName: String?
+        let parentName: String
         let mySelfer: KickOffMySelfProtocol?
         let backgrounder: BackgroundTaskProtocol?
 
         init(
-            networkService: NetworkService?, sleepTimeInSeconds: Double, parentName: String?,
+            networkService: NetworkService?, sleepTimeInSeconds: Double, parentName: String,
             mySelfer: KickOffMySelfProtocol?, backgrounder: BackgroundTaskProtocol?) {
             self.networkService = networkService
             self.sleepTimeInSeconds = sleepTimeInSeconds
@@ -85,12 +85,13 @@ public class NetworkService {
     var lastConnectionDataCache: [EmailConnectInfo: ImapSyncData]?
 
     public init(sleepTimeInSeconds: Double = 10.0,
-                parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+                parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
                 mySelfer: KickOffMySelfProtocol? = nil) {
         serviceConfig = ServiceConfig(
             networkService: nil, sleepTimeInSeconds: sleepTimeInSeconds,
             parentName: parentName,
-            mySelfer: mySelfer ?? DefaultMySelfer(backgrounder: backgrounder),
+            mySelfer: mySelfer ?? DefaultMySelfer(
+                parentName: parentName, backgrounder: backgrounder),
             backgrounder: backgrounder)
         serviceConfig.networkService = self
     }

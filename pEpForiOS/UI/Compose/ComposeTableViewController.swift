@@ -153,7 +153,7 @@ class ComposeTableViewController: UITableViewController {
         if let om = originalMessage, composeMode == .forward {
             messageBodyCell.setInitial(
                 text: ReplyUtil.quotedMessageText(message: om, replyAll: composeMode == .forward))
-            let mtao = MessageToAttachmentOperation(message: om)
+            let mtao = MessageToAttachmentOperation(parentName: #function, message: om)
             mtao.main()
             if let attachment = mtao.attachment {
                 messageBodyCell.add(attachment)

@@ -40,10 +40,60 @@ public protocol ImapSyncDelegate: class {
 
 open class ImapSync: Service {
     public struct ImapState {
-        var authenticationCompleted = false
+        enum State {
+            case initial
+            case authenticated
+            case idling
+            case error
+        }
+        var state: State = .initial {
+            didSet {
+                Log.shared.info(component: #function, content: "\(oldValue) -> \(state)")
+            }
+        }
+
+        var authenticationCompleted: Bool {
+            get {
+                return state == .authenticated || state == .idling
+            }
+            set {
+                if newValue {
+                    state = .authenticated
+                } else {
+                    state = .initial
+                }
+            }
+        }
+
+        var isIdling: Bool {
+            get {
+                return state == .idling
+            }
+            set {
+                if newValue {
+                    state = .idling
+                } else {
+                    state = .authenticated
+                }
+            }
+        }
+
+        var hasError: Bool {
+            get {
+                return state == .error
+            }
+            set {
+                if newValue {
+                    state = .error
+                } else {
+                    Log.shared.error(component: #function,
+                                     errorString: "clearing hasError")
+                }
+            }
+        }
+
         var currentFolderName: String?
         var currentFolder: CWIMAPFolder?
-        var hasError = false
     }
 
     open override var comp: String { get { return "ImapSync" } }
@@ -201,6 +251,7 @@ open class ImapSync: Service {
             return
         }
         imapStore.send(IMAP_IDLE, info: nil, string: "IDLE")
+        imapState.isIdling = true
     }
 
     open func exitIdle() {

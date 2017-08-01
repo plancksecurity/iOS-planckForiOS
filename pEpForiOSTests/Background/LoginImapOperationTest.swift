@@ -25,7 +25,7 @@ class LoginImapOperationTest: OperationTestBase {
         let expLoginSucceeds = expectation(description: "LoginSucceeds")
 
         let imapLogin = LoginImapOperation(
-            errorContainer: errorContainer, imapSyncData: imapSyncData)
+            parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
             XCTAssertNotNil(self.imapSyncData.sync)

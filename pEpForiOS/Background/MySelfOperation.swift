@@ -28,10 +28,11 @@ open class MySelfOperation: BaseOperation {
      */
     public static let taskNameSubOperation = "MySelfOperation.Sub"
 
-    public init(backgrounder: BackgroundTaskProtocol? = nil) {
+    public init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil) {
         self.backgrounder = backgrounder
         self.wholeOperationTaskID = backgrounder?.beginBackgroundTask(
             taskName: MySelfOperation.taskNameWhole)
+        super.init(parentName: parentName)
     }
 
     open override func main() {

@@ -12,9 +12,10 @@ import MessageModel
 
 class ServiceFactory {
     func initialSync(
-        parentName: String?, backgrounder: BackgroundTaskProtocol?,
+        parentName: String, backgrounder: BackgroundTaskProtocol?,
         imapSyncData: ImapSyncData, smtpSendData: SmtpSendData,
-        smtpSendServiceDelegate: SmtpSendServiceDelegate?) -> ServiceExecutionProtocol {
+        smtpSendServiceDelegate: SmtpSendServiceDelegate?,
+        syncFlagsToServerServiceDelegate: SyncFlagsToServerServiceDelegate?) -> ServiceExecutionProtocol {
         let fetchFoldersService = FetchFoldersService(
             parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
 
@@ -32,6 +33,7 @@ class ServiceFactory {
         let uploadFlagsService = SyncFlagsToServerService(
             parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData,
             folderName: ImapSync.defaultImapInboxName)
+        uploadFlagsService.delegate = syncFlagsToServerServiceDelegate
 
         let chainedService = ServiceChainExecutor()
         chainedService.add(services: [fetchFoldersService, smtpService,
@@ -42,7 +44,7 @@ class ServiceFactory {
     }
 
     func reSync(
-        parentName: String?, backgrounder: BackgroundTaskProtocol?,
+        parentName: String, backgrounder: BackgroundTaskProtocol?,
         imapSyncData: ImapSyncData, folderName: String) -> ServiceExecutionProtocol {
         let fetchMessagesService = FetchMessagesService(
             parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
@@ -57,11 +59,13 @@ class ServiceFactory {
     }
 
     func syncFlagsToServer(
-        parentName: String?, backgrounder: BackgroundTaskProtocol?,
-        imapSyncData: ImapSyncData, folderName: String) -> ServiceExecutionProtocol {
+        parentName: String, backgrounder: BackgroundTaskProtocol?,
+        imapSyncData: ImapSyncData, folderName: String,
+        syncFlagsDelegate: SyncFlagsToServerServiceDelegate?) -> ServiceExecutionProtocol {
         let uploadFlagsService = SyncFlagsToServerService(
             parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData,
             folderName: folderName)
+        uploadFlagsService.delegate = syncFlagsDelegate
         return uploadFlagsService
     }
 }

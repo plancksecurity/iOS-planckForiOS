@@ -9,6 +9,9 @@
 import CoreData
 import MessageModel
 
+protocol SyncFlagsToServerOperationDelegate: class {
+    func flagsUploaded(cdMessage: CdMessage)
+}
 
 /// Sends (syncs) local changes of Imap flags to server.
 open class SyncFlagsToServerOperation: ImapSyncOperation {
@@ -22,8 +25,9 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
 
     var syncDelegate: SyncFlagsToServerSyncDelegate?
     var changedMessageIDs = [NSManagedObjectID]()
+    weak var delegate: SyncFlagsToServerOperationDelegate?
 
-    public init?(parentName: String? = nil, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    public init?(parentName: String, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                  imapSyncData: ImapSyncData, folder: CdFolder) {
         if let fn = folder.name {
             folderName = fn
@@ -35,7 +39,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    public convenience init?(parentName: String? = nil,
+    public convenience init?(parentName: String,
                              errorContainer: ServiceErrorProtocol = ErrorContainer(),
                              imapSyncData: ImapSyncData, folderID: NSManagedObjectID) {
         guard let folder = Record.Context.default.object(with: folderID) as? CdFolder else {
@@ -205,6 +209,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                 imap.serverFlags = cdFlags
 
                 cdFlags.update(cwFlags: cwFlags)
+                delegate?.flagsUploaded(cdMessage: cdMsg)
                 changedMessageIDs.append(cdMsg.objectID)
             } else {
                 handle(error: CoreDataError.couldNotFindMessage)

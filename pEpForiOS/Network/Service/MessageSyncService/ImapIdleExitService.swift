@@ -11,7 +11,7 @@ class ImapIdleExitService: AtomicImapService {
     var syncDelegate: DefaultImapSyncDelegate?
     var handler: ServiceFinishedHandler?
 
-    init(parentName: String? = nil, backgrounder: BackgroundTaskProtocol? = nil,
+    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData) {
         self.imapSyncData = imapSyncData
         super.init(parentName: parentName, backgrounder: backgrounder)

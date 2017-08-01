@@ -61,7 +61,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Open the first session from the main thread and keep it open
         let firstSession = PEPSession()
 
-        let theMessageSyncService = MessageSyncService(backgrounder: self, mySelfer: self)
+        let theMessageSyncService = MessageSyncService(
+            parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
         appConfig = AppConfig(session: firstSession, messageSyncService: theMessageSyncService)
 
@@ -84,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         kickOffMySelf()
 
-        networkService = NetworkService(backgrounder: self, mySelfer: self)
+        networkService = NetworkService(parentName: #function, backgrounder: self, mySelfer: self)
         networkService?.sendLayerDelegate = sendLayerDelegate
         CdAccount.sendLayer = networkService
         networkService?.start()
@@ -111,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func kickOffMySelf() {
-        mySelfQueue.addOperation(MySelfOperation(backgrounder: self))
+        mySelfQueue.addOperation(MySelfOperation(parentName: #function, backgrounder: self))
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

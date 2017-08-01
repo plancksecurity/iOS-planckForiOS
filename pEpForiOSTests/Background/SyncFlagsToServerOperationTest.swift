@@ -23,7 +23,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             XCTFail()
             return
         }
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -100,7 +100,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -171,7 +171,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -244,7 +244,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -328,7 +328,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
         XCTAssertEqual(messagesToBeSynced.count, messages.count,
                        "all messages should need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -407,7 +407,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -487,7 +487,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -567,7 +567,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -646,7 +646,9 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function,
+                                                  imapSyncData: imapSyncData,
+                                                  folder: inbox) else {
             XCTFail()
             return
         }
@@ -719,7 +721,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -795,7 +797,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -873,7 +875,9 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function,
+                                                  imapSyncData: imapSyncData,
+                                                  folder: inbox) else {
             XCTFail()
             return
         }
@@ -951,7 +955,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -1029,7 +1033,9 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function,
+                                                  imapSyncData: imapSyncData,
+                                                  folder: inbox) else {
             XCTFail()
             return
         }
@@ -1107,7 +1113,7 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
             XCTFail()
             return
         }
@@ -1185,7 +1191,9 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
             folder: inbox, context: Record.Context.default)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folder: inbox) else {
+        guard let op = SyncFlagsToServerOperation(parentName: #function,
+                                                  imapSyncData: imapSyncData,
+                                                  folder: inbox) else {
             XCTFail()
             return
         }
@@ -1271,8 +1279,10 @@ class SyncFlagsToServerOperationTest: OperationTestBase {
         let numSyncOpsToTrigger = 5
         var ops = [SyncFlagsToServerOperation]()
         for i in 1...numSyncOpsToTrigger {
-            guard let op = SyncFlagsToServerOperation(
-                imapSyncData: imapSyncData, folder: inbox) else {
+            guard let op = SyncFlagsToServerOperation(parentName: #function,
+                imapSyncData: imapSyncData,
+                folder: inbox)
+                else {
                     XCTFail()
                     return
             }
