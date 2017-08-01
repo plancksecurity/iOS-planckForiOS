@@ -250,7 +250,7 @@ class MessageSyncServiceTests: XCTestCase {
     func testSendOnIdle() {
         let ms = runOrContinueUntilIdle(parentName: #function)
         sendMessages(ms: ms)
-        let _ = runOrContinueUntilIdle(parentName: #function)
+        let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
         ReferenceCounter.logOutstanding()
     }
 
