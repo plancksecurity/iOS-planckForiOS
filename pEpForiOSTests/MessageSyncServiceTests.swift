@@ -251,6 +251,7 @@ class MessageSyncServiceTests: XCTestCase {
         let ms = runOrContinueUntilIdle(parentName: #function)
         sendMessages(ms: ms)
         let _ = runOrContinueUntilIdle(parentName: #function)
+        ReferenceCounter.logOutstanding()
     }
 
     func notestUploadFlagsBeforeIdle() {

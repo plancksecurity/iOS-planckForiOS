@@ -100,6 +100,11 @@ class MessageSyncService: MessageSyncServiceProtocol {
         self.parentName = parentName
         self.backgrounder = backgrounder
         self.mySelfer = mySelfer
+        ReferenceCounter.inc(obj: self)
+    }
+
+    deinit {
+        ReferenceCounter.dec(obj: self)
     }
 
     func start(account: Account) {
