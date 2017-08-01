@@ -379,50 +379,6 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
-    func uploadFlags(context: NSManagedObjectContext,
-                     ms: MessageSyncService,
-                     cdFolder: CdFolder, maxCount: Int) {
-        let cdMessages = cdFolder.messages?.sortedArray(
-            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
-        XCTAssertGreaterThan(cdMessages.count, 0)
-
-        for cdM in cdMessages.prefix(3) {
-            guard
-                let cdLocalFlags1 = cdM.imapFields().localFlags,
-                let cdServerFlags1 = cdM.imapFields().serverFlags else {
-                    XCTFail()
-                    return
-            }
-            cdLocalFlags1.flagFlagged = !cdLocalFlags1.flagFlagged
-            let expectedFlagged = cdLocalFlags1.flagFlagged
-            XCTAssertNotEqual(cdLocalFlags1.flagFlagged, cdServerFlags1.flagFlagged)
-            context.saveAndLogErrors()
-
-            let cdSyncMsgs1 = SyncFlagsToServerOperation.messagesToBeSynced(
-                folder: cdFolder, context: Record.Context.background)
-            XCTAssertEqual(cdSyncMsgs1.count, 1)
-
-            guard let msg = cdM.message() else {
-                XCTFail()
-                return
-            }
-            let flagsDelegate = TestFlagsDelegate()
-            ms.flagsUploadDelegate = flagsDelegate
-            ms.requestFlagChange(message: msg)
-            let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
-            XCTAssertTrue(flagsDelegate.messagesChanged.contains(msg))
-            context.refresh(cdM, mergeChanges: true)
-            guard
-                let cdLocalFlags2 = cdM.imapFields().localFlags,
-                let cdServerFlags2 = cdM.imapFields().serverFlags else {
-                    XCTFail()
-                    return
-            }
-            XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
-            XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
-        }
-    }
-
     func testUploadFlagsOnIdle() {
         let context = Record.Context.default
         let ms = runOrContinueUntilIdle(parentName: #function)
@@ -437,10 +393,19 @@ class MessageSyncServiceTests: XCTestCase {
     }
 
     func notestUploadFlagsBeforeIdle() {
-        let ms = MessageSyncService(
-            sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        let ms = runOrContinueUntilIdle(parentName: #function)
         self.messageSyncService = ms
+
+        let context = Record.Context.default
         ms.start(account: cdAccount.account())
+
+        guard let cdFolder = CdFolder.by(
+            folderType: .inbox, account: cdAccount, context: context) else {
+                XCTFail()
+                return
+        }
+
+        uploadFlags(context: context, ms: ms, cdFolder: cdFolder, maxCount: 3)
 
         waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
@@ -462,5 +427,57 @@ class MessageSyncServiceTests: XCTestCase {
             expectedNumberOfSyncs: 2)
 
         print("Deleted messages: \(messageFolderDelegate.deletedMessages.count)")
+    }
+
+    // MARK: - Helpers
+
+    func uploadFlags(
+        context: NSManagedObjectContext, ms: MessageSyncService, cdMessage: CdMessage) {
+        guard
+            let cdLocalFlags1 = cdMessage.imapFields().localFlags,
+            let cdServerFlags1 = cdMessage.imapFields().serverFlags,
+            let cdFolder = cdMessage.parent else {
+                XCTFail()
+                return
+        }
+        cdLocalFlags1.flagFlagged = !cdLocalFlags1.flagFlagged
+        let expectedFlagged = cdLocalFlags1.flagFlagged
+        XCTAssertNotEqual(cdLocalFlags1.flagFlagged, cdServerFlags1.flagFlagged)
+        context.saveAndLogErrors()
+
+        let cdSyncMsgs1 = SyncFlagsToServerOperation.messagesToBeSynced(
+            folder: cdFolder, context: Record.Context.background)
+        XCTAssertEqual(cdSyncMsgs1.count, 1)
+
+        guard let msg = cdMessage.message() else {
+            XCTFail()
+            return
+        }
+        let flagsDelegate = TestFlagsDelegate()
+        ms.flagsUploadDelegate = flagsDelegate
+        ms.requestFlagChange(message: msg)
+        let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
+        XCTAssertTrue(flagsDelegate.messagesChanged.contains(msg))
+        context.refresh(cdMessage, mergeChanges: true)
+        guard
+            let cdLocalFlags2 = cdMessage.imapFields().localFlags,
+            let cdServerFlags2 = cdMessage.imapFields().serverFlags else {
+                XCTFail()
+                return
+        }
+        XCTAssertEqual(cdLocalFlags2.flagFlagged, cdServerFlags2.flagFlagged)
+        XCTAssertEqual(cdLocalFlags2.flagFlagged, expectedFlagged)
+    }
+
+    func uploadFlags(context: NSManagedObjectContext,
+                     ms: MessageSyncService,
+                     cdFolder: CdFolder, maxCount: Int) {
+        let cdMessages = cdFolder.messages?.sortedArray(
+            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
+        XCTAssertGreaterThan(cdMessages.count, 0)
+
+        for cdM in cdMessages.prefix(3) {
+            uploadFlags(context: context, ms: ms, cdMessage: cdM)
+        }
     }
 }
