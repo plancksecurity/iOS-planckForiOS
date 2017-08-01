@@ -195,11 +195,12 @@ class ImapSmtpSyncService {
             cancelIdling()
             sendRequested = false
             state = .sending
-            let sendService = SmtpSendService(
+            var service: ServiceExecutionProtocol = SmtpSendService(
                 parentName: parentName, backgrounder: backgrounder,
                 imapSyncData: imapSyncData, smtpSendData: smtpSendData)
-            currentlyRunningService = sendService
-            sendService.execute() { [weak self] error in
+            service = decoratedWithIdleExit(service: service)
+            currentlyRunningService = service
+            service.execute() { [weak self] error in
                 self?.workerQueue.async {
                     self?.currentlyRunningService = nil
                     self?.handleSendRequestFinished(error: error)
