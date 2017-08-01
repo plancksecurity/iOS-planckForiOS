@@ -8,13 +8,19 @@
 
 import Foundation
 
+protocol ImapIdleServiceDelegate: class {
+    func didEnterIdle(service: ImapIdleService)
+}
+
 class ImapIdleService: AtomicImapService {
     enum IdleResult {
         case nothing
         case error
         case newMessages
+        case idleExit
     }
 
+    weak var delegate: ImapIdleServiceDelegate?
     var idleResult: IdleResult = .nothing
     let imapSyncData: ImapSyncData
 
@@ -45,6 +51,15 @@ extension ImapIdleService: ServiceExecutionProtocol {
         imapSyncData.sync?.delegate = syncDelegate
         imapSyncData.sync?.sendIdle()
     }
+
+    func didEnterIdle() {
+        delegate?.didEnterIdle(service: self)
+    }
+
+    func didFinishIdle() {
+        idleResult = .idleExit
+        handler?(nil)
+    }
 }
 
 extension ImapIdleService: ImapSyncDelegateErrorHandlerProtocol {
@@ -60,8 +75,16 @@ class ImapIdleSyncDelegate: DefaultImapSyncDelegate {
         (errorHandler as? ImapIdleService)?.handleNewMessages()
     }
 
-    public override func messageChanged(_ sync: ImapSync, notification: Notification?) {
+    override func messageChanged(_ sync: ImapSync, notification: Notification?) {
         // Will be called when the status of existing messages changes.
         // Can be ignored since the storing is already handled by PersistentImapFolder.
+    }
+
+    override func idleEntered(_ sync: ImapSync, notification: Notification?) {
+        (errorHandler as? ImapIdleService)?.didEnterIdle()
+    }
+
+    override func idleFinished(_ sync: ImapSync, notification: Notification?) {
+        (errorHandler as? ImapIdleService)?.didFinishIdle()
     }
 }

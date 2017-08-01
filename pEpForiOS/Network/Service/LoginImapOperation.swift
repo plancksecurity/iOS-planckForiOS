@@ -25,7 +25,11 @@ open class LoginImapOperation: ImapSyncOperation {
         if !service.imapState.authenticationCompleted {
             service.delegate = syncDelegate
             service.start()
-        } else {
+        } else if service.imapState.isIdling {
+            service.delegate = syncDelegate
+            service.exitIdle()
+        }
+        else {
             syncDelegate = nil
             markAsFinished()
         }
@@ -38,7 +42,7 @@ open class LoginImapOperation: ImapSyncOperation {
 }
 
 class LoginImapSyncDelegate: DefaultImapSyncDelegate {
-    public override func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
+    override func authenticationCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? LoginImapOperation else {
             return
         }
@@ -49,15 +53,19 @@ class LoginImapSyncDelegate: DefaultImapSyncDelegate {
         op.imapSyncData.connectInfo.unsetNeedsVerificationAndFinish(context: context, operation: op)
     }
 
-    public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+    override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         // Should not generate an error, since we may try to select an non-existant
         // mailbox as alternative to CLOSE.
         (errorHandler as? ImapSyncOperation)?.markAsFinished()
     }
 
-    public override func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
+    override func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
         // Should not generate an error, since we may try to select an non-existant
         // mailbox as alternative to CLOSE.
+        (errorHandler as? ImapSyncOperation)?.markAsFinished()
+    }
+
+    override func idleFinished(_ sync: ImapSync, notification: Notification?) {
         (errorHandler as? ImapSyncOperation)?.markAsFinished()
     }
 }

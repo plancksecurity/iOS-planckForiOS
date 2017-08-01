@@ -60,7 +60,6 @@
 		43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B3D1DF5BB6600610253 /* MySelfOperation.swift */; };
 		431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 431394A81E4B03AA00D92F33 /* Settings.bundle */; };
 		431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431394C01E4B11CF00D92F33 /* AppSettings.swift */; };
-		4315BB1F1F274CB600907B49 /* ImapIdleExitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315BB1E1F274CB600907B49 /* ImapIdleExitService.swift */; };
 		431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798761CF87FE6007DD655 /* ReferenceCounter.swift */; };
 		4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */; };
 		431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D41D2EC0C000F609D3 /* ComposeTableViewController.swift */; };
@@ -368,7 +367,6 @@
 		43122B3D1DF5BB6600610253 /* MySelfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySelfOperation.swift; sourceTree = "<group>"; };
 		431394A81E4B03AA00D92F33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		431394C01E4B11CF00D92F33 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		4315BB1E1F274CB600907B49 /* ImapIdleExitService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapIdleExitService.swift; sourceTree = "<group>"; };
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageToAttachmentOperation.swift; sourceTree = "<group>"; };
@@ -843,7 +841,6 @@
 				430EA5F91F0FAD7700F816D4 /* ServiceChainExecutor.swift */,
 				43D2C2671F13847700C97235 /* ServiceFactory.swift */,
 				432677151F17796D00F01F5A /* ImapIdleService.swift */,
-				4315BB1E1F274CB600907B49 /* ImapIdleExitService.swift */,
 			);
 			path = MessageSyncService;
 			sourceTree = "<group>";
@@ -1550,7 +1547,6 @@
 				43D2C2681F13847700C97235 /* ServiceFactory.swift in Sources */,
 				436239921EAE08F400BD2EB9 /* NSData+Extensions.swift in Sources */,
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
-				4315BB1F1F274CB600907B49 /* ImapIdleExitService.swift in Sources */,
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
 				43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */,
 				43313DF41DEC7AE600C111C8 /* CreateFoldersOperation.swift in Sources */,
