@@ -54,6 +54,8 @@ class ImapSmtpSyncService {
 
         case readyForIdling
 
+        case enteringIdle
+
         /** Using the real IMAP IDLE command */
         case idling
 
@@ -68,7 +70,7 @@ class ImapSmtpSyncService {
     private(set) var imapSyncData: ImapSyncData
     private(set) var smtpSendData: SmtpSendData
 
-    private var state: State = .initial
+    fileprivate var state: State = .initial
     private var sendRequested: Bool = false
     private var reSyncNecessary: Bool = false
     private var messagesEnqueuedForSend = [MessageID: Message]()
@@ -79,7 +81,7 @@ class ImapSmtpSyncService {
         switch state {
         case .idling, .waitingForNextSync, .error, .readyForIdling:
             return true
-        case .initial, .initialSync, .sending, .reSyncing:
+        case .initial, .initialSync, .sending, .reSyncing, .enteringIdle:
             return false
         }
     }
@@ -88,7 +90,7 @@ class ImapSmtpSyncService {
         switch state {
         case .idling, .waitingForNextSync:
             return true
-        case .initial, .initialSync, .sending, .error, .readyForIdling, .reSyncing:
+        case .initial, .initialSync, .sending, .error, .readyForIdling, .reSyncing, .enteringIdle:
             return false
         }
     }
@@ -153,11 +155,9 @@ class ImapSmtpSyncService {
         if isIdling {
             cancelIdling()
             let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
-            var service: ServiceExecutionProtocol = serviceFactory.syncFlagsToServer(
+            let service = serviceFactory.syncFlagsToServer(
                 parentName: parentName, backgrounder: backgrounder,
                 imapSyncData: imapSyncData, folderName: folderName, syncFlagsDelegate: self)
-
-            service = decoratedWithIdleExit(service: service)
 
             currentlyRunningService = service
             service.execute() { [weak self] error in
@@ -180,25 +180,14 @@ class ImapSmtpSyncService {
         }
     }
 
-    func decoratedWithIdleExit(service: ServiceExecutionProtocol) -> ServiceExecutionProtocol {
-        if state == .idling {
-            let exitIdleService = ImapIdleExitService(
-                parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
-            return ServiceChainExecutor(services: [exitIdleService, service])
-        } else {
-            return service
-        }
-    }
-
     func sendMessages()  {
         if readyForSend {
             cancelIdling()
             sendRequested = false
             state = .sending
-            var service: ServiceExecutionProtocol = SmtpSendService(
+            let service = SmtpSendService(
                 parentName: parentName, backgrounder: backgrounder,
                 imapSyncData: imapSyncData, smtpSendData: smtpSendData)
-            service = decoratedWithIdleExit(service: service)
             currentlyRunningService = service
             service.execute() { [weak self] error in
                 self?.workerQueue.async {
@@ -288,10 +277,9 @@ class ImapSmtpSyncService {
 
     func reSync() {
         cancelIdling()
-        var service = serviceFactory.reSync(
+        let service = serviceFactory.reSync(
             parentName: parentName, backgrounder: backgrounder,
             imapSyncData: imapSyncData, folderName: currentFolderName)
-        service = decoratedWithIdleExit(service: service)
         currentlyRunningService = service
         service.execute() { [weak self] error in
             self?.workerQueue.async {
@@ -323,9 +311,10 @@ class ImapSmtpSyncService {
         }
         if state == .readyForIdling {
             if imapSyncData.supportsIdle {
-                state = .idling
+                state = .enteringIdle
                 let imapIdleService = ImapIdleService(
                     parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
+                imapIdleService.delegate = self
                 currentlyRunningService = imapIdleService
                 currentlyRunningIdleService = imapIdleService
                 imapIdleService.execute() { [weak self] error in
@@ -342,6 +331,8 @@ class ImapSmtpSyncService {
                                 break
                             case .nothing:
                                 break
+                            case .idleExit:
+                                break
                             }
                         }
                     }
@@ -349,7 +340,6 @@ class ImapSmtpSyncService {
             } else {
                 state = .waitingForNextSync
             }
-            delegate?.startIdling(service: self)
             return
         }
     }
@@ -372,5 +362,12 @@ extension ImapSmtpSyncService: SyncFlagsToServerServiceDelegate {
                 messagesEnqueuedForFlagChange.remove(message)
             }
         }
+    }
+}
+
+extension ImapSmtpSyncService: ImapIdleServiceDelegate {
+    func didEnterIdle(service: ImapIdleService) {
+        state = .idling
+        delegate?.startIdling(service: self)
     }
 }
