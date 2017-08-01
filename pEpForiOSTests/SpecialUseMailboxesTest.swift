@@ -14,14 +14,15 @@ import MessageModel
 
 class SpecialUseMailboxesTest: OperationTestBase {
 
-    //
-    func test_UNDERSTAND() {
+    /// This test can succeed using a Yahoo account only as special-use 
+    /// mailbox names and purposes will differ using other providers.
+    func testSpecialMailboxesAndRequiredFolders() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let errorContainer = ErrorContainer()
 
         let imapLogin = LoginImapOperation(parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData)
-            //LoginImapOperation(
-            //errorContainer: errorContainer, imapSyncData: imapSyncData)
+        //LoginImapOperation(
+        //errorContainer: errorContainer, imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
             XCTAssertNotNil(imapSyncData.sync)
@@ -43,7 +44,7 @@ class SpecialUseMailboxesTest: OperationTestBase {
 
         let expFoldersCreated = expectation(description: "expFoldersCreated")
         let createRequiredFoldersOp = CreateRequiredFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
-            //CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
+        //CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
         createRequiredFoldersOp.addDependency(fetchFoldersOp)
         createRequiredFoldersOp.completionBlock = {
             print("####BUF:\n finished CreateRequiredFoldersOperation")
@@ -75,12 +76,12 @@ class SpecialUseMailboxesTest: OperationTestBase {
 
             let allFolders = CdFolder.all() as! [CdFolder]
 
-//            for folder in allFolders {
-//                print("name: \(String(describing: folder.name)) -- type:\(String(describing: FolderType.fromInt(folder.folderType)))")
-//            }
+            //            for folder in allFolders {
+            //                print("name: \(String(describing: folder.name)) -- type:\(String(describing: FolderType.fromInt(folder.folderType)))")
+            //            }
 
             for folder in allFolders {
-//                print("name: \(String(describing: folder.name)) -- type:\(String(describing: FolderType.fromInt(folder.folderType)))")
+                //                print("name: \(String(describing: folder.name)) -- type:\(String(describing: FolderType.fromInt(folder.folderType)))")
                 if folder.name! == "Bulk Mail" {
                     XCTAssertTrue(FolderType.fromInt(folder.folderType) == .spam)
                 } else if folder.name! == "Archive" {
@@ -95,10 +96,10 @@ class SpecialUseMailboxesTest: OperationTestBase {
                     XCTAssertTrue(FolderType.fromInt(folder.folderType) == .trash)
                 }
 
-                // Some folders should not be created. Yahoo has a folder "Draft" with special 
+                // Some folders should not be created. Yahoo has a folder "Draft" with special
                 // use purpose \Drafts, so the pEp required folder "Drafts" should not be created.
-                let pEpYahooNameDiff = ["Drafts", "Spam"]
-                let nonRequiredFoldersHaveBeenCreated = pEpYahooNameDiff.contains(folder.name!)
+                let pEpNamesThatDifferFromYahooNames = ["Drafts", "Spam"]
+                let nonRequiredFoldersHaveBeenCreated = pEpNamesThatDifferFromYahooNames.contains(folder.name!)
                 XCTAssertFalse(nonRequiredFoldersHaveBeenCreated)
             }
         })

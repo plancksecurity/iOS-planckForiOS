@@ -21,9 +21,7 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
     public struct FolderInfo {
         let name: String
         let separator: String?
-        //BUFF: buff added
         let folderType: FolderType?
-        //FFUB
     }
     
     let folderInfo: FolderInfo

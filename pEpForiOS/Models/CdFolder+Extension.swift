@@ -58,9 +58,8 @@ public extension CdFolder {
 
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
-            if let type = folderType {
-                folder.folderType = type.rawValue
-            }
+            folder.setFolderType(folderType: folderType)
+
             return (folder, reactivate(folder: folder))
         }
 
@@ -73,7 +72,11 @@ public extension CdFolder {
                 pathsSoFar.append(p)
                 let pathName = (pathsSoFar as NSArray).componentsJoined(
                     by: separator)
-                let folder = insert(folderName: pathName, folderType: nil, account: account) //BUFF: check type here
+                let folder = insert(folderName: pathName, folderType: nil, account: account)
+                //if it is the actual folder (has no child folder), set its folder type
+                if p == paths.last {
+                    folder.setFolderType(folderType: folderType)
+                }
                 folder.parent = parentFolder
                 let scalars = separator.unicodeScalars
                 if let first = scalars.first {
@@ -96,10 +99,12 @@ public extension CdFolder {
         }
     }
 
-
-    /// Set the given folder type. 
-    /// Also searches for existing folder with give type and resets it to FolderType.normal to avoid having 
-    /// two or more folders assigned to one type".
+    /// Sets the given folder type. Assures folderType uniqueness.
+    /// Only this method should be used to set the folder type.
+    /// Note:
+    /// Side effect
+    /// Also searches for existing folder with give type and resets it to FolderType.normal to avoid having
+    /// two or more folders assigned to one type. E.g. two "\Drafts" folders.
     ///
     /// - Parameter folderType: type to set
     func setFolderType(folderType: FolderType?) {
@@ -118,7 +123,7 @@ public extension CdFolder {
          */
         if let tmpAccount = self.account,
             let exsistingFolderForType = CdFolder.by(folderType: type, account: tmpAccount) {
-            // A folder for the given purpose/type already exists. 
+            // A folder for the given purpose/type already exists.
             // Reset the type of the existing one
             exsistingFolderForType.folderType = FolderType.normal.rawValue
         }
@@ -130,10 +135,6 @@ public extension CdFolder {
 
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
-//            if let type = folderType {
-//
-////                folder.folderType = type.rawValue //BUFF: search for .folderType
-//             }
             folder.setFolderType(folderType: folderType)
             let _ = reactivate(folder: folder)
             return folder
@@ -146,7 +147,7 @@ public extension CdFolder {
         folder.setFolderType(folderType: folderType)
 
         if folder.folderType != FolderType.normal.rawValue {
-            // The folder has already a non-normal folder type set. 
+            // The folder has already a non-normal folder type set.
             // No need to do heuristics by folder name to find its purpose.
             return folder
         }
