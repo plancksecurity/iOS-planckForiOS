@@ -231,7 +231,7 @@ class SimpleOperationsTest: OperationTestBase {
         let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
 
         let _ = CdFolder.insertOrUpdate(
-            folderName: folder.name(), folderSeparator: nil, folderType: nil, account: cdAccount) //BUFF:
+            folderName: folder.name(), folderSeparator: nil, folderType: nil, account: cdAccount)
         Record.saveAndWait()
 
         let message = CWIMAPMessage.init()
@@ -264,7 +264,7 @@ class SimpleOperationsTest: OperationTestBase {
         var numberOfCallbacksCalled = 0
 
         let _ = CdFolder.insertOrUpdate(
-            folderName: folder.name(), folderSeparator: nil, folderType: nil,account: cdAccount) //BUFF:
+            folderName: folder.name(), folderSeparator: nil, folderType: nil,account: cdAccount)
         Record.saveAndWait()
         XCTAssertEqual(CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
 
