@@ -14,6 +14,7 @@ import MessageModel
 
 class SpecialUseMailboxesTest: OperationTestBase {
 
+    //
     func test_UNDERSTAND() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let errorContainer = ErrorContainer()
@@ -30,13 +31,32 @@ class SpecialUseMailboxesTest: OperationTestBase {
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil
+            print("####BUF:\nfetched folders")
+            let allFolders = CdFolder.all() as! [CdFolder]
+            for folder in allFolders {
+                print("name: \(String(describing: folder.name)) -- type:\(String(describing: FolderType.fromInt(folder.folderType)))")
+            }
+
             expFoldersFetched.fulfill()
         }
 
         let expFoldersCreated = expectation(description: "expFoldersCreated")
-        let createRequiredFoldersOp = CreateLocalRequiredFoldersOperation(account: cdAccount)
+        let createRequiredFoldersOp = CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
         createRequiredFoldersOp.addDependency(fetchFoldersOp)
         createRequiredFoldersOp.completionBlock = {
+            print("####BUF:\n finished CreateRequiredFoldersOperation")
+            let allFolders = CdFolder.all() as! [CdFolder]
+            for folder in allFolders {
+                print("name: \(String(describing: folder.name)) -- type:\(String(describing: FolderType.fromInt(folder.folderType)))")
+            }
+
+            let allFolderNames: [String] = allFolders.map { $0.name! }
+            XCTAssertTrue(allFolderNames.contains("Bulk Mail"))
+            XCTAssertTrue(allFolderNames.contains("Archive"))
+            XCTAssertTrue(allFolderNames.contains("Draft"))
+            XCTAssertTrue(allFolderNames.contains("Inbox"))
+            XCTAssertTrue(allFolderNames.contains("Sent"))
+
             expFoldersCreated.fulfill()
         }
 
@@ -51,12 +71,34 @@ class SpecialUseMailboxesTest: OperationTestBase {
             XCTAssertFalse(fetchFoldersOp.hasErrors())
             XCTAssertFalse(createRequiredFoldersOp.hasErrors())
 
-//            let folderDrafts = CdFolder.by(folderType: .drafts, account: cdAccount)
-//            XCTAssertNotNil(folderDrafts)
-//
-//            let folderDrafts = CdFolder.by(folderType: .inbox, account: cdAccount)
-//            XCTAssertNotNil(folderDrafts)
+            let allFolders = CdFolder.all() as! [CdFolder]
 
+//            for folder in allFolders {
+//                print("name: \(String(describing: folder.name)) -- type:\(String(describing: FolderType.fromInt(folder.folderType)))")
+//            }
+
+            for folder in allFolders {
+//                print("name: \(String(describing: folder.name)) -- type:\(String(describing: FolderType.fromInt(folder.folderType)))")
+                if folder.name! == "Bulk Mail" {
+                    XCTAssertTrue(FolderType.fromInt(folder.folderType) == .spam)
+                } else if folder.name! == "Archive" {
+                    XCTAssertTrue(FolderType.fromInt(folder.folderType) == .archive)
+                } else if folder.name! == "Draft" {
+                    XCTAssertTrue(FolderType.fromInt(folder.folderType) == .drafts)
+                } else if folder.name! == "Inbox" {
+                    XCTAssertTrue(FolderType.fromInt(folder.folderType) == .inbox)
+                } else if folder.name! == "Sent" {
+                    XCTAssertTrue(FolderType.fromInt(folder.folderType) == .sent)
+                } else if folder.name! == "Trash" {
+                    XCTAssertTrue(FolderType.fromInt(folder.folderType) == .trash)
+                }
+
+                // Some folders should not be created. Yahoo has a folder "Draft" with special 
+                // use purpose \Drafts, so the pEp required folder "Drafts" should not be created.
+                let pEpYahooNameDiff = ["Drafts", "Spam"]
+                let nonRequiredFoldersHaveBeenCreated = pEpYahooNameDiff.contains(folder.name!)
+                XCTAssertFalse(nonRequiredFoldersHaveBeenCreated)
+            }
         })
     }
 }
