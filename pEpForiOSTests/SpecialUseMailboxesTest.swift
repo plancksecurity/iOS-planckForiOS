@@ -16,7 +16,7 @@ class SpecialUseMailboxesTest: OperationTestBase {
 
     /// This test makes sense only for a Yahoo account as special-use
     /// mailbox names and purposes will differ using other providers. 
-    /// Or Special-Use MAilboxes are not even supported by the server.
+    /// Or Special-Use Mailboxes are not even supported by the server.
     func testSpecialMailboxesAndRequiredFolders() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let errorContainer = ErrorContainer()
