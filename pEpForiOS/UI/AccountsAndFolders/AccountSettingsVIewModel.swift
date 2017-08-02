@@ -91,13 +91,15 @@ public class AccountSettingsViewModel {
     func update(loginName: String, name: String, password: String? = nil,
                 imap: (address: String, port: String, transport: String),
                 smtp: (address: String, port: String, transport: String)) {
-        //lala
         self.account?.user.userName = name
         self.account?.serverCredentials.forEach({ (sc) in
             sc.userName = loginName
-            sc.password = password
+            if password != nil && password != "" {
+                sc.password = password
+            }
             var servers = [Server]()
             //fixme remove the !
+            //BUFF: creates duplicate server not assigned to account
             servers.append(
                 Server.create(serverType: Server.ServerType.imap,
                               port: UInt16(imap.port)!,
