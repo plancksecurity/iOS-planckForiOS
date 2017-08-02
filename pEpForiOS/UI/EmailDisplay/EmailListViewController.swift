@@ -40,6 +40,7 @@ class EmailListViewController: UITableViewController {
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var textFilterButton: UIBarButtonItem!
 
+    @IBOutlet var showFoldersButton: UIBarButtonItem!
     //private var filterEnabled = false
 
     override func viewDidLoad() {
@@ -75,6 +76,12 @@ class EmailListViewController: UITableViewController {
             viewModel = EmailListViewModel(config: config, delegate: self)
         }
         MessageModelConfig.messageFolderDelegate = self
+
+        if let size = navigationController?.viewControllers.count, size > 1 {
+            self.showFoldersButton.isEnabled = false
+        } else {
+            self.showFoldersButton.isEnabled = true
+        }
         
     }
 
