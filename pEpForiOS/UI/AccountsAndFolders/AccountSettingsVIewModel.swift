@@ -70,7 +70,7 @@ public class AccountSettingsViewModel {
     var smtpServer: (address: String?, port: String?, transport: String?) {
         //fixme only support one server
         get {
-            if let server = account?.smtpServers.first {
+            if let server = account?.smtpServer {
                 return (server.address, "\(server.port)", server.transport?.asString())
             }
             return (nil,nil,nil)
@@ -80,7 +80,7 @@ public class AccountSettingsViewModel {
     var imapServer: (address: String?, port: String?, transport: String?) {
         //fixme only support one servers
         get {
-            if let server = account?.imapServers.first {
+            if let server = account?.imapServer {
                 return (server.address, "\(server.port)", server.transport?.asString())
             }
             return (nil,nil,nil)
