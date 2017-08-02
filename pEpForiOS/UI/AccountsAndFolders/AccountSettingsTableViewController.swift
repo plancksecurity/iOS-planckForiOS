@@ -95,14 +95,14 @@ class AccountSettingsTableViewController: UITableViewController, UIPickerViewDel
             return
         }
 
-        let imap: (address: String, port: String, transport: String) = (addi, porti, transi)
+        let imap = (addi, porti, transi)
 
         guard let adds = smtpServerTextfield.text, adds != "",
             let ports = smtpPortTextfield.text, ports != "",
             let transs = smtpSecurityTextfield.text, transs != "" else {
             return
         }
-        let smtp: (address: String, port: String, transport: String) = (adds, ports, transs)
+        let smtp = (adds, ports, transs)
 
         if let name = nameTextfield.text, name != "", let loginName = usernameTextfield.text, loginName != "" {
             viewModel?.update(loginName: loginName, name: name, password: passwordTextfield.text, imap: imap, smtp: smtp)
