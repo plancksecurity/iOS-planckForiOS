@@ -111,7 +111,7 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
         cdFolder.uuid = MessageID.generate()
         cdFolder.name = folderToCreate.folderName
         cdFolder.account = folderToCreate.cdAccount
-        cdFolder.setFolderType(folderType: folderToCreate.folderType)
+        cdFolder.folderType = folderToCreate.folderType.rawValue
         context.saveAndLogErrors()
     }
 
