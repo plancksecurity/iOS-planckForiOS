@@ -77,7 +77,7 @@ class ImapSmtpSyncService {
     fileprivate var messagesEnqueuedForFlagChange = Set<Message>()
     private var currentFolderName: String = ImapSync.defaultImapInboxName
 
-    var readyForSend: Bool {
+    var isReadyForImapAction: Bool {
         switch state {
         case .idling, .waitingForNextSync, .error, .readyForIdling:
             return true
@@ -152,7 +152,7 @@ class ImapSmtpSyncService {
     }
 
     func uploadFlagChanges(message: Message) {
-        if isIdling {
+        if isReadyForImapAction {
             cancelIdling()
             let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
             let service = serviceFactory.syncFlagsToServer(
@@ -181,7 +181,7 @@ class ImapSmtpSyncService {
     }
 
     func sendMessages()  {
-        if readyForSend {
+        if isReadyForImapAction {
             cancelIdling()
             sendRequested = false
             state = .sending
@@ -301,13 +301,14 @@ class ImapSmtpSyncService {
             reSync()
             return
         }
-        if sendRequested && readyForSend {
+        if sendRequested && isReadyForImapAction {
             sendMessages()
             return
         }
-        if !messagesEnqueuedForFlagChange.isEmpty && readyForSend {
-            // TODO
-            fatalError("not yet implemented")
+        if !messagesEnqueuedForFlagChange.isEmpty && isReadyForImapAction {
+            if let msg = messagesEnqueuedForFlagChange.first {
+                uploadFlagChanges(message: msg)
+            }
         }
         if state == .readyForIdling {
             if imapSyncData.supportsIdle {

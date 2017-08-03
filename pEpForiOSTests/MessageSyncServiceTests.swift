@@ -254,7 +254,7 @@ class MessageSyncServiceTests: XCTestCase {
         ReferenceCounter.logOutstanding()
     }
 
-    func notestUploadFlagsBeforeIdle() {
+    func testUploadFlagsBeforeIdle() {
         let ms = runOrContinueUntilIdle(parentName: #function)
 
         let context = Record.Context.default
@@ -265,8 +265,14 @@ class MessageSyncServiceTests: XCTestCase {
                 return
         }
 
-
-        uploadFlags(context: context, ms: ms, cdFolder: cdFolder, maxCount: 3)
+        sendMessages(ms: ms)
+        let expectedNumberOfFlagUploads = 3
+        let flagsDelegate = TestFlagsDelegate()
+        uploadFlags(
+            context: context, ms: ms, cdFolder: cdFolder, maxCount: expectedNumberOfFlagUploads,
+            flagsDelegate: flagsDelegate, waitForAnswer: false)
+        let _ = runOrContinueUntilIdle(parentName: #function)
+        XCTAssertEqual(flagsDelegate.messagesChanged.count, expectedNumberOfFlagUploads)
         ms.stateDelegate = nil
     }
 
@@ -330,7 +336,7 @@ class MessageSyncServiceTests: XCTestCase {
 
         let cdSyncMsgs1 = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: cdFolder, context: Record.Context.background)
-        XCTAssertEqual(cdSyncMsgs1.count, 1)
+        XCTAssertGreaterThan(cdSyncMsgs1.count, 0)
 
         guard let msg = cdMessage.message() else {
             XCTFail()
@@ -356,13 +362,16 @@ class MessageSyncServiceTests: XCTestCase {
 
     func uploadFlags(context: NSManagedObjectContext,
                      ms: MessageSyncService,
-                     cdFolder: CdFolder, maxCount: Int) {
+                     cdFolder: CdFolder, maxCount: Int,
+                     flagsDelegate: TestFlagsDelegate = TestFlagsDelegate(),
+                     waitForAnswer: Bool = true) {
         let cdMessages = cdFolder.messages?.sortedArray(
             using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] ?? []
         XCTAssertGreaterThan(cdMessages.count, 0)
 
-        for cdM in cdMessages.prefix(3) {
-            uploadFlags(context: context, ms: ms, cdMessage: cdM, waitForAnswer: true)
+        for cdM in cdMessages.prefix(maxCount) {
+            uploadFlags(context: context, ms: ms, cdMessage: cdM,
+                        flagsDelegate: flagsDelegate, waitForAnswer: waitForAnswer)
         }
     }
 
