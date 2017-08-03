@@ -83,9 +83,10 @@ public class AccountSettingsViewModel {
     }
 
     //fixme need to rethought the server update things
-    func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
+    func updatxe(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
         //BUFF:
+        //HERE:
 //        let imapServer = account.imapServer
 ////        guard let addrSmtp = smtpServerTextfield.text, addrSmtp != "",
 ////            let portSmtp = smtpPortTextfield.text, portSmtp != "",
