@@ -32,7 +32,7 @@ public class EmailAddressValidation {
     private var addressComponents : [String]?
 
     private func generalValidation() {
-        if let s = addressComponents {
+        if let s = addressComponents, s.count > 3 {
             let chars = s[s.endIndex-2].characters
             if chars.last != " " {
                 general = true
