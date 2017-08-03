@@ -234,6 +234,13 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
+    func testSendOnIdle() {
+        let ms = runOrContinueUntilIdle(parentName: #function)
+        sendMessages(ms: ms)
+        let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
+        ReferenceCounter.logOutstanding()
+    }
+
     func testUploadFlagsOnIdle() {
         let context = Record.Context.default
         let ms = runOrContinueUntilIdle(parentName: #function)
@@ -245,13 +252,6 @@ class MessageSyncServiceTests: XCTestCase {
         }
 
         uploadFlags(context: context, ms: ms, cdFolder: cdFolder, maxCount: 3)
-    }
-
-    func testSendOnIdle() {
-        let ms = runOrContinueUntilIdle(parentName: #function)
-        sendMessages(ms: ms)
-        let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
-        ReferenceCounter.logOutstanding()
     }
 
     func testUploadFlagsBeforeIdle() {
