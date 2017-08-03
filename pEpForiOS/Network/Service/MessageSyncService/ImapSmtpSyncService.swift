@@ -339,6 +339,7 @@ class ImapSmtpSyncService {
                 }
             } else {
                 state = .waitingForNextSync
+                delegate?.startIdling(service: self)
             }
             return
         }

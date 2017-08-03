@@ -45,7 +45,7 @@ protocol MessageSyncServiceSyncDelegate: class {
 
 protocol MessageSyncServiceStateDelegate: class {
     /**
-     Called when the state reaches the idling phase.
+     Called when the state reaches the idling (or polling) phase.
      */
     func startIdling(account: Account)
 }
