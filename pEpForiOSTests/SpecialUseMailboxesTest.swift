@@ -41,7 +41,6 @@ class SpecialUseMailboxesTest: OperationTestBase {
 
         let expFoldersCreated = expectation(description: "expFoldersCreated")
         let createRequiredFoldersOp = CreateRequiredFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
-        //CreateRequiredFoldersOperation(imapSyncData: imapSyncData)
         createRequiredFoldersOp.addDependency(fetchFoldersOp)
         createRequiredFoldersOp.completionBlock = {
             let allFolders = CdFolder.all() as! [CdFolder]
@@ -61,6 +60,7 @@ class SpecialUseMailboxesTest: OperationTestBase {
             XCTAssertFalse(imapLogin.hasErrors())
             XCTAssertFalse(fetchFoldersOp.hasErrors())
             XCTAssertFalse(createRequiredFoldersOp.hasErrors())
+            XCTAssertTrue(self.existsFolderForEveryRequiredFolderType(in: self.cdAccount))
 
             let allFolders = CdFolder.all() as! [CdFolder]
             // triggers only for Yahoo accounts
@@ -159,4 +159,28 @@ class SpecialUseMailboxesTest: OperationTestBase {
         }
         return false
     }
+
+    private func existsFolderForEveryRequiredFolderType(in account: CdAccount) -> Bool {
+        for type in FolderType.requiredTypes {
+            if !existsFolder(for: type, in: account) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private func existsFolder(`for` folderType: FolderType, in account: CdAccount) -> Bool{
+        guard let origFolders = account.folders,
+        let folders = Array(origFolders) as? [CdFolder]
+            else {
+            return false
+        }
+        for folder in folders {
+            if folder.folderType == folderType.rawValue {
+                return true
+            }
+        }
+        return false
+    }
+
 }

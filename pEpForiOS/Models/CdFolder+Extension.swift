@@ -58,7 +58,9 @@ public extension CdFolder {
 
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
-            folder.setFolderType(folderType: folderType)
+            if let type = folderType {
+                folder.folderType = type.rawValue
+            }
 
             return (folder, reactivate(folder: folder))
         }
@@ -75,7 +77,9 @@ public extension CdFolder {
                 let folder = insert(folderName: pathName, folderType: nil, account: account)
                 //if it is the actual folder (has no child folder), set its folder type
                 if p == paths.last {
-                    folder.setFolderType(folderType: folderType)
+                    if let type = folderType {
+                        folder.folderType = type.rawValue
+                    }
                 }
                 folder.parent = parentFolder
                 let scalars = separator.unicodeScalars
@@ -99,43 +103,14 @@ public extension CdFolder {
         }
     }
 
-    /// Sets the given folder type. Assures folderType uniqueness.
-    /// Only this method should be used to set the folder type.
-    /// Note:
-    /// Side effect
-    /// Also searches for existing folder with give type and resets it to FolderType.normal to avoid having
-    /// two or more folders assigned to one type. E.g. two "\Drafts" folders.
-    ///
-    /// - Parameter folderType: type to set
-    func setFolderType(folderType: FolderType?) {
-        guard let type = folderType else {
-            return
-        }
-
-        if type == .normal {
-            self.folderType = type.rawValue
-            return
-        }
-
-        /*
-         The given type represents a special folder (Drafts, Sent, != Normal).
-         As only one folder must present one special purpose type, we have to assure uniqueness.
-         */
-        if let tmpAccount = self.account,
-            let exsistingFolderForType = CdFolder.by(folderType: type, account: tmpAccount) {
-            // A folder for the given purpose/type already exists.
-            // Reset the type of the existing one
-            exsistingFolderForType.folderType = FolderType.normal.rawValue
-        }
-        self.folderType = type.rawValue
-    }
-
     static func insert(folderName: String, folderType: FolderType?, account: CdAccount) -> CdFolder {
         Log.verbose(component: comp, content: "insert \(folderName)")
 
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
-            folder.setFolderType(folderType: folderType)
+            if let type = folderType {
+                folder.folderType = type.rawValue
+            }
             let _ = reactivate(folder: folder)
             return folder
         }
@@ -144,17 +119,20 @@ public extension CdFolder {
         folder.name = folderName
         folder.account = account
         folder.uuid = MessageID.generate()
-        folder.setFolderType(folderType: folderType)
+        if let type = folderType {
+            folder.folderType = type.rawValue
+        }
 
-        if folder.folderType != FolderType.normal.rawValue {
-            // The folder has already a non-normal folder type set.
+        if folder.folderType != FolderType.normal.rawValue /*|| folderType != nil*/ { //BUFF:
+            // The folder has already a non-normal folder type set 
+            // OR the folderType to use is explicitly given
             // No need to do heuristics by folder name to find its purpose.
             return folder
         }
 
 
         if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
-            folder.setFolderType(folderType: FolderType.inbox)
+            folder.folderType = FolderType.inbox.rawValue
         } else {
             var foundMatch = false
             for ty in FolderType.allValuesToCheckFromServer {
@@ -162,7 +140,7 @@ public extension CdFolder {
                     if folderName.matchesPattern("\(theName)",
                         reOptions: [.caseInsensitive]) {
                         foundMatch = true
-                        folder.setFolderType(folderType: ty)
+                        folder.folderType = ty.rawValue
                         break
                     }
                 }
@@ -171,7 +149,9 @@ public extension CdFolder {
                 }
             }
             if !foundMatch {
-                folder.setFolderType(folderType: FolderType.normal)
+                if let type = folderType {
+                    folder.folderType = FolderType.normal.rawValue
+                }
             }
         }
 

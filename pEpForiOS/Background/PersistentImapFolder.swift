@@ -107,7 +107,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                     return
             }
             if let (fo, _) = CdFolder.insertOrUpdate(
-                //I _think_ it is OK not to deal with folderType here and pass nil.
                 folderName: name, folderSeparator: nil, folderType: nil, account: account) {
                 context.saveAndLogErrors()
                 folder = fo
