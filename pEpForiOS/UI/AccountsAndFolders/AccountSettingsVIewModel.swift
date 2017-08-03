@@ -11,7 +11,17 @@ import MessageModel
 
 public class AccountSettingsViewModel {
 
-    public struct securityViewModel {
+    public struct ServerViewModel {
+        let address: String?
+        let port: String?
+        let transport: String?
+
+        static func emptyViewModel() -> ServerViewModel {
+            return ServerViewModel(address: nil, port: nil, transport: nil)
+        }
+    }
+
+    public struct SecurityViewModel {
 
         var options = Server.Transport.toArray()
         var size : Int {
@@ -27,10 +37,10 @@ public class AccountSettingsViewModel {
         }
     }
 
-    private var account: Account?
+    private var account: Account
     private var headers: [String]
 
-    public let svm = securityViewModel()
+    public let svm = SecurityViewModel()
 
     public init(account: Account) {
         headers = [String]()
@@ -42,48 +52,37 @@ public class AccountSettingsViewModel {
 
     var email: String {
         get {
-            if let acc = account {
-                return acc.user.address
-            }
-            return ""
+            return account.user.address
         }
     }
 
     var loginName: String {
         get {
-            if let loginName = account?.serverCredentials.array.first?.userName {
-                return loginName
-            }
-            return ""
+            return account.serverCredentials.array.first?.userName ?? ""
         }
     }
 
     var name: String {
         get {
-            if let name = account?.user.userName {
-                return name
-            }
-            return ""
+            return account.user.userName ?? ""
         }
     }
 
-    var smtpServer: (address: String?, port: String?, transport: String?) {
-        //fixme only support one server
+    var smtpServer: ServerViewModel {
         get {
-            if let server = account?.smtpServer {
-                return (server.address, "\(server.port)", server.transport?.asString())
+            if let server = account.smtpServer {
+                return ServerViewModel(address: server.address, port: "\(server.port)", transport: server.transport?.asString())
             }
-            return (nil,nil,nil)
+            return ServerViewModel.emptyViewModel()
         }
     }
 
-    var imapServer: (address: String?, port: String?, transport: String?) {
-        //fixme only support one servers
+    var imapServer: ServerViewModel {
         get {
-            if let server = account?.imapServer {
-                return (server.address, "\(server.port)", server.transport?.asString())
+            if let server = account.imapServer {
+                return ServerViewModel(address: server.address, port: "\(server.port)", transport: server.transport?.asString())
             }
-            return (nil,nil,nil)
+            return ServerViewModel.emptyViewModel()
         }
     }
 
@@ -91,8 +90,11 @@ public class AccountSettingsViewModel {
     func update(loginName: String, name: String, password: String? = nil,
                 imap: (address: String, port: String, transport: String),
                 smtp: (address: String, port: String, transport: String)) {
-        self.account?.user.userName = name
-        self.account?.serverCredentials.forEach({ (sc) in
+//        let imapServer = account?.imapServer
+
+        //HERE:
+        self.account.user.userName = name
+        self.account.serverCredentials.forEach({ (sc) in
             sc.userName = loginName
             if password != nil && password != "" {
                 sc.password = password
@@ -115,19 +117,7 @@ public class AccountSettingsViewModel {
             sc.servers = MutableOrderedSet(array: servers)
             sc.save()
         })
-        self.account?.save()
-    }
-
-    //fixme temporal function without server
-    func update(loginName: String, name: String, password: String? = nil) {
-        self.account?.user.userName = name
-        self.account?.serverCredentials.forEach({ (servercredentials) in
-            servercredentials.userName = loginName
-            servercredentials.password = password
-            servercredentials.save()
-        })
-        self.account?.user.save()
-        self.account?.save()
+        self.account.save()
     }
 
     func sectionIsValid(section: Int) -> Bool {
