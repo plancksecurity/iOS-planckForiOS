@@ -12,13 +12,9 @@ import MessageModel
 public class AccountSettingsViewModel {
 
     public struct ServerViewModel {
-        let address: String?
-        let port: String?
-        let transport: String?
-
-        static func emptyViewModel() -> ServerViewModel {
-            return ServerViewModel(address: nil, port: nil, transport: nil)
-        }
+        var address: String? = nil
+        var port: String? = nil
+        var transport: String? = nil
     }
 
     public struct SecurityViewModel {
@@ -73,7 +69,7 @@ public class AccountSettingsViewModel {
             if let server = account.smtpServer {
                 return ServerViewModel(address: server.address, port: "\(server.port)", transport: server.transport?.asString())
             }
-            return ServerViewModel.emptyViewModel()
+            return ServerViewModel()
         }
     }
 
@@ -82,41 +78,59 @@ public class AccountSettingsViewModel {
             if let server = account.imapServer {
                 return ServerViewModel(address: server.address, port: "\(server.port)", transport: server.transport?.asString())
             }
-            return ServerViewModel.emptyViewModel()
+            return ServerViewModel()
         }
     }
 
     //fixme need to rethought the server update things
-    func update(loginName: String, name: String, password: String? = nil,
-                imap: (address: String, port: String, transport: String),
-                smtp: (address: String, port: String, transport: String)) {
-//        let imapServer = account?.imapServer
+    func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
+                smtp: ServerViewModel) {
+        //BUFF:
+//        let imapServer = account.imapServer
+////        guard let addrSmtp = smtpServerTextfield.text, addrSmtp != "",
+////            let portSmtp = smtpPortTextfield.text, portSmtp != "",
+////            let transSmtp = smtpSecurityTextfield.text, transSmtp != ""
+////            else {
+////                return
+////        }
+//        guard let addrSmtp = imap.address else {
+//            throw
+//        }
+//
+//
+//        account.imapServer?.address = imap.address
+//
+//        let cdAccount = CdAccount.search(account: account)
+//        let cdImapServer = cdAccount?.imapCdServer
+//        cdImapServer?.update(with: imapServer)
 
-        //HERE:
-        self.account.user.userName = name
-        self.account.serverCredentials.forEach({ (sc) in
-            sc.userName = loginName
-            if password != nil && password != "" {
-                sc.password = password
-            }
-            var servers = [Server]()
-            //fixme remove the !
-            //BUFF: creates duplicate server not assigned to account
-            servers.append(
-                Server.create(serverType: Server.ServerType.imap,
-                              port: UInt16(imap.port)!,
-                              address: imap.address,
-                              transport: Server.Transport(fromString: imap.transport)))
+//        //HERE:
 
-            servers.append(
-                Server.create(serverType: Server.ServerType.smtp,
-                              port: UInt16(smtp.port)!,
-                              address: smtp.address,
-                              transport: Server.Transport(fromString: smtp.transport)))
-
-            sc.servers = MutableOrderedSet(array: servers)
-            sc.save()
-        })
+//        self.account.user.userName = name
+//        self.account.serverCredentials.forEach({ (sc) in
+//            sc.userName = loginName
+//            if password != nil && password != "" {
+//                sc.password = password
+//            }
+//            var servers = [Server]()
+//            //fixme remove the !
+//            //BUFF: creates duplicate server not assigned to account
+//            servers.append(
+//                Server.create(serverType: Server.ServerType.imap,
+//                              port: UInt16(imap.port)!,
+//                              address: imap.address,
+//                              transport: Server.Transport(fromString: imap.transport)))
+//
+//            servers.append(
+//                Server.create(serverType: Server.ServerType.smtp,
+//                              port: UInt16(smtp.port)!,
+//                              address: smtp.address,
+//                              transport: Server.Transport(fromString: smtp.transport)))
+//
+//            sc.servers = MutableOrderedSet(array: servers)
+//            sc.save()
+//        })
+        //FFUB
         self.account.save()
     }
 

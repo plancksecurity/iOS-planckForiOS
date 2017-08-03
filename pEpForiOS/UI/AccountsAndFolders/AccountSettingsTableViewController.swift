@@ -61,6 +61,71 @@ class AccountSettingsTableViewController: UITableViewController, UIPickerViewDel
         self.smtpSecurityTextfield.delegate = self
         self.smtpSecurityTextfield.tag = 2
     }
+
+    private func informUser(about error:Error) {
+        let alert = UIAlertController(title: NSLocalizedString("Invalid Input", comment: "Title of invalid accout settings user input alert"),
+                                      message: error.localizedDescription,
+                                      preferredStyle: UIAlertControllerStyle.alert)
+
+        let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
+                                         style: .cancel, handler: nil)
+
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+
+    // MARK: - HELPER
+    private func validateInput() throws -> (addrImap: String, portImap: String, transImap: String,
+        addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
+        loginName: String) {
+            //IMAP
+            guard let addrImap = imapServerTextfield.text, addrImap != "" else {
+                let msg = NSLocalizedString("IMAP server must not be empty.", comment: "Empty IMAP server message")
+                throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
+            }
+
+            guard let portImap = imapPortTextfield.text, portImap != "" else {
+                let msg = NSLocalizedString("IMAP Port must not be empty.", comment: "Empty IMAP port server message")
+                throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
+            }
+
+            guard let transImap = imapSecurityTextfield.text, transImap != "" else {
+                let msg = NSLocalizedString("Choose IMAP transport security method.", comment: "Empty IMAP transport security method")
+                throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
+            }
+
+            //SMTP
+            guard let addrSmpt = smtpServerTextfield.text, addrSmpt != "" else {
+                let msg = NSLocalizedString("SMTP server must not be empty.", comment: "Empty SMTP server message")
+                throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
+            }
+
+            guard let portSmtp = smtpPortTextfield.text, portSmtp != "" else {
+                let msg = NSLocalizedString("SMTP Port must not be empty.", comment: "Empty SMTP port server message")
+                throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
+            }
+
+            guard let transSmtp = smtpSecurityTextfield.text, transSmtp != "" else {
+                let msg = NSLocalizedString("Choose SMTP transport security method.", comment: "Empty SMTP transport security method")
+                throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
+            }
+
+            //other
+            guard let name = nameTextfield.text, name != "" else {
+                let msg = NSLocalizedString("Account name must not be empty.", comment: "Empty account name message")
+                throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
+            }
+
+            guard let loginName = usernameTextfield.text, loginName != "" else {
+                let msg = NSLocalizedString("Username must not be empty.", comment: "Empty username message")
+                throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
+            }
+
+            return (addrImap: addrImap, portImap: portImap, transImap: transImap,
+                    addrSmpt: addrSmpt, portSmtp: portSmtp, transSmtp: transSmtp, accountName: name,
+                    loginName: loginName)
+    }
+
     // MARK: - UItableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -80,7 +145,7 @@ class AccountSettingsTableViewController: UITableViewController, UIPickerViewDel
         _ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
     }
-    
+
     // MARK: - Actions
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
@@ -88,25 +153,20 @@ class AccountSettingsTableViewController: UITableViewController, UIPickerViewDel
     }
 
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        
-        guard let addi = imapServerTextfield.text, addi != "",
-            let porti = imapPortTextfield.text, porti != "",
-            let transi = imapSecurityTextfield.text, transi != "" else {
-            return
-        }
+        do {
+            let validated = try validateInput()
+            let imap = AccountSettingsViewModel.ServerViewModel(address: validated.addrImap,
+                                                                port: validated.portImap,
+                                                                transport: validated.transImap)
 
-        let imap = (addi, porti, transi)
-
-        guard let adds = smtpServerTextfield.text, adds != "",
-            let ports = smtpPortTextfield.text, ports != "",
-            let transs = smtpSecurityTextfield.text, transs != "" else {
-            return
-        }
-        let smtp = (adds, ports, transs)
-
-        if let name = nameTextfield.text, name != "", let loginName = usernameTextfield.text, loginName != "" {
-            viewModel?.update(loginName: loginName, name: name, password: passwordTextfield.text, imap: imap, smtp: smtp)
+            let smtp = AccountSettingsViewModel.ServerViewModel(address: validated.addrSmpt,
+                                                                port: validated.portSmtp,
+                                                                transport: validated.transSmtp)
+            viewModel?.update(loginName: validated.loginName, name: validated.accountName,
+                              imap: imap, smtp: smtp)
             navigationController?.popViewController(animated: true)
+        } catch {
+            informUser(about: error)
         }
     }
 
