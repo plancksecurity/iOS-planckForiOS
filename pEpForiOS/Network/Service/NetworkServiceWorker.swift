@@ -362,16 +362,16 @@ open class NetworkServiceWorker {
                 }
             }
 
-            operations.append(opFetchFolders)
             opFetchFolders.addDependency(opImapLogin)
             opImapFinished.addDependency(opFetchFolders)
+            operations.append(opFetchFolders)
 
             let opRequiredFolders = CreateRequiredFoldersOperation(
                 parentName: description, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
-            operations.append(opRequiredFolders)
             opRequiredFolders.addDependency(opFetchFolders)
             opImapFinished.addDependency(opRequiredFolders)
+            operations.append(opRequiredFolders)
 
             // 3.c Client-to-server synchronization (IMAP)
             let (lastSendOp, sendOperations) = buildSendOperations(

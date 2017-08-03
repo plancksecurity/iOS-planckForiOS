@@ -107,10 +107,10 @@ open class FetchFoldersOperation: ImapSyncOperation {
         super.markAsFinished()
     }
 
-    func folderNameParsed(
-        syncOp: FetchFoldersOperation, folderName: String, folderSeparator: String?) {
+    func folderNameParsed(syncOp: FetchFoldersOperation, folderName: String, folderSeparator: String?,
+                          folderType: FolderType?) {
         let folderInfo = StoreFolderOperation.FolderInfo(
-            name: folderName, separator: folderSeparator)
+            name: folderName, separator: folderSeparator, folderType: folderType)
         let storeFolderOp = StoreFolderOperation(
             parentName: comp, connectInfo: syncOp.imapSyncData.connectInfo,
             folderInfo: folderInfo)
@@ -140,8 +140,16 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
 
         let folderSeparator = folderInfoDict[PantomimeFolderSeparatorKey] as? String
 
-        (errorHandler as? FetchFoldersOperation)?.folderNameParsed(
-            syncOp: syncOp, folderName: folderName, folderSeparator: folderSeparator)
+        // Check and handle if the folder is reported as Special-Use Mailbox by the server
+        var folderType: FolderType? = nil
+        if let specialUseMailboxType = folderInfoDict[PantomimeFolderSpecialUseKey] as? Int {
+            folderType = FolderType.from(pantomimeSpecialUseMailboxType: specialUseMailboxType)
+        }
+
+        (errorHandler as? FetchFoldersOperation)?.folderNameParsed(syncOp: syncOp,
+                                                                   folderName: folderName,
+                                                                   folderSeparator: folderSeparator,
+                                                                   folderType:folderType)
     }
 }
 

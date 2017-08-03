@@ -21,6 +21,7 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
     public struct FolderInfo {
         let name: String
         let separator: String?
+        let folderType: FolderType?
     }
     
     let folderInfo: FolderInfo
@@ -56,7 +57,9 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
         }
 
         if let (cdFolder, newlyCreated) = CdFolder.insertOrUpdate(
-            folderName: folderInfo.name, folderSeparator: folderInfo.separator,
+            folderName: folderInfo.name,
+            folderSeparator: folderInfo.separator,
+            folderType: folderInfo.folderType,
             account: account) {
             if newlyCreated {
                 delegate?.didCreate(cdFolder: cdFolder)

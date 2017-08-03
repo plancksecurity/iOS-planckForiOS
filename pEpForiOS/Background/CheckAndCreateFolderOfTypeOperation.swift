@@ -96,6 +96,7 @@ class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
                 as? CdServer
             if CdFolder.insertOrUpdate(folderName: op.folderName,
                                        folderSeparator: server?.imapFolderSeparator,
+                                       folderType: op.folderType,
                                        account: ac) == nil {
                 op.addError(Constants.errorFolderCreateFailed(#function, name: op.folderName))
             } else {
