@@ -80,11 +80,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         super.init(name: name)
 
         self.setCacheManager(self)
-        ReferenceCounter.inc(obj: self)
-    }
-
-    deinit {
-        ReferenceCounter.dec(obj: self)
     }
 
     func functionName(_ name: String) -> String {
