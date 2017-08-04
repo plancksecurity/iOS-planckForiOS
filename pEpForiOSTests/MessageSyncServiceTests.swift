@@ -170,6 +170,7 @@ class MessageSyncServiceTests: XCTestCase {
 
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        ms.errorDelegate = TestErrorDelegate()
         messageSyncService = ms
         ms.syncDelegate = syncDelegate
         ms.start(account: cdAccount.account())
@@ -189,6 +190,7 @@ class MessageSyncServiceTests: XCTestCase {
 
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
+        ms.errorDelegate = TestErrorDelegate()
         messageSyncService = ms
         ms.errorDelegate = errorDelegate
         ms.start(account: cdAccount.account())
@@ -206,6 +208,7 @@ class MessageSyncServiceTests: XCTestCase {
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: #function, backgrounder: nil, mySelfer: nil)
         messageSyncService = ms
+        ms.errorDelegate = TestErrorDelegate()
 
         // Verification
         let expVerified = expectation(description: "expVerified")
@@ -480,6 +483,7 @@ class MessageSyncServiceTests: XCTestCase {
         }
         let ms = MessageSyncService(
             sleepTimeInSeconds: 2, parentName: parentName, backgrounder: mbg, mySelfer: nil)
+        ms.errorDelegate = TestErrorDelegate()
         messageSyncService = ms
 
         runMessageSyncWithSend(
@@ -511,6 +515,7 @@ class MessageSyncServiceTests: XCTestCase {
         ms.stateDelegate = stateDelegate
 
         if messageSyncService == nil {
+            ms.errorDelegate = TestErrorDelegate()
             ms.start(account: cdAccount.account())
         }
         waitForExpectations(timeout: TestUtil.waitTimeForever) { error in
