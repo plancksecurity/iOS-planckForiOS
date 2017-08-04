@@ -10,7 +10,6 @@ import UIKit
 
 import MessageModel
 
-//BUFF: replace open with public also in previous views (make other accesses also as strict as possible)
 public class ViewStatus {
     public var activityIndicatorViewEnable = false
 }

@@ -64,7 +64,6 @@ class LoginViewModel {
         return !Account.all().isEmpty
     }
 
-    //BUFF: added
     func login(account: String, password: String, login: String? = nil,
                username: String? = nil, callback: (Error?) -> Void) {
         var user = AccountUserInput()

@@ -123,7 +123,6 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         manualConfigButton.isEnabled = !(status.activityIndicatorViewEnable)
     }
 
-    //BUFF: dupl
     @IBAction func logIn(_ sender: Any) {
         dismissKeyboard()
         self.status.activityIndicatorViewEnable = true
