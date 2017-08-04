@@ -146,7 +146,10 @@ UITextFieldDelegate {
         }
     }
 
-    //BUFF: check for accidental server duplication
+    /// Creates and persits an account with given data and triggers a verification request.
+    ///
+    /// - Parameter model: account data
+    /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
         self.status.activityIndicatorViewEnable =  true
         updateView()
@@ -169,10 +172,21 @@ UITextFieldDelegate {
             try verifyAccount()
             hideKeybord()
         } catch {
-            //BUFF: handle error
+            let errorTopic = NSLocalizedString("Empty Field",
+                                               comment: "Title of alert: a required field is empty")
+            informUser(about: error, title: errorTopic)
         }
-        //        verifyAccount()
-        //        hideKeybord()
+    }
+
+    private func informUser(about error: Error, title: String) {
+        let alert = UIAlertController(title: title,
+                                      message: error.localizedDescription,
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        let cancelAction = UIAlertAction(title:
+            NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
+                                         style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
     }
 
     private func hideKeybord() {

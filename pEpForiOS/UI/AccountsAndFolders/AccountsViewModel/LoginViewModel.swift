@@ -45,10 +45,6 @@ extension AccountSettingsError: LocalizedError {
     }
 }
 
-enum AccountVerificationError: Error {
-    case insufficientInput
-}
-
 enum LoginCellType {
     case Text, Button
 }
@@ -106,9 +102,7 @@ class LoginViewModel {
         }
     }
 
-    //BUFF: check here for moreserver duplication
-
-    /// Crreates and persits an account with given data and triggers a verification request.
+    /// Creates and persits an account with given data and triggers a verification request.
     ///
     /// - Parameter model: account data
     /// - Throws: AccountVerificationError

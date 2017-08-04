@@ -10,12 +10,10 @@ import MessageModel
 
 public struct AccountUserInput {
     public var email: String?
-
     /**
      The actual name of the user, or nick name.
      */
     public var name: String?
-
     /**
      An optional name for the servers, if needed.
      */
@@ -58,7 +56,6 @@ public struct AccountUserInput {
         return false
     }
 
-
     /// Returns an Account instance filled with data of self.
     /// It does not deal with Core Data (does not persist).
     /// Only data from this model is taken into account, not needsVerivication or others.
@@ -66,10 +63,30 @@ public struct AccountUserInput {
     /// - Returns: filled Account
     /// - Throws: AccountVerificationError
     public func account() throws -> Account {
-        guard let address = self.email, let name = self.name,
-            let loginUser = self.username, let serverIMAP = self.serverIMAP,
-            let serverSMTP = self.serverSMTP else {
-                throw AccountVerificationError.insufficientInput
+        guard let address = self.email, address != "" else {
+            let msg = NSLocalizedString("E-mail must not be empty",
+                                        comment: "Alert message for empty em-mail address field")
+            throw AccountSettingsUserInputError.invalidInputEmailAddress(localizedMessage: msg)
+        }
+        guard let name = self.name, name != "" else { //BUFF: assure name is account name (first field in first view)
+            let msg = NSLocalizedString("Account name must not be empty",
+                                        comment: "Alert message for empty account name")
+            throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
+        }
+        guard let loginUser = self.username, loginUser != "" else {
+            let msg = NSLocalizedString("Username must not be empty",
+                                        comment: "Alert message for empty username")
+            throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
+        }
+        guard let serverIMAP = self.serverIMAP, serverIMAP != "" else {
+            let msg = NSLocalizedString("IMAP server must not be empty",
+                                        comment: "Alert message for empty IMAP server")
+            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
+        }
+        guard let serverSMTP = self.serverSMTP, serverSMTP != "" else {
+            let msg = NSLocalizedString("SMTP server must not be empty",
+                                        comment: "Alert message for empty SMTP server")
+            throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
         }
 
         let identity = Identity.create(address: address, userID: address, userName: name,
