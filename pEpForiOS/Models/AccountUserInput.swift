@@ -61,7 +61,7 @@ public struct AccountUserInput {
     /// Only data from this model is taken into account, not needsVerivication or others.
     ///
     /// - Returns: filled Account
-    /// - Throws: AccountVerificationError
+    /// - Throws: AccountSettingsUserInputError
     public func account() throws -> Account {
         guard let address = self.email, address != "" else {
             let msg = NSLocalizedString("E-mail must not be empty",
@@ -90,23 +90,20 @@ public struct AccountUserInput {
         }
 
         let identity = Identity.create(address: address, userID: address, userName: name,
-                                       isMySelf: true, toPersist: false) //BUFF: remove persist stuff. Everywhere! //make create methods unreachable
+                                       isMySelf: true) //BUFF: remove persist stuff. Everywhere! //make create methods unreachable
 
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
-                                       transport: self.transportIMAP.toServerTransport(),
-                                       toPersist: false)
+                                       transport: self.transportIMAP.toServerTransport())
         imapServer.needsVerification = true
 
         let smtpServer = Server.create(serverType: .smtp, port: self.portSMTP, address: serverSMTP,
-                                       transport: self.transportSMTP.toServerTransport(),
-                                       toPersist: false)
+                                       transport: self.transportSMTP.toServerTransport())
         smtpServer.needsVerification = true
 
         let credentials = ServerCredentials.create(userName: loginUser, password: self.password,
                                                    servers: [imapServer, smtpServer])
         credentials.needsVerification = true
-        let account = Account.create(identity: identity, credentials: [credentials],
-                                     toPersist: false)
+        let account = Account.create(identity: identity, credentials: [credentials])
         return account
     }
 }

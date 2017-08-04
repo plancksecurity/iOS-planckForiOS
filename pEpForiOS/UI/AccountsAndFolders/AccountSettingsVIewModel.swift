@@ -140,7 +140,7 @@ public class AccountSettingsViewModel {
         }
         let transport = Server.Transport.init(fromString: viewModel.transport)
         let server = Server.create(serverType: serverType, port: port, address: address,
-                                   transport: transport, toPersist: false)
+                                   transport: transport)
 
         return server
     }
