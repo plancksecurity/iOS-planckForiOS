@@ -11,6 +11,7 @@ import XCTest
 import pEpForiOS
 @testable import MessageModel
 
+//BUFF: move to MessageModelTests
 class CdMessage_PantomimeTest: XCTestCase {
     var persistentSetup: PersistentSetup!
 

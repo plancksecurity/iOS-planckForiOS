@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  UserInfoTableViewController.swift
 //  pEpDemo
 //
 //  Created by ana on 12/4/16.
@@ -10,58 +10,7 @@ import UIKit
 
 import MessageModel
 
-open class ModelUserInfoTable {
-    open var email: String?
-
-    /**
-     The actual name of the user, or nick name.
-     */
-    open var name: String?
-
-    /**
-     An optional name for the servers, if needed.
-     */
-    open var username: String?
-    open var password: String?
-    open var serverIMAP: String?
-    open var portIMAP: UInt16 = 993
-    open var transportIMAP = ConnectionTransport.TLS
-    open var serverSMTP: String?
-    open var portSMTP: UInt16 = 587
-    open var transportSMTP = ConnectionTransport.startTLS
-
-    open var isValidEmail: Bool {
-        if let em = email {
-            return em.isProbablyValidEmail()
-        }
-        return false
-    }
-
-    open var isValidPassword: Bool {
-        if let pass = password {
-            return pass.characters.count > 0
-        }
-        return false
-    }
-
-    open var isValidName: Bool {
-        return (name?.characters.count ?? 0) >= 3
-    }
-
-    open var isValidUser: Bool {
-        return isValidName && isValidEmail && isValidPassword
-    }
-
-    open var isValidImap: Bool {
-        return false
-    }
-
-    open var isValidSmtp: Bool {
-        return false
-    }
-}
-
-open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
+open class UserInfoTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!
@@ -137,14 +86,11 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
         navigationItem.rightBarButtonItem?.isEnabled = model.isValidUser
     }
 
-    /**
-     Sometimes you have to put stuff from the view into the model again.
-     */
-    func updateModel() {}
-
-    override open func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
+    //BUFF: delete or implement if required
+//    /**
+//     Sometimes you have to put stuff from the view into the model again.
+//     */
+//    func updateModel() {}
 
     open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
@@ -186,7 +132,7 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
 
 // MARK: - Navigation
 
-extension UserInfoTableView: SegueHandlerType {
+extension UserInfoTableViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case IMAPSettings
         case noSegue
@@ -195,7 +141,7 @@ extension UserInfoTableView: SegueHandlerType {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
-            if let destination = segue.destination as? IMAPSettingsTableView {
+            if let destination = segue.destination as? IMAPSettingsTableViewController {
                 destination.appConfig = appConfig
                 destination.model = model
             }

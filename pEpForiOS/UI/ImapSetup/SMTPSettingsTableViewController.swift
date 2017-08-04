@@ -1,5 +1,5 @@
 //
-//  SMTPSettingsTableView.swift
+//  SMTPSettingsTableViewController.swift
 //  pEpForiOS
 //
 //  Created by ana on 18/4/16.
@@ -10,11 +10,12 @@ import UIKit
 
 import MessageModel
 
+//BUFF: replace open with public also in previous views (make other accesses also as strict as possible)
 open class ViewStatus {
     open var activityIndicatorViewEnable = false
 }
 
-open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
+open class SMTPSettingsTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
 
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
@@ -145,46 +146,32 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
     }
 
     //BUFF: check for accidental server duplication
-    func verifyAccount() {
+    func verifyAccount() throws {
         self.status.activityIndicatorViewEnable =  true
         updateView()
-
-        guard
-            let theEmail = model.email,
-            let imapServerAddress = model.serverIMAP,
-            let smtpServerAddress = model.serverSMTP,
-            let ms = appConfig?.messageSyncService else {
-                Log.shared.errorComponent(
-                    comp,
-                    message: "Need email and other data for verification, and verification service must be set up")
-                return
+        guard let ms = appConfig?.messageSyncService else {
+            Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
+            return
         }
-
-        let identity = Identity.create(address: theEmail, userName: model.name)
-        identity.isMySelf = true
-        let userName = model.username ?? theEmail
-
-        let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
-                                       address: imapServerAddress,
-                                       transport: model.transportIMAP.toServerTransport())
-        imapServer.needsVerification = true
-
-        let smtpServer = Server.create(serverType: .smtp, port: model.portSMTP,
-                                       address: smtpServerAddress,
-                                       transport: model.transportSMTP.toServerTransport())
-        smtpServer.needsVerification = true
-        let credentials = ServerCredentials.create(userName: userName, password: model.password,
-                                                   servers: [imapServer, smtpServer])
-        credentials.needsVerification = true
-        let account = Account.create(identity: identity, credentials: [credentials])
-        account.needsVerification = true
-        account.save()
-        ms.requestVerification(account: account, delegate: self)
+        do {
+            let account = try model.account()
+            account.needsVerification = true
+            account.save()
+            ms.requestVerification(account: account, delegate: self)
+        } catch {
+            throw error
+        }
     }
 
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
-        verifyAccount()
-        hideKeybord()
+        do {
+            try verifyAccount()
+            hideKeybord()
+        } catch {
+            //BUFF: handle error
+        }
+//        verifyAccount()
+//        hideKeybord()
     }
     
     func hideKeybord() {
@@ -202,7 +189,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
     }
 }
 
-extension SMTPSettingsTableView: AccountVerificationServiceDelegate {
+extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         GCD.onMain() {
@@ -222,7 +209,7 @@ extension SMTPSettingsTableView: AccountVerificationServiceDelegate {
     }
 }
 
-extension SMTPSettingsTableView: SegueHandlerType {
+extension SMTPSettingsTableViewController: SegueHandlerType {
    public enum SegueIdentifier: String {
     case noSegue
     case viewLogSegue

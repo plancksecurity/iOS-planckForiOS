@@ -1,5 +1,5 @@
 //
-//  MyTableIMAPSettings.swift
+//  IMAPSettingsTableViewController.swift
 //  pEpForiOS
 //
 //  Created by ana on 15/4/16.
@@ -18,8 +18,7 @@ extension UIAlertController {
     }
 }
 
-class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
-
+class IMAPSettingsTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var serverTitle: UILabel!
@@ -28,14 +27,13 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
 
     let viewWidthAligner = ViewWidthsAligner()
 
-    var appConfig: AppConfig!
-    var model: ModelUserInfoTable!
+    var appConfig: AppConfig?
+    var model: ModelUserInfoTable! //FIXME: remove !
     var fields = [UITextField]()
     var responder = 0
     
     open override func viewDidLoad() {
         super.viewDidLoad()
-        
         title = NSLocalizedString("IMAP", comment: "Manual account setup")
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [serverValue, portValue]
@@ -57,12 +55,7 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
        firstResponder(model.serverIMAP == nil)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
     func updateView() {
@@ -123,7 +116,7 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
 
 // MARK: - Navigation
 
-extension IMAPSettingsTableView: SegueHandlerType {
+extension IMAPSettingsTableViewController: SegueHandlerType {
     
     public enum SegueIdentifier: String {
         case SMTPSettings
@@ -133,13 +126,11 @@ extension IMAPSettingsTableView: SegueHandlerType {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .SMTPSettings:
-            let destination = segue.destination as! SMTPSettingsTableView
-            destination.appConfig = self.appConfig
-            destination.model = self.model
+            let destination = segue.destination as! SMTPSettingsTableViewController
+            destination.appConfig = appConfig
+            destination.model = model
             break
         default:()
         }
-        
     }
-    
 }
