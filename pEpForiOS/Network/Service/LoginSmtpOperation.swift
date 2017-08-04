@@ -40,8 +40,14 @@ extension LoginSmtpOperation: SmtpSendDelegate {
 
     public func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
         smtpSendData.smtp = smtp
-        smtpSendData.connectInfo.unsetNeedsVerificationAndFinish(
-            context: Record.Context.background, operation: self)
+        let context = Record.Context.background
+        context.perform {
+            if let err = self.smtpSendData.connectInfo.unsetNeedsVerificationAndFinish(
+                context: context) {
+                self.addError(err)
+            }
+            self.markAsFinished()
+        }
     }
 
     public func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {

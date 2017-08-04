@@ -152,24 +152,11 @@ public class EmailConnectInfo: ConnectInfo {
                    networkTransportType: networkTransportType)
     }
 
-    func unsetNeedsVerificationAndFinish(context: NSManagedObjectContext,
-                                         operation: ConcurrentBaseOperation) {
-        context.perform {
-            self.unsetNeedsVerificationAndFinishInternal(context: context, operation: operation)
-        }
-    }
-
-    func unsetNeedsVerificationAndFinishInternal(context: NSManagedObjectContext,
-                                                 operation: ConcurrentBaseOperation) {
-        defer {
-            operation.markAsFinished()
-        }
-
+    func unsetNeedsVerificationAndFinish(context: NSManagedObjectContext) -> Error? {
         guard let creds = context.object(
             with: self.credentialsObjectID)
             as? CdServerCredentials else {
-                operation.addError(EmailConnectInfoError.cannotFindServerCredentials)
-                return
+                return EmailConnectInfoError.cannotFindServerCredentials
         }
 
         if creds.needsVerification == true {
@@ -179,6 +166,7 @@ public class EmailConnectInfo: ConnectInfo {
             }
             context.saveAndLogErrors()
         }
+        return nil
     }
 
     override public var hashValue: Int {
