@@ -579,7 +579,7 @@
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rgv-e4-sMa">
                                                     <rect key="frame" x="20" y="5" width="335" height="34"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="userName"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="loginName"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
