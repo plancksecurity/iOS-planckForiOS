@@ -85,7 +85,6 @@ public class AccountSettingsViewModel {
     //Currently we assume imap and smtp servers exist already (update). If we run into problems here modify to updateOrCreate
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
-        //BUFF:
         guard let serverImap = account.imapServer,
             let serverSmtp = account.smtpServer else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Account misses imap or smtp server.")
