@@ -29,7 +29,7 @@ open class UserInfoTableViewController: UITableViewController, TextfieldResponde
     var responder = 0
     var accounts = [Account]()
     
-    open var model = ModelUserInfoTable()
+    open var model = AccountUserInput()
 
     let viewWidthAligner = ViewWidthsAligner()
 

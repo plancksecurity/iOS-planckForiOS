@@ -11,11 +11,12 @@ import UIKit
 import MessageModel
 
 //BUFF: replace open with public also in previous views (make other accesses also as strict as possible)
-open class ViewStatus {
-    open var activityIndicatorViewEnable = false
+public class ViewStatus {
+    public var activityIndicatorViewEnable = false
 }
 
-open class SMTPSettingsTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
+public class SMTPSettingsTableViewController: UITableViewController, TextfieldResponder,
+UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
 
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
@@ -27,51 +28,51 @@ open class SMTPSettingsTableViewController: UITableViewController, TextfieldResp
     @IBOutlet weak var portTitle: UILabel!
 
     var appConfig: AppConfig?
-    var model: ModelUserInfoTable!
+    var model: AccountUserInput!
     var fields = [UITextField]()
     var responder = 0
-    
+
     let viewWidthAligner = ViewWidthsAligner()
     let status = ViewStatus()
-    
-    
-    open override func viewDidLoad() {
+
+
+    public override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         title = NSLocalizedString("SMTP", comment: "Manual account setup")
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [serverValue, portValue]
     }
-    
-    open override func viewDidLayoutSubviews() {
+
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         viewWidthAligner.alignViews([
             serverTitle,
             portTitle
-        ], parentView: view)
+            ], parentView: view)
     }
-    
-    open override func viewWillAppear(_ animated: Bool) {
+
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateView()
     }
-    
-    open override func viewDidAppear(_ animated: Bool) {
+
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         firstResponder(model.serverSMTP == nil)
     }
 
-    open override func didReceiveMemoryWarning() {
+    public override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    func updateView() {
+    private func updateView() {
         serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
         transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControlState())
-        
+
         if status.activityIndicatorViewEnable {
             activityIndicatorView.startAnimating()
         } else {
@@ -80,10 +81,10 @@ open class SMTPSettingsTableViewController: UITableViewController, TextfieldResp
         navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
     }
 
-    func showErrorMessage (_ message: String) {
+    fileprivate func showErrorMessage (_ message: String) {
         let alertView = UIAlertController(
             title: NSLocalizedString("Error",
-                comment: "the text in the title for the error message AlerView in account settings"),
+                                     comment: "the text in the title for the error message AlerView in account settings"),
             message:message, preferredStyle: .alert)
         alertView.view.tintColor = .pEpGreen
         alertView.addAction(UIAlertAction(
@@ -101,23 +102,23 @@ open class SMTPSettingsTableViewController: UITableViewController, TextfieldResp
         present(alertView, animated: true, completion: nil)
     }
 
-    func viewLog() {
+    private func viewLog() {
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
 
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {
         let alertController = UIAlertController(
             title: NSLocalizedString("Transport protocol",
-                comment: "UI alert title for transport protocol"),
+                                     comment: "UI alert title for transport protocol"),
             message: NSLocalizedString("Choose a Security protocol for your accont",
-                comment: "UI alert message for transport protocol"),
+                                       comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
         alertController.view.tintColor = .pEpGreen
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportSMTP = transport
             self.updateView()
         }
-        
+
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = sender
         }
@@ -146,7 +147,7 @@ open class SMTPSettingsTableViewController: UITableViewController, TextfieldResp
     }
 
     //BUFF: check for accidental server duplication
-    func verifyAccount() throws {
+    private func verifyAccount() throws {
         self.status.activityIndicatorViewEnable =  true
         updateView()
         guard let ms = appConfig?.messageSyncService else {
@@ -170,20 +171,20 @@ open class SMTPSettingsTableViewController: UITableViewController, TextfieldResp
         } catch {
             //BUFF: handle error
         }
-//        verifyAccount()
-//        hideKeybord()
+        //        verifyAccount()
+        //        hideKeybord()
     }
-    
-    func hideKeybord() {
+
+    private func hideKeybord() {
         serverValue.resignFirstResponder()
         portValue.resignFirstResponder()
     }
-    
-    open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+
+    public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
         return true
     }
-    
+
     public func textFieldDidEndEditing(_ textField: UITextField) {
         changedResponder(textField)
     }
@@ -210,9 +211,9 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
 }
 
 extension SMTPSettingsTableViewController: SegueHandlerType {
-   public enum SegueIdentifier: String {
-    case noSegue
-    case viewLogSegue
-    case backToEmailListSegue
+    public enum SegueIdentifier: String {
+        case noSegue
+        case viewLogSegue
+        case backToEmailListSegue
     }
 }

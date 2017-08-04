@@ -1,5 +1,5 @@
 //
-//  ModelUserInfoTable.swift
+//  AccountUserInput.swift
 //  pEpForiOS
 //
 //  Created by buff on 04.08.17.
@@ -8,54 +8,53 @@
 
 import MessageModel
 
-//BUFF: make struct
-open class ModelUserInfoTable {
-    open var email: String?
+public struct AccountUserInput {
+    public var email: String?
 
     /**
      The actual name of the user, or nick name.
      */
-    open var name: String?
+    public var name: String?
 
     /**
      An optional name for the servers, if needed.
      */
-    open var username: String?
-    open var password: String?
-    open var serverIMAP: String?
-    open var portIMAP: UInt16 = 993
-    open var transportIMAP = ConnectionTransport.TLS
-    open var serverSMTP: String?
-    open var portSMTP: UInt16 = 587
-    open var transportSMTP = ConnectionTransport.startTLS
+    public var username: String?
+    public var password: String?
+    public var serverIMAP: String?
+    public var portIMAP: UInt16 = 993
+    public var transportIMAP = ConnectionTransport.TLS
+    public var serverSMTP: String?
+    public var portSMTP: UInt16 = 587
+    public var transportSMTP = ConnectionTransport.startTLS
 
-    open var isValidEmail: Bool {
+    public var isValidEmail: Bool {
         if let em = email {
             return em.isProbablyValidEmail()
         }
         return false
     }
 
-    open var isValidPassword: Bool {
+    public var isValidPassword: Bool {
         if let pass = password {
             return pass.characters.count > 0
         }
         return false
     }
 
-    open var isValidName: Bool {
+    public var isValidName: Bool {
         return (name?.characters.count ?? 0) >= 3
     }
 
-    open var isValidUser: Bool {
+    public var isValidUser: Bool {
         return isValidName && isValidEmail && isValidPassword
     }
 
-    open var isValidImap: Bool {
+    public var isValidImap: Bool {
         return false
     }
 
-    open var isValidSmtp: Bool {
+    public var isValidSmtp: Bool {
         return false
     }
 
@@ -66,7 +65,7 @@ open class ModelUserInfoTable {
     ///
     /// - Returns: filled Account
     /// - Throws: AccountVerificationError
-    open func account() throws -> Account {
+    public func account() throws -> Account {
         guard let address = self.email, let name = self.name,
             let loginUser = self.username, let serverIMAP = self.serverIMAP,
             let serverSMTP = self.serverSMTP else {

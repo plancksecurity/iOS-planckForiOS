@@ -71,7 +71,7 @@ class LoginViewModel {
     //BUFF: added
     func login(account: String, password: String, login: String? = nil,
                username: String? = nil, callback: (Error?) -> Void) {
-        let user = ModelUserInfoTable()
+        var user = AccountUserInput()
         let acSettings = ASAccountSettings(accountName: account, provider: password,
                                            flags: AS_FLAG_USE_ANY, credentials: nil)
         accountSettings = acSettings
@@ -107,7 +107,12 @@ class LoginViewModel {
     }
 
     //BUFF: check here for moreserver duplication
-    func verifyAccount(model: ModelUserInfoTable) throws {
+
+    /// Crreates and persits an account with given data and triggers a verification request.
+    ///
+    /// - Parameter model: account data
+    /// - Throws: AccountVerificationError
+    func verifyAccount(model: AccountUserInput) throws {
         guard let ms = messageSyncService else {
             Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
             return
@@ -122,6 +127,8 @@ class LoginViewModel {
             throw error
         }
     }
+
+//    private func createAccount(with data: ModelUserInfoTable)
 }
 
 extension LoginViewModel: AccountVerificationServiceDelegate {
