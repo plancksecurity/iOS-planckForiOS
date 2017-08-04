@@ -271,7 +271,7 @@ class MessageSyncServiceTests: XCTestCase {
         uploadFlags(
             context: context, ms: ms, cdFolder: cdFolder, maxCount: expectedNumberOfFlagUploads,
             flagsDelegate: flagsDelegate, waitForAnswer: false)
-        let _ = runOrContinueUntilIdle(parentName: #function)
+        let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
         XCTAssertEqual(flagsDelegate.messagesChanged.count, expectedNumberOfFlagUploads)
         ms.stateDelegate = nil
     }
