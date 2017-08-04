@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 import MessageModel
 
-class SyncFlagsToServerOperationTest: OperationTestBase {
+class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
     // MARK: - SyncFlagsToServerOperation
 

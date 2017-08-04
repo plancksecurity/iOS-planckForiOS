@@ -1,5 +1,5 @@
 //
-//  OperationTestBase.swift
+//  CoreDataDrivenTestBase.swift
 //  pEpForiOS
 //
 //  Created by buff on 26.07.17.
@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 import MessageModel
 
-class OperationTestBase: XCTestCase {
+class CoreDataDrivenTestBase: XCTestCase {
     
     let connectionManager = ConnectionManager()
     var cdAccount: CdAccount!

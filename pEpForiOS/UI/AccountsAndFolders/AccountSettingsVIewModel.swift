@@ -12,9 +12,9 @@ import MessageModel
 public class AccountSettingsViewModel {
 
     public struct ServerViewModel {
-        var address: String? = nil
-        var port: String? = nil
-        var transport: String? = nil
+        var address: String?
+        var port: String?
+        var transport: String?
     }
 
     public struct SecurityViewModel {
@@ -82,20 +82,6 @@ public class AccountSettingsViewModel {
         }
     }
 
-    private func server(from viewModel:ServerViewModel, `for` serverType:Server.ServerType) -> Server? {
-        guard let viewModelPort = viewModel.port,
-            let port = UInt16(viewModelPort),
-            let address = viewModel.address else {
-            Log.shared.errorAndCrash(component: #function, errorString: "viewModel misses required data.")
-            return nil
-        }
-        let transport = Server.Transport.init(fromString: viewModel.transport)
-        let server = Server.create(serverType: serverType, port: port, address: address,
-                                   transport: transport, toPersist: false)
-
-        return server
-    }
-
     //Currently we assume imap and smtp servers exist already (update). If we run into problems here modify to updateOrCreate
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
@@ -143,5 +129,20 @@ public class AccountSettingsViewModel {
             assert(sectionIsValid(section: section), "Section out of range")
             return headers[section]
         }
+    }
+
+    //MARK: - PRIVATE
+    private func server(from viewModel:ServerViewModel, `for` serverType:Server.ServerType) -> Server? {
+        guard let viewModelPort = viewModel.port,
+            let port = UInt16(viewModelPort),
+            let address = viewModel.address else {
+                Log.shared.errorAndCrash(component: #function, errorString: "viewModel misses required data.")
+                return nil
+        }
+        let transport = Server.Transport.init(fromString: viewModel.transport)
+        let server = Server.create(serverType: serverType, port: port, address: address,
+                                   transport: transport, toPersist: false)
+
+        return server
     }
 }

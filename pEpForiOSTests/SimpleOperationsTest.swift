@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 import MessageModel
 
-class SimpleOperationsTest: OperationTestBase {
+class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     func testComp() {
         let f = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)

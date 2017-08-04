@@ -12,7 +12,8 @@
 		1507BC311F2640960036B3E9 /* CdMessage+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */; };
 		1507BC331F2641FD0036B3E9 /* Message+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */; };
 		1572B9BE1F3379990048BCF5 /* AccountSettingsUserInputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1572B9BD1F3379990048BCF5 /* AccountSettingsUserInputError.swift */; };
-		15B483D91F28CD8E000FB2CF /* OperationTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483D81F28CD8E000FB2CF /* OperationTestBase.swift */; };
+		1572B9CB1F3474880048BCF5 /* AccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */; };
+		15B483D91F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */; };
 		15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */; };
 		15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */; };
 		220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE2C1E0AB544002FE716 /* MessageCell.swift */; };
@@ -321,7 +322,8 @@
 		1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+TestUtils.swift"; sourceTree = "<group>"; };
 		1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+TestUtils.swift"; sourceTree = "<group>"; };
 		1572B9BD1F3379990048BCF5 /* AccountSettingsUserInputError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsUserInputError.swift; sourceTree = "<group>"; };
-		15B483D81F28CD8E000FB2CF /* OperationTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTestBase.swift; sourceTree = "<group>"; };
+		1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
+		15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataDrivenTestBase.swift; sourceTree = "<group>"; };
 		15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialUseMailboxesTest.swift; sourceTree = "<group>"; };
 		15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperationTest.swift; sourceTree = "<group>"; };
 		220DCE2C1E0AB544002FE716 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
@@ -649,6 +651,30 @@
 			name = Error;
 			sourceTree = "<group>";
 		};
+		1572B9C71F3474880048BCF5 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				1572B9C81F3474880048BCF5 /* AccountSettings */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		1572B9C81F3474880048BCF5 /* AccountSettings */ = {
+			isa = PBXGroup;
+			children = (
+				1572B9C91F3474880048BCF5 /* AccountSettingsViewModel */,
+			);
+			path = AccountSettings;
+			sourceTree = "<group>";
+		};
+		1572B9C91F3474880048BCF5 /* AccountSettingsViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */,
+			);
+			path = AccountSettingsViewModel;
+			sourceTree = "<group>";
+		};
 		15B483DF1F290B14000FB2CF /* Background */ = {
 			isa = PBXGroup;
 			children = (
@@ -874,7 +900,7 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		437432061CFC49A4000F8D35 /* Util */ = {
+		437432061CFC49A4000F8D35 /* TestUtils */ = {
 			isa = PBXGroup;
 			children = (
 				490FF81B1E79BFCE00BC15F9 /* ObserverDelegate.swift */,
@@ -884,8 +910,9 @@
 				431FEEB01F03B04300FE37FF /* MockBackgrounder.swift */,
 				1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */,
 				1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */,
-				15B483D81F28CD8E000FB2CF /* OperationTestBase.swift */,
+				15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */,
 			);
+			name = TestUtils;
 			path = Util;
 			sourceTree = "<group>";
 		};
@@ -961,7 +988,8 @@
 		43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				437432061CFC49A4000F8D35 /* Util */,
+				437432061CFC49A4000F8D35 /* TestUtils */,
+				1572B9C71F3474880048BCF5 /* UI */,
 				43B2C3151D2280ED00A08557 /* Resources */,
 				4918EBF91E783C70006207FC /* Models */,
 				15B483DF1F290B14000FB2CF /* Background */,
@@ -1777,12 +1805,13 @@
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				1500199F1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift in Sources */,
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
-				15B483D91F28CD8E000FB2CF /* OperationTestBase.swift in Sources */,
+				15B483D91F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift in Sources */,
 				43C579ED1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift in Sources */,
 				1507BC311F2640960036B3E9 /* CdMessage+TestUtils.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
 				15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */,
 				490FF81C1E79BFCE00BC15F9 /* ObserverDelegate.swift in Sources */,
+				1572B9CB1F3474880048BCF5 /* AccountSettingsViewModelTest.swift in Sources */,
 				432A3E441F0E793A00834749 /* SyncExistingMessagesServiceTests.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
 				15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */,

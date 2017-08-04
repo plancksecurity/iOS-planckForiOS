@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 import MessageModel
 
-class SpecialUseMailboxesTest: OperationTestBase {
+class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
 
     /// This test makes sense only for a Yahoo account as special-use
     /// mailbox names and purposes will differ using other providers. 

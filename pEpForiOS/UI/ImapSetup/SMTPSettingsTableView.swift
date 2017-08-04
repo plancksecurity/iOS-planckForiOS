@@ -144,6 +144,7 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         }
     }
 
+    //BUFF: check for accidental server duplication
     func verifyAccount() {
         self.status.activityIndicatorViewEnable =  true
         updateView()
