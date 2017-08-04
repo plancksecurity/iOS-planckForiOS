@@ -82,57 +82,50 @@ public class AccountSettingsViewModel {
         }
     }
 
-    //fixme need to rethought the server update things
-    func updatxe(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
+    private func server(from viewModel:ServerViewModel, `for` serverType:Server.ServerType) -> Server? {
+        guard let viewModelPort = viewModel.port,
+            let port = UInt16(viewModelPort),
+            let address = viewModel.address else {
+            Log.shared.errorAndCrash(component: #function, errorString: "viewModel misses required data.")
+            return nil
+        }
+        let transport = Server.Transport.init(fromString: viewModel.transport)
+        let server = Server.create(serverType: serverType, port: port, address: address,
+                                   transport: transport, toPersist: false)
+
+        return server
+    }
+
+    //Currently we assume imap and smtp servers exist already (update). If we run into problems here modify to updateOrCreate
+    func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
         //BUFF:
-        //HERE:
-//        let imapServer = account.imapServer
-////        guard let addrSmtp = smtpServerTextfield.text, addrSmtp != "",
-////            let portSmtp = smtpPortTextfield.text, portSmtp != "",
-////            let transSmtp = smtpSecurityTextfield.text, transSmtp != ""
-////            else {
-////                return
-////        }
-//        guard let addrSmtp = imap.address else {
-//            throw
-//        }
-//
-//
-//        account.imapServer?.address = imap.address
-//
-//        let cdAccount = CdAccount.search(account: account)
-//        let cdImapServer = cdAccount?.imapCdServer
-//        cdImapServer?.update(with: imapServer)
+        guard let serverImap = account.imapServer,
+            let serverSmtp = account.smtpServer else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Account misses imap or smtp server.")
+                return
+        }
+        guard let editedServerImap = server(from: imap, for: .imap),
+            let editedServerSmtp = server(from: smtp, for: .smtp) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Invalid input.")
+                return
+        }
 
-//        //HERE:
+        serverImap.updateValues(from: editedServerImap)
+        serverImap.needsVerification = true
 
-//        self.account.user.userName = name
-//        self.account.serverCredentials.forEach({ (sc) in
-//            sc.userName = loginName
-//            if password != nil && password != "" {
-//                sc.password = password
-//            }
-//            var servers = [Server]()
-//            //fixme remove the !
-//            //BUFF: creates duplicate server not assigned to account
-//            servers.append(
-//                Server.create(serverType: Server.ServerType.imap,
-//                              port: UInt16(imap.port)!,
-//                              address: imap.address,
-//                              transport: Server.Transport(fromString: imap.transport)))
-//
-//            servers.append(
-//                Server.create(serverType: Server.ServerType.smtp,
-//                              port: UInt16(smtp.port)!,
-//                              address: smtp.address,
-//                              transport: Server.Transport(fromString: smtp.transport)))
-//
-//            sc.servers = MutableOrderedSet(array: servers)
-//            sc.save()
-//        })
-        //FFUB
-        self.account.save()
+        serverSmtp.updateValues(from: editedServerSmtp)
+        serverSmtp.needsVerification = true
+
+        self.account.user.userName = name
+        self.account.serverCredentials.forEach { sc in
+            sc.userName = loginName
+            if password != nil && password != "" {
+                sc.password = password
+            }
+        }
+
+        account.save()
     }
 
     func sectionIsValid(section: Int) -> Bool {

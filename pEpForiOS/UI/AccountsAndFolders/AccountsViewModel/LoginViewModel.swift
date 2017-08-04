@@ -103,6 +103,7 @@ class LoginViewModel {
         }
     }
 
+    //BUFF: check here for moreserver duplication
     func verifyAccount(model: ModelUserInfoTable,
                        callback: (Error?) -> Void) -> AccountVerificationError? {
         guard let addres = model.email, let name = model.name,
