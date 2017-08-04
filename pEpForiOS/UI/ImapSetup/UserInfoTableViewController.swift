@@ -10,7 +10,7 @@ import UIKit
 
 import MessageModel
 
-open class UserInfoTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
+public class UserInfoTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!
@@ -29,11 +29,11 @@ open class UserInfoTableViewController: UITableViewController, TextfieldResponde
     var responder = 0
     var accounts = [Account]()
     
-    open var model = AccountUserInput()
+    public var model = AccountUserInput()
 
     let viewWidthAligner = ViewWidthsAligner()
 
-    open override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         title = NSLocalizedString("Account Configuration", comment: "Title for manual account setup")
@@ -43,7 +43,7 @@ open class UserInfoTableViewController: UITableViewController, TextfieldResponde
         fields = [nameValue, emailValue, usernameValue, passwordValue]
     }
 
-    open override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         viewWidthAligner.alignViews([
@@ -61,14 +61,14 @@ open class UserInfoTableViewController: UITableViewController, TextfieldResponde
         }
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.hidesBackButton = Account.all().isEmpty
         updateViewFromInitialModel()
         updateView()
     }
     
-    open override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         firstResponder(!model.isValidName)
     }
@@ -86,13 +86,7 @@ open class UserInfoTableViewController: UITableViewController, TextfieldResponde
         navigationItem.rightBarButtonItem?.isEnabled = model.isValidUser
     }
 
-    //BUFF: delete or implement if required
-//    /**
-//     Sometimes you have to put stuff from the view into the model again.
-//     */
-//    func updateModel() {}
-
-    open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
         
         if model.isValidUser {
@@ -138,7 +132,7 @@ extension UserInfoTableViewController: SegueHandlerType {
         case noSegue
     }
     
-    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
             if let destination = segue.destination as? IMAPSettingsTableViewController {
