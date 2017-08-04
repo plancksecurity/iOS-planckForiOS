@@ -90,7 +90,7 @@ public struct AccountUserInput {
         }
 
         let identity = Identity.create(address: address, userID: address, userName: name,
-                                       isMySelf: true) //BUFF: remove persist stuff. Everywhere! //make create methods unreachable
+                                       isMySelf: true)
 
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
                                        transport: self.transportIMAP.toServerTransport())
