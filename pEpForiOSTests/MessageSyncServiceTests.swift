@@ -257,7 +257,7 @@ class MessageSyncServiceTests: XCTestCase {
         uploadFlags(context: context, ms: ms, cdFolder: cdFolder, maxCount: 3)
     }
 
-    func testUploadFlagsBeforeIdle() {
+    func notestUploadFlagsBeforeIdle() {
         let ms = runOrContinueUntilIdle(parentName: #function)
 
         let context = Record.Context.default
