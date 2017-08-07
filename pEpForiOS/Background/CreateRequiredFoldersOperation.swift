@@ -111,8 +111,7 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
         cdFolder.uuid = MessageID.generate()
         cdFolder.name = folderToCreate.folderName
         cdFolder.account = folderToCreate.cdAccount
-        cdFolder.folderType = folderToCreate.folderType.rawValue
-        context.saveAndLogErrors()
+        cdFolder.folderType = folderToCreate.folderType
     }
 
     func createFolderAgain(potentialError: Error) {

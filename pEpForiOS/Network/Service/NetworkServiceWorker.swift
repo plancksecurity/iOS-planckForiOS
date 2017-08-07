@@ -230,11 +230,11 @@ open class NetworkServiceWorker {
             var haveInbox = false
             for f in folders {
                 if let name = f.name {
-                    if f.folderType == FolderType.inbox.rawValue {
+                    if f.folderTypeRawValue == FolderType.inbox.rawValue {
                         haveInbox = true
                     }
                     folderInfos.append(FolderInfo(
-                        name: name, folderType: FolderType(rawValue: f.folderType) ?? .normal,
+                        name: name, folderType: f.folderType,
                         firstUID: f.firstUID(), lastUID: f.lastUID(), folderID: f.objectID))
                 }
             }
@@ -246,7 +246,7 @@ open class NetworkServiceWorker {
                     folderInfos.append(
                         FolderInfo(
                             name: name,
-                            folderType: FolderType(rawValue: inboxFolder.folderType) ?? .inbox,
+                            folderType: inboxFolder.folderType,
                             firstUID: inboxFolder.firstUID(), lastUID: inboxFolder.lastUID(),
                             folderID: inboxFolder.objectID))
                 }

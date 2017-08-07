@@ -26,8 +26,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
 
             for message in messages {
                 var outgoing = false
-                let folderTypeNum = message.parent?.folderType
-                if let folderType = FolderType.fromInt(folderTypeNum!) {
+                if let folderType = message.parent?.folderType {
                     outgoing = folderType.isOutgoing()
                 } else {
                     outgoing = false
