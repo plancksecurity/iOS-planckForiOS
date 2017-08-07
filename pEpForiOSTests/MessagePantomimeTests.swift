@@ -80,7 +80,7 @@ class MessagePantomimeTests: XCTestCase {
 
         let cdFolder = CdFolder.create()
         let folderName = "inbox"
-        cdFolder.folderType = FolderType.inbox.rawValue
+        cdFolder.folderType = FolderType.inbox
         cdFolder.name = folderName
         cdFolder.uuid = MessageID.generate()
         cdFolder.account = cdAccount

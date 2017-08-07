@@ -208,7 +208,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNotNil(CdMessage.all())
 
         guard let cdFolder = CdFolder.first(
-            attributes: ["folderType": FolderType.inbox.rawValue]) else {
+            attributes: ["folderTypeRawValue": FolderType.inbox.rawValue]) else {
                 XCTFail()
                 return
         }
@@ -222,7 +222,7 @@ class NetworkServiceTests: XCTestCase {
                 XCTFail()
                 continue
             }
-            XCTAssertEqual(parentF.folderType, FolderType.inbox.rawValue)
+            XCTAssertEqual(parentF.folderType, FolderType.inbox)
             if cdMsg.pEpRating == PEPUtil.pEpRatingNone {
                 cdDecryptAgainCount += 1
             }
@@ -377,9 +377,9 @@ class NetworkServiceTests: XCTestCase {
 
         // Verify outgoing mails
         for m in outgoingMails {
-            XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
+            XCTAssertEqual(m.parent?.folderType, FolderType.sent)
             XCTAssertEqual(m.uid, Int32(0))
-            XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+            XCTAssertEqual(m.sendStatus, SendStatus.none    )
         }
 
         del = NetworkServiceObserver(

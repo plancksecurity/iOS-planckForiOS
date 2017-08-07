@@ -25,7 +25,7 @@ public extension CdFolder {
 
     public static func by(folderType: FolderType, account: CdAccount,
                           context: NSManagedObjectContext = Record.Context.default) -> CdFolder? {
-        return CdFolder.first(attributes: ["folderType": folderType.rawValue, "account": account],
+        return CdFolder.first(attributes: ["folderTypeRawValue": folderType.rawValue, "account": account],
                               in: context)
     }
 

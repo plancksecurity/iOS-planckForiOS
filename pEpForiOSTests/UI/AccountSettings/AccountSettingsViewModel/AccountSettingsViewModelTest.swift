@@ -67,16 +67,16 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
                     return
                 }
 
-                if server.serverType == Int16(Server.ServerType.imap.rawValue)
-                    || server.serverType == Int16(Server.ServerType.smtp.rawValue) {
+                if server.serverType == Server.ServerType.imap
+                    || server.serverType == Server.ServerType.smtp {
                     XCTAssertEqual(server.address, testServerAddress)
                     XCTAssertEqual(Int16(cdPort), Int16(testPort)!)
-                    XCTAssertEqual(server.transport, Int16(testTransport.rawValue))
+                    XCTAssertEqual(server.transport, testTransport)
                 }
             }
         }
     }
-
+    
     //MARK: - HELPERS
     /// Returns the number of all servers assined to the Account, taking all credentials into account
     private func serverCount(account:Account) -> Int {

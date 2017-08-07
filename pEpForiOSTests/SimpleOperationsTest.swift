@@ -215,7 +215,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertGreaterThanOrEqual(
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
 
-        var options: [String: Any] = ["folderType": FolderType.inbox.rawValue,
+        var options: [String: Any] = ["folderTypeRawValue": FolderType.inbox.rawValue,
                                       "account": cdAccount]
         let inboxFolder = CdFolder.first(attributes: options)
         options["folderType"] = FolderType.sent.rawValue

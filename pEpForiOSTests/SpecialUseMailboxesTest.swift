@@ -117,17 +117,17 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
         assertAllYahooFolderNamesExist(in: yahooFolders)
         for folder in yahooFolders {
             if folder.name! == "Bulk Mail" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .spam)
+                XCTAssertTrue(folder.folderType == .spam)
             } else if folder.name! == "Archive" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .archive)
+                XCTAssertTrue(folder.folderType == .archive)
             } else if folder.name! == "Draft" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .drafts)
+                XCTAssertTrue(folder.folderType == .drafts)
             } else if folder.name! == "Inbox" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .inbox)
+                XCTAssertTrue(folder.folderType == .inbox)
             } else if folder.name! == "Sent" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .sent)
+                XCTAssertTrue(folder.folderType == .sent)
             } else if folder.name! == "Trash" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .trash)
+                XCTAssertTrue(folder.folderType == .trash)
             }
         }
     }
@@ -176,7 +176,7 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
             return false
         }
         for folder in folders {
-            if folder.folderType == folderType.rawValue {
+            if folder.folderType == folderType {
                 return true
             }
         }
