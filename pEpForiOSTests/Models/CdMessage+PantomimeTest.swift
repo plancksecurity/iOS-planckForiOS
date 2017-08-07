@@ -8,9 +8,10 @@
 
 import XCTest
 
-//@testable import pEpForiOS
+@testable import pEpForiOS
 @testable import MessageModel
 
+//BUFF: later. Move to MessageModel
 class CdMessage_PantomimeTest: XCTestCase {
     var persistentSetup: PersistentSetup!
 
