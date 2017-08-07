@@ -16,7 +16,7 @@ open class AppendDraftMailsOperation: AppendMailsOperation {
         var msg: CdMessage?
         context.performAndWait {
             let p = NSPredicate(
-                format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatus = %d",
+                format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d",
                 FolderType.drafts.rawValue, SendStatus.none.rawValue)
             msg = CdMessage.first(predicate: p, in: self.context)
         }

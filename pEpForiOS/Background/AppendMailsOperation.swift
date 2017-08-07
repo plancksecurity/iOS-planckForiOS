@@ -55,7 +55,7 @@ open class AppendMailsOperation: ImapSyncOperation {
         var msg: CdMessage?
         context.performAndWait {
             let p = NSPredicate(
-                format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatus = %d",
+                format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d",
                 FolderType.sent.rawValue, SendStatus.smtpDone.rawValue)
             msg = CdMessage.first(predicate: p, in: self.context)
         }

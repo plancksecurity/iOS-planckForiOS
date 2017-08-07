@@ -599,7 +599,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))
+                XCTAssertEqual(m.sendStatus, SendStatus.smtpDone)
             }
         } else {
             XCTFail()
@@ -659,7 +659,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sendStatus = Int16(SendStatus.smtpDone.rawValue)
+            message.sendStatus = SendStatus.smtpDone
             message.sent = Date() as NSDate
             message.addTo(cdIdentity: to)
         }
@@ -669,7 +669,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             for m in msgs {
                 XCTAssertEqual(m.parent?.folderType, FolderType.sent)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))
+                XCTAssertEqual(m.sendStatus, SendStatus.smtpDone)
             }
         } else {
             XCTFail()
@@ -746,7 +746,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sendStatus = Int16(SendStatus.none.rawValue)
+            message.sendStatus = SendStatus.none
             message.addTo(cdIdentity: to)
         }
         Record.saveAndWait()
@@ -755,7 +755,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             for m in msgs {
                 XCTAssertEqual(m.parent?.folderType, FolderType.drafts)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+                XCTAssertEqual(m.sendStatus, SendStatus.none)
             }
         } else {
             XCTFail()
@@ -941,7 +941,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sendStatus = Int16(SendStatus.none.rawValue)
+            message.sendStatus = SendStatus.none
             message.addTo(cdIdentity: to)
             let imapFields = CdImapFields.create()
             let imapFlags = CdImapFlags.create()
@@ -970,7 +970,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(m.parent?.folderType == FolderType.inbox ||
                     m.parent?.folderType == FolderType.drafts)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+                XCTAssertEqual(m.sendStatus, SendStatus.none)
             }
         } else {
             XCTFail()

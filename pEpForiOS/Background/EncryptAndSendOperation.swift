@@ -52,7 +52,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     public static func predicateOutgoingMails(cdAccount: CdAccount) -> NSPredicate {
         return NSPredicate(
-            format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatus = %d and parent.account = %@",
+            format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d and parent.account = %@",
             FolderType.sent.rawValue, SendStatus.none.rawValue, cdAccount)
     }
 
@@ -102,7 +102,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         if let objID = lastSentMessageObjectID {
             context.performAndWait {
                 if let msg = context.object(with: objID) as? CdMessage {
-                    msg.sendStatus = Int16(SendStatus.smtpDone.rawValue)
+                    msg.sendStatus = SendStatus.smtpDone
                     Log.info(
                         component: #function,
                         content: "Setting \(String(describing: msg.messageID)): \(msg.sendStatus)")
