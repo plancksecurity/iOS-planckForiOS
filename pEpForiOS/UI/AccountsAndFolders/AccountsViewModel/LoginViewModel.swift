@@ -120,8 +120,6 @@ class LoginViewModel {
             throw error
         }
     }
-
-//    private func createAccount(with data: ModelUserInfoTable)
 }
 
 extension LoginViewModel: AccountVerificationServiceDelegate {
