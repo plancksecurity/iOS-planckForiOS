@@ -218,7 +218,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         var options: [String: Any] = ["folderTypeRawValue": FolderType.inbox.rawValue,
                                       "account": cdAccount]
         let inboxFolder = CdFolder.first(attributes: options)
-        options["folderType"] = FolderType.sent.rawValue
+        options["folderTypeRawValue"] = FolderType.sent.rawValue
         XCTAssertNotNil(inboxFolder)
         XCTAssertEqual(inboxFolder?.name?.lowercased(),
                        ImapSync.defaultImapInboxName.lowercased())

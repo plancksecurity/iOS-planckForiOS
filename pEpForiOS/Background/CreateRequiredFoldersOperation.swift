@@ -112,6 +112,8 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
         cdFolder.name = folderToCreate.folderName
         cdFolder.account = folderToCreate.cdAccount
         cdFolder.folderType = folderToCreate.folderType
+
+        Record.save()
     }
 
     func createFolderAgain(potentialError: Error) {
