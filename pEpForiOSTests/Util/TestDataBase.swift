@@ -67,16 +67,16 @@ class TestDataBase {
             id.userName = idUserName
 
             let smtp = CdServer.create()
-            smtp.serverType = Int16(smtpServerType.rawValue)
+            smtp.serverType = smtpServerType
             smtp.port = NSNumber(value: smtpServerPort)
             smtp.address = smtpServerAddress
-            smtp.transport = Int16(smtpServerTransport.rawValue)
+            smtp.transport = smtpServerTransport
 
             let imap = CdServer.create()
-            imap.serverType = Int16(imapServerType.rawValue)
+            imap.serverType = imapServerType
             imap.port = NSNumber(value: imapServerPort)
             imap.address = imapServerAddress
-            imap.transport = Int16(imapServerTransport.rawValue)
+            imap.transport = imapServerTransport
 
             let key = MessageID.generate()
             CdServerCredentials.add(password: password, forKey: key)
