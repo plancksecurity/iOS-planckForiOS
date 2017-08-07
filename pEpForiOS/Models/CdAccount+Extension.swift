@@ -11,8 +11,8 @@ import MessageModel
 extension CdAccount {
     func serverNTuple(credentials: CdServerCredentials,
                       server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
-        if let serverType = Server.ServerType.init(rawValue: Int(server.serverType))?.asString(),
-            let key = credentials.key {
+        if let key = credentials.key {
+            let serverType = server.serverType.asString()
             return (server, credentials, KeyChain.password(key: key, serverType: serverType))
         }
         return nil
@@ -28,9 +28,8 @@ extension CdAccount {
         for cred in creds {
             if let servers = cred.servers?.sortedArray(using: []) as? [CdServer] {
                 for server in servers {
-                    let st = Int(server.serverType)
-                    if st == Server.ServerType.imap.rawValue ||
-                        st == Server.ServerType.smtp.rawValue {
+                    if server.serverType == Server.ServerType.imap
+                        || server.serverType == Server.ServerType.smtp  {
                         let password = cred.password
                         if let emailConnectInfo = emailConnectInfo(
                             account: self, server: server, credentials: cred,
@@ -63,11 +62,9 @@ extension CdAccount {
                           password: String?) -> EmailConnectInfo? {
         let connectionTransport = ConnectionTransport(fromInt: Int(server.transport))
 
-        let serverTypeInt = Int(server.serverType)
         if let port = server.port?.int16Value,
             let address = server.address,
-            let serverType = Server.ServerType(rawValue: serverTypeInt),
-            let emailProtocol = EmailProtocol(serverType: serverType) {
+            let emailProtocol = EmailProtocol(serverType: server.serverType) {
             return EmailConnectInfo(
                 accountObjectID: account.objectID, serverObjectID: server.objectID,
                 credentialsObjectID: credentials.objectID,
