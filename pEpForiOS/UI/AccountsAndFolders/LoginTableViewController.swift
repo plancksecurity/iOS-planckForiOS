@@ -210,7 +210,7 @@ extension LoginTableViewController: SegueHandlerType {
         case .manualConfigSegue:
             if
                 let navVC = segue.destination as? UINavigationController,
-                let vc = navVC.topViewController as? UserInfoTableView {
+                let vc = navVC.topViewController as? UserInfoTableViewController {
                 vc.appConfig = appConfig
                 vc.model.email = emailAddress.text
                 vc.model.password = password.text

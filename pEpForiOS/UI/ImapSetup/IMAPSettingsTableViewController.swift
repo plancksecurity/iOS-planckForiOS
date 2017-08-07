@@ -1,5 +1,5 @@
 //
-//  MyTableIMAPSettings.swift
+//  IMAPSettingsTableViewController.swift
 //  pEpForiOS
 //
 //  Created by ana on 15/4/16.
@@ -9,17 +9,17 @@
 import UIKit
 
 extension UIAlertController {
-    
-    func setupActionFromConnectionTransport(_ transport: ConnectionTransport, block: @escaping (ConnectionTransport) -> ()) {
-        let action = UIAlertAction(title: transport.localizedString(), style: .default, handler: { action in
+    func setupActionFromConnectionTransport(_ transport: ConnectionTransport,
+                                            block: @escaping (ConnectionTransport) -> ()) {
+        let action = UIAlertAction(title: transport.localizedString(), style: .default,
+                                   handler: { action in
             block(transport)
         })
         addAction(action)
     }
 }
 
-class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
-
+class IMAPSettingsTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var serverTitle: UILabel!
@@ -28,44 +28,38 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
 
     let viewWidthAligner = ViewWidthsAligner()
 
-    var appConfig: AppConfig!
-    var model: ModelUserInfoTable!
+    var appConfig: AppConfig?
+    var model: AccountUserInput! //FIXME: remove !
     var fields = [UITextField]()
     var responder = 0
-    
-    open override func viewDidLoad() {
+
+    override func viewDidLoad() {
         super.viewDidLoad()
-        
         title = NSLocalizedString("IMAP", comment: "Manual account setup")
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [serverValue, portValue]
     }
-    
-    open override func viewDidLayoutSubviews() {
+
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         viewWidthAligner.alignViews([
             serverTitle,
             portTitle
-        ], parentView: view)
+            ], parentView: view)
     }
-    
-    open override func viewWillAppear(_ animated: Bool) {
+
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateView()
     }
-    
-    open override func viewDidAppear(_ animated: Bool) {
+
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-       firstResponder(model.serverIMAP == nil)
+        firstResponder(model.serverIMAP == nil)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
-    func updateView() {
+    private func updateView() {
         serverValue.text = model.serverIMAP
         portValue.text = String(model.portIMAP)
         transportSecurity.setTitle(model.transportIMAP.localizedString(), for: UIControlState())
@@ -74,16 +68,16 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {
         let alertController = UIAlertController(
             title: NSLocalizedString("Transport protocol",
-                comment: "UI alert title for transport protocol"),
+                                     comment: "UI alert title for transport protocol"),
             message: NSLocalizedString("Choose a Security protocol for your accont",
-                comment: "UI alert message for transport protocol"),
+                                       comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
         alertController.view.tintColor = .pEpGreen
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportIMAP = transport
             self.updateView()
         }
-        
+
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = sender
         }
@@ -110,12 +104,12 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
     @IBAction func changeServer(_ sender: UITextField) {
         model.serverIMAP = serverValue.text!
     }
-    
-    open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+
+    public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
         return true
     }
-    
+
     public func textFieldDidEndEditing(_ textField: UITextField) {
         changedResponder(textField)
     }
@@ -123,23 +117,21 @@ class IMAPSettingsTableView: UITableViewController, TextfieldResponder, UITextFi
 
 // MARK: - Navigation
 
-extension IMAPSettingsTableView: SegueHandlerType {
-    
+extension IMAPSettingsTableViewController: SegueHandlerType {
+
     public enum SegueIdentifier: String {
         case SMTPSettings
         case noSegue
     }
-    
-    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .SMTPSettings:
-            let destination = segue.destination as! SMTPSettingsTableView
-            destination.appConfig = self.appConfig
-            destination.model = self.model
+            let destination = segue.destination as! SMTPSettingsTableViewController
+            destination.appConfig = appConfig
+            destination.model = model
             break
         default:()
         }
-        
     }
-    
 }

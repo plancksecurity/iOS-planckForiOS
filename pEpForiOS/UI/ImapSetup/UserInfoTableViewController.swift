@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  UserInfoTableViewController.swift
 //  pEpDemo
 //
 //  Created by ana on 12/4/16.
@@ -10,58 +10,7 @@ import UIKit
 
 import MessageModel
 
-open class ModelUserInfoTable {
-    open var email: String?
-
-    /**
-     The actual name of the user, or nick name.
-     */
-    open var name: String?
-
-    /**
-     An optional name for the servers, if needed.
-     */
-    open var username: String?
-    open var password: String?
-    open var serverIMAP: String?
-    open var portIMAP: UInt16 = 993
-    open var transportIMAP = ConnectionTransport.TLS
-    open var serverSMTP: String?
-    open var portSMTP: UInt16 = 587
-    open var transportSMTP = ConnectionTransport.startTLS
-
-    open var isValidEmail: Bool {
-        if let em = email {
-            return em.isProbablyValidEmail()
-        }
-        return false
-    }
-
-    open var isValidPassword: Bool {
-        if let pass = password {
-            return pass.characters.count > 0
-        }
-        return false
-    }
-
-    open var isValidName: Bool {
-        return (name?.characters.count ?? 0) >= 3
-    }
-
-    open var isValidUser: Bool {
-        return isValidName && isValidEmail && isValidPassword
-    }
-
-    open var isValidImap: Bool {
-        return false
-    }
-
-    open var isValidSmtp: Bool {
-        return false
-    }
-}
-
-open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
+public class UserInfoTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
     let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!
@@ -80,11 +29,11 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
     var responder = 0
     var accounts = [Account]()
     
-    open var model = ModelUserInfoTable()
+    public var model = AccountUserInput()
 
     let viewWidthAligner = ViewWidthsAligner()
 
-    open override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         title = NSLocalizedString("Account Configuration", comment: "Title for manual account setup")
@@ -94,7 +43,7 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
         fields = [nameValue, emailValue, usernameValue, passwordValue]
     }
 
-    open override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         viewWidthAligner.alignViews([
@@ -112,14 +61,14 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
         }
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.hidesBackButton = Account.all().isEmpty
         updateViewFromInitialModel()
         updateView()
     }
     
-    open override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         firstResponder(!model.isValidName)
     }
@@ -137,16 +86,7 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
         navigationItem.rightBarButtonItem?.isEnabled = model.isValidUser
     }
 
-    /**
-     Sometimes you have to put stuff from the view into the model again.
-     */
-    func updateModel() {}
-
-    override open func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
-    open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
         
         if model.isValidUser {
@@ -186,16 +126,16 @@ open class UserInfoTableView: UITableViewController, TextfieldResponder, UITextF
 
 // MARK: - Navigation
 
-extension UserInfoTableView: SegueHandlerType {
+extension UserInfoTableViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case IMAPSettings
         case noSegue
     }
     
-    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
-            if let destination = segue.destination as? IMAPSettingsTableView {
+            if let destination = segue.destination as? IMAPSettingsTableViewController {
                 destination.appConfig = appConfig
                 destination.model = model
             }

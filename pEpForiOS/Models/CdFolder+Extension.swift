@@ -123,13 +123,12 @@ public extension CdFolder {
             folder.folderType = type.rawValue
         }
 
-        if folder.folderType != FolderType.normal.rawValue /*|| folderType != nil*/ { //BUFF:
+        if folder.folderType != FolderType.normal.rawValue || folderType != nil {
             // The folder has already a non-normal folder type set 
-            // OR the folderType to use is explicitly given
+            // OR the folderType to use is explicitly given.
             // No need to do heuristics by folder name to find its purpose.
             return folder
         }
-
 
         if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
             folder.folderType = FolderType.inbox.rawValue

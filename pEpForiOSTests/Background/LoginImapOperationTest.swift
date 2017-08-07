@@ -12,7 +12,7 @@ import CoreData
 import pEpForiOS
 import MessageModel
 
-class LoginImapOperationTest: OperationTestBase {
+class LoginImapOperationTest: CoreDataDrivenTestBase {
     
     /*
      *IOS-606 Login fails using Yahoo account*

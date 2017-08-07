@@ -45,11 +45,6 @@ extension AccountSettingsError: LocalizedError {
     }
 }
 
-enum AccountVerificationError: Error {
-    case insufficientInput
-    case noMessageSyncService
-}
-
 enum LoginCellType {
     case Text, Button
 }
@@ -71,7 +66,7 @@ class LoginViewModel {
 
     func login(account: String, password: String, login: String? = nil,
                username: String? = nil, callback: (Error?) -> Void) {
-        let user = ModelUserInfoTable()
+        var user = AccountUserInput()
         let acSettings = ASAccountSettings(accountName: account, provider: password,
                                            flags: AS_FLAG_USE_ANY, credentials: nil)
         accountSettings = acSettings
@@ -97,44 +92,36 @@ class LoginViewModel {
             }
         }
         user.name = username
-        if let err = verifyAccount(model: user, callback: callback) {
-            Log.shared.error(component: #function, error: err)
-            callback(AccountSettingsError.illegalValue)
+
+        do {
+            try verifyAccount(model: user)
+        } catch {
+            Log.shared.error(component: #function, error: error)
+            callback(error)
         }
     }
 
-    func verifyAccount(model: ModelUserInfoTable,
-                       callback: (Error?) -> Void) -> AccountVerificationError? {
-        guard let addres = model.email, let name = model.name,
-            let loginUser = model.username, let serverIMAP = model.serverIMAP,
-                let serverSMTP = model.serverSMTP else {
-            return .insufficientInput
-        }
+    /// Creates and persits an account with given data and triggers a verification request.
+    ///
+    /// - Parameter model: account data
+    /// - Throws: AccountVerificationError
+    func verifyAccount(model: AccountUserInput) throws {
         guard let ms = messageSyncService else {
-            return .noMessageSyncService
+            Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
+            return
         }
-        let identity = Identity.create(address: addres, userName: name)
-        identity.isMySelf = true
-        let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
-                                       address: serverIMAP,
-                                       transport: model.transportIMAP.toServerTransport())
-        imapServer.needsVerification = true
-        let smtpServer = Server.create(serverType: .smtp, port: model.portSMTP,
-                                       address: serverSMTP,
-                                       transport: model.transportSMTP.toServerTransport())
-        smtpServer.needsVerification = true
-        let credentials = ServerCredentials.create(userName: loginUser, password: model.password,
-                                                   servers: [imapServer, smtpServer])
-        credentials.needsVerification = true
-        let account = Account.create(identity: identity, credentials: [credentials])
-        loginAccount = account
-        account.needsVerification = true
-        account.save()
-
-        ms.requestVerification(account: account, delegate: self)
-
-        return nil
+        do {
+            let account = try model.account()
+            loginAccount = account
+            account.needsVerification = true
+            account.save()
+            ms.requestVerification(account: account, delegate: self)
+        } catch {
+            throw error
+        }
     }
+
+//    private func createAccount(with data: ModelUserInfoTable)
 }
 
 extension LoginViewModel: AccountVerificationServiceDelegate {

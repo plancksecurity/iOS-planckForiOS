@@ -1,5 +1,5 @@
 //
-//  SMTPSettingsTableView.swift
+//  SMTPSettingsTableViewController.swift
 //  pEpForiOS
 //
 //  Created by ana on 18/4/16.
@@ -10,11 +10,12 @@ import UIKit
 
 import MessageModel
 
-open class ViewStatus {
-    open var activityIndicatorViewEnable = false
+public class ViewStatus {
+    public var activityIndicatorViewEnable = false
 }
 
-open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UITextFieldDelegate {
+public class SMTPSettingsTableViewController: UITableViewController, TextfieldResponder,
+UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
 
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
@@ -26,51 +27,51 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
     @IBOutlet weak var portTitle: UILabel!
 
     var appConfig: AppConfig?
-    var model: ModelUserInfoTable!
+    var model: AccountUserInput!
     var fields = [UITextField]()
     var responder = 0
-    
+
     let viewWidthAligner = ViewWidthsAligner()
     let status = ViewStatus()
-    
-    
-    open override func viewDidLoad() {
+
+
+    public override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         title = NSLocalizedString("SMTP", comment: "Manual account setup")
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [serverValue, portValue]
     }
-    
-    open override func viewDidLayoutSubviews() {
+
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         viewWidthAligner.alignViews([
             serverTitle,
             portTitle
-        ], parentView: view)
+            ], parentView: view)
     }
-    
-    open override func viewWillAppear(_ animated: Bool) {
+
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateView()
     }
-    
-    open override func viewDidAppear(_ animated: Bool) {
+
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         firstResponder(model.serverSMTP == nil)
     }
 
-    open override func didReceiveMemoryWarning() {
+    public override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    func updateView() {
+    private func updateView() {
         serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
         transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControlState())
-        
+
         if status.activityIndicatorViewEnable {
             activityIndicatorView.startAnimating()
         } else {
@@ -79,10 +80,10 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
     }
 
-    func showErrorMessage (_ message: String) {
+    fileprivate func showErrorMessage (_ message: String) {
         let alertView = UIAlertController(
             title: NSLocalizedString("Error",
-                comment: "the text in the title for the error message AlerView in account settings"),
+                                     comment: "the text in the title for the error message AlerView in account settings"),
             message:message, preferredStyle: .alert)
         alertView.view.tintColor = .pEpGreen
         alertView.addAction(UIAlertAction(
@@ -100,23 +101,23 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         present(alertView, animated: true, completion: nil)
     }
 
-    func viewLog() {
+    private func viewLog() {
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
 
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {
         let alertController = UIAlertController(
             title: NSLocalizedString("Transport protocol",
-                comment: "UI alert title for transport protocol"),
+                                     comment: "UI alert title for transport protocol"),
             message: NSLocalizedString("Choose a Security protocol for your accont",
-                comment: "UI alert message for transport protocol"),
+                                       comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
         alertController.view.tintColor = .pEpGreen
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportSMTP = transport
             self.updateView()
         }
-        
+
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = sender
         }
@@ -144,64 +145,65 @@ open class SMTPSettingsTableView: UITableViewController, TextfieldResponder, UIT
         }
     }
 
-    func verifyAccount() {
+    /// Creates and persits an account with given data and triggers a verification request.
+    ///
+    /// - Parameter model: account data
+    /// - Throws: AccountVerificationError
+    private func verifyAccount() throws {
         self.status.activityIndicatorViewEnable =  true
         updateView()
-
-        guard
-            let theEmail = model.email,
-            let imapServerAddress = model.serverIMAP,
-            let smtpServerAddress = model.serverSMTP,
-            let ms = appConfig?.messageSyncService else {
-                Log.shared.errorComponent(
-                    comp,
-                    message: "Need email and other data for verification, and verification service must be set up")
-                return
+        guard let ms = appConfig?.messageSyncService else {
+            Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
+            return
         }
-
-        let identity = Identity.create(address: theEmail, userName: model.name)
-        identity.isMySelf = true
-        let userName = model.username ?? theEmail
-
-        let imapServer = Server.create(serverType: .imap, port: model.portIMAP,
-                                       address: imapServerAddress,
-                                       transport: model.transportIMAP.toServerTransport())
-        imapServer.needsVerification = true
-
-        let smtpServer = Server.create(serverType: .smtp, port: model.portSMTP,
-                                       address: smtpServerAddress,
-                                       transport: model.transportSMTP.toServerTransport())
-        smtpServer.needsVerification = true
-        let credentials = ServerCredentials.create(userName: userName, password: model.password,
-                                                   servers: [imapServer, smtpServer])
-        credentials.needsVerification = true
-        let account = Account.create(identity: identity, credentials: [credentials])
-        account.needsVerification = true
-        account.save()
-        ms.requestVerification(account: account, delegate: self)
+        do {
+            let account = try model.account()
+            account.needsVerification = true
+            account.save()
+            ms.requestVerification(account: account, delegate: self)
+        } catch {
+            throw error
+        }
     }
 
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
-        verifyAccount()
-        hideKeybord()
+        do {
+            try verifyAccount()
+            hideKeybord()
+        } catch {
+            let errorTopic = NSLocalizedString("Empty Field",
+                                               comment: "Title of alert: a required field is empty")
+            informUser(about: error, title: errorTopic)
+        }
     }
-    
-    func hideKeybord() {
+
+    private func informUser(about error: Error, title: String) {
+        let alert = UIAlertController(title: title,
+                                      message: error.localizedDescription,
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        let cancelAction = UIAlertAction(title:
+            NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
+                                         style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+
+    private func hideKeybord() {
         serverValue.resignFirstResponder()
         portValue.resignFirstResponder()
     }
-    
-    open func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+
+    public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
         nextResponder(textfield)
         return true
     }
-    
+
     public func textFieldDidEndEditing(_ textField: UITextField) {
         changedResponder(textField)
     }
 }
 
-extension SMTPSettingsTableView: AccountVerificationServiceDelegate {
+extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         GCD.onMain() {
@@ -221,10 +223,10 @@ extension SMTPSettingsTableView: AccountVerificationServiceDelegate {
     }
 }
 
-extension SMTPSettingsTableView: SegueHandlerType {
-   public enum SegueIdentifier: String {
-    case noSegue
-    case viewLogSegue
-    case backToEmailListSegue
+extension SMTPSettingsTableViewController: SegueHandlerType {
+    public enum SegueIdentifier: String {
+        case noSegue
+        case viewLogSegue
+        case backToEmailListSegue
     }
 }
