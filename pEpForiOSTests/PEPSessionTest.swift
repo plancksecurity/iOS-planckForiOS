@@ -123,8 +123,7 @@ class PEPSessionTest: XCTestCase {
 
     func testParseMessageHeapBufferOverflow() {
         CWLogger.setLogger(Log.shared)
-        let ps = PersistentSetup()
-        ps.dummyToAvoidCompilerWarning()
+        let _ = PersistentSetup()
 
         let cdAccount = TestData().createWorkingCdAccount()
 
@@ -153,8 +152,7 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testDecryptMessageHeapBufferOverflow() {
-        let ps = PersistentSetup()
-        ps.dummyToAvoidCompilerWarning()
+        let _ = PersistentSetup()
 
         let cdAccount = TestData().createWorkingCdAccount()
 
