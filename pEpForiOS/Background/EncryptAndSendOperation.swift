@@ -52,7 +52,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     public static func predicateOutgoingMails(cdAccount: CdAccount) -> NSPredicate {
         return NSPredicate(
-            format: "uid = 0 and parent.folderType = %d and sendStatus = %d and parent.account = %@",
+            format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatus = %d and parent.account = %@",
             FolderType.sent.rawValue, SendStatus.none.rawValue, cdAccount)
     }
 

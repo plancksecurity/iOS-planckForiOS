@@ -32,7 +32,7 @@ open class TrashMailsOperation: AppendMailsOperation {
                 return
             }
             let p = NSPredicate(
-                format: "parent = %@ and imap.localFlags.flagDeleted = true and imap.trashedStatus = %d",
+                format: "parent = %@ and imap.localFlags.flagDeleted = true and imap.trashedStatusRawValue = %d",
                 folder, TrashedStatus.shouldBeTrashed.rawValue)
             if let msg = CdMessage.first(predicate: p, in: self.context),
                 let cdIdent = msg.parent?.account?.identity {
@@ -55,7 +55,7 @@ open class TrashMailsOperation: AppendMailsOperation {
             context.performAndWait {
                 if let obj = self.context.object(with: msgID) as? CdMessage {
                     let imap = obj.imapFields(context: self.context)
-                    imap.trashedStatus = TrashedStatus.trashed.rawValue
+                    imap.trashedStatus = TrashedStatus.trashed
                     obj.imap = imap
                     self.context.saveAndLogErrors()
                 } else {
@@ -73,7 +73,7 @@ open class TrashMailsOperation: AppendMailsOperation {
 
     public static func foldersWithTrashedMessages(context: NSManagedObjectContext) -> [CdFolder] {
         let p = NSPredicate(
-            format: "imap.localFlags.flagDeleted = true and imap.trashedStatus = %d",
+            format: "imap.localFlags.flagDeleted = true and imap.trashedStatusRawValue = %d",
             TrashedStatus.shouldBeTrashed.rawValue)
         let msgs = CdMessage.all(predicate: p, orderedBy: nil, in: context) as? [CdMessage] ?? []
         var folders = Set<CdFolder>()
