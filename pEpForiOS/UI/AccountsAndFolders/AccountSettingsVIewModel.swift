@@ -54,7 +54,8 @@ public class AccountSettingsViewModel {
 
     var loginName: String {
         get {
-            return account.serverCredentials.array.first?.userName ?? ""
+            // the email model is based on the assumption that imap.loginName == smtp.loginName
+            return account.server(with: .imap)?.credentials.userName ?? ""
         }
     }
 
@@ -82,6 +83,7 @@ public class AccountSettingsViewModel {
         }
     }
 
+    //BUFF:
     //Currently we assume imap and smtp servers exist already (update). If we run into problems here modify to updateOrCreate
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
@@ -90,25 +92,21 @@ public class AccountSettingsViewModel {
                 Log.shared.errorAndCrash(component: #function, errorString: "Account misses imap or smtp server.")
                 return
         }
-        guard let editedServerImap = server(from: imap, for: .imap),
-            let editedServerSmtp = server(from: smtp, for: .smtp) else {
+        guard let editedServerImap = server(from: imap, serverType: .imap, loginName: loginName,
+                                            password: password),
+            let editedServerSmtp = server(from: smtp, serverType: .smtp, loginName: loginName,
+                                          password: password)
+            else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Invalid input.")
                 return
         }
-
-        serverImap.updateValues(from: editedServerImap)
         serverImap.needsVerification = true
-
-        serverSmtp.updateValues(from: editedServerSmtp)
         serverSmtp.needsVerification = true
 
+        serverImap.updateValues(with: editedServerImap)
+        serverSmtp.updateValues(with: editedServerSmtp)
+
         self.account.user.userName = name
-        self.account.serverCredentials.forEach { sc in
-            sc.userName = loginName
-            if password != nil && password != "" {
-                sc.password = password
-            }
-        }
 
         account.save()
     }
@@ -131,16 +129,24 @@ public class AccountSettingsViewModel {
     }
 
     //MARK: - PRIVATE
-    private func server(from viewModel:ServerViewModel, `for` serverType:Server.ServerType) -> Server? {
+    private func server(from viewModel:ServerViewModel, serverType:Server.ServerType,
+                        loginName: String, password: String?) -> Server? {
         guard let viewModelPort = viewModel.port,
             let port = UInt16(viewModelPort),
             let address = viewModel.address else {
-                Log.shared.errorAndCrash(component: #function, errorString: "viewModel misses required data.")
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "viewModel misses required data.")
                 return nil
         }
         let transport = Server.Transport.init(fromString: viewModel.transport)
+
+        let credentials = ServerCredentials.create(userName: loginName)
+        if password != nil && password != "" {
+            credentials.password = password
+        }
+
         let server = Server.create(serverType: serverType, port: port, address: address,
-                                   transport: transport)
+                                   transport: transport, credentials: credentials)
 
         return server
     }

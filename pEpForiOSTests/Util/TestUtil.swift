@@ -201,13 +201,7 @@ class TestUtil {
                 XCTAssertTrue(false)
                 return
             }
-            for c in creds {
-                guard let cred = c as? CdServerCredentials else {
-                    XCTAssertTrue(false)
-                    return
-                }
-                cred.needsVerification = false
-            }
+            creds.needsVerification = false
         }
     }
 

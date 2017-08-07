@@ -89,21 +89,25 @@ public struct AccountUserInput {
             throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
         }
 
-        let identity = Identity.create(address: address, userID: address, userName: name,
+        let identity = Identity.create(address: address, userID: nil, userName: name,
                                        isMySelf: true)
 
+        let credentials = ServerCredentials.create(userName: loginUser, password: self.password)
+        credentials.needsVerification = true
+
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
-                                       transport: self.transportIMAP.toServerTransport())
+                                       transport: self.transportIMAP.toServerTransport(),
+                                       credentials: credentials)
         imapServer.needsVerification = true
 
         let smtpServer = Server.create(serverType: .smtp, port: self.portSMTP, address: serverSMTP,
-                                       transport: self.transportSMTP.toServerTransport())
+                                       transport: self.transportSMTP.toServerTransport(),
+                                       credentials: credentials)
         smtpServer.needsVerification = true
 
-        let credentials = ServerCredentials.create(userName: loginUser, password: self.password,
-                                                   servers: [imapServer, smtpServer])
-        credentials.needsVerification = true
-        let account = Account.create(identity: identity, credentials: [credentials])
+        let servers = [imapServer, smtpServer]
+        let account = Account.create(identity: identity, servers: servers)
+
         return account
     }
 }
