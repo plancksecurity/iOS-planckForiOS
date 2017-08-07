@@ -142,16 +142,14 @@ class TestDataBase {
      - Returns: A valid `CdAccount`.
      */
     func createWorkingCdAccount(number: Int = 0) -> CdAccount {
-        populateAccounts()
-        return testAccounts[number].cdAccount()
+        return createWorkingAccountSettings(number: number).cdAccount()
     }
 
     /**
      - Returns: A `CdAccount` that should not be able to be verified.
      */
     func createDisfunctionalCdAccount() -> CdAccount {
-        populateAccounts()
-        var accountSettings = testAccounts[0]
+        var accountSettings = createWorkingAccountSettings(number: 0)
         accountSettings.smtpServerAddress = "localhost"
         accountSettings.smtpServerPort = 2323
         accountSettings.imapServerPort = 2323
@@ -159,12 +157,16 @@ class TestDataBase {
         return accountSettings.cdAccount()
     }
 
+    func createWorkingAccountSettings(number: Int = 0) -> AccountSettings {
+        populateAccounts()
+        return testAccounts[number]
+    }
+
     /**
      - Returns: A valid `Account`.
      */
     func createWorkingAccount(number: Int = 0) -> Account {
-        populateAccounts()
-        return testAccounts[number].account()
+        return createWorkingAccountSettings(number: number).account()
     }
 
     /**
@@ -172,7 +174,7 @@ class TestDataBase {
      */
     func createWorkingIdentity(number: Int = 0) -> [String: AnyObject] {
         populateAccounts()
-        return testAccounts[number].pEpIdentity()
+        return createWorkingAccountSettings(number: number).pEpIdentity()
     }
 
     /**
@@ -180,7 +182,7 @@ class TestDataBase {
      */
     func createSmtpTimeOutAccountSettings() -> AccountSettings {
         populateAccounts()
-        var accountSettings = testAccounts[0]
+        var accountSettings = createWorkingAccountSettings(number: 0)
         accountSettings.smtpServerAddress = "localhost"
         accountSettings.smtpServerPort = 2323
         return accountSettings
@@ -191,7 +193,7 @@ class TestDataBase {
      */
     func createImapTimeOutAccountSettings() -> AccountSettings {
         populateAccounts()
-        var accountSettings = testAccounts[0]
+        var accountSettings = createWorkingAccountSettings(number: 0)
         accountSettings.imapServerAddress = "localhost"
         accountSettings.imapServerPort = 2323
         return accountSettings
