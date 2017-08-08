@@ -73,6 +73,7 @@
 		431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */; };
 		431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B0B991D6734DF0082D0DB /* AccountsTableViewController.swift */; };
 		431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */; };
+		431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */; };
 		431D60DB1E93BB2D001266D7 /* AttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */; };
 		431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */; };
 		431E2B071F02550C000035FA /* CheckOutgoingMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */; };
@@ -384,6 +385,7 @@
 		431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Extension.swift"; sourceTree = "<group>"; };
 		431B0B991D6734DF0082D0DB /* AccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
+		431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		431D60DA1E93BB2D001266D7 /* AttachmentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsView.swift; sourceTree = "<group>"; };
 		431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAttachmentsCell.swift; sourceTree = "<group>"; };
 		431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckOutgoingMessagesOperation.swift; sourceTree = "<group>"; };
@@ -1221,6 +1223,7 @@
 			isa = PBXGroup;
 			children = (
 				4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */,
+				431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1802,6 +1805,7 @@
 				43FAA0D41EC9CBC0005BFC4B /* DecryptionTests.swift in Sources */,
 				4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
+				431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */,
 				430EA5FC1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift in Sources */,
 				436795F81EE98B9A00B03E23 /* MessageReevalutionTests.swift in Sources */,
 				43EE994E1E4392530060EACE /* FlagImageTests.swift in Sources */,

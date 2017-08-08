@@ -56,7 +56,7 @@ class LoginViewModel {
     var messageSyncService: MessageSyncServiceProtocol?
     weak var delegate: AccountVerificationResultDelegate?
 
-    init(messageSyncService: MessageSyncService? = nil) {
+    init(messageSyncService: MessageSyncServiceProtocol? = nil) {
         self.messageSyncService = messageSyncService
     }
 
