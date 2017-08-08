@@ -48,7 +48,7 @@ class LoginViewModelTests: XCTestCase {
         }
     }
 
-    func testBasic() {
+    func notestBasic() {
         let td = TestData()
         let account = td.createWorkingAccountSettings()
         let ms = TestMessageSyncService()
@@ -57,7 +57,7 @@ class LoginViewModelTests: XCTestCase {
             XCTFail("Expect password for account")
             return
         }
-        vm.login(account: account.idAddress, password: passw, login: nil, username: nil) {
+        vm.login(account: account.idAddress, password: passw, login: nil, userName: nil) {
             error in
             XCTAssertNil(error)
         }
