@@ -128,11 +128,10 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
-    //Start app, accept contact permissions manually, start test, wait for alert and click OK manually
+    /// Start app, accept contact permissions manually, start test,
+    /// wait for alert and click OK manually
     func testNewAccountSetupManuallyAccountThatDoesNotWorkAutomatically() {
-
-        //
-        let account = UITestData.manualAccountThatDoesNotWorkAutomatically
+        let account = UITestData.manualAccount
         newAccountSetup(account: account)
 
         //wait until manual setup button appaers
