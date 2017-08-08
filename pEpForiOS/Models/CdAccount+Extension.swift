@@ -11,8 +11,8 @@ import MessageModel
 extension CdAccount {
     func serverNTuple(credentials: CdServerCredentials,
                       server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
-        if let serverType = Server.ServerType.init(rawValue: Int(server.serverType))?.asString(),
-            let key = credentials.key {
+        if let key = credentials.key {
+            let serverType = server.serverType.asString()
             return (server, credentials, KeyChain.password(key: key, serverType: serverType))
         }
         return nil
@@ -21,26 +21,25 @@ extension CdAccount {
     private func emailConnectInfos() -> [(EmailConnectInfo, CdServerCredentials)] {
         var result = [(emailConnectInfo: EmailConnectInfo,
                        cdServerCredentials: CdServerCredentials)]()
-
-        guard let creds = credentials?.array as? [CdServerCredentials] else {
+        guard let cdServers = servers?.allObjects as? [CdServer] else {
             return result
         }
-        for cred in creds {
-            if let servers = cred.servers?.sortedArray(using: []) as? [CdServer] {
-                for server in servers {
-                    let st = Int(server.serverType)
-                    if st == Server.ServerType.imap.rawValue ||
-                        st == Server.ServerType.smtp.rawValue {
-                        let password = cred.password
-                        if let emailConnectInfo = emailConnectInfo(
-                            account: self, server: server, credentials: cred,
-                            password: password) {
-                            result.append((emailConnectInfo, cred))
-                        }
-                    }
+
+        for cdServer in cdServers {
+            if cdServer.serverType == Server.ServerType.imap
+                || cdServer.serverType == Server.ServerType.smtp  {
+                guard let password = cdServer.credentials?.password,
+                    let cdCredentials = cdServer.credentials else {
+                        continue
+                }
+                if let emailConnectInfo = emailConnectInfo(
+                    account: self, server: cdServer, credentials: cdCredentials,
+                    password: password) {
+                    result.append((emailConnectInfo, cdCredentials))
                 }
             }
         }
+
         return result
     }
 
@@ -61,13 +60,11 @@ extension CdAccount {
     func emailConnectInfo(account: CdAccount, server: CdServer,
                           credentials: CdServerCredentials,
                           password: String?) -> EmailConnectInfo? {
-        let connectionTransport = ConnectionTransport(fromInt: Int(server.transport))
+        let connectionTransport = ConnectionTransport(fromInt: Int(server.transportRawValue))
 
-        let serverTypeInt = Int(server.serverType)
         if let port = server.port?.int16Value,
             let address = server.address,
-            let serverType = Server.ServerType(rawValue: serverTypeInt),
-            let emailProtocol = EmailProtocol(serverType: serverType) {
+            let emailProtocol = EmailProtocol(serverType: server.serverType) {
             return EmailConnectInfo(
                 accountObjectID: account.objectID, serverObjectID: server.objectID,
                 credentialsObjectID: credentials.objectID,
@@ -95,10 +92,16 @@ extension CdAccount {
      the whole account gets updated too.
      */
     open func checkVerificationStatus() {
-        let creds = credentials?.array as? [CdServerCredentials] ?? []
+        guard let cdServers = servers?.allObjects as? [CdServer] else {
+            return
+        }
         var verificationStillNeeded = false
-        for theCred in creds {
-            if theCred.needsVerification {
+        for cdServer in cdServers { //BUFF: after clrifying needsVerification. Shouldnt we take server.needsVerification into account also?
+            guard let creds = cdServer.credentials else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Server \(cdServer) has no credetials.")
+                continue
+            }
+            if creds.needsVerification {
                 verificationStillNeeded = true
             }
         }

@@ -66,29 +66,40 @@ class TestDataBase {
             id.address = idAddress
             id.userName = idUserName
 
-            let smtp = CdServer.create()
-            smtp.serverType = Int16(smtpServerType.rawValue)
-            smtp.port = NSNumber(value: smtpServerPort)
-            smtp.address = smtpServerAddress
-            smtp.transport = Int16(smtpServerTransport.rawValue)
-
-            let imap = CdServer.create()
-            imap.serverType = Int16(imapServerType.rawValue)
-            imap.port = NSNumber(value: imapServerPort)
-            imap.address = imapServerAddress
-            imap.transport = Int16(imapServerTransport.rawValue)
-
-            let key = MessageID.generate()
-            CdServerCredentials.add(password: password, forKey: key)
-
-            let cred = CdServerCredentials.create()
-            cred.userName = id.address
-            cred.key = key
-            cred.servers = NSSet(array: [imap, smtp])
-
             let acc = CdAccount.create()
             acc.identity = id
-            acc.credentials = NSOrderedSet(array: [cred])
+
+            //SMTP
+            let smtp = CdServer.create()
+            smtp.serverType = smtpServerType
+            smtp.port = NSNumber(value: smtpServerPort)
+            smtp.address = smtpServerAddress
+            smtp.transport = smtpServerTransport
+
+            let keySmtp = MessageID.generate()
+            CdServerCredentials.add(password: password, forKey: keySmtp)
+            let credSmtp = CdServerCredentials.create()
+            credSmtp.userName = id.address
+            credSmtp.key = keySmtp
+            smtp.credentials = credSmtp
+
+            acc.addToServers(smtp)
+
+            //IMAP
+            let imap = CdServer.create()
+            imap.serverType = imapServerType
+            imap.port = NSNumber(value: imapServerPort)
+            imap.address = imapServerAddress
+            imap.transport = imapServerTransport
+
+            let keyImap = MessageID.generate()
+            CdServerCredentials.add(password: password, forKey: keyImap)
+            let credImap = CdServerCredentials.create()
+            credImap.userName = id.address
+            credImap.key = keyImap
+            imap.credentials = credImap
+            
+            acc.addToServers(imap)
 
             return acc
         }
@@ -96,22 +107,21 @@ class TestDataBase {
         func account() -> Account {
             let id = Identity.create(address: idAddress, userName: idUserName, isMySelf: true)
 
+            let credSmtp = ServerCredentials.create(userName: id.address, password: password)
             let smtp = Server.create(serverType: .smtp,
                                      port: smtpServerPort,
                                      address: smtpServerAddress ?? "",
-                                     transport: smtpServerTransport)
+                                     transport: smtpServerTransport,
+                                     credentials:credSmtp)
 
+            let credImap = ServerCredentials.create(userName: id.address, password: password)
             let imap = Server.create(serverType: .imap,
                                      port: imapServerPort,
                                      address: imapServerAddress ?? "",
-                                     transport: imapServerTransport)
-
-            // Assumes
-            let cred = ServerCredentials.create(userName: id.address,
-                                                password: password,
-                                                servers: [smtp, imap])
-
-            let acc = Account.create(identity: id, credentials: [cred])
+                                     transport: imapServerTransport,
+                                     credentials:credImap)
+            
+            let acc = Account.create(identity: id, servers: [smtp, imap])
 
             return acc
         }

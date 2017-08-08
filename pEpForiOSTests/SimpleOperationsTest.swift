@@ -215,10 +215,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertGreaterThanOrEqual(
             CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
 
-        var options: [String: Any] = ["folderType": FolderType.inbox.rawValue,
+        var options: [String: Any] = ["folderTypeRawValue": FolderType.inbox.rawValue,
                                       "account": cdAccount]
         let inboxFolder = CdFolder.first(attributes: options)
-        options["folderType"] = FolderType.sent.rawValue
+        options["folderTypeRawValue"] = FolderType.sent.rawValue
         XCTAssertNotNil(inboxFolder)
         XCTAssertEqual(inboxFolder?.name?.lowercased(),
                        ImapSync.defaultImapInboxName.lowercased())
@@ -320,7 +320,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 return
             }
             XCTAssertEqual(folders.count, FolderType.allValuesToCreate.count)
-            let p = NSPredicate(format: "folderType = %d and account = %@",
+            let p = NSPredicate(format: "folderTypeRawValue = %d and account = %@",
                                 FolderType.localOutbox.rawValue, self.cdAccount)
             let outbox = CdFolder.first(predicate: p)
             XCTAssertNotNil(outbox, "Expected outbox to exist")
@@ -424,6 +424,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: cdAccount))
     }
 
+    /// The test makes no sense with servers supporting Special-Use Mailboxes, as it is not allowed to delete folder marked as reserved for special-use
     func testCreateRequiredFoldersOperation() {
         let imapLogin = LoginImapOperation(
             parentName: #function, imapSyncData: imapSyncData)
@@ -461,6 +462,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(opCreate1.hasErrors())
         })
 
+        //FIXME: dirty workarount for Yahoo account (server with specil-use mailboxes)
+        if cdAccount.identity!.address!.contains("yahoo") {
+            return
+        }
         // Let's delete a special folder, if it exists
         if let spamFolder = CdFolder.by(folderType: .spam, account: cdAccount),
             let fn = spamFolder.name {
@@ -599,7 +604,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))
+                XCTAssertEqual(m.sendStatus, SendStatus.smtpDone)
             }
         } else {
             XCTFail()
@@ -659,7 +664,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sendStatus = Int16(SendStatus.smtpDone.rawValue)
+            message.sendStatus = SendStatus.smtpDone
             message.sent = Date() as NSDate
             message.addTo(cdIdentity: to)
         }
@@ -667,9 +672,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
-                XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
+                XCTAssertEqual(m.parent?.folderType, FolderType.sent)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.smtpDone.rawValue))
+                XCTAssertEqual(m.sendStatus, SendStatus.smtpDone)
             }
         } else {
             XCTFail()
@@ -746,16 +751,16 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sendStatus = Int16(SendStatus.none.rawValue)
+            message.sendStatus = SendStatus.none
             message.addTo(cdIdentity: to)
         }
         Record.saveAndWait()
 
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
-                XCTAssertEqual(m.parent?.folderType, FolderType.drafts.rawValue)
+                XCTAssertEqual(m.parent?.folderType, FolderType.drafts)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+                XCTAssertEqual(m.sendStatus, SendStatus.none)
             }
         } else {
             XCTFail()
@@ -941,13 +946,13 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sendStatus = Int16(SendStatus.none.rawValue)
+            message.sendStatus = SendStatus.none
             message.addTo(cdIdentity: to)
             let imapFields = CdImapFields.create()
             let imapFlags = CdImapFlags.create()
             imapFields.localFlags = imapFlags
             imapFlags.flagDeleted = true
-            imapFields.trashedStatus = TrashedStatus.shouldBeTrashed.rawValue
+            imapFields.trashedStatus = TrashedStatus.shouldBeTrashed
             message.imap = imapFields
             originalMessages.append(message)
         }
@@ -967,10 +972,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         if let msgs = CdMessage.all() as? [CdMessage] {
             for m in msgs {
                 XCTAssertNotNil(m.messageID)
-                XCTAssertTrue(m.parent?.folderType == FolderType.inbox.rawValue ||
-                    m.parent?.folderType == FolderType.drafts.rawValue)
+                XCTAssertTrue(m.parent?.folderType == FolderType.inbox ||
+                    m.parent?.folderType == FolderType.drafts)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+                XCTAssertEqual(m.sendStatus, SendStatus.none)
             }
         } else {
             XCTFail()
@@ -1034,14 +1039,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 XCTFail()
                 continue
             }
-            XCTAssertTrue(folder.folderType == FolderType.inbox.rawValue ||
-                folder.folderType == FolderType.drafts.rawValue)
+            XCTAssertTrue(folder.folderType == FolderType.inbox ||
+                folder.folderType == FolderType.drafts)
             guard let imap = m.imap else {
                 XCTFail()
                 continue
             }
             XCTAssertTrue(imap.localFlags?.flagDeleted ?? false)
-            XCTAssertEqual(imap.trashedStatus, TrashedStatus.trashed.rawValue)
+            XCTAssertEqual(imap.trashedStatus, TrashedStatus.trashed)
             // Make sure the email now exists in the trash folder as well
             let trashedP = NSPredicate(format: "parent = %@", trashFolder)
             let trashedP1 = NSCompoundPredicate(andPredicateWithSubpredicates: [uuidP, trashedP])
@@ -1055,7 +1060,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let cdFolder = CdFolder.create()
         cdFolder.name = "AttachmentTestFolder"
         cdFolder.uuid = "1"
-        cdFolder.folderType = FolderType.inbox.rawValue
+        cdFolder.folderType = FolderType.inbox
         cdFolder.account = cdAccount
         
         let cdMsg = CdMessage.create(messageID: "2", uid: 1, parent: cdFolder)

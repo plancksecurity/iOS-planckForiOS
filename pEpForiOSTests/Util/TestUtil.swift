@@ -201,13 +201,7 @@ class TestUtil {
                 XCTAssertTrue(false)
                 return
             }
-            for c in creds {
-                guard let cred = c as? CdServerCredentials else {
-                    XCTAssertTrue(false)
-                    return
-                }
-                cred.needsVerification = false
-            }
+            creds.needsVerification = false
         }
     }
 
@@ -323,9 +317,9 @@ class TestUtil {
             using: [NSSortDescriptor.init(key: "uid", ascending: true)]) as? [CdMessage] {
             XCTAssertEqual(cdOutgoingMsgs.count, numberOfMails)
             for m in cdOutgoingMsgs {
-                XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
+                XCTAssertEqual(m.parent?.folderType, FolderType.sent)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+                XCTAssertEqual(m.sendStatus, SendStatus.none)
             }
         } else {
             XCTFail()
@@ -348,10 +342,11 @@ class TestUtil {
      Makes the servers for this account unreachable, for tests that expects failure.
      */
     static func makeServersUnreachable(cdAccount: CdAccount) {
-        let cdServers = cdAccount.cdServers() { server in
-            return Int(server.serverType) == Server.ServerType.imap.rawValue ||
-                Int(server.serverType) == Server.ServerType.smtp.rawValue
+        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
+            XCTFail()
+            return
         }
+
         for cdServer in cdServers {
             cdServer.address = "localhost"
             cdServer.port = 2525

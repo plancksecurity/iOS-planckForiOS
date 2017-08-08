@@ -32,7 +32,10 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil
-            let allFolders = CdFolder.all() as! [CdFolder]
+            guard let allFolders = CdFolder.all() as? [CdFolder] else {
+                XCTFail("No folders?")
+                return
+            }
             // triggers only for Yahoo accounts
             self.assertYahooFolderTypes(for: allFolders)
 
@@ -43,7 +46,10 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
         let createRequiredFoldersOp = CreateRequiredFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
         createRequiredFoldersOp.addDependency(fetchFoldersOp)
         createRequiredFoldersOp.completionBlock = {
-            let allFolders = CdFolder.all() as! [CdFolder]
+            guard let allFolders = CdFolder.all() as? [CdFolder] else {
+                XCTFail("No folders?")
+                return
+            }
             // triggers only for Yahoo accounts
             self.assert(yahooFolders: allFolders)
 
@@ -62,7 +68,10 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
             XCTAssertFalse(createRequiredFoldersOp.hasErrors())
             XCTAssertTrue(self.existsFolderForEveryRequiredFolderType(in: self.cdAccount))
 
-            let allFolders = CdFolder.all() as! [CdFolder]
+            guard let allFolders = CdFolder.all() as? [CdFolder] else {
+                XCTFail("No folders?")
+                return
+            }
             // triggers only for Yahoo accounts
             self.assert(yahooFolders: allFolders)
         })
@@ -117,17 +126,17 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
         assertAllYahooFolderNamesExist(in: yahooFolders)
         for folder in yahooFolders {
             if folder.name! == "Bulk Mail" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .spam)
+                XCTAssertTrue(folder.folderType == .spam)
             } else if folder.name! == "Archive" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .archive)
+                XCTAssertTrue(folder.folderType == .archive)
             } else if folder.name! == "Draft" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .drafts)
+                XCTAssertTrue(folder.folderType == .drafts)
             } else if folder.name! == "Inbox" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .inbox)
+                XCTAssertTrue(folder.folderType == .inbox)
             } else if folder.name! == "Sent" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .sent)
+                XCTAssertTrue(folder.folderType == .sent)
             } else if folder.name! == "Trash" {
-                XCTAssertTrue(FolderType.fromInt(folder.folderType) == .trash)
+                XCTAssertTrue(folder.folderType == .trash)
             }
         }
     }
@@ -176,7 +185,7 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
             return false
         }
         for folder in folders {
-            if folder.folderType == folderType.rawValue {
+            if folder.folderType == folderType {
                 return true
             }
         }

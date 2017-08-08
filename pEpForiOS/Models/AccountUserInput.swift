@@ -74,6 +74,7 @@ public struct AccountUserInput {
                                         comment: "Alert message for empty username")
             throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
         }
+
         guard let serverIMAP = self.serverIMAP, serverIMAP != "" else {
             let msg = NSLocalizedString("IMAP server must not be empty",
                                         comment: "Alert message for empty IMAP server")
@@ -85,26 +86,32 @@ public struct AccountUserInput {
             throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
         }
 
-        let identity = Identity.create(address: address, userID: nil, userName: userName,
+        let identity = Identity.create(address: address, userID: address, userName: userName,
                                        isMySelf: true)
 
+        var logIn = self.loginName
+        if logIn == nil {
+            logIn = address
+        }
+
+        let credentialsImap = ServerCredentials.create(userName: logIn!/* use of ! save due to if clause*/,
+            password: self.password)
+        credentialsImap.needsVerification = true
+
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
-                                       transport: self.transportIMAP.toServerTransport())
+                                       transport: self.transportIMAP.toServerTransport(),
+                                       credentials: credentialsImap)
         imapServer.needsVerification = true
 
+        let credentialsSmtp = ServerCredentials.create(userName: logIn!/* use of ! save due to if clause*/,
+            password: self.password)
+        credentialsSmtp.needsVerification = true
         let smtpServer = Server.create(serverType: .smtp, port: self.portSMTP, address: serverSMTP,
-                                       transport: self.transportSMTP.toServerTransport())
+                                       transport: self.transportSMTP.toServerTransport(),
+                                       credentials: credentialsSmtp)
         smtpServer.needsVerification = true
 
-        var theLoginName = loginName ?? ""
-        if theLoginName == "" {
-            theLoginName = address
-        }
-        let credentials = ServerCredentials.create(userName: theLoginName,
-                                                   password: self.password,
-                                                   servers: [imapServer, smtpServer])
-        credentials.needsVerification = true
-        let account = Account.create(identity: identity, credentials: [credentials])
+        let account = Account.create(identity: identity, servers: [imapServer, smtpServer])
         return account
     }
 }

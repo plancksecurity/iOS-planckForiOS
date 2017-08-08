@@ -10,6 +10,20 @@
 import MessageModel
 
 extension CdMessage {
+
+    open var sendStatus: SendStatus {
+        get {
+            guard let status = SendStatus(rawValue: self.sendStatusRawValue) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No sendStatus?!")
+                return SendStatus.none
+            }
+            return status
+        }
+        set {
+            self.sendStatusRawValue = newValue.rawValue
+        }
+    }
+
     /**
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.

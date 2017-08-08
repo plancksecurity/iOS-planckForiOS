@@ -25,7 +25,7 @@ public extension CdFolder {
 
     public static func by(folderType: FolderType, account: CdAccount,
                           context: NSManagedObjectContext = Record.Context.default) -> CdFolder? {
-        return CdFolder.first(attributes: ["folderType": folderType.rawValue, "account": account],
+        return CdFolder.first(attributes: ["folderTypeRawValue": folderType.rawValue, "account": account],
                               in: context)
     }
 
@@ -59,7 +59,7 @@ public extension CdFolder {
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
             if let type = folderType {
-                folder.folderType = type.rawValue
+                folder.folderType = type
             }
 
             return (folder, reactivate(folder: folder))
@@ -78,7 +78,7 @@ public extension CdFolder {
                 //if it is the actual folder (has no child folder), set its folder type
                 if p == paths.last {
                     if let type = folderType {
-                        folder.folderType = type.rawValue
+                        folder.folderType = type
                     }
                 }
                 folder.parent = parentFolder
@@ -109,7 +109,7 @@ public extension CdFolder {
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account) {
             if let type = folderType {
-                folder.folderType = type.rawValue
+                folder.folderType = type
             }
             let _ = reactivate(folder: folder)
             return folder
@@ -120,10 +120,10 @@ public extension CdFolder {
         folder.account = account
         folder.uuid = MessageID.generate()
         if let type = folderType {
-            folder.folderType = type.rawValue
+            folder.folderType = type
         }
 
-        if folder.folderType != FolderType.normal.rawValue || folderType != nil {
+        if folder.folderType != FolderType.normal || folderType != nil {
             // The folder has already a non-normal folder type set 
             // OR the folderType to use is explicitly given.
             // No need to do heuristics by folder name to find its purpose.
@@ -131,7 +131,7 @@ public extension CdFolder {
         }
 
         if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
-            folder.folderType = FolderType.inbox.rawValue
+            folder.folderType = FolderType.inbox
         } else {
             var foundMatch = false
             for ty in FolderType.allValuesToCheckFromServer {
@@ -139,7 +139,7 @@ public extension CdFolder {
                     if folderName.matchesPattern("\(theName)",
                         reOptions: [.caseInsensitive]) {
                         foundMatch = true
-                        folder.folderType = ty.rawValue
+                        folder.folderType = ty
                         break
                     }
                 }
@@ -148,9 +148,7 @@ public extension CdFolder {
                 }
             }
             if !foundMatch {
-                if let type = folderType {
-                    folder.folderType = FolderType.normal.rawValue
-                }
+                folder.folderType = FolderType.normal
             }
         }
 

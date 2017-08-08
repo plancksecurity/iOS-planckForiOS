@@ -10,11 +10,11 @@ import Foundation
 import MessageModel
 
 
-// MARK: - Parses notifications sent by CWServiceClient protocol methods for actual error messages.
+/// Parses notifications sent by CWServiceClient protocol methods for actual error messages.
 extension Notification {
     func parseErrorMessageBadResponse() -> String {
-        guard let pantomimeError = self.userInfo?["PantomimeErrorInfo"] as? [String:String],
-            let errorMsg = pantomimeError["PantomimeBadResponseInfoKey"]
+        guard let pantomimeError = self.userInfo?[PantomimeErrorInfo] as? [String:String],
+            let errorMsg = pantomimeError[PantomimeBadResponseInfoKey]
             else {
                 return "Bad response"
         }

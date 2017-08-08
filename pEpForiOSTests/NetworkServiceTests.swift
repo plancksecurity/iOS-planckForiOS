@@ -208,7 +208,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNotNil(CdMessage.all())
 
         guard let cdFolder = CdFolder.first(
-            attributes: ["folderType": FolderType.inbox.rawValue]) else {
+            attributes: ["folderTypeRawValue": FolderType.inbox.rawValue]) else {
                 XCTFail()
                 return
         }
@@ -222,7 +222,7 @@ class NetworkServiceTests: XCTestCase {
                 XCTFail()
                 continue
             }
-            XCTAssertEqual(parentF.folderType, FolderType.inbox.rawValue)
+            XCTAssertEqual(parentF.folderType, FolderType.inbox)
             if cdMsg.pEpRating == PEPUtil.pEpRatingNone {
                 cdDecryptAgainCount += 1
             }
@@ -323,8 +323,9 @@ class NetworkServiceTests: XCTestCase {
         networkService.sleepTimeInSeconds = 2
 
         // A temp variable is necassary, since the networkServiceDelegate is weak
+        let expAccountsSynced = expectation(description: "expSingleAccountSynced1")
         var del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced1"),
+            expAccountsSynced: expAccountsSynced,
             failOnError: useCorrectSmtpAccount)
 
         networkService.networkServiceDelegate = del
@@ -377,13 +378,14 @@ class NetworkServiceTests: XCTestCase {
 
         // Verify outgoing mails
         for m in outgoingMails {
-            XCTAssertEqual(m.parent?.folderType, FolderType.sent.rawValue)
+            XCTAssertEqual(m.parent?.folderType, FolderType.sent)
             XCTAssertEqual(m.uid, Int32(0))
-            XCTAssertEqual(m.sendStatus, Int16(SendStatus.none.rawValue))
+            XCTAssertEqual(m.sendStatus, SendStatus.none    )
         }
 
+        let expAccountsSynced2 = expectation(description: "expSingleAccountSynced2")
         del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced2"))
+            expAccountsSynced: expAccountsSynced2)
         networkService.networkServiceDelegate = del
 
         // Wait for next sync, to verify outgoing mails

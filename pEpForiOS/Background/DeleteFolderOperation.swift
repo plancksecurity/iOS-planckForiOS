@@ -56,6 +56,13 @@ open class DeleteFolderOperation: ImapSyncOperation {
         }
     }
 
+    func handleBadResponse(sync: ImapSync, response: String?) {
+        let msg = response ?? "Bad Response"
+        Log.shared.errorComponent(#function,
+                                  message: "The folder could not be deleted: \(msg)")
+        self.markAsFinished()
+    }
+
     override func markAsFinished() {
         syncDelegate = nil
         super.markAsFinished()
@@ -65,5 +72,9 @@ open class DeleteFolderOperation: ImapSyncOperation {
 class DeleteFolderSyncDelegate: DefaultImapSyncDelegate {
     public override func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
         (errorHandler as? DeleteFolderOperation)?.deleteLocalFolderAndFinish()
+    }
+
+    public override func badResponse(_ sync: ImapSync, response: String?) {
+        (errorHandler as? DeleteFolderOperation)?.handleBadResponse(sync: sync, response: response)
     }
 }
