@@ -106,6 +106,14 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginTableViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
+
+        self.navigationItem.hidesBackButton = true
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
+        //self.navigationController?.navigationBar.backItem = UIBarButtonItem(title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
+    }
+
+    func backButton() {
+        self.navigationController?.popViewController(animated: true)
     }
 
     override func didReceiveMemoryWarning() {
