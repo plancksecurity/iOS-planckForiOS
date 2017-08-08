@@ -424,6 +424,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: cdAccount))
     }
 
+    /// The test makes no sense with servers supporting Special-Use Mailboxes, as it is not allowed to delete folder marked as reserved for special-use
     func testCreateRequiredFoldersOperation() {
         let imapLogin = LoginImapOperation(
             parentName: #function, imapSyncData: imapSyncData)
@@ -461,6 +462,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(opCreate1.hasErrors())
         })
 
+        //FIXME: dirty workarount for Yahoo account (server with specil-use mailboxes)
+        if cdAccount.identity!.address!.contains("yahoo") {
+            return
+        }
         // Let's delete a special folder, if it exists
         if let spamFolder = CdFolder.by(folderType: .spam, account: cdAccount),
             let fn = spamFolder.name {
