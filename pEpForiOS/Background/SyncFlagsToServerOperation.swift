@@ -74,7 +74,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                 }
             }
         } else {
-            self.waitForFinished()
+            self.waitForBackgroundTasksToFinish()
         }
     }
 
@@ -90,7 +90,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     func nextMessageToBeSynced(context: NSManagedObjectContext) -> CdMessage? {
         guard let folder = context.object(with: folderID) as? CdFolder else {
             addError(Constants.errorCannotFindFolder(component: comp))
-            waitForFinished()
+            waitForBackgroundTasksToFinish()
             return nil
         }
         let messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: folder,
@@ -101,7 +101,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     func syncNextMessage(context: NSManagedObjectContext) {
         context.perform() {
             guard let m = self.nextMessageToBeSynced(context: context) else {
-                self.waitForFinished()
+                self.waitForBackgroundTasksToFinish()
                 return
             }
             self.updateFlags(message: m, context: context)
@@ -183,7 +183,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                        notification n: Notification, handler: () -> ()) {
         guard let folder = context.object(with: folderID) as? CdFolder else {
             addError(Constants.errorCannotFindFolder(component: comp))
-            waitForFinished()
+            waitForBackgroundTasksToFinish()
             handler()
             return
         }

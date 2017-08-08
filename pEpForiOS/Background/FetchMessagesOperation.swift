@@ -62,7 +62,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
             with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
                 addError(Constants.errorCannotFindAccount(component: comp))
-                waitForFinished()
+                waitForBackgroundTasksToFinish()
                 return
         }
 
@@ -91,7 +91,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
             try sync.fetchMessages()
         } catch let err as NSError {
             addIMAPError(err)
-            waitForFinished()
+            waitForBackgroundTasksToFinish()
         }
     }
 
@@ -103,15 +103,15 @@ open class FetchMessagesOperation: ImapSyncOperation {
         super.cancel()
     }
 
-    open override func waitForFinished() {
+    open override func waitForBackgroundTasksToFinish() {
         syncDelegate = nil
-        super.waitForFinished()
+        super.waitForBackgroundTasksToFinish()
     }
 }
 
 class FetchMessagesSyncDelegate: DefaultImapSyncDelegate {
     public override func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-        (errorHandler as? FetchMessagesOperation)?.waitForFinished()
+        (errorHandler as? FetchMessagesOperation)?.waitForBackgroundTasksToFinish()
     }
 
     public override func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
