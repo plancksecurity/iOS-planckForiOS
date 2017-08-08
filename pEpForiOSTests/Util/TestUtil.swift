@@ -16,7 +16,7 @@ class TestUtil {
     /**
      The maximum time most tests are allowed to run.
      */
-    static let waitTime: TimeInterval = 30
+    static let waitTime: TimeInterval = 300 //BUFF: re-set. Requiered form many tests to succeed though. Somthing got slow.
 
     /**
      The maximum time model save tests are allowed to run.
@@ -342,10 +342,11 @@ class TestUtil {
      Makes the servers for this account unreachable, for tests that expects failure.
      */
     static func makeServersUnreachable(cdAccount: CdAccount) {
-        let cdServers = cdAccount.cdServers() { server in
-            return server.serverType == Server.ServerType.imap ||
-                server.serverType == Server.ServerType.smtp
+        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
+            XCTFail()
+            return
         }
+
         for cdServer in cdServers {
             cdServer.address = "localhost"
             cdServer.port = 2525

@@ -323,8 +323,9 @@ class NetworkServiceTests: XCTestCase {
         networkService.sleepTimeInSeconds = 2
 
         // A temp variable is necassary, since the networkServiceDelegate is weak
+        let expAccountsSynced = expectation(description: "expSingleAccountSynced1")
         var del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced1"),
+            expAccountsSynced: expAccountsSynced,
             failOnError: useCorrectSmtpAccount)
 
         networkService.networkServiceDelegate = del
@@ -382,8 +383,9 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertEqual(m.sendStatus, SendStatus.none    )
         }
 
+        let expAccountsSynced2 = expectation(description: "expSingleAccountSynced2")
         del = NetworkServiceObserver(
-            expAccountsSynced: expectation(description: "expSingleAccountSynced2"))
+            expAccountsSynced: expAccountsSynced2)
         networkService.networkServiceDelegate = del
 
         // Wait for next sync, to verify outgoing mails

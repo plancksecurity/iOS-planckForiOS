@@ -14,11 +14,19 @@ import MessageModel
 class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     func testUpdate() {
-        let numServersBefore = serverCount(account: cdAccount)
+        guard let cdServerCount = cdAccount.servers?.count else {
+            XCTFail()
+            return
+        }
+        let numServersBefore = cdServerCount
 
         let account = Account.from(cdAccount: cdAccount)
 
-        XCTAssertEqual(numServersBefore, serverCount(account: account))
+        guard let serverCount = account.servers?.count else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(numServersBefore, serverCount)
 
         let testLoginName = "testLoginName"
         let testName = "testName"
@@ -36,72 +44,40 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
                       smtp: newServerData)
 
         //Account updated
-        XCTAssertEqual(numServersBefore, serverCount(account: account))
+        XCTAssertEqual(numServersBefore, account.servers?.count)
         XCTAssertEqual(account.user.userName, testName)
-        for credential in account.serverCredentials.array {
-            for server in credential.servers.array {
-                if server.serverType == .imap || server.serverType == .smtp {
-                    XCTAssertEqual(server.address, testServerAddress)
-                    XCTAssertEqual(server.port, UInt16(testPort)!)
-                    XCTAssertEqual(server.transport, testTransport)
-                }
+
+        guard let servers = account.servers,
+            let testPortInt = UInt16(testPort) else {
+                XCTFail()
+                return
+        }
+        for server in servers {
+            if server.serverType == .imap || server.serverType == .smtp {
+                XCTAssertEqual(server.address, testServerAddress)
+                XCTAssertEqual(server.port, testPortInt)
+                XCTAssertEqual(server.transport, testTransport)
             }
         }
 
         //CdAccount also updated
-        XCTAssertEqual(numServersBefore, serverCount(account: cdAccount))
+        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(numServersBefore, cdAccount.servers?.count)
         XCTAssertEqual(cdAccount.identity?.userName, testName)
-        guard let cdCredentials = cdAccount.credentials?.array as? [CdServerCredentials] else {
-                XCTFail()
-                return
-        }
 
-        for credential in cdCredentials {
-            guard let cdServers = credential.servers?.allObjects as? [CdServer] else {
+        for cdServer in cdServers {
+            guard let cdPort = cdServer.port else {
                 XCTFail()
                 return
             }
-            for server in cdServers {
-                guard let cdPort = server.port else {
-                    XCTFail()
-                    return
-                }
-
-                if server.serverType == Server.ServerType.imap
-                    || server.serverType == Server.ServerType.smtp {
-                    XCTAssertEqual(server.address, testServerAddress)
-                    XCTAssertEqual(Int16(cdPort), Int16(testPort)!)
-                    XCTAssertEqual(server.transport, testTransport)
-                }
+            if cdServer.serverType == .imap || cdServer.serverType == .smtp {
+                XCTAssertEqual(cdServer.address, testServerAddress)
+                XCTAssertEqual(UInt16(cdPort), testPortInt)
+                XCTAssertEqual(cdServer.transport, testTransport)
             }
         }
-    }
-    
-    //MARK: - HELPERS
-    /// Returns the number of all servers assined to the Account, taking all credentials into account
-    private func serverCount(account:Account) -> Int {
-        var count = 0
-        for credential in account.serverCredentials {
-            count += credential.servers.count
-        }
-
-        return count
-    }
-
-    /// Returns the number of all servers assined to the CdAccount, taking all credentials into account
-    private func serverCount(account:CdAccount) -> Int {
-        var count = 0
-        guard let cdCredentials = cdAccount.credentials?.array as? [CdServerCredentials] else {
-            return count
-        }
-
-        for credential in cdCredentials {
-            guard let cdServers = credential.servers?.allObjects as? [CdServer] else {
-                XCTFail()
-                continue
-            }
-           count += cdServers.count
-        }
-        return count
     }
 }

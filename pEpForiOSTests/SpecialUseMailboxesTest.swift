@@ -32,7 +32,10 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil
-            let allFolders = CdFolder.all() as! [CdFolder]
+            guard let allFolders = CdFolder.all() as? [CdFolder] else {
+                XCTFail("No folders?")
+                return
+            }
             // triggers only for Yahoo accounts
             self.assertYahooFolderTypes(for: allFolders)
 
@@ -43,7 +46,10 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
         let createRequiredFoldersOp = CreateRequiredFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
         createRequiredFoldersOp.addDependency(fetchFoldersOp)
         createRequiredFoldersOp.completionBlock = {
-            let allFolders = CdFolder.all() as! [CdFolder]
+            guard let allFolders = CdFolder.all() as? [CdFolder] else {
+                XCTFail("No folders?")
+                return
+            }
             // triggers only for Yahoo accounts
             self.assert(yahooFolders: allFolders)
 
@@ -62,7 +68,11 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
             XCTAssertFalse(createRequiredFoldersOp.hasErrors())
             XCTAssertTrue(self.existsFolderForEveryRequiredFolderType(in: self.cdAccount))
 
-            let allFolders = CdFolder.all() as! [CdFolder]
+            //BUFF: no folders created?
+            guard let allFolders = CdFolder.all() as? [CdFolder] else {
+                XCTFail("No folders?")
+                return
+            }
             // triggers only for Yahoo accounts
             self.assert(yahooFolders: allFolders)
         })
