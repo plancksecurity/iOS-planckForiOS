@@ -118,7 +118,8 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
     }
 
     public func badResponse(_ sync: ImapSync, response: String?) {
-        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
+        let msg = response ?? "?"
+        errorHandler?.handle(error: ImapSyncError.illegalState("#function, response: \(msg)"))
     }
 
     public func actionFailed(_ sync: ImapSync, response: String?) {

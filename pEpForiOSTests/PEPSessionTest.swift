@@ -51,7 +51,11 @@ class PEPSessionTest: XCTestCase {
         message.optionalFields = [hf]
         message.save( )
         let sesion = PEPSession()
-        let cdmessage1 = CdMessage.first()! //BUFF: crash !
+        guard let first = CdMessage.first() else {
+            XCTFail("No messages ...")
+            return
+        }
+        let cdmessage1 = first
         let cdmessage2 = cdmessage1
         let pepmessage = cdmessage1.pEpMessage()
         sesion.encryptMessageDict(pepmessage, extra: nil, dest: nil)

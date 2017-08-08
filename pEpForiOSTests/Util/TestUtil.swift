@@ -16,7 +16,7 @@ class TestUtil {
     /**
      The maximum time most tests are allowed to run.
      */
-    static let waitTime: TimeInterval = 300 //BUFF: re-set. Requiered form many tests to succeed though. Somthing got slow.
+    static let waitTime: TimeInterval = 30
 
     /**
      The maximum time model save tests are allowed to run.

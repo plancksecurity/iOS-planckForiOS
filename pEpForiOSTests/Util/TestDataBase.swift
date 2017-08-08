@@ -61,7 +61,6 @@ class TestDataBase {
             self.password = password
         }
 
-        //BUFF: here too :-)
         func cdAccount() -> CdAccount {
             let id = CdIdentity.create()
             id.address = idAddress

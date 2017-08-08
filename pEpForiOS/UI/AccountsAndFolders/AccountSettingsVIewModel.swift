@@ -83,7 +83,6 @@ public class AccountSettingsViewModel {
         }
     }
 
-    //BUFF:
     //Currently we assume imap and smtp servers exist already (update). If we run into problems here modify to updateOrCreate
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {

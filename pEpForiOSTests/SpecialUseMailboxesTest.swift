@@ -68,7 +68,6 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
             XCTAssertFalse(createRequiredFoldersOp.hasErrors())
             XCTAssertTrue(self.existsFolderForEveryRequiredFolderType(in: self.cdAccount))
 
-            //BUFF: no folders created?
             guard let allFolders = CdFolder.all() as? [CdFolder] else {
                 XCTFail("No folders?")
                 return

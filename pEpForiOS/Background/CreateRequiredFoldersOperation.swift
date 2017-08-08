@@ -16,7 +16,7 @@ import MessageModel
  both locally and remote.
  */
 open class CreateRequiredFoldersOperation: ImapSyncOperation {
-    //BUFF: use Folder
+    //FIXME: use Folder
     struct FolderToCreate {
         var folderName: String
         let folderType: FolderType
