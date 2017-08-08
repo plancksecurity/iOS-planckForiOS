@@ -9,15 +9,18 @@
 import MessageModel
 
 public struct AccountUserInput {
-    public var email: String?
+    public var address: String?
+
     /**
-     The actual name of the user, or nick name.
+     The actual name of the user, or nick name. Not to be confused with the login name.
      */
-    public var name: String?
+    public var userName: String?
+
     /**
      An optional name for the servers, if needed.
      */
-    public var username: String?
+    public var loginName: String?
+
     public var password: String?
     public var serverIMAP: String?
     public var portIMAP: UInt16 = 993
@@ -27,10 +30,7 @@ public struct AccountUserInput {
     public var transportSMTP = ConnectionTransport.startTLS
 
     public var isValidEmail: Bool {
-        if let em = email {
-            return em.isProbablyValidEmail()
-        }
-        return false
+        return address?.isProbablyValidEmail() ?? false
     }
 
     public var isValidPassword: Bool {
@@ -41,7 +41,7 @@ public struct AccountUserInput {
     }
 
     public var isValidName: Bool {
-        return (name?.characters.count ?? 0) >= 3
+        return (userName?.characters.count ?? 0) >= 3
     }
 
     public var isValidUser: Bool {
@@ -63,21 +63,18 @@ public struct AccountUserInput {
     /// - Returns: filled Account
     /// - Throws: AccountSettingsUserInputError
     public func account() throws -> Account {
-        guard let address = self.email, address != "" else {
+        guard let address = self.address, address != "" else {
             let msg = NSLocalizedString("E-mail must not be empty",
                                         comment: "Alert message for empty em-mail address field")
             throw AccountSettingsUserInputError.invalidInputEmailAddress(localizedMessage: msg)
         }
-        guard let name = self.name, name != "" else { //BUFF: assure name is account name (first field in first view)
-            let msg = NSLocalizedString("Account name must not be empty",
-                                        comment: "Alert message for empty account name")
-            throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
-        }
-        guard let loginUser = self.username, loginUser != "" else {
+
+        guard let userName = self.userName, userName != "" else {
             let msg = NSLocalizedString("Username must not be empty",
                                         comment: "Alert message for empty username")
             throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
         }
+
         guard let serverIMAP = self.serverIMAP, serverIMAP != "" else {
             let msg = NSLocalizedString("IMAP server must not be empty",
                                         comment: "Alert message for empty IMAP server")
@@ -89,10 +86,16 @@ public struct AccountUserInput {
             throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
         }
 
-        let identity = Identity.create(address: address, userID: nil, userName: name,
+        let identity = Identity.create(address: address, userID: address, userName: userName,
                                        isMySelf: true)
 
-        let credentials = ServerCredentials.create(userName: loginUser, password: self.password)
+        var logIn = self.loginName
+        if logIn == nil {
+            logIn = address
+        }
+
+        let credentials = ServerCredentials.create(userName: logIn!/* use of ! save due to if clause*/,
+            password: self.password)
         credentials.needsVerification = true
 
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
@@ -105,9 +108,7 @@ public struct AccountUserInput {
                                        credentials: credentials)
         smtpServer.needsVerification = true
 
-        let servers = [imapServer, smtpServer]
-        let account = Account.create(identity: identity, servers: servers)
-
+        let account = Account.create(identity: identity, servers: [imapServer, smtpServer])
         return account
     }
 }

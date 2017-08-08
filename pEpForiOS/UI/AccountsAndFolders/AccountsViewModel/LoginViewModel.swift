@@ -56,7 +56,7 @@ class LoginViewModel {
     var messageSyncService: MessageSyncServiceProtocol?
     weak var delegate: AccountVerificationResultDelegate?
 
-    init(messageSyncService: MessageSyncService? = nil) {
+    init(messageSyncService: MessageSyncServiceProtocol? = nil) {
         self.messageSyncService = messageSyncService
     }
 
@@ -65,8 +65,7 @@ class LoginViewModel {
     }
 
     func login(account: String, password: String, login: String? = nil,
-               username: String? = nil, callback: (Error?) -> Void) {
-        var user = AccountUserInput()
+               userName: String? = nil, callback: (Error?) -> Void) {
         let acSettings = ASAccountSettings(accountName: account, provider: password,
                                            flags: AS_FLAG_USE_ANY, credentials: nil)
         accountSettings = acSettings
@@ -75,26 +74,24 @@ class LoginViewModel {
             callback(err)
             return
         }
-        user.email = account
-        user.password = password
-        user.portIMAP = UInt16(acSettings.incoming.port)
-        user.serverIMAP = acSettings.incoming.hostname
-        user.portSMTP = UInt16(acSettings.outgoing.port)
-        user.serverSMTP = acSettings.outgoing.hostname
-        if login != nil && login != "" {
-            user.username = login
-        } else {
-            //FIXME
-            if acSettings.incoming.username != "" {
-                user.username = acSettings.incoming.username
-            } else {
-                user.username = account
-            }
-        }
-        user.name = username
+
+        let imapTransport = ConnectionTransport(
+            accountSettingsTransport: acSettings.incoming.transport)
+        let smtpTransport = ConnectionTransport(
+            accountSettingsTransport: acSettings.outgoing.transport)
+
+        let newAccount = AccountUserInput(
+            address: account, userName: userName ?? account,
+            loginName: login, password: password,
+            serverIMAP: acSettings.incoming.hostname,
+            portIMAP: UInt16(acSettings.incoming.port),
+            transportIMAP: imapTransport,
+            serverSMTP: acSettings.outgoing.hostname,
+            portSMTP: UInt16(acSettings.outgoing.port),
+            transportSMTP: smtpTransport)
 
         do {
-            try verifyAccount(model: user)
+            try verifyAccount(model: newAccount)
         } catch {
             Log.shared.error(component: #function, error: error)
             callback(error)

@@ -77,8 +77,8 @@ public class UserInfoTableViewController: UITableViewController, TextfieldRespon
      Puts the model into the view, in case it was set by the invoking view controller.
      */
     func updateViewFromInitialModel() {
-        emailValue.text = model.email
-        nameValue.text = model.name
+        emailValue.text = model.address
+        nameValue.text = model.userName
         passwordValue.text = model.password
     }
 
@@ -100,12 +100,12 @@ public class UserInfoTableViewController: UITableViewController, TextfieldRespon
     }
 
     @IBAction func changeEmail(_ sender: UITextField) {
-        model.email = sender.text
+        model.address = sender.text
         updateView()
     }
 
     @IBAction func changeUsername(_ sender: UITextField) {
-        model.username = sender.text
+        model.userName = sender.text
         updateView()
     }
 
@@ -115,7 +115,7 @@ public class UserInfoTableViewController: UITableViewController, TextfieldRespon
     }
 
     @IBAction func changedName(_ sender: UITextField) {
-        model.name = sender.text
+        model.userName = sender.text
         updateView()
     }
     

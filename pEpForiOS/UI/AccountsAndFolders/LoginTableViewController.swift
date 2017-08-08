@@ -139,7 +139,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         let username = user.text
         loginViewModel.delegate = self
         loginViewModel.login(account: email, password: pass, login: internalLoginName,
-                             username: username) { (err) in
+                             userName: username) { (err) in
             if let error = err {
                 handleLoginError(error: error)
             }
@@ -212,9 +212,9 @@ extension LoginTableViewController: SegueHandlerType {
                 let navVC = segue.destination as? UINavigationController,
                 let vc = navVC.topViewController as? UserInfoTableViewController {
                 vc.appConfig = appConfig
-                vc.model.email = emailAddress.text
+                vc.model.address = emailAddress.text
                 vc.model.password = password.text
-                vc.model.name = user.text
+                vc.model.userName = user.text
             }
         default:
             break
