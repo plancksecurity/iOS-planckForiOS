@@ -41,7 +41,7 @@ public struct AccountUserInput {
     }
 
     public var isValidName: Bool {
-        return (userName?.characters.count ?? 0) >= 3
+        return (userName?.characters.count ?? 0) >= 1
     }
 
     public var isValidUser: Bool {
