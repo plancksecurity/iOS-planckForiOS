@@ -19,8 +19,29 @@ class LoginViewModelTests: XCTestCase {
         weak var stateDelegate: MessageSyncServiceStateDelegate?
         weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate?
 
+        let accountSettings: TestDataBase.AccountSettings
+
+        init(accountSettings: TestDataBase.AccountSettings) {
+            self.accountSettings = accountSettings
+        }
+
         func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-            XCTFail("unexpected call to \(#function)")
+            XCTAssertEqual(account.user.address, accountSettings.idAddress)
+            guard let imapServer = account.imapServer else {
+                XCTFail("expecting IMAP server")
+                return
+            }
+            XCTAssertEqual(imapServer.transport, accountSettings.imapServerTransport)
+            XCTAssertEqual(imapServer.port, accountSettings.imapServerPort)
+            XCTAssertEqual(imapServer.address, accountSettings.imapServerAddress)
+
+            guard let smtpServer = account.smtpServer else {
+                XCTFail("expecting SMTP server")
+                return
+            }
+            XCTAssertEqual(imapServer.transport, accountSettings.smtpServerTransport)
+            XCTAssertEqual(smtpServer.port, accountSettings.smtpServerPort)
+            XCTAssertEqual(smtpServer.address, accountSettings.smtpServerAddress)
         }
 
         func requestDraft(message: Message) {
@@ -48,16 +69,27 @@ class LoginViewModelTests: XCTestCase {
         }
     }
 
-    func notestBasic() {
+    var persistentSetup: PersistentSetup!
+
+    override func setUp() {
+        super.setUp()
+        persistentSetup = PersistentSetup()
+    }
+
+    override func tearDown() {
+        persistentSetup = nil
+    }
+
+    func testBasic() {
         let td = TestData()
-        let account = td.createWorkingAccountSettings()
-        let ms = TestMessageSyncService()
+        let accountSettings = td.createWorkingAccountSettings()
+        let ms = TestMessageSyncService(accountSettings: accountSettings)
         let vm = LoginViewModel(messageSyncService: ms)
-        guard let passw = account.password else {
-            XCTFail("Expect password for account")
+        guard let passw = accountSettings.password else {
+            XCTFail("expecting password for account")
             return
         }
-        vm.login(account: account.idAddress, password: passw, login: nil, userName: nil) {
+        vm.login(account: accountSettings.idAddress, password: passw, login: nil, userName: nil) {
             error in
             XCTAssertNil(error)
         }

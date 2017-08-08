@@ -69,7 +69,7 @@ public struct AccountUserInput {
             throw AccountSettingsUserInputError.invalidInputEmailAddress(localizedMessage: msg)
         }
 
-        guard let loginUser = self.loginName, loginUser != "" else {
+        guard let userName = self.userName, userName != "" else {
             let msg = NSLocalizedString("Username must not be empty",
                                         comment: "Alert message for empty username")
             throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
@@ -96,7 +96,7 @@ public struct AccountUserInput {
                                        transport: self.transportSMTP.toServerTransport())
         smtpServer.needsVerification = true
 
-        let credentials = ServerCredentials.create(userName: loginUser, password: self.password,
+        let credentials = ServerCredentials.create(userName: userName, password: self.password,
                                                    servers: [imapServer, smtpServer])
         credentials.needsVerification = true
         let account = Account.create(identity: identity, credentials: [credentials])
