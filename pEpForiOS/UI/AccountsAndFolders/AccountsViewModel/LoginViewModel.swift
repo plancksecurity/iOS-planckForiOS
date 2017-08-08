@@ -51,7 +51,6 @@ enum LoginCellType {
 
 class LoginViewModel {
     var loginAccount : Account?
-    var accountSettings: ASAccountSettings?
     var extendedLogin = false
     var messageSyncService: MessageSyncServiceProtocol?
     weak var delegate: AccountVerificationResultDelegate?
@@ -68,7 +67,6 @@ class LoginViewModel {
                userName: String? = nil, callback: (Error?) -> Void) {
         let acSettings = ASAccountSettings(accountName: account, provider: password,
                                            flags: AS_FLAG_USE_ANY, credentials: nil)
-        accountSettings = acSettings
         if let err = AccountSettingsError(status: acSettings.status) {
             Log.shared.error(component: #function, error: err)
             callback(err)
