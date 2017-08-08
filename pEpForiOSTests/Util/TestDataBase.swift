@@ -82,8 +82,8 @@ class TestDataBase {
             let credSmtp = CdServerCredentials.create()
             credSmtp.userName = id.address
             credSmtp.key = keySmtp
-
             smtp.credentials = credSmtp
+
             acc.addToServers(smtp)
 
             //IMAP
@@ -92,12 +92,14 @@ class TestDataBase {
             imap.port = NSNumber(value: imapServerPort)
             imap.address = imapServerAddress
             imap.transport = imapServerTransport
+
             let keyImap = MessageID.generate()
             CdServerCredentials.add(password: password, forKey: keyImap)
             let credImap = CdServerCredentials.create()
             credImap.userName = id.address
             credImap.key = keyImap
             imap.credentials = credImap
+            
             acc.addToServers(imap)
 
             return acc

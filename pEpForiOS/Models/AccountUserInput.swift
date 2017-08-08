@@ -94,18 +94,21 @@ public struct AccountUserInput {
             logIn = address
         }
 
-        let credentials = ServerCredentials.create(userName: logIn!/* use of ! save due to if clause*/,
+        let credentialsImap = ServerCredentials.create(userName: logIn!/* use of ! save due to if clause*/,
             password: self.password)
-        credentials.needsVerification = true
+        credentialsImap.needsVerification = true
 
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
                                        transport: self.transportIMAP.toServerTransport(),
-                                       credentials: credentials)
+                                       credentials: credentialsImap)
         imapServer.needsVerification = true
 
+        let credentialsSmtp = ServerCredentials.create(userName: logIn!/* use of ! save due to if clause*/,
+            password: self.password)
+        credentialsSmtp.needsVerification = true
         let smtpServer = Server.create(serverType: .smtp, port: self.portSMTP, address: serverSMTP,
                                        transport: self.transportSMTP.toServerTransport(),
-                                       credentials: credentials)
+                                       credentials: credentialsSmtp)
         smtpServer.needsVerification = true
 
         let account = Account.create(identity: identity, servers: [imapServer, smtpServer])
