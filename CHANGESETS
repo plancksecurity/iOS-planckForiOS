@@ -1,6 +1,7 @@
-v0.0.18
-pEpEngine 0dbbba72dfbb
-pEpObjCAdapter cbfe333e6df2
-netpgp-et bcb6285efdff
-MessageModel 5895ebec740d
-pantomime-iOS 15afa190bbd7
+v0.0.19
+pEpEngine 7c1de6525863
+pEpObjCAdapter d660aae03056
+netpgp-et 6837c983ba83
+MessageModel 5cb11e213a41
+pantomime-iOS fdf29615c9aa
+libAccountSettings 3ac4738afffe
