@@ -68,7 +68,7 @@ extension CdAccount {
             return EmailConnectInfo(
                 accountObjectID: account.objectID, serverObjectID: server.objectID,
                 credentialsObjectID: credentials.objectID,
-                loginName: credentials.userName,
+                loginName: credentials.loginName,
                 loginPassword: password,
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,

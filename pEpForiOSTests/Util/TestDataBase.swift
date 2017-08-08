@@ -79,7 +79,7 @@ class TestDataBase {
             let keySmtp = MessageID.generate()
             CdServerCredentials.add(password: password, forKey: keySmtp)
             let credSmtp = CdServerCredentials.create()
-            credSmtp.userName = id.address
+            credSmtp.loginName = id.address
             credSmtp.key = keySmtp
             smtp.credentials = credSmtp
 
@@ -95,7 +95,7 @@ class TestDataBase {
             let keyImap = MessageID.generate()
             CdServerCredentials.add(password: password, forKey: keyImap)
             let credImap = CdServerCredentials.create()
-            credImap.userName = id.address
+            credImap.loginName = id.address
             credImap.key = keyImap
             imap.credentials = credImap
             
@@ -107,14 +107,14 @@ class TestDataBase {
         func account() -> Account {
             let id = Identity.create(address: idAddress, userName: idUserName, isMySelf: true)
 
-            let credSmtp = ServerCredentials.create(userName: id.address, password: password)
+            let credSmtp = ServerCredentials.create(loginName: id.address, password: password)
             let smtp = Server.create(serverType: .smtp,
                                      port: smtpServerPort,
                                      address: smtpServerAddress ?? "",
                                      transport: smtpServerTransport,
                                      credentials:credSmtp)
 
-            let credImap = ServerCredentials.create(userName: id.address, password: password)
+            let credImap = ServerCredentials.create(loginName: id.address, password: password)
             let imap = Server.create(serverType: .imap,
                                      port: imapServerPort,
                                      address: imapServerAddress ?? "",

@@ -55,7 +55,7 @@ public class AccountSettingsViewModel {
     var loginName: String {
         get {
             // the email model is based on the assumption that imap.loginName == smtp.loginName
-            return account.server(with: .imap)?.credentials.userName ?? ""
+            return account.server(with: .imap)?.credentials.loginName ?? ""
         }
     }
 
@@ -139,7 +139,7 @@ public class AccountSettingsViewModel {
         }
         let transport = Server.Transport.init(fromString: viewModel.transport)
 
-        let credentials = ServerCredentials.create(userName: loginName)
+        let credentials = ServerCredentials.create(loginName: loginName)
         if password != nil && password != "" {
             credentials.password = password
         }
