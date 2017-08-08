@@ -39,7 +39,7 @@ class LoginViewModelTests: XCTestCase {
                 XCTFail("expecting SMTP server")
                 return
             }
-            XCTAssertEqual(imapServer.transport, accountSettings.smtpServerTransport)
+            XCTAssertEqual(smtpServer.transport, accountSettings.smtpServerTransport)
             XCTAssertEqual(smtpServer.port, accountSettings.smtpServerPort)
             XCTAssertEqual(smtpServer.address, accountSettings.smtpServerAddress)
         }
