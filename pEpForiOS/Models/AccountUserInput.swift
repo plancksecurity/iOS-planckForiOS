@@ -96,7 +96,11 @@ public struct AccountUserInput {
                                        transport: self.transportSMTP.toServerTransport())
         smtpServer.needsVerification = true
 
-        let credentials = ServerCredentials.create(userName: loginName ?? address,
+        var theLoginName = loginName ?? ""
+        if theLoginName == "" {
+            theLoginName = address
+        }
+        let credentials = ServerCredentials.create(userName: theLoginName,
                                                    password: self.password,
                                                    servers: [imapServer, smtpServer])
         credentials.needsVerification = true
