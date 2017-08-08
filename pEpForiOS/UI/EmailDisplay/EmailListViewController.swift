@@ -223,9 +223,11 @@ class EmailListViewController: UITableViewController {
             self.tableView.reloadRows(at: [indexPath], with: .none)
         }
 
-        var title = "\n\n\(NSLocalizedString("Flag", comment: "Message action (on swipe)"))"
+        let flagString = NSLocalizedString("Flag", comment: "Message action (on swipe)")
+        var title = "\n\n\(flagString)"
+        let unflagString = NSLocalizedString("Unflag", comment: "Message action (on swipe)")
         if message.imapFlags?.flagged ?? true {
-            title = "\n\n\(NSLocalizedString("Unflag", comment: "Message action (on swipe)"))"
+            title = "\n\n\(unflagString)"
         }
 
         return createRowAction(
@@ -243,9 +245,10 @@ class EmailListViewController: UITableViewController {
             self.tableView.reloadData()
         }
 
+        let title = NSLocalizedString("Delete", comment: "Message action (on swipe)")
         return createRowAction(
             cell: cell, image: UIImage(named: "swipe-trash"), action: action,
-            title: "\n\n\(NSLocalizedString("Delete", comment: "Message action (on swipe)"))")
+            title: "\n\n\(title)")
     }
 
     func createMarkAsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
@@ -277,9 +280,10 @@ class EmailListViewController: UITableViewController {
             self.showMoreActionSheet(cell: cell)
         }
 
+        let title = NSLocalizedString("More", comment: "Message action (on swipe)")
         return createRowAction(
             cell: cell, image: UIImage(named: "swipe-more"), action: action,
-            title: "\n\n\(NSLocalizedString("More", comment: "Message action (on swipe)"))")
+            title: "\n\n\(title)")
     }
 
     // MARK: - Action Sheet
