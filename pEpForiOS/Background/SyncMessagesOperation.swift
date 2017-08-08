@@ -109,7 +109,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
             try sync.syncMessages(firstUID: firstUID, lastUID: lastUID)
         } catch let err as NSError {
             addError(err)
-            waitForFinished()
+            waitForBackgroundTasksToFinish()
         }
     }
 

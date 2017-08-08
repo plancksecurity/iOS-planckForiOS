@@ -67,7 +67,7 @@ open class ConcurrentBaseOperation: BaseOperation {
      to finish and then signal `finished`.
      Although this method has 'wait' in the name, it certainly does not block.
      */
-    func waitForFinished() {
+    func waitForBackgroundTasksToFinish() {
         Log.verbose(component: comp, content: "\(#function) \(backgroundQueue.operationCount)")
         if backgroundQueue.operationCount == 0 {
             markAsFinished()

@@ -98,7 +98,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
 
     func readFolderNamesFromImapSync(_ sync: ImapSync?) {
         if let _ = sync?.folderNames {
-            waitForFinished()
+            waitForBackgroundTasksToFinish()
         }
     }
 

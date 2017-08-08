@@ -36,9 +36,9 @@ open class ImapSyncOperation: ConcurrentBaseOperation {
         super.markAsFinished()
     }
 
-    override open func waitForFinished() {
+    override open func waitForBackgroundTasksToFinish() {
         imapSyncData.sync?.delegate = nil
-        super.waitForFinished()
+        super.waitForBackgroundTasksToFinish()
     }
 }
 
