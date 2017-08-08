@@ -237,12 +237,12 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
-    func testSendOnIdle() {
-        let ms = runOrContinueUntilIdle(parentName: #function)
-        sendMessages(ms: ms)
-        let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
-        ReferenceCounter.logOutstanding()
-    }
+        func testSendOnIdle() {
+            let ms = runOrContinueUntilIdle(parentName: #function)
+            sendMessages(ms: ms)
+            let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
+            ReferenceCounter.logOutstanding()
+        }
 
     func testUploadFlagsOnIdle() {
         let context = Record.Context.default
