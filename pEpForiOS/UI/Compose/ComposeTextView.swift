@@ -58,7 +58,7 @@ open class ComposeTextView: UITextView {
             attributedText.enumerateAttribute(
                 NSAttachmentAttributeName, in: range,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
-                    (value, range, stop) -> Void in
+                    value, range, stop in
                     if let attachment = value as? TextAttachment {
                         allAttachments.append(attachment)
                     }
@@ -113,18 +113,33 @@ open class ComposeTextView: UITextView {
             }
         }
     }
-    
+
+    /**
+     Pure debug function
+     */
+    func extensionFor(documentType: String) -> String {
+        switch documentType {
+        case NSRTFTextDocumentType, NSRTFDTextDocumentType:
+            return "rtf"
+        case NSHTMLTextDocumentType:
+            return "html"
+        default:
+            return "txt"
+        }
+    }
+
     public func toHtml() -> String? {
         let string = NSMutableAttributedString(attributedString: attributedText)
         let range = NSMakeRange(0, string.length)
         string.fixAttributes(in: range)
-        
-        let docAttributes = [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]
+
+        let documentType = NSHTMLTextDocumentType
+        let docAttributes = [NSDocumentTypeDocumentAttribute: documentType]
         do {
             let data = try string.data(from: range, documentAttributes: docAttributes)
             return String(data: data, encoding: .utf8)
         } catch {
-            Log.error(component: #function, errorString: "Could not covert into html")
+            Log.error(component: #function, errorString: "Could not convert into \(documentType)")
             return nil
         }
     }
