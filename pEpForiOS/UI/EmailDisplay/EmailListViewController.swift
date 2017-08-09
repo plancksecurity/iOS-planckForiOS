@@ -65,12 +65,12 @@ class EmailListViewController: UITableViewController {
         }
 
         setDefaultColors()
-        initialConfig()
+        setupConfig()
         updateModel()
 
         // Mark this folder as having been looked at by the user
-        if let fol = config?.folder {
-            fol.updateLastLookAt()
+        if let folder = config?.folder {
+            updateLastLookAt(on: folder)
         }
         if viewModel == nil {
             viewModel = EmailListViewModel(config: config, delegate: self)
@@ -85,14 +85,23 @@ class EmailListViewController: UITableViewController {
         
     }
 
+    private func updateLastLookAt(on folder: Folder) {
+        if folder.isUnified {
+            folder.updateLastLookAt()
+        } else {
+            folder.updateLastLookAtAndSave()
+        }
+    }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         MessageModelConfig.messageFolderDelegate = nil
     }
 
-    func initialConfig() {
+    //BUFF: folder without account!
+    func setupConfig() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No AppDelegate?")
             return
         }
         if config == nil {
@@ -103,6 +112,7 @@ class EmailListViewController: UITableViewController {
         if Account.all().isEmpty {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
+
         self.title = config?.folder?.realName
     }
 
