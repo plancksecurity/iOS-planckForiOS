@@ -96,7 +96,7 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
                     cdMsg.imapFields().messageNumber = newMSN
                 }
             }
-        } else if let msg = insert(pantomimeMessage: message, account: account) {
+        } else if let msg = insertOrUpdate(pantomimeMessage: message, account: account) {
             if msg.received == nil {
                 msg.received = NSDate()
             }
@@ -109,7 +109,7 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
         }
     }
 
-    func insert(pantomimeMessage: CWIMAPMessage, account: CdAccount) -> CdMessage? {
+    func insertOrUpdate(pantomimeMessage: CWIMAPMessage, account: CdAccount) -> CdMessage? {
         return CdMessage.insertOrUpdate(
             pantomimeMessage: self.message, account: account, messageUpdate: messageUpdate)
     }
