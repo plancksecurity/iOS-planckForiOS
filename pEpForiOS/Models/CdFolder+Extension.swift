@@ -86,9 +86,6 @@ public extension CdFolder {
                 if let first = scalars.first {
                     folder.folderSeparator = Int16(first.value)
                 }
-                if let pf = parentFolder {
-                    folder.parent = pf
-                }
                 parentFolder = folder
             }
             if let createdFolder = parentFolder {
