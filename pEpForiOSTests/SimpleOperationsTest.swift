@@ -504,7 +504,15 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertGreaterThanOrEqual(opCreate2.numberOfFoldersCreated, 1)
 
         for ft in FolderType.requiredTypes {
-            XCTAssertNotNil(CdFolder.by(folderType: ft, account: cdAccount))
+            if
+                let cdF = CdFolder.by(folderType: ft, account: cdAccount),
+                let folderName = cdF.name {
+                if let sep = cdF.folderSeparatorAsString(), cdF.parent != nil {
+                    XCTAssertTrue(folderName.contains(sep))
+                }
+            } else {
+                XCTFail("expecting folder of type \(ft) with defined name")
+            }
         }
     }
 
