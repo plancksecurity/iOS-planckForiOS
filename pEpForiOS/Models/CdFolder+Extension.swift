@@ -42,22 +42,24 @@ public extension CdFolder {
      - Returns: An optional tuple consisting of a `CdFolder`, and a flag indicating
      that this folder is new. The Inbox will never be returned as new.
      */
-    public static func insertOrUpdate(folderName: String,
-                                      folderSeparator: String?,
-                                      folderType: FolderType?,
-                                      account: CdAccount) -> (CdFolder, Bool)? {
+    public static func insertOrUpdate(
+        folderName: String,
+        folderSeparator: String?,
+        folderType: FolderType?,
+        account: CdAccount,
+        context: NSManagedObjectContext = Record.Context.default) -> (CdFolder, Bool)? {
         // Treat Inbox specially, since its name is case insensitive.
         // For all other folders, it's undefined if they have to be handled
         // case insensitive or not, so no special handling for those.
         if folderName.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
-            if let folder = by(folderType: .inbox, account: account) {
+            if let folder = by(folderType: .inbox, account: account, context: context) {
                 let _ = reactivate(folder: folder)
                 return (folder, false)
             }
         }
 
         // Reactivate if previously deleted
-        if let folder = by(name: folderName, account: account) {
+        if let folder = by(name: folderName, account: account, context: context) {
             if let type = folderType {
                 folder.folderType = type
             }
@@ -74,7 +76,8 @@ public extension CdFolder {
                 pathsSoFar.append(p)
                 let pathName = (pathsSoFar as NSArray).componentsJoined(
                     by: separator)
-                let folder = insert(folderName: pathName, folderType: nil, account: account)
+                let folder = insert(folderName: pathName, folderType: nil, account: account,
+                                    context: context)
                 //if it is the actual folder (has no child folder), set its folder type
                 if p == paths.last {
                     if let type = folderType {
@@ -100,11 +103,13 @@ public extension CdFolder {
         }
     }
 
-    static func insert(folderName: String, folderType: FolderType?, account: CdAccount) -> CdFolder {
+    static func insert(
+        folderName: String, folderType: FolderType?, account: CdAccount,
+        context: NSManagedObjectContext = Record.Context.default) -> CdFolder {
         Log.verbose(component: comp, content: "insert \(folderName)")
 
         // Reactivate if previously deleted
-        if let folder = by(name: folderName, account: account) {
+        if let folder = by(name: folderName, account: account, context: context) {
             if let type = folderType {
                 folder.folderType = type
             }
@@ -112,7 +117,7 @@ public extension CdFolder {
             return folder
         }
 
-        let folder = CdFolder.create()
+        let folder = CdFolder.create(context: context)
         folder.name = folderName
         folder.account = account
         folder.uuid = MessageID.generate()
