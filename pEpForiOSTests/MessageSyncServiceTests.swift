@@ -133,11 +133,6 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
     }
 
     //MARK: - TESTS
-    //BUFF:
-    // IOS-615 (Only) the first email in an Yahoo account gets duplicated locally on every sync cycle
-    func testMailsNotDuplicated() {
-
-    }
 
     func testBasicPassiveSend() {
         runMessageSyncServiceSend(
@@ -234,12 +229,12 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
         ms.cancel(account: cdAccount.account())
     }
 
-        func testSendOnIdle() {
-            let ms = runOrContinueUntilIdle(parentName: #function)
-            sendMessages(ms: ms)
-            let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
-            ReferenceCounter.logOutstanding()
-        }
+    func testSendOnIdle() {
+        let ms = runOrContinueUntilIdle(parentName: #function)
+        sendMessages(ms: ms)
+        let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
+        ReferenceCounter.logOutstanding()
+    }
 
     func testUploadFlagsOnIdle() {
         let context = Record.Context.default
