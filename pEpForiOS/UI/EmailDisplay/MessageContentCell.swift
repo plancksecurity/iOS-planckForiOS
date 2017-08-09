@@ -16,6 +16,11 @@ open class MessageContentCell: MessageCell {
     public override func updateCell(model: ComposeFieldModel, message: Message,
                                     indexPath: IndexPath) {
         super.updateCell(model: model, message: message, indexPath: indexPath)
-        contentLabel.text = message.longMessage?.trimmedWhiteSpace()
+        //if let body = message.longMessage {
+            contentLabel.text = message.longMessage?.trimmedWhiteSpace()
+        //} else {
+        //    contentLabel.text = message.longMessageFormatted
+        //}
+
     }
 }

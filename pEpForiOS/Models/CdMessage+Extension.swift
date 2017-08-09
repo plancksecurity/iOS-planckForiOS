@@ -150,7 +150,7 @@ extension CdMessage {
         attachment.length = Int64(data.count)
         attachment.mimeType = contentType
         attachment.fileName = filename
-        attachment.contentID = contentID
+        //attachment.contentID = contentID
         return attachment
     }
 }

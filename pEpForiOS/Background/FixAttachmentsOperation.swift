@@ -55,7 +55,7 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
         } else {
             openFetchCount = totalCount
             for cdAttach in cdAttachments2 {
-                if let urlString = cdAttach.url, let theURL = URL(string: urlString) {
+                /*if let urlString = cdAttach.url, let theURL = URL(string: urlString) {
                     FixAttachmentsOperation.retrieveData(fromURL: theURL) { data in
                         if let theData = data {
                             context.perform {
@@ -71,7 +71,7 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
                 } else {
                     Log.error(component: comp, errorString: "CdAttachment with invalid URL")
                     openFetchCount -= 1
-                }
+                }*/
             }
         }
     }

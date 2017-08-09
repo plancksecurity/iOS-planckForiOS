@@ -112,8 +112,7 @@ open class PEPUtil {
     }
 
     open static func pEpAttachment(
-        fileName: String?, mimeType: String?, data: Data?,
-        contentID: String?) -> [String: AnyObject] {
+        fileName: String?, mimeType: String?, data: Data?) -> [String: AnyObject] {
         var dict: [String: AnyObject] = [:]
         if let fn = fileName {
             dict[kPepMimeFilename] = fn as NSString
@@ -124,9 +123,9 @@ open class PEPUtil {
         if let d = data {
             dict[kPepMimeData] = d as NSData
         }
-        if let cid = contentID {
+        /*if let cid = contentID {
             dict[kPepContentID] = cid as NSString
-        }
+        }*/
         return dict
     }
 
@@ -136,7 +135,7 @@ open class PEPUtil {
     open static func pEp(cdAttachment: CdAttachment) -> [String: AnyObject] {
         return pEpAttachment(
             fileName: cdAttachment.fileName, mimeType: cdAttachment.mimeType,
-            data: cdAttachment.data as Data?, contentID: cdAttachment.contentID)
+            data: cdAttachment.data as Data?)
     }
 
     /**
@@ -144,8 +143,7 @@ open class PEPUtil {
      */
     open static func pEp(attachment: Attachment) -> [String: AnyObject] {
         return pEpAttachment(
-            fileName: attachment.fileName, mimeType: attachment.mimeType, data: attachment.data,
-            contentID: attachment.contentID)
+            fileName: attachment.fileName, mimeType: attachment.mimeType, data: attachment.data)
     }
 
     open static func pEp(message: Message, outgoing: Bool = true) -> PEPMessage {
