@@ -20,4 +20,15 @@ extension Data {
             return String.init(data: self, encoding: String.Encoding.utf8)
         }
     }
+
+    public func debugSave(basePath: String, fileName: String, ext: String = "data") {
+        let dateDesc = Date().description(with: nil)
+        let filePath = "\(basePath)/\(fileName)_\(dateDesc).\(ext)"
+        let url = URL(fileURLWithPath: filePath)
+        do {
+            try write(to: url)
+        } catch {
+            Log.error(component: #function, errorString: "Could not save to \(url)")
+        }
+    }
 }
