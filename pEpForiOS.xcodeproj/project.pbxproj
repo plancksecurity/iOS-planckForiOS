@@ -132,7 +132,6 @@
 		4360282D1ED6F27600C95FC4 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360282C1ED6F27600C95FC4 /* NetworkError.swift */; };
 		4360282F1ED6F33400C95FC4 /* ImapSyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360282E1ED6F33400C95FC4 /* ImapSyncError.swift */; };
 		4362398C1EADD61B00BD2EB9 /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */; };
-		436239921EAE08F400BD2EB9 /* NSData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4362398E1EAE08F400BD2EB9 /* NSData+Extensions.swift */; };
 		436239931EAE08F400BD2EB9 /* PEPSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4362398F1EAE08F400BD2EB9 /* PEPSession+Extensions.swift */; };
 		436239941EAE08F400BD2EB9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436239901EAE08F400BD2EB9 /* String+Extensions.swift */; };
 		436239951EAE08F400BD2EB9 /* String+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436239911EAE08F400BD2EB9 /* String+pEp.swift */; };
@@ -160,6 +159,7 @@
 		4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4381D0FE1E51A124002743C3 /* NetworkServiceWorker.swift */; };
 		438281831E891B7E00087343 /* DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438281821E891B7E00087343 /* DateTests.swift */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
+		4384ABB01F3B5A11006982B8 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384ABAF1F3B5A11006982B8 /* Data+Extensions.swift */; };
 		438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438D253B1D4B9E7500BFF7AA /* MimeTests.swift */; };
 		438D25401D4B9EDB00BFF7AA /* PGPMimeMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 438D253F1D4B9EDB00BFF7AA /* PGPMimeMail.txt */; };
 		438D5A711EA77CFC001A37E1 /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */; };
@@ -446,7 +446,6 @@
 		4360282C1ED6F27600C95FC4 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		4360282E1ED6F33400C95FC4 /* ImapSyncError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncError.swift; sourceTree = "<group>"; };
 		4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
-		4362398E1EAE08F400BD2EB9 /* NSData+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+Extensions.swift"; sourceTree = "<group>"; };
 		4362398F1EAE08F400BD2EB9 /* PEPSession+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPSession+Extensions.swift"; sourceTree = "<group>"; };
 		436239901EAE08F400BD2EB9 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		436239911EAE08F400BD2EB9 /* String+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+pEp.swift"; sourceTree = "<group>"; };
@@ -478,6 +477,7 @@
 		4381D0FE1E51A124002743C3 /* NetworkServiceWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceWorker.swift; sourceTree = "<group>"; };
 		438281821E891B7E00087343 /* DateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTests.swift; sourceTree = "<group>"; };
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
+		4384ABAF1F3B5A11006982B8 /* Data+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		438D253B1D4B9E7500BFF7AA /* MimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTests.swift; sourceTree = "<group>"; };
 		438D253F1D4B9EDB00BFF7AA /* PGPMimeMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPMimeMail.txt; sourceTree = "<group>"; };
 		438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeViewController.swift; sourceTree = "<group>"; };
@@ -890,11 +890,11 @@
 		4362398D1EAE08F400BD2EB9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				4384ABAF1F3B5A11006982B8 /* Data+Extensions.swift */,
 				436239961EAE0CE800BD2EB9 /* Actionsheet+Extension.swift */,
 				436239971EAE0CE800BD2EB9 /* Date+Extension.swift */,
 				436239981EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift */,
 				436239991EAE0CE800BD2EB9 /* OperationQueue+Extension.swift */,
-				4362398E1EAE08F400BD2EB9 /* NSData+Extensions.swift */,
 				4362398F1EAE08F400BD2EB9 /* PEPSession+Extensions.swift */,
 				436239901EAE08F400BD2EB9 /* String+Extensions.swift */,
 				436239911EAE08F400BD2EB9 /* String+pEp.swift */,
@@ -1594,7 +1594,6 @@
 				220DCE341E0AB5CC002FE716 /* MailinglistCell.swift in Sources */,
 				436239941EAE08F400BD2EB9 /* String+Extensions.swift in Sources */,
 				43D2C2681F13847700C97235 /* ServiceFactory.swift in Sources */,
-				436239921EAE08F400BD2EB9 /* NSData+Extensions.swift in Sources */,
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
 				43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */,
@@ -1603,6 +1602,7 @@
 				5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */,
 				439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */,
 				438D5A711EA77CFC001A37E1 /* HandshakeViewController.swift in Sources */,
+				4384ABB01F3B5A11006982B8 /* Data+Extensions.swift in Sources */,
 				B729BEC61E7C35E200793110 /* FilterUpdateProtocol.swift in Sources */,
 				431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */,
 				431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */,
