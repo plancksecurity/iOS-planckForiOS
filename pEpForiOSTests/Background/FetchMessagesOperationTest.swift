@@ -96,7 +96,8 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         }
         fetch2Op.addDependency(fetchOp)
         queue.addOperation(fetch2Op)
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+        //BUF: waittime
+        waitForExpectations(timeout: TestUtil.waitTimeForever, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(fetchOp.hasErrors())
             XCTAssertFalse(fetch2Op.hasErrors())

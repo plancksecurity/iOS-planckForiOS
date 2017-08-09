@@ -98,7 +98,6 @@ class EmailListViewController: UITableViewController {
         MessageModelConfig.messageFolderDelegate = nil
     }
 
-    //BUFF: folder without account!
     func setupConfig() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             Log.shared.errorAndCrash(component: #function, errorString: "No AppDelegate?")

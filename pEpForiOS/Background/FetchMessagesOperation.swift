@@ -70,7 +70,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
         // that is mandatorily case-insensitive.
         if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
             if let folder = CdFolder.first(attributes: ["folderTypeRawValue": FolderType.inbox.rawValue,
-                                          "account": account]) {
+                                                        "account": account]) {
                 self.folderToOpen = folder.name!
             }
         }
