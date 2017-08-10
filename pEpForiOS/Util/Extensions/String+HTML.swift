@@ -33,27 +33,11 @@ extension String {
     }
 
     /**
-     Markdown text from HTML.
+     Very simple markdown text from HTML.
      */
-    public func htmlToMarkdown() -> String? {
-        let htmlData = data(using: String.Encoding.utf8)
-        let doc = TFHpple(htmlData: htmlData, encoding: "UTF-8")
-        let elms = doc?.search(withXPathQuery: "//body//*")
-
-        var result = ""
-        for tmp in elms ?? [] {
-            if let e = tmp as? TFHppleElement {
-                let s = e.content.trimmedWhiteSpace()
-                if !s.isEmpty {
-                    if result.characters.count > 0 {
-                        result.append(" " as Character)
-                    }
-                    result.append(s)
-                }
-            } else {
-                print("What's this: \(tmp)")
-            }
-        }
-        return result
+    public func htmlToSimpleMarkdown() -> String? {
+        let parser = HtmlSaxParser()
+        parser.parse(string: self)
+        return parser.output
     }
 }

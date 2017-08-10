@@ -23,37 +23,37 @@ class HtmlSaxParser: NSObject {
             output = nil
         }
     }
+
+    func add(string: String) {
+        output = "\(output ?? "")\(string)"
+    }
 }
 
 extension HtmlSaxParser: AXHTMLParserDelegate {
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
-                qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        Log.shared.info(component: #function, content: "\(elementName)")
+    func parser(_ parser: AXHTMLParser, didStartElement elementName: String,
+                attributes attributeDict: [AnyHashable : Any] = [:]) {
         if elementName == "body" {
             acceptCharacters = true
         } else if elementName == "img" {
             print("img!")
         } else if elementName == "br" {
-            print("br!")
+            add(string: "\n")
         }
     }
 
-    func parser(_ parser: AXHTMLParser, didEndElement elementName: String, namespaceURI: String?,
-                qualifiedName qName: String?) {
-        Log.shared.info(component: #function, content: "/\(elementName)")
+    func parser(_ parser: AXHTMLParser, didEndElement elementName: String) {
         if elementName == "body" {
             acceptCharacters = false
         }
     }
 
     func parser(_ parser: AXHTMLParser, foundCharacters string: String) {
-        Log.shared.info(component: #function, content: "\(string)")
         if acceptCharacters {
-            print("\(string)")
+            add(string: string)
         }
     }
 
     func parser(_ parser: AXHTMLParser, parseErrorOccurred parseError: Error) {
-        print("error: \(parseError)")
+        Log.shared.error(component: #function, error: parseError)
     }
 }

@@ -141,7 +141,7 @@ class StringExtensionsTest: XCTestCase {
             html.extractTextFromHTML(), "HTML! Yes! Whatever. New bold paragraph.")
     }
 
-    func notestToMarkdown() {
+    func testToMarkdown() {
         guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
             XCTFail()
             return
@@ -150,7 +150,7 @@ class StringExtensionsTest: XCTestCase {
             XCTFail()
             return
         }
-        guard let mdString = inputString.htmlToMarkdown() else {
+        guard let mdString = inputString.htmlToSimpleMarkdown() else {
             XCTFail()
             return
         }
