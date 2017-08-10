@@ -222,6 +222,7 @@
 		43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */; };
 		43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657D01F3C33C30014CBEC /* String+HTML.swift */; };
 		43E657DA1F3C62310014CBEC /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */ = {isa = PBXBuildFile; fileRef = 43E657D91F3C62310014CBEC /* NSHTML_2017-08-09 15_40_53 +0000.html */; };
+		43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43E657DD1F3C72360014CBEC /* AXHTMLParser.m */; };
 		43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E74C731E38DE2200A2F7A6 /* ImapFlagsTests.swift */; };
 		43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */; };
 		43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E88BDD1EFA665600E0B224 /* AsyncStateMachineProtocol.swift */; };
@@ -549,6 +550,9 @@
 		43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageHeapBufferOverflow.txt; sourceTree = "<group>"; };
 		43E657D01F3C33C30014CBEC /* String+HTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
 		43E657D91F3C62310014CBEC /* NSHTML_2017-08-09 15_40_53 +0000.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "NSHTML_2017-08-09 15_40_53 +0000.html"; sourceTree = "<group>"; };
+		43E657DC1F3C72360014CBEC /* AXHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXHTMLParser.h; sourceTree = "<group>"; };
+		43E657DD1F3C72360014CBEC /* AXHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXHTMLParser.m; sourceTree = "<group>"; };
+		43E657DE1F3C72360014CBEC /* Axt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Axt.h; sourceTree = "<group>"; };
 		43E74C731E38DE2200A2F7A6 /* ImapFlagsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapFlagsTests.swift; sourceTree = "<group>"; };
 		43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+pEp.swift"; sourceTree = "<group>"; };
 		43E88BDD1EFA665600E0B224 /* AsyncStateMachineProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncStateMachineProtocol.swift; sourceTree = "<group>"; };
@@ -931,6 +935,7 @@
 		43800D8C1D112A0800821E34 /* HTMLParser */ = {
 			isa = PBXGroup;
 			children = (
+				43E657DB1F3C72360014CBEC /* Axt */,
 				43800D8D1D112A0800821E34 /* TFHpple.h */,
 				43800D8E1D112A0800821E34 /* TFHpple.m */,
 				43800D8F1D112A0800821E34 /* TFHppleElement.h */,
@@ -1178,6 +1183,16 @@
 				15F835231F34BE1300FCE887 /* AccountUserInput.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		43E657DB1F3C72360014CBEC /* Axt */ = {
+			isa = PBXGroup;
+			children = (
+				43E657DC1F3C72360014CBEC /* AXHTMLParser.h */,
+				43E657DD1F3C72360014CBEC /* AXHTMLParser.m */,
+				43E657DE1F3C72360014CBEC /* Axt.h */,
+			);
+			path = Axt;
 			sourceTree = "<group>";
 		};
 		43ED53611CC77F95006AB156 /* UI */ = {
@@ -1630,6 +1645,7 @@
 				4360282F1ED6F33400C95FC4 /* ImapSyncError.swift in Sources */,
 				222B35561DF962D7007A1F82 /* ComposeHelpers.swift in Sources */,
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
+				43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */,
 				43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */,
 				B7F19A001E5DE9FB0079A513 /* Folder+Extensions.swift in Sources */,
