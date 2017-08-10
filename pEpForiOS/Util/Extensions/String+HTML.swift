@@ -36,11 +36,6 @@ extension String {
      Text from HTML, useful for creating snippets of a mail.
      */
     public func htmlToMarkdown() -> String? {
-        guard let parser = HtmlSaxParser(string: self) else {
-            return nil
-        }
-        parser.parse()
-
-        return parser.output
+        return nil
     }
 }
