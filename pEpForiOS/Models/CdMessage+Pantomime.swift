@@ -550,24 +550,8 @@ extension CdMessage {
      */
     static private func existing(pantomimeMessage: CWIMAPMessage) -> CdMessage? {
         return search(message:pantomimeMessage)
-//        guard let mid = pantomimeMessage.messageID() else {
-//            return nil
-//        }
-//        let uid = pantomimeMessage.uid()
-//        //BUFF:
-//        var message = CdMessage.by(uuid: mid, uid: uid)
-//        // If no message is found by UUID+UID, re-try searching for UID+folderName.
-//        // We had cases where the UUID changes on server side. IOS-615.
-//        if message == nil,
-//            let parentFolderName = pantomimeMessage.folder()?.name() {
-//            message = CdMessage.by(uid: Int32(uid), folderName: parentFolderName)
-//        }
-//        //FFUB
-
-//       return message
     }
 
-    //BUFF:
     /// Try to get the best possible match possible for given data.
     /// Best match priority:
     /// 1) UID + foldername
@@ -581,7 +565,6 @@ extension CdMessage {
        return search(uid: uid, uuid: message.messageID(),
                      folderName: message.folder()?.name())
     }
-    //FFUB
 
     static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {
         let addr = CdIdentity.first(attribute: "address", value: pantomimeAddress.address()) ??

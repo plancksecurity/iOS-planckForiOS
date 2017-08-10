@@ -76,10 +76,7 @@ class PersistentImapFolder: CWIMAPFolder {
         } else {
             return nil
         }
-
         super.init(name: name)
-
-        //BUFF:
         self.setCacheManager(self)
     }
 

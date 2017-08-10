@@ -14,7 +14,6 @@ import CoreData
 
 class FetchMessagesOperationTest: CoreDataDrivenTestBase {
     
-    //BUFF:
     // IOS-615 (Only) the first email in an Yahoo account gets duplicated locally on every sync cycle
     func testMailsNotDuplicated() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)

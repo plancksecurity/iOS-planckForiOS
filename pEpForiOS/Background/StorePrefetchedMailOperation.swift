@@ -79,21 +79,10 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
                 return
         }
         if messageUpdate.isFlagsOnly() {
-            //BUFF:
-//            guard
-//                let messageID = message.messageID(),
-//                let folderName = message.folder()?.name(),
-//                let cdMsg = CdMessage.by(uuid: messageID, folderName: folderName) else {
-//                    addError(OperationError.messageForFlagUpdateNotFound)
-//                    return
-//            }
-
             guard let cdMsg = CdMessage.search(message: message) else {
                     addError(OperationError.messageForFlagUpdateNotFound)
                     return
             }
-            //FFUB
-
             let oldMSN = cdMsg.imapFields().messageNumber
             let newMSN = Int32(message.messageNumber())
 
