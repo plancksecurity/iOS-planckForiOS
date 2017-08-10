@@ -140,4 +140,18 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual(
             html.extractTextFromHTML(), "HTML! Yes! Whatever. New bold paragraph.")
     }
+
+    func notestToMarkdown() {
+        guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15:40:53 +0000.html") else {
+            XCTFail()
+            return
+        }
+        guard let inputString = String(data: data, encoding: String.Encoding.utf8) else {
+            XCTFail()
+            return
+        }
+        let mdString = inputString.htmlToMarkdown()
+        XCTAssertTrue(mdString.characters.count > 0)
+        XCTAssertNotEqual(mdString, inputString)
+    }
 }

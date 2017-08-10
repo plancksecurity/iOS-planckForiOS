@@ -14,7 +14,7 @@ extension String {
      */
     public func extractTextFromHTML() -> String {
         let htmlData = data(using: String.Encoding.utf8)
-        let doc = TFHpple(data: htmlData, encoding: "UTF-8", isXML: false)
+        let doc = TFHpple(htmlData: htmlData, encoding: "UTF-8")
         let elms = doc?.search(withXPathQuery: "//body//text()[normalize-space()]")
 
         var result = ""
@@ -30,5 +30,15 @@ extension String {
             }
         }
         return result
+    }
+
+    /**
+     Text from HTML, useful for creating snippets of a mail.
+     */
+    public func htmlToMarkdown() -> String {
+        let htmlData = data(using: String.Encoding.utf8)
+        let doc = TFHpple(htmlData: htmlData, encoding: "UTF-8")
+        let elms = doc?.search(withXPathQuery: "//body//text()[normalize-space()]")
+        return self
     }
 }

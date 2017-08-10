@@ -15,9 +15,9 @@ extension Data {
     public func toStringWithIANACharset(_ charset: String?) -> String? {
         if let cs = charset {
             let enc = stringEncodingFromIANACharset(cs)
-            return String.init(data: self, encoding: enc)
+            return String(data: self, encoding: enc)
         } else {
-            return String.init(data: self, encoding: String.Encoding.utf8)
+            return String(data: self, encoding: String.Encoding.utf8)
         }
     }
 
