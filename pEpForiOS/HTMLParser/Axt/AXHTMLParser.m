@@ -82,7 +82,7 @@ typedef struct {
 
 - (instancetype)initWithHTMLString:(NSString *)string
 {
-    NSStringEncoding encoding = [string fastestEncoding];
+    NSStringEncoding encoding = NSUTF8StringEncoding;
     return [self initWithStream:[NSInputStream inputStreamWithData:[string dataUsingEncoding:encoding]]];
 }
 
