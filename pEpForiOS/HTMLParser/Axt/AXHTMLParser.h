@@ -11,11 +11,11 @@
 @protocol AXHTMLParserDelegate;
 @interface AXHTMLParser : NSObject
 
-@property (nonatomic, strong) NSError *parserError;
-@property (nonatomic, weak) id<AXHTMLParserDelegate> delegate;
+@property (nonatomic, strong) NSError * _Nullable parserError;
+@property (nonatomic, weak, nullable) id <AXHTMLParserDelegate> delegate;
 
-- (instancetype)initWithHTMLString:(NSString *)string;
-- (instancetype)initWithStream:(NSInputStream *)stream;
+- (nonnull instancetype)initWithHTMLString:(NSString *_Nonnull)string;
+- (nonnull instancetype)initWithStream:(NSInputStream *_Nonnull)stream;
 
 /** Starts synchronous parsing
  
@@ -38,7 +38,7 @@
  
  @param parser The parser
  */
-- (void)parserDidStartDocument:(AXHTMLParser *)parser;
+- (void)parserDidStartDocument:(AXHTMLParser *_Nonnull)parser;
 
 /** Called when the document parsing ended.
  
@@ -47,21 +47,21 @@
  
  @param parser The parser
  */
-- (void)parserDidEndDocument:(AXHTMLParser *)parser;
+- (void)parserDidEndDocument:(AXHTMLParser *_Nonnull)parser;
 
 /** Called when the opening tag of an element is found.
  
  @param parser The parser
  @param elementName The element/tag name
  */
-- (void)parser:(AXHTMLParser *)parser didStartElement:(NSString *)elementName attributes:(NSDictionary *)attributeDict;
+- (void)parser:(AXHTMLParser *_Nonnull)parser didStartElement:(NSString *_Nonnull)elementName attributes:(NSDictionary *_Nonnull)attributeDict;
 
 /** Called when the closing tag of an element is found.
  
  @param parser The parser
  @param elementName The element/tag name
  */
-- (void)parser:(AXHTMLParser *)parser didEndElement:(NSString *)elementName;
+- (void)parser:(AXHTMLParser *_Nonnull)parser didEndElement:(NSString *_Nonnull)elementName;
 
 /** Called when character are found.
  
@@ -70,7 +70,7 @@
  @param parser The parser
  @param string The characters found so far
  */
-- (void)parser:(AXHTMLParser *)parser foundCharacters:(NSString *)string;
+- (void)parser:(AXHTMLParser *_Nonnull)parser foundCharacters:(NSString *_Nonnull)string;
 
 /** Called when a parse error occured.
  
@@ -79,11 +79,11 @@
  @param parser The parser
  @param parserError The parse error
  */
-- (void)parser:(AXHTMLParser *)parser parseErrorOccurred:(NSError *)parseError;
+- (void)parser:(AXHTMLParser *_Nonnull)parser parseErrorOccurred:(NSError *_Nonnull)parseError;
 
 @end
 
-static NSString *const AXHTMLErrorDomain = @"at.mah.axhtmlparser";
+static NSString * _Nonnull const AXHTMLErrorDomain = @"at.mah.axhtmlparser";
 
 typedef NS_ENUM(NSInteger, AXHTMLError) {
     AXHTMLErrorUndefined = -1,
