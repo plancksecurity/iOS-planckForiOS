@@ -88,9 +88,7 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
 //                    return
 //            }
 
-            let uid = Int32(message.uid())
-            guard let folderName = message.folder()?.name(),
-                let cdMsg = CdMessage.by(uid: uid, folderName: folderName) else {
+            guard let cdMsg = CdMessage.search(message: message) else {
                     addError(OperationError.messageForFlagUpdateNotFound)
                     return
             }

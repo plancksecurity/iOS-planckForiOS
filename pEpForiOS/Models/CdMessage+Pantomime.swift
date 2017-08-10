@@ -544,27 +544,44 @@ extension CdMessage {
     }
 
     /**
-     Will match existing messages on UUID (message ID) and UID.
+     Will match existing messages.
      Message ID alone is not sufficient, trashed emails can and will exist in more than one folder.
      - Returns: An existing message that matches the given pantomime one.
      */
-    static func existing(pantomimeMessage: CWIMAPMessage) -> CdMessage? {
-        guard let mid = pantomimeMessage.messageID() else {
-            return nil
-        }
-        let uid = pantomimeMessage.uid()
-        //BUFF:
-        var message = CdMessage.by(uuid: mid, uid: uid)
-        // If no message is found by UUID+UID, re-try searching for UID+folderName.
-        // We had cases where the UUID changes on server side. IOS-615.
-        if message == nil,
-            let parentFolderName = pantomimeMessage.folder()?.name() {
-            message = CdMessage.by(uid: Int32(uid), folderName: parentFolderName)
-        }
-        //FFUB
+    static private func existing(pantomimeMessage: CWIMAPMessage) -> CdMessage? {
+        return search(message:pantomimeMessage)
+//        guard let mid = pantomimeMessage.messageID() else {
+//            return nil
+//        }
+//        let uid = pantomimeMessage.uid()
+//        //BUFF:
+//        var message = CdMessage.by(uuid: mid, uid: uid)
+//        // If no message is found by UUID+UID, re-try searching for UID+folderName.
+//        // We had cases where the UUID changes on server side. IOS-615.
+//        if message == nil,
+//            let parentFolderName = pantomimeMessage.folder()?.name() {
+//            message = CdMessage.by(uid: Int32(uid), folderName: parentFolderName)
+//        }
+//        //FFUB
 
-       return message
+//       return message
     }
+
+    //BUFF:
+    /// Try to get the best possible match possible for given data.
+    /// Best match priority:
+    /// 1) UID + foldername
+    /// 2) UUID + foldername
+    /// 3) UUID only
+    ///
+    /// - Parameter message: message to search for
+    /// - Returns: existing message
+    static public func search(message: CWIMAPMessage) -> CdMessage? {
+        let uid = Int32(message.uid())
+       return search(uid: uid, uuid: message.messageID(),
+                     folderName: message.folder()?.name())
+    }
+    //FFUB
 
     static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {
         let addr = CdIdentity.first(attribute: "address", value: pantomimeAddress.address()) ??
