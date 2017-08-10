@@ -20,7 +20,6 @@ public class FolderViewModel {
     }
 
     private func generateSections(accounts: [Account]) {
-
         for acc in accounts {
             items.append(FolderSectionViewModel(account: acc))
         }
@@ -36,6 +35,4 @@ public class FolderViewModel {
     var count: Int {
         return self.items.count
     }
-
-
 }

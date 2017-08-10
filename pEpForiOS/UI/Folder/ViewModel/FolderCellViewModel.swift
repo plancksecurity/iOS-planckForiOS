@@ -38,7 +38,7 @@ public class FolderCellViewModel {
         return folder
     }
 
-    private var name:String {
+    private var name: String {
         return self.folder.realName
     }
 

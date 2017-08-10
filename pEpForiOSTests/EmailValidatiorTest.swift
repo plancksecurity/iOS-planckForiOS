@@ -19,6 +19,11 @@ class EmailValidatorTest: XCTestCase {
         XCTAssertTrue(emailAddressValidation.result)
     }
 
+    func testMultipleArrobaAddress() {
+        let emailAddressValidation = EmailAddressValidation(address: "ios@test010@mail.com")
+        XCTAssertTrue(emailAddressValidation.result)
+    }
+
     func testIpv4Address() {
         let emailAddressValidation = EmailAddressValidation(address: "iostest010@192.168.0.0")
         XCTAssertTrue(emailAddressValidation.result)

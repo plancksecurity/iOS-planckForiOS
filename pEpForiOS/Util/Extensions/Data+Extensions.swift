@@ -15,9 +15,20 @@ extension Data {
     public func toStringWithIANACharset(_ charset: String?) -> String? {
         if let cs = charset {
             let enc = stringEncodingFromIANACharset(cs)
-            return String.init(data: self, encoding: enc)
+            return String(data: self, encoding: enc)
         } else {
-            return String.init(data: self, encoding: String.Encoding.utf8)
+            return String(data: self, encoding: String.Encoding.utf8)
+        }
+    }
+
+    public func debugSave(basePath: String, fileName: String, ext: String = "data") {
+        let dateDesc = Date().description(with: nil)
+        let filePath = "\(basePath)/\(fileName)_\(dateDesc).\(ext)"
+        let url = URL(fileURLWithPath: filePath)
+        do {
+            try write(to: url)
+        } catch {
+            Log.error(component: #function, errorString: "Could not save to \(url)")
         }
     }
 }

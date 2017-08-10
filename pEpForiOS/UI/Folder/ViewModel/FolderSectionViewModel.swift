@@ -10,7 +10,6 @@ import Foundation
 import MessageModel
 
 public class FolderSectionViewModel {
-
     public var collapsed: Bool
     private var account: Account
     private var items: [FolderCellViewModel]

@@ -28,7 +28,7 @@ class ServiceFactoryTests: XCTestCase {
         self.cdAccount = cdAccount
     }
 
-    func runServices(useDisfunctionalAccount: Bool, expectError: Bool) {
+    func runServices(functionName: String, useDisfunctionalAccount: Bool, expectError: Bool) {
         guard let theCdAccount = cdAccount else {
             XCTFail()
             return
@@ -61,7 +61,7 @@ class ServiceFactoryTests: XCTestCase {
         let serviceFactory = ServiceFactory()
         let smtpSentDelegate = TestSmtpSendServiceDelegate()
         let service = serviceFactory.initialSync(
-            parentName: #function, backgrounder: backgrounder,
+            parentName: functionName, backgrounder: backgrounder,
             imapSyncData: imapSyncData, smtpSendData: smtpSendData,
             smtpSendServiceDelegate: smtpSentDelegate, syncFlagsToServerServiceDelegate: nil)
 
@@ -93,10 +93,10 @@ class ServiceFactoryTests: XCTestCase {
     }
 
     func testInitialSyncOK() {
-        runServices(useDisfunctionalAccount: false, expectError: false)
+        runServices(functionName: #function, useDisfunctionalAccount: false, expectError: false)
     }
     
     func testInitialSyncError() {
-        runServices(useDisfunctionalAccount: true, expectError: true)
+        runServices(functionName: #function, useDisfunctionalAccount: true, expectError: true)
     }
 }

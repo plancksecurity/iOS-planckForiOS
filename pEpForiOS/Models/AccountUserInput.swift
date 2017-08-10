@@ -86,7 +86,7 @@ public struct AccountUserInput {
             throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
         }
 
-        let identity = Identity.create(address: address, userID: address, userName: userName,
+        let identity = Identity.create(address: address, userID: nil, userName: userName,
                                        isMySelf: true)
 
         var logIn = self.loginName ?? address

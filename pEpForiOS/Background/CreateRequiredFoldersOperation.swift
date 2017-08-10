@@ -16,9 +16,9 @@ import MessageModel
  both locally and remote.
  */
 open class CreateRequiredFoldersOperation: ImapSyncOperation {
-    //FIXME: use Folder
     struct FolderToCreate {
         var folderName: String
+        let folderSeparator: String?
         let folderType: FolderType
         let cdAccount: CdAccount
     }
@@ -69,7 +69,8 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
             } else {
                 let folderName = ft.folderName()
                 foldersToCreate.append(
-                    FolderToCreate(folderName: folderName, folderType: ft, cdAccount: theAccount))
+                    FolderToCreate(folderName: folderName, folderSeparator: folderSeparator,
+                                   folderType: ft, cdAccount: theAccount))
             }
         }
 
@@ -108,12 +109,10 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
     }
 
     func createLocal(folderToCreate: FolderToCreate, context: NSManagedObjectContext) {
-        let cdFolder = CdFolder.create(context: context)
-        cdFolder.uuid = MessageID.generate()
-        cdFolder.name = folderToCreate.folderName
-        cdFolder.account = folderToCreate.cdAccount
-        cdFolder.folderType = folderToCreate.folderType
-
+        let _ = CdFolder.insertOrUpdate(
+            folderName: folderToCreate.folderName, folderSeparator: folderToCreate.folderSeparator,
+            folderType: folderToCreate.folderType, account: folderToCreate.cdAccount,
+            context: context)
         Record.save()
     }
 

@@ -12,6 +12,7 @@ enum LoginTableViewControllerError: Error {
     case missingEmail
     case missingPassword
     case noConnectData
+    case missingUsername
 }
 
 extension LoginTableViewControllerError: LocalizedError {
@@ -23,6 +24,9 @@ extension LoginTableViewControllerError: LocalizedError {
         case .missingPassword:
             return NSLocalizedString("Password needed",
                                      comment: "Automated account setup error description")
+        case .missingUsername:
+            return NSLocalizedString("Username must not be empty.",
+                                     comment: "Empty username message")
         case .noConnectData:
             return NSLocalizedString("Internal error",
                                      comment: "Automated account setup error description")
@@ -106,6 +110,14 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginTableViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
+
+        self.navigationItem.hidesBackButton = true
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
+        //self.navigationController?.navigationBar.backItem = UIBarButtonItem(title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
+    }
+
+    func backButton() {
+        self.navigationController?.popViewController(animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -128,25 +140,28 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         self.status.activityIndicatorViewEnable = true
         updateView()
         guard let email = emailAddress.text, email != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingEmail)
+            handleLoginError(error: LoginTableViewControllerError.missingEmail, extended: false)
             return
         }
         guard let pass = password.text, pass != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingPassword)
+            handleLoginError(error: LoginTableViewControllerError.missingPassword, extended: false)
+            return
+        }
+        guard let username = user.text, username != "" else {
+            handleLoginError(error: LoginTableViewControllerError.missingUsername, extended: false)
             return
         }
         let internalLoginName = loginName.text
-        let username = user.text
         loginViewModel.delegate = self
         loginViewModel.login(account: email, password: pass, login: internalLoginName,
                              userName: username) { (err) in
             if let error = err {
-                handleLoginError(error: error)
+                handleLoginError(error: error, extended: true)
             }
         }
     }
 
-    public func handleLoginError(error: Error) {
+    public func handleLoginError(error: Error, extended: Bool) {
         Log.shared.error(component: #function, error: error)
         let alertView = UIAlertController(
             title: NSLocalizedString(
@@ -168,9 +183,12 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
             style: .default, handler: {action in
                 self.status.activityIndicatorViewEnable = false
                 self.updateView()
-                self.loginName.isHidden = false
-                self.manualConfigButton.isHidden = false
-                self.extendedLogin = true
+                if extended {
+                    self.loginName.isHidden = false
+                    self.manualConfigButton.isHidden = false
+                    self.extendedLogin = true
+                }
+
         }))
         present(alertView, animated: true, completion: nil)
     }
@@ -230,11 +248,11 @@ extension LoginTableViewController: AccountVerificationResultDelegate {
                 // unwind back to INBOX on success
                 self.performSegue(withIdentifier: .backToEmailList, sender: self)
             case .imapError(let err):
-                self.handleLoginError(error: err)
+                self.handleLoginError(error: err, extended: true)
             case .smtpError(let err):
-                self.handleLoginError(error: err)
+                self.handleLoginError(error: err, extended: true)
             case .noImapConnectData, .noSmtpConnectData:
-                self.handleLoginError(error: LoginTableViewControllerError.noConnectData)
+                self.handleLoginError(error: LoginTableViewControllerError.noConnectData, extended: true)
             }
         }
     }

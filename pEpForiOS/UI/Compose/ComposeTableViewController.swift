@@ -328,6 +328,9 @@ class ComposeTableViewController: UITableViewController {
 
     override func tableView(
         _ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView.isEqual(suggestTableView) {
+            return UITableViewAutomaticDimension
+        }
         guard let row = tableData?.getRow(at: indexPath.row) else {
             return UITableViewAutomaticDimension
         }
@@ -336,6 +339,9 @@ class ComposeTableViewController: UITableViewController {
 
     override func tableView(
         _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView.isEqual(suggestTableView) {
+            return UITableViewAutomaticDimension
+        }
         guard let row = tableData?.getRow(at: indexPath.row) else {
             return UITableViewAutomaticDimension
         }
@@ -369,6 +375,9 @@ class ComposeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView.isEqual(suggestTableView) {
+            return suggestTableView.numberOfRows(inSection: section)
+        }
         return tableData?.numberOfRows() ?? 0
     }
 
