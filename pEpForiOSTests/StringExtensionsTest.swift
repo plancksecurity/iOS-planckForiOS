@@ -150,7 +150,10 @@ class StringExtensionsTest: XCTestCase {
             XCTFail()
             return
         }
-        let mdString = inputString.htmlToMarkdown()
+        guard let mdString = inputString.htmlToMarkdown() else {
+            XCTFail()
+            return
+        }
         XCTAssertTrue(mdString.characters.count > 0)
         XCTAssertNotEqual(mdString, inputString)
     }

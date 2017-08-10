@@ -35,10 +35,12 @@ extension String {
     /**
      Text from HTML, useful for creating snippets of a mail.
      */
-    public func htmlToMarkdown() -> String {
-        let htmlData = data(using: String.Encoding.utf8)
-        let doc = TFHpple(htmlData: htmlData, encoding: "UTF-8")
-        let elms = doc?.search(withXPathQuery: "//body//text()[normalize-space()]")
-        return self
+    public func htmlToMarkdown() -> String? {
+        guard let parser = HtmlSaxParser(string: self) else {
+            return nil
+        }
+        parser.parse()
+
+        return parser.output
     }
 }
