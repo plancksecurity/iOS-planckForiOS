@@ -79,14 +79,10 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
                 return
         }
         if messageUpdate.isFlagsOnly() {
-            guard
-                let messageID = message.messageID(),
-                let folderName = message.folder()?.name(),
-                let cdMsg = CdMessage.by(uuid: messageID, folderName: folderName) else {
+            guard let cdMsg = CdMessage.search(message: message) else {
                     addError(OperationError.messageForFlagUpdateNotFound)
                     return
             }
-
             let oldMSN = cdMsg.imapFields().messageNumber
             let newMSN = Int32(message.messageNumber())
 
@@ -96,7 +92,7 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
                     cdMsg.imapFields().messageNumber = newMSN
                 }
             }
-        } else if let msg = insert(pantomimeMessage: message, account: account) {
+        } else if let msg = insertOrUpdate(pantomimeMessage: message, account: account) {
             if msg.received == nil {
                 msg.received = NSDate()
             }
@@ -109,7 +105,7 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
         }
     }
 
-    func insert(pantomimeMessage: CWIMAPMessage, account: CdAccount) -> CdMessage? {
+    func insertOrUpdate(pantomimeMessage: CWIMAPMessage, account: CdAccount) -> CdMessage? {
         return CdMessage.insertOrUpdate(
             pantomimeMessage: self.message, account: account, messageUpdate: messageUpdate)
     }

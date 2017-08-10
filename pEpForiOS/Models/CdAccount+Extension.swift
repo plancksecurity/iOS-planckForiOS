@@ -96,7 +96,7 @@ extension CdAccount {
             return
         }
         var verificationStillNeeded = false
-        for cdServer in cdServers { //BUFF: after clrifying needsVerification. Shouldnt we take server.needsVerification into account also?
+        for cdServer in cdServers {
             guard let creds = cdServer.credentials else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Server \(cdServer) has no credetials.")
                 continue

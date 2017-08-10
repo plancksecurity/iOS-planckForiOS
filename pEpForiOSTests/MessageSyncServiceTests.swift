@@ -12,13 +12,22 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
-class MessageSyncServiceTests: XCTestCase {
-    var persistentSetup: PersistentSetup!
-
-    var cdAccount: CdAccount!
+class MessageSyncServiceTests: CoreDataDrivenTestBase {
     var cdAccountDisfunctional: CdAccount!
     var messageSyncService: MessageSyncService?
 
+    override func setUp() {
+        super.setUp()
+        continueAfterFailure = false
+    }
+
+    override func tearDown() {
+        messageSyncService?.cancel()
+        messageSyncService = nil
+        super.tearDown()
+    }
+
+    //MARK: - TEST DELEGATES
     class TestErrorDelegate: MessageSyncServiceErrorDelegate {
         var expErrorOccurred: XCTestExpectation?
         var error: Error?
@@ -123,24 +132,7 @@ class MessageSyncServiceTests: XCTestCase {
         }
     }
 
-    override func setUp() {
-        super.setUp()
-
-        continueAfterFailure = false
-
-        persistentSetup = PersistentSetup()
-
-        let cdAccount = TestData().createWorkingCdAccount()
-        cdAccount.identity?.isMySelf = true
-        Record.saveAndWait()
-        self.cdAccount = cdAccount
-    }
-
-    override func tearDown() {
-        messageSyncService?.cancel()
-        messageSyncService = nil
-        persistentSetup = nil
-    }
+    //MARK: - TESTS
 
     func testBasicPassiveSend() {
         runMessageSyncServiceSend(
@@ -237,12 +229,12 @@ class MessageSyncServiceTests: XCTestCase {
         ms.cancel(account: cdAccount.account())
     }
 
-        func testSendOnIdle() {
-            let ms = runOrContinueUntilIdle(parentName: #function)
-            sendMessages(ms: ms)
-            let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
-            ReferenceCounter.logOutstanding()
-        }
+    func testSendOnIdle() {
+        let ms = runOrContinueUntilIdle(parentName: #function)
+        sendMessages(ms: ms)
+        let _ = runOrContinueUntilIdle(parentName: #function, messageSyncService: ms)
+        ReferenceCounter.logOutstanding()
+    }
 
     func testUploadFlagsOnIdle() {
         let context = Record.Context.default

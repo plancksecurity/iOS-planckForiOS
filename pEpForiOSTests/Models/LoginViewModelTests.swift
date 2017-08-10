@@ -91,7 +91,7 @@ class LoginViewModelTests: XCTestCase {
             return
         }
 
-        //FIXME: //BUFF: return if imap or smtp server settings in TestData.createWorkingAccountSettings differ from
+        //FIXME: return if imap or smtp server settings in TestData.createWorkingAccountSettings differ from
         // Wait until propper type conversion in between the account settings (SettingsLib, Pantomime, Server.Transport) exist -> IOS-633
         // dirty workarount for so long:
         if accountSettings.idAddress.contains("yahoo") {

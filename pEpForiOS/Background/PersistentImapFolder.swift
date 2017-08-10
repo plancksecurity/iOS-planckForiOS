@@ -13,7 +13,7 @@ import MessageModel
 /**
  A `CWFolder`/`CWIMAPFolder` that is backed by core data. Use on the main thread.
  */
-class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
+class PersistentImapFolder: CWIMAPFolder {
     let accountID: NSManagedObjectID
     let folderID: NSManagedObjectID
 
@@ -76,9 +76,7 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         } else {
             return nil
         }
-
         super.init(name: name)
-
         self.setCacheManager(self)
     }
 
@@ -113,27 +111,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             }
         }
         return folder
-    }
-
-    override func setUIDValidity(_ theUIDValidity: UInt) {
-        privateMOC.performAndWait() {
-            if self.folder.uidValidity != Int32(theUIDValidity) {
-                Log.warn(
-                    component: self.functionName(#function),
-                    content: "UIValidity changed, deleting all messages. Folder \(String(describing: self.folder.name))")
-                self.folder.messages = []
-            }
-            self.folder.uidValidity = Int32(theUIDValidity)
-            self.privateMOC.saveAndLogErrors()
-        }
-    }
-
-    override func uidValidity() -> UInt {
-        var i: Int32 = 0
-        privateMOC.performAndWait({
-            i = self.folder.uidValidity
-        })
-        return UInt(i)
     }
 
     override func allMessages() -> [Any] {
@@ -199,13 +176,6 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
         return uid
     }
 
-    func invalidate() {
-    }
-
-    func synchronize() -> Bool {
-        return true
-    }
-
     func cdMessage(withUID theUID: UInt, context: NSManagedObjectContext) -> CdMessage? {
         let pUid = NSPredicate.init(format: "uid = %d", theUID)
         let pFolder = NSPredicate.init(format: "parent = %@", self.folder)
@@ -215,21 +185,12 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
     }
 
     func cwMessage(withUID theUID: UInt, context: NSManagedObjectContext) -> CWIMAPMessage? {
-        if
-            let cdMsg = cdMessage(withUID: theUID, context: context),
+        if let cdMsg = cdMessage(withUID: theUID, context: context),
             let cwFolder = folder.cwFolder() {
             return cdMsg.pantomimeQuick(folder: cwFolder)
         } else {
             return nil
         }
-    }
-
-    func message(withUID theUID: UInt) -> CWIMAPMessage? {
-        var result: CWIMAPMessage?
-        privateMOC.performAndWait {
-            result = self.cwMessage(withUID: theUID, context: self.privateMOC)
-        }
-        return result
     }
 
     override func remove(_ cwMessage: CWMessage) {
@@ -250,6 +211,29 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
             parentName: functionName(#function),
             folderID: folderID, uid: uid, msn: msn)
         backgroundQueue.addOperation(opMatch)
+    }
+}
+
+//MARK: - CWCache
+extension PersistentImapFolder: CWCache {
+    func invalidate() {
+        //???: no implementations?
+        // if intentionally, please mark so
+    }
+
+    func synchronize() -> Bool {
+        return true
+    }
+}
+
+//MARK: - CWIMAPCache
+extension PersistentImapFolder: CWIMAPCache {
+    func message(withUID theUID: UInt) -> CWIMAPMessage? {
+        var result: CWIMAPMessage?
+        privateMOC.performAndWait {
+            result = self.cwMessage(withUID: theUID, context: self.privateMOC)
+        }
+        return result
     }
 
     func removeMessage(withUID: UInt) {
@@ -276,6 +260,27 @@ class PersistentImapFolder: CWIMAPFolder, CWCache, CWIMAPCache {
                 Log.shared.warn(component: self.functionName(#function),
                                 content: "Could not find message by UID for expunging.")
             }
+        }
+    }
+
+    override func uidValidity() -> UInt {
+        var i: Int32 = 0
+        privateMOC.performAndWait({
+            i = self.folder.uidValidity
+        })
+        return UInt(i)
+    }
+
+    override func setUIDValidity(_ theUIDValidity: UInt) {
+        privateMOC.performAndWait() {
+            if self.folder.uidValidity != Int32(theUIDValidity) {
+                Log.warn(
+                    component: self.functionName(#function),
+                    content: "UIValidity changed, deleting all messages. Folder \(String(describing: self.folder.name))")
+                self.folder.messages = []
+            }
+            self.folder.uidValidity = Int32(theUIDValidity)
+            self.privateMOC.saveAndLogErrors()
         }
     }
 
