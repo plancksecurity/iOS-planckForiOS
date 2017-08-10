@@ -223,6 +223,7 @@
 		43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657D01F3C33C30014CBEC /* String+HTML.swift */; };
 		43E657DA1F3C62310014CBEC /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */ = {isa = PBXBuildFile; fileRef = 43E657D91F3C62310014CBEC /* NSHTML_2017-08-09 15_40_53 +0000.html */; };
 		43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43E657DD1F3C72360014CBEC /* AXHTMLParser.m */; };
+		43E657E51F3C75260014CBEC /* HtmlSaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657E41F3C75260014CBEC /* HtmlSaxParser.swift */; };
 		43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E74C731E38DE2200A2F7A6 /* ImapFlagsTests.swift */; };
 		43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */; };
 		43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E88BDD1EFA665600E0B224 /* AsyncStateMachineProtocol.swift */; };
@@ -553,6 +554,7 @@
 		43E657DC1F3C72360014CBEC /* AXHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXHTMLParser.h; sourceTree = "<group>"; };
 		43E657DD1F3C72360014CBEC /* AXHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXHTMLParser.m; sourceTree = "<group>"; };
 		43E657DE1F3C72360014CBEC /* Axt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Axt.h; sourceTree = "<group>"; };
+		43E657E41F3C75260014CBEC /* HtmlSaxParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlSaxParser.swift; sourceTree = "<group>"; };
 		43E74C731E38DE2200A2F7A6 /* ImapFlagsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapFlagsTests.swift; sourceTree = "<group>"; };
 		43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+pEp.swift"; sourceTree = "<group>"; };
 		43E88BDD1EFA665600E0B224 /* AsyncStateMachineProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncStateMachineProtocol.swift; sourceTree = "<group>"; };
@@ -1188,6 +1190,7 @@
 		43E657DB1F3C72360014CBEC /* Axt */ = {
 			isa = PBXGroup;
 			children = (
+				43E657E41F3C75260014CBEC /* HtmlSaxParser.swift */,
 				43E657DC1F3C72360014CBEC /* AXHTMLParser.h */,
 				43E657DD1F3C72360014CBEC /* AXHTMLParser.m */,
 				43E657DE1F3C72360014CBEC /* Axt.h */,
@@ -1734,6 +1737,7 @@
 				222B356D1DF96C30007A1F82 /* ComposeCell.swift in Sources */,
 				4326D3FD1EFBC7320016AB0D /* CoreDataError.swift in Sources */,
 				222B35721DF96CC8007A1F82 /* ComposeFieldModel.swift in Sources */,
+				43E657E51F3C75260014CBEC /* HtmlSaxParser.swift in Sources */,
 				B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */,
 				436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */,
 				430E0BE71EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift in Sources */,
