@@ -607,8 +607,7 @@ extension CdMessage {
                 targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
             } else {
                 let attachment = insertAttachment(
-                    contentType: part.contentType(), filename: part.filename(), data: data,
-                    contentID: part.contentID())
+                    contentType: part.contentType(), filename: part.filename(), data: data)
                 targetMail.addAttachment(attachment)
             }
         }

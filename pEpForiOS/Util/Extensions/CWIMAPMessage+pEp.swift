@@ -106,8 +106,10 @@ extension CWIMAPMessage {
 
                         // handle this as an attachment
                         part.setContentDisposition(PantomimeAttachmentDisposition)
-
-                        part.setContentID(at[kPepContentID] as? String)
+                        if let cid = at[kPepContentID] as? String, !cid.isEmpty {
+                            part.setFilename(cid)
+                        }
+                        //part.setContentID(at[kPepContentID] as? String)
 
                         multiPart.add(part)
                     }

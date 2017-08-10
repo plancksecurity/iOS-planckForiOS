@@ -144,7 +144,7 @@ extension CdMessage {
     }
 
     static func insertAttachment(
-        contentType: String?, filename: String?, data: Data, contentID: String?) -> CdAttachment {
+        contentType: String?, filename: String?, data: Data) -> CdAttachment {
         let attachment = CdAttachment.create()
         attachment.data = data as NSData?
         attachment.length = Int64(data.count)
