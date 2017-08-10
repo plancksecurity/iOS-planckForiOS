@@ -85,7 +85,7 @@ class EmailListViewCell: UITableViewCell {
                 UIHelper.putString(UIHelper.cleanHtml(theText), toLabel: self.summaryLabel)
             } else if let html = message.longMessageFormatted {
                 var text = html.extractTextFromHTML()
-                text = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
+                text = text?.replaceNewLinesWith(" ").trimmedWhiteSpace()
                 UIHelper.putString(text, toLabel: self.summaryLabel)
             } else {
                 UIHelper.putString(nil, toLabel: self.summaryLabel)

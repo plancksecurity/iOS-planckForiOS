@@ -130,7 +130,7 @@ class StringExtensionsTest: XCTestCase {
             + "</head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n"
             + "<p>HTML! <b>Yes!</b><br>\r\n"
             + "</p><p>Whatever. New paragraph.</p>\r\n  </body>\r\n</html>\r\n"
-        XCTAssertEqual(html.extractTextFromHTML(), "HTML! Yes! Whatever. New paragraph.")
+        XCTAssertEqual(html.extractTextFromHTML(), "HTML! Yes!  Whatever. New paragraph.")
 
         html = "<html>\r\n  <head>\r\n\r\n"
             + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
@@ -138,7 +138,7 @@ class StringExtensionsTest: XCTestCase {
             + "<p>HTML! <b>Yes!</b><br>\r\n"
             + "</p><p>Whatever. New <b>bold</b> paragraph.</p>\r\n  </body>\r\n</html>\r\n"
         XCTAssertEqual(
-            html.extractTextFromHTML(), "HTML! Yes! Whatever. New bold paragraph.")
+            html.extractTextFromHTML(), "HTML! Yes!  Whatever. New bold paragraph.")
     }
 
     func testToMarkdown() {

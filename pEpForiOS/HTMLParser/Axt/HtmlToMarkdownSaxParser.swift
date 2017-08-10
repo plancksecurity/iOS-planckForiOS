@@ -1,5 +1,5 @@
 //
-//  HtmlSaxParser.swift
+//  HtmlToMarkdownSaxParser.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 10.08.17.
@@ -10,7 +10,7 @@ import Foundation
 
 import MessageModel
 
-class HtmlSaxParser: NSObject {
+class HtmlToMarkdownSaxParser: NSObject {
     var output: String?
 
     var acceptCharacters = false
@@ -29,7 +29,7 @@ class HtmlSaxParser: NSObject {
     }
 }
 
-extension HtmlSaxParser: AXHTMLParserDelegate {
+extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
     func parser(_ parser: AXHTMLParser, didStartElement elementName: String,
                 attributes attributeDict: [AnyHashable : Any] = [:]) {
         if elementName == "body" {
