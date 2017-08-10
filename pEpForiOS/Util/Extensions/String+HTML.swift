@@ -18,7 +18,7 @@ extension String {
         let elms = doc?.search(withXPathQuery: "//body//text()[normalize-space()]")
 
         var result = ""
-        for tmp in elms! {
+        for tmp in elms ?? [] {
             if let e = tmp as? TFHppleElement {
                 let s = e.content.trimmedWhiteSpace()
                 if !s.isEmpty {
@@ -33,9 +33,27 @@ extension String {
     }
 
     /**
-     Text from HTML, useful for creating snippets of a mail.
+     Markdown text from HTML.
      */
     public func htmlToMarkdown() -> String? {
-        return nil
+        let htmlData = data(using: String.Encoding.utf8)
+        let doc = TFHpple(htmlData: htmlData, encoding: "UTF-8")
+        let elms = doc?.search(withXPathQuery: "//body//*")
+
+        var result = ""
+        for tmp in elms ?? [] {
+            if let e = tmp as? TFHppleElement {
+                let s = e.content.trimmedWhiteSpace()
+                if !s.isEmpty {
+                    if result.characters.count > 0 {
+                        result.append(" " as Character)
+                    }
+                    result.append(s)
+                }
+            } else {
+                print("What's this: \(tmp)")
+            }
+        }
+        return result
     }
 }

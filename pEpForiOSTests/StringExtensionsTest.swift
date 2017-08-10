@@ -142,7 +142,7 @@ class StringExtensionsTest: XCTestCase {
     }
 
     func notestToMarkdown() {
-        guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15:40:53 +0000.html") else {
+        guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
             XCTFail()
             return
         }
