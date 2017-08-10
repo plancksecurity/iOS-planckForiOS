@@ -553,7 +553,17 @@ extension CdMessage {
             return nil
         }
         let uid = pantomimeMessage.uid()
-        return CdMessage.by(uuid: mid, uid: uid)
+        //BUFF:
+        var message = CdMessage.by(uuid: mid, uid: uid)
+        // If no message is found by UUID+UID, re-try searching for UID+folderName.
+        // We had cases where the UUID changes on server side. IOS-615.
+        if message == nil,
+            let parentFolderName = pantomimeMessage.folder()?.name() {
+            message = CdMessage.by(uid: Int32(uid), folderName: parentFolderName)
+        }
+        //FFUB
+
+       return message
     }
 
     static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {
