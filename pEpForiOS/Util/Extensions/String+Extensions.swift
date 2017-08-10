@@ -325,29 +325,6 @@ public extension String {
         return matchesPattern("^\(prefix)")
     }
 
-    /**
-     Text from HTML, useful for creating snippets of a mail.
-     */
-    public func extractTextFromHTML() -> String {
-        let htmlData = data(using: String.Encoding.utf8)
-        let doc = TFHpple(data: htmlData, encoding: "UTF-8", isXML: false)
-        let elms = doc?.search(withXPathQuery: "//body//text()[normalize-space()]")
-
-        var result = ""
-        for tmp in elms! {
-            if let e = tmp as? TFHppleElement {
-                let s = e.content.trimmedWhiteSpace()
-                if !s.isEmpty {
-                    if result.characters.count > 0 {
-                        result.append(" " as Character)
-                    }
-                    result.append(s)
-                }
-            }
-        }
-        return result
-    }
-
     public func replaceNewLinesWith(_ delimiter: String) -> String {
         var result = ""
 
