@@ -112,7 +112,10 @@ class EmailListViewController: UITableViewController {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
 
-        self.title = config?.folder?.realName
+        guard let folder = config?.folder else {
+            return
+        }
+        self.title = realName(of: folder)
     }
 
     func addSearchBar() {
@@ -127,7 +130,6 @@ class EmailListViewController: UITableViewController {
     func updateModel() {
         tableView.reloadData()
     }
-
 
     @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {
         if let vm = viewModel {
@@ -148,8 +150,16 @@ class EmailListViewController: UITableViewController {
             }
             self.textFilterButton.isEnabled = vm.filterEnabled
         }
+    }
 
+    // MARK: - Private
 
+    private func realName(of folder: Folder) -> String? {
+        if folder.isUnified {
+            return folder.name
+        } else {
+            return folder.realName
+        }
     }
 
     // MARK: - UI State
