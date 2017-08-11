@@ -52,6 +52,7 @@
 		430E5F201EBC87A700E5D5D3 /* LanguageListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430E5F1F1EBC87A700E5D5D3 /* LanguageListTableViewCell.swift */; };
 		430EA5FA1F0FAD7700F816D4 /* ServiceChainExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EA5F91F0FAD7700F816D4 /* ServiceChainExecutor.swift */; };
 		430EA5FC1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EA5FB1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift */; };
+		430FF2411F3DDB17001B9284 /* ComposeMarkdownImageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430FF2401F3DDB17001B9284 /* ComposeMarkdownImageDelegate.swift */; };
 		431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B41CC0FCA40007639D /* StoreFolderOperation.swift */; };
 		431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B61CC11D6A0007639D /* BaseOperation.swift */; };
 		431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */; };
@@ -366,6 +367,7 @@
 		430E5F1F1EBC87A700E5D5D3 /* LanguageListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListTableViewCell.swift; sourceTree = "<group>"; };
 		430EA5F91F0FAD7700F816D4 /* ServiceChainExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceChainExecutor.swift; sourceTree = "<group>"; };
 		430EA5FB1F0FB92A00F816D4 /* ServiceChainExecutorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceChainExecutorTests.swift; sourceTree = "<group>"; };
+		430FF2401F3DDB17001B9284 /* ComposeMarkdownImageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeMarkdownImageDelegate.swift; sourceTree = "<group>"; };
 		431144B41CC0FCA40007639D /* StoreFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreFolderOperation.swift; sourceTree = "<group>"; };
 		431144B61CC11D6A0007639D /* BaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseOperation.swift; sourceTree = "<group>"; };
 		431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorePrefetchedMailOperation.swift; sourceTree = "<group>"; };
@@ -832,6 +834,7 @@
 				222B35551DF962D7007A1F82 /* ComposeHelpers.swift */,
 				431AE5D41D2EC0C000F609D3 /* ComposeTableViewController.swift */,
 				4333A2A21E5C62860025D8A5 /* AttachmentCounter.swift */,
+				430FF2401F3DDB17001B9284 /* ComposeMarkdownImageDelegate.swift */,
 			);
 			path = Compose;
 			sourceTree = "<group>";
@@ -1701,6 +1704,7 @@
 				B741D5031F26234A00DFD93A /* EmailAddressValidation.swift in Sources */,
 				4301B3161E28D259007D626C /* AppendMailsOperation.swift in Sources */,
 				B72528351EE953BC00815118 /* AccountsSettingsCellViewModel.swift in Sources */,
+				430FF2411F3DDB17001B9284 /* ComposeMarkdownImageDelegate.swift in Sources */,
 				43122B1A1DF5B48B00610253 /* ImapService.swift in Sources */,
 				222B35651DF96A9C007A1F82 /* ComposeCellProtocols.swift in Sources */,
 				43A6E04B1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift in Sources */,
