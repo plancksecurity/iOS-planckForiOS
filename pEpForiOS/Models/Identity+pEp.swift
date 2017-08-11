@@ -13,7 +13,6 @@ extension Identity {
         if let address = pEpIdentity[kPepAddress] as? String {
             let id = Identity.create(address: address, userID: pEpIdentity[kPepUserID] as? String,
                                      userName: pEpIdentity[kPepUsername] as? String)
-            id.isMySelf = (pEpIdentity[kPepIsMe] as? NSNumber)?.boolValue ?? false
             return id
         }
         return nil

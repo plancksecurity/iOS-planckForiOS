@@ -71,7 +71,6 @@ open class PEPUtil {
         if let userID = identity.userID {
             contact[kPepUserID] = userID as AnyObject
         }
-        contact[kPepIsMe] = identity.isMySelf as AnyObject
         return contact
     }
 
@@ -89,7 +88,6 @@ open class PEPUtil {
             dict[kPepUserID] = userID as NSObject
         }
         dict[kPepAddress] = cdIdentity.address as AnyObject
-        dict[kPepIsMe] = cdIdentity.isMySelf
         return dict
     }
 
@@ -100,7 +98,6 @@ open class PEPUtil {
         var identity = PEPIdentity()
         identity[kPepAddress] = email as AnyObject
         identity[kPepUsername] = name as AnyObject
-        identity[kPepIsMe] = NSNumber(booleanLiteral: false)
         return identity
     }
 

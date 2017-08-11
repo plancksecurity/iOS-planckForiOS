@@ -25,9 +25,6 @@ extension CdIdentity {
         }
         if let theIdent = identOpt {
             theIdent.userName = pEpC[kPepUsername] as? String
-            if let mySelfNum = pEpC[kPepIsMe] as? NSNumber {
-                theIdent.isMySelf = mySelfNum
-            }
             theIdent.userID = pEpC[kPepUserID] as? String
             Record.saveAndWait()
             return theIdent
