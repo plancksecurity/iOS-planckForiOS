@@ -200,7 +200,7 @@ class ComposeTableViewController: UITableViewController {
             comment: "Base name for attachments, must be the same name iOS uses for NSHTMLTextDocumentType attachments")
         let fileName = attachmentCounter.filename(baseName: baseName, fileExtension: fileExtension)
 
-        let mimeType = mimeTypeUtil?.getMimeType(fileExtension: fileExtension) ??
+        let mimeType = mimeTypeUtil?.mimeType(fileExtension: fileExtension) ??
             MimeTypeUtil.defaultMimeType
 
         let att = Attachment.createWithNewContentID(
@@ -252,7 +252,7 @@ class ComposeTableViewController: UITableViewController {
                     break
                 }
             } else if cell is MessageBodyCell {
-                message.attachments = (cell as? MessageBodyCell)?.getAllAttachments() ?? []
+                message.attachments = (cell as? MessageBodyCell)?.allAttachments() ?? []
                 message.longMessageFormatted = cell.textView.toHtml()
                 message.adaptLongImagesTextFormattedToAttachments()
                 if message.attachments.isEmpty {

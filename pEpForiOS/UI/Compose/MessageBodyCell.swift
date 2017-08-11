@@ -93,7 +93,7 @@ extension MessageBodyCell {
         textView.attributedText = attrText
     }
     
-    public final func getAllAttachments() -> [Attachment] {
+    public final func allAttachments() -> [Attachment] {
         let attachments = textView.textAttachments()
         var mailAttachments = [Attachment]()
         attachments.forEach { (attachment) in

@@ -9,7 +9,6 @@ import UIKit
 import MessageModel
 
 open class ComposeTextView: UITextView {
-
     public var fieldModel: ComposeFieldModel?
     
     fileprivate final var fontDescender: CGFloat = -7.0
