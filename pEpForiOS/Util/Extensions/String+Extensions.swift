@@ -326,16 +326,15 @@ public extension String {
     }
 
     public func replaceNewLinesWith(_ delimiter: String) -> String {
-        var result = ""
-
-        for ch in characters {
-            if !ch.isNewline() {
-                result.append(ch)
-            } else {
-                result.append(delimiter)
-            }
+        do {
+            let regex = try NSRegularExpression(
+                pattern: "(\\n|\\r\\n)+", options: [])
+            return regex.stringByReplacingMatches(
+                in: self, options: [], range: self.wholeRange(), withTemplate: delimiter)
+        } catch let err as NSError {
+            Log.error(component: #function, error: err)
+            return self
         }
-        return result
     }
 
     public func splitFileExtension() -> (String, String?) {

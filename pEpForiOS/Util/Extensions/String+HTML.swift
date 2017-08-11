@@ -13,12 +13,7 @@ extension String {
      Text from HTML, useful for creating snippets of a mail.
      */
     public func extractTextFromHTML() -> String? {
-        if var s = htmlToSimpleMarkdown() {
-            s = s.replaceNewLinesWith(" ")
-            s = s.trimmedWhiteSpace()
-            return s
-        }
-        return nil
+        return htmlToSimpleMarkdown()?.replaceNewLinesWith(" ").trimmedWhiteSpace()
     }
 
     /**
