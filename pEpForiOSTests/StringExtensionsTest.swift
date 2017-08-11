@@ -8,9 +8,19 @@
 
 import XCTest
 
-import pEpForiOS
+@testable import pEpForiOS
 
 class StringExtensionsTest: XCTestCase {
+    class TestHtmlToMarkdownSaxParserImageDelegate: HtmlToMarkdownSaxParserImageDelegate {
+        var imgCount = 0
+
+        func img(src: String, alt: String?) -> (String, String) {
+            let result = ("src\(imgCount)", "alt\(imgCount)")
+            imgCount += 1
+            return result
+        }
+    }
+
     func testValidEmail() {
         XCTAssertFalse("".isProbablyValidEmail())
         XCTAssertFalse("whe@@@uiae".isProbablyValidEmail())
@@ -142,6 +152,8 @@ class StringExtensionsTest: XCTestCase {
     }
 
     func testToMarkdown() {
+        let imgDelegate = TestHtmlToMarkdownSaxParserImageDelegate()
+
         guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
             XCTFail()
             return
@@ -150,11 +162,12 @@ class StringExtensionsTest: XCTestCase {
             XCTFail()
             return
         }
-        guard let mdString = inputString.htmlToSimpleMarkdown() else {
+        guard let mdString = inputString.htmlToSimpleMarkdown(imgDelegate: imgDelegate) else {
             XCTFail()
             return
         }
         XCTAssertTrue(mdString.characters.count > 0)
+        XCTAssertEqual(mdString, "2\n![alt0](src0)]\n1\n![alt1](src1)]\nSent with p≡p")
         XCTAssertNotEqual(mdString, inputString)
     }
 }

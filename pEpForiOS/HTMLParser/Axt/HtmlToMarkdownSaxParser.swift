@@ -10,7 +10,7 @@ import Foundation
 
 import MessageModel
 
-protocol HtmlToMarkdownSaxParserImageDelegate: class {
+public protocol HtmlToMarkdownSaxParserImageDelegate: class {
     /** Let the delegate rewrite the src and alt of images */
     func img(src: String, alt: String?) -> (String, String)
 }
