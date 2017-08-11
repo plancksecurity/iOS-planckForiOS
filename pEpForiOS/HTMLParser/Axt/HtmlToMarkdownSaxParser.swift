@@ -10,7 +10,13 @@ import Foundation
 
 import MessageModel
 
+protocol HtmlToMarkdownSaxParserImageDelegate: class {
+    /** Let the delegate rewrite the src and alt of images */
+    func img(src: String, alt: String?) -> (String, String)
+}
+
 class HtmlToMarkdownSaxParser: NSObject {
+    weak var imgDelegate: HtmlToMarkdownSaxParserImageDelegate?
     var output: String?
 
     var acceptCharacters = false
@@ -27,6 +33,10 @@ class HtmlToMarkdownSaxParser: NSObject {
     func add(string: String) {
         output = "\(output ?? "")\(string)"
     }
+
+    func addImg(src: String, alt: String?) {
+        add(string: "![\(alt ?? "")](\(src))]")
+    }
 }
 
 extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
@@ -36,10 +46,12 @@ extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
             acceptCharacters = true
         } else if elementName == "img" {
             if let src = attributeDict["src"] as? String {
-                let alt = attributeDict["alt"]
-                // ready to let some delegate rewrite what we have (src, alt?)
-                let altIndeed = alt ?? ""
-                add(string: "![\(altIndeed)](\(src))]")
+                let alt = attributeDict["alt"] as? String
+                if let (newSrc, newAlt) = imgDelegate?.img(src: src, alt: alt) {
+                    addImg(src: newSrc, alt: newAlt)
+                } else {
+                    addImg(src: src, alt: alt)
+                }
             }
         } else if elementName == "br" {
             add(string: "\n")
