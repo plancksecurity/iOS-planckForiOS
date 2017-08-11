@@ -35,7 +35,12 @@ extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
         if elementName == "body" {
             acceptCharacters = true
         } else if elementName == "img" {
-            print("img!")
+            if let src = attributeDict["src"] as? String {
+                let alt = attributeDict["alt"]
+                // ready to let some delegate rewrite what we have (src, alt?)
+                let altIndeed = alt ?? ""
+                add(string: "![\(altIndeed)](\(src))]")
+            }
         } else if elementName == "br" {
             add(string: "\n")
         }
