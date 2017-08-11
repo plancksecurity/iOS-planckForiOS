@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 
 class StringExtensionsTest: XCTestCase {
-    class TestHtmlToMarkdownSaxParserImageDelegate: HtmlToMarkdownSaxParserImageDelegate {
+    class TestMarkdownImageDelegate: MarkdownImageDelegate {
         var imgCount = 0
 
         func img(src: String, alt: String?) -> (String, String) {
@@ -152,7 +152,7 @@ class StringExtensionsTest: XCTestCase {
     }
 
     func testToMarkdown() {
-        let imgDelegate = TestHtmlToMarkdownSaxParserImageDelegate()
+        let imgDelegate = TestMarkdownImageDelegate()
 
         guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
             XCTFail()

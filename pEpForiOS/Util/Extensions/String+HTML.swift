@@ -20,7 +20,7 @@ extension String {
      Very simple markdown text from HTML.
      */
     public func htmlToSimpleMarkdown(
-        imgDelegate: HtmlToMarkdownSaxParserImageDelegate? = nil) -> String? {
+        imgDelegate: MarkdownImageDelegate? = nil) -> String? {
         let parser = HtmlToMarkdownSaxParser()
         parser.imgDelegate = imgDelegate
         parser.parse(string: self)

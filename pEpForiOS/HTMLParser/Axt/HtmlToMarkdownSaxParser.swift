@@ -10,13 +10,13 @@ import Foundation
 
 import MessageModel
 
-public protocol HtmlToMarkdownSaxParserImageDelegate: class {
+public protocol MarkdownImageDelegate: class {
     /** Let the delegate rewrite the src and alt of images */
     func img(src: String, alt: String?) -> (String, String)
 }
 
 class HtmlToMarkdownSaxParser: NSObject {
-    weak var imgDelegate: HtmlToMarkdownSaxParserImageDelegate?
+    weak var imgDelegate: MarkdownImageDelegate?
     var output: String?
 
     var acceptCharacters = false
