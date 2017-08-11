@@ -49,7 +49,7 @@ extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
 
     func parser(_ parser: AXHTMLParser, foundCharacters string: String) {
         if acceptCharacters {
-            add(string: string)
+            add(string: string.replaceNewLinesWith(""))
         }
     }
 
