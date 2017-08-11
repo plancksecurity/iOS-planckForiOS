@@ -19,23 +19,15 @@ extension CdIdentity {
         guard let addr = pEpC[kPepAddress] as? String else {
             return nil
         }
-        var identOpt = CdIdentity.search(address: addr)
-        if identOpt == nil {
-            identOpt = CdIdentity.create()
-        }
-        if let theIdent = identOpt {
-            theIdent.userName = pEpC[kPepUsername] as? String
-            theIdent.userID = pEpC[kPepUserID] as? String
-            Record.saveAndWait()
-            return theIdent
-        }
-        return nil
+        let theIdent = CdIdentity.search(address: addr) ?? CdIdentity.create()
+        theIdent.userName = pEpC[kPepUsername] as? String
+        theIdent.userID = pEpC[kPepUserID] as? String
+        Record.saveAndWait()
+        return theIdent
     }
 
     public static func from(pEpContacts: [PEPIdentity]?) -> [CdIdentity] {
-        guard let theContacts = pEpContacts else {
-            return []
-        }
+        let theContacts = pEpContacts ?? []
         var contacts = [CdIdentity]()
         for p in theContacts {
             if let c = from(pEpContact: p) {
