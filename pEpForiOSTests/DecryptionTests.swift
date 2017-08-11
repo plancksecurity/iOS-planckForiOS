@@ -148,10 +148,11 @@ class DecryptionTests: XCTestCase {
         XCTAssertEqual(decryptOp.numberOfMessagesDecrypted, 1)
 
         Record.Context.default.refreshAllObjects()
-        XCTAssertEqual(
-            Int32(cdMsg.pEpRating),
-            shouldEncrypt ? PEP_rating_trusted_and_anonymized.rawValue:
-                Int32(PEPUtil.pEpRatingNone))
+        if shouldEncrypt {
+            XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
+        } else {
+            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
+        }
         if shouldEncrypt {
             XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
             XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
