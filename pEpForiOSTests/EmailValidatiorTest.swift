@@ -13,7 +13,7 @@ import pEpForiOS
 import MessageModel
 
 class EmailValidatorTest: XCTestCase {
-    func testStandarAddress() {
+    func testStandardAddress() {
         let emailAddressValidation = EmailAddressValidation(address: "iostest010@d-o.mainf-ak.e.com")
         XCTAssertTrue(emailAddressValidation.result)
     }
