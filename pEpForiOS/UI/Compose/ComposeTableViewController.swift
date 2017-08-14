@@ -105,6 +105,12 @@ class ComposeTableViewController: UITableViewController {
                 }
             }
         }
+        if let cc = destinyCc,
+            let to = destinyTo,
+            let bcc = destinyBcc,
+            (!cc.isEmpty || !to.isEmpty || !bcc.isEmpty) {
+            messageCanBeSend(value: true)
+        }
         calculateComposeColor()
     }
 
