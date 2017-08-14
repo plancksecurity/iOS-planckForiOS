@@ -15,22 +15,39 @@ import MessageModel
  corresponding attachment, thereby effectively producing markdown with inlined
  attached images.
  */
-class ComposeMarkdownImageDelegate: MarkdownImageDelegate {
-    let attachments: [Attachment]
+class ComposeMarkdownImageDelegate {
+    struct AttachmentInfo {
+        let cidUrl: String
+        let alt: String
+    }
 
-    private var attachmentCount = 0
+    let attachments: [Attachment]
+    var attachmentInfos = [AttachmentInfo]()
+
+    fileprivate let mimeUtil = MimeTypeUtil()
+    fileprivate var attachmentCount = 0
 
     init(attachments: [Attachment]) {
         self.attachments = attachments
     }
+}
 
+extension ComposeMarkdownImageDelegate : MarkdownImageDelegate {
     func img(src: String, alt: String?) -> (String, String) {
-        let _ = attachments[attachmentCount]
+        let attachment = attachments[attachmentCount]
+
+        let theID = MessageID.generate()
+        let theExt = mimeUtil?.fileExtension(mimeType: attachment.mimeType) ?? "jpg"
+        let cidSrc = "cid:\(theID).\(theExt)"
+
         attachmentCount += 1
-        let cidName = "attached\(attachmentCount)"
-        let attchName = String(
-            format: NSLocalizedString("Image_%1d.%2@", comment: "image attachment name"),
-            attachmentCount, "jpg")
-        return (cidName, attchName)
+        let alt = String(
+            format: NSLocalizedString("Attached_Image_%1d.%2@", comment: "image attachment name"),
+            attachmentCount, theExt)
+        attachmentInfos.append(AttachmentInfo(cidUrl: cidSrc, alt: alt))
+
+        attachment.fileName = cidSrc
+
+        return (cidSrc, alt)
     }
 }
