@@ -120,7 +120,7 @@ extension RecipientCell {
         
         var string = cTextview.attributedText.string.cleanAttachments
         if string.characters.count >= 3 && string.isEmailAddress {
-            let identity = Identity.create(address: string)
+            let identity = Identity.create(address: string.trimmedWhiteSpace())
             identities.append(identity)
             
             cTextview.insertImage(identity)
