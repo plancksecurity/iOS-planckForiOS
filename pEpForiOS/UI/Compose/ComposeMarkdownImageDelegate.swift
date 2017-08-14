@@ -36,7 +36,7 @@ extension ComposeMarkdownImageDelegate : MarkdownImageDelegate {
     func img(src: String, alt: String?) -> (String, String) {
         let attachment = attachments[attachmentCount]
 
-        let theID = MessageID.generate()
+        let theID = MessageID.generate().trimmingCharacters(in: CharacterSet(charactersIn: "<>"))
         let theExt = mimeUtil?.fileExtension(mimeType: attachment.mimeType) ?? "jpg"
         let cidSrc = "cid:\(theID).\(theExt)"
 

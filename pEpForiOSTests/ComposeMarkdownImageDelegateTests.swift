@@ -40,10 +40,15 @@ class ComposeMarkdownImageDelegateTests: XCTestCase {
         let alt1 = imgDelegate.attachmentInfos[1].alt
         let cid1 = imgDelegate.attachmentInfos[1].cidUrl
 
-        XCTAssertTrue(alt0.hasExtension("jpg"))
-        XCTAssertTrue(cid0.hasExtension("jpg"))
-        XCTAssertTrue(alt1.hasExtension("jpg"))
-        XCTAssertTrue(cid1.hasExtension("jpg"))
+        for s in [alt0, cid0, alt1, cid1] {
+            XCTAssertTrue(s.hasExtension("jpg"))
+        }
+
+        for s in [cid0, cid1] {
+            XCTAssertTrue(s.startsWith("cid:"))
+            XCTAssertFalse(s.contains(find: "<"))
+            XCTAssertFalse(s.contains(find: ">"))
+        }
 
         XCTAssertEqual(mdString, "2\n![\(alt0)](\(cid0))]\n1\n![\(alt1)](\(cid1))]\nSent with p≡p")
         XCTAssertNotEqual(mdString, inputString)
