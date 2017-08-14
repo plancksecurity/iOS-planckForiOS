@@ -32,6 +32,8 @@ open class MimeTypeUtil {
                     mimeTypeToExtension[mimeType.lowercased()] = theExtension
                     extensionToMimeType[theExtension.lowercased()] = mimeType
                 }
+                // manual fixes
+                mimeTypeToExtension["image/jpeg"] = "jpg"
             }
         } catch let error as NSError {
             Log.shared.error(component: comp, error: error)
