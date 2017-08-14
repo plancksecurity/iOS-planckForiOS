@@ -139,7 +139,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         dismissKeyboard()
         self.status.activityIndicatorViewEnable = true
         updateView()
-        guard let email = emailAddress.text, email != "" else {
+        guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
             handleLoginError(error: LoginTableViewControllerError.missingEmail, extended: false)
             return
         }
