@@ -166,6 +166,7 @@
                         <segue destination="Rly-af-89k" kind="presentation" identifier="segueAddNewAccount" id="Na7-CM-lbe"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAll" id="xmi-xn-p8T"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="YH0-dx-pSs"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReply" id="I15-Dm-oo1"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1036,6 +1037,6 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xmi-xn-p8T"/>
+        <segue reference="I15-Dm-oo1"/>
     </inferredMetricsTieBreakers>
 </document>

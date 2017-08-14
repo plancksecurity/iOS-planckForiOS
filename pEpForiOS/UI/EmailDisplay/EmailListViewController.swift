@@ -335,7 +335,7 @@ class EmailListViewController: UITableViewController {
     func createReplyAction(cell: EmailListViewCell) ->  UIAlertAction {
         return UIAlertAction(title: "Reply", style: .default) { (action) in
             // self.performSegue(withIdentifier: self.segueCompose, sender: cell)
-            self.performSegue(withIdentifier: .segueCompose, sender: cell)
+            self.performSegue(withIdentifier: .segueReply, sender: cell)
         }
     }
 
@@ -383,6 +383,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueEditAccounts
         case segueShowEmail
         case segueCompose
+        case segueReply
         case segueReplyAll
         case segueForward
         case segueFilter
@@ -392,6 +393,16 @@ extension EmailListViewController: SegueHandlerType {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
+        case .segueReply:
+            if let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? ComposeTableViewController,
+                let cell = sender as? EmailListViewCell,
+                let indexPath = self.tableView.indexPath(for: cell),
+                let email = cell.messageAt(indexPath: indexPath, config: config) {
+                destination.composeMode = .replyFrom
+                destination.appConfig = config?.appConfig
+                destination.originalMessage = email
+            }
         case .segueReplyAll:
             if let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
