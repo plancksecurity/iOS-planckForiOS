@@ -71,6 +71,7 @@ open class TrashMailsOperation: AppendMailsOperation {
         }
     }
 
+    /// This method is only for Unit tests to call
     public static func foldersWithTrashedMessages(context: NSManagedObjectContext) -> [CdFolder] {
         let p = NSPredicate(
             format: "imap.localFlags.flagDeleted = true and imap.trashedStatusRawValue = %d",
