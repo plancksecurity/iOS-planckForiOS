@@ -14,6 +14,7 @@ import MessageModel
 class EmailViewController: UITableViewController {
     var appConfig: AppConfig!
 
+    @IBOutlet var handShakeButton: UIBarButtonItem!
     var message: Message!
 
     var partnerIdentity: Identity?
@@ -111,6 +112,12 @@ class EmailViewController: UITableViewController {
 
     func showPepRating() {
         let _ = showPepRating(pEpRating: message.pEpRating(session: nil))
+        handShakeButton.isEnabled = false
+        message.allIdentities.forEach { (id) in
+            if id.canHandshakeOn() {
+                handShakeButton.isEnabled = true
+            }
+        }
     }
     
     fileprivate final func loadDatasource(_ file: String) {

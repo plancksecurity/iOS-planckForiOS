@@ -733,6 +733,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="handShakeButton" destination="1oP-DI-wuJ" id="uQN-WO-dVS"/>
                         <outlet property="nextMessage" destination="nCS-Wg-ZJI" id="Q0q-LK-Q5C"/>
                         <outlet property="previousMessage" destination="NsK-Ye-A0p" id="tHt-Ag-IaU"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
@@ -1037,6 +1038,6 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="I15-Dm-oo1"/>
+        <segue reference="Usl-iS-7fo"/>
     </inferredMetricsTieBreakers>
 </document>
