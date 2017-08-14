@@ -9,11 +9,11 @@
 import Foundation
 
 open class MimeTypeUtil {
-    static let defaultMimeType = "application/octet-stream"
+    public static let defaultMimeType = "application/octet-stream"
 
-    let comp = "MimeTypeUtil"
-    var mimeTypeToExtension = [String: String]()
-    var extensionToMimeType = [String: String]()
+    private let comp = "MimeTypeUtil"
+    private var mimeTypeToExtension = [String: String]()
+    private var extensionToMimeType = [String: String]()
 
     public init?() {
         let resource = "jsonMimeType"
