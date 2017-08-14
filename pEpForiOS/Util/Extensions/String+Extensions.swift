@@ -325,6 +325,21 @@ public extension String {
         return matchesPattern("^\(prefix)")
     }
 
+    public func hasExtension(_ ext: String) -> Bool {
+        let suffix = ext.startsWith(".") ? ext : ".\(ext)"
+        return endsWith(suffix)
+    }
+
+    public func endsWith(_ suffix: String) -> Bool {
+        let suffixCount = suffix.characters.count
+        if characters.count < suffixCount {
+            return false
+        }
+        let fromWhere = index(endIndex, offsetBy: -suffixCount)
+        let end = substring(from: fromWhere)
+        return end == suffix
+    }
+
     public func replaceNewLinesWith(_ delimiter: String) -> String {
         do {
             let regex = try NSRegularExpression(
