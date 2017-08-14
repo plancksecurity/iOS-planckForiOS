@@ -12,10 +12,17 @@ import XCTest
 @testable import pEpForiOS
 
 class ComposeMarkdownImageDelegateTests: XCTestCase {
-    func testToMarkdown() {
+    func runTestToMarkdown(withExtension: String) {
+        guard let mimeUtil = MimeTypeUtil() else {
+            XCTFail()
+            return
+        }
+        let mimeType = mimeUtil.mimeType(fileExtension: withExtension)
         let attachments = [
-            Attachment.create(data: nil, mimeType: "image/jpeg", fileName: "Attach_001.jpg"),
-            Attachment.create(data: nil, mimeType: "image/jpeg", fileName: "Attach_002.jpg"),
+            Attachment.create(data: nil, mimeType: mimeType,
+                              fileName: "Attach_001.\(withExtension)"),
+            Attachment.create(data: nil, mimeType: mimeType,
+                              fileName: "Attach_002.\(withExtension)"),
         ]
         let imgDelegate = ComposeMarkdownImageDelegate(attachments: attachments)
         XCTAssertEqual(imgDelegate.attachments.count, attachments.count)
@@ -41,7 +48,7 @@ class ComposeMarkdownImageDelegateTests: XCTestCase {
         let cid1 = imgDelegate.attachmentInfos[1].cidUrl
 
         for s in [alt0, cid0, alt1, cid1] {
-            XCTAssertTrue(s.hasExtension("jpg"))
+            XCTAssertTrue(s.hasExtension(withExtension))
         }
 
         for s in [cid0, cid1] {
@@ -52,5 +59,16 @@ class ComposeMarkdownImageDelegateTests: XCTestCase {
 
         XCTAssertEqual(mdString, "2\n![\(alt0)](\(cid0))]\n1\n![\(alt1)](\(cid1))]\nSent with p≡p")
         XCTAssertNotEqual(mdString, inputString)
+
+        XCTAssertEqual(attachments[0].fileName, cid0)
+        XCTAssertEqual(attachments[1].fileName, cid1)
+    }
+
+    func testToMarkdownJPG() {
+        runTestToMarkdown(withExtension: "jpg")
+    }
+
+    func testToMarkdownPNG() {
+        runTestToMarkdown(withExtension: "png")
     }
 }
