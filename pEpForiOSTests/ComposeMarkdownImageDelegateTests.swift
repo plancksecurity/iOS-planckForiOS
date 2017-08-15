@@ -35,9 +35,10 @@ class ComposeMarkdownImageDelegateTests: XCTestCase {
             XCTFail()
             return
         }
-        guard let mdString = inputString.htmlToSimpleMarkdown(imgDelegate: imgDelegate) else {
-            XCTFail()
-            return
+        guard let mdString = inputString.attributedStringHtmlToMarkdown(
+            imgDelegate: imgDelegate) else {
+                XCTFail()
+                return
         }
         XCTAssertTrue(mdString.characters.count > 0)
         XCTAssertEqual(imgDelegate.attachmentInfos.count, imgDelegate.attachments.count)

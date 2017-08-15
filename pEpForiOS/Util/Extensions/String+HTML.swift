@@ -10,16 +10,17 @@ import Foundation
 
 extension String {
     /**
-     Text from HTML, useful for creating snippets of a mail.
+     Extracts pure text from HTML, useful for creating snippets of a mail.
      */
     public func extractTextFromHTML() -> String? {
-        return htmlToSimpleMarkdown()?.replaceNewLinesWith(" ").trimmedWhiteSpace()
+        return attributedStringHtmlToMarkdown()?.replaceNewLinesWith(" ").trimmedWhiteSpace()
     }
 
     /**
-     Very simple markdown text from HTML.
+     Very simple markdown text from the HTML that is produced when converting
+     an NSAttributedString to HTML.
      */
-    public func htmlToSimpleMarkdown(
+    public func attributedStringHtmlToMarkdown(
         imgDelegate: MarkdownImageDelegate? = nil) -> String? {
         let parser = HtmlToMarkdownSaxParser()
         parser.imgDelegate = imgDelegate

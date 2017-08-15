@@ -162,9 +162,10 @@ class StringExtensionsTest: XCTestCase {
             XCTFail()
             return
         }
-        guard let mdString = inputString.htmlToSimpleMarkdown(imgDelegate: imgDelegate) else {
-            XCTFail()
-            return
+        guard let mdString = inputString.attributedStringHtmlToMarkdown(
+            imgDelegate: imgDelegate) else {
+                XCTFail()
+                return
         }
         XCTAssertTrue(mdString.characters.count > 0)
         XCTAssertEqual(mdString, "2\n![alt0](src0)]\n1\n![alt1](src1)]\nSent with p≡p")
