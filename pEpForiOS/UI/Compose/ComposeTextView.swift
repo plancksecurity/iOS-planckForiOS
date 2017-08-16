@@ -67,7 +67,7 @@ open class ComposeTextView: UITextView {
         return allAttachments
     }
     
-    public final func getAttachments(_ string: String) -> [TextAttachment] {
+    public final func textAttachments(string: String) -> [TextAttachment] {
         return textAttachments(range: NSMakeRange(0, string.characters.count))
     }
     
