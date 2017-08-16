@@ -424,7 +424,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(CdFolder.by(folderType: .drafts, account: cdAccount))
     }
 
-    /// The test makes no sense with servers supporting Special-Use Mailboxes, as it is not allowed to delete folder marked as reserved for special-use
+    /// The test makes no work using servers supporting Special-Use Mailboxes, as it is not allowed to delete folder marked as reserved for special-use
     func testCreateRequiredFoldersOperation() {
         let imapLogin = LoginImapOperation(
             parentName: #function, imapSyncData: imapSyncData)
