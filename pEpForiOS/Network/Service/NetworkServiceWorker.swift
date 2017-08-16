@@ -475,6 +475,7 @@ open class NetworkServiceWorker {
             var myLines = operationLines
             Log.verbose(component: theComp,
                         content: "\(operationLines.count) left, repeat? \(repeatProcess)")
+            //BUFF: If one accounts operation line is in idle all other accounts will not sync anymore using this concept.
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
                 scheduleOperationLineInternal(operationLine: ol, completionBlock: {
