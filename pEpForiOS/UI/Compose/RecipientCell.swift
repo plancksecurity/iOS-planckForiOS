@@ -78,9 +78,11 @@ extension RecipientCell {
             let selected = textView.text(in: range)
             
             // Extract text attachments form selection
-            let attachments = cTextview.textAttachments(string: selected!)
-            if attachments.count > 0 {
-                recipients.append(textView.selectedRange.location)
+            if let theSelected = selected {
+                let attachments = cTextview.textAttachments(string: theSelected)
+                if attachments.count > 0 {
+                    recipients.append(textView.selectedRange.location)
+                }
             }
         }
     }
