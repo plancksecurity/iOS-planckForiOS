@@ -60,9 +60,12 @@ open class NetworkServiceWorker {
 
     var cancelled = false
 
-    let workerQueue = DispatchQueue(
-        label: "NetworkService", qos: .utility, target: nil)
-    let backgroundQueue = OperationQueue()
+    let workerQueue = DispatchQueue(label: "NetworkService", qos: .utility, target: nil)
+    let backgroundQueue: OperationQueue = {
+        let queue = OperationQueue()
+        //BUFF: check best setup (maxConcurrency, prio ...)
+        return queue
+    }()
 
     let operationCountKeyPath = "operationCount"
 
@@ -261,11 +264,11 @@ open class NetworkServiceWorker {
         return folderInfos
     }
 
-    func syncExistingMessages(
+    func syncExistingMessagesOperationLine(
         folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
-        imapSyncData: ImapSyncData,
-        lastImapOp: Operation, opImapFinished: Operation) -> (lastImapOp: Operation, [Operation]) {
-        var theLastImapOp = lastImapOp
+        imapSyncData: ImapSyncData,/*//BUFF:*/dependOn: Operation/*//BUFF:,
+        lastImapOp: Operation, opImapFinished: Operation*/) -> (lastImapOp: Operation, [Operation]) {
+        var lastOp = dependOn
         var operations: [Operation] = []
         for fi in folderInfos {
             if let folderID = fi.folderID, let firstUID = fi.firstUID,
@@ -279,22 +282,23 @@ open class NetworkServiceWorker {
                     syncMessagesOp.completionBlock = nil
                     Log.info(component: #function, content: "syncMessagesOp finished")
                 }
-                syncMessagesOp.addDependency(theLastImapOp)
+                syncMessagesOp.addDependency(dependOn)
                 operations.append(syncMessagesOp)
-                opImapFinished.addDependency(syncMessagesOp)
-                theLastImapOp = syncMessagesOp
+//                opImapFinished.addDependency(syncMessagesOp)
+                lastOp = syncMessagesOp
 
                 if let syncFlagsOp = SyncFlagsToServerOperation(
                     parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData, folderID: folderID) {
-                    syncFlagsOp.addDependency(theLastImapOp)
+                    syncFlagsOp.addDependency(lastOp)
                     operations.append(syncFlagsOp)
-                    opImapFinished.addDependency(syncFlagsOp)
-                    theLastImapOp = syncFlagsOp
+//                    opImapFinished.addDependency(syncFlagsOp) //BUFF:
+//                    theLastImapOp = syncFlagsOp //BUFF:
+                    lastOp = syncFlagsOp //BUFF:
                 }
             }
         }
-        return (theLastImapOp, operations)
+        return (lastOp, operations)
     }
 
     func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
@@ -413,11 +417,35 @@ open class NetworkServiceWorker {
             operations.append(opDecrypt)
 
             // sync existing messages
-            let (lastOp, syncOperations) = syncExistingMessages(
-                folderInfos: folderInfos, errorContainer: errorContainer,
-                imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
-            lastImapOp = lastOp
+            //BUFF:
+//            let (lastOp, syncOperations) = syncExistingMessagesOperationLine(
+//                folderInfos: folderInfos, errorContainer: errorContainer,
+//                imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
+            let (lastSyncExistingOp, syncOperations) = syncExistingMessagesOperationLine(
+                folderInfos: folderInfos,
+                errorContainer: errorContainer,
+                imapSyncData: imapSyncData,
+                dependOn: lastImapOp)
+            opImapFinished.addDependency(lastSyncExistingOp)
+            lastImapOp = lastSyncExistingOp
+
+            //FFUB
+//            lastImapOp = lastOp //BUFF:
             operations.append(contentsOf: syncOperations)
+
+            //BUFF:
+            let imapIdleOp = ImapIdleOperation(parentName: #function, errorContainer: errorContainer,
+                                               imapSyncData: imapSyncData)
+            imapIdleOp.completionBlock = {
+                //BUFF:
+                print("BUFF: IDLE FINISHED")
+                imapIdleOp.completionBlock = nil
+            }
+            imapIdleOp.addDependency(lastImapOp)
+            opImapFinished.addDependency(imapIdleOp)
+            lastImapOp = imapIdleOp
+            operations.append(imapIdleOp)
+            //FFUB
         }
 
         // ...
@@ -447,7 +475,8 @@ open class NetworkServiceWorker {
         }
         let bgID = serviceConfig.backgrounder?.beginBackgroundTask()
         operationLine.finalOperation.completionBlock = { [weak self, weak operationLine] in
-            operationLine?.finalOperation.completionBlock = nil
+            let strongOperationLine = operationLine //BUFF:
+            strongOperationLine?.finalOperation.completionBlock = nil
             self?.serviceConfig.backgrounder?.endBackgroundTask(bgID)
             completionBlock?()
         }

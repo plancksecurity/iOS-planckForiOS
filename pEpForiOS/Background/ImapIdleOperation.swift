@@ -89,7 +89,6 @@ class ImapIdleDelegate: DefaultImapSyncDelegate {
     //    }
 
     public override func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
-        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
         imapIdleOp()?.handleError()
     }
 

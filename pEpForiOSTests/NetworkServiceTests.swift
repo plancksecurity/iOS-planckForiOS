@@ -170,7 +170,7 @@ class NetworkServiceTests: XCTestCase {
         networkService.cancel()
 
         // Wait for cancellation
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever, handler: { error in //BUFF: waittime!
             XCTAssertNil(error)
         })
     }
@@ -199,7 +199,7 @@ class NetworkServiceTests: XCTestCase {
 
         networkService.start()
 
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+        waitForExpectations(timeout: TestUtil.waitTimeForever, handler: { error in //BUFF: waittime
             XCTAssertNil(error)
         })
 
