@@ -128,6 +128,28 @@
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */; };
 		434F513E1EF7FE8700FEB837 /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F513D1EF7FE8700FEB837 /* DelayOperation.swift */; };
+		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
+		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
+		4351C2CA1F4441190053381F /* case_fold_switch.inc in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B51F4441190053381F /* case_fold_switch.inc */; };
+		4351C2CB1F4441190053381F /* cmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B61F4441190053381F /* cmark.c */; };
+		4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B71F4441190053381F /* cmark_ctype.c */; };
+		4351C2CD1F4441190053381F /* commonmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B81F4441190053381F /* commonmark.c */; };
+		4351C2CE1F4441190053381F /* entities.inc in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B91F4441190053381F /* entities.inc */; };
+		4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BA1F4441190053381F /* houdini_href_e.c */; };
+		4351C2D01F4441190053381F /* houdini_html_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BB1F4441190053381F /* houdini_html_e.c */; };
+		4351C2D11F4441190053381F /* houdini_html_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BC1F4441190053381F /* houdini_html_u.c */; };
+		4351C2D21F4441190053381F /* html.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BD1F4441190053381F /* html.c */; };
+		4351C2D31F4441190053381F /* inlines.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BE1F4441190053381F /* inlines.c */; };
+		4351C2D41F4441190053381F /* iterator.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BF1F4441190053381F /* iterator.c */; };
+		4351C2D51F4441190053381F /* latex.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C01F4441190053381F /* latex.c */; };
+		4351C2D61F4441190053381F /* man.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C11F4441190053381F /* man.c */; };
+		4351C2D71F4441190053381F /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C21F4441190053381F /* node.c */; };
+		4351C2D81F4441190053381F /* references.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C31F4441190053381F /* references.c */; };
+		4351C2D91F4441190053381F /* render.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C41F4441190053381F /* render.c */; };
+		4351C2DA1F4441190053381F /* scanners.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C51F4441190053381F /* scanners.c */; };
+		4351C2DB1F4441190053381F /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C61F4441190053381F /* utf8.c */; };
+		4351C2DC1F4441190053381F /* xml.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C71F4441190053381F /* xml.c */; };
+		4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2DD1F4457620053381F /* NSString+Markdown.m */; };
 		43549A8E1E48B54100210D86 /* TrashMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */; };
 		4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
@@ -447,6 +469,45 @@
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		434F513D1EF7FE8700FEB837 /* DelayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayOperation.swift; sourceTree = "<group>"; };
+		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
+		4351C2A31F4441190053381F /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunk.h; sourceTree = "<group>"; };
+		4351C2A41F4441190053381F /* cmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark.h; sourceTree = "<group>"; };
+		4351C2A51F4441190053381F /* cmark_ctype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark_ctype.h; sourceTree = "<group>"; };
+		4351C2A61F4441190053381F /* cmark_export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark_export.h; sourceTree = "<group>"; };
+		4351C2A71F4441190053381F /* cmark_version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark_version.h; sourceTree = "<group>"; };
+		4351C2A81F4441190053381F /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		4351C2A91F4441190053381F /* houdini.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = houdini.h; sourceTree = "<group>"; };
+		4351C2AA1F4441190053381F /* inlines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inlines.h; sourceTree = "<group>"; };
+		4351C2AB1F4441190053381F /* iterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iterator.h; sourceTree = "<group>"; };
+		4351C2AC1F4441190053381F /* node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = node.h; sourceTree = "<group>"; };
+		4351C2AD1F4441190053381F /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
+		4351C2AE1F4441190053381F /* references.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = references.h; sourceTree = "<group>"; };
+		4351C2AF1F4441190053381F /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
+		4351C2B01F4441190053381F /* scanners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scanners.h; sourceTree = "<group>"; };
+		4351C2B11F4441190053381F /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = "<group>"; };
+		4351C2B31F4441190053381F /* blocks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = blocks.c; sourceTree = "<group>"; };
+		4351C2B41F4441190053381F /* buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = buffer.c; sourceTree = "<group>"; };
+		4351C2B51F4441190053381F /* case_fold_switch.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = case_fold_switch.inc; sourceTree = "<group>"; };
+		4351C2B61F4441190053381F /* cmark.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cmark.c; sourceTree = "<group>"; };
+		4351C2B71F4441190053381F /* cmark_ctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cmark_ctype.c; sourceTree = "<group>"; };
+		4351C2B81F4441190053381F /* commonmark.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = commonmark.c; sourceTree = "<group>"; };
+		4351C2B91F4441190053381F /* entities.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = entities.inc; sourceTree = "<group>"; };
+		4351C2BA1F4441190053381F /* houdini_href_e.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_href_e.c; sourceTree = "<group>"; };
+		4351C2BB1F4441190053381F /* houdini_html_e.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_html_e.c; sourceTree = "<group>"; };
+		4351C2BC1F4441190053381F /* houdini_html_u.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = houdini_html_u.c; sourceTree = "<group>"; };
+		4351C2BD1F4441190053381F /* html.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = html.c; sourceTree = "<group>"; };
+		4351C2BE1F4441190053381F /* inlines.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inlines.c; sourceTree = "<group>"; };
+		4351C2BF1F4441190053381F /* iterator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = iterator.c; sourceTree = "<group>"; };
+		4351C2C01F4441190053381F /* latex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = latex.c; sourceTree = "<group>"; };
+		4351C2C11F4441190053381F /* man.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = man.c; sourceTree = "<group>"; };
+		4351C2C21F4441190053381F /* node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = node.c; sourceTree = "<group>"; };
+		4351C2C31F4441190053381F /* references.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = references.c; sourceTree = "<group>"; };
+		4351C2C41F4441190053381F /* render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render.c; sourceTree = "<group>"; };
+		4351C2C51F4441190053381F /* scanners.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scanners.c; sourceTree = "<group>"; };
+		4351C2C61F4441190053381F /* utf8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utf8.c; sourceTree = "<group>"; };
+		4351C2C71F4441190053381F /* xml.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xml.c; sourceTree = "<group>"; };
+		4351C2DD1F4457620053381F /* NSString+Markdown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Markdown.m"; sourceTree = "<group>"; };
+		4351C2DF1F44581A0053381F /* NSString+Markdown.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Markdown.h"; sourceTree = "<group>"; };
 		43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashMailsOperation.swift; sourceTree = "<group>"; };
 		4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncMessagesOperation.swift; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
@@ -899,6 +960,68 @@
 			path = MessageSyncService;
 			sourceTree = "<group>";
 		};
+		4351C2A01F4441190053381F /* Markdown */ = {
+			isa = PBXGroup;
+			children = (
+				4351C2DF1F44581A0053381F /* NSString+Markdown.h */,
+				4351C2DD1F4457620053381F /* NSString+Markdown.m */,
+				4351C2A11F4441190053381F /* include */,
+				4351C2B21F4441190053381F /* src */,
+			);
+			path = Markdown;
+			sourceTree = "<group>";
+		};
+		4351C2A11F4441190053381F /* include */ = {
+			isa = PBXGroup;
+			children = (
+				4351C2A21F4441190053381F /* buffer.h */,
+				4351C2A31F4441190053381F /* chunk.h */,
+				4351C2A41F4441190053381F /* cmark.h */,
+				4351C2A51F4441190053381F /* cmark_ctype.h */,
+				4351C2A61F4441190053381F /* cmark_export.h */,
+				4351C2A71F4441190053381F /* cmark_version.h */,
+				4351C2A81F4441190053381F /* config.h */,
+				4351C2A91F4441190053381F /* houdini.h */,
+				4351C2AA1F4441190053381F /* inlines.h */,
+				4351C2AB1F4441190053381F /* iterator.h */,
+				4351C2AC1F4441190053381F /* node.h */,
+				4351C2AD1F4441190053381F /* parser.h */,
+				4351C2AE1F4441190053381F /* references.h */,
+				4351C2AF1F4441190053381F /* render.h */,
+				4351C2B01F4441190053381F /* scanners.h */,
+				4351C2B11F4441190053381F /* utf8.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		4351C2B21F4441190053381F /* src */ = {
+			isa = PBXGroup;
+			children = (
+				4351C2B31F4441190053381F /* blocks.c */,
+				4351C2B41F4441190053381F /* buffer.c */,
+				4351C2B51F4441190053381F /* case_fold_switch.inc */,
+				4351C2B61F4441190053381F /* cmark.c */,
+				4351C2B71F4441190053381F /* cmark_ctype.c */,
+				4351C2B81F4441190053381F /* commonmark.c */,
+				4351C2B91F4441190053381F /* entities.inc */,
+				4351C2BA1F4441190053381F /* houdini_href_e.c */,
+				4351C2BB1F4441190053381F /* houdini_html_e.c */,
+				4351C2BC1F4441190053381F /* houdini_html_u.c */,
+				4351C2BD1F4441190053381F /* html.c */,
+				4351C2BE1F4441190053381F /* inlines.c */,
+				4351C2BF1F4441190053381F /* iterator.c */,
+				4351C2C01F4441190053381F /* latex.c */,
+				4351C2C11F4441190053381F /* man.c */,
+				4351C2C21F4441190053381F /* node.c */,
+				4351C2C31F4441190053381F /* references.c */,
+				4351C2C41F4441190053381F /* render.c */,
+				4351C2C51F4441190053381F /* scanners.c */,
+				4351C2C61F4441190053381F /* utf8.c */,
+				4351C2C71F4441190053381F /* xml.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		4362398D1EAE08F400BD2EB9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -981,6 +1104,7 @@
 			children = (
 				1572B9BA1F3376EE0048BCF5 /* Error */,
 				43800D8C1D112A0800821E34 /* HTMLParser */,
+				4351C2A01F4441190053381F /* Markdown */,
 				431144A61CC0CB0A0007639D /* Background */,
 				43E58EB21CBF8301008AA7A7 /* Models */,
 				43ED53611CC77F95006AB156 /* UI */,
@@ -1611,6 +1735,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */,
+				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,
 				B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */,
 				43EE99481E438E320060EACE /* FlagImages.swift in Sources */,
 				220DCE341E0AB5CC002FE716 /* MailinglistCell.swift in Sources */,
@@ -1620,15 +1745,18 @@
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
 				43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */,
 				43313DF41DEC7AE600C111C8 /* CreateFoldersOperation.swift in Sources */,
+				4351C2D71F4441190053381F /* node.c in Sources */,
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
 				5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */,
 				439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */,
+				4351C2D51F4441190053381F /* latex.c in Sources */,
 				438D5A711EA77CFC001A37E1 /* HandshakeViewController.swift in Sources */,
 				4384ABB01F3B5A11006982B8 /* Data+Extensions.swift in Sources */,
 				B729BEC61E7C35E200793110 /* FilterUpdateProtocol.swift in Sources */,
 				431AE5D91D2EC99B00F609D3 /* MessageBodyCell.swift in Sources */,
 				431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */,
 				B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */,
+				4351C2C91F4441190053381F /* buffer.c in Sources */,
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
 				4362399F1EAE2F0A00BD2EB9 /* UITableView+Extension.swift in Sources */,
 				4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */,
@@ -1638,10 +1766,12 @@
 				43F848471EA9EB9D00DBE460 /* IdentityImageProvider.swift in Sources */,
 				43C579E91F0A1FEC00A8EDF0 /* AtomicImapService.swift in Sources */,
 				222B35691DF96AFE007A1F82 /* ComposeTextView.swift in Sources */,
+				4351C2D61F4441190053381F /* man.c in Sources */,
 				43F6DFD71DEEC752006B526F /* FetchMessagesOperation.swift in Sources */,
 				436C232D1E02A2D900071430 /* KickOffMySelfProtocol.swift in Sources */,
 				43C322111EA91764005073FB /* UIImageView+Extension.swift in Sources */,
 				220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */,
+				4351C2D31F4441190053381F /* inlines.c in Sources */,
 				4360282F1ED6F33400C95FC4 /* ImapSyncError.swift in Sources */,
 				222B35561DF962D7007A1F82 /* ComposeHelpers.swift in Sources */,
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
@@ -1681,6 +1811,7 @@
 				B714C4851ED437A7000BC84D /* LoginTableViewController.swift in Sources */,
 				1515E0A41F443D9D008C0F0E /* ImapIdleOperation.swift in Sources */,
 				4339477B1D5C9D8C005EE7C2 /* HTMLConvertOperation.swift in Sources */,
+				4351C2D41F4441190053381F /* iterator.c in Sources */,
 				43AA825B1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift in Sources */,
 				4326D3FF1EFBC8DB0016AB0D /* FolderInfoOperation.swift in Sources */,
 				43122B3C1DF5B75000610253 /* NetworkService.swift in Sources */,
@@ -1719,6 +1850,7 @@
 				431E2B071F02550C000035FA /* CheckOutgoingMessagesOperation.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				432142641E8FD66900FBE987 /* QuickSyncService.swift in Sources */,
+				4351C2C81F4441190053381F /* blocks.c in Sources */,
 				43F84CD21CD899760092FCAE /* FetchFoldersOperation.swift in Sources */,
 				43C322071EA8E7AD005073FB /* UIButton+Extension.swift in Sources */,
 				4362399D1EAE0CE800BD2EB9 /* OperationQueue+Extension.swift in Sources */,
@@ -1738,6 +1870,7 @@
 				222B35721DF96CC8007A1F82 /* ComposeFieldModel.swift in Sources */,
 				B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */,
 				436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */,
+				4351C2DC1F4441190053381F /* xml.c in Sources */,
 				430E0BE71EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift in Sources */,
 				431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */,
 				436239951EAE08F400BD2EB9 /* String+pEp.swift in Sources */,
@@ -1747,12 +1880,16 @@
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */,
 				1572B9BE1F3379990048BCF5 /* AccountSettingsUserInputError.swift in Sources */,
+				4351C2CA1F4441190053381F /* case_fold_switch.inc in Sources */,
 				4362399A1EAE0CE800BD2EB9 /* Actionsheet+Extension.swift in Sources */,
 				B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */,
 				4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */,
 				431E58FA1ED591E900EFA77F /* AccountVerificationService.swift in Sources */,
 				43C3220D1EA915C6005073FB /* UIColor+Extension.swift in Sources */,
+				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
+				4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */,
+				4351C2D01F4441190053381F /* houdini_html_e.c in Sources */,
 				43FAA0D21EC9972B005BFC4B /* Tuple.swift in Sources */,
 				430A2EEC1E81357A00878837 /* CdImapFlags+Pantomime.swift in Sources */,
 				43122B171DF5B48B00610253 /* ConnectInfo.swift in Sources */,
@@ -1761,6 +1898,7 @@
 				430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */,
 				431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */,
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
+				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */,
@@ -1774,10 +1912,12 @@
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
 				430EA5FA1F0FAD7700F816D4 /* ServiceChainExecutor.swift in Sources */,
+				4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */,
 				432AC3061ECB0C44007DC418 /* CWIMAPMessage+pEp.swift in Sources */,
 				431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */,
 				430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */,
 				43463AAE1D8AA54800F3A673 /* CheckAndCreateFolderOfTypeOperation.swift in Sources */,
+				4351C2D21F4441190053381F /* html.c in Sources */,
 				4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */,
 				430E5F201EBC87A700E5D5D3 /* LanguageListTableViewCell.swift in Sources */,
 				430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */,
@@ -1787,11 +1927,13 @@
 				432142661E8FD6A400FBE987 /* ServiceUtil.swift in Sources */,
 				43FC24231F04F43000C32110 /* ImapSmtpConnection.swift in Sources */,
 				43C322051EA89EED005073FB /* HandshakePartnerTableViewCell.swift in Sources */,
+				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				B7365CDE1EAF45F30036ECC7 /* UITextField+Extension.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
+				4351C2CE1F4441190053381F /* entities.inc in Sources */,
 				43C579EB1F0A382400A8EDF0 /* FetchFoldersService.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
@@ -1806,11 +1948,15 @@
 				4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */,
 				B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */,
 				43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */,
+				4351C2D81F4441190053381F /* references.c in Sources */,
+				4351C2CB1F4441190053381F /* cmark.c in Sources */,
 				432A5E261EB344C3007CB670 /* PEP_color+Extension.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */,
 				8B77BD691E0C1D930060F11F /* AccountSettingsTableViewController.swift in Sources */,
 				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
+				4351C2DA1F4441190053381F /* scanners.c in Sources */,
+				4351C2D91F4441190053381F /* render.c in Sources */,
 				B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */,
 				43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */,
 				43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */,
@@ -1966,6 +2112,7 @@
 					"$(SRCROOT)/../libAccountSettings/include",
 					"$(SRCROOT)/../pEpObjCAdapter/",
 					"$(SRCROOT)/../pEpEngine/src",
+					"$(SRCROOT)/pEpForiOS/Markdown/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -2019,6 +2166,7 @@
 					"$(SRCROOT)/../libAccountSettings/include",
 					"$(SRCROOT)/../pEpObjCAdapter/",
 					"$(SRCROOT)/../pEpEngine/src",
+					"$(SRCROOT)/pEpForiOS/Markdown/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

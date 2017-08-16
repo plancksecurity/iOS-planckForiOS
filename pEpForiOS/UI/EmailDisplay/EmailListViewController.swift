@@ -314,12 +314,10 @@ class EmailListViewController: UITableViewController {
         let replyAction = createReplyAction(cell: cell)
         let replyAllAction = createReplyAllAction(cell: cell)
         let forwardAction = createForwardAction(cell: cell)
-        let markAction = createMarkAction()
         alertControler.addAction(cancelAction)
         alertControler.addAction(replyAction)
         alertControler.addAction(replyAllAction)
         alertControler.addAction(forwardAction)
-        alertControler.addAction(markAction)
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = cell
         }
@@ -348,11 +346,6 @@ class EmailListViewController: UITableViewController {
     func createForwardAction(cell: EmailListViewCell) -> UIAlertAction {
         return UIAlertAction(title: "Forward", style: .default) { (action) in
             self.performSegue(withIdentifier: .segueForward, sender: cell)
-        }
-    }
-
-    func createMarkAction() -> UIAlertAction {
-        return UIAlertAction(title: "Mark", style: .default) { (action) in
         }
     }
 
