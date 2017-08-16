@@ -11,6 +11,9 @@
 
 @interface NSString (Markdown)
 
+/**
+ Assuming that this NSString is markdown, parse and convert that to HTML.
+ */
 - (nullable NSString *)markdownToHtml;
 
 @end
