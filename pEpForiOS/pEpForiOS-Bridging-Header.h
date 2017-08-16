@@ -51,5 +51,6 @@
 
 #import "Axt.h"
 #import "cmark.h"
+#import "NSString+Markdown.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */

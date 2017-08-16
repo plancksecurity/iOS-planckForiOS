@@ -171,4 +171,14 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual(mdString, "2\n![alt0](src0)]\n1\n![alt1](src1)]\nSent with p≡p")
         XCTAssertNotEqual(mdString, inputString)
     }
+
+    func testMarkdownToHtml() {
+        let s1 = "Hi, what's up!"
+        XCTAssertEqual(s1.markdownToHtml(), "<p>\(s1)</p>\n")
+
+        let alt1 = "Image1"
+        let ref1 = "cid:001"
+        XCTAssertEqual("![\(alt1)](\(ref1))".markdownToHtml(),
+                       "<p><img src=\"\(ref1)\" alt=\"\(alt1)\" /></p>\n")
+    }
 }

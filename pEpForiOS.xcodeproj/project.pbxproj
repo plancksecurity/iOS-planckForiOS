@@ -148,6 +148,7 @@
 		4351C2DA1F4441190053381F /* scanners.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C51F4441190053381F /* scanners.c */; };
 		4351C2DB1F4441190053381F /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C61F4441190053381F /* utf8.c */; };
 		4351C2DC1F4441190053381F /* xml.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C71F4441190053381F /* xml.c */; };
+		4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2DD1F4457620053381F /* NSString+Markdown.m */; };
 		43549A8E1E48B54100210D86 /* TrashMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */; };
 		4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
@@ -503,6 +504,8 @@
 		4351C2C51F4441190053381F /* scanners.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scanners.c; sourceTree = "<group>"; };
 		4351C2C61F4441190053381F /* utf8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utf8.c; sourceTree = "<group>"; };
 		4351C2C71F4441190053381F /* xml.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xml.c; sourceTree = "<group>"; };
+		4351C2DD1F4457620053381F /* NSString+Markdown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Markdown.m"; sourceTree = "<group>"; };
+		4351C2DF1F44581A0053381F /* NSString+Markdown.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Markdown.h"; sourceTree = "<group>"; };
 		43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashMailsOperation.swift; sourceTree = "<group>"; };
 		4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncMessagesOperation.swift; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
@@ -957,6 +960,8 @@
 		4351C2A01F4441190053381F /* Markdown */ = {
 			isa = PBXGroup;
 			children = (
+				4351C2DF1F44581A0053381F /* NSString+Markdown.h */,
+				4351C2DD1F4457620053381F /* NSString+Markdown.m */,
 				4351C2A11F4441190053381F /* include */,
 				4351C2B21F4441190053381F /* src */,
 			);
@@ -1918,6 +1923,7 @@
 				432142661E8FD6A400FBE987 /* ServiceUtil.swift in Sources */,
 				43FC24231F04F43000C32110 /* ImapSmtpConnection.swift in Sources */,
 				43C322051EA89EED005073FB /* HandshakePartnerTableViewCell.swift in Sources */,
+				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
 				B7365CDE1EAF45F30036ECC7 /* UITextField+Extension.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
