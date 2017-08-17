@@ -408,13 +408,27 @@ class TestUtil {
 
     // MARK: - IMAP IDLE
 
+    /// Waits until a potetiolly IMAP IDLE supporting server is in idle mode and sends an email 
+    /// to trigger IDLE-new-message response from server.
+    ///
+    /// - Parameters:
+    ///   - cdAccount: account to send email to
+    ///   - expectation: is fullfilled when the server should have responded with IDLE-new-message
+    static public func triggerImapIdleNewMessage(cdAccount: CdAccount, expectation: XCTestExpectation) {
+        // As the server might support IMAP IDLE, we wait to assure
+        // NetworlService's sync loop is ideling before we ...
+        waitUntilInIdleMode()
+        // ... send an email to trigger IDLE-new-message response from server.
+        sendMailsToYourselfAndWait(cdAccount: cdAccount, expectation: expectation)
+    }
+
     /// Waits until IMAP IDLE mode should be reached, if the server supports it
-    static public func waitUntilInIdleMode() {
+    static private func waitUntilInIdleMode() {
         TestUtil.waitUnblocking(TestUtil.waitTimeIdleMode)
     }
 
     /// Sends an email to yourself and waits until server changes should have been reported by a server, that is p
-    static public func sendMailToYourselfAndWait(cdAccount: CdAccount, expectation: XCTestExpectation) {
+    static private func sendMailToYourselfAndWaitForImapIdleNewMessage(cdAccount: CdAccount, expectation: XCTestExpectation) {
         // As the server might support IMAP IDLE, we wait to assure
         // NetworlService's sync loop is ideling before we ...
         TestUtil.waitUnblocking(TestUtil.waitTimeIdleMode)

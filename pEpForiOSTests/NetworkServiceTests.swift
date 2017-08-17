@@ -199,12 +199,8 @@ class NetworkServiceTests: XCTestCase {
 
         networkService.start()
 
-        // As the server might support IMAP IDLE, we wait to assure 
-        // NetworlService's sync loop is ideling before we ...
-        TestUtil.waitUntilInIdleMode()
-//        // ... send an email to trigger IDLE-new-message response from server.
         let expEmailsSent = expectation(description: "expEmailsSent")
-        TestUtil.sendMailToYourselfAndWait(cdAccount: cdAccount, expectation: expEmailsSent)
+        TestUtil.triggerImapIdleNewMessage(cdAccount: cdAccount, expectation: expEmailsSent)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
