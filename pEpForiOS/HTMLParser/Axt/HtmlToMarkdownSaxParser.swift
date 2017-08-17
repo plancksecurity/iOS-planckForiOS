@@ -28,6 +28,8 @@ class HtmlToMarkdownSaxParser: NSObject {
         if !success {
             output = nil
         }
+        output = output?.trimmingCharacters(in: CharacterSet.newlines)
+        output = output?.trimmedExcessiveNewLines()
     }
 
     func add(string: String) {
@@ -35,7 +37,7 @@ class HtmlToMarkdownSaxParser: NSObject {
     }
 
     func addImg(src: String, alt: String?) {
-        add(string: "![\(alt ?? "")](\(src))]")
+        add(string: "![\(alt ?? "")](\(src))")
     }
 }
 
@@ -53,7 +55,7 @@ extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
                     addImg(src: src, alt: alt)
                 }
             }
-        } else if elementName == "br" {
+        } else if elementName == "br" || elementName == "p" || elementName == "div" {
             add(string: "\n")
         }
     }

@@ -168,7 +168,7 @@ class StringExtensionsTest: XCTestCase {
                 return
         }
         XCTAssertTrue(mdString.characters.count > 0)
-        XCTAssertEqual(mdString, "2\n![alt0](src0)]\n1\n![alt1](src1)]\nSent with p≡p")
+        XCTAssertEqual(mdString, "2\n\n![alt0](src0)\n\n1\n\n![alt1](src1)\n\nSent with p≡p")
         XCTAssertNotEqual(mdString, inputString)
     }
 
