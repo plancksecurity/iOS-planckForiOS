@@ -9,17 +9,15 @@
 import CoreData
 import MessageModel
 
-//BUFF: Maybe inform about result (changes, stopped idle whatsoever.
-//We currently do not want to use this information though afaics.
-//protocol ImapIdleOperationDelegate: class {
-//
-//}
-
-/// Sets and keeps an account in IDLE mode while:
-/// - IDLE is supported by server
-/// - No errors occure
-/// - The server does not report any changes
-//BUFF: change doc if we need a delegate
+/// Sets and keeps an account in IDLE mode 
+/// if:
+///     - IDLE is supported by server
+/// while:
+///     - No errors occure
+///     - The server does not report any changes
+///
+/// In case an error occurs or changes on server site are reported, we simple finish the operation to signal 
+/// this to the client.
 class ImapIdleOperation: ImapSyncOperation {
 
     var syncDelegate: ImapIdleDelegate?
@@ -35,16 +33,13 @@ class ImapIdleOperation: ImapSyncOperation {
         if !shouldRun() {
             return
         }
-
         if !checkImapSync() {
             return
         }
-
         if !imapSyncData.supportsIdle {
             markAsFinished()
             return
         }
-
         privateMOC.perform() {
             self.process()
         }
@@ -58,14 +53,7 @@ class ImapIdleOperation: ImapSyncOperation {
     }
 
     private func startIdle(context: NSManagedObjectContext) {
-
-        //BUFF: select INBOX?
-
-        guard let imapStore = imapSyncData.sync?.imapStore else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No store!?")
-            return
-        }
-        imapStore.send(IMAP_IDLE, info: nil, string: "IDLE")
+        requestIdle()
     }
 
     override func markAsFinished() {
@@ -73,8 +61,24 @@ class ImapIdleOperation: ImapSyncOperation {
         super.markAsFinished()
     }
 
+    private func requestIdle() {
+        guard let imapStore = imapSyncData.sync?.imapStore else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No store!?")
+            return
+        }
+        imapStore.send(IMAP_IDLE, info: nil, string: "IDLE")
+    }
+
+    private func sendDone() {
+        guard let imapStore = imapSyncData.sync?.imapStore else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No store!?")
+            return
+        }
+        imapStore.exitIDLE()
+    }
+
     fileprivate func handleIdleNewMessages() {
-        markAsFinished()
+        sendDone()
     }
 
     fileprivate func handleIdleFinished() {
@@ -90,11 +94,6 @@ class ImapIdleOperation: ImapSyncOperation {
 // MARK: - ImapIdleDelegate (actual delegate)
 
 class ImapIdleDelegate: DefaultImapSyncDelegate {
-    //BUFF: TODO: Handle callbacks
-    //    public override init(errorHandler: ImapSyncDelegateErrorHandlerProtocol) {
-    //        self.errorHandler = errorHandler
-    //    }
-
     public override func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
         errorHandler?.handle(error: ImapSyncError.illegalState(#function))
         imapIdleOp()?.handleError()
@@ -111,16 +110,6 @@ class ImapIdleDelegate: DefaultImapSyncDelegate {
     public override func connectionTimedOut(_ sync: ImapSync, notification: Notification?) {
         imapIdleOp()?.handleError()
     }
-
-    //    //BUFF: maybe
-    //    public func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-    //        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
-    //    }
-    //
-    //
-    //    public func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
-    //        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
-    //    }
 
     public override func badResponse(_ sync: ImapSync, response: String?) {
         imapIdleOp()?.handleError()
@@ -139,6 +128,12 @@ class ImapIdleDelegate: DefaultImapSyncDelegate {
     }
     
     override func idleFinished(_ sync: ImapSync, notification: Notification?) {
+        imapIdleOp()?.handleIdleFinished()
+    }
+
+    /// We did stop ideling by sending DONE, so the server returns the actual changes.
+    /// We are currently ignoring those reports and signal to our client that ideling finished.
+    override func messageChanged(_ sync: ImapSync, notification: Notification?) {
         imapIdleOp()?.handleIdleFinished()
     }
 

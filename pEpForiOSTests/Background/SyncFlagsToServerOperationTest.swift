@@ -770,6 +770,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             }
             // flagsCurrent == flagsFromServer, so no syncing should take place
             let localFlags = imap.localFlags ?? CdImapFlags.create()
+            // server flags
+            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
             imap.localFlags = localFlags
 
             localFlags.flagAnswered = false
@@ -777,12 +779,11 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             localFlags.flagFlagged = false
             // (the client must never change flagRecent according to RFC,
             // so we set it in state of flagsServer)
-            localFlags.flagRecent = false
+            localFlags.flagRecent = serverFlags.flagRecent
             localFlags.flagSeen = true
             localFlags.flagDeleted = false
 
-            // server flags
-            let serverFlags = imap.serverFlags ?? CdImapFlags.create()
+
             imap.serverFlags = serverFlags
             var theBits = ImapFlagsBits.imapNoFlagsSet()
             theBits.imapSetFlagBit(.draft)
