@@ -16,8 +16,8 @@ import MessageModel
  Downloads attachment content with nil data, also fixes nil sizes.
  */
 open class FixAttachmentsOperation: ConcurrentBaseOperation {
-    let pInvalidLength = NSPredicate(format: "length = 0")
-    let pInvalidData = NSPredicate(format: "data = nil")
+    let pInvalidLength = NSPredicate(format: "length = 0 and data != nil")
+    let pInvalidData = NSPredicate(format: "data = nil and (fileName != nil or assetUrl != nil)")
 
     var openFetchCount = 0
 
@@ -30,7 +30,8 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
     func fixZeroSizeAttachments(context: NSManagedObjectContext) -> Int {
         var changedAttachmentsCount = 0
 
-        if let cdAttachments1 = CdAttachment.all(predicate: pInvalidLength, orderedBy: nil, in: context)
+        if let cdAttachments1 = CdAttachment.all(predicate: pInvalidLength, orderedBy: nil,
+                                                 in: context)
             as? [CdAttachment] {
             for cdAttach in cdAttachments1 {
                 if let theData = cdAttach.data {
@@ -44,7 +45,8 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
     }
 
     func fixNilDataAttachments(context: NSManagedObjectContext, handler: @escaping (Int) -> ()) {
-        guard let cdAttachments2 = CdAttachment.all(predicate: pInvalidData, orderedBy: nil, in: context)
+        guard let cdAttachments2 = CdAttachment.all(predicate: pInvalidData, orderedBy: nil,
+                                                    in: context)
             as? [CdAttachment] else {
                 handler(0)
                 return
@@ -55,7 +57,8 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
         } else {
             openFetchCount = totalCount
             for cdAttach in cdAttachments2 {
-                if let urlString = cdAttach.fileName, let theURL = URL(string: urlString) {
+                if let urlString = cdAttach.assetUrl ?? cdAttach.fileName {
+                    let theURL = URL(string: urlString)
                     FixAttachmentsOperation.retrieveData(fromURL: theURL) { data in
                         context.perform {
                             if let theData = data {
@@ -109,9 +112,9 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
             do {
                 let data = try Data(contentsOf: theURL)
                 block(data)
+                return
             } catch let err {
                 Log.shared.error(component: #function, error: err)
-                block(nil)
             }
             let assets = PHAsset.fetchAssets(withALAssetURLs: [theURL], options: nil)
             if let theAsset = assets.firstObject {
