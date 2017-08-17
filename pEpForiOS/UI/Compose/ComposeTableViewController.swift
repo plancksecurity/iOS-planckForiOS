@@ -13,7 +13,6 @@ import MobileCoreServices
 import MessageModel
 
 class ComposeTableViewController: UITableViewController {
-
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
@@ -199,20 +198,13 @@ class ComposeTableViewController: UITableViewController {
     }
 
     fileprivate final func createAttachment(
-        url: URL, _ isMovie: Bool = false, image: UIImage? = nil) -> Attachment {
-        let fileExtension = url.pathExtension
-        let baseName = NSLocalizedString(
-            "Attachment",
-            comment: "Base name for attachments, must be the same name iOS uses for NSHTMLTextDocumentType attachments")
-        let fileName = attachmentCounter.filename(baseName: baseName, fileExtension: fileExtension)
+        assetUrl: URL, image: UIImage? = nil, isMovie: Bool = false) -> Attachment {
+        let fileExtension = assetUrl.pathExtension
 
         let mimeType = mimeTypeUtil?.mimeType(fileExtension: fileExtension) ??
             MimeTypeUtil.defaultMimeType
 
-        let att = Attachment.createWithNewContentID(
-            data: nil, mimeType: mimeType, fileName: fileName, url: url, image: image)
-
-        return att
+        return Attachment.createFromAsset(mimeType: mimeType, assetUrl: assetUrl, image: image)
     }
 
     fileprivate final func addContactSuggestTable() {
@@ -258,10 +250,18 @@ class ComposeTableViewController: UITableViewController {
                     break
                 }
             } else if cell is MessageBodyCell {
-                message.attachments = (cell as? MessageBodyCell)?.allAttachments() ?? []
-                message.longMessageFormatted = cell.textView.toHtml()
-                if message.attachments.isEmpty {
+                let inlinedAttachments = (cell as? MessageBodyCell)?.allAttachments() ?? []
+
+                if inlinedAttachments.isEmpty {
                     message.longMessage = cell.textView.text
+                } else {
+                    let mdDelegate = ComposeMarkdownImageDelegate(attachments: inlinedAttachments)
+                    if let htmlFromAttributedString = cell.textView.toHtml() {
+                        let markdownText = htmlFromAttributedString.attributedStringHtmlToMarkdown(
+                            imgDelegate: mdDelegate)
+                        message.longMessage = markdownText
+                        message.attachments = mdDelegate.attachments
+                    }
                 }
             } else if let fm = cell.fieldModel {
                 switch fm.type {
@@ -656,20 +656,23 @@ extension ComposeTableViewController: CNContactPickerDelegate {
 extension ComposeTableViewController: UIImagePickerControllerDelegate {
     public func imagePickerController(
         _ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
-        guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else { return }
+        guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else {
+            return
+        }
+
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return
+        }
 
         if let mediaType = info[UIImagePickerControllerMediaType] as? String {
             if mediaType == kUTTypeMovie as String {
                 guard let url = info[UIImagePickerControllerMediaURL] as? URL else { return }
-                cell.addMovie(createAttachment(url: url, true))
+                cell.addMovie(createAttachment(assetUrl: url, image: image, isMovie: true))
             } else {
                 guard let url = info[UIImagePickerControllerReferenceURL] as? URL else {
                     return
                 }
-                guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-                    return
-                }
-                cell.insert(createAttachment(url: url, image: image))
+                cell.insert(createAttachment(assetUrl: url, image: image))
             }
         }
 
@@ -682,8 +685,10 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
 
 extension ComposeTableViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else { return }
-        cell.add(createAttachment(url: url))
+        guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else {
+            return
+        }
+        cell.add(createAttachment(assetUrl: url))
         tableView.updateSize()
     }
 }
