@@ -58,7 +58,7 @@ class ComposeMarkdownImageDelegateTests: XCTestCase {
             XCTAssertFalse(s.contains(find: ">"))
         }
 
-        XCTAssertEqual(mdString, "2\n![\(alt0)](\(cid0))]\n1\n![\(alt1)](\(cid1))]\nSent with p≡p")
+        XCTAssertEqual(mdString, "2\n\n![\(alt0)](\(cid0))\n\n1\n\n![\(alt1)](\(cid1))\n\nSent with p≡p")
         XCTAssertNotEqual(mdString, inputString)
 
         XCTAssertEqual(attachments[0].fileName, cid0)
