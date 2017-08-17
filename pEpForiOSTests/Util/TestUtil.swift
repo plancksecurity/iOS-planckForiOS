@@ -475,11 +475,11 @@ class TestUtil {
             return []
         }
         let from = cdAccount.identity ?? CdIdentity.create()
-        from.userName = cdAccount.identity?.userName ?? "Unknown ?"
+        from.userName = cdAccount.identity?.userName ?? "unittest.ios.4@peptest.ch"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
         let to = cdAccount.identity ?? CdIdentity.create()
-        to.userName = cdAccount.identity?.userName ?? "Unknown ?"
+        to.userName = cdAccount.identity?.userName ?? "unittest.ios.4@peptest.ch"
         to.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
         var messages = TestUtil.createMails(in: sentFolder, from: from, to: to,

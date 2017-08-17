@@ -424,12 +424,14 @@ open class NetworkServiceWorker {
             operations.append(contentsOf: syncOperations)
 
             //BUFF:
-            let imapIdleOp = ImapIdleOperation(parentName: #function, errorContainer: errorContainer,
-                                               imapSyncData: imapSyncData)
-            imapIdleOp.addDependency(lastImapOp)
-            opImapFinished.addDependency(imapIdleOp)
-            lastImapOp = imapIdleOp
-            operations.append(imapIdleOp)
+            if imapSyncData.supportsIdle {
+                let imapIdleOp = ImapIdleOperation(parentName: #function, errorContainer: errorContainer,
+                                                   imapSyncData: imapSyncData)
+                imapIdleOp.addDependency(lastImapOp)
+                opImapFinished.addDependency(imapIdleOp)
+                lastImapOp = imapIdleOp
+                operations.append(imapIdleOp)
+            }
             //FFUB
         }
 
