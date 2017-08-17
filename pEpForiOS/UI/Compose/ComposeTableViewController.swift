@@ -256,12 +256,13 @@ class ComposeTableViewController: UITableViewController {
                     message.longMessage = cell.textView.text
                 } else {
                     let mdDelegate = ComposeMarkdownImageDelegate(attachments: inlinedAttachments)
-                    if let htmlFromAttributedString = cell.textView.toHtml() {
+                    if let htmlFromAttributedString = cell.textView.toHtml(),
                         let markdownText = htmlFromAttributedString.attributedStringHtmlToMarkdown(
-                            imgDelegate: mdDelegate)
+                            imgDelegate: mdDelegate) {
                         message.longMessage = markdownText
-                        message.attachments = mdDelegate.attachments
+                        message.longMessageFormatted = markdownText.markdownToHtml()
                     }
+                    message.attachments = mdDelegate.attachments
                 }
             } else if let fm = cell.fieldModel {
                 switch fm.type {
