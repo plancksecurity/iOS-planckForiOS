@@ -27,4 +27,8 @@ extension String {
         parser.parse(string: self)
         return parser.output
     }
+
+    public func markdownToHtml() -> String? {
+        return (self as NSString).nsMarkdownToHtml()
+    }
 }

@@ -14,7 +14,7 @@
 /**
  Assuming that this NSString is markdown, parse and convert that to HTML.
  */
-- (nullable NSString *)markdownToHtml;
+- (nullable NSString *)nsMarkdownToHtml;
 
 @end
 

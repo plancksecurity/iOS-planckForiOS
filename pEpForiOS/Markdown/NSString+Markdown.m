@@ -14,7 +14,7 @@
 
 @implementation NSString (Markdown)
 
-- (NSString *)markdownToHtml
+- (NSString *)nsMarkdownToHtml
 {
     const char* utf8Chars = [self cStringUsingEncoding:NSUTF8StringEncoding];
     size_t len = strlen(utf8Chars);
