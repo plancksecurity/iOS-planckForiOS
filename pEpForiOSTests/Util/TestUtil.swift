@@ -370,7 +370,7 @@ class TestUtil {
     // MARK: - Attachments
 
     static func createMails(in folder: CdFolder, from: CdIdentity, to: CdIdentity, numMails: Int = 1,
-                     addAttachment: Bool = false) -> [CdMessage] {
+                            addAttachment: Bool = false) -> [CdMessage] {
         var messages = [CdMessage]()
         if numMails <= 0 {
             return messages
@@ -398,7 +398,7 @@ class TestUtil {
                 let cdAttachment = CdAttachment.create(attachment: attachment)
                 message.addAttachment(cdAttachment)
             }
-            
+
             messages.append(message)
         }
         Record.saveAndWait()
@@ -406,11 +406,29 @@ class TestUtil {
         return messages
     }
 
+    // MARK: - IMAP IDLE
+
+    /// Waits until IMAP IDLE mode should be reached, if the server supports it
+    static public func waitUntilInIdleMode() {
+        TestUtil.waitUnblocking(TestUtil.waitTimeIdleMode)
+    }
+
+    /// Sends an email to yourself and waits until server changes should have been reported by a server, that is p
+    static public func sendMailToYourselfAndWait(cdAccount: CdAccount, expectation: XCTestExpectation) {
+        // As the server might support IMAP IDLE, we wait to assure
+        // NetworlService's sync loop is ideling before we ...
+        TestUtil.waitUnblocking(TestUtil.waitTimeIdleMode)
+        // ... send an email to trigger IDLE-new-message response from server.
+
+        TestUtil.sendMailsToYourselfAndWait(cdAccount: cdAccount, expectation: expectation)
+    }
+
     // MARK: - Outgoing Mails
 
-    @discardableResult static
-        func createOutgoingMailsToYourselfAndWait(cdAccount: CdAccount, numMails: Int = 1,
-                                                  addAttachment: Bool = false) -> [CdMessage] {
+    @discardableResult static func
+        createOutgoingMailsToYourselfAndWait(cdAccount: CdAccount,
+                                             numMails: Int = 1,
+                                             addAttachment: Bool = false) -> [CdMessage] {
         if numMails <= 0 {
             return []
         }
@@ -449,7 +467,7 @@ class TestUtil {
         let to = cdAccount.identity ?? CdIdentity.create()
         to.userName = cdAccount.identity?.userName ?? "Unknown ?"
         to.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
-        
+
         var messages = TestUtil.createMails(in: sentFolder, from: from, to: to,
                                             addAttachment: addAttachment)
 
@@ -554,7 +572,7 @@ class TestUtil {
             messagesInTheQueue.append(message)
         }
         Record.saveAndWait()
-
+        
         if let cdOutgoingMsgs = sentFolder.messages?.sortedArray(
             using: [NSSortDescriptor.init(key: "uid", ascending: true)]) as? [CdMessage] {
             XCTAssertEqual(cdOutgoingMsgs.count, numberOfMails)
@@ -566,7 +584,7 @@ class TestUtil {
         } else {
             XCTFail()
         }
-
+        
         return messagesInTheQueue
     }
 }

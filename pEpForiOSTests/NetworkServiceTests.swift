@@ -175,26 +175,6 @@ class NetworkServiceTests: XCTestCase {
         })
     }
 
-
-    //BUFF:  to helpersor utils
-
-    /// Waits until IMAP IDLE mode should be reached, if the server supports it
-    static public func waitUntilInIdleMode() {
-               TestUtil.waitUnblocking(TestUtil.waitTimeIdleMode)
-    }
-
-    /// Sends an email to yourself and waits until server changes should have been reported by a server, that is p
-    static public func sendMailToYourselfAndWait(cdAccount: CdAccount, expectation: XCTestExpectation) {
-        // As the server might support IMAP IDLE, we wait to assure
-        // NetworlService's sync loop is ideling before we ...
-        TestUtil.waitUnblocking(TestUtil.waitTimeIdleMode)
-        // ... send an email to trigger IDLE-new-message response from server.
-
-        TestUtil.sendMailsToYourselfAndWait(cdAccount: cdAccount, expectation: expectation)
-    }
-
-
-    //FFUG
     func testSyncOneTime() {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
@@ -221,10 +201,10 @@ class NetworkServiceTests: XCTestCase {
 
         // As the server might support IMAP IDLE, we wait to assure 
         // NetworlService's sync loop is ideling before we ...
-        NetworkServiceTests.waitUntilInIdleMode()
+        TestUtil.waitUntilInIdleMode()
 //        // ... send an email to trigger IDLE-new-message response from server.
         let expEmailsSent = expectation(description: "expEmailsSent")
-        NetworkServiceTests.sendMailToYourselfAndWait(cdAccount: cdAccount, expectation: expEmailsSent)
+        TestUtil.sendMailToYourselfAndWait(cdAccount: cdAccount, expectation: expEmailsSent)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
