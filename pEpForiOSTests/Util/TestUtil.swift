@@ -29,9 +29,9 @@ class TestUtil {
     static let waitTimeForever: TimeInterval = 20000
 
     /**
-     Assumed maximum time for a server to report IMAP IDLE changes afrer receiving a new email 
+     Assumed maximum time for our IMAP sync loop to reach IMAP IDLE mode
      */
-    static let waitTimeIdleMode: TimeInterval = 30
+    static let waitTimeIdleMode: TimeInterval = 10
 
     /**
      The time to wait for something "leuisurely".
@@ -322,7 +322,139 @@ class TestUtil {
         imapSyncData.sync?.close()
     }
 
+    // MARK: - Send Emails
+
+    //BUFF: move to utils
+    static func sendMailsToYourselfAndWait(cdAccount: CdAccount, expectation: XCTestExpectation, numMails: Int = 1, addAttachment: Bool = false) {
+        if numMails <= 0 {
+            return
+        }
+        let outgoingMailsToSend = TestUtil.createOutgoingMailsToYourselfAndWait(
+            cdAccount: cdAccount, numMails: numMails, addAttachment: addAttachment)
+
+        XCTAssertGreaterThan(outgoingMailsToSend.count, 0)
+
+        guard let (imapSyncData, smtpSendData) = TestUtil.syncData(cdAccount: cdAccount) else {
+            XCTFail()
+            return
+        }
+        let backgrounder = MockBackgrounder()
+
+        let smtpSentDelegate = TestSmtpSendServiceDelegate()
+        let smtpService = SmtpSendService(
+            parentName: #function, backgrounder: backgrounder,
+            imapSyncData: imapSyncData, smtpSendData: smtpSendData)
+        smtpService.delegate = smtpSentDelegate
+        var smtpExecuted = false
+        smtpService.execute() { error in
+            if error == nil {
+                XCTAssertEqual(smtpSentDelegate.successfullySentMessageIDs.count,
+                               outgoingMailsToSend.count)
+            } else {
+                XCTAssertLessThan(smtpSentDelegate.successfullySentMessageIDs.count,
+                                  outgoingMailsToSend.count)
+            }
+            smtpExecuted = true
+        }
+
+        let timeoutTimer = Date()
+        while !smtpExecuted {
+            TestUtil.waitUnblocking(0.001)
+            if -timeoutTimer.timeIntervalSinceNow > TestUtil.waitTime{
+                return
+            }
+        }
+
+        expectation.fulfill()
+    }
+
     // MARK: - Create Outgoing Mails
+
+    //BUFF
+    @discardableResult static
+        func createOutgoingMailsToYourselfAndWait(cdAccount: CdAccount, numMails: Int = 1,
+                                                  addAttachment: Bool = false) -> [CdMessage] {
+        if numMails <= 0 {
+            return []
+        }
+
+        let existingSentFolder = CdFolder.by(folderType: .sent, account: cdAccount)
+
+        if existingSentFolder == nil {
+            var foldersFetched = false
+            guard let imapCI = cdAccount.imapConnectInfo else {
+                XCTFail()
+                return []
+            }
+            let imapSyncData = ImapSyncData(connectInfo: imapCI)
+            let fs = FetchFoldersService(parentName: #function, imapSyncData: imapSyncData)
+            fs.execute() { error in
+                XCTAssertNil(error)
+                foldersFetched = true
+            }
+
+            let timeoutTimer = Date()
+            while !foldersFetched {
+                TestUtil.waitUnblocking(0.001)
+                if -timeoutTimer.timeIntervalSinceNow > TestUtil.waitTime{
+                    return []
+                }
+            }
+        }
+        guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+            XCTFail()
+            return []
+        }
+        let from = cdAccount.identity ?? CdIdentity.create()
+        from.userName = cdAccount.identity?.userName ?? "Unknown ?"
+        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+
+        let to = cdAccount.identity ?? CdIdentity.create()
+        to.userName = cdAccount.identity?.userName ?? "Unknown ?"
+        to.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+
+        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
+        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+            XCTAssertTrue(false)
+            return []
+        }
+
+        var messagesInTheQueue = [CdMessage]()
+        for i in 1...numMails {
+            let message = CdMessage.create()
+            message.from = from
+            message.parent = sentFolder
+            message.shortMessage = "Some subject \(i)"
+            message.longMessage = "Long message \(i)"
+            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
+            message.sent = Date() as NSDate
+            message.addTo(cdIdentity: to)
+
+            if addAttachment {
+                let attachment = Attachment.create(data: imageData, mimeType: "image/jpeg",
+                                                   fileName: "\(imageFileName) \(i)")
+                let cdAttachment = CdAttachment.create(attachment: attachment)
+                message.addAttachment(cdAttachment)
+            }
+
+            messagesInTheQueue.append(message)
+        }
+        Record.saveAndWait()
+
+        if let cdOutgoingMsgs = sentFolder.messages?.sortedArray(
+            using: [NSSortDescriptor.init(key: "uid", ascending: true)]) as? [CdMessage] {
+            XCTAssertEqual(cdOutgoingMsgs.count, numMails)
+            for m in cdOutgoingMsgs {
+                XCTAssertEqual(m.parent?.folderType, FolderType.sent)
+                XCTAssertEqual(m.uid, Int32(0))
+                XCTAssertEqual(m.sendStatus, SendStatus.none)
+            }
+        } else {
+            XCTFail()
+        }
+
+        return messagesInTheQueue
+    }
 
     @discardableResult static func createOutgoingMails(inOutfolderOf cdAccount: CdAccount, recipient to: CdAccount,
                                                        testCase: XCTestCase, numberOfMails: Int,
