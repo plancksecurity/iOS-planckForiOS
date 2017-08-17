@@ -50,12 +50,12 @@ open class ComposeTextView: UITextView {
         attributedText = attrText
     }
     
-    public final func textAttachments() -> [TextAttachment] {
+    public final func textAttachments(range: NSRange? = nil) -> [TextAttachment] {
+        let theRange = range ?? NSMakeRange(0, attributedText.length)
         var allAttachments = [TextAttachment]()
-        let range = NSMakeRange(0, attributedText.length)
-        if range.length > 0 {
+        if theRange.length > 0 {
             attributedText.enumerateAttribute(
-                NSAttachmentAttributeName, in: range,
+                NSAttachmentAttributeName, in: theRange,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
                     value, range, stop in
                     if let attachment = value as? TextAttachment {
@@ -67,20 +67,8 @@ open class ComposeTextView: UITextView {
         return allAttachments
     }
     
-    public final func getAttachments(_ string: String) -> [TextAttachment?] {
-        var allAttachments = [TextAttachment?]()
-        let range = NSMakeRange(0, string.characters.count)
-        if range.length > 0 {
-            attributedText.enumerateAttribute(NSAttachmentAttributeName, in: range,
-                options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) -> Void in
-                if value != nil {
-                    let attachment = value as! TextAttachment
-                    allAttachments.append(attachment)
-                }
-            }
-        }
-        
-        return allAttachments
+    public final func textAttachments(string: String) -> [TextAttachment] {
+        return textAttachments(range: NSMakeRange(0, string.characters.count))
     }
     
     public final func removePlainText() {

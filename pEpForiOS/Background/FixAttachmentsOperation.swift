@@ -57,14 +57,14 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
             for cdAttach in cdAttachments2 {
                 if let urlString = cdAttach.fileName, let theURL = URL(string: urlString) {
                     FixAttachmentsOperation.retrieveData(fromURL: theURL) { data in
-                        if let theData = data {
-                            context.perform {
+                        context.perform {
+                            if let theData = data {
                                 cdAttach.data = theData as NSData
                                 context.saveAndLogErrors()
-                                self.openFetchCount -= 1
-                                if self.openFetchCount == 0 {
-                                    handler(totalCount)
-                                }
+                            }
+                            self.openFetchCount -= 1
+                            if self.openFetchCount == 0 {
+                                handler(totalCount)
                             }
                         }
                     }
@@ -109,8 +109,10 @@ open class FixAttachmentsOperation: ConcurrentBaseOperation {
             do {
                 let data = try Data(contentsOf: theURL)
                 block(data)
-            } catch {}
-
+            } catch let err {
+                Log.shared.error(component: #function, error: err)
+                block(nil)
+            }
             let assets = PHAsset.fetchAssets(withALAssetURLs: [theURL], options: nil)
             if let theAsset = assets.firstObject {
                 PHImageManager().requestImageData(for: theAsset, options: nil) {
