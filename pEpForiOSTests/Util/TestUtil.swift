@@ -324,7 +324,6 @@ class TestUtil {
 
     // MARK: - Send Emails
 
-    //BUFF: move to utils
     static func sendMailsToYourselfAndWait(cdAccount: CdAccount, expectation: XCTestExpectation, numMails: Int = 1, addAttachment: Bool = false) {
         if numMails <= 0 {
             return
