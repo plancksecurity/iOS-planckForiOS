@@ -264,11 +264,11 @@ open class NetworkServiceWorker {
         return folderInfos
     }
 
-    func syncExistingMessagesOperationLine(
+    func syncExistingMessages(
         folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
-        imapSyncData: ImapSyncData,/*//BUFF:*/dependOn: Operation/*//BUFF:,
-        lastImapOp: Operation, opImapFinished: Operation*/) -> (lastImapOp: Operation, [Operation]) {
-        var lastOp = dependOn
+        imapSyncData: ImapSyncData,
+        lastImapOp: Operation, opImapFinished: Operation) -> (lastImapOp: Operation, [Operation]) {
+        var theLastImapOp = lastImapOp
         var operations: [Operation] = []
         for fi in folderInfos {
             if let folderID = fi.folderID, let firstUID = fi.firstUID,
@@ -282,23 +282,22 @@ open class NetworkServiceWorker {
                     syncMessagesOp.completionBlock = nil
                     Log.info(component: #function, content: "syncMessagesOp finished")
                 }
-                syncMessagesOp.addDependency(dependOn)
+                syncMessagesOp.addDependency(theLastImapOp)
                 operations.append(syncMessagesOp)
-//                opImapFinished.addDependency(syncMessagesOp)
-                lastOp = syncMessagesOp
+                opImapFinished.addDependency(syncMessagesOp)
+                theLastImapOp = syncMessagesOp
 
                 if let syncFlagsOp = SyncFlagsToServerOperation(
                     parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData, folderID: folderID) {
-                    syncFlagsOp.addDependency(lastOp)
+                    syncFlagsOp.addDependency(theLastImapOp)
                     operations.append(syncFlagsOp)
-//                    opImapFinished.addDependency(syncFlagsOp) //BUFF:
-//                    theLastImapOp = syncFlagsOp //BUFF:
-                    lastOp = syncFlagsOp //BUFF:
+                    opImapFinished.addDependency(syncFlagsOp)
+                    theLastImapOp = syncFlagsOp
                 }
             }
         }
-        return (lastOp, operations)
+        return (theLastImapOp, operations)
     }
 
     func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
@@ -416,31 +415,17 @@ open class NetworkServiceWorker {
             opImapFinished.addDependency(opDecrypt)
             operations.append(opDecrypt)
 
-            // sync existing messages
-            //BUFF:
-//            let (lastOp, syncOperations) = syncExistingMessagesOperationLine(
-//                folderInfos: folderInfos, errorContainer: errorContainer,
-//                imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
-            let (lastSyncExistingOp, syncOperations) = syncExistingMessagesOperationLine(
-                folderInfos: folderInfos,
-                errorContainer: errorContainer,
-                imapSyncData: imapSyncData,
-                dependOn: lastImapOp)
-            opImapFinished.addDependency(lastSyncExistingOp)
-            lastImapOp = lastSyncExistingOp
+            let (lastOp, syncOperations) = syncExistingMessages(
+                folderInfos: folderInfos, errorContainer: errorContainer,
+                imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
+            opImapFinished.addDependency(lastOp)
+            lastImapOp = lastOp
 
-            //FFUB
-//            lastImapOp = lastOp //BUFF:
             operations.append(contentsOf: syncOperations)
 
             //BUFF:
             let imapIdleOp = ImapIdleOperation(parentName: #function, errorContainer: errorContainer,
                                                imapSyncData: imapSyncData)
-            imapIdleOp.completionBlock = {
-                //BUFF:
-                print("BUFF: IDLE FINISHED")
-                imapIdleOp.completionBlock = nil
-            }
             imapIdleOp.addDependency(lastImapOp)
             opImapFinished.addDependency(imapIdleOp)
             lastImapOp = imapIdleOp

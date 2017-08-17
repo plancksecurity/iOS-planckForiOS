@@ -288,7 +288,6 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
     }
 
     // MARK: - Helpers
-
     func sendMessages(ms: MessageSyncService) {
         let numberOfOutgoingMessagesToCreate = 3
         let numberOfOutgoingMessagesToSendImmediately = numberOfOutgoingMessagesToCreate

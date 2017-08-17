@@ -26,6 +26,11 @@ class ImapIdleOperation: ImapSyncOperation {
     var changedMessageIDs = [NSManagedObjectID]()
     //    weak var delegate: ImapIdleOperationDelegate?
 
+    override func cancel() {
+        super.cancel()
+        markAsFinished()
+    }
+
     override func main() {
         if !shouldRun() {
             return
@@ -57,6 +62,7 @@ class ImapIdleOperation: ImapSyncOperation {
         //BUFF: select INBOX?
 
         guard let imapStore = imapSyncData.sync?.imapStore else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No store!?")
             return
         }
         imapStore.send(IMAP_IDLE, info: nil, string: "IDLE")
