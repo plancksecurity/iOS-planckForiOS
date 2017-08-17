@@ -367,7 +367,46 @@ class TestUtil {
         expectation.fulfill()
     }
 
-    // MARK: - Create Outgoing Mails
+    // MARK: - Attachments
+
+    static func createMails(in folder: CdFolder, from: CdIdentity, to: CdIdentity, numMails: Int = 1,
+                     addAttachment: Bool = false) -> [CdMessage] {
+        var messages = [CdMessage]()
+        if numMails <= 0 {
+            return messages
+        }
+
+        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
+        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+            XCTAssertTrue(false)
+            return []
+        }
+
+        for i in 1...numMails {
+            let message = CdMessage.create()
+            message.from = from
+            message.parent = folder
+            message.shortMessage = "Some subject \(i)"
+            message.longMessage = "Long message \(i)"
+            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
+            message.sent = Date() as NSDate
+            message.addTo(cdIdentity: to)
+
+            if addAttachment {
+                let attachment = Attachment.create(data: imageData, mimeType: "image/jpeg",
+                                                   fileName: "\(imageFileName) \(i)")
+                let cdAttachment = CdAttachment.create(attachment: attachment)
+                message.addAttachment(cdAttachment)
+            }
+            
+            messages.append(message)
+        }
+        Record.saveAndWait()
+
+        return messages
+    }
+
+    // MARK: - Outgoing Mails
 
     @discardableResult static
         func createOutgoingMailsToYourselfAndWait(cdAccount: CdAccount, numMails: Int = 1,
@@ -410,34 +449,9 @@ class TestUtil {
         let to = cdAccount.identity ?? CdIdentity.create()
         to.userName = cdAccount.identity?.userName ?? "Unknown ?"
         to.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
-
-        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
-            XCTAssertTrue(false)
-            return []
-        }
-
-        var messagesInTheQueue = [CdMessage]()
-        for i in 1...numMails {
-            let message = CdMessage.create()
-            message.from = from
-            message.parent = sentFolder
-            message.shortMessage = "Some subject \(i)"
-            message.longMessage = "Long message \(i)"
-            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sent = Date() as NSDate
-            message.addTo(cdIdentity: to)
-
-            if addAttachment {
-                let attachment = Attachment.create(data: imageData, mimeType: "image/jpeg",
-                                                   fileName: "\(imageFileName) \(i)")
-                let cdAttachment = CdAttachment.create(attachment: attachment)
-                message.addAttachment(cdAttachment)
-            }
-
-            messagesInTheQueue.append(message)
-        }
-        Record.saveAndWait()
+        
+        var messages = TestUtil.createMails(in: sentFolder, from: from, to: to,
+                                            addAttachment: addAttachment)
 
         if let cdOutgoingMsgs = sentFolder.messages?.sortedArray(
             using: [NSSortDescriptor.init(key: "uid", ascending: true)]) as? [CdMessage] {
@@ -451,7 +465,7 @@ class TestUtil {
             XCTFail()
         }
 
-        return messagesInTheQueue
+        return messages
     }
 
     static func createOutgoingMails(cdAccount: CdAccount, testCase: XCTestCase,
