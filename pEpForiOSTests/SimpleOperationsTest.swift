@@ -462,7 +462,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(opCreate1.hasErrors())
         })
 
-        //dirty workarount for Yahoo account (server with specil-use mailboxes)
+        //dirty workaround for Yahoo account (server with specil-use mailboxes)
         if cdAccount.identity!.address!.contains("yahoo") {
             return
         }
