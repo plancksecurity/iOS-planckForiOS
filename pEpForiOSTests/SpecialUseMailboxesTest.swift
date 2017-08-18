@@ -17,8 +17,6 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
     /// This test makes sense only for a Yahoo account as special-use
     /// mailbox names and purposes will differ using other providers. 
     /// Or Special-Use Mailboxes are not even supported by the server.
-    /// It also checks that all required folder types exist though, even for servers that 
-    /// do not support special-use.
     func testSpecialMailboxesAndRequiredFolders() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let errorContainer = ErrorContainer()
