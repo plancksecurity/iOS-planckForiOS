@@ -198,17 +198,6 @@ open class ImapSync: Service {
         }
     }
 
-    /**
-     Unselects the current mailbox by selecting a mailbox that doesn't exist
-     on the server.
-     */
-    @discardableResult open func unselectCurrentMailBox() -> Bool {
-        if imapState.currentFolderName == nil {
-            return false
-        }
-        return openMailBox(name: nonExistantMailboxName)
-    }
-
     func openFolder() throws -> CWIMAPFolder {
         guard let folderName = imapState.currentFolderName else {
             throw Constants.errorIllegalState(
