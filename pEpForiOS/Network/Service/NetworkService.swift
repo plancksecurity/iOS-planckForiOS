@@ -84,7 +84,7 @@ public class NetworkService {
      */
     var lastConnectionDataCache: [EmailConnectInfo: ImapSyncData]?
 
-    public init(sleepTimeInSeconds: Double = 10.0,
+    public init(sleepTimeInSeconds: Double = 5.0,
                 parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
                 mySelfer: KickOffMySelfProtocol? = nil) {
         serviceConfig = ServiceConfig(
