@@ -1,21 +1,21 @@
  //
-//  LoginTableViewController.swift
-//  pEpForiOS
-//
-//  Created by Xavier Algarra on 23/05/2017.
-//  Copyright © 2017 p≡p Security S.A. All rights reserved.
-//
+ //  LoginTableViewController.swift
+ //  pEpForiOS
+ //
+ //  Created by Xavier Algarra on 23/05/2017.
+ //  Copyright © 2017 p≡p Security S.A. All rights reserved.
+ //
 
-import UIKit
+ import UIKit
 
-enum LoginTableViewControllerError: Error {
+ enum LoginTableViewControllerError: Error {
     case missingEmail
     case missingPassword
     case noConnectData
     case missingUsername
-}
+ }
 
-extension LoginTableViewControllerError: LocalizedError {
+ extension LoginTableViewControllerError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingEmail:
@@ -32,9 +32,9 @@ extension LoginTableViewControllerError: LocalizedError {
                                      comment: "Automated account setup error description")
         }
     }
-}
+ }
 
-class LoginTableViewController: UITableViewController, UITextFieldDelegate {
+ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     var appConfig: AppConfig? {
         didSet {
             loginViewModel.messageSyncService = appConfig?.messageSyncService
@@ -59,8 +59,11 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var manualConfigTableViewCell: UITableViewCell!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
 
-
-    let status = ViewStatus()
+    var isCurrentlyVerifying = false {
+        didSet {
+            updateView()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,20 +128,19 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     func updateView() {
-        if status.activityIndicatorViewEnable {
+        if isCurrentlyVerifying {
             activityIndicatorView.startAnimating()
         } else {
             activityIndicatorView.stopAnimating()
         }
-        navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
-        loginButton.isEnabled = !(status.activityIndicatorViewEnable)
-        manualConfigButton.isEnabled = !(status.activityIndicatorViewEnable)
+        navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
+        loginButton.isEnabled = !isCurrentlyVerifying
+        manualConfigButton.isEnabled = !isCurrentlyVerifying
     }
 
     @IBAction func logIn(_ sender: Any) {
         dismissKeyboard()
-        self.status.activityIndicatorViewEnable = true
-        updateView()
+        isCurrentlyVerifying = true
         guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
             handleLoginError(error: LoginTableViewControllerError.missingEmail, extended: false)
             return
@@ -155,14 +157,15 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         loginViewModel.delegate = self
         loginViewModel.login(account: email, password: pass, login: internalLoginName,
                              userName: username) { (err) in
-            if let error = err {
-                handleLoginError(error: error, extended: true)
-            }
+                                if let error = err {
+                                    handleLoginError(error: error, extended: true)
+                                }
         }
     }
 
     public func handleLoginError(error: Error, extended: Bool) {
         Log.shared.error(component: #function, error: error)
+        self.isCurrentlyVerifying = false
         let alertView = UIAlertController(
             title: NSLocalizedString(
                 "Error",
@@ -181,14 +184,11 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                 "Ok",
                 comment: "UIAlertAction ok after error"),
             style: .default, handler: {action in
-                self.status.activityIndicatorViewEnable = false
-                self.updateView()
                 if extended {
                     self.loginName.isHidden = false
                     self.manualConfigButton.isHidden = false
                     self.extendedLogin = true
                 }
-
         }))
         present(alertView, animated: true, completion: nil)
     }
@@ -213,9 +213,9 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     func viewLog() {
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
-}
+ }
 
-extension LoginTableViewController: SegueHandlerType {
+ extension LoginTableViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case noSegue
         case viewLogSegue
@@ -238,9 +238,9 @@ extension LoginTableViewController: SegueHandlerType {
             break
         }
     }
-}
+ }
 
-extension LoginTableViewController: AccountVerificationResultDelegate {
+ extension LoginTableViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult) {
         GCD.onMain() {
             switch result {
@@ -256,4 +256,4 @@ extension LoginTableViewController: AccountVerificationResultDelegate {
             }
         }
     }
-}
+ }
