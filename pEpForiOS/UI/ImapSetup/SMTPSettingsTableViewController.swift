@@ -10,10 +10,6 @@ import UIKit
 
 import MessageModel
 
-//public class ViewStatus {
-//    public var activityIndicatorViewEnable = false
-//}
-
 public class SMTPSettingsTableViewController: UITableViewController, TextfieldResponder,
 UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"

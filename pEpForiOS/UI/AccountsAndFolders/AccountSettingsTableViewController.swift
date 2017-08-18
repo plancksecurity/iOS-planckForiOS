@@ -74,7 +74,8 @@ class AccountSettingsTableViewController: UITableViewController, UIPickerViewDel
         present(alert, animated: true)
     }
 
-    // MARK: - HELPER
+    // MARK: - Helper
+    
     private func validateInput() throws -> (addrImap: String, portImap: String, transImap: String,
         addrSmpt: String, portSmtp: String, transSmtp: String, accountName: String,
         loginName: String) {
