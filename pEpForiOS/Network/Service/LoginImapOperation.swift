@@ -28,8 +28,7 @@ open class LoginImapOperation: ImapSyncOperation {
         } else if service.imapState.isIdling {
             service.delegate = syncDelegate
             service.exitIdle()
-        }
-        else {
+        } else {
             syncDelegate = nil
             markAsFinished()
         }
