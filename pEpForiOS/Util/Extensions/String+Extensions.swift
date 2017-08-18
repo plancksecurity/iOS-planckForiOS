@@ -352,6 +352,21 @@ public extension String {
         }
     }
 
+    /**
+     - Returns: A new string that never contains 3 or more consecutive newlines.
+     */
+    public func trimmedExcessiveNewLines() -> String {
+        do {
+            let regex = try NSRegularExpression(
+                pattern: "(\\n|\\r\\n){3,}", options: [])
+            return regex.stringByReplacingMatches(
+                in: self, options: [], range: self.wholeRange(), withTemplate: "\n\n")
+        } catch let err as NSError {
+            Log.error(component: #function, error: err)
+            return self
+        }
+    }
+
     public func splitFileExtension() -> (String, String?) {
         do {
             let regex = try NSRegularExpression(
