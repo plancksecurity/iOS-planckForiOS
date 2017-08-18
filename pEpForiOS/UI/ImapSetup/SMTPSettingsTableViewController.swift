@@ -10,9 +10,9 @@ import UIKit
 
 import MessageModel
 
-public class ViewStatus {
-    public var activityIndicatorViewEnable = false
-}
+//public class ViewStatus {
+//    public var activityIndicatorViewEnable = false
+//}
 
 public class SMTPSettingsTableViewController: UITableViewController, TextfieldResponder,
 UITextFieldDelegate {
@@ -32,8 +32,11 @@ UITextFieldDelegate {
     var responder = 0
 
     let viewWidthAligner = ViewWidthsAligner()
-    let status = ViewStatus()
-
+    var isCurrentlyVerifying = false {
+        didSet {
+            updateView()
+        }
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,12 +75,12 @@ UITextFieldDelegate {
         portValue.text = String(model.portSMTP)
         transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControlState())
 
-        if status.activityIndicatorViewEnable {
+        if isCurrentlyVerifying {
             activityIndicatorView.startAnimating()
         } else {
             activityIndicatorView.stopAnimating()
         }
-        navigationItem.rightBarButtonItem?.isEnabled = !(status.activityIndicatorViewEnable)
+        navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
     }
 
     fileprivate func showErrorMessage (_ message: String) {
@@ -150,8 +153,7 @@ UITextFieldDelegate {
     /// - Parameter model: account data
     /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
-        self.status.activityIndicatorViewEnable =  true
-        updateView()
+        isCurrentlyVerifying =  true
         guard let ms = appConfig?.messageSyncService else {
             Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
             return
@@ -173,6 +175,7 @@ UITextFieldDelegate {
         } catch {
             let errorTopic = NSLocalizedString("Empty Field",
                                                comment: "Title of alert: a required field is empty")
+            isCurrentlyVerifying =  false
             informUser(about: error, title: errorTopic)
         }
     }
@@ -207,6 +210,7 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         GCD.onMain() {
+            self.isCurrentlyVerifying =  false
             switch result {
             case .ok:
                 // unwind back to INBOX on success
