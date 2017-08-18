@@ -80,6 +80,8 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
     public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? CheckAndCreateFolderOfTypeOperation else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We can not mark the op as finnished, as we do not have an op.")
             return
         }
         op.privateMOC.perform() {
@@ -89,6 +91,8 @@ class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
 
     func completed(context: NSManagedObjectContext) {
         guard let op = errorHandler as? CheckAndCreateFolderOfTypeOperation else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We can not mark the op as finnished, as we do not have an op.")
             return
         }
         if let ac = op.account {
@@ -108,6 +112,8 @@ class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
 
     public override func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? CheckAndCreateFolderOfTypeOperation else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We can not mark the op as finnished, as we do not have an op.")
             return
         }
         op.privateMOC.perform() {
@@ -117,6 +123,8 @@ class CheckAndCreateFolderOfTypeSyncDelegate: DefaultImapSyncDelegate {
 
     func tryAgain(context: NSManagedObjectContext, sync: ImapSync) {
         guard let op = errorHandler as? CheckAndCreateFolderOfTypeOperation else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We can not mark the op as finnished, as we do not have an op.")
             return
         }
         if !op.isCancelled {
