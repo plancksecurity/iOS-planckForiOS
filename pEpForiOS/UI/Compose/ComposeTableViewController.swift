@@ -596,10 +596,12 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
         self.edited = true
         currentCell = indexPath
         let media = UIMenuItem(
-            title: NSLocalizedString("Insert Photo/Video", comment: "Insert attachment"),
+            title: NSLocalizedString("Insert Photo",
+                                     comment: "Insert photo/video in message text context menu"),
             action: #selector(addMediaToCell))
         let attachment = UIMenuItem(
-            title: NSLocalizedString("Insert Attachment", comment: "Insert attachment"),
+            title: NSLocalizedString("Insert Document",
+                                     comment: "Insert document in message text context menu"),
             action: #selector(addAttachment))
         menuController.menuItems = [media, attachment]
     }
