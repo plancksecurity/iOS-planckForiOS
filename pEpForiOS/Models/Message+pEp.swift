@@ -13,10 +13,6 @@ extension Message {
         return PEPUtil.pEp(message: self)
     }
 
-    /*public func pEpRating() -> PEP_rating? {
-        return PEPUtil.pEpRatingFromInt(pEpRatingInt)
-    }*/
-
     public func pEpRating(session: PEPSession?) -> PEP_rating? {
         if belongToSentFolder() {
             return Message.calculateOutgoingColorFromMessage(message: self)
