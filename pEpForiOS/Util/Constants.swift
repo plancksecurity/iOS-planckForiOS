@@ -27,6 +27,11 @@ open class Constants {
     open static let contentTypeMultipartMixed = "multipart/mixed"
 
     /**
+     Content type for MIME multipart/related.
+     */
+    open static let contentTypeMultipartRelated = "multipart/related"
+
+    /**
      Content type for MIME multipart/encrypted.
      */
     open static let contentTypeMultipartEncrypted = "multipart/encrypted"

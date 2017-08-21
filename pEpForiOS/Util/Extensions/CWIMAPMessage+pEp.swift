@@ -75,7 +75,7 @@ extension CWIMAPMessage {
                     self.setContentType(Constants.contentTypeMultipartEncrypted)
                     self.setParameter(Constants.protocolPGPEncrypted, forKey: "protocol")
                 } else {
-                    self.setContentType(Constants.contentTypeMultipartMixed)
+                    self.setContentType(Constants.contentTypeMultipartRelated)
                 }
                 self.setContent(multiPart)
 
