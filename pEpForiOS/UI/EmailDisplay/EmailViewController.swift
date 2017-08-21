@@ -181,7 +181,6 @@ class EmailViewController: UITableViewController {
         Log.shared.errorAndCrash(component: #function, errorString:"Unimplemented Stub!")
     }
 
-    //BUFF: here
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
         message.delete() // mark for deletion/trash
         _ = navigationController?.popViewController(animated: true)
