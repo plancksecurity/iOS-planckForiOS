@@ -75,7 +75,7 @@ extension CWIMAPMessage {
                     self.setContentType(Constants.contentTypeMultipartEncrypted)
                     self.setParameter(Constants.protocolPGPEncrypted, forKey: "protocol")
                 } else {
-                    self.setContentType(Constants.contentTypeMultipartMixed)
+                    self.setContentType(Constants.contentTypeMultipartRelated)
                 }
                 self.setContent(multiPart)
 
@@ -92,10 +92,19 @@ extension CWIMAPMessage {
                         }
                         let part = CWPart()
                         part.setContentType(at[kPepMimeType] as? String)
-                        part.setFilename(at[kPepMimeFilename] as? String)
                         if let theData = at[kPepMimeData] as? NSData {
                             part.setContent(theData)
                             part.setSize(theData.length)
+                        }
+
+                        if let fileName = at[kPepMimeFilename] as? String {
+                            if let cid = fileName.extractCid() {
+                                part.setContentID("<\(cid)>")
+                                part.setContentDisposition(PantomimeInlineDisposition)
+                            } else {
+                                part.setFilename(at[kPepMimeFilename] as? String)
+                                part.setContentDisposition(PantomimeAttachmentDisposition)
+                            }
                         }
 
                         if !encrypted {
@@ -103,13 +112,6 @@ extension CWIMAPMessage {
                             // Otherwise, leave it as-is.
                             part.setContentTransferEncoding(PantomimeEncodingBase64)
                         }
-
-                        // handle this as an attachment
-                        part.setContentDisposition(PantomimeAttachmentDisposition)
-                        if let cid = at[kPepContentID] as? String, !cid.isEmpty {
-                            part.setFilename(cid)
-                        }
-                        //part.setContentID(at[kPepContentID] as? String)
 
                         multiPart.add(part)
                     }

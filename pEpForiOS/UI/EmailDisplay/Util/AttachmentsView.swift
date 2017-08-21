@@ -43,9 +43,9 @@ class AttachmentsView: UIView {
         }
 
         // rm all previously set up constraints
-        removeConstraints(lastConstraints)
+        NSLayoutConstraint.deactivate(lastConstraints)
 
-        guard attachmentViewContainers.count > 0 else {
+        if attachmentViewContainers.count <= 0 {
             return
         }
 
@@ -55,8 +55,8 @@ class AttachmentsView: UIView {
         }
 
         // distance to the top
-        topAnchor.constraint(
-            equalTo: attachmentViewContainers[0].view.topAnchor, constant: spacing).isActive = true
+        attachmentViewContainers[0].view.topAnchor.constraint(
+            equalTo: topAnchor, constant: spacing).isActive = true
 
         // distance to the bottom
         let cBottom = bottomAnchor.constraint(

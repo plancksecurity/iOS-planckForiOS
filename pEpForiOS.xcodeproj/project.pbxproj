@@ -253,6 +253,7 @@
 		43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E88BDD1EFA665600E0B224 /* AsyncStateMachineProtocol.swift */; };
 		43E88BE01EFA667600E0B224 /* AsyncStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E88BDF1EFA667600E0B224 /* AsyncStateMachine.swift */; };
 		43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */; };
+		43EC03481F4AE28F0026E152 /* String+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC03471F4AE28F0026E152 /* String+Attachment.swift */; };
 		43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53631CC77F95006AB156 /* EmailListViewCell.swift */; };
 		43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53641CC77F95006AB156 /* EmailListViewController.swift */; };
 		43ED53711CC77F95006AB156 /* IMAPSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53661CC77F95006AB156 /* IMAPSettingsTableViewController.swift */; };
@@ -622,6 +623,7 @@
 		43E88BDD1EFA665600E0B224 /* AsyncStateMachineProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncStateMachineProtocol.swift; sourceTree = "<group>"; };
 		43E88BDF1EFA667600E0B224 /* AsyncStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncStateMachine.swift; sourceTree = "<group>"; };
 		43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Extension.swift"; sourceTree = "<group>"; };
+		43EC03471F4AE28F0026E152 /* String+Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Attachment.swift"; sourceTree = "<group>"; };
 		43ED53631CC77F95006AB156 /* EmailListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewCell.swift; sourceTree = "<group>"; };
 		43ED53641CC77F95006AB156 /* EmailListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewController.swift; sourceTree = "<group>"; };
 		43ED53661CC77F95006AB156 /* IMAPSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAPSettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -1036,6 +1038,7 @@
 				436239901EAE08F400BD2EB9 /* String+Extensions.swift */,
 				436239911EAE08F400BD2EB9 /* String+pEp.swift */,
 				43E657D01F3C33C30014CBEC /* String+HTML.swift */,
+				43EC03471F4AE28F0026E152 /* String+Attachment.swift */,
 				430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */,
 				432A5E251EB344C3007CB670 /* PEP_color+Extension.swift */,
 				432AC3051ECB0C44007DC418 /* CWIMAPMessage+pEp.swift */,
@@ -1942,6 +1945,7 @@
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
 				431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */,
 				43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */,
+				43EC03481F4AE28F0026E152 /* String+Attachment.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
 				4360282D1ED6F27600C95FC4 /* NetworkError.swift in Sources */,
