@@ -33,7 +33,7 @@ open class TrashMailsOperation: AppendMailsOperation {
             }
             let p = NSPredicate(
                 format: "parent = %@ and imap.localFlags.flagDeleted = true and imap.trashedStatusRawValue = %d",
-                folder, TrashedStatus.shouldBeTrashed.rawValue)
+                folder, Message.TrashedStatus.shouldBeTrashed.rawValue)
             if let msg = CdMessage.first(predicate: p, in: self.context),
                 let cdIdent = msg.parent?.account?.identity {
                 result = (msg.pEpMessage(), cdIdent.pEpIdentity(), msg.objectID)
@@ -55,7 +55,7 @@ open class TrashMailsOperation: AppendMailsOperation {
             context.performAndWait {
                 if let obj = self.context.object(with: msgID) as? CdMessage {
                     let imap = obj.imapFields(context: self.context)
-                    imap.trashedStatus = TrashedStatus.trashed
+                    imap.trashedStatus = Message.TrashedStatus.trashed
                     obj.imap = imap
                     self.context.saveAndLogErrors()
                 } else {
@@ -71,11 +71,10 @@ open class TrashMailsOperation: AppendMailsOperation {
         }
     }
 
-    /// This method is only for Unit tests to call
-    public static func foldersWithTrashedMessages(context: NSManagedObjectContext) -> [CdFolder] {
+    static func foldersWithTrashedMessages(context: NSManagedObjectContext) -> [CdFolder] {
         let p = NSPredicate(
             format: "imap.localFlags.flagDeleted = true and imap.trashedStatusRawValue = %d",
-            TrashedStatus.shouldBeTrashed.rawValue)
+            Message.TrashedStatus.shouldBeTrashed.rawValue)
         let msgs = CdMessage.all(predicate: p, orderedBy: nil, in: context) as? [CdMessage] ?? []
         var folders = Set<CdFolder>()
         for m in msgs {

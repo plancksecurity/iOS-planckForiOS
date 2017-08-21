@@ -28,8 +28,6 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                 var outgoing = false
                 if let folderType = message.parent?.folderType {
                     outgoing = folderType.isOutgoing()
-                } else {
-                    outgoing = false
                 }
 
                 let pepMessage = PEPUtil.pEp(cdMessage: message, outgoing: outgoing)
@@ -67,10 +65,15 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_trusted,
                      PEP_rating_trusted_and_anonymized,
                      PEP_rating_fully_anonymous:
-                    if let decrypted = pepDecryptedMessage {
-                        message.update(pEpMessage: decrypted as! PEPMessage, pepColorRating: color)
+
+                    if let decrypted = pepDecryptedMessage as? PEPMessage {
+                        message.update(pEpMessage: decrypted, pepColorRating: color)
                         self.updateMessage(cdMessage: message, keys: theKeys)
+                    } else {
+                        Log.shared.errorAndCrash(component: #function,
+                                                 errorString:"Not sure if this is supposed to happen even I think it's not. If it is, remove the else block or lower the log ")
                     }
+                    //FFUB
                     break
                 default:
                     Log.warn(

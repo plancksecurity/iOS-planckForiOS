@@ -11,6 +11,7 @@ import CoreData
 import MessageModel
 
 extension CdMessage {
+
     public func allRecipienst() -> NSOrderedSet {
         let recipients: NSMutableOrderedSet = []
         recipients.addObjects(from: (to?.array)!)
