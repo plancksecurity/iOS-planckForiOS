@@ -43,7 +43,7 @@ class AttachmentsView: UIView {
         }
 
         // rm all previously set up constraints
-        removeConstraints(lastConstraints)
+        NSLayoutConstraint.deactivate(lastConstraints)
 
         guard attachmentViewContainers.count > 0 else {
             return
