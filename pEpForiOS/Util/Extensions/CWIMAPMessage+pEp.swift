@@ -99,7 +99,7 @@ extension CWIMAPMessage {
                                 part.setContentID("<\(cid)>")
                                 part.setContentDisposition(PantomimeInlineDisposition)
                             } else {
-                                part.setFilename(at[kPepMimeFilename] as? String)
+                                part.setFilename(fileName)
                                 part.setContentDisposition(PantomimeAttachmentDisposition)
                             }
                         }
