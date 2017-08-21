@@ -97,7 +97,7 @@ class EmailListViewCell: UITableViewCell {
                 UIHelper.putString(nil, toLabel: self.dateLabel)
             }
             
-            attachmentIcon.isHidden = message.attachments.count > 0 ? false : true
+            attachmentIcon.isHidden = message.viewableAttachments().count > 0 ? false : true
             updateFlags(message: message)
             updatePepRating(message: message)
 
