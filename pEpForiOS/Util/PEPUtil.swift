@@ -120,9 +120,6 @@ open class PEPUtil {
         if let d = data {
             dict[kPepMimeData] = d as NSData
         }
-        /*if let cid = contentID {
-            dict[kPepContentID] = cid as NSString
-        }*/
         return dict
     }
 
