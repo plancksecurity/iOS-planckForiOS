@@ -51,11 +51,13 @@ extension Message {
      - Returns: An array of attachments that can be viewed.
      */
     func viewableAttachments() -> [Attachment] {
+        let unviewableMimeTypes = Set([
+            "application/pgp-keys",
+            "application/pgp-signature",
+            "image/gif"] // IOS-577
+        )
         return attachments.filter() { att in
-            if att.data == nil || att.mimeType.lowercased() == "application/pgp-keys" {
-                return false
-            }
-            if att.mimeType.lowercased() == "image/gif" {
+            if att.data == nil || unviewableMimeTypes.contains(att.mimeType.lowercased()) {
                 return false
             }
             return true
