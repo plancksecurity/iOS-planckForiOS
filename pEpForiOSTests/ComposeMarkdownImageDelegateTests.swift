@@ -48,10 +48,6 @@ class ComposeMarkdownImageDelegateTests: XCTestCase {
         let alt1 = imgDelegate.attachmentInfos[1].alt
         let cid1 = imgDelegate.attachmentInfos[1].cidUrl
 
-        for s in [alt0, cid0, alt1, cid1] {
-            XCTAssertTrue(s.hasExtension(withExtension))
-        }
-
         for s in [cid0, cid1] {
             XCTAssertTrue(s.startsWith("cid:"))
             XCTAssertFalse(s.contains(find: "<"))

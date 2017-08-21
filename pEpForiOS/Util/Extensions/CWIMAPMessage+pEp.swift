@@ -76,14 +76,11 @@ extension CWIMAPMessage {
                     self.setParameter(Constants.protocolPGPEncrypted, forKey: "protocol")
                 } else {
                     self.setContentType(Constants.contentTypeMultipartRelated)
-                }
-                self.setContent(multiPart)
-
-                if !encrypted {
                     if let bodyPart = PEPUtil.bodyPart(pEpMessage: pEpMessage) {
                         multiPart.add(bodyPart)
                     }
                 }
+                self.setContent(multiPart)
 
                 if let attachmentDicts = attachmentDictsOpt {
                     for attachmentDict in attachmentDicts {
@@ -102,7 +99,7 @@ extension CWIMAPMessage {
                                 part.setContentID("<\(cid)>")
                                 part.setContentDisposition(PantomimeInlineDisposition)
                             } else {
-                                part.setFilename(at[kPepMimeFilename] as? String)
+                                part.setFilename(fileName)
                                 part.setContentDisposition(PantomimeAttachmentDisposition)
                             }
                         }

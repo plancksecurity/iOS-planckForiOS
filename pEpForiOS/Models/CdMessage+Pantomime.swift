@@ -570,7 +570,12 @@ extension CdMessage {
         let addr = CdIdentity.first(attribute: "address", value: pantomimeAddress.address()) ??
             CdIdentity.create(attributes: ["address": pantomimeAddress.address(),
                                            "isMySelf": false])
-        addr.userName = pantomimeAddress.personal()
+        let identity = Identity.from(cdIdentity: addr)
+        if let username = pantomimeAddress.personal() {
+            identity.userName = username
+        }
+        identity.save()
+        //addr.userName = pantomimeAddress.personal()
         return addr
     }
 
