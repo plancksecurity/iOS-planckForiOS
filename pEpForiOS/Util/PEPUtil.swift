@@ -363,6 +363,7 @@ open class PEPUtil {
             part.setContentType(contentType)
             part.setContent(t.data(using: String.Encoding.utf8) as NSObject?)
             part.setCharset("UTF-8")
+            part.setContentTransferEncoding(PantomimeEncoding8bit)
             return part
         }
         return nil
