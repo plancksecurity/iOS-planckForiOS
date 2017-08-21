@@ -10,7 +10,7 @@ import Foundation
 
 import MessageModel
 
-class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate, AttachmentsViewDelegate {
+class MessageAttachmentsCell: MessageCell {
     @IBOutlet weak var attachmentsImageView: AttachmentsView!
 
     var attachmentsViewHelper = AttachmentsViewHelper()
@@ -47,7 +47,7 @@ class MessageAttachmentsCell: MessageCell, AttachmentsViewHelperDelegate, Attach
 
 // MARK: - AttachmentsViewDelegate
 
-extension MessageAttachmentsCell {
+extension MessageAttachmentsCell: AttachmentsViewDelegate {
     func didTap(attachment: Attachment, location: CGPoint, inView: UIView?) {
         (delegate as? MessageAttachmentDelegate)?.didTap(cell: self, attachment: attachment,
                                                          location: location, inView: inView)
@@ -56,7 +56,7 @@ extension MessageAttachmentsCell {
 
 // MARK: - AttachmentsViewHelperDelegate
 
-extension MessageAttachmentsCell {
+extension MessageAttachmentsCell: AttachmentsViewHelperDelegate {
     func didCreate(attachmentsView: UIView?, message: Message) {
         (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: 0)
     }
