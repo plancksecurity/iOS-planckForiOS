@@ -181,4 +181,13 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual("![\(alt1)](\(ref1))".markdownToHtml(),
                        "<p><img src=\"\(ref1)\" alt=\"\(alt1)\" /></p>\n")
     }
+
+    func testExtractCid() {
+        let token = "uiaeuiae"
+        XCTAssertEqual("cid:\(token)".extractCid(), token)
+        XCTAssertNil("file:\(token)".extractCid())
+        XCTAssertNil(token.extractCid())
+        XCTAssertNil("http://uiaeuiaeuiae".extractCid())
+        XCTAssertNil("whatever is this".extractCid())
+    }
 }
