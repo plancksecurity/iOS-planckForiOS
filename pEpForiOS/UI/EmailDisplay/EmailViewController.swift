@@ -178,11 +178,12 @@ class EmailViewController: UITableViewController {
     
     @IBAction func archiveButtonTapped(_ sender: UIBarButtonItem) {
         //TODO: stubbed method
+        Log.shared.errorAndCrash(component: #function, errorString:"Unimplemented Stub!")
     }
-    
+
+    //BUFF: here
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
         message.delete() // mark for deletion/trash
-        message.save()
         _ = navigationController?.popViewController(animated: true)
     }
     

@@ -260,7 +260,6 @@ class EmailListViewController: UITableViewController {
             }
 
             message.delete() // mark for deletion/trash
-            message.save()
             self.tableView.reloadData()
         }
 
