@@ -49,7 +49,8 @@ extension MessageBodyCell {
         textAttachment.attachment = attachment
         let imageString = NSAttributedString(attachment: textAttachment)
         
-        textAttachment.bounds = obtainContainerToMaintainRatio(textView.bounds.width, rectangle: (attachment.image?.size)!)
+        textAttachment.bounds = obtainContainerToMaintainRatio(textView.bounds.width,
+                                                               rectangle: (attachment.image?.size)!)
         
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
@@ -57,7 +58,8 @@ extension MessageBodyCell {
         textView.attributedText = attrText
     }
     
-    fileprivate final func obtainContainerToMaintainRatio(_ fixedWidth: CGFloat, rectangle: CGSize) -> CGRect {
+    fileprivate final func obtainContainerToMaintainRatio(_ fixedWidth: CGFloat,
+                                                          rectangle: CGSize) -> CGRect {
         let fixRatio = rectangle.width / rectangle.height
         let newHeight = fixedWidth / fixRatio
         return CGRect(x: 0, y: 0, width: fixedWidth, height: newHeight)
