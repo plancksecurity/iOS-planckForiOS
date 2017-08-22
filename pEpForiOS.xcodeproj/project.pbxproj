@@ -96,6 +96,7 @@
 		432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432198E71DF6B51B00318A74 /* LoginImapOperation.swift */; };
 		432198ED1DF6B66800318A74 /* SharedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432198EC1DF6B66800318A74 /* SharedObjects.swift */; };
 		4323FE861E83D6FF006785E1 /* ImapFolderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4323FE851E83D6FF006785E1 /* ImapFolderBuilder.swift */; };
+		432645811F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432645801F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift */; };
 		43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */; };
 		432677161F17796D00F01F5A /* ImapIdleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432677151F17796D00F01F5A /* ImapIdleService.swift */; };
 		4326D3FB1EFBC55C0016AB0D /* OperationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326D3FA1EFBC55C0016AB0D /* OperationError.swift */; };
@@ -438,6 +439,7 @@
 		432198E71DF6B51B00318A74 /* LoginImapOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperation.swift; sourceTree = "<group>"; };
 		432198EC1DF6B66800318A74 /* SharedObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedObjects.swift; sourceTree = "<group>"; };
 		4323FE851E83D6FF006785E1 /* ImapFolderBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapFolderBuilder.swift; sourceTree = "<group>"; };
+		432645801F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Parsing.swift"; sourceTree = "<group>"; };
 		43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperation.swift; sourceTree = "<group>"; };
 		432677151F17796D00F01F5A /* ImapIdleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapIdleService.swift; sourceTree = "<group>"; };
 		4326D3FA1EFBC55C0016AB0D /* OperationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationError.swift; sourceTree = "<group>"; };
@@ -1045,6 +1047,7 @@
 				1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */,
 				431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */,
 				43E0CA291F4AB81600D9BB7E /* Attachment+Extension.swift */,
+				432645801F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1956,6 +1959,7 @@
 				B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */,
 				43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */,
 				4351C2D81F4441190053381F /* references.c in Sources */,
+				432645811F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift in Sources */,
 				4351C2CB1F4441190053381F /* cmark.c in Sources */,
 				432A5E261EB344C3007CB670 /* PEP_color+Extension.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
