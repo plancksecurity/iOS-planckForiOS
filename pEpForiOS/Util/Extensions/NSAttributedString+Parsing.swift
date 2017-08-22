@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 protocol NSAttributedStringParsingDelegate: class {
-    func stringFor(attachment: NSTextAttachment) -> String
-    func stringFor(string: String) -> String
+    func stringFor(attachment: NSTextAttachment) -> String?
+    func stringFor(string: String) -> String?
 }
 
 extension NSAttributedString {
@@ -22,13 +22,15 @@ extension NSAttributedString {
 
         string.enumerateAttributes(in: string.wholeRange(), options: []) { attrs, r, stop in
             if let attachment = attrs["NSAttachment"] as? NSTextAttachment {
-                let attachmentString = delegate.stringFor(attachment: attachment)
-                resultString = "\(resultString)\(attachmentString)"
+                if let attachmentString = delegate.stringFor(attachment: attachment) {
+                    resultString = "\(resultString)\(attachmentString)"
+                }
             } else {
                 let theAttributedString = string.attributedSubstring(from: r)
                 let theString = theAttributedString.string
-                let theStringToAppend = delegate.stringFor(string: theString)
-                resultString = "\(resultString)\(theStringToAppend)"
+                if let theStringToAppend = delegate.stringFor(string: theString) {
+                    resultString = "\(resultString)\(theStringToAppend)"
+                }
             }
         }
         return resultString

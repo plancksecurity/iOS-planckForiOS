@@ -106,7 +106,7 @@ open class ComposeTextView: UITextView {
 
         fileprivate let mimeUtil = MimeTypeUtil()
 
-        func stringFor(attachment: NSTextAttachment) -> String {
+        func stringFor(attachment: NSTextAttachment) -> String? {
             if let textAttachment = attachment as? TextAttachment,
                 let theAttachment = textAttachment.attachment {
                 attachments.append(theAttachment)
@@ -125,10 +125,10 @@ open class ComposeTextView: UITextView {
 
                 return "![\(alt)](\(cidSrc))"
             }
-            return ""
+            return nil
         }
 
-        func stringFor(string: String) -> String {
+        func stringFor(string: String) -> String? {
             return string
         }
     }
