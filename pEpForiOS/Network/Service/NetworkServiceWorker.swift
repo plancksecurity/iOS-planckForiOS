@@ -412,6 +412,8 @@ open class NetworkServiceWorker {
             opImapFinished.addDependency(opDecrypt)
             operations.append(opDecrypt)
 
+            lastImapOp = opDecrypt // Don't sync messages after all messages got decrypted
+
             // sync existing messages
             let (lastOp, syncOperations) = syncExistingMessages(
                 folderInfos: folderInfos, errorContainer: errorContainer,
