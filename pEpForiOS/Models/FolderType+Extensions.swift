@@ -1,5 +1,5 @@
 //
-//  Folder+Extensions.swift
+//  FolderType+Extensions.swift
 //  pEpForiOS
 //
 //  Created by Xavier Algarra on 22/02/17.
