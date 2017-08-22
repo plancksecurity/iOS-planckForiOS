@@ -9,15 +9,33 @@
 import Foundation
 import UIKit
 
-protocol NSAttributedStringAttachmentDelegate: class {
+protocol NSAttributedStringParsingDelegate: class {
     func stringFor(attachment: NSTextAttachment) -> String
+    func stringFor(string: String) -> String
 }
 
 extension NSAttributedString {
-    func toMarkdown(delegate: NSAttributedStringAttachmentDelegate) -> String {
+    func oldToHtml() -> String {
+        let string = NSMutableAttributedString(attributedString: self)
+        string.fixAttributes(in: string.wholeRange())
+
+        let documentType = NSHTMLTextDocumentType
+        let docAttributes = [NSDocumentTypeDocumentAttribute: documentType]
+        do {
+            let data = try string.data(from: string.wholeRange(), documentAttributes: docAttributes)
+            let html = String(data: data, encoding: .utf8)
+            return html ?? ""
+        } catch {
+            Log.error(component: #function, errorString: "Could not convert into \(documentType)")
+            return ""
+        }
+    }
+
+    func convert(delegate: NSAttributedStringParsingDelegate) -> String {
         var resultString = ""
         let string = NSMutableAttributedString(attributedString: self)
         string.fixAttributes(in: string.wholeRange())
+
         string.enumerateAttributes(in: string.wholeRange(), options: []) { attrs, r, stop in
             if let attachment = attrs["NSAttachment"] as? NSTextAttachment {
                 let attachmentString = delegate.stringFor(attachment: attachment)
@@ -25,7 +43,8 @@ extension NSAttributedString {
             } else {
                 let theAttributedString = string.attributedSubstring(from: r)
                 let theString = theAttributedString.string
-                resultString = "\(resultString)\(theString)"
+                let theStringToAppend = delegate.stringFor(string: theString)
+                resultString = "\(resultString)\(theStringToAppend)"
             }
         }
         return resultString

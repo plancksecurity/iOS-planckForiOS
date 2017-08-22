@@ -255,14 +255,10 @@ class ComposeTableViewController: UITableViewController {
                 if inlinedAttachments.isEmpty {
                     message.longMessage = cell.textView.text
                 } else {
-                    let mdDelegate = ComposeMarkdownImageDelegate(attachments: inlinedAttachments)
-                    if let htmlFromAttributedString = cell.textView.toHtml(),
-                        let markdownText = htmlFromAttributedString.attributedStringHtmlToMarkdown(
-                            imgDelegate: mdDelegate) {
-                        message.longMessage = markdownText
-                        message.longMessageFormatted = markdownText.markdownToHtml()
-                    }
-                    message.attachments = mdDelegate.attachments
+                    let (markdownText, attachments) = cell.textView.toMarkdown()
+                    message.longMessage = markdownText
+                    message.longMessageFormatted = markdownText.markdownToHtml()
+                    message.attachments = attachments
                 }
             } else if let fm = cell.fieldModel {
                 switch fm.type {

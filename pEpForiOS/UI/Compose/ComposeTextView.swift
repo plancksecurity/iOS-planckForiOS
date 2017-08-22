@@ -115,19 +115,41 @@ open class ComposeTextView: UITextView {
         }
     }
 
-    public func toHtml() -> String? {
-        let string = NSMutableAttributedString(attributedString: attributedText)
-        let range = NSMakeRange(0, string.length)
-        string.fixAttributes(in: range)
+    class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
+        var attachments = [Attachment]()
 
-        let documentType = NSHTMLTextDocumentType
-        let docAttributes = [NSDocumentTypeDocumentAttribute: documentType]
-        do {
-            let data = try string.data(from: range, documentAttributes: docAttributes)
-            return String(data: data, encoding: .utf8)
-        } catch {
-            Log.error(component: #function, errorString: "Could not convert into \(documentType)")
-            return nil
+        fileprivate let mimeUtil = MimeTypeUtil()
+
+        func stringFor(attachment: NSTextAttachment) -> String {
+            if let textAttachment = attachment as? TextAttachment,
+                let theAttachment = textAttachment.attachment {
+                attachments.append(theAttachment)
+                let count = attachments.count
+
+                let theID = MessageID.generateUUID()
+                let theExt = mimeUtil?.fileExtension(mimeType: theAttachment.mimeType) ?? "jpg"
+                let cidSrc = "cid:attached-inline-image-\(count)-\(theExt)-\(theID)"
+
+                theAttachment.fileName = cidSrc
+
+                let alt = String(
+                    format: NSLocalizedString("Attached Image %1d (%2@)",
+                                              comment: "image attachment name"),
+                    count, theExt)
+
+                return "![\(alt)](\(cidSrc))"
+            }
+            return ""
         }
+
+        func stringFor(string: String) -> String {
+            return string
+        }
+    }
+
+    public func toMarkdown() -> (String, [Attachment]) {
+        let theDelegate = ToMarkdownDelegate()
+        let markdown = attributedText.convert(delegate: theDelegate)
+        return (markdown, theDelegate.attachments)
     }
 }
