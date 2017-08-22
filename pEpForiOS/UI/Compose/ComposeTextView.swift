@@ -101,20 +101,6 @@ open class ComposeTextView: UITextView {
         }
     }
 
-    /**
-     Pure debug function
-     */
-    func extensionFor(documentType: String) -> String {
-        switch documentType {
-        case NSRTFTextDocumentType, NSRTFDTextDocumentType:
-            return "rtf"
-        case NSHTMLTextDocumentType:
-            return "html"
-        default:
-            return "txt"
-        }
-    }
-
     class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
         var attachments = [Attachment]()
 

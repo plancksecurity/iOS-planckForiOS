@@ -15,22 +15,6 @@ protocol NSAttributedStringParsingDelegate: class {
 }
 
 extension NSAttributedString {
-    func oldToHtml() -> String {
-        let string = NSMutableAttributedString(attributedString: self)
-        string.fixAttributes(in: string.wholeRange())
-
-        let documentType = NSHTMLTextDocumentType
-        let docAttributes = [NSDocumentTypeDocumentAttribute: documentType]
-        do {
-            let data = try string.data(from: string.wholeRange(), documentAttributes: docAttributes)
-            let html = String(data: data, encoding: .utf8)
-            return html ?? ""
-        } catch {
-            Log.error(component: #function, errorString: "Could not convert into \(documentType)")
-            return ""
-        }
-    }
-
     func convert(delegate: NSAttributedStringParsingDelegate) -> String {
         var resultString = ""
         let string = NSMutableAttributedString(attributedString: self)
