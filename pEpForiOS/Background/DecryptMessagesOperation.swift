@@ -73,7 +73,6 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                         Log.shared.errorAndCrash(component: #function,
                                                  errorString:"Not sure if this is supposed to happen even I think it's not. If it is, remove the else block or lower the log ")
                     }
-                    //FFUB
                     break
                 default:
                     Log.warn(
