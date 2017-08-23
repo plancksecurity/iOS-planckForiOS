@@ -20,7 +20,10 @@ open class ConcurrentBaseOperation: BaseOperation {
      If you need to spawn child operations (that is, subtasks that should be waited upon),
      schedule them on this queue.
      */
-    let backgroundQueue = OperationQueue()
+    let backgroundQueue: OperationQueue = {
+        let queue = OperationQueue()
+        return queue
+    }()
 
     /** Do we observe the `operationCount` of `backgroundQueue`? */
     var operationCountObserverAdded = false
