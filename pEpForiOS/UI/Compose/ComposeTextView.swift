@@ -30,7 +30,8 @@ open class ComposeTextView: UITextView {
 
     public final var fieldHeight: CGFloat {
         get {
-            let size = sizeThatFits(CGSize(width: frame.size.width, height: CGFloat(Float.greatestFiniteMagnitude)))
+            let size = sizeThatFits(CGSize(width: frame.size.width,
+                                           height: CGFloat(Float.greatestFiniteMagnitude)))
             return size.height + textBottomMargin
         }
     }
@@ -105,7 +106,8 @@ open class ComposeTextView: UITextView {
         let mutAttrString = NSMutableAttributedString(attributedString: attributedText)
         let range = NSMakeRange(0, mutAttrString.length)
         
-        mutAttrString.enumerateAttributes(in: range, options: .reverse) { (attributes, theRange, stop) -> Void in
+        mutAttrString.enumerateAttributes(in: range, options: .reverse) {
+            (attributes, theRange, stop) -> Void in
             for attachment in attributes {
                 if attachment.value is NSTextAttachment {
                     mutAttrString.removeAttribute(attachment.0, range: theRange)
