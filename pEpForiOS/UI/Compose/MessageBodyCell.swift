@@ -15,7 +15,6 @@ public class TextAttachment: NSTextAttachment {
 }
 
 class MessageBodyCell: ComposeCell {
-    
     public var photos = [Attachment]()
     public var attachments = [Attachment]()
     
