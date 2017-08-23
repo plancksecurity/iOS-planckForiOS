@@ -13,16 +13,6 @@ class FolderTableViewController: TableViewControllerBase {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // As this is the initial VC of the storyboard, we have to set the config here once.
-        // Better abbroach would be to init initial VC progamatically in AppDelegate, but I do not know how 
-        // to do this with Storyboards that are referencing each other.
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            Log.shared.errorAndCrash(component: #function, errorString: "App without delegate?")
-            return
-        }
-        appConfig = appDelegate.appConfig
-
         initialConfig()
     }
     
@@ -111,6 +101,14 @@ class FolderTableViewController: TableViewControllerBase {
                 vc.appConfig = self.appConfig
                 vc.hidesBottomBarWhenPushed = true
             }
+        } else if segue.identifier == "SettingsSegue" {
+            guard let dnc = segue.destination as? UINavigationController,
+                let dvc = dnc.rootViewController as? AccountsTableViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Error casting DVC")
+                    return
+            }
+            dvc.appConfig = self.appConfig
+            dvc.hidesBottomBarWhenPushed = true
         }
     }
 }

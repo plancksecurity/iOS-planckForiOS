@@ -17,6 +17,7 @@
 		1579396E1F4DB7AC00A2A6CF /* TableViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579396D1F4DB7AC00A2A6CF /* TableViewControllerBase.swift */; };
 		157939701F4DB8B600A2A6CF /* ViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579396F1F4DB8B600A2A6CF /* ViewControllerBase.swift */; };
 		157939791F4DED9D00A2A6CF /* PEPSessionCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157939781F4DED9D00A2A6CF /* PEPSessionCreator.swift */; };
+		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		15B483D91F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */; };
 		15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */; };
 		15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */; };
@@ -361,6 +362,7 @@
 		1579396D1F4DB7AC00A2A6CF /* TableViewControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewControllerBase.swift; sourceTree = "<group>"; };
 		1579396F1F4DB8B600A2A6CF /* ViewControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerBase.swift; sourceTree = "<group>"; };
 		157939781F4DED9D00A2A6CF /* PEPSessionCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionCreator.swift; sourceTree = "<group>"; };
+		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataDrivenTestBase.swift; sourceTree = "<group>"; };
 		15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialUseMailboxesTest.swift; sourceTree = "<group>"; };
 		15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperationTest.swift; sourceTree = "<group>"; };
@@ -1266,6 +1268,7 @@
 				B74940021ECB3BEB001A710B /* UILabel+Extension.swift */,
 				1579396D1F4DB7AC00A2A6CF /* TableViewControllerBase.swift */,
 				1579396F1F4DB8B600A2A6CF /* ViewControllerBase.swift */,
+				1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1915,6 +1918,7 @@
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */,
 				1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
+				1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */,
 				431E2B091F0281DF000035FA /* SmtpSendService.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,

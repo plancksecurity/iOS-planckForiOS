@@ -29,19 +29,6 @@ class HandshakeViewController: TableViewControllerBase {
 
     var indexPathRequestingLanguage: IndexPath?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // As this is the initial VC of the storyboard, we have to set the config here once.
-        // Better abbroach would be to init initial VC progamatically in AppDelegate, but I do not know how
-        // to do this with Storyboards that are referencing each other.
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            Log.shared.errorAndCrash(component: #function, errorString: "App without delegate?")
-            return
-        }
-        appConfig = appDelegate.appConfig
-    }
-
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension

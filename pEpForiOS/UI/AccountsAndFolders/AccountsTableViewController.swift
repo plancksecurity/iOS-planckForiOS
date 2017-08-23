@@ -30,15 +30,6 @@ class AccountsTableViewController: TableViewControllerBase {
         super.viewDidLoad()
         title = NSLocalizedString("Accounts", comment: "Accounts view title")
         UIHelper.variableCellHeightsTableView(self.tableView)
-
-        // As this is the initial VC of the storyboard, we have to set the config here once.
-        // Better abbroach would be to init initial VC progamatically in AppDelegate, but I do not know how
-        // to do this with Storyboards that are referencing each other.
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            Log.shared.errorAndCrash(component: #function, errorString: "App without delegate?")
-            return
-        }
-        appConfig = appDelegate.appConfig
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -49,14 +40,6 @@ class AccountsTableViewController: TableViewControllerBase {
             return
         }
 
-        if appConfig == nil {
-            guard let appDelegate = UIApplication.shared.delegate as?
-                AppDelegate
-                else {
-                    return
-            }
-            appConfig = appDelegate.appConfig
-        }
         updateModel()
     }
 
@@ -173,6 +156,14 @@ extension AccountsTableViewController: SegueHandlerType {
                     destination.viewModel = vm
                 }
             }
+            break
+        case .segueAddNewAccount:
+            guard
+                let destination = segue.destination as? LoginTableViewController
+                else {
+                    return
+            }
+            destination.appConfig = self.appConfig
             break
         default:()
         }

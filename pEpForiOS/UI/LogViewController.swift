@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LogViewController: UIViewController {
+class LogViewController: ViewControllerBase {
 
     @IBOutlet weak var logTextView: UITextView!
     @IBOutlet weak var copyButton: UIButton!

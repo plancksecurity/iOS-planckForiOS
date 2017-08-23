@@ -552,7 +552,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pmq-ZS-pdQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7183.1999999999998" y="-395.35232383808096"/>
+            <point key="canvasLocation" x="7175" y="-395"/>
         </scene>
         <!--Login Table View Controller-->
         <scene sceneID="dN7-bX-yDv">
@@ -741,10 +741,10 @@
             </objects>
             <point key="canvasLocation" x="7233" y="349"/>
         </scene>
-        <!--Main-->
+        <!--UIViewController-01V-rr-Nt1-->
         <scene sceneID="Ib2-kl-E5M">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="6yd-9e-jF0" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Settings" referencedIdentifier="UIViewController-01V-rr-Nt1" id="6yd-9e-jF0" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3c0-E0-VNt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="11389.6" y="90.854572713643179"/>
