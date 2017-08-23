@@ -14,10 +14,24 @@ open class ComposeTextView: UITextView {
     fileprivate final var fontDescender: CGFloat = -7.0
     fileprivate final var textBottomMargin: CGFloat = 25.0
     fileprivate final var imageFieldHeight: CGFloat = 66.0
-    
+
+    fileprivate let newLinePaddingRegEx: NSRegularExpression?
+
+    required public init?(coder aDecoder: NSCoder) {
+        do {
+            newLinePaddingRegEx = try NSRegularExpression(
+                pattern: ".*[^\n]+(\n){2,}$", options: [])
+        } catch let err {
+            Log.shared.error(component: #function, error: err)
+            newLinePaddingRegEx = nil
+        }
+        super.init(coder: aDecoder)
+    }
+
     public final var fieldHeight: CGFloat {
         get {
-            let size = sizeThatFits(CGSize(width: frame.size.width, height: CGFloat(Float.greatestFiniteMagnitude)))
+            let size = sizeThatFits(CGSize(width: frame.size.width,
+                                           height: CGFloat(Float.greatestFiniteMagnitude)))
             return size.height + textBottomMargin
         }
     }
@@ -92,7 +106,8 @@ open class ComposeTextView: UITextView {
         let mutAttrString = NSMutableAttributedString(attributedString: attributedText)
         let range = NSMakeRange(0, mutAttrString.length)
         
-        mutAttrString.enumerateAttributes(in: range, options: .reverse) { (attributes, theRange, stop) -> Void in
+        mutAttrString.enumerateAttributes(in: range, options: .reverse) {
+            (attributes, theRange, stop) -> Void in
             for attachment in attributes {
                 if attachment.value is NSTextAttachment {
                     mutAttrString.removeAttribute(attachment.0, range: theRange)
@@ -137,5 +152,38 @@ open class ComposeTextView: UITextView {
         let theDelegate = ToMarkdownDelegate()
         let markdown = attributedText.convert(delegate: theDelegate)
         return (markdown, theDelegate.attachments)
+    }
+
+    /**
+     Makes sure that the text has at least two newlines appended, so all content
+     is always visible.
+     */
+    public func addNewlinePadding() {
+        func paddedByDoubleNewline(pureText: NSAttributedString) -> Bool {
+            let numMatches = newLinePaddingRegEx?.numberOfMatches(
+                in: pureText.string, options: [], range: pureText.wholeRange()) ?? 1
+            return numMatches > 0
+        }
+
+        if text.isEmpty {
+            return
+        }
+        var changed = false
+        let theText = NSMutableAttributedString(attributedString: attributedText)
+        let theRange = selectedRange
+        while !paddedByDoubleNewline(pureText: theText) {
+            let appendedString = NSMutableAttributedString(string: "\n")
+            appendedString.addAttribute(NSFontAttributeName,
+                             value: UIFont.pEpInput,
+                             range: appendedString.wholeRange()
+            )
+
+            theText.append(appendedString)
+            changed = true
+        }
+        if changed {
+            attributedText = theText
+            selectedRange = theRange
+        }
     }
 }

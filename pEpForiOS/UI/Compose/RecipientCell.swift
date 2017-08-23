@@ -11,7 +11,6 @@ import Contacts
 import MessageModel
 
 class RecipientCell: ComposeCell {
-    
     @IBOutlet weak var addButton: UIButton!
     
     public var identities = [Identity]()
@@ -55,7 +54,6 @@ class RecipientCell: ComposeCell {
 // MARK: - UITextViewDelegate
 
 extension RecipientCell {
-    
     public override func textViewDidBeginEditing(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
         

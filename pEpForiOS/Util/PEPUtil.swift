@@ -554,7 +554,7 @@ extension String {
 extension UIFont {
     open class var pEpInput: UIFont {
         get {
-            return self.systemFont(ofSize: 14.0)
+            return UIFont.preferredFont(forTextStyle: .body)
         }
     }
 }

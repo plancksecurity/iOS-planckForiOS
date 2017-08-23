@@ -15,7 +15,6 @@ public class TextAttachment: NSTextAttachment {
 }
 
 class MessageBodyCell: ComposeCell {
-    
     public var photos = [Attachment]()
     public var attachments = [Attachment]()
     
@@ -83,7 +82,7 @@ extension MessageBodyCell {
         
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
-        let template = UIImage(named: "attatchment-icon")!
+        let template = UIImage(named: "attachment-icon")!
         let icon = template.attachment(attachment.fileName)
         let at = TextAttachment()
         at.image = icon
