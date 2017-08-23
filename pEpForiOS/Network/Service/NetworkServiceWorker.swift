@@ -62,7 +62,10 @@ open class NetworkServiceWorker {
 
     let workerQueue = DispatchQueue(
         label: "NetworkService", qos: .utility, target: nil)
-    let backgroundQueue = OperationQueue()
+    let backgroundQueue: OperationQueue = {
+        let queue = OperationQueue()
+        return queue
+    }()
 
     let operationCountKeyPath = "operationCount"
 
@@ -315,16 +318,33 @@ open class NetworkServiceWorker {
             }
         }
 
+        #if DEBUG
+            var startTime = Date()
+        #endif
+
         // Operation depending on all IMAP and SMTP operations
         let opAllFinished = BlockOperation { [weak self] in
             self?.workerQueue.async {
-                Log.info(component: #function, content: "sync finished")
+                #if DEBUG
+                    Log.info(component: #function, content: "sync finished in \(-startTime.timeIntervalSinceNow) seconds")
+                #else
+                    Log.info(component: #function, content: "sync finished")
+                #endif
             }
         }
+
+        var operations = [Operation]()
+
         opAllFinished.addDependency(opImapFinished)
         opAllFinished.addDependency(opSmtpFinished)
 
-        var operations: [Operation] = []
+        #if DEBUG
+            let debugTimerOp = BlockOperation() {
+                startTime = Date()
+            }
+            opAllFinished.addDependency(debugTimerOp)
+            operations.append(debugTimerOp)
+        #endif
 
         let fixAttachmentsOp = FixAttachmentsOperation(
             parentName: description, errorContainer: ErrorContainer())
@@ -336,6 +356,8 @@ open class NetworkServiceWorker {
             accountInfo: accountInfo, errorContainer: ErrorContainer(),
             opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
         operations.append(contentsOf: smtpOperations)
+
+
 
         if let imapCI = accountInfo.imapConnectInfo {
             let imapSyncData = ServiceUtil.cachedImapSync(
@@ -381,7 +403,7 @@ open class NetworkServiceWorker {
 
             let (lastTrashOp, trashOperations) = buildTrashOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
-                opImapFinished: opImapFinished, previousOp: lastSendOp ?? opFetchFolders)
+                opImapFinished: opImapFinished, previousOp: lastSendOp ?? opRequiredFolders)
             operations.append(contentsOf: trashOperations)
 
             // 3.d Server-to-client synchronization (IMAP)
@@ -389,7 +411,7 @@ open class NetworkServiceWorker {
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
             // sync new messages
-            var lastImapOp: Operation = lastTrashOp ?? opFetchFolders
+            var lastImapOp: Operation = (lastTrashOp ?? lastSendOp) ?? opRequiredFolders
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
                     parentName: description, errorContainer: errorContainer,
@@ -411,6 +433,7 @@ open class NetworkServiceWorker {
             opDecrypt.addDependency(lastImapOp)
             opImapFinished.addDependency(opDecrypt)
             operations.append(opDecrypt)
+            opAllFinished.addDependency(opDecrypt)
 
             // sync existing messages
             let (lastOp, syncOperations) = syncExistingMessages(
