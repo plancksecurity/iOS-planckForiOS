@@ -10,7 +10,6 @@ import Foundation
 import MessageModel
 
 public protocol CellProtocol {
-    
     var index: IndexPath! { get set }
     weak var textView: ComposeTextView! { get set }
 }
@@ -25,12 +24,10 @@ public protocol ComposeCellDelegate: class {
 }
 
 public protocol RecipientCellDelegate: ComposeCellDelegate {
-    
     func shouldOpenAddressbook(at indexPath: IndexPath)
 }
 
 public protocol MessageBodyCellDelegate: ComposeCellDelegate {
-    
     func didStartEditing(at indexPath: IndexPath)
     func didEndEditing(at indexPath: IndexPath)
 }

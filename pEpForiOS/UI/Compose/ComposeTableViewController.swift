@@ -570,7 +570,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
 // MARK: - RecipientCellDelegate
 
 extension ComposeTableViewController: RecipientCellDelegate {
-
     func shouldOpenAddressbook(at indexPath: IndexPath) {
         currentCell = indexPath
         openAddressBook()
@@ -580,7 +579,6 @@ extension ComposeTableViewController: RecipientCellDelegate {
 // MARK: - MessageBodyCellDelegate
 
 extension ComposeTableViewController: MessageBodyCellDelegate {
-
     func didStartEditing(at indexPath: IndexPath) {
         self.edited = true
         currentCell = indexPath
