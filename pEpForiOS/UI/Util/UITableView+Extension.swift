@@ -24,6 +24,6 @@ extension UITableView {
     }
 }
 
-protocol tableViewUpdate {
-        func updateView()
+protocol TableViewUpdate {
+    func updateView()
 }

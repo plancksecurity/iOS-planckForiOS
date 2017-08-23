@@ -14,13 +14,13 @@ public class EmailListViewModel : FilterUpdateProtocol{
 
     var folderToShow: Folder?
     let cellsInUse = NSCache<NSString, EmailListViewCell>()
-    var delegate : tableViewUpdate?
+    var delegate : TableViewUpdate?
 
     var filterEnabled = false
 
     var enabledFilters : Filter?
 
-    init(config: EmailListConfig?, delegate: tableViewUpdate) {
+    init(config: EmailListConfig?, delegate: TableViewUpdate) {
         //MessageModelConfig.messageFolderDelegate = self
         folderToShow = config?.folder
         self.delegate = delegate
