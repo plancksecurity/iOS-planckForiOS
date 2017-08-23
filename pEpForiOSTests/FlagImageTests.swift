@@ -9,7 +9,7 @@
 import XCTest
 import UIKit
 
-import pEpForiOS
+@testable import pEpForiOS
 import MessageModel
 
 class FlagImageTests: XCTestCase {

@@ -53,7 +53,7 @@ open class MySelfOperation: BaseOperation {
         }
 
         // Invoke mySelf on all identities
-        var session: PEPSession? = PEPSession()
+        var session: PEPSession? = PEPSession() //BUFF: looks dangerous
         for pEpIdDict in ids {
             let taskID = backgrounder?.beginBackgroundTask(
             taskName: MySelfOperation.taskNameSubOperation) {

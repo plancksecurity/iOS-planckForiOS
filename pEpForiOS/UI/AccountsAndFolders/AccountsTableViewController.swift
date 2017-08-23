@@ -8,15 +8,13 @@
 
 import MessageModel
 
-class AccountsTableViewController: UITableViewController {
+class AccountsTableViewController: TableViewControllerBase {
     let comp = "AccountsTableViewController"
 
     let viewModel = AccountsSettingsViewModel()
 
     /** Our vanilla table view cell */
     let accountsCellIdentifier = "accountsCell"
-
-    var appConfig: AppConfig!
 
     var ipath : IndexPath?
     /** For email list configuration */
@@ -27,16 +25,25 @@ class AccountsTableViewController: UITableViewController {
     }
 
     var state = UIState.init()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Accounts", comment: "Accounts view title")
         UIHelper.variableCellHeightsTableView(self.tableView)
+
+        // As this is the initial VC of the storyboard, we have to set the config here once.
+        // Better abbroach would be to init initial VC progamatically in AppDelegate, but I do not know how
+        // to do this with Storyboards that are referencing each other.
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "App without delegate?")
+            return
+        }
+        appConfig = appDelegate.appConfig
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         if MiscUtil.isUnitTest() {
             super.viewWillAppear(animated)
             return
@@ -45,8 +52,8 @@ class AccountsTableViewController: UITableViewController {
         if appConfig == nil {
             guard let appDelegate = UIApplication.shared.delegate as?
                 AppDelegate
-            else {
-                return
+                else {
+                    return
             }
             appConfig = appDelegate.appConfig
         }
@@ -131,36 +138,35 @@ class AccountsTableViewController: UITableViewController {
         }
 
     }
-    
+
     // MARK: - Actions
-    
+
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-    
+
 }
 
 // MARK: - Navigation
 
 extension AccountsTableViewController: SegueHandlerType {
-    
+
     enum SegueIdentifier: String {
         case segueAddNewAccount
         case segueEditAccount
         case segueShowLog
         case noSegue
     }
-    
-    // MARK: - Navigation
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .segueEditAccount:
             guard
                 let destination = segue.destination as? AccountSettingsTableViewController
-            else {
-                return
+                else {
+                    return
             }
+            destination.appConfig = self.appConfig
             if let path = ipath {
                 if let acc = viewModel[path.section][path.row].account {
                     let vm = AccountSettingsViewModel(account: acc)
@@ -170,7 +176,5 @@ extension AccountsTableViewController: SegueHandlerType {
             break
         default:()
         }
-        
     }
-    
 }

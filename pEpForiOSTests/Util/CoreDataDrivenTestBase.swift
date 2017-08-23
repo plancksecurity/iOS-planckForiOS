@@ -21,9 +21,13 @@ class CoreDataDrivenTestBase: XCTestCase {
     var smtpConnectInfo: EmailConnectInfo!
     var imapSyncData: ImapSyncData!
 
+    var session = PEPSession()
+
     override func setUp() {
         super.setUp()
 
+        session = PEPSession()
+        
         persistentSetup = PersistentSetup()
         
         let cdAccount = TestData().createWorkingCdAccount()

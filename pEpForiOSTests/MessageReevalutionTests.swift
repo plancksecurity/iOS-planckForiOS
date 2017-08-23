@@ -27,6 +27,8 @@ class MessageReevalutionTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
+        session = PEPSession()
+
         persistentSetup = PersistentSetup()
 
         let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
@@ -138,17 +140,17 @@ class MessageReevalutionTests: XCTestCase {
         let senderDict = senderIdentity.updatedIdentityDictionary(session: session)
 
         XCTAssertTrue(senderDict.isPGP)
-        XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_reliable)
+        XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
 
         session.keyMistrusted(senderDict)
         let senderDict2 = senderIdentity.updatedIdentityDictionary(session: session)
         XCTAssertFalse(senderDict2.isPGP) // mistrusting sets the comm type to PEP_ct_mistrusted
-        XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_mistrust)
+        XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_mistrust)
 
         session.keyResetTrust(senderDict2)
         let senderDict3 = senderIdentity.updatedIdentityDictionary(session: session)
         XCTAssertTrue(senderDict3.isPGP)
-        XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_reliable)
+        XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
     }
 
     func reevaluateMessage(expectedRating: PEP_rating, inBackground: Bool = true,
@@ -159,7 +161,8 @@ class MessageReevalutionTests: XCTestCase {
         }
         if inBackground {
             let expReevaluated = expectation(description: "expReevaluated")
-            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message)
+            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message,
+                                                            session: session)
             reevalOp.completionBlock = {
                 reevalOp.completionBlock = nil
                 expReevaluated.fulfill()
@@ -193,14 +196,14 @@ class MessageReevalutionTests: XCTestCase {
         for _ in 0..<1 {
             session.trustPersonalKey(senderDict)
             XCTAssertTrue(senderDict.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_trusted)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_trusted)
             reevaluateMessage(
                 expectedRating: PEP_rating_trusted,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after trust")
 
             session.keyMistrusted(senderDict)
-            XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_mistrust)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_mistrust)
             reevaluateMessage(
                 expectedRating: PEP_rating_mistrust,
                 inBackground: runReevaluationInBackground,
@@ -210,7 +213,7 @@ class MessageReevalutionTests: XCTestCase {
 
             session.keyResetTrust(senderDict)
             XCTAssertFalse(senderDict.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_reliable)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
             reevaluateMessage(
                 expectedRating: PEP_rating_reliable,
                 inBackground: runReevaluationInBackground,
@@ -218,7 +221,7 @@ class MessageReevalutionTests: XCTestCase {
 
             session.keyResetTrust(senderDict)
             XCTAssertFalse(senderDict.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_reliable)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
             reevaluateMessage(
                 expectedRating: PEP_rating_reliable,
                 inBackground: runReevaluationInBackground,

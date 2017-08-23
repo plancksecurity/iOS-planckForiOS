@@ -15,18 +15,20 @@ public protocol RatingReEvaluatorDelegate: class {
 }
 
 class RatingReEvaluator {
+    let session: PEPSession
     let message: Message
     lazy var queue = LimitedOperationQueue()
     weak var delegate: RatingReEvaluatorDelegate?
     let parentName: String
 
-    init(parentName: String, message: Message) {
+    init(parentName: String, message: Message, session: PEPSession) {
         self.parentName = parentName
         self.message = message
+        self.session = session
     }
 
     func reevaluateRating() {
-        let op = ReevaluateMessageRatingOperation(parentName: parentName, message: message)
+        let op = ReevaluateMessageRatingOperation(parentName: parentName, message: message, session: session)
         op.completionBlock = {
             op.completionBlock = nil
             if !op.hasErrors() {

@@ -34,13 +34,7 @@
     }
  }
 
- class LoginTableViewController: UITableViewController, UITextFieldDelegate {
-    var appConfig: AppConfig? {
-        didSet {
-            loginViewModel.messageSyncService = appConfig?.messageSyncService
-        }
-    }
-
+ class LoginTableViewController: TableViewControllerBase, UITextFieldDelegate {
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
@@ -65,18 +59,26 @@
         }
     }
 
+    override func didSetAppConfig() {
+        loginViewModel.messageSyncService = appConfig?.messageSyncService
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // As this is the initial VC of the storyboard, we have to set the config here once.
+        // Better abbroach would be to init initial VC progamatically in AppDelegate, but I do not know how
+        // to do this with Storyboards that are referencing each other.
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "App without delegate?")
+            return
+        }
+        appConfig = appDelegate.appConfig
+        
         configureView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        if appConfig == nil {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                appConfig = appDelegate.appConfig
-            }
-        }
-
         updateView()
     }
 

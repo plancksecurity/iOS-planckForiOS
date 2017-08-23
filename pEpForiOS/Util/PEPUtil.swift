@@ -389,19 +389,19 @@ open class PEPUtil {
     }
 
     open static func pEpRating(cdIdentity: CdIdentity,
-                               session: PEPSession = PEPSession()) -> PEP_rating {
+                               session: PEPSession) -> PEP_rating {
         let pepC = pEp(cdIdentity: cdIdentity)
         let rating = session.identityRating(pepC)
         return rating
     }
 
     open static func pEpColor(cdIdentity: CdIdentity,
-                              session: PEPSession = PEPSession()) -> PEP_color {
+                              session: PEPSession) -> PEP_color {
         return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity, session: session))
     }
 
     open static func pEpRating(identity: Identity,
-                               session: PEPSession = PEPSession()) -> PEP_rating {
+                               session: PEPSession) -> PEP_rating {
         let pepC = pEp(identity: identity)
         let rating = session.identityRating(pepC)
         return rating
@@ -409,7 +409,7 @@ open class PEPUtil {
 
     open static func outgoingMessageColor(from: Identity, to: [Identity],
                                           cc: [Identity], bcc: [Identity],
-                                          session: PEPSession = PEPSession()) -> PEP_rating {
+                                          session: PEPSession) -> PEP_rating {
         let fakemail = Message.create(uuid: "fakeuuid")
         fakemail.from = from
         fakemail.to = to
@@ -423,7 +423,7 @@ open class PEPUtil {
     }
 
     open static func pEpColor(identity: Identity,
-                              session: PEPSession = PEPSession()) -> PEP_color {
+                              session: PEPSession) -> PEP_color {
         return pEpColor(pEpRating: pEpRating(identity: identity, session: session))
     }
 
@@ -447,12 +447,12 @@ open class PEPUtil {
 
     open static func trustwords(identity1: PEPIdentity, identity2: PEPIdentity,
                                 language: String, full: Bool = true,
-                                session: PEPSession = PEPSession()) -> String? {
+                                session: PEPSession) -> String? {
         return session.getTrustwordsIdentity1(identity1, identity2: identity2,
                                               language: language, full: full)
     }
 
-    open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) -> String? {
+    open static func fingerPrint(identity: Identity, session: PEPSession) -> String? {
         let pEpID = pEp(identity: identity)
         let pEpDict = NSMutableDictionary(dictionary: pEpID)
         session.updateIdentity(pEpDict)
@@ -460,7 +460,7 @@ open class PEPUtil {
     }
 
     open static func fingerPrint(cdIdentity: CdIdentity,
-                                 session: PEPSession = PEPSession()) -> String? {
+                                 session: PEPSession) -> String? {
         let pEpID = pEp(cdIdentity: cdIdentity)
         let pEpDict = NSMutableDictionary(dictionary: pEpID)
         session.updateIdentity(pEpDict)
@@ -470,7 +470,7 @@ open class PEPUtil {
     /**
      Trust that contact (yellow to green).
      */
-    open static func trust(identity: Identity, session: PEPSession = PEPSession()) {
+    open static func trust(identity: Identity, session: PEPSession) {
         let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
         session.updateIdentity(pepC)
         session.trustPersonalKey(pepC)
@@ -479,7 +479,7 @@ open class PEPUtil {
     /**
      Mistrust the identity (yellow to red)
      */
-    open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) {
+    open static func mistrust(identity: Identity, session: PEPSession) {
         let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
         session.updateIdentity(pepC)
         session.keyMistrusted(pepC)
@@ -489,7 +489,7 @@ open class PEPUtil {
      Resets the trust for the given `Identity`. Use both for trusting again after
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
-    open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) {
+    open static func resetTrust(identity: Identity, session: PEPSession) {
         let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
         session.updateIdentity(pepC)
         session.keyResetTrust(pepC)
@@ -497,7 +497,7 @@ open class PEPUtil {
 
     open static func encrypt(
         pEpMessageDict: PEPMessage, forIdentity: PEPIdentity? = nil,
-        session: PEPSession = PEPSession()) -> (PEP_STATUS, NSDictionary?) {
+        session: PEPSession) -> (PEP_STATUS, NSDictionary?) {
         var encryptedMessage: NSDictionary? = nil
 
         if let ident = forIdentity {

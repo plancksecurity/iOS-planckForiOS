@@ -12,7 +12,7 @@ import ContactsUI
 import MobileCoreServices
 import MessageModel
 
-class ComposeTableViewController: UITableViewController {
+class ComposeTableViewController: TableViewControllerBase {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
@@ -35,7 +35,6 @@ class ComposeTableViewController: UITableViewController {
     var allCells = MutableOrderedSet<ComposeCell>()
     var ccEnabled = false
 
-    var appConfig: AppConfig?
     var composeMode: ComposeMode = .normal
     var messageToSend: Message?
     var originalMessage: Message?
@@ -171,7 +170,7 @@ class ComposeTableViewController: UITableViewController {
             composeCell.setInitial(text: ReplyUtil.replySubject(message: om))
         }
         if let om = originalMessage, composeMode == .forward {
-           composeCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
+            composeCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
         }
     }
 
@@ -439,22 +438,22 @@ class ComposeTableViewController: UITableViewController {
             alertCtrl.addAction(
                 alertCtrl.action(NSLocalizedString("Delete", comment: "compose email delete"),
                                  .destructive, {
-                self.dismiss()
-            }))
+                                    self.dismiss()
+                }))
 
             alertCtrl.addAction(
-                alertCtrl.action(NSLocalizedString("Save", comment: "compose email save"),
-                                 .default, {
-                if let msg = self.populateMessageForSending(),
-                    let acc = msg.parent?.account, let f = Folder.by(account:acc, folderType: .drafts) {
-                    msg.parent = f
-                    msg.save()
-                } else {
-                    Log.error(component: #function, errorString: "No drafts folder for message")
-                }
-                self.dismiss()
-            }))
-            
+                alertCtrl.action(NSLocalizedString("Save", comment: "compose email save"), .default, {
+                    if let msg = self.populateMessageForSending(),
+                        let acc = msg.parent?.account,
+                        let f = Folder.by(account:acc, folderType: .drafts) {
+                        msg.parent = f
+                        msg.save()
+                    } else {
+                        Log.error(component: #function, errorString: "No drafts folder for message")
+                    }
+                    self.dismiss()
+                }))
+
             present(alertCtrl, animated: true, completion: nil)
         } else {
             self.dismiss()
@@ -478,7 +477,7 @@ class ComposeTableViewController: UITableViewController {
 // MARK: - Extensions
 
 extension ComposeTableViewController: ComposeCellDelegate {
-    
+
     public func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel) {
         switch type.type {
         case .to:
@@ -499,12 +498,11 @@ extension ComposeTableViewController: ComposeCellDelegate {
         if let to = destinyTo, let cc = destinyCc, let bcc = destinyBcc, let from = origin {
             var rating : PEP_rating?
             if let session = appConfig?.session {
-                rating = PEPUtil.outgoingMessageColor(from: from, to: to,
-                                                      cc: cc, bcc: bcc,
+                rating = PEPUtil.outgoingMessageColor(from: from, to: to, cc: cc, bcc: bcc,
                                                       session: session)
             } else {
-                rating = PEPUtil.outgoingMessageColor(from: from, to: to,
-                                                      cc: cc, bcc: bcc)
+                rating = PEPUtil.outgoingMessageColor(from: from, to: to, cc: cc, bcc: bcc,
+                                                      session: session)
             }
             if let rate = rating {
                 if let b = showPepRating(pEpRating: rate, pEpProtection: pEpProtection) {
@@ -664,12 +662,13 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
                 cell.insert(createAttachment(assetUrl: url, image: image))
             }
         }
-
+        
         tableView.updateSize()
         dismiss(animated: true, completion: nil)
     }
 }
 
+//BUFF: remove dead code
 // MARK: - UINavigationControllerDelegate
 
 extension ComposeTableViewController: UINavigationControllerDelegate {

@@ -11,9 +11,7 @@ import UIKit
 
 import MessageModel
 
-class EmailViewController: UITableViewController {
-    var appConfig: AppConfig!
-
+class EmailViewController: TableViewControllerBase {
     @IBOutlet var handShakeButton: UIBarButtonItem!
     var message: Message!
 
@@ -43,18 +41,6 @@ class EmailViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
-        
-        guard
-            let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-            let config = appDelegate.appConfig
-            else {
-                #if DEBUG
-                    fatalError()
-                #else
-                    return
-                #endif
-        }
-        appConfig = config
 
         self.title = NSLocalizedString("Message", comment: "Message view title")
     }
@@ -105,16 +91,16 @@ class EmailViewController: UITableViewController {
 
     func checkMessageReEvaluation() {
         if ratingReEvaluator?.message != message {
-            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: message)
+            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: message, session: session)
             ratingReEvaluator?.delegate = self
         }
     }
 
     func showPepRating() {
-        let _ = showPepRating(pEpRating: message.pEpRating(session: nil))
+        let _ = showPepRating(pEpRating: message.pEpRating(session: session))
         handShakeButton.isEnabled = false
         message.allIdentities.forEach { (id) in
-            if id.canHandshakeOn() {
+            if id.canHandshakeOn(session: session) {
                 handShakeButton.isEnabled = true
             }
         }
@@ -166,7 +152,7 @@ class EmailViewController: UITableViewController {
 
         present(alertViewWithoutTitle, animated: true, completion: nil)
     }
-    
+
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
         if (message.imapFlags?.flagged == true) {
             message.imapFlags?.flagged = false
@@ -175,7 +161,7 @@ class EmailViewController: UITableViewController {
         }
         message.save()
     }
-    
+
     @IBAction func archiveButtonTapped(_ sender: UIBarButtonItem) {
         //TODO: stubbed method
         Log.shared.errorAndCrash(component: #function, errorString:"Unimplemented Stub!")
@@ -191,7 +177,7 @@ class EmailViewController: UITableViewController {
      */
     @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
-            PEPUtil.trust(identity: p)
+            PEPUtil.trust(identity: p, session: session)
             decryptAgain()
         }
     }
@@ -201,7 +187,7 @@ class EmailViewController: UITableViewController {
      */
     @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
-            PEPUtil.mistrust(identity: p)
+            PEPUtil.mistrust(identity: p, session: session)
             decryptAgain()
         }
     }

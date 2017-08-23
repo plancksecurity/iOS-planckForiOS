@@ -71,20 +71,19 @@ class HandshakePartnerTableViewCellViewModel {
      */
     var pEpPartner: NSMutableDictionary
 
-    init(ownIdentity: Identity, partner: Identity, session: PEPSession?,
+    init(ownIdentity: Identity, partner: Identity, session: PEPSession,
          imageProvider: IdentityImageProvider) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
         self.ownIdentity = ownIdentity
         self.partnerIdentity = partner
-        let theSession = session ?? PEPSession()
-        self.session = theSession
-        self.identityColor = partner.pEpColor(session: theSession)
+        self.session = session
+        self.identityColor = partner.pEpColor(session: session)
 
-        self.rating = partner.pEpRating(session: theSession)
+        self.rating = partner.pEpRating(session: session)
 
-        pEpSelf = ownIdentity.updatedIdentityDictionary(session: theSession)
-        pEpPartner = partner.updatedIdentityDictionary(session: theSession)
+        pEpSelf = ownIdentity.updatedIdentityDictionary(session: session)
+        pEpPartner = partner.updatedIdentityDictionary(session: session)
 
         isPartnerPGPUser = pEpPartner.isPGP
 
@@ -94,7 +93,7 @@ class HandshakePartnerTableViewCellViewModel {
             }
         }
 
-        updateTrustwords(session: theSession)
+        updateTrustwords(session: session)
     }
 
     func updateTrustwords(session: PEPSession) {

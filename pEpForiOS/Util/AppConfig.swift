@@ -20,13 +20,11 @@ class AppConfig {
 
     var session: PEPSession {
         get {
-            if theSession == nil {
-                theSession = PEPSession()
+            guard let session = theSession else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No session!")
+                return PEPSession()
             }
-            return theSession ?? PEPSession()
-        }
-        set {
-            theSession = newValue
+            return session
         }
     }
 

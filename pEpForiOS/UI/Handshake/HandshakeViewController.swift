@@ -10,17 +10,15 @@ import UIKit
 
 import MessageModel
 
-class HandshakeViewController: UITableViewController {
-    var appConfig: AppConfig?
-
+class HandshakeViewController: TableViewControllerBase {
     var ratingReEvaluator: RatingReEvaluator?
-
-    var session: PEPSession {
-        return appConfig?.session ?? PEPSession()
-    }
 
     var message: Message? {
         didSet {
+            guard let session = appConfig?.session else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No session!")
+                return
+            }
             partners = message?.identitiesEligibleForHandshake(session: session) ?? []
         }
     }
@@ -30,6 +28,19 @@ class HandshakeViewController: UITableViewController {
     let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
 
     var indexPathRequestingLanguage: IndexPath?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // As this is the initial VC of the storyboard, we have to set the config here once.
+        // Better abbroach would be to init initial VC progamatically in AppDelegate, but I do not know how
+        // to do this with Storyboards that are referencing each other.
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "App without delegate?")
+            return
+        }
+        appConfig = appDelegate.appConfig
+    }
 
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 72.0
@@ -186,7 +197,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
             let cell = tableView.cellForRow(at: indexPath)
                 as? HandshakePartnerTableViewCell {
             cell.viewModel?.trustwordsLanguage = lang.code
-            cell.viewModel?.updateTrustwords(session: appConfig?.session ?? PEPSession())
+            cell.viewModel?.updateTrustwords(session: session)
             cell.updateTrustwords()
             tableView.updateSize()
         }
@@ -204,6 +215,7 @@ extension HandshakeViewController: SegueHandlerType {
             let navVC = segue.destination as? UINavigationController
             if let destination = navVC?.viewControllers.first as? LanguageListViewController ??
                 segue.destination as? LanguageListViewController {
+                destination.appConfig = appConfig
                 prepare(destination: destination)
             }
             break
@@ -211,7 +223,7 @@ extension HandshakeViewController: SegueHandlerType {
     }
 
     func prepare(destination: LanguageListViewController) {
-        let theSession = appConfig?.session ?? PEPSession()
+        let theSession = session
         destination.languages = theSession.languageList()
     }
 }

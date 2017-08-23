@@ -19,7 +19,7 @@ extension UIAlertController {
     }
 }
 
-class IMAPSettingsTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
+class IMAPSettingsTableViewController: TableViewControllerBase, TextfieldResponder, UITextFieldDelegate {
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var serverTitle: UILabel!
@@ -28,7 +28,6 @@ class IMAPSettingsTableViewController: UITableViewController, TextfieldResponder
 
     let viewWidthAligner = ViewWidthsAligner()
 
-    var appConfig: AppConfig?
     var model: AccountUserInput! //FIXME: remove !
     var fields = [UITextField]()
     var responder = 0

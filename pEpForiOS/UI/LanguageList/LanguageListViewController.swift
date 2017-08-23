@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LanguageListViewController: UITableViewController {
+class LanguageListViewController: TableViewControllerBase {
     let defaultCellReuseIdentifier = "LanguageListCell"
 
     var languages = [PEPLanguage]()
@@ -58,6 +58,8 @@ extension LanguageListViewController: SegueHandlerType {
             } else {
                 chosenLanguage = nil
             }
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "Do not foget to handle appConfig to DVC")
             break
         }
     }

@@ -10,7 +10,7 @@ import UIKit
 
 import MessageModel
 
-public class UserInfoTableViewController: UITableViewController, TextfieldResponder, UITextFieldDelegate {
+class UserInfoTableViewController: TableViewControllerBase, TextfieldResponder, UITextFieldDelegate {
     let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!
@@ -24,7 +24,6 @@ public class UserInfoTableViewController: UITableViewController, TextfieldRespon
     @IBOutlet weak var nameTitle: UILabel!
     @IBOutlet weak var cancelBarbutton: UIBarButtonItem!
 
-    var appConfig: AppConfig?
     var fields = [UITextField]()
     var responder = 0
     var accounts = [Account]()

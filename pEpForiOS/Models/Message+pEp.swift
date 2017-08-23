@@ -13,9 +13,9 @@ extension Message {
         return PEPUtil.pEp(message: self)
     }
 
-    public func pEpRating(session: PEPSession?) -> PEP_rating? {
+    public func pEpRating(session: PEPSession) -> PEP_rating? {
         if belongToSentFolder() {
-            return Message.calculateOutgoingColorFromMessage(message: self)
+            return Message.calculateOutgoingColorFromMessage(message: self, session: session)
         } else {
             return PEPUtil.pEpRatingFromInt(pEpRatingInt)
         }
@@ -29,10 +29,12 @@ extension Message {
         }
     }
 
-    static func calculateOutgoingColorFromMessage(message: Message) -> PEP_rating? {
+    static func calculateOutgoingColorFromMessage(message: Message, session: PEPSession) -> PEP_rating? {
         if let from = message.from {
             return PEPUtil.outgoingMessageColor(from: from, to: message.to,
-                                                      cc: message.cc, bcc: message.bcc)
+                                                      cc: message.cc,
+                                                      bcc: message.bcc,
+                                                      session: session)
         }
         return nil
     }
@@ -40,7 +42,7 @@ extension Message {
     /**
      - Returns: An array of identities you can make a handshake on.
      */
-    public func identitiesEligibleForHandshake(session: PEPSession = PEPSession()) -> [Identity] {
+    public func identitiesEligibleForHandshake(session: PEPSession) -> [Identity] {
         let myselfIdentity = PEPUtil.ownIdentity(message: self)
         return Array(allIdentities).filter {
             return $0 != myselfIdentity && $0.canHandshakeOn(session: session)

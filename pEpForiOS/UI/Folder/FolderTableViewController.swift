@@ -8,13 +8,21 @@
 
 import UIKit
 
-class FolderTableViewController: UITableViewController {
-    var appConfig: AppConfig?
-
+class FolderTableViewController: TableViewControllerBase {
     var folderVM = FolderViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // As this is the initial VC of the storyboard, we have to set the config here once.
+        // Better abbroach would be to init initial VC progamatically in AppDelegate, but I do not know how 
+        // to do this with Storyboards that are referencing each other.
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "App without delegate?")
+            return
+        }
+        appConfig = appDelegate.appConfig
+
         initialConfig()
     }
     
@@ -78,18 +86,23 @@ class FolderTableViewController: UITableViewController {
         return folderVM[indexPath.section][indexPath.item].level
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
-        if let vc = sb.instantiateViewController(withIdentifier: "EmailListViewController")
-            as? EmailListViewController {
-            let config = EmailListConfig(appConfig: appConfig,
-                                         folder: folderVM[indexPath.section][indexPath.row]
-                                            .getFolder())
-            vc.config = config
-            vc.hidesBottomBarWhenPushed = false
-            self.navigationController?.pushViewController(vc, animated: true)
+        guard
+            let vc = sb.instantiateViewController(withIdentifier: "EmailListViewController")
+                as? EmailListViewController,
+            let saveAppConfig = appConfig
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
+                return
         }
+
+        let config = EmailListConfig(appConfig: saveAppConfig,
+                                     folder: folderVM[indexPath.section][indexPath.row]
+                                        .getFolder())
+        vc.config = config
+        vc.hidesBottomBarWhenPushed = false
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -100,55 +113,4 @@ class FolderTableViewController: UITableViewController {
             }
         }
     }
-
-    @IBAction func addAccount(_ sender: Any) {
-        //add account action tbi
-    }
-
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,
-     forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-     }
-     */
-
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-
-    /*
-     // MARK: - Navigation
-
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-
 }

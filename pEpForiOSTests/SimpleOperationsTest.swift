@@ -881,9 +881,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        XCTAssertNotNil(theIdent.fingerPrint())
+        XCTAssertNotNil(theIdent.fingerPrint(session: session))
 
-        let session = PEPSession.init()
         let identDict = theIdent.updatedIdentityDictionary(session: session)
         XCTAssertNotNil(identDict[kPepFingerprint])
         XCTAssertNotNil(identDict[kPepUserID])

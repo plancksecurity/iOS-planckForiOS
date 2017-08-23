@@ -12,15 +12,15 @@ import CoreData
 import MessageModel
 
 struct EmailListConfig {
-    var appConfig: AppConfig?
-
+    var appConfig: AppConfig
     /** The folder to display, if it exists */
     var folder: Folder?
 
     let imageProvider = IdentityImageProvider()
 }
 
-class EmailListViewController: UITableViewController {
+class EmailListViewController: TableViewControllerBase {
+    public static let storyboardId = "EmailListViewController"
     struct UIState {
         var isSynching: Bool = false
     }
@@ -45,6 +45,15 @@ class EmailListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // As this is the initial VC, we have to set the config here once.
+        // Better abbroach would be to init initial VC progamatically in AppDelegate, but that failed 
+        // due to references to mainStoryboard.initialViewController from other Storyboards.
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "App without delegate?")
+            return
+        }
+        appConfig = appDelegate.appConfig
 
         title = NSLocalizedString("Inbox", comment: "General name for (unified) inbox")
         UIHelper.emailListTableHeight(self.tableView)
@@ -82,7 +91,7 @@ class EmailListViewController: UITableViewController {
         } else {
             self.showFoldersButton.isEnabled = true
         }
-        
+
     }
 
     private func updateLastLookAt(on folder: Folder) {
@@ -99,12 +108,12 @@ class EmailListViewController: UITableViewController {
     }
 
     func setupConfig() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No AppDelegate?")
+        guard let saveAppConfig = appConfig else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No AppConfig!")
             return
         }
         if config == nil {
-            config = EmailListConfig(appConfig: appDelegate.appConfig,
+            config = EmailListConfig(appConfig: saveAppConfig,
                                      folder: Folder.unifiedInbox())
         }
 
@@ -192,7 +201,7 @@ class EmailListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
         //mantener el configure cell para tal de no generar un vm para celdas
-        let _ = cell.configureCell(config: config, indexPath: indexPath)
+        let _ = cell.configureCell(config: config, indexPath: indexPath, session: session)
         viewModel?.associate(cell: cell, position: indexPath.row)
         return cell
     }
@@ -430,6 +439,7 @@ extension EmailListViewController: SegueHandlerType {
             break
         case .segueFilter:
             if let destiny = segue.destination as? FilterTableViewController {
+                destiny.appConfig = self.appConfig
                 destiny.filterDelegate = self.viewModel
                 destiny.inFolder = false
                 destiny.filterEnabled = self.viewModel?.folderToShow?.filter
@@ -449,9 +459,8 @@ extension EmailListViewController: SegueHandlerType {
         case .segueEditAccounts, .segueCompose, .noSegue:
             break
         }
-
     }
-    
+
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
     }
 

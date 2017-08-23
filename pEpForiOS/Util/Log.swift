@@ -12,7 +12,7 @@ import MessageModel
 @objc open class Log: NSObject {
 
     private let title = "pEpForiOS"
-    lazy private var session = PEPSession()
+    private var session = PEPSession() //BUFF: The usual singleton problems. It has state plus we might have to configure it once to assure a unique session
     private var logEnabled = true
     private let queue = DispatchQueue(label: "logging")
 
@@ -20,10 +20,6 @@ import MessageModel
         let instance = Log()
         return instance
     }()
-
-    fileprivate override init() {
-        super.init()
-    }
 
     private func saveLog(entity: String, description: String, comment: String) {
         #if DEBUG_LOGGING
@@ -37,6 +33,7 @@ import MessageModel
             }
         }
     }
+    
     static open func disableLog() {
         Log.shared.queue.async {
             Log.shared.logEnabled = false

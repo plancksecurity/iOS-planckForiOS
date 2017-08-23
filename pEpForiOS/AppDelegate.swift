@@ -59,12 +59,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         // Open the first session from the main thread and keep it open
-        let firstSession = PEPSession()
+        let session = PEPSession()
 
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
-        appConfig = AppConfig(session: firstSession, messageSyncService: theMessageSyncService)
+        appConfig = AppConfig(session: session, messageSyncService: theMessageSyncService)
 
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
