@@ -14,7 +14,20 @@ open class ComposeTextView: UITextView {
     fileprivate final var fontDescender: CGFloat = -7.0
     fileprivate final var textBottomMargin: CGFloat = 25.0
     fileprivate final var imageFieldHeight: CGFloat = 66.0
-    
+
+    fileprivate let newLinePaddingRegEx: NSRegularExpression?
+
+    required public init?(coder aDecoder: NSCoder) {
+        do {
+            newLinePaddingRegEx = try NSRegularExpression(
+                pattern: ".*[^\n]+(\n){2,}$", options: [])
+        } catch let err {
+            Log.shared.error(component: #function, error: err)
+            newLinePaddingRegEx = nil
+        }
+        super.init(coder: aDecoder)
+    }
+
     public final var fieldHeight: CGFloat {
         get {
             let size = sizeThatFits(CGSize(width: frame.size.width, height: CGFloat(Float.greatestFiniteMagnitude)))
@@ -137,5 +150,32 @@ open class ComposeTextView: UITextView {
         let theDelegate = ToMarkdownDelegate()
         let markdown = attributedText.convert(delegate: theDelegate)
         return (markdown, theDelegate.attachments)
+    }
+
+    /**
+     Makes sure that the text has at least two newlines appended, so all content
+     is always visible.
+     */
+    public func addNewlinePadding() {
+        func paddedByDoubleNewline(pureText: NSAttributedString) -> Bool {
+            let numMatches = newLinePaddingRegEx?.numberOfMatches(
+                in: pureText.string, options: [], range: pureText.wholeRange()) ?? 0
+            return numMatches > 0
+        }
+
+        if text.isEmpty {
+            return
+        }
+        var changed = false
+        let theText = NSMutableAttributedString(attributedString: attributedText)
+        let theRange = selectedRange
+        while !paddedByDoubleNewline(pureText: theText) {
+            theText.append(NSAttributedString(string: "\n"))
+            changed = true
+        }
+        if changed {
+            attributedText = theText
+            selectedRange = theRange
+        }
     }
 }

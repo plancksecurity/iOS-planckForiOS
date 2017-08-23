@@ -48,6 +48,7 @@ extension ComposeCell: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         guard let cmTextview = textView as? ComposeTextView else { return }
         fieldModel?.value = cmTextview.attributedText
+        cmTextview.addNewlinePadding()
         delegate?.textdidChange(at: index, textView: cmTextview)
     }
     
