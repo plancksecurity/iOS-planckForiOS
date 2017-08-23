@@ -172,7 +172,13 @@ open class ComposeTextView: UITextView {
         let theText = NSMutableAttributedString(attributedString: attributedText)
         let theRange = selectedRange
         while !paddedByDoubleNewline(pureText: theText) {
-            theText.append(NSAttributedString(string: "\n"))
+            let appendedString = NSMutableAttributedString(string: "\n")
+            appendedString.addAttribute(NSFontAttributeName,
+                             value: UIFont.pEpInput,
+                             range: appendedString.wholeRange()
+            )
+
+            theText.append(appendedString)
             changed = true
         }
         if changed {
