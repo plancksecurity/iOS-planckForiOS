@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 open class ComposeCell: UITableViewCell, CellProtocol {
-    
     @IBOutlet weak public var textView: ComposeTextView!
     @IBOutlet weak public var titleLabel: UILabel?
 
@@ -41,7 +40,6 @@ open class ComposeCell: UITableViewCell, CellProtocol {
 }
 
 extension ComposeCell: UITextViewDelegate {
-    
     public func textViewDidBeginEditing(_ textView: UITextView) {
         guard let cmTextview = textView as? ComposeTextView else { return }
         delegate?.textdidStartEditing(at: index, textView: cmTextview)
@@ -58,5 +56,3 @@ extension ComposeCell: UITextViewDelegate {
         delegate?.textDidEndEditing(at: index, textView: cmTextview)
     }
 }
-
-
