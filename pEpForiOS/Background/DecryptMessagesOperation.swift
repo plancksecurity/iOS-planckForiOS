@@ -17,7 +17,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
             let session = PEPSession()
 
             guard let messages = CdMessage.all(
-                predicate: CdMessage.unencryptedMessagesPredicate(),
+                predicate: CdMessage.unknownToPepMessagesPredicate(),
                 orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
                 in: context) as? [CdMessage] else {
                     self.markAsFinished()
@@ -65,7 +65,6 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_trusted,
                      PEP_rating_trusted_and_anonymized,
                      PEP_rating_fully_anonymous:
-
                     if let decrypted = pepDecryptedMessage as? PEPMessage {
                         message.update(pEpMessage: decrypted, pepColorRating: color)
                         self.updateMessage(cdMessage: message, keys: theKeys)
