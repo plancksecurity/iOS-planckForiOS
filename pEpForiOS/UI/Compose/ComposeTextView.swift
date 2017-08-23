@@ -161,7 +161,7 @@ open class ComposeTextView: UITextView {
     public func addNewlinePadding() {
         func paddedByDoubleNewline(pureText: NSAttributedString) -> Bool {
             let numMatches = newLinePaddingRegEx?.numberOfMatches(
-                in: pureText.string, options: [], range: pureText.wholeRange()) ?? 0
+                in: pureText.string, options: [], range: pureText.wholeRange()) ?? 1
             return numMatches > 0
         }
 
