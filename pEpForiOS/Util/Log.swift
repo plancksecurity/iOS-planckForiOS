@@ -12,7 +12,8 @@ import MessageModel
 @objc open class Log: NSObject {
 
     private let title = "pEpForiOS"
-    private var session = PEPSession() //BUFF: The usual singleton problems. It has state plus we might have to configure it once to assure a unique session
+    //We have the typical singleton problems. It has state plus we might have to configure it once to assure a unique session
+    private var session = PEPSessionCreator.shared.newSession()
     private var logEnabled = true
     private let queue = DispatchQueue(label: "logging")
 

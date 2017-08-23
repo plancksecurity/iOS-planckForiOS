@@ -22,7 +22,7 @@ class AppConfig {
         get {
             guard let session = theSession else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No session!")
-                return PEPSession()
+                return PEPSessionCreator.shared.newSession()
             }
             return session
         }

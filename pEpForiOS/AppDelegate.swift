@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         // Open the first session from the main thread and keep it open
-        let session = PEPSession()
+        let session = PEPSessionCreator.shared.newSession()
 
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)

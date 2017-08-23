@@ -69,7 +69,7 @@ class EmailListViewCell: UITableViewCell {
     }
 
     func updatePepRating(message: Message) {
-        var saveSession = session ?? PEPSession()
+        let saveSession = session ?? PEPSessionCreator.shared.newSession()
         if session == nil {
             Log.shared.errorAndCrash(component: #function, errorString: "We need a session")
         }

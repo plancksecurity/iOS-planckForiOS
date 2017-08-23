@@ -14,7 +14,7 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
     open override func main() {
         let context = Record.Context.background
         context.perform() {
-            let session = PEPSession()
+            let session = PEPSessionCreator.shared.newSession()
 
             guard let messages = CdMessage.all(
                 predicate: CdMessage.unknownToPepMessagesPredicate(),

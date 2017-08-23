@@ -666,7 +666,6 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
     }
 }
 
-//BUFF: remove dead code
 // MARK: - UINavigationControllerDelegate
 
 extension ComposeTableViewController: UINavigationControllerDelegate {

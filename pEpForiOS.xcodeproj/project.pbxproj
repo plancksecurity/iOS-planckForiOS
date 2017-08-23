@@ -16,6 +16,7 @@
 		1572B9CB1F3474880048BCF5 /* AccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */; };
 		1579396E1F4DB7AC00A2A6CF /* TableViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579396D1F4DB7AC00A2A6CF /* TableViewControllerBase.swift */; };
 		157939701F4DB8B600A2A6CF /* ViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579396F1F4DB8B600A2A6CF /* ViewControllerBase.swift */; };
+		157939791F4DED9D00A2A6CF /* PEPSessionCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157939781F4DED9D00A2A6CF /* PEPSessionCreator.swift */; };
 		15B483D91F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */; };
 		15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */; };
 		15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */; };
@@ -359,6 +360,7 @@
 		1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		1579396D1F4DB7AC00A2A6CF /* TableViewControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewControllerBase.swift; sourceTree = "<group>"; };
 		1579396F1F4DB8B600A2A6CF /* ViewControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerBase.swift; sourceTree = "<group>"; };
+		157939781F4DED9D00A2A6CF /* PEPSessionCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSessionCreator.swift; sourceTree = "<group>"; };
 		15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataDrivenTestBase.swift; sourceTree = "<group>"; };
 		15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialUseMailboxesTest.swift; sourceTree = "<group>"; };
 		15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperationTest.swift; sourceTree = "<group>"; };
@@ -1221,6 +1223,7 @@
 				43E88BDD1EFA665600E0B224 /* AsyncStateMachineProtocol.swift */,
 				43E88BDF1EFA667600E0B224 /* AsyncStateMachine.swift */,
 				B741D5021F26234A00DFD93A /* EmailAddressValidation.swift */,
+				157939781F4DED9D00A2A6CF /* PEPSessionCreator.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1867,6 +1870,7 @@
 				B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */,
 				4307C4721ED826E400A276A4 /* SmtpSendError.swift in Sources */,
 				222B357E1DF97675007A1F82 /* SuggestTableView.swift in Sources */,
+				157939791F4DED9D00A2A6CF /* PEPSessionCreator.swift in Sources */,
 				431AE5D71D2EC0DD00F609D3 /* RecipientCell.swift in Sources */,
 				432198ED1DF6B66800318A74 /* SharedObjects.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,

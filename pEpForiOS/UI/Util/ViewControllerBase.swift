@@ -25,7 +25,7 @@ class ViewControllerBase: UIViewController {
     var session: PEPSession {
         guard let config = appConfig else {
             Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
-            return PEPSession()
+            return PEPSessionCreator.shared.newSession()
         }
         return config.session
     }
