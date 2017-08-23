@@ -73,9 +73,11 @@ extension CWIMAPMessage {
                 let multiPart = CWMIMEMultipart()
                 if encrypted {
                     self.setContentType(Constants.contentTypeMultipartEncrypted)
+                    self.setContentTransferEncoding(PantomimeEncoding8bit)
                     self.setParameter(Constants.protocolPGPEncrypted, forKey: "protocol")
                 } else {
                     self.setContentType(Constants.contentTypeMultipartRelated)
+                    self.setContentTransferEncoding(PantomimeEncoding8bit)
                     if let bodyPart = PEPUtil.bodyPart(pEpMessage: pEpMessage) {
                         multiPart.add(bodyPart)
                     }

@@ -502,7 +502,7 @@ extension EmailListViewController: MessageFolderDelegate {
     }
 }
 
-extension EmailListViewController: tableViewUpdate {
+extension EmailListViewController: TableViewUpdate {
     func updateView() {
         self.tableView.reloadData()
     }
