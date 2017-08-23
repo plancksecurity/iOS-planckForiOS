@@ -58,7 +58,6 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                     break
                 case PEP_rating_unreliable,
                      PEP_rating_mistrust,
-                     PEP_rating_under_attack,
                      PEP_rating_reliable,
                      PEP_rating_reliable,
                      PEP_rating_trusted,
@@ -73,6 +72,15 @@ open class DecryptMessagesOperation: ConcurrentBaseOperation {
                                                  errorString:"Not sure if this is supposed to happen even I think it's not. If it is, remove the else block or lower the log ")
                     }
                     break
+                case PEP_rating_under_attack:
+                    if let decrypted = pepDecryptedMessage as? PEPMessage {
+                        message.update(pEpMessage: decrypted, pepColorRating: color)
+                        message.underAttack = true
+                        self.updateMessage(cdMessage: message, keys: theKeys)
+                    } else {
+                        Log.shared.errorAndCrash(component: #function,
+                                                 errorString:"Not sure if this is supposed to happen even I think it's not. If it is, remove the else block or lower the log ")
+                    }
                 default:
                     Log.warn(
                         component: self.comp,

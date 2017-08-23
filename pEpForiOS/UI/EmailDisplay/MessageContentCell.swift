@@ -16,8 +16,21 @@ open class MessageContentCell: MessageCell {
     public override func updateCell(model: ComposeFieldModel, message: Message,
                                     indexPath: IndexPath) {
         super.updateCell(model: model, message: message, indexPath: indexPath)
+
+        contentLabel.text = ""
+        if message.underAttack {
+            let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
+            contentLabel.text?.append(status.title)
+            contentLabel.text?.append(status.explanation)
+            contentLabel.text?.append(status.suggestion)
+            contentLabel.text?.append("\n")
+        }
+
         //if let body = message.longMessage {
-            contentLabel.text = message.longMessage?.trimmedWhiteSpace()
+        if let longmessage = message.longMessage?.trimmedWhiteSpace() {
+            contentLabel.text?.append(longmessage)
+        }
+
         //} else {
         //    contentLabel.text = message.longMessageFormatted
         //}
