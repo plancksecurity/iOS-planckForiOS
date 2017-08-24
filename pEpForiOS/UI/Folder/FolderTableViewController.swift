@@ -87,6 +87,7 @@ class FolderTableViewController: TableViewControllerBase {
                 return
         }
 
+        vc.appConfig = saveAppConfig
         let config = EmailListConfig(appConfig: saveAppConfig,
                                      folder: folderVM[indexPath.section][indexPath.row]
                                         .getFolder())
