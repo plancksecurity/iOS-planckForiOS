@@ -50,6 +50,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    private func setupInitialViewController() -> Bool {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UINavigationController,
+            let rootVC = initialNVC.rootViewController as? EmailListViewController
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Problem initializing UI")
+                return false
+        }
+        rootVC.appConfig = appConfig
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        self.window = window
+        window.rootViewController = initialNVC
+        window.makeKeyAndVisible()
+
+        return true
+    }
+
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -94,7 +111,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AddressBook.checkAndTransfer()
         }
 
-        return false
+        let result = setupInitialViewController()
+
+        return result
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

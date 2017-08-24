@@ -45,16 +45,6 @@ class EmailListViewController: TableViewControllerBase {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // As this is the initial VC, we have to set the config here once.
-        // Better abbroach would be to init initial VC progamatically in AppDelegate, but that failed 
-        // due to references to mainStoryboard.initialViewController from other Storyboards.
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            Log.shared.errorAndCrash(component: #function, errorString: "App without delegate?")
-            return
-        }
-        appConfig = appDelegate.appConfig
-
         title = NSLocalizedString("Inbox", comment: "General name for (unified) inbox")
         UIHelper.emailListTableHeight(self.tableView)
         addSearchBar()
