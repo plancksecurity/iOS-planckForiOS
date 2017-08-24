@@ -63,7 +63,19 @@ extension CWIMAPMessage {
             }
             self.setReferences(allRefsAdded.array)
 
-            // deal with MIME type
+            if let optFields = pEpMessage[kPepOptFields] as? NSArray {
+                for item in optFields {
+                    if let headerfield = item as? NSArray {
+                        guard let header = headerfield[0] as? String else {
+                            continue
+                        }
+                        guard let value = headerfield[1] as? String else {
+                            continue
+                        }
+                        addHeader(header, withValue: value)
+                    }
+                }
+            }
 
             let attachmentDictsOpt = pEpMessage[kPepAttachments] as? NSArray
             if !MiscUtil.isNilOrEmptyNSArray(attachmentDictsOpt) {

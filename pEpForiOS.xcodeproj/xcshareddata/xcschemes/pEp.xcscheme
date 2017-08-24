@@ -154,6 +154,16 @@
                ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "64415E161BE94FCB00F6CBB2"
+               BuildableName = "pEpObjCAdapterTests.xctest"
+               BlueprintName = "pEpObjCAdapterTests"
+               ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
