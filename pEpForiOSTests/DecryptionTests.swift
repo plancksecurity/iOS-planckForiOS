@@ -101,6 +101,26 @@ class DecryptionTests: XCTestCase {
                     return
             }
             XCTAssertEqual(theAttachments.count, 2)
+            XCTAssertNotNil(theEncryptedDict[kPepOptFields])
+            guard let optFields = theEncryptedDict[kPepOptFields] as? NSArray else {
+                XCTFail()
+                return
+            }
+            XCTAssertTrue(optFields.count > 0)
+            var pEpVersionFound = false
+            for item in optFields {
+                if let headerfield = item as? NSArray {
+                    guard let name = headerfield[0] as? String else {
+                        XCTFail()
+                        continue
+                    }
+                    if name == "X-pEp-Version" {
+                        pEpVersionFound = true
+                    }
+                    XCTAssertNotNil(headerfield[1] as? String)
+                }
+            }
+            XCTAssertTrue(pEpVersionFound)
 
             encryptedDict = theEncryptedDict
         }
