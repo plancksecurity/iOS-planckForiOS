@@ -13,6 +13,7 @@ import MessageModel
 
 struct EmailListConfig {
     var appConfig: AppConfig
+
     /** The folder to display, if it exists */
     var folder: Folder?
 
@@ -29,7 +30,6 @@ class EmailListViewController: TableViewControllerBase {
     var viewModel: EmailListViewModel?
     var state = UIState()
     let searchController = UISearchController(searchResultsController: nil)
-    //let cellsInUse = NSCache<NSString, EmailListViewCell>()
 
     /**
      After trustwords have been invoked, this will be the partner identity that
@@ -41,7 +41,6 @@ class EmailListViewController: TableViewControllerBase {
     @IBOutlet weak var textFilterButton: UIBarButtonItem!
 
     @IBOutlet var showFoldersButton: UIBarButtonItem!
-    //private var filterEnabled = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
