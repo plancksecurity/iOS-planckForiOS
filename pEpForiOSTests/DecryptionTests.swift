@@ -114,7 +114,7 @@ class DecryptionTests: XCTestCase {
                         XCTFail()
                         continue
                     }
-                    if name == "X-pEp-Version" {
+                    if name == kXpEpVersion {
                         pEpVersionFound = true
                     }
                     XCTAssertNotNil(headerfield[1] as? String)
@@ -131,6 +131,11 @@ class DecryptionTests: XCTestCase {
         }
 
         let pantMail = CWIMAPMessage(pEpMessage: encryptedDict, mailboxName: inboxName)
+
+        if shouldEncrypt {
+            XCTAssertTrue(pantMail.headerValue(forName: kXpEpVersion) is String)
+        }
+
         guard
             let cdMsg = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantMail, account: cdOwnAccount,
