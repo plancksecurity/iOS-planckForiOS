@@ -330,7 +330,7 @@
                                             </connections>
                                         </textView>
                                         <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8S-M4-JdW">
-                                            <rect key="frame" x="-10" y="40" width="373" height="140"/>
+                                            <rect key="frame" x="-10" y="40" width="372" height="140"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="prY-xp-1rI" id="VoP-0P-HiT"/>
