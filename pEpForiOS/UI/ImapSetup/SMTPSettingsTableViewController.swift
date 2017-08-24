@@ -213,6 +213,7 @@ UITextFieldDelegate {
         case .viewLogSegue:
             if let dnc = segue.destination as? UINavigationController,
                 let dvc = dnc.rootViewController as? LogViewController {
+                dvc.appConfig = appConfig
             }
         default:()
         }
