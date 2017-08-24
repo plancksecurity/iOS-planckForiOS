@@ -1366,7 +1366,6 @@
 				43ED53641CC77F95006AB156 /* EmailListViewController.swift */,
 				431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */,
 				43A6E0571E57400E005BEE69 /* RatingReEvaluator.swift */,
-				B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */,
 			);
 			path = EmailDisplay;
 			sourceTree = "<group>";
@@ -1467,6 +1466,7 @@
 		B74D08BF1F013F15003D092C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";

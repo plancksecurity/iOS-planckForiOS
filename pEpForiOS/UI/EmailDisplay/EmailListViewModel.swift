@@ -84,7 +84,13 @@ public class EmailListViewModel : FilterUpdateProtocol{
     }
 
     public func updateFilter(filter: Filter) {
-        enabledFilters = folderToShow?.updateFilter(filter: filter)
+        if let temporalfilters = folderToShow?.filter {
+            temporalfilters.and(filter: filter)
+            enabledFilters = folderToShow?.updateFilter(filter: temporalfilters)
+        } else {
+            enabledFilters = folderToShow?.updateFilter(filter: filter)
+        }
+
         self.delegate?.updateView()
     }
 
