@@ -9,7 +9,7 @@
 import XCTest
 
 import CoreData
-import pEpForiOS
+@testable import pEpForiOS
 import MessageModel
 
 class CoreDataDrivenTestBase: XCTestCase {
@@ -21,9 +21,13 @@ class CoreDataDrivenTestBase: XCTestCase {
     var smtpConnectInfo: EmailConnectInfo!
     var imapSyncData: ImapSyncData!
 
+    var session = PEPSessionCreator.shared.newSession()
+
     override func setUp() {
         super.setUp()
 
+        session = PEPSessionCreator.shared.newSession()
+        
         persistentSetup = PersistentSetup()
         
         let cdAccount = TestData().createWorkingCdAccount()

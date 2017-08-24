@@ -263,7 +263,7 @@ class TestUtil {
             return []
         }
 
-        let session = PEPSession()
+        let session = PEPSessionCreator.shared.newSession()
         TestUtil.importKeyByFileName(
             session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
 

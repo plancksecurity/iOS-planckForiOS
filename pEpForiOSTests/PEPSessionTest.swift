@@ -8,7 +8,7 @@
 
 import XCTest
 
-import pEpForiOS
+@testable import pEpForiOS
 import MessageModel
 
 class PEPSessionTest: XCTestCase {
@@ -50,7 +50,7 @@ class PEPSessionTest: XCTestCase {
         let hf = HeaderField(name: "name", value: "Value")
         message.optionalFields = [hf]
         message.save( )
-        let sesion = PEPSession()
+        let session = PEPSessionCreator.shared.newSession()
         guard let first = CdMessage.first() else {
             XCTFail("No messages ...")
             return
@@ -58,8 +58,8 @@ class PEPSessionTest: XCTestCase {
         let cdmessage1 = first
         let cdmessage2 = cdmessage1
         let pepmessage = cdmessage1.pEpMessage()
-        sesion.encryptMessageDict(pepmessage, extra: nil, dest: nil)
-        sesion.decryptMessageDict(pepmessage, dest: nil, keys: nil)
+        session.encryptMessageDict(pepmessage, extra: nil, dest: nil)
+        session.decryptMessageDict(pepmessage, dest: nil, keys: nil)
         cdmessage2.update(pEpMessage: pepmessage)
         XCTAssertEqual(cdmessage2,cdmessage1)
 
@@ -96,7 +96,7 @@ class PEPSessionTest: XCTestCase {
             kPepOutgoing: NSNumber(booleanLiteral: true)
         ] as PEPMessage
 
-        let session = PEPSession()
+        let session = PEPSessionCreator.shared.newSession()
 
         session.mySelf(NSMutableDictionary(dictionary: myself))
 
@@ -177,7 +177,7 @@ class PEPSessionTest: XCTestCase {
         }
 
         let pEpMessage = cdMessage.pEpMessage(outgoing: false)
-        let session = PEPSession()
+        let session = PEPSessionCreator.shared.newSession()
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
         let _ = session.decryptMessageDict(

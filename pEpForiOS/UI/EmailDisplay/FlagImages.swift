@@ -10,7 +10,7 @@ import UIKit
 
 import MessageModel
 
-open class FlagImages {
+class FlagImages {
     public static func create(imageSize: CGSize) -> FlagImages {
         let val = NSValue(cgSize: imageSize)
         if let o = sharedDict[val] {
@@ -101,13 +101,13 @@ open class FlagImages {
             NSForegroundColorAttributeName: UIColor.white,
             ] as [String : Any]
 
-            UIGraphicsBeginImageContextWithOptions((image?.size)!, false, 0.0)
-            image?.draw(in: CGRect(origin: CGPoint.zero, size: (image?.size)!))
-            let rect = CGRect(origin: CGPoint(x: 1, y: 1), size: (image?.size)!)
-            text.draw(in: rect, withAttributes: textFontAttributes)
-            let newImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            return newImage
+        UIGraphicsBeginImageContextWithOptions((image?.size)!, false, 0.0)
+        image?.draw(in: CGRect(origin: CGPoint.zero, size: (image?.size)!))
+        let rect = CGRect(origin: CGPoint(x: 1, y: 1), size: (image?.size)!)
+        text.draw(in: rect, withAttributes: textFontAttributes)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
     }
 
     func produceImage(size: CGSize, block: (CGContext) -> ()) -> UIImage? {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LogViewController: UIViewController {
+class LogViewController: ViewControllerBase {
 
     @IBOutlet weak var logTextView: UITextView!
     @IBOutlet weak var copyButton: UIButton!
@@ -36,16 +36,6 @@ class LogViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     @IBAction func copyAction(_ sender: Any) {
         Log.checklog() { logString in

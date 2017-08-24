@@ -50,6 +50,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    private func setupInitialViewController() -> Bool {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UINavigationController,
+            let rootVC = initialNVC.rootViewController as? EmailListViewController
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Problem initializing UI")
+                return false
+        }
+        rootVC.appConfig = appConfig
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        self.window = window
+        window.rootViewController = initialNVC
+        window.makeKeyAndVisible()
+
+        return true
+    }
+
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -59,12 +76,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         // Open the first session from the main thread and keep it open
-        let firstSession = PEPSession()
+        let session = PEPSessionCreator.shared.newSession()
 
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
-        appConfig = AppConfig(session: firstSession, messageSyncService: theMessageSyncService)
+        appConfig = AppConfig(session: session, messageSyncService: theMessageSyncService)
 
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
@@ -94,7 +111,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AddressBook.checkAndTransfer()
         }
 
-        return false
+        let result = setupInitialViewController()
+
+        return result
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

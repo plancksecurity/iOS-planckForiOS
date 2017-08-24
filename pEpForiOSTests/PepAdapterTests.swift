@@ -8,7 +8,7 @@
 
 import XCTest
 
-import pEpForiOS
+@testable import pEpForiOS
 
 class PepAdapterTests: XCTestCase {
     let comp = "PepAdapterTests"
@@ -18,7 +18,7 @@ class PepAdapterTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        pEpSession = PEPSession()
+        pEpSession = PEPSessionCreator.shared.newSession()
     }
     
     override func tearDown() {

@@ -16,7 +16,7 @@ import MessageModel
 open class EncryptAndSendOperation: ConcurrentBaseOperation {
     var smtpSend: SmtpSend!
     var smtpSendData: SmtpSendData
-    lazy var session = PEPSession()
+    lazy var session = PEPSessionCreator.shared.newSession()
 
     /** The object ID of the last sent message, so we can change the sendStatus on success */
     var lastSentMessageObjectID: NSManagedObjectID?

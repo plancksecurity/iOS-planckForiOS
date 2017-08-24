@@ -8,7 +8,7 @@
 
 import XCTest
 
-import pEpForiOS
+@testable import pEpForiOS
 import MessageModel
 
 class DecryptionTests: XCTestCase {
@@ -19,7 +19,7 @@ class DecryptionTests: XCTestCase {
     var cdInbox: CdFolder!
 
     var persistentSetup: PersistentSetup!
-    var session = PEPSession()
+    var session = PEPSessionCreator.shared.newSession()
     var backgroundQueue: OperationQueue!
 
     override func setUp() {

@@ -21,9 +21,9 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
     }
 
     let message: Message
-    let session: PEPSession?
+    let session: PEPSession
 
-    init(parentName: String, message: Message, session: PEPSession? = nil) {
+    init(parentName: String, message: Message, session: PEPSession) {
         self.message = message
         self.session = session
         super.init(parentName: parentName)
@@ -42,7 +42,7 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
             addError(ReevaluationError.noMessageFound)
             return
         }
-        let theSession = session ?? PEPSession()
+        let theSession = session
         let pepMessage = cdMsg.pEpMessage()
         let newRating = theSession.reEvaluateMessageRating(pepMessage)
 

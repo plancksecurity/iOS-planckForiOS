@@ -17,7 +17,7 @@ import MessageModel
  For marking the message as done, overwrite `markLastMessageAsFinished`.
  */
 open class AppendMailsOperation: ImapSyncOperation {
-    lazy var session = PEPSession()
+    lazy var session = PEPSessionCreator.shared.newSession()
     lazy var context = Record.Context.background
 
     var syncDelegate: AppendMailsSyncDelegate?

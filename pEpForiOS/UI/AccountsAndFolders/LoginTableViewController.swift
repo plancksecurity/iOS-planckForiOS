@@ -34,13 +34,7 @@
     }
  }
 
- class LoginTableViewController: UITableViewController, UITextFieldDelegate {
-    var appConfig: AppConfig? {
-        didSet {
-            loginViewModel.messageSyncService = appConfig?.messageSyncService
-        }
-    }
-
+ class LoginTableViewController: TableViewControllerBase, UITextFieldDelegate {
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
@@ -65,18 +59,16 @@
         }
     }
 
+    override func didSetAppConfig() {
+        loginViewModel.messageSyncService = appConfig?.messageSyncService
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        if appConfig == nil {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                appConfig = appDelegate.appConfig
-            }
-        }
-
         updateView()
     }
 
@@ -228,6 +220,14 @@
         case .manualConfigSegue:
             if
                 let navVC = segue.destination as? UINavigationController,
+                let vc = navVC.topViewController as? UserInfoTableViewController {
+                vc.appConfig = appConfig
+                vc.model.address = emailAddress.text
+                vc.model.password = password.text
+                vc.model.userName = user.text
+            }
+        case .viewLogSegue:
+            if let navVC = segue.destination as? UINavigationController,
                 let vc = navVC.topViewController as? UserInfoTableViewController {
                 vc.appConfig = appConfig
                 vc.model.address = emailAddress.text

@@ -12,6 +12,8 @@ import UIKit
 import MessageModel
 
 class EmailListViewCell: UITableViewCell {
+    var session: PEPSession?
+
     @IBOutlet weak var senderLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
@@ -67,12 +69,19 @@ class EmailListViewCell: UITableViewCell {
     }
 
     func updatePepRating(message: Message) {
-        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: nil))
+        let saveSession = session ?? PEPSessionCreator.shared.newSession()
+        if session == nil {
+            Log.shared.errorAndCrash(component: #function, errorString: "We need a session")
+        }
+        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: saveSession))
         ratingImage.image = color.statusIcon()
         ratingImage.backgroundColor = nil
     }
 
-    func configureCell(config: EmailListConfig?, indexPath: IndexPath) -> Message? {
+    // Seperation of concerns is broken here. An UI element must not now anything about model/bussness logic,
+    // thus is must not know about a PEPSession
+    func configureCell(config: EmailListConfig?, indexPath: IndexPath, session: PEPSession) -> Message? {
+        self.session = session
         self.config = config
 
         if let message = messageAt(indexPath: indexPath, config: config) {

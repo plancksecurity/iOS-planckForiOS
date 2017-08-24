@@ -10,7 +10,7 @@ import UIKit
 
 import MessageModel
 
-public class SMTPSettingsTableViewController: UITableViewController, TextfieldResponder,
+class SMTPSettingsTableViewController: TableViewControllerBase, TextfieldResponder,
 UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
 
@@ -22,7 +22,6 @@ UITextFieldDelegate {
     @IBOutlet weak var serverTitle: UILabel!
     @IBOutlet weak var portTitle: UILabel!
 
-    var appConfig: AppConfig?
     var model: AccountUserInput!
     var fields = [UITextField]()
     var responder = 0
@@ -199,6 +198,25 @@ UITextFieldDelegate {
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
         changedResponder(textField)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .backToEmailListSegue:
+            guard
+                let destination = segue.destination as? EmailListViewController
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Problem casting DVC")
+                    return
+            }
+            destination.appConfig = self.appConfig
+        case .viewLogSegue:
+            if let dnc = segue.destination as? UINavigationController,
+                let dvc = dnc.rootViewController as? LogViewController {
+                dvc.appConfig = appConfig
+            }
+        default:()
+        }
     }
 }
 

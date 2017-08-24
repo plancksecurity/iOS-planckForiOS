@@ -12,15 +12,15 @@ import CoreData
 import MessageModel
 
 struct EmailListConfig {
-    var appConfig: AppConfig?
-
+    var appConfig: AppConfig
     /** The folder to display, if it exists */
     var folder: Folder?
 
     let imageProvider = IdentityImageProvider()
 }
 
-class EmailListViewController: UITableViewController {
+class EmailListViewController: TableViewControllerBase {
+    public static let storyboardId = "EmailListViewController"
     struct UIState {
         var isSynching: Bool = false
     }
@@ -45,7 +45,6 @@ class EmailListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         title = NSLocalizedString("Inbox", comment: "General name for (unified) inbox")
         UIHelper.emailListTableHeight(self.tableView)
         addSearchBar()
@@ -82,7 +81,7 @@ class EmailListViewController: UITableViewController {
         } else {
             self.showFoldersButton.isEnabled = true
         }
-        
+
     }
 
     private func updateLastLookAt(on folder: Folder) {
@@ -99,12 +98,12 @@ class EmailListViewController: UITableViewController {
     }
 
     func setupConfig() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No AppDelegate?")
+        guard let saveAppConfig = appConfig else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No AppConfig!")
             return
         }
         if config == nil {
-            config = EmailListConfig(appConfig: appDelegate.appConfig,
+            config = EmailListConfig(appConfig: saveAppConfig,
                                      folder: Folder.unifiedInbox())
         }
 
@@ -192,7 +191,7 @@ class EmailListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
         //mantener el configure cell para tal de no generar un vm para celdas
-        let _ = cell.configureCell(config: config, indexPath: indexPath)
+        let _ = cell.configureCell(config: config, indexPath: indexPath, session: session)
         viewModel?.associate(cell: cell, position: indexPath.row)
         return cell
     }
@@ -386,72 +385,93 @@ extension EmailListViewController: SegueHandlerType {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .segueReply:
-            if let nav = segue.destination as? UINavigationController,
+            guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
                 let cell = sender as? EmailListViewCell,
                 let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config) {
-                destination.composeMode = .replyFrom
-                destination.appConfig = config?.appConfig
-                destination.originalMessage = email
+                let email = cell.messageAt(indexPath: indexPath, config: config) else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
             }
+            destination.appConfig = appConfig
+            destination.composeMode = .replyFrom
+            destination.originalMessage = email
         case .segueReplyAll:
-            if let nav = segue.destination as? UINavigationController,
+            guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
                 let cell = sender as? EmailListViewCell,
                 let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config) {
-                destination.composeMode = .replyAll
-                destination.appConfig = config?.appConfig
-                destination.originalMessage = email
+                let email = cell.messageAt(indexPath: indexPath, config: config)  else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
             }
-            break
+            destination.appConfig = appConfig
+            destination.composeMode = .replyAll
+            destination.originalMessage = email
         case .segueShowEmail:
-            if let vc = segue.destination as? EmailViewController,
+            guard let vc = segue.destination as? EmailViewController,
                 let cell = sender as? EmailListViewCell,
                 let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config) {
-                vc.appConfig = config?.appConfig
-                vc.message = email
-                vc.folderShow = viewModel?.folderToShow
-                vc.messageId = indexPath.row
+                let email = cell.messageAt(indexPath: indexPath, config: config) else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
             }
-            break
+            vc.appConfig = appConfig
+            vc.message = email
+            vc.folderShow = viewModel?.folderToShow
+            vc.messageId = indexPath.row
         case .segueForward:
-            if let nav = segue.destination as? UINavigationController,
+            guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
                 let cell = sender as? EmailListViewCell,
                 let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config) {
-                destination.composeMode = .forward
-                destination.appConfig = config?.appConfig
-                destination.originalMessage = email
+                let email = cell.messageAt(indexPath: indexPath, config: config) else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
             }
-            break
+            destination.composeMode = .forward
+            destination.appConfig = appConfig
+            destination.originalMessage = email
         case .segueFilter:
-            if let destiny = segue.destination as? FilterTableViewController {
-                destiny.filterDelegate = self.viewModel
-                destiny.inFolder = false
-                destiny.filterEnabled = self.viewModel?.folderToShow?.filter
-                destiny.hidesBottomBarWhenPushed = true
+            guard let destiny = segue.destination as? FilterTableViewController  else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                return
             }
-            break
+            destiny.appConfig = appConfig
+            destiny.filterDelegate = viewModel
+            destiny.inFolder = false
+            destiny.filterEnabled = viewModel?.folderToShow?.filter
+            destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
-            if let vc = segue.destination as? LoginTableViewController {
-                vc.appConfig = config?.appConfig
-                vc.hidesBottomBarWhenPushed = true
+            guard let vc = segue.destination as? LoginTableViewController  else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                return
             }
+            vc.appConfig = appConfig
+            vc.hidesBottomBarWhenPushed = true
+            break
         case .segueFolderViews:
-            if let vC = segue.destination as? FolderTableViewController {
-                vC.appConfig = config?.appConfig
-                vC.hidesBottomBarWhenPushed = true
+            guard let vC = segue.destination as? FolderTableViewController  else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                return
             }
-        case .segueEditAccounts, .segueCompose, .noSegue:
+            vC.appConfig = appConfig
+            vC.hidesBottomBarWhenPushed = true
+            break
+        case .segueCompose:
+            guard let nav = segue.destination as? UINavigationController,
+                let destination = nav.rootViewController as? ComposeTableViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
+            }
+            destination.appConfig = appConfig
+            destination.composeMode = .normal
+        default:
+            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break
         }
-
     }
-    
+
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
     }
 

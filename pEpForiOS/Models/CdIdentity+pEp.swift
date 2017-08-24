@@ -37,11 +37,11 @@ extension CdIdentity {
         return contacts
     }
 
-    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
+    public func pEpRating(session: PEPSession) -> PEP_rating {
         return PEPUtil.pEpRating(cdIdentity: self, session: session)
     }
 
-    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
+    public func pEpColor(session: PEPSession) -> PEP_color {
         return PEPUtil.pEpColor(cdIdentity: self, session: session)
     }
 
@@ -49,7 +49,7 @@ extension CdIdentity {
         return PEPUtil.pEp(cdIdentity: self)
     }
 
-    public func fingerPrint(session: PEPSession = PEPSession()) -> String? {
+    public func fingerPrint(session: PEPSession) -> String? {
         return PEPUtil.fingerPrint(cdIdentity: self, session: session)
     }
 }

@@ -18,11 +18,11 @@ extension Identity {
         return nil
     }
 
-    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
+    public func pEpRating(session: PEPSession) -> PEP_rating {
         return PEPUtil.pEpRating(identity: self, session: session)
     }
 
-    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
+    public func pEpColor(session: PEPSession) -> PEP_color {
         return PEPUtil.pEpColor(identity: self, session: session)
     }
 
@@ -30,26 +30,26 @@ extension Identity {
         return PEPUtil.pEp(identity: self)
     }
     
-    open func fingerPrint(session: PEPSession? = PEPSession()) -> String? {
-        return PEPUtil.fingerPrint(identity: self, session: session ?? PEPSession())
+    open func fingerPrint(session: PEPSession) -> String? {
+        return PEPUtil.fingerPrint(identity: self, session: session)
     }
 
-    public func canHandshakeOn(session: PEPSession? = PEPSession()) -> Bool {
+    public func canHandshakeOn(session: PEPSession) -> Bool {
         if isMySelf {
             return false
         }
-        let rating = pEpRating(session: session ?? PEPSession())
+        let rating = pEpRating(session: session)
         return rating.rawValue >= PEP_rating_reliable.rawValue || rating == PEP_rating_mistrust
     }
 
-    public func canResetTrust(session: PEPSession? = PEPSession()) -> Bool {
-        let color = pEpColor(session: session ?? PEPSession())
+    public func canResetTrust(session: PEPSession) -> Bool {
+        let color = pEpColor(session: session)
         return color == PEP_color_green || color == PEP_color_red
     }
 
-    public func decorateButton(button: UIButton) {
+    public func decorateButton(button: UIButton, session: PEPSession) {
         button.setTitleColor(.black, for: .normal)
-        if let color = pEpColor().uiColor() {
+        if let color = pEpColor(session: session).uiColor() {
             button.backgroundColor = color
         } else {
             let buttonDefault = UIButton()
