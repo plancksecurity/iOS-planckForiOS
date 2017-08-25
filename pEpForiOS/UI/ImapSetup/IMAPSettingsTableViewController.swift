@@ -34,7 +34,7 @@ class IMAPSettingsTableViewController: TableViewControllerBase, TextfieldRespond
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("IMAP", comment: "Manual account setup")
+        self.title = NSLocalizedString("IMAP", comment: "Manual account setup")
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [serverValue, portValue]
     }
