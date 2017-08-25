@@ -76,6 +76,13 @@ public extension String {
     }
 
     /**
+     Runs `trimmedWhiteSpace`, `unquote`, and `trimmedWhiteSpace` again.
+     */
+    public func fullyUnquoted() -> String {
+        return trimmedWhiteSpace().unquote().trimmedWhiteSpace()
+    }
+
+    /**
      Very rudimentary test whether this String is a valid email.
      - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
      */

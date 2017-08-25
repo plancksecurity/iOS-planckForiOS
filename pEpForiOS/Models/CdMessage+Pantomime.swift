@@ -568,16 +568,21 @@ extension CdMessage {
     }
 
     static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {
-        let addr = CdIdentity.first(attribute: "address", value: pantomimeAddress.address()) ??
-            CdIdentity.create(attributes: ["address": pantomimeAddress.address(),
-                                           "isMySelf": false])
-        let identity = Identity.from(cdIdentity: addr)
-        if let username = pantomimeAddress.personal() {
-            identity.userName = username
+        let theEmail = pantomimeAddress.address().fullyUnquoted()
+        let userName = pantomimeAddress.personal()?.fullyUnquoted()
+
+        let cdID = CdIdentity.search(address: theEmail) ?? CdIdentity.create()
+        if cdID.address == nil { // this identity is new
+            cdID.isMySelf = false
+            cdID.address = theEmail
+            cdID.userName = userName
+        } else {
+            let isMySelf = cdID.isMySelf?.boolValue ?? false
+            if !isMySelf {
+                cdID.userName = userName
+            }
         }
-        identity.save()
-        //addr.userName = pantomimeAddress.personal()
-        return addr
+        return cdID
     }
 
     /**
