@@ -52,9 +52,9 @@ class UIHelper {
         guard let label = toLabel else {
             return
         }
-        if string?.characters.count > 0 {
+        if let theString = string, !theString.isEmpty {
             label.isHidden = false
-            label.text = string!
+            label.text = theString
         } else {
             label.isHidden = true
         }

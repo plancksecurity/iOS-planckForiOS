@@ -85,7 +85,7 @@ class EmailListViewCell: UITableViewCell {
         self.config = config
 
         if let message = messageAt(indexPath: indexPath, config: config) {
-            UIHelper.putString(message.from?.userName, toLabel: self.senderLabel)
+            UIHelper.putString(message.from?.userNameOrAddress, toLabel: self.senderLabel)
             UIHelper.putString(message.shortMessage, toLabel: self.subjectLabel)
             
             // Snippet
