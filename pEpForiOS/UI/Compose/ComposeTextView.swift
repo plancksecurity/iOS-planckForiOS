@@ -116,42 +116,8 @@ open class ComposeTextView: UITextView {
         }
     }
 
-    class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
-        var attachments = [Attachment]()
-
-        fileprivate let mimeUtil = MimeTypeUtil()
-
-        func stringFor(attachment: NSTextAttachment) -> String? {
-            if let textAttachment = attachment as? TextAttachment,
-                let theAttachment = textAttachment.attachment {
-                attachments.append(theAttachment)
-                let count = attachments.count
-
-                let theID = MessageID.generateUUID()
-                let theExt = mimeUtil?.fileExtension(mimeType: theAttachment.mimeType) ?? "jpg"
-                let cidSrc = "cid:attached-inline-image-\(count)-\(theExt)-\(theID)"
-
-                theAttachment.fileName = cidSrc
-
-                let alt = String(
-                    format: NSLocalizedString("Attached Image %1d (%2@)",
-                                              comment: "image attachment name"),
-                    count, theExt)
-
-                return "![\(alt)](\(cidSrc))"
-            }
-            return nil
-        }
-
-        func stringFor(string: String) -> String? {
-            return string
-        }
-    }
-
     public func toMarkdown() -> (String, [Attachment]) {
-        let theDelegate = ToMarkdownDelegate()
-        let markdown = attributedText.convert(delegate: theDelegate)
-        return (markdown, theDelegate.attachments)
+        return attributedText.convertToMarkDown()
     }
 
     /**

@@ -36,7 +36,7 @@ UITextFieldDelegate {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("SMTP", comment: "Manual account setup")
+        self.title = NSLocalizedString("SMTP", comment: "Manual account setup")
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [serverValue, portValue]
     }

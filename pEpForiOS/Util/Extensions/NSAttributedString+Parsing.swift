@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol NSAttributedStringParsingDelegate: class {
+public protocol NSAttributedStringParsingDelegate: class {
     func stringFor(attachment: NSTextAttachment) -> String?
     func stringFor(string: String) -> String?
 }
