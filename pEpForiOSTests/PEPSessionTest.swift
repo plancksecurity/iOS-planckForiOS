@@ -14,6 +14,8 @@ import MessageModel
 class PEPSessionTest: XCTestCase {
     var persistentSetup: PersistentSetup!
 
+    // MARK: - Setup
+
     override func setUp() {
         super.setUp()
         persistentSetup = PersistentSetup()
@@ -23,6 +25,8 @@ class PEPSessionTest: XCTestCase {
         persistentSetup = nil
         super.tearDown()
     }
+
+    //MARK: - Test
 
     func testPEPConversion() {
         Log.info(component: "testPEPConversion", content: "test")
@@ -65,20 +69,6 @@ class PEPSessionTest: XCTestCase {
 
         Log.verbose(component: "testPEPConversion", content: "test")
         Log.error(component: "testPEPConversion", errorString: "test")
-    }
-
-    func tryDecryptMessage(
-        message: NSDictionary, myID: String, references: [String], session: PEPSession) {
-        var pepDecryptedMessage: NSDictionary? = nil
-        var keys: NSArray?
-        let _ = session.decryptMessageDict(message as! PEPMessage,
-                                           dest: &pepDecryptedMessage, keys: &keys)
-        if let decMsg = pepDecryptedMessage {
-            XCTAssertEqual(decMsg[kPepID] as? String, myID)
-            XCTAssertEqual(decMsg[kPepReferences] as? [String] ?? [], references)
-        } else {
-            XCTFail()
-        }
     }
 
     func testMessageIDAndReferencesAfterEncrypt() {
@@ -183,5 +173,50 @@ class PEPSessionTest: XCTestCase {
         let _ = session.decryptMessageDict(
             pEpMessage, dest: &pepDecryptedMessage, keys: &keys)
         XCTAssertNotNil(pepDecryptedMessage?[kPepLongMessage])
+    }
+
+    // IOS-211
+    func testAttachmentsDoNotGetDuplilcated() {
+        CWLogger.setLogger(Log.shared)
+
+        let cdAccount = TestData().createWorkingCdAccount()
+
+        let folder = CdFolder.create()
+        folder.account = cdAccount
+        folder.name = ImapSync.defaultImapInboxName
+        folder.uuid = MessageID.generate()
+
+        guard let data = TestUtil.loadData(fileName: "IOS-211-duplicated-attachments.txt") else {
+            XCTAssertTrue(false)
+            return
+        }
+        let pantMessage = CWIMAPMessage(data: data)
+        pantMessage.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
+        guard let cdMessage = CdMessage.insertOrUpdate(
+            pantomimeMessage: pantMessage, account: cdAccount, messageUpdate: CWMessageUpdate(),
+            forceParseAttachments: true) else {
+                XCTFail()
+                return
+        }
+
+        let attachments = cdMessage.attachments?.array as? [CdAttachment] ?? []
+
+        XCTAssertEqual(attachments.count, 1)
+    }
+
+    // MARK: - Helper
+
+    func tryDecryptMessage(
+        message: NSDictionary, myID: String, references: [String], session: PEPSession) {
+        var pepDecryptedMessage: NSDictionary? = nil
+        var keys: NSArray?
+        let _ = session.decryptMessageDict(message as! PEPMessage,
+                                           dest: &pepDecryptedMessage, keys: &keys)
+        if let decMsg = pepDecryptedMessage {
+            XCTAssertEqual(decMsg[kPepID] as? String, myID)
+            XCTAssertEqual(decMsg[kPepReferences] as? [String] ?? [], references)
+        } else {
+            XCTFail()
+        }
     }
 }
