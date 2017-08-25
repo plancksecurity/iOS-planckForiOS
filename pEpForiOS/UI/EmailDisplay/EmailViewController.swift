@@ -272,8 +272,8 @@ extension EmailViewController: SegueHandlerType {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                 break
             }
-            destination.message = message
             destination.appConfig = appConfig
+            destination.message = message
             destination.ratingReEvaluator = ratingReEvaluator
             break
         case .noSegue:
