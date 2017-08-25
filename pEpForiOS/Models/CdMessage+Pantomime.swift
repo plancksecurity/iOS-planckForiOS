@@ -302,7 +302,8 @@ extension CdMessage {
     }
 
     func internetAddressFromContact(_ contact: CdIdentity) -> CWInternetAddress {
-        return CWInternetAddress.init(personal: contact.userName, address: contact.address)
+        let address = contact.address ?? "" // CdIdentity.address is not optional in the DB
+        return CWInternetAddress.init(personal: contact.userName, address: address)
     }
 
     func collectContacts(_ contacts: NSOrderedSet?,
