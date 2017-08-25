@@ -78,10 +78,9 @@ open class SmtpSend: Service {
         msg.setFrom(CWInternetAddress.init(personal: "Unit 004",
             address: "unittest.ios.4@peptest.ch"))
 
-        if let to = CWInternetAddress(personal: "Unit 001", address: "unittest.ios.1@peptest.ch") {
-            to.setType(.toRecipient)
-            msg.addRecipient(to)
-        }
+        let to = CWInternetAddress(personal: "Unit 001", address: "unittest.ios.1@peptest.ch")
+        to.setType(.toRecipient)
+        msg.addRecipient(to)
 
         msg.setContentType(Constants.contentTypeText)
         msg.setContentTransferEncoding(PantomimeEncodingNone)
