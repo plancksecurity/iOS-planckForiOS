@@ -63,7 +63,6 @@ class UserInfoTableViewController: TableViewControllerBase, TextfieldResponder, 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.hidesBackButton = Account.all().isEmpty
-        self.title = NSLocalizedString("Account Configuration", comment: "Title for manual account setup")
         updateViewFromInitialModel()
         updateView()
     }
@@ -136,7 +135,6 @@ extension UserInfoTableViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:
             if let destination = segue.destination as? IMAPSettingsTableViewController {
-                self.title = "Account"
                 destination.appConfig = appConfig
                 destination.model = model
             }
