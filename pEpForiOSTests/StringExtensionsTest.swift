@@ -11,16 +11,6 @@ import XCTest
 @testable import pEpForiOS
 
 class StringExtensionsTest: XCTestCase {
-    class TestMarkdownImageDelegate: MarkdownImageDelegate {
-        var imgCount = 0
-
-        func img(src: String, alt: String?) -> (String, String) {
-            let result = ("src\(imgCount)", "alt\(imgCount)")
-            imgCount += 1
-            return result
-        }
-    }
-
     func testValidEmail() {
         XCTAssertFalse("".isProbablyValidEmail())
         XCTAssertFalse("whe@@@uiae".isProbablyValidEmail())
@@ -125,69 +115,5 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual("<messageid@someserver>".removeAngleBrackets(), "messageid@someserver")
         XCTAssertEqual("  <messageid@someserver>  ".removeAngleBrackets(),
                        "messageid@someserver")
-    }
-
-    func testExtractTextFromHTML() {
-        var html = "<html>\r\n  <head>\r\n\r\n"
-            + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
-            + "</head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n"
-            + "<p>HTML! <b>Yes!</b><br>\r\n"
-            + "</p>\r\n  </body>\r\n</html>\r\n"
-        XCTAssertEqual(html.extractTextFromHTML(), "HTML! Yes!")
-
-        html = "<html>\r\n  <head>\r\n\r\n"
-            + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
-            + "</head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n"
-            + "<p>HTML! <b>Yes!</b><br>\r\n"
-            + "</p><p>Whatever. New paragraph.</p>\r\n  </body>\r\n</html>\r\n"
-        XCTAssertEqual(html.extractTextFromHTML(), "HTML! Yes! Whatever. New paragraph.")
-
-        html = "<html>\r\n  <head>\r\n\r\n"
-            + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
-            + "</head>\r\n  <body bgcolor=\"#FFFFFF\" text=\"#000000\">\r\n"
-            + "<p>HTML! <b>Yes!</b><br>\r\n"
-            + "</p><p>Whatever. New <b>bold</b> paragraph.</p>\r\n  </body>\r\n</html>\r\n"
-        XCTAssertEqual(
-            html.extractTextFromHTML(), "HTML! Yes! Whatever. New bold paragraph.")
-    }
-
-    func testToMarkdown() {
-        let imgDelegate = TestMarkdownImageDelegate()
-
-        guard let data = TestUtil.loadData(fileName: "NSHTML_2017-08-09 15_40_53 +0000.html") else {
-            XCTFail()
-            return
-        }
-        guard let inputString = String(data: data, encoding: String.Encoding.utf8) else {
-            XCTFail()
-            return
-        }
-        guard let mdString = inputString.attributedStringHtmlToMarkdown(
-            imgDelegate: imgDelegate) else {
-                XCTFail()
-                return
-        }
-        XCTAssertTrue(mdString.characters.count > 0)
-        XCTAssertEqual(mdString, "2\n\n![alt0](src0)\n\n1\n\n![alt1](src1)\n\nSent with p≡p")
-        XCTAssertNotEqual(mdString, inputString)
-    }
-
-    func testMarkdownToHtml() {
-        let s1 = "Hi, what's up!"
-        XCTAssertEqual(s1.markdownToHtml(), "<p>\(s1)</p>\n")
-
-        let alt1 = "Image1"
-        let ref1 = "cid:001"
-        XCTAssertEqual("![\(alt1)](\(ref1))".markdownToHtml(),
-                       "<p><img src=\"\(ref1)\" alt=\"\(alt1)\" /></p>\n")
-    }
-
-    func testExtractCid() {
-        let token = "uiaeuiae"
-        XCTAssertEqual("cid:\(token)".extractCid(), token)
-        XCTAssertNil("file:\(token)".extractCid())
-        XCTAssertNil(token.extractCid())
-        XCTAssertNil("http://uiaeuiaeuiae".extractCid())
-        XCTAssertNil("whatever is this".extractCid())
     }
 }
