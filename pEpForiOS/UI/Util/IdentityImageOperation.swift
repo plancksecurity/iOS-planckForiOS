@@ -53,6 +53,9 @@ class IdentityImageOperation: Operation {
             var initials = "?"
             if let userName = identity.userName {
                 initials = userName.initials()
+            } else {
+                let namePart = identity.address.namePartOfEmail()
+                initials = namePart.initials()
             }
             image = identityImageFromName(initials: initials, size: imageSize)
         }

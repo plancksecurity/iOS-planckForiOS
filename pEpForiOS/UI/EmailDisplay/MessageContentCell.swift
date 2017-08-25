@@ -26,14 +26,12 @@ open class MessageContentCell: MessageCell {
             contentLabel.text?.append("\n")
         }
 
-        //if let body = message.longMessage {
         if let longmessage = message.longMessage?.trimmedWhiteSpace() {
             contentLabel.text?.append(longmessage)
+        } else {
+            if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
+                contentLabel.text?.append(text)
+            }
         }
-
-        //} else {
-        //    contentLabel.text = message.longMessageFormatted
-        //}
-
     }
 }

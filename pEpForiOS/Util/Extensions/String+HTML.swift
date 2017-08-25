@@ -13,7 +13,9 @@ extension String {
      Extracts pure text from HTML, useful for creating snippets of a mail.
      */
     public func extractTextFromHTML() -> String? {
-        return attributedStringHtmlToMarkdown()?.replaceNewLinesWith(" ").trimmedWhiteSpace()
+        let parser = HtmlToTextSaxParser()
+        parser.parse(string: self)
+        return parser.output?.replaceNewLinesWith(" ").trimmedWhiteSpace()
     }
 
     /**
