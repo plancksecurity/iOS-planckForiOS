@@ -18,6 +18,8 @@ class BasicSaxParser: NSObject {
         if !success {
             output = nil
         }
+
+        output = output?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     func add(string: String) {

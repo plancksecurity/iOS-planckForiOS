@@ -22,6 +22,7 @@ class HtmlToMarkdownSaxParser: BasicSaxParser {
 
     func parse(string: String) {
         super.parse(string: string, theDelegate: self)
+        output = output?.eliminateExcessiveNewLines()
     }
 
     func addImg(src: String, alt: String?) {
