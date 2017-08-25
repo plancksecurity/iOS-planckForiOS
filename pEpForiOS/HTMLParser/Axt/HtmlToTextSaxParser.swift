@@ -15,7 +15,13 @@ class HtmlToTextSaxParser: BasicSaxParser {
         super.parse(string: string, theDelegate: self)
     }
 
-    let tagsAcceptingChars = Set<String>(["p", "div", "body", "b"])
+    var tagsAcceptingChars = Set<String>(["p", "div", "body", "b", "td", "span"])
+
+    override init() {
+        for i in 1...20 {
+            tagsAcceptingChars.insert("h\(i)")
+        }
+    }
 
     func acceptCharacters() -> Bool {
         if let elm = tagStack.last {
