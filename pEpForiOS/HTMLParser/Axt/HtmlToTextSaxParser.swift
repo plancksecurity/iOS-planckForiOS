@@ -8,28 +8,11 @@
 
 import Foundation
 
-class HtmlToTextSaxParser: NSObject {
-    var output: String?
-
+class HtmlToTextSaxParser: BasicSaxParser {
     var tagStack = [String]()
 
     func parse(string: String) {
-        let parser = AXHTMLParser(htmlString: string)
-        parser.delegate = self
-        let success = parser.parse()
-        if !success {
-            output = nil
-        }
-        output = output?.trimmingCharacters(in: CharacterSet.newlines)
-        output = output?.trimmedExcessiveNewLines()
-    }
-
-    func add(string: String) {
-        output = "\(output ?? "")\(string)"
-    }
-
-    func addImg(src: String, alt: String?) {
-        add(string: "![\(alt ?? "")](\(src))")
+        super.parse(string: string, theDelegate: self)
     }
 
     let tagsAcceptingChars = Set<String>(["p", "div", "body", "b"])

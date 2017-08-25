@@ -15,25 +15,13 @@ public protocol MarkdownImageDelegate: class {
     func img(src: String, alt: String?) -> (String, String)
 }
 
-class HtmlToMarkdownSaxParser: NSObject {
+class HtmlToMarkdownSaxParser: BasicSaxParser {
     weak var imgDelegate: MarkdownImageDelegate?
-    var output: String?
 
     var acceptCharacters = false
 
     func parse(string: String) {
-        let parser = AXHTMLParser(htmlString: string)
-        parser.delegate = self
-        let success = parser.parse()
-        if !success {
-            output = nil
-        }
-        output = output?.trimmingCharacters(in: CharacterSet.newlines)
-        output = output?.trimmedExcessiveNewLines()
-    }
-
-    func add(string: String) {
-        output = "\(output ?? "")\(string)"
+        super.parse(string: string, theDelegate: self)
     }
 
     func addImg(src: String, alt: String?) {
