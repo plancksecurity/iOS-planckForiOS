@@ -434,11 +434,11 @@ extension String {
     }
 
     /**
-     - Returns: A list of words contained in that String. Might parse parentheses
-     in the future, at the moment just separates by space.
+     - Returns: A list of words contained in that String. Primitively separates by
+     delimiters like "-", or " ".
      */
     func tokens() -> [String] {
-        return self.characters.split(separator: " ").map(String.init).map() {
+        return self.components(separatedBy: CharacterSet(charactersIn: "- ")).map {
             return $0.trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
