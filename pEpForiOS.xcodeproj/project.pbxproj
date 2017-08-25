@@ -11,6 +11,7 @@
 		1500199F1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */; };
 		1507BC311F2640960036B3E9 /* CdMessage+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */; };
 		1507BC331F2641FD0036B3E9 /* Message+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */; };
+		153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */; };
 		153EFA721F4AD51200C3432A /* TrashMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153EFA711F4AD51200C3432A /* TrashMailsOperationTest.swift */; };
 		1572B9BE1F3379990048BCF5 /* AccountSettingsUserInputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1572B9BD1F3379990048BCF5 /* AccountSettingsUserInputError.swift */; };
 		1572B9CB1F3474880048BCF5 /* AccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */; };
@@ -356,6 +357,7 @@
 		1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperationTest.swift; sourceTree = "<group>"; };
 		1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+TestUtils.swift"; sourceTree = "<group>"; };
 		1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+TestUtils.swift"; sourceTree = "<group>"; };
+		153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-duplicated-attachments.txt"; sourceTree = "<group>"; };
 		153EFA711F4AD51200C3432A /* TrashMailsOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashMailsOperationTest.swift; sourceTree = "<group>"; };
 		1572B9BD1F3379990048BCF5 /* AccountSettingsUserInputError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsUserInputError.swift; sourceTree = "<group>"; };
 		1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
@@ -1284,6 +1286,7 @@
 		43B2C3151D2280ED00A08557 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */,
 				43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */,
 				436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */,
 				436795FD1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc */,
@@ -1657,6 +1660,7 @@
 				43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */,
 				43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */,
 				436795FF1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc in Resources */,
+				153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */,
 				43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */,
 				436795FC1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc in Resources */,
 			);
