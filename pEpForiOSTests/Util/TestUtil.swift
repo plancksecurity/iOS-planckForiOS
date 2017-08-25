@@ -302,7 +302,7 @@ class TestUtil {
                 let attachment = Attachment.create(
                     data: imageData, mimeType: "image/jpeg", fileName: imageFileName)
                 let cdAttachment = CdAttachment.create(attachment: attachment)
-                message.addAttachment(cdAttachment)
+                message.addToAttachments(cdAttachment)
             }
             // prevent encryption for last mail
             if i == numberOfMails {

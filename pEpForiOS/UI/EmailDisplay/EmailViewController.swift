@@ -51,9 +51,9 @@ class EmailViewController: TableViewControllerBase {
         message = folderShow?.messageAt(index: messageId)
         self.tableView.reloadData()
         configureView()
-        
+
     }
-    
+
     @IBAction func previous(_ sender: Any) {
         messageId -= 1
         message = folderShow?.messageAt(index: messageId)
@@ -61,12 +61,12 @@ class EmailViewController: TableViewControllerBase {
         configureView()
     }
 
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureView()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setNoColor()
@@ -105,7 +105,7 @@ class EmailViewController: TableViewControllerBase {
             }
         }
     }
-    
+
     fileprivate final func loadDatasource(_ file: String) {
         if let path = Bundle.main.path(forResource: file, ofType: "plist") {
             if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
@@ -113,13 +113,13 @@ class EmailViewController: TableViewControllerBase {
             }
         }
     }
-    
+
     // MARK: - IBActions
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
         let alertViewWithoutTitle = UIAlertController()
         alertViewWithoutTitle.view.tintColor = .pEpGreen
-        
+
         if let popoverPresentationController = alertViewWithoutTitle.popoverPresentationController {
             popoverPresentationController.sourceView = view
         }
@@ -171,7 +171,7 @@ class EmailViewController: TableViewControllerBase {
         message.delete() // mark for deletion/trash
         _ = navigationController?.popViewController(animated: true)
     }
-    
+
     /**
      For the unwind segue from the trustwords controller, when the user choses "trusted".
      */
@@ -237,7 +237,7 @@ extension EmailViewController: SegueHandlerType {
         case segueHandshake
         case noSegue
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .segueReplyFrom:
