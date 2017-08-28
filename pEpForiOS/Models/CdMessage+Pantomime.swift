@@ -562,6 +562,7 @@ extension CdMessage {
     /// - Parameter message: message to search for
     /// - Returns: existing message
     static public func search(message: CWIMAPMessage) -> CdMessage? {
+        //BUFF: here take accoutn into account :-)
         let uid = Int32(message.uid())
        return search(uid: uid, uuid: message.messageID(),
                      folderName: message.folder()?.name())
