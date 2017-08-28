@@ -409,7 +409,7 @@ extension CdMessage {
 
         // Bail out quickly if there is only a flag change needed
         if messageUpdate.isFlagsOnly() {
-            if let mail = existing(pantomimeMessage: message) {
+            if let mail = existing(pantomimeMessage: message, inAccount: account) {
                 if mail.updateFromServer(cwFlags: message.flags()) {
                     Record.saveAndWait()
                     if mail.pEpRating != pEpRatingNone {
@@ -425,8 +425,7 @@ extension CdMessage {
             return nil
         }
 
-        let mail = existing(pantomimeMessage: message) ??
-            CdMessage.create()
+        let mail = existing(pantomimeMessage: message, inAccount: account) ?? CdMessage.create()
 
         mail.parent = folder
         mail.bodyFetched = message.isInitialized()
@@ -549,8 +548,8 @@ extension CdMessage {
      Message ID alone is not sufficient, trashed emails can and will exist in more than one folder.
      - Returns: An existing message that matches the given pantomime one.
      */
-    static private func existing(pantomimeMessage: CWIMAPMessage) -> CdMessage? {
-        return search(message:pantomimeMessage)
+    static private func existing(pantomimeMessage: CWIMAPMessage, inAccount account: CdAccount) -> CdMessage? {
+        return search(message:pantomimeMessage, inAccount: account)
     }
 
     /// Try to get the best possible match possible for given data.
@@ -561,8 +560,8 @@ extension CdMessage {
     ///
     /// - Parameter message: message to search for
     /// - Returns: existing message
-    static public func search(message: CWIMAPMessage) -> CdMessage? {
-        //BUFF: here take accoutn into account :-)
+    static func search(message: CWIMAPMessage, inAccount account: CdAccount) -> CdMessage? {
+        //BUFF: here take account into account :-)
         let uid = Int32(message.uid())
        return search(uid: uid, uuid: message.messageID(),
                      folderName: message.folder()?.name())
