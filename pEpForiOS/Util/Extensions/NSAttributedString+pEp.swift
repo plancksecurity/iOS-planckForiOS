@@ -46,6 +46,7 @@ extension NSAttributedString {
     func convertToMarkDown() -> (String, [Attachment]) {
         let theDelegate = ToMarkdownDelegate()
         let markdown = convert(delegate: theDelegate)
-        return (markdown, theDelegate.attachments)
+        return (markdown.trimmingCharacters(in: CharacterSet(charactersIn: "\n \t")),
+                theDelegate.attachments)
     }
 }
