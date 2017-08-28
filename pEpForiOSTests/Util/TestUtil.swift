@@ -300,7 +300,7 @@ class TestUtil {
             // add attachment to last and previous-to-last mail
             if i == numberOfMails || i == numberOfMails - 1 {
                 let attachment = Attachment.create(
-                    data: imageData, mimeType: "image/jpeg", fileName: imageFileName)
+                    data: imageData, mimeType: MimeTypeUtil.jpegMimeType, fileName: imageFileName)
                 let cdAttachment = CdAttachment.create(attachment: attachment)
                 message.addToAttachments(cdAttachment)
             }
