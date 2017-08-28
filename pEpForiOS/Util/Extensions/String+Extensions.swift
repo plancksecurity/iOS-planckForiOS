@@ -77,7 +77,7 @@ public extension String {
             $0.trimmedWhiteSpace()
         })
         for e in emails {
-            if e.matchesPattern("\(delimiter)") || !e.isProbablyValidEmail() {
+            if e.matches(pattern: "\(delimiter)") || !e.isProbablyValidEmail() {
                 return false
             }
         }
@@ -209,7 +209,7 @@ public extension String {
      Does this String match the given regex pattern? Without any options.
      - Parameter pattern: The pattern to match.
      */
-    public func matchesPattern(_ pattern: String) -> Bool {
+    public func matches(pattern: String) -> Bool {
         return matchesPattern(pattern, reOptions: [])
     }
 
@@ -235,7 +235,7 @@ public extension String {
      */
     public func isOnlyWhiteSpace() -> Bool {
         let whiteSpacePattern = "^\\s*$"
-        return matchesPattern(whiteSpacePattern)
+        return matches(pattern: whiteSpacePattern)
     }
 
     /**
@@ -298,7 +298,7 @@ public extension String {
      - Returns: True if the given string starts with the given prefix.
      */
     public func startsWith(_ prefix: String) -> Bool {
-        return matchesPattern("^\(prefix)")
+        return matches(pattern: "^\(prefix)")
     }
 
     public func hasExtension(_ ext: String) -> Bool {

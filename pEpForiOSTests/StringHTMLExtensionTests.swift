@@ -134,8 +134,8 @@ class StringHTMLExtensionTests: XCTestCase {
         let patternRest1 = "\nSent with p≡p\n"
         let patternRest2 = "Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT\\+2:\n"
         let patternRest3 = "> Just some mind the gap text.\n> Blah!"
-        XCTAssertTrue(markdown.matchesPattern(
-            "^\(patternImage)\(patternRest1)\(patternRest2)\(patternRest3)$"))
+        XCTAssertTrue(markdown.matches(
+            pattern: "^\(patternImage)\(patternRest1)\(patternRest2)\(patternRest3)$"))
 
         guard let attachmentNew = attachments.first else {
             XCTFail()
