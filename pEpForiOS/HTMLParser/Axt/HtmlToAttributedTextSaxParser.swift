@@ -9,24 +9,38 @@
 import Foundation
 import UIKit
 
+import MessageModel
+
+public protocol HtmlToAttributedTextSaxParserAttachmentDelegate: class {
+    func imageAttachment(src: String?, alt: String?) -> Attachment?
+}
+
 class HtmlToAttributedTextSaxParser: HtmlToTextSaxParser {
-    var attributedOutput = NSAttributedString()
+    var attributedOutput = NSMutableAttributedString()
+    let defaultFont = UIFont.preferredFont(forTextStyle: .body)
+    let mimeUtil = MimeTypeUtil()
+
+    weak var attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?
 
     override func add(string: String) {
-        output = "\(output ?? "")\(string)"
+        attributedOutput.append(
+            NSAttributedString(string: string,
+                               attributes: ["NSFont": defaultFont]))
     }
 
     override func parser(_ parser: AXHTMLParser, didStartElement elementName: String,
                 attributes attributeDict: [AnyHashable : Any] = [:]) {
         if elementName == "img" {
-
+            let src = attributeDict["src"] as? String
+            let alt = attributeDict["alt"] as? String
+            if let attachment = attachmentDelegate?.imageAttachment(src: src, alt: alt) {
+                let textAttachment = TextAttachment()
+                textAttachment.image = attachment.image
+                textAttachment.attachment = attachment
+                let imageString = NSAttributedString(attachment: textAttachment)
+                attributedOutput.append(imageString)
+            }
         }
         super.parser(parser, didStartElement: elementName)
-    }
-
-    override func parser(_ parser: AXHTMLParser, foundCharacters string: String) {
-        if acceptCharacters() {
-            add(string: string.replaceNewLinesWith(""))
-        }
     }
 }

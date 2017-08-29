@@ -65,18 +65,18 @@ class StringExtensionsTest: XCTestCase {
     }
 
     func testMatchesPattern() {
-        XCTAssertTrue("uiaeuiae, ".matchesPattern(", $"))
-        XCTAssertFalse("uiaeuiae, uiae".matchesPattern(", $"))
-        XCTAssertFalse("uiaeuiae, uiae".matchesPattern(",\\w*$"))
-        XCTAssertTrue("uiaeuiae,".matchesPattern(",\\s*$"))
-        XCTAssertTrue("uiaeuiae, ".matchesPattern(",\\s*$"))
-        XCTAssertTrue("uiaeuiae,  ".matchesPattern(",\\s*$"))
-        XCTAssertFalse("uiaeuiae,  .".matchesPattern(",\\s*$"))
+        XCTAssertTrue("uiaeuiae, ".matches(pattern: ", $"))
+        XCTAssertFalse("uiaeuiae, uiae".matches(pattern: ", $"))
+        XCTAssertFalse("uiaeuiae, uiae".matches(pattern: ",\\w*$"))
+        XCTAssertTrue("uiaeuiae,".matches(pattern: ",\\s*$"))
+        XCTAssertTrue("uiaeuiae, ".matches(pattern: ",\\s*$"))
+        XCTAssertTrue("uiaeuiae,  ".matches(pattern: ",\\s*$"))
+        XCTAssertFalse("uiaeuiae,  .".matches(pattern: ",\\s*$"))
 
         let whiteSpacePattern = "^\\s*$"
-        XCTAssertTrue("".matchesPattern(whiteSpacePattern))
-        XCTAssertTrue("   ".matchesPattern(whiteSpacePattern))
-        XCTAssertFalse(" uiae  ".matchesPattern(whiteSpacePattern))
+        XCTAssertTrue("".matches(pattern: whiteSpacePattern))
+        XCTAssertTrue("   ".matches(pattern: whiteSpacePattern))
+        XCTAssertFalse(" uiae  ".matches(pattern: whiteSpacePattern))
     }
 
     func testIsOnlyWhitespace() {

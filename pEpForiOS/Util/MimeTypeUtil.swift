@@ -10,6 +10,7 @@ import Foundation
 
 open class MimeTypeUtil {
     public static let defaultMimeType = "application/octet-stream"
+    public static let jpegMimeType = "image/jpeg"
 
     private let comp = "MimeTypeUtil"
     private var mimeTypeToExtension = [String: String]()
@@ -33,7 +34,7 @@ open class MimeTypeUtil {
                     extensionToMimeType[theExtension.lowercased()] = mimeType
                 }
                 // manual fixes
-                mimeTypeToExtension["image/jpeg"] = "jpg"
+                mimeTypeToExtension[MimeTypeUtil.jpegMimeType] = "jpg"
             }
         } catch let error as NSError {
             Log.shared.error(component: comp, error: error)

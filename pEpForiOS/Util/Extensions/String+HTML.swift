@@ -34,8 +34,10 @@ extension String {
         return (self as NSString).nsMarkdownToHtml()
     }
 
-    public func htmlToAttributedString() -> NSAttributedString {
+    public func htmlToAttributedString(
+        attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate?) -> NSAttributedString {
         let parser = HtmlToAttributedTextSaxParser()
+        parser.attachmentDelegate = attachmentDelegate
         parser.parse(string: self)
         return parser.attributedOutput
     }

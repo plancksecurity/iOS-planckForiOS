@@ -23,9 +23,11 @@ class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
 
             let theID = MessageID.generateUUID()
             let theExt = mimeUtil?.fileExtension(mimeType: theAttachment.mimeType) ?? "jpg"
-            let cidSrc = "cid:attached-inline-image-\(count)-\(theExt)-\(theID)"
+            let cidBase = "attached-inline-image-\(count)-\(theExt)-\(theID)"
+            let cidSrc = "cid:\(cidBase)"
+            let cidUrl = "cid://\(cidBase)"
 
-            theAttachment.fileName = cidSrc
+            theAttachment.fileName = cidUrl
 
             let alt = String(
                 format: NSLocalizedString("Attached Image %1d (%2@)",
@@ -46,6 +48,7 @@ extension NSAttributedString {
     func convertToMarkDown() -> (String, [Attachment]) {
         let theDelegate = ToMarkdownDelegate()
         let markdown = convert(delegate: theDelegate)
-        return (markdown, theDelegate.attachments)
+        return (markdown.trimmingCharacters(in: .whitespacesAndNewlines),
+                theDelegate.attachments)
     }
 }

@@ -29,6 +29,10 @@ class HtmlToTextSaxParser: BasicSaxParser {
         }
         return false
     }
+
+    func nestedInside(tag: String) -> Bool {
+        return tagStack.contains(tag)
+    }
 }
 
 extension HtmlToTextSaxParser: AXHTMLParserDelegate {
@@ -46,7 +50,11 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
 
     func parser(_ parser: AXHTMLParser, foundCharacters string: String) {
         if acceptCharacters() {
-            add(string: string.replaceNewLinesWith(""))
+            var toAppend = string.replaceNewLinesWith("")
+            if nestedInside(tag: "blockquote") {
+                toAppend = "> \(toAppend)"
+            }
+            add(string: toAppend)
         }
     }
 
