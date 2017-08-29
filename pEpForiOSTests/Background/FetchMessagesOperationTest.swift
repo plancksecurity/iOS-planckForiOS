@@ -71,7 +71,6 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(msgsAfter2.count, msgsBefore2.count + numMailsToSend)
     }
 
-    //BUFF: fails
     // IOS-615 (Only) the first email in an Yahoo account gets duplicated locally on every sync cycle
     func testMailsNotDuplicated() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)

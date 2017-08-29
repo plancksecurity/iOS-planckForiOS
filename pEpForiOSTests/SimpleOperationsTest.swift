@@ -303,31 +303,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertEqual(CdMessage.all()?.count, numMails)
     }
 
-    //BUFF: remove dead code
-    func testCreateLocalRequiredFoldersOperation() {
-        let expFoldersStored = expectation(description: "expFoldersStored")
-        let op = CreateLocalRequiredFoldersOperation(
-            parentName: #function, account: cdAccount)
-        let queue = OperationQueue()
-        op.completionBlock = {
-            op.completionBlock = nil
-            expFoldersStored.fulfill()
-        }
-        queue.addOperation(op)
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            guard let folders = CdFolder.all() as? [CdFolder] else {
-                XCTAssertTrue(false, "Expected folders created")
-                return
-            }
-            XCTAssertEqual(folders.count, FolderType.allValuesToCreate.count)
-            let p = NSPredicate(format: "folderTypeRawValue = %d and account = %@",
-                                FolderType.localOutbox.rawValue, self.cdAccount)
-            let outbox = CdFolder.first(predicate: p)
-            XCTAssertNotNil(outbox, "Expected outbox to exist")
-        })
-    }
-
     func testCreateFolders() {
         let backgroundQueue = OperationQueue.init()
 
@@ -515,54 +490,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 XCTFail("expecting folder of type \(ft) with defined name")
             }
         }
-    }
-
-    //BUFF: remove dead code
-    func insertNewMessageForSending(account: CdAccount) -> CdMessage {
-        let msg = CdMessage.create(messageID: MessageID.generate(), uid: 1)
-        msg.from = account.identity
-        msg.longMessage = "Inserted by insertNewMessageForSending()"
-        msg.bodyFetched = true
-        msg.parent = CdFolder.by(folderType: .localOutbox, account: account)
-        XCTAssertNotNil(msg.from)
-        XCTAssertNotNil(msg.parent)
-        return msg
-    }
-
-    func createBasicMail() -> (
-        OperationQueue, CdMessage,
-        (identity: NSMutableDictionary, receiver1: PEPIdentity,
-        receiver2: PEPIdentity, receiver3: PEPIdentity,
-        receiver4: PEPIdentity)) {
-            let opCreateRequiredFolders = CreateLocalRequiredFoldersOperation(
-                parentName: #function, account: cdAccount)
-            let expFoldersStored = expectation(description: "expFoldersStored")
-            opCreateRequiredFolders.completionBlock = {
-                opCreateRequiredFolders.completionBlock = nil
-                expFoldersStored.fulfill()
-            }
-
-            let queue = OperationQueue.init()
-            queue.addOperation(opCreateRequiredFolders)
-            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-                XCTAssertNil(error)
-            })
-
-            let message = insertNewMessageForSending(account: cdAccount)
-
-            let session = PEPSession.init()
-
-            let (identity, receiver1, receiver2, receiver3, receiver4) =
-                TestUtil.setupSomeIdentities(session)
-            session.mySelf(identity)
-            XCTAssertNotNil(identity[kPepFingerprint])
-
-            // Import public key for receiver4
-            TestUtil.importKeyByFileName(
-                session, fileName: "5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc")
-
-            Record.saveAndWait()
-            return (queue, message, (identity, receiver1, receiver2, receiver3, receiver4))
     }
 
     func dumpAllAccounts() {
@@ -850,7 +777,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
     }
 
-    //BUFF: fails see above
     func testOutgoingMailColorPerformanceWithoutMySelf() {
         let session = PEPSession.init()
         let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
