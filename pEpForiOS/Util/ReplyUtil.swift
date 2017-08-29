@@ -23,7 +23,7 @@ public struct ReplyUtil {
                 return "\n\n\(footer())\n\n\(c)\n\n\(quotedText)"
             }
         }
-        return footer()
+        return "\n\n\(footer())"
     }
 
     /**
