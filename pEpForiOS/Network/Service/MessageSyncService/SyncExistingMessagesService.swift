@@ -14,7 +14,7 @@ import MessageModel
 class SyncExistingMessagesService: BackgroundOperationImapService {
     let folderName: String
 
-    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
+    init(parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData,
          folderName: String = ImapSync.defaultImapInboxName) {
         self.folderName = folderName

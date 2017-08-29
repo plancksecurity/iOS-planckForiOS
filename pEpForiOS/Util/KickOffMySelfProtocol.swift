@@ -20,7 +20,7 @@ open class DefaultMySelfer {
     let queue = LimitedOperationQueue()
     let parentName: String
 
-    public init(parentName: String, backgrounder: BackgroundTaskProtocol?) {
+    public init(parentName: String = #function, backgrounder: BackgroundTaskProtocol?) {
         self.parentName = parentName
         self.backgrounder = backgrounder
     }

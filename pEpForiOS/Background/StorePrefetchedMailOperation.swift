@@ -26,7 +26,7 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     let messageUpdate: CWMessageUpdate
 
     public init(
-        parentName: String,
+        parentName: String = #function,
         accountID: NSManagedObjectID, message: CWIMAPMessage,
         messageUpdate: CWMessageUpdate,
         messageFetchedBlock: MessageFetchedBlock? = nil) {

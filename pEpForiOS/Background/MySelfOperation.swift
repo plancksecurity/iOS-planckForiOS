@@ -28,7 +28,7 @@ open class MySelfOperation: BaseOperation {
      */
     public static let taskNameSubOperation = "MySelfOperation.Sub"
 
-    public init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil) {
+    public init(parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil) {
         self.backgrounder = backgrounder
         self.wholeOperationTaskID = backgrounder?.beginBackgroundTask(
             taskName: MySelfOperation.taskNameWhole)

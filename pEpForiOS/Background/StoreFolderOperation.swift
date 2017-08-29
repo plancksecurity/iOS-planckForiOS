@@ -29,7 +29,7 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
 
     weak var delegate: StoreFolderOperationDelegate?
 
-    init(parentName: String, connectInfo: EmailConnectInfo, folderInfo: FolderInfo) {
+    init(parentName: String = #function, connectInfo: EmailConnectInfo, folderInfo: FolderInfo) {
         self.folderInfo = folderInfo
         self.connectInfo = connectInfo
         super.init(parentName: parentName)

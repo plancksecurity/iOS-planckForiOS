@@ -98,7 +98,7 @@ class ImapSmtpSyncService {
     let workerQueue = DispatchQueue(
         label: "ImapSmtpSyncService", qos: .utility, target: nil)
 
-    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
+    init(parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
         self.parentName = parentName
         self.backgrounder = backgrounder

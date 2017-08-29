@@ -27,7 +27,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
     var syncDelegate: FetchMessagesSyncDelegate?
 
     public init(
-        parentName: String, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+        parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
         imapSyncData: ImapSyncData,
         folderName: String = ImapSync.defaultImapInboxName,
         messageFetchedBlock: MessageFetchedBlock? = nil) {

@@ -16,7 +16,7 @@ open class MessageToAttachmentOperation: BaseOperation {
 
     var attachment: Attachment?
 
-    public init(parentName: String, message: Message) {
+    public init(parentName: String = #function, message: Message) {
         self.message = message
         super.init(parentName: parentName)
     }

@@ -27,7 +27,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
     var changedMessageIDs = [NSManagedObjectID]()
     weak var delegate: SyncFlagsToServerOperationDelegate?
 
-    public init?(parentName: String, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    public init?(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                  imapSyncData: ImapSyncData, folder: CdFolder) {
         if let fn = folder.name {
             folderName = fn
