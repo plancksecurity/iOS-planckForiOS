@@ -21,7 +21,7 @@ open class MessageContentCell: MessageCell {
         if message.underAttack {
             let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
             finalText.bold("\n" + status.title + "\n\n" + status.explanation + "\n\n" + status.suggestion
-                + "\n\n" + NSLocalizedString("attachments are disabled", comment: "Disabled attachments") + "\n\n")
+                + "\n\n" + NSLocalizedString("Attachments are disabled.", comment: "Disabled attachments") + "\n\n")
             //if there will be attachmetns show warning
         }
 
