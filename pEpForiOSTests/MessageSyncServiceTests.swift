@@ -27,7 +27,8 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
         super.tearDown()
     }
 
-    //MARK: - TEST DELEGATES
+    //MARK: - Test Delegates
+
     class TestErrorDelegate: MessageSyncServiceErrorDelegate {
         var expErrorOccurred: XCTestExpectation?
         var error: Error?
@@ -132,7 +133,7 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
         }
     }
 
-    //MARK: - TESTS
+    //MARK: - Tests
 
     func testBasicPassiveSend() {
         runMessageSyncServiceSend(

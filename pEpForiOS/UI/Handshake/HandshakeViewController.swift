@@ -107,19 +107,23 @@ class HandshakeViewController: TableViewControllerBase {
             withIdentifier: "handshakePartnerCell",
             for: indexPath) as? HandshakePartnerTableViewCell {
             cell.delegate = self
-            if let m = message {
-                if let selfId = message?.parent?.account?.user {
-                    let theId = partners[indexPath.row]
-                    let viewModel = createViewModel(partnerIdentity: theId, selfIdentity: selfId)
-                    adjustBackgroundColor(viewModel: viewModel, indexPath: indexPath)
-                    cell.viewModel = viewModel
-                    cell.indexPath = indexPath
-                } else {
-                    Log.error(
-                        component: #function,
-                        errorString: "Could not deduce account from message: \(m)")
-                }
+
+            guard let m = message else {
+                return cell
             }
+
+            guard let selfId = message?.parent.account.user else {
+                Log.error( component: #function,
+                           errorString: "Could not deduce account from message: \(m)")
+                return cell
+            }
+
+            let theId = partners[indexPath.row]
+            let viewModel = createViewModel(partnerIdentity: theId, selfIdentity: selfId)
+            adjustBackgroundColor(viewModel: viewModel, indexPath: indexPath)
+            cell.viewModel = viewModel
+            cell.indexPath = indexPath
+
             return cell
         }
 

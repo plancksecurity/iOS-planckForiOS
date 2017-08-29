@@ -13,7 +13,64 @@ import CoreData
 @testable import pEpForiOS
 
 class FetchMessagesOperationTest: CoreDataDrivenTestBase {
-    
+
+    // IOS-671 pEp app has two accounts. Someone sends a mail to both (with both accounts in receipients).
+    // Message must exist twice, once for each account, after fetching.
+    func testMailSentToBothPepAccounts() {
+        // Setup 2 accounts
+       cdAccount.createRequiredFoldersAndWait(testCase: self)
+        Record.saveAndWait()
+        
+        let cdAccount2 = TestData().createWorkingCdAccount(number: 1)
+        cdAccount2.identity?.isMySelf = true
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+        cdAccount2.createRequiredFoldersAndWait(testCase: self)
+        Record.saveAndWait()
+
+        guard let id1 = cdAccount.identity,
+            let id2 = cdAccount2.identity else {
+                XCTFail("We all loose identity ...")
+                return
+        }
+
+        // Sync both acocunts and remember what we got before starting the actual test
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        let msgsBefore1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
+        let msgsBefore2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id2)
+
+        // Create mails from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2) ...
+        let numMailsToSend = 2
+        let mailsToSend = TestUtil.createOutgoingMails(
+            cdAccount: cdAccount2, testCase: self, numberOfMails: numMailsToSend)
+        XCTAssertEqual(mailsToSend.count, numMailsToSend)
+
+        for mail in mailsToSend {
+            guard let currentReceipinets = mail.to else {
+                    XCTFail("Should have receipients")
+                    return
+            }
+            mail.from = id2
+            mail.removeFromTo(currentReceipinets)
+            mail.addToTo(id1)
+            mail.addToTo(id2)
+        }
+        Record.saveAndWait()
+
+        // ... and send them.
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+
+        // Sync once again to make sure we mirror the servers state (i.e. received the sent mails)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+
+        // Now let's see what we got.
+        let msgsAfter1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
+        let msgsAfter2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id2)
+
+        XCTAssertEqual(msgsAfter1.count, msgsBefore1.count + numMailsToSend)
+        XCTAssertEqual(msgsAfter2.count, msgsBefore2.count + numMailsToSend)
+    }
+
     // IOS-615 (Only) the first email in an Yahoo account gets duplicated locally on every sync cycle
     func testMailsNotDuplicated() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
@@ -77,8 +134,6 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         }
         queue.addOperation(fetchOp)
 
-
-
         // ... and fetch again.
         let expMessagesSynced2 = expectation(description: "expMessagesSynced2")
         let fetch2Op = FetchMessagesOperation(parentName: #function, imapSyncData: imapSyncData)
@@ -101,5 +156,4 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(fetch2Op.hasErrors())
         })
     }
-    
 }

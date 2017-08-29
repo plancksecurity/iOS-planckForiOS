@@ -12,54 +12,18 @@ import MessageModel
 import pEpForiOS
 
 class NetworkServiceTests: XCTestCase {
-    
+
     var persistenceSetup: PersistentSetup!
 
     override func setUp() {
         super.setUp()
         persistenceSetup = PersistentSetup()
     }
-    
+
     override func tearDown() {
         persistenceSetup = nil
         CdAccount.sendLayer = nil
         super.tearDown()
-    }
-
-    class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertible {
-        let expSingleAccountSynced: XCTestExpectation?
-        var expCanceled: XCTestExpectation?
-        var accountInfo: AccountConnectInfo?
-
-        var debugDescription: String {
-            return expSingleAccountSynced?.debugDescription ?? "unknown"
-        }
-
-        let failOnError: Bool
-
-        init(expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil,
-             failOnError: Bool = false) {
-            self.expSingleAccountSynced = expAccountsSynced
-            self.expCanceled = expCanceled
-            self.failOnError = failOnError
-        }
-
-        func didSync(service: NetworkService, accountInfo: AccountConnectInfo,
-                     errorProtocol: ServiceErrorProtocol) {
-            Log.info(component: #function, content: "\(self)")
-            if errorProtocol.hasErrors() && failOnError {
-                Log.error(component: #function, error: errorProtocol.error)
-                XCTFail()
-            }
-            if self.accountInfo == nil {
-                self.accountInfo = accountInfo
-                expSingleAccountSynced?.fulfill()
-            }
-        }
-
-        func didCancel(service: NetworkService) {
-            expCanceled?.fulfill()
-        }
     }
 
     class MessageModelObserver: MessageFolderDelegate {
@@ -122,36 +86,6 @@ class NetworkServiceTests: XCTestCase {
                     }
                 }
             }
-        }
-    }
-
-    class SendLayerObserver: SendLayerDelegate {
-        let expAccountVerified: XCTestExpectation?
-        var messageIDs = [String]()
-
-        init(expAccountVerified: XCTestExpectation? = nil) {
-            self.expAccountVerified = expAccountVerified
-        }
-
-        func didVerify(cdAccount: CdAccount, error: Error?) {
-            XCTAssertNil(error)
-            expAccountVerified?.fulfill()
-        }
-
-        func didFetch(cdMessage: CdMessage) {
-            if let msg = cdMessage.message() {
-                messageIDs.append(msg.messageID)
-            } else {
-                XCTFail()
-            }
-        }
-
-        func didRemove(cdFolder: CdFolder) {
-            XCTFail()
-        }
-
-        func didRemove(cdMessage: CdMessage) {
-            XCTFail()
         }
     }
 
@@ -261,7 +195,7 @@ class NetworkServiceTests: XCTestCase {
             }
         }
         XCTAssertFalse(modelDelegate.hasChangedMessages)
-        
+
         cancelNetworkService(networkService: networkService)
     }
 
@@ -360,7 +294,7 @@ class NetworkServiceTests: XCTestCase {
         // Build outgoing emails
         var outgoingMails = [CdMessage]()
         var outgoingMessageIDs = [String]()
-        let numMails = 5
+        let numMails = 1
         for i in 1...numMails {
             let message = CdMessage.create()
             message.from = from
@@ -440,14 +374,17 @@ class NetworkServiceTests: XCTestCase {
         del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced3"))
         networkService.networkServiceDelegate = del
-
+        
         // Wait for next sync
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             Log.info(component: "didSync", content: "expSingleAccountSynced3 timeout?")
             XCTAssertNil(error)
         })
-        
-        TestUtil.checkForUniqueness(uuids: outgoingMessageIDs)
+
+        if useCorrectSmtpAccount {
+            // those messages do not exist if we are using an incorrect account
+            TestUtil.checkForExistanceAndUniqueness(uuids: outgoingMessageIDs)
+        }
         cancelNetworkService(networkService: networkService)
     }
 }

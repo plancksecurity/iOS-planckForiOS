@@ -98,7 +98,7 @@ class ImapSmtpSyncService {
     let workerQueue = DispatchQueue(
         label: "ImapSmtpSyncService", qos: .utility, target: nil)
 
-    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
+    init(parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
         self.parentName = parentName
         self.backgrounder = backgrounder
@@ -154,7 +154,7 @@ class ImapSmtpSyncService {
     func uploadFlagChanges(message: Message) {
         if isReadyForImapAction {
             cancelIdling()
-            let folderName = message.parent?.name ?? ImapSync.defaultImapInboxName
+            let folderName = message.parent.name ?? ImapSync.defaultImapInboxName
             let service = serviceFactory.syncFlagsToServer(
                 parentName: parentName, backgrounder: backgrounder,
                 imapSyncData: imapSyncData, folderName: folderName, syncFlagsDelegate: self)

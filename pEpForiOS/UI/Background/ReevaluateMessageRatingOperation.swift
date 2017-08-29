@@ -23,7 +23,7 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
     let message: Message
     let session: PEPSession
 
-    init(parentName: String, message: Message, session: PEPSession) {
+    init(parentName: String = #function, message: Message, session: PEPSession) {
         self.message = message
         self.session = session
         super.init(parentName: parentName)

@@ -21,7 +21,7 @@ class AtomicImapService: ServiceErrorProtocol {
     let parentName: String
     let backgrounder: BackgroundTaskProtocol?
     
-    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil) {
+    init(parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil) {
         self.parentName = parentName
         self.backgrounder = backgrounder
     }

@@ -21,7 +21,7 @@ class RatingReEvaluator {
     weak var delegate: RatingReEvaluatorDelegate?
     let parentName: String
 
-    init(parentName: String, message: Message, session: PEPSession) {
+    init(parentName: String = #function, message: Message, session: PEPSession) {
         self.parentName = parentName
         self.message = message
         self.session = session

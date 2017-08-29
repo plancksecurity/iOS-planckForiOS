@@ -21,7 +21,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
     let firstUID: UInt
     var syncDelegate: SyncMessagesSyncDelegate?
 
-    public init(parentName: String, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    public init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, folderName: String, firstUID: UInt, lastUID: UInt) {
         self.folderToOpen = folderName
         self.lastUID = lastUID

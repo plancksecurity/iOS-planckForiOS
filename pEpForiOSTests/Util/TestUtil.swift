@@ -205,7 +205,7 @@ class TestUtil {
         }
     }
 
-    static func checkForUniqueness(uuids: [MessageID]) {
+    static func checkForExistanceAndUniqueness(uuids: [MessageID]) {
         for uuid in uuids {
             if let ms = CdMessage.all(attributes: ["uuid": uuid]) as? [CdMessage] {
                 var folder: CdFolder? = nil
@@ -226,16 +226,127 @@ class TestUtil {
         }
     }
 
+    static func syncData(cdAccount: CdAccount) -> (ImapSyncData, SmtpSendData)? {
+        guard
+            let imapCI = cdAccount.imapConnectInfo,
+            let smtpCI = cdAccount.smtpConnectInfo else {
+                XCTFail()
+                return nil
+        }
+        return (ImapSyncData(connectInfo: imapCI), SmtpSendData(connectInfo: smtpCI))
+    }
+
+    /**
+     Makes the servers for this account unreachable, for tests that expects failure.
+     */
+    static func makeServersUnreachable(cdAccount: CdAccount) {
+        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
+            XCTFail()
+            return
+        }
+
+        for cdServer in cdServers {
+            cdServer.address = "localhost"
+            cdServer.port = 2525
+        }
+        if let context = cdAccount.managedObjectContext {
+            context.saveAndLogErrors()
+        } else {
+            Record.saveAndWait()
+        }
+    }
+
+    class FetchMessagesServiceTestDelegate: FetchMessagesServiceDelegate {
+        var fetchedMessages = [Message]()
+
+        func didFetch(message: Message) {
+            fetchedMessages.append(message)
+        }
+    }
+
+    static func runFetchTest(parentName: String, testCase: XCTestCase, cdAccount: CdAccount,
+                             useDisfunctionalAccount: Bool,
+                             folderName: String = ImapSync.defaultImapInboxName,
+                             expectError: Bool) {
+        if useDisfunctionalAccount {
+            TestUtil.makeServersUnreachable(cdAccount: cdAccount)
+        }
+
+        guard let (imapSyncData, _) = TestUtil.syncData(cdAccount: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        let expectationServiceRan = testCase.expectation(description: "expectationServiceRan")
+        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
+
+        let service = FetchMessagesService(parentName: parentName, backgrounder: mbg,
+                                           imapSyncData: imapSyncData, folderName: folderName)
+        let testDelegate = FetchMessagesServiceTestDelegate()
+        service.delegate = testDelegate
+
+        let expServiceBlockInvoked = testCase.expectation(description: "expServiceBlockInvoked")
+        service.execute() { error in
+            expServiceBlockInvoked.fulfill()
+
+            if expectError {
+                XCTAssertNotNil(error)
+            } else {
+                XCTAssertNil(error)
+            }
+        }
+
+        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+
+        if expectError {
+            XCTAssertEqual(testDelegate.fetchedMessages.count, 0)
+        } else {
+            XCTAssertGreaterThan(testDelegate.fetchedMessages.count, 0)
+        }
+
+        imapSyncData.sync?.close()
+    }
+
+    // MARK: - Sync Loop
+
+    static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase, skipValidation: Bool) {
+        let sendLayerDelegate = SendLayerObserver()
+
+        let networkService = NetworkService()
+        networkService.sleepTimeInSeconds = 0.1
+
+        let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
+        // A temp variable is necassary, since the networkServiceDelegate is weak
+        let del = NetworkServiceObserver(numAccountsToSync: numAccountsToSync,
+                                         expAccountsSynced: expAccountsSynced,
+                                         failOnError: true)
+
+        networkService.networkServiceDelegate = del
+        networkService.sendLayerDelegate = sendLayerDelegate
+
+        if skipValidation {
+            TestUtil.skipValidation()
+        }
+        Record.saveAndWait()
+
+        networkService.start()
+
+        let canTakeSomeTimeFactor = 3.0
+        testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor, handler: { error in
+            XCTAssertNil(error)
+        })
+        networkService.cancel()
+    }
+
+    // MARK: Messages
+
     static func createOutgoingMails(cdAccount: CdAccount, testCase: XCTestCase,
                                     numberOfMails: Int) -> [CdMessage] {
         testCase.continueAfterFailure = false
 
         if numberOfMails == 0 {
-            return []
-        }
-
-        if numberOfMails < 3 {
-            XCTFail("need 0 or at least 3 outgoing mails to generate")
             return []
         }
 
@@ -324,90 +435,7 @@ class TestUtil {
         } else {
             XCTFail()
         }
-
+        
         return messagesInTheQueue
-    }    
-
-    static func syncData(cdAccount: CdAccount) -> (ImapSyncData, SmtpSendData)? {
-        guard
-            let imapCI = cdAccount.imapConnectInfo,
-            let smtpCI = cdAccount.smtpConnectInfo else {
-                XCTFail()
-                return nil
-        }
-        return (ImapSyncData(connectInfo: imapCI), SmtpSendData(connectInfo: smtpCI))
-    }
-
-    /**
-     Makes the servers for this account unreachable, for tests that expects failure.
-     */
-    static func makeServersUnreachable(cdAccount: CdAccount) {
-        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
-            XCTFail()
-            return
-        }
-
-        for cdServer in cdServers {
-            cdServer.address = "localhost"
-            cdServer.port = 2525
-        }
-        if let context = cdAccount.managedObjectContext {
-            context.saveAndLogErrors()
-        } else {
-            Record.saveAndWait()
-        }
-    }
-
-    class FetchMessagesServiceTestDelegate: FetchMessagesServiceDelegate {
-        var fetchedMessages = [Message]()
-
-        func didFetch(message: Message) {
-            fetchedMessages.append(message)
-        }
-    }
-
-    static func runFetchTest(parentName: String, testCase: XCTestCase, cdAccount: CdAccount,
-                             useDisfunctionalAccount: Bool,
-                             folderName: String = ImapSync.defaultImapInboxName,
-                             expectError: Bool) {
-        if useDisfunctionalAccount {
-            TestUtil.makeServersUnreachable(cdAccount: cdAccount)
-        }
-
-        guard let (imapSyncData, _) = TestUtil.syncData(cdAccount: cdAccount) else {
-            XCTFail()
-            return
-        }
-
-        let expectationServiceRan = testCase.expectation(description: "expectationServiceRan")
-        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
-
-        let service = FetchMessagesService(parentName: parentName, backgrounder: mbg,
-                                           imapSyncData: imapSyncData, folderName: folderName)
-        let testDelegate = FetchMessagesServiceTestDelegate()
-        service.delegate = testDelegate
-
-        let expServiceBlockInvoked = testCase.expectation(description: "expServiceBlockInvoked")
-        service.execute() { error in
-            expServiceBlockInvoked.fulfill()
-
-            if expectError {
-                XCTAssertNotNil(error)
-            } else {
-                XCTAssertNil(error)
-            }
-        }
-
-        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
-        }
-
-        if expectError {
-            XCTAssertEqual(testDelegate.fetchedMessages.count, 0)
-        } else {
-            XCTAssertGreaterThan(testDelegate.fetchedMessages.count, 0)
-        }
-
-        imapSyncData.sync?.close()
     }
 }

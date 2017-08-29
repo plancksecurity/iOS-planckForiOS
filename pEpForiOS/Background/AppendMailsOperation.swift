@@ -30,7 +30,7 @@ open class AppendMailsOperation: ImapSyncOperation {
     /** On finish, the messageIDs of the messages that have been sent successfully */
     private(set) var successfullySentMessageIDs = [String]()
 
-    public init(parentName: String, imapSyncData: ImapSyncData,
+    public init(parentName: String = #function, imapSyncData: ImapSyncData,
                 errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)

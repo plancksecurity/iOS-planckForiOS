@@ -39,7 +39,7 @@ open class PEPUtil {
             homeURL.appendingPathComponent(".pEp_management.db"),
             keyRingURL.appendingPathComponent("secring.gpg"),
             keyRingURL.appendingPathComponent("pubring.gpg"),
-        ]
+            ]
 
         let fileManager: FileManager = FileManager.default
         for itemToDelete in pEpItemsToDelete {
@@ -410,16 +410,26 @@ open class PEPUtil {
     open static func outgoingMessageColor(from: Identity, to: [Identity],
                                           cc: [Identity], bcc: [Identity],
                                           session: PEPSession) -> PEP_rating {
-        let fakemail = Message.create(uuid: "fakeuuid")
+        let fakeFolder: Folder
+        if let account = Account.by(address: from.address) {
+            fakeFolder = Folder(parent: nil, uuid: "fakeuuid", name: "fakename", account:account)
+        } else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "No account exists for Identity \"from\". That is inconsitant DB state and thus not allowed")
+            let fakeId = Identity(address: "fake@address.com", userID: nil, userName: "fakeName",
+                                  isMySelf: true)
+            let fakeAccount = Account(user: fakeId, servers: [Server]())
+            fakeFolder = Folder(parent: nil, uuid: "fakeuuid", name: "fakename", account:fakeAccount)
+        }
+
+        let fakemail = Message(uuid: "fakeuuid", parentFolder: fakeFolder)
         fakemail.from = from
         fakemail.to = to
         fakemail.cc = cc
         fakemail.bcc = bcc
         fakemail.shortMessage = ""
         fakemail.longMessage = ""
-        return session.outgoingMessageColor(
-            fakemail.pEpMessage(message: fakemail, outgoing: true))
-
+        return session.outgoingMessageColor(fakemail.pEpMessage(message: fakemail, outgoing: true))
     }
 
     open static func pEpColor(identity: Identity,
@@ -534,7 +544,7 @@ open class PEPUtil {
     }
 
     public static func ownIdentity(message: Message) -> Identity? {
-        return message.parent?.account?.user ?? nil
+        return message.parent.account.user
     }
 
     public static func systemLanguage() -> String {

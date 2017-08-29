@@ -21,7 +21,7 @@ class FlagImageTests: XCTestCase {
         XCTAssertNotNil(fi.flaggedImage)
         XCTAssertNotNil(fi.flaggedAndNotSeenImage)
 
-        let msg = Message.create(uuid: MessageID.generate())
+        let msg = Message.fakeMessage(uuid: MessageID.generate())
 
         msg.imapFlags?.seen = true
         XCTAssertNil(fi.flagsImage(message: msg))

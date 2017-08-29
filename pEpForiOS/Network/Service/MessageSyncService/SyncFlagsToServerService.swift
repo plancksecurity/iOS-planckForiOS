@@ -19,7 +19,7 @@ class SyncFlagsToServerService: BackgroundOperationImapService {
     let folderName: String
     weak var delegate: SyncFlagsToServerServiceDelegate?
 
-    init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
+    init(parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData,
          folderName: String = ImapSync.defaultImapInboxName) {
         self.folderName = folderName

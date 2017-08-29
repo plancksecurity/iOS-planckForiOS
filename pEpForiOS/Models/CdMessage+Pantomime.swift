@@ -10,10 +10,10 @@ import MessageModel
 
 public typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
 
-    public enum UpdateFlagsMode: String {
-        case add = "+"
-        case remove = "-"
-    }
+public enum UpdateFlagsMode: String {
+    case add = "+"
+    case remove = "-"
+}
 
 extension CdMessage {
     /**
@@ -96,17 +96,17 @@ extension CdMessage {
         return dict
     }
 
-    /// Creates a tuple consisting of an IMAP command string for syncing flags that have been 
-    /// modified by the client for this message, and a dictionary suitable for using pantomime 
+    /// Creates a tuple consisting of an IMAP command string for syncing flags that have been
+    /// modified by the client for this message, and a dictionary suitable for using pantomime
     /// for the actual execution.
     ///
-    /// - note: Flags added and flags removed by the client use different commands. 
+    /// - note: Flags added and flags removed by the client use different commands.
     ///         Which to use can be chosen by the `mode` parameted.
     ///
     /// - seealso: [RFC4549](https://tools.ietf.org/html/rfc4549#section-4.2.3)
     ///
     /// - Parameter mode: mode to create command for
-    /// - Returns: tuple consisting of an IMAP command string for syncing flags and a dictionary 
+    /// - Returns: tuple consisting of an IMAP command string for syncing flags and a dictionary
     ///    suitable for using pantomime
     /// for the actual execution
     public func storeCommandForUpdateFlags(to mode: UpdateFlagsMode) -> ImapStoreCommand? {
@@ -325,9 +325,9 @@ extension CdMessage {
      Stores server flags that have changed.
      * If the server flags have already been known, nothing is done.
      * Otherwise, the new server flags are stored.
-       * If there were no local flag changes (in respect to the previous server flags version),
-         the local flags will then be set to the same value.
-       * If there were local changes, then the local flags will not change.
+     * If there were no local flag changes (in respect to the previous server flags version),
+     the local flags will then be set to the same value.
+     * If there were local changes, then the local flags will not change.
      - Returns: true if the local flags were updated.
      */
     public func updateFromServer(cwFlags: CWFlags) -> Bool {
@@ -409,7 +409,7 @@ extension CdMessage {
 
         // Bail out quickly if there is only a flag change needed
         if messageUpdate.isFlagsOnly() {
-            if let mail = existing(pantomimeMessage: message) {
+            if let mail = existing(pantomimeMessage: message, inAccount: account) {
                 if mail.updateFromServer(cwFlags: message.flags()) {
                     Record.saveAndWait()
                     if mail.pEpRating != pEpRatingNone {
@@ -425,8 +425,7 @@ extension CdMessage {
             return nil
         }
 
-        let mail = existing(pantomimeMessage: message) ??
-            CdMessage.create()
+        let mail = existing(pantomimeMessage: message, inAccount: account) ?? CdMessage.create()
 
         mail.parent = folder
         mail.bodyFetched = message.isInitialized()
@@ -549,8 +548,8 @@ extension CdMessage {
      Message ID alone is not sufficient, trashed emails can and will exist in more than one folder.
      - Returns: An existing message that matches the given pantomime one.
      */
-    static private func existing(pantomimeMessage: CWIMAPMessage) -> CdMessage? {
-        return search(message:pantomimeMessage)
+    static private func existing(pantomimeMessage: CWIMAPMessage, inAccount account: CdAccount) -> CdMessage? {
+        return search(message:pantomimeMessage, inAccount: account)
     }
 
     /// Try to get the best possible match possible for given data.
@@ -561,10 +560,10 @@ extension CdMessage {
     ///
     /// - Parameter message: message to search for
     /// - Returns: existing message
-    static public func search(message: CWIMAPMessage) -> CdMessage? {
+    static func search(message: CWIMAPMessage, inAccount account: CdAccount) -> CdMessage? {
         let uid = Int32(message.uid())
-       return search(uid: uid, uuid: message.messageID(),
-                     folderName: message.folder()?.name())
+        return search(uid: uid, uuid: message.messageID(),
+                      folderName: message.folder()?.name(), inAccount: account)
     }
 
     static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {

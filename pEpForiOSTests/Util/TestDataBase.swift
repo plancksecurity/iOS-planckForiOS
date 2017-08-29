@@ -121,7 +121,7 @@ class TestDataBase {
                                      transport: imapServerTransport,
                                      credentials:credImap)
             
-            let acc = Account.create(identity: id, servers: [smtp, imap])
+            let acc = Account(user: id, servers: [smtp, imap])
 
             return acc
         }

@@ -111,7 +111,7 @@ public struct AccountUserInput {
                                        credentials: credentialsSmtp)
         smtpServer.needsVerification = true
 
-        let account = Account.create(identity: identity, servers: [imapServer, smtpServer])
+        let account = Account(user: identity, servers: [imapServer, smtpServer])
         return account
     }
 }

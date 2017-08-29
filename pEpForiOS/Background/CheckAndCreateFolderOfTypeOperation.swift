@@ -28,7 +28,7 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
 
     var syncDelegate: CheckAndCreateFolderOfTypeSyncDelegate?
 
-    public init(parentName: String, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    public init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount, folderType: FolderType) {
         self.folderType = folderType
         self.folderName = folderType.folderName()

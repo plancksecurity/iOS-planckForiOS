@@ -80,9 +80,7 @@ class ComposeTableViewController: TableViewControllerBase {
         destinyCc = [Identity]()
         destinyBcc = [Identity]()
         if let om = originalMessage {
-            if let id = om.parent?.account?.user {
-                origin = id
-            }
+            origin = om.parent.account.user
             if composeMode == .replyFrom {
                 if let from = om.from {
                     destinyTo?.append(from)
@@ -223,7 +221,14 @@ class ComposeTableViewController: TableViewControllerBase {
     }
 
     fileprivate final func populateMessageForSending() -> Message? {
-        let message = Message.create(uuid: MessageID.generate())
+        guard let from = appConfig?.currentAccount?.user ?? Account.all().first?.user,
+            let account = Account.by(address: from.address),
+            let f = Folder.by(account: account, folderType: .sent) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "Required data missing. Inconsistant State.")
+                return nil
+        }
+        let message = Message(uuid: MessageID.generate(), parentFolder: f)
 
         allCells.forEach({ (cell) in
             if cell is RecipientCell, let fm = cell.fieldModel {
@@ -280,16 +285,6 @@ class ComposeTableViewController: TableViewControllerBase {
                 refs.remove(at: 1)
             }
             message.references = refs
-        }
-
-        // determine the folder for this message
-        let from = message.from ?? appConfig?.currentAccount?.user ?? Account.all()[0].user
-        if let account = Account.by(address: from.address) {
-            let f = Folder.by(account: account, folderType: .sent)
-            message.parent = f
-        } else {
-            Log.warn(component: #function, content: "Cannot determine message account")
-            return nil
         }
 
         message.pEpProtected = pEpProtection
@@ -443,11 +438,12 @@ class ComposeTableViewController: TableViewControllerBase {
 
             alertCtrl.addAction(
                 alertCtrl.action(NSLocalizedString("Save", comment: "compose email save"), .default, {
-                    if let msg = self.populateMessageForSending(),
-                        let acc = msg.parent?.account,
-                        let f = Folder.by(account:acc, folderType: .drafts) {
-                        msg.parent = f
-                        msg.save()
+                    if let msg = self.populateMessageForSending() {
+                        let acc = msg.parent.account
+                        if let f = Folder.by(account:acc, folderType: .drafts) {
+                            msg.parent = f
+                            msg.save()
+                        }
                     } else {
                         Log.error(component: #function, errorString: "No drafts folder for message")
                     }

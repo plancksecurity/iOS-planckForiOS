@@ -26,7 +26,7 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
         return errorContainer.hasErrors()
     }
 
-    public init(parentName: String,
+    public init(parentName: String = #function,
                 errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.errorContainer = errorContainer
 

@@ -46,7 +46,7 @@ class FolderInfoOperation: ConcurrentBaseOperation {
     let folderName: String
     var folderInfo = FolderUIDInfo()
 
-    public init(parentName: String,
+    public init(parentName: String = #function,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 connectInfo: ConnectInfo,
                 folderName: String) {

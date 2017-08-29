@@ -26,7 +26,7 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     let messageUpdate: CWMessageUpdate
 
     public init(
-        parentName: String,
+        parentName: String = #function,
         accountID: NSManagedObjectID, message: CWIMAPMessage,
         messageUpdate: CWMessageUpdate,
         messageFetchedBlock: MessageFetchedBlock? = nil) {
@@ -73,13 +73,12 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     }
 
     func storeMessage(context: NSManagedObjectContext) {
-        guard let account = context.object(with: accountID)
-            as? CdAccount else {
+        guard let account = context.object(with: accountID) as? CdAccount else {
                 addError(OperationError.cannotFindAccount)
                 return
         }
         if messageUpdate.isFlagsOnly() {
-            guard let cdMsg = CdMessage.search(message: message) else {
+            guard let cdMsg = CdMessage.search(message: message, inAccount: account ) else {
                     addError(OperationError.messageForFlagUpdateNotFound)
                     return
             }

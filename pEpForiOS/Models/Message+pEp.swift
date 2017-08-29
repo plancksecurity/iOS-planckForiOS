@@ -22,7 +22,7 @@ extension Message {
     }
 
     func belongToSentFolder() -> Bool {
-        if self.parent?.folderType  == FolderType.sent {
+        if self.parent.folderType  == FolderType.sent {
             return true
         } else {
             return false

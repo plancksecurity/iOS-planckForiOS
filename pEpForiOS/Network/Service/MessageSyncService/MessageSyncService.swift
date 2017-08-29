@@ -118,7 +118,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
     }
 
     func requestSend(message: Message) {
-        connectInfos(account: message.parent?.account) { [weak self] (imapCI, smtpCI) in
+        connectInfos(account: message.parent.account) { [weak self] (imapCI, smtpCI) in
             self?.managementQueue.async { [weak self] in
                 self?.handleSendRequest(imapConnectInfo: imapCI,
                                         smtpConnectInfo: smtpCI, message: message)
@@ -135,7 +135,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
     }
 
     func requestFlagChange(message: Message) {
-        connectInfos(account: message.parent?.account) { [weak self] (imapCI, smtpCI) in
+        connectInfos(account: message.parent.account) { [weak self] (imapCI, smtpCI) in
             self?.managementQueue.async { [weak self] in
                 self?.handleFlagChange(imapConnectInfo: imapCI,
                                        smtpConnectInfo: smtpCI, message: message)

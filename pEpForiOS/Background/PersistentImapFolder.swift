@@ -217,7 +217,7 @@ class PersistentImapFolder: CWIMAPFolder {
 //MARK: - CWCache
 extension PersistentImapFolder: CWCache {
     func invalidate() {
-        //???: no implementations?
+        Log.shared.errorAndCrash(component: #function, errorString: "Unimplemented stub")
         // if intentionally, please mark so
     }
 
@@ -277,7 +277,15 @@ extension PersistentImapFolder: CWIMAPCache {
                 Log.warn(
                     component: self.functionName(#function),
                     content: "UIValidity changed, deleting all messages. Folder \(String(describing: self.folder.name))")
-                self.folder.messages = []
+                // For some reason messages are not deleted when removing it from folder 
+                // (even cascade is the delete rule). This couses crashes saving the context, 
+                // as it holds invalid messages that have no parent folder.
+                // That is why we are deleting the messages manually.
+                if let messages =  self.folder.messages?.allObjects as? [CdMessage] {
+                    for cdMessage in messages  {
+                        self.privateMOC.delete(cdMessage)
+                    }
+                }
             }
             self.folder.uidValidity = Int32(theUIDValidity)
             self.privateMOC.saveAndLogErrors()
