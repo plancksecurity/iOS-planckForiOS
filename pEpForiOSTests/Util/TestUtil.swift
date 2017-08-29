@@ -205,7 +205,7 @@ class TestUtil {
         }
     }
 
-    static func checkForUniqueness(uuids: [MessageID]) {
+    static func checkForExistanceAndUniqueness(uuids: [MessageID]) {
         for uuid in uuids {
             if let ms = CdMessage.all(attributes: ["uuid": uuid]) as? [CdMessage] {
                 var folder: CdFolder? = nil
@@ -314,10 +314,10 @@ class TestUtil {
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase, skipValidation: Bool) {
         let sendLayerDelegate = SendLayerObserver()
 
-        let networkService = NetworkService(parentName: "//BUFF: TEST \(#function)")
-        networkService.sleepTimeInSeconds = 0.1
+        let networkService = NetworkService()
+        networkService.sleepTimeInSeconds = 5
 
-        let expAccountsSynced = testCase.expectation(description: "expSingleAccountSynced1")
+        let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
         // A temp variable is necassary, since the networkServiceDelegate is weak
         let del = NetworkServiceObserver(numAccountsToSync: numAccountsToSync,
                                          expAccountsSynced: expAccountsSynced,
@@ -333,7 +333,8 @@ class TestUtil {
 
         networkService.start()
 
-        testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+        let canTakeSomeTimeFactor = 3.0
+        testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor, handler: { error in
             XCTAssertNil(error)
         })
     }

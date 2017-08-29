@@ -95,7 +95,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
             XCTAssertNotNil(m.imap)
         }
-        TestUtil.checkForUniqueness(uuids: uuids)
+        TestUtil.checkForExistanceAndUniqueness(uuids: uuids)
     }
 
     /**

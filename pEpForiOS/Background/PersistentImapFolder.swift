@@ -277,8 +277,7 @@ extension PersistentImapFolder: CWIMAPCache {
                 Log.warn(
                     component: self.functionName(#function),
                     content: "UIValidity changed, deleting all messages. Folder \(String(describing: self.folder.name))")
-                //BUFF: DIRK: supposed behaviour?
-                // for some reason messages are not deleted when removing it from folder 
+                // For some reason messages are not deleted when removing it from folder 
                 // (even cascade is the delete rule). This couses crashes saving the context, 
                 // as it holds invalid messages that have no parent folder.
                 // That is why we are deleting the messages manually.
@@ -287,8 +286,6 @@ extension PersistentImapFolder: CWIMAPCache {
                         self.privateMOC.delete(cdMessage)
                     }
                 }
-                    //FFUB
-//                self.folder.messages = []
             }
             self.folder.uidValidity = Int32(theUIDValidity)
             self.privateMOC.saveAndLogErrors()

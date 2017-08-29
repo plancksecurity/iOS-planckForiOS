@@ -10,10 +10,10 @@ import MessageModel
 
 public typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
 
-    public enum UpdateFlagsMode: String {
-        case add = "+"
-        case remove = "-"
-    }
+public enum UpdateFlagsMode: String {
+    case add = "+"
+    case remove = "-"
+}
 
 extension CdMessage {
     /**
@@ -96,17 +96,17 @@ extension CdMessage {
         return dict
     }
 
-    /// Creates a tuple consisting of an IMAP command string for syncing flags that have been 
-    /// modified by the client for this message, and a dictionary suitable for using pantomime 
+    /// Creates a tuple consisting of an IMAP command string for syncing flags that have been
+    /// modified by the client for this message, and a dictionary suitable for using pantomime
     /// for the actual execution.
     ///
-    /// - note: Flags added and flags removed by the client use different commands. 
+    /// - note: Flags added and flags removed by the client use different commands.
     ///         Which to use can be chosen by the `mode` parameted.
     ///
     /// - seealso: [RFC4549](https://tools.ietf.org/html/rfc4549#section-4.2.3)
     ///
     /// - Parameter mode: mode to create command for
-    /// - Returns: tuple consisting of an IMAP command string for syncing flags and a dictionary 
+    /// - Returns: tuple consisting of an IMAP command string for syncing flags and a dictionary
     ///    suitable for using pantomime
     /// for the actual execution
     public func storeCommandForUpdateFlags(to mode: UpdateFlagsMode) -> ImapStoreCommand? {
@@ -325,9 +325,9 @@ extension CdMessage {
      Stores server flags that have changed.
      * If the server flags have already been known, nothing is done.
      * Otherwise, the new server flags are stored.
-       * If there were no local flag changes (in respect to the previous server flags version),
-         the local flags will then be set to the same value.
-       * If there were local changes, then the local flags will not change.
+     * If there were no local flag changes (in respect to the previous server flags version),
+     the local flags will then be set to the same value.
+     * If there were local changes, then the local flags will not change.
      - Returns: true if the local flags were updated.
      */
     public func updateFromServer(cwFlags: CWFlags) -> Bool {
@@ -561,10 +561,9 @@ extension CdMessage {
     /// - Parameter message: message to search for
     /// - Returns: existing message
     static func search(message: CWIMAPMessage, inAccount account: CdAccount) -> CdMessage? {
-        //BUFF: here take account into account :-)
         let uid = Int32(message.uid())
-       return search(uid: uid, uuid: message.messageID(),
-                     folderName: message.folder()?.name(), inAccount: account)
+        return search(uid: uid, uuid: message.messageID(),
+                      folderName: message.folder()?.name(), inAccount: account)
     }
 
     static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {

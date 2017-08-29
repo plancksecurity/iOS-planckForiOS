@@ -44,12 +44,11 @@ class CoreDataDrivenTestBase: XCTestCase {
         XCTAssertNotNil(smtpConnectInfo)
     }
 
-    //BUFF:
-//    override func tearDown() {
-//        imapSyncData?.sync?.close()
-//        persistentSetup = nil
-//        super.tearDown()
-//    }
+    override func tearDown() {
+        imapSyncData?.sync?.close()
+        persistentSetup = nil
+        super.tearDown()
+    }
 
     // MARK: - HELPER
 

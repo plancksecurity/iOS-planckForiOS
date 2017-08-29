@@ -40,11 +40,6 @@ class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertib
         }
         if self.accountInfo == nil {
             self.accountInfo = accountInfo
-            //BUFF:
-//            numAccountsSynced += 1
-//            if numAccountsToBeSynced == numAccountsSynced {
-//                expAllSynced?.fulfill()
-//            }
         }
         numAccountsSynced += 1
         if numAccountsToBeSynced == numAccountsSynced {
