@@ -315,7 +315,7 @@ class TestUtil {
         let sendLayerDelegate = SendLayerObserver()
 
         let networkService = NetworkService()
-        networkService.sleepTimeInSeconds = 5
+        networkService.sleepTimeInSeconds = 0.1
 
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
         // A temp variable is necassary, since the networkServiceDelegate is weak
@@ -337,6 +337,7 @@ class TestUtil {
         testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor, handler: { error in
             XCTAssertNil(error)
         })
+        networkService.cancel()
     }
 
     // MARK: Messages
