@@ -12,7 +12,7 @@ extension String {
     public func extractCid() -> String? {
         do {
             let regex = try NSRegularExpression(
-                pattern: "^cid:(.+)$", options: [])
+                pattern: "^cid:(?://)?(.+)$", options: [])
             if let match = regex.firstMatch(in: self, options: [], range: wholeRange()) {
                 let r = match.rangeAt(1)
                 let s = (self as NSString).substring(with: r)
