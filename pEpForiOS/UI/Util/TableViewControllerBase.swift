@@ -10,6 +10,9 @@ import UIKit
 
 class TableViewControllerBase: UITableViewController {
     private var _appConfig: AppConfig?
+
+    var originalTitleView: String?
+
     var appConfig: AppConfig? {
         get {
             guard _appConfig != nil else {

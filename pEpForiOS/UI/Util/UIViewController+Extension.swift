@@ -10,9 +10,20 @@ import Foundation
 import UIKit
 
 extension UIViewController {
+
+    /*var originalTitleView: UIView? {
+        set {
+            self.originalTitleView = newValue
+        }
+
+        get {
+            return self.originalTitleView
+        }
+    }*/
+
     func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
         setEmailDisplayColors()
-
+        
         // icon
         navigationItem.title = nil
         if let img = pEpRating?.pepColor().statusIcon(enabled: pEpProtection) {
@@ -54,4 +65,6 @@ extension UIViewController {
             UINavigationBar.appearance().titleTextAttributes
         navigationController?.toolbar.tintColor = UIToolbar.appearance().tintColor
     }
+
+
 }
