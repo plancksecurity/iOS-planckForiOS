@@ -303,6 +303,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertEqual(CdMessage.all()?.count, numMails)
     }
 
+    //BUFF: remove dead code
     func testCreateLocalRequiredFoldersOperation() {
         let expFoldersStored = expectation(description: "expFoldersStored")
         let op = CreateLocalRequiredFoldersOperation(
@@ -516,6 +517,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
     }
 
+    //BUFF: remove dead code
     func insertNewMessageForSending(account: CdAccount) -> CdMessage {
         let msg = CdMessage.create(messageID: MessageID.generate(), uid: 1)
         msg.from = account.identity
@@ -817,6 +819,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         if let theID = identity as NSDictionary as? PEPIdentity,
             let id = Identity.from(pEpIdentity: theID) {
+            let account = TestData().createWorkingAccount()
+            account.user = id
+            account.save()
+
             self.measure {
                 for _ in [1...1000] {
                     let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
@@ -832,6 +838,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testOutgoingMessageColor() {
         let session = PEPSession.init()
         let identity = TestData().createWorkingAccount().user
+        let account = TestData().createWorkingAccount()
+        account.user = identity
+        account.save()
         self.measure {
             for _ in [1...1000] {
                 let _ = PEPUtil.outgoingMessageColor(from: identity, to: [identity],
@@ -841,12 +850,16 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
     }
 
+    //BUFF: fails see above
     func testOutgoingMailColorPerformanceWithoutMySelf() {
         let session = PEPSession.init()
         let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
         if let theID = identity as NSDictionary as? PEPIdentity,
             let id = Identity.from(pEpIdentity: theID) {
+            let account = TestData().createWorkingAccount()
+            account.user = id
+            account.save()
             self.measure {
                 for _ in [1...1000] {
                     let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
@@ -895,9 +908,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         cdFolder.uuid = "1"
         cdFolder.folderType = FolderType.inbox
         cdFolder.account = cdAccount
-        
+
         let cdMsg = CdMessage.create(messageID: "2", uid: 1, parent: cdFolder)
-        
+
         let cdAttachWithoutSize = CdAttachment.create()
         cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8) as NSData?
         cdAttachWithoutSize.message = cdMsg
