@@ -610,10 +610,10 @@ extension CdMessage {
                 MiscUtil.isEmptyString(part.filename()) {
                 // some content with unknown content type at the first level must be text
                 targetMail.longMessage = data.toStringWithIANACharset(part.charset())
-            } else if isText && level < 3 && targetMail.longMessage == nil &&
+            } else if isText && targetMail.longMessage == nil &&
                 MiscUtil.isEmptyString(part.filename()) {
                 targetMail.longMessage = data.toStringWithIANACharset(part.charset())
-            } else if isHtml && level < 3 && targetMail.longMessageFormatted == nil &&
+            } else if isHtml && targetMail.longMessageFormatted == nil &&
                 MiscUtil.isEmptyString(part.filename()) {
                 targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
             } else {

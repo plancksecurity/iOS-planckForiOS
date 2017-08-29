@@ -12,6 +12,7 @@ import MessageModel
 
 class HandshakeViewController: TableViewControllerBase {
     var ratingReEvaluator: RatingReEvaluator?
+    var backTitle: String?
 
     var message: Message? {
         didSet {
@@ -32,6 +33,19 @@ class HandshakeViewController: TableViewControllerBase {
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
+        /*backTitle = "luul"
+        self.navigationItem.hidesBackButton = true
+        let backbutton = UIBarButtonItem()//UIButton(type: .custom)
+        backbutton.setImage(UIImage(named: "chevron-icon"), for: .normal) // Image can be downloaded from here below link
+        backbutton.setTitle(backTitle, for: .normal)
+        backbutton.setTitleColor(backbutton.tintColor, for: .normal) // You can change the TitleColor
+        backbutton.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
+
+        self.navigationItem.leftBarButtonItem = backbutton*/
+    }
+
+    func back(sender: UIBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
     }
 
     override func didReceiveMemoryWarning() {

@@ -42,7 +42,8 @@ class EmailViewController: TableViewControllerBase {
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
 
-        self.title = NSLocalizedString("Message", comment: "Message view title")
+        self.title = message.shortMessage//NSLocalizedString("Message", comment: "Message view title")
+        saveTitleView()
     }
 
 
@@ -272,6 +273,7 @@ extension EmailViewController: SegueHandlerType {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                 break
             }
+            recoveryInitialTitle()
             destination.appConfig = appConfig
             destination.message = message
             destination.ratingReEvaluator = ratingReEvaluator
@@ -328,4 +330,19 @@ extension EmailViewController: MessageAttachmentDelegate {
         }
         backgroundQueue.addOperation(attachmentOp)
     }
+}
+
+// MARK: - Title View Extension
+extension EmailViewController {
+
+    func saveTitleView() {
+        self.originalTitleView = self.title
+    }
+
+    func recoveryInitialTitle() {
+        self.navigationItem.titleView = nil
+        self.navigationItem.title = self.originalTitleView
+        self.title = self.originalTitleView
+    }
+
 }

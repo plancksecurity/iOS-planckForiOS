@@ -17,21 +17,21 @@ open class MessageContentCell: MessageCell {
                                     indexPath: IndexPath) {
         super.updateCell(model: model, message: message, indexPath: indexPath)
 
-        contentLabel.text = ""
+        let finalText = NSMutableAttributedString()
         if message.underAttack {
             let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
-            contentLabel.text?.append(status.title)
-            contentLabel.text?.append(status.explanation)
-            contentLabel.text?.append(status.suggestion)
-            contentLabel.text?.append("\n")
+            finalText.bold("\n" + status.title + "\n\n" + status.explanation + "\n\n" + status.suggestion
+                + "\n\n" + NSLocalizedString("attachments are disabled", comment: "Disabled attachments") + "\n\n")
+            //if there will be attachmetns show warning
         }
 
         if let longmessage = message.longMessage?.trimmedWhiteSpace() {
-            contentLabel.text?.append(longmessage)
+            finalText.normal(longmessage)
         } else {
             if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
-                contentLabel.text?.append(text)
+                finalText.normal(text)
             }
         }
+        contentLabel.attributedText = finalText
     }
 }
