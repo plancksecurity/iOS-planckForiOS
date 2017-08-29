@@ -80,6 +80,7 @@ class StringHTMLExtensionTests: XCTestCase {
     func testExtractCid() {
         let token = "uiaeuiae"
         XCTAssertEqual("cid:\(token)".extractCid(), token)
+        XCTAssertEqual("cid://\(token)".extractCid(), token)
         XCTAssertNil("file:\(token)".extractCid())
         XCTAssertNil(token.extractCid())
         XCTAssertNil("http://uiaeuiaeuiae".extractCid())
