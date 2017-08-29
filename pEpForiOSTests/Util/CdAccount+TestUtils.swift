@@ -12,7 +12,27 @@ import pEpForiOS
 
 extension CdAccount {
 
-    func createRequiredFoldersAndWait(testCase: XCTestCase) {
+    public func allMessages(inFolderOfType type: FolderType,
+                            sendFrom from: CdIdentity? = nil) -> [CdMessage] {
+        guard let messages = CdMessage.all() as? [CdMessage] else {
+            XCTFail("We got no mails in DB at all.")
+            return []
+        }
+
+        let msgs: [CdMessage]
+        if let id = from {
+            msgs = messages.filter { $0.parent?.account == self
+                && $0.parent?.folderType == type
+                && $0.from == id }
+        } else {
+            msgs = messages.filter { $0.parent?.account == self
+                && $0.parent?.folderType == type }
+        }
+
+        return msgs
+    }
+    
+    public func createRequiredFoldersAndWait(testCase: XCTestCase) {
         guard let imapConnectInfo = self.imapConnectInfo else {
             XCTFail("No imapConnectInfo")
             return

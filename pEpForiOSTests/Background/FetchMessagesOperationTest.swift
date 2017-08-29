@@ -14,10 +14,10 @@ import CoreData
 
 class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 
-    //BUFF: here
     // IOS-671 pEp app has two accounts. Someone sends a mail to both (with both accounts in receipients).
     // Message must exist twice, once for each account, after fetching.
     func testMailSentToBothPepAccounts() {
+        // Setup 2 accounts
        cdAccount.createRequiredFoldersAndWait(testCase: self)
         Record.saveAndWait()
         
@@ -28,50 +28,47 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         cdAccount2.createRequiredFoldersAndWait(testCase: self)
         Record.saveAndWait()
 
-        //##################
-
-        let numMailsToSend = 2
-
-        // Create mail(s) from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2) ...
-        let mailsToSend = TestUtil.createOutgoingMails(
-            cdAccount: cdAccount2, testCase: self, numberOfMails: numMailsToSend)
-        XCTAssertEqual(mailsToSend.count, numMailsToSend)
-        for mail in mailsToSend {
-            mail.from = cdAccount2.identity
-            guard let currentReceipinets = mail.to,
-            let id1 = cdAccount.identity,
+        guard let id1 = cdAccount.identity,
             let id2 = cdAccount2.identity else {
                 XCTFail("We all loose identity ...")
                 return
+        }
+
+        // Sync both acocunts and remember what we got before starting the actual test
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        let msgsBefore1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
+        let msgsBefore2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id2)
+
+        // Create mails from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2) ...
+        let numMailsToSend = 2
+        let mailsToSend = TestUtil.createOutgoingMails(
+            cdAccount: cdAccount2, testCase: self, numberOfMails: numMailsToSend)
+        XCTAssertEqual(mailsToSend.count, numMailsToSend)
+
+        for mail in mailsToSend {
+            guard let currentReceipinets = mail.to else {
+                    XCTFail("Should have receipients")
+                    return
             }
+            mail.from = id2
             mail.removeFromTo(currentReceipinets)
             mail.addToTo(id1)
             mail.addToTo(id2)
         }
-
         Record.saveAndWait()
 
-        // ... and send it.
-        TestUtil.syncOnceAndWait(testCase: self, skipValidation: true)
+        // ... and send them.
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
 
-        // Sync once again to make sure we mirror the servers state.
-        TestUtil.syncOnceAndWait(testCase: self, skipValidation: true)
+        // Sync once again to make sure we mirror the servers state (i.e. received the sent mails)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
 
         // Now let's see what we got.
-        guard let messages = CdMessage.all() as? [CdMessage] else {
-            XCTFail("We got no mails.")
-            return
-        }
+        let msgsAfter1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
+        let msgsAfter2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id2)
 
-        let msgsFromAcc2_1 = messages.filter { $0.parent?.account == cdAccount &&
-            $0.parent?.folderType == .inbox &&
-            $0.from == cdAccount2}
-        let msgsFromAcc2_2 = messages.filter { $0.parent?.account == cdAccount2 &&
-            $0.parent?.folderType == .inbox &&
-            $0.from == cdAccount2 }
-
-        XCTAssertGreaterThanOrEqual(msgsFromAcc2_1.count, numMailsToSend)
-        XCTAssertGreaterThanOrEqual(msgsFromAcc2_2.count, numMailsToSend)
+        XCTAssertEqual(msgsBefore1.count + numMailsToSend, msgsAfter1.count)
+        XCTAssertEqual(msgsBefore2.count + numMailsToSend, msgsAfter2.count)
     }
 
     // IOS-615 (Only) the first email in an Yahoo account gets duplicated locally on every sync cycle
@@ -159,7 +156,4 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(fetch2Op.hasErrors())
         })
     }
-
-    //BUFF: to utils
-
 }

@@ -11,19 +11,22 @@ import pEpForiOS
 import MessageModel
 
 class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertible {
-    let expSingleAccountSynced: XCTestExpectation?
+    let expAllSynced: XCTestExpectation?
     var expCanceled: XCTestExpectation?
     var accountInfo: AccountConnectInfo?
+    let numAccountsToBeSynced: Int
+    var numAccountsSynced = 0
 
     var debugDescription: String {
-        return expSingleAccountSynced?.debugDescription ?? "unknown"
+        return expAllSynced?.debugDescription ?? "unknown"
     }
 
     let failOnError: Bool
 
-    init(expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil,
+    init(numAccountsToSync: Int = 1, expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil,
          failOnError: Bool = false) {
-        self.expSingleAccountSynced = expAccountsSynced
+        self.numAccountsToBeSynced = numAccountsToSync
+        self.expAllSynced = expAccountsSynced
         self.expCanceled = expCanceled
         self.failOnError = failOnError
     }
@@ -37,7 +40,15 @@ class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertib
         }
         if self.accountInfo == nil {
             self.accountInfo = accountInfo
-            expSingleAccountSynced?.fulfill()
+            //BUFF:
+//            numAccountsSynced += 1
+//            if numAccountsToBeSynced == numAccountsSynced {
+//                expAllSynced?.fulfill()
+//            }
+        }
+        numAccountsSynced += 1
+        if numAccountsToBeSynced == numAccountsSynced {
+            expAllSynced?.fulfill()
         }
     }
 
