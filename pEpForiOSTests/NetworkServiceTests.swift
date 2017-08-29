@@ -26,41 +26,42 @@ class NetworkServiceTests: XCTestCase {
         super.tearDown()
     }
 
-    class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertible {
-        let expSingleAccountSynced: XCTestExpectation?
-        var expCanceled: XCTestExpectation?
-        var accountInfo: AccountConnectInfo?
-
-        var debugDescription: String {
-            return expSingleAccountSynced?.debugDescription ?? "unknown"
-        }
-
-        let failOnError: Bool
-
-        init(expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil,
-             failOnError: Bool = false) {
-            self.expSingleAccountSynced = expAccountsSynced
-            self.expCanceled = expCanceled
-            self.failOnError = failOnError
-        }
-
-        func didSync(service: NetworkService, accountInfo: AccountConnectInfo,
-                     errorProtocol: ServiceErrorProtocol) {
-            Log.info(component: #function, content: "\(self)")
-            if errorProtocol.hasErrors() && failOnError {
-                Log.error(component: #function, error: errorProtocol.error)
-                XCTFail()
-            }
-            if self.accountInfo == nil {
-                self.accountInfo = accountInfo
-                expSingleAccountSynced?.fulfill()
-            }
-        }
-
-        func didCancel(service: NetworkService) {
-            expCanceled?.fulfill()
-        }
-    }
+    //BUFF: to util
+//    class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertible {
+//        let expSingleAccountSynced: XCTestExpectation?
+//        var expCanceled: XCTestExpectation?
+//        var accountInfo: AccountConnectInfo?
+//
+//        var debugDescription: String {
+//            return expSingleAccountSynced?.debugDescription ?? "unknown"
+//        }
+//
+//        let failOnError: Bool
+//
+//        init(expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil,
+//             failOnError: Bool = false) {
+//            self.expSingleAccountSynced = expAccountsSynced
+//            self.expCanceled = expCanceled
+//            self.failOnError = failOnError
+//        }
+//
+//        func didSync(service: NetworkService, accountInfo: AccountConnectInfo,
+//                     errorProtocol: ServiceErrorProtocol) {
+//            Log.info(component: #function, content: "\(self)")
+//            if errorProtocol.hasErrors() && failOnError {
+//                Log.error(component: #function, error: errorProtocol.error)
+//                XCTFail()
+//            }
+//            if self.accountInfo == nil {
+//                self.accountInfo = accountInfo
+//                expSingleAccountSynced?.fulfill()
+//            }
+//        }
+//
+//        func didCancel(service: NetworkService) {
+//            expCanceled?.fulfill()
+//        }
+//    }
 
     class MessageModelObserver: MessageFolderDelegate {
         var messages: [Message] {
@@ -125,35 +126,36 @@ class NetworkServiceTests: XCTestCase {
         }
     }
 
-    class SendLayerObserver: SendLayerDelegate {
-        let expAccountVerified: XCTestExpectation?
-        var messageIDs = [String]()
-
-        init(expAccountVerified: XCTestExpectation? = nil) {
-            self.expAccountVerified = expAccountVerified
-        }
-
-        func didVerify(cdAccount: CdAccount, error: Error?) {
-            XCTAssertNil(error)
-            expAccountVerified?.fulfill()
-        }
-
-        func didFetch(cdMessage: CdMessage) {
-            if let msg = cdMessage.message() {
-                messageIDs.append(msg.messageID)
-            } else {
-                XCTFail()
-            }
-        }
-
-        func didRemove(cdFolder: CdFolder) {
-            XCTFail()
-        }
-
-        func didRemove(cdMessage: CdMessage) {
-            XCTFail()
-        }
-    }
+    //BUFF: to utils
+//    class SendLayerObserver: SendLayerDelegate {
+//        let expAccountVerified: XCTestExpectation?
+//        var messageIDs = [String]()
+//
+//        init(expAccountVerified: XCTestExpectation? = nil) {
+//            self.expAccountVerified = expAccountVerified
+//        }
+//
+//        func didVerify(cdAccount: CdAccount, error: Error?) {
+//            XCTAssertNil(error)
+//            expAccountVerified?.fulfill()
+//        }
+//
+//        func didFetch(cdMessage: CdMessage) {
+//            if let msg = cdMessage.message() {
+//                messageIDs.append(msg.messageID)
+//            } else {
+//                XCTFail()
+//            }
+//        }
+//
+//        func didRemove(cdFolder: CdFolder) {
+//            XCTFail()
+//        }
+//
+//        func didRemove(cdMessage: CdMessage) {
+//            XCTFail()
+//        }
+//    }
 
     func testSyncOutgoing() {
         testSyncOutgoing(useCorrectSmtpAccount: true)
@@ -351,6 +353,7 @@ class NetworkServiceTests: XCTestCase {
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
+        //BUFF: DIRK: .sent?
         guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
             XCTFail()
             return
@@ -360,7 +363,7 @@ class NetworkServiceTests: XCTestCase {
         // Build outgoing emails
         var outgoingMails = [CdMessage]()
         var outgoingMessageIDs = [String]()
-        let numMails = 5
+        let numMails = 1
         for i in 1...numMails {
             let message = CdMessage.create()
             message.from = from

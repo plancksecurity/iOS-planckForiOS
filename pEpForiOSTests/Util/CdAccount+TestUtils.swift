@@ -12,36 +12,6 @@ import pEpForiOS
 
 extension CdAccount {
 
-    func syncOnceAndWait(testCase: XCTestCase) {
-//                       let modelDelegate = MessageModelObserver()
-//            MessageModelConfig.messageFolderDelegate = modelDelegate
-//
-//            let sendLayerDelegate = SendLayerObserver()
-
-            let networkService = NetworkService(parentName: "//BUFF: TEST \(#function)")
-            networkService.sleepTimeInSeconds = 2
-
-            // A temp variable is necassary, since the networkServiceDelegate is weak
-            let expAccountsSynced = testCase.expectation(description: "expSingleAccountSynced1")
-            var del = NetworkServiceObserver(
-                expAccountsSynced: expAccountsSynced,
-                failOnError: useCorrectSmtpAccount)
-
-            networkService.networkServiceDelegate = del
-            networkService.sendLayerDelegate = sendLayerDelegate
-
-            let cdAccount = useCorrectSmtpAccount ? TestData().createWorkingCdAccount() :
-                TestData().createSmtpTimeOutCdAccount()
-            TestUtil.skipValidation()
-            Record.saveAndWait()
-
-            networkService.start()
-
-            // Wait for first sync, mainly to have folders
-            waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-                XCTAssertNil(error)
-            })
-    }
     func createRequiredFoldersAndWait(testCase: XCTestCase) {
         guard let imapConnectInfo = self.imapConnectInfo else {
             XCTFail("No imapConnectInfo")

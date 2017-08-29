@@ -55,7 +55,7 @@ public class EmailListViewModel : FilterUpdateProtocol{
     }
 
     func keyFor(message: Message) -> NSString {
-        let parentName = message.parent?.name ?? "unknown"
+        let parentName = message.parent.name 
         return "\(message.uuid) \(parentName) \(message.uuid)" as NSString
     }
 

@@ -234,11 +234,6 @@ class TestUtil {
             return []
         }
 
-        if numberOfMails < 3 {
-            XCTFail("need 0 or at least 3 outgoing mails to generate")
-            return []
-        }
-
         let existingSentFolder = CdFolder.by(folderType: .sent, account: cdAccount)
 
         if existingSentFolder == nil {
@@ -409,5 +404,33 @@ class TestUtil {
         }
 
         imapSyncData.sync?.close()
+    }
+
+    static public func syncOnceAndWait(testCase: XCTestCase, skipValidation: Bool) {
+        let sendLayerDelegate = SendLayerObserver()
+
+        let networkService = NetworkService(parentName: "//BUFF: TEST \(#function)")
+        networkService.sleepTimeInSeconds = 2
+
+        // A temp variable is necassary, since the networkServiceDelegate is weak
+        let expAccountsSynced = testCase.expectation(description: "expSingleAccountSynced1")
+        let del = NetworkServiceObserver(
+            expAccountsSynced: expAccountsSynced,
+            failOnError: true)
+
+        networkService.networkServiceDelegate = del
+        networkService.sendLayerDelegate = sendLayerDelegate
+
+        if skipValidation {
+            TestUtil.skipValidation()
+        }
+        Record.saveAndWait()
+
+        networkService.start()
+
+        // Wait for first sync, mainly to have folders
+        testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
     }
 }

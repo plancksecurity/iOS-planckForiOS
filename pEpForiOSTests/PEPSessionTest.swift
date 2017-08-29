@@ -33,11 +33,11 @@ class PEPSessionTest: XCTestCase {
         let account = TestData().createWorkingAccount()
         account.save()
 
-        let folder = Folder.create(name: "inbox", account: account, folderType: .inbox)
+        let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         folder.save()
 
         let uuid = MessageID.generate()
-        let message = Message.create(uuid: uuid)
+        let message = Message.fakeMessage(uuid: uuid)
         message.comments = "comment"
         message.shortMessage = "short message"
         message.longMessage = "long message"

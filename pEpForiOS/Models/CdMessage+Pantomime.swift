@@ -564,7 +564,7 @@ extension CdMessage {
         //BUFF: here take account into account :-)
         let uid = Int32(message.uid())
        return search(uid: uid, uuid: message.messageID(),
-                     folderName: message.folder()?.name())
+                     folderName: message.folder()?.name(), inAccount: account)
     }
 
     static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {
