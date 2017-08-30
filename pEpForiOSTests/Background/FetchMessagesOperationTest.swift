@@ -15,7 +15,7 @@ import CoreData
 class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 
     // IOS-671 pEp app has two accounts. Someone sends a mail to both (with both accounts in receipients).
-    // Message must exist twice, once for each account, after fetching.
+    // Message must exist twice, once for each account, after fetching mails from server.
     func testMailSentToBothPepAccounts() {
         // Setup 2 accounts
        cdAccount.createRequiredFoldersAndWait(testCase: self)
@@ -60,7 +60,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         // ... and send them.
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
 
-        // Sync once again to make sure we mirror the servers state (i.e. received the sent mails)
+        // Sync once again to make sure we mirror the servers state (i.e. receive the sent mails)
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
 
         // Now let's see what we got.
