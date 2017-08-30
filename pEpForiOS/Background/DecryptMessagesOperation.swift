@@ -8,6 +8,8 @@
 
 import MessageModel
 
+import CoreData
+
 public class DecryptMessagesOperation: ConcurrentBaseOperation {
     public var numberOfMessagesDecrypted = 0
 
@@ -24,21 +26,21 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     return
             }
 
-            for message in messages {
+            for cdMessage in messages {
                 var outgoing = false
-                if let folderType = message.parent?.folderType {
+                if let folderType = cdMessage.parent?.folderType {
                     outgoing = folderType.isOutgoing()
                 }
 
-                let pepMessage = PEPUtil.pEp(cdMessage: message, outgoing: outgoing)
+                let pepMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: outgoing)
                 var pEpDecryptedMessage: NSDictionary? = nil
                 var keys: NSArray?
                 Log.info(component: self.comp,
-                         content: "Will decrypt \(message.logString())")
+                         content: "Will decrypt \(cdMessage.logString())")
                 let color = session.decryptMessageDict(
                     pepMessage, dest: &pEpDecryptedMessage, keys: &keys)
                 Log.info(component: self.comp,
-                         content: "Decrypted message \(message.logString()) with color \(color)")
+                         content: "Decrypted message \(cdMessage.logString()) with color \(color)")
 
                 self.numberOfMessagesDecrypted += 1
                 let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
@@ -53,8 +55,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 case PEP_rating_unencrypted,
                      PEP_rating_unencrypted_for_some:
                     // Set the color, nothing else to update
-                    message.pEpRating = Int16(color.rawValue)
-                    self.updateMessage(cdMessage: message, keys: theKeys)
+                    cdMessage.pEpRating = Int16(color.rawValue)
+                    self.updateMessage(cdMessage: cdMessage, keys: theKeys, context: context)
                     break
                 case PEP_rating_unreliable,
                      PEP_rating_mistrust,
@@ -65,26 +67,28 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_trusted_and_anonymized,
                      PEP_rating_fully_anonymous:
                     if let decrypted = pEpDecryptedMessage as? PEPMessage {
-                        message.update(pEpMessage: decrypted, pEpColorRating: color)
-                        self.updateMessage(cdMessage: message, keys: theKeys)
+                        cdMessage.update(pEpMessage: decrypted, pEpColorRating: color)
+                        self.updateMessage(cdMessage: cdMessage, keys: theKeys, context: context)
                     } else {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString:"Not sure if this is supposed to happen even I think it's not. If it is, remove the else block or lower the log ")
+                        Log.shared.errorAndCrash(
+                            component: #function,
+                            errorString:"Decrypt with rating, but nil message")
                     }
                     break
                 case PEP_rating_under_attack:
                     if let decrypted = pEpDecryptedMessage as? PEPMessage {
-                        message.update(pEpMessage: decrypted, pEpColorRating: color)
-                        message.underAttack = true
-                        self.updateMessage(cdMessage: message, keys: theKeys)
+                        cdMessage.update(pEpMessage: decrypted, pEpColorRating: color)
+                        cdMessage.underAttack = true
+                        self.updateMessage(cdMessage: cdMessage, keys: theKeys, context: context)
                     } else {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString:"Not sure if this is supposed to happen even I think it's not. If it is, remove the else block or lower the log ")
+                        Log.shared.errorAndCrash(
+                            component: #function,
+                            errorString:"Decrypt with rating, but nil message")
                     }
                 default:
                     Log.warn(
                         component: self.comp,
-                        content: "No default action for decrypted message \(message.logString())")
+                        content: "No default action for decrypted message \(cdMessage.logString())")
                     break
                 }
             }
@@ -96,9 +100,9 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
      Updates the given key list for the message, puts rating into optional fields
      and notifies delegates.
      */
-    func updateMessage(cdMessage: CdMessage, keys: [String]) {
+    func updateMessage(cdMessage: CdMessage, keys: [String], context: NSManagedObjectContext) {
         cdMessage.updateKeyList(keys: keys)
-        Record.saveAndWait()
+        context.saveAndLogErrors()
         cdMessage.updateDecrypted()
     }
 }
