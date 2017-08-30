@@ -100,17 +100,15 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     func markLastSentMessageAsSent(context: NSManagedObjectContext) {
         if let objID = lastSentMessageObjectID {
-            context.performAndWait {
-                if let msg = context.object(with: objID) as? CdMessage {
-                    msg.sendStatus = SendStatus.smtpDone
-                    Log.info(
-                        component: #function,
-                        content: "Setting \(String(describing: msg.messageID)): \(msg.sendStatus)")
-                    context.saveAndLogErrors()
-                } else {
-                    Log.error(
-                        component: self.comp, errorString: "Could not access sent message by ID")
-                }
+            if let msg = context.object(with: objID) as? CdMessage {
+                msg.sendStatus = SendStatus.smtpDone
+                Log.info(
+                    component: #function,
+                    content: "Setting \(String(describing: msg.messageID)): \(msg.sendStatus)")
+                context.saveAndLogErrors()
+            } else {
+                Log.error(
+                    component: self.comp, errorString: "Could not access sent message by ID")
             }
         }
     }
