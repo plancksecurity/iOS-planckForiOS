@@ -94,19 +94,19 @@ extension CdMessage {
         self.attachments = NSOrderedSet(array: attachments)
         CdAttachment.deleteOrphans()
 
-        var optfield = [CdHeaderField]()
+        var newOptFields = [CdHeaderField]()
         if let optFields = pEpMessage[kPepOptFields] as? NSArray {
             for item in optFields {
                 if let headerfield = item as? NSArray {
                     let cdHeaderField = CdHeaderField.create()
                     cdHeaderField.name = headerfield[0] as? String
                     cdHeaderField.value = headerfield[1] as? String
-                    optfield.append(cdHeaderField)
+                    newOptFields.append(cdHeaderField)
                 }
             }
         }
 
-        self.optionalFields = NSOrderedSet(array: optfield)
+        self.optionalFields = NSOrderedSet(array: newOptFields)
         CdHeaderField.deleteOrphans()
 
         from = CdIdentity.from(pEpContact: pEpMessage[kPepFrom] as? PEPIdentity)
