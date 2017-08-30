@@ -31,12 +31,12 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 }
 
                 let pepMessage = PEPUtil.pEp(cdMessage: message, outgoing: outgoing)
-                var pepDecryptedMessage: NSDictionary? = nil
+                var pEpDecryptedMessage: NSDictionary? = nil
                 var keys: NSArray?
                 Log.info(component: self.comp,
                          content: "Will decrypt \(message.logString())")
                 let color = session.decryptMessageDict(
-                    pepMessage, dest: &pepDecryptedMessage, keys: &keys)
+                    pepMessage, dest: &pEpDecryptedMessage, keys: &keys)
                 Log.info(component: self.comp,
                          content: "Decrypted message \(message.logString()) with color \(color)")
 
@@ -64,7 +64,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_trusted,
                      PEP_rating_trusted_and_anonymized,
                      PEP_rating_fully_anonymous:
-                    if let decrypted = pepDecryptedMessage as? PEPMessage {
+                    if let decrypted = pEpDecryptedMessage as? PEPMessage {
                         message.update(pEpMessage: decrypted, pEpColorRating: color)
                         self.updateMessage(cdMessage: message, keys: theKeys)
                     } else {
@@ -73,7 +73,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     }
                     break
                 case PEP_rating_under_attack:
-                    if let decrypted = pepDecryptedMessage as? PEPMessage {
+                    if let decrypted = pEpDecryptedMessage as? PEPMessage {
                         message.update(pEpMessage: decrypted, pEpColorRating: color)
                         message.underAttack = true
                         self.updateMessage(cdMessage: message, keys: theKeys)
