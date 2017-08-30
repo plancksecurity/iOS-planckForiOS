@@ -20,7 +20,6 @@ import MessageModel
  Subclasses MUST override `retrieveNextMessage`
  For marking the message as done, you MAY overwrite `markLastMessageAsFinished`.
  */
-//BUFF: stores mails to folder. Impl. here?
 public class AppendMailsOperationBase: ImapSyncOperation {
     lazy private(set) var session = PEPSessionCreator.shared.newSession()
     lazy private(set) var context = Record.Context.background
@@ -59,7 +58,6 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     }
 
     func retrieveNextMessage() -> (PEPMessage, PEPIdentity, NSManagedObjectID)? {
-        //BUFF:
         Log.shared.errorAndCrash(component: #function, errorString: "Must be overridden in subclass")
         return nil
     }
@@ -167,7 +165,6 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         if let (msg, ident, objID) = retrieveNextMessage() {
             lastHandledMessageObjectID = objID
             determineTargetFolder(msgID: objID)
-            //BUFF: encryption happens here
             let (status, encMsg) = session.encrypt(pEpMessageDict: msg, forIdentity: ident)
             let (encMsg2, error) = PEPUtil.check(
                 comp: comp, status: status, encryptedMessage: encMsg)
