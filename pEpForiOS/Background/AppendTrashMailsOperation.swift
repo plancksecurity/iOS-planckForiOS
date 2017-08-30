@@ -1,5 +1,5 @@
 //
-//  TrashMailsOperation.swift
+//  AppendTrashMailsOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 06/02/2017.
@@ -15,7 +15,7 @@ import MessageModel
  Copies deleted messages to the trash folder, and marks them as copied, so they
  can be expunged.
  */
-public class TrashMailsOperation: AppendMailsOperationBase {
+public class AppendTrashMailsOperation: AppendMailsOperationBase {
     let folderObjectID: NSManagedObjectID
 
     public init(parentName: String = #function, imapSyncData: ImapSyncData,

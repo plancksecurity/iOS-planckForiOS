@@ -163,7 +163,7 @@
 		4351C2DB1F4441190053381F /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C61F4441190053381F /* utf8.c */; };
 		4351C2DC1F4441190053381F /* xml.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2C71F4441190053381F /* xml.c */; };
 		4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2DD1F4457620053381F /* NSString+Markdown.m */; };
-		43549A8E1E48B54100210D86 /* TrashMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */; };
+		43549A8E1E48B54100210D86 /* AppendTrashMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43549A8D1E48B54100210D86 /* AppendTrashMailsOperation.swift */; };
 		4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
 		435DF9091F2A26F2003254F7 /* BackgroundOperationImapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435DF9081F2A26F2003254F7 /* BackgroundOperationImapService.swift */; };
@@ -534,7 +534,7 @@
 		4351C2C71F4441190053381F /* xml.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xml.c; sourceTree = "<group>"; };
 		4351C2DD1F4457620053381F /* NSString+Markdown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Markdown.m"; sourceTree = "<group>"; };
 		4351C2DF1F44581A0053381F /* NSString+Markdown.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Markdown.h"; sourceTree = "<group>"; };
-		43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashMailsOperation.swift; sourceTree = "<group>"; };
+		43549A8D1E48B54100210D86 /* AppendTrashMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendTrashMailsOperation.swift; sourceTree = "<group>"; };
 		4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncMessagesOperation.swift; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
 		435DF9081F2A26F2003254F7 /* BackgroundOperationImapService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundOperationImapService.swift; sourceTree = "<group>"; };
@@ -862,12 +862,12 @@
 				43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */,
 				4301B3151E28D259007D626C /* AppendMailsOperationBase.swift */,
 				43DB81321E2A56BE00A20902 /* AppendDraftMailsOperation.swift */,
-				43549A8D1E48B54100210D86 /* TrashMailsOperation.swift */,
+				43549A8D1E48B54100210D86 /* AppendTrashMailsOperation.swift */,
+				153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */,
 				4333A2A41E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift */,
 				4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */,
 				431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */,
 				43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */,
-				153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -1879,7 +1879,7 @@
 				4362399C1EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift in Sources */,
 				434F513E1EF7FE8700FEB837 /* DelayOperation.swift in Sources */,
 				43C322091EA90192005073FB /* PEP+UI.swift in Sources */,
-				43549A8E1E48B54100210D86 /* TrashMailsOperation.swift in Sources */,
+				43549A8E1E48B54100210D86 /* AppendTrashMailsOperation.swift in Sources */,
 				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,
 				8B81BB901E03F73100D38C82 /* SegueHandlerType.swift in Sources */,
 				B741D5031F26234A00DFD93A /* EmailAddressValidation.swift in Sources */,
