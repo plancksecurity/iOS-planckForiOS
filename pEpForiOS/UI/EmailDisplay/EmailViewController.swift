@@ -92,7 +92,7 @@ class EmailViewController: TableViewControllerBase {
 
     func checkMessageReEvaluation() {
         if ratingReEvaluator?.message != message {
-            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: message, session: session)
+            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: message)
             ratingReEvaluator?.delegate = self
         }
     }

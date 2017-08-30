@@ -161,8 +161,7 @@ class MessageReevalutionTests: XCTestCase {
         }
         if inBackground {
             let expReevaluated = expectation(description: "expReevaluated")
-            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message,
-                                                            session: session)
+            let reevalOp = ReevaluateMessageRatingOperation(parentName: #function, message: message)
             reevalOp.completionBlock = {
                 reevalOp.completionBlock = nil
                 expReevaluated.fulfill()
@@ -177,7 +176,7 @@ class MessageReevalutionTests: XCTestCase {
                            infoMessage)
         } else {
             let reevalOp = ReevaluateMessageRatingOperation(
-                parentName: #function, message: message, session: session)
+                parentName: #function, message: message)
             reevalOp.reevaluate(context: Record.Context.default)
         }
     }
