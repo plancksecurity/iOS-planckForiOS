@@ -28,8 +28,8 @@ extension CdMessage {
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.
      */
-    public func update(pEpMessage: PEPMessage, pepColorRating: PEP_rating? = nil) {
-        if let color = pepColorRating {
+    public func update(pEpMessage: PEPMessage, pEpColorRating: PEP_rating? = nil) {
+        if let color = pEpColorRating {
             pEpRating = Int16(color.rawValue)
         }
 

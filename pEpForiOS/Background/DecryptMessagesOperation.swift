@@ -65,7 +65,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_trusted_and_anonymized,
                      PEP_rating_fully_anonymous:
                     if let decrypted = pepDecryptedMessage as? PEPMessage {
-                        message.update(pEpMessage: decrypted, pepColorRating: color)
+                        message.update(pEpMessage: decrypted, pEpColorRating: color)
                         self.updateMessage(cdMessage: message, keys: theKeys)
                     } else {
                         Log.shared.errorAndCrash(component: #function,
@@ -74,7 +74,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     break
                 case PEP_rating_under_attack:
                     if let decrypted = pepDecryptedMessage as? PEPMessage {
-                        message.update(pEpMessage: decrypted, pepColorRating: color)
+                        message.update(pEpMessage: decrypted, pEpColorRating: color)
                         message.underAttack = true
                         self.updateMessage(cdMessage: message, keys: theKeys)
                     } else {
