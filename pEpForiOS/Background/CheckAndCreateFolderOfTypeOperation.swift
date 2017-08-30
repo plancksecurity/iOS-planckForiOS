@@ -14,7 +14,7 @@ import MessageModel
  Can be run before operations that operate on folders, like "save draft"
  (with a dependency), to make sure that folder does exist.
  */
-open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
+public class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
     let folderType: FolderType
     var folderName: String
 
@@ -36,7 +36,7 @@ open class CheckAndCreateFolderOfTypeOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    open override func main() {
+    public override func main() {
         if !shouldRun() {
             return
         }

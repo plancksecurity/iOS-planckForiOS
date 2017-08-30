@@ -15,7 +15,7 @@ import MessageModel
  Copies deleted messages to the trash folder, and marks them as copied, so they
  can be expunged.
  */
-open class TrashMailsOperation: AppendMailsOperation {
+public class TrashMailsOperation: AppendMailsOperation {
     let folderObjectID: NSManagedObjectID
 
     public init(parentName: String = #function, imapSyncData: ImapSyncData,

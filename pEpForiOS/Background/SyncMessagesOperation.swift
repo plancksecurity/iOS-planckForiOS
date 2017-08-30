@@ -14,7 +14,7 @@ import MessageModel
 /**
  Syncs existing messages with the servers, e.g., detecting deleted ones.
  */
-open class SyncMessagesOperation: ImapSyncOperation {
+public class SyncMessagesOperation: ImapSyncOperation {
     var folderID: NSManagedObjectID?
     let folderToOpen: String
     let lastUID: UInt
@@ -58,7 +58,7 @@ open class SyncMessagesOperation: ImapSyncOperation {
         return true
     }
 
-    override open func main() {
+    override public func main() {
         if !shouldRun() {
             return
         }

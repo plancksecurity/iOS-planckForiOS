@@ -14,12 +14,12 @@ protocol SyncFlagsToServerOperationDelegate: class {
 }
 
 /// Sends (syncs) local changes of Imap flags to server.
-open class SyncFlagsToServerOperation: ImapSyncOperation {
+public class SyncFlagsToServerOperation: ImapSyncOperation {
     var folderID: NSManagedObjectID
     let folderName: String
 
     fileprivate var currentlyProcessedMessage: CdMessage?
-    open var numberOfMessagesSynced: Int {
+    public var numberOfMessagesSynced: Int {
         return changedMessageIDs.count
     }
 
@@ -49,7 +49,7 @@ open class SyncFlagsToServerOperation: ImapSyncOperation {
                   imapSyncData: imapSyncData, folder: folder)
     }
 
-    open override func main() {
+    public override func main() {
         if !shouldRun() {
             return
         }

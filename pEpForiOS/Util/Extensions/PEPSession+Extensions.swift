@@ -138,6 +138,7 @@ public extension PEPSession {
             (bccs != nil && bccs!.count > 0)
     }
 
+    //BUFF: 
     public func encrypt(pEpMessageDict: PEPMessage,
                         forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, NSDictionary?) {
         return PEPUtil.encrypt(

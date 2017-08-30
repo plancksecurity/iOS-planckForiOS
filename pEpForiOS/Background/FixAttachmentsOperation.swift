@@ -15,13 +15,13 @@ import MessageModel
 /**
  Downloads attachment content with nil data, also fixes nil sizes.
  */
-open class FixAttachmentsOperation: ConcurrentBaseOperation {
+public class FixAttachmentsOperation: ConcurrentBaseOperation {
     let pInvalidLength = NSPredicate(format: "length = 0 and data != nil")
     let pInvalidData = NSPredicate(format: "data = nil and (fileName != nil or assetUrl != nil)")
 
     var openFetchCount = 0
 
-    override open func main() {
+    override public func main() {
         privateMOC.perform {
             self.fixAttachments(context: self.privateMOC)
         }

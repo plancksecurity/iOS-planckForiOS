@@ -17,7 +17,7 @@ protocol StoreFolderOperationDelegate: class {
     func didCreate(cdFolder: CdFolder)
 }
 
-open class StoreFolderOperation: ConcurrentBaseOperation {
+public class StoreFolderOperation: ConcurrentBaseOperation {
     public struct FolderInfo {
         let name: String
         let separator: String?
@@ -36,7 +36,7 @@ open class StoreFolderOperation: ConcurrentBaseOperation {
         Log.verbose(component: comp, content: "init \(folderInfo.name)")
     }
 
-    override open func main() {
+    override public func main() {
         Log.verbose(component: comp, content: "main \(folderInfo.name)")
         let privateMOC = Record.Context.default
         privateMOC.perform({

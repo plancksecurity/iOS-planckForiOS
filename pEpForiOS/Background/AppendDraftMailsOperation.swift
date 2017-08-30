@@ -11,7 +11,7 @@ import CoreData
 
 import MessageModel
 
-open class AppendDraftMailsOperation: AppendMailsOperation {
+public class AppendDraftMailsOperation: AppendMailsOperation {
     override func retrieveNextMessage() -> (PEPMessage, PEPIdentity, NSManagedObjectID)? {
         var msg: CdMessage?
         context.performAndWait {

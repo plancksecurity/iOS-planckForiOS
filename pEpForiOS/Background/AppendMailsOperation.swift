@@ -16,7 +16,7 @@ import MessageModel
  in other types of folders. Overwrite `retrieveNextMessage` and `retrieveFolderForAppend`.
  For marking the message as done, overwrite `markLastMessageAsFinished`.
  */
-open class AppendMailsOperation: ImapSyncOperation {
+public class AppendMailsOperation: ImapSyncOperation {
     lazy var session = PEPSessionCreator.shared.newSession()
     lazy var context = Record.Context.background
 
@@ -36,7 +36,7 @@ open class AppendMailsOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    override open func main() {
+    override public func main() {
         if !shouldRun() {
             return
         }
@@ -168,6 +168,7 @@ open class AppendMailsOperation: ImapSyncOperation {
         if let (msg, ident, objID) = retrieveNextMessage() {
             lastHandledMessageObjectID = objID
             determineTargetFolder(msgID: objID)
+            //BUFF: encryption happens here
             let (status, encMsg) = session.encrypt(pEpMessageDict: msg, forIdentity: ident)
             let (encMsg2, error) = PEPUtil.check(
                 comp: comp, status: status, encryptedMessage: encMsg)
