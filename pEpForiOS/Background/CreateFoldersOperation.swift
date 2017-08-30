@@ -14,7 +14,7 @@ import MessageModel
 /**
  Tries to create all local folders on the server.
  */
-open class CreateFoldersOperation: ImapSyncOperation {
+public class CreateFoldersOperation: ImapSyncOperation {
     let accountID: NSManagedObjectID
     var account: CdAccount!
     var folderNamesToCreate = [String]()
@@ -27,7 +27,7 @@ open class CreateFoldersOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    open override func main() {
+    public override func main() {
         if !shouldRun() {
             return
         }

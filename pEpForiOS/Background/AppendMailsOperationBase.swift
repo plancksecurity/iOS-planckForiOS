@@ -1,5 +1,5 @@
 //
-//  AppendMailsOperation.swift
+//  AppendMailsOperationBase.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 13/01/2017.
@@ -12,31 +12,37 @@ import CoreData
 import MessageModel
 
 /**
- Stores SMTPed mails in the sent folder. Can be used more generically for storing mails
- in other types of folders. Overwrite `retrieveNextMessage` and `retrieveFolderForAppend`.
- For marking the message as done, overwrite `markLastMessageAsFinished`.
+ Base class for storing mails in any type of folder.
+
+ Stores messges retreived by `retrieveNextMessage` to folder of type `targetFolderType`.
+ Mails are encrypted whenever possible before storing it in the target folder .
+
+ Subclasses MUST override `retrieveNextMessage`
+ For marking the message as done, you MAY overwrite `markLastMessageAsFinished`.
  */
-open class AppendMailsOperation: ImapSyncOperation {
-    lazy var session = PEPSessionCreator.shared.newSession()
-    lazy var context = Record.Context.background
+public class AppendMailsOperationBase: ImapSyncOperation {
+    lazy private(set) var session = PEPSessionCreator.shared.newSession()
+    lazy private(set) var context = Record.Context.background
 
     var syncDelegate: AppendMailsSyncDelegate?
 
     /** The object ID of the last handled message, so we can modify/delete it on success */
     var lastHandledMessageObjectID: NSManagedObjectID?
 
-    var targetFolderName: String?
+    private var targetFolderName: String?
+    let targetFolderType: FolderType
 
     /** On finish, the messageIDs of the messages that have been sent successfully */
-    private(set) var successfullySentMessageIDs = [String]()
+    private(set) var successAppendedMessageIDs = [String]()
 
-    public init(parentName: String = #function, imapSyncData: ImapSyncData,
+    init(parentName: String = #function, appendFolderType: FolderType, imapSyncData: ImapSyncData,
                 errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+        targetFolderType = appendFolderType
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
 
-    override open func main() {
+    override public func main() {
         if !shouldRun() {
             return
         }
@@ -52,22 +58,13 @@ open class AppendMailsOperation: ImapSyncOperation {
     }
 
     func retrieveNextMessage() -> (PEPMessage, PEPIdentity, NSManagedObjectID)? {
-        var msg: CdMessage?
-        context.performAndWait {
-            let p = NSPredicate(
-                format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d",
-                FolderType.sent.rawValue, SendStatus.smtpDone.rawValue)
-            msg = CdMessage.first(predicate: p, in: self.context)
-        }
-        if let m = msg, let cdIdent = m.parent?.account?.identity {
-            return (m.pEpMessage(), cdIdent.pEpIdentity(), m.objectID)
-        }
+        Log.shared.errorAndCrash(component: #function, errorString: "Must be overridden in subclass")
         return nil
     }
 
-    func retrieveFolderForAppend(
+    private func retrieveFolderForAppend(
         account: CdAccount, context: NSManagedObjectContext) -> CdFolder? {
-        return CdFolder.by(folderType: .sent, account: account, context: context)
+        return CdFolder.by(folderType: targetFolderType, account: account, context: context)
     }
 
     func markLastMessageAsFinished() {
@@ -78,7 +75,7 @@ open class AppendMailsOperation: ImapSyncOperation {
                 }
                 if let obj = theSelf.context.object(with: msgID) as? CdMessage {
                     if let msgID = obj.messageID {
-                        theSelf.successfullySentMessageIDs.append(msgID)
+                        theSelf.successAppendedMessageIDs.append(msgID)
                     }
                     theSelf.context.delete(obj)
                     theSelf.context.saveAndLogErrors()
@@ -94,7 +91,7 @@ open class AppendMailsOperation: ImapSyncOperation {
         }
     }
 
-    func appendMessage(pEpMessage: PEPMessage?) {
+    private func appendMessage(pEpMessage: PEPMessage?) {
         guard let msg = pEpMessage else {
             handleError(Constants.errorInvalidParameter(comp),
                         message: NSLocalizedString("Cannot append nil message",
@@ -194,11 +191,11 @@ open class AppendMailsOperation: ImapSyncOperation {
 
 class AppendMailsSyncDelegate: DefaultImapSyncDelegate {
     public override func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
-        (errorHandler as? AppendMailsOperation)?.handleNextMessage()
+        (errorHandler as? AppendMailsOperationBase)?.handleNextMessage()
     }
 
     public override func folderAppendFailed(_ sync: ImapSync, notification: Notification?) {
-        (errorHandler as? AppendMailsOperation)?.addIMAPError(ImapSyncError.folderAppendFailed)
-        (errorHandler as? AppendMailsOperation)?.markAsFinished()
+        (errorHandler as? AppendMailsOperationBase)?.addIMAPError(ImapSyncError.folderAppendFailed)
+        (errorHandler as? AppendMailsOperationBase)?.markAsFinished()
     }
 }

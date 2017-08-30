@@ -10,7 +10,7 @@ import CoreData
 
 import MessageModel
 
-open class DeleteFoldersOperation: ImapSyncOperation {
+public class DeleteFoldersOperation: ImapSyncOperation {
     let accountID: NSManagedObjectID
     var account: CdAccount!
     var folderNamesToDelete = [String]()
@@ -24,7 +24,7 @@ open class DeleteFoldersOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    open override func main() {
+    public override func main() {
         if !shouldRun() {
             return
         }

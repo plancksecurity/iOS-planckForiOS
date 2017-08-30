@@ -8,10 +8,10 @@
 
 import MessageModel
 
-open class DecryptMessagesOperation: ConcurrentBaseOperation {
-    open var numberOfMessagesDecrypted = 0
+public class DecryptMessagesOperation: ConcurrentBaseOperation {
+    public var numberOfMessagesDecrypted = 0
 
-    open override func main() {
+    public override func main() {
         let context = Record.Context.background
         context.perform() {
             let session = PEPSessionCreator.shared.newSession()

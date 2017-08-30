@@ -180,7 +180,7 @@ open class NetworkServiceWorker {
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
         opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
 
-        let opAppend = AppendMailsOperation(
+        let opAppend = AppendSendMailsOperation(
             parentName: serviceConfig.parentName, imapSyncData: imapSyncData)
         opAppend.addDependency(previousOp)
         opImapFinished.addDependency(opAppend)
@@ -197,10 +197,10 @@ open class NetworkServiceWorker {
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
         opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
         var lastOp = previousOp
-        var trashOps = [TrashMailsOperation]()
-        let folders = TrashMailsOperation.foldersWithTrashedMessages(context: context)
+        var trashOps = [AppendTrashMailsOperation]()
+        let folders = AppendTrashMailsOperation.foldersWithTrashedMessages(context: context)
         for cdF in folders {
-            let op = TrashMailsOperation(
+            let op = AppendTrashMailsOperation(
                 parentName: serviceConfig.parentName, imapSyncData: imapSyncData, folder: cdF)
             op.addDependency(lastOp)
             opImapFinished.addDependency(op)

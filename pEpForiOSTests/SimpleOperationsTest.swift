@@ -619,7 +619,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let expSentAppended = expectation(description: "expSentAppended")
 
-        let appendOp = AppendMailsOperation(
+        let appendOp = AppendSendMailsOperation(
             parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer)
         appendOp.completionBlock = {

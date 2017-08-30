@@ -21,7 +21,7 @@ public typealias MessageFetchedBlock = (_ message: CdMessage) -> ()
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-open class FetchMessagesOperation: ImapSyncOperation {
+public class FetchMessagesOperation: ImapSyncOperation {
     var folderToOpen: String
     let messageFetchedBlock: MessageFetchedBlock?
     var syncDelegate: FetchMessagesSyncDelegate?
@@ -37,7 +37,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    override open func main() {
+    override public func main() {
         if !shouldRun() {
             return
         }
@@ -95,7 +95,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
         }
     }
 
-    open override func cancel() {
+    public override func cancel() {
         Log.info(component: comp, content: "cancel")
         if let sync = imapSyncData.sync {
             sync.cancel()
@@ -103,7 +103,7 @@ open class FetchMessagesOperation: ImapSyncOperation {
         super.cancel()
     }
 
-    open override func waitForBackgroundTasksToFinish() {
+    public override func waitForBackgroundTasksToFinish() {
         syncDelegate = nil
         super.waitForBackgroundTasksToFinish()
     }

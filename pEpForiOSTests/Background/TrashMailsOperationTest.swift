@@ -91,7 +91,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         }
         Record.saveAndWait()
 
-        let foldersWithTrashedMessages = TrashMailsOperation.foldersWithTrashedMessages(
+        let foldersWithTrashedMessages = AppendTrashMailsOperation.foldersWithTrashedMessages(
             context: Record.Context.default)
         XCTAssertEqual(foldersWithTrashedMessages.count, 2)
         if inboxFolder.name ?? "" < draftsFolder.name ?? "" {
@@ -116,10 +116,10 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
 
         let expTrashed = expectation(description: "expTrashed")
 
-        let trashMailsOp1 = TrashMailsOperation(
+        let trashMailsOp1 = AppendTrashMailsOperation(
             parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder)
-        let trashMailsOp2 = TrashMailsOperation(
+        let trashMailsOp2 = AppendTrashMailsOperation(
             parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: draftsFolder)
         trashMailsOp2.addDependency(trashMailsOp1)
@@ -187,8 +187,8 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             let trashedCdMessage = CdMessage.first(predicate: trashedP1)
             guard let trashed = trashedCdMessage,
                 let localFlags = trashed.imapFields().localFlags else {
-                XCTFail("Message missing in trash folder? No flags?")
-                return
+                    XCTFail("Message missing in trash folder? No flags?")
+                    return
             }
             // ... and check the newly created (in trash folder) message's flags
             XCTAssertFalse(localFlags.flagDeleted)

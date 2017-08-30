@@ -22,7 +22,7 @@ protocol FetchFoldersOperationOperationDelegate: class {
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-open class FetchFoldersOperation: ImapSyncOperation {
+public class FetchFoldersOperation: ImapSyncOperation {
     var folderBuilder: ImapFolderBuilder!
 
     /**
@@ -47,7 +47,7 @@ open class FetchFoldersOperation: ImapSyncOperation {
             backgroundQueue: backgroundQueue, messageFetchedBlock: nil)
     }
 
-    open override func main() {
+    public override func main() {
         if !shouldRun() {
             return
         }

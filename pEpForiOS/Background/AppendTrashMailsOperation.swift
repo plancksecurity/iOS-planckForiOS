@@ -1,5 +1,5 @@
 //
-//  TrashMailsOperation.swift
+//  AppendTrashMailsOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 06/02/2017.
@@ -15,14 +15,18 @@ import MessageModel
  Copies deleted messages to the trash folder, and marks them as copied, so they
  can be expunged.
  */
-open class TrashMailsOperation: AppendMailsOperation {
+public class AppendTrashMailsOperation: AppendMailsOperationBase {
     let folderObjectID: NSManagedObjectID
 
     public init(parentName: String = #function, imapSyncData: ImapSyncData,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(), folder: CdFolder) {
+        let trashFolderType = FolderType.trash
         self.folderObjectID = folder.objectID
         super.init(
-            parentName: parentName, imapSyncData: imapSyncData, errorContainer: errorContainer)
+            parentName: parentName,
+            appendFolderType: trashFolderType,
+            imapSyncData: imapSyncData,
+            errorContainer: errorContainer)
     }
 
     override func retrieveNextMessage() -> (PEPMessage, PEPIdentity, NSManagedObjectID)? {
@@ -40,14 +44,6 @@ open class TrashMailsOperation: AppendMailsOperation {
             }
         }
         return result
-    }
-
-    /**
-     - Returns: The trash folder, or nil, if that does not exist.
-     */
-    override func retrieveFolderForAppend(
-        account: CdAccount, context: NSManagedObjectContext) -> CdFolder? {
-        return CdFolder.by(folderType: .trash, account: account, context: context)
     }
 
     override func markLastMessageAsFinished() {

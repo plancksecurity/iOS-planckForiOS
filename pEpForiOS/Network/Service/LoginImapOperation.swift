@@ -10,11 +10,11 @@ import UIKit
 
 import MessageModel
 
-open class LoginImapOperation: ImapSyncOperation {
+public class LoginImapOperation: ImapSyncOperation {
     var syncDelegate: LoginImapSyncDelegate?
     var capabilities: Set<String>?
 
-    open override func main() {
+    public override func main() {
         var service = imapSyncData.sync ?? ImapSync(connectInfo: imapSyncData.connectInfo)
         if service.imapState.hasError {
             service = ImapSync(connectInfo: imapSyncData.connectInfo)

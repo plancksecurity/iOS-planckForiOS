@@ -17,7 +17,7 @@ protocol SmtpSendServiceDelegate: class {
 class SmtpSendService: BackgroundOperationImapService {
     weak var delegate: SmtpSendServiceDelegate?
 
-    let smtpSendData: SmtpSendData
+    fileprivate let smtpSendData: SmtpSendData
 
     init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
@@ -25,10 +25,10 @@ class SmtpSendService: BackgroundOperationImapService {
         super.init(parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
     }
 
-    func haveMailsToEncrypt(smtpSendData: SmtpSendData,
-                            imapSyncData: ImapSyncData,
-                            bgID: BackgroundTaskID?,
-                            handler: ServiceFinishedHandler? = nil) {
+    fileprivate func haveMailsToEncrypt(smtpSendData: SmtpSendData,
+                                        imapSyncData: ImapSyncData,
+                                        bgID: BackgroundTaskID?,
+                                        handler: ServiceFinishedHandler? = nil) {
         let smtpLoginOp = LoginSmtpOperation(
             parentName: parentName, smtpSendData: smtpSendData, errorContainer: self)
         let sendOp = EncryptAndSendOperation(
@@ -38,12 +38,12 @@ class SmtpSendService: BackgroundOperationImapService {
         let imapLoginOp = LoginImapOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
         imapLoginOp.addDependency(sendOp)
-        let appendOp = AppendMailsOperation(
+        let appendOp = AppendSendMailsOperation(
             parentName: parentName, imapSyncData: imapSyncData, errorContainer: self)
         appendOp.addDependency(imapLoginOp)
         appendOp.completionBlock = { [weak self] in
             appendOp.completionBlock = nil
-            self?.delegate?.sent(messageIDs: appendOp.successfullySentMessageIDs)
+            self?.delegate?.sent(messageIDs: appendOp.successAppendedMessageIDs)
             handler?(self?.error)
             self?.backgrounder?.endBackgroundTask(bgID)
         }

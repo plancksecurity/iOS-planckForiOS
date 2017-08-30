@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class ImapSyncOperation: ConcurrentBaseOperation {
+public class ImapSyncOperation: ConcurrentBaseOperation {
     let imapSyncData: ImapSyncData
 
     public init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
@@ -26,7 +26,7 @@ open class ImapSyncOperation: ConcurrentBaseOperation {
         return true
     }
 
-    open func addIMAPError(_ error: Error) {
+    public func addIMAPError(_ error: Error) {
         addError(error)
         imapSyncData.sync?.imapState.hasError = true
     }
@@ -36,7 +36,7 @@ open class ImapSyncOperation: ConcurrentBaseOperation {
         super.markAsFinished()
     }
 
-    override open func waitForBackgroundTasksToFinish() {
+    override public func waitForBackgroundTasksToFinish() {
         imapSyncData.sync?.delegate = nil
         super.waitForBackgroundTasksToFinish()
     }

@@ -15,7 +15,7 @@ import MessageModel
  Checks for needed folders, like "Drafts", and when they don't exist, create them
  both locally and remote.
  */
-open class CreateRequiredFoldersOperation: ImapSyncOperation {
+public class CreateRequiredFoldersOperation: ImapSyncOperation {
     struct FolderToCreate {
         var folderName: String
         let folderSeparator: String?
@@ -39,7 +39,7 @@ open class CreateRequiredFoldersOperation: ImapSyncOperation {
     var folderSeparator: String?
     var syncDelegate: CreateRequiredFoldersSyncDelegate?
 
-    open override func main() {
+    public override func main() {
         if !shouldRun() {
             return
         }

@@ -8,7 +8,7 @@
 
 import MessageModel
 
-open class LoginSmtpOperation: ConcurrentBaseOperation {
+public class LoginSmtpOperation: ConcurrentBaseOperation {
     var service: SmtpSend!
     var smtpSendData: SmtpSendData
 
@@ -18,7 +18,7 @@ open class LoginSmtpOperation: ConcurrentBaseOperation {
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
-    override open func main() {
+    override public func main() {
         if self.isCancelled {
             return
         }

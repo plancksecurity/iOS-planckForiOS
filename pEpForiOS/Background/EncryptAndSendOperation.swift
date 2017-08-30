@@ -13,7 +13,7 @@ import MessageModel
 /**
  Encrypts and SMTPs all suitable messages.
  */
-open class EncryptAndSendOperation: ConcurrentBaseOperation {
+public class EncryptAndSendOperation: ConcurrentBaseOperation {
     var smtpSend: SmtpSend!
     var smtpSendData: SmtpSendData
     lazy var session = PEPSessionCreator.shared.newSession()
@@ -37,7 +37,7 @@ open class EncryptAndSendOperation: ConcurrentBaseOperation {
         return true
     }
 
-    override open func main() {
+    override public func main() {
         if !shouldRun() {
             return
         }

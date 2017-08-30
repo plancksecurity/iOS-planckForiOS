@@ -15,7 +15,7 @@ import MessageModel
  that handle asynchronicity themselves, and are typically not finished when `main()` ends.
  Instead, they spawn their own threads or use other forms of asynchronicity.
  */
-open class ConcurrentBaseOperation: BaseOperation {
+public class ConcurrentBaseOperation: BaseOperation {
     /**
      If you need to spawn child operations (that is, subtasks that should be waited upon),
      schedule them on this queue.
@@ -38,15 +38,15 @@ open class ConcurrentBaseOperation: BaseOperation {
 
     var myFinished: Bool = false
 
-    open override var isExecuting: Bool {
+    public override var isExecuting: Bool {
         return !isFinished
     }
 
-    open override var isAsynchronous: Bool {
+    public override var isAsynchronous: Bool {
         return true
     }
 
-    open override var isFinished: Bool {
+    public override var isFinished: Bool {
         return myFinished && backgroundQueue.operationCount == 0
     }
 
@@ -56,7 +56,7 @@ open class ConcurrentBaseOperation: BaseOperation {
         }
     }
 
-    open override func start() {
+    public override func start() {
         if !shouldRun() {
             return
         }
@@ -85,7 +85,7 @@ open class ConcurrentBaseOperation: BaseOperation {
         }
     }
 
-    override open func observeValue(forKeyPath keyPath: String?, of object: Any?,
+    override public func observeValue(forKeyPath keyPath: String?, of object: Any?,
                                                 change: [NSKeyValueChangeKey : Any]?,
                                                 context: UnsafeMutableRawPointer?) {
         guard let newValue = change?[NSKeyValueChangeKey.newKey] else {

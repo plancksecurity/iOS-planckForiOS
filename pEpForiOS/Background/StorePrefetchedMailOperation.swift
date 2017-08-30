@@ -13,7 +13,7 @@ import MessageModel
 /**
  This can be used in a queue, or directly called with ```start()```.
  */
-open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
+public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     enum OperationError: Error, LocalizedError {
         case cannotFindAccount
         case cannotStoreMessage
@@ -37,7 +37,7 @@ open class StorePrefetchedMailOperation: ConcurrentBaseOperation {
         super.init(parentName: parentName)
     }
 
-    override open func main() {
+    override public func main() {
         let selfInfo = "\(unsafeBitCast(self, to: UnsafeRawPointer.self))"
         let theComp = comp
         let canceled = "\(self.isCancelled ? "" : "not") canceled"
