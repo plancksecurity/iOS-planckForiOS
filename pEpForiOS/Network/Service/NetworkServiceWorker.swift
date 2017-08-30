@@ -180,7 +180,7 @@ open class NetworkServiceWorker {
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
         opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
 
-        let opAppend = AppendMailsOperation(
+        let opAppend = AppendSendMailsOperation(
             parentName: serviceConfig.parentName, imapSyncData: imapSyncData)
         opAppend.addDependency(previousOp)
         opImapFinished.addDependency(opAppend)

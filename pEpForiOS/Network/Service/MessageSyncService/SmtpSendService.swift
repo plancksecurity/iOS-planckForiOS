@@ -38,12 +38,12 @@ class SmtpSendService: BackgroundOperationImapService {
         let imapLoginOp = LoginImapOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData)
         imapLoginOp.addDependency(sendOp)
-        let appendOp = AppendMailsOperation(
+        let appendOp = AppendSendMailsOperation(
             parentName: parentName, imapSyncData: imapSyncData, errorContainer: self)
         appendOp.addDependency(imapLoginOp)
         appendOp.completionBlock = { [weak self] in
             appendOp.completionBlock = nil
-            self?.delegate?.sent(messageIDs: appendOp.successfullySentMessageIDs)
+            self?.delegate?.sent(messageIDs: appendOp.successAppendedMessageIDs)
             handler?(self?.error)
             self?.backgrounder?.endBackgroundTask(bgID)
         }
