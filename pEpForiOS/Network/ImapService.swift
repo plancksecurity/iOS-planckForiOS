@@ -103,7 +103,25 @@ open class ImapSync: Service {
 
     let nonExistantMailboxName = MessageID.generate()
 
-    weak open var delegate: ImapSyncDelegate?
+    //BUFF: debug
+//    var delegate: ImapSyncDelegate?
+    var _delegate: ImapSyncDelegate?
+    weak open var delegate: ImapSyncDelegate? {
+        get {
+            return _delegate
+        }
+        set {
+            _delegate = newValue
+            if newValue == nil {
+                if _delegate != nil {
+                    print("BUFF: \(_delegate!.self  ) has been set to nil)")
+                }
+            } else {
+                    print("BUFF: ImapService delegate has been set to \(newValue!)")
+            }
+        }
+    }
+    //FFUB
 
     open var maxPrefetchCount: UInt = 20
 
@@ -307,9 +325,13 @@ extension ImapSync: CWServiceClient {
         } else {
             Log.info(component: comp, content: "folderSyncCompleted: \(String(describing: notification))")
         }
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderSyncCompleted(self, notification: notification)
     }
-
+    
     @objc public func folderSyncFailed(_ notification: Notification?) {
         dumpMethodName("folderSyncFailed", notification: notification)
         delegate?.folderSyncFailed(self, notification: notification)
