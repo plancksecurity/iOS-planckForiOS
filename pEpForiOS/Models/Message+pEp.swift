@@ -9,7 +9,7 @@
 import MessageModel
 
 extension Message {
-    public func pEpMessage(message: Message, outgoing: Bool = true) -> PEPMessage {
+    public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
         return PEPUtil.pEp(message: self)
     }
 
