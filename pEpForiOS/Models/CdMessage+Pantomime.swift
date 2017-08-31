@@ -427,18 +427,21 @@ extension CdMessage {
 
         let mail = existing(pantomimeMessage: message, inAccount: account) ?? CdMessage.create()
 
-        mail.parent = folder
-        mail.bodyFetched = message.isInitialized()
-        mail.sent = message.originationDate() as NSDate?
-        mail.shortMessage = message.subject()
+        if !moreMessagesThanRequested(mail: mail, messageUpdate: messageUpdate) {
+            mail.parent = folder
+            mail.bodyFetched = message.isInitialized()
+            mail.sent = message.originationDate() as NSDate?
+            mail.shortMessage = message.subject()
 
-        mail.uuid = message.messageID()
-        mail.uid = Int32(message.uid())
+            mail.uuid = message.messageID()
+            mail.uid = Int32(message.uid())
 
-        let imap = mail.imapFields()
+            let imap = mail.imapFields()
 
-        imap.messageNumber = Int32(message.messageNumber())
-        imap.mimeBoundary = (message.boundary() as NSData?)?.asciiString()
+            imap.messageNumber = Int32(message.messageNumber())
+            imap.mimeBoundary = (message.boundary() as NSData?)?.asciiString()
+        }
+
 
         let _ = mail.updateFromServer(cwFlags: message.flags())
 
@@ -468,7 +471,7 @@ extension CdMessage {
             return mail
         }
 
-        if mail.pEpRating != PEPUtil.pEpRatingNone && messageUpdate.rfc822 {
+        if moreMessagesThanRequested(mail: mail, messageUpdate: messageUpdate) {
             // This is a contradiction in itself, a new message that already existed.
             // Can happen with yahoo IMAP servers when they send more messages in
             // FETCH responses than requested.
@@ -541,6 +544,10 @@ extension CdMessage {
         }
 
         return mail
+    }
+
+    static private func moreMessagesThanRequested(mail: CdMessage, messageUpdate: CWMessageUpdate) -> Bool {
+        return mail.pEpRating != PEPUtil.pEpRatingNone && messageUpdate.rfc822
     }
 
     /**
