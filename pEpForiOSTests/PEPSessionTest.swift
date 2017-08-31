@@ -51,8 +51,6 @@ class PEPSessionTest: XCTestCase {
         message.received = Date()
         message.replyTo = [account.user]
         message.references = ["ref1"]
-        let hf = HeaderField(name: "name", value: "Value")
-        message.optionalFields = [hf]
         message.save( )
         let session = PEPSessionCreator.shared.newSession()
         guard let first = CdMessage.first() else {
