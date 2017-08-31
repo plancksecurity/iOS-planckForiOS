@@ -429,7 +429,7 @@ open class PEPUtil {
         fakemail.bcc = bcc
         fakemail.shortMessage = ""
         fakemail.longMessage = ""
-        return session.outgoingMessageColor(fakemail.pEpMessage(message: fakemail, outgoing: true))
+        return session.outgoingMessageColor(fakemail.pEpMessage(outgoing: true))
     }
 
     open static func pEpColor(identity: Identity,
