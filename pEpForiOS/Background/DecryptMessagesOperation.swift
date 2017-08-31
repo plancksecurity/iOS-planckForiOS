@@ -66,25 +66,16 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_trusted,
                      PEP_rating_trusted_and_anonymized,
                      PEP_rating_fully_anonymous:
-                    if let decrypted = pEpDecryptedMessage as? PEPMessage {
-                        cdMessage.update(pEpMessage: decrypted, pEpColorRating: color)
-                        self.updateMessage(cdMessage: cdMessage, keys: theKeys, context: context)
-                    } else {
-                        Log.shared.errorAndCrash(
-                            component: #function,
-                            errorString:"Decrypt with rating, but nil message")
-                    }
+                    self.updateWholeMessage(
+                        pEpDecryptedMessage: pEpDecryptedMessage,
+                        pEpColorRating: color, cdMessage: cdMessage,
+                        keys: theKeys, underAttack: false, context: context)
                     break
                 case PEP_rating_under_attack:
-                    if let decrypted = pEpDecryptedMessage as? PEPMessage {
-                        cdMessage.update(pEpMessage: decrypted, pEpColorRating: color)
-                        cdMessage.underAttack = true
-                        self.updateMessage(cdMessage: cdMessage, keys: theKeys, context: context)
-                    } else {
-                        Log.shared.errorAndCrash(
-                            component: #function,
-                            errorString:"Decrypt with rating, but nil message")
-                    }
+                    self.updateWholeMessage(
+                        pEpDecryptedMessage: pEpDecryptedMessage,
+                        pEpColorRating: color, cdMessage: cdMessage,
+                        keys: theKeys, underAttack: true, context: context)
                 default:
                     Log.warn(
                         component: self.comp,
@@ -97,8 +88,27 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
     }
 
     /**
-     Updates the given key list for the message, puts rating into optional fields
-     and notifies delegates.
+     Updates message bodies (after decryption), then calls `updateMessage`.
+     */
+    func updateWholeMessage(
+        pEpDecryptedMessage: NSDictionary?,
+        pEpColorRating: PEP_rating,
+        cdMessage: CdMessage, keys: [String],
+        underAttack: Bool,
+        context: NSManagedObjectContext) {
+        if let decrypted = pEpDecryptedMessage as? PEPMessage {
+            cdMessage.update(pEpMessage: decrypted, pEpColorRating: pEpColorRating)
+            cdMessage.underAttack = underAttack
+            self.updateMessage(cdMessage: cdMessage, keys: keys, context: context)
+        } else {
+            Log.shared.errorAndCrash(
+                component: #function,
+                errorString:"Decrypt with rating, but nil message")
+        }
+    }
+
+    /**
+     Updates the given key list for the message and notifies delegates.
      */
     func updateMessage(cdMessage: CdMessage, keys: [String], context: NSManagedObjectContext) {
         cdMessage.updateKeyList(keys: keys)
