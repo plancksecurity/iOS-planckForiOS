@@ -337,7 +337,22 @@ class TestUtil {
         testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor, handler: { error in
             XCTAssertNil(error)
         })
+        //BUFF:
         networkService.cancel()
+//        TestUtil.cancelNetworkService(networkService: networkService, testCase: testCase)
+    }
+
+// MARK: - NetworkService
+    static public func cancelNetworkService(networkService: NetworkService, testCase: XCTestCase) {
+        let del = NetworkServiceObserver(
+            expCanceled: testCase.expectation(description: "expCanceled"))
+        networkService.networkServiceDelegate = del
+        networkService.cancel()
+
+        // Wait for cancellation
+        testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
     }
 
     // MARK: Messages

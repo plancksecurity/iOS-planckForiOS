@@ -97,18 +97,6 @@ class NetworkServiceTests: XCTestCase {
         testSyncOutgoing(useCorrectSmtpAccount: false)
     }
 
-    func cancelNetworkService(networkService: NetworkService) {
-        let del = NetworkServiceObserver(
-            expCanceled: expectation(description: "expCanceled"))
-        networkService.networkServiceDelegate = del
-        networkService.cancel()
-
-        // Wait for cancellation
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
-    }
-
     func testSyncOneTime() {
         XCTAssertNil(CdAccount.all())
         XCTAssertNil(CdFolder.all())
@@ -196,7 +184,7 @@ class NetworkServiceTests: XCTestCase {
         }
         XCTAssertFalse(modelDelegate.hasChangedMessages)
 
-        cancelNetworkService(networkService: networkService)
+        TestUtil.cancelNetworkService(networkService: networkService, testCase: self)
     }
 
     func testCancelSyncImmediately() {
@@ -212,7 +200,7 @@ class NetworkServiceTests: XCTestCase {
 
         for _ in 0...10 {
             networkService.start()
-            cancelNetworkService(networkService: networkService)
+            TestUtil.cancelNetworkService(networkService: networkService, testCase: self)
         }
 
         XCTAssertNil(CdFolder.all())
@@ -385,6 +373,6 @@ class NetworkServiceTests: XCTestCase {
             // those messages do not exist if we are using an incorrect account
             TestUtil.checkForExistanceAndUniqueness(uuids: outgoingMessageIDs)
         }
-        cancelNetworkService(networkService: networkService)
+        TestUtil.cancelNetworkService(networkService: networkService, testCase: self)
     }
 }
