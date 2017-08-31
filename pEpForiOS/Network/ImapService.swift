@@ -114,10 +114,10 @@ open class ImapSync: Service {
             _delegate = newValue
             if newValue == nil {
                 if _delegate != nil {
-                    print("BUFF: \(_delegate!.self  ) has been set to nil)")
+                    print("//BUFF: \(_delegate!.self  ) has been set to nil)")
                 }
             } else {
-                    print("BUFF: ImapService delegate has been set to \(newValue!)")
+                    print("//BUFF: ImapService delegate has been set to \(newValue!)")
             }
         }
     }
