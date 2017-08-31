@@ -112,6 +112,12 @@ public class NetworkService {
         if let config = currentWorker?.serviceConfig {
             serviceConfig = config
         }
+        //BUFF:
+        guard let _ = currentWorker else {
+            print("//BUFF: NetworkService - No worker")
+            return
+        }
+        //FFUB
         lastConnectionDataCache = currentWorker?.imapConnectionDataCache
         currentWorker?.cancel(networkService: self)
         currentWorker = nil

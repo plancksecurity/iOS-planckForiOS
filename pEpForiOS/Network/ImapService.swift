@@ -103,7 +103,25 @@ open class ImapSync: Service {
 
     let nonExistantMailboxName = MessageID.generate()
 
-    weak open var delegate: ImapSyncDelegate?
+    //BUFF: debug
+//    var delegate: ImapSyncDelegate?
+    var _delegate: ImapSyncDelegate?
+    weak open var delegate: ImapSyncDelegate? {
+        get {
+            return _delegate
+        }
+        set {
+            _delegate = newValue
+            if newValue == nil {
+                if _delegate != nil {
+                    print("//BUFF: \(_delegate!.self  ) has been set to nil)")
+                }
+            } else {
+                    print("//BUFF: ImapService delegate has been set to \(newValue!)")
+            }
+        }
+    }
+    //FFUB
 
     open var maxPrefetchCount: UInt = 20
 
@@ -252,17 +270,29 @@ extension ImapSync: CWServiceClient {
     @objc public func badResponse(_ theNotification: Notification?) {
         dumpMethodName(#function, notification: theNotification)
         let errorMsg = theNotification?.parseErrorMessageBadResponse()
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.badResponse(self, response: errorMsg)
     }
 
     @objc public func authenticationCompleted(_ notification: Notification?) {
         dumpMethodName("authenticationCompleted", notification: notification)
         imapState.authenticationCompleted = true
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.authenticationCompleted(self, notification: notification)
     }
 
     @objc public func authenticationFailed(_ notification: Notification?) {
         dumpMethodName("authenticationFailed", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.authenticationFailed(self, notification: notification)
     }
 
@@ -273,18 +303,30 @@ extension ImapSync: CWServiceClient {
     @objc public func connectionLost(_ notification: Notification?) {
         dumpMethodName("connectionLost", notification: notification)
         imapState.authenticationCompleted = false
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.connectionLost(self, notification: notification)
     }
 
     @objc public func connectionTerminated(_ notification: Notification?) {
         dumpMethodName("connectionTerminated", notification: notification)
         imapState.authenticationCompleted = false
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.connectionTerminated(self, notification: notification)
     }
 
     @objc public func connectionTimedOut(_ notification: Notification?) {
         dumpMethodName("connectionTimedOut", notification: notification)
         imapState.authenticationCompleted = false
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.connectionTimedOut(self, notification: notification)
     }
 
@@ -295,6 +337,10 @@ extension ImapSync: CWServiceClient {
             Log.info(component: comp, content: "prefetched folder: \(folder.name())")
         } else {
             Log.info(component: comp, content: "folderPrefetchCompleted: \(String(describing: notification))")
+        }
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
         }
         delegate?.folderPrefetchCompleted(self, notification: notification)
     }
@@ -307,16 +353,28 @@ extension ImapSync: CWServiceClient {
         } else {
             Log.info(component: comp, content: "folderSyncCompleted: \(String(describing: notification))")
         }
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderSyncCompleted(self, notification: notification)
     }
-
+    
     @objc public func folderSyncFailed(_ notification: Notification?) {
         dumpMethodName("folderSyncFailed", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderSyncFailed(self, notification: notification)
     }
 
     @objc public func messagePrefetchCompleted(_ notification: Notification?) {
         dumpMethodName("messagePrefetchCompleted", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.messagePrefetchCompleted(self, notification: notification)
     }
 
@@ -335,6 +393,10 @@ extension ImapSync: CWServiceClient {
             if connectInfo.loginName == nil {
                 Log.error(component: comp, errorString: "Want to login, but don't have a login")
             }
+            guard let _ = delegate else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+                return
+            }
             delegate?.authenticationFailed(self, notification: notification)
         }
     }
@@ -345,17 +407,28 @@ extension ImapSync: CWServiceClient {
 
     @objc public func messageChanged(_ notification: Notification?) {
         dumpMethodName("messageChanged", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.messageChanged(self, notification: notification)
     }
 
     @objc public func folderStatusCompleted(_ notification: Notification?) {
         dumpMethodName("folderStatusCompleted", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderStatusCompleted(self, notification: notification)
     }
 
     @objc public func actionFailed(_ notification: Notification?) {
         dumpMethodName("actionFailed", notification: notification)
-
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         guard
             let userInfo = (notification as NSNotification?)?.userInfo,
             let errorInfoDict = userInfo[PantomimeErrorInfo] as? NSDictionary,
@@ -369,48 +442,84 @@ extension ImapSync: CWServiceClient {
 
     @objc public func messageStoreCompleted(_ notification: Notification?) {
         dumpMethodName("messageStoreCompleted", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.messageStoreCompleted(self, notification: notification)
     }
 
     @objc public func messageStoreFailed(_ notification: Notification?) {
         dumpMethodName("messageStoreFailed", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.messageStoreFailed(self, notification: notification)
     }
 
     @objc public func folderCreateCompleted(_ notification: Notification?) {
         dumpMethodName("folderCreateCompleted", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderCreateCompleted(self, notification: notification)
     }
 
     @objc public func folderCreateFailed(_ notification: Notification?) {
         dumpMethodName("folderCreateFailed", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderCreateFailed(self, notification: notification)
     }
 
     @objc public func folderDeleteCompleted(_ notification: Notification?) {
         dumpMethodName("folderDeleteCompleted", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderDeleteCompleted(self, notification: notification)
     }
 
     @objc public func folderDeleteFailed(_ notification: Notification?) {
         dumpMethodName("folderDeleteFailed", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderDeleteFailed(self, notification: notification)
     }
 
     @objc public func idleEntered(_ notification: Notification?) {
         dumpMethodName("idleEntered", notification: notification)
         imapState.isIdling = true
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.idleEntered(self, notification: notification)
     }
 
     @objc public func idleNewMessages(_ notification: Notification?) {
         dumpMethodName("idleNewMessages", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.idleNewMessages(self, notification: notification)
     }
 
     @objc public func idleFinished(_ notification: Notification?) {
         dumpMethodName("idleFinished", notification: notification)
         imapState.isIdling = false
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.idleFinished(self, notification: notification)
     }
 }
@@ -425,6 +534,10 @@ extension ImapSync: PantomimeFolderDelegate {
             Log.info(component: comp, content: "folderOpenCompleted: \(String(describing: notification))")
             imapState.currentFolderName = nil
         }
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderOpenCompleted(self, notification: notification)
     }
 
@@ -435,26 +548,46 @@ extension ImapSync: PantomimeFolderDelegate {
         } else {
             Log.info(component: comp, content: "folderOpenFailed: \(String(describing: notification))")
         }
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderOpenFailed(self, notification: notification)
     }
 
     @objc public func folderListCompleted(_ notification: Notification?) {
         dumpMethodName("folderListCompleted", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderListCompleted(self, notification: notification)
     }
 
     @objc public func folderNameParsed(_ notification: Notification?) {
         dumpMethodName("folderNameParsed", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderNameParsed(self, notification: notification)
     }
 
     @objc public func folderAppendCompleted(_ notification: Notification?) {
         dumpMethodName("folderAppendCompleted", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderAppendCompleted(self, notification: notification)
     }
 
     @objc public func folderAppendFailed(_ notification: Notification?) {
         dumpMethodName("folderAppendFailed", notification: notification)
+        guard let _ = delegate else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No delegate :-(")
+            return
+        }
         delegate?.folderAppendFailed(self, notification: notification)
     }
 }

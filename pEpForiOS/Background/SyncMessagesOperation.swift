@@ -19,7 +19,27 @@ public class SyncMessagesOperation: ImapSyncOperation {
     let folderToOpen: String
     let lastUID: UInt
     let firstUID: UInt
-    var syncDelegate: SyncMessagesSyncDelegate?
+
+
+    //BUFF:
+    //    var syncDelegate: SyncMessagesSyncDelegate?
+    var _syncDelegate: SyncMessagesSyncDelegate?
+    weak var syncDelegate: SyncMessagesSyncDelegate? {
+        get {
+            return _syncDelegate
+        }
+        set {
+            _syncDelegate = newValue
+            if newValue == nil {
+                if _syncDelegate != nil {
+                    print("BUFF: SyncMessagesOperation. syncDelegate: \(_syncDelegate!.self) has been set to nil)")
+                }
+            } else {
+                print("BUFF: SyncMessagesOperation syncDelegate has been set to \(newValue!)")
+            }
+        }
+    }
+    //FFUB
 
     public init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, folderName: String, firstUID: UInt, lastUID: UInt) {
@@ -153,25 +173,48 @@ public class SyncMessagesOperation: ImapSyncOperation {
     }
 
     override func markAsFinished() {
+        print("//BUFF: SyncMessagesOperation called markAsFinished()") //BUFF:
         syncDelegate = nil
         super.markAsFinished()
     }
+
+    //BUFF:
+    deinit {
+        print("Buff: deinit: \(type(of:self))")
+    }
+    //FFUB
 }
 
 // MARK: - ImapSyncDelegate (actual delegate)
 
 class SyncMessagesSyncDelegate: DefaultImapSyncDelegate {
-    public override func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+    override public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+        guard let _ = errorHandler else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We must have an errorHandler here!")
+            return
+        }
         (errorHandler as? SyncMessagesOperation)?.folderSyncCompleted(
             sync, notification: notification)
     }
 
-    public override func messageChanged(_ sync: ImapSync, notification: Notification?) {
+    override public func messageChanged(_ sync: ImapSync, notification: Notification?) {
         // The update of the flags is already handled by `PersistentFolder`.
     }
 
-    public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+    override public  func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+        guard let _ = errorHandler else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We must have an errorHandler here!")
+            return
+        }
         (errorHandler as? SyncMessagesOperation)?.folderOpenCompleted(
             sync, notification: notification)
     }
+
+    //BUFF:
+    deinit {
+        print("Buff: deinit: \(type(of:self))")
+    }
+    //FFUB
 }

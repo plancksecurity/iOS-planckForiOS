@@ -50,6 +50,7 @@ open class NetworkServiceWorker {
         }
 
         func dumpOperations() {
+            Log.verbose(component: #function, content: "//BUFF: dumping operations: \(self.backgroundQueue.operations)") //BUFF:
             for op in self.backgroundQueue.operations {
                 Log.info(component: #function, content: "Still running: \(op)")
             }
@@ -89,6 +90,9 @@ open class NetworkServiceWorker {
      Cancel all background operations, finish main loop.
      */
     public func cancel(networkService: NetworkService) {
+        //BUFF:
+        print("//BUFF: NetworkServiceWorker cancle called with self.backgroundQueue.operationCount: \(self.backgroundQueue.operationCount) self.backgroundQueue.operations: \(self.backgroundQueue.operations) networkService: \(networkService)")
+        //FFUB
         let myComp = #function
 
         self.cancelled = true
@@ -435,6 +439,7 @@ open class NetworkServiceWorker {
             operations.append(opDecrypt)
             opAllFinished.addDependency(opDecrypt)
 
+            //BUFF: comment to fullfil comment
             lastImapOp = opDecrypt // Don't sync messages after all messages got decrypted
 
             // sync existing messages
@@ -444,8 +449,6 @@ open class NetworkServiceWorker {
             lastImapOp = lastOp
             operations.append(contentsOf: syncOperations)
         }
-
-        // ...
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
 
@@ -478,6 +481,9 @@ open class NetworkServiceWorker {
         }
         for op in operationLine.operations {
             if cancelled {
+                
+                print("//BUFF: NetworkServiceWorker scheduleOperationLineInternal  called all operations: \(self.backgroundQueue.operations)") //BUFF:
+
                 backgroundQueue.cancelAllOperations()
                 return
             }
