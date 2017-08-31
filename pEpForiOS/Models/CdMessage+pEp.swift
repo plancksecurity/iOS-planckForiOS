@@ -101,6 +101,7 @@ extension CdMessage {
                     let cdHeaderField = CdHeaderField.create()
                     cdHeaderField.name = headerfield[0] as? String
                     cdHeaderField.value = headerfield[1] as? String
+                    cdHeaderField.message = self
                     newOptFields.append(cdHeaderField)
                 }
             }
