@@ -93,11 +93,6 @@
                BlueprintName = "pEpForiOSTests"
                ReferencedContainer = "container:pEpForiOS.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "FetchMessagesOperationTest/testMailSentToBothPepAccounts()">
-               </Test>
-            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO">
