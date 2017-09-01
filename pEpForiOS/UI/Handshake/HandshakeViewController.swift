@@ -71,6 +71,7 @@ class HandshakeViewController: TableViewControllerBase {
             return vm
         } else {
             let vm = HandshakePartnerTableViewCellViewModel(
+                message: message,
                 ownIdentity: selfIdentity,
                 partner: partnerIdentity,
                 session: session,

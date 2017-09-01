@@ -71,7 +71,12 @@ class HandshakePartnerTableViewCellViewModel {
      */
     var pEpPartner: NSMutableDictionary
 
-    init(ownIdentity: Identity, partner: Identity, session: PEPSession,
+    /**
+     The message the status/trustwords are invoked for
+     */
+    let message: Message?
+
+    init(message: Message?, ownIdentity: Identity, partner: Identity, session: PEPSession,
          imageProvider: IdentityImageProvider) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
@@ -85,7 +90,8 @@ class HandshakePartnerTableViewCellViewModel {
         pEpSelf = ownIdentity.updatedIdentityDictionary(session: session)
         pEpPartner = partner.updatedIdentityDictionary(session: session)
 
-        isPartnerPGPUser = pEpPartner.isPGP
+        //isPartnerPGPUser = pEpPartner.isPGP
+        self.message = message
 
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
             if partner == ident {
@@ -106,12 +112,45 @@ class HandshakePartnerTableViewCellViewModel {
                 "\(partnerIdentity.userName ?? partnerIdentity.address):\n\(fprPrettyPartner)\n\n" +
             "\(ownIdentity.userName ?? ownIdentity.address):\n\(fprPrettySelf)"
         } else {
-            self.trustwords = session.getTrustwordsIdentity1(
-                pEpSelf.pEpIdentity(),
-                identity2: pEpPartner.pEpIdentity(),
-                language: trustwordsLanguage,
-                full: trustwordsFull)
+            self.trustwords = determineTrustwords(
+                message: message, identitySelf: pEpSelf.pEpIdentity(),
+                identityPartner: pEpPartner.pEpIdentity())
         }
+    }
+
+    /**
+     If the message is defined, and the partner is the sender, tries message trustwords.
+     If not, or message trustwords does not compute, it determines the trustwords between
+     the 2 identies.
+     */
+    func determineTrustwords(
+        message: Message?, identitySelf: PEPIdentity, identityPartner: PEPIdentity) -> String? {
+        if let msg = message,
+            let from = msg.from,
+            let partnerAddress = identityPartner[kPepAddress] as? String,
+            from.address == partnerAddress {
+            var pEpMessage = msg.pEpMessage()
+            pEpMessage[kPepFrom] = identityPartner as AnyObject
+            var pEpResult = PEP_UNKNOWN_ERROR
+            let trustwordsResult = session.getTrustwordsMessageDict(
+                pEpMessage, receiverDict: identitySelf,
+                keysArray: msg.keyListFromDecryption,
+                language: trustwordsLanguage, full: trustwordsFull,
+                resultingStatus: &pEpResult)
+            if pEpResult != PEP_STATUS_OK {
+                Log.shared.errorComponent(
+                    #function,
+                    message: "cannot get message trustwords: result \(pEpResult)")
+            } else {
+                return trustwordsResult
+            }
+        }
+        let trustwordsResult = session.getTrustwordsIdentity1(
+            pEpSelf.pEpIdentity(),
+            identity2: pEpPartner.pEpIdentity(),
+            language: trustwordsLanguage,
+            full: trustwordsFull)
+        return trustwordsResult
     }
 
     func toggleTrustwordsLength() {
