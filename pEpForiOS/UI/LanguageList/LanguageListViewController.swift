@@ -58,8 +58,6 @@ extension LanguageListViewController: SegueHandlerType {
             } else {
                 chosenLanguage = nil
             }
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Do not foget to handle appConfig to DVC")
             break
         }
     }
