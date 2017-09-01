@@ -270,7 +270,8 @@ class ComposeTableViewController: TableViewControllerBase {
                     message.from = (cell as? AccountCell)?.getIdentity()
                     break
                 default:
-                    message.shortMessage = cell.textView.text
+                    message.shortMessage = cell.textView.text.trimmingCharacters(
+                        in: .whitespacesAndNewlines).replaceNewLinesWith(" ")
                     break
                 }
             }
