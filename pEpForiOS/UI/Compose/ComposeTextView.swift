@@ -125,6 +125,9 @@ open class ComposeTextView: UITextView {
      is always visible.
      */
     public func addNewlinePadding() {
+        if fieldModel?.type != .content {
+            return
+        }
         func paddedByDoubleNewline(pureText: NSAttributedString) -> Bool {
             let numMatches = newLinePaddingRegEx?.numberOfMatches(
                 in: pureText.string, options: [], range: pureText.wholeRange()) ?? 1
