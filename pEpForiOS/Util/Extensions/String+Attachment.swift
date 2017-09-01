@@ -9,12 +9,12 @@
 import Foundation
 
 extension String {
-    public func extractCid() -> String? {
+    public func firstMatch(pattern: String, rangeNumber: Int = 1) -> String? {
         do {
             let regex = try NSRegularExpression(
-                pattern: "^cid:(?://)?(.+)$", options: [])
+                pattern: pattern, options: [])
             if let match = regex.firstMatch(in: self, options: [], range: wholeRange()) {
-                let r = match.rangeAt(1)
+                let r = match.rangeAt(rangeNumber)
                 let s = (self as NSString).substring(with: r)
                 return s
             }
@@ -23,5 +23,19 @@ extension String {
             Log.error(component: #function, error: err)
             return nil
         }
+    }
+
+    /**
+     The actual cid in a String like "cid://someCid" or "cid:someCid".
+     */
+    public func extractCid() -> String? {
+        return firstMatch(pattern: "^cid:(?://)?(.+)$")
+    }
+
+    /**
+     - Return: The filename part in a URL String of the form "file://filename"
+     */
+    public func extractFileName() -> String? {
+        return firstMatch(pattern: "^file://(.+)$")
     }
 }

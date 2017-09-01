@@ -113,8 +113,8 @@ extension CWIMAPMessage {
                                 part.setContentID("<\(cid)>")
                                 part.setContentDisposition(PantomimeInlineDisposition)
                             } else {
-                                part.setFilename(fileName)
-                                part.setContentDisposition(PantomimeAttachmentDisposition)
+                                let theFilePart = fileName.extractFileName() ?? fileName
+                                part.setFilename(theFilePart)
                             }
                         }
 
