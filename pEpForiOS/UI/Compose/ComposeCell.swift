@@ -56,4 +56,12 @@ extension ComposeCell: UITextViewDelegate {
         guard let cmTextview = textView as? ComposeTextView else { return }
         delegate?.textDidEndEditing(at: index, textView: cmTextview)
     }
+
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if fieldModel?.type == .subject && text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
 }

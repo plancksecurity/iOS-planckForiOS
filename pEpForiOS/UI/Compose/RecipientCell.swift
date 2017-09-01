@@ -85,7 +85,7 @@ extension RecipientCell {
         }
     }
     
-    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == .returnKey) {
             guard let cTextview = textView as? ComposeTextView else { return false }
             delegate?.textShouldReturn(at: index, textView: cTextview)
