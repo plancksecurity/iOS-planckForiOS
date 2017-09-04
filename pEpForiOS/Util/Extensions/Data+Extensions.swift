@@ -31,4 +31,14 @@ extension Data {
             Log.error(component: #function, errorString: "Could not save to \(url)")
         }
     }
+
+    public func debugSaveAsJson(basePath: String, fileName: String, ext: String = "data") {
+        do {
+            let jsonData = try JSONSerialization.data(
+                withJSONObject: self, options: .prettyPrinted)
+            jsonData.debugSave(basePath: basePath, fileName: fileName, ext: ext)
+        } catch let err {
+            Log.shared.error(component: #function, error: err)
+        }
+    }
 }
