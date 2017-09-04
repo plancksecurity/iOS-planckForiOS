@@ -370,7 +370,6 @@ extension EmailListViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
         case segueAddNewAccount
-        case segueEditAccounts
         case segueShowEmail
         case segueCompose
         case segueReply
