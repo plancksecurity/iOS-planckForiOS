@@ -390,56 +390,57 @@ extension EmailListViewController: SegueHandlerType {
         return true
     }
 
+    func currentMessage(senderCell: Any?) -> (Message, IndexPath)? {
+        if let cell = senderCell as? EmailListViewCell,
+            let indexPath = self.tableView.indexPath(for: cell),
+            let message = cell.messageAt(indexPath: indexPath, config: config) {
+            return (message, indexPath)
+        }
+        return nil
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .segueReply:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
-                let cell = sender as? EmailListViewCell,
-                let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config) else {
+                let (theMessage, _) = currentMessage(senderCell: sender) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             destination.appConfig = appConfig
             destination.composeMode = .replyFrom
-            destination.originalMessage = email
+            destination.originalMessage = theMessage
         case .segueReplyAll:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
-                let cell = sender as? EmailListViewCell,
-                let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config)  else {
+                let (theMessage, _) = currentMessage(senderCell: sender)  else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             destination.appConfig = appConfig
             destination.composeMode = .replyAll
-            destination.originalMessage = email
+            destination.originalMessage = theMessage
         case .segueShowEmail:
             guard let vc = segue.destination as? EmailViewController,
-                let cell = sender as? EmailListViewCell,
-                let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config) else {
+                let (theMessage, indexPath) = currentMessage(senderCell: sender) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             vc.appConfig = appConfig
-            vc.message = email
+            vc.message = theMessage
             vc.folderShow = viewModel?.folderToShow
             vc.messageId = indexPath.row
         case .segueForward:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
-                let cell = sender as? EmailListViewCell,
-                let indexPath = self.tableView.indexPath(for: cell),
-                let email = cell.messageAt(indexPath: indexPath, config: config) else {
+                let (theMessage, _) = currentMessage(senderCell: sender) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             destination.composeMode = .forward
             destination.appConfig = appConfig
-            destination.originalMessage = email
+            destination.originalMessage = theMessage
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
@@ -468,16 +469,16 @@ extension EmailListViewController: SegueHandlerType {
             break
         case .segueCompose:
             guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.rootViewController as? ComposeTableViewController,
-                let email = cell.messageAt(indexPath: indexPath, config: config) else {
+                let destination = nav.rootViewController as? ComposeTableViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             destination.appConfig = appConfig
 
-            if config?.folder?.folderType == .drafts {
+            if let (theMessage, _) = currentMessage(senderCell: sender),
+                config?.folder?.folderType == .drafts {
                 destination.composeMode = .draft
-                destination.originalMessage = email
+                destination.originalMessage = theMessage
             } else {
                 destination.composeMode = .normal
             }
