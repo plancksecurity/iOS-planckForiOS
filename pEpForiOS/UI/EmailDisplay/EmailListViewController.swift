@@ -380,15 +380,6 @@ extension EmailListViewController: SegueHandlerType {
         case noSegue
     }
 
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if identifier == SegueIdentifier.segueShowEmail.rawValue &&
-            config?.folder?.folderType == .drafts {
-            performSegue(withIdentifier: .segueCompose, sender: self)
-            return false
-        }
-        return true
-    }
-
     func currentMessage(senderCell: Any?) -> (Message, IndexPath)? {
         if let cell = senderCell as? EmailListViewCell,
             let indexPath = self.tableView.indexPath(for: cell),
@@ -473,14 +464,7 @@ extension EmailListViewController: SegueHandlerType {
                     return
             }
             destination.appConfig = appConfig
-
-            if let (theMessage, _) = currentMessage(senderCell: sender),
-                config?.folder?.folderType == .drafts {
-                destination.composeMode = .draft
-                destination.originalMessage = theMessage
-            } else {
-                destination.composeMode = .normal
-            }
+            destination.composeMode = .normal
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break
