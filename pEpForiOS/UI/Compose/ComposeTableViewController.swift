@@ -438,17 +438,20 @@ class ComposeTableViewController: TableViewControllerBase {
                 }))
 
             alertCtrl.addAction(
-                alertCtrl.action(NSLocalizedString("Save", comment: "compose email save"), .default, {
-                    if let msg = self.populateMessageForSending() {
-                        let acc = msg.parent.account
-                        if let f = Folder.by(account:acc, folderType: .drafts) {
-                            msg.parent = f
-                            msg.save()
+                alertCtrl.action(
+                    NSLocalizedString("Save", comment: "compose email save"),
+                    .default, {
+                        if let msg = self.populateMessageForSending() {
+                            let acc = msg.parent.account
+                            if let f = Folder.by(account:acc, folderType: .drafts) {
+                                msg.parent = f
+                                msg.save()
+                            }
+                        } else {
+                            Log.error(component: #function,
+                                      errorString: "No drafts folder for message")
                         }
-                    } else {
-                        Log.error(component: #function, errorString: "No drafts folder for message")
-                    }
-                    self.dismiss()
+                        self.dismiss()
                 }))
 
             present(alertCtrl, animated: true, completion: nil)
