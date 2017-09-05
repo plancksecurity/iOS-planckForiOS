@@ -25,10 +25,12 @@ class FilterTableViewController: TableViewControllerBase {
     }
 
     func ok(sender: UIBarButtonItem) {
-
-        filterEnabled = Filter.unified()
+        if filterEnabled == nil {
+            filterEnabled = Filter.empty()
+        }
         for section in sections {
             filterEnabled?.and(filter: section.getFilter())
+            filterEnabled?.without(filter: section.getInvaildFilter())
         }
         if let fe = filterEnabled {
             filterDelegate?.updateFilter(filter: fe)
@@ -39,7 +41,6 @@ class FilterTableViewController: TableViewControllerBase {
 
     override func viewWillAppear(_ animated: Bool) {
         initViewModel()
-
     }
 
     func initViewModel() {
@@ -82,7 +83,6 @@ class FilterTableViewController: TableViewControllerBase {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "filterCell", for: indexPath)
-        //cell.imageView?.image = FlagImages.create(imageSize: cell.imageView?.image).flaggedImage
         let cellvm = sections[indexPath.section][indexPath.row]
         cell.textLabel?.text = cellvm.title
         cell.imageView?.image = cellvm.icon

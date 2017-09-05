@@ -69,5 +69,12 @@ public class FilterCellViewModel {
         }
         return nil
     }
-    
+
+    func getInvalidFilter() -> Filter? {
+        if !enabled {
+            return filter
+        }
+        return nil
+    }
+
 }

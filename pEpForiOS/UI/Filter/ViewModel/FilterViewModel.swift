@@ -63,10 +63,15 @@ public class FilterViewModel {
         return filter
     }
 
-    func updateFilter(filter: Filter) {
-        
+    func getInvaildFilter() -> Filter {
+        let filter = Filter.empty()
+        for item in items {
+            if let f = item.getInvalidFilter() {
+                filter.and(filter: f)
+            }
+        }
+        return filter
     }
-
 
     subscript(index: Int) -> FilterCellViewModel {
         get {
