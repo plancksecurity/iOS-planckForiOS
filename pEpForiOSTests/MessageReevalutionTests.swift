@@ -84,6 +84,7 @@ class MessageReevalutionTests: XCTestCase {
                 return
         }
         let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
+        pantomimeMail.setUID(5) // some random UID out of nowhere
         pantomimeMail.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let cdMessage = CdMessage.insertOrUpdate(
             pantomimeMessage: pantomimeMail, account: cdOwnAccount,
