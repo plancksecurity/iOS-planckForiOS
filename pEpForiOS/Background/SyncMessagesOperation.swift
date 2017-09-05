@@ -19,27 +19,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
     let folderToOpen: String
     let lastUID: UInt
     let firstUID: UInt
-
-
-    //BUFF:
-    //    var syncDelegate: SyncMessagesSyncDelegate?
-    var _syncDelegate: SyncMessagesSyncDelegate?
-    weak var syncDelegate: SyncMessagesSyncDelegate? {
-        get {
-            return _syncDelegate
-        }
-        set {
-            _syncDelegate = newValue
-            if newValue == nil {
-                if _syncDelegate != nil {
-                    print("BUFF: SyncMessagesOperation. syncDelegate: \(_syncDelegate!.self) has been set to nil)")
-                }
-            } else {
-                print("BUFF: SyncMessagesOperation syncDelegate has been set to \(newValue!)")
-            }
-        }
-    }
-    //FFUB
+    var syncDelegate: SyncMessagesSyncDelegate?
 
     public init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, folderName: String, firstUID: UInt, lastUID: UInt) {
