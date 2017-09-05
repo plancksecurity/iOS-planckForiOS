@@ -19,19 +19,22 @@ class FilterTableViewController: TableViewControllerBase {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.hidesBackButton = true
+        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: NSLocalizedString("Ok", comment: "Filter accept text"), style: .plain, target: self, action: #selector(ok(sender:)))
 
     }
 
-    func back(sender: UIBarButtonItem) {
+    func ok(sender: UIBarButtonItem) {
 
         filterEnabled = Filter.unified()
         for section in sections {
             filterEnabled?.and(filter: section.getFilter())
         }
-        filterDelegate?.updateFilter(filter: filterEnabled!)
+        if let fe = filterEnabled {
+            filterDelegate?.updateFilter(filter: fe)
+        }
 
        _ = self.navigationController?.popViewController(animated: true)
-
     }
 
     override func viewWillAppear(_ animated: Bool) {

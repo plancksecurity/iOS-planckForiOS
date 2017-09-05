@@ -58,6 +58,7 @@ class EmailListViewController: TableViewControllerBase {
 
         if let vm = viewModel {
             self.textFilterButton.isEnabled = vm.filterEnabled
+            updateFilterText()
         } else {
             self.textFilterButton.isEnabled = false
         }
@@ -140,13 +141,19 @@ class EmailListViewController: TableViewControllerBase {
                 }
             } else {
                 vm.filterEnabled = true
-                textFilterButton.title = "Filter by: unread"
                 enableFilterButton.image = UIImage(named: "unread-icon-active")
                 if config != nil {
                     vm.updateFilter(filter: Filter.unread())
                 }
+                updateFilterText()
             }
             self.textFilterButton.isEnabled = vm.filterEnabled
+        }
+    }
+
+    func updateFilterText() {
+        if let vm = viewModel, let txt = vm.enabledFilters?.text {
+            textFilterButton.title = "Filter by: " + txt
         }
     }
 
@@ -329,7 +336,6 @@ class EmailListViewController: TableViewControllerBase {
 
     func createReplyAction(cell: EmailListViewCell) ->  UIAlertAction {
         return UIAlertAction(title: "Reply", style: .default) { (action) in
-            // self.performSegue(withIdentifier: self.segueCompose, sender: cell)
             self.performSegue(withIdentifier: .segueReply, sender: cell)
         }
     }
