@@ -69,19 +69,20 @@ extension CdMessage {
 
     static func existingMessagesPredicate() -> NSPredicate {
         let pBody = NSPredicate.init(format: "bodyFetched = true")
-        let pNotDeleted = NSPredicate.init(format: "imap.localFlags.flagDeleted = false")
+        let pNotDeleted = NSPredicate(format: "imap.localFlags.flagDeleted = false")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [pBody, pNotDeleted])
     }
 
     public static func basicMessagePredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pEpRating != %d", PEPUtil.pEpRatingNone)
-        let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
+        let predicateDecrypted = NSPredicate(format: "pEpRating != %d", PEPUtil.pEpRatingNone)
+        let predicates = [existingMessagesPredicate(), predicateDecrypted]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 
     public static func unknownToPepMessagesPredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate.init(format: "pEpRating == %d", PEPUtil.pEpRatingNone)
-        let predicates: [NSPredicate] = [existingMessagesPredicate(), predicateDecrypted]
+        let predicateDecrypted = NSPredicate(format: "pEpRating == %d", PEPUtil.pEpRatingNone)
+        let predicateIsFromServer = NSPredicate(format: "uid > 0")
+        let predicates = [existingMessagesPredicate(), predicateDecrypted, predicateIsFromServer]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 
