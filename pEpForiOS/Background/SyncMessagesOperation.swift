@@ -153,7 +153,6 @@ public class SyncMessagesOperation: ImapSyncOperation {
     }
 
     override func markAsFinished() {
-        print("//BUFF: SyncMessagesOperation called markAsFinished()") //BUFF:
         syncDelegate = nil
         super.markAsFinished()
     }
