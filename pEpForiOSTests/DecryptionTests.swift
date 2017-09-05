@@ -131,6 +131,7 @@ class DecryptionTests: XCTestCase {
         }
 
         let pantMail = CWIMAPMessage(pEpMessage: encryptedDict, mailboxName: inboxName)
+        pantMail.setUID(5) // some UID is needed to trigger decrypt
 
         if shouldEncrypt {
             XCTAssertTrue(pantMail.headerValue(forName: kXpEpVersion) is String)
