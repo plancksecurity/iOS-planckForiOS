@@ -157,12 +157,6 @@ public class SyncMessagesOperation: ImapSyncOperation {
         syncDelegate = nil
         super.markAsFinished()
     }
-
-    //BUFF:
-    deinit {
-        print("Buff: deinit: \(type(of:self))")
-    }
-    //FFUB
 }
 
 // MARK: - ImapSyncDelegate (actual delegate)
@@ -191,10 +185,4 @@ class SyncMessagesSyncDelegate: DefaultImapSyncDelegate {
         (errorHandler as? SyncMessagesOperation)?.folderOpenCompleted(
             sync, notification: notification)
     }
-
-    //BUFF:
-    deinit {
-        print("Buff: deinit: \(type(of:self))")
-    }
-    //FFUB
 }
