@@ -1,7 +1,8 @@
-v0.0.21
-pEpEngine fa5a0fb170ba
-pEpObjCAdapter 959a115bc0f7
+v0.0.22
+pEpEngine 148b879873f8
+pEpObjCAdapter 55344bcf3220
 netpgp-et 6837c983ba83
-MessageModel 61f34ce8947d
-pantomime-iOS 1e2b051a2a2c
+MessageModel ab5b838feb10
+pantomime-iOS 05f596e38a2d
 libAccountSettings bc1df5077165
+OpenSSL-for-iPhone 173110e9b414d7a8c2f62e20e94e876b6beb632d
