@@ -142,7 +142,9 @@ class TestDataBase {
     }
 
     /**
-     - Note: Add test accounts in TestData.swift only!).
+     - Note:
+       * Add test accounts in TestData.swift only!).
+       * The first 2 accounts play in tandem for some tests.
      */
     func populateAccounts() {
         fatalError("Abstract method. Must be overridden")
