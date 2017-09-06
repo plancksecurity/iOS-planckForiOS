@@ -47,7 +47,7 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
             Log.error(component: comp, error: error)
         }
 
-        comp = "\(comp) [\(parentName)]"
+        comp = "\(comp) \(unsafeBitCast(self, to: UnsafeRawPointer.self)) [\(parentName)]"
         self.name = comp
         Log.info(component: comp, content: "\(#function)")
     }

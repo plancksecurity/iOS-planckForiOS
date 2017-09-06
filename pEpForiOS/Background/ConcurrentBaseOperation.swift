@@ -51,9 +51,9 @@ public class ConcurrentBaseOperation: BaseOperation {
     }
 
     deinit {
-        if operationCountObserverAdded {
-            backgroundQueue.removeObserver(self, forKeyPath: operationCountKeyPath)
-        }
+        Log.shared.info(component: comp,
+                        content: "\(#function): \(unsafeBitCast(self, to: UnsafeRawPointer.self))")
+        removeAllObservers()
     }
 
     public override func start() {
@@ -72,16 +72,25 @@ public class ConcurrentBaseOperation: BaseOperation {
      */
     func waitForBackgroundTasksToFinish() {
         Log.verbose(component: comp, content: "\(#function) \(backgroundQueue.operationCount)")
+
         if backgroundQueue.operationCount == 0 {
             markAsFinished()
         } else {
-            operationCountObserverAdded = true
             backgroundQueue.addObserver(self, forKeyPath: operationCountKeyPath,
                                         options: [.initial, .new],
                                         context: nil)
             self.addObserver(self, forKeyPath: isCancelledKeyPath,
                              options: [.initial, .new],
                              context: nil)
+            operationCountObserverAdded = true
+        }
+    }
+
+    func removeAllObservers() {
+        if operationCountObserverAdded {
+            backgroundQueue.removeObserver(self, forKeyPath: operationCountKeyPath,
+                                           context: nil)
+            removeObserver(self, forKeyPath: isCancelledKeyPath, context: nil)
         }
     }
 
