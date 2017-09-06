@@ -154,7 +154,7 @@ class ImapSmtpSyncService {
     func uploadFlagChanges(message: Message) {
         if isReadyForImapAction {
             cancelIdling()
-            let folderName = message.parent.name ?? ImapSync.defaultImapInboxName
+            let folderName = message.parent.name
             let service = serviceFactory.syncFlagsToServer(
                 parentName: parentName, backgrounder: backgrounder,
                 imapSyncData: imapSyncData, folderName: folderName, syncFlagsDelegate: self)
