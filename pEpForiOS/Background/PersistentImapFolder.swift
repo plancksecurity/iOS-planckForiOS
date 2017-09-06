@@ -64,7 +64,7 @@ class PersistentImapFolder: CWIMAPFolder {
           logName: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
-        self.logName = logName ?? "<unknown>"
+        self.logName = "PersistentImapFolder (\(logName ?? "<unknown>"))"
         self.messageFetchedBlock = messageFetchedBlock
         let context = Record.Context.background
         self.privateMOC = context
