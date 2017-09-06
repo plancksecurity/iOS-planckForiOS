@@ -21,7 +21,6 @@ public class EmailListViewModel : FilterUpdateProtocol{
     var enabledFilters : Filter?
 
     init(config: EmailListConfig?, delegate: TableViewUpdate) {
-        //MessageModelConfig.messageFolderDelegate = self
         folderToShow = config?.folder
         self.delegate = delegate
     }

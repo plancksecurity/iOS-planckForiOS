@@ -131,23 +131,35 @@ class EmailListViewController: TableViewControllerBase {
     }
 
     @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {
+        handlefilter()
+    }
+
+    func handlefilter() {
         if let vm = viewModel {
             if vm.filterEnabled {
                 vm.filterEnabled = false
-                textFilterButton.title = ""
-                enableFilterButton.image = UIImage(named: "unread-icon")
+                handleButtonFilter(enabled: false)
                 if config != nil {
                     vm.resetFilters()
                 }
             } else {
                 vm.filterEnabled = true
-                enableFilterButton.image = UIImage(named: "unread-icon-active")
                 if config != nil {
                     vm.updateFilter(filter: Filter.unread())
                 }
-                updateFilterText()
+                handleButtonFilter(enabled: true)
             }
             self.textFilterButton.isEnabled = vm.filterEnabled
+        }
+    }
+
+    func handleButtonFilter(enabled: Bool) {
+        if enabled == false {
+            textFilterButton.title = ""
+            enableFilterButton.image = UIImage(named: "unread-icon")
+        } else {
+            enableFilterButton.image = UIImage(named: "unread-icon-active")
+            updateFilterText()
         }
     }
 
@@ -529,6 +541,10 @@ extension EmailListViewController: MessageFolderDelegate {
 
 extension EmailListViewController: TableViewUpdate {
     func updateView() {
+        if let vm = self.viewModel, let filter = vm.folderToShow?.filter, filter.isDefault() {
+            vm.filterEnabled = false
+            handleButtonFilter(enabled: false)
+        }
         self.tableView.reloadData()
     }
 }
