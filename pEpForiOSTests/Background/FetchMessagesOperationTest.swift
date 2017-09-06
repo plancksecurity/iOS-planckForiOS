@@ -16,11 +16,12 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 
     //BUFF: Randomly triggers IOS-674 sync stops forever
 
-    // IOS-671 pEp app has two accounts. Someone sends a mail to both (with both accounts in receipients).
+    // IOS-671 pEp app has two accounts. Someone sends a mail to both
+    // (with both accounts in receipients).
     // Message must exist twice, once for each account, after fetching mails from server.
     func testMailSentToBothPepAccounts() {
         // Setup 2 accounts
-       cdAccount.createRequiredFoldersAndWait(testCase: self)
+        cdAccount.createRequiredFoldersAndWait(testCase: self)
         Record.saveAndWait()
         
         let cdAccount2 = TestData().createWorkingCdAccount(number: 1)
@@ -41,7 +42,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         let msgsBefore1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
         let msgsBefore2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id2)
 
-        // Create mails from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2) ...
+        // Create mails from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2)
         let numMailsToSend = 2
         let mailsToSend = TestUtil.createOutgoingMails(
             cdAccount: cdAccount2, testCase: self, numberOfMails: numMailsToSend)
@@ -73,20 +74,23 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(msgsAfter2.count, msgsBefore2.count + numMailsToSend)
     }
 
-    // IOS-615 (Only) the first email in an Yahoo account gets duplicated locally on every sync cycle
+    // IOS-615 (Only) the first email in an Yahoo account gets duplicated locally
+    // on every sync cycle
     func testMailsNotDuplicated() {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let errorContainer = ErrorContainer()
 
-        //fetch emails in inbox ...
-        let imapLogin = LoginImapOperation(parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData)
+        // fetch emails in inbox ...
+        let imapLogin = LoginImapOperation(parentName: #function, errorContainer: errorContainer,
+                                           imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
             XCTAssertNotNil(imapSyncData.sync)
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
+        let fetchFoldersOp = FetchFoldersOperation(parentName: #function,
+                                                   imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil
