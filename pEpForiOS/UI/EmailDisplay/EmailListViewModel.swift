@@ -109,8 +109,6 @@ public class EmailListViewModel : FilterUpdateProtocol{
 
 extension EmailListViewModel: MessageFolderDelegate {
     public func didChange(messageFolder: MessageFolder) {
-        //GCD.onMainWait {
-        //    self.didChangeInternal(messageFolder: messageFolder)
-        //}
+
     }
 }
