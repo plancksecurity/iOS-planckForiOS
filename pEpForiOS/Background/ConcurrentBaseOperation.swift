@@ -53,7 +53,6 @@ public class ConcurrentBaseOperation: BaseOperation {
     deinit {
         Log.shared.info(component: comp,
                         content: "\(#function): \(unsafeBitCast(self, to: UnsafeRawPointer.self))")
-        removeAllObservers()
     }
 
     public override func start() {
@@ -130,6 +129,8 @@ public class ConcurrentBaseOperation: BaseOperation {
      to signal the end of this operation.
      */
     func markAsFinished() {
+        removeAllObservers()
+
         let isFinishedKeyPath = "isFinished"
         let isExecutingKeyPath = "isExecuting"
         Log.verbose(component: comp, content: #function)
