@@ -5,15 +5,15 @@
       location = "group:pEpForiOS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../pEpiOSAdapter/pEpiOSAdapter.xcodeproj">
+      location = "group:../MessageModel/MessageModel/MessageModel.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../pantomime-iOS/Pantomime.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../MailModel/MessageModel/MessageModel.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../libAccountSettings/attic/xcode/ServerConfig.xcodeproj">
+      location = "group:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
    </FileRef>
 </Workspace>
