@@ -117,6 +117,7 @@ open class NetworkServiceWorker {
      Start endlessly synchronizing in the background.
      */
     public func process(repeatProcess: Bool = true) {
+        ReferenceCounter.logOutstanding()
         workerQueue.async {
             self.processAllInternal(repeatProcess: repeatProcess)
         }
