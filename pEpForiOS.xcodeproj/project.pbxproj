@@ -285,7 +285,6 @@
 		43FC24231F04F43000C32110 /* ImapSmtpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24221F04F43000C32110 /* ImapSmtpConnection.swift */; };
 		43FC24251F04FC6E00C32110 /* MessageSyncServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24241F04FC6E00C32110 /* MessageSyncServiceTests.swift */; };
 		43FC24271F04FDDF00C32110 /* SmtpSendServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */; };
-		490FF81C1E79BFCE00BC15F9 /* ObserverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490FF81B1E79BFCE00BC15F9 /* ObserverDelegate.swift */; };
 		4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */; };
 		493B6D221E7078A100364D60 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B6D211E7078A100364D60 /* TestData.swift */; };
 		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
@@ -666,7 +665,6 @@
 		43FC24221F04F43000C32110 /* ImapSmtpConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSmtpConnection.swift; sourceTree = "<group>"; };
 		43FC24241F04FC6E00C32110 /* MessageSyncServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSyncServiceTests.swift; sourceTree = "<group>"; };
 		43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSendServiceTests.swift; sourceTree = "<group>"; };
-		490FF81B1E79BFCE00BC15F9 /* ObserverDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverDelegate.swift; sourceTree = "<group>"; };
 		4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		493B6D211E7078A100364D60 /* TestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		495560851E7150ED0016579E /* libPantomimeStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPantomimeStatic.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libPantomimeStatic.a"; sourceTree = "<group>"; };
@@ -1075,7 +1073,6 @@
 		437432061CFC49A4000F8D35 /* TestUtils */ = {
 			isa = PBXGroup;
 			children = (
-				490FF81B1E79BFCE00BC15F9 /* ObserverDelegate.swift */,
 				493B6D211E7078A100364D60 /* TestData.swift */,
 				433C519F1E64236500272E19 /* TestDataBase.swift */,
 				4374320A1CFC49B1000F8D35 /* TestUtil.swift */,
@@ -2044,7 +2041,6 @@
 				1507BC311F2640960036B3E9 /* CdMessage+TestUtils.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
 				15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */,
-				490FF81C1E79BFCE00BC15F9 /* ObserverDelegate.swift in Sources */,
 				1572B9CB1F3474880048BCF5 /* AccountSettingsViewModelTest.swift in Sources */,
 				432A3E441F0E793A00834749 /* SyncExistingMessagesServiceTests.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
