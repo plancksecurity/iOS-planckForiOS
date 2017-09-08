@@ -11,16 +11,6 @@ import UIKit
 
 extension UIViewController {
 
-    /*var originalTitleView: UIView? {
-        set {
-            self.originalTitleView = newValue
-        }
-
-        get {
-            return self.originalTitleView
-        }
-    }*/
-
     func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
         setEmailDisplayColors()
         
