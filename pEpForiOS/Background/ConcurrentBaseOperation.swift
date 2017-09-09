@@ -96,6 +96,10 @@ public class ConcurrentBaseOperation: BaseOperation {
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?,
                                                 change: [NSKeyValueChangeKey : Any]?,
                                                 context: UnsafeMutableRawPointer?) {
+        if isFinished {
+            Log.shared.info(component: comp,
+                            content: "\(#function) still called, although finished")
+        }
         guard let newValue = change?[NSKeyValueChangeKey.newKey] else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change,
                                context: context)
