@@ -35,11 +35,6 @@ public class FetchMessagesOperation: ImapSyncOperation {
         self.messageFetchedBlock = messageFetchedBlock
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
-        ReferenceCounter.inc(obj: self)
-    }
-
-    deinit {
-        ReferenceCounter.dec(obj: self)
     }
 
     override public func main() {
