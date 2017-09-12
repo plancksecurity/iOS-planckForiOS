@@ -115,7 +115,6 @@ class AccountsTableViewController: TableViewControllerBase {
                 performSegue(withIdentifier: .segueShowLog, sender: self)
             }
         } else {
-            //selectedAccount = accounts[indexPath.row]
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         }
