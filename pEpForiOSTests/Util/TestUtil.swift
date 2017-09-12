@@ -221,7 +221,7 @@ class TestUtil {
                     }
                 }
             } else {
-                XCTFail()
+                XCTFail("no message with message ID \(uuid)")
             }
         }
     }
