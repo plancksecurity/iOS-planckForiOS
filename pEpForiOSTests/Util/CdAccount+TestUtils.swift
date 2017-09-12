@@ -18,16 +18,14 @@ extension CdAccount {
             return []
         }
 
-        let msgs: [CdMessage]
-        if let id = from {
-            msgs = messages.filter { $0.parent?.account == self
-                && $0.parent?.folderType == type
-                && $0.from == id }
-        } else {
-            msgs = messages.filter { $0.parent?.account == self
-                && $0.parent?.folderType == type }
+        var msgs = messages.filter {
+            $0.parent?.account == self && $0.parent?.folderType == type
         }
-
+        if let id = from {
+            msgs = msgs.filter {
+                $0.from == id
+            }
+        }
         return msgs
     }
     
@@ -74,9 +72,7 @@ extension CdAccount {
         testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(opCreate1.hasErrors())
-            //            finished = true
         })
-
 
         for ft in FolderType.requiredTypes {
             if
