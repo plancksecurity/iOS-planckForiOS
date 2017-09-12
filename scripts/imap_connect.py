@@ -55,7 +55,5 @@ if __name__ == '__main__':
     try:
         print(c)
         dump_folder(c, 'INBOX')
-        dump_folder(c, 'INBOX.Trash')
-        rm_folders(c)
     finally:
         c.logout()
