@@ -45,7 +45,8 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         // Create mails from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2)
         let numMailsToSend = 2
         let mailsToSend = TestUtil.createOutgoingMails(
-            cdAccount: cdAccount2, testCase: self, numberOfMails: numMailsToSend)
+            cdAccount: cdAccount2, testCase: self, numberOfMails: numMailsToSend,
+            withAttachments: false, encrypt: false)
         XCTAssertEqual(mailsToSend.count, numMailsToSend)
 
         for mail in mailsToSend {

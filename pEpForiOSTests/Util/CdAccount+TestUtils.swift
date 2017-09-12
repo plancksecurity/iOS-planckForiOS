@@ -18,15 +18,17 @@ extension CdAccount {
             return []
         }
 
-        var msgs = messages.filter {
+        let msgs1 = messages.filter {
             $0.parent?.account == self && $0.parent?.folderType == type
         }
         if let id = from {
-            msgs = msgs.filter {
+            let msgs2 = msgs1.filter {
                 $0.from == id
             }
+            return msgs2
+        } else {
+            return msgs1
         }
-        return msgs
     }
     
     public func createRequiredFoldersAndWait(testCase: XCTestCase) {

@@ -357,8 +357,11 @@ class TestUtil {
 
     // MARK: Messages
 
-    static func createOutgoingMails(cdAccount: CdAccount, testCase: XCTestCase,
-                                    numberOfMails: Int) -> [CdMessage] {
+    static func createOutgoingMails(cdAccount: CdAccount,
+                                    testCase: XCTestCase,
+                                    numberOfMails: Int,
+                                    withAttachments: Bool = true,
+                                    encrypt: Bool = true) -> [CdMessage] {
         testCase.continueAfterFailure = false
 
         if numberOfMails == 0 {
@@ -389,9 +392,11 @@ class TestUtil {
             return []
         }
 
-        let session = PEPSessionCreator.shared.newSession()
-        TestUtil.importKeyByFileName(
-            session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
+        if encrypt {
+            let session = PEPSessionCreator.shared.newSession()
+            TestUtil.importKeyByFileName(
+                session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
+        }
 
         let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
@@ -423,12 +428,15 @@ class TestUtil {
             message.sent = Date() as NSDate
             message.addTo(cdIdentity: toWithKey)
 
-            // add attachment to last and previous-to-last mail
-            if i == numberOfMails || i == numberOfMails - 1 {
-                let attachment = Attachment.create(
-                    data: imageData, mimeType: MimeTypeUtil.jpegMimeType, fileName: imageFileName)
-                let cdAttachment = CdAttachment.create(attachment: attachment)
-                message.addToAttachments(cdAttachment)
+            // add attachment to last and previous-to-last mail, if desired
+            if withAttachments {
+                if i == numberOfMails || i == numberOfMails - 1 {
+                    let attachment = Attachment.create(
+                        data: imageData, mimeType: MimeTypeUtil.jpegMimeType,
+                        fileName: imageFileName)
+                    let cdAttachment = CdAttachment.create(attachment: attachment)
+                    message.addToAttachments(cdAttachment)
+                }
             }
             // prevent encryption for last mail
             if i == numberOfMails {
