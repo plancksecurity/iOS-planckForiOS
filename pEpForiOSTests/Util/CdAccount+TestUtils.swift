@@ -11,7 +11,6 @@ import MessageModel
 import pEpForiOS
 
 extension CdAccount {
-
     public func allMessages(inFolderOfType type: FolderType,
                             sendFrom from: CdIdentity? = nil) -> [CdMessage] {
         guard let messages = CdMessage.all() as? [CdMessage] else {
