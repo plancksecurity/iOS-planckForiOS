@@ -177,8 +177,8 @@ class ComposeTableViewController: TableViewControllerBase {
             tableDict = NSDictionary(contentsOfFile: path)
         }
 
-        if let dict = tableDict as? [String: Any] {
-            tableData = ComposeDataSource(with: dict["Rows"] as! [[String: Any]])
+        if let dict = tableDict as? [String: Any], let dictRows = dict["Rows"] as? [[String: Any]]{
+            tableData = ComposeDataSource(with: dictRows)
         }
     }
 
@@ -231,8 +231,8 @@ class ComposeTableViewController: TableViewControllerBase {
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
 
         allCells.forEach({ (cell) in
-            if cell is RecipientCell, let fm = cell.fieldModel {
-                let addresses = (cell as! RecipientCell).identities
+            if let tempCell = cell as? RecipientCell, let fm = cell.fieldModel {
+                let addresses = (tempCell).identities
 
                 switch fm.type {
                 case .to:
@@ -342,8 +342,8 @@ class ComposeTableViewController: TableViewControllerBase {
         let height = cell.textView.fieldHeight
         let expandable = cell.fieldModel?.expanded
 
-        if cell is AccountCell {
-            if (cell as! AccountCell).shouldDisplayPicker {
+        if let tempCell = cell as? AccountCell {
+            if (tempCell).shouldDisplayPicker {
                 if (expandable != nil) && cell.isExpanded { return expandable! }
             }
         }

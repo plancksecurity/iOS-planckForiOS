@@ -276,7 +276,7 @@ extension CdMessage {
         var refs: [String] = []
         if let theRefs = references {
             for ref in theRefs {
-                if let refString: String = (ref as! CdMessageReference).reference {
+                if let tref = ref as? CdMessageReference, let refString: String = tref.reference {
                     refs.append(refString)
                 }
             }

@@ -180,8 +180,8 @@ public extension CdFolder {
      - Returns: All (undeleted, valid) messages in that folder.
      */
     public func allMessages() -> [CdMessage] {
-        if let msgs = CdMessage.all(predicate: allMessagesPredicate()) {
-            return msgs as! [CdMessage]
+        if let msgs = CdMessage.all(predicate: allMessagesPredicate()) as? [CdMessage] {
+            return msgs
         }
         return []
     }
