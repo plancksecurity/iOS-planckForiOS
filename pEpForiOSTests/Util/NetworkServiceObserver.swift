@@ -10,12 +10,14 @@ import XCTest
 import pEpForiOS
 import MessageModel
 
+import CoreData
+
 class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertible {
     let expAllSynced: XCTestExpectation?
     var expCanceled: XCTestExpectation?
     var accountInfo: AccountConnectInfo?
     let numAccountsToBeSynced: Int
-    var numAccountsSynced = 0
+    var accountIDsSynced = Set<NSManagedObjectID>()
 
     var debugDescription: String {
         return expAllSynced?.debugDescription ?? "unknown"
@@ -41,8 +43,8 @@ class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertib
         if self.accountInfo == nil {
             self.accountInfo = accountInfo
         }
-        numAccountsSynced += 1
-        if numAccountsToBeSynced == numAccountsSynced {
+        accountIDsSynced.insert(accountInfo.accountID)
+        if accountIDsSynced.count == numAccountsToBeSynced {
             expAllSynced?.fulfill()
         }
     }
