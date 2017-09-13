@@ -22,11 +22,12 @@ open class MessageSenderCell: MessageCell {
             NSFontAttributeName: UIFont.systemFont(ofSize: 15.0),
             NSForegroundColorAttributeName: UIColor.lightGray
         ]
-        
+        var temp: [String] = []
         message.allRecipients.forEach { (recepient) in
-            let recepient = NSAttributedString(string: "\(recepient.address), ", attributes: attributes)
-            attributed.append(recepient)
+            let recepient = recepient.address
+            temp.append(recepient)
         }
+        attributed.append(NSAttributedString(string: temp.joined(separator: ", "), attributes: attributes))
         valueLabel?.attributedText = attributed
     }
 }
