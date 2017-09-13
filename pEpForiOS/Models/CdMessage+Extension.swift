@@ -117,34 +117,6 @@ extension CdMessage {
         return objs?.count ?? 0
     }
 
-    /**
-     The original (`addToTo`) crashes
-     */
-    public func addTo(cdIdentity: CdIdentity) {
-        to = NSOrderedSet.adding(elements: [cdIdentity], toSet: to)
-    }
-
-    /**
-     The original (`addToCc`) crashes
-     */
-    public func addCc(cdIdentity: CdIdentity) {
-        cc = NSOrderedSet.adding(elements: [cdIdentity], toSet: cc)
-    }
-
-    /**
-     The original (`addToBcc`) crashes
-     */
-    public func addBcc(cdIdentity: CdIdentity) {
-        bcc = NSOrderedSet.adding(elements: [cdIdentity], toSet: bcc)
-    }
-
-    /**
-     The original (`addToReferences`) crashes
-     */
-    public func addReference(cdMessageReference: CdMessageReference) {
-        references = NSOrderedSet.adding(elements: [cdMessageReference], toSet: references)
-    }
-
     static func insertAttachment(
         contentType: String?, filename: String?, data: Data) -> CdAttachment {
         let attachment = CdAttachment.create()

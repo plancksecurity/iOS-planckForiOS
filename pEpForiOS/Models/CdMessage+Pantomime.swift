@@ -625,7 +625,7 @@ extension CdMessage {
             } else {
                 let attachment = insertAttachment(
                     contentType: part.contentType(), filename: part.filename(), data: data)
-                targetMail.addToAttachments(attachment)
+                targetMail.addAttachment(cdAttachment: attachment)
             }
         }
         

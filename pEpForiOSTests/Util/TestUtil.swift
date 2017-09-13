@@ -337,12 +337,12 @@ class TestUtil {
         testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor, handler: { error in
             XCTAssertNil(error)
         })
-        //BUFF:
+
         networkService.cancel()
-//        TestUtil.cancelNetworkService(networkService: networkService, testCase: testCase)
+        TestUtil.cancelNetworkService(networkService: networkService, testCase: testCase)
     }
 
-// MARK: - NetworkService
+    // MARK: - NetworkService
     static public func cancelNetworkService(networkService: NetworkService, testCase: XCTestCase) {
         let del = NetworkServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
@@ -435,7 +435,7 @@ class TestUtil {
                         data: imageData, mimeType: MimeTypeUtil.jpegMimeType,
                         fileName: imageFileName)
                     let cdAttachment = CdAttachment.create(attachment: attachment)
-                    message.addToAttachments(cdAttachment)
+                     message.addAttachment(cdAttachment: cdAttachment)
                 }
             }
             // prevent encryption for last mail

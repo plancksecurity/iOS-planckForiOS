@@ -90,7 +90,6 @@ open class NetworkServiceWorker {
      Cancel all background operations, finish main loop.
      */
     public func cancel(networkService: NetworkService) {
-        //BUFF:
         print("//BUFF: NetworkServiceWorker cancle called with self.backgroundQueue.operationCount: \(self.backgroundQueue.operationCount) self.backgroundQueue.operations: \(self.backgroundQueue.operations) networkService: \(networkService)")
         //FFUB
         let myComp = #function
@@ -439,7 +438,7 @@ open class NetworkServiceWorker {
             operations.append(opDecrypt)
             opAllFinished.addDependency(opDecrypt)
 
-            //BUFF: comment to fullfil comment
+            //comment to fullfil comment
             lastImapOp = opDecrypt // Don't sync messages after all messages got decrypted
 
             // sync existing messages

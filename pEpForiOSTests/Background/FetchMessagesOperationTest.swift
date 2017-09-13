@@ -50,15 +50,15 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(mailsToSend.count, numMailsToSend)
 
         for mail in mailsToSend {
-            guard let currentReceipinets = mail.to else {
+            guard let currentReceipinets = mail.to?.array as? [CdIdentity] else {
                     XCTFail("Should have receipients")
                     return
             }
             mail.from = id2
-            mail.removeFromTo(currentReceipinets)
-            mail.addToTo(id1)
-            mail.addToTo(id2)
-            mail.pEpProtected = false // force unencrypted
+            mail.removeTo(cdIdentities: currentReceipinets)
+            mail.addTo(cdIdentity: id1)
+            mail.addTo(cdIdentity: id2)
+			mail.pEpProtected = false // force unencrypted
         }
         Record.saveAndWait()
 
