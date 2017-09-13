@@ -12,7 +12,7 @@
         <!--Log View Controller-->
         <scene sceneID="cbu-sz-o8C">
             <objects>
-                <viewController storyboardIdentifier="UIViewController-01V-rr-Nt1" id="01V-rr-Nt1" customClass="LogViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="01V-rr-Nt1" customClass="LogViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="QZZ-tr-QTf"/>
                         <viewControllerLayoutGuide type="bottom" id="rBB-CM-MCF"/>
@@ -43,7 +43,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3rg-vA-cxG">
-                                <rect key="frame" x="0.0" y="145" width="375" height="522"/>
+                                <rect key="frame" x="20" y="145" width="335" height="502"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
@@ -53,17 +53,24 @@
                         <constraints>
                             <constraint firstItem="AzW-rt-GWz" firstAttribute="top" secondItem="Imh-fw-p8J" secondAttribute="bottom" constant="7.5" id="10i-rs-BY8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="APq-dm-jI3" secondAttribute="trailing" constant="20" id="1td-rV-I6z"/>
-                            <constraint firstItem="rBB-CM-MCF" firstAttribute="top" secondItem="3rg-vA-cxG" secondAttribute="bottom" id="VbE-A5-t8k"/>
+                            <constraint firstItem="rBB-CM-MCF" firstAttribute="top" secondItem="3rg-vA-cxG" secondAttribute="bottom" constant="20" id="VbE-A5-t8k"/>
                             <constraint firstItem="Imh-fw-p8J" firstAttribute="leading" secondItem="tns-XA-Mrg" secondAttribute="leadingMargin" id="aGl-vb-oe3"/>
                             <constraint firstItem="AzW-rt-GWz" firstAttribute="leading" secondItem="Imh-fw-p8J" secondAttribute="leading" id="d18-m2-nb9"/>
                             <constraint firstItem="3rg-vA-cxG" firstAttribute="top" secondItem="AzW-rt-GWz" secondAttribute="bottom" constant="7" id="pkN-oi-L8n"/>
-                            <constraint firstAttribute="trailing" secondItem="3rg-vA-cxG" secondAttribute="trailing" id="qPi-2M-H4Q"/>
-                            <constraint firstItem="3rg-vA-cxG" firstAttribute="leading" secondItem="tns-XA-Mrg" secondAttribute="leading" id="qZ3-IE-FF8"/>
+                            <constraint firstAttribute="trailing" secondItem="3rg-vA-cxG" secondAttribute="trailing" constant="20" id="qPi-2M-H4Q"/>
+                            <constraint firstItem="3rg-vA-cxG" firstAttribute="leading" secondItem="tns-XA-Mrg" secondAttribute="leading" constant="20" id="qZ3-IE-FF8"/>
                             <constraint firstItem="APq-dm-jI3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Imh-fw-p8J" secondAttribute="trailing" constant="15" id="tkO-WA-pvT"/>
                             <constraint firstItem="Imh-fw-p8J" firstAttribute="centerY" secondItem="APq-dm-jI3" secondAttribute="centerY" id="u7Z-rq-CHB"/>
                             <constraint firstItem="Imh-fw-p8J" firstAttribute="top" secondItem="QZZ-tr-QTf" secondAttribute="bottom" constant="15" id="wHe-pT-Vki"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="NJ7-bO-v75">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="0K7-Nt-BNs">
+                            <connections>
+                                <action selector="cancel:" destination="01V-rr-Nt1" id="GRg-LT-rxn"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="copyButton" destination="AzW-rt-GWz" id="SFC-bV-zg2"/>
                         <outlet property="enableLogSwitch" destination="APq-dm-jI3" id="GeN-vD-8cg"/>
@@ -73,7 +80,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XWE-s0-h4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3372" y="-54.422788605697157"/>
+            <point key="canvasLocation" x="4311.1999999999998" y="-54.422788605697157"/>
         </scene>
         <!--Accounts Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">
@@ -116,12 +123,12 @@
                     </navigationItem>
                     <connections>
                         <segue destination="Eri-pJ-T3J" kind="show" identifier="segueEditAccount" id="WKY-VX-I5i"/>
-                        <segue destination="01V-rr-Nt1" kind="show" identifier="segueShowLog" id="uAI-I4-HaK"/>
+                        <segue destination="3GT-NT-vyR" kind="show" identifier="segueShowLog" id="uAI-I4-HaK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4185" y="-54"/>
+            <point key="canvasLocation" x="5124" y="-54.422788605697157"/>
         </scene>
         <!--Account Settings Table View Controller-->
         <scene sceneID="8yf-Dg-eGD">
@@ -506,7 +513,25 @@
                 <viewControllerPlaceholder storyboardName="AccountCreation" id="Rly-af-89k" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLV-3R-1jF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4966" y="-377"/>
+            <point key="canvasLocation" x="5904" y="-377.81109445277366"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="oQR-4y-gfE">
+            <objects>
+                <navigationController storyboardIdentifier="UIViewController-01V-rr-Nt1" automaticallyAdjustsScrollViewInsets="NO" id="3GT-NT-vyR" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LdW-C9-lTr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="01V-rr-Nt1" kind="relationship" relationship="rootViewController" id="88T-Z4-l3p"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YDK-fm-lri" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3372" y="-54.422788605697157"/>
         </scene>
     </scenes>
 </document>

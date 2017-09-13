@@ -108,7 +108,6 @@
 
         self.navigationItem.hidesBackButton = true
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
-        //self.navigationController?.navigationBar.backItem = UIBarButtonItem(title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
     }
 
     func backButton() {
@@ -227,12 +226,9 @@
                 vc.model.userName = user.text
             }
         case .viewLogSegue:
-            if let navVC = segue.destination as? UINavigationController,
-                let vc = navVC.topViewController as? UserInfoTableViewController {
+            if let navVC = segue.destination as? UINavigationController, let vc = navVC.topViewController as? LogViewController {
                 vc.appConfig = appConfig
-                vc.model.address = emailAddress.text
-                vc.model.password = password.text
-                vc.model.userName = user.text
+                vc.navigationController?.navigationBar.isHidden = false
             }
         default:
             break

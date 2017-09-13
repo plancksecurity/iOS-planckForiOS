@@ -17,7 +17,6 @@ class LogViewController: ViewControllerBase {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         Log.checkEnabled() { enabled in
             GCD.onMain {
                 self.enableLogSwitch.isOn = enabled
@@ -32,6 +31,9 @@ class LogViewController: ViewControllerBase {
         }
     }
 
+    @IBAction func cancel(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

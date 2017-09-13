@@ -23,7 +23,6 @@ public class FolderViewModel {
         for acc in accounts {
             items.append(FolderSectionViewModel(account: acc))
         }
-
     }
 
     subscript(index: Int) -> FolderSectionViewModel {
