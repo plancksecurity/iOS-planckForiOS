@@ -120,6 +120,16 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
+    func testAdditionalAccount() {
+        let app = XCUIApplication()
+        app.navigationBars["Inbox"].buttons["Folders"].tap()
+        app.tables.buttons["add account"].tap()
+
+        let account = UITestData.workingAccount2
+        newAccountSetup(account: account)
+        waitForever()
+    }
+
     func testNewAccountSetupManually() {
         let account = UITestData.manualAccount
         newAccountSetup(account: account)
