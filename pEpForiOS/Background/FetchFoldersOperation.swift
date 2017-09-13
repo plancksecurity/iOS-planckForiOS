@@ -35,7 +35,8 @@ public class FetchFoldersOperation: ImapSyncOperation {
 
     weak var delegate: FetchFoldersOperationOperationDelegate?
 
-    public init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    public init(parentName: String = #function,
+                errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
 
