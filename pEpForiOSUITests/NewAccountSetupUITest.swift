@@ -114,7 +114,7 @@ class NewAccountSetupUITest: XCTestCase {
         XCUIApplication().tables.cells.buttons["Sign In"].tap()
     }
 
-    func testNewAccountSetup() {
+    func testInitialAccountSetup() {
         let account = UITestData.workingAccount1
         newAccountSetup(account: account)
         waitForever()
@@ -130,11 +130,16 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
-    func testNewAccountSetupManually() {
-        let account = UITestData.manualAccount
-        newAccountSetup(account: account)
-        XCUIApplication().buttons["Manual configuration"].tap()
-        manualNewAccountSetup(account)
+    func testTwoInitialAccounts() {
+        let account1 = UITestData.workingAccount1
+        newAccountSetup(account: account1)
+
+        let app = XCUIApplication()
+        app.navigationBars["Inbox"].buttons["Folders"].tap()
+        app.tables.buttons["add account"].tap()
+
+        let account2 = UITestData.workingAccount2
+        newAccountSetup(account: account2)
         waitForever()
     }
 
@@ -154,85 +159,8 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
-
-
-    func testInsertNewWorkingAccount() {
-        let account = UITestData.workingAccount1
-        manualNewAccountSetup(account)
-        waitForever()
-    }
-
-    func testNewAccountThatShouldFail() {
-        var account = UITestData.workingAccount1
-        account.password = "CLEArlyWRong"
-        manualNewAccountSetup(account)
-        // TODO: Verify error message
-        waitForever()
-    }
-
-    func testInsertNewYahooAccount() {
-        let account = UITestData.workingYahooAccount
-        manualNewAccountSetup(account)
-        waitForever()
-    }
-
-    func testAddSingleWorkingAccounts() {
-        let app = XCUIApplication()
-
-        app.navigationBars["Inbox"].buttons["Accounts"].tap()
-        app.navigationBars["Accounts"].buttons["Add"].tap()
-
-        let account = UITestData.workingAccount3
-        manualNewAccountSetup(account)
-
-        waitForever()
-    }
-
-    func testAddTwoWorkingAccounts() {
-        let app = XCUIApplication()
-
-        var account = UITestData.workingAccount1
-        manualNewAccountSetup(account)
-
-        app.navigationBars["Inbox"].buttons["Accounts"].tap()
-        app.navigationBars["Accounts"].buttons["Add"].tap()
-
-        account = UITestData.workingAccount2
-        manualNewAccountSetup(account)
-
-        waitForever()
-    }
-    
-    func testAddThreeWorkingAccounts() {
-        let app = XCUIApplication()
-
-        var account = UITestData.workingAccount1
-        manualNewAccountSetup(account)
-
-        app.navigationBars["Inbox"].buttons["Accounts"].tap()
-        app.navigationBars["Accounts"].buttons["Add"].tap()
-
-        account = UITestData.workingAccount2
-        manualNewAccountSetup(account)
-
-        app.navigationBars["Inbox"].buttons["Accounts"].tap()
-        app.navigationBars["Accounts"].buttons["Add"].tap()
-
-        account = UITestData.workingAccount3
-        manualNewAccountSetup(account)
-        
-        waitForever()
-    }
-
-    //Mark: DEBUG ONLY HELPER
-    /*
-     Helpers for manual debugging.
-     Keep them commented in commits as a working accound must exist already.
-     */
-
-
-    //Adds Yahoo account
-    //Note: A working accound must exist already.
+    // Adds Yahoo account
+    // Note: A working accound must exist already.
     func testAddYahooAccount() {
         openAddAccountManualConfiguration()
         let account = UITestData.workingYahooAccount
@@ -240,8 +168,10 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
-    //Opens the "add account" setting in manual configuration mode.
-    //Note: A working accound must exist already.
+    // Mark: DEBUG ONLY HELPER
+
+    // Opens the "add account" setting in manual configuration mode.
+    // Note: A working accound must exist already.
     func openAddAccountManualConfiguration() {
         XCUIDevice.shared().orientation = .faceUp
         XCUIDevice.shared().orientation = .faceUp
