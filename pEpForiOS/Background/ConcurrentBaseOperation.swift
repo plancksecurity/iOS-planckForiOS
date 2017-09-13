@@ -38,6 +38,9 @@ public class ConcurrentBaseOperation: BaseOperation {
 
     var myFinished: Bool = false
 
+    let internalQueue = DispatchQueue(
+        label: "ConcurrentBaseOperation", qos: .utility, target: nil)
+
     public override var isExecuting: Bool {
         return !isFinished
     }
@@ -70,61 +73,77 @@ public class ConcurrentBaseOperation: BaseOperation {
      Although this method has 'wait' in the name, it certainly does not block.
      */
     func waitForBackgroundTasksToFinish() {
-        Log.verbose(component: comp, content: "\(#function) \(backgroundQueue.operationCount)")
+        func f() {
+            Log.verbose(component: comp, content: "\(#function) \(backgroundQueue.operationCount)")
 
-        if backgroundQueue.operationCount == 0 {
-            markAsFinished()
-        } else {
-            backgroundQueue.addObserver(self, forKeyPath: operationCountKeyPath,
-                                        options: [.initial, .new],
-                                        context: nil)
-            self.addObserver(self, forKeyPath: isCancelledKeyPath,
-                             options: [.initial, .new],
-                             context: nil)
-            operationCountObserverAdded = true
+            if backgroundQueue.operationCount == 0 {
+                markAsFinished()
+            } else {
+                backgroundQueue.addObserver(self, forKeyPath: operationCountKeyPath,
+                                            options: [.initial, .new],
+                                            context: nil)
+                self.addObserver(self, forKeyPath: isCancelledKeyPath,
+                                 options: [.initial, .new],
+                                 context: nil)
+                operationCountObserverAdded = true
+            }
+        }
+        internalQueue.async {
+            f()
         }
     }
 
     func removeAllObservers() {
-        if operationCountObserverAdded {
-            backgroundQueue.removeObserver(self, forKeyPath: operationCountKeyPath,
-                                           context: nil)
-            removeObserver(self, forKeyPath: isCancelledKeyPath, context: nil)
+        func f() {
+            if operationCountObserverAdded {
+                backgroundQueue.removeObserver(self, forKeyPath: operationCountKeyPath,
+                                               context: nil)
+                removeObserver(self, forKeyPath: isCancelledKeyPath, context: nil)
+                operationCountObserverAdded = false
+            }
+        }
+        internalQueue.async {
+            f()
         }
     }
 
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?,
                                                 change: [NSKeyValueChangeKey : Any]?,
                                                 context: UnsafeMutableRawPointer?) {
-        if isFinished {
-            Log.shared.info(component: comp,
-                            content: "\(#function) still called, although finished")
-        }
-        guard let newValue = change?[NSKeyValueChangeKey.newKey] else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change,
-                               context: context)
-            return
-        }
-        if keyPath == operationCountKeyPath {
-            let opCount = (newValue as? NSNumber)?.intValue
-            Log.verbose(component: comp, content: "opCount \(String(describing: opCount))")
-            if let c = opCount, c == 0 {
-                markAsFinished()
+        func f() {
+            if isFinished {
+                Log.shared.info(component: comp,
+                                content: "\(#function) still called, although finished")
             }
-        } else if keyPath == isCancelledKeyPath {
-            guard let cancelled = (newValue as? NSNumber)?.boolValue else {
+            guard let newValue = change?[NSKeyValueChangeKey.newKey] else {
                 super.observeValue(forKeyPath: keyPath, of: object, change: change,
                                    context: context)
                 return
             }
-            if cancelled {
-                for op in backgroundQueue.operations {
-                    op.cancel()
+            if keyPath == operationCountKeyPath {
+                let opCount = (newValue as? NSNumber)?.intValue
+                Log.verbose(component: comp, content: "opCount \(String(describing: opCount))")
+                if let c = opCount, c == 0 {
+                    markAsFinished()
                 }
+            } else if keyPath == isCancelledKeyPath {
+                guard let cancelled = (newValue as? NSNumber)?.boolValue else {
+                    super.observeValue(forKeyPath: keyPath, of: object, change: change,
+                                       context: context)
+                    return
+                }
+                if cancelled {
+                    for op in backgroundQueue.operations {
+                        op.cancel()
+                    }
+                }
+            } else {
+                super.observeValue(forKeyPath: keyPath, of: object, change: change,
+                                   context: context)
             }
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change,
-                                         context: context)
+        }
+        internalQueue.async {
+            f()
         }
     }
 
