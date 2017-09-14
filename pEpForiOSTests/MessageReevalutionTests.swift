@@ -140,17 +140,17 @@ class MessageReevalutionTests: XCTestCase {
     func testCommunicationTypes() {
         let senderDict = senderIdentity.updatedIdentityDictionary(session: session)
 
-        XCTAssertTrue(senderDict.containsPGPCommType())
+        XCTAssertTrue(senderDict.containsPGPCommType)
         XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
 
         session.keyMistrusted(senderDict)
         let senderDict2 = senderIdentity.updatedIdentityDictionary(session: session)
-        XCTAssertFalse(senderDict2.containsPGPCommType()) // mistrusting sets the comm type to PEP_ct_mistrusted
+        XCTAssertFalse(senderDict2.containsPGPCommType) // mistrusting sets the comm type to PEP_ct_mistrusted
         XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_mistrust)
 
         session.keyResetTrust(senderDict2)
         let senderDict3 = senderIdentity.updatedIdentityDictionary(session: session)
-        XCTAssertTrue(senderDict3.containsPGPCommType())
+        XCTAssertTrue(senderDict3.containsPGPCommType)
         XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
     }
 
