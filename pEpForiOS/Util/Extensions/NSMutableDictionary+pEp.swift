@@ -16,17 +16,6 @@ extension NSMutableDictionary {
         return nil
     }
 
-    public var isPGP: Bool {
-        let ct = commType ?? PEP_ct_unknown
-        switch ct {
-        case PEP_ct_OpenPGP_weak_unconfirmed, PEP_ct_OpenPGP_unconfirmed,
-             PEP_ct_OpenPGP_weak, PEP_ct_OpenPGP:
-            return true
-        default:
-            return false
-        }
-    }
-
     public var isConfirmed: Bool {
         let ct = commType ?? PEP_ct_unknown
         return (ct.rawValue & PEP_ct_confirmed.rawValue) > 0
