@@ -104,21 +104,9 @@ open class ImapSync: Service {
     let nonExistantMailboxName = MessageID.generate()
 
     //BUFF: debug
-//    var delegate: ImapSyncDelegate?
-    var _delegate: ImapSyncDelegate?
     weak open var delegate: ImapSyncDelegate? {
-        get {
-            return _delegate
-        }
-        set {
-            _delegate = newValue
-            if newValue == nil {
-                if _delegate != nil {
-                    print("//BUFF: \(_delegate!.self  ) has been set to nil)")
-                }
-            } else {
-                    print("//BUFF: ImapService delegate has been set to \(newValue!)")
-            }
+        didSet {
+            print("//BUFF: ImapService delegate has been set to \(String(describing: delegate))")
         }
     }
     //FFUB
