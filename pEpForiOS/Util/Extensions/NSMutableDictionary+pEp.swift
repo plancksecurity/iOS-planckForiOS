@@ -9,16 +9,8 @@
 import Foundation
 
 extension NSMutableDictionary {
-    public var commType: PEP_comm_type? {
-        if let val = object(forKey: kPepCommType) as? NSNumber {
-            return PEP_comm_type(val.uint32Value)
-        }
-        return nil
-    }
-
     public var isConfirmed: Bool {
-        let ct = commType ?? PEP_ct_unknown
-        return (ct.rawValue & PEP_ct_confirmed.rawValue) > 0
+        return (commType.rawValue & PEP_ct_confirmed.rawValue) > 0
     }
 
     /**
