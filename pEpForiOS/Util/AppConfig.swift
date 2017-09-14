@@ -13,7 +13,6 @@ import MessageModel
  */
 class AppConfig {
     let coreDataUtil: CoreDataUtil = CoreDataUtil()
-    let connectionManager = ConnectionManager()
     let messageSyncService: MessageSyncServiceProtocol
 
     private var theSession: PEPSession?
