@@ -90,7 +90,7 @@ class HandshakePartnerTableViewCellViewModel {
         pEpSelf = ownIdentity.updatedIdentityDictionary(session: session)
         pEpPartner = partner.updatedIdentityDictionary(session: session)
 
-        isPartnerPGPUser = pEpPartner.containsPGPCommType()
+        isPartnerPGPUser = pEpPartner.containsPGPCommType
         self.message = message
 
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
@@ -162,7 +162,7 @@ class HandshakePartnerTableViewCellViewModel {
         pEpPartner = partnerIdentity.updatedIdentityDictionary(session: session)
         action(pEpPartner)
         pEpPartner = partnerIdentity.updatedIdentityDictionary(session: session)
-        isPartnerPGPUser = pEpPartner.containsPGPCommType()
+        isPartnerPGPUser = pEpPartner.containsPGPCommType
         identityColor = partnerIdentity.pEpColor(session: session)
         rating = partnerIdentity.pEpRating(session: session)
         updateTrustwords(session: session)
