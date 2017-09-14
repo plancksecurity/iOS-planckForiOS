@@ -534,6 +534,9 @@ extension CdMessage {
             addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail, level: 0)
         }
 
+        store(headerFieldNames: ["X-pEp-Version", "X-EncStatus", "X-KeyList"],
+              pantomimeMessage: pantomimeMessage, cdMessage: mail)
+
         Record.saveAndWait()
         if mail.pEpRating != PEPUtil.pEpRatingNone,
             let msg = mail.message() {
@@ -544,6 +547,23 @@ extension CdMessage {
         }
 
         return mail
+    }
+
+    static func store(headerFieldNames: [String], pantomimeMessage: CWIMAPMessage,
+                      cdMessage: CdMessage) {
+        var headerFields = [CdHeaderField]()
+        for headerName in headerFieldNames {
+            if let value = pantomimeMessage.headerValue(forName: headerName) as? String {
+                let hf = CdHeaderField.create()
+                hf.name = headerName
+                hf.value = value
+                hf.message = cdMessage
+                headerFields.append(hf)
+            }
+        }
+        if !headerFields.isEmpty {
+            cdMessage.optionalFields = NSOrderedSet(array: headerFields)
+        }
     }
 
     static private func moreMessagesThanRequested(mail: CdMessage, messageUpdate: CWMessageUpdate) -> Bool {
