@@ -13,7 +13,6 @@ import CoreData
 import MessageModel
 
 class CoreDataDrivenTestBase: XCTestCase {
-    let connectionManager = ConnectionManager()
     var cdAccount: CdAccount!
     var persistentSetup: PersistentSetup!
 
