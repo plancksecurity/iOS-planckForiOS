@@ -143,11 +143,9 @@
 		434F513E1EF7FE8700FEB837 /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F513D1EF7FE8700FEB837 /* DelayOperation.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
-		4351C2CA1F4441190053381F /* case_fold_switch.inc in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B51F4441190053381F /* case_fold_switch.inc */; };
 		4351C2CB1F4441190053381F /* cmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B61F4441190053381F /* cmark.c */; };
 		4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B71F4441190053381F /* cmark_ctype.c */; };
 		4351C2CD1F4441190053381F /* commonmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B81F4441190053381F /* commonmark.c */; };
-		4351C2CE1F4441190053381F /* entities.inc in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B91F4441190053381F /* entities.inc */; };
 		4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BA1F4441190053381F /* houdini_href_e.c */; };
 		4351C2D01F4441190053381F /* houdini_html_e.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BB1F4441190053381F /* houdini_html_e.c */; };
 		4351C2D11F4441190053381F /* houdini_html_u.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BC1F4441190053381F /* houdini_html_u.c */; };
@@ -1920,7 +1918,6 @@
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,
 				432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */,
 				1572B9BE1F3379990048BCF5 /* AccountSettingsUserInputError.swift in Sources */,
-				4351C2CA1F4441190053381F /* case_fold_switch.inc in Sources */,
 				4362399A1EAE0CE800BD2EB9 /* Actionsheet+Extension.swift in Sources */,
 				B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */,
 				4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */,
@@ -1976,7 +1973,6 @@
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
-				4351C2CE1F4441190053381F /* entities.inc in Sources */,
 				43C579EB1F0A382400A8EDF0 /* FetchFoldersService.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
