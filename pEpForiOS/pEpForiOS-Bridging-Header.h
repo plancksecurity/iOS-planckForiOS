@@ -42,7 +42,6 @@
 #import "pEpObjCAdapter/PEPLanguage.h"
 #import "pEpObjCAdapter/PEPLanguage.h"
 #import "pEpObjCAdapter/NSDictionary+Extension.h"
-#import "message_api.h"
 
 #pragma mark -- pEp AccountSettings Headers
 
