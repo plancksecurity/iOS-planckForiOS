@@ -70,6 +70,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        if MiscUtil.isUnitTest() {
+            // If unit tests are running, leave the stage for them
+            // and pretty much don't do anything.
+            return false
+        }
+
         self.application = application
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
@@ -91,11 +97,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.warn(component: comp,
                  content: "Library url: \(String(describing: applicationDirectory()))")
 
-        if MiscUtil.isUnitTest() {
-            // If unit tests are running, leave the stage for them
-            // and pretty much don't do anything.
-            return false
-        }
         loadCoreDataStack()
 
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
