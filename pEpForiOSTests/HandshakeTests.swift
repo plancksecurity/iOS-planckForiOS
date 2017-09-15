@@ -50,7 +50,7 @@ class HandshakeTests: XCTestCase {
             kPepAddress: "iostest002@peptest.ch" as AnyObject
         ]
         let meDict = NSMutableDictionary(dictionary: me)
-        session.updateIdentity(meDict)
+        session.mySelf(meDict)
         XCTAssertNotNil(meDict[kPepFingerprint])
 
         guard
@@ -134,16 +134,9 @@ class HandshakeTests: XCTestCase {
         session.keyMistrusted(fromDict)
         XCTAssertFalse(fromDict.containsPGPCommType)
 
+        // after mistrust, the engine throws away all status,
+        // so this is expected behavior. See ENGINE-254
         session.keyResetTrust(fromDict)
-        XCTAssertFalse(fromDict.containsPGPCommType)
-
-        session.keyMistrusted(fromDict)
-        XCTAssertFalse(fromDict.containsPGPCommType)
-
-        session.keyResetTrust(fromDict)
-        XCTAssertFalse(fromDict.containsPGPCommType)
-
-        session.trustPersonalKey(fromDict)
-        XCTAssertFalse(fromDict.containsPGPCommType)
+        XCTAssertTrue(fromDict.containsPGPCommType)
     }
 }
