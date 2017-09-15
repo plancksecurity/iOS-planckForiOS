@@ -12,8 +12,10 @@ import MessageModel
 @objc open class Log: NSObject {
 
     private let title = "pEpForiOS"
+
     //We have the typical singleton problems. It has state plus we might have to configure it once to assure a unique session
-    private var session = PEPSessionCreator.shared.newSession()
+    private lazy var session: PEPSession = PEPSessionCreator.shared.newSession()
+
     private var logEnabled = true
     private let queue = DispatchQueue(label: "logging")
 
@@ -27,10 +29,12 @@ import MessageModel
             // If running in the debugger, dump to the console right away
             print("\(entity): \(description)")
         #endif
-        queue.async {
-            if self.logEnabled {
-                self.session.logTitle(
-                    self.title, entity: entity, description: description, comment: comment)
+        if !MiscUtil.isUnitTest() {
+            queue.async {
+                if self.logEnabled {
+                    self.session.logTitle(
+                        self.title, entity: entity, description: description, comment: comment)
+                }
             }
         }
     }
@@ -55,9 +59,13 @@ import MessageModel
     }
 
     static open func checklog(_ block: ((String) -> ())?) {
-        Log.shared.queue.async {
-            let s = Log.shared.session.getLog()
-            block?(s)
+        if !MiscUtil.isUnitTest() {
+            Log.shared.queue.async {
+                let s = Log.shared.session.getLog()
+                block?(s)
+            }
+        } else {
+            block?("")
         }
     }
 
