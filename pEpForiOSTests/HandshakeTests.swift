@@ -13,15 +13,13 @@ import XCTest
 
 class HandshakeTests: XCTestCase {
     var persistentSetup: PersistentSetup!
-    var session: PEPSession!
     var cdOwnAccount: CdAccount!
     var fromDict = NSMutableDictionary()
 
     override func setUp() {
         super.setUp()
 
-        session = PEPSessionCreator.shared.newSession()
-
+        XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
 
         let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
@@ -50,6 +48,7 @@ class HandshakeTests: XCTestCase {
             kPepAddress: "iostest002@peptest.ch" as AnyObject
         ]
         let meDict = NSMutableDictionary(dictionary: me)
+        let session = PEPSessionCreator.shared.newSession()
         session.mySelf(meDict)
         XCTAssertNotNil(meDict[kPepFingerprint])
 
@@ -109,6 +108,7 @@ class HandshakeTests: XCTestCase {
     }
 
     func testPositiveTrustResetCycle() {
+        let session = PEPSessionCreator.shared.newSession()
         session.updateIdentity(fromDict)
         XCTAssertNotNil(fromDict[kPepFingerprint])
         XCTAssertFalse(fromDict.containsPGPCommType)
@@ -127,6 +127,7 @@ class HandshakeTests: XCTestCase {
     }
 
     func testNegativeTrustResetCycle() {
+        let session = PEPSessionCreator.shared.newSession()
         session.updateIdentity(fromDict)
         XCTAssertNotNil(fromDict[kPepFingerprint])
         XCTAssertFalse(fromDict.containsPGPCommType)
