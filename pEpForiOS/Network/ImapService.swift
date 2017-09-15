@@ -14,7 +14,7 @@ public protocol ImapSyncDelegate: class {
     func connectionLost(_ sync: ImapSync, notification: Notification?)
     func connectionTerminated(_ sync: ImapSync, notification: Notification?)
     func connectionTimedOut(_ sync: ImapSync, notification: Notification?)
-    func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?)
+    func folderFetchCompleted(_ sync: ImapSync, notification: Notification?)
     func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)
     func folderSyncFailed(_ sync: ImapSync, notification: Notification?)
     func messageChanged(_ sync: ImapSync, notification: Notification?)
@@ -111,7 +111,7 @@ open class ImapSync: Service {
     }
     //FFUB
 
-    open var maxPrefetchCount: UInt = 20
+    open var maxFetchCount: UInt = 20
 
     var capabilities: Set<String> {
         return service.capabilities()
@@ -165,7 +165,7 @@ open class ImapSync: Service {
     }
 
     override open func start() {
-        (service as! CWIMAPStore).maxPrefetchCount = maxPrefetchCount
+        (service as! CWIMAPStore).maxFetchCount = maxFetchCount
         super.start()
     }
 
@@ -192,8 +192,8 @@ open class ImapSync: Service {
             imapState.currentFolderName = nil
             imapState.currentFolder = nil
             // Note: If you open a folder with PantomimeReadOnlyMode,
-            // all messages will be prefetched by default,
-            // independent of the prefetch parameter.
+            // all messages will be fetched by default,
+            // independent of the fetch parameter.
             let fol = imapStore.folder(forName: name, mode: PantomimeReadWriteMode)
             imapState.currentFolder = fol
             if let folder = fol {
@@ -219,7 +219,7 @@ open class ImapSync: Service {
 
     open func fetchMessages() throws {
         let folder = try openFolder()
-        folder.prefetch()
+        folder.fetch() //BUFF: add fetchOlder
     }
 
     open func syncMessages(firstUID: UInt, lastUID: UInt) throws {
@@ -314,16 +314,16 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func folderPrefetchCompleted(_ notification: Notification?) {
-        dumpMethodName("folderPrefetchCompleted", notification: notification)
+    @objc public func folderFetchCompleted(_ notification: Notification?) {
+        dumpMethodName("folderFetchCompleted", notification: notification)
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
-            Log.info(component: comp, content: "prefetched folder: \(folder.name())")
+            Log.info(component: comp, content: "fetched folder: \(folder.name())")
         } else {
-            Log.info(component: comp, content: "folderPrefetchCompleted: \(String(describing: notification))")
+            Log.info(component: comp, content: "folderFetchCompleted: \(String(describing: notification))")
         }
         runOnDelegate(logName: #function) { theDelegate in
-            theDelegate.folderPrefetchCompleted(self, notification: notification)
+            theDelegate.folderFetchCompleted(self, notification: notification)
         }
     }
 

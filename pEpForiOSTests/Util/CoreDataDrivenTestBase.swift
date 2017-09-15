@@ -52,7 +52,7 @@ class CoreDataDrivenTestBase: XCTestCase {
     // MARK: - HELPER
 
     func fetchMessages(parentName: String) {
-        let expMailsPrefetched = expectation(description: "expMailsPrefetched")
+        let expMailsFetched = expectation(description: "expMailsFetched")
 
         let opLogin = LoginImapOperation(parentName: parentName, imapSyncData: imapSyncData)
         let op = FetchMessagesOperation(parentName: parentName, imapSyncData: imapSyncData,
@@ -60,7 +60,7 @@ class CoreDataDrivenTestBase: XCTestCase {
         op.addDependency(opLogin)
         op.completionBlock = {
             op.completionBlock = nil
-            expMailsPrefetched.fulfill()
+            expMailsFetched.fulfill()
         }
 
         let bgQueue = OperationQueue()
