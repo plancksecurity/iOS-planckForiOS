@@ -150,10 +150,13 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
     // MARK: - Actions
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-      let _ =  navigationController?.popViewController(animated: true)
+        let _ =  navigationController?.popViewController(animated: true)
+        //aqui tenemos que si no ha ido todo bien guardar lo original, si ha ido todo bien no hacer nada
+
     }
 
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
+        //verificar la cuenta si es un exito nos vamos de esta vista en cambio si sale mal nos quedamos aqui pero guardamos la informacion original
         do {
             let validated = try validateInput()
             let imap = AccountSettingsViewModel.ServerViewModel(address: validated.addrImap,
@@ -196,6 +199,45 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if let c = current, let vm = viewModel {
             c.text = vm.svm[row]
+        }
+    }
+}
+
+//Error Handling
+extension AccountSettingsTableViewController {
+    public func handleLoginError(error: Error, extended: Bool) {
+        Log.shared.error(component: #function, error: error)
+        //self.isCurrentlyVerifying = false
+        let alertView = UIAlertController(
+            title: NSLocalizedString(
+                "Error",
+                comment: "UIAlertController error title"),
+            message:error.localizedDescription, preferredStyle: .alert)
+        alertView.view.tintColor = .pEpGreen
+        alertView.addAction(UIAlertAction(
+            title: NSLocalizedString(
+                "Ok",
+                comment: "UIAlertAction ok after error"),
+            style: .default, handler: {action in
+        }))
+        present(alertView, animated: true, completion: nil)
+    }
+}
+
+extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
+    func didVerify(result: AccountVerificationResult) {
+        GCD.onMain() {
+            switch result {
+            case .ok: break
+                // unwind back to INBOX on success
+                //self.performSegue(withIdentifier: .backToEmailList, sender: self)
+            case .imapError(let err):
+                self.handleLoginError(error: err, extended: true)
+            case .smtpError(let err):
+                self.handleLoginError(error: err, extended: true)
+            case .noImapConnectData, .noSmtpConnectData:
+                self.handleLoginError(error: LoginTableViewControllerError.noConnectData, extended: true)
+            }
         }
     }
 }
