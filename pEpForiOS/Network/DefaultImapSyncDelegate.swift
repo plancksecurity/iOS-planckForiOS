@@ -80,7 +80,7 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
         errorHandler?.handle(error: ImapSyncError.connectionTimedOut(#function))
     }
 
-    public func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
+    public func folderFetchCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let _ = errorHandler else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We must have an errorHandler here!")

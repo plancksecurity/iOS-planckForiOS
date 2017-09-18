@@ -110,7 +110,7 @@ public class FetchMessagesOperation: ImapSyncOperation {
 }
 
 class FetchMessagesSyncDelegate: DefaultImapSyncDelegate {
-    public override func folderPrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
+    public override func folderFetchCompleted(_ sync: ImapSync, notification: Notification?) {
         (errorHandler as? FetchMessagesOperation)?.waitForBackgroundTasksToFinish()
     }
 

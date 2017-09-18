@@ -77,6 +77,8 @@ protocol MessageSyncServiceProtocol {
      */
     func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate)
 
+    func requestFetchOlderMessages(inFolder folder: Folder)
+
     /**
      Requests the given message to be drafted.
      */

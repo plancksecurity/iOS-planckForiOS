@@ -93,6 +93,9 @@ class MessageSyncService: MessageSyncServiceProtocol {
     var accountVerifications = [Account:
         (AccountVerificationService, AccountVerificationServiceDelegate)]()
 
+    //BUFF:
+    let fetchOlderImapMessagesService = FetchOlderImapMessagesService()
+
     init(sleepTimeInSeconds: Double = 10.0,
          parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          mySelfer: KickOffMySelfProtocol? = nil) {
@@ -108,12 +111,6 @@ class MessageSyncService: MessageSyncServiceProtocol {
                 self?.startInternal(imapConnectInfo: ici,
                                     smtpConnectInfo: sci)
             }
-        }
-    }
-
-    func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-        managementQueue.async {
-            self.requestVerificationInternal(account: account, delegate: delegate)
         }
     }
 
@@ -197,12 +194,17 @@ class MessageSyncService: MessageSyncServiceProtocol {
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo).cancel()
     }
 
-    private func requestVerificationInternal(account: Account,
+    fileprivate func requestVerificationInternal(account: Account,
                                              delegate: AccountVerificationServiceDelegate) {
         let service = AccountVerificationService()
         service.delegate = self
         accountVerifications[account] = (service, delegate)
         service.verify(account: account)
+    }
+
+    //BUFF:
+    fileprivate func requestFetchOlderImapMessagesInternal(forFolder folder: Folder) {
+        fetchOlderImapMessagesService.fetchOlderMessages(inFolder: folder)
     }
 
     private func handleSendRequest(imapConnectInfo: EmailConnectInfo,
@@ -247,6 +249,23 @@ class MessageSyncService: MessageSyncServiceProtocol {
     }
 }
 
+// MARK: - MessageSyncServiceProtocol
+
+//BUFF:
+extension MessageSyncService {
+    func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
+        managementQueue.async {
+            self.requestVerificationInternal(account: account, delegate: delegate)
+        }
+    }
+
+    func requestFetchOlderMessages(inFolder folder: Folder) {
+        self.requestFetchOlderImapMessagesInternal(forFolder: folder)
+    }
+}
+
+// MARK: - AccountVerificationServiceDelegate
+
 extension MessageSyncService: AccountVerificationServiceDelegate {
     private func verifiedInternal(account: Account, service: AccountVerificationServiceProtocol,
                                   result: AccountVerificationResult) {
@@ -265,6 +284,8 @@ extension MessageSyncService: AccountVerificationServiceDelegate {
         }
     }
 }
+
+// MARK: - ImapSmtpSyncServiceDelegate
 
 extension MessageSyncService: ImapSmtpSyncServiceDelegate {
     func messagesSent(service: ImapSmtpSyncService, messages: [Message],

@@ -81,7 +81,6 @@ class EmailListViewController: TableViewControllerBase {
         } else {
             self.showFoldersButton.isEnabled = true
         }
-
     }
 
     private func updateLastLookAt(on folder: Folder) {
