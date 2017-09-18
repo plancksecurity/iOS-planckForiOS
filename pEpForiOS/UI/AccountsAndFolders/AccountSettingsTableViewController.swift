@@ -151,12 +151,11 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         let _ =  navigationController?.popViewController(animated: true)
-        //aqui tenemos que si no ha ido todo bien guardar lo original, si ha ido todo bien no hacer nada
+        //here if it has not gone well recover the original, if everything went well do nothing
 
     }
 
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        //verificar la cuenta si es un exito nos vamos de esta vista en cambio si sale mal nos quedamos aqui pero guardamos la informacion original
         do {
             let validated = try validateInput()
             let imap = AccountSettingsViewModel.ServerViewModel(address: validated.addrImap,
