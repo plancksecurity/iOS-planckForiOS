@@ -27,11 +27,9 @@ public class FetchOlderImapMessagesService {
             let cdAccount = cdFolder.account else {
                 Log.shared.error(component: #function,
                                  errorString: "Inconsistent DB state. CDFolder for Folder \(folder) does not exist or its mandatory field \"account\" is not set.")
-                //BUFF: if we introduce a delegate, please inform her.
                 return
         }
         guard let imapConnectInfo = cdAccount.imapConnectInfo else {
-            //BUFF: if we introduce a delegate, please inform her.
             return
         }
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
