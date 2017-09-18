@@ -44,6 +44,7 @@ public class FetchOlderImapMessagesService {
             //            fetchOlderOp.completionBlock = nil
             self?.removeFromRunning(opForFolder: folder)
         }
+        runningOperations[folder] = fetchOlderOp
         queue.addOperation(loginOp)
         queue.addOperation(fetchOlderOp)
     }

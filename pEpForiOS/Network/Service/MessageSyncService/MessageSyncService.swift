@@ -260,7 +260,7 @@ extension MessageSyncService {
     }
 
     func requestFetchOlderMessages(inFolder folder: Folder) {
-        //BUFF: TODO:
+        self.requestFetchOlderImapMessagesInternal(forFolder: folder)
     }
 }
 
