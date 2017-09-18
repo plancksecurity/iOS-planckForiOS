@@ -6,8 +6,56 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import MessageModel
 
 public class FetchOlderImapMessagesService {
-    //BUFF: TODO
+    var runningOperations = [Folder:BaseOperation]()
+    let queue: OperationQueue
+
+    public init() {
+        queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        queue.qualityOfService = .userInitiated //BUFF: I tend to use -utility, it is actually userInitiated though. Let's see if it blocks the UI somehow...
+    }
+
+    public func fetchOlderMessages(inFolder folder: Folder) {
+        if anOperationIsAlreadyRunning(forFolder: folder) {
+            return
+        }
+
+        guard let cdFolder = CdFolder.search(folder: folder),
+            let cdAccount = cdFolder.account else {
+                Log.shared.error(component: #function,
+                                 errorString: "Inconsistent DB state. CDFolder for Folder \(folder) does not exist or its mandatory field \"account\" is not set.")
+                //BUFF: if we introduce a delegate, please inform her.
+                return
+        }
+        guard let imapConnectInfo = cdAccount.imapConnectInfo else {
+            //BUFF: if we introduce a delegate, please inform her.
+            return
+        }
+        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+        let errorContainer = ErrorContainer()
+        let loginOp = LoginImapOperation(
+            parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData)
+        let fetchOlderOp = FetchOlderImapMessagesOperation(errorContainer: errorContainer, imapSyncData: imapSyncData, folderName: folder.name)
+        //        fetchOlderOp.addDependency(loginOp) //BUFF: we use a serial queue
+        fetchOlderOp.completionBlock = {[weak self] in
+            //            fetchOlderOp.completionBlock = nil
+            self?.removeFromRunning(opForFolder: folder)
+        }
+        queue.addOperation(loginOp)
+        queue.addOperation(fetchOlderOp)
+    }
+
+    func removeFromRunning(opForFolder folder: Folder) {
+        guard let runningOp = runningOperations[folder] else {
+            return
+        }
+        runningOp.cancel()
+    }
+
+    private func anOperationIsAlreadyRunning(forFolder folder: Folder) -> Bool {
+        return runningOperations[folder] != nil
+    }
 }

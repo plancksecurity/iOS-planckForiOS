@@ -93,6 +93,9 @@ class MessageSyncService: MessageSyncServiceProtocol {
     var accountVerifications = [Account:
         (AccountVerificationService, AccountVerificationServiceDelegate)]()
 
+    //BUFF:
+    let fetchOlderImapMessagesService = FetchOlderImapMessagesService()
+
     init(sleepTimeInSeconds: Double = 10.0,
          parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          mySelfer: KickOffMySelfProtocol? = nil) {
@@ -197,6 +200,11 @@ class MessageSyncService: MessageSyncServiceProtocol {
         service.delegate = self
         accountVerifications[account] = (service, delegate)
         service.verify(account: account)
+    }
+
+    //BUFF:
+    fileprivate func requestFetchOlderImapMessagesInternal(forFolder folder: Folder) {
+        fetchOlderImapMessagesService.fetchOlderMessages(inFolder: folder)
     }
 
     private func handleSendRequest(imapConnectInfo: EmailConnectInfo,
