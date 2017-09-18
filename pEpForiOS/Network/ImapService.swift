@@ -219,7 +219,12 @@ open class ImapSync: Service {
 
     open func fetchMessages() throws {
         let folder = try openFolder()
-        folder.fetch() //BUFF: add fetchOlder
+        folder.fetch()
+    }
+
+    open func fetchOlderMessages() throws {
+        let folder = try openFolder()
+        folder.fetchOlder()
     }
 
     open func syncMessages(firstUID: UInt, lastUID: UInt) throws {

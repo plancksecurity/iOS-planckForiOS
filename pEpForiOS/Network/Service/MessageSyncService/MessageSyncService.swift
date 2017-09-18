@@ -111,12 +111,6 @@ class MessageSyncService: MessageSyncServiceProtocol {
         }
     }
 
-    func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-        managementQueue.async {
-            self.requestVerificationInternal(account: account, delegate: delegate)
-        }
-    }
-
     func requestSend(message: Message) {
         connectInfos(account: message.parent.account) { [weak self] (imapCI, smtpCI) in
             self?.managementQueue.async { [weak self] in
@@ -197,7 +191,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo).cancel()
     }
 
-    private func requestVerificationInternal(account: Account,
+    fileprivate func requestVerificationInternal(account: Account,
                                              delegate: AccountVerificationServiceDelegate) {
         let service = AccountVerificationService()
         service.delegate = self
@@ -247,6 +241,23 @@ class MessageSyncService: MessageSyncServiceProtocol {
     }
 }
 
+// MARK: - MessageSyncServiceProtocol
+
+//BUFF:
+extension MessageSyncService {
+    func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
+        managementQueue.async {
+            self.requestVerificationInternal(account: account, delegate: delegate)
+        }
+    }
+
+    func requestFetchOlderMessages(inFolder folder: Folder) {
+        //BUFF: TODO:
+    }
+}
+
+// MARK: - AccountVerificationServiceDelegate
+
 extension MessageSyncService: AccountVerificationServiceDelegate {
     private func verifiedInternal(account: Account, service: AccountVerificationServiceProtocol,
                                   result: AccountVerificationResult) {
@@ -265,6 +276,8 @@ extension MessageSyncService: AccountVerificationServiceDelegate {
         }
     }
 }
+
+// MARK: - ImapSmtpSyncServiceDelegate
 
 extension MessageSyncService: ImapSmtpSyncServiceDelegate {
     func messagesSent(service: ImapSmtpSyncService, messages: [Message],

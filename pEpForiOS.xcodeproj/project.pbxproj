@@ -14,6 +14,8 @@
 		153D08281F56BBCB00377110 /* AppendSendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */; };
 		153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */; };
 		153EFA721F4AD51200C3432A /* TrashMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153EFA711F4AD51200C3432A /* TrashMailsOperationTest.swift */; };
+		1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */; };
+		1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */; };
 		1572B9BE1F3379990048BCF5 /* AccountSettingsUserInputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1572B9BD1F3379990048BCF5 /* AccountSettingsUserInputError.swift */; };
 		1572B9CB1F3474880048BCF5 /* AccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */; };
 		1579396E1F4DB7AC00A2A6CF /* TableViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579396D1F4DB7AC00A2A6CF /* TableViewControllerBase.swift */; };
@@ -366,6 +368,8 @@
 		153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendSendMailsOperation.swift; sourceTree = "<group>"; };
 		153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-duplicated-attachments.txt"; sourceTree = "<group>"; };
 		153EFA711F4AD51200C3432A /* TrashMailsOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashMailsOperationTest.swift; sourceTree = "<group>"; };
+		1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesOperation.swift; sourceTree = "<group>"; };
+		1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesService.swift; sourceTree = "<group>"; };
 		1572B9BD1F3379990048BCF5 /* AccountSettingsUserInputError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsUserInputError.swift; sourceTree = "<group>"; };
 		1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		1579396D1F4DB7AC00A2A6CF /* TableViewControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewControllerBase.swift; sourceTree = "<group>"; };
@@ -839,6 +843,7 @@
 				4326D3FC1EFBC7320016AB0D /* CoreDataError.swift */,
 				43D755F51F262B37006F933A /* PantomimeError.swift */,
 				43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */,
+				1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */,
 				4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */,
 				43A26FB91E0408FB00AF0B84 /* ErrorProtocol.swift */,
 				431144B61CC11D6A0007639D /* BaseOperation.swift */,
@@ -902,6 +907,7 @@
 				4348EF0C1E27ABA100F441A9 /* LoginSmtpOperation.swift */,
 				432198EC1DF6B66800318A74 /* SharedObjects.swift */,
 				4307C46F1ED81F3100A276A4 /* DefaultImapSyncDelegate.swift */,
+				1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1794,6 +1800,7 @@
 				439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				153D08281F56BBCB00377110 /* AppendSendMailsOperation.swift in Sources */,
+				1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */,
 				438D5A711EA77CFC001A37E1 /* HandshakeViewController.swift in Sources */,
 				4384ABB01F3B5A11006982B8 /* Data+Extensions.swift in Sources */,
 				B729BEC61E7C35E200793110 /* FilterUpdateProtocol.swift in Sources */,
@@ -1945,6 +1952,7 @@
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
+				1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */,
 				1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
