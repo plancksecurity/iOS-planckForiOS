@@ -16,7 +16,6 @@ import MessageModel
 public class EncryptAndSendOperation: ConcurrentBaseOperation {
     var smtpSend: SmtpSend!
     var smtpSendData: SmtpSendData
-    lazy var session = PEPSessionCreator.shared.newSession()
 
     /** The object ID of the last sent message, so we can change the sendStatus on success */
     var lastSentMessageObjectID: NSManagedObjectID?
@@ -134,6 +133,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             context: context, cdAccount: cdAccount) {
             lastSentMessageObjectID = objID
             if protected {
+                let session = PEPSessionCreator.shared.newSession()
                 let (status, encMsg) = session.encrypt(pEpMessageDict: msg)
                 let (encMsg2, error) = PEPUtil.check(
                     comp: comp, status: status, encryptedMessage: encMsg)

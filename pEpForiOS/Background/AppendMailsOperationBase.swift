@@ -21,7 +21,6 @@ import MessageModel
  For marking the message as done, you MAY overwrite `markLastMessageAsFinished`.
  */
 public class AppendMailsOperationBase: ImapSyncOperation {
-    lazy private(set) var session = PEPSessionCreator.shared.newSession()
     lazy private(set) var context = Record.Context.background
 
     var syncDelegate: AppendMailsSyncDelegate?
@@ -165,6 +164,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         if let (msg, ident, objID) = retrieveNextMessage() {
             lastHandledMessageObjectID = objID
             determineTargetFolder(msgID: objID)
+            let session = PEPSessionCreator.shared.newSession()
             let (status, encMsg) = session.encrypt(pEpMessageDict: msg, forIdentity: ident)
             let (encMsg2, error) = PEPUtil.check(
                 comp: comp, status: status, encryptedMessage: encMsg)
