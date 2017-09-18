@@ -18,6 +18,7 @@ class PepAdapterTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        XCTAssertTrue(PEPUtil.pEpClean())
         pEpSession = PEPSessionCreator.shared.newSession()
     }
     

@@ -12,7 +12,6 @@ import MessageModel
 @testable import pEpForiOS
 
 class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
-
     func testUpdate() {
         guard let cdServerCount = cdAccount.servers?.count else {
             XCTFail()

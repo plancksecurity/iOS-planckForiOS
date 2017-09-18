@@ -13,7 +13,6 @@ import CoreData
 import MessageModel
 
 class TrashMailsOperationTest: CoreDataDrivenTestBase {
-
     func testTrashCdMessages() {
         let errorContainer = ErrorContainer()
 

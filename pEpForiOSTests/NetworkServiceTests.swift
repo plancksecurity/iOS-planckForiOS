@@ -12,7 +12,6 @@ import MessageModel
 import pEpForiOS
 
 class NetworkServiceTests: XCTestCase {
-
     var persistenceSetup: PersistentSetup!
 
     override func setUp() {

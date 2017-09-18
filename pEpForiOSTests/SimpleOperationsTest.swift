@@ -13,7 +13,6 @@ import CoreData
 import MessageModel
 
 class SimpleOperationsTest: CoreDataDrivenTestBase {
-
     func testComp() {
         let f = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
         XCTAssertTrue(f.comp.contains("FetchFoldersOperation"))
@@ -727,7 +726,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
      It's important to always provide the correct kPepUserID for a local account ID.
      */
     func testSimpleOutgoingMailColor() {
-        let session = PEPSession.init()
         let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
         let myself = identity.mutableCopy() as! NSMutableDictionary
         session.mySelf(myself)
@@ -738,7 +736,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {
-        let session = PEPSession.init()
         let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
         let myself = identity.mutableCopy() as! NSMutableDictionary
         session.mySelf(myself)
@@ -754,7 +751,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 for _ in [1...1000] {
                     let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
                                                          cc: [id], bcc: [id],
-                                                         session: session)
+                                                         session: self.session)
                 }
             }
         } else {
@@ -763,7 +760,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMessageColor() {
-        let session = PEPSession.init()
         let identity = TestData().createWorkingAccount().user
         let account = TestData().createWorkingAccount()
         account.user = identity
@@ -772,13 +768,12 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             for _ in [1...1000] {
                 let _ = PEPUtil.outgoingMessageColor(from: identity, to: [identity],
                                                      cc: [identity], bcc: [identity],
-                                                     session: session)
+                                                     session: self.session)
             }
         }
     }
 
     func testOutgoingMailColorPerformanceWithoutMySelf() {
-        let session = PEPSession.init()
         let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
         if let theID = identity as NSDictionary as? PEPIdentity,
@@ -790,7 +785,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 for _ in [1...1000] {
                     let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
                                                          cc: [id], bcc: [id],
-                                                         session: session)
+                                                         session: self.session)
                 }
             }
         } else {

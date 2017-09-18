@@ -19,12 +19,14 @@ class DecryptionTests: XCTestCase {
     var cdInbox: CdFolder!
 
     var persistentSetup: PersistentSetup!
-    var session = PEPSessionCreator.shared.newSession()
+    var session: PEPSession!
     var backgroundQueue: OperationQueue!
 
     override func setUp() {
         super.setUp()
 
+        XCTAssertTrue(PEPUtil.pEpClean())
+        session = PEPSessionCreator.shared.newSession()
         persistentSetup = PersistentSetup()
 
         let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
@@ -53,6 +55,7 @@ class DecryptionTests: XCTestCase {
         persistentSetup = nil
         backgroundQueue.cancelAllOperations()
         backgroundQueue = nil
+        session = nil
         super.tearDown()
     }
 

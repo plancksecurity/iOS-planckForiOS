@@ -21,12 +21,13 @@ class MessageReevalutionTests: XCTestCase {
     var cdDecryptedMessage: CdMessage!
 
     var persistentSetup: PersistentSetup!
-    var session = PEPSessionCreator.shared.newSession()
+    var session: PEPSession!
     var backgroundQueue: OperationQueue!
 
     override func setUp() {
         super.setUp()
 
+        XCTAssertTrue(PEPUtil.pEpClean())
         session = PEPSessionCreator.shared.newSession()
 
         persistentSetup = PersistentSetup()
@@ -72,6 +73,7 @@ class MessageReevalutionTests: XCTestCase {
         persistentSetup = nil
         backgroundQueue.cancelAllOperations()
         backgroundQueue = nil
+        session = nil
         super.tearDown()
     }
 

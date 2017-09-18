@@ -18,6 +18,7 @@ class PEPSessionTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
 
     }

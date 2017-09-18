@@ -12,10 +12,9 @@ import pEpForiOS
 import MessageModel
 
 class ImapFlagsTests: XCTestCase {
-
     func loopAllFlags(
         cdFlags: CdImapFlags, cwFlags: CWFlags, value: Bool) {
-        var imapFlags = Message.ImapFlags()
+        let imapFlags = Message.ImapFlags()
 
         imapFlags.answered = cdFlags.flagAnswered
         imapFlags.draft = cdFlags.flagDraft

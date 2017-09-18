@@ -13,7 +13,6 @@ import UIKit
 import MessageModel
 
 class FlagImageTests: XCTestCase {
-    
     func testSimple() {
         let fi = FlagImages.create(imageSize: CGSize(width: 16, height: 16))
 
