@@ -175,7 +175,6 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
                                                                 transport: validated.transSmtp)
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               imap: imap, smtp: smtp)
-            navigationController?.popViewController(animated: true)
         } catch {
             informUser(about: error)
         }
@@ -214,7 +213,6 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
 extension AccountSettingsTableViewController {
     public func handleLoginError(error: Error, extended: Bool) {
         Log.shared.error(component: #function, error: error)
-        //self.isCurrentlyVerifying = false
         let alertView = UIAlertController(
             title: NSLocalizedString(
                 "Error",
@@ -236,6 +234,7 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
         GCD.onMain() {
             switch result {
             case .ok: break
+                self.navigationController?.popViewController(animated: true)
                 // unwind back to INBOX on success
                 //self.performSegue(withIdentifier: .backToEmailList, sender: self)
             case .imapError(let err):

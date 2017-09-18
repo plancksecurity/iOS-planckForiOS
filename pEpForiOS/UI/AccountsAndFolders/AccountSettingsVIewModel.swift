@@ -179,7 +179,7 @@ public class AccountSettingsViewModel {
 extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
-        //delegate?.didVerify(result: result)
+        delegate?.didVerify(result: result)
     }
 }
 
