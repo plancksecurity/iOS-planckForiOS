@@ -34,6 +34,7 @@ public class AccountSettingsViewModel {
     }
 
     private var account: Account
+    private var clonedAccount: Account?
     private var headers: [String]
 
     public let svm = SecurityViewModel()
@@ -83,9 +84,13 @@ public class AccountSettingsViewModel {
         }
     }
 
+    var messageSyncService: MessageSyncServiceProtocol?
+    weak var delegate: AccountVerificationResultDelegate?
+
     //Currently we assume imap and smtp servers exist already (update). If we run into problems here modify to updateOrCreate
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
+        clonedAccount = account.clone()
         guard let serverImap = account.imapServer,
             let serverSmtp = account.smtpServer else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Account misses imap or smtp server.")
@@ -107,7 +112,14 @@ public class AccountSettingsViewModel {
 
         self.account.user.userName = name
 
+        guard let ms = messageSyncService else {
+            Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
+            return
+        }
+        account.needsVerification = true
         account.save()
+        ms.requestVerification(account: account, delegate: self)
+
     }
 
     func sectionIsValid(section: Int) -> Bool {
@@ -150,3 +162,11 @@ public class AccountSettingsViewModel {
         return server
     }
 }
+
+extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
+    func verified(account: Account, service: AccountVerificationServiceProtocol,
+                  result: AccountVerificationResult) {
+        //delegate?.didVerify(result: result)
+    }
+}
+

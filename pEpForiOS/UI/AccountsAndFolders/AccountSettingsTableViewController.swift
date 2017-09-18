@@ -33,6 +33,10 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
      override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+        if let vm = viewModel {
+            vm.delegate = self
+            vm.messageSyncService = appConfig?.messageSyncService
+        }
     }
 
     func configureView() {
@@ -158,6 +162,7 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         do {
             let validated = try validateInput()
+
             let imap = AccountSettingsViewModel.ServerViewModel(address: validated.addrImap,
                                                                 port: validated.portImap,
                                                                 transport: validated.transImap)
