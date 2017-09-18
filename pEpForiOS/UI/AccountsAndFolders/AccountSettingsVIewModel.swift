@@ -36,6 +36,7 @@ public class AccountSettingsViewModel {
     private var account: Account
     private var clonedAccount: Account?
     private var headers: [String]
+    private var controlWord = "noRealPassword"
 
     public let svm = SecurityViewModel()
 
@@ -63,6 +64,12 @@ public class AccountSettingsViewModel {
     var name: String {
         get {
             return account.user.userName ?? ""
+        }
+    }
+
+    var password: String {
+        get {
+            return controlWord
         }
     }
 
@@ -97,7 +104,7 @@ public class AccountSettingsViewModel {
                 return
         }
         let pass : String?
-        if let p = password {
+        if let p = password, p != controlWord {
             pass = p
         } else {
             pass = serverImap.credentials.password

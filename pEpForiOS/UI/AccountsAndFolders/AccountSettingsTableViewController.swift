@@ -26,6 +26,8 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
 
     var securityPicker: UIPickerView?
 
+
+
     var viewModel: AccountSettingsViewModel? = nil
 
     var current: UITextField?
@@ -43,6 +45,7 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
         self.nameTextfield.text = viewModel?.name
         self.emailTextfield.text = viewModel?.email
         self.usernameTextfield.text = viewModel?.loginName
+        self.passwordTextfield.text = viewModel?.password
 
         securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
         securityPicker?.delegate = self
