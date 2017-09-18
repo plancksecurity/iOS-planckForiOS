@@ -174,11 +174,16 @@ public class AccountSettingsViewModel {
 
         return server
     }
+
+    func cleanClonedAccount() {
+        //account.update(to: clonedAccount)
+    }
 }
 
 extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
+        cleanClonedAccount()
         delegate?.didVerify(result: result)
     }
 }

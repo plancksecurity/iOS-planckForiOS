@@ -235,8 +235,6 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
             switch result {
             case .ok:
                 self.navigationController?.popViewController(animated: true)
-                // unwind back to INBOX on success
-                //self.performSegue(withIdentifier: .backToEmailList, sender: self)
             case .imapError(let err):
                 self.handleLoginError(error: err, extended: true)
             case .smtpError(let err):
