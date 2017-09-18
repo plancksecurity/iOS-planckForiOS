@@ -44,6 +44,10 @@ class LoginViewModelTests: XCTestCase {
             XCTAssertEqual(smtpServer.address, accountSettings.smtpServerAddress)
         }
 
+        func requestFetchOlderMessages(inFolder folder: Folder) {
+            XCTFail("unexpected call to \(#function)")
+        }
+
         func requestDraft(message: Message) {
             XCTFail("unexpected call to \(#function)")
         }
