@@ -96,7 +96,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
     let fetchOlderImapMessagesService = FetchOlderImapMessagesService()
 
     init(sleepTimeInSeconds: Double = 10.0,
-         parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
+         parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil,
          mySelfer: KickOffMySelfProtocol? = nil) {
         self.sleepTimeInSeconds = sleepTimeInSeconds
         self.parentName = parentName
