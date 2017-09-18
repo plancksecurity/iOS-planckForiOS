@@ -233,7 +233,7 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
     func didVerify(result: AccountVerificationResult) {
         GCD.onMain() {
             switch result {
-            case .ok: break
+            case .ok:
                 self.navigationController?.popViewController(animated: true)
                 // unwind back to INBOX on success
                 //self.performSegue(withIdentifier: .backToEmailList, sender: self)
