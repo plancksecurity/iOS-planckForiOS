@@ -96,10 +96,16 @@ public class AccountSettingsViewModel {
                 Log.shared.errorAndCrash(component: #function, errorString: "Account misses imap or smtp server.")
                 return
         }
+        let pass : String?
+        if let p = password {
+            pass = p
+        } else {
+            pass = serverImap.credentials.password
+        }
         guard let editedServerImap = server(from: imap, serverType: .imap, loginName: loginName,
-                                            password: password),
+                                            password: pass),
             let editedServerSmtp = server(from: smtp, serverType: .smtp, loginName: loginName,
-                                          password: password)
+                                          password: pass)
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Invalid input.")
                 return
