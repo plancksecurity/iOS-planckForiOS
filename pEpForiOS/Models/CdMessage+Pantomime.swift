@@ -561,7 +561,12 @@ extension CdMessage {
                 headerFields.append(hf)
             }
         }
-        cdMessage.optionalFields = NSOrderedSet(array: headerFields)
+
+        if !headerFields.isEmpty {
+            cdMessage.optionalFields = NSOrderedSet(array: headerFields)
+        } else {
+            cdMessage.optionalFields = nil
+        }
         CdHeaderField.deleteOrphans()
     }
 

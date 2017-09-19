@@ -107,7 +107,11 @@ extension CdMessage {
             }
         }
 
-        self.optionalFields = NSOrderedSet(array: newOptFields)
+        if !newOptFields.isEmpty {
+            optionalFields = NSOrderedSet(array: newOptFields)
+        } else {
+            optionalFields = nil
+        }
         CdHeaderField.deleteOrphans()
 
         from = CdIdentity.from(pEpContact: pEpMessage[kPepFrom] as? PEPIdentity)
