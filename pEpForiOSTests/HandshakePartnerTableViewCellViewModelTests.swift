@@ -25,10 +25,11 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
     }
     
     func testMailImport() {
-        guard let (mySelf: mySelfID, partner: partnerID) = TestUtil.setUpPepFromMail(
-            emailFilePath: "HandshakeTests_mail_001.txt") else {
-                XCTFail()
-                return
+        guard let (mySelf: mySelfID, partner: partnerID, message: _) =
+            TestUtil.setUpPepFromMail(
+                emailFilePath: "HandshakeTests_mail_001.txt") else {
+                    XCTFail()
+                    return
         }
         XCTAssertNotEqual(mySelfID.address, partnerID.address)
 
