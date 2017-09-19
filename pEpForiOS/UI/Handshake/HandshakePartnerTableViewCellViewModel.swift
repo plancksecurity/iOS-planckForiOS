@@ -77,7 +77,7 @@ class HandshakePartnerTableViewCellViewModel {
     let message: Message?
 
     init(message: Message?, ownIdentity: Identity, partner: Identity, session: PEPSession,
-         imageProvider: IdentityImageProvider) {
+         imageProvider: IdentityImageProviderProtocol) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
         self.ownIdentity = ownIdentity

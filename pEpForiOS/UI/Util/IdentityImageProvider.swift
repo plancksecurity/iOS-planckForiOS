@@ -10,7 +10,11 @@ import MessageModel
 
 typealias ImageReadyFunc = (UIImage, Identity) -> Void
 
-class IdentityImageProvider {
+protocol IdentityImageProviderProtocol {
+    func image(forIdentity identity: Identity, callback: @escaping ImageReadyFunc)
+}
+
+class IdentityImageProvider: IdentityImageProviderProtocol {
     fileprivate let dispatchQueue = DispatchQueue(label: "IdentityImageProvider Queue")
     fileprivate let backgroundQueue = OperationQueue()
     fileprivate let identityImageCache = NSCache<Identity, UIImage>()
