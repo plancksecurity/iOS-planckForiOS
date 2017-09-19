@@ -106,13 +106,15 @@ class MessageReevalutionTests: XCTestCase {
             decryptOperation.completionBlock = nil
             expDecrypted.fulfill()
         }
+        let decryptDelegate = DecryptionAttemptCounterDelegate()
+        decryptOperation.delegate = decryptDelegate
         backgroundQueue.addOperation(decryptOperation)
 
         waitForExpectations(timeout: TestUtil.waitTime) { error in
             XCTAssertNil(error)
         }
 
-        XCTAssertEqual(decryptOperation.numberOfMessagesDecrypted, 1)
+        XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
         Record.Context.main.refreshAllObjects()
         cdDecryptedMessage = cdMessage
         XCTAssertEqual(cdMessage.pEpRating, Int16(PEP_rating_reliable.rawValue))

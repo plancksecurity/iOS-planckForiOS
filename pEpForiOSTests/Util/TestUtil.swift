@@ -556,11 +556,13 @@ class TestUtil {
 
         let errorContainer = TestErrorContainer()
         let decOp = DecryptMessagesOperation(errorContainer: errorContainer)
+        let decryptDelegate = DecryptionAttemptCounterDelegate()
+        decOp.delegate = decryptDelegate
         let bgQueue = OperationQueue()
         bgQueue.addOperation(decOp)
         bgQueue.waitUntilAllOperationsAreFinished()
         XCTAssertFalse(errorContainer.hasErrors())
-        XCTAssertEqual(decOp.numberOfMessagesDecrypted, 1)
+        XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
 
         return (mySelf: mySelfID, partnerID)
     }

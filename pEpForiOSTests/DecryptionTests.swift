@@ -168,13 +168,17 @@ class DecryptionTests: XCTestCase {
             decryptOp.completionBlock = nil
             expectationDecryptHasRun.fulfill()
         }
+
+        let decryptDelegate = DecryptionAttemptCounterDelegate()
+        decryptOp.delegate = decryptDelegate
+
         backgroundQueue.addOperation(decryptOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
 
-        XCTAssertEqual(decryptOp.numberOfMessagesDecrypted, 1)
+        XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
 
         Record.Context.default.refreshAllObjects()
         if shouldEncrypt {

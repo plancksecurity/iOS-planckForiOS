@@ -10,8 +10,16 @@ import MessageModel
 
 import CoreData
 
+public protocol DecryptMessagesOperationProtocol: class {
+    /**
+     Called whenever a message just got decrypted. Useful for tests.
+     */
+    func decrypted(originalCdMessage: CdMessage, decryptedMessageDict: NSDictionary?,
+                   rating: PEP_rating, keys: [String])
+}
+
 public class DecryptMessagesOperation: ConcurrentBaseOperation {
-    public var numberOfMessagesDecrypted = 0
+    public weak var delegate: DecryptMessagesOperationProtocol?
 
     public override func main() {
         let context = Record.Context.background
@@ -37,15 +45,18 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 var keys: NSArray?
                 Log.info(component: self.comp,
                          content: "Will decrypt \(cdMessage.logString())")
-                let color = session.decryptMessageDict(
+                let rating = session.decryptMessageDict(
                     pepMessage, dest: &pEpDecryptedMessage, keys: &keys)
                 Log.info(component: self.comp,
-                         content: "Decrypted message \(cdMessage.logString()) with color \(color)")
+                         content: "Decrypted message \(cdMessage.logString()) with color \(rating)")
 
-                self.numberOfMessagesDecrypted += 1
                 let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
 
-                switch color {
+                self.delegate?.decrypted(
+                    originalCdMessage: cdMessage, decryptedMessageDict: pEpDecryptedMessage,
+                    rating: rating, keys: theKeys)
+
+                switch rating {
                 case PEP_rating_undefined,
                      PEP_rating_cannot_decrypt,
                      PEP_rating_have_no_key,
@@ -55,7 +66,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 case PEP_rating_unencrypted,
                      PEP_rating_unencrypted_for_some:
                     // Set the color, nothing else to update
-                    cdMessage.pEpRating = Int16(color.rawValue)
+                    cdMessage.pEpRating = Int16(rating.rawValue)
                     self.updateMessage(cdMessage: cdMessage, keys: theKeys, context: context)
                     break
                 case PEP_rating_unreliable,
@@ -68,13 +79,13 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                      PEP_rating_fully_anonymous:
                     self.updateWholeMessage(
                         pEpDecryptedMessage: pEpDecryptedMessage,
-                        pEpColorRating: color, cdMessage: cdMessage,
+                        pEpColorRating: rating, cdMessage: cdMessage,
                         keys: theKeys, underAttack: false, context: context)
                     break
                 case PEP_rating_under_attack:
                     self.updateWholeMessage(
                         pEpDecryptedMessage: pEpDecryptedMessage,
-                        pEpColorRating: color, cdMessage: cdMessage,
+                        pEpColorRating: rating, cdMessage: cdMessage,
                         keys: theKeys, underAttack: true, context: context)
                 default:
                     Log.warn(

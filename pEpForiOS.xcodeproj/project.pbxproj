@@ -118,6 +118,7 @@
 		4326D3FB1EFBC55C0016AB0D /* OperationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326D3FA1EFBC55C0016AB0D /* OperationError.swift */; };
 		4326D3FD1EFBC7320016AB0D /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326D3FC1EFBC7320016AB0D /* CoreDataError.swift */; };
 		4326D3FF1EFBC8DB0016AB0D /* FolderInfoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */; };
+		432736D31F7114B3007CB989 /* DecryptionAttemptCounterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432736D21F7114B3007CB989 /* DecryptionAttemptCounterDelegate.swift */; };
 		43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */; };
 		432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */; };
 		432A3E3F1F0E6B3700834749 /* SyncExistingMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A3E3E1F0E6B3700834749 /* SyncExistingMessagesService.swift */; };
@@ -474,6 +475,7 @@
 		4326D3FA1EFBC55C0016AB0D /* OperationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationError.swift; sourceTree = "<group>"; };
 		4326D3FC1EFBC7320016AB0D /* CoreDataError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderInfoOperation.swift; sourceTree = "<group>"; };
+		432736D21F7114B3007CB989 /* DecryptionAttemptCounterDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptionAttemptCounterDelegate.swift; sourceTree = "<group>"; };
 		43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePantomimeTests.swift; sourceTree = "<group>"; };
 		432A3E3E1F0E6B3700834749 /* SyncExistingMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncExistingMessagesService.swift; sourceTree = "<group>"; };
@@ -1095,6 +1097,7 @@
 				15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */,
 				15ECD7071F555E9D002889B8 /* CdAccount+TestUtils.swift */,
 				15ECD7091F5564C1002889B8 /* NetworkServiceObserver.swift */,
+				432736D21F7114B3007CB989 /* DecryptionAttemptCounterDelegate.swift */,
 			);
 			name = TestUtils;
 			path = Util;
@@ -2074,6 +2077,7 @@
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
 				43D2C26A1F1385CF00C97235 /* ServiceFactoryTests.swift in Sources */,
 				43200D9F1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift in Sources */,
+				432736D31F7114B3007CB989 /* DecryptionAttemptCounterDelegate.swift in Sources */,
 				15ECD7081F555E9D002889B8 /* CdAccount+TestUtils.swift in Sources */,
 				43FC24271F04FDDF00C32110 /* SmtpSendServiceTests.swift in Sources */,
 				43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */,
