@@ -561,9 +561,8 @@ extension CdMessage {
                 headerFields.append(hf)
             }
         }
-        if !headerFields.isEmpty {
-            cdMessage.optionalFields = NSOrderedSet(array: headerFields)
-        }
+        cdMessage.optionalFields = NSOrderedSet(array: headerFields)
+        CdHeaderField.deleteOrphans()
     }
 
     static private func moreMessagesThanRequested(mail: CdMessage, messageUpdate: CWMessageUpdate) -> Bool {
