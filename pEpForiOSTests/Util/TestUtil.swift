@@ -486,84 +486,90 @@ class TestUtil {
      After this function, you should have a self with generated key, and a partner ID
      you can do handshakes on.
      */
-    static func setUpPepFromMail(emailFilePath: String) -> (mySelf: Identity, partner: Identity)? {
-        guard
-            let msgTxt = TestUtil.loadData(
-                fileName: emailFilePath)
-            else {
-                XCTFail()
-                return nil
-        }
-        let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
-        pantomimeMail.setUID(5) // some random UID out of nowhere
-        pantomimeMail.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
-
-        guard let recipients = pantomimeMail.recipients() as? [CWInternetAddress] else {
-            XCTFail("Expected array of recipients")
-            return nil
-        }
-        var mySelfIdentityOpt: Identity?
-        for rec in recipients {
-            if rec.type() == .toRecipient {
-                mySelfIdentityOpt = rec.identity(userID: "!MYSELF!")
+    static func setUpPepFromMail(emailFilePath: String,
+                                 decryptDelegate: DecryptMessagesOperationProtocol? = nil)
+        -> (mySelf: Identity, partner: Identity)? {
+            guard
+                let msgTxt = TestUtil.loadData(
+                    fileName: emailFilePath)
+                else {
+                    XCTFail()
+                    return nil
             }
-        }
-        guard let mySelfID = mySelfIdentityOpt else {
-            XCTFail("Could not derive own identity from message")
-            return nil
-        }
+            let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
+            pantomimeMail.setUID(5) // some random UID out of nowhere
+            pantomimeMail.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
 
-        mySelfID.save()
-        mySelfID.isMySelf = true
-        let cdMySelfIdentity = CdIdentity.search(identity: mySelfID)
-        XCTAssertNotNil(cdMySelfIdentity)
-
-        let cdMyAccount = CdAccount.create()
-        cdMyAccount.identity = cdMySelfIdentity
-
-        let cdInbox = CdFolder.create()
-        cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
-        cdInbox.account = cdMyAccount
-
-        Record.saveAndWait()
-
-        let session = PEPSessionCreator.shared.newSession()
-        let mySelfIdentityMutable = mySelfID.pEpIdentity().mutableDictionary()
-        session.mySelf(mySelfIdentityMutable)
-        XCTAssertNotNil(mySelfIdentityMutable[kPepFingerprint])
-
-        guard let cdMessage = CdMessage.insertOrUpdate(
-            pantomimeMessage: pantomimeMail, account: cdMyAccount,
-            messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
-                XCTFail()
+            guard let recipients = pantomimeMail.recipients() as? [CWInternetAddress] else {
+                XCTFail("Expected array of recipients")
                 return nil
-        }
-        XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
+            }
+            var mySelfIdentityOpt: Identity?
+            for rec in recipients {
+                if rec.type() == .toRecipient {
+                    mySelfIdentityOpt = rec.identity(userID: "!MYSELF!")
+                }
+            }
+            guard let mySelfID = mySelfIdentityOpt else {
+                XCTFail("Could not derive own identity from message")
+                return nil
+            }
 
-        guard let pantFrom = pantomimeMail.from() else {
-            XCTFail("Expected the mail to have a sender")
-            return nil
-        }
-        let partnerID = pantFrom.identity(userID: "THE PARTNER ID")
+            mySelfID.save()
+            mySelfID.isMySelf = true
+            let cdMySelfIdentity = CdIdentity.search(identity: mySelfID)
+            XCTAssertNotNil(cdMySelfIdentity)
 
-        guard let cdM = CdMessage.first() else {
-            XCTFail("Expected the one message in the DB that we imported")
-            return nil
-        }
-        XCTAssertEqual(cdM.messageID, pantomimeMail.messageID())
+            let cdMyAccount = CdAccount.create()
+            cdMyAccount.identity = cdMySelfIdentity
 
-        let errorContainer = TestErrorContainer()
-        let decOp = DecryptMessagesOperation(errorContainer: errorContainer)
-        let decryptDelegate = DecryptionAttemptCounterDelegate()
-        decOp.delegate = decryptDelegate
-        let bgQueue = OperationQueue()
-        bgQueue.addOperation(decOp)
-        bgQueue.waitUntilAllOperationsAreFinished()
-        XCTAssertFalse(errorContainer.hasErrors())
-        XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
+            let cdInbox = CdFolder.create()
+            cdInbox.name = ImapSync.defaultImapInboxName
+            cdInbox.uuid = MessageID.generate()
+            cdInbox.account = cdMyAccount
 
-        return (mySelf: mySelfID, partnerID)
+            Record.saveAndWait()
+
+            let session = PEPSessionCreator.shared.newSession()
+            let mySelfIdentityMutable = mySelfID.pEpIdentity().mutableDictionary()
+            session.mySelf(mySelfIdentityMutable)
+            XCTAssertNotNil(mySelfIdentityMutable[kPepFingerprint])
+
+            guard let cdMessage = CdMessage.insertOrUpdate(
+                pantomimeMessage: pantomimeMail, account: cdMyAccount,
+                messageUpdate: CWMessageUpdate(),
+                forceParseAttachments: true) else {
+                    XCTFail()
+                    return nil
+            }
+            XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
+
+            guard let pantFrom = pantomimeMail.from() else {
+                XCTFail("Expected the mail to have a sender")
+                return nil
+            }
+            let partnerID = pantFrom.identity(userID: "THE PARTNER ID")
+
+            guard let cdM = CdMessage.first() else {
+                XCTFail("Expected the one message in the DB that we imported")
+                return nil
+            }
+            XCTAssertEqual(cdM.messageID, pantomimeMail.messageID())
+
+            let errorContainer = TestErrorContainer()
+            let decOp = DecryptMessagesOperation(errorContainer: errorContainer)
+
+            decOp.delegate = decryptDelegate ?? DecryptionAttemptCounterDelegate()
+
+            let bgQueue = OperationQueue()
+            bgQueue.addOperation(decOp)
+            bgQueue.waitUntilAllOperationsAreFinished()
+            XCTAssertFalse(errorContainer.hasErrors())
+
+            if let ownDecryptDelegate = decOp.delegate as? DecryptionAttemptCounterDelegate {
+                XCTAssertEqual(ownDecryptDelegate.numberOfMessageDecryptAttempts, 1)
+            }
+
+            return (mySelf: mySelfID, partnerID)
     }
 }
