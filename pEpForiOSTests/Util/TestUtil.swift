@@ -487,7 +487,7 @@ class TestUtil {
      you can do handshakes on.
      */
     static func setUpPepFromMail(emailFilePath: String,
-                                 decryptDelegate: DecryptMessagesOperationProtocol? = nil)
+                                 decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
         -> (mySelf: Identity, partner: Identity, message: Message)? {
             guard
                 let msgTxt = TestUtil.loadData(

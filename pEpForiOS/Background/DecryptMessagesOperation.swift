@@ -10,7 +10,7 @@ import MessageModel
 
 import CoreData
 
-public protocol DecryptMessagesOperationProtocol: class {
+public protocol DecryptMessagesOperationDelegateProtocol: class {
     /**
      Called whenever a message just got decrypted. Useful for tests.
      */
@@ -19,7 +19,7 @@ public protocol DecryptMessagesOperationProtocol: class {
 }
 
 public class DecryptMessagesOperation: ConcurrentBaseOperation {
-    public weak var delegate: DecryptMessagesOperationProtocol?
+    public weak var delegate: DecryptMessagesOperationDelegateProtocol?
 
     public override func main() {
         let context = Record.Context.background

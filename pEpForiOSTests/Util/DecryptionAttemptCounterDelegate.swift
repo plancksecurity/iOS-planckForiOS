@@ -11,7 +11,7 @@ import Foundation
 @testable import pEpForiOS
 @testable import MessageModel
 
-class DecryptionAttemptCounterDelegate: DecryptMessagesOperationProtocol {
+class DecryptionAttemptCounterDelegate: DecryptMessagesOperationDelegateProtocol {
     var numberOfMessageDecryptAttempts = 0
 
     func decrypted(originalCdMessage: CdMessage, decryptedMessageDict: NSDictionary?,
