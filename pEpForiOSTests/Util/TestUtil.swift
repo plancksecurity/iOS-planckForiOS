@@ -528,6 +528,13 @@ class TestUtil {
             cdInbox.uuid = MessageID.generate()
             cdInbox.account = cdMyAccount
 
+            guard let pantFrom = pantomimeMail.from() else {
+                XCTFail("Expected the mail to have a sender")
+                return nil
+            }
+            let partnerID = pantFrom.identity(userID: "THE PARTNER ID")
+            partnerID.save()
+
             Record.saveAndWait()
 
             let session = PEPSessionCreator.shared.newSession()
@@ -543,12 +550,6 @@ class TestUtil {
                     return nil
             }
             XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
-
-            guard let pantFrom = pantomimeMail.from() else {
-                XCTFail("Expected the mail to have a sender")
-                return nil
-            }
-            let partnerID = pantFrom.identity(userID: "THE PARTNER ID")
 
             guard let cdM = CdMessage.first() else {
                 XCTFail("Expected the one message in the DB that we imported")
