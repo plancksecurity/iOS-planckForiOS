@@ -488,7 +488,7 @@ class TestUtil {
      */
     static func setUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationProtocol? = nil)
-        -> (mySelf: Identity, partner: Identity)? {
+        -> (mySelf: Identity, partner: Identity, message: Message)? {
             guard
                 let msgTxt = TestUtil.loadData(
                     fileName: emailFilePath)
@@ -570,6 +570,11 @@ class TestUtil {
                 XCTAssertEqual(ownDecryptDelegate.numberOfMessageDecryptAttempts, 1)
             }
 
-            return (mySelf: mySelfID, partnerID)
+        guard let msg = cdMessage.message() else {
+            XCTFail("Need to be able to convert the CdMessage into a Message")
+            return nil
+        }
+
+        return (mySelf: mySelfID, partner: partnerID, message: msg)
     }
 }
