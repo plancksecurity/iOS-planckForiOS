@@ -541,6 +541,7 @@ class TestUtil {
             let mySelfIdentityMutable = mySelfID.pEpIdentity().mutableDictionary()
             session.mySelf(mySelfIdentityMutable)
             XCTAssertNotNil(mySelfIdentityMutable[kPepFingerprint])
+            XCTAssertFalse(mySelfIdentityMutable.containsPGPCommType)
 
             guard let cdMessage = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantomimeMail, account: cdMyAccount,
