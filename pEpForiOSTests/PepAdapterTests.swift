@@ -36,30 +36,6 @@ class PepAdapterTests: XCTestCase {
         pEpSession.mySelf(identity_me)
         XCTAssertNotNil(identity_me[kPepUserID])
     }
-
-    //BUFF: delete
-    // XXX: Parts of this should be in PEPUtil module.
-    func testKeyServerLookup() {
-        let identity: NSMutableDictionary = [kPepUsername: "hernani",
-                                             kPepAddress: "hernani@pep.foundation",
-                                             kPepUserID: "2342"]
-        PEPObjCAdapter.startKeyserverLookup()
-        sleep(4)
-        
-        pEpSession.updateIdentity(identity)
-        
-        XCTAssertTrue(identity.count > 3,
-                      "Identity dictionary was "
-                        + "(successfully) modified by reference.")
-
-        for key in identity.allKeys {
-            Log.info(component: comp, content: "key = \(key)")
-        }
-        
-        XCTAssertNotNil(identity[kPepFingerprint], "A fingerprint, there is!")
-        
-        PEPObjCAdapter.stopKeyserverLookup()
-    }
     
     /**
      - See: https://cacert.pep.foundation/jira/browse/IOSAD-10
