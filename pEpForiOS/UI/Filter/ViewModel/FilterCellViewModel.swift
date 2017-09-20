@@ -65,7 +65,7 @@ public class FilterCellViewModel {
 
     func getFilter() -> Filter? {
         if enabled {
-            return filter
+            return filter ?? nil
         }
         return nil
     }
