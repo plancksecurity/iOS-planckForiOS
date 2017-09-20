@@ -251,9 +251,9 @@ class MessageSyncService: MessageSyncServiceProtocol {
 
 extension MessageSyncService {
     func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
-        managementQueue.async {
+//        managementQueue.async {
             self.requestVerificationInternal(account: account, delegate: delegate)
-        }
+//        }
     }
 
     func requestFetchOlderMessages(inFolder folder: Folder) {
