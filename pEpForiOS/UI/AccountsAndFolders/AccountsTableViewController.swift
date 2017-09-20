@@ -100,7 +100,7 @@ class AccountsTableViewController: TableViewControllerBase {
         }
     }
 
-    func switchChanged(sender: UISwitch) {
+    @objc func switchChanged(sender: UISwitch) {
         NSLog( "The switch is %@", sender.isOn ? "ON" : "OFF" );
     }
 

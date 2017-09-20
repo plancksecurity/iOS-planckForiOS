@@ -38,7 +38,7 @@ class ObservableValue<T> {
 
 typealias ObservableFunc<T> = (_ newValue: T?) -> Void
 
-class ObservableFuncWrapper<T>: AnyObject {
+class ObservableFuncWrapper<T> {
     let fn: ObservableFunc<T>
 
     init(fn: @escaping ObservableFunc<T>) {

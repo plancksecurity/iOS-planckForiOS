@@ -175,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func loadCoreDataStack() {
         let objectModel = MessageModelData.MessageModelData()
         do {
-            try Record.loadCoreDataStack(managedObjectModel: objectModel)
+            try Record.loadCoreDataStack(managedObjectModel: objectModel, storeURL: nil)
         } catch {
             Log.error(component: comp, errorString: "Error while Loading DataStack")
         }

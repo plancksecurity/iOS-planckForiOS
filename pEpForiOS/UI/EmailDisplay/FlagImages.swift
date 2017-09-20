@@ -94,13 +94,13 @@ class FlagImages {
         })
         return addTextToImage(image: image, text: text)
     }
-
+    
     func addTextToImage(image: UIImage?, text: NSString) -> UIImage? {
-        let textFontAttributes = [
-            NSFontAttributeName: UIFont(name: "Helvetica Bold", size: 10)!,
-            NSForegroundColorAttributeName: UIColor.white,
-            ] as [String : Any]
-
+        let textFontAttributes: [NSAttributedStringKey : Any] = [
+            NSAttributedStringKey.font: UIFont(name: "Helvetica Bold", size: 10)!,
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            ] 
+        
         UIGraphicsBeginImageContextWithOptions((image?.size)!, false, 0.0)
         image?.draw(in: CGRect(origin: CGPoint.zero, size: (image?.size)!))
         let rect = CGRect(origin: CGPoint(x: 1, y: 1), size: (image?.size)!)

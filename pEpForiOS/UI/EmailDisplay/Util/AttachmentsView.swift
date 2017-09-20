@@ -62,7 +62,7 @@ class AttachmentsView: UIView {
         let cBottom = bottomAnchor.constraint(
             equalTo: attachmentViewContainers[attachmentViewContainers.count - 1].view.bottomAnchor,
             constant: spacing)
-        cBottom.priority = UILayoutPriorityDefaultLow
+        cBottom.priority = UILayoutPriority.defaultLow
         cBottom.isActive = true
 
         var lastView: UIView?
@@ -103,7 +103,7 @@ class AttachmentsView: UIView {
         }
     }
 
-    func attachmentTapped(sender: UITapGestureRecognizer) {
+    @objc func attachmentTapped(sender: UITapGestureRecognizer) {
         if sender.state == .ended {
             if let ac = gestureRecognizersToAttachments[sender] {
                 let loc = sender.location(in: sender.view)

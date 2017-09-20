@@ -19,8 +19,8 @@ open class MessageSenderCell: MessageCell {
         let attributed = NSMutableAttributedString(
             string: NSLocalizedString("To:", comment: "Compose field title"))
         let attributes = [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 15.0),
-            NSForegroundColorAttributeName: UIColor.lightGray
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15.0),
+            NSAttributedStringKey.foregroundColor: UIColor.lightGray
         ]
         var temp: [String] = []
         message.allRecipients.forEach { (recepient) in

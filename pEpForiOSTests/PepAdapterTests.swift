@@ -36,7 +36,8 @@ class PepAdapterTests: XCTestCase {
         pEpSession.mySelf(identity_me)
         XCTAssertNotNil(identity_me[kPepUserID])
     }
-    
+
+    //BUFF: delete
     // XXX: Parts of this should be in PEPUtil module.
     func testKeyServerLookup() {
         let identity: NSMutableDictionary = [kPepUsername: "hernani",

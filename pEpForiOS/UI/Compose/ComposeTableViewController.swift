@@ -295,7 +295,7 @@ class ComposeTableViewController: TableViewControllerBase {
 
     // MARK: - Public Methods
 
-    public final func addMediaToCell() {
+    @objc public final func addMediaToCell() {
         let media = Capability.media
 
         media.request { (success, error) in

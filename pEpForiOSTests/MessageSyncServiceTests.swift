@@ -379,18 +379,18 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
         var sentDelegate: TestSentDelegate?
         if numberOfTotalOutgoingMessages > 0 {
             let expMessagesSent = expectation(description: "expMessagesSent")
-            expMessagesSent.expectedFulfillmentCount = UInt(expectedNumberOfSyncs)
+            expMessagesSent.expectedFulfillmentCount = expectedNumberOfSyncs
             sentDelegate = TestSentDelegate(expMessagesSent: expMessagesSent)
             ms.sentDelegate = sentDelegate
         }
 
         let expMessagesSynced = expectation(description: "expMessagesSynced")
-        expMessagesSynced.expectedFulfillmentCount = UInt(expectedNumberOfSyncs)
+        expMessagesSynced.expectedFulfillmentCount = expectedNumberOfSyncs
         let syncDelegate = TestSyncDelegate(expMessagesSynced: expMessagesSynced)
         ms.syncDelegate = syncDelegate
 
         let expReachedIdle = expectation(description: "expReachedIdle")
-        expReachedIdle.expectedFulfillmentCount = UInt(expectedNumberOfSyncs)
+        expReachedIdle.expectedFulfillmentCount = expectedNumberOfSyncs
         let stateDelegate = TestStateDelegate(expReachedIdling: expReachedIdle)
         ms.stateDelegate = stateDelegate
 
@@ -471,7 +471,7 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
         if expectedNumberOfExpectedBackgroundTasks > 0 {
             let expBackgroundTaskFinished = expectation(description: "expBackgrounded")
             expBackgroundTaskFinished.expectedFulfillmentCount =
-                UInt(expectedNumberOfExpectedBackgroundTasks)
+                expectedNumberOfExpectedBackgroundTasks
             mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expBackgroundTaskFinished)
         }
         let ms = MessageSyncService(
@@ -503,7 +503,7 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
             sleepTimeInSeconds: 2, parentName: parentName, backgrounder: nil, mySelfer: nil)
         self.messageSyncService = ms
         let expReachedIdle = expectation(description: "expReachedIdle")
-        expReachedIdle.expectedFulfillmentCount = UInt(1)
+        expReachedIdle.expectedFulfillmentCount = 1
         let stateDelegate = TestStateDelegate(expReachedIdling: expReachedIdle)
         ms.stateDelegate = stateDelegate
         

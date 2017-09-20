@@ -24,7 +24,7 @@ class FilterTableViewController: TableViewControllerBase {
 
     }
 
-    func ok(sender: UIBarButtonItem) {
+    @objc func ok(sender: UIBarButtonItem) {
         if filterEnabled == nil {
             filterEnabled = Filter.empty()
         }

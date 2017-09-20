@@ -34,7 +34,7 @@ public extension String {
             if let match = regex.firstMatch(
                 in: self, options: [],
                 range: wholeRange()) {
-                let r1 = match.rangeAt(1)
+                let r1 = match.range(at: 1)
                 let name = (self as NSString).substring(with: r1)
                 return name
             }
@@ -93,7 +93,7 @@ public extension String {
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
-                let r = m.rangeAt(1)
+                let r = m.range(at: 1)
                 if r.location != NSNotFound {
                     let s = self as NSString
                     let result = s.substring(with: r)
@@ -191,7 +191,7 @@ public extension String {
             let matches = regex.matches(in: result, options: [], range: result.wholeRange())
             if matches.count > 0 {
                 let m = matches[0]
-                let r = m.rangeAt(1)
+                let r = m.range(at: 1)
                 if r.location != NSNotFound {
                     let s = result as NSString
                     let result = s.substring(with: r)
@@ -248,7 +248,7 @@ public extension String {
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
-                let r = m.rangeAt(1)
+                let r = m.range(at: 1)
                 if r.location != NSNotFound {
                     let s = self as NSString
                     let result = s.substring(with: r)
@@ -271,7 +271,7 @@ public extension String {
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
-                let r = m.rangeAt(1)
+                let r = m.range(at: 1)
                 if r.location != NSNotFound {
                     let s = self as NSString
                     let result = s.substring(with: r)
@@ -350,9 +350,9 @@ public extension String {
             if let match = regex.firstMatch(
                 in: self, options: [],
                 range: wholeRange()) {
-                let r1 = match.rangeAt(1)
+                let r1 = match.range(at: 1)
                 let name = (self as NSString).substring(with: r1)
-                let r2 = match.rangeAt(2)
+                let r2 = match.range(at: 2)
                 let ext = (self as NSString).substring(with: r2)
                 return (name, ext)
             }
@@ -475,11 +475,11 @@ extension String {
 
         let wholeRect = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
         let nsString = self as NSString
-        let textAttributes: [String : Any] = [
-            NSStrokeColorAttributeName: color,
-            NSForegroundColorAttributeName: color,
-            NSFontAttributeName: font]
-        let stringSize = nsString.size(attributes: textAttributes)
+        let textAttributes: [NSAttributedStringKey : Any] = [
+            NSAttributedStringKey.strokeColor: color,
+            NSAttributedStringKey.foregroundColor: color,
+            NSAttributedStringKey.font: font]
+        let stringSize = nsString.size(withAttributes: textAttributes)
         let textRect = center(size: stringSize, inRect: wholeRect)
         nsString.draw(in: textRect, withAttributes: textAttributes)
     }

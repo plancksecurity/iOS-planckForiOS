@@ -25,7 +25,7 @@ class HtmlToAttributedTextSaxParser: HtmlToTextSaxParser {
     override func add(string: String) {
         attributedOutput.append(
             NSAttributedString(string: string,
-                               attributes: ["NSFont": defaultFont]))
+                               attributes: [NSAttributedStringKey(rawValue: "NSFont"): defaultFont]))
     }
 
     override func parser(_ parser: AXHTMLParser, didStartElement elementName: String,

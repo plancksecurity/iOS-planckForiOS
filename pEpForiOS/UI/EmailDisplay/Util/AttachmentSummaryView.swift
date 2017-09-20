@@ -133,7 +133,7 @@ class AttachmentSummaryView: UIView {
     func createLabel() -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
         label.allowsDefaultTighteningForTruncation = true
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center

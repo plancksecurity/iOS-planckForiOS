@@ -38,7 +38,7 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
             let regex = try NSRegularExpression(pattern: "<pEpForiOS\\.(\\w+):", options: [])
             if let m = regex.firstMatch(in: comp, options: [], range: comp.wholeRange()) {
                 if m.numberOfRanges > 1 {
-                    let r = m.rangeAt(1)
+                    let r = m.range(at: 1)
                     let s = comp as NSString
                     comp = s.substring(with: r)
                 }

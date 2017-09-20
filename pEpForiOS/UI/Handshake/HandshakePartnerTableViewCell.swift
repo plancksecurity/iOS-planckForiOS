@@ -376,7 +376,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     // MARK: - Gestures
 
-    func languageSelectorAction(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func languageSelectorAction(_ gestureRecognizer: UIGestureRecognizer) {
         if gestureRecognizer.state == .ended {
             delegate?.pickLanguage(
                 sender: gestureRecognizer.view ?? languageSelectorImageView,
@@ -386,7 +386,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func toggleTrustwordsLengthAction(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func toggleTrustwordsLengthAction(_ gestureRecognizer: UIGestureRecognizer) {
         if gestureRecognizer.state == .ended {
             delegate?.toggleTrustwordsLength(
                 sender: gestureRecognizer.view ?? trustWordsLabel,

@@ -239,7 +239,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
         let context = Record.Context.background
         context.perform { [weak self] in
             if let (iCI, sCI) = self?.connectInfos(account: theAccount, context: context) {
-                handler((iCI, sCI))
+                handler(iCI, sCI)
             } else {
                 self?.indicate(error: InternalError.noConnectInfos)
             }

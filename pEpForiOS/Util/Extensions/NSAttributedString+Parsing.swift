@@ -21,7 +21,7 @@ extension NSAttributedString {
         string.fixAttributes(in: string.wholeRange())
 
         string.enumerateAttributes(in: string.wholeRange(), options: []) { attrs, r, stop in
-            if let attachment = attrs["NSAttachment"] as? NSTextAttachment {
+            if let attachment = attrs[NSAttributedStringKey(rawValue:"NSAttachment")] as? NSTextAttachment {
                 if let attachmentString = delegate.stringFor(attachment: attachment) {
                     resultString = "\(resultString)\(attachmentString)"
                 }

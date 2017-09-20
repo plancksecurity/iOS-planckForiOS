@@ -27,7 +27,7 @@ class FolderTableViewController: TableViewControllerBase {
         navigationItem.rightBarButtonItem = item
     }
 
-    func settingsTapped() {
+    @objc func settingsTapped() {
         performSegue(withIdentifier: "SettingsSegue", sender: self)
     }
 

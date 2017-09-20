@@ -14,7 +14,7 @@ extension String {
             let regex = try NSRegularExpression(
                 pattern: pattern, options: [])
             if let match = regex.firstMatch(in: self, options: [], range: wholeRange()) {
-                let r = match.rangeAt(rangeNumber)
+                let r = match.range(at: rangeNumber)
                 let s = (self as NSString).substring(with: r)
                 return s
             }

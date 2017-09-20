@@ -281,7 +281,7 @@ open class NetworkServiceWorker {
                     parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData, folderName: fi.name,
                     firstUID: firstUID, lastUID: lastUID)
-                syncMessagesOp.completionBlock = { _ in
+                syncMessagesOp.completionBlock = {
                     syncMessagesOp.completionBlock = nil
                     Log.info(component: #function, content: "syncMessagesOp finished")
                 }

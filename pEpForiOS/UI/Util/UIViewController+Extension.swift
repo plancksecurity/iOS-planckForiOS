@@ -37,7 +37,7 @@ extension UIViewController {
     func setEmailDisplayColors() {
         setNoColor()
         navigationController?.navigationBar.titleTextAttributes =
-            [NSForegroundColorAttributeName: UIColor.black]
+            [NSAttributedStringKey.foregroundColor: UIColor.black]
         navigationController?.navigationBar.tintColor = UIColor.pEpGreen
         navigationController?.toolbar.tintColor = UIColor.pEpGreen
     }

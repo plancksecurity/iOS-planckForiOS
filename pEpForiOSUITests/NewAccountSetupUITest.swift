@@ -173,8 +173,8 @@ class NewAccountSetupUITest: XCTestCase {
     // Opens the "add account" setting in manual configuration mode.
     // Note: A working accound must exist already.
     func openAddAccountManualConfiguration() {
-        XCUIDevice.shared().orientation = .faceUp
-        XCUIDevice.shared().orientation = .faceUp
+        XCUIDevice.shared.orientation = .faceUp
+        XCUIDevice.shared.orientation = .faceUp
 
         let app = XCUIApplication()
         app.navigationBars["Inbox"].buttons["Folders"].tap()

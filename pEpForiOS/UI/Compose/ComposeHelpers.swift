@@ -46,12 +46,12 @@ extension String {
 extension UIImage {
     public final func attachment(_ text: String, textColor: UIColor = .gray) -> UIImage {
         let attributes = [
-            NSForegroundColorAttributeName: textColor,
-            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12.0)
+            NSAttributedStringKey.foregroundColor: textColor,
+            NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 12.0)
         ]
         
         let textMargin: CGFloat = 3.0
-        let textSize = text.size(attributes: attributes)
+        let textSize = text.size(withAttributes: attributes)
         var textFrame = CGRect(x: 0, y: 0, width: textSize.width, height: textSize.height)
         var imageSize = size
         let iconWidth = imageSize.width
@@ -83,12 +83,12 @@ extension UIImage {
 open class ComposeHelper {
     public static func recepient(_ text: String, textColor: UIColor = .black) -> UIImage {
         let attributes = [
-            NSForegroundColorAttributeName: textColor,
-            NSFontAttributeName: UIFont.pEpInput
+            NSAttributedStringKey.foregroundColor: textColor,
+            NSAttributedStringKey.font: UIFont.pEpInput
         ]
 
         let textMargin: CGFloat = 4.0
-        let textSize = text.size(attributes: attributes)
+        let textSize = text.size(withAttributes: attributes)
         var textFrame = CGRect(x: 0, y: 0, width: textSize.width, height: textSize.height)
 
         let label = UILabel()

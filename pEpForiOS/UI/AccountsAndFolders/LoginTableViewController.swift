@@ -110,7 +110,7 @@
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
     }
 
-    func backButton() {
+    @objc func backButton() {
         self.navigationController?.popViewController(animated: true)
     }
 
@@ -197,7 +197,7 @@
         return true
     }
 
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         view.endEditing(true)
     }
 

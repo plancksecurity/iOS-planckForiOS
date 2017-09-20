@@ -57,7 +57,7 @@ open class ComposeTextView: UITextView {
         
         let attachString = NSAttributedString(attachment: at)
         attrText.replaceCharacters(in: selectedRange, with: attachString)
-        attrText.addAttribute(NSFontAttributeName,
+        attrText.addAttribute(NSAttributedStringKey.font,
             value: UIFont.pEpInput,
             range: NSRange(location: 0, length: attrText.length)
         )
@@ -69,7 +69,7 @@ open class ComposeTextView: UITextView {
         var allAttachments = [TextAttachment]()
         if theRange.length > 0 {
             attributedText.enumerateAttribute(
-                NSAttachmentAttributeName, in: theRange,
+                NSAttributedStringKey.attachment, in: theRange,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
                     value, range, stop in
                     if let attachment = value as? TextAttachment {
@@ -94,7 +94,7 @@ open class ComposeTextView: UITextView {
                 new.append(attachString)
             }
             
-            new.addAttribute(NSFontAttributeName,
+            new.addAttribute(NSAttributedStringKey.font,
                 value: UIFont.pEpInput,
                 range: NSRange(location: 0, length: new.length)
             )
@@ -142,7 +142,7 @@ open class ComposeTextView: UITextView {
         let theRange = selectedRange
         while !paddedByDoubleNewline(pureText: theText) {
             let appendedString = NSMutableAttributedString(string: "\n")
-            appendedString.addAttribute(NSFontAttributeName,
+            appendedString.addAttribute(NSAttributedStringKey.font,
                              value: UIFont.pEpInput,
                              range: appendedString.wholeRange()
             )
