@@ -25,6 +25,20 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         super.tearDown()
     }
 
+    class TestAccountVerificationDelegate: AccountVerificationResultDelegate {
+        let expAccountVerified: XCTestExpectation
+        var verificationResult: AccountVerificationResult?
+
+        func didVerify(result: AccountVerificationResult) {
+            self.verificationResult = result
+            expAccountVerified.fulfill()
+        }
+
+        init(expAccountVerified: XCTestExpectation) {
+            self.expAccountVerified = expAccountVerified
+        }
+    }
+    
     func testUpdate() {
 
         mss = MessageSyncService(sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil)
@@ -53,12 +67,30 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
             AccountSettingsViewModel.ServerViewModel(address: testServerAddress,
                                                      port: testPort,
                                                      transport: testTransport.asString())
-        let testee = AccountSettingsViewModel(account: account)
+        let expVerified = expectation(description: "expVerified")
+        let accvef = TestAccountVerificationDelegate(expAccountVerified: expVerified)
 
+        let testee = AccountSettingsViewModel(account: account)
         testee.messageSyncService = mss
+        testee.delegate = accvef
 
         testee.update(loginName: testLoginName, name: testName, imap: newServerData,
                       smtp: newServerData)
+
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+
+        guard let result = accvef.verificationResult else {
+            XCTFail()
+            return
+        }
+        switch result {
+        case .ok:
+            break
+        default:
+            XCTFail("Unexpected verification result: \(result)")
+        }
 
         //Account updated
         XCTAssertEqual(numServersBefore, account.servers?.count)
