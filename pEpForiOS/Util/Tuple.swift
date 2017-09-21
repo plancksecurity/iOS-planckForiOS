@@ -18,7 +18,7 @@ struct Tuple<T:Hashable, U:Hashable>: Hashable {
 }
 
 extension Tuple: Equatable {
-    static func ==<T:Hashable, U:Hashable>(lhs: Tuple<T,U>, rhs: Tuple<T,U>) -> Bool {
+    static func ==<T, U>(lhs: Tuple<T,U>, rhs: Tuple<T,U>) -> Bool {
         return lhs.values == rhs.values
     }
 }

@@ -24,7 +24,7 @@ class Weak<T: AnyObject> {
  delegating to their values.
  Useful for putting weak values into containers like arrays.
  */
-class WeakHashable<T: AnyObject>: Hashable where T: Equatable, T: Hashable {
+class WeakHashable<T: AnyObject>: Hashable where T: Hashable {
     weak var value : T?
 
     var hashValue: Int {
@@ -39,7 +39,7 @@ class WeakHashable<T: AnyObject>: Hashable where T: Equatable, T: Hashable {
 /**
  - Note: weakHashable.nil == otherWeakHashable.nil, weakHashable.nil != otherWeakHashable.value.
  */
-func ==<T>(left: WeakHashable<T>, right: WeakHashable<T>) -> Bool where T: Equatable {
+func ==<T>(left: WeakHashable<T>, right: WeakHashable<T>) -> Bool {
     if let l = left.value, let r = right.value {
         return l == r
     }
