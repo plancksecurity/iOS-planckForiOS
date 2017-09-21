@@ -39,7 +39,7 @@ extension Identity {
             return false
         }
         let rating = pEpRating(session: session)
-        return rating.rawValue >= PEP_rating_reliable.rawValue || rating == PEP_rating_mistrust
+        return rating == PEP_rating_reliable
     }
 
     public func canResetTrust(session: PEPSession) -> Bool {
