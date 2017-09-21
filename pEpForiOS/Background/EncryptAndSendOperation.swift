@@ -71,7 +71,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         let p = predicateOutgoingMails(cdAccount: cdAccount)
         if let m = CdMessage.first(predicate: p) {
             if m.sent == nil {
-                m.sent = NSDate()
+                m.sent = Date()
                 context.saveAndLogErrors()
             }
             pepMessage = m.pEpMessage()

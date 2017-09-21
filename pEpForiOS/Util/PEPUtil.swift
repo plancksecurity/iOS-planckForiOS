@@ -173,7 +173,7 @@ open class PEPUtil {
         var dict = PEPMessage()
 
         if let sent = cdMessage.sent {
-            dict[kPepSent] = sent
+            dict[kPepSent] = sent as NSDate
         }
 
         if let subject = cdMessage.shortMessage {

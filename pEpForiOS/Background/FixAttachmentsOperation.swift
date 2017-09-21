@@ -36,7 +36,7 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
             for cdAttach in cdAttachments1 {
                 if let theData = cdAttach.data {
                     changedAttachmentsCount += 1
-                    cdAttach.length = Int64(theData.length)
+                    cdAttach.length = Int64(theData.count)
                 }
             }
         }
@@ -62,7 +62,7 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
                     FixAttachmentsOperation.retrieveData(fromURL: theURL) { data in
                         context.perform {
                             if let theData = data {
-                                cdAttach.data = theData as NSData
+                                cdAttach.data = theData
                                 context.saveAndLogErrors()
                             }
                             self.openFetchCount -= 1

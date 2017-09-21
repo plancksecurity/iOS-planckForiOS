@@ -39,10 +39,10 @@ extension CdMessage {
         longMessage = pEpMessage[kPepLongMessage] as? String
         longMessageFormatted = pEpMessage[kPepLongMessageFormatted] as? String
 
-        if let testsent = pEpMessage[kPepSent] as? NSDate {
+        if let testsent = pEpMessage[kPepSent] as? Date {
             sent = testsent
         }
-        if let testrecived = pEpMessage[kPepReceived] as? NSDate {
+        if let testrecived = pEpMessage[kPepReceived] as? Date {
             received = testrecived
         }
 
@@ -79,7 +79,7 @@ extension CdMessage {
                     continue
                 }
                 let attach = CdAttachment.create()
-                attach.data = data as NSData
+                attach.data = data
                 attach.length = Int64(data.count)
                 if let mt = at[kPepMimeType] as? String {
                     attach.mimeType = mt

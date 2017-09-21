@@ -93,7 +93,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
             }
         } else if let msg = insertOrUpdate(pantomimeMessage: message, account: account) {
             if msg.received == nil {
-                msg.received = NSDate()
+                msg.received = Date()
             }
             context.saveAndLogErrors()
             if messageUpdate.rfc822 {

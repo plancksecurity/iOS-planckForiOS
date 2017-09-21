@@ -430,7 +430,7 @@ extension CdMessage {
         if !moreMessagesThanRequested(mail: mail, messageUpdate: messageUpdate) {
             mail.parent = folder
             mail.bodyFetched = message.isInitialized()
-            mail.sent = message.originationDate() as NSDate?
+            mail.sent = message.originationDate()
             mail.shortMessage = message.subject()
 
             mail.uuid = message.messageID()
