@@ -92,7 +92,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
             }
             if cdServer.serverType == .imap || cdServer.serverType == .smtp {
                 XCTAssertEqual(cdServer.address, testServerAddress)
-                XCTAssertEqual(UInt16(cdPort), testPortInt)
+                XCTAssertEqual(UInt16(truncating:cdPort), testPortInt)
                 XCTAssertEqual(cdServer.transport, testTransport)
             }
         }
