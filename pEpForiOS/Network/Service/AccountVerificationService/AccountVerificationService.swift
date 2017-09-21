@@ -18,9 +18,9 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
     let backgroundQueue = OperationQueue()
 
     func verify(account: Account) {
-//        verificationQueue.async {
+        verificationQueue.async {
             self.verifyInternal(account: account)
-//        }
+        }
     }
 
     func removeFromRunning(account: Account) {
