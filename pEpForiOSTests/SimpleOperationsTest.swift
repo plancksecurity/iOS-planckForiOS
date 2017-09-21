@@ -601,7 +601,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.sendStatus = SendStatus.smtpDone
-            message.sent = Date() as NSDate
+            message.sent = Date()
             message.addTo(cdIdentity: to)
         }
         Record.saveAndWait()
@@ -833,7 +833,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let cdMsg = CdMessage.create(messageID: "2", uid: 1, parent: cdFolder)
 
         let cdAttachWithoutSize = CdAttachment.create()
-        cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8) as NSData?
+        cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8)
         cdAttachWithoutSize.message = cdMsg
         cdAttachWithoutSize.length = 0
         

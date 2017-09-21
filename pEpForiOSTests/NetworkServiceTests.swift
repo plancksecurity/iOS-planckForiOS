@@ -325,7 +325,6 @@ class NetworkServiceTests: XCTestCase {
         // Make sure the sent folder will still *not* be synced in the next step
         sentFolder.lastLookedAt = Date(
             timeIntervalSinceNow: -(networkService.timeIntervalForInterestingFolders + 1))
-            as NSDate?
         Record.saveAndWait()
 
         // Will the sent folder be synced on next sync?
@@ -343,7 +342,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertFalse(haveSentFolder)
 
         // Make sure the sent folder will be synced in the next step
-        sentFolder.lastLookedAt = Date() as NSDate?
+        sentFolder.lastLookedAt = Date()
         Record.saveAndWait()
 
         // Will the sent folder be synced on next sync?

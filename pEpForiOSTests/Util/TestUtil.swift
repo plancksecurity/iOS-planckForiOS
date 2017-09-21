@@ -425,7 +425,7 @@ class TestUtil {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sent = Date() as NSDate
+            message.sent = Date()
             message.addTo(cdIdentity: toWithKey)
 
             // add attachment to last and previous-to-last mail, if desired
