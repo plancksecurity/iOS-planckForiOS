@@ -8,7 +8,7 @@
 
 import XCTest
 
-@testable import pEpForiOS
+import pEpForiOS
 @testable import MessageModel
 
 class CdMessage_PantomimeTest: XCTestCase {
