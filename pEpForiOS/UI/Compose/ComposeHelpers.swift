@@ -37,7 +37,7 @@ extension String {
         let length = self.characters.count
         if length > defaultFilenameLength {
             let index: String.Index = self.index(self.startIndex, offsetBy: defaultFilenameLength)
-            return self.substring(to: index).appending("...")
+            return String(prefix(upTo: index))
         }
         return self
     }

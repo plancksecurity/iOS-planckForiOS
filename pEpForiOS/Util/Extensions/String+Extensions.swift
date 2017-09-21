@@ -312,7 +312,7 @@ public extension String {
             return false
         }
         let fromWhere = index(endIndex, offsetBy: -suffixCount)
-        let end = substring(from: fromWhere)
+        let end = self[fromWhere...]
         return end == suffix
     }
 
@@ -427,7 +427,7 @@ extension String {
     func prefix(ofLength: Int) -> String {
         if self.characters.count >= ofLength {
             let start = self.startIndex
-            return self.substring(to: self.index(start, offsetBy: ofLength))
+            return String(prefix(upTo: self.index(start, offsetBy: ofLength)))
         } else {
             return self
         }
