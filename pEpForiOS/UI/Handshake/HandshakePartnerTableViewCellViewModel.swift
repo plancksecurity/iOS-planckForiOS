@@ -72,6 +72,12 @@ class HandshakePartnerTableViewCellViewModel {
     var pEpPartner: NSMutableDictionary
 
     /**
+     A copy of the partner dictionary, in case the user wants to undo a "Mistrust" action.
+     See ENGINE-254.
+     */
+    let pEpPartnerCopy: NSDictionary
+
+    /**
      The message the status/trustwords are invoked for
      */
     let message: Message?
@@ -89,6 +95,9 @@ class HandshakePartnerTableViewCellViewModel {
 
         pEpSelf = ownIdentity.updatedIdentityDictionary(session: session)
         pEpPartner = partner.updatedIdentityDictionary(session: session)
+
+        // backup the partner dict
+        pEpPartnerCopy = NSDictionary(dictionary: pEpPartner)
 
         isPartnerPGPUser = pEpPartner.containsPGPCommType
         self.message = message
@@ -159,10 +168,9 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     func invokeTrustAction(action: (NSMutableDictionary) -> ()) {
-        pEpPartner = partnerIdentity.updatedIdentityDictionary(session: session)
+        pEpPartner.diff(otherDict: pEpPartnerCopy)
+        pEpPartner = NSMutableDictionary(dictionary: pEpPartnerCopy)
         action(pEpPartner)
-        pEpPartner = partnerIdentity.updatedIdentityDictionary(session: session)
-        isPartnerPGPUser = pEpPartner.containsPGPCommType
         identityColor = partnerIdentity.pEpColor(session: session)
         rating = partnerIdentity.pEpRating(session: session)
         updateTrustwords(session: session)
