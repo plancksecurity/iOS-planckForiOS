@@ -168,7 +168,7 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     func invokeTrustAction(action: (NSMutableDictionary) -> ()) {
-        pEpPartner.diff(otherDict: pEpPartnerCopy)
+        // Restore original partner, to preserve comm type
         pEpPartner = NSMutableDictionary(dictionary: pEpPartnerCopy)
         action(pEpPartner)
         identityColor = partnerIdentity.pEpColor(session: session)
