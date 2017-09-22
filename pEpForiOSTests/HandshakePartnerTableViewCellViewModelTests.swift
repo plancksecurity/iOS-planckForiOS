@@ -168,12 +168,15 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         vm.confirmTrust()
         XCTAssertFalse(vm.isPartnerPGPUser)
         vm.resetTrust()
+        XCTAssertFalse(vm.isPartnerPGPUser)
 
         vm.denyTrust()
+        XCTAssertFalse(vm.isPartnerPGPUser)
         vm.resetTrust()
         XCTAssertFalse(vm.isPartnerPGPUser)
 
         vm.confirmTrust()
+        XCTAssertFalse(vm.isPartnerPGPUser)
         vm.resetTrust()
         XCTAssertFalse(vm.isPartnerPGPUser)
     }
