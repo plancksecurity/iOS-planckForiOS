@@ -64,12 +64,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     // Do nothing, try to decrypt again later though
                     break
                 case PEP_rating_unencrypted,
-                     PEP_rating_unencrypted_for_some:
-                    // Set the color, nothing else to update
-                    cdMessage.pEpRating = Int16(rating.rawValue)
-                    self.updateMessage(cdMessage: cdMessage, keys: theKeys, context: context)
-                    break
-                case PEP_rating_unreliable,
+                     PEP_rating_unencrypted_for_some,
+                     PEP_rating_unreliable,
                      PEP_rating_mistrust,
                      PEP_rating_reliable,
                      PEP_rating_reliable,
