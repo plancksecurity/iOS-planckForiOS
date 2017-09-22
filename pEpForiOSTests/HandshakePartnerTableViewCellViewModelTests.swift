@@ -75,7 +75,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             return (message: message, mySelfID: mySelfID, partnerID: partnerID)
     }
 
-    func testTrustAfterReset() {
+    func testBasicTrustAfterReset() {
         let session = PEPSessionCreator.shared.newSession()
 
         guard
@@ -147,7 +147,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertTrue(partnerMutable.containsPGPCommType)
     }
 
-    func testTrustMistrustCycles() {
+    func testViewModelTrustMistrustCycles() {
         let session = PEPSessionCreator.shared.newSession()
 
         guard
@@ -167,14 +167,14 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
         vm.confirmTrust()
         XCTAssertFalse(vm.isPartnerPGPUser)
-        vm.startStopTrusting()
+        vm.resetTrust()
 
         vm.denyTrust()
-        vm.startStopTrusting()
+        vm.resetTrust()
         XCTAssertFalse(vm.isPartnerPGPUser)
 
         vm.confirmTrust()
-        vm.startStopTrusting()
+        vm.resetTrust()
         XCTAssertFalse(vm.isPartnerPGPUser)
     }
 }

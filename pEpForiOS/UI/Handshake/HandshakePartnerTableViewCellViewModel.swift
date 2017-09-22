@@ -188,7 +188,7 @@ class HandshakePartnerTableViewCellViewModel {
         }
     }
 
-    public func startStopTrusting() {
+    public func resetTrust() {
         invokeTrustAction() { thePartner in
             session.keyResetTrust(thePartner)
         }

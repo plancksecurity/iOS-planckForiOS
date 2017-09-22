@@ -14,9 +14,9 @@ import MessageModel
  That delegate is in control to handle the actual trust changes.
  */
 protocol HandshakePartnerTableViewCellDelegate: class {
-    func startStopTrusting(sender: UIButton, cell: HandshakePartnerTableViewCell,
-                           indexPath: IndexPath,
-                           viewModel: HandshakePartnerTableViewCellViewModel?)
+    func resetTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                    indexPath: IndexPath,
+                    viewModel: HandshakePartnerTableViewCellViewModel?)
 
     func confirmTrust(sender: UIButton,  cell: HandshakePartnerTableViewCell,
                       indexPath: IndexPath,
@@ -435,8 +435,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     // MARK: - Actions
 
     @IBAction func startStopTrustingAction(_ sender: UIButton) {
-        delegate?.startStopTrusting(sender: sender, cell: self, indexPath: indexPath,
-                                    viewModel: viewModel)
+        delegate?.resetTrust(sender: sender, cell: self, indexPath: indexPath,
+                             viewModel: viewModel)
     }
 
     @IBAction func confirmAction(_ sender: UIButton) {
