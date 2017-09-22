@@ -134,15 +134,21 @@ class HandshakePartnerTableViewCellViewModel {
      */
     func determineTrustwords(
         message: Message?, identitySelf: PEPIdentity, identityPartner: PEPIdentity) -> String? {
+
+        let selfDict = NSMutableDictionary(dictionary: identitySelf)
+        let partnerDict = NSMutableDictionary(dictionary: identityPartner)
+        selfDict.update(session: session)
+        partnerDict.update(session: session)
+
         if let msg = message,
             let from = msg.from,
-            let partnerAddress = identityPartner[kPepAddress] as? String,
+            let partnerAddress = partnerDict[kPepAddress] as? String,
             from.address == partnerAddress {
             var pEpMessage = msg.pEpMessage()
-            pEpMessage[kPepFrom] = identityPartner as AnyObject
+            pEpMessage[kPepFrom] = partnerDict as AnyObject
             var pEpResult = PEP_UNKNOWN_ERROR
             let trustwordsResult = session.getTrustwordsMessageDict(
-                pEpMessage, receiverDict: identitySelf,
+                pEpMessage, receiverDict: selfDict.pEpIdentity(),
                 keysArray: msg.keyListFromDecryption,
                 language: trustwordsLanguage, full: trustwordsFull,
                 resultingStatus: &pEpResult)
