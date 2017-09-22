@@ -98,7 +98,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertFalse(partnerMutable.containsPGPCommType)
     }
 
-    func testPrimitiveTrustMistrustCycles() {
+    func testBasicTrustMistrustCycles() {
         let session = PEPSessionCreator.shared.newSession()
 
         guard
@@ -113,11 +113,10 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         myDictMutable.update(session: session)
         partnerMutable.update(session: session)
 
+        // copy the original
         let partnerDictOrig = NSDictionary(dictionary: partnerMutable)
+        XCTAssertFalse(partnerDictOrig.containsPGPCommType)
 
-        XCTAssertFalse(partnerMutable.containsPGPCommType)
-
-        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig)
         session.trustPersonalKey(partnerMutable)
         partnerMutable.update(session: session)
         XCTAssertFalse(partnerMutable.containsPGPCommType)
@@ -125,6 +124,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig)
         session.keyResetTrust(partnerMutable)
         partnerMutable.update(session: session)
+        XCTAssertFalse(partnerMutable.containsPGPCommType)
 
         partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig)
         session.keyMistrusted(partnerMutable)
@@ -134,10 +134,17 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig)
         session.keyResetTrust(partnerMutable)
         partnerMutable.update(session: session)
+        // engine forgets everything about that key
+        XCTAssertTrue(partnerMutable.containsPGPCommType)
 
         partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig)
+        // The partner (restored from the backup) is still a pEp user
+        XCTAssertFalse(partnerMutable.containsPGPCommType)
         session.trustPersonalKey(partnerMutable)
         partnerMutable.update(session: session)
+
+        // This is incorrect behavior. The user should still (or again) be a pEp user
+        XCTAssertTrue(partnerMutable.containsPGPCommType)
     }
 
     func testTrustMistrustCycles() {
