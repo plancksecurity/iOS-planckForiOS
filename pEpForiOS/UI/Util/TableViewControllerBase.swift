@@ -22,6 +22,7 @@ class TableViewControllerBase: UITableViewController {
                 // executed. Just here to make it compile.
                 return AppConfig(
                     session: PEPSession(),
+                    mySelfer: self,
                     messageSyncService: MessageSyncService(
                         sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil))
             }
@@ -39,5 +40,11 @@ class TableViewControllerBase: UITableViewController {
 
     func didSetAppConfig() {
         // do nothing. Meant to be overridden by subclasses that require this information
+    }
+}
+
+extension TableViewControllerBase: KickOffMySelfProtocol {
+    func startMySelf() {
+        Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
     }
 }

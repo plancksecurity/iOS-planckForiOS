@@ -87,7 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
-        let theAppConfig = AppConfig(session: session, messageSyncService: theMessageSyncService)
+        let theAppConfig = AppConfig(session: session, mySelfer: self,
+                                     messageSyncService: theMessageSyncService)
         appConfig = theAppConfig
 
         // set up logging for libraries

@@ -33,9 +33,16 @@ class AppConfig {
      */
     var currentAccount: Account? = nil
 
-    init(session: PEPSession, messageSyncService: MessageSyncServiceProtocol) {
+    /**
+     The UI can request key generation.
+     */
+    let mySelfer: KickOffMySelfProtocol
+
+    init(session: PEPSession, mySelfer: KickOffMySelfProtocol,
+         messageSyncService: MessageSyncServiceProtocol) {
         self.theSession = session
         self.messageSyncService = messageSyncService
+        self.mySelfer = mySelfer
     }
 
     public func tearDownSession() {

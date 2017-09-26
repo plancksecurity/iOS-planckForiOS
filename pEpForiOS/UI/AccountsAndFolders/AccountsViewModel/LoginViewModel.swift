@@ -55,6 +55,12 @@ class LoginViewModel {
     var messageSyncService: MessageSyncServiceProtocol?
     weak var delegate: AccountVerificationResultDelegate?
 
+    /**
+     The last mySelfer, as indicated by login(), so after account verification,
+     a key can be generated.
+     */
+    var mySelfer: KickOffMySelfProtocol?
+
     init(messageSyncService: MessageSyncServiceProtocol? = nil) {
         self.messageSyncService = messageSyncService
     }
@@ -64,7 +70,9 @@ class LoginViewModel {
     }
 
     func login(account: String, password: String, login: String? = nil,
-               userName: String? = nil, callback: (Error?) -> Void) {
+               userName: String? = nil, mySelfer: KickOffMySelfProtocol,
+               callback: (Error?) -> Void) {
+        self.mySelfer = mySelfer
         let acSettings = ASAccountSettings(accountName: account, provider: password,
                                            flags: AS_FLAG_USE_ANY, credentials: nil)
         if let err = AccountSettingsError(status: acSettings.status) {
@@ -120,6 +128,7 @@ class LoginViewModel {
 extension LoginViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
+        mySelfer?.startMySelf()
         delegate?.didVerify(result: result)
     }
 }
