@@ -149,15 +149,11 @@ UITextFieldDelegate {
     /// - Throws: AccountVerificationError
     private func verifyAccount() throws {
         isCurrentlyVerifying =  true
-        guard let ms = appConfig?.messageSyncService else {
-            Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
-            return
-        }
         do {
             let account = try model.account()
             account.needsVerification = true
             account.save()
-            ms.requestVerification(account: account, delegate: self)
+            appConfig.messageSyncService.requestVerification(account: account, delegate: self)
         } catch {
             throw error
         }

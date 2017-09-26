@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    private func setupInitialViewController() -> Bool {
+    private func setupInitialViewController(theAppConfig: AppConfig) -> Bool {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UINavigationController,
             let rootVC = initialNVC.rootViewController as? EmailListViewController
@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Log.shared.errorAndCrash(component: #function, errorString: "Problem initializing UI")
                 return false
         }
-        rootVC.appConfig = appConfig
+        rootVC.appConfig = theAppConfig
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         window.rootViewController = initialNVC
@@ -87,7 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
-        appConfig = AppConfig(session: session, messageSyncService: theMessageSyncService)
+        let theAppConfig = AppConfig(session: session, messageSyncService: theMessageSyncService)
+        appConfig = theAppConfig
 
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
@@ -112,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AddressBook.checkAndTransfer()
         }
 
-        let result = setupInitialViewController()
+        let result = setupInitialViewController(theAppConfig: theAppConfig)
 
         return result
     }

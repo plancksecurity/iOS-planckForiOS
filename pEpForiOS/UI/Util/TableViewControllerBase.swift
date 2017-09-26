@@ -13,13 +13,19 @@ class TableViewControllerBase: UITableViewController {
 
     var originalTitleView: String?
 
-    var appConfig: AppConfig? {
+    var appConfig: AppConfig {
         get {
-            guard _appConfig != nil else {
+            guard let theAC = _appConfig else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
-                return nil
+
+                // The app should crash in the line before, so this never gets actually
+                // executed. Just here to make it compile.
+                return AppConfig(
+                    session: PEPSession(),
+                    messageSyncService: MessageSyncService(
+                        sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil))
             }
-            return _appConfig
+            return theAC
         }
         set {
             _appConfig = newValue
@@ -28,14 +34,10 @@ class TableViewControllerBase: UITableViewController {
     }
 
     var session: PEPSession {
-        guard let config = appConfig else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
-            return PEPSessionCreator.shared.newSession()
-        }
-        return config.session
+        return appConfig.session
     }
 
     func didSetAppConfig() {
-        // do nothing. Ment to be overridden by subclasses that require this information
+        // do nothing. Meant to be overridden by subclasses that require this information
     }
 }

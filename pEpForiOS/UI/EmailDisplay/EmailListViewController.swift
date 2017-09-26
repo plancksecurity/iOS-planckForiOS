@@ -97,12 +97,8 @@ class EmailListViewController: TableViewControllerBase {
     }
 
     func setupConfig() {
-        guard let saveAppConfig = appConfig else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No AppConfig!")
-            return
-        }
         if config == nil {
-            config = EmailListConfig(appConfig: saveAppConfig,
+            config = EmailListConfig(appConfig: appConfig,
                                      folder: Folder.unifiedInbox())
         }
 

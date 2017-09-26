@@ -37,7 +37,7 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
         configureView()
         if let vm = viewModel {
             vm.delegate = self
-            vm.messageSyncService = appConfig?.messageSyncService
+            vm.messageSyncService = appConfig.messageSyncService
         }
     }
 

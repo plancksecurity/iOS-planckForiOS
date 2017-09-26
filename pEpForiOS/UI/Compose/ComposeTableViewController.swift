@@ -221,7 +221,7 @@ class ComposeTableViewController: TableViewControllerBase {
     }
 
     fileprivate final func populateMessageForSending() -> Message? {
-        guard let from = appConfig?.currentAccount?.user ?? Account.all().first?.user,
+        guard let from = appConfig.currentAccount?.user ?? Account.all().first?.user,
             let account = Account.by(address: from.address),
             let f = Folder.by(account: account, folderType: .sent) else {
                 Log.shared.errorAndCrash(component: #function,
@@ -496,22 +496,14 @@ extension ComposeTableViewController: ComposeCellDelegate {
 
     func calculateComposeColor() {
         if let to = destinyTo, let cc = destinyCc, let bcc = destinyBcc, let from = origin {
-            var rating : PEP_rating?
-            if let session = appConfig?.session {
-                rating = PEPUtil.outgoingMessageColor(from: from, to: to, cc: cc, bcc: bcc,
-                                                      session: session)
-            } else {
-                rating = PEPUtil.outgoingMessageColor(from: from, to: to, cc: cc, bcc: bcc,
-                                                      session: session)
-            }
-            if let rate = rating {
-                if let b = showPepRating(pEpRating: rate, pEpProtection: pEpProtection) {
-                    if rate == PEP_rating_reliable || rate == PEP_rating_trusted {
-                        // disable protection only for certain ratings
-                        let r = UILongPressGestureRecognizer(target: self,
-                                                             action: #selector(toggleProtection))
-                        b.addGestureRecognizer(r)
-                    }
+            let rating = PEPUtil.outgoingMessageColor(from: from, to: to, cc: cc, bcc: bcc,
+                                                  session: appConfig.session)
+            if let b = showPepRating(pEpRating: rating, pEpProtection: pEpProtection) {
+                if rating == PEP_rating_reliable || rating == PEP_rating_trusted {
+                    // disable protection only for certain ratings
+                    let r = UILongPressGestureRecognizer(target: self,
+                                                         action: #selector(toggleProtection))
+                    b.addGestureRecognizer(r)
                 }
             }
         }

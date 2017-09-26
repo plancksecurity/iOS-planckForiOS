@@ -80,15 +80,14 @@ class FolderTableViewController: TableViewControllerBase {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
             let vc = sb.instantiateViewController(withIdentifier: "EmailListViewController")
-                as? EmailListViewController,
-            let saveAppConfig = appConfig
+                as? EmailListViewController
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
                 return
         }
 
-        vc.appConfig = saveAppConfig
-        let config = EmailListConfig(appConfig: saveAppConfig,
+        vc.appConfig = appConfig
+        let config = EmailListConfig(appConfig: appConfig,
                                      folder: folderVM[indexPath.section][indexPath.row]
                                         .getFolder())
         vc.config = config

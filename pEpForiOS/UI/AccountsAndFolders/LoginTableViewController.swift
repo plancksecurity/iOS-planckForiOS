@@ -60,7 +60,7 @@
     }
 
     override func didSetAppConfig() {
-        loginViewModel.messageSyncService = appConfig?.messageSyncService
+        loginViewModel.messageSyncService = appConfig.messageSyncService
     }
 
     override func viewDidLoad() {

@@ -16,11 +16,7 @@ class HandshakeViewController: TableViewControllerBase {
 
     var message: Message? {
         didSet {
-            guard let session = appConfig?.session else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No session!")
-                return
-            }
-            partners = message?.identitiesEligibleForHandshake(session: session) ?? []
+            partners = message?.identitiesEligibleForHandshake(session: appConfig.session) ?? []
         }
     }
 
