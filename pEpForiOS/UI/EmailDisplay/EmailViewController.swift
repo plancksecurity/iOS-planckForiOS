@@ -99,12 +99,23 @@ class EmailViewController: TableViewControllerBase {
 
     func showPepRating() {
         let _ = showPepRating(pEpRating: message.pEpRating(session: session))
-        handShakeButton.isEnabled = false
-        message.allIdentities.forEach { (id) in
-            if id.canHandshakeOn(session: session) {
-                handShakeButton.isEnabled = true
+        var allOwnKeysGenerated = true
+        var atLeastOneHandshakableIdentityFound = false
+        for id in message.allIdentities {
+            if id.isMySelf {
+                // if we encounter an own identity, make sure it already has a key
+                if id.fingerPrint(session: session) == nil {
+                    allOwnKeysGenerated = false
+                    break
+                }
+            } else {
+                if id.canHandshakeOn(session: session) {
+                    atLeastOneHandshakableIdentityFound = true
+                    break
+                }
             }
         }
+        handShakeButton.isEnabled = allOwnKeysGenerated && atLeastOneHandshakableIdentityFound
     }
 
     fileprivate final func loadDatasource(_ file: String) {
