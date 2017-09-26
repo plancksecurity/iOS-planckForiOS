@@ -35,16 +35,16 @@ public class AccountSettingsViewModel {
 
     private var account: Account
     private var clonedAccount: Account?
-    private var headers: [String]
+    private let headers = [
+        NSLocalizedString("Account", comment: "Account settings"),
+        NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
+        NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP")
+    ]
     private var controlWord = "noRealPassword"
 
     public let svm = SecurityViewModel()
 
     public init(account: Account) {
-        headers = [String]()
-        headers.append(NSLocalizedString("Account", comment: "Account settings"))
-        headers.append(NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"))
-        headers.append(NSLocalizedString("SMTP Settings", comment: "Account settings title SMTP"))
         self.account = account
     }
 
