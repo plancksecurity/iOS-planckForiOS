@@ -20,6 +20,8 @@ public class EmailListViewModel : FilterUpdateProtocol{
 
     var enabledFilters : Filter?
 
+    var lastFilterEnabled: Filter?
+
     init(config: EmailListConfig?, delegate: TableViewUpdate) {
         folderToShow = config?.folder
         self.delegate = delegate
@@ -82,6 +84,14 @@ public class EmailListViewModel : FilterUpdateProtocol{
         }
     }
 
+    public func enableFilter() {
+        if let lastFilter = lastFilterEnabled {
+            updateFilter(filter: lastFilter)
+        } else {
+            updateFilter(filter: Filter.unread())
+        }
+    }
+
     public func updateFilter(filter: Filter) {
         if let temporalfilters = folderToShow?.filter {
             temporalfilters.and(filter: filter)
@@ -94,10 +104,13 @@ public class EmailListViewModel : FilterUpdateProtocol{
     }
 
     public func resetFilters() {
-        if let f = folderToShow, f.isUnified {
-            let _ = folderToShow?.updateFilter(filter: Filter.unified())
-        } else {
-            let _ = folderToShow?.updateFilter(filter: Filter.empty())
+        if let f = folderToShow {
+            lastFilterEnabled = f.filter
+            if f.isUnified {
+                let _ = folderToShow?.updateFilter(filter: Filter.unified())
+            } else {
+                let _ = folderToShow?.updateFilter(filter: Filter.empty())
+            }
         }
         self.delegate?.updateView()
     }

@@ -140,7 +140,7 @@ class EmailListViewController: TableViewControllerBase {
             } else {
                 vm.filterEnabled = true
                 if config != nil {
-                    vm.updateFilter(filter: Filter.unread())
+                    vm.enableFilter()
                 }
                 handleButtonFilter(enabled: true)
             }
@@ -203,7 +203,6 @@ class EmailListViewController: TableViewControllerBase {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "EmailListViewCell", for: indexPath) as! EmailListViewCell
-        //mantener el configure cell para tal de no generar un vm para celdas
         let _ = cell.configureCell(config: config, indexPath: indexPath, session: session)
         viewModel?.associate(cell: cell, position: indexPath.row)
         return cell
