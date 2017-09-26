@@ -11,6 +11,12 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
+class NoOpMySelfer: KickOffMySelfProtocol {
+    func startMySelf() {
+        // do nothing
+    }
+}
+
 class LoginViewModelTests: XCTestCase {
     class TestMessageSyncService: MessageSyncServiceProtocol {
         weak var errorDelegate: MessageSyncServiceErrorDelegate?
@@ -122,9 +128,10 @@ class LoginViewModelTests: XCTestCase {
         let ms = TestMessageSyncService(accountSettings: accountSettings)
         let vm = LoginViewModel(messageSyncService: ms)
 
-        vm.login(account: accountSettings.idAddress, password: passw, login: nil, userName: nil) {
-            error in
-            XCTAssertNil(error)
+        vm.login(account: accountSettings.idAddress, password: passw, login: nil, userName: nil,
+                 mySelfer: NoOpMySelfer()) {
+                    error in
+                    XCTAssertNil(error)
         }
     }
 }
