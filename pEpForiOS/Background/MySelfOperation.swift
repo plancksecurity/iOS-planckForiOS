@@ -60,6 +60,9 @@ open class MySelfOperation: BaseOperation {
                 session = nil
             }
             session?.mySelf(pEpIdDict)
+            Log.shared.info(
+                component: #function,
+                content: "\(pEpIdDict[kPepAddress] ?? "<unknown>") -> \(pEpIdDict[kPepFingerprint] ?? "no fingerprint")")
             backgrounder?.endBackgroundTask(taskID)
         }
         backgrounder?.endBackgroundTask(wholeOperationTaskID)
