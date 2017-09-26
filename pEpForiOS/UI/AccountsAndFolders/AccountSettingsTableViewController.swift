@@ -26,7 +26,7 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
 
     var securityPicker: UIPickerView?
 
-
+    var passWordChanged: Bool = false
 
     var viewModel: AccountSettingsViewModel? = nil
 
@@ -39,13 +39,14 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
             vm.delegate = self
             vm.messageSyncService = appConfig.messageSyncService
         }
+        passwordTextfield.delegate = self
     }
 
     func configureView() {
         self.nameTextfield.text = viewModel?.name
         self.emailTextfield.text = viewModel?.email
         self.usernameTextfield.text = viewModel?.loginName
-        self.passwordTextfield.text = viewModel?.password
+        self.passwordTextfield.text = "JustAPassword"
 
         securityPicker = UIPickerView(frame: CGRect(x: 0, y: 50, width: 100, height: 150))
         securityPicker?.delegate = self
@@ -173,8 +174,15 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
             let smtp = AccountSettingsViewModel.ServerViewModel(address: validated.addrSmpt,
                                                                 port: validated.portSmtp,
                                                                 transport: validated.transSmtp)
+
+            var password: String? = passwordTextfield.text
+            if passWordChanged == false {
+                password = nil
+            }
+
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
-                              imap: imap, smtp: smtp)
+                              password: password, imap: imap, smtp: smtp)
+
         } catch {
             informUser(about: error)
         }
@@ -182,6 +190,14 @@ class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewD
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         current = textField
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        if textField == passwordTextfield {
+            passWordChanged = true
+        }
+        return true
     }
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

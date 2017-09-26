@@ -14,6 +14,7 @@ import MessageModel
 class EmailViewController: TableViewControllerBase {
     @IBOutlet var handShakeButton: UIBarButtonItem!
     var message: Message!
+    @IBOutlet var flagButton: UIBarButtonItem!
 
     var partnerIdentity: Identity?
     var tableData: ComposeDataSource?
@@ -88,6 +89,9 @@ class EmailViewController: TableViewControllerBase {
         } else {
             self.nextMessage.isEnabled = true
         }
+//        if message.imapFlags?.flagged {
+//            //flagButton.image
+//        }
     }
 
     func checkMessageReEvaluation() {

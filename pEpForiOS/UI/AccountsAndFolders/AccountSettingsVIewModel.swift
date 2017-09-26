@@ -67,12 +67,6 @@ public class AccountSettingsViewModel {
         }
     }
 
-    var password: String {
-        get {
-            return controlWord
-        }
-    }
-
     var smtpServer: ServerViewModel {
         get {
             if let server = account.smtpServer {
@@ -104,7 +98,7 @@ public class AccountSettingsViewModel {
                 return
         }
         let pass : String?
-        if let p = password, p != controlWord {
+        if let p = password {
             pass = p
         } else {
             pass = serverImap.credentials.password
@@ -184,7 +178,9 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         cleanClonedAccount()
-        delegate?.didVerify(result: result)
+        DispatchQueue.main.sync {
+            delegate?.didVerify(result: result)
+        }
     }
 }
 
