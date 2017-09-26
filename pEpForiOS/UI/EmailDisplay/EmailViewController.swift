@@ -11,7 +11,7 @@ import UIKit
 
 import MessageModel
 
-class EmailViewController: TableViewControllerBase {
+class EmailViewController: BaseTableViewController {
     @IBOutlet var handShakeButton: UIBarButtonItem!
     var message: Message!
     @IBOutlet var flagButton: UIBarButtonItem!

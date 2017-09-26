@@ -10,7 +10,7 @@ import UIKit
 
 import MessageModel
 
-class UserInfoTableViewController: TableViewControllerBase, TextfieldResponder, UITextFieldDelegate {
+class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, UITextFieldDelegate {
     let comp = "UserInfoTableView"
 
     @IBOutlet weak var emailValue: UITextField!

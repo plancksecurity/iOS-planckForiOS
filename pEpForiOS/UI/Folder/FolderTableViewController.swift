@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FolderTableViewController: TableViewControllerBase {
+class FolderTableViewController: BaseTableViewController {
     var folderVM = FolderViewModel()
 
     override func viewDidLoad() {

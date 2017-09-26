@@ -8,7 +8,7 @@
 
 import MessageModel
 
-class AccountsTableViewController: TableViewControllerBase {
+class AccountsTableViewController: BaseTableViewController {
     let comp = "AccountsTableViewController"
 
     let viewModel = AccountsSettingsViewModel()

@@ -34,7 +34,7 @@
     }
  }
 
- class LoginTableViewController: TableViewControllerBase, UITextFieldDelegate {
+ class LoginTableViewController: BaseTableViewController, UITextFieldDelegate {
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 

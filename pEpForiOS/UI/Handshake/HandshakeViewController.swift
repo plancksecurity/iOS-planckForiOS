@@ -10,7 +10,7 @@ import UIKit
 
 import MessageModel
 
-class HandshakeViewController: TableViewControllerBase {
+class HandshakeViewController: BaseTableViewController {
     var ratingReEvaluator: RatingReEvaluator?
     var backTitle: String?
 

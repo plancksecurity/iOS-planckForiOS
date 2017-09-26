@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LanguageListViewController: TableViewControllerBase {
+class LanguageListViewController: BaseTableViewController {
     let defaultCellReuseIdentifier = "LanguageListCell"
 
     var languages = [PEPLanguage]()

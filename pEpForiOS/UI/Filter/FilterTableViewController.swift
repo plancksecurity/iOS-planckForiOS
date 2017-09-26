@@ -9,7 +9,7 @@
 import UIKit
 import MessageModel
 
-class FilterTableViewController: TableViewControllerBase {
+class FilterTableViewController: BaseTableViewController {
 
     open var inFolder: Bool = false
     open var filterEnabled: Filter?

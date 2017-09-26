@@ -1,5 +1,5 @@
 //
-//  ViewControllerBase.swift
+//  BaseViewController.swift
 //  pEpForiOS
 //
 //  Created by Andreas Buff on 23.08.17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewControllerBase: UIViewController {
+class BaseViewController: UIViewController {
     private var _appConfig: AppConfig?
     var appConfig: AppConfig? {
         get {

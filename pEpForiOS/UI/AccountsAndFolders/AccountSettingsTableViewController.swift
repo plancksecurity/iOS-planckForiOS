@@ -9,7 +9,7 @@
 import UIKit
 import MessageModel
 
-class AccountSettingsTableViewController: TableViewControllerBase, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
+class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!

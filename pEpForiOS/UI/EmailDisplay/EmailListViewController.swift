@@ -20,7 +20,7 @@ struct EmailListConfig {
     let imageProvider = IdentityImageProvider()
 }
 
-class EmailListViewController: TableViewControllerBase {
+class EmailListViewController: BaseTableViewController {
     public static let storyboardId = "EmailListViewController"
     struct UIState {
         var isSynching: Bool = false

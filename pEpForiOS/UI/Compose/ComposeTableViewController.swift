@@ -12,7 +12,7 @@ import ContactsUI
 import MobileCoreServices
 import MessageModel
 
-class ComposeTableViewController: TableViewControllerBase {
+class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 

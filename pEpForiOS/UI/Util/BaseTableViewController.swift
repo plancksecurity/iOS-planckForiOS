@@ -1,5 +1,5 @@
 //
-//  TableViewControllerBase.swift
+//  BaseTableViewController.swift
 //  pEpForiOS
 //
 //  Created by buff on 23.08.17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableViewControllerBase: UITableViewController {
+class BaseTableViewController: UITableViewController {
     private var _appConfig: AppConfig?
 
     var originalTitleView: String?
@@ -43,7 +43,7 @@ class TableViewControllerBase: UITableViewController {
     }
 }
 
-extension TableViewControllerBase: KickOffMySelfProtocol {
+extension BaseTableViewController: KickOffMySelfProtocol {
     func startMySelf() {
         Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
     }

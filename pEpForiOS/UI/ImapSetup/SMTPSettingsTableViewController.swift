@@ -10,7 +10,7 @@ import UIKit
 
 import MessageModel
 
-class SMTPSettingsTableViewController: TableViewControllerBase, TextfieldResponder,
+class SMTPSettingsTableViewController: BaseTableViewController, TextfieldResponder,
 UITextFieldDelegate {
     let comp = "SMTPSettingsTableView"
 

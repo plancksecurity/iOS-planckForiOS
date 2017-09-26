@@ -19,7 +19,7 @@ extension UIAlertController {
     }
 }
 
-class IMAPSettingsTableViewController: TableViewControllerBase, TextfieldResponder, UITextFieldDelegate {
+class IMAPSettingsTableViewController: BaseTableViewController, TextfieldResponder, UITextFieldDelegate {
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
     @IBOutlet weak var serverTitle: UILabel!
