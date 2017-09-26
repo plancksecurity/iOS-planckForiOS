@@ -126,7 +126,6 @@ public class AccountSettingsViewModel {
         account.needsVerification = true
         account.save()
         ms.requestVerification(account: account, delegate: self)
-
     }
 
     func sectionIsValid(section: Int) -> Bool {

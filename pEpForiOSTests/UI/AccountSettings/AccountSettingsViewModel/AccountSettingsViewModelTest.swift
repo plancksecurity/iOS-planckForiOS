@@ -12,7 +12,6 @@ import MessageModel
 @testable import pEpForiOS
 
 class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
-
     var mss : MessageSyncService?
 
     override func setUp() {
@@ -40,7 +39,6 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
     
     func testUpdate() {
-
         mss = MessageSyncService(sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil)
         
         guard let cdServerCount = cdAccount.servers?.count else {
