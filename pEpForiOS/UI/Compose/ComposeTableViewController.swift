@@ -221,12 +221,19 @@ class ComposeTableViewController: TableViewControllerBase {
     }
 
     fileprivate final func populateMessageForSending() -> Message? {
-        guard let from = appConfig.currentAccount?.user ?? Account.all().first?.user,
-            let account = Account.by(address: from.address),
-            let f = Folder.by(account: account, folderType: .sent) else {
+        let fromCells = allCells.filter { $0.fieldModel?.type == .from }
+        guard fromCells.count == 1,
+            let fromCell = fromCells.first,
+            let fromAddress = (fromCell as? AccountCell)?.getIdentity().address,
+            let account = Account.by(address: fromAddress) else {
                 Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Required data missing. Inconsistant State.")
+                                         errorString: "We have a problem here getting the senders account.")
                 return nil
+        }
+        guard let f = Folder.by(account: account, folderType: .sent) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "No sent folder exists.")
+            return nil
         }
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
 
