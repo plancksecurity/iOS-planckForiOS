@@ -28,7 +28,7 @@ open class Service: IEmailService {
 
     public init(connectInfo: EmailConnectInfo,
                 fileString: String = #file, functionName: String = #function) {
-        Log.shared.info(component: "\(fileString):\(functionName)", content: "BUFF: \(#function)")
+        Log.shared.info(component: "\(fileString):\(functionName)", content: "//IOS-674: \(#function)")
         CWLogger.setLogger(Log.shared)
 
         self.connectInfo = connectInfo

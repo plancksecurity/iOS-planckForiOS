@@ -14,7 +14,7 @@ import CoreData
 
 class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 
-    //BUFF: Randomly triggers IOS-674 sync stops forever
+    //IOS-674: Randomly triggers IOS-674 sync stops forever
 
     // IOS-671 pEp app has two accounts. Someone sends a mail to both
     // (with both accounts in receipients).

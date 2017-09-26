@@ -50,7 +50,7 @@ open class NetworkServiceWorker {
         }
 
         func dumpOperations() {
-            Log.verbose(component: #function, content: "//BUFF: dumping operations: \(self.backgroundQueue.operations)") //BUFF:
+            Log.verbose(component: #function, content: "//IOS-674: dumping operations: \(self.backgroundQueue.operations)") //IOS-674:remove after issue is fixed
             for op in self.backgroundQueue.operations {
                 Log.info(component: #function, content: "Still running: \(op)")
             }
@@ -90,8 +90,9 @@ open class NetworkServiceWorker {
      Cancel all background operations, finish main loop.
      */
     public func cancel(networkService: NetworkService) {
-        print("//BUFF: NetworkServiceWorker cancle called with self.backgroundQueue.operationCount: \(self.backgroundQueue.operationCount) self.backgroundQueue.operations: \(self.backgroundQueue.operations) networkService: \(networkService)")
-        //FFUB
+        //IOS-674: debug code. Remove after issue is fixed.
+        print("//IOS-674: NetworkServiceWorker cancle called with self.backgroundQueue.operationCount: \(self.backgroundQueue.operationCount) self.backgroundQueue.operations: \(self.backgroundQueue.operations) networkService: \(networkService)")
+        //476.SOI
         let myComp = #function
 
         self.cancelled = true
@@ -480,9 +481,9 @@ open class NetworkServiceWorker {
         }
         for op in operationLine.operations {
             if cancelled {
-                
-                print("//BUFF: NetworkServiceWorker scheduleOperationLineInternal  called all operations: \(self.backgroundQueue.operations)") //BUFF:
-
+                //IOS-674: debug code. Remove after issue is fixed.
+                print("//IOS-674: NetworkServiceWorker scheduleOperationLineInternal  called all operations: \(self.backgroundQueue.operations)")
+                //476.SOI
                 backgroundQueue.cancelAllOperations()
                 return
             }
