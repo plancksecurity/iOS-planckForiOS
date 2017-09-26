@@ -32,7 +32,7 @@ import MessageModel
         if !MiscUtil.isUnitTest() {
             queue.async {
                 if self.logEnabled {
-                    self.session.logTitle(
+                    PEPSessionCreator.shared.newSession().logTitle(
                         self.title, entity: entity, description: description, comment: comment)
                 }
             }
