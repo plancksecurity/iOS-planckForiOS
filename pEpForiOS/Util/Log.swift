@@ -13,7 +13,6 @@ import MessageModel
 
     private let title = "pEpForiOS"
 
-    //We have the typical singleton problems. It has state plus we might have to configure it once to assure a unique session
     private lazy var session: PEPSession = PEPSessionCreator.shared.newSession()
 
     private var logEnabled = true
@@ -32,7 +31,7 @@ import MessageModel
         if !MiscUtil.isUnitTest() {
             queue.async {
                 if self.logEnabled {
-                    PEPSessionCreator.shared.newSession().logTitle(
+                    self.session.logTitle(
                         self.title, entity: entity, description: description, comment: comment)
                 }
             }

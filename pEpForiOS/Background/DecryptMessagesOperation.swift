@@ -21,11 +21,11 @@ public protocol DecryptMessagesOperationDelegateProtocol: class {
 public class DecryptMessagesOperation: ConcurrentBaseOperation {
     public weak var delegate: DecryptMessagesOperationDelegateProtocol?
 
+    lazy var session = PEPSessionCreator.shared.newSession()
+
     public override func main() {
         let context = Record.Context.background
         context.perform() {
-            let session = PEPSessionCreator.shared.newSession()
-
             guard let messages = CdMessage.all(
                 predicate: CdMessage.unknownToPepMessagesPredicate(),
                 orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
@@ -45,7 +45,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 var keys: NSArray?
                 Log.info(component: self.comp,
                          content: "Will decrypt \(cdMessage.logString())")
-                let rating = session.decryptMessageDict(
+                let rating = self.session.decryptMessageDict(
                     pepMessage, dest: &pEpDecryptedMessage, keys: &keys)
                 Log.info(component: self.comp,
                          content: "Decrypted message \(cdMessage.logString()) with color \(rating)")
