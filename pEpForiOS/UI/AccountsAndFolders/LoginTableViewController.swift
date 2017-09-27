@@ -88,10 +88,12 @@
             placeHolder: NSLocalizedString("Name", comment: "username"), delegate: self)
 
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
+
         //color and spacing configurations
         self.view.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
         self.tableView.contentInset = UIEdgeInsets(top: 30,left: 0,bottom: 0,right: 0)
         self.tableView.backgroundColor  = UIColor.pEpGreen
+
         //clear cell color
         UserTableViewCell.backgroundColor = UIColor.clear
         emailTableViewCell.backgroundColor = UIColor.clear
@@ -99,6 +101,7 @@
         loginTableViewCell.backgroundColor = UIColor.clear
         manualConfigTableViewCell.backgroundColor = UIColor.clear
         loginNameTableViewCell.backgroundColor = UIColor.clear
+
         //hide extended login fields
         manualConfigButton.isHidden = true
         loginName.isHidden = true
