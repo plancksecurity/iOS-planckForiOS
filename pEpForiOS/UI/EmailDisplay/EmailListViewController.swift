@@ -392,13 +392,40 @@ extension EmailListViewController: SegueHandlerType {
         case noSegue
     }
 
-    func currentMessage(senderCell: Any?) -> (Message, IndexPath)? {
+    private func currentMessage(senderCell: Any?) -> (Message, IndexPath)? {
         if let cell = senderCell as? EmailListViewCell,
             let indexPath = self.tableView.indexPath(for: cell),
             let message = cell.messageAt(indexPath: indexPath, config: config) {
             return (message, indexPath)
         }
         return nil
+    }
+
+    /// Sets ComposeTableViewControllers sender ("from" field) to the appropriate account
+    ///
+    /// - Parameter vc: viewController to set the origin on
+    private func setOrigin(toComposeViewController vc: ComposeTableViewController) {
+        guard let folder = viewModel?.folderToShow else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder shown?")
+            vc.origin = Account.defaultAccount()?.user
+            return
+        }
+        if folder.isUnified {
+            //Set compose views sender ("from" field) to the default account.
+            vc.origin = Account.defaultAccount()?.user
+        } else {
+            //Set compose views sender ("from" field) to the account we are currently viewing emails for
+            vc.origin = folder.account.user
+        }
+    }
+
+    private func setup(composeViewController vc: ComposeTableViewController,
+                       composeMode: ComposeTableViewController.ComposeMode = .normal,
+                       originalMessage: Message? = nil) {
+        vc.appConfig = appConfig
+        vc.composeMode = composeMode
+        vc.originalMessage = originalMessage
+        setOrigin(toComposeViewController: vc)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -410,9 +437,8 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
-            destination.appConfig = appConfig
-            destination.composeMode = .replyFrom
-            destination.originalMessage = theMessage
+            setup(composeViewController: destination, composeMode: .replyFrom,
+                  originalMessage: theMessage)
         case .segueReplyAll:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
@@ -420,10 +446,9 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
-            destination.appConfig = appConfig
-            destination.composeMode = .replyAll
-            destination.originalMessage = theMessage
-        case .segueShowEmail:
+            setup(composeViewController: destination, composeMode: .replyAll,
+                  originalMessage: theMessage)
+        case .segueShowEmail: //BUFF: set origin in showEmail view also
             guard let vc = segue.destination as? EmailViewController,
                 let (theMessage, indexPath) = currentMessage(senderCell: sender) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
@@ -440,9 +465,8 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
-            destination.composeMode = .forward
-            destination.appConfig = appConfig
-            destination.originalMessage = theMessage
+            setup(composeViewController: destination, composeMode: .forward,
+                  originalMessage: theMessage)
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
@@ -475,8 +499,7 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
-            destination.appConfig = appConfig
-            destination.composeMode = .normal
+            setup(composeViewController: destination)
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break
