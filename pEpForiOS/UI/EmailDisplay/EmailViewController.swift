@@ -47,7 +47,6 @@ class EmailViewController: BaseTableViewController {
         saveTitleView()
     }
 
-
     @IBAction func next(_ sender: Any) {
         messageId += 1
         message = folderShow?.messageAt(index: messageId)
@@ -62,7 +61,6 @@ class EmailViewController: BaseTableViewController {
         self.tableView.reloadData()
         configureView()
     }
-
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
