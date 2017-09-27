@@ -60,7 +60,7 @@ import MessageModel
     static open func checklog(_ block: ((String) -> ())?) {
         if !MiscUtil.isUnitTest() {
             Log.shared.queue.async {
-                let s = Log.shared.session.getLog()
+                let s = PEPSessionCreator.shared.newSession().getLog()
                 block?(s)
             }
         } else {
