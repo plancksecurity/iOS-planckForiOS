@@ -90,9 +90,8 @@
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
 
         //color and spacing configurations
-        let bgView = UIView()
+        let bgView = GradientView(colors: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
         tableView.backgroundView = bgView
-        bgView.applyGradient(colours: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
         self.tableView.contentInset = UIEdgeInsets(top: 30,left: 0,bottom: 0,right: 0)
         self.tableView.backgroundColor  = UIColor.pEpGreen
 
