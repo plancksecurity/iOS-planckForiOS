@@ -401,21 +401,20 @@ extension EmailListViewController: SegueHandlerType {
         return nil
     }
 
-    /// Sets ComposeTableViewControllers sender ("from" field) to the appropriate account
+    /// Figures out the the appropriate account to use as sender ("from" field) when composing a mail.
     ///
     /// - Parameter vc: viewController to set the origin on
-    private func setOrigin(toComposeViewController vc: ComposeTableViewController) {
+    private func origin() -> Identity? {
         guard let folder = viewModel?.folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder shown?")
-            vc.origin = Account.defaultAccount()?.user
-            return
+            return Account.defaultAccount()?.user
         }
         if folder.isUnified {
             //Set compose views sender ("from" field) to the default account.
-            vc.origin = Account.defaultAccount()?.user
+            return Account.defaultAccount()?.user
         } else {
             //Set compose views sender ("from" field) to the account we are currently viewing emails for
-            vc.origin = folder.account.user
+            return folder.account.user
         }
     }
 
@@ -425,7 +424,7 @@ extension EmailListViewController: SegueHandlerType {
         vc.appConfig = appConfig
         vc.composeMode = composeMode
         vc.originalMessage = originalMessage
-        setOrigin(toComposeViewController: vc)
+        vc.origin = origin()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -448,7 +447,7 @@ extension EmailListViewController: SegueHandlerType {
             }
             setup(composeViewController: destination, composeMode: .replyAll,
                   originalMessage: theMessage)
-        case .segueShowEmail: //BUFF: set origin in showEmail view also
+        case .segueShowEmail:
             guard let vc = segue.destination as? EmailViewController,
                 let (theMessage, indexPath) = currentMessage(senderCell: sender) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")

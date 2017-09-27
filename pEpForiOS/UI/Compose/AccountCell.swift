@@ -11,30 +11,15 @@ import MessageModel
 class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var picker: UIPickerView!
-    
-    var accounts = Account.all()
-    var account: String?
-    
+
+    var pickerEmailAdresses = [String]()
+
     public var shouldDisplayPicker: Bool = false {
         didSet {
             picker.isHidden = !shouldDisplayPicker
         }
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        if account == nil {
-            let selectedAccount = accounts.first
-            account = selectedAccount?.user.address
-            textView.text = account
-            if let user = selectedAccount?.user, let fm = super.fieldModel {
-                delegate?.haveToUpdateColor(
-                    newIdentity: [user], type: fm)
-            }
-        }
-    }
-    
+
     // MARK: - Public Methods
     
     public final func expand() -> Bool {
@@ -52,29 +37,28 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
         }
         return isExpanded
     }
-    
-    public final func getIdentity() -> Identity {
-        let selected = picker.selectedRow(inComponent: 0)
-        return accounts[selected].user
-    }
-    
+
     // MARK: - UIPickerView Delegate & Datasource
-    
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return accounts.count
+        return pickerEmailAdresses.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return accounts[row].user.address
+        return pickerEmailAdresses[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        textView.text = accounts[row].user.address
-        let id = accounts[row].user
-        delegate?.haveToUpdateColor(newIdentity: [id], type: super.fieldModel!)
+        let address = pickerEmailAdresses[row]
+        textView.text = address
+
+        guard let fm = super.fieldModel else {
+            return
+        }
+        delegate?.composeCell(cell: self, didChangeEmailAddresses: [address], forFieldType: fm.type)
     }
 }

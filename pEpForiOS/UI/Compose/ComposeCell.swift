@@ -15,7 +15,7 @@ open class ComposeCell: UITableViewCell, CellProtocol {
 
     open weak var delegate: ComposeCellDelegate?
 
-    public var index: IndexPath!
+    public var index: IndexPath! // a cell must not know its index path
     public var fieldModel: ComposeFieldModel?
     public var isExpanded = false
     
@@ -29,7 +29,7 @@ open class ComposeCell: UITableViewCell, CellProtocol {
     }
 
     public func updateCell(_ model: ComposeFieldModel, _ indexPath: IndexPath) {
-        index = indexPath
+        index = indexPath // a cell must not know it's index path
         fieldModel = model
         textView.fieldModel = model
         

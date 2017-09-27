@@ -19,7 +19,8 @@ public protocol ComposeCellDelegate: class {
     func textdidChange(at indexPath: IndexPath, textView: ComposeTextView)
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView)
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView)
-    func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel)
+    func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String], forFieldType type: ComposeFieldModel.FieldType)
+    func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel) //remove after refactoring all cells to not know Identity
     func messageCanBeSend(value: Bool)
 }
 

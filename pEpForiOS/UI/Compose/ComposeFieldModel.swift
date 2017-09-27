@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-open class ComposeFieldModel {
+public class ComposeFieldModel {
     
-    enum FieldType: String {
+    public enum FieldType: String {
         case to, cc, bcc, from, subject, content, mailingList, none
 
         func translatedTitle(expanded: Bool = false) -> String {

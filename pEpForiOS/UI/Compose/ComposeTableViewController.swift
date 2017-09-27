@@ -24,40 +24,40 @@ class ComposeTableViewController: BaseTableViewController {
         case draft
     }
 
-    let contactPicker = CNContactPickerViewController()
-    let imagePicker = UIImagePickerController()
-    let menuController = UIMenuController.shared
+    private let contactPicker = CNContactPickerViewController()
+    private let imagePicker = UIImagePickerController()
+    private let menuController = UIMenuController.shared
 
-    var suggestTableView: SuggestTableView!
-    var tableDict: NSDictionary?
-    var tableData: ComposeDataSource? = nil
-    var currentCell: IndexPath!
-    var allCells = MutableOrderedSet<ComposeCell>()
-    var ccEnabled = false
+    private var suggestTableView: SuggestTableView!
+    private var tableDict: NSDictionary?
+    private var tableData: ComposeDataSource? = nil
+    private var currentCell: IndexPath!
+    private var allCells = MutableOrderedSet<ComposeCell>()
+    private var ccEnabled = false
 
     var composeMode: ComposeMode = .normal
-    var messageToSend: Message?
+    private var messageToSend: Message?
     var originalMessage: Message?
-    let operationQueue = OperationQueue()
+    private let operationQueue = OperationQueue()
 
-    lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    private lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
-    let mimeTypeController = MimeTypeUtil()
+    private let mimeTypeController = MimeTypeUtil()
 
     var origin : Identity?
-    var destinyTo : [Identity]?
-    var destinyCc : [Identity]?
-    var destinyBcc : [Identity]?
+    private var destinyTo : [Identity]?
+    private var destinyCc : [Identity]?
+    private var destinyBcc : [Identity]?
 
-    let attachmentCounter = AttachmentCounter()
-    let mimeTypeUtil = MimeTypeUtil()
+    private let attachmentCounter = AttachmentCounter()
+    private let mimeTypeUtil = MimeTypeUtil()
 
-    var edited = false
+    private var edited = false
 
     /**
      A value of `true` means that the mail will be encrypted.
      */
-    var pEpProtection = true
+    private var pEpProtection = true
 
     // MARK: - Lifecycle
 
@@ -224,7 +224,7 @@ class ComposeTableViewController: BaseTableViewController {
         let fromCells = allCells.filter { $0.fieldModel?.type == .from }
         guard fromCells.count == 1,
             let fromCell = fromCells.first,
-            let fromAddress = (fromCell as? AccountCell)?.getIdentity().address,
+            let fromAddress = (fromCell as? AccountCell)?.textView.text,
             let account = Account.by(address: fromAddress) else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "We have a problem here getting the senders account.")
@@ -274,7 +274,7 @@ class ComposeTableViewController: BaseTableViewController {
             } else if let fm = cell.fieldModel {
                 switch fm.type {
                 case .from:
-                    message.from = (cell as? AccountCell)?.getIdentity()
+                    message.from = account.user
                     break
                 default:
                     message.shortMessage = cell.textView.text.trimmingCharacters(
@@ -396,13 +396,12 @@ class ComposeTableViewController: BaseTableViewController {
             } else if let fm = cell.fieldModel, fm.type == .subject {
                 updateInitialContent(composeCell: cell)
             } else if let ac = cell as? AccountCell {
-                self.origin = ac.accounts[0].user
+                setupAccountCell(cell: ac)
             }
         }
 
         return cell
     }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView is SuggestTableView {
             guard let cell = self.tableView.cellForRow(at: currentCell) as? RecipientCell else {
@@ -422,6 +421,15 @@ class ComposeTableViewController: BaseTableViewController {
             ccEnabled = accountCell.expand()
             self.tableView.updateSize()
         }
+    }
+
+    private func setupAccountCell(cell: AccountCell) {
+        let accounts = Account.all()
+        origin = origin ?? accounts.first?.user
+        cell.textView.text = origin?.address
+        cell.pickerEmailAdresses = accounts.map { $0.user.address }
+        cell.picker.reloadAllComponents()
+        calculateComposeColor()
     }
 
     // MARK: - IBActions
@@ -484,7 +492,24 @@ class ComposeTableViewController: BaseTableViewController {
 // MARK: - Extensions
 
 extension ComposeTableViewController: ComposeCellDelegate {
+    func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String], forFieldType type: ComposeFieldModel.FieldType) {
+        let identities = changedAddresses.map { Identity(address: $0) }
+        switch type {
+        case .to:
+            destinyTo = identities
+        case .cc:
+            destinyCc = identities
+        case .bcc:
+            destinyBcc = identities
+        case .from:
+            origin = identities.last
+        default:
+            break
+        }
+        calculateComposeColor()
+    }
 
+    //remove after refactoring all Cells to not know Identity
     public func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel) {
         switch type.type {
         case .to:
