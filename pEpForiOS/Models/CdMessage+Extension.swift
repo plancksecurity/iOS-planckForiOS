@@ -122,7 +122,7 @@ extension CdMessage {
         let attachment = CdAttachment.create()
         attachment.data = data
         attachment.length = Int64(data.count)
-        attachment.mimeType = contentType
+        attachment.mimeType = contentType?.lowercased()
         attachment.fileName = filename
         return attachment
     }

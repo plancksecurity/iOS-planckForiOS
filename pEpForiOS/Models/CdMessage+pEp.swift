@@ -79,7 +79,7 @@ extension CdMessage {
                 attach.data = data
                 attach.length = Int64(data.count)
                 if let mt = at[kPepMimeType] as? String {
-                    attach.mimeType = mt
+                    attach.mimeType = mt.lowercased()
                 }
                 if let fn = at[kPepMimeFilename] as? String {
                     attach.fileName = fn
