@@ -43,7 +43,20 @@ class AttachmentsViewHelper {
 
     func opFinished(theBuildOp: AttachmentsViewOperation) {
         if let imageView = attachmentsImageView {
-            imageView.attachmentViewContainers = theBuildOp.attachmentViewContainers
+            let viewContainers = theBuildOp.attachmentContainers.map {
+                (c: AttachmentContainer) -> (AttachmentViewContainer) in
+                if let img = c.image {
+                    return AttachmentViewContainer(view: UIImageView(image: img),
+                                                   attachment: c.attachment)
+                } else {
+                    let dic = UIDocumentInteractionController()
+                    dic.name = c.attachment.fileName
+                    let theView = AttachmentSummaryView(attachment: c.attachment,
+                                                        iconImage: dic.icons.first)
+                    return AttachmentViewContainer(view: theView, attachment: c.attachment)
+                }
+            }
+            imageView.attachmentViewContainers = viewContainers
             delegate?.didCreate(attachmentsView: imageView, message: theBuildOp.message)
         }
     }
