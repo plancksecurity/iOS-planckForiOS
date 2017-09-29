@@ -22,13 +22,9 @@ struct EmailListConfig {
 
 class EmailListViewController: BaseTableViewController {
     public static let storyboardId = "EmailListViewController"
-    struct UIState {
-        var isSynching: Bool = false
-    }
-
+    
     var config: EmailListConfig?
     var viewModel: EmailListViewModel?
-    var state = UIState()
     let searchController = UISearchController(searchResultsController: nil)
 
     /**
@@ -176,12 +172,13 @@ class EmailListViewController: BaseTableViewController {
 
     // MARK: - UI State
 
-    func updateUI() {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = state.isSynching
-        if !state.isSynching {
-            refreshControl?.endRefreshing()
-        }
-    }
+    //BUFF: dead code
+//    func updateUI() {
+//        UIApplication.shared.isNetworkActivityIndicatorVisible = state.isSynching
+//        if !state.isSynching {
+//            refreshControl?.endRefreshing()
+//        }
+//    }
 
     // MARK: - UITableViewDataSource
 
