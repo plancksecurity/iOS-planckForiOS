@@ -58,8 +58,6 @@ public enum RecipientType: Int, Hashable {
 
 /**
  A PEP contact bundled with its receiver type (like BCC or CC).
- - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
- dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
 open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
     open let recipient: PEPIdentity
@@ -84,60 +82,6 @@ open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
  across apps.
  */
 public extension PEPSession {
-    /**
-     PEP predicate to run on a contact, given a session. Used for determining if a PEP contact
-     matches some criteria.
-     */
-    public typealias RecipientSortPredicate = (_ contact: PEPIdentity,
-        _ session: PEPSession) -> Bool
-
-    /**
-     Sorts the receivers from a pEp mail into a set of ordered an unordered recipients.
-     - Parameter recipients: An `NSArray` of pEp contacts (`NSMutableDictionary`) taken
-     directly from a pEp mail (e.g., `pEpMail[kPepTo]`)
-     - Parameter recipientType: The recipient type the result should have (the method has to
-     know which type of recipients it was given).
-     - Parameter session: The pEp session.
-     - Parameter sortOutPredicate: A closure that, given a pEp contact and a session, will
-     return `true` if that recipient should be filtered out or `false` if not.
-     - Returns: A tuple of the unencrypted recipients, and the encrypted recipients.
-     Both elements are of type `NSOrderedSet` of `PEPRecipient`
-     */
-    func filterOutUnencryptedReceivers(
-        _ recipients: NSArray, recipientType: RecipientType, session: PEPSession,
-        sortOutPredicate: RecipientSortPredicate)
-        -> (unencryptedReceivers: [PEPRecipient], encryptedReceivers: [PEPRecipient]) {
-            let unencryptedReceivers = NSMutableOrderedSet()
-            let encryptedReceivers = NSMutableOrderedSet()
-
-            for contact in recipients {
-                if let c = contact as? PEPIdentity {
-                    let receiver = PEPRecipient.init(recipient: c, recipientType: recipientType)
-                    if sortOutPredicate(c, session) {
-                        unencryptedReceivers.add(receiver)
-                    } else {
-                        encryptedReceivers.add(receiver)
-                    }
-                }
-            }
-
-            return (unencryptedReceivers: unencryptedReceivers.array.map({$0 as! PEPRecipient}),
-                    encryptedReceivers: encryptedReceivers.map({$0 as! PEPRecipient}))
-    }
-
-    /**
-     Checks whether a given PEP mail has any recipients.
-     - Parameter pepMail: The PEP mail to check for recipients.
-     - Returns: true if the mail has any recipients, false otherwise.
-     */
-    func pepMailHasRecipients(_ pepMail: PEPMessage) -> Bool {
-        let tos = pepMail[kPepTo] as? NSArray
-        let ccs = pepMail[kPepCC] as? NSArray
-        let bccs = pepMail[kPepBCC] as? NSArray
-        return (tos != nil && tos!.count > 0) || (ccs != nil && ccs!.count > 0) ||
-            (bccs != nil && bccs!.count > 0)
-    }
-
     public func encrypt(pEpMessageDict: PEPMessage,
                         forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, NSDictionary?) {
         return PEPUtil.encrypt(
@@ -145,9 +89,6 @@ public extension PEPSession {
     }
 }
 
-/**
- Equatable for `PEPSession.PEPReceiver`.
- */
 public func ==(lhs: PEPRecipient, rhs: PEPRecipient) -> Bool {
     return lhs.recipientType == rhs.recipientType &&
         lhs.recipient == rhs.recipient

@@ -71,7 +71,7 @@ extension RecipientCell {
     public func textViewDidChangeSelection(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
         
-        if textView.selectedRange.length > 0 {
+        if textView.selectedRange.location != NSNotFound {
             let range = textView.selectedTextRange!
             let selected = textView.text(in: range)
             
@@ -92,7 +92,7 @@ extension RecipientCell {
             return false
         }
         
-        if text.characters.count == 0 && range.length > 0 && !hasSelection {
+        if text.characters.count == 0 && range.location != NSNotFound && !hasSelection {
             let selectedRange = textView.selectedTextRange!
             
             if let newPos = textView.position(from: selectedRange.start, offset: -1) {
@@ -107,7 +107,7 @@ extension RecipientCell {
             }
         }
         
-        if range.length > 0 {
+        if range.location != NSNotFound {
             removeRecepients()
         }
         

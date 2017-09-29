@@ -11,13 +11,18 @@ import Foundation
 import MessageModel
 
 class AttachmentsViewOperation: Operation {
+    enum AttachmentContainer {
+        case imageAttachment(Attachment, UIImage)
+        case docAttachment(Attachment)
+    }
+
     let mimeTypes: MimeTypeUtil?
     let message: Message
 
     /**
      The resulting attachments view will appear here.
      */
-    var attachmentViewContainers = [AttachmentViewContainer]()
+    var attachmentContainers = [AttachmentContainer]()
 
     /**
      The number of attachments.
@@ -34,18 +39,13 @@ class AttachmentsViewOperation: Operation {
     }
 
     override func main() {
-        let dic = UIDocumentInteractionController()
         let attachments = message.viewableAttachments()
         for att in attachments {
             if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
                 let imgData = att.data, let img = UIImage(data: imgData) {
-                let view = UIImageView(image: img)
-                attachmentViewContainers.append(AttachmentViewContainer(view: view,
-                                                                        attachment: att))
+                attachmentContainers.append(.imageAttachment(att, img))
             } else {
-                dic.name = att.fileName
-                let view = AttachmentSummaryView(attachment: att, iconImage: dic.icons.first)
-                attachmentViewContainers.append(AttachmentViewContainer(view: view, attachment: att))
+                attachmentContainers.append(.docAttachment(att))
             }
         }
     }
