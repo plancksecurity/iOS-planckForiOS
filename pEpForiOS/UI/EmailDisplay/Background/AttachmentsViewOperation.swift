@@ -10,12 +10,12 @@ import Foundation
 
 import MessageModel
 
-struct AttachmentContainer {
-    let attachment: Attachment
-    let image: UIImage?
-}
-
 class AttachmentsViewOperation: Operation {
+    enum AttachmentContainer {
+        case imageAttachment(Attachment, UIImage)
+        case docAttachment(Attachment)
+    }
+
     let mimeTypes: MimeTypeUtil?
     let message: Message
 
@@ -43,9 +43,9 @@ class AttachmentsViewOperation: Operation {
         for att in attachments {
             if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
                 let imgData = att.data, let img = UIImage(data: imgData) {
-                attachmentContainers.append(AttachmentContainer(attachment: att, image: img))
+                attachmentContainers.append(.imageAttachment(att, img))
             } else {
-                attachmentContainers.append(AttachmentContainer(attachment: att, image: nil))
+                attachmentContainers.append(.docAttachment(att))
             }
         }
     }
