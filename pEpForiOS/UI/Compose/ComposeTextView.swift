@@ -67,7 +67,7 @@ open class ComposeTextView: UITextView {
     public final func textAttachments(range: NSRange? = nil) -> [TextAttachment] {
         let theRange = range ?? NSMakeRange(0, attributedText.length)
         var allAttachments = [TextAttachment]()
-        if theRange.length > 0 {
+        if theRange.location != NSNotFound {
             attributedText.enumerateAttribute(
                 NSAttributedStringKey.attachment, in: theRange,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
