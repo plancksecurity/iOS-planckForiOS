@@ -41,6 +41,8 @@ class EmailListViewCell: UITableViewCell {
         self.contactImageView.layer.masksToBounds = true
     }
 
+
+
     func updateFlags(message: Message) {
         let seen = haveSeen(message: message)
         let flagged = isFlagged(message: message)
@@ -63,7 +65,7 @@ class EmailListViewCell: UITableViewCell {
         }
     }
 
-    func setLabels(font: UIFont) {
+    func setLabels(font: UIFont) { //BUFF: rename
         senderLabel.font = font
         subjectLabel.font = font
         summaryLabel.font = font
@@ -85,7 +87,7 @@ class EmailListViewCell: UITableViewCell {
         if let message = messageAt(indexPath: indexPath, config: config) {
             UIHelper.putString(message.from?.userNameOrAddress, toLabel: self.senderLabel)
             UIHelper.putString(message.shortMessage, toLabel: self.subjectLabel)
-            
+
             // Snippet
             if let text = message.longMessage {
                 let theText = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
@@ -97,13 +99,13 @@ class EmailListViewCell: UITableViewCell {
             } else {
                 UIHelper.putString(nil, toLabel: self.summaryLabel)
             }
-            
+
             if let originationDate = message.sent {
                 UIHelper.putString(originationDate.smartString(), toLabel: self.dateLabel)
             } else {
                 UIHelper.putString(nil, toLabel: self.dateLabel)
             }
-            
+
             attachmentIcon.isHidden = message.viewableAttachments().count > 0 ? false : true
             updateFlags(message: message)
             updatePepRating(message: message)
@@ -129,11 +131,11 @@ class EmailListViewCell: UITableViewCell {
     func haveSeen(message: Message) -> Bool {
         return message.imapFlags?.seen ?? false
     }
-    
+
     func isFlagged(message: Message) -> Bool {
         return message.imapFlags?.flagged ?? false
     }
-    
+
     func messageAt(indexPath: IndexPath, config: EmailListConfig?) -> Message? {
         if let fol = config?.folder {
             return fol.messageAt(index: indexPath.row)

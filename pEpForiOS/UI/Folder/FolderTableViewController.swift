@@ -80,7 +80,7 @@ class FolderTableViewController: BaseTableViewController {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
             let vc = sb.instantiateViewController(withIdentifier: "EmailListViewController")
-                as? EmailListViewController
+                as? EmailListViewController_IOS700
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
                 return

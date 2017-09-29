@@ -13,7 +13,7 @@ public class EmailListViewModel : FilterUpdateProtocol{
 
 
     var folderToShow: Folder?
-    let cellsInUse = NSCache<NSString, EmailListViewCell>()
+    let cellsInUse = NSCache<NSString, EmailListViewCell>() //BUFF: This is wrong imo, as reused cells will show up multiple times here for multiple messages
     var delegate : TableViewUpdate?
 
     var filterEnabled = false

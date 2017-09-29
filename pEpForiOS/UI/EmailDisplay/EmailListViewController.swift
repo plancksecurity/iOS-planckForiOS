@@ -505,7 +505,7 @@ extension EmailListViewController: SegueHandlerType {
         }
     }
 
-    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
+    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) { //BUFF: dead code? looks empty & unconnected
     }
 
     func didChangeInternal(messageFolder: MessageFolder) {
