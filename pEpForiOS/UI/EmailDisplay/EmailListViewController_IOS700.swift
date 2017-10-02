@@ -17,9 +17,9 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
 }
 
 class EmailListViewModel_IOS700: FilterUpdateProtocol {
-    //    lazy var senderImageCache = NSCache<PreviewMessage, UIImage>()
+    let contactImageTool = IdentityImageTool()
     class Row {
-//        var senderImage: UIImage?
+        var senderContactImage: UIImage?
         var ratingImage: UIImage?
         var showAttchmentIcon: Bool = false
         let from: String
@@ -29,13 +29,8 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
         var isSeen: Bool = false
         var dateText: String
 
-//        func freeMemory() {
-//            senderImage = nil
-//        }
-
-        init(withPreviewMessage pvmsg: PreviewMessage) {
-            //            senderImage //BUFF: not here i guess
-            //            ratingImage //buff: not here I guess
+        init(withPreviewMessage pvmsg: PreviewMessage, senderContactImage: UIImage? = nil) {
+            self.senderContactImage = senderContactImage
             showAttchmentIcon = pvmsg.hasAttachments
             from = pvmsg.from.userNameOrAddress
             subject = pvmsg.subject
@@ -77,39 +72,42 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
             Log.shared.errorAndCrash(component: #function, errorString: "Problem getting data")
             return nil
         }
-        return Row(withPreviewMessage: previewMessage)
+        if let cachedSenderImage = contactImageTool.cachedIdentityImage(forIdentity: previewMessage.from) {
+            return Row(withPreviewMessage: previewMessage, senderContactImage: cachedSenderImage)
+        } else {
+            return Row(withPreviewMessage: previewMessage)
+        }
     }
 
     var rowCount: Int {
         return messages?.count ?? 0
     }
 
-
-    /// Returns (and caches) the senders contact image to display.
+    /// Returns the senders contact image to display.
     /// This is a possibly time consuming process and shold not be called from the main thread.
     ///
     /// - Parameter indexPath: row indexpath to get the contact image for
     /// - Returns: contact image to display
-    func senderImage(for indexPath:IndexPath) -> UIImage? {
+    func senderImage(forCellAt indexPath:IndexPath) -> UIImage? {
         guard let previewMessage = messages?.object(at: indexPath.row) else {
             return nil
         }
-        if previewMessage.senderImage != nil {
-            return previewMessage.senderImage
-        }
-
-        let tool = IdentityImageTool()
-        if let senderImage = tool.identityImage(for: previewMessage.from) {
-            setSenderImage(image: senderImage, for: indexPath)
-            return senderImage
-        }
-        return nil
+        return contactImageTool.identityImage(for: previewMessage.from)
     }
 
-    private func setSenderImage(image: UIImage, for indexPath: IndexPath) {
-        if let previewMessage = messages?.object(at: indexPath.row) {
-            previewMessage.senderImage = image
+    func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {
+        guard let previewMessage = messages?.object(at: indexPath.row),
+            let message = previewMessage.message() else {
+                return nil
         }
+        let session = PEPSessionCreator.shared.newSession()
+        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: session))
+        let result = color.statusIcon()
+        return result
+    }
+
+    func freeMemory() {
+        contactImageTool.clearCache()
     }
 
     private func resetViewModel() {
@@ -505,117 +503,39 @@ class EmailListViewController_IOS700: BaseTableViewController {
         cell.senderLabel.text = row.from
         cell.subjectLabel.text = row.subject
         cell.summaryLabel.text = row.bodyPeek
+        cell.isFlagged = row.isFlagged
+        cell.isSeen = row.isSeen
+        cell.hasAttachment = row.showAttchmentIcon
+        cell.dateLabel.text = row.dateText
+        // Set image from cache if any
+        cell.setContactImage(image: row.senderContactImage)
+
         let op = BlockOperation() { [weak self] in
             // ... and expensive computations in background
-            //            guard let strongSelf = self else {
-            //                // View is gone, nothing to do.
-            //                return
-            //            }
-            let senderImage = self?.model?.senderImage(for: indexPath)
+            guard let strongSelf = self else {
+                // View is gone, nothing to do.
+                return
+            }
+
+            var senderImage: UIImage?
+            if row.senderContactImage == nil {
+                // image for identity has not been cached yet, get and cache it
+                senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
+            }
+            let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath)
+
             // Set data on cell on main queue
             DispatchQueue.main.async {
-                cell.dateLabel.text = row.dateText //BUFF: move out of OP
-
-                cell.contactImageView.image  = senderImage
-
-                //    func updatePepRating(message: Message) {
-                //        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: theSession))
-                //        ratingImage.image = color.statusIcon()
-                //        ratingImage.backgroundColor = nil
-                //    }
-
-//                            identityForImage = message.from
-//                            if let ident = identityForImage, let imgProvider = config?.imageProvider {
-//                                imgProvider.image(forIdentity: ident) { img, ident in
-//                                    if ident == self.identityForImage {
-//                                        self.contactImageView.image = img
-//                                    }
-//                                }
-//                            }
-
-
-
-            //            senderImage: nil,
-            //            ratingImage: nil,
-            //            showAttchmentIcon: msg.attachments.count > 0,
-            //            from: from,
-            //            subject: msg.shortMessage ?? "",
-            //            bodyPeek: msg.longMessage ?? "",
-            //            isFlagged: msg.imapFlags?.flagged ?? false,
-            //            isSeen: msg.imapFlags?.seen ?? false,
-            //            date: msg.sent?.smartString() ?? "")
-
-
-            //BUFF: TODO
-            //        self.session = theSession
-            //        self.config = config
-            //
-            //        if let message = messageAt(indexPath: indexPath, config: config) {
-            //            UIHelper.putString(message.from?.userNameOrAddress, toLabel: self.senderLabel)
-            //            UIHelper.putString(message.shortMessage, toLabel: self.subjectLabel)
-            //
-            //            // Snippet
-            //            if let text = message.longMessage {
-            //                let theText = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
-            //                UIHelper.putString(UIHelper.cleanHtml(theText), toLabel: self.summaryLabel)
-            //            } else if let html = message.longMessageFormatted {
-            //                var text = html.extractTextFromHTML()
-            //                text = text?.replaceNewLinesWith(" ").trimmedWhiteSpace()
-            //                UIHelper.putString(text, toLabel: self.summaryLabel)
-            //            } else {
-            //                UIHelper.putString(nil, toLabel: self.summaryLabel)
-            //            }
-            //
-            //            if let originationDate = message.sent {
-            //                UIHelper.putString(originationDate.smartString(), toLabel: self.dateLabel)
-            //            } else {
-            //                UIHelper.putString(nil, toLabel: self.dateLabel)
-            //            }
-            //
-            //            attachmentIcon.isHidden = message.viewableAttachments().count > 0 ? false : true
-            //            updateFlags(message: message)
-            //            updatePepRating(message: message)
-            //
-            //            contactImageView.image = UIImage.init(named: "empty-avatar")
-            //            identityForImage = message.from
-            //            if let ident = identityForImage, let imgProvider = config?.imageProvider {
-            //                imgProvider.image(forIdentity: ident) { img, ident in
-            //                    if ident == self.identityForImage {
-            //                        self.contactImageView.image = img
-            //                    }
-            //                }
-            //            }
-            //
-            //            return message
-            //        }
+                if senderImage != nil {
+                    cell.contactImageView.image  = senderImage
+                }
+                if pEpRatingImage != nil {
+                    cell.setPepRatingImage(image: pEpRatingImage)
+                }
             }
         }
         queue(operation: op, for: indexPath)
     }
-
-    //    /**
-    //     The message at the given position.
-    //     */
-    //    func haveSeen(message: Message) -> Bool {
-    //        return message.imapFlags?.seen ?? false
-    //    }
-    //
-    //    func isFlagged(message: Message) -> Bool {
-    //        return message.imapFlags?.flagged ?? false
-    //    }
-    //
-    //    func messageAt(indexPath: IndexPath, config: EmailListConfig?) -> Message? {
-    //        if let fol = config?.folder {
-    //            return fol.messageAt(index: indexPath.row)
-    //        }
-    //        return nil
-    //    }
-
-    //    func updatePepRating(message: Message) {
-    //        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: theSession))
-    //        ratingImage.image = color.statusIcon()
-    //        ratingImage.backgroundColor = nil
-    //    }
 
     //    func updateFlags(message: Message) {
     //        let seen = haveSeen(message: message)
@@ -658,14 +578,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
     // MARK: - Trival Cache
 
     override func didReceiveMemoryWarning() {
-        //BUFF: TODO: clear senderImageCache
-        //        guard let m = model else {
-        //            return
-        //        }
-        //        for row in m.tableViewModel.rows {
-        //            var tmp = row
-        //            tmp.freeMemory()
-        //        }
+        model?.freeMemory()
     }
 }
 

@@ -17,7 +17,7 @@ class IdentityImageTool {
         imageCache.removeAllObjects()
     }
 
-    func cachedIdentityImage(forIdentity: Identity) -> UIImage? {
+    func cachedIdentityImage(forIdentity identity: Identity) -> UIImage? {
         return imageCache.object(forKey: identity)
     }
 
