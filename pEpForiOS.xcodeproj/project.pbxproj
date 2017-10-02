@@ -11,6 +11,7 @@
 		1500199F1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */; };
 		1507BC311F2640960036B3E9 /* CdMessage+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */; };
 		1507BC331F2641FD0036B3E9 /* Message+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */; };
+		15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */; };
 		1532D0D51F7D542700F88C6C /* EmailListViewController_IOS700.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532D0D41F7D542700F88C6C /* EmailListViewController_IOS700.swift */; };
 		153D08281F56BBCB00377110 /* AppendSendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */; };
 		153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */; };
@@ -374,6 +375,7 @@
 		1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperationTest.swift; sourceTree = "<group>"; };
 		1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+TestUtils.swift"; sourceTree = "<group>"; };
 		1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+TestUtils.swift"; sourceTree = "<group>"; };
+		15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityImageTool.swift; sourceTree = "<group>"; };
 		1532D0D41F7D542700F88C6C /* EmailListViewController_IOS700.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailListViewController_IOS700.swift; sourceTree = "<group>"; };
 		153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendSendMailsOperation.swift; sourceTree = "<group>"; };
 		153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-duplicated-attachments.txt"; sourceTree = "<group>"; };
@@ -1275,6 +1277,7 @@
 				B741D5021F26234A00DFD93A /* EmailAddressValidation.swift */,
 				157939781F4DED9D00A2A6CF /* PEPSessionCreator.swift */,
 				15C5F2451F823752007DE086 /* SortedSet.swift */,
+				15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1992,6 +1995,7 @@
 				431E2B091F0281DF000035FA /* SmtpSendService.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,
+				15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */,
 				432A3E3F1F0E6B3700834749 /* SyncExistingMessagesService.swift in Sources */,
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,

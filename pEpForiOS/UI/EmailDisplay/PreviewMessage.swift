@@ -7,14 +7,17 @@
 //
 
 import MessageModel
+import UIKit
 
 class PreviewMessage: Equatable {
     private let uuid: MessageID
+    private let userId: String?
     private let address: String
     private let parentFolderName: String
+    var senderImage: UIImage?
     var pEpRating: Int
     let hasAttachments: Bool
-    let from: String
+    let from: Identity
     let subject: String
     let bodyPeek: String
     var isFlagged: Bool = false
@@ -24,28 +27,32 @@ class PreviewMessage: Equatable {
     init(withMessage msg: Message) {
         if let rating = msg.pEpRatingInt,
             let nameOrAddress = msg.from?.userNameOrAddress,
-            let sent = msg.sent {
+            let sent = msg.sent,
+            let saveFrom = msg.from{
             uuid = msg.uuid
+            userId = msg.parent.account.user.userID
             address = msg.parent.account.user.address
             parentFolderName = msg.parent.name
             pEpRating = rating
             hasAttachments = msg.attachments.count > 0
-            from = nameOrAddress
+            from = saveFrom
             subject = msg.shortMessage ?? ""
             bodyPeek = msg.longMessageFormatted ?? msg.longMessage ?? ""
             isFlagged = msg.imapFlags?.flagged ?? false
             isSeen = msg.imapFlags?.seen ?? false
             dateSent = sent
         } else {
+            //this block is only to avoid init?
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We should have those values here")
             // Required field are missing. Should never happen. Return dummy data
             uuid = msg.uuid
+            userId = nil
             address = msg.parent.account.user.address
             parentFolderName = msg.parent.name
             pEpRating = 0
             hasAttachments = msg.attachments.count > 0
-            from = "Could not be found"
+            from = Identity(address: "")
             subject = msg.shortMessage ?? ""
             bodyPeek = msg.longMessageFormatted ?? msg.longMessage ?? ""
             isFlagged = msg.imapFlags?.flagged ?? false

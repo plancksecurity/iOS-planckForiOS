@@ -17,9 +17,9 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
 }
 
 class EmailListViewModel_IOS700: FilterUpdateProtocol {
-//    lazy var senderImageCache = NSCache<PreviewMessage, UIImage>()
+    //    lazy var senderImageCache = NSCache<PreviewMessage, UIImage>()
     class Row {
-        var senderImage: UIImage?
+//        var senderImage: UIImage?
         var ratingImage: UIImage?
         var showAttchmentIcon: Bool = false
         let from: String
@@ -29,15 +29,15 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
         var isSeen: Bool = false
         var dateText: String
 
-        func freeMemory() {
-            senderImage = nil
-        }
+//        func freeMemory() {
+//            senderImage = nil
+//        }
 
         init(withPreviewMessage pvmsg: PreviewMessage) {
             //            senderImage //BUFF: not here i guess
             //            ratingImage //buff: not here I guess
             showAttchmentIcon = pvmsg.hasAttachments
-            from = pvmsg.from
+            from = pvmsg.from.userNameOrAddress
             subject = pvmsg.subject
             bodyPeek = pvmsg.bodyPeek
             isFlagged = pvmsg.isFlagged
@@ -84,8 +84,35 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
         return messages?.count ?? 0
     }
 
+
+    /// Returns (and caches) the senders contact image to display.
+    /// This is a possibly time consuming process and shold not be called from the main thread.
+    ///
+    /// - Parameter indexPath: row indexpath to get the contact image for
+    /// - Returns: contact image to display
+    func senderImage(for indexPath:IndexPath) -> UIImage? {
+        guard let previewMessage = messages?.object(at: indexPath.row) else {
+            return nil
+        }
+        if previewMessage.senderImage != nil {
+            return previewMessage.senderImage
+        }
+
+        let tool = IdentityImageTool()
+        if let senderImage = tool.identityImage(for: previewMessage.from) {
+            setSenderImage(image: senderImage, for: indexPath)
+            return senderImage
+        }
+        return nil
+    }
+
+    private func setSenderImage(image: UIImage, for indexPath: IndexPath) {
+        if let previewMessage = messages?.object(at: indexPath.row) {
+            previewMessage.senderImage = image
+        }
+    }
+
     private func resetViewModel() {
-        //BUFF: dispatch!
         guard let folder = folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data, no cry.")
             return
@@ -112,11 +139,11 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
 
     //BUFF: TODO
 
-//    private func key(forMessage msg: Message) -> MessageKey {
-//        let parentFolderName = msg.parent.name
-//        let accountAddress = msg.parent.account.user.address
-//        return "\(accountAddress)\(parentFolderName)\(msg.uuid)"
-//    }
+    //    private func key(forMessage msg: Message) -> MessageKey {
+    //        let parentFolderName = msg.parent.name
+    //        let accountAddress = msg.parent.account.user.address
+    //        return "\(accountAddress)\(parentFolderName)\(msg.uuid)"
+    //    }
 
     func filterContentForSearchText(searchText: String? = nil, clear: Bool) {
         if clear {
@@ -199,33 +226,33 @@ extension EmailListViewModel_IOS700: MessageFolderDelegate { //BUFF: Shuld the m
                 //                tableView.insertRows(at: [ip], with: .automatic)
             } else {
                 delegate?.updateView()
-//                tableView.reloadData()
+                //                tableView.reloadData()
             }
         } else if message.isGhost {
-//            if let vm = self
-                //                    ,let cell = vm.cellFor(message: message), let ip = tableView.indexPath(for: cell)
-//            {
-                //BUFF: handle delete
-                //                    Log.info(
-                //                        component: #function,
-                //                        content: "delete message at \(index), \(folder.messageCount()) messages")
-                //BUFF: get data consistant, fugure out indexPath, and call delegate:
-//                delegate?.emailListModel(emailListModel: self, didRemoveDataAt: <#T##IndexPath#>)
-                //                    tableView.deleteRows(at: [ip], with: .automatic)
-//            } else {
-                delegate?.updateView()
-//                tableView.reloadData()
-//            }
+            //            if let vm = self
+            //                    ,let cell = vm.cellFor(message: message), let ip = tableView.indexPath(for: cell)
+            //            {
+            //BUFF: handle delete
+            //                    Log.info(
+            //                        component: #function,
+            //                        content: "delete message at \(index), \(folder.messageCount()) messages")
+            //BUFF: get data consistant, fugure out indexPath, and call delegate:
+            //                delegate?.emailListModel(emailListModel: self, didRemoveDataAt: <#T##IndexPath#>)
+            //                    tableView.deleteRows(at: [ip], with: .automatic)
+            //            } else {
+            delegate?.updateView()
+            //                tableView.reloadData()
+            //            }
         } else {
             // other flags than delete must have been changed
-//            if let vm = self//, let cell = vm.cellFor(message: message)
-//            {
-                //BUFF: handle update flags
-                //                    cell.updateFlags(message: message)
-//            } else {
-                delegate?.updateView()
-//                tableView.reloadData()
-//            }
+            //            if let vm = self//, let cell = vm.cellFor(message: message)
+            //            {
+            //BUFF: handle update flags
+            //                    cell.updateFlags(message: message)
+            //            } else {
+            delegate?.updateView()
+            //                tableView.reloadData()
+            //            }
         }
     }
 }
@@ -245,7 +272,6 @@ class EmailListViewController_IOS700: BaseTableViewController {
             return _folderToShow
         }
     }
-    let imageProvider = IdentityImageProvider()
 
     func updateLastLookAt() {
         guard let saveFolder = folderToShow else {
@@ -258,9 +284,9 @@ class EmailListViewController_IOS700: BaseTableViewController {
         }
     }
 
-//    struct UIState {
-//        var isSynching: Bool = false
-//    }
+    //    struct UIState {
+    //        var isSynching: Bool = false
+    //    }
 
     private var model: EmailListViewModel_IOS700?
 
@@ -298,11 +324,6 @@ class EmailListViewController_IOS700: BaseTableViewController {
         }
 
         MessageModelConfig.messageFolderDelegate = self as? MessageFolderDelegate
-        //BUFF:
-        //Create model here?
-//        tableView.reloadData()
-        //FFUB
-
         //BUFF: TODO
         if let vm = model {
             self.textFilterButton.isEnabled = vm.filterEnabled
@@ -317,15 +338,6 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
-
-//        //EmailListViewModel(config: config, delegate: self)
-//        // If no model exists yet (as folderToShow has not been set yet), create one
-//        if model == nil {
-//            //BUFF: we should have the folder to show here already. Double check.
-//            model = EmailListModel(delegate: self, folderToShow: nil)
-//        }
-
-
         setupFoldersBarButton()
     }
 
@@ -339,7 +351,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
     //BUFF: has to be tested
     private func hideFoldersNavigationBarButton() {
-          self.showFoldersButton.isEnabled = false
+        self.showFoldersButton.isEnabled = false
         self.showFoldersButton.tintColor = UIColor.clear
     }
     //BUFF: has to be tested
@@ -352,34 +364,25 @@ class EmailListViewController_IOS700: BaseTableViewController {
         model = EmailListViewModel_IOS700(delegate: self, folderToShow: folderToShow)
     }
 
-    // MARK: - Setup
-//    func updateModel() {
-//        tableView.reloadData() //BUFF: Äh, no.
-//    }
-
-    func setup() {
-//        // If no model exists yet (as folderToShow has not been set yet), create one
-//        if folderToShow == nil {
-//            folderToShow = Folder.unifiedInbox()
-//        }
-
-        //BUFF: should be obsolete, triggered when setting folderToShow
-//        if model == nil {
-//            model = EmailListModel(delegate: self, folderToShow: folderToShow)
-//        }
-
+    private func setup() {
         // We have not been created to show a specific folder, thus we show unified inbox
         if folderToShow == nil {
             folderToShow = Folder.unifiedInbox()
         }
 
-        if Account.all().isEmpty { //BUFF: check performance
+        if noAccountsExist() {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
         guard let saveFolder = folderToShow else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We do not know what to show without a folder")
             return
         }
         self.title = realName(of: saveFolder)
+    }
+
+    private func noAccountsExist() -> Bool {
+        return Account.all().isEmpty
     }
 
     private func setupFoldersBarButton() {
@@ -433,33 +436,25 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
     func handlefilter() {
         //BUFF: TODO
-//        if let vm = viewModel {
-//            if vm.filterEnabled {
-//                vm.filterEnabled = false
-//                handleButtonFilter(enabled: false)
-//                if config != nil {
-//                    vm.resetFilters()
-//                }
-//            } else {
-//                vm.filterEnabled = true
-//                if config != nil {
-//                    vm.enableFilter()
-//                }
-//                handleButtonFilter(enabled: true)
-//            }
-//            self.textFilterButton.isEnabled = vm.filterEnabled
-//        }
+        //        if let vm = viewModel {
+        //            if vm.filterEnabled {
+        //                vm.filterEnabled = false
+        //                handleButtonFilter(enabled: false)
+        //                if config != nil {
+        //                    vm.resetFilters()
+        //                }
+        //            } else {
+        //                vm.filterEnabled = true
+        //                if config != nil {
+        //                    vm.enableFilter()
+        //                }
+        //                handleButtonFilter(enabled: true)
+        //            }
+        //            self.textFilterButton.isEnabled = vm.filterEnabled
+        //        }
     }
 
     // MARK: - UITableViewDataSource
-
-    //BUFF: is default. not needed. We always have one section, maybe an empty one
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        if let _ = viewModel?.folderToShow {
-//            return 1
-//        }
-//        return 0
-//    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model?.rowCount ?? 0
@@ -469,11 +464,9 @@ class EmailListViewController_IOS700: BaseTableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "EmailListViewCell",
                                                        for: indexPath) as? EmailListViewCell_IOS700 else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell!")
-            return UITableViewCell()
+                                                        Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell!")
+                                                        return UITableViewCell()
         }
-//        let _ = cell.configureCell(config: config, indexPath: indexPath, session: session)
-//        viewModel?.associate(cell: cell, position: indexPath.row)
         configure(cell: cell, for: indexPath)
         return cell
     }
@@ -483,13 +476,13 @@ class EmailListViewController_IOS700: BaseTableViewController {
     override func tableView(_ tableView: UITableView, editActionsForRowAt
         indexPath: IndexPath)-> [UITableViewRowAction]? {
         //BUFF: TODO:
-//        let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
-//        if let email = cell.messageAt(indexPath: indexPath, config: config) {
-//            let flagAction = createFlagAction(message: email, cell: cell)
-//            let deleteAction = createDeleteAction(message: email, cell: cell)
-//            let moreAction = createMoreAction(message: email, cell: cell)
-//            return [deleteAction, flagAction, moreAction]
-//        }
+        //        let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
+        //        if let email = cell.messageAt(indexPath: indexPath, config: config) {
+        //            let flagAction = createFlagAction(message: email, cell: cell)
+        //            let deleteAction = createDeleteAction(message: email, cell: cell)
+        //            let moreAction = createMoreAction(message: email, cell: cell)
+        //            return [deleteAction, flagAction, moreAction]
+        //        }
         return nil
     }
 
@@ -498,35 +491,59 @@ class EmailListViewController_IOS700: BaseTableViewController {
     }
 
     //BUFF: from EmaiListCell
+    //BUFF: move somewhere
+
     private func configure(cell: EmailListViewCell_IOS700, for indexPath: IndexPath) {
         // Configure lightweight stuff on main thread ...
         guard let saveModel = model else {
             return
         }
-        let row = saveModel.row(for: indexPath)
-        cell.senderLabel.text = row?.from
-        cell.subjectLabel.text = row?.subject
-        cell.summaryLabel.text = row?.bodyPeek
+        guard let row = saveModel.row(for: indexPath) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
+            return
+        }
+        cell.senderLabel.text = row.from
+        cell.subjectLabel.text = row.subject
+        cell.summaryLabel.text = row.bodyPeek
         let op = BlockOperation() { [weak self] in
             // ... and expensive computations in background
-//            guard let strongSelf = self else {
-//                // View is gone, nothing to do.
-//                return
-//            }
+            //            guard let strongSelf = self else {
+            //                // View is gone, nothing to do.
+            //                return
+            //            }
+            let senderImage = self?.model?.senderImage(for: indexPath)
+            // Set data on cell on main queue
             DispatchQueue.main.async {
-                cell.dateLabel.text = row?.dateText
-            }
+                cell.dateLabel.text = row.dateText //BUFF: move out of OP
+
+                cell.contactImageView.image  = senderImage
+
+                //    func updatePepRating(message: Message) {
+                //        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: theSession))
+                //        ratingImage.image = color.statusIcon()
+                //        ratingImage.backgroundColor = nil
+                //    }
+
+//                            identityForImage = message.from
+//                            if let ident = identityForImage, let imgProvider = config?.imageProvider {
+//                                imgProvider.image(forIdentity: ident) { img, ident in
+//                                    if ident == self.identityForImage {
+//                                        self.contactImageView.image = img
+//                                    }
+//                                }
+//                            }
 
 
-//            senderImage: nil,
-//            ratingImage: nil,
-//            showAttchmentIcon: msg.attachments.count > 0,
-//            from: from,
-//            subject: msg.shortMessage ?? "",
-//            bodyPeek: msg.longMessage ?? "",
-//            isFlagged: msg.imapFlags?.flagged ?? false,
-//            isSeen: msg.imapFlags?.seen ?? false,
-//            date: msg.sent?.smartString() ?? "")
+
+            //            senderImage: nil,
+            //            ratingImage: nil,
+            //            showAttchmentIcon: msg.attachments.count > 0,
+            //            from: from,
+            //            subject: msg.shortMessage ?? "",
+            //            bodyPeek: msg.longMessage ?? "",
+            //            isFlagged: msg.imapFlags?.flagged ?? false,
+            //            isSeen: msg.imapFlags?.seen ?? false,
+            //            date: msg.sent?.smartString() ?? "")
 
 
             //BUFF: TODO
@@ -571,55 +588,56 @@ class EmailListViewController_IOS700: BaseTableViewController {
             //
             //            return message
             //        }
+            }
         }
         queue(operation: op, for: indexPath)
     }
 
-//    /**
-//     The message at the given position.
-//     */
-//    func haveSeen(message: Message) -> Bool {
-//        return message.imapFlags?.seen ?? false
-//    }
-//
-//    func isFlagged(message: Message) -> Bool {
-//        return message.imapFlags?.flagged ?? false
-//    }
-//
-//    func messageAt(indexPath: IndexPath, config: EmailListConfig?) -> Message? {
-//        if let fol = config?.folder {
-//            return fol.messageAt(index: indexPath.row)
-//        }
-//        return nil
-//    }
+    //    /**
+    //     The message at the given position.
+    //     */
+    //    func haveSeen(message: Message) -> Bool {
+    //        return message.imapFlags?.seen ?? false
+    //    }
+    //
+    //    func isFlagged(message: Message) -> Bool {
+    //        return message.imapFlags?.flagged ?? false
+    //    }
+    //
+    //    func messageAt(indexPath: IndexPath, config: EmailListConfig?) -> Message? {
+    //        if let fol = config?.folder {
+    //            return fol.messageAt(index: indexPath.row)
+    //        }
+    //        return nil
+    //    }
 
-//    func updatePepRating(message: Message) {
-//        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: theSession))
-//        ratingImage.image = color.statusIcon()
-//        ratingImage.backgroundColor = nil
-//    }
+    //    func updatePepRating(message: Message) {
+    //        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: theSession))
+    //        ratingImage.image = color.statusIcon()
+    //        ratingImage.backgroundColor = nil
+    //    }
 
-//    func updateFlags(message: Message) {
-//        let seen = haveSeen(message: message)
-//        let flagged = isFlagged(message: message)
-//
-//        self.flaggedImageView.backgroundColor = nil
-//        if flagged {
-//            let fi = FlagImages.create(imageSize: flaggedImageView.frame.size)
-//            self.flaggedImageView.isHidden = false
-//            self.flaggedImageView.image = fi.flagsImage(message: message)
-//        } else {
-//            // show nothing
-//            self.flaggedImageView.isHidden = true
-//            self.flaggedImageView.image = nil
-//        }
-//
-//        if let font = senderLabel.font {
-//            let font = seen ? UIFont.systemFont(ofSize: font.pointSize):
-//                UIFont.boldSystemFont(ofSize: font.pointSize)
-//            setLabels(font: font)
-//        }
-//    }
+    //    func updateFlags(message: Message) {
+    //        let seen = haveSeen(message: message)
+    //        let flagged = isFlagged(message: message)
+    //
+    //        self.flaggedImageView.backgroundColor = nil
+    //        if flagged {
+    //            let fi = FlagImages.create(imageSize: flaggedImageView.frame.size)
+    //            self.flaggedImageView.isHidden = false
+    //            self.flaggedImageView.image = fi.flagsImage(message: message)
+    //        } else {
+    //            // show nothing
+    //            self.flaggedImageView.isHidden = true
+    //            self.flaggedImageView.image = nil
+    //        }
+    //
+    //        if let font = senderLabel.font {
+    //            let font = seen ? UIFont.systemFont(ofSize: font.pointSize):
+    //                UIFont.boldSystemFont(ofSize: font.pointSize)
+    //            setLabels(font: font)
+    //        }
+    //    }
 
     // MARK: - Queue Handling
 
@@ -641,13 +659,13 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
     override func didReceiveMemoryWarning() {
         //BUFF: TODO: clear senderImageCache
-//        guard let m = model else {
-//            return
-//        }
-//        for row in m.tableViewModel.rows {
-//            var tmp = row
-//            tmp.freeMemory()
-//        }
+        //        guard let m = model else {
+        //            return
+        //        }
+        //        for row in m.tableViewModel.rows {
+        //            var tmp = row
+        //            tmp.freeMemory()
+        //        }
     }
 }
 
@@ -684,16 +702,16 @@ extension EmailListViewController_IOS700: EmailListViewModelDelegate {
 
     func updateView() {
         //BUFF: uncomment
-//        if let m = model, let filter = folderToShow?.filter, filter.isDefault() {
-//            m.filterEnabled = false
-//            handleButtonFilter(enabled: false)
-//        }
+        //        if let m = model, let filter = folderToShow?.filter, filter.isDefault() {
+        //            m.filterEnabled = false
+        //            handleButtonFilter(enabled: false)
+        //        }
         self.tableView.reloadData()
-//        if var vm = self.model, let filter = vm.folderToShow?.filter, filter.isDefault() {
-//            vm.filterEnabled = false
-//            handleButtonFilter(enabled: false)
-//        }
-//        self.tableView.reloadData()
+        //        if var vm = self.model, let filter = vm.folderToShow?.filter, filter.isDefault() {
+        //            vm.filterEnabled = false
+        //            handleButtonFilter(enabled: false)
+        //        }
+        //        self.tableView.reloadData()
     }
 }
 
@@ -786,19 +804,19 @@ extension EmailListViewController_IOS700 {
 
     func createDeleteAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
         //BUFF:
-//        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-//            guard let message = cell.messageAt(indexPath: indexPath, config: self.config) else {
-//                return
-//            }
-//
-//            message.delete() // mark for deletion/trash
-//            self.tableView.reloadData()
-//        }
-//
-//        let title = NSLocalizedString("Delete", comment: "Message action (on swipe)")
-//        return createRowAction(
-//            cell: cell, image: UIImage(named: "swipe-trash"), action: action,
-//            title: "\n\n\(title)")
+        //        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+        //            guard let message = cell.messageAt(indexPath: indexPath, config: self.config) else {
+        //                return
+        //            }
+        //
+        //            message.delete() // mark for deletion/trash
+        //            self.tableView.reloadData()
+        //        }
+        //
+        //        let title = NSLocalizedString("Delete", comment: "Message action (on swipe)")
+        //        return createRowAction(
+        //            cell: cell, image: UIImage(named: "swipe-trash"), action: action,
+        //            title: "\n\n\(title)")
         return UITableViewRowAction() //BUFF: delete
     }
 
@@ -856,11 +874,11 @@ extension EmailListViewController_IOS700: SegueHandlerType {
 
     private func currentMessage(senderCell: Any?) -> (Message, IndexPath)? {
         //BUFF:
-//        if let cell = senderCell as? EmailListViewCell,
-//            let indexPath = self.tableView.indexPath(for: cell),
-//            let message = cell.messageAt(indexPath: indexPath, config: config) {
-//            return (message, indexPath)
-//        }
+        //        if let cell = senderCell as? EmailListViewCell,
+        //            let indexPath = self.tableView.indexPath(for: cell),
+        //            let message = cell.messageAt(indexPath: indexPath, config: config) {
+        //            return (message, indexPath)
+        //        }
         return nil
     }
 
