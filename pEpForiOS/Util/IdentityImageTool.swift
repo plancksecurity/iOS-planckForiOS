@@ -10,10 +10,33 @@ import UIKit
 import AddressBook
 import MessageModel
 
-struct IdentityImageTool {
+class IdentityImageTool {
+    lazy var imageCache = NSCache<Identity, UIImage>()
+
+    func clearCache() {
+        imageCache.removeAllObjects()
+    }
+
+    func cachedIdentityImage(forIdentity: Identity) -> UIImage? {
+        return imageCache.object(forKey: identity)
+    }
+
+    /// Creates (and caches) the contact image to display for an identity.
+    /// This is a possibly time consuming process and shold not be called from the main thread.
+    ///
+    /// - Parameters:
+    ///   - identity: identity to create contact image to doisplay for
+    ///   - imageSize: size of the image to create
+    ///   - textColor: text color to use in case the resulting images contains the users initials
+    ///   - backgroundColor: backgroundcolor to use in case the resulting images contains the users initials
+    /// - Returns: contact image to display
     func identityImage(for identity:Identity, imageSize: CGSize = CGSize.defaultAvatarSize, textColor: UIColor = UIColor.white,
                        backgroundColor: UIColor = UIColor(hex: "#c8c7cc")) -> UIImage? {
         var image:UIImage?
+        if let cachedImage = imageCache.object(forKey: identity) {
+            return cachedImage
+        }
+
         if let theID = identity.userID {
             let ab = AddressBook()
             if let contact = ab.contactBy(userID: theID),
@@ -31,6 +54,9 @@ struct IdentityImageTool {
             }
             image = identityImageFromName(initials: initials, size: imageSize, textColor: textColor,
                                           imageBackgroundColor: backgroundColor)
+        }
+        if let saveImage = image {
+            imageCache.setObject(saveImage, forKey: identity)
         }
         return image
     }
