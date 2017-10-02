@@ -14,19 +14,19 @@ class PreviewMessage: Equatable {
     private let userId: String?
     private let address: String
     private let parentFolderName: String
-    var senderImage: UIImage?
     var pEpRating: Int
     let hasAttachments: Bool
     let from: Identity
     let subject: String
-    let bodyPeek: String
+    var bodyPeek: String
     var isFlagged: Bool = false
     var isSeen: Bool = false
     let dateSent: Date
 
+    var maxBodyPreviewCharacters = 120
+
     init(withMessage msg: Message) {
         if let rating = msg.pEpRatingInt,
-            let nameOrAddress = msg.from?.userNameOrAddress,
             let sent = msg.sent,
             let saveFrom = msg.from{
             uuid = msg.uuid
@@ -37,10 +37,11 @@ class PreviewMessage: Equatable {
             hasAttachments = msg.attachments.count > 0
             from = saveFrom
             subject = msg.shortMessage ?? ""
-            bodyPeek = msg.longMessageFormatted ?? msg.longMessage ?? ""
             isFlagged = msg.imapFlags?.flagged ?? false
             isSeen = msg.imapFlags?.seen ?? false
             dateSent = sent
+            bodyPeek = ""
+            bodyPeek = displayBody(fromMessage: msg)
         } else {
             //this block is only to avoid init?
             Log.shared.errorAndCrash(component: #function,
@@ -60,6 +61,29 @@ class PreviewMessage: Equatable {
             dateSent = Date()
         }
 
+    }
+
+
+    private func displayBody(fromMessage msg: Message) -> String {
+        var body: String?
+        if let text = msg.longMessage {
+            body = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
+        } else if let html = msg.longMessageFormatted {
+            body = html.extractTextFromHTML()
+            body = body?.replaceNewLinesWith(" ").trimmedWhiteSpace()
+        }
+        guard let saveBody = body else {
+            return ""
+        }
+
+        let result: String
+        if saveBody.characters.count <= maxBodyPreviewCharacters {
+            result = saveBody
+        } else {
+            let endIndex = saveBody.index(saveBody.startIndex, offsetBy: maxBodyPreviewCharacters)
+            result = String(saveBody[..<endIndex])
+        }
+        return result
     }
 
     public func message() -> Message? {
