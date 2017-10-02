@@ -11,36 +11,44 @@ import Foundation
 
 import MessageModel
 
-protocol EmailListModelDelegate: TableViewUpdate {
-    func emailListModel(emailListModel: EmailListModel, didInsertDataAt indexPath: IndexPath)
-    func emailListModel(emailListModel: EmailListModel, didRemoveDataAt indexPath: IndexPath)
+protocol EmailListViewModelDelegate: TableViewUpdate {
+    func emailListViewModel(viewModel: EmailListViewModel_IOS700, didInsertDataAt indexPath: IndexPath)
+    func emailListViewModel(viewModel: EmailListViewModel_IOS700, didRemoveDataAt indexPath: IndexPath)
 }
 
-class EmailListModel: FilterUpdateProtocol {
-    typealias MessageKey = String
-    public struct TableViewModel {
-        var rows: [Row]
-        public struct Row {
-            let identifier: MessageKey
-            var senderImage: UIImage?
-            var ratingImage: UIImage?
-            var showAttchmentIcon: Bool = false
-            let from: String
-            let subject: String
-            let bodyPeek: String
-            var isFlagged: Bool = false
-            var isSeen: Bool = false
-            var date: String
+class EmailListViewModel_IOS700: FilterUpdateProtocol {
+//    lazy var senderImageCache = NSCache<PreviewMessage, UIImage>()
+    class Row {
+        var senderImage: UIImage?
+        var ratingImage: UIImage?
+        var showAttchmentIcon: Bool = false
+        let from: String
+        let subject: String
+        let bodyPeek: String
+        var isFlagged: Bool = false
+        var isSeen: Bool = false
+        var dateText: String
 
-            mutating func freeMemory() {
-                senderImage = nil
-                ratingImage = nil
-            }
+        func freeMemory() {
+            senderImage = nil
+        }
+
+        init(withPreviewMessage pvmsg: PreviewMessage) {
+            //            senderImage //BUFF: not here i guess
+            //            ratingImage //buff: not here I guess
+            showAttchmentIcon = pvmsg.hasAttachments
+            from = pvmsg.from
+            subject = pvmsg.subject
+            bodyPeek = pvmsg.bodyPeek
+            isFlagged = pvmsg.isFlagged
+            isSeen = pvmsg.isSeen
+            dateText = pvmsg.dateSent.smartString()
         }
     }
 
-    public var tableViewModel: TableViewModel = TableViewModel(rows: [])
-    public var delegate: EmailListModelDelegate?
+    private var messages: SortedSet<PreviewMessage>?
+
+    public var delegate: EmailListViewModelDelegate?
     private var _folderToShow: Folder?
     private var folderToShow: Folder? {
         set{
@@ -48,7 +56,7 @@ class EmailListModel: FilterUpdateProtocol {
                 return
             }
             _folderToShow = newValue
-            updateViewModel()
+            resetViewModel()
         }
         get {
             return _folderToShow
@@ -58,44 +66,45 @@ class EmailListModel: FilterUpdateProtocol {
     public private(set) var enabledFilters : Filter? = nil
     private var lastFilterEnabled: Filter?
 
-    init(delegate: EmailListModelDelegate? = nil, folderToShow: Folder? = nil) {
+    init(delegate: EmailListViewModelDelegate? = nil, folderToShow: Folder? = nil) {
         self.delegate = delegate
         self.folderToShow = folderToShow
     }
 
     //BUFF:
-    private func updateViewModel() {
+    func row(for indexPath: IndexPath) -> Row? {
+        guard let previewMessage = messages?.object(at: indexPath.row) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Problem getting data")
+            return nil
+        }
+        return Row(withPreviewMessage: previewMessage)
+    }
+
+    var rowCount: Int {
+        return messages?.count ?? 0
+    }
+
+    private func resetViewModel() {
         //BUFF: dispatch!
         guard let folder = folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data, no cry.")
             return
         }
+
         let messagesToDisplay = folder.allMessages()
-        var rows = [TableViewModel.Row]()
-        for msg in messagesToDisplay {
-            //BUFF: ??? senderImage hrere or config?
-            //ratingImage ??
-
-            guard let from = msg.from?.userNameOrAddress else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString:
-                    "All mails in Email List must should have a \"from\" address, no?")
-                continue
+        let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
+        let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
+        { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
+            if pvMsg1.dateSent < pvMsg1.dateSent {
+                return .orderedAscending
+            } else if pvMsg1.dateSent > pvMsg1.dateSent {
+                return .orderedDescending
+            } else {
+                return .orderedSame
             }
-
-            let row = TableViewModel.Row(identifier: key(forMessage: msg),
-                                         senderImage: nil,
-                                         ratingImage: nil,
-                                         showAttchmentIcon: msg.attachments.count > 0,
-                                         from: from,
-                                         subject: msg.shortMessage ?? "",
-                                         bodyPeek: msg.longMessage ?? "",
-                                         isFlagged: msg.imapFlags?.flagged ?? false,
-                                         isSeen: msg.imapFlags?.seen ?? false,
-                                         date: msg.sent?.smartString() ?? "")
-            rows.append(row)
         }
-        tableViewModel.rows = rows
+
+        messages = SortedSet(array: previewMessages, sortBlock: sortByDateSentAscending)
         delegate?.updateView()
     }
 
@@ -103,11 +112,11 @@ class EmailListModel: FilterUpdateProtocol {
 
     //BUFF: TODO
 
-    private func key(forMessage msg: Message) -> MessageKey {
-        let parentFolderName = msg.parent.name
-        let accountAddress = msg.parent.account.user.address
-        return "\(accountAddress)\(parentFolderName)\(msg.uuid)"
-    }
+//    private func key(forMessage msg: Message) -> MessageKey {
+//        let parentFolderName = msg.parent.name
+//        let accountAddress = msg.parent.account.user.address
+//        return "\(accountAddress)\(parentFolderName)\(msg.uuid)"
+//    }
 
     func filterContentForSearchText(searchText: String? = nil, clear: Bool) {
         if clear {
@@ -165,8 +174,8 @@ class EmailListModel: FilterUpdateProtocol {
 
 // MARK: - MessageFolderDelegate
 
-extension EmailListModel: MessageFolderDelegate { //BUFF: Shuld the model be the delegate? If so, it must be changed to a class
-    func didChange(messageFolder: MessageFolder) {
+extension EmailListViewModel_IOS700: MessageFolderDelegate { //BUFF: Shuld the model be the delegate? If so, it must be changed to a class
+    public func didChange(messageFolder: MessageFolder) {
         GCD.onMainWait { //BUFF: assure we are not on main thread alread, to avoid deadlock
             self.didChangeInternal(messageFolder: messageFolder)
         }
@@ -186,7 +195,7 @@ extension EmailListModel: MessageFolderDelegate { //BUFF: Shuld the model be the
                 Log.info(
                     component: #function,
                     content: "insert message at \(index), \(folder.messageCount()) messages")
-                delegate?.emailListModel(emailListModel: self, didInsertDataAt: ip)
+                delegate?.emailListViewModel(viewModel: self, didInsertDataAt: ip)
                 //                tableView.insertRows(at: [ip], with: .automatic)
             } else {
                 delegate?.updateView()
@@ -253,7 +262,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
 //        var isSynching: Bool = false
 //    }
 
-    private var model: EmailListModel?
+    private var model: EmailListViewModel_IOS700?
 
     private let queue: OperationQueue = {
         let createe = OperationQueue()
@@ -340,7 +349,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
     }
 
     private func resetModel() {
-        model = EmailListModel(delegate: self, folderToShow: folderToShow)
+        model = EmailListViewModel_IOS700(delegate: self, folderToShow: folderToShow)
     }
 
     // MARK: - Setup
@@ -453,7 +462,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
 //    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model?.tableViewModel.rows.count ?? 0
+        return model?.rowCount ?? 0
     }
 
     override func tableView(_ tableView: UITableView,
@@ -494,10 +503,10 @@ class EmailListViewController_IOS700: BaseTableViewController {
         guard let saveModel = model else {
             return
         }
-        let rowModel = saveModel.tableViewModel.rows[indexPath.row]
-        cell.senderLabel.text = rowModel.from
-        cell.subjectLabel.text = rowModel.subject
-        cell.summaryLabel.text = rowModel.bodyPeek
+        let row = saveModel.row(for: indexPath)
+        cell.senderLabel.text = row?.from
+        cell.subjectLabel.text = row?.subject
+        cell.summaryLabel.text = row?.bodyPeek
         let op = BlockOperation() { [weak self] in
             // ... and expensive computations in background
 //            guard let strongSelf = self else {
@@ -505,7 +514,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
 //                return
 //            }
             DispatchQueue.main.async {
-                cell.dateLabel.text = rowModel.date
+                cell.dateLabel.text = row?.dateText
             }
 
 
@@ -631,13 +640,14 @@ class EmailListViewController_IOS700: BaseTableViewController {
     // MARK: - Trival Cache
 
     override func didReceiveMemoryWarning() {
-        guard let m = model else {
-            return
-        }
-        for row in m.tableViewModel.rows {
-            var tmp = row
-            tmp.freeMemory()
-        }
+        //BUFF: TODO: clear senderImageCache
+//        guard let m = model else {
+//            return
+//        }
+//        for row in m.tableViewModel.rows {
+//            var tmp = row
+//            tmp.freeMemory()
+//        }
     }
 }
 
@@ -659,7 +669,19 @@ extension EmailListViewController_IOS700: UISearchResultsUpdating, UISearchContr
 
 // MARK: - EmailListModelDelegate
 
-extension EmailListViewController_IOS700: EmailListModelDelegate {
+extension EmailListViewController_IOS700: EmailListViewModelDelegate {
+    func emailListViewModel(viewModel: EmailListViewModel_IOS700, didInsertDataAt indexPath: IndexPath) {
+        tableView.beginUpdates() //BUFF: need testing
+        tableView.insertRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
+    }
+
+    func emailListViewModel(viewModel: EmailListViewModel_IOS700, didRemoveDataAt indexPath: IndexPath) {
+        tableView.beginUpdates()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
+    }
+
     func updateView() {
         //BUFF: uncomment
 //        if let m = model, let filter = folderToShow?.filter, filter.isDefault() {
@@ -672,18 +694,6 @@ extension EmailListViewController_IOS700: EmailListModelDelegate {
 //            handleButtonFilter(enabled: false)
 //        }
 //        self.tableView.reloadData()
-    }
-
-    func emailListModel(emailListModel: EmailListModel, didInsertDataAt indexPath: IndexPath) {
-        tableView.beginUpdates() //BUFF: need testing
-        tableView.insertRows(at: [indexPath], with: .automatic)
-        tableView.endUpdates()
-    }
-
-    func emailListModel(emailListModel: EmailListModel, didRemoveDataAt indexPath: IndexPath) {
-        tableView.beginUpdates()
-        tableView.deleteRows(at: [indexPath], with: .automatic)
-        tableView.endUpdates()
     }
 }
 
