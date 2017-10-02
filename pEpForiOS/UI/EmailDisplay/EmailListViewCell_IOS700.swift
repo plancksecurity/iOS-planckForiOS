@@ -57,16 +57,34 @@ class EmailListViewCell_IOS700: UITableViewCell {
         }
     }
 
+    func setPepRatingImage(image: UIImage?) {
+        guard image != nil else {
+            return
+        }
+        self.ratingImage.image = image
+        self.ratingImage.isHidden = false
+    }
+
+    func setContactImage(image: UIImage?) {
+        guard image != nil else {
+            return
+        }
+        self.contactImageView.image = image
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCellSelectionStyle.none
-
         self.contactImageView.layer.cornerRadius = round(contactImageView.bounds.size.width / 2)
         self.contactImageView.layer.masksToBounds = true
-        self.contactImageView.image = EmailListViewCell_IOS700.emptyContactImage
+        resetToDefault()
     }
 
     override func prepareForReuse() {
+        resetToDefault()
+    }
+
+    private func resetToDefault() {
         senderLabel.text = nil
         subjectLabel.text = nil
         summaryLabel.text = nil
