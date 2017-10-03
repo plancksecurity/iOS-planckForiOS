@@ -68,7 +68,8 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
 
     func row(for indexPath: IndexPath) -> Row? {
         guard let previewMessage = messages?.object(at: indexPath.row) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Problem getting data")
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "InconsistencyviewModel vs. model")
             return nil
         }
         if let cachedSenderImage = contactImageTool.cachedIdentityImage(forIdentity: previewMessage.from) {
@@ -89,14 +90,27 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
     /// - Returns: contact image to display
     func senderImage(forCellAt indexPath:IndexPath) -> UIImage? {
         guard let previewMessage = messages?.object(at: indexPath.row) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "InconsistencyviewModel vs. model")
             return nil
         }
         return contactImageTool.identityImage(for: previewMessage.from)
     }
 
+    private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
+        guard let previewMessage = messages?.object(at: indexPath.row) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "InconsistencyviewModel vs. model")
+            return nil
+        }
+        return contactImageTool.cachedIdentityImage(forIdentity: previewMessage.from)
+    }
+
     func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {
         guard let previewMessage = messages?.object(at: indexPath.row),
             let message = previewMessage.message() else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "InconsistencyviewModel vs. model")
                 return nil
         }
         let session = PEPSessionCreator.shared.newSession()
@@ -477,13 +491,20 @@ class EmailListViewController_IOS700: BaseTableViewController {
                 // image for identity has not been cached yet, get and cache it
                 senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
             }
-            let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath)
 
-            // Set data on cell on main queue
+            // Set data on cell on main queue.
+            // In theory we want to set all data in *one* async call. But as pEpRatingColorImage takes
+            // very long, we are setting the sender image seperatelly.
             DispatchQueue.main.async {
                 if senderImage != nil {
                     cell.contactImageView.image  = senderImage
                 }
+            }
+
+            let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath)
+
+            // Set data on cell on main queue, again ...
+            DispatchQueue.main.async {
                 if pEpRatingImage != nil {
                     cell.setPepRatingImage(image: pEpRatingImage)
                 }
