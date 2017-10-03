@@ -66,7 +66,6 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
         self.folderToShow = folderToShow
     }
 
-    //BUFF:
     func row(for indexPath: IndexPath) -> Row? {
         guard let previewMessage = messages?.object(at: indexPath.row) else {
             Log.shared.errorAndCrash(component: #function, errorString: "Problem getting data")
@@ -166,16 +165,6 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
         messages = SortedSet(array: previewMessages, sortBlock: sortByDateSentAscending)
         delegate?.updateView()
     }
-
-    //FFUB
-
-    //BUFF: TODO
-
-    //    private func key(forMessage msg: Message) -> MessageKey {
-    //        let parentFolderName = msg.parent.name
-    //        let accountAddress = msg.parent.account.user.address
-    //        return "\(accountAddress)\(parentFolderName)\(msg.uuid)"
-    //    }
 
     func filterContentForSearchText(searchText: String? = nil, clear: Bool) {
         if clear {
@@ -315,10 +304,6 @@ class EmailListViewController_IOS700: BaseTableViewController {
             saveFolder.updateLastLookAtAndSave()
         }
     }
-
-    //    struct UIState {
-    //        var isSynching: Bool = false
-    //    }
 
     private var model: EmailListViewModel_IOS700?
 
@@ -461,6 +446,52 @@ class EmailListViewController_IOS700: BaseTableViewController {
         }
     }
 
+    private func configure(cell: EmailListViewCell_IOS700, for indexPath: IndexPath) {
+        // Configure lightweight stuff on main thread ...
+        guard let saveModel = model else {
+            return
+        }
+        guard let row = saveModel.row(for: indexPath) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
+            return
+        }
+        cell.senderLabel.text = row.from
+        cell.subjectLabel.text = row.subject
+        cell.summaryLabel.text = row.bodyPeek
+        cell.isFlagged = row.isFlagged
+        cell.isSeen = row.isSeen
+        cell.hasAttachment = row.showAttchmentIcon
+        cell.dateLabel.text = row.dateText
+        // Set image from cache if any
+        cell.setContactImage(image: row.senderContactImage)
+
+        let op = BlockOperation() { [weak self] in
+            // ... and expensive computations in background
+            guard let strongSelf = self else {
+                // View is gone, nothing to do.
+                return
+            }
+
+            var senderImage: UIImage?
+            if row.senderContactImage == nil {
+                // image for identity has not been cached yet, get and cache it
+                senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
+            }
+            let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath)
+
+            // Set data on cell on main queue
+            DispatchQueue.main.async {
+                if senderImage != nil {
+                    cell.contactImageView.image  = senderImage
+                }
+                if pEpRatingImage != nil {
+                    cell.setPepRatingImage(image: pEpRatingImage)
+                }
+            }
+        }
+        queue(operation: op, for: indexPath)
+    }
+
     // MARK: - Actions
 
     @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {
@@ -525,81 +556,10 @@ class EmailListViewController_IOS700: BaseTableViewController {
         cancelOperation(for: indexPath)
     }
 
-    //BUFF: from EmaiListCell
-    //BUFF: move somewhere
-
-    private func configure(cell: EmailListViewCell_IOS700, for indexPath: IndexPath) {
-        // Configure lightweight stuff on main thread ...
-        guard let saveModel = model else {
-            return
-        }
-        guard let row = saveModel.row(for: indexPath) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
-            return
-        }
-        cell.senderLabel.text = row.from
-        cell.subjectLabel.text = row.subject
-        cell.summaryLabel.text = row.bodyPeek
-        cell.isFlagged = row.isFlagged
-        cell.isSeen = row.isSeen
-        cell.hasAttachment = row.showAttchmentIcon
-        cell.dateLabel.text = row.dateText
-        // Set image from cache if any
-        cell.setContactImage(image: row.senderContactImage)
-
-        let op = BlockOperation() { [weak self] in
-            // ... and expensive computations in background
-            guard let strongSelf = self else {
-                // View is gone, nothing to do.
-                return
-            }
-
-            var senderImage: UIImage?
-            if row.senderContactImage == nil {
-                // image for identity has not been cached yet, get and cache it
-                senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
-            }
-            let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath)
-
-            // Set data on cell on main queue
-            DispatchQueue.main.async {
-                if senderImage != nil {
-                    cell.contactImageView.image  = senderImage
-                }
-                if pEpRatingImage != nil {
-                    cell.setPepRatingImage(image: pEpRatingImage)
-                }
-            }
-        }
-        queue(operation: op, for: indexPath)
-    }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
         performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
-
-    //    func updateFlags(message: Message) {
-    //        let seen = haveSeen(message: message)
-    //        let flagged = isFlagged(message: message)
-    //
-    //        self.flaggedImageView.backgroundColor = nil
-    //        if flagged {
-    //            let fi = FlagImages.create(imageSize: flaggedImageView.frame.size)
-    //            self.flaggedImageView.isHidden = false
-    //            self.flaggedImageView.image = fi.flagsImage(message: message)
-    //        } else {
-    //            // show nothing
-    //            self.flaggedImageView.isHidden = true
-    //            self.flaggedImageView.image = nil
-    //        }
-    //
-    //        if let font = senderLabel.font {
-    //            let font = seen ? UIFont.systemFont(ofSize: font.pointSize):
-    //                UIFont.boldSystemFont(ofSize: font.pointSize)
-    //            setLabels(font: font)
-    //        }
-    //    }
 
     // MARK: - Queue Handling
 
@@ -774,30 +734,6 @@ extension EmailListViewController_IOS700 {
                                title: "\n\n\(title)")
     }
 
-//    func createMarkAsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-//        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-//            if cell.haveSeen(message: message) {
-//                message.imapFlags?.seen = false
-//            } else {
-//                message.imapFlags?.seen = true
-//            }
-//            self.tableView.reloadRows(at: [indexPath], with: .none)
-//        }
-//
-//        var title = NSLocalizedString(
-//            "Unread", comment: "Message action (on swipe)")
-//        if !cell.haveSeen(message: message) {
-//            title = NSLocalizedString(
-//                "Read", comment: "Message action (on swipe)")
-//        }
-//
-//        let isReadAction = createRowAction(cell: cell, image: nil, action: action,
-//                                           title: title)
-//        isReadAction.backgroundColor = UIColor.blue
-//
-//        return isReadAction
-//    }
-
     func createMoreAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
         func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
             self.showMoreActionSheet(forRowAt: indexPath)
@@ -825,16 +761,6 @@ extension EmailListViewController_IOS700: SegueHandlerType {
         case segueFolderViews
         case noSegue
     }
-
-//    private func currentMessage(senderCell: Any?) -> (Message, IndexPath)? {
-//        //BUFF:
-//        //        if let cell = senderCell as? EmailListViewCell,
-//        //            let indexPath = self.tableView.indexPath(for: cell),
-//        //            let message = cell.messageAt(indexPath: indexPath, config: config) {
-//        //            return (message, indexPath)
-//        //        }
-//        return nil
-//    }
 
     /// Figures out the the appropriate account to use as sender ("from" field) when composing a mail.
     ///
