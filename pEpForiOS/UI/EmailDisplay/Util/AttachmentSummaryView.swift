@@ -92,7 +92,6 @@ class AttachmentSummaryView: UIView {
             imgView.widthAnchor.constraint(
                 lessThanOrEqualTo: guide.widthAnchor, multiplier: 1,
                 constant: 2 * -marginHorizontal).isActive = true
-            imgView.activateAspectRatioConstraint()
             lastVerticalView = imgView
         }
 
