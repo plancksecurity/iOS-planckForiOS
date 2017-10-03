@@ -106,8 +106,38 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
         return result
     }
 
+    func setFlagged(forIndexPath indexPath: IndexPath) {
+        setFlagged(forIndexPath: indexPath, newValue: true)
+    }
+
+    func unsetFlagged(forIndexPath indexPath: IndexPath) {
+        setFlagged(forIndexPath: indexPath, newValue: false)
+    }
+
+    func delete(forIndexPath indexPath: IndexPath) {
+        guard let previewMessage = messages?.object(at: indexPath.row),
+            let message = previewMessage.message() else {
+                return
+        }
+        messages?.remove(object: previewMessage)
+        message.delete()
+    }
+
     func freeMemory() {
         contactImageTool.clearCache()
+    }
+
+    private func setFlagged(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+        guard let previewMessage = messages?.object(at: indexPath.row),
+            let message = previewMessage.message() else {
+                return
+        }
+
+        previewMessage.isFlagged = flagged
+        message.imapFlags?.flagged = flagged
+        DispatchQueue.main.async {
+            message.save()
+        }
     }
 
     private func resetViewModel() {
@@ -460,10 +490,11 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "EmailListViewCell",
-                                                       for: indexPath) as? EmailListViewCell_IOS700 else {
-                                                        Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell!")
-                                                        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell_IOS700.storyboardId,
+                                                       for: indexPath) as? EmailListViewCell_IOS700
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell!")
+                return UITableViewCell()
         }
         configure(cell: cell, for: indexPath)
         return cell
@@ -474,14 +505,15 @@ class EmailListViewController_IOS700: BaseTableViewController {
     override func tableView(_ tableView: UITableView, editActionsForRowAt
         indexPath: IndexPath)-> [UITableViewRowAction]? {
         //BUFF: TODO:
-        //        let cell = tableView.cellForRow(at: indexPath) as! EmailListViewCell
-        //        if let email = cell.messageAt(indexPath: indexPath, config: config) {
-        //            let flagAction = createFlagAction(message: email, cell: cell)
-        //            let deleteAction = createDeleteAction(message: email, cell: cell)
-        //            let moreAction = createMoreAction(message: email, cell: cell)
-        //            return [deleteAction, flagAction, moreAction]
-        //        }
-        return nil
+
+        guard let flagAction = createFlagAction(forCellAt: indexPath),
+        let deleteAction = createDeleteAction(forCellAt: indexPath) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Error creating action.")
+            return nil
+        }
+//        let deleteAction = createDeleteAction(message: email, cell: cell)
+//        let moreAction = createMoreAction(message: email, cell: cell)
+        return [deleteAction, flagAction /*moreaction*/]
     }
 
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -676,97 +708,91 @@ extension EmailListViewController_IOS700 {
 // MARK: - TableViewCell Actions
 
 extension EmailListViewController_IOS700 {
-    func createRowAction(cell: EmailListViewCell,
-                         image: UIImage?, action: @escaping (UITableViewRowAction, IndexPath) -> Void,
+    private func createRowAction(image: UIImage?,
+                                 action: @escaping (UITableViewRowAction, IndexPath) -> Void,
                          title: String) -> UITableViewRowAction {
-        let rowAction = UITableViewRowAction(
-            style: .normal, title: title, handler: action)
-
+        let rowAction = UITableViewRowAction(style: .normal, title: title, handler: action)
         if let theImage = image {
             let iconColor = UIColor(patternImage: theImage)
             rowAction.backgroundColor = iconColor
         }
-
         return rowAction
     }
 
-    func createFlagAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            if message.imapFlags == nil {
-                Log.warn(component: #function, content: "message.imapFlags == nil")
-            }
-            if cell.isFlagged(message: message) {
-                message.imapFlags?.flagged = false
-            } else {
-                message.imapFlags?.flagged = true
-            }
-            message.save()
-            self.tableView.reloadRows(at: [indexPath], with: .none)
+    func createFlagAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
+        guard let row = model?.row(for: indexPath) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
+            return nil
         }
-
-        let flagString = NSLocalizedString("Flag", comment: "Message action (on swipe)")
-        var title = "\n\n\(flagString)"
-        let unflagString = NSLocalizedString("Unflag", comment: "Message action (on swipe)")
-        if message.imapFlags?.flagged ?? true {
+        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+            if row.isFlagged {
+                model?.unsetFlagged(forIndexPath: indexPath)
+            } else {
+                model?.setFlagged(forIndexPath: indexPath)
+            }
+             tableView.beginUpdates()
+            self.tableView.setEditing(false, animated: true)
+            self.tableView.reloadRows(at: [indexPath], with: .none) //BUFF: glitches in UI. CHeck
+            tableView.endUpdates()
+        }
+        let title: String
+        if row.isFlagged{
+            let unflagString = NSLocalizedString("Unflag", comment: "Message action (on swipe)")
             title = "\n\n\(unflagString)"
+        } else {
+            let flagString = NSLocalizedString("Flag", comment: "Message action (on swipe)")
+            title = "\n\n\(flagString)"
         }
-
-        return createRowAction(
-            cell: cell, image: UIImage(named: "swipe-flag"), action: action, title: title)
+        return createRowAction(image: UIImage(named: "swipe-flag"), action: action, title: title)
     }
 
-    func createDeleteAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-        //BUFF:
-        //        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-        //            guard let message = cell.messageAt(indexPath: indexPath, config: self.config) else {
-        //                return
-        //            }
-        //
-        //            message.delete() // mark for deletion/trash
-        //            self.tableView.reloadData()
-        //        }
-        //
-        //        let title = NSLocalizedString("Delete", comment: "Message action (on swipe)")
-        //        return createRowAction(
-        //            cell: cell, image: UIImage(named: "swipe-trash"), action: action,
-        //            title: "\n\n\(title)")
-        return UITableViewRowAction() //BUFF: delete
-    }
-
-    func createMarkAsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+    func createDeleteAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
         func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            if cell.haveSeen(message: message) {
-                message.imapFlags?.seen = false
-            } else {
-                message.imapFlags?.seen = true
-            }
-            self.tableView.reloadRows(at: [indexPath], with: .none)
+            tableView.beginUpdates()
+            model?.delete(forIndexPath: indexPath) // mark for deletion/trash
+            tableView.deleteRows(at: [indexPath], with: .none)
+            tableView.endUpdates()
         }
 
-        var title = NSLocalizedString(
-            "Unread", comment: "Message action (on swipe)")
-        if !cell.haveSeen(message: message) {
-            title = NSLocalizedString(
-                "Read", comment: "Message action (on swipe)")
-        }
-
-        let isReadAction = createRowAction(cell: cell, image: nil, action: action,
-                                           title: title)
-        isReadAction.backgroundColor = UIColor.blue
-
-        return isReadAction
+        let title = NSLocalizedString("Delete", comment: "Message action (on swipe)")
+        return createRowAction(image: UIImage(named: "swipe-trash"), action: action,
+                               title: "\n\n\(title)")
     }
 
-    func createMoreAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            self.showMoreActionSheet(cell: cell)
-        }
+//    func createMarkAsReadAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+//        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+//            if cell.haveSeen(message: message) {
+//                message.imapFlags?.seen = false
+//            } else {
+//                message.imapFlags?.seen = true
+//            }
+//            self.tableView.reloadRows(at: [indexPath], with: .none)
+//        }
+//
+//        var title = NSLocalizedString(
+//            "Unread", comment: "Message action (on swipe)")
+//        if !cell.haveSeen(message: message) {
+//            title = NSLocalizedString(
+//                "Read", comment: "Message action (on swipe)")
+//        }
+//
+//        let isReadAction = createRowAction(cell: cell, image: nil, action: action,
+//                                           title: title)
+//        isReadAction.backgroundColor = UIColor.blue
+//
+//        return isReadAction
+//    }
 
-        let title = NSLocalizedString("More", comment: "Message action (on swipe)")
-        return createRowAction(
-            cell: cell, image: UIImage(named: "swipe-more"), action: action,
-            title: "\n\n\(title)")
-    }
+//    func createMoreAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
+//        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+//            self.showMoreActionSheet(cell: cell)
+//        }
+//
+//        let title = NSLocalizedString("More", comment: "Message action (on swipe)")
+//        return createRowAction(
+//            cell: cell, image: UIImage(named: "swipe-more"), action: action,
+//            title: "\n\n\(title)")
+//    }
 }
 
 // MARK: - SegueHandlerType
